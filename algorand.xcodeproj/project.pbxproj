@@ -361,10 +361,6 @@
 		2B0F5F3A24E5686200DA22A6 /* NotificationBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F3824E5686200DA22A6 /* NotificationBanner.swift */; };
 		2B0F5F3E24E5F29B00DA22A6 /* RekeyTransactionSendDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F3D24E5F29B00DA22A6 /* RekeyTransactionSendDraft.swift */; };
 		2B0F5F3F24E5F29B00DA22A6 /* RekeyTransactionSendDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F3D24E5F29B00DA22A6 /* RekeyTransactionSendDraft.swift */; };
-		2B0F5F5B24EAECB700DA22A6 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0F5F5A24EAECB700DA22A6 /* Crypto.framework */; };
-		2B0F5F5E24EAECBE00DA22A6 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0F5F5A24EAECB700DA22A6 /* Crypto.framework */; };
-		2B0F5F6224EAECD300DA22A6 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0F5F6124EAECD200DA22A6 /* Crypto.framework */; };
-		2B0F5F6324EAECD300DA22A6 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0F5F6124EAECD200DA22A6 /* Crypto.framework */; };
 		2B0F615D24EC129D00DA22A6 /* AddNodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F45225F64B60051BC43 /* AddNodeViewController.swift */; };
 		2B0F615E24EC129D00DA22A6 /* AdaptiveLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4FE22393963005D8565 /* AdaptiveLayout.swift */; };
 		2B0F615F24EC129D00DA22A6 /* LedgerTroubleshootInstallAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95A12865242C8EEB00B491A5 /* LedgerTroubleshootInstallAppView.swift */; };
@@ -1185,8 +1181,6 @@
 		2B56B8412505013600AC7B8D /* LedgerAccountSelectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F0F24E1A4F900DA22A6 /* LedgerAccountSelectionHeaderView.swift */; };
 		2B56B8422505013600AC7B8D /* LedgerAccountSelectionHeaderSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F1224E1A51800DA22A6 /* LedgerAccountSelectionHeaderSupplementaryView.swift */; };
 		2B56B8432505013600AC7B8D /* LedgerAccountSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5F0B24E19ABA00DA22A6 /* LedgerAccountSelectionView.swift */; };
-		2B56B8442505018E00AC7B8D /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0F5F6124EAECD200DA22A6 /* Crypto.framework */; };
-		2B56B8452505019200AC7B8D /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0F5F5A24EAECB700DA22A6 /* Crypto.framework */; };
 		2B56F7D6225B3C1D00E58737 /* SendTransactionPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D5225B3C1D00E58737 /* SendTransactionPreviewViewController.swift */; };
 		2B56F7DA225B45B300E58737 /* SendTransactionPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7D9225B45B300E58737 /* SendTransactionPreviewView.swift */; };
 		2B56F7DC225B51C100E58737 /* AssetInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56F7DB225B51C100E58737 /* AssetInputView.swift */; };
@@ -2023,6 +2017,10 @@
 		2BD36E0E2681DC8E00C57728 /* WCGroupTransactionAccountInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36E0D2681DC8E00C57728 /* WCGroupTransactionAccountInformationViewModel.swift */; };
 		2BD36E0F2681DC8E00C57728 /* WCGroupTransactionAccountInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36E0D2681DC8E00C57728 /* WCGroupTransactionAccountInformationViewModel.swift */; };
 		2BD36E102681DC8E00C57728 /* WCGroupTransactionAccountInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36E0D2681DC8E00C57728 /* WCGroupTransactionAccountInformationViewModel.swift */; };
+		2BD36E122681FBE900C57728 /* AlgoSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD36E112681FBE900C57728 /* AlgoSDK.framework */; };
+		2BD36E132681FBE900C57728 /* AlgoSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD36E112681FBE900C57728 /* AlgoSDK.framework */; };
+		2BD36E142681FBE900C57728 /* AlgoSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BD36E112681FBE900C57728 /* AlgoSDK.framework */; };
+		2BD36E172682474800C57728 /* AlgorandSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD36E162682474800C57728 /* AlgorandSDKTests.swift */; };
 		2BD54766231714A9007179FE /* RewardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54765231714A9007179FE /* RewardDetailViewController.swift */; };
 		2BD54767231714A9007179FE /* RewardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54765231714A9007179FE /* RewardDetailViewController.swift */; };
 		2BD5476A23182636007179FE /* RewardDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5476923182636007179FE /* RewardDetailViewModel.swift */; };
@@ -2503,7 +2501,6 @@
 		2B0F5F3824E5686200DA22A6 /* NotificationBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBanner.swift; sourceTree = "<group>"; };
 		2B0F5F3D24E5F29B00DA22A6 /* RekeyTransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransactionSendDraft.swift; sourceTree = "<group>"; };
 		2B0F5F5A24EAECB700DA22A6 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crypto.framework; path = ../../Desktop/Algorand/SDK/Crypto.framework; sourceTree = "<group>"; };
-		2B0F5F6124EAECD200DA22A6 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		2B0F634E24EC129D00DA22A6 /* algorand-prod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "algorand-prod.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B0F634F24EC129D00DA22A6 /* Info-Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Prod.plist"; sourceTree = "<group>"; };
 		2B0F635124ED0CCF00DA22A6 /* RekeyedAccountsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountsResponse.swift; sourceTree = "<group>"; };
@@ -3057,6 +3054,8 @@
 		2BD36E042681DBC400C57728 /* WCAppCallTransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAppCallTransactionViewModel.swift; sourceTree = "<group>"; };
 		2BD36E092681DBE800C57728 /* WCAppCallTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAppCallTransactionViewController.swift; sourceTree = "<group>"; };
 		2BD36E0D2681DC8E00C57728 /* WCGroupTransactionAccountInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCGroupTransactionAccountInformationViewModel.swift; sourceTree = "<group>"; };
+		2BD36E112681FBE900C57728 /* AlgoSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlgoSDK.framework; sourceTree = "<group>"; };
+		2BD36E162682474800C57728 /* AlgorandSDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandSDKTests.swift; sourceTree = "<group>"; };
 		2BD54765231714A9007179FE /* RewardDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailViewController.swift; sourceTree = "<group>"; };
 		2BD5476923182636007179FE /* RewardDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailViewModel.swift; sourceTree = "<group>"; };
 		2BD5477023184310007179FE /* FeedbackCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackCategory.swift; sourceTree = "<group>"; };
@@ -3255,8 +3254,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B0F5F6324EAECD300DA22A6 /* Crypto.framework in Frameworks */,
-				2B0F5F5B24EAECB700DA22A6 /* Crypto.framework in Frameworks */,
+				2BD36E142681FBE900C57728 /* AlgoSDK.framework in Frameworks */,
 				CB624417B8B29A26FE98B92E /* Pods_algorand_staging.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3265,8 +3263,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B56B8452505019200AC7B8D /* Crypto.framework in Frameworks */,
-				2B56B8442505018E00AC7B8D /* Crypto.framework in Frameworks */,
+				2BD36E132681FBE900C57728 /* AlgoSDK.framework in Frameworks */,
 				97F637CB9A81E02C6567D1FE /* Pods_algorand_prod.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3275,8 +3272,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B0F5F6224EAECD300DA22A6 /* Crypto.framework in Frameworks */,
-				2B0F5F5E24EAECBE00DA22A6 /* Crypto.framework in Frameworks */,
+				2BD36E122681FBE900C57728 /* AlgoSDK.framework in Frameworks */,
 				34E10EEDAEE4C90E51BCBBB2 /* Pods_algorand.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3337,7 +3333,7 @@
 		17512612223BDC2B0095AF4F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				2B0F5F6124EAECD200DA22A6 /* Crypto.framework */,
+				2BD36E112681FBE900C57728 /* AlgoSDK.framework */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
@@ -6124,6 +6120,7 @@
 			children = (
 				2B95408C25A782D90098805B /* DB */,
 				2B95408A25A782D10098805B /* Models */,
+				2BD36E152682472F00C57728 /* SDK */,
 				2BE7516B25BF48E400F2CC66 /* Transactions */,
 				2B95408B25A782D40098805B /* ViewModels */,
 				2B95407B25A75FB20098805B /* Info.plist */,
@@ -7532,6 +7529,14 @@
 				2BD36E092681DBE800C57728 /* WCAppCallTransactionViewController.swift */,
 			);
 			path = AppCall;
+			sourceTree = "<group>";
+		};
+		2BD36E152682472F00C57728 /* SDK */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36E162682474800C57728 /* AlgorandSDKTests.swift */,
+			);
+			path = SDK;
 			sourceTree = "<group>";
 		};
 		2BD5476423171491007179FE /* Rewards */ = {
@@ -11658,6 +11663,7 @@
 				2B9541F525AFC2E80098805B /* algorand.xcdatamodeld in Sources */,
 				2BE7517525BF490500F2CC66 /* TransactionFeeCalculatorTests.swift in Sources */,
 				2B95409925A7835A0098805B /* NotificationsViewModelTests.swift in Sources */,
+				2BD36E172682474800C57728 /* AlgorandSDKTests.swift in Sources */,
 				2B2EE8BB25B6F605006A53C5 /* LedgerAccountSelectionViewModelTests.swift in Sources */,
 				2B9540ED25A85CBA0098805B /* Bundle+JSON.swift in Sources */,
 				2B95417425AE62BE0098805B /* TransactionParamsTests.swift in Sources */,
