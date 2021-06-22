@@ -71,6 +71,28 @@ extension TransactionAssetView {
 }
 
 extension TransactionAssetView {
+    func bind(_ viewModel: TransactionAssetViewModel) {
+        setAssetName(viewModel.assetName)
+
+        if !viewModel.isVerified {
+            removeVerifiedAsset()
+        }
+
+        if let assetId = viewModel.assetId {
+            setAssetId(assetId)
+        } else {
+            removeAssetId()
+        }
+
+        if let unitName = viewModel.unitName {
+            setAssetCode(unitName)
+        } else {
+            removeAssetUnitName()
+        }
+
+        setSeparatorHidden(viewModel.isSeparatorHidden)
+    }
+
     func setAssetName(for assetDetail: AssetDetail) {
         assetNameView.setAssetName(for: assetDetail)
     }
