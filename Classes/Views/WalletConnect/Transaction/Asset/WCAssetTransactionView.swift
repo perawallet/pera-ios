@@ -17,31 +17,114 @@
 
 import UIKit
 
-class WCAssetTransactionView: BaseView {
+class WCAssetTransactionView: WCSingleTransactionView {
 
-    private let layout = Layout<LayoutConstants>()
+    weak var delegate: WCAssetTransactionViewDelegate?
 
-    override func configureAppearance() {
-        super.configureAppearance()
-    }
+    private lazy var accountInformationView = TitledTransactionAccountNameView()
+
+    private lazy var assetInformationView = TransactionAssetView()
+
+    private lazy var receiverInformationView = WCTransactionTextInformationView()
+
+    private lazy var rekeyWarningInformationView = WCTransactionAddressWarningInformationView()
+
+    private lazy var closeWarningInformationView = WCTransactionAddressWarningInformationView()
+
+    private lazy var balanceInformationView = TitledTransactionAmountInformationView()
+
+    private lazy var amountInformationView = TitledTransactionAmountInformationView()
+
+    private lazy var feeInformationView = TitledTransactionAmountInformationView()
+
+    private lazy var noteInformationView = WCTransactionTextInformationView()
+
+    private lazy var rawTransactionInformationView = WCTransactionActionableInformationView()
 
     override func prepareLayout() {
         super.prepareLayout()
+        addParticipantInformationViews()
+        addBalanceInformationViews()
+        addDetailedInformationViews()
+    }
+
+    override func setListeners() {
+        rawTransactionInformationView.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
     }
 }
 
 extension WCAssetTransactionView {
+    private func addParticipantInformationViews() {
+        addParticipantInformationView(accountInformationView)
+        addParticipantInformationView(assetInformationView)
+        addParticipantInformationView(receiverInformationView)
+        addParticipantInformationView(rekeyWarningInformationView)
+        addParticipantInformationView(closeWarningInformationView)
+    }
 
+    private func addBalanceInformationViews() {
+        addBalanceInformationView(balanceInformationView)
+        addBalanceInformationView(amountInformationView)
+        addBalanceInformationView(feeInformationView)
+    }
+
+    private func addDetailedInformationViews() {
+        addDetailedInformationView(noteInformationView)
+        addDetailedInformationView(rawTransactionInformationView)
+    }
+}
+
+extension WCAssetTransactionView {
+    @objc
+    private func notifyDelegateToOpenRawTransaction() {
+        delegate?.wcAssetTransactionViewDidOpenRawTransaction(self)
+    }
 }
 
 extension WCAssetTransactionView {
     func bind(_ viewModel: WCAssetTransactionViewModel) {
+        accountInformationView.bind(viewModel.senderInformationViewModel)
 
+        if let assetInformationViewModel = viewModel.assetInformationViewModel {
+            assetInformationView.bind(assetInformationViewModel)
+        }
+
+        if let receiverInformationViewModel = viewModel.receiverInformationViewModel {
+            receiverInformationView.bind(receiverInformationViewModel)
+        }
+
+        if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
+            rekeyWarningInformationView.bind(rekeyWarningInformationViewModel)
+        } else {
+            hideViewInStack(rekeyWarningInformationView)
+        }
+
+        if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
+            closeWarningInformationView.bind(closeWarningInformationViewModel)
+        } else {
+            hideViewInStack(closeWarningInformationView)
+        }
+
+        balanceInformationView.bind(viewModel.balanceInformationViewModel)
+        amountInformationView.bind(viewModel.amountInformationViewModel)
+        feeInformationView.bind(viewModel.feeInformationViewModel)
+
+        if let noteInformationViewModel = viewModel.noteInformationViewModel {
+            noteInformationView.bind(noteInformationViewModel)
+        } else {
+            hideViewInStack(noteInformationView)
+        }
+
+        if let rawTransactionInformationViewModel = viewModel.rawTransactionInformationViewModel {
+            rawTransactionInformationView.bind(rawTransactionInformationViewModel)
+        }
+    }
+
+    private func hideViewInStack(_ view: UIView) {
+        view.isHidden = true
     }
 }
 
-extension WCAssetTransactionView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-
-    }
+protocol WCAssetTransactionViewDelegate: AnyObject {
+    func wcAssetTransactionViewDidOpenRawTransaction(_ wcAssetTransactionView: WCAssetTransactionView)
 }
