@@ -125,7 +125,7 @@ extension AlgorandSDK {
         return AlgoMobileIsValidAddress(address)
     }
 
-    func msgpackToJSON(_ msgpack: Data, error: inout NSError?) -> String {
+    func msgpackToJSON(_ msgpack: Data?, error: inout NSError?) -> String {
         return AlgoMobileTransactionMsgpackToJson(msgpack, &error)
     }
 
