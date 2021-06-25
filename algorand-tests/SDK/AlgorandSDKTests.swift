@@ -26,8 +26,24 @@ class AlgorandSDKTests: XCTestCase {
     private let accountAddress = "X2YHQU7W6OJG66TMLL3PZ7JQS2D42YEGATBBNDXH22Q6JSNOFR6LVZYXXM"
     private let transactionParams = Bundle.main.decode(TransactionParams.self, from: "TransactionParams.json")
 
-    override func setUp() {
-        super.setUp()
+    func testPrivateKeys() {
+        guard let privateKey = algorandSDK.generatePrivateKey() else {
+            XCTFail("Private key is nil")
+            return
+        }
+
+        var mnemonicError: NSError?
+        let mnemonic = algorandSDK.mnemonicFrom(privateKey, error: &mnemonicError)
+        XCTAssertNil(mnemonicError)
+        XCTAssertEqual(mnemonic.components(separatedBy: " ").count, 25)
+
+        var privateKeyError: NSError?
+        if algorandSDK.privateKeyFrom(mnemonic, error: &privateKeyError) == nil {
+            XCTFail("Received private key is nil")
+            return
+        }
+
+        XCTAssertNil(privateKeyError)
     }
 
     func testIsValidAddress() {
@@ -39,30 +55,12 @@ class AlgorandSDKTests: XCTestCase {
         XCTAssertFalse(algorandSDK.isValidAddress(invalidAddress))
     }
 
-    func testMsgpackToJSON() {
-        let msgpack = Data(base64Encoded: "3wAAAAGkdGVzdKR0ZXN0==")
-        let resultJson = "{\"test\": \"test\"}"
-        var error: NSError?
-        let result = algorandSDK.msgpackToJSON(msgpack, error: &error)
-        XCTAssertEqual(result, resultJson)
-        XCTAssertNil(error)
-    }
-
-    func testJSONToMsgpack() {
-        let msgpack = Data(base64Encoded: "3wAAAAGkdGVzdKR0ZXN0==")
-        let resultJson = "{\"test\": \"test\"}"
-        var error: NSError?
-        let result = algorandSDK.jsonToMsgpack(resultJson, error: &error)
-        XCTAssertEqual(msgpack, result)
-        XCTAssertNil(error)
-    }
-
     func testSendAlgos() {
         let draft = AlgosTransactionDraft(
             from: account,
             toAccount: accountAddress,
             transactionParams: transactionParams,
-            amount: 10000,
+            amount: 1000000,
             isMaxTransaction: false,
             note: nil
         )

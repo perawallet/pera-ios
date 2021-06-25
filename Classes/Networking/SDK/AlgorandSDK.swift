@@ -172,6 +172,7 @@ fileprivate extension Array where Element == Data {
 }
 
 fileprivate extension Int64 {
+    // Received from: https://github.com/algorand/go-algorand-sdk/blob/MobileWrapper/mobile/utils.go#L22-L27
     func toSDKInt64() -> AlgoMobileUint64 {
         let int64 = AlgoMobileUint64()
         int64.upper = Int64(self >> 32)
