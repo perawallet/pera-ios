@@ -24,4 +24,27 @@ class WCAssetAdditionTransactionViewController: WCTransactionViewController {
     override var transactionView: WCSingleTransactionView? {
         return assetAdditionTransactionView
     }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+        assetAdditionTransactionView.delegate = self
+    }
+}
+
+extension WCAssetAdditionTransactionViewController: WCAssetAdditionTransactionViewDelegate {
+    func wcAssetAdditionTransactionViewDidOpenRawTransaction(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
+
+    }
+
+    func wcAssetAdditionTransactionViewDidOpenAlgoExplorer(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
+
+    }
+
+    func wcAssetAdditionTransactionViewDidOpenAssetURL(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
+
+    }
+
+    func wcAssetAdditionTransactionViewDidOpenAssetMetadata(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
+
+    }
 }
