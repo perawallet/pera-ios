@@ -17,6 +17,110 @@
 
 import UIKit
 
-class WCAlgosTransactionView: BaseView {
-    
+class WCAlgosTransactionView: WCSingleTransactionView {
+
+    weak var delegate: WCAlgosTransactionViewDelegate?
+
+    private lazy var accountInformationView = TitledTransactionAccountNameView()
+
+    private lazy var assetInformationView = TransactionAssetView()
+
+    private lazy var receiverInformationView = WCTransactionTextInformationView()
+
+    private lazy var rekeyWarningInformationView = WCTransactionAddressWarningInformationView()
+
+    private lazy var closeWarningInformationView = WCTransactionAddressWarningInformationView()
+
+    private lazy var balanceInformationView = TitledTransactionAmountInformationView()
+
+    private lazy var amountInformationView = TitledTransactionAmountInformationView()
+
+    private lazy var feeInformationView = TitledTransactionAmountInformationView()
+
+    private lazy var noteInformationView = WCTransactionTextInformationView()
+
+    private lazy var rawTransactionInformationView = WCTransactionActionableInformationView()
+
+    override func prepareLayout() {
+        super.prepareLayout()
+        addParticipantInformationViews()
+        addBalanceInformationViews()
+        addDetailedInformationViews()
+    }
+
+    override func setListeners() {
+        rawTransactionInformationView.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
+    }
+}
+
+extension WCAlgosTransactionView {
+    private func addParticipantInformationViews() {
+        addParticipantInformationView(accountInformationView)
+        addParticipantInformationView(assetInformationView)
+        addParticipantInformationView(receiverInformationView)
+        addParticipantInformationView(rekeyWarningInformationView)
+        addParticipantInformationView(closeWarningInformationView)
+    }
+
+    private func addBalanceInformationViews() {
+        addBalanceInformationView(balanceInformationView)
+        addBalanceInformationView(amountInformationView)
+        addBalanceInformationView(feeInformationView)
+    }
+
+    private func addDetailedInformationViews() {
+        addDetailedInformationView(noteInformationView)
+        addDetailedInformationView(rawTransactionInformationView)
+    }
+}
+
+extension WCAlgosTransactionView {
+    @objc
+    private func notifyDelegateToOpenRawTransaction() {
+        delegate?.wcAlgosTransactionViewDidOpenRawTransaction(self)
+    }
+}
+
+extension WCAlgosTransactionView {
+    func bind(_ viewModel: WCAlgosTransactionViewModel) {
+        accountInformationView.bind(viewModel.senderInformationViewModel)
+
+        if let assetInformationViewModel = viewModel.assetInformationViewModel {
+            assetInformationView.bind(assetInformationViewModel)
+        }
+
+        if let receiverInformationViewModel = viewModel.receiverInformationViewModel {
+            receiverInformationView.bind(receiverInformationViewModel)
+        }
+
+        if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
+            rekeyWarningInformationView.bind(rekeyWarningInformationViewModel)
+        } else {
+            rekeyWarningInformationView.hideViewInStack()
+        }
+
+        if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
+            closeWarningInformationView.bind(closeWarningInformationViewModel)
+        } else {
+            closeWarningInformationView.hideViewInStack()
+        }
+
+        balanceInformationView.bind(viewModel.balanceInformationViewModel)
+        amountInformationView.bind(viewModel.amountInformationViewModel)
+        feeInformationView.bind(viewModel.feeInformationViewModel)
+
+        if let noteInformationViewModel = viewModel.noteInformationViewModel {
+            noteInformationView.bind(noteInformationViewModel)
+        } else {
+            noteInformationView.hideViewInStack()
+        }
+
+        if let rawTransactionInformationViewModel = viewModel.rawTransactionInformationViewModel {
+            rawTransactionInformationView.bind(rawTransactionInformationViewModel)
+        }
+    }
+}
+
+protocol WCAlgosTransactionViewDelegate: AnyObject {
+    func wcAlgosTransactionViewDidOpenRawTransaction(_ wcAlgosTransactionView: WCAlgosTransactionView)
 }

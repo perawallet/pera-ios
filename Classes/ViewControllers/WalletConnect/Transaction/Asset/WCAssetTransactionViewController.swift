@@ -17,6 +17,22 @@
 
 import UIKit
 
-class WCAssetTransactionViewController: BaseViewController {
-    
+class WCAssetTransactionViewController: WCTransactionViewController {
+
+    private lazy var assetTransactionView = WCAssetTransactionView()
+
+    override var transactionView: WCSingleTransactionView? {
+        return assetTransactionView
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+        assetTransactionView.delegate = self
+    }
+}
+
+extension WCAssetTransactionViewController: WCAssetTransactionViewDelegate {
+    func wcAssetTransactionViewDidOpenRawTransaction(_ wcAssetTransactionView: WCAssetTransactionView) {
+        
+    }
 }

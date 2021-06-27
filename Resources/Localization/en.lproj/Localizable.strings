@@ -37,6 +37,10 @@
 "title-learn-more" = "Learn More";
 "title-connect" = "Connect";
 "title-disconnect" = "Disconnect";
+"title-confirm" = "Confirm";
+"title-confirm-all" = "Confirm All Transactions";
+"title-decline" = "Decline";
+"title-decline-all" = "Decline All";
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";
@@ -342,6 +346,7 @@
 "transaction-detail-copy-tooltip" = "Press and hold to Copy to Clipboard";
 "transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
 "transaction-id-open-goalseeker" = "Open in GoalSeeker";
+"transaction-detail-balance" = "Account Balance";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
@@ -630,3 +635,29 @@
 "wallet-connect-session-disconnect-message" = "Would you like to disconnect from %@?";
 "wallet-connect-session-connected" = "Connected";
 "wallet-connect-session-disconnect-fail-message" = "Failed to disconnect from Session %@.";
+
+// MARK: Wallet Connect Transaction Warning
+"wallet-connect-transaction-warning-rekey" = "Enter here Rekey warning message";
+"wallet-connect-transaction-warning-close-algos" = "Enter here Close Algos warning message";
+"wallet-connect-transaction-warning-close-asset" = "Enter here Close Asset warning message";
+"wallet-connect-transaction-warning-rekey-title" = "Rekeyed To:";
+"wallet-connect-transaction-warning-close-asset-title" = "Close Asset To:";
+"wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To:";
+
+// MARK: Wallet Connect Transaction Dapp Message
+"wallet-connect-transaction-dapp-show-more" = "Show More Info";
+
+// MARK: Wallet Connect Transaction
+"wallet-connect-transaction-title-transaction" = "Transaction Request";
+"wallet-connect-transaction-title-asset" = "Transfer Asset Request";
+"wallet-connect-transaction-title-opt-in" = "Assets Opt-in Request";
+"wallet-connect-transaction-title-multiple" = "Multiple Transaction Request";
+"wallet-connect-transaction-count" = "All transactions (%d)";
+"wallet-connect-transaction-title-raw" = "Raw Txns";
+"wallet-connect-transaction-detail-raw" = "Show Raw Transaction";
+"wallet-connect-transaction-title-explorer" = "AlgoExplorer";
+"wallet-connect-transaction-detail-explorer" = "Show Explorer";
+"wallet-connect-transaction-title-asset" = "Asset URL";
+"wallet-connect-transaction-detail-asset" = "Show Asset URL";
+"wallet-connect-transaction-title-metadata" = "Asset Metadata";
+"wallet-connect-transaction-detail-metadata" = "Show Asset Metadata";
