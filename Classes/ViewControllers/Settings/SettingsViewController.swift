@@ -280,7 +280,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                     open(url)
                 }
             case .walletConnect:
-                break
+                open(.walletConnectSessions, by: .push)
             case .notifications:
                 open(.notificationFilter(flow: .settings), by: .push)
             case .appReview:

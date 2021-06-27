@@ -27,6 +27,12 @@ class WCSessionItemCell: BaseCollectionViewCell<WCSessionItemView> {
     }
 }
 
+extension WCSessionItemCell {
+    func bind(_ viewModel: WCSessionItemViewModel) {
+        contextView.bind(viewModel)
+    }
+}
+
 extension WCSessionItemCell: WCSessionItemViewDelegate {
     func wcSessionItemViewDidOpenDisconnectionMenu(_ wcSessionItemView: WCSessionItemView) {
         delegate?.wcSessionItemCellDidOpenDisconnectionMenu(self)

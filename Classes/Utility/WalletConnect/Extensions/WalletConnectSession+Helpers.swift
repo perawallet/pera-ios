@@ -17,6 +17,8 @@
 
 import UIKit
 
+let algorandWalletConnectChainID = 4160
+
 extension WalletConnectSession {
     func getClientMeta() -> ClientMeta {
         return ClientMeta(
@@ -31,7 +33,7 @@ extension WalletConnectSession {
         return WalletInfo(
             approved: true,
             accounts: [account],
-            chainId: walletInfo?.chainId ?? 4,
+            chainId: walletInfo?.chainId ?? algorandWalletConnectChainID,
             peerId: UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString,
             peerMeta: getClientMeta()
         )
@@ -41,7 +43,7 @@ extension WalletConnectSession {
         return WalletInfo(
             approved: false,
             accounts: [],
-            chainId: walletInfo?.chainId ?? 4,
+            chainId: walletInfo?.chainId ?? algorandWalletConnectChainID,
             peerId: UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString,
             peerMeta: getClientMeta()
         )

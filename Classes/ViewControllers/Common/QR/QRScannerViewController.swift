@@ -302,6 +302,14 @@ extension QRScannerViewControllerDelegate {
     ) {
         
     }
+    
+    func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
+
+    }
+
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
+
+    }
 }
 
 enum QRScannerError: Error {

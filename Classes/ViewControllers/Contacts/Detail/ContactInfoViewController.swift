@@ -280,6 +280,8 @@ extension ContactInfoViewController: AddContactViewControllerDelegate {
 
 extension ContactInfoViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
+        viewController.dismissScreen()
+        
         if let assetDetail = selectedAsset {
             selectedAsset = nil
             open(
