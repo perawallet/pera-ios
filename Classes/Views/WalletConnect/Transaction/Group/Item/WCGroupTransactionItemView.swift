@@ -18,5 +18,30 @@
 import UIKit
 
 class WCGroupTransactionItemView: BaseView {
-    
+
+    private let layout = Layout<LayoutConstants>()
+
+    override func configureAppearance() {
+        super.configureAppearance()
+    }
+
+    override func prepareLayout() {
+        super.prepareLayout()
+    }
+}
+
+extension WCGroupTransactionItemView {
+
+}
+
+extension WCGroupTransactionItemView {
+    func bind(_ viewModel: WCGroupTransactionItemViewModel) {
+
+    }
+}
+
+extension WCGroupTransactionItemView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+
+    }
 }
