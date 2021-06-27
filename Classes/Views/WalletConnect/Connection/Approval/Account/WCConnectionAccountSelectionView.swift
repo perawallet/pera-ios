@@ -45,7 +45,7 @@ class WCConnectionAccountSelectionView: BaseControl {
         backgroundColor = .clear
         layer.cornerRadius = 12.0
         layer.borderWidth = 1.0
-        layer.borderColor = Colors.WCConnectionAccountSelectionView.borderColor.cgColor
+        layer.borderColor = Colors.Component.dappImageBorderColor.cgColor
     }
 
     override func prepareLayout() {
@@ -113,11 +113,5 @@ extension WCConnectionAccountSelectionView {
         let iconHorizontalInset: CGFloat = 20.0
         let iconVerticalInset: CGFloat = 26.0
         let horizontalInset: CGFloat = 16.0
-    }
-}
-
-extension Colors {
-    fileprivate enum WCConnectionAccountSelectionView {
-        static let borderColor = color("wcAccountSelectionBorderColor")
     }
 }

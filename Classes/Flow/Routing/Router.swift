@@ -389,6 +389,18 @@ class Router {
             )
         case .walletConnectSessions:
             viewController = WCSessionListViewController(configuration: configuration)
+        case let .wcTransactionFullDappDetail(wcSession):
+            viewController = WCTransactionFullDappDetailViewController(wcSession: wcSession, configuration: configuration)
+        case .wcAlgosTransaction:
+            viewController = WCAlgosTransactionViewController(configuration: configuration)
+        case .wcAssetTransaction:
+            viewController = WCAssetTransactionViewController(configuration: configuration)
+        case .wcAssetAdditionTransaction:
+            viewController = WCAssetAdditionTransactionViewController(configuration: configuration)
+        case .wcGroupTransaction:
+            viewController = WCGroupTransactionViewController(configuration: configuration)
+        case .wcAppCall:
+            viewController = WCAppCallTransactionViewController(configuration: configuration)
         }
         
         return viewController as? T
