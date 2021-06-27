@@ -28,7 +28,7 @@ class WCSessionItemView: BaseView {
         let imageView = URLImageView()
         imageView.layer.cornerRadius = 20.0
         imageView.layer.borderWidth = 1.0
-        imageView.layer.borderColor = Colors.WCSessionItemView.borderColor.cgColor
+        imageView.layer.borderColor = Colors.Component.dappImageBorderColor.cgColor
         return imageView
     }()
 
@@ -204,10 +204,4 @@ extension WCSessionItemView {
 
 protocol WCSessionItemViewDelegate: AnyObject {
     func wcSessionItemViewDidOpenDisconnectionMenu(_ wcSessionItemView: WCSessionItemView)
-}
-
-extension Colors {
-    fileprivate enum WCSessionItemView {
-        static let borderColor = color("wcAccountSelectionBorderColor")
-    }
 }

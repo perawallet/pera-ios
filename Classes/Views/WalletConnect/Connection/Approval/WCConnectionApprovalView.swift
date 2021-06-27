@@ -28,7 +28,7 @@ class WCConnectionApprovalView: BaseView {
         let imageView = URLImageView()
         imageView.layer.cornerRadius = 36.0
         imageView.layer.borderWidth = 1.0
-        imageView.layer.borderColor = Colors.WCConnectionApprovalView.borderColor.cgColor
+        imageView.layer.borderColor = Colors.Component.dappImageBorderColor.cgColor
         return imageView
     }()
 
@@ -200,10 +200,4 @@ protocol WCConnectionApprovalViewDelegate: AnyObject {
     func wcConnectionApprovalViewDidApproveConnection(_ wcConnectionApprovalView: WCConnectionApprovalView)
     func wcConnectionApprovalViewDidRejectConnection(_ wcConnectionApprovalView: WCConnectionApprovalView)
     func wcConnectionApprovalViewDidSelectAccountSelection(_ wcConnectionApprovalView: WCConnectionApprovalView)
-}
-
-extension Colors {
-    fileprivate enum WCConnectionApprovalView {
-        static let borderColor = color("wcAccountSelectionBorderColor")
-    }
 }
