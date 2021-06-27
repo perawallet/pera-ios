@@ -17,6 +17,6 @@
 
 import UIKit
 
-class WCGroupTransactionViewController {
+class WCGroupTransactionViewController: BaseViewController {
     
 }

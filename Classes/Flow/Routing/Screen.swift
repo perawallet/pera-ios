@@ -103,6 +103,11 @@ indirect enum Screen {
     case wcConnectionApproval(walletConnectSession: WalletConnectSession, completion: WalletConnectSessionConnectionCompletionHandler)
     case walletConnectSessions
     case wcTransactionFullDappDetail(wcSession: WalletConnectSession)
+    case wcAlgosTransaction
+    case wcAssetTransaction
+    case wcAssetAdditionTransaction
+    case wcGroupTransaction
+    case wcAppCall
 }
 
 extension Screen {

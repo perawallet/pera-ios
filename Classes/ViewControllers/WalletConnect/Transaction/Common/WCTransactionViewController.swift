@@ -23,7 +23,7 @@ class WCTransactionViewController: BaseScrollViewController {
 
     private lazy var dappMessageView = WCTransactionDappMessageView()
 
-    var transactionView: UIView? {
+    var transactionView: WCSingleTransactionView? {
         return nil
     }
 

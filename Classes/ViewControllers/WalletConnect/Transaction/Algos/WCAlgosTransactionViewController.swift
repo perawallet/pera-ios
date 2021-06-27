@@ -21,11 +21,18 @@ class WCAlgosTransactionViewController: WCTransactionViewController {
 
     private lazy var algosTransactionView = WCAlgosTransactionView()
 
-    override var transactionView: UIView? {
+    override var transactionView: WCSingleTransactionView? {
         return algosTransactionView
     }
 
-    override func configureAppearance() {
-        super.configureAppearance()
+    override func linkInteractors() {
+        super.linkInteractors()
+        algosTransactionView.delegate = self
+    }
+}
+
+extension WCAlgosTransactionViewController: WCAlgosTransactionViewDelegate {
+    func wcAlgosTransactionViewDidOpenRawTransaction(_ wcAlgosTransactionView: WCAlgosTransactionView) {
+        
     }
 }
