@@ -35,11 +35,26 @@ extension WCSessionListLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return .zero
+        guard let session = dataSource?.session(at: indexPath.item) else {
+            return .zero
+        }
+
+        var descriptionHeight: CGFloat = 0.0
+
+        if let description = session.sessionDetail.dAppInfo.peerMeta.description {
+            descriptionHeight = description.height(
+                withConstrained: UIScreen.main.bounds.width - layout.current.horizontalInset,
+                font: UIFont.font(withWeight: .regular(size: 14.0))
+            )
+        }
+
+        return CGSize(width: UIScreen.main.bounds.width, height: descriptionHeight + layout.current.constantHeight)
     }
 }
 
 extension WCSessionListLayout {
     private struct LayoutConstants: AdaptiveLayoutConstants {
+        let constantHeight: CGFloat = 112.0
+        let horizontalInset: CGFloat = 100.0
     }
 }

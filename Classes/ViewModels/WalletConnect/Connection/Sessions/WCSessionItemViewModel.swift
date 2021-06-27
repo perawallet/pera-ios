@@ -16,7 +16,42 @@
 //   WCSessionItemViewModel.swift
 
 import UIKit
+import Macaroon
+import SwiftDate
 
 class WCSessionItemViewModel {
-    
+    private(set) var image: ImageSource?
+    private(set) var name: String?
+    private(set) var description: String?
+    private(set) var date: String?
+
+    init(session: WCSession) {
+        setImage(from: session)
+        setName(from: session)
+        setDescription(from: session)
+        setDate(from: session)
+    }
+
+    private func setImage(from session: WCSession) {
+        image = PNGImageSource(
+            url: session.sessionDetail.dAppInfo.peerMeta.icons.first,
+            color: nil,
+            size: .resize(CGSize(width: 40.0, height: 40.0), .aspectFit),
+            shape: .circle,
+            placeholder: nil,
+            forceRefresh: false
+        )
+    }
+
+    private func setName(from session: WCSession) {
+        name = session.sessionDetail.dAppInfo.peerMeta.name
+    }
+
+    private func setDescription(from session: WCSession) {
+        description = session.sessionDetail.dAppInfo.peerMeta.description
+    }
+
+    private func setDate(from session: WCSession) {
+        date = session.date.toFormat("MMMM dd, yyyy - HH:mm")
+    }
 }

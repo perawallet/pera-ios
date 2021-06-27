@@ -19,20 +19,35 @@ import UIKit
 
 class WCSessionListViewController: BaseViewController {
 
+    private lazy var wcConnectionModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 454.0))
+    )
+
     private lazy var sessionListView = WCSessionListView()
 
-    private lazy var dataSource = WCSessionListDataSource()
+    private lazy var emptyStateView = WCSessionListEmptyView()
+
+    private lazy var dataSource = WCSessionListDataSource(walletConnector: walletConnector)
 
     private lazy var layoutBuilder = WCSessionListLayout(dataSource: dataSource)
 
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.tertiary
+        title = "settings-wallet-connect-title".localized
+        setListContentState()
     }
 
     override func linkInteractors() {
         super.linkInteractors()
         sessionListView.setDataSource(dataSource)
         sessionListView.setDelegate(layoutBuilder)
+        dataSource.delegate = self
+        walletConnector.delegate = self
+        emptyStateView.delegate = self
     }
 
     override func prepareLayout() {
@@ -41,10 +56,132 @@ class WCSessionListViewController: BaseViewController {
     }
 }
 
-extension WCSessionListViewController {
+extension WCSessionListViewController: WCSessionListDataSourceDelegate {
+    func wSessionListDataSource(_ wSessionListDataSource: WCSessionListDataSource, didOpenDisconnectMenuFrom cell: WCSessionItemCell) {
+        displayDisconnectionMenu(for: cell)
+    }
+}
 
+extension WCSessionListViewController: WalletConnectorDelegate {
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        shouldStart session: WalletConnectSession,
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
+    ) {
+        openWCSessionApproval(for: session, then: completion)
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WalletConnectSession) {
+        setListContentState()
+        sessionListView.collectionView.reloadData()
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WalletConnectSession) {
+        updateScreenAfterDisconnecting(from: session)
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
+        displayDisconnectionError(error)
+    }
+}
+
+extension WCSessionListViewController: WCSessionListEmptyViewDelegate {
+    func wcSessionListEmptyViewDidOpenScanQR(_ wcSessionListEmptyView: WCSessionListEmptyView) {
+        openQRScanner()
+    }
+}
+
+extension WCSessionListViewController: QRScannerViewControllerDelegate {
+    func qrScannerViewController(
+        _ controller: QRScannerViewController,
+        didRead walletConnectSession: String,
+        completionHandler: EmptyHandler?
+    ) {
+        walletConnector.connect(to: walletConnectSession)
+    }
 }
 
 extension WCSessionListViewController {
+    private func setListContentState() {
+        sessionListView.collectionView.contentState = dataSource.isEmpty ? .empty(emptyStateView) : .none
+    }
 
+    private func index(of cell: WCSessionItemCell) -> Int? {
+        return sessionListView.collectionView.indexPath(for: cell)?.item
+    }
+}
+
+extension WCSessionListViewController {
+    private func openQRScanner() {
+        let qrScannerViewController = open(.qrScanner, by: .push) as? QRScannerViewController
+        qrScannerViewController?.delegate = self
+    }
+
+    private func openWCSessionApproval(
+        for session: WalletConnectSession,
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
+    ) {
+        guard let accounts = self.session?.accounts,
+              accounts.contains(where: { $0.type != .watch }) else {
+            NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-error-no-account".localized)
+            return
+        }
+
+        open(
+            .wcConnectionApproval(walletConnectSession: session, completion: completion),
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: wcConnectionModalPresenter
+            )
+        )
+    }
+}
+
+extension WCSessionListViewController {
+    private func displayDisconnectionMenu(for cell: WCSessionItemCell) {
+        guard let index = index(of: cell),
+              let session = dataSource.session(at: index) else {
+            return
+        }
+
+        let actionSheet = UIAlertController(
+            title: nil,
+            message: "wallet-connect-session-disconnect-message".localized(params: session.sessionDetail.dAppInfo.peerMeta.name),
+            preferredStyle: .actionSheet
+        )
+
+        let disconnectAction = UIAlertAction(title: "title-disconnect".localized, style: .destructive) { _ in
+            self.dataSource.disconnectFromSession(session)
+        }
+
+        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel)
+
+        actionSheet.addAction(disconnectAction)
+        actionSheet.addAction(cancelAction)
+        present(actionSheet, animated: true, completion: nil)
+    }
+
+    private func updateScreenAfterDisconnecting(from session: WalletConnectSession) {
+        guard let index = dataSource.index(of: session) else {
+            sessionListView.collectionView.reloadData()
+            setListContentState()
+            return
+        }
+
+        sessionListView.collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+        setListContentState()
+    }
+
+    private func displayDisconnectionError(_ error: WalletConnector.Error) {
+        switch error {
+        case let .failedToDisconnect(session):
+            NotificationBanner.showError(
+                "title-error".localized,
+                message: "wallet-connect-session-disconnect-fail-message".localized(session.dAppInfo.peerMeta.name)
+            )
+        default:
+            break
+        }
+    }
 }
