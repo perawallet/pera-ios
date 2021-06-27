@@ -25,7 +25,14 @@ class WCAlgosTransactionViewController: WCTransactionViewController {
         return algosTransactionView
     }
 
-    override func configureAppearance() {
-        super.configureAppearance()
+    override func linkInteractors() {
+        super.linkInteractors()
+        algosTransactionView.delegate = self
+    }
+}
+
+extension WCAlgosTransactionViewController: WCAlgosTransactionViewDelegate {
+    func wcAlgosTransactionViewDidOpenRawTransaction(_ wcAlgosTransactionView: WCAlgosTransactionView) {
+        
     }
 }

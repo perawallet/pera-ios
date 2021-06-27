@@ -107,6 +107,7 @@ indirect enum Screen {
     case wcAssetTransaction
     case wcAssetAdditionTransaction
     case wcGroupTransaction
+    case wcAppCall
 }
 
 extension Screen {
