@@ -399,6 +399,8 @@ class Router {
             viewController = WCAssetAdditionTransactionViewController(configuration: configuration)
         case .wcGroupTransaction:
             viewController = WCGroupTransactionViewController(configuration: configuration)
+        case .wcAppCall:
+            viewController = WCAppCallTransactionViewController(configuration: configuration)
         }
         
         return viewController as? T
