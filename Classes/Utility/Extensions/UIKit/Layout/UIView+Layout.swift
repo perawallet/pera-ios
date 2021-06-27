@@ -28,4 +28,8 @@ extension UIView {
             make.edges.equalToSuperview()
         }
     }
+
+    func hideViewInStack() {
+        isHidden = true
+    }
 }

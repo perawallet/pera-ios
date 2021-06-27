@@ -24,4 +24,15 @@ class WCAssetTransactionViewController: WCTransactionViewController {
     override var transactionView: WCSingleTransactionView? {
         return assetTransactionView
     }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+        assetTransactionView.delegate = self
+    }
+}
+
+extension WCAssetTransactionViewController: WCAssetTransactionViewDelegate {
+    func wcAssetTransactionViewDidOpenRawTransaction(_ wcAssetTransactionView: WCAssetTransactionView) {
+        
+    }
 }
