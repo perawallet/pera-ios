@@ -17,6 +17,22 @@
 
 import UIKit
 
-class WCAlgosTransactionViewController: BaseViewController {
+class WCAlgosTransactionViewController: WCTransactionViewController {
 
+    private lazy var algosTransactionView = WCAlgosTransactionView()
+
+    override var transactionView: WCSingleTransactionView? {
+        return algosTransactionView
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+        algosTransactionView.delegate = self
+    }
+}
+
+extension WCAlgosTransactionViewController: WCAlgosTransactionViewDelegate {
+    func wcAlgosTransactionViewDidOpenRawTransaction(_ wcAlgosTransactionView: WCAlgosTransactionView) {
+        
+    }
 }
