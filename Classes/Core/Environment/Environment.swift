@@ -34,8 +34,20 @@ class Environment {
     lazy var isTestNet = target == .staging
     
     lazy var schema = "https"
-    lazy var algodToken = "0dw4Qu6ckPJTQY540Z0sEokH910KUWKjsf312fxNtTcVjw5UUhhlK4s4odcXIoEz"
-    lazy var indexerToken = "KegWFLYQnBNVeP4oHCX64dObBk8VemzYdNqsnAOIxYQ8aqJLQTYeVDQyZNnx1PZA"
+    
+    lazy var algodToken: String = {
+        guard let token = Bundle.main.infoDictionary?["ALGOD_TOKEN"] as? String else {
+            return ""
+        }
+        return token
+    }()
+
+    lazy var indexerToken: String = {
+        guard let token = Bundle.main.infoDictionary?["INDEXER_TOKEN"] as? String else {
+            return ""
+        }
+        return token
+    }()
     
     lazy var testNetAlgodHost = "node-testnet.aws.algodev.network"
     lazy var testNetIndexerHost = "indexer-testnet.aws.algodev.network"

@@ -2596,6 +2596,7 @@
 		2B3A34EF246F7289001C8F22 /* TransactionReceiverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionReceiverButton.swift; sourceTree = "<group>"; };
 		2B3A95E5238FF99C00A3DF44 /* TransactionControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionControllerDelegate.swift; sourceTree = "<group>"; };
 		2B3A95E8239011EB00A3DF44 /* AssetTransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTransactionSendDraft.swift; sourceTree = "<group>"; };
+		2B3BC385266FEBCD007D7107 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		2B3D73B523C3621500597D32 /* VerifiedAssetList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAssetList.swift; sourceTree = "<group>"; };
 		2B3D73B823C3621F00597D32 /* VerifiedAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAsset.swift; sourceTree = "<group>"; };
 		2B3D73BB23C3638900597D32 /* LimitQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitQuery.swift; sourceTree = "<group>"; };
@@ -5877,6 +5878,7 @@
 				EC9412FF22BD6D4C00745662 /* Info-Demo.plist */,
 				2B09603722578C990005BE27 /* GoogleService-Info.plist */,
 				2B8BE4DD22391C3B005D8565 /* Info.plist */,
+				2B3BC385266FEBCD007D7107 /* Config.xcconfig */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -12019,6 +12021,7 @@
 		};
 		2B8BE4DE22391C3B005D8565 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B3BC385266FEBCD007D7107 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -12081,6 +12084,7 @@
 		};
 		2B8BE4DF22391C3B005D8565 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B3BC385266FEBCD007D7107 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -12268,6 +12272,7 @@
 		};
 		EC6B733422541CA8006D146B /* App Store */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2B3BC385266FEBCD007D7107 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
