@@ -61,7 +61,6 @@ indirect enum Screen {
     case addNode
     case editNode(node: Node)
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetDetail?)
-    case feedback
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
@@ -102,6 +101,13 @@ indirect enum Screen {
     case algoUSDAnalytics(account: Account, currency: Currency)
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
     case wcConnectionApproval(walletConnectSession: WalletConnectSession, completion: WalletConnectSessionConnectionCompletionHandler)
+    case walletConnectSessions
+    case wcTransactionFullDappDetail(wcSession: WalletConnectSession)
+    case wcAlgosTransaction
+    case wcAssetTransaction
+    case wcAssetAdditionTransaction
+    case wcGroupTransaction
+    case wcAppCall
 }
 
 extension Screen {

@@ -62,6 +62,14 @@ class AccountsViewController: BaseViewController {
             initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
         )
     }()
+
+    private lazy var wcConnectionModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 454.0))
+    )
     
     private lazy var pushNotificationController: PushNotificationController = {
         guard let api = api else {
@@ -181,6 +189,7 @@ class AccountsViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        walletConnector.reconnectToSavedSessionsIfPossible()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.presentQRTooltipIfNeeded()
@@ -589,11 +598,20 @@ extension AccountsViewController: WalletConnectorDelegate {
         shouldStart session: WalletConnectSession,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
-        open(.wcConnectionApproval(walletConnectSession: session, completion: completion), by: .present)
-    }
+        guard let accounts = self.session?.accounts,
+              accounts.contains(where: { $0.type != .watch }) else {
+            NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-error-no-account".localized)
+            return
+        }
 
-    func walletConnector(_ walletConnector: WalletConnector, didFailToConnect url: WalletConnectURL) {
-
+        open(
+            .wcConnectionApproval(walletConnectSession: session, completion: completion),
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: wcConnectionModalPresenter
+            )
+        )
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WalletConnectSession) {
@@ -604,7 +622,7 @@ extension AccountsViewController: WalletConnectorDelegate {
 
     }
 
-    func walletConnector(_ walletConnector: WalletConnector, didFailToDisconnectFrom session: WalletConnectSession) {
+    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
 
     }
 }

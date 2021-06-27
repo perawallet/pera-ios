@@ -29,14 +29,16 @@ class WCConnectionAccountSelectionViewModel {
     }
 
     private func setImage(from account: Account) {
-
+        image = account.accountImage()
     }
 
     private func setAccountName(from account: Account) {
-
+        accountName = account.name ?? account.address.shortAddressDisplay()
     }
 
     private func setDetail(from account: Account) {
-
+        if let amount = account.amount.toAlgos.toAlgosStringForLabel {
+            detail = "\(amount) \("asset-algos-title".localized)"
+        }
     }
 }

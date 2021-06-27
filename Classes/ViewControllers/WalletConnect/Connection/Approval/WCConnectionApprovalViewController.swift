@@ -19,6 +19,10 @@ import UIKit
 
 class WCConnectionApprovalViewController: BaseViewController {
 
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+
     private lazy var connectionApprovalView = WCConnectionApprovalView()
 
     private let walletConnectSession: WalletConnectSession
@@ -56,10 +60,6 @@ class WCConnectionApprovalViewController: BaseViewController {
     }
 }
 
-extension WCConnectionApprovalViewController {
-
-}
-
 extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
     func wcConnectionApprovalViewDidApproveConnection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
         guard let account = selectedAccount else {
@@ -76,14 +76,20 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
     }
 
     func wcConnectionApprovalViewDidSelectAccountSelection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
-        let accountListViewController = open(.accountList(mode: .empty), by: .present) as? AccountListViewController
+        let accountListViewController = open(.accountList(mode: .walletConnect), by: .push) as? AccountListViewController
         accountListViewController?.delegate = self
     }
 }
 
 extension WCConnectionApprovalViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
+        viewController.popScreen()
+
         selectedAccount = account
         connectionApprovalView.bind(WCConnectionAccountSelectionViewModel(account: account))
+    }
+
+    func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {
+        viewController.popScreen()
     }
 }
