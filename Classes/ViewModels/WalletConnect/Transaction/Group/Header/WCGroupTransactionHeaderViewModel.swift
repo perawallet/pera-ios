@@ -15,8 +15,22 @@
 //
 //   WCGroupTransactionHeaderViewModel.swift
 
-import Foundation
+import UIKit
 
 class WCGroupTransactionHeaderViewModel {
-    
+    private(set) var transactionDappMessageViewModel: WCTransactionDappMessageViewModel?
+    private(set) var title: String?
+
+    init(session: WalletConnectSession, transactionCount: Int) {
+        setTransactionDappMessageViewModel(from: session)
+        setTitle(from: transactionCount)
+    }
+
+    private func setTransactionDappMessageViewModel(from session: WalletConnectSession) {
+        transactionDappMessageViewModel = WCTransactionDappMessageViewModel(session: session, imageSize: CGSize(width: 44.0, height: 44.0))
+    }
+
+    private func setTitle(from transactionCount: Int) {
+        title = "wallet-connect-transaction-count".localized(transactionCount)
+    }
 }
