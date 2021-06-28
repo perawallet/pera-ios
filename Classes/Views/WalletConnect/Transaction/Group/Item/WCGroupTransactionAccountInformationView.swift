@@ -25,7 +25,14 @@ class WCGroupTransactionAccountInformationView: BaseView {
 
     private lazy var dotImage = UIImageView(image: img("img-round-separator"))
 
-    private lazy var balanceStackView = HStackView()
+    private lazy var balanceStackView: HStackView = {
+        let stackView = HStackView()
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 4.0
+        stackView.alignment = .leading
+        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        return stackView
+    }()
 
     private lazy var algosIcon = UIImageView(image: img("img-algorand-16"))
 

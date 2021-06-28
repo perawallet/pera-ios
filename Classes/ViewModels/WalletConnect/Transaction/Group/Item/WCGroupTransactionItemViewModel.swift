@@ -18,5 +18,44 @@
 import UIKit
 
 class WCGroupTransactionItemViewModel {
-    
+
+    private(set) var hasWarning = false
+    private(set) var title: String?
+    private(set) var isAlgos = true
+    private(set) var amount: String?
+    private(set) var assetName: String?
+    private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
+
+    init() {
+        setHasWarning()
+        setTitle()
+        setIsAlgos()
+        setAmount()
+        setAssetName()
+        setAccountInformationViewModel()
+    }
+
+    private func setHasWarning() {
+        hasWarning = true
+    }
+
+    private func setTitle() {
+        title = ""
+    }
+
+    private func setIsAlgos() {
+        isAlgos = true
+    }
+
+    private func setAmount() {
+        amount = ""
+    }
+
+    private func setAssetName() {
+        assetName = ""
+    }
+
+    private func setAccountInformationViewModel() {
+        
+    }
 }
