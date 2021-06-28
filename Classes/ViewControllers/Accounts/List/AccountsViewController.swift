@@ -149,7 +149,12 @@ class AccountsViewController: BaseViewController {
         
         pushNotificationController.requestAuthorization()
         pushNotificationController.sendDeviceDetails()
-        walletConnector.register(for: .transactionSign)
+
+        let wcRequestHandler = TransactionSignRequestHandler()
+        if let rootViewController = UIApplication.shared.rootViewController() {
+            wcRequestHandler.delegate = rootViewController
+        }
+        walletConnector.register(for: wcRequestHandler)
         
         setAccountsCollectionViewContentState()
         requestAppReview()

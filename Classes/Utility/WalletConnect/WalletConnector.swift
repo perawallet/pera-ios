@@ -32,11 +32,8 @@ class WalletConnector {
 
 extension WalletConnector {
     // Register the actions that WalletConnect is able to handle.
-    func register(for action: WalletConnectMethod) {
-        switch action {
-        case .transactionSign:
-            walletConnectBridge.register(TransactionSignRequestHandler())
-        }
+    func register(for handler: WalletConnectRequestHandler) {
+        walletConnectBridge.register(handler)
     }
 
     func connect(to session: String) {
