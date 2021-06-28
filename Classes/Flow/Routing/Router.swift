@@ -391,16 +391,19 @@ class Router {
             viewController = WCSessionListViewController(configuration: configuration)
         case let .wcTransactionFullDappDetail(wcSession):
             viewController = WCTransactionFullDappDetailViewController(wcSession: wcSession, configuration: configuration)
-        case .wcAlgosTransaction:
-            viewController = WCAlgosTransactionViewController(configuration: configuration)
-        case .wcAssetTransaction:
-            viewController = WCAssetTransactionViewController(configuration: configuration)
-        case .wcAssetAdditionTransaction:
-            viewController = WCAssetAdditionTransactionViewController(configuration: configuration)
-        case .wcGroupTransaction:
-            viewController = WCGroupTransactionViewController(configuration: configuration)
-        case .wcAppCall:
-            viewController = WCAppCallTransactionViewController(configuration: configuration)
+        case let .wcAlgosTransaction(transactionParameter):
+            viewController = WCAlgosTransactionViewController(transactionParameter: transactionParameter, configuration: configuration)
+        case let .wcAssetTransaction(transactionParameter):
+            viewController = WCAssetTransactionViewController(transactionParameter: transactionParameter, configuration: configuration)
+        case let .wcAssetAdditionTransaction(transactionParameter):
+            viewController = WCAssetAdditionTransactionViewController(
+                transactionParameter: transactionParameter,
+                configuration: configuration
+            )
+        case let .wcGroupTransaction(transactionParameters):
+            viewController = WCGroupTransactionViewController(transactionParameters: transactionParameters, configuration: configuration)
+        case let .wcAppCall(transactionParameter):
+            viewController = WCAppCallTransactionViewController(transactionParameter: transactionParameter, configuration: configuration)
         }
         
         return viewController as? T

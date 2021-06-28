@@ -126,6 +126,60 @@ extension RootViewController: BannerDisplayable {
     }
 }
 
+extension RootViewController: WalletConnectRequestHandlerDelegate {
+    func walletConnectRequestHandler(
+        _ walletConnectRequestHandler: WalletConnectRequestHandler,
+        shouldSignFor transactionParameter: WCTransactionParams
+    ) {
+        guard let transaction = transactionParameter.transaction else {
+            return
+        }
+
+        let fullScreenPresentation = Screen.Transition.Open.customPresent(
+            presentationStyle: .fullScreen,
+            transitionStyle: nil,
+            transitioningDelegate: nil
+        )
+
+        switch transaction.transactionType {
+        case .algos:
+            open(.wcAlgosTransaction(transactionParameter: transactionParameter), by: fullScreenPresentation)
+        case .asset:
+            open(.wcAssetTransaction(transactionParameter: transactionParameter), by: fullScreenPresentation)
+        case .assetAddition:
+            open(.wcAssetAdditionTransaction(transactionParameter: transactionParameter), by: fullScreenPresentation)
+        case .appCall:
+            open(.wcAppCall(transactionParameter: transactionParameter), by: fullScreenPresentation)
+        default:
+            break
+        }
+    }
+
+    func walletConnectRequestHandler(
+        _ walletConnectRequestHandler: WalletConnectRequestHandler,
+        shouldSignFor transactionParameters: [WCTransactionParams]
+    ) {
+        let fullScreenPresentation = Screen.Transition.Open.customPresent(
+            presentationStyle: .fullScreen,
+            transitionStyle: nil,
+            transitioningDelegate: nil
+        )
+
+        open(.wcGroupTransaction(transactionParameters: transactionParameters), by: fullScreenPresentation)
+    }
+
+    func walletConnectRequestHandler(_ walletConnectRequestHandler: WalletConnectRequestHandler, didReject request: WalletConnectRequest) {
+
+    }
+
+    func walletConnectRequestHandler(
+        _ walletConnectRequestHandler: WalletConnectRequestHandler,
+        didInvalidate request: WalletConnectRequest
+    ) {
+
+    }
+}
+
 extension RootViewController: UserInterfaceChangable { }
 
 extension RootViewController {

@@ -36,7 +36,10 @@ class WCTransactionViewController: BaseScrollViewController {
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
     }()
 
-    override init(configuration: ViewControllerConfiguration) {
+    private let transactionParameter: WCTransactionParams
+
+    init(transactionParameter: WCTransactionParams, configuration: ViewControllerConfiguration) {
+        self.transactionParameter = transactionParameter
         super.init(configuration: configuration)
     }
 
@@ -162,4 +165,5 @@ enum WCTransactionType {
     case asset
     case assetAddition
     case group
+    case appCall
 }

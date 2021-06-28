@@ -25,6 +25,13 @@ class WCGroupTransactionViewController: BaseViewController {
 
     private lazy var layoutBuilder = WCGroupTransactionLayout(dataSource: dataSource)
 
+    private let transactionParameters: [WCTransactionParams]
+
+    init(transactionParameters: [WCTransactionParams], configuration: ViewControllerConfiguration) {
+        self.transactionParameters = transactionParameters
+        super.init(configuration: configuration)
+    }
+
     override func linkInteractors() {
         groupTransactionView.delegate = self
         groupTransactionView.setDataSource(dataSource)
