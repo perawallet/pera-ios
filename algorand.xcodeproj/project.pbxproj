@@ -1366,9 +1366,6 @@
 		2B7E3047267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E3046267A526C00E89EE3 /* WCTransactionWarningView.swift */; };
 		2B7E3048267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E3046267A526C00E89EE3 /* WCTransactionWarningView.swift */; };
 		2B7E3049267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E3046267A526C00E89EE3 /* WCTransactionWarningView.swift */; };
-		2B7E304C267A5D5500E89EE3 /* WCGroupTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E304B267A5D5500E89EE3 /* WCGroupTransactionViewModel.swift */; };
-		2B7E304D267A5D5500E89EE3 /* WCGroupTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E304B267A5D5500E89EE3 /* WCGroupTransactionViewModel.swift */; };
-		2B7E304E267A5D5500E89EE3 /* WCGroupTransactionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E304B267A5D5500E89EE3 /* WCGroupTransactionViewModel.swift */; };
 		2B7E3050267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E304F267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift */; };
 		2B7E3051267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E304F267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift */; };
 		2B7E3052267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7E304F267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift */; };
@@ -2790,7 +2787,6 @@
 		2B7E303E267A51ED00E89EE3 /* WCGroupTransactionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCGroupTransactionItemView.swift; sourceTree = "<group>"; };
 		2B7E3042267A524D00E89EE3 /* WCTransactionDappMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionDappMessageView.swift; sourceTree = "<group>"; };
 		2B7E3046267A526C00E89EE3 /* WCTransactionWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionWarningView.swift; sourceTree = "<group>"; };
-		2B7E304B267A5D5500E89EE3 /* WCGroupTransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCGroupTransactionViewModel.swift; sourceTree = "<group>"; };
 		2B7E304F267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCGroupTransactionItemViewModel.swift; sourceTree = "<group>"; };
 		2B7E3054267A5D9D00E89EE3 /* WCGroupTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCGroupTransactionViewController.swift; sourceTree = "<group>"; };
 		2B7E3058267A5DBF00E89EE3 /* WCAssetTransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAssetTransactionViewModel.swift; sourceTree = "<group>"; };
@@ -5548,7 +5544,6 @@
 			children = (
 				2BD36E2526846F4A00C57728 /* Header */,
 				2B7E304A267A5D4C00E89EE3 /* Item */,
-				2B7E304B267A5D5500E89EE3 /* WCGroupTransactionViewModel.swift */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -10011,7 +10006,6 @@
 				2BD36DDB267E45B700C57728 /* WCTransactionTextInformationViewModel.swift in Sources */,
 				17BD4EA12292F1260003E49A /* TabBar.swift in Sources */,
 				17BD4EA22292F1260003E49A /* String+Localization.swift in Sources */,
-				2B7E304E267A5D5500E89EE3 /* WCGroupTransactionViewModel.swift in Sources */,
 				2BB93C1C25BF2434001F1D6C /* TransactionSigner.swift in Sources */,
 				2BE937352464AEE200322C1E /* TransactionDetailTitleLabel.swift in Sources */,
 				17BD4EA32292F1260003E49A /* CursorlessTextField.swift in Sources */,
@@ -10751,7 +10745,6 @@
 				2BD36DDA267E45B700C57728 /* WCTransactionTextInformationViewModel.swift in Sources */,
 				2B0F627C24EC129D00DA22A6 /* TestNetTitleView.swift in Sources */,
 				2B0F627D24EC129D00DA22A6 /* User.swift in Sources */,
-				2B7E304D267A5D5500E89EE3 /* WCGroupTransactionViewModel.swift in Sources */,
 				2BB93C1B25BF2434001F1D6C /* TransactionSigner.swift in Sources */,
 				2B0F627E24EC129D00DA22A6 /* AccountsViewController+Options.swift in Sources */,
 				2B0F627F24EC129D00DA22A6 /* UIColor+Additions.swift in Sources */,
@@ -11491,7 +11484,6 @@
 				2BD36DD9267E45B700C57728 /* WCTransactionTextInformationViewModel.swift in Sources */,
 				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
 				2BB93C1A25BF2434001F1D6C /* TransactionSigner.swift in Sources */,
-				2B7E304C267A5D5500E89EE3 /* WCGroupTransactionViewModel.swift in Sources */,
 				2BE937342464AEE200322C1E /* TransactionDetailTitleLabel.swift in Sources */,
 				17AA1B0622662B5B000B0BB0 /* CursorlessTextField.swift in Sources */,
 				95A12860242BA5E700B491A5 /* LedgerTroubleshootBluetoothConnectionView.swift in Sources */,
