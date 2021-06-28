@@ -18,5 +18,58 @@
 import UIKit
 
 class WCGroupTransactionViewController: BaseViewController {
-    
+
+    private lazy var groupTransactionView = WCGroupTransactionView()
+
+    private lazy var dataSource = WCGroupTransactionDataSource(walletConnector: walletConnector)
+
+    private lazy var layoutBuilder = WCGroupTransactionLayout(dataSource: dataSource)
+
+    override func linkInteractors() {
+        groupTransactionView.delegate = self
+        groupTransactionView.setDataSource(dataSource)
+        groupTransactionView.setDelegate(layoutBuilder)
+        dataSource.delegate = self
+        layoutBuilder.delegate = self
+    }
+
+    override func prepareLayout() {
+        prepareWholeScreenLayoutFor(groupTransactionView)
+    }
+}
+
+extension WCGroupTransactionViewController: WCGroupTransactionViewDelegate {
+    func wcGroupTransactionViewDidOpenLongMessage(_ wcGroupTransactionView: WCGroupTransactionView) {
+
+    }
+
+    func wcGroupTransactionViewDidConfirmSigning(_ wcGroupTransactionView: WCGroupTransactionView) {
+        signTransaction()
+    }
+
+    func wcGroupTransactionViewDidDeclineSigning(_ wcGroupTransactionView: WCGroupTransactionView) {
+        declineTransaction()
+    }
+}
+
+extension WCGroupTransactionViewController: WalletConnectTransactionSignable {
+    func signTransaction() {
+
+    }
+
+    func declineTransaction() {
+
+    }
+}
+
+extension WCGroupTransactionViewController: WCGroupTransactionDataSourceDelegate {
+    func wcGroupTransactionDataSourceDidOpenLongDappMessageView(_ wcGroupTransactionDataSource: WCGroupTransactionDataSource) {
+        
+    }
+}
+
+extension WCGroupTransactionViewController: WCGroupTransactionLayoutDelegate {
+    func wcGroupTransactionLayout(_ wcGroupTransactionLayout: WCGroupTransactionLayout, didSelect tranaction: String) {
+
+    }
 }

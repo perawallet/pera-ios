@@ -21,6 +21,8 @@ class WCGroupTransactionDataSource: NSObject {
 
     weak var delegate: WCGroupTransactionDataSourceDelegate?
 
+    private let transactions: [String] = []
+
     private let walletConnector: WalletConnector
 
     init(walletConnector: WalletConnector) {
@@ -31,7 +33,7 @@ class WCGroupTransactionDataSource: NSObject {
 
 extension WCGroupTransactionDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        return transactions.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -40,6 +42,10 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             for: indexPath
         ) as? WCGroupTransactionItemCell else {
             fatalError("Unexpected cell type")
+        }
+
+        if let transaction = transaction(at: indexPath.item) {
+            cell.bind(WCGroupTransactionItemViewModel())
         }
 
         return cell
@@ -62,8 +68,19 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected element kind")
         }
 
+        // Will be updated with the related session later.
+        if let session = walletConnector.allWalletConnectSessions.first?.sessionDetail {
+            headerView.bind(WCGroupTransactionHeaderViewModel(session: session, transactionCount: transactions.count))
+        }
+
         headerView.delegate = self
         return headerView
+    }
+}
+
+extension WCGroupTransactionDataSource {
+    func transaction(at index: Int) -> String? {
+        return transactions[safe: index]
     }
 }
 
@@ -71,10 +88,10 @@ extension WCGroupTransactionDataSource: WCGroupTransactionSupplementaryHeaderVie
     func wcGroupTransactionSupplementaryHeaderViewDidOpenLongMessageView(
         _ wcGroupTransactionSupplementaryHeaderView: WCGroupTransactionSupplementaryHeaderView
     ) {
-
+        delegate?.wcGroupTransactionDataSourceDidOpenLongDappMessageView(self)
     }
 }
 
 protocol WCGroupTransactionDataSourceDelegate: AnyObject {
-
+    func wcGroupTransactionDataSourceDidOpenLongDappMessageView(_ wcGroupTransactionDataSource: WCGroupTransactionDataSource)
 }

@@ -89,6 +89,10 @@ extension WalletConnector {
     var allWalletConnectSessions: [WCSession] {
         sessionSource.allWalletConnectSessions
     }
+
+    func getWalletConnectSession(with url: WalletConnectURL) -> WCSession? {
+        return sessionSource.getWalletConnectSession(with: url)
+    }
     
     func resetAllSessions() {
         sessionSource.resetAllSessions()
