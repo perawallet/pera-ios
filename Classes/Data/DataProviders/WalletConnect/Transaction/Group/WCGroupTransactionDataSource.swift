@@ -21,11 +21,11 @@ class WCGroupTransactionDataSource: NSObject {
 
     weak var delegate: WCGroupTransactionDataSourceDelegate?
 
-    private let transactions: [String] = []
-
+    private let transactionParameters: [WCTransactionParams]
     private let walletConnector: WalletConnector
 
-    init(walletConnector: WalletConnector) {
+    init(transactionParameters: [WCTransactionParams], walletConnector: WalletConnector) {
+        self.transactionParameters = transactionParameters
         self.walletConnector = walletConnector
         super.init()
     }
@@ -33,7 +33,7 @@ class WCGroupTransactionDataSource: NSObject {
 
 extension WCGroupTransactionDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return transactions.count
+        return transactionParameters.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -44,8 +44,8 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected cell type")
         }
 
-        if let transaction = transaction(at: indexPath.item) {
-            cell.bind(WCGroupTransactionItemViewModel())
+        if let transactionParam = transactionParameter(at: indexPath.item) {
+            cell.bind(WCGroupTransactionItemViewModel(transactionParam: transactionParam))
         }
 
         return cell
@@ -70,7 +70,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
 
         // Will be updated with the related session later.
         if let session = walletConnector.allWalletConnectSessions.first?.sessionDetail {
-            headerView.bind(WCGroupTransactionHeaderViewModel(session: session, transactionCount: transactions.count))
+            headerView.bind(WCGroupTransactionHeaderViewModel(session: session, transactionCount: transactionParameters.count))
         }
 
         headerView.delegate = self
@@ -79,8 +79,8 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
 }
 
 extension WCGroupTransactionDataSource {
-    func transaction(at index: Int) -> String? {
-        return transactions[safe: index]
+    func transactionParameter(at index: Int) -> WCTransactionParams? {
+        return transactionParameters[safe: index]
     }
 }
 
