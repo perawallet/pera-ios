@@ -47,7 +47,8 @@ extension WCSingleTransactionView {
         addSubview(mainStackView)
 
         mainStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.top.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
 
         mainStackView.addArrangedSubview(participantInformationStackView)
@@ -73,5 +74,6 @@ extension WCSingleTransactionView {
 extension WCSingleTransactionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let spacing: CGFloat = 16.0
+        let horizontalInset: CGFloat = 20.0
     }
 }

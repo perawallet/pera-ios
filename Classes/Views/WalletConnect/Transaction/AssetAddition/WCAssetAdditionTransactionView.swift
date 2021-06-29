@@ -23,7 +23,11 @@ class WCAssetAdditionTransactionView: WCSingleTransactionView {
 
     private lazy var accountInformationView = TitledTransactionAccountNameView()
 
-    private lazy var assetInformationView = TransactionAssetView()
+    private lazy var assetInformationView: TransactionAssetView = {
+        let assetInformationView = TransactionAssetView()
+        assetInformationView.setAssetAlignment(.right)
+        return assetInformationView
+    }()
 
     private lazy var rekeyWarningInformationView = WCTransactionAddressWarningInformationView()
 
@@ -60,8 +64,8 @@ extension WCAssetAdditionTransactionView {
     private func addParticipantInformationViews() {
         addParticipantInformationView(accountInformationView)
         addParticipantInformationView(assetInformationView)
-        addParticipantInformationView(rekeyWarningInformationView)
         addParticipantInformationView(closeWarningInformationView)
+        addParticipantInformationView(rekeyWarningInformationView)
     }
 
     private func addBalanceInformationViews() {
@@ -107,16 +111,16 @@ extension WCAssetAdditionTransactionView {
             assetInformationView.bind(assetInformationViewModel)
         }
 
-        if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
-            rekeyWarningInformationView.bind(rekeyWarningInformationViewModel)
-        } else {
-            rekeyWarningInformationView.hideViewInStack()
-        }
-
         if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
             closeWarningInformationView.bind(closeWarningInformationViewModel)
         } else {
             closeWarningInformationView.hideViewInStack()
+        }
+
+        if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
+            rekeyWarningInformationView.bind(rekeyWarningInformationViewModel)
+        } else {
+            rekeyWarningInformationView.hideViewInStack()
         }
 
         feeInformationView.bind(viewModel.feeInformationViewModel)

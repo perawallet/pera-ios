@@ -93,7 +93,7 @@ extension WCTransactionDappMessageView {
 
         messageLabel.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel)
-            make.top.equalTo(nameLabel.snp.bottom).inset(layout.current.messageLabelVerticalInset)
+            make.top.equalTo(nameLabel.snp.bottom).offset(layout.current.messageLabelVerticalInset)
             make.trailing.equalToSuperview().inset(layout.current.defaultInset)
         }
     }
@@ -103,7 +103,7 @@ extension WCTransactionDappMessageView {
 
         readMoreLabel.snp.makeConstraints { make in
             make.leading.equalTo(nameLabel)
-            make.top.equalTo(messageLabel.snp.bottom).inset(layout.current.messageLabelVerticalInset)
+            make.top.equalTo(messageLabel.snp.bottom).offset(layout.current.messageLabelVerticalInset)
             make.trailing.equalToSuperview().inset(layout.current.defaultInset)
             make.bottom.equalToSuperview().inset(layout.current.defaultInset)
         }
