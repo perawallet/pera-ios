@@ -33,11 +33,13 @@ class WalletConnectRequestHandler: RequestHandler {
 protocol WalletConnectRequestHandlerDelegate: AnyObject {
     func walletConnectRequestHandler(
         _ walletConnectRequestHandler: WalletConnectRequestHandler,
-        shouldSignFor transactionParameter: WCTransactionParams
+        shouldSignFor transactionParameter: WCTransactionParams,
+        fromDappSession url: WalletConnectURL
     )
     func walletConnectRequestHandler(
         _ walletConnectRequestHandler: WalletConnectRequestHandler,
-        shouldSignFor transactionParameters: [WCTransactionParams]
+        shouldSignFor transactionParameters: [WCTransactionParams],
+        fromDappSession url: WalletConnectURL
     )
     func walletConnectRequestHandler(_ walletConnectRequestHandler: WalletConnectRequestHandler, didReject request: WalletConnectRequest)
     func walletConnectRequestHandler(

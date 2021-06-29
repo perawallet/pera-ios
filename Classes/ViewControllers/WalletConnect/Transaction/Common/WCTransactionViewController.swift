@@ -34,20 +34,28 @@ class WCTransactionViewController: BaseScrollViewController {
             .withTitleColor(Colors.ButtonText.tertiary)
             .withAlignment(.center)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withTitle("title-decline".localized)
     }()
 
-    private let transactionParameter: WCTransactionParams
+    private(set) var transactionParameter: WCTransactionParams
+    private(set) var account: Account
+    private let wcSession: WCSession
 
-    init(transactionParameter: WCTransactionParams, configuration: ViewControllerConfiguration) {
+    init(transactionParameter: WCTransactionParams, account: Account, wcSession: WCSession, configuration: ViewControllerConfiguration) {
         self.transactionParameter = transactionParameter
+        self.account = account
+        self.wcSession = wcSession
         super.init(configuration: configuration)
     }
 
     override func configureAppearance() {
         super.configureAppearance()
-        view.backgroundColor = Colors.Background.secondary
-       // dappMessageView.bind(WCTransactionDappMessageViewModel(session: , imageSize: ))
-        bind(WCTransactionViewModel())
+        dappMessageView.bind(
+            WCTransactionDappMessageViewModel(
+                session: wcSession.sessionDetail,
+                imageSize: CGSize(width: 44.0, height: 44.0)
+            )
+        )
     }
 
     override func setListeners() {
@@ -84,10 +92,12 @@ extension WCTransactionViewController {
 
         contentView.addSubview(transactionView)
 
+        let bottomInset = view.safeAreaBottom + layout.current.verticalInset * 2 + layout.current.buttonHeight * 2
+
         transactionView.snp.makeConstraints { make in
             make.top.equalTo(dappMessageView.snp.bottom).offset(layout.current.verticalInset)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(view.safeAreaBottom + layout.current.verticalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(bottomInset)
         }
     }
 
@@ -106,15 +116,8 @@ extension WCTransactionViewController {
 
         confirmButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(declineButton.snp.bottom).offset(layout.current.buttonInset)
+            make.bottom.equalTo(declineButton.snp.top).offset(-layout.current.buttonInset)
         }
-    }
-}
-
-extension WCTransactionViewController {
-    func bind(_ viewModel: WCTransactionViewModel) {
-        confirmButton.setTitle(viewModel.confirmTitle, for: .normal)
-        declineButton.setTitle(viewModel.declineTitle, for: .normal)
     }
 }
 
@@ -141,7 +144,7 @@ extension WCTransactionViewController: WalletConnectTransactionSignable {
     }
 
     func declineTransaction() {
-
+        dismissScreen()
     }
 }
 

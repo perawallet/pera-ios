@@ -391,19 +391,36 @@ class Router {
             viewController = WCSessionListViewController(configuration: configuration)
         case let .wcTransactionFullDappDetail(wcSession):
             viewController = WCTransactionFullDappDetailViewController(wcSession: wcSession, configuration: configuration)
-        case let .wcAlgosTransaction(transactionParameter):
-            viewController = WCAlgosTransactionViewController(transactionParameter: transactionParameter, configuration: configuration)
-        case let .wcAssetTransaction(transactionParameter):
-            viewController = WCAssetTransactionViewController(transactionParameter: transactionParameter, configuration: configuration)
-        case let .wcAssetAdditionTransaction(transactionParameter):
+        case let .wcAlgosTransaction(transactionParameter, account, wcSession):
+            viewController = WCAlgosTransactionViewController(
+                transactionParameter: transactionParameter,
+                account: account,
+                wcSession: wcSession,
+                configuration: configuration
+            )
+        case let .wcAssetTransaction(transactionParameter, account, wcSession):
+            viewController = WCAssetTransactionViewController(
+                transactionParameter: transactionParameter,
+                account: account,
+                wcSession: wcSession,
+                configuration: configuration
+            )
+        case let .wcAssetAdditionTransaction(transactionParameter, account, wcSession):
             viewController = WCAssetAdditionTransactionViewController(
                 transactionParameter: transactionParameter,
+                account: account,
+                wcSession: wcSession,
                 configuration: configuration
             )
         case let .wcGroupTransaction(transactionParameters):
             viewController = WCGroupTransactionViewController(transactionParameters: transactionParameters, configuration: configuration)
-        case let .wcAppCall(transactionParameter):
-            viewController = WCAppCallTransactionViewController(transactionParameter: transactionParameter, configuration: configuration)
+        case let .wcAppCall(transactionParameter, account, wcSession):
+            viewController = WCAppCallTransactionViewController(
+                transactionParameter: transactionParameter,
+                account: account,
+                wcSession: wcSession,
+                configuration: configuration
+            )
         }
         
         return viewController as? T

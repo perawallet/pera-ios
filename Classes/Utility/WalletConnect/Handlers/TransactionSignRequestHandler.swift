@@ -31,16 +31,22 @@ class TransactionSignRequestHandler: WalletConnectRequestHandler {
 extension TransactionSignRequestHandler {
     private func handleTransaction(from request: WalletConnectRequest) {
         guard let transactionParameters = try? request.parameter(of: [WCTransactionParams].self, at: 0) else {
-            delegate?.walletConnectRequestHandler(self, didInvalidate: request)
+            DispatchQueue.main.async {
+                self.delegate?.walletConnectRequestHandler(self, didInvalidate: request)
+            }
             return
         }
 
         // Check whether it's a group transaction
         if transactionParameters.count > 1 {
-            delegate?.walletConnectRequestHandler(self, shouldSignFor: transactionParameters)
+            DispatchQueue.main.async {
+                self.delegate?.walletConnectRequestHandler(self, shouldSignFor: transactionParameters, fromDappSession: request.url)
+            }
         } else {
             if let transactionParameter = transactionParameters.first {
-                delegate?.walletConnectRequestHandler(self, shouldSignFor: transactionParameter)
+                DispatchQueue.main.async {
+                    self.delegate?.walletConnectRequestHandler(self, shouldSignFor: transactionParameter, fromDappSession: request.url)
+                }
             }
         }
     }

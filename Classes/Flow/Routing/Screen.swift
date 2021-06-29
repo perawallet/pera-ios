@@ -103,11 +103,11 @@ indirect enum Screen {
     case wcConnectionApproval(walletConnectSession: WalletConnectSession, completion: WalletConnectSessionConnectionCompletionHandler)
     case walletConnectSessions
     case wcTransactionFullDappDetail(wcSession: WalletConnectSession)
-    case wcAlgosTransaction(transactionParameter: WCTransactionParams)
-    case wcAssetTransaction(transactionParameter: WCTransactionParams)
-    case wcAssetAdditionTransaction(transactionParameter: WCTransactionParams)
+    case wcAlgosTransaction(transactionParameter: WCTransactionParams, account: Account, wcSession: WCSession)
+    case wcAssetTransaction(transactionParameter: WCTransactionParams, account: Account, wcSession: WCSession)
+    case wcAssetAdditionTransaction(transactionParameter: WCTransactionParams, account: Account, wcSession: WCSession)
     case wcGroupTransaction(transactionParameters: [WCTransactionParams])
-    case wcAppCall(transactionParameter: WCTransactionParams)
+    case wcAppCall(transactionParameter: WCTransactionParams, account: Account, wcSession: WCSession)
 }
 
 extension Screen {

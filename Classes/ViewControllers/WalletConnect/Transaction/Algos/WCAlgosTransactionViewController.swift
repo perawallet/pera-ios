@@ -25,6 +25,12 @@ class WCAlgosTransactionViewController: WCTransactionViewController {
         return algosTransactionView
     }
 
+    override func configureAppearance() {
+        super.configureAppearance()
+        title = "wallet-connect-transaction-title-transaction".localized
+        algosTransactionView.bind(WCAlgosTransactionViewModel(transactionParams: transactionParameter, senderAccount: account))
+    }
+
     override func linkInteractors() {
         super.linkInteractors()
         algosTransactionView.delegate = self

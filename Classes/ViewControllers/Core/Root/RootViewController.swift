@@ -129,9 +129,12 @@ extension RootViewController: BannerDisplayable {
 extension RootViewController: WalletConnectRequestHandlerDelegate {
     func walletConnectRequestHandler(
         _ walletConnectRequestHandler: WalletConnectRequestHandler,
-        shouldSignFor transactionParameter: WCTransactionParams
+        shouldSignFor transactionParameter: WCTransactionParams,
+        fromDappSession url: WalletConnectURL
     ) {
-        guard let transaction = transactionParameter.transaction else {
+        guard let transaction = transactionParameter.transaction,
+              let account = appConfiguration.session.accounts.first(of: \.address, equalsTo: transaction.sender),
+              let wcSession = appConfiguration.walletConnector.getWalletConnectSession(with: url) else {
             return
         }
 
@@ -143,13 +146,34 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
 
         switch transaction.transactionType {
         case .algos:
-            open(.wcAlgosTransaction(transactionParameter: transactionParameter), by: fullScreenPresentation)
+            open(
+                .wcAlgosTransaction(
+                    transactionParameter: transactionParameter,
+                    account: account,
+                    wcSession: wcSession
+                ),
+                by: fullScreenPresentation
+            )
         case .asset:
-            open(.wcAssetTransaction(transactionParameter: transactionParameter), by: fullScreenPresentation)
+            open(
+                .wcAssetTransaction(
+                    transactionParameter: transactionParameter,
+                    account: account,
+                    wcSession: wcSession
+                ),
+                by: fullScreenPresentation
+            )
         case .assetAddition:
-            open(.wcAssetAdditionTransaction(transactionParameter: transactionParameter), by: fullScreenPresentation)
+            open(
+                .wcAssetAdditionTransaction(
+                    transactionParameter: transactionParameter,
+                    account: account,
+                    wcSession: wcSession
+                ),
+                by: fullScreenPresentation
+            )
         case .appCall:
-            open(.wcAppCall(transactionParameter: transactionParameter), by: fullScreenPresentation)
+            open(.wcAppCall(transactionParameter: transactionParameter, account: account, wcSession: wcSession), by: fullScreenPresentation)
         default:
             break
         }
@@ -157,7 +181,8 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
 
     func walletConnectRequestHandler(
         _ walletConnectRequestHandler: WalletConnectRequestHandler,
-        shouldSignFor transactionParameters: [WCTransactionParams]
+        shouldSignFor transactionParameters: [WCTransactionParams],
+        fromDappSession url: WalletConnectURL
     ) {
         let fullScreenPresentation = Screen.Transition.Open.customPresent(
             presentationStyle: .fullScreen,
