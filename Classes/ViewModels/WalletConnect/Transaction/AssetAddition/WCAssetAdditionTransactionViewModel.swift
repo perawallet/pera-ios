@@ -29,58 +29,86 @@ class WCAssetAdditionTransactionViewModel {
     private(set) var urlInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var metadataInformationViewModel: WCTransactionActionableInformationViewModel?
 
-    init(account: Account) {
-        setSenderInformationViewModel(from: account)
-        setAssetInformationViewModel()
-        setRekeyWarningInformationViewModel(from: account)
-        setCloseWarningInformationViewModel(from: account)
-        setFeeInformationViewModel()
-        setNoteInformationViewModel()
-        setRawTransactionInformationViewModel()
+    init(transactionParams: WCTransactionParams, senderAccount: Account, assetDetail: AssetDetail) {
+        setSenderInformationViewModel(from: senderAccount)
+        setAssetInformationViewModel(from: transactionParams, and: assetDetail)
+        setCloseWarningInformationViewModel(from: transactionParams)
+        setRekeyWarningInformationViewModel(from: transactionParams)
+        setFeeInformationViewModel(from: transactionParams)
+        setNoteInformationViewModel(from: transactionParams)
+        setRawTransactionInformationViewModel(from: transactionParams)
         setAlgoExplorerInformationViewModel()
         setUrlInformationViewModel()
         setMetadataInformationViewModel()
     }
 
-    private func setSenderInformationViewModel(from account: Account) {
-        senderInformationViewModel = TitledTransactionAccountNameViewModel(title: "transaction-detail-from" .localized, account: account)
-    }
-
-    private func setAssetInformationViewModel() {
-        assetInformationViewModel = TransactionAssetViewModel(assetDetail: nil, isLastElement: true)
-    }
-
-    private func setRekeyWarningInformationViewModel(from account: Account) {
-        rekeyWarningInformationViewModel = WCTransactionAddressWarningInformationViewModel(
-            account: account,
-            warning: .rekeyed,
-            isLastElement: false
+    private func setSenderInformationViewModel(from senderAccount: Account) {
+        senderInformationViewModel = TitledTransactionAccountNameViewModel(
+            title: "transaction-detail-from" .localized,
+            account: senderAccount
         )
     }
 
-    private func setCloseWarningInformationViewModel(from account: Account) {
+    private func setAssetInformationViewModel(from transactionParam: WCTransactionParams, and assetDetail: AssetDetail) {
+        guard let transaction = transactionParam.transaction else {
+            return
+        }
+
+        assetInformationViewModel = TransactionAssetViewModel(
+            assetDetail: assetDetail,
+            isLastElement: !transaction.isRekeyTransaction && !transaction.isCloseTransaction
+        )
+    }
+
+    private func setCloseWarningInformationViewModel(from transactionParam: WCTransactionParams) {
+        guard let transaction = transactionParam.transaction,
+              let closeAddress = transaction.closeAddress else {
+            return
+        }
+
+        closeWarningInformationViewModel = WCTransactionAddressWarningInformationViewModel(
+            address: closeAddress,
+            warning: .closeAlgos,
+            isLastElement: !transaction.isRekeyTransaction
+        )
+    }
+
+    private func setRekeyWarningInformationViewModel(from transactionParam: WCTransactionParams) {
+        guard let rekeyAddress = transactionParam.transaction?.rekeyAddress else {
+            return
+        }
+
         rekeyWarningInformationViewModel = WCTransactionAddressWarningInformationViewModel(
-            account: account,
-            warning: .closeAsset,
+            address: rekeyAddress,
+            warning: .rekeyed,
             isLastElement: true
         )
     }
     
-    private func setFeeInformationViewModel() {
+    private func setFeeInformationViewModel(from transactionParams: WCTransactionParams) {
+        guard let fee = transactionParams.transaction?.fee else {
+            return
+        }
+
         feeInformationViewModel = TitledTransactionAmountInformationViewModel(
             title: "transaction-detail-fee".localized,
+            mode: .fee(value: fee),
             isLastElement: true
         )
     }
 
-    private func setNoteInformationViewModel() {
+    private func setNoteInformationViewModel(from transactionParams: WCTransactionParams) {
+        guard let note = transactionParams.transaction?.noteRepresentation() else {
+            return
+        }
+
         noteInformationViewModel = WCTransactionTextInformationViewModel(
-            information: TitledInformation(title: "transaction-detail-note".localized, detail: ""),
+            information: TitledInformation(title: "transaction-detail-note".localized, detail: note),
             isLastElement: false
         )
     }
     
-    private func setRawTransactionInformationViewModel() {
+    private func setRawTransactionInformationViewModel(from transactionParams: WCTransactionParams) {
         rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(information: .rawTransaction, isLastElement: false)
     }
 

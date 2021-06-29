@@ -23,9 +23,9 @@ class WCTransactionAddressWarningInformationViewModel {
     private(set) var warningViewModel: WCTransactionWarningViewModel?
     private(set) var isSeparatorHidden = false
 
-    init(account: Account, warning: WCTransactionWarning, isLastElement: Bool) {
+    init(address: String, warning: WCTransactionWarning, isLastElement: Bool) {
         setTitle(from: warning)
-        setDetail(from: account, and: warning)
+        setDetail(from: address)
         setWarningViewModel(from: warning)
         setIsSeparatorHidden(from: isLastElement)
     }
@@ -41,16 +41,8 @@ class WCTransactionAddressWarningInformationViewModel {
         }
     }
 
-    private func setDetail(from account: Account, and warning: WCTransactionWarning) {
-        // This part will be updated later.
-        switch warning {
-        case .closeAlgos:
-            detail = ""
-        case .closeAsset:
-            detail = ""
-        case .rekeyed:
-            detail = ""
-        }
+    private func setDetail(from address: String) {
+        detail = address.shortAddressDisplay()
     }
 
     private func setWarningViewModel(from warning: WCTransactionWarning) {

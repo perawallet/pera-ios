@@ -24,41 +24,54 @@ class WCAppCallTransactionViewModel {
     private(set) var noteInformationViewModel: WCTransactionTextInformationViewModel?
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
 
-    init(account: Account) {
+    init(transactionParams: WCTransactionParams, account: Account) {
         setSenderInformationViewModel(from: account)
-        setRekeyWarningInformationViewModel(from: account)
-        setFeeInformationViewModel()
-        setNoteInformationViewModel()
-        setRawTransactionInformationViewModel()
+        setRekeyWarningInformationViewModel(from: transactionParams)
+        setFeeInformationViewModel(from: transactionParams)
+        setNoteInformationViewModel(from: transactionParams)
+        setRawTransactionInformationViewModel(from: transactionParams)
     }
 
     private func setSenderInformationViewModel(from account: Account) {
         senderInformationViewModel = TitledTransactionAccountNameViewModel(title: "transaction-detail-from".localized, account: account)
     }
 
-    private func setRekeyWarningInformationViewModel(from account: Account) {
+    private func setRekeyWarningInformationViewModel(from transactionParam: WCTransactionParams) {
+        guard let rekeyAddress = transactionParam.transaction?.rekeyAddress else {
+            return
+        }
+
         rekeyWarningInformationViewModel = WCTransactionAddressWarningInformationViewModel(
-            account: account,
+            address: rekeyAddress,
             warning: .rekeyed,
             isLastElement: true
         )
     }
 
-    private func setFeeInformationViewModel() {
+    private func setFeeInformationViewModel(from transactionParams: WCTransactionParams) {
+        guard let fee = transactionParams.transaction?.fee else {
+            return
+        }
+
         feeInformationViewModel = TitledTransactionAmountInformationViewModel(
             title: "transaction-detail-fee".localized,
+            mode: .fee(value: fee),
             isLastElement: true
         )
     }
 
-    private func setNoteInformationViewModel() {
+    private func setNoteInformationViewModel(from transactionParams: WCTransactionParams) {
+        guard let note = transactionParams.transaction?.noteRepresentation() else {
+            return
+        }
+
         noteInformationViewModel = WCTransactionTextInformationViewModel(
-            information: TitledInformation(title: "transaction-detail-note".localized, detail: ""),
+            information: TitledInformation(title: "transaction-detail-note".localized, detail: note),
             isLastElement: false
         )
     }
 
-    private func setRawTransactionInformationViewModel() {
+    private func setRawTransactionInformationViewModel(from transactionParams: WCTransactionParams) {
         rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(information: .rawTransaction, isLastElement: true)
     }
 }
