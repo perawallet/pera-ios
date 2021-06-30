@@ -33,32 +33,34 @@ class TransactionAssetView: BaseView {
     }
     
     override func prepareLayout() {
-        setupAssetNameViewLayout()
         setupTitleLabelLayout()
+        setupAssetNameViewLayout()
         setupSeparatorViewLayout()
     }
 }
 
 extension TransactionAssetView {
+    private func setupTitleLabelLayout() {
+        addSubview(titleLabel)
+
+        titleLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+        }
+    }
+
     private func setupAssetNameViewLayout() {
         addSubview(assetNameView)
+
+        assetNameView.setContentHuggingPriority(.required, for: .horizontal)
+        assetNameView.setContentCompressionResistancePriority(.required, for: .horizontal)
         
         assetNameView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview().inset(layout.current.defaultInset)
             make.trailing.equalToSuperview().inset(layout.current.defaultInset)
         }
     }
-    
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(assetNameView)
-            make.leading.equalToSuperview().inset(layout.current.defaultInset)
-            make.trailing.lessThanOrEqualTo(assetNameView.snp.leading).offset(-layout.current.minimumOffset)
-        }
-    }
-    
+
     private func setupSeparatorViewLayout() {
         addSubview(separatorView)
         
