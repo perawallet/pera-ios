@@ -40,12 +40,12 @@ extension TransactionSignRequestHandler {
         // Check whether it's a group transaction
         if transactionParameters.count > 1 {
             DispatchQueue.main.async {
-                self.delegate?.walletConnectRequestHandler(self, shouldSignFor: transactionParameters, fromDappSession: request.url)
+                self.delegate?.walletConnectRequestHandler(self, shouldSign: transactionParameters, for: request)
             }
         } else {
             if let transactionParameter = transactionParameters.first {
                 DispatchQueue.main.async {
-                    self.delegate?.walletConnectRequestHandler(self, shouldSignFor: transactionParameter, fromDappSession: request.url)
+                    self.delegate?.walletConnectRequestHandler(self, shouldSign: transactionParameter, for: request)
                 }
             }
         }

@@ -16,6 +16,7 @@
 //   WCTransactionViewController.swift
 
 import UIKit
+import Magpie
 
 class WCTransactionViewController: BaseScrollViewController {
     
@@ -37,22 +38,50 @@ class WCTransactionViewController: BaseScrollViewController {
             .withTitle("title-decline".localized)
     }()
 
+    private lazy var ledgerTransactionOperation: LedgerTransactionOperation = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+        return LedgerTransactionOperation(api: api)
+    }()
+
     private(set) var transactionParameter: WCTransactionParams
     private(set) var account: Account
-    private let wcSession: WCSession
+    private let transactionRequest: WalletConnectRequest
 
-    init(transactionParameter: WCTransactionParams, account: Account, wcSession: WCSession, configuration: ViewControllerConfiguration) {
+    init(
+        transactionParameter: WCTransactionParams,
+        account: Account,
+        transactionRequest: WalletConnectRequest,
+        configuration: ViewControllerConfiguration
+    ) {
         self.transactionParameter = transactionParameter
         self.account = account
-        self.wcSession = wcSession
+        self.transactionRequest = transactionRequest
         super.init(configuration: configuration)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if !account.requiresLedgerConnection() {
+            return
+        }
+
+        ledgerTransactionOperation.disconnectFromCurrentDevice()
+        ledgerTransactionOperation.stopScan()
+        ledgerTransactionOperation.stopTimer()
     }
 
     override func configureAppearance() {
         super.configureAppearance()
+
+        guard let wcSession = walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url)) else {
+            return
+        }
+
         dappMessageView.bind(
             WCTransactionDappMessageViewModel(
-                session: wcSession.sessionDetail,
+                session: wcSession,
                 imageSize: CGSize(width: 44.0, height: 44.0)
             )
         )
@@ -140,11 +169,77 @@ extension WCTransactionViewController {
 
 extension WCTransactionViewController: WalletConnectTransactionSignable {
     func signTransaction() {
-
+        if account.requiresLedgerConnection() {
+            signLedgerAccountTransaction()
+        } else {
+            signStandardAccountTransaction()
+        }
     }
 
     func declineTransaction() {
+        walletConnector.rejectTransactionRequest(transactionRequest, with: .rejected)
         dismissScreen()
+    }
+}
+
+extension WCTransactionViewController {
+    private func signLedgerAccountTransaction() {
+        guard let unsignedTransaction = transactionParameter.unparsedTransaction else {
+            return
+        }
+
+        ledgerTransactionOperation.setTransactionAccount(account)
+        ledgerTransactionOperation.delegate = self
+        ledgerTransactionOperation.startTimer()
+        ledgerTransactionOperation.setUnsignedTransactionData(unsignedTransaction)
+        ledgerTransactionOperation.startScan()
+    }
+
+    private func signStandardAccountTransaction() {
+        if let signature = session?.privateData(for: account.address) {
+            sign(signature, with: SDKTransactionSigner())
+        }
+    }
+
+    private func sign(_ signature: Data?, with signer: TransactionSigner) {
+        signer.delegate = self
+
+        guard let unsignedTransaction = transactionParameter.unparsedTransaction,
+              let signedTransaction = signer.sign(unsignedTransaction, with: signature) else {
+            return
+        }
+
+        walletConnector.signTransactionRequest(transactionRequest, with: [signedTransaction])
+        self.dismissScreen()
+    }
+}
+
+extension WCTransactionViewController: LedgerTransactionOperationDelegate {
+    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didReceiveSignature data: Data) {
+        sign(data, with: LedgerTransactionSigner(account: account))
+    }
+
+    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError) {
+        switch error {
+        case .cancelled:
+            NotificationBanner.showError(
+                "ble-error-transaction-cancelled-title".localized,
+                message: "ble-error-fail-sign-transaction".localized
+            )
+        case .closedApp:
+            NotificationBanner.showError(
+                "ble-error-ledger-connection-title".localized,
+                message: "ble-error-ledger-connection-open-app-error".localized
+            )
+        default:
+            break
+        }
+    }
+}
+
+extension WCTransactionViewController: TransactionSignerDelegate {
+    func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPError<TransactionError>) {
+        declineTransaction()
     }
 }
 

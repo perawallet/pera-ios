@@ -21,10 +21,16 @@ class WCTransactionParams: Model {
     private(set) var unparsedTransaction: Data? // Transaction that is not parsed for msgpack, needs to be used for signing
     var transaction: WCTransaction?
     let signers: [String]?
+    let multisigMetadata: WCMultisigMetadata?
+    let message: String?
+    let authAddress: String?
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         signers = try container.decodeIfPresent([String].self, forKey: .signers)
+        multisigMetadata = try container.decodeIfPresent(WCMultisigMetadata.self, forKey: .multisigMetadata)
+        message = try container.decodeIfPresent(String.self, forKey: .message)
+        authAddress = try container.decodeIfPresent(String.self, forKey: .authAddress)
         if let transactionMsgpack = try container.decodeIfPresent(Data.self, forKey: .transaction) {
             unparsedTransaction = transactionMsgpack
             transaction = parseTransaction(from: transactionMsgpack)
@@ -35,6 +41,9 @@ class WCTransactionParams: Model {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encodeIfPresent(transaction, forKey: .transaction)
         try container.encodeIfPresent(signers, forKey: .signers)
+        try container.encodeIfPresent(multisigMetadata, forKey: .multisigMetadata)
+        try container.encodeIfPresent(message, forKey: .message)
+        try container.encodeIfPresent(authAddress, forKey: .authAddress)
     }
 }
 
@@ -42,6 +51,9 @@ extension WCTransactionParams {
     private enum CodingKeys: String, CodingKey {
         case transaction = "txn"
         case signers = "signers"
+        case multisigMetadata = "msig"
+        case message = "message"
+        case authAddress = "authAddr"
     }
 }
 

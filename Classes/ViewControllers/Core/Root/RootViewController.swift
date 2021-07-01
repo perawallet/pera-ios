@@ -129,12 +129,31 @@ extension RootViewController: BannerDisplayable {
 extension RootViewController: WalletConnectRequestHandlerDelegate {
     func walletConnectRequestHandler(
         _ walletConnectRequestHandler: WalletConnectRequestHandler,
-        shouldSignFor transactionParameter: WCTransactionParams,
-        fromDappSession url: WalletConnectURL
+        shouldSign transactionParameter: WCTransactionParams,
+        for request: WalletConnectRequest
     ) {
+        openSingleTransactionScreen(with: transactionParameter, for: request)
+    }
+
+    func walletConnectRequestHandler(
+        _ walletConnectRequestHandler: WalletConnectRequestHandler,
+        shouldSign transactionParameters: [WCTransactionParams],
+        for request: WalletConnectRequest
+    ) {
+        openGroupTransactionScreen(with: transactionParameters)
+    }
+
+    func walletConnectRequestHandler(
+        _ walletConnectRequestHandler: WalletConnectRequestHandler,
+        didInvalidate request: WalletConnectRequest
+    ) {
+        appConfiguration.walletConnector.rejectTransactionRequest(request, with: .invalidInput)
+    }
+
+    private func openSingleTransactionScreen(with transactionParameter: WCTransactionParams, for request: WalletConnectRequest) {
         guard let transaction = transactionParameter.transaction,
-              let account = appConfiguration.session.accounts.first(of: \.address, equalsTo: transaction.sender),
-              let wcSession = appConfiguration.walletConnector.getWalletConnectSession(with: url) else {
+              let account = appConfiguration.session.accounts.first(of: \.address, equalsTo: transaction.sender) else {
+            appConfiguration.walletConnector.rejectTransactionRequest(request, with: .unauthorized)
             return
         }
 
@@ -150,7 +169,7 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
                 .wcAlgosTransaction(
                     transactionParameter: transactionParameter,
                     account: account,
-                    wcSession: wcSession
+                    transactionRequest: request
                 ),
                 by: fullScreenPresentation
             )
@@ -159,7 +178,7 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
                 .wcAssetTransaction(
                     transactionParameter: transactionParameter,
                     account: account,
-                    wcSession: wcSession
+                    transactionRequest: request
                 ),
                 by: fullScreenPresentation
             )
@@ -168,22 +187,25 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
                 .wcAssetAdditionTransaction(
                     transactionParameter: transactionParameter,
                     account: account,
-                    wcSession: wcSession
+                    transactionRequest: request
                 ),
                 by: fullScreenPresentation
             )
         case .appCall:
-            open(.wcAppCall(transactionParameter: transactionParameter, account: account, wcSession: wcSession), by: fullScreenPresentation)
+            open(
+                .wcAppCall(
+                    transactionParameter: transactionParameter,
+                    account: account,
+                    transactionRequest: request
+                ),
+                by: fullScreenPresentation
+            )
         default:
             break
         }
     }
 
-    func walletConnectRequestHandler(
-        _ walletConnectRequestHandler: WalletConnectRequestHandler,
-        shouldSignFor transactionParameters: [WCTransactionParams],
-        fromDappSession url: WalletConnectURL
-    ) {
+    private func openGroupTransactionScreen(with transactionParameters: [WCTransactionParams]) {
         let fullScreenPresentation = Screen.Transition.Open.customPresent(
             presentationStyle: .fullScreen,
             transitionStyle: nil,
@@ -191,17 +213,6 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         )
 
         open(.wcGroupTransaction(transactionParameters: transactionParameters), by: fullScreenPresentation)
-    }
-
-    func walletConnectRequestHandler(_ walletConnectRequestHandler: WalletConnectRequestHandler, didReject request: WalletConnectRequest) {
-
-    }
-
-    func walletConnectRequestHandler(
-        _ walletConnectRequestHandler: WalletConnectRequestHandler,
-        didInvalidate request: WalletConnectRequest
-    ) {
-
     }
 }
 

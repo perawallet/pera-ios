@@ -25,9 +25,9 @@ class WCTransactionFullDappDetailViewController: BaseViewController {
 
     private lazy var fullDappDetailView = WCTransactionFullDappDetailView()
 
-    private let wcSession: WalletConnectSession
+    private let wcSession: WCSession
 
-    init(wcSession: WalletConnectSession, configuration: ViewControllerConfiguration) {
+    init(wcSession: WCSession, configuration: ViewControllerConfiguration) {
         self.wcSession = wcSession
         super.init(configuration: configuration)
     }
