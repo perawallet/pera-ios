@@ -13,30 +13,20 @@
 // limitations under the License.
 
 //
-//   WCSessionDB.swift
+//   WCMultisigMetadata.swift
 
-import CoreData
+import Magpie
 
-@objc(WCSessionList)
-public final class WCSessionList: NSManagedObject {
-    @NSManaged public var sessions: Data?
+class WCMultisigMetadata: Model {
+    let version: Int?
+    let threshold: Int64?
+    let address: String?
+}
 
-    var wcSessions: [String: WCSession]? {
-        guard let data = sessions else {
-            return nil
-        }
-        return try? JSONDecoder().decode([String: WCSession].self, from: data)
+extension WCMultisigMetadata {
+    private enum CodingKeys: String, CodingKey {
+        case version = "version"
+        case threshold = "threshold"
+        case address = "addrs"
     }
 }
-
-extension WCSessionList {
-    enum DBKeys: String {
-        case sessions = "sessions"
-    }
-}
-
-extension WCSessionList {
-    static let entityName = "WCSessionList"
-}
-
-extension WCSessionList: DBStorable { }

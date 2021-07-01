@@ -13,30 +13,24 @@
 // limitations under the License.
 
 //
-//   WCSessionDB.swift
+//   WCURLMeta.swift
 
-import CoreData
+import Foundation
 
-@objc(WCSessionList)
-public final class WCSessionList: NSManagedObject {
-    @NSManaged public var sessions: Data?
+class WCURLMeta: Codable {
+    let topic: String
+    let version: String
+    let bridge: URL
+    let key: String
 
-    var wcSessions: [String: WCSession]? {
-        guard let data = sessions else {
-            return nil
-        }
-        return try? JSONDecoder().decode([String: WCSession].self, from: data)
+    init(wcURL: WalletConnectURL) {
+        self.topic = wcURL.topic
+        self.version = wcURL.version
+        self.bridge = wcURL.bridgeURL
+        self.key = wcURL.key
+    }
+
+    var wcURL: WalletConnectURL {
+        return WalletConnectURL(topic: topic, version: version, bridgeURL: bridge, key: key)
     }
 }
-
-extension WCSessionList {
-    enum DBKeys: String {
-        case sessions = "sessions"
-    }
-}
-
-extension WCSessionList {
-    static let entityName = "WCSessionList"
-}
-
-extension WCSessionList: DBStorable { }

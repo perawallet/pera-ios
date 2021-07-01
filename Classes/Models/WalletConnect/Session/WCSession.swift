@@ -18,11 +18,19 @@
 import Foundation
 
 class WCSession: Codable {
-    let sessionDetail: WalletConnectSession
+    let urlMeta: WCURLMeta
+    let peerMeta: WCPeerMeta
+    let walletMeta: WCWalletMeta?
     let date: Date
 
-    init(sessionDetail: WalletConnectSession, date: Date) {
-        self.sessionDetail = sessionDetail
+    init(urlMeta: WCURLMeta, peerMeta: WCPeerMeta, walletMeta: WCWalletMeta?, date: Date) {
+        self.urlMeta = urlMeta
+        self.peerMeta = peerMeta
+        self.walletMeta = walletMeta
         self.date = date
+    }
+
+    var sessionBridgeValue: WalletConnectSession {
+        WalletConnectSession(url: urlMeta.wcURL, dAppInfo: peerMeta.dappInfo, walletInfo: walletMeta?.walletInfo)
     }
 }
