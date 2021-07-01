@@ -48,4 +48,13 @@ extension WalletConnectSession {
             peerMeta: getClientMeta()
         )
     }
+
+    func toWCSession() -> WCSession {
+        return WCSession(
+            urlMeta: WCURLMeta(wcURL: url),
+            peerMeta: WCPeerMeta(dappInfo: dAppInfo),
+            walletMeta: WCWalletMeta(walletInfo: walletInfo, dappInfo: dAppInfo),
+            date: Date()
+        )
+    }
 }

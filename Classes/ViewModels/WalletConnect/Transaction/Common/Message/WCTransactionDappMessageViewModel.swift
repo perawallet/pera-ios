@@ -23,15 +23,15 @@ class WCTransactionDappMessageViewModel {
     private(set) var name: String?
     private(set) var message: String?
 
-    init(session: WalletConnectSession, imageSize: CGSize) {
+    init(session: WCSession, imageSize: CGSize) {
         setImage(from: session, and: imageSize)
         setName(from: session)
         setMessage(from: session)
     }
 
-    private func setImage(from session: WalletConnectSession, and imageSize: CGSize) {
+    private func setImage(from session: WCSession, and imageSize: CGSize) {
         image = PNGImageSource(
-            url: session.dAppInfo.peerMeta.icons.first,
+            url: session.peerMeta.icons.first,
             color: nil,
             size: .resize(imageSize, .aspectFit),
             shape: .circle,
@@ -40,11 +40,11 @@ class WCTransactionDappMessageViewModel {
         )
     }
 
-    private func setName(from session: WalletConnectSession) {
-        name = session.dAppInfo.peerMeta.name
+    private func setName(from session: WCSession) {
+        name = session.peerMeta.name
     }
 
-    private func setMessage(from session: WalletConnectSession) {
-        message = session.dAppInfo.peerMeta.description
+    private func setMessage(from session: WCSession) {
+        message = session.peerMeta.description
     }
 }

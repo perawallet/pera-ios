@@ -619,11 +619,11 @@ extension AccountsViewController: WalletConnectorDelegate {
         )
     }
 
-    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WalletConnectSession) {
+    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
 
     }
 
-    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WalletConnectSession) {
+    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession) {
 
     }
 

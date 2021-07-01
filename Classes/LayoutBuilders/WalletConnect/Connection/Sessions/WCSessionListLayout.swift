@@ -41,7 +41,7 @@ extension WCSessionListLayout: UICollectionViewDelegateFlowLayout {
 
         var descriptionHeight: CGFloat = 0.0
 
-        if let description = session.sessionDetail.dAppInfo.peerMeta.description {
+        if let description = session.peerMeta.description {
             descriptionHeight = description.height(
                 withConstrained: UIScreen.main.bounds.width - layout.current.horizontalInset,
                 font: UIFont.font(withWeight: .regular(size: 14.0))

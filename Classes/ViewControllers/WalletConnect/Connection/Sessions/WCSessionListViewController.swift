@@ -71,12 +71,12 @@ extension WCSessionListViewController: WalletConnectorDelegate {
         openWCSessionApproval(for: session, then: completion)
     }
 
-    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WalletConnectSession) {
+    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
         setListContentState()
         sessionListView.collectionView.reloadData()
     }
 
-    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WalletConnectSession) {
+    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession) {
         updateScreenAfterDisconnecting(from: session)
     }
 
@@ -147,7 +147,7 @@ extension WCSessionListViewController {
 
         let actionSheet = UIAlertController(
             title: nil,
-            message: "wallet-connect-session-disconnect-message".localized(params: session.sessionDetail.dAppInfo.peerMeta.name),
+            message: "wallet-connect-session-disconnect-message".localized(params: session.peerMeta.name),
             preferredStyle: .actionSheet
         )
 
@@ -162,7 +162,7 @@ extension WCSessionListViewController {
         present(actionSheet, animated: true, completion: nil)
     }
 
-    private func updateScreenAfterDisconnecting(from session: WalletConnectSession) {
+    private func updateScreenAfterDisconnecting(from session: WCSession) {
         guard let index = dataSource.index(of: session) else {
             sessionListView.collectionView.reloadData()
             setListContentState()
@@ -178,7 +178,7 @@ extension WCSessionListViewController {
         case let .failedToDisconnect(session):
             NotificationBanner.showError(
                 "title-error".localized,
-                message: "wallet-connect-session-disconnect-fail-message".localized(session.dAppInfo.peerMeta.name)
+                message: "wallet-connect-session-disconnect-fail-message".localized(session.peerMeta.name)
             )
         default:
             break

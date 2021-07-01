@@ -34,7 +34,7 @@ class WCSessionItemViewModel {
 
     private func setImage(from session: WCSession) {
         image = PNGImageSource(
-            url: session.sessionDetail.dAppInfo.peerMeta.icons.first,
+            url: session.peerMeta.icons.first,
             color: nil,
             size: .resize(CGSize(width: 40.0, height: 40.0), .aspectFit),
             shape: .circle,
@@ -44,11 +44,11 @@ class WCSessionItemViewModel {
     }
 
     private func setName(from session: WCSession) {
-        name = session.sessionDetail.dAppInfo.peerMeta.name
+        name = session.peerMeta.name
     }
 
     private func setDescription(from session: WCSession) {
-        description = session.sessionDetail.dAppInfo.peerMeta.description
+        description = session.peerMeta.description
     }
 
     private func setDate(from session: WCSession) {
