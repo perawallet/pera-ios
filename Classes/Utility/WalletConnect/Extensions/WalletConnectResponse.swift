@@ -13,16 +13,20 @@
 // limitations under the License.
 
 //
-//   WalletConnectRequest+Helpers.swift
+//   WalletConnectResponse+Helpers.swift
 
 import Foundation
 
-extension WalletConnectRequest {
-    static func signature(_ signature: String, for request: WalletConnectRequest) -> WalletConnectResponse? {
+extension WalletConnectResponse {
+    static func signature(_ signature: [Data?], for request: WalletConnectRequest) -> WalletConnectResponse? {
         guard let id = request.id else {
             return nil
         }
 
         return try? WalletConnectResponse(url: request.url, value: signature, id: id)
+    }
+
+    static func rejection(_ request: WalletConnectRequest, with error: WCTransactionErrorResponse) -> WalletConnectResponse? {
+        return try? WalletConnectResponse(url: request.url, errorCode: error.rawValue, message: error.message, id: request.id)
     }
 }
