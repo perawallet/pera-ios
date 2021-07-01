@@ -72,6 +72,14 @@ extension WalletConnector {
             }
         }
     }
+
+    func signTransactionRequest(_ request: WalletConnectRequest, with signature: [Data?]) {
+        walletConnectBridge.signTransactionRequest(request, with: signature)
+    }
+
+    func rejectTransactionRequest(_ request: WalletConnectRequest, with error: WCTransactionErrorResponse) {
+        walletConnectBridge.rejectTransactionRequest(request, with: error)
+    }
 }
 
 extension WalletConnector {

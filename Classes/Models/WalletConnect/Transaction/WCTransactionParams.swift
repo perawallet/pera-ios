@@ -18,6 +18,7 @@
 import Magpie
 
 class WCTransactionParams: Model {
+    private(set) var unparsedTransaction: Data? // Transaction that is not parsed for msgpack, needs to be used for signing
     var transaction: WCTransaction?
     let signers: [String]?
 
@@ -25,6 +26,7 @@ class WCTransactionParams: Model {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         signers = try container.decodeIfPresent([String].self, forKey: .signers)
         if let transactionMsgpack = try container.decodeIfPresent(Data.self, forKey: .transaction) {
+            unparsedTransaction = transactionMsgpack
             transaction = parseTransaction(from: transactionMsgpack)
         }
     }
