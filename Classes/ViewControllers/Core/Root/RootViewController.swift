@@ -174,45 +174,49 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
                 by: fullScreenPresentation
             )
         case .asset:
-            open(
-                .wcAssetTransaction(
-                    transactionParameter: transactionParameter,
-                    account: account,
-                    transactionRequest: request
-                ),
-                by: fullScreenPresentation
-            )
+            // These transaction types disabled temporarly, after the test release, these will be opened again.
+            appConfiguration.walletConnector.rejectTransactionRequest(request, with: .rejected)
+//            open(
+//                .wcAssetTransaction(
+//                    transactionParameter: transactionParameter,
+//                    account: account,
+//                    transactionRequest: request
+//                ),
+//                by: fullScreenPresentation
+//            )
         case .assetAddition:
-            open(
-                .wcAssetAdditionTransaction(
-                    transactionParameter: transactionParameter,
-                    account: account,
-                    transactionRequest: request
-                ),
-                by: fullScreenPresentation
-            )
+            appConfiguration.walletConnector.rejectTransactionRequest(request, with: .rejected)
+//            open(
+//                .wcAssetAdditionTransaction(
+//                    transactionParameter: transactionParameter,
+//                    account: account,
+//                    transactionRequest: request
+//                ),
+//                by: fullScreenPresentation
+//            )
         case .appCall:
-            open(
-                .wcAppCall(
-                    transactionParameter: transactionParameter,
-                    account: account,
-                    transactionRequest: request
-                ),
-                by: fullScreenPresentation
-            )
+            appConfiguration.walletConnector.rejectTransactionRequest(request, with: .rejected)
+//            open(
+//                .wcAppCall(
+//                    transactionParameter: transactionParameter,
+//                    account: account,
+//                    transactionRequest: request
+//                ),
+//                by: fullScreenPresentation
+//            )
         default:
             break
         }
     }
 
     private func openGroupTransactionScreen(with transactionParameters: [WCTransactionParams]) {
-        let fullScreenPresentation = Screen.Transition.Open.customPresent(
-            presentationStyle: .fullScreen,
-            transitionStyle: nil,
-            transitioningDelegate: nil
-        )
+//        let fullScreenPresentation = Screen.Transition.Open.customPresent(
+//            presentationStyle: .fullScreen,
+//            transitionStyle: nil,
+//            transitioningDelegate: nil
+//        )
 
-        open(.wcGroupTransaction(transactionParameters: transactionParameters), by: fullScreenPresentation)
+        // open(.wcGroupTransaction(transactionParameters: transactionParameters), by: fullScreenPresentation)
     }
 }
 
