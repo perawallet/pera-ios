@@ -886,6 +886,9 @@
 		2B288ACA268E377300BC6FB6 /* WCWalletMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288AC9268E377300BC6FB6 /* WCWalletMeta.swift */; };
 		2B288ACB268E377300BC6FB6 /* WCWalletMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288AC9268E377300BC6FB6 /* WCWalletMeta.swift */; };
 		2B288ACC268E377300BC6FB6 /* WCWalletMeta.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288AC9268E377300BC6FB6 /* WCWalletMeta.swift */; };
+		2B288ACF268F158100BC6FB6 /* AssetCachable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288ACE268F158100BC6FB6 /* AssetCachable.swift */; };
+		2B288AD0268F158100BC6FB6 /* AssetCachable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288ACE268F158100BC6FB6 /* AssetCachable.swift */; };
+		2B288AD1268F158100BC6FB6 /* AssetCachable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288ACE268F158100BC6FB6 /* AssetCachable.swift */; };
 		2B298D1124F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */; };
 		2B298D1224F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */; };
 		2B298D1724F47FCF0047408A /* LedgerAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1624F47FCF0047408A /* LedgerAccountNameViewModel.swift */; };
@@ -2569,6 +2572,7 @@
 		2B288AC1268E374700BC6FB6 /* WCURLMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCURLMeta.swift; sourceTree = "<group>"; };
 		2B288AC5268E375D00BC6FB6 /* WCPeerMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCPeerMeta.swift; sourceTree = "<group>"; };
 		2B288AC9268E377300BC6FB6 /* WCWalletMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCWalletMeta.swift; sourceTree = "<group>"; };
+		2B288ACE268F158100BC6FB6 /* AssetCachable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCachable.swift; sourceTree = "<group>"; };
 		2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionHeaderSupplementaryViewModel.swift; sourceTree = "<group>"; };
 		2B298D1624F47FCF0047408A /* LedgerAccountNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountNameViewModel.swift; sourceTree = "<group>"; };
 		2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTrackDraft.swift; sourceTree = "<group>"; };
@@ -3896,6 +3900,14 @@
 				2B270390263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift */,
 			);
 			path = Verification;
+			sourceTree = "<group>";
+		};
+		2B288ACD268F157500BC6FB6 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				2B288ACE268F158100BC6FB6 /* AssetCachable.swift */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 		2B298D0F24F4371F0047408A /* Selection */ = {
@@ -6052,6 +6064,7 @@
 			isa = PBXGroup;
 			children = (
 				2BE4D0F82594D328005F5764 /* AppStoreReview */,
+				2B288ACD268F157500BC6FB6 /* Assets */,
 				2B0F5F3724E5684E00DA22A6 /* Banner */,
 				2B62B03B240813A5002DF2A0 /* BLE */,
 				2B9F064024B60EAA006880F0 /* CSVExport */,
@@ -10312,6 +10325,7 @@
 				2B05A669251E23D7008A8791 /* CurrencyChangeEvent.swift in Sources */,
 				17BD4EFE2292F1260003E49A /* NodeSettingsViewController.swift in Sources */,
 				2BAD559523A29C830037079F /* Optional+Nil.swift in Sources */,
+				2B288AD1268F158100BC6FB6 /* AssetCachable.swift in Sources */,
 				2B7E5818257E56DB00731C97 /* Int16+Byte.swift in Sources */,
 				2B4487212379649700C19FDE /* AssetAdditionViewController.swift in Sources */,
 				17BD4EFF2292F1260003E49A /* LocalAuthenticator.swift in Sources */,
@@ -11057,6 +11071,7 @@
 				2B05A668251E23D7008A8791 /* CurrencyChangeEvent.swift in Sources */,
 				2B0F631B24EC129D00DA22A6 /* BottomInformationViewModel.swift in Sources */,
 				2B0F631C24EC129D00DA22A6 /* NodeSettingsViewController.swift in Sources */,
+				2B288AD0268F158100BC6FB6 /* AssetCachable.swift in Sources */,
 				2B7E5817257E56DB00731C97 /* Int16+Byte.swift in Sources */,
 				2B0F631D24EC129D00DA22A6 /* Optional+Nil.swift in Sources */,
 				2B0F631E24EC129D00DA22A6 /* AssetAdditionViewController.swift in Sources */,
@@ -11802,6 +11817,7 @@
 				2B05A667251E23D7008A8791 /* CurrencyChangeEvent.swift in Sources */,
 				171111BA225E34E400DAF55C /* NodeSettingsViewController.swift in Sources */,
 				2BAD559423A29C830037079F /* Optional+Nil.swift in Sources */,
+				2B288ACF268F158100BC6FB6 /* AssetCachable.swift in Sources */,
 				2B7E5816257E56DB00731C97 /* Int16+Byte.swift in Sources */,
 				2B4487202379649700C19FDE /* AssetAdditionViewController.swift in Sources */,
 				2B6687152248DF83009F21E7 /* LocalAuthenticator.swift in Sources */,

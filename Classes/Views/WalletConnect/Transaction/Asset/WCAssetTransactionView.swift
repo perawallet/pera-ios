@@ -91,6 +91,9 @@ extension WCAssetTransactionView {
 
         if let assetInformationViewModel = viewModel.assetInformationViewModel {
             assetInformationView.bind(assetInformationViewModel)
+            unhideViewAnimatedIfNeeded(assetInformationView)
+        } else {
+            assetInformationView.hideViewInStack()
         }
 
         if let receiverInformationViewModel = viewModel.receiverInformationViewModel {
@@ -109,8 +112,20 @@ extension WCAssetTransactionView {
             rekeyWarningInformationView.hideViewInStack()
         }
 
-        balanceInformationView.bind(viewModel.balanceInformationViewModel)
-        amountInformationView.bind(viewModel.amountInformationViewModel)
+        if let balanceInformationViewModel = viewModel.balanceInformationViewModel {
+            balanceInformationView.bind(balanceInformationViewModel)
+            unhideViewAnimatedIfNeeded(balanceInformationView)
+        } else {
+            balanceInformationView.hideViewInStack()
+        }
+
+        if let amountInformationViewModel = viewModel.amountInformationViewModel {
+            amountInformationView.bind(amountInformationViewModel)
+            unhideViewAnimatedIfNeeded(amountInformationView)
+        } else {
+            amountInformationView.hideViewInStack()
+        }
+
         feeInformationView.bind(viewModel.feeInformationViewModel)
 
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
@@ -121,6 +136,14 @@ extension WCAssetTransactionView {
 
         if let rawTransactionInformationViewModel = viewModel.rawTransactionInformationViewModel {
             rawTransactionInformationView.bind(rawTransactionInformationViewModel)
+        }
+    }
+
+    private func unhideViewAnimatedIfNeeded(_ view: UIView) {
+        if view.isHidden {
+            UIView.animate(withDuration: 0.3) {
+                view.showViewInStack()
+            }
         }
     }
 }

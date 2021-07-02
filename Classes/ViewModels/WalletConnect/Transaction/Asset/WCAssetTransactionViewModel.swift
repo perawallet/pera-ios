@@ -29,7 +29,7 @@ class WCAssetTransactionViewModel {
     private(set) var noteInformationViewModel: WCTransactionTextInformationViewModel?
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
 
-    init(transactionParams: WCTransactionParams, senderAccount: Account, assetDetail: AssetDetail) {
+    init(transactionParams: WCTransactionParams, senderAccount: Account, assetDetail: AssetDetail?) {
         setSenderInformationViewModel(from: senderAccount)
         setAssetInformationViewModel(from: assetDetail)
         setReceiverInformationViewModel(from: transactionParams)
@@ -49,7 +49,11 @@ class WCAssetTransactionViewModel {
         )
     }
 
-    private func setAssetInformationViewModel(from assetDetail: AssetDetail) {
+    private func setAssetInformationViewModel(from assetDetail: AssetDetail?) {
+        guard let assetDetail = assetDetail else {
+            return
+        }
+
         assetInformationViewModel = TransactionAssetViewModel(assetDetail: assetDetail, isLastElement: false)
     }
 
@@ -90,8 +94,9 @@ class WCAssetTransactionViewModel {
         )
     }
 
-    private func setBalanceInformationViewModel(from senderAccount: Account, and assetDetail: AssetDetail) {
-        guard let amount = senderAccount.amountWithoutFraction(for: assetDetail) else {
+    private func setBalanceInformationViewModel(from senderAccount: Account, and assetDetail: AssetDetail?) {
+        guard let assetDetail = assetDetail,
+              let amount = senderAccount.amountWithoutFraction(for: assetDetail) else {
             return
         }
 
@@ -102,8 +107,9 @@ class WCAssetTransactionViewModel {
         )
     }
 
-    private func setAmountInformationViewModel(from transactionParams: WCTransactionParams, and assetDetail: AssetDetail) {
-        guard let amount = transactionParams.transaction?.amount else {
+    private func setAmountInformationViewModel(from transactionParams: WCTransactionParams, and assetDetail: AssetDetail?) {
+        guard let assetDetail = assetDetail,
+              let amount = transactionParams.transaction?.amount else {
             return
         }
 
