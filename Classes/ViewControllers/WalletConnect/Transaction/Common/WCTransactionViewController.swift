@@ -45,9 +45,18 @@ class WCTransactionViewController: BaseScrollViewController {
         return LedgerTransactionOperation(api: api)
     }()
 
+    private lazy var dappMessageModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 350.0))
+    )
+
     private(set) var transactionParameter: WCTransactionParams
     private(set) var account: Account
-    private let transactionRequest: WalletConnectRequest
+    private(set) var transactionRequest: WalletConnectRequest
+    private let wcSession: WCSession?
 
     init(
         transactionParameter: WCTransactionParams,
@@ -58,6 +67,7 @@ class WCTransactionViewController: BaseScrollViewController {
         self.transactionParameter = transactionParameter
         self.account = account
         self.transactionRequest = transactionRequest
+        self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url))
         super.init(configuration: configuration)
     }
 
@@ -75,13 +85,14 @@ class WCTransactionViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
 
-        guard let wcSession = walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url)) else {
+        guard let wcSession = wcSession else {
             return
         }
 
         dappMessageView.bind(
             WCTransactionDappMessageViewModel(
                 session: wcSession,
+                transactionParameter: transactionParameter,
                 imageSize: CGSize(width: 44.0, height: 44.0)
             )
         )
@@ -163,7 +174,21 @@ extension WCTransactionViewController {
 
     @objc
     private func openLongDappMessageScreen() {
+        guard let wcSession = wcSession else {
+            return
+        }
 
+        open(
+            .wcTransactionFullDappDetail(
+                wcSession: wcSession,
+                transactionParameter: transactionParameter
+            ),
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: dappMessageModalPresenter
+            )
+        )
     }
 }
 

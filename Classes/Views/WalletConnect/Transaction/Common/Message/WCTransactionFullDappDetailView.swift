@@ -88,7 +88,7 @@ extension WCTransactionFullDappDetailView {
         addSubview(nameLabel)
 
         nameLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(layout.current.nameTopInset)
+            make.top.equalTo(dappImageView.snp.bottom).offset(layout.current.nameTopInset)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
@@ -107,7 +107,7 @@ extension WCTransactionFullDappDetailView {
         addSubview(closeButton)
 
         closeButton.snp.makeConstraints { make in
-            make.top.equalTo(messageLabel.snp.bottom).offset(layout.current.buttonTopInset)
+            make.top.greaterThanOrEqualTo(messageLabel.snp.bottom).offset(layout.current.buttonTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
         }

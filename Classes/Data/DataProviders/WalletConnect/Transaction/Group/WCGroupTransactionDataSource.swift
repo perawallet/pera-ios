@@ -69,8 +69,15 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
         }
 
         // Will be updated with the related session later.
-        if let session = walletConnector.allWalletConnectSessions.first {
-            headerView.bind(WCGroupTransactionHeaderViewModel(session: session, transactionCount: transactionParameters.count))
+        if let session = walletConnector.allWalletConnectSessions.first,
+           let transactionParam = transactionParameters.first {
+            headerView.bind(
+                WCGroupTransactionHeaderViewModel(
+                    session: session,
+                    transactionParameter: transactionParam,
+                    transactionCount: transactionParameters.count
+                )
+            )
         }
 
         headerView.delegate = self
