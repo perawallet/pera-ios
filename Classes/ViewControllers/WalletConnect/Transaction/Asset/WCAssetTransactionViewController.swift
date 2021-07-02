@@ -34,7 +34,7 @@ class WCAssetTransactionViewController: WCTransactionViewController {
             return
         }
 
-        getAssetDetail(with: assetId) { [weak self] assetDetail in
+        cacheAssetDetail(with: assetId) { [weak self] assetDetail in
             guard let self = self else {
                 return
             }
