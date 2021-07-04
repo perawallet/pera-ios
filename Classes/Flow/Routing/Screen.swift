@@ -108,6 +108,7 @@ indirect enum Screen {
     case wcAssetAdditionTransaction(transactionParameter: WCTransactionParams, account: Account, transactionRequest: WalletConnectRequest)
     case wcGroupTransaction(transactionParameters: [WCTransactionParams])
     case wcAppCall(transactionParameter: WCTransactionParams, account: Account, transactionRequest: WalletConnectRequest)
+    case jsonDisplay(jsonData: Data)
 }
 
 extension Screen {

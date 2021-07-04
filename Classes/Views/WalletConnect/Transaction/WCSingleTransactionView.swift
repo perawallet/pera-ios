@@ -35,7 +35,12 @@ class WCSingleTransactionView: BaseView {
 
     private lazy var balanceInformationStackView = WrappedStackView()
 
-    private lazy var detailedInformationStackView = WrappedStackView()
+    private lazy var detailedInformationStackView: WrappedStackView = {
+        let detailedInformationStackView = WrappedStackView()
+        detailedInformationStackView.isUserInteractionEnabled = true
+        detailedInformationStackView.stackView.isUserInteractionEnabled = true
+        return detailedInformationStackView
+    }()
 
     override func prepareLayout() {
         setupMainStackViewLayout()

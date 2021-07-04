@@ -889,6 +889,15 @@
 		2B288ACF268F158100BC6FB6 /* AssetCachable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288ACE268F158100BC6FB6 /* AssetCachable.swift */; };
 		2B288AD0268F158100BC6FB6 /* AssetCachable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288ACE268F158100BC6FB6 /* AssetCachable.swift */; };
 		2B288AD1268F158100BC6FB6 /* AssetCachable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288ACE268F158100BC6FB6 /* AssetCachable.swift */; };
+		2B288AD42691128A00BC6FB6 /* JSONDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288AD32691128A00BC6FB6 /* JSONDisplayViewController.swift */; };
+		2B288AD52691128A00BC6FB6 /* JSONDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288AD32691128A00BC6FB6 /* JSONDisplayViewController.swift */; };
+		2B288AD62691128A00BC6FB6 /* JSONDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288AD32691128A00BC6FB6 /* JSONDisplayViewController.swift */; };
+		2B288AD8269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288AD7269112CF00BC6FB6 /* JSONDisplayView.swift */; };
+		2B288AD9269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288AD7269112CF00BC6FB6 /* JSONDisplayView.swift */; };
+		2B288ADA269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288AD7269112CF00BC6FB6 /* JSONDisplayView.swift */; };
+		2B288ADC269112EB00BC6FB6 /* JSONDisplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288ADB269112EB00BC6FB6 /* JSONDisplayViewModel.swift */; };
+		2B288ADD269112EB00BC6FB6 /* JSONDisplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288ADB269112EB00BC6FB6 /* JSONDisplayViewModel.swift */; };
+		2B288ADE269112EB00BC6FB6 /* JSONDisplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B288ADB269112EB00BC6FB6 /* JSONDisplayViewModel.swift */; };
 		2B298D1124F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */; };
 		2B298D1224F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */; };
 		2B298D1724F47FCF0047408A /* LedgerAccountNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B298D1624F47FCF0047408A /* LedgerAccountNameViewModel.swift */; };
@@ -2573,6 +2582,9 @@
 		2B288AC5268E375D00BC6FB6 /* WCPeerMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCPeerMeta.swift; sourceTree = "<group>"; };
 		2B288AC9268E377300BC6FB6 /* WCWalletMeta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCWalletMeta.swift; sourceTree = "<group>"; };
 		2B288ACE268F158100BC6FB6 /* AssetCachable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCachable.swift; sourceTree = "<group>"; };
+		2B288AD32691128A00BC6FB6 /* JSONDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDisplayViewController.swift; sourceTree = "<group>"; };
+		2B288AD7269112CF00BC6FB6 /* JSONDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDisplayView.swift; sourceTree = "<group>"; };
+		2B288ADB269112EB00BC6FB6 /* JSONDisplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONDisplayViewModel.swift; sourceTree = "<group>"; };
 		2B298D1024F437360047408A /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionHeaderSupplementaryViewModel.swift; sourceTree = "<group>"; };
 		2B298D1624F47FCF0047408A /* LedgerAccountNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountNameViewModel.swift; sourceTree = "<group>"; };
 		2B2A9F40232A403600450DB0 /* TransactionTrackDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTrackDraft.swift; sourceTree = "<group>"; };
@@ -3908,6 +3920,14 @@
 				2B288ACE268F158100BC6FB6 /* AssetCachable.swift */,
 			);
 			path = Assets;
+			sourceTree = "<group>";
+		};
+		2B288AD22691126A00BC6FB6 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2B288AD32691128A00BC6FB6 /* JSONDisplayViewController.swift */,
+			);
+			path = Detail;
 			sourceTree = "<group>";
 		};
 		2B298D0F24F4371F0047408A /* Selection */ = {
@@ -5718,6 +5738,7 @@
 		2B7E307C267B64F800E89EE3 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2B288AD22691126A00BC6FB6 /* Detail */,
 				2B7E307D267B651A00E89EE3 /* WCTransactionFullDappDetailViewController.swift */,
 				2B7E3081267BC0A100E89EE3 /* WCTransactionViewController.swift */,
 			);
@@ -7577,6 +7598,7 @@
 				2BD36DC7267E082B00C57728 /* WCTransactionActionableInformationView.swift */,
 				2BD36DD0267E445F00C57728 /* WCTransactionAddressWarningInformationView.swift */,
 				2BD36DD4267E458200C57728 /* WCTransactionTextInformationView.swift */,
+				2B288AD7269112CF00BC6FB6 /* JSONDisplayView.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -7587,6 +7609,7 @@
 				2BD36DCC267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift */,
 				2BD36DD8267E45B700C57728 /* WCTransactionTextInformationViewModel.swift */,
 				2BD36DDC267E45E300C57728 /* WCTransactionAddressWarningInformationViewModel.swift */,
+				2B288ADB269112EB00BC6FB6 /* JSONDisplayViewModel.swift */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -9601,6 +9624,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B5BE150251B732800324BEE /* Currency.swift in Sources */,
+				2B288ADE269112EB00BC6FB6 /* JSONDisplayViewModel.swift in Sources */,
 				2B0F635824ED21C200DA22A6 /* LedgerAccountSelectionViewController.swift in Sources */,
 				2B0F635924ED21C200DA22A6 /* LedgerAccountSelectionView.swift in Sources */,
 				2BF90F6D25FBAAEE0033F348 /* VStackView.swift in Sources */,
@@ -10197,6 +10221,7 @@
 				2B2A9F42232A403600450DB0 /* TransactionTrackDraft.swift in Sources */,
 				2B7E306F267A5E8900E89EE3 /* WCTransactionDappMessageViewModel.swift in Sources */,
 				17BD4ED22292F1260003E49A /* OptionsViewController.swift in Sources */,
+				2B288AD62691128A00BC6FB6 /* JSONDisplayViewController.swift in Sources */,
 				2B5715B92634F1FF002C876D /* AlgorandChartViewCustomizable.swift in Sources */,
 				2B4EEECD24C105E100059A16 /* NotificationsDataSource.swift in Sources */,
 				2BB68F47261260DB0070FFE9 /* AccountsEmptyStateView.swift in Sources */,
@@ -10240,6 +10265,7 @@
 				2B7E3052267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */,
 				2BA4B3F2267819840041586B /* WCSessionItemViewModel.swift in Sources */,
 				2BA4B3DE2673F0E60041586B /* WCConnectionApprovalViewModel.swift in Sources */,
+				2B288ADA269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */,
 				2B0F5EFB24DD509D00DA22A6 /* RekeyConfirmationViewModel.swift in Sources */,
 				2BECB4DF25A12C3A0081870A /* NotificationFilterListLayout.swift in Sources */,
 				2B0F635724ED0CFC00DA22A6 /* RekeyedAccountQuery.swift in Sources */,
@@ -10347,6 +10373,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B5BE14F251B732800324BEE /* Currency.swift in Sources */,
+				2B288ADD269112EB00BC6FB6 /* JSONDisplayViewModel.swift in Sources */,
 				2B56B8292505013600AC7B8D /* RekeyConfirmationDataSource.swift in Sources */,
 				2B56B82A2505013600AC7B8D /* LedgerAccountSelectionDataSource.swift in Sources */,
 				2BF90F6C25FBAAEE0033F348 /* VStackView.swift in Sources */,
@@ -10943,6 +10970,7 @@
 				2B0F62CA24EC129D00DA22A6 /* AssetSupportViewController.swift in Sources */,
 				2B7E306E267A5E8900E89EE3 /* WCTransactionDappMessageViewModel.swift in Sources */,
 				2B0F62CB24EC129D00DA22A6 /* IntroductionViewController.swift in Sources */,
+				2B288AD52691128A00BC6FB6 /* JSONDisplayViewController.swift in Sources */,
 				2B5715B82634F1FF002C876D /* AlgorandChartViewCustomizable.swift in Sources */,
 				2B0F62CC24EC129D00DA22A6 /* TransactionDetailView.swift in Sources */,
 				2BB68F46261260DB0070FFE9 /* AccountsEmptyStateView.swift in Sources */,
@@ -10986,6 +11014,7 @@
 				2B7E3051267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */,
 				2BA4B3F1267819840041586B /* WCSessionItemViewModel.swift in Sources */,
 				2BA4B3DD2673F0E60041586B /* WCConnectionApprovalViewModel.swift in Sources */,
+				2B288AD9269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */,
 				2B0F62DF24EC129D00DA22A6 /* PassphraseBackUpOrderView.swift in Sources */,
 				2BECB4DE25A12C3A0081870A /* NotificationFilterListLayout.swift in Sources */,
 				2B0F62E024EC129D00DA22A6 /* CSVConfig.swift in Sources */,
@@ -11093,6 +11122,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B5BE14E251B732800324BEE /* Currency.swift in Sources */,
+				2B288ADC269112EB00BC6FB6 /* JSONDisplayViewModel.swift in Sources */,
 				17D04F46225F64B60051BC43 /* AddNodeViewController.swift in Sources */,
 				2B8954B92243FCFA00D6D068 /* AdaptiveLayout.swift in Sources */,
 				2BF90F6B25FBAAEE0033F348 /* VStackView.swift in Sources */,
@@ -11689,6 +11719,7 @@
 				2B656E93224BAF2E0064A49B /* OptionsViewController.swift in Sources */,
 				2B7E306D267A5E8900E89EE3 /* WCTransactionDappMessageViewModel.swift in Sources */,
 				2B59F1392254BABF005203DD /* algorand.xcdatamodeld in Sources */,
+				2B288AD42691128A00BC6FB6 /* JSONDisplayViewController.swift in Sources */,
 				2B5715B72634F1FF002C876D /* AlgorandChartViewCustomizable.swift in Sources */,
 				2B4EEECC24C105E100059A16 /* NotificationsDataSource.swift in Sources */,
 				2BB68F45261260DB0070FFE9 /* AccountsEmptyStateView.swift in Sources */,
@@ -11732,6 +11763,7 @@
 				2B7E3050267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */,
 				2BA4B3F0267819840041586B /* WCSessionItemViewModel.swift in Sources */,
 				2BA4B3DC2673F0E60041586B /* WCConnectionApprovalViewModel.swift in Sources */,
+				2B288AD8269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */,
 				2B0F5EFA24DD509D00DA22A6 /* RekeyConfirmationViewModel.swift in Sources */,
 				2BECB4DD25A12C3A0081870A /* NotificationFilterListLayout.swift in Sources */,
 				2B0F635624ED0CFC00DA22A6 /* RekeyedAccountQuery.swift in Sources */,

@@ -665,3 +665,4 @@
 "wallet-connect-transaction-error-unauthorized" = "The requested operation and/or account has not been authorized by the user.";
 "wallet-connect-transaction-error-unsupported" = "The wallet does not support the requested operation.";
 "wallet-connect-transaction-error-invalid" = "The input provided is invalid.";
+"wallet-connect-raw-transaction-title" = "Raw Transaction";

@@ -39,6 +39,12 @@ class WCAlgosTransactionViewController: WCTransactionViewController {
 
 extension WCAlgosTransactionViewController: WCAlgosTransactionViewDelegate {
     func wcAlgosTransactionViewDidOpenRawTransaction(_ wcAlgosTransactionView: WCAlgosTransactionView) {
-        
+        guard let transactionData = try? JSONEncoder().encode(transactionParameter),
+              let object = try? JSONSerialization.jsonObject(with: transactionData, options: []),
+              let data = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted]) else {
+            return
+        }
+
+        open(.jsonDisplay(jsonData: data), by: .present)
     }
 }

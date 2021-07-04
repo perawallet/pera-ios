@@ -425,6 +425,8 @@ class Router {
                 transactionRequest: transactionRequest,
                 configuration: configuration
             )
+        case let .jsonDisplay(jsonData):
+            viewController = JSONDisplayViewController(jsonData: jsonData, configuration: configuration)
         }
         
         return viewController as? T
