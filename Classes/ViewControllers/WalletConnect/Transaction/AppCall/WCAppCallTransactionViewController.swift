@@ -25,6 +25,11 @@ class WCAppCallTransactionViewController: WCTransactionViewController {
         return appCallTransactionView
     }
 
+    override func configureAppearance() {
+        super.configureAppearance()
+        appCallTransactionView.bind(WCAppCallTransactionViewModel(transactionParams: transactionParameter, account: account))
+    }
+
     override func linkInteractors() {
         super.linkInteractors()
         appCallTransactionView.delegate = self

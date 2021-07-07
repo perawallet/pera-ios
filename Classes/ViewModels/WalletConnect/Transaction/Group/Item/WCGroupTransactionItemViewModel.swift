@@ -18,5 +18,52 @@
 import UIKit
 
 class WCGroupTransactionItemViewModel {
-    
+
+    private(set) var hasWarning = false
+    private(set) var title: String?
+    private(set) var isAlgos = true
+    private(set) var amount: String?
+    private(set) var assetName: String?
+    private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
+
+    init(transactionParam: WCTransactionParams) {
+        setHasWarning(from: transactionParam)
+        setTitle(from: transactionParam)
+        setIsAlgos(from: transactionParam)
+        setAmount(from: transactionParam)
+        setAssetName(from: transactionParam)
+        setAccountInformationViewModel(from: transactionParam)
+    }
+
+    private func setHasWarning(from transactionParam: WCTransactionParams) {
+        guard let transaction = transactionParam.transaction else {
+            return
+        }
+
+        hasWarning = transaction.isCloseTransaction || transaction.isRekeyTransaction
+    }
+
+    private func setTitle(from transactionParam: WCTransactionParams) {
+        title = ""
+    }
+
+    private func setIsAlgos(from transactionParam: WCTransactionParams) {
+        guard let transaction = transactionParam.transaction else {
+            return
+        }
+
+        isAlgos = transaction.isAlgosTransaction
+    }
+
+    private func setAmount(from transactionParam: WCTransactionParams) {
+        amount = ""
+    }
+
+    private func setAssetName(from transactionParam: WCTransactionParams) {
+        assetName = ""
+    }
+
+    private func setAccountInformationViewModel(from transactionParam: WCTransactionParams) {
+        
+    }
 }

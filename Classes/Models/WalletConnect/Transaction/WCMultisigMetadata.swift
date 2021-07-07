@@ -13,10 +13,20 @@
 // limitations under the License.
 
 //
-//   WCGroupTransactionViewModel.swift
+//   WCMultisigMetadata.swift
 
-import UIKit
+import Magpie
 
-class WCGroupTransactionViewModel {
+class WCMultisigMetadata: Model {
+    let version: Int?
+    let threshold: Int64?
+    let address: String?
+}
 
+extension WCMultisigMetadata {
+    private enum CodingKeys: String, CodingKey {
+        case version = "version"
+        case threshold = "threshold"
+        case address = "addrs"
+    }
 }

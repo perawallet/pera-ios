@@ -13,24 +13,24 @@
 // limitations under the License.
 
 //
-//   WCTransactionViewModel.swift
+//   WCSession.swift
 
-import UIKit
+import Foundation
 
-class WCTransactionViewModel {
-    private(set) var confirmTitle: String?
-    private(set) var declineTitle: String?
+class WCSession: Codable {
+    let urlMeta: WCURLMeta
+    let peerMeta: WCPeerMeta
+    let walletMeta: WCWalletMeta?
+    let date: Date
 
-    init() {
-        setConfirmTitle()
-        setDeclineTitle()
+    init(urlMeta: WCURLMeta, peerMeta: WCPeerMeta, walletMeta: WCWalletMeta?, date: Date) {
+        self.urlMeta = urlMeta
+        self.peerMeta = peerMeta
+        self.walletMeta = walletMeta
+        self.date = date
     }
 
-    private func setConfirmTitle() {
-
-    }
-
-    private func setDeclineTitle() {
-
+    var sessionBridgeValue: WalletConnectSession {
+        WalletConnectSession(url: urlMeta.wcURL, dAppInfo: peerMeta.dappInfo, walletInfo: walletMeta?.walletInfo)
     }
 }

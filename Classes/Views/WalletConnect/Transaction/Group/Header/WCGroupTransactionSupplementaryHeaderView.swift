@@ -27,10 +27,20 @@ class WCGroupTransactionSupplementaryHeaderView: BaseSupplementaryView<WCGroupTr
     }
 }
 
-extension WCGroupTransactionSupplementaryHeaderView: WCGroupTransactionHeaderViewDelegate {
+extension WCGroupTransactionSupplementaryHeaderView {
+    func bind(_ viewModel: WCGroupTransactionHeaderViewModel) {
+        contextView.bind(viewModel)
+    }
+}
 
+extension WCGroupTransactionSupplementaryHeaderView: WCGroupTransactionHeaderViewDelegate {
+    func wcGroupTransactionHeaderViewDidOpenLongMessageView(_ wcGroupTransactionHeaderView: WCGroupTransactionHeaderView) {
+        delegate?.wcGroupTransactionSupplementaryHeaderViewDidOpenLongMessageView(self)
+    }
 }
 
 protocol WCGroupTransactionSupplementaryHeaderViewDelegate: AnyObject {
-
+    func wcGroupTransactionSupplementaryHeaderViewDidOpenLongMessageView(
+        _ wcGroupTransactionSupplementaryHeaderView: WCGroupTransactionSupplementaryHeaderView
+    )
 }

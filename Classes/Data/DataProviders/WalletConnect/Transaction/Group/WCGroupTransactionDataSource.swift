@@ -21,9 +21,11 @@ class WCGroupTransactionDataSource: NSObject {
 
     weak var delegate: WCGroupTransactionDataSourceDelegate?
 
+    private let transactionParameters: [WCTransactionParams]
     private let walletConnector: WalletConnector
 
-    init(walletConnector: WalletConnector) {
+    init(transactionParameters: [WCTransactionParams], walletConnector: WalletConnector) {
+        self.transactionParameters = transactionParameters
         self.walletConnector = walletConnector
         super.init()
     }
@@ -31,7 +33,7 @@ class WCGroupTransactionDataSource: NSObject {
 
 extension WCGroupTransactionDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 0
+        return transactionParameters.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -40,6 +42,10 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             for: indexPath
         ) as? WCGroupTransactionItemCell else {
             fatalError("Unexpected cell type")
+        }
+
+        if let transactionParam = transactionParameter(at: indexPath.item) {
+            cell.bind(WCGroupTransactionItemViewModel(transactionParam: transactionParam))
         }
 
         return cell
@@ -62,8 +68,26 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected element kind")
         }
 
+        // Will be updated with the related session later.
+        if let session = walletConnector.allWalletConnectSessions.first,
+           let transactionParam = transactionParameters.first {
+            headerView.bind(
+                WCGroupTransactionHeaderViewModel(
+                    session: session,
+                    transactionParameter: transactionParam,
+                    transactionCount: transactionParameters.count
+                )
+            )
+        }
+
         headerView.delegate = self
         return headerView
+    }
+}
+
+extension WCGroupTransactionDataSource {
+    func transactionParameter(at index: Int) -> WCTransactionParams? {
+        return transactionParameters[safe: index]
     }
 }
 
@@ -71,10 +95,10 @@ extension WCGroupTransactionDataSource: WCGroupTransactionSupplementaryHeaderVie
     func wcGroupTransactionSupplementaryHeaderViewDidOpenLongMessageView(
         _ wcGroupTransactionSupplementaryHeaderView: WCGroupTransactionSupplementaryHeaderView
     ) {
-
+        delegate?.wcGroupTransactionDataSourceDidOpenLongDappMessageView(self)
     }
 }
 
 protocol WCGroupTransactionDataSourceDelegate: AnyObject {
-
+    func wcGroupTransactionDataSourceDidOpenLongDappMessageView(_ wcGroupTransactionDataSource: WCGroupTransactionDataSource)
 }

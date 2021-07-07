@@ -24,17 +24,30 @@ class TransactionSignRequestHandler: WalletConnectRequestHandler {
     }
 
     override func handle(request: WalletConnectRequest) {
-        do {
-            // Just a basic implementation, will be updated later with the Signing Flow
-            let transaction = try request.parameter(of: WalletConnectTransaction.self, at: 0)
-            delegate?.walletConnectRequestHandler(self, shouldSign: transaction)
-        } catch {
-            delegate?.walletConnectRequestHandler(self, didInvalidate: request)
-        }
+        handleTransaction(from: request)
     }
 }
 
-// Will be updated later with the Signing Flow
-class WalletConnectTransaction: Codable {
+extension TransactionSignRequestHandler {
+    private func handleTransaction(from request: WalletConnectRequest) {
+        guard let transactionParameters = try? request.parameter(of: [WCTransactionParams].self, at: 0) else {
+            DispatchQueue.main.async {
+                self.delegate?.walletConnectRequestHandler(self, didInvalidate: request)
+            }
+            return
+        }
 
+        // Check whether it's a group transaction
+        if transactionParameters.count > 1 {
+            DispatchQueue.main.async {
+                self.delegate?.walletConnectRequestHandler(self, shouldSign: transactionParameters, for: request)
+            }
+        } else {
+            if let transactionParameter = transactionParameters.first {
+                DispatchQueue.main.async {
+                    self.delegate?.walletConnectRequestHandler(self, shouldSign: transactionParameter, for: request)
+                }
+            }
+        }
+    }
 }

@@ -42,6 +42,20 @@ extension WalletConnectBridge {
     }
 }
 
+extension WalletConnectBridge {
+    func signTransactionRequest(_ request: WalletConnectRequest, with signature: [Data?]) {
+        if let signature = WalletConnectResponse.signature(signature, for: request) {
+            walletConnectServer.send(signature)
+        }
+    }
+
+    func rejectTransactionRequest(_ request: WalletConnectRequest, with error: WCTransactionErrorResponse) {
+        if let rejection = WalletConnectResponse.rejection(request, with: error) {
+            walletConnectServer.send(rejection)
+        }
+    }
+}
+
 extension WalletConnectBridge: ServerDelegate {
     func server(
         _ server: WalletConnectServer,

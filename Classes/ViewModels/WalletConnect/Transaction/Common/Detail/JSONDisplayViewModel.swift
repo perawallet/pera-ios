@@ -13,16 +13,18 @@
 // limitations under the License.
 
 //
-//   WalletConnectRequest+Helpers.swift
+//   JSONDisplayViewModel.swift
 
-import Foundation
+import UIKit
 
-extension WalletConnectRequest {
-    static func signature(_ signature: String, for request: WalletConnectRequest) -> WalletConnectResponse? {
-        guard let id = request.id else {
-            return nil
-        }
+class JSONDisplayViewModel {
+    private(set) var jsonText: String?
 
-        return try? WalletConnectResponse(url: request.url, value: signature, id: id)
+    init(json: Data) {
+        setJSONText(from: json)
+    }
+
+    private func setJSONText(from json: Data) {
+        jsonText = String(data: json, encoding: .utf8)
     }
 }

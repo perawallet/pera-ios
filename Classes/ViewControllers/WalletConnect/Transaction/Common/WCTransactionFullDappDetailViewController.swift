@@ -25,16 +25,29 @@ class WCTransactionFullDappDetailViewController: BaseViewController {
 
     private lazy var fullDappDetailView = WCTransactionFullDappDetailView()
 
-    private let wcSession: WalletConnectSession
+    private let wcSession: WCSession
+    private let transactionParameter: WCTransactionParams
 
-    init(wcSession: WalletConnectSession, configuration: ViewControllerConfiguration) {
+    init(wcSession: WCSession, transactionParameter: WCTransactionParams, configuration: ViewControllerConfiguration) {
         self.wcSession = wcSession
+        self.transactionParameter = transactionParameter
         super.init(configuration: configuration)
     }
 
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.secondary
-        fullDappDetailView.bind(WCTransactionDappMessageViewModel(session: wcSession, imageSize: CGSize(width: 60.0, height: 60.0)))
+        fullDappDetailView.bind(
+            WCTransactionDappMessageViewModel(
+                session: wcSession,
+                transactionParameter: transactionParameter,
+                imageSize: CGSize(width: 60.0, height: 60.0)
+            )
+        )
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+        fullDappDetailView.delegate = self
     }
 
     override func prepareLayout() {

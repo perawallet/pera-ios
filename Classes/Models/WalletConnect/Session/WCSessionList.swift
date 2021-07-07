@@ -13,16 +13,30 @@
 // limitations under the License.
 
 //
-//   WCSession.swift
+//   WCSessionDB.swift
 
-import Foundation
+import CoreData
 
-class WCSession: Codable {
-    let sessionDetail: WalletConnectSession
-    let date: Date
+@objc(WCSessionList)
+public final class WCSessionList: NSManagedObject {
+    @NSManaged public var sessions: Data?
 
-    init(sessionDetail: WalletConnectSession, date: Date) {
-        self.sessionDetail = sessionDetail
-        self.date = date
+    var wcSessions: [String: WCSession]? {
+        guard let data = sessions else {
+            return nil
+        }
+        return try? JSONDecoder().decode([String: WCSession].self, from: data)
     }
 }
+
+extension WCSessionList {
+    enum DBKeys: String {
+        case sessions = "sessions"
+    }
+}
+
+extension WCSessionList {
+    static let entityName = "WCSessionList"
+}
+
+extension WCSessionList: DBStorable { }

@@ -56,13 +56,12 @@ extension WCSessionListDataSource {
         return walletConnector.allWalletConnectSessions[safe: index]
     }
 
-    func index(of wcSession: WalletConnectSession) -> Int? {
-        let session = WCSession(sessionDetail: wcSession, date: Date())
-        return walletConnector.allWalletConnectSessions.firstIndex(of: session, equals: \.sessionDetail.url)
+    func index(of wcSession: WCSession) -> Int? {
+        return walletConnector.allWalletConnectSessions.firstIndex { $0.urlMeta.topic == wcSession.urlMeta.topic }
     }
 
     func disconnectFromSession(_ session: WCSession) {
-        walletConnector.disconnectFromSession(session.sessionDetail)
+        walletConnector.disconnectFromSession(session)
     }
 
     var isEmpty: Bool {

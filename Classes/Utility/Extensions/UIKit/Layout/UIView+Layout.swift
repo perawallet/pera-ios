@@ -29,6 +29,10 @@ extension UIView {
         }
     }
 
+    func showViewInStack() {
+        isHidden = false
+    }
+
     func hideViewInStack() {
         isHidden = true
     }

@@ -19,7 +19,7 @@ import Foundation
 
 class WalletConnectSessionSource {
 
-    var sessions: [WalletConnectURL: WCSession]? {
+    var sessions: [String: WCSession]? {
         get {
             return wcSessionList?.wcSessions
         }
@@ -82,14 +82,14 @@ class WalletConnectSessionSource {
 extension WalletConnectSessionSource {
     func addWalletConnectSession(_ session: WCSession) {
         if sessions != nil {
-            if sessions?[session.sessionDetail.url] != nil {
+            if sessions?[session.urlMeta.topic] != nil {
                 return
             }
 
-            self.sessions?[session.sessionDetail.url] = session
+            self.sessions?[session.urlMeta.topic] = session
             syncSessions()
         } else {
-            sessions = [session.sessionDetail.url: session]
+            sessions = [session.urlMeta.topic: session]
         }
     }
 
@@ -101,12 +101,12 @@ extension WalletConnectSessionSource {
         return []
     }
 
-    func getWalletConnectSession(with url: WalletConnectURL) -> WCSession? {
-        return sessions?[url]
+    func getWalletConnectSession(with url: WCURLMeta) -> WCSession? {
+        return sessions?[url.topic]
     }
 
-    func removeWalletConnectSession(with url: WalletConnectURL) {
-        _ = sessions?.removeValue(forKey: url)
+    func removeWalletConnectSession(with url: WCURLMeta) {
+        _ = sessions?.removeValue(forKey: url.topic)
         syncSessions()
     }
 

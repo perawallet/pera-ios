@@ -22,9 +22,9 @@ class TitledTransactionAmountInformationViewModel {
     private(set) var amountMode: TransactionAmountView.Mode?
     private(set) var isSeparatorHidden = false
 
-    init(title: String, isLastElement: Bool) {
+    init(title: String, mode: AmountMode, isLastElement: Bool) {
         setTitle(from: title)
-        setAmountMode()
+        setAmountMode(from: mode)
         setIsSeparatorHidden(from: isLastElement)
     }
 
@@ -32,11 +32,34 @@ class TitledTransactionAmountInformationViewModel {
         self.title = title
     }
 
-    private func setAmountMode() {
-        
+    private func setAmountMode(from mode: AmountMode) {
+        switch mode {
+        case let .fee(value):
+            amountMode = .normal(amount: value.toAlgos)
+        case let .balance(value, isAlgos, fraction):
+            if isAlgos {
+                amountMode = .normal(amount: value.toAlgos)
+            } else {
+                amountMode = .normal(amount: value.assetAmount(fromFraction: fraction ?? 0), isAlgos: false, fraction: fraction)
+            }
+        case let .amount(value, isAlgos, fraction):
+            if isAlgos {
+                amountMode = .negative(amount: value.toAlgos)
+            } else {
+                amountMode = .negative(amount: value.assetAmount(fromFraction: fraction ?? 0), isAlgos: false, fraction: fraction)
+            }
+        }
     }
 
     private func setIsSeparatorHidden(from isLastElement: Bool) {
         isSeparatorHidden = isLastElement
+    }
+}
+
+extension TitledTransactionAmountInformationViewModel {
+    enum AmountMode {
+        case fee(value: Int64)
+        case balance(value: Int64, isAlgos: Bool = true, fraction: Int? = nil)
+        case amount(value: Int64, isAlgos: Bool = true, fraction: Int? = nil)
     }
 }

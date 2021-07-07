@@ -23,7 +23,11 @@ class WCAssetTransactionView: WCSingleTransactionView {
 
     private lazy var accountInformationView = TitledTransactionAccountNameView()
 
-    private lazy var assetInformationView = TransactionAssetView()
+    private lazy var assetInformationView: TransactionAssetView = {
+        let assetInformationView = TransactionAssetView()
+        assetInformationView.setAssetAlignment(.right)
+        return assetInformationView
+    }()
 
     private lazy var receiverInformationView = WCTransactionTextInformationView()
 
@@ -58,8 +62,8 @@ extension WCAssetTransactionView {
         addParticipantInformationView(accountInformationView)
         addParticipantInformationView(assetInformationView)
         addParticipantInformationView(receiverInformationView)
-        addParticipantInformationView(rekeyWarningInformationView)
         addParticipantInformationView(closeWarningInformationView)
+        addParticipantInformationView(rekeyWarningInformationView)
     }
 
     private func addBalanceInformationViews() {
@@ -87,16 +91,13 @@ extension WCAssetTransactionView {
 
         if let assetInformationViewModel = viewModel.assetInformationViewModel {
             assetInformationView.bind(assetInformationViewModel)
+            unhideViewAnimatedIfNeeded(assetInformationView)
+        } else {
+            assetInformationView.hideViewInStack()
         }
 
         if let receiverInformationViewModel = viewModel.receiverInformationViewModel {
             receiverInformationView.bind(receiverInformationViewModel)
-        }
-
-        if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
-            rekeyWarningInformationView.bind(rekeyWarningInformationViewModel)
-        } else {
-            rekeyWarningInformationView.hideViewInStack()
         }
 
         if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
@@ -105,8 +106,26 @@ extension WCAssetTransactionView {
             closeWarningInformationView.hideViewInStack()
         }
 
-        balanceInformationView.bind(viewModel.balanceInformationViewModel)
-        amountInformationView.bind(viewModel.amountInformationViewModel)
+        if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
+            rekeyWarningInformationView.bind(rekeyWarningInformationViewModel)
+        } else {
+            rekeyWarningInformationView.hideViewInStack()
+        }
+
+        if let balanceInformationViewModel = viewModel.balanceInformationViewModel {
+            balanceInformationView.bind(balanceInformationViewModel)
+            unhideViewAnimatedIfNeeded(balanceInformationView)
+        } else {
+            balanceInformationView.hideViewInStack()
+        }
+
+        if let amountInformationViewModel = viewModel.amountInformationViewModel {
+            amountInformationView.bind(amountInformationViewModel)
+            unhideViewAnimatedIfNeeded(amountInformationView)
+        } else {
+            amountInformationView.hideViewInStack()
+        }
+
         feeInformationView.bind(viewModel.feeInformationViewModel)
 
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
@@ -117,6 +136,14 @@ extension WCAssetTransactionView {
 
         if let rawTransactionInformationViewModel = viewModel.rawTransactionInformationViewModel {
             rawTransactionInformationView.bind(rawTransactionInformationViewModel)
+        }
+    }
+
+    private func unhideViewAnimatedIfNeeded(_ view: UIView) {
+        if view.isHidden {
+            UIView.animate(withDuration: 0.3) {
+                view.showViewInStack()
+            }
         }
     }
 }

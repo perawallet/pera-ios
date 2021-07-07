@@ -13,30 +13,20 @@
 // limitations under the License.
 
 //
-//   WCSessionDB.swift
+//   WalletConnectResponse+Helpers.swift
 
-import CoreData
+import Foundation
 
-@objc(WCSessionList)
-public final class WCSessionList: NSManagedObject {
-    @NSManaged public var sessions: Data?
-
-    var wcSessions: [WalletConnectURL: WCSession]? {
-        guard let data = sessions else {
+extension WalletConnectResponse {
+    static func signature(_ signature: [Data?], for request: WalletConnectRequest) -> WalletConnectResponse? {
+        guard let id = request.id else {
             return nil
         }
-        return try? JSONDecoder().decode([WalletConnectURL: WCSession].self, from: data)
+
+        return try? WalletConnectResponse(url: request.url, value: signature, id: id)
+    }
+
+    static func rejection(_ request: WalletConnectRequest, with error: WCTransactionErrorResponse) -> WalletConnectResponse? {
+        return try? WalletConnectResponse(url: request.url, errorCode: error.rawValue, message: error.message, id: request.id)
     }
 }
-
-extension WCSessionList {
-    enum DBKeys: String {
-        case sessions = "sessions"
-    }
-}
-
-extension WCSessionList {
-    static let entityName = "WCSessionList"
-}
-
-extension WCSessionList: DBStorable { }

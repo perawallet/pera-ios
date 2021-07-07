@@ -640,9 +640,9 @@
 "wallet-connect-transaction-warning-rekey" = "Enter here Rekey warning message";
 "wallet-connect-transaction-warning-close-algos" = "Enter here Close Algos warning message";
 "wallet-connect-transaction-warning-close-asset" = "Enter here Close Asset warning message";
-"wallet-connect-transaction-warning-rekey-title" = "Rekeyed To:";
-"wallet-connect-transaction-warning-close-asset-title" = "Close Asset To:";
-"wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To:";
+"wallet-connect-transaction-warning-rekey-title" = "Rekeyed To";
+"wallet-connect-transaction-warning-close-asset-title" = "Close Asset To";
+"wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To";
 
 // MARK: Wallet Connect Transaction Dapp Message
 "wallet-connect-transaction-dapp-show-more" = "Show More Info";
@@ -661,3 +661,8 @@
 "wallet-connect-transaction-detail-asset" = "Show Asset URL";
 "wallet-connect-transaction-title-metadata" = "Asset Metadata";
 "wallet-connect-transaction-detail-metadata" = "Show Asset Metadata";
+"wallet-connect-transaction-error-rejected" = "The user rejected the request.";
+"wallet-connect-transaction-error-unauthorized" = "The requested operation and/or account has not been authorized by the user.";
+"wallet-connect-transaction-error-unsupported" = "The wallet does not support the requested operation.";
+"wallet-connect-transaction-error-invalid" = "The input provided is invalid.";
+"wallet-connect-raw-transaction-title" = "Raw Transaction";
