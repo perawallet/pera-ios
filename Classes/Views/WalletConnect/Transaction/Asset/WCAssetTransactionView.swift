@@ -31,6 +31,8 @@ class WCAssetTransactionView: WCSingleTransactionView {
 
     private lazy var receiverInformationView = WCTransactionTextInformationView()
 
+    private lazy var authAccountInformationView = WCTransactionTextInformationView()
+
     private lazy var rekeyWarningInformationView = WCTransactionAddressWarningInformationView()
 
     private lazy var closeWarningInformationView = WCTransactionAddressWarningInformationView()
@@ -62,6 +64,7 @@ extension WCAssetTransactionView {
         addParticipantInformationView(accountInformationView)
         addParticipantInformationView(assetInformationView)
         addParticipantInformationView(receiverInformationView)
+        addParticipantInformationView(authAccountInformationView)
         addParticipantInformationView(closeWarningInformationView)
         addParticipantInformationView(rekeyWarningInformationView)
     }
@@ -98,6 +101,12 @@ extension WCAssetTransactionView {
 
         if let receiverInformationViewModel = viewModel.receiverInformationViewModel {
             receiverInformationView.bind(receiverInformationViewModel)
+        }
+
+        if let authAccountInformationViewModel = viewModel.authAccountInformationViewModel {
+            authAccountInformationView.bind(authAccountInformationViewModel)
+        } else {
+            authAccountInformationView.hideViewInStack()
         }
 
         if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {

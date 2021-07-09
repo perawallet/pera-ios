@@ -31,12 +31,21 @@ class WCSingleTransactionView: BaseView {
         return stackView
     }()
 
-    private lazy var participantInformationStackView = WrappedStackView()
+    private lazy var participantInformationStackView: WrappedStackView = {
+        let participantInformationStackView = WrappedStackView()
+        participantInformationStackView.stackView.distribution = .equalSpacing
+        return participantInformationStackView
+    }()
 
-    private lazy var balanceInformationStackView = WrappedStackView()
+    private lazy var balanceInformationStackView: WrappedStackView = {
+        let balanceInformationStackView = WrappedStackView()
+        balanceInformationStackView.stackView.distribution = .equalSpacing
+        return balanceInformationStackView
+    }()
 
     private lazy var detailedInformationStackView: WrappedStackView = {
         let detailedInformationStackView = WrappedStackView()
+        detailedInformationStackView.stackView.distribution = .equalSpacing
         detailedInformationStackView.isUserInteractionEnabled = true
         detailedInformationStackView.stackView.isUserInteractionEnabled = true
         return detailedInformationStackView

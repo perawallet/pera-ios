@@ -640,7 +640,7 @@
 "wallet-connect-transaction-warning-rekey" = "Enter here Rekey warning message";
 "wallet-connect-transaction-warning-close-algos" = "Enter here Close Algos warning message";
 "wallet-connect-transaction-warning-close-asset" = "Enter here Close Asset warning message";
-"wallet-connect-transaction-warning-rekey-title" = "Rekeyed To";
+"wallet-connect-transaction-warning-rekey-title" = "Rekey To";
 "wallet-connect-transaction-warning-close-asset-title" = "Close Asset To";
 "wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To";
 
@@ -657,8 +657,9 @@
 "wallet-connect-transaction-detail-raw" = "Show Raw Transaction";
 "wallet-connect-transaction-title-explorer" = "AlgoExplorer";
 "wallet-connect-transaction-detail-explorer" = "Show Explorer";
-"wallet-connect-transaction-title-asset" = "Asset URL";
-"wallet-connect-transaction-detail-asset" = "Show Asset URL";
+"wallet-connect-transaction-title-auth-address" = "Auth Address";
+"wallet-connect-transaction-title-asset-url" = "Asset URL";
+"wallet-connect-transaction-detail-asset-url" = "Show Asset URL";
 "wallet-connect-transaction-title-metadata" = "Asset Metadata";
 "wallet-connect-transaction-detail-metadata" = "Show Asset Metadata";
 "wallet-connect-transaction-error-rejected" = "The user rejected the request.";

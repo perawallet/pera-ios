@@ -23,6 +23,10 @@ class WCAppCallTransactionView: WCSingleTransactionView {
 
     private lazy var accountInformationView = TitledTransactionAccountNameView()
 
+    private lazy var authAccountInformationView = WCTransactionTextInformationView()
+
+    private lazy var closeWarningInformationView = WCTransactionAddressWarningInformationView()
+
     private lazy var rekeyWarningInformationView = WCTransactionAddressWarningInformationView()
 
     private lazy var feeInformationView = TitledTransactionAmountInformationView()
@@ -46,6 +50,8 @@ class WCAppCallTransactionView: WCSingleTransactionView {
 extension WCAppCallTransactionView {
     private func addParticipantInformationViews() {
         addParticipantInformationView(accountInformationView)
+        addParticipantInformationView(authAccountInformationView)
+        addParticipantInformationView(closeWarningInformationView)
         addParticipantInformationView(rekeyWarningInformationView)
     }
 
@@ -69,6 +75,18 @@ extension WCAppCallTransactionView {
 extension WCAppCallTransactionView {
     func bind(_ viewModel: WCAppCallTransactionViewModel) {
         accountInformationView.bind(viewModel.senderInformationViewModel)
+
+        if let authAccountInformationViewModel = viewModel.authAccountInformationViewModel {
+            authAccountInformationView.bind(authAccountInformationViewModel)
+        } else {
+            authAccountInformationView.hideViewInStack()
+        }
+
+        if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
+            closeWarningInformationView.bind(closeWarningInformationViewModel)
+        } else {
+            closeWarningInformationView.hideViewInStack()
+        }
 
         if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
             rekeyWarningInformationView.bind(rekeyWarningInformationViewModel)
