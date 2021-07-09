@@ -21,6 +21,7 @@ class WCAlgosTransactionViewModel {
     private(set) var senderInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var assetInformationViewModel: TransactionAssetViewModel?
     private(set) var receiverInformationViewModel: WCTransactionTextInformationViewModel?
+    private(set) var authAccountInformationViewModel: WCTransactionTextInformationViewModel?
     private(set) var rekeyWarningInformationViewModel: WCTransactionAddressWarningInformationViewModel?
     private(set) var closeWarningInformationViewModel: WCTransactionAddressWarningInformationViewModel?
     private(set) var balanceInformationViewModel: TitledTransactionAmountInformationViewModel?
@@ -29,17 +30,18 @@ class WCAlgosTransactionViewModel {
     private(set) var noteInformationViewModel: WCTransactionTextInformationViewModel?
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
 
-    init(transactionParams: WCTransactionParams, senderAccount: Account) {
+    init(transaction: WCTransaction, senderAccount: Account) {
         setSenderInformationViewModel(from: senderAccount)
         setAssetInformationViewModel()
-        setReceiverInformationViewModel(from: transactionParams)
-        setCloseWarningInformationViewModel(from: transactionParams)
-        setRekeyWarningInformationViewModel(from: transactionParams)
+        setReceiverInformationViewModel(from: transaction)
+        setAuthAccountInformationViewModel(from: transaction)
+        setCloseWarningInformationViewModel(from: transaction)
+        setRekeyWarningInformationViewModel(from: transaction)
         setBalanceInformationViewModel(from: senderAccount)
-        setAmountInformationViewModel(from: transactionParams)
-        setFeeInformationViewModel(from: transactionParams)
-        setNoteInformationViewModel(from: transactionParams)
-        setRawTransactionInformationViewModel(from: transactionParams)
+        setAmountInformationViewModel(from: transaction)
+        setFeeInformationViewModel(from: transaction)
+        setNoteInformationViewModel(from: transaction)
+        setRawTransactionInformationViewModel(from: transaction)
     }
 
     private func setSenderInformationViewModel(from senderAccount: Account) {
@@ -53,33 +55,49 @@ class WCAlgosTransactionViewModel {
         assetInformationViewModel = TransactionAssetViewModel(assetDetail: nil, isLastElement: false)
     }
 
-    private func setReceiverInformationViewModel(from transactionParam: WCTransactionParams) {
-        guard let transaction = transactionParam.transaction,
-              let receiverAddress = transaction.receiver else {
+    private func setReceiverInformationViewModel(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail,
+              let receiverAddress = transactionDetail.receiver else {
             return
         }
 
         receiverInformationViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(title: "transaction-detail-to".localized, detail: receiverAddress.shortAddressDisplay()),
-            isLastElement: !transaction.isRekeyTransaction && !transaction.isCloseTransaction
+            isLastElement: !transaction.hasSameSignerWithAuthAddress && !transactionDetail.hasRekeyOrCloseAddress
         )
     }
 
-    private func setCloseWarningInformationViewModel(from transactionParam: WCTransactionParams) {
-        guard let transaction = transactionParam.transaction,
-              let closeAddress = transaction.closeAddress else {
+    private func setAuthAccountInformationViewModel(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail,
+              let authAddress = transaction.authAddress,
+              transaction.hasSameSignerWithAuthAddress else {
+            return
+        }
+
+        authAccountInformationViewModel = WCTransactionTextInformationViewModel(
+            information: TitledInformation(
+                title: "wallet-connect-transaction-title-auth-address".localized,
+                detail: authAddress.shortAddressDisplay()
+            ),
+            isLastElement: !transactionDetail.hasRekeyOrCloseAddress
+        )
+    }
+
+    private func setCloseWarningInformationViewModel(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail,
+              let closeAddress = transactionDetail.closeAddress else {
             return
         }
 
         closeWarningInformationViewModel = WCTransactionAddressWarningInformationViewModel(
             address: closeAddress,
             warning: .closeAlgos,
-            isLastElement: !transaction.isRekeyTransaction
+            isLastElement: !transactionDetail.isRekeyTransaction
         )
     }
 
-    private func setRekeyWarningInformationViewModel(from transactionParam: WCTransactionParams) {
-        guard let rekeyAddress = transactionParam.transaction?.rekeyAddress else {
+    private func setRekeyWarningInformationViewModel(from transaction: WCTransaction) {
+        guard let rekeyAddress = transaction.transactionDetail?.rekeyAddress else {
             return
         }
 
@@ -98,8 +116,8 @@ class WCAlgosTransactionViewModel {
         )
     }
 
-    private func setAmountInformationViewModel(from transactionParams: WCTransactionParams) {
-        guard let amount = transactionParams.transaction?.amount else {
+    private func setAmountInformationViewModel(from transaction: WCTransaction) {
+        guard let amount = transaction.transactionDetail?.amount else {
             return
         }
 
@@ -110,8 +128,8 @@ class WCAlgosTransactionViewModel {
         )
     }
 
-    private func setFeeInformationViewModel(from transactionParams: WCTransactionParams) {
-        guard let fee = transactionParams.transaction?.fee else {
+    private func setFeeInformationViewModel(from transaction: WCTransaction) {
+        guard let fee = transaction.transactionDetail?.fee else {
             return
         }
 
@@ -122,8 +140,8 @@ class WCAlgosTransactionViewModel {
         )
     }
 
-    private func setNoteInformationViewModel(from transactionParams: WCTransactionParams) {
-        guard let note = transactionParams.transaction?.noteRepresentation() else {
+    private func setNoteInformationViewModel(from transaction: WCTransaction) {
+        guard let note = transaction.transactionDetail?.noteRepresentation() else {
             return
         }
 
@@ -133,7 +151,7 @@ class WCAlgosTransactionViewModel {
         )
     }
 
-    private func setRawTransactionInformationViewModel(from transactionParams: WCTransactionParams) {
+    private func setRawTransactionInformationViewModel(from transaction: WCTransaction) {
         rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(information: .rawTransaction, isLastElement: true)
     }
 }

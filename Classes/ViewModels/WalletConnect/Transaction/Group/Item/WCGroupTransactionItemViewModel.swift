@@ -18,7 +18,6 @@
 import UIKit
 
 class WCGroupTransactionItemViewModel {
-
     private(set) var hasWarning = false
     private(set) var title: String?
     private(set) var isAlgos = true
@@ -26,44 +25,44 @@ class WCGroupTransactionItemViewModel {
     private(set) var assetName: String?
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
-    init(transactionParam: WCTransactionParams) {
-        setHasWarning(from: transactionParam)
-        setTitle(from: transactionParam)
-        setIsAlgos(from: transactionParam)
-        setAmount(from: transactionParam)
-        setAssetName(from: transactionParam)
-        setAccountInformationViewModel(from: transactionParam)
+    init(transaction: WCTransaction) {
+        setHasWarning(from: transaction)
+        setTitle(from: transaction)
+        setIsAlgos(from: transaction)
+        setAmount(from: transaction)
+        setAssetName(from: transaction)
+        setAccountInformationViewModel(from: transaction)
     }
 
-    private func setHasWarning(from transactionParam: WCTransactionParams) {
-        guard let transaction = transactionParam.transaction else {
+    private func setHasWarning(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail else {
             return
         }
 
-        hasWarning = transaction.isCloseTransaction || transaction.isRekeyTransaction
+        hasWarning = transactionDetail.isCloseTransaction || transactionDetail.isRekeyTransaction
     }
 
-    private func setTitle(from transactionParam: WCTransactionParams) {
+    private func setTitle(from transaction: WCTransaction) {
         title = ""
     }
 
-    private func setIsAlgos(from transactionParam: WCTransactionParams) {
-        guard let transaction = transactionParam.transaction else {
+    private func setIsAlgos(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail else {
             return
         }
 
-        isAlgos = transaction.isAlgosTransaction
+        isAlgos = transactionDetail.isAlgosTransaction
     }
 
-    private func setAmount(from transactionParam: WCTransactionParams) {
+    private func setAmount(from transaction: WCTransaction) {
         amount = ""
     }
 
-    private func setAssetName(from transactionParam: WCTransactionParams) {
+    private func setAssetName(from transaction: WCTransaction) {
         assetName = ""
     }
 
-    private func setAccountInformationViewModel(from transactionParam: WCTransactionParams) {
+    private func setAccountInformationViewModel(from transaction: WCTransaction) {
         
     }
 }

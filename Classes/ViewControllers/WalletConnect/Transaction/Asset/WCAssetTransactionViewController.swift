@@ -17,7 +17,7 @@
 
 import UIKit
 
-class WCAssetTransactionViewController: WCTransactionViewController {
+class WCAssetTransactionViewController: WCSingleTransactionViewController {
 
     private lazy var assetTransactionView = WCAssetTransactionView()
 
@@ -25,56 +25,42 @@ class WCAssetTransactionViewController: WCTransactionViewController {
         return assetTransactionView
     }
 
-    private var assetDetail: AssetDetail?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        guard let assetId = transactionParameter.transaction?.assetId else {
-            return
-        }
-
-        cacheAssetDetail(with: assetId) { [weak self] assetDetail in
-            guard let self = self else {
-                return
-            }
-
-            if assetDetail == nil {
-                self.walletConnector.rejectTransactionRequest(self.transactionRequest, with: .invalidInput)
-                self.dismissScreen()
-                return
-            }
-
-            self.assetDetail = assetDetail
-            self.bindView()
-        }
-    }
+    var assetDetail: AssetDetail?
 
     override func configureAppearance() {
         super.configureAppearance()
         title = "wallet-connect-transaction-title-asset".localized
-        bindView()
-    }
-
-    private func bindView() {
-        assetTransactionView.bind(
-            WCAssetTransactionViewModel(
-                transactionParams: transactionParameter,
-                senderAccount: account,
-                assetDetail: assetDetail)
-        )
     }
 
     override func linkInteractors() {
         super.linkInteractors()
         assetTransactionView.delegate = self
     }
+
+    override func bindData() {
+        bindView()
+
+        setCachedAsset {
+            self.bindView()
+        }
+    }
+}
+
+extension WCAssetTransactionViewController {
+    private func bindView() {
+        assetTransactionView.bind(
+            WCAssetTransactionViewModel(
+                transaction: transaction,
+                senderAccount: account,
+                assetDetail: assetDetail)
+        )
+    }
 }
 
 extension WCAssetTransactionViewController: WCAssetTransactionViewDelegate {
     func wcAssetTransactionViewDidOpenRawTransaction(_ wcAssetTransactionView: WCAssetTransactionView) {
-        
+        displayRawTransaction()
     }
 }
 
-extension WCAssetTransactionViewController: AssetCachable { }
+extension WCAssetTransactionViewController: WCSingleTransactionViewControllerAssetManagable { }

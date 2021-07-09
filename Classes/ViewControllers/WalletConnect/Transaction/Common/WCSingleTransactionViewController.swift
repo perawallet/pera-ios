@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   WCTransactionViewController.swift
+//   WCSingleTransactionViewController.swift
 
 import UIKit
 import Magpie
 
-class WCTransactionViewController: BaseScrollViewController {
+class WCSingleTransactionViewController: BaseScrollViewController {
     
     private let layout = Layout<LayoutConstants>()
 
@@ -53,18 +53,18 @@ class WCTransactionViewController: BaseScrollViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 350.0))
     )
 
-    private(set) var transactionParameter: WCTransactionParams
+    private(set) var transaction: WCTransaction
     private(set) var account: Account
     private(set) var transactionRequest: WalletConnectRequest
     private let wcSession: WCSession?
 
     init(
-        transactionParameter: WCTransactionParams,
+        transaction: WCTransaction,
         account: Account,
         transactionRequest: WalletConnectRequest,
         configuration: ViewControllerConfiguration
     ) {
-        self.transactionParameter = transactionParameter
+        self.transaction = transaction
         self.account = account
         self.transactionRequest = transactionRequest
         self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url))
@@ -92,7 +92,7 @@ class WCTransactionViewController: BaseScrollViewController {
         dappMessageView.bind(
             WCTransactionDappMessageViewModel(
                 session: wcSession,
-                transactionParameter: transactionParameter,
+                transaction: transaction,
                 imageSize: CGSize(width: 44.0, height: 44.0)
             )
         )
@@ -114,7 +114,7 @@ class WCTransactionViewController: BaseScrollViewController {
     }
 }
 
-extension WCTransactionViewController {
+extension WCSingleTransactionViewController {
     private func setupDappMessageViewLayout() {
         contentView.addSubview(dappMessageView)
 
@@ -161,7 +161,7 @@ extension WCTransactionViewController {
     }
 }
 
-extension WCTransactionViewController {
+extension WCSingleTransactionViewController {
     @objc
     private func confirmSigningTransaction() {
         signTransaction()
@@ -181,7 +181,7 @@ extension WCTransactionViewController {
         open(
             .wcTransactionFullDappDetail(
                 wcSession: wcSession,
-                transactionParameter: transactionParameter
+                transaction: transaction
             ),
             by: .customPresent(
                 presentationStyle: .custom,
@@ -192,7 +192,7 @@ extension WCTransactionViewController {
     }
 }
 
-extension WCTransactionViewController: WalletConnectTransactionSignable {
+extension WCSingleTransactionViewController: WalletConnectTransactionSignable {
     func signTransaction() {
         if account.requiresLedgerConnection() {
             signLedgerAccountTransaction()
@@ -207,9 +207,9 @@ extension WCTransactionViewController: WalletConnectTransactionSignable {
     }
 }
 
-extension WCTransactionViewController {
+extension WCSingleTransactionViewController {
     private func signLedgerAccountTransaction() {
-        guard let unsignedTransaction = transactionParameter.unparsedTransaction else {
+        guard let unsignedTransaction = transaction.unparsedTransactionDetail else {
             return
         }
 
@@ -229,7 +229,7 @@ extension WCTransactionViewController {
     private func sign(_ signature: Data?, with signer: TransactionSigner) {
         signer.delegate = self
 
-        guard let unsignedTransaction = transactionParameter.unparsedTransaction,
+        guard let unsignedTransaction = transaction.unparsedTransactionDetail,
               let signedTransaction = signer.sign(unsignedTransaction, with: signature) else {
             return
         }
@@ -239,7 +239,7 @@ extension WCTransactionViewController {
     }
 }
 
-extension WCTransactionViewController: LedgerTransactionOperationDelegate {
+extension WCSingleTransactionViewController: LedgerTransactionOperationDelegate {
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didReceiveSignature data: Data) {
         sign(data, with: LedgerTransactionSigner(account: account))
     }
@@ -262,13 +262,13 @@ extension WCTransactionViewController: LedgerTransactionOperationDelegate {
     }
 }
 
-extension WCTransactionViewController: TransactionSignerDelegate {
+extension WCSingleTransactionViewController: TransactionSignerDelegate {
     func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPError<TransactionError>) {
         declineTransaction()
     }
 }
 
-extension WCTransactionViewController {
+extension WCSingleTransactionViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 8.0
         let buttonInset: CGFloat = 16.0

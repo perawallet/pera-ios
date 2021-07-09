@@ -102,13 +102,13 @@ indirect enum Screen {
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
     case wcConnectionApproval(walletConnectSession: WalletConnectSession, completion: WalletConnectSessionConnectionCompletionHandler)
     case walletConnectSessions
-    case wcTransactionFullDappDetail(wcSession: WCSession, transactionParameter: WCTransactionParams)
-    case wcAlgosTransaction(transactionParameter: WCTransactionParams, account: Account, transactionRequest: WalletConnectRequest)
-    case wcAssetTransaction(transactionParameter: WCTransactionParams, account: Account, transactionRequest: WalletConnectRequest)
-    case wcAssetAdditionTransaction(transactionParameter: WCTransactionParams, account: Account, transactionRequest: WalletConnectRequest)
-    case wcGroupTransaction(transactionParameters: [WCTransactionParams])
-    case wcAppCall(transactionParameter: WCTransactionParams, account: Account, transactionRequest: WalletConnectRequest)
-    case jsonDisplay(jsonData: Data)
+    case wcTransactionFullDappDetail(wcSession: WCSession, transaction: WCTransaction)
+    case wcAlgosTransaction(transaction: WCTransaction, account: Account, transactionRequest: WalletConnectRequest)
+    case wcAssetTransaction(transaction: WCTransaction, account: Account, transactionRequest: WalletConnectRequest)
+    case wcAssetAdditionTransaction(transaction: WCTransaction, account: Account, transactionRequest: WalletConnectRequest)
+    case wcGroupTransaction(transactions: [WCTransaction])
+    case wcAppCall(transaction: WCTransaction, account: Account, transactionRequest: WalletConnectRequest)
+    case jsonDisplay(jsonData: Data, title: String)
 }
 
 extension Screen {

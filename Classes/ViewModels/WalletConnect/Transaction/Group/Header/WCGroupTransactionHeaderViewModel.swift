@@ -21,15 +21,15 @@ class WCGroupTransactionHeaderViewModel {
     private(set) var transactionDappMessageViewModel: WCTransactionDappMessageViewModel?
     private(set) var title: String?
 
-    init(session: WCSession, transactionParameter: WCTransactionParams, transactionCount: Int) {
-        setTransactionDappMessageViewModel(from: session, and: transactionParameter)
+    init(session: WCSession, transaction: WCTransaction, transactionCount: Int) {
+        setTransactionDappMessageViewModel(from: session, and: transaction)
         setTitle(from: transactionCount)
     }
 
-    private func setTransactionDappMessageViewModel(from session: WCSession, and transactionParameter: WCTransactionParams) {
+    private func setTransactionDappMessageViewModel(from session: WCSession, and transaction: WCTransaction) {
         transactionDappMessageViewModel = WCTransactionDappMessageViewModel(
             session: session,
-            transactionParameter: transactionParameter,
+            transaction: transaction,
             imageSize: CGSize(width: 44.0, height: 44.0)
         )
     }

@@ -22,16 +22,16 @@ class WCGroupTransactionViewController: BaseViewController {
     private lazy var groupTransactionView = WCGroupTransactionView()
 
     private lazy var dataSource = WCGroupTransactionDataSource(
-        transactionParameters: transactionParameters,
+        transactions: transactions,
         walletConnector: walletConnector
     )
 
     private lazy var layoutBuilder = WCGroupTransactionLayout(dataSource: dataSource)
 
-    private let transactionParameters: [WCTransactionParams]
+    private let transactions: [WCTransaction]
 
-    init(transactionParameters: [WCTransactionParams], configuration: ViewControllerConfiguration) {
-        self.transactionParameters = transactionParameters
+    init(transactions: [WCTransaction], configuration: ViewControllerConfiguration) {
+        self.transactions = transactions
         super.init(configuration: configuration)
     }
 
@@ -81,7 +81,7 @@ extension WCGroupTransactionViewController: WCGroupTransactionDataSourceDelegate
 extension WCGroupTransactionViewController: WCGroupTransactionLayoutDelegate {
     func wcGroupTransactionLayout(
         _ wcGroupTransactionLayout: WCGroupTransactionLayout,
-        didSelect transactionParameter: WCTransactionParams
+        didSelect transaction: WCTransaction
     ) {
 
     }

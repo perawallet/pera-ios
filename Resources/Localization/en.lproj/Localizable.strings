@@ -651,6 +651,7 @@
 "wallet-connect-transaction-title-transaction" = "Transaction Request";
 "wallet-connect-transaction-title-asset" = "Transfer Asset Request";
 "wallet-connect-transaction-title-opt-in" = "Assets Opt-in Request";
+"wallet-connect-transaction-title-app-call" = "App Call Request";
 "wallet-connect-transaction-title-multiple" = "Multiple Transaction Request";
 "wallet-connect-transaction-count" = "All transactions (%d)";
 "wallet-connect-transaction-title-raw" = "Raw Txns";

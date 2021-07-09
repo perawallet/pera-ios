@@ -17,7 +17,7 @@
 
 import UIKit
 
-class WCAlgosTransactionViewController: WCTransactionViewController {
+class WCAlgosTransactionViewController: WCSingleTransactionViewController {
 
     private lazy var algosTransactionView = WCAlgosTransactionView()
 
@@ -28,23 +28,22 @@ class WCAlgosTransactionViewController: WCTransactionViewController {
     override func configureAppearance() {
         super.configureAppearance()
         title = "wallet-connect-transaction-title-transaction".localized
-        algosTransactionView.bind(WCAlgosTransactionViewModel(transactionParams: transactionParameter, senderAccount: account))
     }
 
     override func linkInteractors() {
         super.linkInteractors()
         algosTransactionView.delegate = self
     }
+
+    override func bindData() {
+        algosTransactionView.bind(WCAlgosTransactionViewModel(transaction: transaction, senderAccount: account))
+    }
 }
 
 extension WCAlgosTransactionViewController: WCAlgosTransactionViewDelegate {
     func wcAlgosTransactionViewDidOpenRawTransaction(_ wcAlgosTransactionView: WCAlgosTransactionView) {
-        guard let transactionData = try? JSONEncoder().encode(transactionParameter),
-              let object = try? JSONSerialization.jsonObject(with: transactionData, options: []),
-              let data = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted]) else {
-            return
-        }
-
-        open(.jsonDisplay(jsonData: data), by: .present)
+        displayRawTransaction()
     }
 }
+
+extension WCAlgosTransactionViewController: WCSingleTransactionViewControllerActionable { }

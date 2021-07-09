@@ -26,11 +26,11 @@ class WCTransactionFullDappDetailViewController: BaseViewController {
     private lazy var fullDappDetailView = WCTransactionFullDappDetailView()
 
     private let wcSession: WCSession
-    private let transactionParameter: WCTransactionParams
+    private let transaction: WCTransaction
 
-    init(wcSession: WCSession, transactionParameter: WCTransactionParams, configuration: ViewControllerConfiguration) {
+    init(wcSession: WCSession, transaction: WCTransaction, configuration: ViewControllerConfiguration) {
         self.wcSession = wcSession
-        self.transactionParameter = transactionParameter
+        self.transaction = transaction
         super.init(configuration: configuration)
     }
 
@@ -39,7 +39,7 @@ class WCTransactionFullDappDetailViewController: BaseViewController {
         fullDappDetailView.bind(
             WCTransactionDappMessageViewModel(
                 session: wcSession,
-                transactionParameter: transactionParameter,
+                transaction: transaction,
                 imageSize: CGSize(width: 60.0, height: 60.0)
             )
         )

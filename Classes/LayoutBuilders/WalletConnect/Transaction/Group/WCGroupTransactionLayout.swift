@@ -49,8 +49,8 @@ extension WCGroupTransactionLayout: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let transactionParameter = dataSource?.transactionParameter(at: indexPath.item) {
-            delegate?.wcGroupTransactionLayout(self, didSelect: transactionParameter)
+        if let transaction = dataSource?.transaction(at: indexPath.item) {
+            delegate?.wcGroupTransactionLayout(self, didSelect: transaction)
         }
     }
 }
@@ -63,5 +63,5 @@ extension WCGroupTransactionLayout {
 }
 
 protocol WCGroupTransactionLayoutDelegate: AnyObject {
-    func wcGroupTransactionLayout(_ wcGroupTransactionLayout: WCGroupTransactionLayout, didSelect transactionParameter: WCTransactionParams)
+    func wcGroupTransactionLayout(_ wcGroupTransactionLayout: WCGroupTransactionLayout, didSelect transaction: WCTransaction)
 }

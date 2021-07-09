@@ -23,10 +23,10 @@ class WCTransactionDappMessageViewModel {
     private(set) var name: String?
     private(set) var message: String?
 
-    init(session: WCSession, transactionParameter: WCTransactionParams, imageSize: CGSize) {
+    init(session: WCSession, transaction: WCTransaction, imageSize: CGSize) {
         setImage(from: session, and: imageSize)
         setName(from: session)
-        setMessage(from: transactionParameter)
+        setMessage(from: transaction)
     }
 
     private func setImage(from session: WCSession, and imageSize: CGSize) {
@@ -44,7 +44,7 @@ class WCTransactionDappMessageViewModel {
         name = session.peerMeta.name
     }
 
-    private func setMessage(from transactionParameter: WCTransactionParams) {
-        message = transactionParameter.message
+    private func setMessage(from transaction: WCTransaction) {
+        message = transaction.message
     }
 }

@@ -129,18 +129,20 @@ extension RootViewController: BannerDisplayable {
 extension RootViewController: WalletConnectRequestHandlerDelegate {
     func walletConnectRequestHandler(
         _ walletConnectRequestHandler: WalletConnectRequestHandler,
-        shouldSign transactionParameter: WCTransactionParams,
-        for request: WalletConnectRequest
+        shouldSign transaction: WCTransaction,
+        for request: WalletConnectRequest,
+        with transactionOption: WCTransactionOption?
     ) {
-        openSingleTransactionScreen(with: transactionParameter, for: request)
+        openSingleTransactionScreen(with: transaction, for: request)
     }
 
     func walletConnectRequestHandler(
         _ walletConnectRequestHandler: WalletConnectRequestHandler,
-        shouldSign transactionParameters: [WCTransactionParams],
-        for request: WalletConnectRequest
+        shouldSign transactions: [WCTransaction],
+        for request: WalletConnectRequest,
+        with transactionOption: WCTransactionOption?
     ) {
-        openGroupTransactionScreen(with: transactionParameters)
+        openGroupTransactionScreen(with: transactions)
     }
 
     func walletConnectRequestHandler(
@@ -150,9 +152,9 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         appConfiguration.walletConnector.rejectTransactionRequest(request, with: .invalidInput)
     }
 
-    private func openSingleTransactionScreen(with transactionParameter: WCTransactionParams, for request: WalletConnectRequest) {
-        guard let transaction = transactionParameter.transaction,
-              let account = appConfiguration.session.accounts.first(of: \.address, equalsTo: transaction.sender) else {
+    private func openSingleTransactionScreen(with transaction: WCTransaction, for request: WalletConnectRequest) {
+        guard let transactionDetail = transaction.transactionDetail,
+              let account = appConfiguration.session.accounts.first(of: \.address, equalsTo: transactionDetail.sender) else {
             appConfiguration.walletConnector.rejectTransactionRequest(request, with: .unauthorized)
             return
         }
@@ -163,53 +165,54 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
             transitioningDelegate: nil
         )
 
-        switch transaction.transactionType {
+        switch transactionDetail.transactionType(for: account) {
         case .algos:
             open(
                 .wcAlgosTransaction(
-                    transactionParameter: transactionParameter,
+                    transaction: transaction,
                     account: account,
                     transactionRequest: request
                 ),
                 by: fullScreenPresentation
             )
         case .asset:
-            // These transaction types disabled temporarly, after the test release, these will be opened again.
-            appConfiguration.walletConnector.rejectTransactionRequest(request, with: .rejected)
-//            open(
-//                .wcAssetTransaction(
-//                    transactionParameter: transactionParameter,
-//                    account: account,
-//                    transactionRequest: request
-//                ),
-//                by: fullScreenPresentation
-//            )
+            open(
+                .wcAssetTransaction(
+                    transaction: transaction,
+                    account: account,
+                    transactionRequest: request
+                ),
+                by: fullScreenPresentation
+            )
         case .assetAddition:
-            appConfiguration.walletConnector.rejectTransactionRequest(request, with: .rejected)
-//            open(
-//                .wcAssetAdditionTransaction(
-//                    transactionParameter: transactionParameter,
-//                    account: account,
-//                    transactionRequest: request
-//                ),
-//                by: fullScreenPresentation
-//            )
+            open(
+                .wcAssetAdditionTransaction(
+                    transaction: transaction,
+                    account: account,
+                    transactionRequest: request
+                ),
+                by: fullScreenPresentation
+            )
         case .appCall:
-            appConfiguration.walletConnector.rejectTransactionRequest(request, with: .rejected)
-//            open(
-//                .wcAppCall(
-//                    transactionParameter: transactionParameter,
-//                    account: account,
-//                    transactionRequest: request
-//                ),
-//                by: fullScreenPresentation
-//            )
+            if !transactionDetail.isSupportedAppCallTransaction {
+                appConfiguration.walletConnector.rejectTransactionRequest(request, with: .unsupported)
+                return
+            }
+
+            open(
+                .wcAppCall(
+                    transaction: transaction,
+                    account: account,
+                    transactionRequest: request
+                ),
+                by: fullScreenPresentation
+            )
         default:
             break
         }
     }
 
-    private func openGroupTransactionScreen(with transactionParameters: [WCTransactionParams]) {
+    private func openGroupTransactionScreen(with transactions: [WCTransaction]) {
 //        let fullScreenPresentation = Screen.Transition.Open.customPresent(
 //            presentationStyle: .fullScreen,
 //            transitionStyle: nil,
