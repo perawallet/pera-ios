@@ -41,7 +41,14 @@ class WCAssetTransactionViewController: WCSingleTransactionViewController {
         bindView()
 
         setCachedAsset {
-            self.bindView()
+            if self.assetDetail == nil {
+                self.dismissScreen()
+                return
+            }
+
+            DispatchQueue.main.async {
+                self.bindView()
+            }
         }
     }
 }

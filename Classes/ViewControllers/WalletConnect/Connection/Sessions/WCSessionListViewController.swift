@@ -35,6 +35,18 @@ class WCSessionListViewController: BaseViewController {
 
     private lazy var layoutBuilder = WCSessionListLayout(dataSource: dataSource)
 
+    override func configureNavigationBarAppearance() {
+        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.openQRScanner()
+        }
+
+        rightBarButtonItems = [qrBarButtonItem]
+    }
+
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.tertiary
         title = "settings-wallet-connect-title".localized

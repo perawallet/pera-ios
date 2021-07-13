@@ -27,13 +27,6 @@ class WCAssetAdditionTransactionViewController: WCSingleTransactionViewControlle
 
     var assetDetail: AssetDetail?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setCachedAsset {
-            self.bindView()
-        }
-    }
-
     override func configureAppearance() {
         super.configureAppearance()
         title = "wallet-connect-transaction-title-opt-in".localized
@@ -46,6 +39,17 @@ class WCAssetAdditionTransactionViewController: WCSingleTransactionViewControlle
 
     override func bindData() {
         bindView()
+
+        setCachedAsset {
+            if self.assetDetail == nil {
+                self.dismissScreen()
+                return
+            }
+
+            DispatchQueue.main.async {
+                self.bindView()
+            }
+        }
     }
 }
 
