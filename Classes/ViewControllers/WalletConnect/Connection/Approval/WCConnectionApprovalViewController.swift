@@ -66,13 +66,21 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
             return
         }
 
-        walletConnectSessionConnectionCompletionHandler(walletConnectSession.getApprovedWalletConnectionInfo(for: account.address))
-        dismissScreen()
+        DispatchQueue.main.async {
+            self.walletConnectSessionConnectionCompletionHandler(
+                self.walletConnectSession.getApprovedWalletConnectionInfo(
+                    for: account.address
+                )
+            )
+            self.dismissScreen()
+        }
     }
 
     func wcConnectionApprovalViewDidRejectConnection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
-        walletConnectSessionConnectionCompletionHandler(walletConnectSession.getDeclinedWalletConnectionInfo())
-        dismissScreen()
+        DispatchQueue.main.async {
+            self.walletConnectSessionConnectionCompletionHandler(self.walletConnectSession.getDeclinedWalletConnectionInfo())
+            self.dismissScreen()
+        }
     }
 
     func wcConnectionApprovalViewDidSelectAccountSelection(_ wcConnectionApprovalView: WCConnectionApprovalView) {

@@ -194,6 +194,7 @@ class AccountsViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        walletConnector.delegate = self
         walletConnector.reconnectToSavedSessionsIfPossible()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {

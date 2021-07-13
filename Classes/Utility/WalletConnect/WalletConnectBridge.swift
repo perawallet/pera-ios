@@ -62,7 +62,9 @@ extension WalletConnectBridge: ServerDelegate {
         shouldStart session: WalletConnectSession,
         completion: @escaping (WalletConnectSession.WalletInfo) -> Void
     ) {
-        delegate?.walletConnectBridge(self, shouldStart: session, then: completion)
+        DispatchQueue.main.async {
+            self.delegate?.walletConnectBridge(self, shouldStart: session, then: completion)
+        }
     }
 
     func server(_ server: WalletConnectServer, didConnect session: WalletConnectSession) {
