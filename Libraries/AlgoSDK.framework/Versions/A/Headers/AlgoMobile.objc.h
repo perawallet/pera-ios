@@ -121,6 +121,14 @@ FOUNDATION_EXPORT NSData* _Nullable AlgoMobileAttachSignature(NSData* _Nullable 
  */
 FOUNDATION_EXPORT NSData* _Nullable AlgoMobileAttachSignatureWithSigner(NSData* _Nullable signature, NSData* _Nullable encodedTx, NSString* _Nullable signer, NSError* _Nullable* _Nullable error);
 
+/**
+ * FindAndVerifyTxnGroups takes an array of encoded transactions and finds and verifies consecutive
+transactions which claim to be an atomic group. It returns an array of integers which is the same
+length as the array of input transactions. If two indexes in this array have the same value, then
+the transactions at the same indexes in the input array are in the same atomic group.
+ */
+FOUNDATION_EXPORT AlgoMobileInt64Array* _Nullable AlgoMobileFindAndVerifyTxnGroups(AlgoMobileBytesArray* _Nullable txns, NSError* _Nullable* _Nullable error);
+
 FOUNDATION_EXPORT NSString* _Nonnull AlgoMobileGenerateAddressFromPublicKey(NSData* _Nullable pk, NSError* _Nullable* _Nullable error);
 
 FOUNDATION_EXPORT NSString* _Nonnull AlgoMobileGenerateAddressFromSK(NSData* _Nullable sk, NSError* _Nullable* _Nullable error);
@@ -321,7 +329,7 @@ json-encoded Transaction
 FOUNDATION_EXPORT NSString* _Nonnull AlgoMobileTransactionMsgpackToJson(NSData* _Nullable msgpTxn, NSError* _Nullable* _Nullable error);
 
 /**
- * VerifyGroupID verifies that a group of transactions all contain the correct group ID
+ * VerifyGroupID verifies that an atomic group of transactions all contain the correct group ID
  */
 FOUNDATION_EXPORT BOOL AlgoMobileVerifyGroupID(AlgoMobileBytesArray* _Nullable txns, BOOL* _Nullable valid, NSError* _Nullable* _Nullable error);
 
