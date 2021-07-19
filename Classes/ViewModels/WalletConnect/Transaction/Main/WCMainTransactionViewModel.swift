@@ -13,18 +13,10 @@
 // limitations under the License.
 
 //
-//   WCGroupTransactionHeaderViewModel.swift
+//   WCMainTransactionViewModel.swift
 
-import UIKit
+import Foundation
 
-class WCGroupTransactionHeaderViewModel {
-    private(set) var title: String?
-
-    init(transactionCount: Int) {
-        setTitle(from: transactionCount)
-    }
-
-    private func setTitle(from transactionCount: Int) {
-        title = "wallet-connect-transaction-count".localized(transactionCount)
-    }
+class WCMainTransactionViewModel {
+    
 }

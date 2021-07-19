@@ -1,0 +1,67 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//
+//   WCMainTransactionLayout.swift
+
+import UIKit
+
+class WCMainTransactionLayout: NSObject {
+
+    private let layout = Layout<LayoutConstants>()
+
+    weak var delegate: WCMainTransactionLayoutDelegate?
+
+    private weak var dataSource: WCMainTransactionDataSource?
+
+    init(dataSource: WCMainTransactionDataSource) {
+        self.dataSource = dataSource
+        super.init()
+    }
+}
+
+extension WCMainTransactionLayout: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return layout.current.cellSize
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        return layout.current.headerSize
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let transaction = dataSource?.transaction(at: indexPath.item) {
+            delegate?.wcGroupTransactionLayout(self, didSelect: transaction)
+        }
+    }
+}
+
+extension WCMainTransactionLayout {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let cellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 130.0)
+        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 164.0)
+    }
+}
+
+protocol WCMainTransactionLayoutDelegate: AnyObject {
+    func wcGroupTransactionLayout(_ wcMainTransactionLayout: WCMainTransactionLayout, didSelect transaction: WCTransaction)
+}

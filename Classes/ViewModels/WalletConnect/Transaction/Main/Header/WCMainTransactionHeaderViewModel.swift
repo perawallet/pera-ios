@@ -13,15 +13,25 @@
 // limitations under the License.
 
 //
-//   WCGroupTransactionHeaderViewModel.swift
+//   WCMainTransactionHeaderViewModel.swift
 
 import UIKit
 
-class WCGroupTransactionHeaderViewModel {
+class WCMainTransactionHeaderViewModel {
+    private(set) var transactionDappMessageViewModel: WCTransactionDappMessageViewModel?
     private(set) var title: String?
 
-    init(transactionCount: Int) {
+    init(session: WCSession, transaction: WCTransaction, transactionCount: Int) {
+        setTransactionDappMessageViewModel(from: session, and: transaction)
         setTitle(from: transactionCount)
+    }
+
+    private func setTransactionDappMessageViewModel(from session: WCSession, and transaction: WCTransaction) {
+        transactionDappMessageViewModel = WCTransactionDappMessageViewModel(
+            session: session,
+            transaction: transaction,
+            imageSize: CGSize(width: 44.0, height: 44.0)
+        )
     }
 
     private func setTitle(from transactionCount: Int) {

@@ -19,28 +19,7 @@ import Foundation
 
 class WCGroupTransactionSupplementaryHeaderView: BaseSupplementaryView<WCGroupTransactionHeaderView> {
 
-    weak var delegate: WCGroupTransactionSupplementaryHeaderViewDelegate?
-
-    override func linkInteractors() {
-        super.linkInteractors()
-        contextView.delegate = self
-    }
-}
-
-extension WCGroupTransactionSupplementaryHeaderView {
     func bind(_ viewModel: WCGroupTransactionHeaderViewModel) {
         contextView.bind(viewModel)
     }
-}
-
-extension WCGroupTransactionSupplementaryHeaderView: WCGroupTransactionHeaderViewDelegate {
-    func wcGroupTransactionHeaderViewDidOpenLongMessageView(_ wcGroupTransactionHeaderView: WCGroupTransactionHeaderView) {
-        delegate?.wcGroupTransactionSupplementaryHeaderViewDidOpenLongMessageView(self)
-    }
-}
-
-protocol WCGroupTransactionSupplementaryHeaderViewDelegate: AnyObject {
-    func wcGroupTransactionSupplementaryHeaderViewDidOpenLongMessageView(
-        _ wcGroupTransactionSupplementaryHeaderView: WCGroupTransactionSupplementaryHeaderView
-    )
 }

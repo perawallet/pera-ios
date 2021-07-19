@@ -39,7 +39,6 @@ class WCGroupTransactionViewController: BaseViewController {
         groupTransactionView.delegate = self
         groupTransactionView.setDataSource(dataSource)
         groupTransactionView.setDelegate(layoutBuilder)
-        dataSource.delegate = self
         layoutBuilder.delegate = self
     }
 
@@ -69,12 +68,6 @@ extension WCGroupTransactionViewController: WalletConnectTransactionSignable {
 
     func declineTransaction() {
 
-    }
-}
-
-extension WCGroupTransactionViewController: WCGroupTransactionDataSourceDelegate {
-    func wcGroupTransactionDataSourceDidOpenLongDappMessageView(_ wcGroupTransactionDataSource: WCGroupTransactionDataSource) {
-        
     }
 }
 

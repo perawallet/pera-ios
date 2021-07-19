@@ -13,11 +13,13 @@
 // limitations under the License.
 
 //
-//   WCGroupTransactionDataSource.swift
+//   WCMainTransactionDataSource.swift
 
 import UIKit
 
-class WCGroupTransactionDataSource: NSObject {
+class WCMainTransactionDataSource: NSObject {
+
+    weak var delegate: WCMainTransactionDataSourceDelegate?
 
     private let transactions: [WCTransaction]
     private let walletConnector: WalletConnector
@@ -29,24 +31,13 @@ class WCGroupTransactionDataSource: NSObject {
     }
 }
 
-extension WCGroupTransactionDataSource: UICollectionViewDataSource {
+extension WCMainTransactionDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return transactions.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: WCGroupTransactionItemCell.reusableIdentifier,
-            for: indexPath
-        ) as? WCGroupTransactionItemCell else {
-            fatalError("Unexpected cell type")
-        }
-
-        if let transaction = transaction(at: indexPath.item) {
-            cell.bind(WCGroupTransactionItemViewModel(transaction: transaction))
-        }
-
-        return cell
+        return UICollectionViewCell()
     }
 
     func collectionView(
@@ -60,19 +51,43 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
 
         guard let headerView = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
-            withReuseIdentifier: WCGroupTransactionSupplementaryHeaderView.reusableIdentifier,
+            withReuseIdentifier: WCMainTransactionSupplementaryHeaderView.reusableIdentifier,
             for: indexPath
-        ) as? WCGroupTransactionSupplementaryHeaderView else {
+        ) as? WCMainTransactionSupplementaryHeaderView else {
             fatalError("Unexpected element kind")
         }
 
-        headerView.bind(WCGroupTransactionHeaderViewModel(transactionCount: transactions.count))
+        // Will be updated with the related session later.
+        if let session = walletConnector.allWalletConnectSessions.first,
+           let transaction = transactions.first {
+            headerView.bind(
+                WCMainTransactionHeaderViewModel(
+                    session: session,
+                    transaction: transaction,
+                    transactionCount: transactions.count
+                )
+            )
+        }
+
+        headerView.delegate = self
         return headerView
     }
 }
 
-extension WCGroupTransactionDataSource {
+extension WCMainTransactionDataSource {
     func transaction(at index: Int) -> WCTransaction? {
         return transactions[safe: index]
     }
+}
+
+extension WCMainTransactionDataSource: WCMainTransactionSupplementaryHeaderViewDelegate {
+    func wcMainTransactionSupplementaryHeaderViewDidOpenLongMessageView(
+        _ wcMainTransactionSupplementaryHeaderView: WCMainTransactionSupplementaryHeaderView
+    ) {
+        delegate?.wcMainTransactionDataSourceDidOpenLongDappMessageView(self)
+    }
+}
+
+protocol WCMainTransactionDataSourceDelegate: AnyObject {
+    func wcMainTransactionDataSourceDidOpenLongDappMessageView(_ wcMainTransactionDataSource: WCMainTransactionDataSource)
 }
