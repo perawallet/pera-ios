@@ -17,7 +17,7 @@
 
 import UIKit
 
-class WarningModalViewController: BaseViewController {
+class WarningAlertViewController: BaseViewController {
     
     override var shouldShowNavigationBar: Bool {
         return false
@@ -25,13 +25,14 @@ class WarningModalViewController: BaseViewController {
     
     weak var delegate: WarningModalViewControllerDelegate?
     
-    private lazy var warningModalView = WarningModalView()
+    private lazy var warningModalView = WarningAlertView()
     
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.secondary
     }
     
-    override func setListeners() {
+    override func linkInteractors() {
+        super.linkInteractors()
         warningModalView.delegate = self
     }
     
@@ -40,12 +41,12 @@ class WarningModalViewController: BaseViewController {
     }
 }
 
-extension WarningModalViewController: WarningModalViewDelegate {
-    func warningModalViewDidTakeAction(_ warningModalView: WarningModalView) {
+extension WarningAlertViewController: WarningModalViewDelegate {
+    func warningModalViewDidTakeAction(_ warningModalView: WarningAlertView) {
         delegate?.warningModalViewDidTakeAction(warningModalView)
     }
 }
 
 protocol WarningModalViewControllerDelegate: AnyObject {
-    func warningModalViewDidTakeAction(_ warningModalView: WarningModalView)
+    func warningModalViewDidTakeAction(_ warningModalView: WarningAlertView)
 }

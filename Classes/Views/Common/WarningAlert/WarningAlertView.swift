@@ -17,19 +17,20 @@
 
 import UIKit
 
-class WarningModalView: BaseView {
+class WarningAlertView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: WarningModalViewDelegate?
     
+    private var buttonTitle: String?
+    
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withTextColor(Colors.Text.primary)
-            .withLine(.single)
+            .withLine(.contained)
             .withAlignment(.center)
-            .withText("title-warning-modal".localized)
     }()
     
     private lazy var imageView = UIImageView(image: img("img-warning-circle"))
@@ -40,10 +41,9 @@ class WarningModalView: BaseView {
             .withTextColor(Colors.Text.primary)
             .withLine(.contained)
             .withAlignment(.center)
-            .withText("warning-modal-description".localized)
     }()
     
-    private lazy var actionButton = MainButton(title: "warning-modal-button-title".localized)
+    private lazy var actionButton = MainButton(title: buttonTitle ?? "")
     
     override func prepareLayout() {
         setupTitleLabelLayout()
@@ -57,11 +57,11 @@ class WarningModalView: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
+        backgroundColor = Colors.Background.secondary
     }
 }
 
-extension WarningModalView {
+extension WarningAlertView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         
@@ -104,14 +104,26 @@ extension WarningModalView {
     }
 }
 
-extension WarningModalView {
+extension WarningAlertView {
     @objc
     private func notifyDelegateToTakeAction() {
         delegate?.warningModalViewDidTakeAction(self)
     }
 }
 
-extension WarningModalView {
+extension WarningAlertView {
+    func bind(_ viewModel: WarningAlertModelView?) {
+        guard let viewModel = viewModel else {
+            return
+        }
+        titleLabel.text = viewModel.title
+        imageView.image = viewModel.image
+        descriptionLabel.text = viewModel.description
+        buttonTitle = viewModel.actionTitle
+    }
+}
+
+extension WarningAlertView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let verticalInset: CGFloat = 28.0
         let horizontalInset: CGFloat = 20.0
@@ -122,5 +134,5 @@ extension WarningModalView {
 }
 
 protocol WarningModalViewDelegate: AnyObject {
-    func warningModalViewDidTakeAction(_ warningModalView: WarningModalView)
+    func warningModalViewDidTakeAction(_ warningModalView: WarningAlertView)
 }
