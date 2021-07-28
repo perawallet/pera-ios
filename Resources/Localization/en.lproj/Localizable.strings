@@ -522,11 +522,6 @@
 "ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
 "ledger-transaction-account-match-error" = "It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.";
 
-// MARK: Warning Modal
-"title-warning-modal" = "Warning Modal";
-"warning-modal-description" = "Do not backup your recovery passphrase by taking a screenshot. Having an image containing your passphrase is a security risk.";
-"warning-modal-button-title" = "Got it!";
-
 // MARK: Watch Account
 "title-watch-account" = "Watch Account";
 "watch-account-create" = "Create a Watch Account";
