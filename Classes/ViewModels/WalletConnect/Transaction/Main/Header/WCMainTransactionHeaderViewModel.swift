@@ -21,20 +21,25 @@ class WCMainTransactionHeaderViewModel {
     private(set) var transactionDappMessageViewModel: WCTransactionDappMessageViewModel?
     private(set) var title: String?
 
-    init(session: WCSession, transaction: WCTransaction, transactionCount: Int) {
-        setTransactionDappMessageViewModel(from: session, and: transaction)
+    init(session: WCSession, text: String?, transactionCount: Int) {
+        setTransactionDappMessageViewModel(from: session, and: text)
         setTitle(from: transactionCount)
     }
 
-    private func setTransactionDappMessageViewModel(from session: WCSession, and transaction: WCTransaction) {
+    private func setTransactionDappMessageViewModel(from session: WCSession, and text: String?) {
+        guard let message = text,
+              !message.isEmpty else {
+            return
+        }
+
         transactionDappMessageViewModel = WCTransactionDappMessageViewModel(
             session: session,
-            transaction: transaction,
+            text: message,
             imageSize: CGSize(width: 44.0, height: 44.0)
         )
     }
 
     private func setTitle(from transactionCount: Int) {
-        title = "wallet-connect-transaction-count".localized(transactionCount)
+        title = "wallet-connect-transaction-all-count".localized(transactionCount)
     }
 }

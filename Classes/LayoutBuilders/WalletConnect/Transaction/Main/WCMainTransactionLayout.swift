@@ -37,7 +37,15 @@ extension WCMainTransactionLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return layout.current.cellSize
+        guard let transactions = dataSource?.transactions(at: indexPath.item) else {
+            return .zero
+        }
+
+        if transactions.count == 1 {
+            return layout.current.singleTransactionCellSize
+        }
+
+        return layout.current.multipleTransactionCellSize
     }
 
     func collectionView(
@@ -45,23 +53,29 @@ extension WCMainTransactionLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
+        if dataSource?.transactionOption?.message == nil {
+            return layout.current.headerSizeWithoutMessage
+        }
+
         return layout.current.headerSize
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let transaction = dataSource?.transaction(at: indexPath.item) {
-            delegate?.wcGroupTransactionLayout(self, didSelect: transaction)
+        if let transactions = dataSource?.transactions(at: indexPath.item) {
+            delegate?.wcMainTransactionLayout(self, didSelect: transactions)
         }
     }
 }
 
 extension WCMainTransactionLayout {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 130.0)
+        let singleTransactionCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 130.0)
+        let multipleTransactionCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 92.0)
         let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 164.0)
+        let headerSizeWithoutMessage = CGSize(width: UIScreen.main.bounds.width, height: 56.0)
     }
 }
 
 protocol WCMainTransactionLayoutDelegate: AnyObject {
-    func wcGroupTransactionLayout(_ wcMainTransactionLayout: WCMainTransactionLayout, didSelect transaction: WCTransaction)
+    func wcMainTransactionLayout(_ wcMainTransactionLayout: WCMainTransactionLayout, didSelect transactions: [WCTransaction])
 }

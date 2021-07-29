@@ -129,20 +129,11 @@ extension RootViewController: BannerDisplayable {
 extension RootViewController: WalletConnectRequestHandlerDelegate {
     func walletConnectRequestHandler(
         _ walletConnectRequestHandler: WalletConnectRequestHandler,
-        shouldSign transaction: WCTransaction,
-        for request: WalletConnectRequest,
-        with transactionOption: WCTransactionOption?
-    ) {
-        openSingleTransactionScreen(with: transaction, for: request)
-    }
-
-    func walletConnectRequestHandler(
-        _ walletConnectRequestHandler: WalletConnectRequestHandler,
         shouldSign transactions: [WCTransaction],
         for request: WalletConnectRequest,
         with transactionOption: WCTransactionOption?
     ) {
-        openGroupTransactionScreen(with: transactions)
+        openMainTransactionScreen(transactions, for: request, with: transactionOption)
     }
 
     func walletConnectRequestHandler(
@@ -152,8 +143,12 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         appConfiguration.walletConnector.rejectTransactionRequest(request, with: .invalidInput)
     }
 
-    private func openSingleTransactionScreen(with transaction: WCTransaction, for request: WalletConnectRequest) {
-        guard let transactionDetail = transaction.transactionDetail,
+    private func openMainTransactionScreen(
+        _ transactions: [WCTransaction],
+        for request: WalletConnectRequest,
+        with transactionOption: WCTransactionOption?
+    ) {
+        guard let transactionDetail = transactions.first?.transactionDetail,
               let account = appConfiguration.session.accounts.first(of: \.address, equalsTo: transactionDetail.sender) else {
             appConfiguration.walletConnector.rejectTransactionRequest(request, with: .unauthorized)
             return
@@ -165,61 +160,15 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
             transitioningDelegate: nil
         )
 
-        switch transactionDetail.transactionType(for: account) {
-        case .algos:
-            open(
-                .wcAlgosTransaction(
-                    transaction: transaction,
-                    account: account,
-                    transactionRequest: request
-                ),
-                by: fullScreenPresentation
-            )
-        case .asset:
-            open(
-                .wcAssetTransaction(
-                    transaction: transaction,
-                    account: account,
-                    transactionRequest: request
-                ),
-                by: fullScreenPresentation
-            )
-        case .assetAddition:
-            open(
-                .wcAssetAdditionTransaction(
-                    transaction: transaction,
-                    account: account,
-                    transactionRequest: request
-                ),
-                by: fullScreenPresentation
-            )
-        case .appCall:
-            if !transactionDetail.isSupportedAppCallTransaction {
-                appConfiguration.walletConnector.rejectTransactionRequest(request, with: .unsupported)
-                return
-            }
-
-            open(
-                .wcAppCall(
-                    transaction: transaction,
-                    account: account,
-                    transactionRequest: request
-                ),
-                by: fullScreenPresentation
-            )
-        default:
-            break
-        }
-    }
-
-    private func openGroupTransactionScreen(with transactions: [WCTransaction]) {
-//        let fullScreenPresentation = Screen.Transition.Open.customPresent(
-//            presentationStyle: .fullScreen,
-//            transitionStyle: nil,
-//            transitioningDelegate: nil
-//        )
-
-        // open(.wcGroupTransaction(transactionParameters: transactionParameters), by: fullScreenPresentation)
+        open(
+            .wcMainTransaction(
+                transactions: transactions,
+                account: account,
+                transactionRequest: request,
+                transactionOption: transactionOption
+            ),
+            by: fullScreenPresentation
+        )
     }
 }
 

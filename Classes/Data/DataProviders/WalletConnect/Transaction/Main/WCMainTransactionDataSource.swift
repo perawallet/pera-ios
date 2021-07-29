@@ -21,23 +21,71 @@ class WCMainTransactionDataSource: NSObject {
 
     weak var delegate: WCMainTransactionDataSourceDelegate?
 
-    private let transactions: [WCTransaction]
     private let walletConnector: WalletConnector
+    private let transactionRequest: WalletConnectRequest
+    let transactionOption: WCTransactionOption?
+    private(set) var groupedTransactions: [Int64: [WCTransaction]] = [:]
+    private let account: Account
+    private let session: Session?
 
-    init(transactions: [WCTransaction], walletConnector: WalletConnector) {
-        self.transactions = transactions
+    init(
+        transactions: [WCTransaction],
+        transactionRequest: WalletConnectRequest,
+        transactionOption: WCTransactionOption?,
+        account: Account,
+        session: Session?,
+        walletConnector: WalletConnector
+    ) {
         self.walletConnector = walletConnector
+        self.transactionRequest = transactionRequest
+        self.transactionOption = transactionOption
+        self.account = account
+        self.session = session
         super.init()
+        groupTransactions(transactions)
+    }
+
+    private func groupTransactions(_ transactions: [WCTransaction]) {
+        let transactionData = transactions.compactMap { $0.unparsedTransactionDetail }
+        var error: NSError?
+        let verifiedGroups = AlgorandSDK().findAndVerifyTransactionGroups(for: transactionData, error: &error)
+
+        if error != nil {
+            delegate?.wcMainTransactionDataSourceDidFailedGroupingValidation(self)
+            return
+        }
+
+        guard let groups = verifiedGroups,
+              groups.count == transactions.count else {
+            delegate?.wcMainTransactionDataSourceDidFailedGroupingValidation(self)
+            return
+        }
+
+        for (index, group) in groups.enumerated() {
+            if groupedTransactions[group] == nil {
+                groupedTransactions[group] = [transactions[index]]
+            } else {
+                groupedTransactions[group]?.append(transactions[index])
+            }
+        }
     }
 }
 
 extension WCMainTransactionDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return transactions.count
+        return groupedTransactions.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return UICollectionViewCell()
+        guard let transactions = transactions(at: indexPath.item) else {
+            fatalError("Unexpected index")
+        }
+
+        if transactions.count == 1 {
+            return dequeueSingleTransactionCell(in: collectionView, at: indexPath)
+        }
+
+        return dequeueMultipleTransactionCell(in: collectionView, at: indexPath)
     }
 
     func collectionView(
@@ -49,22 +97,63 @@ extension WCMainTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected element kind")
         }
 
+        return dequeueHeaderView(in: collectionView, at: indexPath)
+    }
+}
+
+extension WCMainTransactionDataSource {
+    private func dequeueSingleTransactionCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: WCGroupTransactionItemCell.reusableIdentifier,
+            for: indexPath
+        ) as? WCGroupTransactionItemCell else {
+            fatalError("Unexpected cell type")
+        }
+
+        if let transactions = transactions(at: indexPath.item),
+           let transaction = transactions.first {
+            cell.bind(
+                WCGroupTransactionItemViewModel(
+                    transaction: transaction,
+                    account: account,
+                    assetDetail: assetDetail(from: transaction)
+                )
+            )
+        }
+
+        return cell
+    }
+
+    private func dequeueMultipleTransactionCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: WCMultipleTransactionItemCell.reusableIdentifier,
+            for: indexPath
+        ) as? WCMultipleTransactionItemCell else {
+            fatalError("Unexpected cell type")
+        }
+
+        if let transactions = transactions(at: indexPath.item) {
+            cell.bind(WCMultipleTransactionItemViewModel(transactions: transactions))
+        }
+
+        return cell
+    }
+
+    private func dequeueHeaderView(in collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionReusableView {
         guard let headerView = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
+            ofKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: WCMainTransactionSupplementaryHeaderView.reusableIdentifier,
             for: indexPath
         ) as? WCMainTransactionSupplementaryHeaderView else {
             fatalError("Unexpected element kind")
         }
 
-        // Will be updated with the related session later.
-        if let session = walletConnector.allWalletConnectSessions.first,
-           let transaction = transactions.first {
+        if let session = walletConnector.allWalletConnectSessions.first(of: \.urlMeta.wcURL, equalsTo: transactionRequest.url) {
             headerView.bind(
                 WCMainTransactionHeaderViewModel(
                     session: session,
-                    transaction: transaction,
-                    transactionCount: transactions.count
+                    text: transactionOption?.message,
+                    transactionCount: groupedTransactions.count
                 )
             )
         }
@@ -75,8 +164,17 @@ extension WCMainTransactionDataSource: UICollectionViewDataSource {
 }
 
 extension WCMainTransactionDataSource {
-    func transaction(at index: Int) -> WCTransaction? {
-        return transactions[safe: index]
+    func transactions(at index: Int) -> [WCTransaction]? {
+        return groupedTransactions[Int64(index)]
+    }
+
+    private func assetDetail(from transaction: WCTransaction) -> AssetDetail? {
+        guard let session = session,
+              let assetId = transaction.transactionDetail?.assetId else {
+            return nil
+        }
+
+        return session.assetDetails[assetId]
     }
 }
 
@@ -89,5 +187,6 @@ extension WCMainTransactionDataSource: WCMainTransactionSupplementaryHeaderViewD
 }
 
 protocol WCMainTransactionDataSourceDelegate: AnyObject {
+    func wcMainTransactionDataSourceDidFailedGroupingValidation(_ wcMainTransactionDataSource: WCMainTransactionDataSource)
     func wcMainTransactionDataSourceDidOpenLongDappMessageView(_ wcMainTransactionDataSource: WCMainTransactionDataSource)
 }

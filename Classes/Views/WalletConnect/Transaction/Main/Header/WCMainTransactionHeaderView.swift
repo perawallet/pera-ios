@@ -23,6 +23,16 @@ class WCMainTransactionHeaderView: BaseView {
 
     weak var delegate: WCMainTransactionHeaderViewDelegate?
 
+    private lazy var stackView: VStackView = {
+        let stackView = VStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.distribution = .equalSpacing
+        stackView.spacing = layout.current.spacing
+        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        stackView.isUserInteractionEnabled = true
+        return stackView
+    }()
+
     private lazy var dappMessageView = WCTransactionDappMessageView()
 
     private lazy var titleLabel: UILabel = {
@@ -34,8 +44,7 @@ class WCMainTransactionHeaderView: BaseView {
     }()
 
     override func prepareLayout() {
-        setupDappMessageViewLayout()
-        setupTitleLabelLayout()
+        setupStackViewLayout()
     }
 
     override func setListeners() {
@@ -44,24 +53,17 @@ class WCMainTransactionHeaderView: BaseView {
 }
 
 extension WCMainTransactionHeaderView {
-    private func setupDappMessageViewLayout() {
-        addSubview(dappMessageView)
+    private func setupStackViewLayout() {
+        addSubview(stackView)
 
-        dappMessageView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        stackView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.topInset)
-            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
-    }
 
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
-
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.titleLeadingInset)
-            make.top.equalTo(dappMessageView.snp.bottom).offset(layout.current.titleTopInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
-        }
+        stackView.addArrangedSubview(dappMessageView)
+        stackView.addArrangedSubview(titleLabel)
     }
 }
 
@@ -76,6 +78,8 @@ extension WCMainTransactionHeaderView {
     func bind(_ viewModel: WCMainTransactionHeaderViewModel) {
         if let transactionDappMessageViewModel = viewModel.transactionDappMessageViewModel {
             dappMessageView.bind(transactionDappMessageViewModel)
+        } else {
+            dappMessageView.hideViewInStack()
         }
 
         titleLabel.text = viewModel.title
@@ -86,8 +90,8 @@ extension WCMainTransactionHeaderView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 8.0
         let horizontalInset: CGFloat = 20.0
-        let titleTopInset: CGFloat = 40.0
-        let titleLeadingInset: CGFloat = 24.0
+        let bottomInset: CGFloat = 20.0
+        let spacing: CGFloat = 28.0
     }
 }
 
