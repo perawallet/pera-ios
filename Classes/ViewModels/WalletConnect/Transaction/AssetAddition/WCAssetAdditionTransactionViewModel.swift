@@ -24,6 +24,7 @@ class WCAssetAdditionTransactionViewModel {
     private(set) var rekeyWarningInformationViewModel: WCTransactionAddressWarningInformationViewModel?
     private(set) var closeWarningInformationViewModel: WCTransactionAddressWarningInformationViewModel?
     private(set) var feeInformationViewModel: TitledTransactionAmountInformationViewModel?
+    private(set) var feeWarningViewModel: WCTransactionWarningViewModel?
     private(set) var noteInformationViewModel: WCTransactionTextInformationViewModel?
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var algoExplorerInformationViewModel: WCTransactionActionableInformationViewModel?
@@ -37,6 +38,7 @@ class WCAssetAdditionTransactionViewModel {
         setCloseWarningInformationViewModel(from: transaction)
         setRekeyWarningInformationViewModel(from: transaction)
         setFeeInformationViewModel(from: transaction)
+        setFeeWarningViewModel(from: transaction)
         setNoteInformationViewModel(from: transaction)
         setRawTransactionInformationViewModel(from: transaction, and: assetDetail)
         setAlgoExplorerInformationViewModel(from: assetDetail)
@@ -59,21 +61,21 @@ class WCAssetAdditionTransactionViewModel {
 
         assetInformationViewModel = TransactionAssetViewModel(
             assetDetail: assetDetail,
-            isLastElement: !transaction.hasSameSignerWithAuthAddress && !transactionDetail.hasRekeyOrCloseAddress
+            isLastElement: !transaction.hasValidAuthAddressForSigner && !transactionDetail.hasRekeyOrCloseAddress
         )
     }
 
     private func setAuthAccountInformationViewModel(from transaction: WCTransaction) {
         guard let transactionDetail = transaction.transactionDetail,
               let authAddress = transaction.authAddress,
-              transaction.hasSameSignerWithAuthAddress else {
+              transaction.hasValidAuthAddressForSigner else {
             return
         }
 
         authAccountInformationViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
                 title: "wallet-connect-transaction-title-auth-address".localized,
-                detail: authAddress.shortAddressDisplay()
+                detail: authAddress
             ),
             isLastElement: !transactionDetail.hasRekeyOrCloseAddress
         )
@@ -105,15 +107,25 @@ class WCAssetAdditionTransactionViewModel {
     }
     
     private func setFeeInformationViewModel(from transaction: WCTransaction) {
-        guard let fee = transaction.transactionDetail?.fee else {
+        guard let transactionDetail = transaction.transactionDetail,
+              let fee = transactionDetail.fee else {
             return
         }
 
         feeInformationViewModel = TitledTransactionAmountInformationViewModel(
             title: "transaction-detail-fee".localized,
             mode: .fee(value: fee),
-            isLastElement: true
+            isLastElement: transactionDetail.hasHighFee
         )
+    }
+
+    private func setFeeWarningViewModel(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail,
+              transactionDetail.hasHighFee else {
+            return
+        }
+
+        feeWarningViewModel = WCTransactionWarningViewModel(warning: .fee)
     }
 
     private func setNoteInformationViewModel(from transaction: WCTransaction) {

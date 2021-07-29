@@ -37,6 +37,8 @@ class WCAssetAdditionTransactionView: WCSingleTransactionView {
 
     private lazy var feeInformationView = TitledTransactionAmountInformationView()
 
+    private lazy var feeWarningView = WCContainedTransactionWarningView()
+
     private lazy var noteInformationView = WCTransactionTextInformationView()
 
     private lazy var rawTransactionInformationView = WCTransactionActionableInformationView()
@@ -72,7 +74,8 @@ extension WCAssetAdditionTransactionView {
     }
 
     private func addBalanceInformationViews() {
-        addBalanceInformationView(feeInformationView)
+        addTransactionInformationView(feeInformationView)
+        addTransactionInformationView(feeWarningView)
     }
 
     private func addDetailedInformationViews() {
@@ -136,6 +139,12 @@ extension WCAssetAdditionTransactionView {
         }
 
         feeInformationView.bind(viewModel.feeInformationViewModel)
+
+        if let feeWarningViewModel = viewModel.feeWarningViewModel {
+            feeWarningView.bind(feeWarningViewModel)
+        } else {
+            feeWarningView.hideViewInStack()
+        }
 
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
             noteInformationView.bind(noteInformationViewModel)

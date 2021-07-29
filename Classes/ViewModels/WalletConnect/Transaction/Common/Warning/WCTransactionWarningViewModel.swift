@@ -32,6 +32,8 @@ class WCTransactionWarningViewModel {
             title = "wallet-connect-transaction-warning-close-algos".localized
         case .closeAsset:
             title = "wallet-connect-transaction-warning-close-asset".localized
+        case .fee:
+            title = "wallet-connect-transaction-warning-close-asset".localized
         }
     }
 }
@@ -40,4 +42,5 @@ enum WCTransactionWarning {
     case rekeyed
     case closeAlgos
     case closeAsset
+    case fee
 }

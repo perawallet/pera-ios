@@ -87,7 +87,7 @@ extension WCTransactionTextInformationView {
 extension WCTransactionTextInformationView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 20.0
-        let minimumOffset: CGFloat = 4.0
+        let minimumOffset: CGFloat = 8.0
         let separatorHeight: CGFloat = 1.0
     }
 }

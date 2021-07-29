@@ -43,6 +43,8 @@ class WCAssetTransactionView: WCSingleTransactionView {
 
     private lazy var feeInformationView = TitledTransactionAmountInformationView()
 
+    private lazy var feeWarningView = WCContainedTransactionWarningView()
+
     private lazy var noteInformationView = WCTransactionTextInformationView()
 
     private lazy var rawTransactionInformationView = WCTransactionActionableInformationView()
@@ -50,7 +52,7 @@ class WCAssetTransactionView: WCSingleTransactionView {
     override func prepareLayout() {
         super.prepareLayout()
         addParticipantInformationViews()
-        addBalanceInformationViews()
+        addTransactionInformationViews()
         addDetailedInformationViews()
     }
 
@@ -63,16 +65,17 @@ extension WCAssetTransactionView {
     private func addParticipantInformationViews() {
         addParticipantInformationView(accountInformationView)
         addParticipantInformationView(assetInformationView)
-        addParticipantInformationView(receiverInformationView)
+        addParticipantInformationView(balanceInformationView)
         addParticipantInformationView(authAccountInformationView)
         addParticipantInformationView(closeWarningInformationView)
         addParticipantInformationView(rekeyWarningInformationView)
     }
 
-    private func addBalanceInformationViews() {
-        addBalanceInformationView(balanceInformationView)
-        addBalanceInformationView(amountInformationView)
-        addBalanceInformationView(feeInformationView)
+    private func addTransactionInformationViews() {
+        addTransactionInformationView(receiverInformationView)
+        addTransactionInformationView(amountInformationView)
+        addTransactionInformationView(feeInformationView)
+        addTransactionInformationView(feeWarningView)
     }
 
     private func addDetailedInformationViews() {
@@ -136,6 +139,12 @@ extension WCAssetTransactionView {
         }
 
         feeInformationView.bind(viewModel.feeInformationViewModel)
+
+        if let feeWarningViewModel = viewModel.feeWarningViewModel {
+            feeWarningView.bind(feeWarningViewModel)
+        } else {
+            feeWarningView.hideViewInStack()
+        }
 
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
             noteInformationView.bind(noteInformationViewModel)

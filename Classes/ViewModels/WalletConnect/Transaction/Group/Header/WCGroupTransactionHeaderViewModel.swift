@@ -25,6 +25,6 @@ class WCGroupTransactionHeaderViewModel {
     }
 
     private func setTitle(from transactionCount: Int) {
-        title = "wallet-connect-transaction-count".localized(transactionCount)
+        title = "wallet-connect-transaction-all-count".localized(transactionCount)
     }
 }
