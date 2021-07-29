@@ -21,7 +21,8 @@ class WCTransactionDetail: Model {
     let fee: Int64?
     let firstValidRound: Int64?
     let lastValidRound: Int64?
-    let genesisHash: String?
+    let genesisHashData: Data?
+    let genesisId: String?
     let note: Data?
 
     private(set) var sender: String?
@@ -57,7 +58,12 @@ class WCTransactionDetail: Model {
         fee = try container.decodeIfPresent(Int64.self, forKey: .fee)
         firstValidRound = try container.decodeIfPresent(Int64.self, forKey: .firstValidRound)
         lastValidRound = try container.decodeIfPresent(Int64.self, forKey: .lastValidRound)
-        genesisHash = try container.decodeIfPresent(String.self, forKey: .genesisHash)
+        if let genesisHashBase64String = try container.decodeIfPresent(String.self, forKey: .genesisHash) {
+            genesisHashData = Data(base64Encoded: genesisHashBase64String)
+        } else {
+            genesisHashData = nil
+        }
+        genesisId = try container.decodeIfPresent(String.self, forKey: .genesisId)
         note = try container.decodeIfPresent(Data.self, forKey: .note)
         type = try container.decodeIfPresent(Transaction.TransferType.self, forKey: .type)
         assetAmount = try container.decodeIfPresent(Int64.self, forKey: .assetAmount)
@@ -97,7 +103,8 @@ class WCTransactionDetail: Model {
         try container.encodeIfPresent(fee, forKey: .fee)
         try container.encodeIfPresent(firstValidRound, forKey: .firstValidRound)
         try container.encodeIfPresent(lastValidRound, forKey: .lastValidRound)
-        try container.encodeIfPresent(genesisHash, forKey: .genesisHash)
+        try container.encodeIfPresent(genesisHashData, forKey: .genesisHash)
+        try container.encodeIfPresent(genesisId, forKey: .genesisId)
         try container.encodeIfPresent(note, forKey: .note)
         try container.encodeIfPresent(sender, forKey: .sender)
         try container.encodeIfPresent(type, forKey: .type)
@@ -191,6 +198,18 @@ extension WCTransactionDetail {
                 appCallOnComplete == .clearState
         )
     }
+
+    var validationAddresses: [String?] {
+        return [sender, receiver, closeAddress, rekeyAddress]
+    }
+
+    var hasHighFee: Bool {
+        guard let fee = fee else {
+            return false
+        }
+
+         return fee > Transaction.Constant.minimumFee
+    }
 }
 
 extension WCTransactionDetail {
@@ -217,6 +236,7 @@ extension WCTransactionDetail {
         case fee = "fee"
         case firstValidRound = "fv"
         case lastValidRound = "lv"
+        case genesisId = "gen"
         case genesisHash = "gh"
         case note = "note"
         case sender = "snd"
@@ -232,5 +252,17 @@ extension WCTransactionDetail {
         case appCallArguments = "apaa"
         case appCallOnComplete = "apan"
         case appCallId = "apid"
+    }
+}
+
+extension WCTransactionDetail: Equatable {
+    static func == (lhs: WCTransactionDetail, rhs: WCTransactionDetail) -> Bool {
+        return lhs.firstValidRound == rhs.firstValidRound &&
+            lhs.lastValidRound == rhs.lastValidRound &&
+            lhs.sender == rhs.sender &&
+            lhs.receiver == rhs.receiver &&
+            lhs.amount == rhs.amount &&
+            lhs.genesisHashData == rhs.genesisHashData &&
+            lhs.type == rhs.type
     }
 }

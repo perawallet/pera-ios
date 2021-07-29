@@ -25,6 +25,8 @@ class WCTransaction: Model {
     let message: String?
     let authAddress: String?
 
+    private(set) var signerAccount: Account?
+
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         signers = try container.decodeIfPresent([String].self, forKey: .signers)
@@ -69,6 +71,68 @@ extension WCTransaction {
         return try? JSONDecoder().decode(WCTransactionDetail.self, from: jsonData)
     }
 
+    func findSignerAccount(in session: Session) {
+        if let authAddress = authAddress {
+            signerAccount = findAccount(authAddress, in: session)
+            return
+        }
+
+        switch signer() {
+        case .sender:
+            if let sender = transactionDetail?.sender {
+                signerAccount = findAccount(sender, in: session)
+                return
+            }
+        case let .current(address):
+            if let address = address {
+                signerAccount = findAccount(address, in: session)
+                return
+            }
+        case .multisig:
+            break
+        case .unsignable:
+            break
+        }
+    }
+
+    private func findAccount(_ address: String, in session: Session) -> Account? {
+        for account in session.accounts where !account.isWatchAccount() {
+            if account.isRekeyed() && (account.address == address || account.authAddress == address) {
+                return findRekeyedAccount(for: account, among: session.accounts)
+            }
+
+            if account.isLedger() && account.ledgerDetail != nil && account.address == address {
+                return account
+            }
+
+            if session.privateData(for: address) != nil && account.address == address {
+                return account
+            }
+        }
+
+        return nil
+    }
+
+    private func findRekeyedAccount(for account: Account, among accounts: [Account]) -> Account? {
+        guard let authAddress = account.authAddress else {
+            return nil
+        }
+
+        if account.rekeyDetail?[authAddress] != nil {
+            return account
+        } else {
+            if let authAccount = accounts.first(where: { account -> Bool in
+                authAddress == account.address
+            }),
+            let ledgerDetail = authAccount.ledgerDetail {
+                account.addRekeyDetail(ledgerDetail, for: authAddress)
+                return account
+            }
+
+            return nil
+        }
+    }
+
     func signer() -> Signer {
         guard let signers = signers else {
             return .sender
@@ -83,17 +147,62 @@ extension WCTransaction {
         }
     }
 
-    var hasSameSignerWithAuthAddress: Bool {
+    var hasValidAuthAddressForSigner: Bool {
         switch signer() {
         case let .current(address):
+            guard let authAddress = authAddress else {
+                return true
+            }
+
             return authAddress == address
         default:
-            return false
+            return true
         }
     }
 
-    var isValidAuthAddress: Bool {
-        return authAddress == transactionDetail?.sender || hasSameSignerWithAuthAddress
+    var hasValidSignerAddress: Bool {
+        switch signer() {
+        case let .current(address):
+            guard let address = address else {
+                return false
+            }
+
+            return address == transactionDetail?.sender
+        default:
+            return true
+        }
+    }
+
+    var isMultisig: Bool {
+        switch signer() {
+        case .multisig:
+            return true
+        default:
+            break
+        }
+
+        return multisigMetadata != nil
+    }
+
+    var validationAddresses: [String?] {
+        var addresses: [String?] = [authAddress]
+
+        if let transactionDetail = transactionDetail {
+            addresses.append(contentsOf: transactionDetail.validationAddresses)
+        }
+
+        switch signer() {
+        case let .current(address):
+            addresses.append(address)
+        default:
+            break
+        }
+
+        return addresses
+    }
+
+    func isInTheSameNetwork(with params: TransactionParams) -> Bool {
+        return transactionDetail?.genesisId == params.genesisId && transactionDetail?.genesisHashData == params.genesisHashData
     }
 }
 
@@ -103,5 +212,11 @@ extension WCTransaction {
         case unsignable // Transaction should not be signed
         case current(address: String?) // Transaction should be signed by the address in the list
         case multisig // Transaction requires multisignature
+    }
+}
+
+extension WCTransaction: Equatable {
+    static func == (lhs: WCTransaction, rhs: WCTransaction) -> Bool {
+        return lhs.unparsedTransactionDetail == rhs.unparsedTransactionDetail && lhs.transactionDetail == rhs.transactionDetail
     }
 }

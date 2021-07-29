@@ -42,17 +42,8 @@ extension TransactionSignRequestHandler {
             transactionOption = try? request.parameter(of: WCTransactionOption.self, at: 1)
         }
 
-        // Check whether it's a group transaction
-        if transactions.count > 1 {
-            DispatchQueue.main.async {
-                self.delegate?.walletConnectRequestHandler(self, shouldSign: transactions, for: request, with: transactionOption)
-            }
-        } else {
-            if let transaction = transactions.first {
-                DispatchQueue.main.async {
-                    self.delegate?.walletConnectRequestHandler(self, shouldSign: transaction, for: request, with: transactionOption)
-                }
-            }
+        DispatchQueue.main.async {
+            self.delegate?.walletConnectRequestHandler(self, shouldSign: transactions, for: request, with: transactionOption)
         }
     }
 }
