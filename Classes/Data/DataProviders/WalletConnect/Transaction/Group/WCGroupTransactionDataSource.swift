@@ -19,12 +19,16 @@ import UIKit
 
 class WCGroupTransactionDataSource: NSObject {
 
+    private let session: Session?
     private let transactions: [WCTransaction]
     private let walletConnector: WalletConnector
+    private let account: Account
 
-    init(transactions: [WCTransaction], walletConnector: WalletConnector) {
+    init(session: Session?, transactions: [WCTransaction], walletConnector: WalletConnector, account: Account) {
+        self.session = session
         self.transactions = transactions
         self.walletConnector = walletConnector
+        self.account = account
         super.init()
     }
 }
@@ -43,7 +47,13 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
         }
 
         if let transaction = transaction(at: indexPath.item) {
-            cell.bind(WCGroupTransactionItemViewModel(transaction: transaction))
+            cell.bind(
+                WCGroupTransactionItemViewModel(
+                    transaction: transaction,
+                    account: account,
+                    assetDetail: assetDetail(from: transaction)
+                )
+            )
         }
 
         return cell
@@ -74,5 +84,14 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
 extension WCGroupTransactionDataSource {
     func transaction(at index: Int) -> WCTransaction? {
         return transactions[safe: index]
+    }
+
+    private func assetDetail(from transaction: WCTransaction) -> AssetDetail? {
+        guard let session = session,
+              let assetId = transaction.transactionDetail?.assetId else {
+            return nil
+        }
+
+        return session.assetDetails[assetId]
     }
 }

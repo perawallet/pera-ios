@@ -54,7 +54,7 @@ extension WCGroupTransactionHeaderView {
 
 extension WCGroupTransactionHeaderView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 4.0
+        let topInset: CGFloat = 8.0
         let horizontalInset: CGFloat = 20.0
         let titleLeadingInset: CGFloat = 24.0
     }

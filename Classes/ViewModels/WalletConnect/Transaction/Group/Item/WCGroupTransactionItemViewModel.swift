@@ -25,13 +25,13 @@ class WCGroupTransactionItemViewModel {
     private(set) var assetName: String?
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
-    init(transaction: WCTransaction) {
+    init(transaction: WCTransaction, account: Account, assetDetail: AssetDetail?) {
         setHasWarning(from: transaction)
-        setTitle(from: transaction)
+        setTitle(from: transaction, and: account)
         setIsAlgos(from: transaction)
-        setAmount(from: transaction)
-        setAssetName(from: transaction)
-        setAccountInformationViewModel(from: transaction)
+        setAmount(from: transaction, and: assetDetail)
+        setAssetName(from: assetDetail)
+        setAccountInformationViewModel(from: account, with: assetDetail)
     }
 
     private func setHasWarning(from transaction: WCTransaction) {
@@ -39,11 +39,32 @@ class WCGroupTransactionItemViewModel {
             return
         }
 
-        hasWarning = transactionDetail.isCloseTransaction || transactionDetail.isRekeyTransaction
+        hasWarning = transactionDetail.hasRekeyOrCloseAddress
     }
 
-    private func setTitle(from transaction: WCTransaction) {
-        title = ""
+    private func setTitle(from transaction: WCTransaction, and account: Account) {
+        guard let transactionDetail = transaction.transactionDetail else {
+            return
+        }
+
+        switch transactionDetail.transactionType(for: account) {
+        case .algos:
+            let receiver = transactionDetail.receiver?.shortAddressDisplay()
+            title = "wallet-connect-transaction-group-algos-title".localized(params: receiver ?? "")
+        case .asset:
+            let receiver = transactionDetail.receiver?.shortAddressDisplay()
+            title = "wallet-connect-transaction-group-asset-title".localized(params: receiver ?? "")
+        case .assetAddition:
+            if let assetId = transactionDetail.assetId {
+                title = "wallet-connect-transaction-group-asset-addition-title".localized(params: "\(assetId)")
+            }
+        case .appCall:
+            if let appCallId = transactionDetail.appCallId {
+                title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
+            }
+        default:
+            break
+        }
     }
 
     private func setIsAlgos(from transaction: WCTransaction) {
@@ -54,15 +75,28 @@ class WCGroupTransactionItemViewModel {
         isAlgos = transactionDetail.isAlgosTransaction
     }
 
-    private func setAmount(from transaction: WCTransaction) {
-        amount = ""
+    private func setAmount(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
+        guard let transactionDetail = transaction.transactionDetail else {
+            return
+        }
+
+        if let assetDetail = assetDetail {
+            let decimals = assetDetail.fractionDecimals
+            amount = transactionDetail.amount.assetAmount(fromFraction: decimals).toFractionStringForLabel(fraction: decimals)
+        } else {
+            amount = transactionDetail.amount.toAlgos.toAlgosStringForLabel
+        }
     }
 
-    private func setAssetName(from transaction: WCTransaction) {
-        assetName = ""
+    private func setAssetName(from assetDetail: AssetDetail?) {
+        guard let assetDetail = assetDetail else {
+            return
+        }
+
+        assetName = assetDetail.getDisplayNames().0
     }
 
-    private func setAccountInformationViewModel(from transaction: WCTransaction) {
-        
+    private func setAccountInformationViewModel(from account: Account, with assetDetail: AssetDetail?) {
+        accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(account: account, assetDetail: assetDetail)
     }
 }

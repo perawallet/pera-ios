@@ -58,7 +58,7 @@ extension WCGroupTransactionLayout: UICollectionViewDelegateFlowLayout {
 extension WCGroupTransactionLayout {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let cellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 130.0)
-        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 164.0)
+        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 56.0)
     }
 }
 
