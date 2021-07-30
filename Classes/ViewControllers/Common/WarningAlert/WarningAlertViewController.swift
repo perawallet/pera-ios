@@ -23,30 +23,37 @@ class WarningAlertViewController: BaseViewController {
         return false
     }
     
-    weak var delegate: WarningModalViewControllerDelegate?
+    weak var delegate: WarningAlertViewControllerDelegate?
     
-    private lazy var warningModalView = WarningAlertView()
-    
+    private lazy var warningAlertView = WarningAlertView()
+        
     override func configureAppearance() {
+        super.configureAppearance()
         view.backgroundColor = Colors.Background.secondary
     }
     
     override func linkInteractors() {
         super.linkInteractors()
-        warningModalView.delegate = self
+        warningAlertView.delegate = self
     }
     
     override func prepareLayout() {
-        prepareWholeScreenLayoutFor(warningModalView)
+        prepareWholeScreenLayoutFor(warningAlertView)
     }
 }
 
-extension WarningAlertViewController: WarningModalViewDelegate {
-    func warningModalViewDidTakeAction(_ warningModalView: WarningAlertView) {
-        delegate?.warningModalViewDidTakeAction(warningModalView)
+extension WarningAlertViewController {
+    func bind(_ viewModel: WarningAlertViewModel) {
+        warningAlertView.bind(viewModel)
     }
 }
 
-protocol WarningModalViewControllerDelegate: AnyObject {
-    func warningModalViewDidTakeAction(_ warningModalView: WarningAlertView)
+extension WarningAlertViewController: WarningAlertViewDelegate {
+    func warningalertViewDidTakeAction(_ warningAlertView: WarningAlertView) {
+        delegate?.warningModalViewDidTakeAction(self)
+    }
+}
+
+protocol WarningAlertViewControllerDelegate: AnyObject {
+    func warningModalViewDidTakeAction(_ warningAlertViewController: WarningAlertViewController)
 }

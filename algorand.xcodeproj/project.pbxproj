@@ -270,15 +270,18 @@
 		17F9E9222257895A004CDF24 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E9212257895A004CDF24 /* AsyncOperation.swift */; };
 		17F9E924225789E7004CDF24 /* AccountFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E923225789E7004CDF24 /* AccountFetchOperation.swift */; };
 		17F9E927225796DA004CDF24 /* AccountManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E926225796DA004CDF24 /* AccountManager.swift */; };
-		18058CAA26B150CE009E89D8 /* WarningAlertModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F34B2F26B149C3007488DF /* WarningAlertModelView.swift */; };
-		18058CAB26B150CE009E89D8 /* WarningAlertModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F34B2F26B149C3007488DF /* WarningAlertModelView.swift */; };
+		18058CAA26B150CE009E89D8 /* WarningAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F34B2F26B149C3007488DF /* WarningAlertViewModel.swift */; };
+		18058CAB26B150CE009E89D8 /* WarningAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F34B2F26B149C3007488DF /* WarningAlertViewModel.swift */; };
 		18138464269F234E00AEEC2F /* WarningAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18138463269F234E00AEEC2F /* WarningAlertView.swift */; };
 		18138467269F2E2500AEEC2F /* WarningAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18138466269F2E2500AEEC2F /* WarningAlertViewController.swift */; };
 		186C6F6626A025EE00E28AE1 /* WarningAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18138463269F234E00AEEC2F /* WarningAlertView.swift */; };
 		186C6F6726A025EE00E28AE1 /* WarningAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18138463269F234E00AEEC2F /* WarningAlertView.swift */; };
 		186C6F6826A025F500E28AE1 /* WarningAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18138466269F2E2500AEEC2F /* WarningAlertViewController.swift */; };
 		186C6F6926A025F500E28AE1 /* WarningAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18138466269F2E2500AEEC2F /* WarningAlertViewController.swift */; };
-		18F34B3026B149C3007488DF /* WarningAlertModelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F34B2F26B149C3007488DF /* WarningAlertModelView.swift */; };
+		18E9EF0426B4114200F2192F /* WarningAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E9EF0326B4114200F2192F /* WarningAlert.swift */; };
+		18E9EF0526B4124800F2192F /* WarningAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E9EF0326B4114200F2192F /* WarningAlert.swift */; };
+		18E9EF0626B4124900F2192F /* WarningAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18E9EF0326B4114200F2192F /* WarningAlert.swift */; };
+		18F34B3026B149C3007488DF /* WarningAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F34B2F26B149C3007488DF /* WarningAlertViewModel.swift */; };
 		2B01E2C524EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01E2C424EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift */; };
 		2B01E2C624EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01E2C424EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift */; };
 		2B01E2C824EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */; };
@@ -2512,7 +2515,8 @@
 		17F9E926225796DA004CDF24 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		18138463269F234E00AEEC2F /* WarningAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningAlertView.swift; sourceTree = "<group>"; };
 		18138466269F2E2500AEEC2F /* WarningAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningAlertViewController.swift; sourceTree = "<group>"; };
-		18F34B2F26B149C3007488DF /* WarningAlertModelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningAlertModelView.swift; sourceTree = "<group>"; };
+		18E9EF0326B4114200F2192F /* WarningAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningAlert.swift; sourceTree = "<group>"; };
+		18F34B2F26B149C3007488DF /* WarningAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningAlertViewModel.swift; sourceTree = "<group>"; };
 		1FBA4CE73FF1117B608D16D7 /* Pods-algorand-staging.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.app store.xcconfig"; path = "Target Support Files/Pods-algorand-staging/Pods-algorand-staging.app store.xcconfig"; sourceTree = "<group>"; };
 		2B01E2C424EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionListLayout.swift; sourceTree = "<group>"; };
 		2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionDataSource.swift; sourceTree = "<group>"; };
@@ -3517,10 +3521,18 @@
 			path = WarningModal;
 			sourceTree = "<group>";
 		};
+		18E9EF0226B4111C00F2192F /* WarningAlert */ = {
+			isa = PBXGroup;
+			children = (
+				18E9EF0326B4114200F2192F /* WarningAlert.swift */,
+			);
+			path = WarningAlert;
+			sourceTree = "<group>";
+		};
 		18F34B2E26B149AA007488DF /* WarningAlert */ = {
 			isa = PBXGroup;
 			children = (
-				18F34B2F26B149C3007488DF /* WarningAlertModelView.swift */,
+				18F34B2F26B149C3007488DF /* WarningAlertViewModel.swift */,
 			);
 			path = WarningAlert;
 			sourceTree = "<group>";
@@ -3643,6 +3655,7 @@
 		2B0F3D8723C8D1BE006BB01B /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				18E9EF0226B4111C00F2192F /* WarningAlert */,
 				2B857630247E987C002F9DA8 /* QR */,
 				2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */,
 				2BD36DF126810E0600C57728 /* TitledInformation.swift */,
@@ -10361,6 +10374,7 @@
 				2BB6EE522392694800CF7874 /* Array+Additions.swift in Sources */,
 				2BE93709245B38ED00322C1E /* QRCreationView.swift in Sources */,
 				2B9EF2DF25D3E222004BCCC4 /* PassphraseMnemonicViewModel.swift in Sources */,
+				18E9EF0626B4124900F2192F /* WarningAlert.swift in Sources */,
 				17BD4EF32292F1260003E49A /* QRSelectableLabel.swift in Sources */,
 				2BCBBAE324A66A89002CD56F /* TransactionFilterViewController.swift in Sources */,
 				2BA4B3D72673F0B20041586B /* WCConnectionApprovalView.swift in Sources */,
@@ -10384,7 +10398,7 @@
 				2B256FF923F1BF700005CBA2 /* SendAssetTransactionViewController.swift in Sources */,
 				2B3A34E7246EDA6C001C8F22 /* TransactionAccountInformationView.swift in Sources */,
 				2BAD5591239FB1B10037079F /* PendingAssetCell.swift in Sources */,
-				18058CAB26B150CE009E89D8 /* WarningAlertModelView.swift in Sources */,
+				18058CAB26B150CE009E89D8 /* WarningAlertViewModel.swift in Sources */,
 				2B56715C24007B3F0037FCFA /* LedgerTutorialView.swift in Sources */,
 				2B7E3018267A253D00E89EE3 /* WCSessionListEmptyView.swift in Sources */,
 				17BD4EFB2292F1260003E49A /* TransactionAmountView.swift in Sources */,
@@ -11113,6 +11127,7 @@
 				2B0F62FD24EC129D00DA22A6 /* LedgerDeviceListViewController.swift in Sources */,
 				2B0F62FE24EC129D00DA22A6 /* LedgerDeviceListViewModel.swift in Sources */,
 				2B9EF2DE25D3E222004BCCC4 /* PassphraseMnemonicViewModel.swift in Sources */,
+				18E9EF0526B4124800F2192F /* WarningAlert.swift in Sources */,
 				2B0F62FF24EC129D00DA22A6 /* Array+Additions.swift in Sources */,
 				2B85F3F9257A723C00C871A5 /* LedgerAccountFetchOperation.swift in Sources */,
 				2BA4B3D62673F0B20041586B /* WCConnectionApprovalView.swift in Sources */,
@@ -11136,7 +11151,7 @@
 				2B0F631124EC129D00DA22A6 /* BLEConnectionManager.swift in Sources */,
 				2B0F631224EC129D00DA22A6 /* TransactionSendDraft.swift in Sources */,
 				2B0F631324EC129D00DA22A6 /* SendAssetTransactionViewController.swift in Sources */,
-				18058CAA26B150CE009E89D8 /* WarningAlertModelView.swift in Sources */,
+				18058CAA26B150CE009E89D8 /* WarningAlertViewModel.swift in Sources */,
 				2B0F631424EC129D00DA22A6 /* TransactionAccountInformationView.swift in Sources */,
 				2B7E3017267A253D00E89EE3 /* WCSessionListEmptyView.swift in Sources */,
 				2B0F631524EC129D00DA22A6 /* PendingAssetCell.swift in Sources */,
@@ -11300,7 +11315,7 @@
 				2BF71910224ECFAF001E8420 /* UserInformationView.swift in Sources */,
 				2B656E9F224BCB130064A49B /* AccountListViewModel.swift in Sources */,
 				2B3A34E3246EDA50001C8F22 /* TransactionAccountNameView.swift in Sources */,
-				18F34B3026B149C3007488DF /* WarningAlertModelView.swift in Sources */,
+				18F34B3026B149C3007488DF /* WarningAlertViewModel.swift in Sources */,
 				18138464269F234E00AEEC2F /* WarningAlertView.swift in Sources */,
 				2B9EEADF264E7527007A112D /* RewardCalculator.swift in Sources */,
 				2BE93705245A2F4B00322C1E /* UIView+Shadow.swift in Sources */,
@@ -11865,6 +11880,7 @@
 				2BF811AC25E5B1AE00D6B406 /* TransactionTutorialViewController.swift in Sources */,
 				2BB6EE512392694800CF7874 /* Array+Additions.swift in Sources */,
 				2BE93708245B38ED00322C1E /* QRCreationView.swift in Sources */,
+				18E9EF0426B4114200F2192F /* WarningAlert.swift in Sources */,
 				2B9EF2DD25D3E222004BCCC4 /* PassphraseMnemonicViewModel.swift in Sources */,
 				17E2E3C722524E4C0065957A /* QRSelectableLabel.swift in Sources */,
 				2BCBBAE224A66A89002CD56F /* TransactionFilterViewController.swift in Sources */,
