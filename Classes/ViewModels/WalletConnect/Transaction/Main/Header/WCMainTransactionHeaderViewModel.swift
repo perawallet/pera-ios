@@ -40,6 +40,8 @@ class WCMainTransactionHeaderViewModel {
     }
 
     private func setTitle(from transactionCount: Int) {
-        title = "wallet-connect-transaction-all-count".localized(transactionCount)
+        title = transactionCount == 1 ?
+            "wallet-connect-transaction-all-count-singular".localized :
+            "wallet-connect-transaction-all-count".localized(transactionCount)
     }
 }

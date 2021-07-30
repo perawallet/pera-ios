@@ -131,6 +131,12 @@ extension WCMainTransactionView {
 }
 
 extension WCMainTransactionView {
+    func bind(_ viewModel: WCMainTransactionViewModel) {
+        confirmButton.setTitle(viewModel.buttonTitle, for: .normal)
+    }
+}
+
+extension WCMainTransactionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let buttonInset: CGFloat = 16.0
         let buttonHeight: CGFloat = 52.0

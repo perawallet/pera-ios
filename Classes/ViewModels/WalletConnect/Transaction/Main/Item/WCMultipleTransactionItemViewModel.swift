@@ -25,6 +25,8 @@ class WCMultipleTransactionItemViewModel {
     }
 
     private func setDetail(from transactions: [WCTransaction]) {
-        detail = "wallet-connect-transaction-count".localized(params: transactions.count)
+        detail = transactions.count == 1 ?
+            "wallet-connect-transaction-count-singular".localized :
+            "wallet-connect-transaction-count".localized(params: transactions.count)
     }
 }

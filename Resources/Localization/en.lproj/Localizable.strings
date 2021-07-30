@@ -656,7 +656,9 @@
 "wallet-connect-transaction-title-app-call" = "App Call Request";
 "wallet-connect-transaction-title-multiple" = "Multiple Transaction Request";
 "wallet-connect-transaction-all-count" = "All transactions (%d)";
+"wallet-connect-transaction-all-count-singular" = "All transaction (1)";
 "wallet-connect-transaction-count" = "%d transactions";
+"wallet-connect-transaction-count-singular" = "1 transaction";
 "wallet-connect-transaction-title-raw" = "Raw Txns";
 "wallet-connect-transaction-detail-raw" = "Show Raw Transaction";
 "wallet-connect-transaction-title-explorer" = "AlgoExplorer";

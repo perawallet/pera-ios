@@ -35,7 +35,7 @@ class WCGroupTransactionItemView: BaseView {
     private lazy var senderLabel: UILabel = {
         UILabel()
             .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
+            .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
     }()
@@ -94,7 +94,8 @@ extension WCGroupTransactionItemView {
 
         senderStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.defaultInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.defaultInset)
             make.height.equalTo(layout.current.senderStackHeight)
         }
 
