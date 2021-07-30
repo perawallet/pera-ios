@@ -21,10 +21,8 @@ class WarningAlertView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    weak var delegate: WarningModalViewDelegate?
-    
-    private var buttonTitle: String?
-    
+    weak var delegate: WarningAlertViewDelegate?
+        
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
@@ -43,7 +41,7 @@ class WarningAlertView: BaseView {
             .withAlignment(.center)
     }()
     
-    private lazy var actionButton = MainButton(title: buttonTitle ?? "")
+    private lazy var actionButton = MainButton(title: "")
     
     override func prepareLayout() {
         setupTitleLabelLayout()
@@ -107,19 +105,16 @@ extension WarningAlertView {
 extension WarningAlertView {
     @objc
     private func notifyDelegateToTakeAction() {
-        delegate?.warningModalViewDidTakeAction(self)
+        delegate?.warningalertViewDidTakeAction(self)
     }
 }
 
 extension WarningAlertView {
-    func bind(_ viewModel: WarningAlertModelView?) {
-        guard let viewModel = viewModel else {
-            return
-        }
+    func bind(_ viewModel: WarningAlertViewModel) {
         titleLabel.text = viewModel.title
         imageView.image = viewModel.image
         descriptionLabel.text = viewModel.description
-        buttonTitle = viewModel.actionTitle
+        actionButton.setTitle(viewModel.actionTitle, for: .normal)
     }
 }
 
@@ -133,6 +128,6 @@ extension WarningAlertView {
     }
 }
 
-protocol WarningModalViewDelegate: AnyObject {
-    func warningModalViewDidTakeAction(_ warningModalView: WarningAlertView)
+protocol WarningAlertViewDelegate: AnyObject {
+    func warningalertViewDidTakeAction(_ warningModalView: WarningAlertView)
 }
