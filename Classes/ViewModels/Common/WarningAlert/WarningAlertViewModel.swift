@@ -17,16 +17,32 @@
 
 import UIKit
 
-class WarningAlertModelView {
+class WarningAlertViewModel {
     private(set) var title: String?
     private(set) var image: UIImage?
     private(set) var description: String?
     private(set) var actionTitle: String?
     
-    init(title: String, image: UIImage, description: String, actionTitle: String) {
-        self.title = title
-        self.image = image
-        self.description = description
-        self.actionTitle = actionTitle
+    init(warningAlert: WarningAlert) {
+        setTitle(from: warningAlert)
+        setImage(from: warningAlert)
+        setDescription(from: warningAlert)
+        setActionTitle(from: warningAlert)
+    }
+    
+    private func setTitle(from warningAlert: WarningAlert) {
+        self.title = warningAlert.title
+    }
+    
+    private func setImage(from warningAlert: WarningAlert) {
+        self.image = warningAlert.image
+    }
+    
+    private func setDescription(from warningAlert: WarningAlert) {
+        self.description = warningAlert.description
+    }
+    
+    private func setActionTitle(from warningAlert: WarningAlert) {
+        self.actionTitle = warningAlert.actionTitle
     }
 }
