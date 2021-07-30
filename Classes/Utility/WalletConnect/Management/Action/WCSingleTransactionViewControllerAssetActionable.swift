@@ -39,12 +39,65 @@ extension WCSingleTransactionViewControllerAssetActionable where Self: WCSingleT
     }
 
     func displayAssetMetadata(_ assetDetail: AssetDetail?) {
-        guard let transactionData = try? JSONEncoder().encode(assetDetail),
+        guard let assetDetail = assetDetail,
+              let transactionData = try? JSONEncoder().encode(AssetDetailPresenter(assetDetail: assetDetail)),
               let object = try? JSONSerialization.jsonObject(with: transactionData, options: []),
               let data = try? JSONSerialization.data(withJSONObject: object, options: [.prettyPrinted]) else {
             return
         }
 
-        open(.jsonDisplay(jsonData: data, title: "wallet-connect-raw-transaction-title".localized), by: .present)
+        open(.jsonDisplay(jsonData: data, title: "wallet-connect-transaction-title-metadata".localized), by: .present)
+    }
+}
+
+private struct AssetDetailPresenter: Encodable {
+    let creator: String
+    let total: UInt64
+    let isDefaultFrozen: Bool?
+    let unitName: String?
+    let assetName: String?
+    let url: String?
+    let managerKey: String?
+    let reserveAddress: String?
+    let freezeAddress: String?
+    let clawBackAddress: String?
+    let fractionDecimals: Int
+    let id: Int64
+    var isDeleted: Bool?
+    var isVerified: Bool = false
+
+    init(assetDetail: AssetDetail) {
+        id = assetDetail.id
+        creator = assetDetail.creator
+        total = assetDetail.total
+        isDefaultFrozen = assetDetail.isDefaultFrozen
+        unitName = assetDetail.unitName
+        assetName = assetDetail.assetName
+        url = assetDetail.url
+        managerKey = assetDetail.managerKey
+        reserveAddress = assetDetail.reserveAddress
+        freezeAddress = assetDetail.freezeAddress
+        clawBackAddress = assetDetail.clawBackAddress
+        fractionDecimals = assetDetail.fractionDecimals
+        isDeleted = assetDetail.isDeleted
+        isVerified = assetDetail.isVerified
+    }
+}
+
+extension AssetDetailPresenter {
+    private enum CodingKeys: String, CodingKey {
+        case id = "index"
+        case total = "total"
+        case isDefaultFrozen = "default-frozen"
+        case unitName = "unit-name"
+        case assetName = "name"
+        case url = "url"
+        case managerKey = "manager"
+        case reserveAddress = "reserve"
+        case freezeAddress = "freeze"
+        case clawBackAddress = "clawback"
+        case isVerified = "is_verified"
+        case fractionDecimals = "decimals"
+        case isDeleted = "deleted"
     }
 }
