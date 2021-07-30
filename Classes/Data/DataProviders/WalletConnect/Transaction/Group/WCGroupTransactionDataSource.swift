@@ -22,13 +22,11 @@ class WCGroupTransactionDataSource: NSObject {
     private let session: Session?
     private let transactions: [WCTransaction]
     private let walletConnector: WalletConnector
-    private let account: Account
 
-    init(session: Session?, transactions: [WCTransaction], walletConnector: WalletConnector, account: Account) {
+    init(session: Session?, transactions: [WCTransaction], walletConnector: WalletConnector) {
         self.session = session
         self.transactions = transactions
         self.walletConnector = walletConnector
-        self.account = account
         super.init()
     }
 }
@@ -47,6 +45,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
         }
 
         if let transaction = transaction(at: indexPath.item) {
+            let account = session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender) 
             cell.bind(
                 WCGroupTransactionItemViewModel(
                     transaction: transaction,

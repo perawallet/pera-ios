@@ -25,21 +25,18 @@ class WCMainTransactionDataSource: NSObject {
     private let transactionRequest: WalletConnectRequest
     let transactionOption: WCTransactionOption?
     private(set) var groupedTransactions: [Int64: [WCTransaction]] = [:]
-    private let account: Account
     private let session: Session?
 
     init(
         transactions: [WCTransaction],
         transactionRequest: WalletConnectRequest,
         transactionOption: WCTransactionOption?,
-        account: Account,
         session: Session?,
         walletConnector: WalletConnector
     ) {
         self.walletConnector = walletConnector
         self.transactionRequest = transactionRequest
         self.transactionOption = transactionOption
-        self.account = account
         self.session = session
         super.init()
         groupTransactions(transactions)
@@ -112,6 +109,7 @@ extension WCMainTransactionDataSource {
 
         if let transactions = transactions(at: indexPath.item),
            let transaction = transactions.first {
+            let account = session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender) 
             cell.bind(
                 WCGroupTransactionItemViewModel(
                     transaction: transaction,

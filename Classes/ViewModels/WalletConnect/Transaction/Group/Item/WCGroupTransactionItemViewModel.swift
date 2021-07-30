@@ -25,7 +25,7 @@ class WCGroupTransactionItemViewModel {
     private(set) var assetName: String?
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
-    init(transaction: WCTransaction, account: Account, assetDetail: AssetDetail?) {
+    init(transaction: WCTransaction, account: Account?, assetDetail: AssetDetail?) {
         setHasWarning(from: transaction)
         setTitle(from: transaction, and: account)
         setIsAlgos(from: transaction)
@@ -42,7 +42,7 @@ class WCGroupTransactionItemViewModel {
         hasWarning = transactionDetail.hasRekeyOrCloseAddress
     }
 
-    private func setTitle(from transaction: WCTransaction, and account: Account) {
+    private func setTitle(from transaction: WCTransaction, and account: Account?) {
         guard let transactionDetail = transaction.transactionDetail else {
             return
         }
@@ -96,7 +96,7 @@ class WCGroupTransactionItemViewModel {
         assetName = assetDetail.getDisplayNames().0
     }
 
-    private func setAccountInformationViewModel(from account: Account, with assetDetail: AssetDetail?) {
+    private func setAccountInformationViewModel(from account: Account?, with assetDetail: AssetDetail?) {
         accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(account: account, assetDetail: assetDetail)
     }
 }

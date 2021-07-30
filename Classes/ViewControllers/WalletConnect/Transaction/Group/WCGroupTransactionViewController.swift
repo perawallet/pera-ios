@@ -25,24 +25,20 @@ class WCGroupTransactionViewController: BaseViewController {
     private lazy var dataSource = WCGroupTransactionDataSource(
         session: session,
         transactions: transactions,
-        walletConnector: walletConnector,
-        account: account
+        walletConnector: walletConnector
     )
 
     private lazy var layoutBuilder = WCGroupTransactionLayout(dataSource: dataSource)
 
     private let transactions: [WCTransaction]
-    private let account: Account
     private let transactionRequest: WalletConnectRequest
 
     init(
         transactions: [WCTransaction],
-        account: Account,
         transactionRequest: WalletConnectRequest,
         configuration: ViewControllerConfiguration
     ) {
         self.transactions = transactions
-        self.account = account
         self.transactionRequest = transactionRequest
         super.init(configuration: configuration)
     }

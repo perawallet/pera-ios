@@ -123,12 +123,13 @@ class WCTransactionDetail: Model {
 }
 
 extension WCTransactionDetail {
-    func transactionType(for account: Account) -> WCTransactionType {
+    func transactionType(for account: Account?) -> WCTransactionType {
         if isAlgosTransaction {
             return .algos
         }
 
-        if isAssetAdditionTransaction(for: account) {
+        if let account = account,
+           isAssetAdditionTransaction(for: account) {
             return .assetAddition
         }
 

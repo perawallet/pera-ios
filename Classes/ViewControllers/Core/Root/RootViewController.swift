@@ -148,12 +148,6 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         for request: WalletConnectRequest,
         with transactionOption: WCTransactionOption?
     ) {
-        guard let transactionDetail = transactions.first?.transactionDetail,
-              let account = appConfiguration.session.accounts.first(of: \.address, equalsTo: transactionDetail.sender) else {
-            appConfiguration.walletConnector.rejectTransactionRequest(request, with: .unauthorized)
-            return
-        }
-
         let fullScreenPresentation = Screen.Transition.Open.customPresent(
             presentationStyle: .fullScreen,
             transitionStyle: nil,
@@ -163,7 +157,6 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         open(
             .wcMainTransaction(
                 transactions: transactions,
-                account: account,
                 transactionRequest: request,
                 transactionOption: transactionOption
             ),

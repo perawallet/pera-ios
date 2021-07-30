@@ -395,10 +395,9 @@ class Router {
                 message: message,
                 configuration: configuration
             )
-        case let .wcMainTransaction(transactions, account, transactionRequest, transactionOption):
+        case let .wcMainTransaction(transactions, transactionRequest, transactionOption):
             viewController = WCMainTransactionViewController(
                 transactions: transactions,
-                account: account,
                 transactionRequest: transactionRequest,
                 transactionOption: transactionOption,
                 configuration: configuration
@@ -424,10 +423,9 @@ class Router {
                 transactionRequest: transactionRequest,
                 configuration: configuration
             )
-        case let .wcGroupTransaction(transactions, account, transactionRequest):
+        case let .wcGroupTransaction(transactions, transactionRequest):
             viewController = WCGroupTransactionViewController(
                 transactions: transactions,
-                account: account,
                 transactionRequest: transactionRequest,
                 configuration: configuration
             )
