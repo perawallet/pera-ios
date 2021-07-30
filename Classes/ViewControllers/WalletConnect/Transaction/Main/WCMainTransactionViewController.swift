@@ -23,11 +23,18 @@ class WCMainTransactionViewController: BaseViewController {
 
     private lazy var mainTransactionView = WCMainTransactionView()
 
+    private lazy var dappMessageModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .scroll
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 350.0))
+    )
+
     private lazy var dataSource = WCMainTransactionDataSource(
         transactions: transactions,
         transactionRequest: transactionRequest,
         transactionOption: transactionOption,
-        account: account,
         session: session,
         walletConnector: walletConnector
     )
@@ -42,7 +49,6 @@ class WCMainTransactionViewController: BaseViewController {
     }()
 
     private let transactions: [WCTransaction]
-    private let account: Account
     private let transactionRequest: WalletConnectRequest
     private let wcSession: WCSession?
     private let transactionOption: WCTransactionOption?
@@ -51,13 +57,11 @@ class WCMainTransactionViewController: BaseViewController {
 
     init(
         transactions: [WCTransaction],
-        account: Account,
         transactionRequest: WalletConnectRequest,
         transactionOption: WCTransactionOption?,
         configuration: ViewControllerConfiguration
     ) {
         self.transactions = transactions
-        self.account = account
         self.transactionRequest = transactionRequest
         self.transactionOption = transactionOption
         self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url))
@@ -73,7 +77,7 @@ class WCMainTransactionViewController: BaseViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if !account.requiresLedgerConnection() {
+        if !transactions.allSatisfy({ ($0.signerAccount?.requiresLedgerConnection() ?? false) }) {
             return
         }
 
@@ -96,6 +100,11 @@ class WCMainTransactionViewController: BaseViewController {
 
     override func prepareLayout() {
         prepareWholeScreenLayoutFor(mainTransactionView)
+    }
+
+    override func bindData() {
+        super.bindData()
+        mainTransactionView.bind(WCMainTransactionViewModel(transactions: transactions))
     }
 }
 
@@ -207,7 +216,7 @@ extension WCMainTransactionViewController: WCMainTransactionLayoutDelegate {
             return
         }
 
-        open(.wcGroupTransaction(transactions: transactions, account: account, transactionRequest: transactionRequest), by: .push)
+        open(.wcGroupTransaction(transactions: transactions, transactionRequest: transactionRequest), by: .push)
     }
 }
 
@@ -215,20 +224,22 @@ extension WCMainTransactionViewController: WalletConnectSingleTransactionRequest
 
 extension WCMainTransactionViewController: AssetCachable {
     private func getAssetDetailsIfNeeded() {
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        for (index, transaction) in transactions.enumerated() where transaction.transactionDetail?.type != .payment {
+            if !SVProgressHUD.isVisible() {
+                SVProgressHUD.show(withStatus: "title-loading".localized)
+            }
 
-        for (index, transaction) in transactions.enumerated() {
-//            guard let assetId = transaction.transactionDetail?.assetId else {
-//                if transaction.transactionDetail?.type == .assetTransfer {
-//                    SVProgressHUD.showError(withStatus: "title-done".localized)
-//                    SVProgressHUD.dismiss()
-//                    self.rejectTransactionRequest(with: .invalidInput)
-//                    return
-//                }
-//                continue
-//            }
+            guard let assetId = transaction.transactionDetail?.assetId else {
+                if transaction.transactionDetail?.type == .assetTransfer {
+                    SVProgressHUD.showError(withStatus: "title-done".localized)
+                    SVProgressHUD.dismiss()
+                    self.rejectTransactionRequest(with: .invalidInput)
+                    return
+                }
+                continue
+            }
 
-            cacheAssetDetail(with: 11711) { assetDetail in
+            cacheAssetDetail(with: assetId) { assetDetail in
                 if assetDetail == nil {
                     SVProgressHUD.showError(withStatus: "title-done".localized)
                     SVProgressHUD.dismiss()
@@ -252,7 +263,22 @@ extension WCMainTransactionViewController: WCMainTransactionDataSourceDelegate {
     }
 
     func wcMainTransactionDataSourceDidOpenLongDappMessageView(_ wcMainTransactionDataSource: WCMainTransactionDataSource) {
+        guard let wcSession = wcSession,
+              let message = transactionOption?.message else {
+            return
+        }
 
+        open(
+            .wcTransactionFullDappDetail(
+                wcSession: wcSession,
+                message: message
+            ),
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: dappMessageModalPresenter
+            )
+        )
     }
 }
 
