@@ -50,12 +50,6 @@ class WarningAlertViewController: BaseViewController {
     }
 }
 
-extension WarningAlertViewController {
-    private func bind(_ viewModel: WarningAlertViewModel) {
-        warningAlertView.bind(viewModel)
-    }
-}
-
 extension WarningAlertViewController: WarningAlertViewDelegate {
     func warningAlertViewDidTakeAction(_ warningAlertView: WarningAlertView) {
         delegate?.warningAlertViewDidTakeAction(self)
