@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//   WarningModalViewController.swift
+//   WarningAlertViewController.swift
 
 import UIKit
 
@@ -26,9 +26,17 @@ class WarningAlertViewController: BaseViewController {
     weak var delegate: WarningAlertViewControllerDelegate?
     
     private lazy var warningAlertView = WarningAlertView()
+    
+    private let warningAlert: WarningAlert
         
+    init(warningAlert: WarningAlert, configuration: ViewControllerConfiguration) {
+        self.warningAlert = warningAlert
+        super.init(configuration: configuration)
+    }
+    
     override func configureAppearance() {
         super.configureAppearance()
+        warningAlertView.bind(WarningAlertViewModel(warningAlert: warningAlert))
         view.backgroundColor = Colors.Background.secondary
     }
     
@@ -43,17 +51,17 @@ class WarningAlertViewController: BaseViewController {
 }
 
 extension WarningAlertViewController {
-    func bind(_ viewModel: WarningAlertViewModel) {
+    private func bind(_ viewModel: WarningAlertViewModel) {
         warningAlertView.bind(viewModel)
     }
 }
 
 extension WarningAlertViewController: WarningAlertViewDelegate {
-    func warningalertViewDidTakeAction(_ warningAlertView: WarningAlertView) {
-        delegate?.warningModalViewDidTakeAction(self)
+    func warningAlertViewDidTakeAction(_ warningAlertView: WarningAlertView) {
+        delegate?.warningAlertViewDidTakeAction(self)
     }
 }
 
 protocol WarningAlertViewControllerDelegate: AnyObject {
-    func warningModalViewDidTakeAction(_ warningAlertViewController: WarningAlertViewController)
+    func warningAlertViewDidTakeAction(_ warningAlertViewController: WarningAlertViewController)
 }

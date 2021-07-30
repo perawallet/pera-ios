@@ -95,7 +95,7 @@ indirect enum Screen {
     case notificationFilter(flow: NotificationFilterViewController.Flow)
     case maximumBalanceWarning(account: Account)
     case screenshotWarning
-    case warningAlert
+    case warningAlert(warningAlert: WarningAlert)
     case animatedTutorial(flow: AccountSetupFlow, tutorial: AnimatedTutorial, isActionable: Bool)
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions

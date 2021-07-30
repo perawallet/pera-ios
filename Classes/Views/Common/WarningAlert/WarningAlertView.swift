@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//   WarningModalView.swift
+//   WarningAlertView.swift
 
 import UIKit
 
@@ -105,7 +105,7 @@ extension WarningAlertView {
 extension WarningAlertView {
     @objc
     private func notifyDelegateToTakeAction() {
-        delegate?.warningalertViewDidTakeAction(self)
+        delegate?.warningAlertViewDidTakeAction(self)
     }
 }
 
@@ -129,5 +129,5 @@ extension WarningAlertView {
 }
 
 protocol WarningAlertViewDelegate: AnyObject {
-    func warningalertViewDidTakeAction(_ warningModalView: WarningAlertView)
+    func warningAlertViewDidTakeAction(_ warningAlertView: WarningAlertView)
 }

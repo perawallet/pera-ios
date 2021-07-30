@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//   WarningAlertModelView.swift
+//   WarningAlertViewModel.swift
 
 import UIKit
 
