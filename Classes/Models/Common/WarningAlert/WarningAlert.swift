@@ -29,5 +29,4 @@ class WarningAlert {
         self.description = description
         self.actionTitle = actionTitle
     }
- 
  }
