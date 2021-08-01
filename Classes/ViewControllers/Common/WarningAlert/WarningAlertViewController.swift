@@ -52,10 +52,10 @@ class WarningAlertViewController: BaseViewController {
 
 extension WarningAlertViewController: WarningAlertViewDelegate {
     func warningAlertViewDidTakeAction(_ warningAlertView: WarningAlertView) {
-        delegate?.warningAlertViewDidTakeAction(self)
+        delegate?.warningAlertViewController(self)
     }
 }
 
 protocol WarningAlertViewControllerDelegate: AnyObject {
-    func warningAlertViewDidTakeAction(_ warningAlertViewController: WarningAlertViewController)
+    func warningAlertViewController(_ warningAlertViewController: WarningAlertViewController)
 }
