@@ -73,6 +73,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         decideToInvalidateSessionInBackground()
     }
+    
+    func applicationWillResignActive(_ application: UIApplication) {
+        bringBlurOnScreen()
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        deleteBlurOnScreen()
+    }
 
     func applicationWillTerminate(_ application: UIApplication) {
         saveContext()
@@ -173,6 +181,14 @@ extension AppDelegate {
         timer?.start()
 
         invalidateAccountManagerFetchPolling()
+    }
+    
+    private func bringBlurOnScreen() {
+        NotificationCenter.default.post(name: .ApplicationWillResignActive, object: self, userInfo: nil)
+    }
+    
+    private func deleteBlurOnScreen() {
+        NotificationCenter.default.post(name: .ApplicationDidBecomeActive, object: self, userInfo: nil)
     }
 }
 
