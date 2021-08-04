@@ -23,6 +23,8 @@ class WCConnectionApprovalViewController: BaseViewController {
         return false
     }
 
+    weak var delegate: WCConnectionApprovalViewControllerDelegate?
+
     private lazy var connectionApprovalView = WCConnectionApprovalView()
 
     private let walletConnectSession: WalletConnectSession
@@ -72,14 +74,14 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
                     for: account.address
                 )
             )
-            self.dismissScreen()
+            self.delegate?.wcConnectionApprovalViewControllerDidApproveConnection(self)
         }
     }
 
     func wcConnectionApprovalViewDidRejectConnection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
         DispatchQueue.main.async {
             self.walletConnectSessionConnectionCompletionHandler(self.walletConnectSession.getDeclinedWalletConnectionInfo())
-            self.dismissScreen()
+            self.delegate?.wcConnectionApprovalViewControllerDidRejectConnection(self)
         }
     }
 
@@ -100,4 +102,9 @@ extension WCConnectionApprovalViewController: AccountListViewControllerDelegate 
     func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {
         viewController.popScreen()
     }
+}
+
+protocol WCConnectionApprovalViewControllerDelegate: AnyObject {
+    func wcConnectionApprovalViewControllerDidApproveConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController)
+    func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController)
 }
