@@ -43,11 +43,12 @@ class WCGroupTransactionItemViewModel {
     }
 
     private func setTitle(from transaction: WCTransaction, and account: Account?) {
-        guard let transactionDetail = transaction.transactionDetail else {
+        guard let transactionDetail = transaction.transactionDetail,
+              let transactionType = transactionDetail.transactionType(for: account) else {
             return
         }
 
-        switch transactionDetail.transactionType(for: account) {
+        switch transactionType {
         case .algos:
             let receiver = transactionDetail.receiver?.shortAddressDisplay()
             title = "wallet-connect-transaction-group-algos-title".localized(params: receiver ?? "")
@@ -62,8 +63,6 @@ class WCGroupTransactionItemViewModel {
             if let appCallId = transactionDetail.appCallId {
                 title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
             }
-        default:
-            break
         }
     }
 

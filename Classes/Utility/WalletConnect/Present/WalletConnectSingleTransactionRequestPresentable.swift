@@ -24,12 +24,13 @@ protocol WalletConnectSingleTransactionRequestPresentable: AnyObject {
 extension WalletConnectSingleTransactionRequestPresentable where Self: BaseViewController {
     func presentSingleWCTransaction(_ transaction: WCTransaction, with request: WalletConnectRequest) {
         guard let transactionDetail = transaction.transactionDetail,
-              let account = session?.accounts.first(of: \.address, equalsTo: transactionDetail.sender) else {
+              let account = session?.accounts.first(of: \.address, equalsTo: transactionDetail.sender),
+              let transactionType = transactionDetail.transactionType(for: account) else {
             walletConnector.rejectTransactionRequest(request, with: .unauthorized)
             return
         }
 
-        switch transactionDetail.transactionType(for: account) {
+        switch transactionType {
         case .algos:
             open(
                 .wcAlgosTransaction(
@@ -71,8 +72,6 @@ extension WalletConnectSingleTransactionRequestPresentable where Self: BaseViewC
                 ),
                 by: .push
             )
-        default:
-            break
         }
     }
 }

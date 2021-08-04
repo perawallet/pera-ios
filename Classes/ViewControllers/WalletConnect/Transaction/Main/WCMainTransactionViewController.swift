@@ -286,6 +286,5 @@ enum WCTransactionType {
     case algos
     case asset
     case assetAddition
-    case group
     case appCall
 }

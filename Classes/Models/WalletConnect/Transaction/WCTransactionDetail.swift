@@ -123,9 +123,9 @@ class WCTransactionDetail: Model {
 }
 
 extension WCTransactionDetail {
-    func transactionType(for account: Account?) -> WCTransactionType {
-        if isAlgosTransaction {
-            return .algos
+    func transactionType(for account: Account?) -> WCTransactionType? {
+        if isAppCallTransaction {
+            return .appCall
         }
 
         if let account = account,
@@ -137,11 +137,11 @@ extension WCTransactionDetail {
             return .asset
         }
 
-        if isAppCallTransaction {
-            return .appCall
+        if isAlgosTransaction {
+            return .algos
         }
 
-        return .group
+        return nil
     }
 
     var isAlgosTransaction: Bool {
