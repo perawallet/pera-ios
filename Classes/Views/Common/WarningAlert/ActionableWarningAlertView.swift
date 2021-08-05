@@ -62,6 +62,7 @@ class ActionableWarningAlertView: BaseView {
 
     override func setListeners() {
         actionButton.addTarget(self, action: #selector(notifyDelegateToTakeAction), for: .touchUpInside)
+        cancelButton.addTarget(self, action: #selector(notifyDelegateToCancel), for: .touchUpInside)
     }
 
     override func configureAppearance() {
