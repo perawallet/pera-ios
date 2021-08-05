@@ -19,13 +19,13 @@ import UIKit
 
 class WCGroupTransactionDataSource: NSObject {
 
-    weak var delegate: WCGroupTransactionDataSourceDelegate?
-
-    private let transactionParameters: [WCTransactionParams]
+    private let session: Session?
+    private let transactions: [WCTransaction]
     private let walletConnector: WalletConnector
 
-    init(transactionParameters: [WCTransactionParams], walletConnector: WalletConnector) {
-        self.transactionParameters = transactionParameters
+    init(session: Session?, transactions: [WCTransaction], walletConnector: WalletConnector) {
+        self.session = session
+        self.transactions = transactions
         self.walletConnector = walletConnector
         super.init()
     }
@@ -33,7 +33,7 @@ class WCGroupTransactionDataSource: NSObject {
 
 extension WCGroupTransactionDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return transactionParameters.count
+        return transactions.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -44,8 +44,15 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected cell type")
         }
 
-        if let transactionParam = transactionParameter(at: indexPath.item) {
-            cell.bind(WCGroupTransactionItemViewModel(transactionParam: transactionParam))
+        if let transaction = transaction(at: indexPath.item) {
+            let account = session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender) 
+            cell.bind(
+                WCGroupTransactionItemViewModel(
+                    transaction: transaction,
+                    account: account,
+                    assetDetail: assetDetail(from: transaction)
+                )
+            )
         }
 
         return cell
@@ -68,37 +75,22 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected element kind")
         }
 
-        // Will be updated with the related session later.
-        if let session = walletConnector.allWalletConnectSessions.first,
-           let transactionParam = transactionParameters.first {
-            headerView.bind(
-                WCGroupTransactionHeaderViewModel(
-                    session: session,
-                    transactionParameter: transactionParam,
-                    transactionCount: transactionParameters.count
-                )
-            )
-        }
-
-        headerView.delegate = self
+        headerView.bind(WCGroupTransactionHeaderViewModel(transactionCount: transactions.count))
         return headerView
     }
 }
 
 extension WCGroupTransactionDataSource {
-    func transactionParameter(at index: Int) -> WCTransactionParams? {
-        return transactionParameters[safe: index]
+    func transaction(at index: Int) -> WCTransaction? {
+        return transactions[safe: index]
     }
-}
 
-extension WCGroupTransactionDataSource: WCGroupTransactionSupplementaryHeaderViewDelegate {
-    func wcGroupTransactionSupplementaryHeaderViewDidOpenLongMessageView(
-        _ wcGroupTransactionSupplementaryHeaderView: WCGroupTransactionSupplementaryHeaderView
-    ) {
-        delegate?.wcGroupTransactionDataSourceDidOpenLongDappMessageView(self)
+    private func assetDetail(from transaction: WCTransaction) -> AssetDetail? {
+        guard let session = session,
+              let assetId = transaction.transactionDetail?.assetId else {
+            return nil
+        }
+
+        return session.assetDetails[assetId]
     }
-}
-
-protocol WCGroupTransactionDataSourceDelegate: AnyObject {
-    func wcGroupTransactionDataSourceDidOpenLongDappMessageView(_ wcGroupTransactionDataSource: WCGroupTransactionDataSource)
 }

@@ -69,7 +69,7 @@ extension WCGroupTransactionAccountInformationView {
         addSubview(accountNameView)
 
         accountNameView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
+            make.centerY.equalToSuperview()
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
@@ -90,7 +90,7 @@ extension WCGroupTransactionAccountInformationView {
         balanceStackView.snp.makeConstraints { make in
             make.leading.equalTo(dotImage.snp.trailing).offset(layout.current.balanceLeadingInset)
             make.centerY.equalTo(accountNameView)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
         }
 
         balanceStackView.addArrangedSubview(algosIcon)

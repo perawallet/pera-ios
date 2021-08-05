@@ -17,7 +17,7 @@
 
 import UIKit
 
-class WCAssetAdditionTransactionViewController: WCTransactionViewController {
+class WCAssetAdditionTransactionViewController: WCSingleTransactionViewController {
 
     private lazy var assetAdditionTransactionView = WCAssetAdditionTransactionView()
 
@@ -25,26 +25,61 @@ class WCAssetAdditionTransactionViewController: WCTransactionViewController {
         return assetAdditionTransactionView
     }
 
+    var assetDetail: AssetDetail?
+
+    override func configureAppearance() {
+        super.configureAppearance()
+        title = "wallet-connect-transaction-title-opt-in".localized
+    }
+
     override func linkInteractors() {
         super.linkInteractors()
         assetAdditionTransactionView.delegate = self
+    }
+
+    override func bindData() {
+        bindView()
+
+        setCachedAsset {
+            if self.assetDetail == nil {
+                self.dismissScreen()
+                return
+            }
+
+            DispatchQueue.main.async {
+                self.bindView()
+            }
+        }
+    }
+}
+
+extension WCAssetAdditionTransactionViewController {
+    private func bindView() {
+        assetAdditionTransactionView.bind(
+            WCAssetAdditionTransactionViewModel(
+                transaction: transaction,
+                senderAccount: account,
+                assetDetail: assetDetail)
+        )
     }
 }
 
 extension WCAssetAdditionTransactionViewController: WCAssetAdditionTransactionViewDelegate {
     func wcAssetAdditionTransactionViewDidOpenRawTransaction(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
-
+        displayRawTransaction()
     }
 
     func wcAssetAdditionTransactionViewDidOpenAlgoExplorer(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
-
+        openInExplorer(assetDetail)
     }
 
     func wcAssetAdditionTransactionViewDidOpenAssetURL(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
-
+        openAssetURL(assetDetail)
     }
 
     func wcAssetAdditionTransactionViewDidOpenAssetMetadata(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
-
+        displayAssetMetadata(assetDetail)
     }
 }
+
+extension WCAssetAdditionTransactionViewController: WCSingleTransactionViewControllerAssetManagable { }

@@ -29,11 +29,15 @@ class WCAssetAdditionTransactionView: WCSingleTransactionView {
         return assetInformationView
     }()
 
+    private lazy var authAccountInformationView = WCTransactionTextInformationView()
+
     private lazy var rekeyWarningInformationView = WCTransactionAddressWarningInformationView()
 
     private lazy var closeWarningInformationView = WCTransactionAddressWarningInformationView()
 
     private lazy var feeInformationView = TitledTransactionAmountInformationView()
+
+    private lazy var feeWarningView = WCContainedTransactionWarningView()
 
     private lazy var noteInformationView = WCTransactionTextInformationView()
 
@@ -64,12 +68,14 @@ extension WCAssetAdditionTransactionView {
     private func addParticipantInformationViews() {
         addParticipantInformationView(accountInformationView)
         addParticipantInformationView(assetInformationView)
+        addParticipantInformationView(authAccountInformationView)
         addParticipantInformationView(closeWarningInformationView)
         addParticipantInformationView(rekeyWarningInformationView)
     }
 
     private func addBalanceInformationViews() {
-        addBalanceInformationView(feeInformationView)
+        addTransactionInformationView(feeInformationView)
+        addTransactionInformationView(feeWarningView)
     }
 
     private func addDetailedInformationViews() {
@@ -109,6 +115,15 @@ extension WCAssetAdditionTransactionView {
 
         if let assetInformationViewModel = viewModel.assetInformationViewModel {
             assetInformationView.bind(assetInformationViewModel)
+            unhideViewAnimatedIfNeeded(assetInformationView)
+        } else {
+            assetInformationView.hideViewInStack()
+        }
+
+        if let authAccountInformationViewModel = viewModel.authAccountInformationViewModel {
+            authAccountInformationView.bind(authAccountInformationViewModel)
+        } else {
+            authAccountInformationView.hideViewInStack()
         }
 
         if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
@@ -125,6 +140,12 @@ extension WCAssetAdditionTransactionView {
 
         feeInformationView.bind(viewModel.feeInformationViewModel)
 
+        if let feeWarningViewModel = viewModel.feeWarningViewModel {
+            feeWarningView.bind(feeWarningViewModel)
+        } else {
+            feeWarningView.hideViewInStack()
+        }
+
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
             noteInformationView.bind(noteInformationViewModel)
         } else {
@@ -139,20 +160,31 @@ extension WCAssetAdditionTransactionView {
 
         if let algoExplorerInformationViewModel = viewModel.algoExplorerInformationViewModel {
             algoExplorerInformationView.bind(algoExplorerInformationViewModel)
+            unhideViewAnimatedIfNeeded(algoExplorerInformationView)
         } else {
             algoExplorerInformationView.hideViewInStack()
         }
 
         if let urlInformationViewModel = viewModel.urlInformationViewModel {
             assetURLInformationView.bind(urlInformationViewModel)
+            unhideViewAnimatedIfNeeded(assetURLInformationView)
         } else {
             assetURLInformationView.hideViewInStack()
         }
 
         if let metadataInformationViewModel = viewModel.metadataInformationViewModel {
             assetMetadataInformationView.bind(metadataInformationViewModel)
+            unhideViewAnimatedIfNeeded(assetMetadataInformationView)
         } else {
             assetMetadataInformationView.hideViewInStack()
+        }
+    }
+
+    private func unhideViewAnimatedIfNeeded(_ view: UIView) {
+        if view.isHidden {
+            UIView.animate(withDuration: 0.3) {
+                view.showViewInStack()
+            }
         }
     }
 }

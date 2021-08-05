@@ -637,28 +637,40 @@
 "wallet-connect-session-disconnect-fail-message" = "Failed to disconnect from Session %@.";
 
 // MARK: Wallet Connect Transaction Warning
-"wallet-connect-transaction-warning-rekey" = "Enter here Rekey warning message";
-"wallet-connect-transaction-warning-close-algos" = "Enter here Close Algos warning message";
-"wallet-connect-transaction-warning-close-asset" = "Enter here Close Asset warning message";
-"wallet-connect-transaction-warning-rekey-title" = "Rekeyed To";
+"wallet-connect-transaction-warning-rekey" = "This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.";
+"wallet-connect-transaction-warning-close-algos" = "This transaction is sending your full Algo balance.";
+"wallet-connect-transaction-warning-close-asset" = "This transaction is sending your full %@ balance and will remove %@ from your account.";
+"wallet-connect-transaction-warning-rekey-title" = "Rekey To";
 "wallet-connect-transaction-warning-close-asset-title" = "Close Asset To";
 "wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To";
+"wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.01 Algos.";
+"wallet-connect-transaction-warning-initial" = "The following transaction requests are from external applications that the Algorand Wallet does not control. Please ensure you review these transactions carefully before signing as transactions are irreversible.";
+"wallet-connect-transaction-warning-future" = "This transaction will be submitted in the future.";
+"wallet-connect-transaction-warning-confirmation" = "Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
 
 // MARK: Wallet Connect Transaction Dapp Message
 "wallet-connect-transaction-dapp-show-more" = "Show More Info";
 
 // MARK: Wallet Connect Transaction
 "wallet-connect-transaction-title-transaction" = "Transaction Request";
+"wallet-connect-transaction-title-unsigned" = "Unsigned Transactions";
+"wallet-connect-transaction-title-atomic" = "Atomic Transaction Request";
 "wallet-connect-transaction-title-asset" = "Transfer Asset Request";
 "wallet-connect-transaction-title-opt-in" = "Assets Opt-in Request";
+"wallet-connect-transaction-title-app-call" = "App Call Request";
 "wallet-connect-transaction-title-multiple" = "Multiple Transaction Request";
-"wallet-connect-transaction-count" = "All transactions (%d)";
+"wallet-connect-transaction-all-count" = "All transactions (%d)";
+"wallet-connect-transaction-all-count-singular" = "All transaction (1)";
+"wallet-connect-transaction-count" = "%d transactions";
+"wallet-connect-transaction-count-singular" = "1 transaction";
 "wallet-connect-transaction-title-raw" = "Raw Txns";
 "wallet-connect-transaction-detail-raw" = "Show Raw Transaction";
 "wallet-connect-transaction-title-explorer" = "AlgoExplorer";
 "wallet-connect-transaction-detail-explorer" = "Show Explorer";
-"wallet-connect-transaction-title-asset" = "Asset URL";
-"wallet-connect-transaction-detail-asset" = "Show Asset URL";
+"wallet-connect-transaction-title-auth-address" = "Auth Address";
+"wallet-connect-transaction-title-app-id" = "Application ID";
+"wallet-connect-transaction-title-asset-url" = "Asset URL";
+"wallet-connect-transaction-detail-asset-url" = "Show Asset URL";
 "wallet-connect-transaction-title-metadata" = "Asset Metadata";
 "wallet-connect-transaction-detail-metadata" = "Show Asset Metadata";
 "wallet-connect-transaction-error-rejected" = "The user rejected the request.";
@@ -666,3 +678,8 @@
 "wallet-connect-transaction-error-unsupported" = "The wallet does not support the requested operation.";
 "wallet-connect-transaction-error-invalid" = "The input provided is invalid.";
 "wallet-connect-raw-transaction-title" = "Raw Transaction";
+
+"wallet-connect-transaction-group-algos-title" = "Payment to %@";
+"wallet-connect-transaction-group-asset-title" = "Asset Transfer to %@";
+"wallet-connect-transaction-group-asset-addition-title" = "Opting in to Asset %@";
+"wallet-connect-transaction-group-app-call-title" = "Application Call to %@";

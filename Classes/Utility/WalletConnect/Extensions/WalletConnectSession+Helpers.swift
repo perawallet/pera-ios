@@ -21,11 +21,12 @@ let algorandWalletConnectChainID = 4160
 
 extension WalletConnectSession {
     func getClientMeta() -> ClientMeta {
+        // No need for localization since it won't be translated and sent to the Dapp.
         return ClientMeta(
-            name: dAppInfo.peerMeta.name,
-            description: dAppInfo.peerMeta.description,
+            name: "Algorand Wallet",
+            description: "Algorand’s official wallet, built by the team that brought you the Algorand Blockchain.",
             icons: dAppInfo.peerMeta.icons,
-            url: dAppInfo.peerMeta.url
+            url: URL(string: "https://algorandwallet.com") ?? dAppInfo.peerMeta.url
         )
     }
 
@@ -33,7 +34,7 @@ extension WalletConnectSession {
         return WalletInfo(
             approved: true,
             accounts: [account],
-            chainId: walletInfo?.chainId ?? algorandWalletConnectChainID,
+            chainId: algorandWalletConnectChainID,
             peerId: UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString,
             peerMeta: getClientMeta()
         )
@@ -43,7 +44,7 @@ extension WalletConnectSession {
         return WalletInfo(
             approved: false,
             accounts: [],
-            chainId: walletInfo?.chainId ?? algorandWalletConnectChainID,
+            chainId: algorandWalletConnectChainID,
             peerId: UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString,
             peerMeta: getClientMeta()
         )

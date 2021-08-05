@@ -94,7 +94,8 @@ extension WCGroupTransactionItemView {
 
         senderStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.defaultInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.defaultInset)
             make.height.equalTo(layout.current.senderStackHeight)
         }
 
@@ -116,7 +117,8 @@ extension WCGroupTransactionItemView {
         addSubview(balanceStackView)
 
         balanceStackView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.lessThanOrEqualTo(arrowImageView.snp.leading).offset(-layout.current.defaultInset)
             make.top.equalTo(senderStackView.snp.bottom).offset(layout.current.balanceStackTopInset)
             make.height.equalTo(layout.current.balanceStackHeight)
         }
@@ -130,9 +132,10 @@ extension WCGroupTransactionItemView {
         addSubview(accountInformationView)
 
         accountInformationView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalTo(balanceStackView.snp.bottom).offset(layout.current.accountInformationViewTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.accountInformationViewInset)
-            make.bottom.equalToSuperview().inset(layout.current.accountInformationViewInset)
+            make.height.greaterThanOrEqualTo(layout.current.accountInformationHeight)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.accountInformationViewInset)
         }
     }
 }
@@ -160,6 +163,8 @@ extension WCGroupTransactionItemView {
         let arrowImageTopInset: CGFloat = 36.0
         let balanceStackHeight: CGFloat = 24.0
         let balanceStackTopInset: CGFloat = 8.0
+        let accountInformationHeight: CGFloat = 36.0
+        let accountInformationViewTopInset: CGFloat = 12.0
         let accountInformationViewInset: CGFloat = 8.0
     }
 }

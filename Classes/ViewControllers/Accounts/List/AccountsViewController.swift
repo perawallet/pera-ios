@@ -215,7 +215,6 @@ class AccountsViewController: BaseViewController {
     override func setListeners() {
         accountsDataSource.delegate = self
         accountsView.delegate = self
-        walletConnector.delegate = self
         accountsView.accountsCollectionView.delegate = accountsDataSource
         accountsView.accountsCollectionView.dataSource = accountsDataSource
         emptyStateView.delegate = self
@@ -440,14 +439,6 @@ extension AccountsViewController {
 }
 
 extension AccountsViewController: QRScannerViewControllerDelegate {
-    func qrScannerViewController(
-        _ controller: QRScannerViewController,
-        didRead walletConnectSession: String,
-        completionHandler: EmptyHandler?
-    ) {
-        walletConnector.connect(to: walletConnectSession)
-    }
-
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         switch qrText.mode {
         case .address:
@@ -594,41 +585,6 @@ extension AccountsViewController: APIListener {
         if UIApplication.shared.isActive {
             isConnectedToInternet = networkMonitor.isConnected
         }
-    }
-}
-
-extension AccountsViewController: WalletConnectorDelegate {
-    func walletConnector(
-        _ walletConnector: WalletConnector,
-        shouldStart session: WalletConnectSession,
-        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
-    ) {
-        guard let accounts = self.session?.accounts,
-              accounts.contains(where: { $0.type != .watch }) else {
-            NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-error-no-account".localized)
-            return
-        }
-
-        open(
-            .wcConnectionApproval(walletConnectSession: session, completion: completion),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: wcConnectionModalPresenter
-            )
-        )
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
-
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession) {
-
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
-
     }
 }
 

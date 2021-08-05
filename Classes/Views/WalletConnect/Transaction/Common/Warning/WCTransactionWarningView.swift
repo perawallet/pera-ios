@@ -26,7 +26,7 @@ class WCTransactionWarningView: BaseView {
     private lazy var warningLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
-            .withLine(.single)
+            .withLine(.contained)
             .withTextColor(Colors.General.unknown)
             .withFont(UIFont.font(withWeight: .medium(size: 12.0)))
     }()

@@ -35,6 +35,18 @@ class WCSessionListViewController: BaseViewController {
 
     private lazy var layoutBuilder = WCSessionListLayout(dataSource: dataSource)
 
+    override func configureNavigationBarAppearance() {
+        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.openQRScanner()
+        }
+
+        rightBarButtonItems = [qrBarButtonItem]
+    }
+
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.tertiary
         title = "settings-wallet-connect-title".localized
@@ -63,19 +75,6 @@ extension WCSessionListViewController: WCSessionListDataSourceDelegate {
 }
 
 extension WCSessionListViewController: WalletConnectorDelegate {
-    func walletConnector(
-        _ walletConnector: WalletConnector,
-        shouldStart session: WalletConnectSession,
-        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
-    ) {
-        openWCSessionApproval(for: session, then: completion)
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
-        setListContentState()
-        sessionListView.collectionView.reloadData()
-    }
-
     func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession) {
         updateScreenAfterDisconnecting(from: session)
     }
@@ -88,16 +87,6 @@ extension WCSessionListViewController: WalletConnectorDelegate {
 extension WCSessionListViewController: WCSessionListEmptyViewDelegate {
     func wcSessionListEmptyViewDidOpenScanQR(_ wcSessionListEmptyView: WCSessionListEmptyView) {
         openQRScanner()
-    }
-}
-
-extension WCSessionListViewController: QRScannerViewControllerDelegate {
-    func qrScannerViewController(
-        _ controller: QRScannerViewController,
-        didRead walletConnectSession: String,
-        completionHandler: EmptyHandler?
-    ) {
-        walletConnector.connect(to: walletConnectSession)
     }
 }
 
@@ -116,25 +105,12 @@ extension WCSessionListViewController {
         let qrScannerViewController = open(.qrScanner, by: .push) as? QRScannerViewController
         qrScannerViewController?.delegate = self
     }
+}
 
-    private func openWCSessionApproval(
-        for session: WalletConnectSession,
-        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
-    ) {
-        guard let accounts = self.session?.accounts,
-              accounts.contains(where: { $0.type != .watch }) else {
-            NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-error-no-account".localized)
-            return
-        }
-
-        open(
-            .wcConnectionApproval(walletConnectSession: session, completion: completion),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: wcConnectionModalPresenter
-            )
-        )
+extension WCSessionListViewController: QRScannerViewControllerDelegate {
+    func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController) {
+        setListContentState()
+        sessionListView.collectionView.reloadData()
     }
 }
 

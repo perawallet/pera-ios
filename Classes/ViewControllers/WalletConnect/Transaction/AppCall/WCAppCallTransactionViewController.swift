@@ -17,7 +17,7 @@
 
 import UIKit
 
-class WCAppCallTransactionViewController: WCTransactionViewController {
+class WCAppCallTransactionViewController: WCSingleTransactionViewController {
 
     private lazy var appCallTransactionView = WCAppCallTransactionView()
 
@@ -27,17 +27,23 @@ class WCAppCallTransactionViewController: WCTransactionViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        appCallTransactionView.bind(WCAppCallTransactionViewModel(transactionParams: transactionParameter, account: account))
+        title = "wallet-connect-transaction-title-app-call".localized
     }
 
     override func linkInteractors() {
         super.linkInteractors()
         appCallTransactionView.delegate = self
     }
+
+    override func bindData() {
+        appCallTransactionView.bind(WCAppCallTransactionViewModel(transaction: transaction, account: account))
+    }
 }
 
 extension WCAppCallTransactionViewController: WCAppCallTransactionViewDelegate {
     func wcAppCallTransactionViewDidOpenRawTransaction(_ wcAppCallTransactionView: WCAppCallTransactionView) {
-
+        displayRawTransaction()
     }
 }
+
+extension WCAppCallTransactionViewController: WCSingleTransactionViewControllerActionable { }
