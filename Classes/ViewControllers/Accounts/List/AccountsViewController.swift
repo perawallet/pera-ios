@@ -62,14 +62,6 @@ class AccountsViewController: BaseViewController {
             initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
         )
     }()
-
-    private lazy var wcConnectionModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 454.0))
-    )
     
     private lazy var pushNotificationController: PushNotificationController = {
         guard let api = api else {

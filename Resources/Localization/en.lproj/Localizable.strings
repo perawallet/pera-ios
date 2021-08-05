@@ -41,6 +41,7 @@
 "title-confirm-all" = "Confirm All Transactions";
 "title-decline" = "Decline";
 "title-decline-all" = "Decline All";
+"title-got-it" = "Got it!";
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";

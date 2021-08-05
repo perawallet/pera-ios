@@ -13,20 +13,24 @@
 // limitations under the License.
 
 //
-//   WarningAlert.swift
+//   OneTimeDisplayStorage.swift
 
 import UIKit
 
-class WarningAlert {
-    let title: String
-    let image: UIImage?
-    let description: String
-    let actionTitle: String
+class OneTimeDisplayStorage: Storable {
+    typealias Object = Any
 
-    init(title: String, image: UIImage?, description: String, actionTitle: String) {
-        self.title = title
-        self.image = image
-        self.description = description
-        self.actionTitle = actionTitle
+    func setDisplayedOnce(for key: StorageKey) {
+        save(true, for: key.rawValue, to: .defaults)
     }
- }
+
+    func isDisplayedOnce(for key: StorageKey) -> Bool {
+        return bool(with: key.rawValue, to: .defaults)
+    }
+}
+
+extension OneTimeDisplayStorage {
+    enum StorageKey: String {
+        case wcInitialWarning = "com.algorand.algorand.wc.warning.displayed"
+    }
+}

@@ -31,6 +31,22 @@ class WCMainTransactionViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 350.0))
     )
 
+    private lazy var initialWarningModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 400.0))
+    )
+
+    private lazy var confirmationModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .backgroundTouch
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 462.0))
+    )
+
     private lazy var dataSource = WCMainTransactionDataSource(
         transactions: transactions,
         transactionRequest: transactionRequest,
@@ -75,6 +91,11 @@ class WCMainTransactionViewController: BaseViewController {
         validateTransactions(transactions, with: dataSource.groupedTransactions)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presentInitialWarningAlertIfNeeded()
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         if !transactions.allSatisfy({ ($0.signerAccount?.requiresLedgerConnection() ?? false) }) {
@@ -113,6 +134,36 @@ extension WCMainTransactionViewController {
         if let session = session {
             transactions.forEach { $0.findSignerAccount(in: session) }
         }
+    }
+
+    private func presentInitialWarningAlertIfNeeded() {
+        let oneTimeDisplayStorage = OneTimeDisplayStorage()
+
+        if oneTimeDisplayStorage.isDisplayedOnce(for: .wcInitialWarning) {
+            return
+        }
+
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: initialWarningModalPresenter
+        )
+
+        let warningAlert = WarningAlert(
+            title: "node-settings-warning-title".localized,
+            image: img("img-warning-circle"),
+            description: "wallet-connect-transaction-warning-initial".localized,
+            actionTitle: "title-got-it".localized
+        )
+
+        oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
+        
+        let controller = open(.warningAlert(warningAlert: warningAlert), by: transitionStyle) as? WarningAlertViewController
+        controller?.delegate = self
+    }
+
+    private func presentConfirmationAlert() {
+
     }
 }
 
@@ -282,9 +333,20 @@ extension WCMainTransactionViewController: WCMainTransactionDataSourceDelegate {
     }
 }
 
+extension WCMainTransactionViewController: WarningAlertViewControllerDelegate {
+    func warningAlertViewControllerDidTakeAction(_ warningAlertViewController: WarningAlertViewController) {
+        warningAlertViewController.dismissScreen()
+    }
+}
+
+extension WCMainTransactionViewController {
+
+}
+
 enum WCTransactionType {
     case algos
     case asset
     case assetAddition
     case appCall
 }
+
