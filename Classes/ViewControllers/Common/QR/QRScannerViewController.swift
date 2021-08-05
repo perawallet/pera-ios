@@ -311,15 +311,18 @@ extension QRScannerViewController: WalletConnectorDelegate {
         ) as? WCConnectionApprovalViewController
         controller?.delegate = self
     }
+
+    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
+        delegate?.qrScannerViewControllerDidApproveWCConnection(self)
+        cancelButton.stopLoading()
+        captureSession = nil
+        closeScreen(by: .pop)
+    }
 }
 
 extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
     func wcConnectionApprovalViewControllerDidApproveConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
         wcConnectionApprovalViewController.dismissScreen()
-        delegate?.qrScannerViewControllerDidApproveWCConnection(self)
-        cancelButton.stopLoading()
-        captureSession = nil
-        closeScreen(by: .pop)
     }
 
     func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
