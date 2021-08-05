@@ -26,7 +26,7 @@ class WCSessionListEmptyView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withAlignment(.center)
-            .withLine(.single)
+            .withLine(.contained)
             .withTextColor(Colors.Text.primary)
             .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
             .withText("wallet-connect-session-list-empty".localized)
@@ -61,7 +61,7 @@ extension WCSessionListEmptyView {
         addSubview(titleLabel)
 
         titleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.titleHorizontalInset)
+            make.leading.trailing.lessThanOrEqualToSuperview().inset(layout.current.titleHorizontalInset).priority(.medium)
             make.centerX.equalToSuperview()
             make.centerY.equalToSuperview()
         }

@@ -18,7 +18,6 @@
 import UIKit
 
 class WCGroupTransactionItemViewModel {
-
     private(set) var hasWarning = false
     private(set) var title: String?
     private(set) var isAlgos = true
@@ -26,44 +25,77 @@ class WCGroupTransactionItemViewModel {
     private(set) var assetName: String?
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
-    init(transactionParam: WCTransactionParams) {
-        setHasWarning(from: transactionParam)
-        setTitle(from: transactionParam)
-        setIsAlgos(from: transactionParam)
-        setAmount(from: transactionParam)
-        setAssetName(from: transactionParam)
-        setAccountInformationViewModel(from: transactionParam)
+    init(transaction: WCTransaction, account: Account?, assetDetail: AssetDetail?) {
+        setHasWarning(from: transaction)
+        setTitle(from: transaction, and: account)
+        setIsAlgos(from: transaction)
+        setAmount(from: transaction, and: assetDetail)
+        setAssetName(from: assetDetail)
+        setAccountInformationViewModel(from: account, with: assetDetail)
     }
 
-    private func setHasWarning(from transactionParam: WCTransactionParams) {
-        guard let transaction = transactionParam.transaction else {
+    private func setHasWarning(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail else {
             return
         }
 
-        hasWarning = transaction.isCloseTransaction || transaction.isRekeyTransaction
+        hasWarning = transactionDetail.hasRekeyOrCloseAddress
     }
 
-    private func setTitle(from transactionParam: WCTransactionParams) {
-        title = ""
-    }
-
-    private func setIsAlgos(from transactionParam: WCTransactionParams) {
-        guard let transaction = transactionParam.transaction else {
+    private func setTitle(from transaction: WCTransaction, and account: Account?) {
+        guard let transactionDetail = transaction.transactionDetail,
+              let transactionType = transactionDetail.transactionType(for: account) else {
             return
         }
 
-        isAlgos = transaction.isAlgosTransaction
+        switch transactionType {
+        case .algos:
+            let receiver = transactionDetail.receiver?.shortAddressDisplay()
+            title = "wallet-connect-transaction-group-algos-title".localized(params: receiver ?? "")
+        case .asset:
+            let receiver = transactionDetail.receiver?.shortAddressDisplay()
+            title = "wallet-connect-transaction-group-asset-title".localized(params: receiver ?? "")
+        case .assetAddition:
+            if let assetId = transactionDetail.assetId {
+                title = "wallet-connect-transaction-group-asset-addition-title".localized(params: "\(assetId)")
+            }
+        case .appCall:
+            if let appCallId = transactionDetail.appCallId {
+                title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
+            }
+        }
     }
 
-    private func setAmount(from transactionParam: WCTransactionParams) {
-        amount = ""
+    private func setIsAlgos(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail else {
+            return
+        }
+
+        isAlgos = transactionDetail.isAlgosTransaction
     }
 
-    private func setAssetName(from transactionParam: WCTransactionParams) {
-        assetName = ""
+    private func setAmount(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
+        guard let transactionDetail = transaction.transactionDetail else {
+            return
+        }
+
+        if let assetDetail = assetDetail {
+            let decimals = assetDetail.fractionDecimals
+            amount = transactionDetail.amount.assetAmount(fromFraction: decimals).toFractionStringForLabel(fraction: decimals)
+        } else {
+            amount = transactionDetail.amount.toAlgos.toAlgosStringForLabel
+        }
     }
 
-    private func setAccountInformationViewModel(from transactionParam: WCTransactionParams) {
-        
+    private func setAssetName(from assetDetail: AssetDetail?) {
+        guard let assetDetail = assetDetail else {
+            return
+        }
+
+        assetName = assetDetail.getDisplayNames().0
+    }
+
+    private func setAccountInformationViewModel(from account: Account?, with assetDetail: AssetDetail?) {
+        accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(account: account, assetDetail: assetDetail)
     }
 }

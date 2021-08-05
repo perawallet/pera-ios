@@ -391,44 +391,55 @@ class Router {
             )
         case .walletConnectSessions:
             viewController = WCSessionListViewController(configuration: configuration)
-        case let .wcTransactionFullDappDetail(wcSession, transactionParameter):
+        case let .wcTransactionFullDappDetail(wcSession, message):
             viewController = WCTransactionFullDappDetailViewController(
                 wcSession: wcSession,
-                transactionParameter: transactionParameter,
+                message: message,
                 configuration: configuration
             )
-        case let .wcAlgosTransaction(transactionParameter, account, transactionRequest):
+        case let .wcMainTransaction(transactions, transactionRequest, transactionOption):
+            viewController = WCMainTransactionViewController(
+                transactions: transactions,
+                transactionRequest: transactionRequest,
+                transactionOption: transactionOption,
+                configuration: configuration
+            )
+        case let .wcAlgosTransaction(transaction, account, transactionRequest):
             viewController = WCAlgosTransactionViewController(
-                transactionParameter: transactionParameter,
+                transaction: transaction,
                 account: account,
                 transactionRequest: transactionRequest,
                 configuration: configuration
             )
-        case let .wcAssetTransaction(transactionParameter, account, transactionRequest):
+        case let .wcAssetTransaction(transaction, account, transactionRequest):
             viewController = WCAssetTransactionViewController(
-                transactionParameter: transactionParameter,
+                transaction: transaction,
                 account: account,
                 transactionRequest: transactionRequest,
                 configuration: configuration
             )
-        case let .wcAssetAdditionTransaction(transactionParameter, account, transactionRequest):
+        case let .wcAssetAdditionTransaction(transaction, account, transactionRequest):
             viewController = WCAssetAdditionTransactionViewController(
-                transactionParameter: transactionParameter,
+                transaction: transaction,
                 account: account,
                 transactionRequest: transactionRequest,
                 configuration: configuration
             )
-        case let .wcGroupTransaction(transactionParameters):
-            viewController = WCGroupTransactionViewController(transactionParameters: transactionParameters, configuration: configuration)
-        case let .wcAppCall(transactionParameter, account, transactionRequest):
+        case let .wcGroupTransaction(transactions, transactionRequest):
+            viewController = WCGroupTransactionViewController(
+                transactions: transactions,
+                transactionRequest: transactionRequest,
+                configuration: configuration
+            )
+        case let .wcAppCall(transaction, account, transactionRequest):
             viewController = WCAppCallTransactionViewController(
-                transactionParameter: transactionParameter,
+                transaction: transaction,
                 account: account,
                 transactionRequest: transactionRequest,
                 configuration: configuration
             )
-        case let .jsonDisplay(jsonData):
-            viewController = JSONDisplayViewController(jsonData: jsonData, configuration: configuration)
+        case let .jsonDisplay(jsonData, title):
+            viewController = JSONDisplayViewController(jsonData: jsonData, title: title, configuration: configuration)
         }
         
         return viewController as? T

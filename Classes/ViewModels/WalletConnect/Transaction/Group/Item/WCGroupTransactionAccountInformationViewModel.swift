@@ -23,14 +23,18 @@ class WCGroupTransactionAccountInformationViewModel {
     private(set) var balance: String?
     private(set) var assetName: String?
 
-    init(account: Account, assetDetail: AssetDetail?) {
+    init(account: Account?, assetDetail: AssetDetail?) {
         setAccountNameViewModel(from: account)
         setIsAlgos(from: assetDetail)
         setBalance(from: account, and: assetDetail)
         setAssetName(from: assetDetail)
     }
 
-    private func setAccountNameViewModel(from account: Account) {
+    private func setAccountNameViewModel(from account: Account?) {
+        guard let account = account else {
+            return
+        }
+
         accountNameViewModel = AccountNameViewModel(account: account)
     }
 
@@ -38,7 +42,11 @@ class WCGroupTransactionAccountInformationViewModel {
         isAlgos = assetDetail == nil
     }
 
-    private func setBalance(from account: Account, and assetDetail: AssetDetail?) {
+    private func setBalance(from account: Account?, and assetDetail: AssetDetail?) {
+        guard let account = account else {
+            return
+        }
+
         if let assetDetail = assetDetail {
             balance = account.amountDisplayWithFraction(for: assetDetail)
             return

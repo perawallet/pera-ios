@@ -35,7 +35,7 @@ class WCTransactionActionableInformationViewModel {
         case .algoExplorer:
             title = "wallet-connect-transaction-title-explorer".localized
         case .assetUrl:
-            title = "wallet-connect-transaction-title-asset".localized
+            title = "wallet-connect-transaction-title-asset-url".localized
         case .assetMetadata:
             title = "wallet-connect-transaction-title-metadata".localized
         }
@@ -48,7 +48,7 @@ class WCTransactionActionableInformationViewModel {
         case .algoExplorer:
             detail = "wallet-connect-transaction-detail-explorer".localized
         case .assetUrl:
-            detail = "wallet-connect-transaction-detail-asset".localized
+            detail = "wallet-connect-transaction-detail-asset-url".localized
         case .assetMetadata:
             detail = "wallet-connect-transaction-detail-metadata".localized
         }

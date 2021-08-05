@@ -21,8 +21,6 @@ class WCGroupTransactionView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
-    weak var delegate: WCGroupTransactionViewDelegate?
-
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = 12.0
@@ -39,32 +37,15 @@ class WCGroupTransactionView: BaseView {
         )
         collectionView.register(
             WCGroupTransactionSupplementaryHeaderView.self,
-            forSupplementaryViewOfKind: WCGroupTransactionSupplementaryHeaderView.reuseIdentifier
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: WCGroupTransactionSupplementaryHeaderView.reuseIdentifier
         )
         return collectionView
     }()
 
-    private lazy var confirmButton = MainButton(title: "title-confirm".localized)
-
-    private lazy var declineButton: UIButton = {
-        UIButton(type: .custom)
-            .withTitleColor(Colors.ButtonText.tertiary)
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTitle("title-confirm-all".localized)
-    }()
-
-    override func setListeners() {
-        super.setListeners()
-        confirmButton.addTarget(self, action: #selector(confirmSigningTransaction), for: .touchUpInside)
-        declineButton.addTarget(self, action: #selector(declineSigningTransaction), for: .touchUpInside)
-    }
-
     override func prepareLayout() {
         super.prepareLayout()
         setupTransactionViewLayout()
-        setupDeclineButtonLayout()
-        setupConfirmButtonLayout()
     }
 }
 
@@ -77,42 +58,6 @@ extension WCGroupTransactionView {
             make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.verticalInset)
         }
     }
-
-    private func setupDeclineButtonLayout() {
-        addSubview(declineButton)
-
-        declineButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.height.equalTo(layout.current.buttonHeight)
-            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.verticalInset)
-        }
-    }
-
-    private func setupConfirmButtonLayout() {
-        addSubview(confirmButton)
-
-        confirmButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(declineButton.snp.bottom).offset(layout.current.buttonInset)
-        }
-    }
-}
-
-extension WCGroupTransactionView {
-    @objc
-    private func confirmSigningTransaction() {
-        delegate?.wcGroupTransactionViewDidConfirmSigning(self)
-    }
-
-    @objc
-    private func declineSigningTransaction() {
-        delegate?.wcGroupTransactionViewDidDeclineSigning(self)
-    }
-
-    @objc
-    private func openLongDappMessageScreen() {
-        delegate?.wcGroupTransactionViewDidOpenLongMessage(self)
-    }
 }
 
 extension WCGroupTransactionView {
@@ -123,19 +68,14 @@ extension WCGroupTransactionView {
     func setDataSource(_ dataSource: UICollectionViewDataSource?) {
         collectionView.dataSource = dataSource
     }
+
+    func reloadData() {
+        collectionView.reloadData()
+    }
 }
 
 extension WCGroupTransactionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let buttonInset: CGFloat = 16.0
-        let buttonHeight: CGFloat = 52.0
-        let horizontalInset: CGFloat = 20.0
         let verticalInset: CGFloat = 16.0
     }
-}
-
-protocol WCGroupTransactionViewDelegate: AnyObject {
-    func wcGroupTransactionViewDidOpenLongMessage(_ wcGroupTransactionView: WCGroupTransactionView)
-    func wcGroupTransactionViewDidConfirmSigning(_ wcGroupTransactionView: WCGroupTransactionView)
-    func wcGroupTransactionViewDidDeclineSigning(_ wcGroupTransactionView: WCGroupTransactionView)
 }

@@ -49,8 +49,8 @@ extension WCGroupTransactionLayout: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let transactionParameter = dataSource?.transactionParameter(at: indexPath.item) {
-            delegate?.wcGroupTransactionLayout(self, didSelect: transactionParameter)
+        if let transaction = dataSource?.transaction(at: indexPath.item) {
+            delegate?.wcGroupTransactionLayout(self, didSelect: transaction)
         }
     }
 }
@@ -58,10 +58,10 @@ extension WCGroupTransactionLayout: UICollectionViewDelegateFlowLayout {
 extension WCGroupTransactionLayout {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let cellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 130.0)
-        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 164.0)
+        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 56.0)
     }
 }
 
 protocol WCGroupTransactionLayoutDelegate: AnyObject {
-    func wcGroupTransactionLayout(_ wcGroupTransactionLayout: WCGroupTransactionLayout, didSelect transactionParameter: WCTransactionParams)
+    func wcGroupTransactionLayout(_ wcGroupTransactionLayout: WCGroupTransactionLayout, didSelect transaction: WCTransaction)
 }

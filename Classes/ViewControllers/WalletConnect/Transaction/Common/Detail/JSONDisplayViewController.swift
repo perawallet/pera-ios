@@ -26,9 +26,11 @@ class JSONDisplayViewController: BaseScrollViewController {
     private lazy var jsonDisplayView = JSONDisplayView()
 
     private let jsonData: Data
+    private let screenTitle: String
 
-    init(jsonData: Data, configuration: ViewControllerConfiguration) {
+    init(jsonData: Data, title: String, configuration: ViewControllerConfiguration) {
         self.jsonData = jsonData
+        self.screenTitle = title
         super.init(configuration: configuration)
     }
 
@@ -39,15 +41,19 @@ class JSONDisplayViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
+        setSecondaryBackgroundColor()
         view.backgroundColor = Colors.Background.secondary
-        title = "wallet-connect-raw-transaction-title".localized
-        jsonDisplayView.bind(JSONDisplayViewModel(json: jsonData))
+        title = screenTitle
     }
 
     override func prepareLayout() {
         super.prepareLayout()
         setupseparatorViewLayout()
         setupJSONDisplayViewLayout()
+    }
+
+    override func bindData() {
+        jsonDisplayView.bind(JSONDisplayViewModel(json: jsonData))
     }
 }
 

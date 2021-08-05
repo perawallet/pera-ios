@@ -133,13 +133,8 @@ extension AlgorandSDK {
         return AlgoMobileTransactionJsonToMsgpack(json, &error)
     }
 
-    func assignGroupID(for transactions: [Data], error: inout NSError?) -> AlgoMobileBytesArray? {
-        return AlgoMobileAssignGroupID(transactions.toSDKByteArray(), &error)
-    }
-
-    func verifyGroupID(for transactions: [Data], isValid: inout Bool, error: inout NSError?) -> Bool {
-        var objcValueForBool = ObjCBool(isValid)
-        return AlgoMobileVerifyGroupID(transactions.toSDKByteArray(), &objcValueForBool, &error)
+    func findAndVerifyTransactionGroups(for transactions: [Data], error: inout NSError?) -> [Int64]? {
+        return AlgoMobileFindAndVerifyTxnGroups(transactions.toSDKByteArray(), &error)?.toIntArray()
     }
 }
 
@@ -168,6 +163,18 @@ fileprivate extension Array where Element == Data {
             transactionByteArray.append($0)
         }
         return transactionByteArray
+    }
+}
+
+fileprivate extension AlgoMobileInt64Array {
+    func toIntArray() -> [Int64] {
+        var intArray = [Int64]()
+
+        for i in 0...length() - 1 {
+            intArray.append(get(i))
+        }
+
+        return intArray
     }
 }
 

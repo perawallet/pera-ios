@@ -21,6 +21,8 @@ class WCSingleTransactionView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
+    weak var mainDelegate: WCSingleTransactionViewDelegate?
+
     private lazy var mainStackView: VStackView = {
         let stackView = VStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -31,16 +33,31 @@ class WCSingleTransactionView: BaseView {
         return stackView
     }()
 
-    private lazy var participantInformationStackView = WrappedStackView()
+    private lazy var dappMessageView = WCTransactionDappMessageView()
 
-    private lazy var balanceInformationStackView = WrappedStackView()
+    private lazy var participantInformationStackView: WrappedStackView = {
+        let participantInformationStackView = WrappedStackView()
+        participantInformationStackView.stackView.distribution = .equalSpacing
+        return participantInformationStackView
+    }()
+
+    private lazy var transactionInformationStackView: WrappedStackView = {
+        let balanceInformationStackView = WrappedStackView()
+        balanceInformationStackView.stackView.distribution = .equalSpacing
+        return balanceInformationStackView
+    }()
 
     private lazy var detailedInformationStackView: WrappedStackView = {
         let detailedInformationStackView = WrappedStackView()
+        detailedInformationStackView.stackView.distribution = .equalSpacing
         detailedInformationStackView.isUserInteractionEnabled = true
         detailedInformationStackView.stackView.isUserInteractionEnabled = true
         return detailedInformationStackView
     }()
+
+    override func setListeners() {
+        dappMessageView.addTarget(self, action: #selector(notifyDelegateToOpenLongDappMessage), for: .touchUpInside)
+    }
 
     override func prepareLayout() {
         setupMainStackViewLayout()
@@ -52,12 +69,14 @@ extension WCSingleTransactionView {
         addSubview(mainStackView)
 
         mainStackView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.lessThanOrEqualToSuperview()
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
 
+        mainStackView.addArrangedSubview(dappMessageView)
         mainStackView.addArrangedSubview(participantInformationStackView)
-        mainStackView.addArrangedSubview(balanceInformationStackView)
+        mainStackView.addArrangedSubview(transactionInformationStackView)
         mainStackView.addArrangedSubview(detailedInformationStackView)
     }
 }
@@ -67,8 +86,8 @@ extension WCSingleTransactionView {
         participantInformationStackView.addArrangedSubview(view)
     }
 
-    func addBalanceInformationView(_ view: UIView) {
-        balanceInformationStackView.addArrangedSubview(view)
+    func addTransactionInformationView(_ view: UIView) {
+        transactionInformationStackView.addArrangedSubview(view)
     }
 
     func addDetailedInformationView(_ view: UIView) {
@@ -77,8 +96,29 @@ extension WCSingleTransactionView {
 }
 
 extension WCSingleTransactionView {
+    @objc
+    private func notifyDelegateToOpenLongDappMessage() {
+        mainDelegate?.wcSingleTransactionViewDidOpenLongDappMessage(self)
+    }
+}
+
+extension WCSingleTransactionView {
+    func bind(_ viewModel: WCSingleTransactionViewModel) {
+        if let transactionDappMessageViewModel = viewModel.transactionDappMessageViewModel {
+            dappMessageView.bind(transactionDappMessageViewModel)
+        } else {
+            dappMessageView.hideViewInStack()
+        }
+    }
+}
+
+extension WCSingleTransactionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let spacing: CGFloat = 16.0
         let horizontalInset: CGFloat = 20.0
     }
+}
+
+protocol WCSingleTransactionViewDelegate: AnyObject {
+    func wcSingleTransactionViewDidOpenLongDappMessage(_ wcSingleTransactionView: WCSingleTransactionView)
 }

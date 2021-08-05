@@ -23,6 +23,8 @@ class WCConnectionApprovalViewController: BaseViewController {
         return false
     }
 
+    weak var delegate: WCConnectionApprovalViewControllerDelegate?
+
     private lazy var connectionApprovalView = WCConnectionApprovalView()
 
     private let walletConnectSession: WalletConnectSession
@@ -66,13 +68,21 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
             return
         }
 
-        walletConnectSessionConnectionCompletionHandler(walletConnectSession.getApprovedWalletConnectionInfo(for: account.address))
-        dismissScreen()
+        DispatchQueue.main.async {
+            self.walletConnectSessionConnectionCompletionHandler(
+                self.walletConnectSession.getApprovedWalletConnectionInfo(
+                    for: account.address
+                )
+            )
+            self.delegate?.wcConnectionApprovalViewControllerDidApproveConnection(self)
+        }
     }
 
     func wcConnectionApprovalViewDidRejectConnection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
-        walletConnectSessionConnectionCompletionHandler(walletConnectSession.getDeclinedWalletConnectionInfo())
-        dismissScreen()
+        DispatchQueue.main.async {
+            self.walletConnectSessionConnectionCompletionHandler(self.walletConnectSession.getDeclinedWalletConnectionInfo())
+            self.delegate?.wcConnectionApprovalViewControllerDidRejectConnection(self)
+        }
     }
 
     func wcConnectionApprovalViewDidSelectAccountSelection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
@@ -92,4 +102,9 @@ extension WCConnectionApprovalViewController: AccountListViewControllerDelegate 
     func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {
         viewController.popScreen()
     }
+}
+
+protocol WCConnectionApprovalViewControllerDelegate: AnyObject {
+    func wcConnectionApprovalViewControllerDidApproveConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController)
+    func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController)
 }

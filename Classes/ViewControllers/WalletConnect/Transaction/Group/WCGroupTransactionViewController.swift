@@ -16,30 +16,41 @@
 //   WCGroupTransactionViewController.swift
 
 import UIKit
+import SVProgressHUD
 
 class WCGroupTransactionViewController: BaseViewController {
 
     private lazy var groupTransactionView = WCGroupTransactionView()
 
     private lazy var dataSource = WCGroupTransactionDataSource(
-        transactionParameters: transactionParameters,
+        session: session,
+        transactions: transactions,
         walletConnector: walletConnector
     )
 
     private lazy var layoutBuilder = WCGroupTransactionLayout(dataSource: dataSource)
 
-    private let transactionParameters: [WCTransactionParams]
+    private let transactions: [WCTransaction]
+    private let transactionRequest: WalletConnectRequest
 
-    init(transactionParameters: [WCTransactionParams], configuration: ViewControllerConfiguration) {
-        self.transactionParameters = transactionParameters
+    init(
+        transactions: [WCTransaction],
+        transactionRequest: WalletConnectRequest,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.transactions = transactions
+        self.transactionRequest = transactionRequest
         super.init(configuration: configuration)
     }
 
+    override func configureAppearance() {
+        super.configureAppearance()
+        title = "wallet-connect-transaction-title-atomic".localized
+    }
+
     override func linkInteractors() {
-        groupTransactionView.delegate = self
         groupTransactionView.setDataSource(dataSource)
         groupTransactionView.setDelegate(layoutBuilder)
-        dataSource.delegate = self
         layoutBuilder.delegate = self
     }
 
@@ -48,41 +59,13 @@ class WCGroupTransactionViewController: BaseViewController {
     }
 }
 
-extension WCGroupTransactionViewController: WCGroupTransactionViewDelegate {
-    func wcGroupTransactionViewDidOpenLongMessage(_ wcGroupTransactionView: WCGroupTransactionView) {
-
-    }
-
-    func wcGroupTransactionViewDidConfirmSigning(_ wcGroupTransactionView: WCGroupTransactionView) {
-        signTransaction()
-    }
-
-    func wcGroupTransactionViewDidDeclineSigning(_ wcGroupTransactionView: WCGroupTransactionView) {
-        declineTransaction()
-    }
-}
-
-extension WCGroupTransactionViewController: WalletConnectTransactionSignable {
-    func signTransaction() {
-
-    }
-
-    func declineTransaction() {
-
-    }
-}
-
-extension WCGroupTransactionViewController: WCGroupTransactionDataSourceDelegate {
-    func wcGroupTransactionDataSourceDidOpenLongDappMessageView(_ wcGroupTransactionDataSource: WCGroupTransactionDataSource) {
-        
-    }
-}
-
 extension WCGroupTransactionViewController: WCGroupTransactionLayoutDelegate {
     func wcGroupTransactionLayout(
         _ wcGroupTransactionLayout: WCGroupTransactionLayout,
-        didSelect transactionParameter: WCTransactionParams
+        didSelect transaction: WCTransaction
     ) {
-
+        presentSingleWCTransaction(transaction, with: transactionRequest)
     }
 }
+
+extension WCGroupTransactionViewController: WalletConnectSingleTransactionRequestPresentable { }
