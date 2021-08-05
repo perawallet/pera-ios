@@ -96,6 +96,7 @@ indirect enum Screen {
     case maximumBalanceWarning(account: Account)
     case screenshotWarning
     case warningAlert(warningAlert: WarningAlert)
+    case actionableWarningAlert(warningAlert: WarningAlert)
     case animatedTutorial(flow: AccountSetupFlow, tutorial: AnimatedTutorial, isActionable: Bool)
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions

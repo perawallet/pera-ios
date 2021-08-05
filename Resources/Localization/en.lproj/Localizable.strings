@@ -646,7 +646,7 @@
 "wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To";
 "wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.01 Algos.";
 "wallet-connect-transaction-warning-initial" = "The following transaction requests are from external applications that the Algorand Wallet does not control. Please ensure you review these transactions carefully before signing as transactions are irreversible.";
-"wallet-connect-transaction-warning-future" = "This transaction will be submitted in the future.";
+"wallet-connect-transaction-warning-future" = "This transaction will be submitted in the future. ";
 "wallet-connect-transaction-warning-confirmation" = "Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
 
 // MARK: Wallet Connect Transaction Dapp Message

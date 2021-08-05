@@ -204,6 +204,15 @@ extension WCTransaction {
     func isInTheSameNetwork(with params: TransactionParams) -> Bool {
         return transactionDetail?.genesisId == params.genesisId && transactionDetail?.genesisHashData == params.genesisHashData
     }
+
+    func isFutureTransaction(with params: TransactionParams) -> Bool {
+        guard let lastRound = transactionDetail?.lastValidRound else {
+            return false
+        }
+
+        let futureTransactionThreshold: Int64 = 500
+        return lastRound > params.lastRound + futureTransactionThreshold
+    }
 }
 
 extension WCTransaction {

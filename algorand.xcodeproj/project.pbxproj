@@ -1056,6 +1056,12 @@
 		2B3E226926BC234F00ED0AAF /* OneTimeDisplayStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E226826BC234F00ED0AAF /* OneTimeDisplayStorage.swift */; };
 		2B3E226A26BC234F00ED0AAF /* OneTimeDisplayStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E226826BC234F00ED0AAF /* OneTimeDisplayStorage.swift */; };
 		2B3E226B26BC234F00ED0AAF /* OneTimeDisplayStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E226826BC234F00ED0AAF /* OneTimeDisplayStorage.swift */; };
+		2B3E226D26BC310500ED0AAF /* ActionableWarningAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E226C26BC310500ED0AAF /* ActionableWarningAlertViewController.swift */; };
+		2B3E226E26BC310500ED0AAF /* ActionableWarningAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E226C26BC310500ED0AAF /* ActionableWarningAlertViewController.swift */; };
+		2B3E226F26BC310500ED0AAF /* ActionableWarningAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E226C26BC310500ED0AAF /* ActionableWarningAlertViewController.swift */; };
+		2B3E227126BC317600ED0AAF /* ActionableWarningAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E227026BC317600ED0AAF /* ActionableWarningAlertView.swift */; };
+		2B3E227226BC317600ED0AAF /* ActionableWarningAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E227026BC317600ED0AAF /* ActionableWarningAlertView.swift */; };
+		2B3E227326BC317600ED0AAF /* ActionableWarningAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E227026BC317600ED0AAF /* ActionableWarningAlertView.swift */; };
 		2B3E39F02478372E00E8AEB7 /* PassphraseDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39EF2478372E00E8AEB7 /* PassphraseDisplayView.swift */; };
 		2B3E39F12478372E00E8AEB7 /* PassphraseDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39EF2478372E00E8AEB7 /* PassphraseDisplayView.swift */; };
 		2B3E39F4247837D700E8AEB7 /* TestNetTitleDisplayable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39F3247837D700E8AEB7 /* TestNetTitleDisplayable.swift */; };
@@ -2728,6 +2734,8 @@
 		2B3D73B823C3621F00597D32 /* VerifiedAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAsset.swift; sourceTree = "<group>"; };
 		2B3D73BB23C3638900597D32 /* LimitQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LimitQuery.swift; sourceTree = "<group>"; };
 		2B3E226826BC234F00ED0AAF /* OneTimeDisplayStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneTimeDisplayStorage.swift; sourceTree = "<group>"; };
+		2B3E226C26BC310500ED0AAF /* ActionableWarningAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionableWarningAlertViewController.swift; sourceTree = "<group>"; };
+		2B3E227026BC317600ED0AAF /* ActionableWarningAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionableWarningAlertView.swift; sourceTree = "<group>"; };
 		2B3E39EF2478372E00E8AEB7 /* PassphraseDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseDisplayView.swift; sourceTree = "<group>"; };
 		2B3E39F3247837D700E8AEB7 /* TestNetTitleDisplayable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestNetTitleDisplayable.swift; sourceTree = "<group>"; };
 		2B3E39F92479665B00E8AEB7 /* TabBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButton.swift; sourceTree = "<group>"; };
@@ -3586,6 +3594,7 @@
 			isa = PBXGroup;
 			children = (
 				18138463269F234E00AEEC2F /* WarningAlertView.swift */,
+				2B3E227026BC317600ED0AAF /* ActionableWarningAlertView.swift */,
 			);
 			path = WarningAlert;
 			sourceTree = "<group>";
@@ -3594,6 +3603,7 @@
 			isa = PBXGroup;
 			children = (
 				18138466269F2E2500AEEC2F /* WarningAlertViewController.swift */,
+				2B3E226C26BC310500ED0AAF /* ActionableWarningAlertViewController.swift */,
 			);
 			path = WarningAlert;
 			sourceTree = "<group>";
@@ -9920,6 +9930,7 @@
 				2B288ADE269112EB00BC6FB6 /* JSONDisplayViewModel.swift in Sources */,
 				2B0F635824ED21C200DA22A6 /* LedgerAccountSelectionViewController.swift in Sources */,
 				2B0F635924ED21C200DA22A6 /* LedgerAccountSelectionView.swift in Sources */,
+				2B3E226F26BC310500ED0AAF /* ActionableWarningAlertViewController.swift in Sources */,
 				2BF90F6D25FBAAEE0033F348 /* VStackView.swift in Sources */,
 				2B46262B23758CC9000AE73C /* Asset.swift in Sources */,
 				2BB350B72588E0B800A03BAC /* LedgerAccountDetailView.swift in Sources */,
@@ -10079,6 +10090,7 @@
 				2B448735237AAD1200C19FDE /* AlgoAssetView.swift in Sources */,
 				17BD4E242292F1260003E49A /* RequestParameter.swift in Sources */,
 				2B7747A926026F9C0083EFFA /* InputSuggestionsDataController.swift in Sources */,
+				2B3E227326BC317600ED0AAF /* ActionableWarningAlertView.swift in Sources */,
 				2B98233C231EC207009560CD /* TransactionsQuery.swift in Sources */,
 				17BD4E252292F1260003E49A /* AccountViewCell.swift in Sources */,
 				2BE937452464B01D00322C1E /* TransactionTitleInformationView.swift in Sources */,
@@ -10694,6 +10706,7 @@
 				2B288ADD269112EB00BC6FB6 /* JSONDisplayViewModel.swift in Sources */,
 				2B56B8292505013600AC7B8D /* RekeyConfirmationDataSource.swift in Sources */,
 				2B56B82A2505013600AC7B8D /* LedgerAccountSelectionDataSource.swift in Sources */,
+				2B3E226E26BC310500ED0AAF /* ActionableWarningAlertViewController.swift in Sources */,
 				2BF90F6C25FBAAEE0033F348 /* VStackView.swift in Sources */,
 				2B56B82B2505013600AC7B8D /* RekeyConfirmationListLayout.swift in Sources */,
 				2BB350B62588E0B800A03BAC /* LedgerAccountDetailView.swift in Sources */,
@@ -10853,6 +10866,7 @@
 				2B0F61A824EC129D00DA22A6 /* LedgerTroubleshootBluetoothConnectionViewController.swift in Sources */,
 				2B0F61A924EC129D00DA22A6 /* StatusBarConfigurable.swift in Sources */,
 				2B7747A826026F9C0083EFFA /* InputSuggestionsDataController.swift in Sources */,
+				2B3E227226BC317600ED0AAF /* ActionableWarningAlertView.swift in Sources */,
 				2B0F61AA24EC129D00DA22A6 /* AlgosTransactionDraft.swift in Sources */,
 				2B0F61AB24EC129D00DA22A6 /* Router.swift in Sources */,
 				2B0F61AC24EC129D00DA22A6 /* DateWithTextImageView.swift in Sources */,
@@ -11468,6 +11482,7 @@
 				2B288ADC269112EB00BC6FB6 /* JSONDisplayViewModel.swift in Sources */,
 				17D04F46225F64B60051BC43 /* AddNodeViewController.swift in Sources */,
 				2B8954B92243FCFA00D6D068 /* AdaptiveLayout.swift in Sources */,
+				2B3E226D26BC310500ED0AAF /* ActionableWarningAlertViewController.swift in Sources */,
 				2BF90F6B25FBAAEE0033F348 /* VStackView.swift in Sources */,
 				95A12866242C8EEB00B491A5 /* LedgerTroubleshootInstallAppView.swift in Sources */,
 				2BB350B52588E0B800A03BAC /* LedgerAccountDetailView.swift in Sources */,
@@ -11627,6 +11642,7 @@
 				2B7E3071267A5E9C00E89EE3 /* WCTransactionWarningViewModel.swift in Sources */,
 				2BB37B1924069F7500F58662 /* LedgerBLEController.swift in Sources */,
 				1751261A223BE5930095AF4F /* RequestParameter.swift in Sources */,
+				2B3E227126BC317600ED0AAF /* ActionableWarningAlertView.swift in Sources */,
 				2B656E9B224BC5370064A49B /* AccountViewCell.swift in Sources */,
 				2B7747A726026F9B0083EFFA /* InputSuggestionsDataController.swift in Sources */,
 				2B65B1FE225268DA001DB5BE /* UIImage+Size.swift in Sources */,

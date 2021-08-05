@@ -364,6 +364,8 @@ class Router {
             viewController = ScreenshotWarningViewController(configuration: configuration)
         case let .warningAlert(warningAlert):
             viewController = WarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
+        case let .actionableWarningAlert(warningAlert):
+            viewController = ActionableWarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
         case let .animatedTutorial(flow, tutorial, isActionable):
             viewController = AnimatedTutorialViewController(
                 flow: flow,

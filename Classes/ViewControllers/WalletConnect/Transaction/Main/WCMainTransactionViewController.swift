@@ -163,7 +163,33 @@ extension WCMainTransactionViewController {
     }
 
     private func presentConfirmationAlert() {
+        guard let params = UIApplication.shared.accountManager?.params else {
+            return
+        }
 
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: confirmationModalPresenter
+        )
+
+        let containsFutureTransaction = transactions.contains { $0.isFutureTransaction(with: params) }
+        let description = containsFutureTransaction ?
+            "wallet-connect-transaction-warning-future".localized + "wallet-connect-transaction-warning-confirmation".localized :
+            "wallet-connect-transaction-warning-confirmation".localized
+
+        let warningAlert = WarningAlert(
+            title: "node-settings-warning-title".localized,
+            image: img("img-warning-circle"),
+            description: description,
+            actionTitle: "title-got-it".localized
+        )
+
+        let controller = open(
+            .actionableWarningAlert(warningAlert: warningAlert),
+            by: transitionStyle
+        ) as? ActionableWarningAlertViewController
+        controller?.delegate = self
     }
 }
 
@@ -176,6 +202,10 @@ extension WCMainTransactionViewController: WCTransactionValidator {
 
 extension WCMainTransactionViewController: WCMainTransactionViewDelegate {
     func wcMainTransactionViewDidConfirmSigning(_ wcMainTransactionView: WCMainTransactionView) {
+        presentConfirmationAlert()
+    }
+
+    private func confirmSigning() {
         if let transaction = getFirstSignableTransaction(),
            let index = transactions.firstIndex(of: transaction) {
             fillInitialUnsignedTransactions(until: index)
@@ -339,8 +369,11 @@ extension WCMainTransactionViewController: WarningAlertViewControllerDelegate {
     }
 }
 
-extension WCMainTransactionViewController {
-
+extension WCMainTransactionViewController: ActionableWarningAlertViewControllerDelegate {
+    func actionableWarningAlertViewControllerDidTakeAction(_ actionableWarningAlertViewController: ActionableWarningAlertViewController) {
+        actionableWarningAlertViewController.dismissScreen()
+        confirmSigning()
+    }
 }
 
 enum WCTransactionType {
@@ -349,4 +382,3 @@ enum WCTransactionType {
     case assetAddition
     case appCall
 }
-

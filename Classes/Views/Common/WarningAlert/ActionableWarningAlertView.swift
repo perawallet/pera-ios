@@ -13,16 +13,16 @@
 // limitations under the License.
 
 //
-//   WarningAlertView.swift
+//   ActionableWarningAlertView.swift
 
 import UIKit
 
-class WarningAlertView: BaseView {
-    
+class ActionableWarningAlertView: BaseView {
+
     private let layout = Layout<LayoutConstants>()
-    
-    weak var delegate: WarningAlertViewDelegate?
-        
+
+    weak var delegate: ActionableWarningAlertViewDelegate?
+
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
@@ -30,9 +30,9 @@ class WarningAlertView: BaseView {
             .withLine(.contained)
             .withAlignment(.center)
     }()
-    
+
     private lazy var imageView = UIImageView(image: img("img-warning-circle"))
-    
+
     private lazy var descriptionLabel: UILabel = {
         UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
@@ -40,76 +40,101 @@ class WarningAlertView: BaseView {
             .withLine(.contained)
             .withAlignment(.center)
     }()
-    
+
     private lazy var actionButton = MainButton(title: "")
-    
+
+    private lazy var cancelButton: UIButton = {
+        UIButton(type: .custom)
+            .withTitle("title-cancel".localized)
+            .withBackgroundImage(img("bg-light-gray-button"))
+            .withAlignment(.center)
+            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withTitleColor(Colors.Text.primary)
+    }()
+
     override func prepareLayout() {
         setupTitleLabelLayout()
         setupImageViewLayout()
         setupDescriptionLabelLayout()
         setupActionButtonLayout()
+        setupCancelButtonLayout()
     }
-    
+
     override func setListeners() {
         actionButton.addTarget(self, action: #selector(notifyDelegateToTakeAction), for: .touchUpInside)
     }
-    
+
     override func configureAppearance() {
         backgroundColor = Colors.Background.secondary
     }
 }
 
-extension WarningAlertView {
+extension ActionableWarningAlertView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
-        
+
         titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
-    
+
     private func setupImageViewLayout() {
         addSubview(imageView)
-        
+
         imageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
             make.size.equalTo(layout.current.imageSize)
         }
     }
-    
+
     private func setupDescriptionLabelLayout() {
         addSubview(descriptionLabel)
-        
+
         descriptionLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(imageView.snp.bottom).offset(layout.current.descriptionTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
-    
+
     private func setupActionButtonLayout() {
         addSubview(actionButton)
-        
+
         actionButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.topInset + safeAreaBottom)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalTo(descriptionLabel.snp.bottom).offset(layout.current.verticalInset)
         }
     }
-}
 
-extension WarningAlertView {
-    @objc
-    private func notifyDelegateToTakeAction() {
-        delegate?.warningAlertViewDidTakeAction(self)
+    private func setupCancelButtonLayout() {
+        addSubview(cancelButton)
+
+        cancelButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.topInset + safeAreaBottom)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalTo(actionButton.snp.bottom).offset(layout.current.buttonVerticalInset)
+        }
     }
 }
 
-extension WarningAlertView {
+extension ActionableWarningAlertView {
+    @objc
+    private func notifyDelegateToTakeAction() {
+        delegate?.actionableWarningAlertViewDidTakeAction(self)
+    }
+
+    @objc
+    private func notifyDelegateToCancel() {
+        delegate?.actionableWarningAlertViewDidCancel(self)
+    }
+}
+
+extension ActionableWarningAlertView {
     func bind(_ viewModel: WarningAlertViewModel) {
         titleLabel.text = viewModel.title
         imageView.image = viewModel.image
@@ -118,16 +143,18 @@ extension WarningAlertView {
     }
 }
 
-extension WarningAlertView {
+extension ActionableWarningAlertView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let verticalInset: CGFloat = 28.0
         let horizontalInset: CGFloat = 20.0
         let topInset: CGFloat = 16.0
         let descriptionTopInset: CGFloat = 20.0
+        let buttonVerticalInset: CGFloat = 12.0
         let imageSize = CGSize(width: 80.0, height: 80.0)
     }
 }
 
-protocol WarningAlertViewDelegate: AnyObject {
-    func warningAlertViewDidTakeAction(_ warningAlertView: WarningAlertView)
+protocol ActionableWarningAlertViewDelegate: AnyObject {
+    func actionableWarningAlertViewDidTakeAction(_ actionableWarningAlertView: ActionableWarningAlertView)
+    func actionableWarningAlertViewDidCancel(_ actionableWarningAlertView: ActionableWarningAlertView)
 }
