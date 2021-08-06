@@ -44,6 +44,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private var shouldInvalidateUserSession: Bool = false
     
+    private lazy var containerBlurView: UIVisualEffectView = {
+        UIVisualEffectView(frame: UIScreen.main.bounds)
+    }()
+    
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -75,11 +79,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
-        bringBlurOnScreen()
+        showBlurOnWindow()
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        deleteBlurOnScreen()
+        hideBlurOnWindow()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -183,12 +187,14 @@ extension AppDelegate {
         invalidateAccountManagerFetchPolling()
     }
     
-    private func bringBlurOnScreen() {
-        NotificationCenter.default.post(name: .ApplicationWillResignActive, object: self, userInfo: nil)
+    private func showBlurOnWindow() {
+        let blurEffect = UIBlurEffect(style: .dark)
+        containerBlurView.effect = blurEffect
+        window?.addSubview(containerBlurView)
     }
     
-    private func deleteBlurOnScreen() {
-        NotificationCenter.default.post(name: .ApplicationDidBecomeActive, object: self, userInfo: nil)
+    private func hideBlurOnWindow() {
+        containerBlurView.removeFromSuperview()
     }
 }
 
