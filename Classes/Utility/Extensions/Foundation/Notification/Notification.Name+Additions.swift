@@ -25,14 +25,6 @@ extension Notification.Name {
     static var ApplicationWillEnterForeground: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.application.WillEnterForeground")
     }
-    
-    static var ApplicationWillResignActive: Notification.Name {
-        return .init(rawValue: "com.algorand.algorand.notification.application.WillResignActive")
-    }
-    
-    static var ApplicationDidBecomeActive: Notification.Name {
-        return .init(rawValue: "com.algorand.algorand.notification.application.DidBecomeActive")
-    }
 
     static var AccountUpdate: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.account.update")

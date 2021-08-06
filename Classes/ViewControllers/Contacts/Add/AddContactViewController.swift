@@ -145,18 +145,6 @@ class AddContactViewController: BaseScrollViewController {
     override func setListeners() {
         super.setListeners()
         keyboardController.beginTracking()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(willApplicationResignActive),
-            name: .ApplicationWillResignActive,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didApplicationBecomeActive),
-            name: .ApplicationDidBecomeActive,
-            object: nil
-        )
     }
     
     override func linkInteractors() {
@@ -354,18 +342,6 @@ extension AddContactViewController {
     enum Mode {
         case new(address: String? = nil, name: String? = nil)
         case edit(contact: Contact)
-    }
-}
-
-extension AddContactViewController {
-    @objc
-    private func willApplicationResignActive() {
-        addContactView.outerView.blurView.setup().enable(isHidden: false)
-    }
-    
-    @objc
-    func didApplicationBecomeActive() {
-        addContactView.outerView.blurView.setup().enable(isHidden: true)
     }
 }
 
