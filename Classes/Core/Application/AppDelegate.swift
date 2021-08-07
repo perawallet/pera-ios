@@ -45,7 +45,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var shouldInvalidateUserSession: Bool = false
     
     private lazy var containerBlurView: UIVisualEffectView = {
-        UIVisualEffectView(frame: UIScreen.main.bounds)
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.frame = UIScreen.main.bounds
+        return blurView
     }()
     
     func application(
@@ -188,8 +191,6 @@ extension AppDelegate {
     }
     
     private func showBlurOnWindow() {
-        let blurEffect = UIBlurEffect(style: .dark)
-        containerBlurView.effect = blurEffect
         window?.addSubview(containerBlurView)
     }
     
