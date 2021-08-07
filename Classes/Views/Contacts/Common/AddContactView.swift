@@ -22,9 +22,7 @@ class AddContactView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
     private(set) lazy var userInformationView = UserInformationView()
-    
-    private(set) lazy var outerView = UIView()
-    
+        
     private(set) lazy var addContactButton = MainButton(title: "contacts-add".localized)
     
     private(set) lazy var deleteContactButton: AlignedButton = {
@@ -52,7 +50,6 @@ class AddContactView: BaseView {
         setupUserInformationViewLayout()
         setupAddButtonLayout()
         setupDeleteContactButtonLayout()
-        setupOuterViewLayout()
     }
 }
 
@@ -70,14 +67,6 @@ extension AddContactView {
         userInformationView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(safeAreaLayoutGuide.snp.top)
-        }
-    }
-    
-    private func setupOuterViewLayout() {
-        addSubview(outerView)
-        
-        outerView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
         }
     }
     
