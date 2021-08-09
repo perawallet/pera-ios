@@ -79,6 +79,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         decideToInvalidateSessionInBackground()
+        removeBlurOnWindow()
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
@@ -86,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        hideBlurOnWindow()
+        removeBlurOnWindow()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -194,7 +195,7 @@ extension AppDelegate {
         window?.addSubview(containerBlurView)
     }
     
-    private func hideBlurOnWindow() {
+    private func removeBlurOnWindow() {
         containerBlurView.removeFromSuperview()
     }
 }
