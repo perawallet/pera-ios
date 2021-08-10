@@ -59,10 +59,6 @@ class SettingsViewController: BaseViewController {
         isTabBarHidden = false
     }
     
-    override func configureAppearance() {
-        view.backgroundColor = Colors.Background.tertiary
-    }
-    
     override func linkInteractors() {
         settingsView.collectionView.delegate = self
         settingsView.collectionView.dataSource = self
