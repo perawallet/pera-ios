@@ -87,6 +87,14 @@ extension WalletConnectSessionSource {
             }
 
             self.sessions?[session.urlMeta.topic] = session
+
+            if let sessionData = try? JSONEncoder().encode([session.urlMeta.topic: session]) {
+                WCSessionHistory.create(
+                    entity: WCSessionHistory.entityName,
+                    with: [WCSessionHistory.DBKeys.sessionHistory.rawValue: sessionData]
+                )
+            }
+
             syncSessions()
         } else {
             sessions = [session.urlMeta.topic: session]
@@ -113,6 +121,7 @@ extension WalletConnectSessionSource {
     func resetAllSessions() {
         wcSessionList = nil
         WCSessionList.clear(entity: WCSessionList.entityName)
+        WCSessionHistory.clear(entity: WCSessionHistory.entityName)
     }
 
     private func syncSessions() {
