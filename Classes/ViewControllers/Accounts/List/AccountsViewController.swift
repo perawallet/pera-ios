@@ -91,7 +91,7 @@ class AccountsViewController: BaseViewController {
         return .accounts
     }
     
-    private var isConnectedToInternet = true {
+    private lazy var isConnectedToInternet = api?.networkMonitor?.isConnected ?? true {
         didSet {
             if isConnectedToInternet == oldValue {
                 return
@@ -141,12 +141,6 @@ class AccountsViewController: BaseViewController {
         
         pushNotificationController.requestAuthorization()
         pushNotificationController.sendDeviceDetails()
-
-        let wcRequestHandler = TransactionSignRequestHandler()
-        if let rootViewController = UIApplication.shared.rootViewController() {
-            wcRequestHandler.delegate = rootViewController
-        }
-        walletConnector.register(for: wcRequestHandler)
         
         setAccountsCollectionViewContentState()
         requestAppReview()
@@ -339,6 +333,12 @@ extension AccountsViewController {
         if !isConnectedToInternet {
             return
         }
+
+        let wcRequestHandler = TransactionSignRequestHandler()
+        if let rootViewController = UIApplication.shared.rootViewController() {
+            wcRequestHandler.delegate = rootViewController
+        }
+        walletConnector.register(for: wcRequestHandler)
         
         accountsDataSource.reload()
         setAccountsCollectionViewContentState()
@@ -404,6 +404,12 @@ extension AccountsViewController {
             return
         }
 
+        if !isConnectedToInternet {
+            accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
+            accountsView.setHeaderButtonsHidden(true)
+            return
+        }
+
         if let remoteAccounts = session?.accounts,
            remoteAccounts.isEmpty,
            isInitialEmptyStateIncluded {
@@ -411,8 +417,8 @@ extension AccountsViewController {
             return
         }
 
-        accountsView.accountsCollectionView.contentState = isConnectedToInternet ? .none : .empty(noConnectionView)
-        accountsView.setHeaderButtonsHidden(!isConnectedToInternet)
+        accountsView.accountsCollectionView.contentState = .none
+        accountsView.setHeaderButtonsHidden(false)
     }
 
     func setEmptyAccountsState() {
