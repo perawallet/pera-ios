@@ -22,12 +22,16 @@ class AccountNameViewModel {
     private(set) var image: UIImage?
     private(set) var name: String?
     
-    init(account: Account) {
-        setImage(from: account)
+    init(account: Account, hasImage: Bool = true) {
+        setImage(from: account, with: hasImage)
         setName(from: account)
     }
     
-    private func setImage(from account: Account) {
+    private func setImage(from account: Account, with hasImage: Bool) {
+        if !hasImage {
+            return
+        }
+
         image = account.accountImage()
     }
     

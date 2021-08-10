@@ -25,14 +25,9 @@ class WCSingleTransactionViewModel {
     }
 
     private func setTransactionDappMessageViewModel(from wcSession: WCSession, and transaction: WCTransaction) {
-        guard let message = transaction.message,
-              !message.isEmpty else {
-            return
-        }
-
         transactionDappMessageViewModel = WCTransactionDappMessageViewModel(
             session: wcSession,
-            text: message,
+            text: transaction.message,
             imageSize: CGSize(width: 44.0, height: 44.0)
         )
     }

@@ -31,8 +31,8 @@ class WCAssetAdditionTransactionViewModel {
     private(set) var urlInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var metadataInformationViewModel: WCTransactionActionableInformationViewModel?
 
-    init(transaction: WCTransaction, senderAccount: Account, assetDetail: AssetDetail?) {
-        setSenderInformationViewModel(from: senderAccount)
+    init(transaction: WCTransaction, senderAccount: Account?, assetDetail: AssetDetail?) {
+        setSenderInformationViewModel(from: senderAccount, and: transaction)
         setAssetInformationViewModel(from: transaction, and: assetDetail)
         setAuthAccountInformationViewModel(from: transaction)
         setCloseWarningInformationViewModel(from: transaction)
@@ -46,10 +46,23 @@ class WCAssetAdditionTransactionViewModel {
         setMetadataInformationViewModel(from: assetDetail)
     }
 
-    private func setSenderInformationViewModel(from senderAccount: Account) {
+    private func setSenderInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+        if let account = senderAccount {
+            senderInformationViewModel = TitledTransactionAccountNameViewModel(
+                title: "transaction-detail-from".localized,
+                account: account
+            )
+            return
+        }
+
+        guard let senderAddress = transaction.transactionDetail?.sender else {
+            return
+        }
+
         senderInformationViewModel = TitledTransactionAccountNameViewModel(
             title: "transaction-detail-from" .localized,
-            account: senderAccount
+            account: Account(address: senderAddress, type: .standard),
+            hasImage: false
         )
     }
 
@@ -61,7 +74,7 @@ class WCAssetAdditionTransactionViewModel {
 
         assetInformationViewModel = TransactionAssetViewModel(
             assetDetail: assetDetail,
-            isLastElement: !transaction.hasValidAuthAddressForSigner && !transactionDetail.hasRekeyOrCloseAddress
+            isLastElement: transaction.hasValidAuthAddressForSigner && !transactionDetail.hasRekeyOrCloseAddress
         )
     }
 
@@ -115,7 +128,7 @@ class WCAssetAdditionTransactionViewModel {
         feeInformationViewModel = TitledTransactionAmountInformationViewModel(
             title: "transaction-detail-fee".localized,
             mode: .fee(value: fee),
-            isLastElement: transactionDetail.hasHighFee
+            isLastElement: !transactionDetail.hasHighFee
         )
     }
 

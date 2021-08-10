@@ -28,8 +28,8 @@ class WCAppCallTransactionViewModel {
     private(set) var noteInformationViewModel: WCTransactionTextInformationViewModel?
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
 
-    init(transaction: WCTransaction, account: Account) {
-        setSenderInformationViewModel(from: account)
+    init(transaction: WCTransaction, account: Account?) {
+        setSenderInformationViewModel(from: account, and: transaction)
         setIdInformationViewModel(from: transaction)
         setAuthAccountInformationViewModel(from: transaction)
         setCloseWarningInformationViewModel(from: transaction)
@@ -40,11 +40,26 @@ class WCAppCallTransactionViewModel {
         setRawTransactionInformationViewModel(from: transaction)
     }
 
-    private func setSenderInformationViewModel(from account: Account) {
+    private func setSenderInformationViewModel(from account: Account?, and transaction: WCTransaction) {
+        if let account = account {
+            senderInformationViewModel = TitledTransactionAccountNameViewModel(
+                title: "transaction-detail-sender".localized,
+                account: account,
+                isLastElement: false
+            )
+            return
+        }
+
+        guard let senderAddress = transaction.transactionDetail?.sender else {
+            return
+        }
+
+        let senderAccount = Account(address: senderAddress, type: .standard)
         senderInformationViewModel = TitledTransactionAccountNameViewModel(
-            title: "transaction-detail-from".localized,
-            account: account,
-            isLastElement: false
+            title: "transaction-detail-sender".localized,
+            account: senderAccount,
+            isLastElement: false,
+            hasImage: false
         )
     }
 
@@ -59,7 +74,7 @@ class WCAppCallTransactionViewModel {
                 title: "wallet-connect-transaction-title-app-id".localized,
                 detail: "\(id)"
             ),
-            isLastElement: !transaction.hasValidAuthAddressForSigner && !transactionDetail.hasRekeyOrCloseAddress
+            isLastElement: transaction.hasValidAuthAddressForSigner && !transactionDetail.hasRekeyOrCloseAddress
         )
     }
 
@@ -113,7 +128,7 @@ class WCAppCallTransactionViewModel {
         feeInformationViewModel = TitledTransactionAmountInformationViewModel(
             title: "transaction-detail-fee".localized,
             mode: .fee(value: fee),
-            isLastElement: transactionDetail.hasHighFee
+            isLastElement: !transactionDetail.hasHighFee
         )
     }
 

@@ -47,8 +47,8 @@ class WCMainTransactionHeaderView: BaseView {
         setupStackViewLayout()
     }
 
-    override func setListeners() {
-        dappMessageView.addTarget(self, action: #selector(notifyDelegateToOpenLongDappMessage), for: .touchUpInside)
+    override func linkInteractors() {
+        dappMessageView.delegate = self
     }
 }
 
@@ -67,9 +67,8 @@ extension WCMainTransactionHeaderView {
     }
 }
 
-extension WCMainTransactionHeaderView {
-    @objc
-    private func notifyDelegateToOpenLongDappMessage() {
+extension WCMainTransactionHeaderView: WCTransactionDappMessageViewDelegate {
+    func wcTransactionDappMessageViewDidTapped(_ WCTransactionDappMessageView: WCTransactionDappMessageView) {
         delegate?.wcMainTransactionHeaderViewDidOpenLongMessageView(self)
     }
 }
@@ -78,8 +77,6 @@ extension WCMainTransactionHeaderView {
     func bind(_ viewModel: WCMainTransactionHeaderViewModel) {
         if let transactionDappMessageViewModel = viewModel.transactionDappMessageViewModel {
             dappMessageView.bind(transactionDappMessageViewModel)
-        } else {
-            dappMessageView.hideViewInStack()
         }
 
         titleLabel.text = viewModel.title

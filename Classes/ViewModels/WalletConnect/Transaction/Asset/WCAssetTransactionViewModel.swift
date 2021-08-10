@@ -31,9 +31,9 @@ class WCAssetTransactionViewModel {
     private(set) var noteInformationViewModel: WCTransactionTextInformationViewModel?
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
 
-    init(transaction: WCTransaction, senderAccount: Account, assetDetail: AssetDetail?) {
-        setSenderInformationViewModel(from: senderAccount)
-        setAssetInformationViewModel(from: assetDetail)
+    init(transaction: WCTransaction, senderAccount: Account?, assetDetail: AssetDetail?) {
+        setSenderInformationViewModel(from: senderAccount, and: transaction)
+        setAssetInformationViewModel(from: transaction, and: assetDetail)
         setBalanceInformationViewModel(from: transaction, with: senderAccount, and: assetDetail)
         setAuthAccountInformationViewModel(from: transaction)
         setCloseWarningInformationViewModel(from: transaction)
@@ -46,27 +46,48 @@ class WCAssetTransactionViewModel {
         setRawTransactionInformationViewModel(from: transaction)
     }
 
-    private func setSenderInformationViewModel(from senderAccount: Account) {
-        senderInformationViewModel = TitledTransactionAccountNameViewModel(
-            title: "transaction-detail-from".localized,
-            account: senderAccount
-        )
-    }
-
-    private func setAssetInformationViewModel(from assetDetail: AssetDetail?) {
-        guard let assetDetail = assetDetail else {
+    private func setSenderInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+        if let account = senderAccount {
+            senderInformationViewModel = TitledTransactionAccountNameViewModel(
+                title: "transaction-detail-from".localized,
+                account: account
+            )
             return
         }
 
-        assetInformationViewModel = TransactionAssetViewModel(assetDetail: assetDetail, isLastElement: false)
+        guard let senderAddress = transaction.transactionDetail?.sender else {
+            return
+        }
+
+        let account = Account(address: senderAddress, type: .standard)
+        senderInformationViewModel = TitledTransactionAccountNameViewModel(
+            title: "transaction-detail-from".localized,
+            account: account,
+            hasImage: false
+        )
+    }
+
+    private func setAssetInformationViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
+        guard let assetDetail = assetDetail,
+              let transactionDetail = transaction.transactionDetail else {
+            return
+        }
+
+        assetInformationViewModel = TransactionAssetViewModel(
+            assetDetail: assetDetail,
+            isLastElement: transaction.signerAccount == nil &&
+                transaction.hasValidAuthAddressForSigner &&
+                !transactionDetail.hasRekeyOrCloseAddress
+        )
     }
 
     private func setBalanceInformationViewModel(
         from transaction: WCTransaction,
-        with senderAccount: Account,
+        with senderAccount: Account?,
         and assetDetail: AssetDetail?
     ) {
-        guard let assetDetail = assetDetail,
+        guard let senderAccount = senderAccount,
+              let assetDetail = assetDetail,
               let amount = senderAccount.amountWithoutFraction(for: assetDetail),
               let transactionDetail = transaction.transactionDetail else {
             return
@@ -75,7 +96,7 @@ class WCAssetTransactionViewModel {
         balanceInformationViewModel = TitledTransactionAmountInformationViewModel(
             title: "transaction-detail-balance".localized,
             mode: .balance(value: amount, isAlgos: false, fraction: assetDetail.fractionDecimals),
-            isLastElement: !transaction.hasValidAuthAddressForSigner && !transactionDetail.hasRekeyOrCloseAddress
+            isLastElement: transaction.hasValidAuthAddressForSigner && !transactionDetail.hasRekeyOrCloseAddress
         )
     }
 
@@ -152,7 +173,7 @@ class WCAssetTransactionViewModel {
         feeInformationViewModel = TitledTransactionAmountInformationViewModel(
             title: "transaction-detail-fee".localized,
             mode: .fee(value: fee),
-            isLastElement: transactionDetail.hasHighFee
+            isLastElement: !transactionDetail.hasHighFee
         )
     }
 

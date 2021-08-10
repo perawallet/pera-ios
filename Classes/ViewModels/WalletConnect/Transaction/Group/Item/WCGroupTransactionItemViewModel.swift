@@ -59,10 +59,29 @@ class WCGroupTransactionItemViewModel {
             if let assetId = transactionDetail.assetId {
                 title = "wallet-connect-transaction-group-asset-addition-title".localized(params: "\(assetId)")
             }
+        case .possibleAssetAddition:
+            if let assetId = transactionDetail.assetId {
+                title = "wallet-connect-transaction-group-possible-asset-addition-title".localized(params: "\(assetId)")
+            }
         case .appCall:
-            if let appCallId = transactionDetail.appCallId {
+            guard let appCallId = transactionDetail.appCallId else {
+                return
+            }
+
+            guard let appCallOnComplete = transactionDetail.appCallOnComplete else {
+                title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
+                return
+            }
+
+            switch appCallOnComplete {
+            case .close:
+                title = "wallet-connect-transaction-group-app-close-title".localized(params: "\(appCallId)")
+            case .optIn:
+                title = "wallet-connect-transaction-group-app-opt-in-title".localized(params: "\(appCallId)")
+            default:
                 title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
             }
+
         }
     }
 
