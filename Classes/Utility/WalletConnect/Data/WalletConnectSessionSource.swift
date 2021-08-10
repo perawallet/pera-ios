@@ -87,14 +87,6 @@ extension WalletConnectSessionSource {
             }
 
             self.sessions?[session.urlMeta.topic] = session
-
-            if let sessionData = try? JSONEncoder().encode([session.urlMeta.topic: session]) {
-                WCSessionHistory.create(
-                    entity: WCSessionHistory.entityName,
-                    with: [WCSessionHistory.DBKeys.sessionHistory.rawValue: sessionData]
-                )
-            }
-
             syncSessions()
         } else {
             sessions = [session.urlMeta.topic: session]

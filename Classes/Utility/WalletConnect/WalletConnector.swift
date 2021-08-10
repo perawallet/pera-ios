@@ -102,6 +102,15 @@ extension WalletConnector {
     func resetAllSessions() {
         sessionSource.resetAllSessions()
     }
+
+    func saveConnectedWCSession(_ session: WCSession) {
+        if let sessionData = try? JSONEncoder().encode([session.urlMeta.topic: session]) {
+            WCSessionHistory.create(
+                entity: WCSessionHistory.entityName,
+                with: [WCSessionHistory.DBKeys.sessionHistory.rawValue: sessionData]
+            )
+        }
+    }
 }
 
 extension WalletConnector: WalletConnectBridgeDelegate {
