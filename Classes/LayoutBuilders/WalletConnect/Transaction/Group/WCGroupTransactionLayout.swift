@@ -37,6 +37,18 @@ extension WCGroupTransactionLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
+        guard let transaction = dataSource?.transaction(at: indexPath.item) else {
+            return .zero
+        }
+
+        if transaction.transactionDetail?.isAppCallTransaction ?? false {
+            return layout.current.appCallCellSize
+        }
+
+        if transaction.signerAccount == nil {
+            return layout.current.anotherAccountCellSize
+        }
+
         return layout.current.cellSize
     }
 
@@ -57,6 +69,8 @@ extension WCGroupTransactionLayout: UICollectionViewDelegateFlowLayout {
 
 extension WCGroupTransactionLayout {
     private struct LayoutConstants: AdaptiveLayoutConstants {
+        let appCallCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 68.0)
+        let anotherAccountCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 96.0)
         let cellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 130.0)
         let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 56.0)
     }
