@@ -23,15 +23,18 @@ class WCSessionListDataSource: NSObject {
 
     private let walletConnector: WalletConnector
 
+    private var sessions: [WCSession]
+
     init(walletConnector: WalletConnector) {
         self.walletConnector = walletConnector
+        self.sessions = walletConnector.allWalletConnectSessions
         super.init()
     }
 }
 
 extension WCSessionListDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return walletConnector.allWalletConnectSessions.count
+        return sessions.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -42,7 +45,7 @@ extension WCSessionListDataSource: UICollectionViewDataSource {
             fatalError("Unexpected cell type")
         }
 
-        if let session = walletConnector.allWalletConnectSessions[safe: indexPath.item] {
+        if let session = sessions[safe: indexPath.item] {
             cell.bind(WCSessionItemViewModel(session: session))
         }
 
@@ -53,11 +56,11 @@ extension WCSessionListDataSource: UICollectionViewDataSource {
 
 extension WCSessionListDataSource {
     func session(at index: Int) -> WCSession? {
-        return walletConnector.allWalletConnectSessions[safe: index]
+        return sessions[safe: index]
     }
 
     func index(of wcSession: WCSession) -> Int? {
-        return walletConnector.allWalletConnectSessions.firstIndex { $0.urlMeta.topic == wcSession.urlMeta.topic }
+        return sessions.firstIndex { $0.urlMeta.topic == wcSession.urlMeta.topic }
     }
 
     func disconnectFromSession(_ session: WCSession) {
@@ -65,7 +68,11 @@ extension WCSessionListDataSource {
     }
 
     var isEmpty: Bool {
-        return walletConnector.allWalletConnectSessions.isEmpty
+        return sessions.isEmpty
+    }
+
+    func updateSessions(_ updatedSessions: [WCSession]) {
+        sessions = updatedSessions
     }
 }
 

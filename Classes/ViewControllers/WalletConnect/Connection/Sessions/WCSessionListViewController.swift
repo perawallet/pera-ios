@@ -109,8 +109,17 @@ extension WCSessionListViewController {
 
 extension WCSessionListViewController: QRScannerViewControllerDelegate {
     func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController) {
+        dataSource.updateSessions(walletConnector.allWalletConnectSessions)
         setListContentState()
         sessionListView.collectionView.reloadData()
+    }
+
+    func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
+        displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
+            if let handler = completionHandler {
+                handler()
+            }
+        }
     }
 }
 
@@ -139,14 +148,9 @@ extension WCSessionListViewController {
     }
 
     private func updateScreenAfterDisconnecting(from session: WCSession) {
-        guard let index = dataSource.index(of: session) else {
-            sessionListView.collectionView.reloadData()
-            setListContentState()
-            return
-        }
-
-        sessionListView.collectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+        dataSource.updateSessions(walletConnector.allWalletConnectSessions)
         setListContentState()
+        sessionListView.collectionView.reloadData()
     }
 
     private func displayDisconnectionError(_ error: WalletConnector.Error) {
