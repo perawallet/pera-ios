@@ -18,9 +18,11 @@
 import UIKit
 import Macaroon
 
-class WCTransactionDappMessageView: BaseControl {
+class WCTransactionDappMessageView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
+
+    weak var delegate: WCTransactionDappMessageViewDelegate?
 
     private lazy var dappImageView: URLImageView = {
         let imageView = URLImageView()
@@ -28,6 +30,16 @@ class WCTransactionDappMessageView: BaseControl {
         imageView.layer.borderWidth = 1.0
         imageView.layer.borderColor = Colors.Component.dappImageBorderColor.cgColor
         return imageView
+    }()
+
+    private lazy var stackView: VStackView = {
+        let stackView = VStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.distribution = .equalSpacing
+        stackView.spacing = layout.current.spacing
+        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        stackView.isUserInteractionEnabled = false
+        return stackView
     }()
 
     private lazy var nameLabel: UILabel = {
@@ -41,7 +53,7 @@ class WCTransactionDappMessageView: BaseControl {
     private lazy var messageLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
-            .withLine(.multi(2))
+            .withLine(.single)
             .withTextColor(Colors.Text.secondary)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
     }()
@@ -62,9 +74,7 @@ class WCTransactionDappMessageView: BaseControl {
 
     override func prepareLayout() {
         setupDappImageViewLayout()
-        setupNameLabelLayout()
-        setupMessageLabelLayout()
-        setupReadMoreLabelLayout()
+        setupStackViewLayout()
     }
 }
 
@@ -73,40 +83,31 @@ extension WCTransactionDappMessageView {
         addSubview(dappImageView)
 
         dappImageView.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview().inset(layout.current.defaultInset)
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.centerY.equalToSuperview()
             make.size.equalTo(layout.current.imageSize)
-        }
-    }
-
-    private func setupNameLabelLayout() {
-        addSubview(nameLabel)
-
-        nameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(dappImageView.snp.trailing).offset(layout.current.nameLabelLeadingInset)
             make.top.equalToSuperview().inset(layout.current.defaultInset)
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
-        }
-    }
-
-    private func setupMessageLabelLayout() {
-        addSubview(messageLabel)
-
-        messageLabel.snp.makeConstraints { make in
-            make.leading.equalTo(nameLabel)
-            make.top.equalTo(nameLabel.snp.bottom).offset(layout.current.messageLabelVerticalInset)
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
-        }
-    }
-
-    private func setupReadMoreLabelLayout() {
-        addSubview(readMoreLabel)
-
-        readMoreLabel.snp.makeConstraints { make in
-            make.leading.equalTo(nameLabel)
-            make.top.equalTo(messageLabel.snp.bottom).offset(layout.current.messageLabelVerticalInset)
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
             make.bottom.equalToSuperview().inset(layout.current.defaultInset)
         }
+    }
+
+    private func setupStackViewLayout() {
+        addSubview(stackView)
+
+        stackView.snp.makeConstraints { make in
+            make.leading.equalTo(dappImageView.snp.trailing).offset(layout.current.nameLabelLeadingInset)
+            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.centerY.equalToSuperview()
+        }
+
+        stackView.addArrangedSubview(nameLabel)
+        stackView.addArrangedSubview(messageLabel)
+        stackView.addArrangedSubview(readMoreLabel)
+    }
+
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        delegate?.wcTransactionDappMessageViewDidTapped(self)
+        return super.hitTest(point, with: event)
     }
 }
 
@@ -115,6 +116,7 @@ extension WCTransactionDappMessageView {
         dappImageView.load(from: viewModel.image)
         nameLabel.text = viewModel.name
         messageLabel.text = viewModel.message
+        readMoreLabel.isHidden = viewModel.isReadMoreHidden
     }
 }
 
@@ -122,7 +124,12 @@ extension WCTransactionDappMessageView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 20.0
         let nameLabelLeadingInset: CGFloat = 16.0
+        let spacing: CGFloat = 4.0
         let messageLabelVerticalInset: CGFloat = 4.0
         let imageSize = CGSize(width: 44.0, height: 44.0)
     }
+}
+
+protocol WCTransactionDappMessageViewDelegate: AnyObject {
+    func wcTransactionDappMessageViewDidTapped(_ WCTransactionDappMessageView: WCTransactionDappMessageView)
 }
