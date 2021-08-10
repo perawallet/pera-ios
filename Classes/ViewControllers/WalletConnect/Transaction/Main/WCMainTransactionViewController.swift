@@ -250,10 +250,19 @@ extension WCMainTransactionViewController: WCMainTransactionViewDelegate {
 extension WCMainTransactionViewController: WCTransactionSignerDelegate {
     func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didSign transaction: WCTransaction, signedTransaction: Data) {
         signedTransactions.append(signedTransaction)
+        continueSigningTransactions(after: transaction)
+    }
 
+    private func continueSigningTransactions(after transaction: WCTransaction) {
         if let index = transactions.firstIndex(of: transaction),
            let nextTransaction = transactions.nextElement(afterElementAt: index) {
-            signTransaction(nextTransaction)
+
+            if let signerAccount = nextTransaction.signerAccount {
+                wcTransactionSigner.signTransaction(nextTransaction, with: transactionRequest, for: signerAccount)
+            } else {
+                signedTransactions.append(nil)
+                continueSigningTransactions(after: nextTransaction)
+            }
             return
         }
 
@@ -262,6 +271,10 @@ extension WCMainTransactionViewController: WCTransactionSignerDelegate {
             return
         }
 
+        sendSignedTransactions()
+    }
+
+    private func sendSignedTransactions() {
         walletConnector.signTransactionRequest(transactionRequest, with: signedTransactions)
         delegate?.wcMainTransactionViewController(self, didCompleted: transactionRequest)
         dismissScreen()
