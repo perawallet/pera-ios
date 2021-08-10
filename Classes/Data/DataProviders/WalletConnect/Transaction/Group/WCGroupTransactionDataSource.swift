@@ -37,6 +37,65 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let transaction = transaction(at: indexPath.item) else {
+            fatalError("Unexpected transaction")
+        }
+
+        if transaction.transactionDetail?.isAppCallTransaction ?? false {
+            return dequeueAppCallCell(in: collectionView, at: indexPath, for: transaction)
+        }
+
+        if transaction.signerAccount == nil {
+            return dequeueUnsignableCell(in: collectionView, at: indexPath, for: transaction)
+        }
+
+        return dequeueSingleSignerCell(in: collectionView, at: indexPath, for: transaction)
+    }
+
+    private func dequeueAppCallCell(
+        in collectionView: UICollectionView,
+        at indexPath: IndexPath,
+        for transaction: WCTransaction
+    ) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: WCAppCallTransactionItemCell.reusableIdentifier,
+            for: indexPath
+        ) as? WCAppCallTransactionItemCell else {
+            fatalError("Unexpected cell type")
+        }
+
+        cell.bind(WCAppCallTransactionItemViewModel(transaction: transaction))
+        return cell
+    }
+
+    private func dequeueUnsignableCell(
+        in collectionView: UICollectionView,
+        at indexPath: IndexPath,
+        for transaction: WCTransaction
+    ) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: WCGroupAnotherAccountTransactionItemCell.reusableIdentifier,
+            for: indexPath
+        ) as? WCGroupAnotherAccountTransactionItemCell else {
+            fatalError("Unexpected cell type")
+        }
+
+        cell.bind(
+            WCGroupTransactionItemViewModel(
+                transaction: transaction,
+                account: nil,
+                assetDetail: assetDetail(from: transaction)
+            )
+        )
+
+        return cell
+    }
+
+    private func dequeueSingleSignerCell(
+        in collectionView: UICollectionView,
+        at indexPath: IndexPath,
+        for transaction: WCTransaction
+    ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: WCGroupTransactionItemCell.reusableIdentifier,
             for: indexPath
@@ -44,16 +103,13 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected cell type")
         }
 
-        if let transaction = transaction(at: indexPath.item) {
-            let account = session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender) 
-            cell.bind(
-                WCGroupTransactionItemViewModel(
-                    transaction: transaction,
-                    account: account,
-                    assetDetail: assetDetail(from: transaction)
-                )
+        cell.bind(
+            WCGroupTransactionItemViewModel(
+                transaction: transaction,
+                account: session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender),
+                assetDetail: assetDetail(from: transaction)
             )
-        }
+        )
 
         return cell
     }

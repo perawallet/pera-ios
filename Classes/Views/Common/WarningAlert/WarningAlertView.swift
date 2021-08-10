@@ -95,7 +95,7 @@ extension WarningAlertView {
         
         actionButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(layout.current.topInset + safeAreaBottom)
+            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.topInset + safeAreaBottom)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.top.equalTo(descriptionLabel.snp.bottom).offset(layout.current.verticalInset)
         }

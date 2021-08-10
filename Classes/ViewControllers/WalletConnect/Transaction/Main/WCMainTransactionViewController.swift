@@ -31,6 +31,24 @@ class WCMainTransactionViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 350.0))
     )
 
+    private lazy var initialWarningModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 400.0))
+    )
+
+    private lazy var confirmationModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .backgroundTouch
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 462.0))
+    )
+
+    weak var delegate: WCMainTransactionViewControllerDelegate?
+
     private lazy var dataSource = WCMainTransactionDataSource(
         transactions: transactions,
         transactionRequest: transactionRequest,
@@ -75,8 +93,19 @@ class WCMainTransactionViewController: BaseViewController {
         validateTransactions(transactions, with: dataSource.groupedTransactions)
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presentInitialWarningAlertIfNeeded()
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
+        if SVProgressHUD.isVisible() {
+            SVProgressHUD.showError(withStatus: "title-done".localized)
+            SVProgressHUD.dismiss()
+        }
+        
         if !transactions.allSatisfy({ ($0.signerAccount?.requiresLedgerConnection() ?? false) }) {
             return
         }
@@ -114,17 +143,78 @@ extension WCMainTransactionViewController {
             transactions.forEach { $0.findSignerAccount(in: session) }
         }
     }
+
+    private func presentInitialWarningAlertIfNeeded() {
+        let oneTimeDisplayStorage = OneTimeDisplayStorage()
+
+        if oneTimeDisplayStorage.isDisplayedOnce(for: .wcInitialWarning) {
+            return
+        }
+
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: initialWarningModalPresenter
+        )
+
+        let warningAlert = WarningAlert(
+            title: "node-settings-warning-title".localized,
+            image: img("img-warning-circle"),
+            description: "wallet-connect-transaction-warning-initial".localized,
+            actionTitle: "title-got-it".localized
+        )
+
+        oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
+        
+        let controller = open(.warningAlert(warningAlert: warningAlert), by: transitionStyle) as? WarningAlertViewController
+        controller?.delegate = self
+    }
+
+    private func presentConfirmationAlert() {
+        guard let params = UIApplication.shared.accountManager?.params else {
+            return
+        }
+
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: confirmationModalPresenter
+        )
+
+        let containsFutureTransaction = transactions.contains { $0.isFutureTransaction(with: params) }
+        let description = containsFutureTransaction ?
+            "wallet-connect-transaction-warning-future".localized + "wallet-connect-transaction-warning-confirmation".localized :
+            "wallet-connect-transaction-warning-confirmation".localized
+
+        let warningAlert = WarningAlert(
+            title: "node-settings-warning-title".localized,
+            image: img("img-warning-circle"),
+            description: description,
+            actionTitle: "title-got-it".localized
+        )
+
+        let controller = open(
+            .actionableWarningAlert(warningAlert: warningAlert),
+            by: transitionStyle
+        ) as? ActionableWarningAlertViewController
+        controller?.delegate = self
+    }
 }
 
 extension WCMainTransactionViewController: WCTransactionValidator {
     func rejectTransactionRequest(with error: WCTransactionErrorResponse) {
         walletConnector.rejectTransactionRequest(transactionRequest, with: error)
+        delegate?.wcMainTransactionViewController(self, didCompleted: transactionRequest)
         dismissScreen()
     }
 }
 
 extension WCMainTransactionViewController: WCMainTransactionViewDelegate {
     func wcMainTransactionViewDidConfirmSigning(_ wcMainTransactionView: WCMainTransactionView) {
+        presentConfirmationAlert()
+    }
+
+    private func confirmSigning() {
         if let transaction = getFirstSignableTransaction(),
            let index = transactions.firstIndex(of: transaction) {
             fillInitialUnsignedTransactions(until: index)
@@ -173,6 +263,7 @@ extension WCMainTransactionViewController: WCTransactionSignerDelegate {
         }
 
         walletConnector.signTransactionRequest(transactionRequest, with: signedTransactions)
+        delegate?.wcMainTransactionViewController(self, didCompleted: transactionRequest)
         dismissScreen()
     }
 
@@ -224,19 +315,17 @@ extension WCMainTransactionViewController: WalletConnectSingleTransactionRequest
 
 extension WCMainTransactionViewController: AssetCachable {
     private func getAssetDetailsIfNeeded() {
-        for (index, transaction) in transactions.enumerated() where transaction.transactionDetail?.type != .payment {
+        let assetTransactions = transactions.filter { $0.transactionDetail?.type == .assetTransfer }
+        for (index, transaction) in assetTransactions.enumerated() {
             if !SVProgressHUD.isVisible() {
                 SVProgressHUD.show(withStatus: "title-loading".localized)
             }
 
             guard let assetId = transaction.transactionDetail?.assetId else {
-                if transaction.transactionDetail?.type == .assetTransfer {
-                    SVProgressHUD.showError(withStatus: "title-done".localized)
-                    SVProgressHUD.dismiss()
-                    self.rejectTransactionRequest(with: .invalidInput)
-                    return
-                }
-                continue
+                SVProgressHUD.showError(withStatus: "title-done".localized)
+                SVProgressHUD.dismiss()
+                self.rejectTransactionRequest(with: .invalidInput)
+                return
             }
 
             cacheAssetDetail(with: assetId) { assetDetail in
@@ -247,7 +336,7 @@ extension WCMainTransactionViewController: AssetCachable {
                     return
                 }
 
-                if index == self.transactions.count - 1 {
+                if index == assetTransactions.count - 1 {
                     SVProgressHUD.showSuccess(withStatus: "title-done".localized)
                     SVProgressHUD.dismiss()
                     self.mainTransactionView.reloadData()
@@ -282,9 +371,30 @@ extension WCMainTransactionViewController: WCMainTransactionDataSourceDelegate {
     }
 }
 
+extension WCMainTransactionViewController: WarningAlertViewControllerDelegate {
+    func warningAlertViewControllerDidTakeAction(_ warningAlertViewController: WarningAlertViewController) {
+        warningAlertViewController.dismissScreen()
+    }
+}
+
+extension WCMainTransactionViewController: ActionableWarningAlertViewControllerDelegate {
+    func actionableWarningAlertViewControllerDidTakeAction(_ actionableWarningAlertViewController: ActionableWarningAlertViewController) {
+        actionableWarningAlertViewController.dismissScreen()
+        confirmSigning()
+    }
+}
+
+protocol WCMainTransactionViewControllerDelegate: AnyObject {
+    func wcMainTransactionViewController(
+        _ wcMainTransactionViewController: WCMainTransactionViewController,
+        didCompleted request: WalletConnectRequest
+    )
+}
+
 enum WCTransactionType {
     case algos
     case asset
     case assetAddition
+    case possibleAssetAddition
     case appCall
 }

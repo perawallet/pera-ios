@@ -23,55 +23,28 @@ protocol WalletConnectSingleTransactionRequestPresentable: AnyObject {
 
 extension WalletConnectSingleTransactionRequestPresentable where Self: BaseViewController {
     func presentSingleWCTransaction(_ transaction: WCTransaction, with request: WalletConnectRequest) {
-        guard let transactionDetail = transaction.transactionDetail,
-              let account = session?.accounts.first(of: \.address, equalsTo: transactionDetail.sender),
-              let transactionType = transactionDetail.transactionType(for: account) else {
-            walletConnector.rejectTransactionRequest(request, with: .unauthorized)
+        guard let transactionDetail = transaction.transactionDetail else {
+            return
+        }
+
+        let account = session?.accounts.first(of: \.address, equalsTo: transactionDetail.sender)
+        
+        guard let transactionType = transactionDetail.transactionType(for: account) else {
+            walletConnector.rejectTransactionRequest(request, with: .unsupported)
+            dismissScreen()
             return
         }
 
         switch transactionType {
         case .algos:
-            open(
-                .wcAlgosTransaction(
-                    transaction: transaction,
-                    account: account,
-                    transactionRequest: request
-                ),
-                by: .push
-            )
+            open(.wcAlgosTransaction(transaction: transaction, transactionRequest: request), by: .push)
         case .asset:
-            open(
-                .wcAssetTransaction(
-                    transaction: transaction,
-                    account: account,
-                    transactionRequest: request
-                ),
-                by: .push
-            )
-        case .assetAddition:
-            open(
-                .wcAssetAdditionTransaction(
-                    transaction: transaction,
-                    account: account,
-                    transactionRequest: request
-                ),
-                by: .push
-            )
+            open(.wcAssetTransaction(transaction: transaction, transactionRequest: request), by: .push)
+        case .assetAddition,
+             .possibleAssetAddition:
+            open(.wcAssetAdditionTransaction( transaction: transaction, transactionRequest: request), by: .push)
         case .appCall:
-            if !transactionDetail.isSupportedAppCallTransaction {
-                walletConnector.rejectTransactionRequest(request, with: .unsupported)
-                return
-            }
-
-            open(
-                .wcAppCall(
-                    transaction: transaction,
-                    account: account,
-                    transactionRequest: request
-                ),
-                by: .push
-            )
+            open(.wcAppCall(transaction: transaction, transactionRequest: request), by: .push)
         }
     }
 }

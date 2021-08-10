@@ -43,6 +43,8 @@ class NotificationsView: BaseView {
     )
     
     private lazy var errorView = ListErrorView()
+
+    private lazy var noConnectionView = NoInternetConnectionView()
     
     private lazy var notificationsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -147,6 +149,10 @@ extension NotificationsView {
     
     func setErrorState() {
         notificationsCollectionView.contentState = .error(errorView)
+    }
+
+    func setConnectionState() {
+        notificationsCollectionView.contentState = .error(noConnectionView)
     }
     
     func setNormalState() {

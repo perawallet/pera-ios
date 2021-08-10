@@ -36,6 +36,15 @@ class WCGroupTransactionView: BaseView {
             forCellWithReuseIdentifier: WCGroupTransactionItemCell.reusableIdentifier
         )
         collectionView.register(
+            WCAppCallTransactionItemCell.self,
+            forCellWithReuseIdentifier: WCAppCallTransactionItemCell.reusableIdentifier
+        )
+        collectionView.register(
+            WCGroupAnotherAccountTransactionItemCell.self,
+            forCellWithReuseIdentifier: WCGroupAnotherAccountTransactionItemCell.reusableIdentifier
+        )
+
+        collectionView.register(
             WCGroupTransactionSupplementaryHeaderView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: WCGroupTransactionSupplementaryHeaderView.reuseIdentifier

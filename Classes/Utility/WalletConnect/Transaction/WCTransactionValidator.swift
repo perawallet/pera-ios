@@ -53,6 +53,16 @@ extension WCTransactionValidator {
             rejectTransactionRequest(with: .unsupported)
             return
         }
+
+        if hasInvalidApplicationCallTransaction(in: transactions) {
+            rejectTransactionRequest(with: .unsupported)
+            return
+        }
+
+        if hasInvalidGroupedTransaction(in: transactionGroups) {
+            rejectTransactionRequest(with: .invalidInput)
+            return
+        }
     }
 
     private func hasValidTransactionCount(for transactions: [WCTransaction]) -> Bool {
@@ -108,6 +118,29 @@ extension WCTransactionValidator {
                    signerAccount.requiresLedgerConnection() {
                     return true
                 }
+            }
+        }
+
+        return false
+    }
+
+    private func hasInvalidApplicationCallTransaction(in transactions: [WCTransaction]) -> Bool {
+        let appCallTransactions = transactions.filter { $0.transactionDetail?.isAppCallTransaction ?? false }
+
+        if appCallTransactions.isEmpty {
+            return false
+        }
+
+        return appCallTransactions.contains { transaction in
+            return !(transaction.transactionDetail?.isSupportedAppCallTransaction ?? true)
+        }
+    }
+
+    private func hasInvalidGroupedTransaction(in transactionGroups: [Int64: [WCTransaction]]) -> Bool {
+        for group in transactionGroups where group.value.count > 1 {
+            let signableTransactions = group.value.filter { $0.signerAccount != nil }
+            if signableTransactions.isEmpty {
+                return true
             }
         }
 

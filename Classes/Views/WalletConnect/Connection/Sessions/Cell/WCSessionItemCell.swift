@@ -25,6 +25,11 @@ class WCSessionItemCell: BaseCollectionViewCell<WCSessionItemView> {
         super.linkInteractors()
         contextView.delegate = self
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        contextView.prepareForReuse()
+    }
 }
 
 extension WCSessionItemCell {

@@ -121,7 +121,12 @@ extension WCAlgosTransactionView {
             rekeyWarningInformationView.hideViewInStack()
         }
 
-        balanceInformationView.bind(viewModel.balanceInformationViewModel)
+        if let balanceInformationViewModel = viewModel.balanceInformationViewModel {
+            balanceInformationView.bind(balanceInformationViewModel)
+        } else {
+            balanceInformationView.hideViewInStack()
+        }
+
         amountInformationView.bind(viewModel.amountInformationViewModel)
         feeInformationView.bind(viewModel.feeInformationViewModel)
 

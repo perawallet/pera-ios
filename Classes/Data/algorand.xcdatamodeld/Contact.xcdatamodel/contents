@@ -18,6 +18,9 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="token" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="WCSessionHistory" representedClassName="WCSessionHistory" syncable="YES">
+        <attribute name="sessionHistory" optional="YES" attributeType="Binary"/>
+    </entity>
     <entity name="WCSessionList" representedClassName="WCSessionList" syncable="YES">
         <attribute name="sessions" optional="YES" attributeType="Binary"/>
     </entity>
@@ -26,5 +29,6 @@
         <element name="Contact" positionX="-63" positionY="-18" width="128" height="43"/>
         <element name="Node" positionX="-54" positionY="27" width="128" height="120"/>
         <element name="WCSessionList" positionX="-54" positionY="54" width="128" height="44"/>
+        <element name="WCSessionHistory" positionX="-54" positionY="54" width="128" height="44"/>
     </elements>
 </model>

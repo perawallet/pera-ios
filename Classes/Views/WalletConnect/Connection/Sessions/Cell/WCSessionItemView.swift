@@ -41,13 +41,15 @@ class WCSessionItemView: BaseView {
     }()
 
     private lazy var disconnectOptionsButton: UIButton = {
-        UIButton(type: .custom).withImage(img("icon-options"))
+        let button = UIButton(type: .custom).withImage(img("icon-options", isTemplate: true))
+        button.tintColor = Colors.ButtonText.secondary
+        return button
     }()
 
     private lazy var descriptionLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
-            .withLine(.single)
+            .withLine(.contained)
             .withTextColor(Colors.Text.secondary)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
     }()
@@ -114,7 +116,7 @@ extension WCSessionItemView {
         disconnectOptionsButton.snp.makeConstraints { make in
             make.trailing.equalToSuperview().inset(layout.current.trailingInset)
             make.size.equalTo(layout.current.buttonSize)
-            make.centerY.equalTo(dappImageView)
+            make.top.equalToSuperview().inset(layout.current.buttonTopInset)
         }
     }
 
@@ -161,9 +163,9 @@ extension WCSessionItemView {
         addSubview(dateLabel)
 
         dateLabel.snp.makeConstraints { make in
-            make.leading.equalTo(statusBackgroundView.snp.trailing).offset(layout.current.dateLabelHorizontalInset)
-            make.trailing.equalToSuperview().inset(layout.current.trailingInset)
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(layout.current.dateLabelTopInset)
+            make.leading.equalTo(statusBackgroundView)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.trailingInset)
+            make.top.equalTo(statusBackgroundView.snp.bottom).offset(layout.current.dateLabelTopInset)
         }
     }
 }
@@ -180,13 +182,23 @@ extension WCSessionItemView {
         dappImageView.load(from: viewModel.image)
         nameLabel.text = viewModel.name
         descriptionLabel.text = viewModel.description
+        statusLabel.text = viewModel.status
         dateLabel.text = viewModel.date
+    }
+
+    func prepareForReuse() {
+        dappImageView.prepareForReuse()
+        nameLabel.text = nil
+        descriptionLabel.text = nil
+        statusLabel.text = nil
+        dateLabel.text = nil
     }
 }
 
 extension WCSessionItemView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 40.0
+        let buttonTopInset: CGFloat = 32.0
         let leadingInset: CGFloat = 24.0
         let trailingInset: CGFloat = 20.0
         let nameLabelHorizontalInset: CGFloat = 16.0
@@ -198,7 +210,7 @@ extension WCSessionItemView {
         let statusLabelVerticalInset: CGFloat = 4.0
         let statusLabelHorizontalInset: CGFloat = 8.0
         let dateLabelHorizontalInset: CGFloat = 12.0
-        let dateLabelTopInset: CGFloat = 20.0
+        let dateLabelTopInset: CGFloat = 8.0
     }
 }
 

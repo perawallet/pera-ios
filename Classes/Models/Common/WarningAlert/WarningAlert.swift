@@ -19,11 +19,11 @@ import UIKit
 
 class WarningAlert {
     let title: String
-    let image: UIImage
+    let image: UIImage?
     let description: String
     let actionTitle: String
 
-    init(title: String, image: UIImage, description: String, actionTitle: String) {
+    init(title: String, image: UIImage?, description: String, actionTitle: String) {
         self.title = title
         self.image = image
         self.description = description

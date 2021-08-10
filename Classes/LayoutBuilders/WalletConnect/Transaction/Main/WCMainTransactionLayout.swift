@@ -41,7 +41,16 @@ extension WCMainTransactionLayout: UICollectionViewDelegateFlowLayout {
             return .zero
         }
 
-        if transactions.count == 1 {
+        if transactions.count == 1,
+           let transaction = transactions.first {
+            if transaction.transactionDetail?.isAppCallTransaction ?? false {
+                return layout.current.appCallCellSize
+            }
+
+            if transaction.signerAccount == nil {
+                return layout.current.anotherAccountCellSize
+            }
+
             return layout.current.singleTransactionCellSize
         }
 
@@ -53,10 +62,6 @@ extension WCMainTransactionLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        if dataSource?.transactionOption?.message == nil {
-            return layout.current.headerSizeWithoutMessage
-        }
-
         return layout.current.headerSize
     }
 
@@ -71,8 +76,9 @@ extension WCMainTransactionLayout {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let singleTransactionCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 130.0)
         let multipleTransactionCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 92.0)
+        let appCallCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 68.0)
+        let anotherAccountCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 96.0)
         let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 164.0)
-        let headerSizeWithoutMessage = CGSize(width: UIScreen.main.bounds.width, height: 56.0)
     }
 }
 

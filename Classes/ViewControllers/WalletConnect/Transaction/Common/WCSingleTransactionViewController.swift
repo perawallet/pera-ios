@@ -35,18 +35,13 @@ class WCSingleTransactionViewController: BaseScrollViewController {
     )
 
     private(set) var transaction: WCTransaction
-    private(set) var account: Account
+    private(set) var account: Account?
     private(set) var transactionRequest: WalletConnectRequest
     private let wcSession: WCSession?
 
-    init(
-        transaction: WCTransaction,
-        account: Account,
-        transactionRequest: WalletConnectRequest,
-        configuration: ViewControllerConfiguration
-    ) {
+    init(transaction: WCTransaction, transactionRequest: WalletConnectRequest, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
-        self.account = account
+        self.account = configuration.session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender)
         self.transactionRequest = transactionRequest
         self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url))
         super.init(configuration: configuration)

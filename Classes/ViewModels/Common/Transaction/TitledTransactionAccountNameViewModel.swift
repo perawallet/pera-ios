@@ -22,9 +22,9 @@ class TitledTransactionAccountNameViewModel {
     private(set) var accountNameViewModel: AccountNameViewModel?
     private(set) var isSeparatorHidden = false
 
-    init(title: String, account: Account, isLastElement: Bool = false) {
+    init(title: String, account: Account, isLastElement: Bool = false, hasImage: Bool = true) {
         setTitle(from: title)
-        setAccountNameViewModel(from: account)
+        setAccountNameViewModel(from: account, and: hasImage)
         setIsSeparatorHidden(from: isLastElement)
     }
 
@@ -32,8 +32,8 @@ class TitledTransactionAccountNameViewModel {
         self.title = title
     }
 
-    private func setAccountNameViewModel(from account: Account) {
-        accountNameViewModel = AccountNameViewModel(account: account)
+    private func setAccountNameViewModel(from account: Account, and hasImage: Bool) {
+        accountNameViewModel = AccountNameViewModel(account: account, hasImage: hasImage)
     }
 
     private func setIsSeparatorHidden(from isLastElement: Bool) {

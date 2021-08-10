@@ -55,12 +55,46 @@ class WCSingleTransactionView: BaseView {
         return detailedInformationStackView
     }()
 
-    override func setListeners() {
-        dappMessageView.addTarget(self, action: #selector(notifyDelegateToOpenLongDappMessage), for: .touchUpInside)
+    override func configureAppearance() {
+        super.configureAppearance()
+
+        if !isDarkModeDisplay {
+            applyShadows()
+        }
+    }
+
+    override func linkInteractors() {
+        dappMessageView.delegate = self
     }
 
     override func prepareLayout() {
         setupMainStackViewLayout()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if !isDarkModeDisplay {
+            participantInformationStackView.containerView.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 12.0)
+            transactionInformationStackView.containerView.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 12.0)
+            detailedInformationStackView.containerView.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 12.0)
+        }
+    }
+
+    @available(iOS 12.0, *)
+    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+        if userInterfaceStyle == .dark {
+            participantInformationStackView.containerView.removeShadows()
+            transactionInformationStackView.containerView.removeShadows()
+            detailedInformationStackView.containerView.removeShadows()
+        } else {
+            applyShadows()
+        }
+    }
+
+    private func applyShadows() {
+        participantInformationStackView.containerView.applyShadow(smallBottomShadow)
+        transactionInformationStackView.containerView.applyShadow(smallBottomShadow)
+        detailedInformationStackView.containerView.applyShadow(smallBottomShadow)
     }
 }
 
@@ -95,9 +129,8 @@ extension WCSingleTransactionView {
     }
 }
 
-extension WCSingleTransactionView {
-    @objc
-    private func notifyDelegateToOpenLongDappMessage() {
+extension WCSingleTransactionView: WCTransactionDappMessageViewDelegate {
+    func wcTransactionDappMessageViewDidTapped(_ WCTransactionDappMessageView: WCTransactionDappMessageView) {
         mainDelegate?.wcSingleTransactionViewDidOpenLongDappMessage(self)
     }
 }
@@ -106,8 +139,6 @@ extension WCSingleTransactionView {
     func bind(_ viewModel: WCSingleTransactionViewModel) {
         if let transactionDappMessageViewModel = viewModel.transactionDappMessageViewModel {
             dappMessageView.bind(transactionDappMessageViewModel)
-        } else {
-            dappMessageView.hideViewInStack()
         }
     }
 }

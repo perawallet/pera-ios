@@ -67,7 +67,11 @@ class QRScannerViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        cameraResetHandler()
+        if self.captureSession?.isRunning == false {
+            self.captureSessionQueue.async {
+                self.captureSession?.startRunning()
+            }
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -314,9 +318,26 @@ extension QRScannerViewController: WalletConnectorDelegate {
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
         delegate?.qrScannerViewControllerDidApproveWCConnection(self)
+        walletConnector.saveConnectedWCSession(session)
         cancelButton.stopLoading()
         captureSession = nil
         closeScreen(by: .pop)
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
+        switch error {
+        case .failedToConnect,
+             .failedToCreateSession:
+            cancelButton.stopLoading()
+            captureSessionQueue.async {
+                self.captureSession?.startRunning()
+            }
+            NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-invalid-qr-message".localized)
+            captureSession = nil
+            closeScreen(by: .pop)
+        default:
+            break
+        }
     }
 }
 
@@ -328,7 +349,9 @@ extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
     func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
         wcConnectionApprovalViewController.dismissScreen()
         cancelButton.stopLoading()
-        cameraResetHandler()
+        captureSessionQueue.async {
+            self.captureSession?.startRunning()
+        }
     }
 }
 

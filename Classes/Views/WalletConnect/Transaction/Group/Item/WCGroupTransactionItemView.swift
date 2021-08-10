@@ -73,7 +73,7 @@ class WCGroupTransactionItemView: BaseView {
 
     private lazy var arrowImageView = UIImageView(image: img("icon-arrow-gray-24"))
 
-    private lazy var accountInformationView = WCGroupTransactionAccountInformationView()
+    private(set) lazy var accountInformationView = WCGroupTransactionAccountInformationView()
 
     override func configureAppearance() {
         backgroundColor = Colors.Background.secondary

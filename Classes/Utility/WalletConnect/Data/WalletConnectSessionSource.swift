@@ -113,6 +113,7 @@ extension WalletConnectSessionSource {
     func resetAllSessions() {
         wcSessionList = nil
         WCSessionList.clear(entity: WCSessionList.entityName)
+        WCSessionHistory.clear(entity: WCSessionHistory.entityName)
     }
 
     private func syncSessions() {

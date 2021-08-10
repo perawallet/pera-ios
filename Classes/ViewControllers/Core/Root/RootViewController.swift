@@ -46,6 +46,8 @@ class RootViewController: UIViewController {
     private lazy var deepLinkRouter = DeepLinkRouter(rootViewController: self, appConfiguration: appConfiguration)
     
     private(set) lazy var tabBarViewController = TabBarController(configuration: appConfiguration.all())
+
+    private var currentWCTransactionRequest: WalletConnectRequest?
     
     init(appConfiguration: AppConfiguration) {
         self.appConfiguration = appConfiguration
@@ -154,14 +156,40 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
             transitioningDelegate: nil
         )
 
-        open(
+        if isWCTransactionRequestDisplayed() {
+            appConfiguration.walletConnector.rejectTransactionRequest(request, with: .rejected)
+            return
+        }
+
+        currentWCTransactionRequest = request
+
+        let controller = open(
             .wcMainTransaction(
                 transactions: transactions,
                 transactionRequest: request,
                 transactionOption: transactionOption
             ),
             by: fullScreenPresentation
-        )
+        ) as? WCMainTransactionViewController
+
+        controller?.delegate = self
+    }
+
+    private func isWCTransactionRequestDisplayed() -> Bool {
+        return currentWCTransactionRequest != nil
+    }
+}
+
+extension RootViewController: WCMainTransactionViewControllerDelegate {
+    func wcMainTransactionViewController(
+        _ wcMainTransactionViewController: WCMainTransactionViewController,
+        didCompleted request: WalletConnectRequest
+    ) {
+        resetCurrentWCTransaction()
+    }
+
+    private func resetCurrentWCTransaction() {
+        currentWCTransactionRequest = nil
     }
 }
 
@@ -170,6 +198,7 @@ extension RootViewController: UserInterfaceChangable { }
 extension RootViewController {
     func deleteAllData() {
         appConfiguration.session.reset(isContactIncluded: true)
+        appConfiguration.walletConnector.resetAllSessions()
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()
     }
