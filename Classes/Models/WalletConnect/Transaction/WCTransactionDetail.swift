@@ -133,6 +133,10 @@ extension WCTransactionDetail {
             return .assetAddition
         }
 
+        if isAssetAdditionTransaction() {
+            return .possibleAssetAddition
+        }
+
         if isAssetTransaction {
             return .asset
         }
@@ -157,10 +161,13 @@ extension WCTransactionDetail {
             return false
         }
 
+        return isAssetAdditionTransaction() && !account.containsAsset(assetId)
+    }
+
+    func isAssetAdditionTransaction() -> Bool {
         return type == .assetTransfer &&
             (assetAmount == nil || assetAmount == 0) &&
-            sender == assetReceiver &&
-            !account.containsAsset(assetId)
+            sender == assetReceiver
     }
 
     var isAppCallTransaction: Bool {
