@@ -44,6 +44,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     private var shouldInvalidateUserSession: Bool = false
     
+    private lazy var containerBlurView: UIVisualEffectView = {
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.frame = UIScreen.main.bounds
+        return blurView
+    }()
+    
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -72,6 +79,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         decideToInvalidateSessionInBackground()
+        removeBlurOnWindow()
+    }
+    
+    func applicationWillResignActive(_ application: UIApplication) {
+        showBlurOnWindow()
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        removeBlurOnWindow()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -173,6 +189,14 @@ extension AppDelegate {
         timer?.start()
 
         invalidateAccountManagerFetchPolling()
+    }
+    
+    private func showBlurOnWindow() {
+        window?.addSubview(containerBlurView)
+    }
+    
+    private func removeBlurOnWindow() {
+        containerBlurView.removeFromSuperview()
     }
 }
 
