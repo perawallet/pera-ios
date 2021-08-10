@@ -406,24 +406,21 @@ class Router {
                 transactionOption: transactionOption,
                 configuration: configuration
             )
-        case let .wcAlgosTransaction(transaction, account, transactionRequest):
+        case let .wcAlgosTransaction(transaction, transactionRequest):
             viewController = WCAlgosTransactionViewController(
                 transaction: transaction,
-                account: account,
                 transactionRequest: transactionRequest,
                 configuration: configuration
             )
-        case let .wcAssetTransaction(transaction, account, transactionRequest):
+        case let .wcAssetTransaction(transaction, transactionRequest):
             viewController = WCAssetTransactionViewController(
                 transaction: transaction,
-                account: account,
                 transactionRequest: transactionRequest,
                 configuration: configuration
             )
-        case let .wcAssetAdditionTransaction(transaction, account, transactionRequest):
+        case let .wcAssetAdditionTransaction(transaction, transactionRequest):
             viewController = WCAssetAdditionTransactionViewController(
                 transaction: transaction,
-                account: account,
                 transactionRequest: transactionRequest,
                 configuration: configuration
             )
@@ -433,10 +430,9 @@ class Router {
                 transactionRequest: transactionRequest,
                 configuration: configuration
             )
-        case let .wcAppCall(transaction, account, transactionRequest):
+        case let .wcAppCall(transaction, transactionRequest):
             viewController = WCAppCallTransactionViewController(
                 transaction: transaction,
-                account: account,
                 transactionRequest: transactionRequest,
                 configuration: configuration
             )

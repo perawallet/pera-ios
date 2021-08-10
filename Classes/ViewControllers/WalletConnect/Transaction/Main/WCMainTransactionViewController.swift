@@ -47,6 +47,8 @@ class WCMainTransactionViewController: BaseViewController {
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 462.0))
     )
 
+    weak var delegate: WCMainTransactionViewControllerDelegate?
+
     private lazy var dataSource = WCMainTransactionDataSource(
         transactions: transactions,
         transactionRequest: transactionRequest,
@@ -98,6 +100,12 @@ class WCMainTransactionViewController: BaseViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
+        if SVProgressHUD.isVisible() {
+            SVProgressHUD.showError(withStatus: "title-done".localized)
+            SVProgressHUD.dismiss()
+        }
+        
         if !transactions.allSatisfy({ ($0.signerAccount?.requiresLedgerConnection() ?? false) }) {
             return
         }
@@ -196,6 +204,7 @@ extension WCMainTransactionViewController {
 extension WCMainTransactionViewController: WCTransactionValidator {
     func rejectTransactionRequest(with error: WCTransactionErrorResponse) {
         walletConnector.rejectTransactionRequest(transactionRequest, with: error)
+        delegate?.wcMainTransactionViewController(self, didCompleted: transactionRequest)
         dismissScreen()
     }
 }
@@ -254,6 +263,7 @@ extension WCMainTransactionViewController: WCTransactionSignerDelegate {
         }
 
         walletConnector.signTransactionRequest(transactionRequest, with: signedTransactions)
+        delegate?.wcMainTransactionViewController(self, didCompleted: transactionRequest)
         dismissScreen()
     }
 
@@ -305,19 +315,17 @@ extension WCMainTransactionViewController: WalletConnectSingleTransactionRequest
 
 extension WCMainTransactionViewController: AssetCachable {
     private func getAssetDetailsIfNeeded() {
-        for (index, transaction) in transactions.enumerated() where transaction.transactionDetail?.type != .payment {
+        let assetTransactions = transactions.filter { $0.transactionDetail?.type == .assetTransfer }
+        for (index, transaction) in assetTransactions.enumerated() {
             if !SVProgressHUD.isVisible() {
                 SVProgressHUD.show(withStatus: "title-loading".localized)
             }
 
             guard let assetId = transaction.transactionDetail?.assetId else {
-                if transaction.transactionDetail?.type == .assetTransfer {
-                    SVProgressHUD.showError(withStatus: "title-done".localized)
-                    SVProgressHUD.dismiss()
-                    self.rejectTransactionRequest(with: .invalidInput)
-                    return
-                }
-                continue
+                SVProgressHUD.showError(withStatus: "title-done".localized)
+                SVProgressHUD.dismiss()
+                self.rejectTransactionRequest(with: .invalidInput)
+                return
             }
 
             cacheAssetDetail(with: assetId) { assetDetail in
@@ -328,7 +336,7 @@ extension WCMainTransactionViewController: AssetCachable {
                     return
                 }
 
-                if index == self.transactions.count - 1 {
+                if index == assetTransactions.count - 1 {
                     SVProgressHUD.showSuccess(withStatus: "title-done".localized)
                     SVProgressHUD.dismiss()
                     self.mainTransactionView.reloadData()
@@ -376,9 +384,17 @@ extension WCMainTransactionViewController: ActionableWarningAlertViewControllerD
     }
 }
 
+protocol WCMainTransactionViewControllerDelegate: AnyObject {
+    func wcMainTransactionViewController(
+        _ wcMainTransactionViewController: WCMainTransactionViewController,
+        didCompleted request: WalletConnectRequest
+    )
+}
+
 enum WCTransactionType {
     case algos
     case asset
     case assetAddition
+    case possibleAssetAddition
     case appCall
 }
