@@ -43,6 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var shouldInvalidateAccountFetch = false
     
     private var shouldInvalidateUserSession: Bool = false
+
+    private(set) var incomingWCSessionRequest: String?
     
     private lazy var containerBlurView: UIVisualEffectView = {
         let blurEffect = UIBlurEffect(style: .light)
@@ -263,12 +265,24 @@ extension AppDelegate {
     private func shouldHandleDeepLinkRouting(from url: URL) -> Bool {
         let parser = DeepLinkParser(url: url)
 
+        if let sessionRequest = parser.wcSessionRequestText {
+            if appConfiguration.session.authenticatedUser != nil {
+                incomingWCSessionRequest = sessionRequest
+            }
+
+            return true
+        }
+
         guard let screen = parser.expectedScreen,
             let rootViewController = rootViewController else {
                 return false
         }
 
         return rootViewController.handleDeepLinkRouting(for: screen)
+    }
+
+    func resetWCSessionRequest() {
+        incomingWCSessionRequest = nil
     }
 }
 
