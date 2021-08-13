@@ -94,6 +94,8 @@ class AccountsViewController: BaseViewController {
     private(set) var localAuthenticator = LocalAuthenticator()
     
     private(set) var accountsDataSource: AccountsDataSource
+
+    private let onceWhenViewDidAppear = Once()
     
     override var name: AnalyticsScreenName? {
         return .accounts
@@ -195,12 +197,12 @@ class AccountsViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        walletConnector.reconnectToSavedSessionsIfPossible()
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.presentQRTooltipIfNeeded()
         }
-        
+
+        reconnectToOldWCSessions()
         connectToWCSessionRequestFromDeeplink()
     }
     
@@ -351,12 +353,7 @@ extension AccountsViewController {
             return
         }
 
-        let wcRequestHandler = TransactionSignRequestHandler()
-        if let rootViewController = UIApplication.shared.rootViewController() {
-            wcRequestHandler.delegate = rootViewController
-        }
-        walletConnector.register(for: wcRequestHandler)
-        
+        registerWCRequests()
         accountsDataSource.reload()
         setAccountsCollectionViewContentState()
         accountsView.accountsCollectionView.reloadData()
@@ -400,6 +397,26 @@ extension AccountsViewController {
         accountsDataSource.refresh()
         setAccountsCollectionViewContentState()
         accountsView.accountsCollectionView.reloadData()
+    }
+
+    private func reconnectToOldWCSessions() {
+        if !isConnectedToInternet {
+            return
+        }
+
+        onceWhenViewDidAppear.execute {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.walletConnector.reconnectToSavedSessionsIfPossible()
+            }
+        }
+    }
+
+    private func registerWCRequests() {
+        let wcRequestHandler = TransactionSignRequestHandler()
+        if let rootViewController = UIApplication.shared.rootViewController() {
+            wcRequestHandler.delegate = rootViewController
+        }
+        walletConnector.register(for: wcRequestHandler)
     }
 
     private func connectToWCSessionRequestFromDeeplink() {
