@@ -662,12 +662,12 @@
 "wallet-connect-transaction-title-atomic" = "Atomic Transaction Request";
 "wallet-connect-transaction-title-asset" = "Transfer Asset Request";
 "wallet-connect-transaction-title-opt-in" = "Assets Opt-in Request";
-"wallet-connect-transaction-title-app-call" = "App Call Request";
+"wallet-connect-transaction-title-app-call" = "App Call";
 "wallet-connect-transaction-title-multiple" = "Multiple Transaction Request";
 "wallet-connect-transaction-all-count" = "All transactions (%d)";
 "wallet-connect-transaction-all-count-singular" = "All transaction (1)";
-"wallet-connect-transaction-request-count" = "Transaction requests (%d)";
-"wallet-connect-transaction-request-count-singular" = "Transaction request (1)";
+"wallet-connect-transaction-request-count" = "Transaction Requests (%d)";
+"wallet-connect-transaction-request-count-singular" = "Transaction Request (1)";
 "wallet-connect-transaction-count" = "%d transactions";
 "wallet-connect-transaction-count-singular" = "1 transaction";
 "wallet-connect-transaction-title-raw" = "Raw Txns";
@@ -675,6 +675,7 @@
 "wallet-connect-transaction-title-explorer" = "AlgoExplorer";
 "wallet-connect-transaction-detail-explorer" = "Show Explorer";
 "wallet-connect-transaction-title-auth-address" = "Auth Address";
+"wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
 "wallet-connect-transaction-title-app-id" = "Application ID";
 "wallet-connect-transaction-title-asset-url" = "Asset URL";
 "wallet-connect-transaction-detail-asset-url" = "Show Asset URL";
@@ -688,8 +689,8 @@
 
 "wallet-connect-transaction-group-algos-title" = "Payment to %@";
 "wallet-connect-transaction-group-asset-title" = "Asset Transfer to %@";
-"wallet-connect-transaction-group-asset-addition-title" = "Opting in to Asset %@";
-"wallet-connect-transaction-group-possible-asset-addition-title" = "Possible Opting in to Asset %@";
-"wallet-connect-transaction-group-app-call-title" = "Application Call to %@";
-"wallet-connect-transaction-group-app-opt-in-title" = "Application Opt in to %@";
-"wallet-connect-transaction-group-app-close-title" = "Application Close to %@";
+"wallet-connect-transaction-group-asset-addition-title" = "Opting in to Asset #%@";
+"wallet-connect-transaction-group-possible-asset-addition-title" = "Possible Opting in to Asset #%@";
+"wallet-connect-transaction-group-app-call-title" = "Application Call to #%@";
+"wallet-connect-transaction-group-app-opt-in-title" = "Application Opt in to #%@";
+"wallet-connect-transaction-group-app-close-title" = "Application Close to #%@";
