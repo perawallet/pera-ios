@@ -206,12 +206,12 @@ extension WCTransaction {
     }
 
     func isFutureTransaction(with params: TransactionParams) -> Bool {
-        guard let lastRound = transactionDetail?.lastValidRound else {
+        guard let firstRound = transactionDetail?.firstValidRound else {
             return false
         }
 
         let futureTransactionThreshold: Int64 = 500
-        return lastRound > params.lastRound + futureTransactionThreshold
+        return firstRound > params.lastRound + futureTransactionThreshold
     }
 }
 

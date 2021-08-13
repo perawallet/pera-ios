@@ -187,10 +187,10 @@ extension WCMainTransactionViewController {
             "wallet-connect-transaction-warning-confirmation".localized
 
         let warningAlert = WarningAlert(
-            title: "node-settings-warning-title".localized,
+            title: "contacts-close-warning-title".localized,
             image: img("img-warning-circle"),
             description: description,
-            actionTitle: "title-got-it".localized
+            actionTitle: "title-accept".localized
         )
 
         let controller = open(
