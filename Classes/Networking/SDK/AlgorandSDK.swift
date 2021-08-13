@@ -136,6 +136,10 @@ extension AlgorandSDK {
     func findAndVerifyTransactionGroups(for transactions: [Data], error: inout NSError?) -> [Int64]? {
         return AlgoMobileFindAndVerifyTxnGroups(transactions.toSDKByteArray(), &error)?.toIntArray()
     }
+
+    func getTransactionID(for transaction: Data) -> String {
+        return AlgoMobileGetTxID(transaction)
+    }
 }
 
 extension AlgorandSDK {

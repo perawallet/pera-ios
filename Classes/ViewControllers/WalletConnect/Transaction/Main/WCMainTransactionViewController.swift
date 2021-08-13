@@ -243,6 +243,17 @@ extension WCMainTransactionViewController: WCMainTransactionViewDelegate {
     }
 
     func wcMainTransactionViewDidDeclineSigning(_ wcMainTransactionView: WCMainTransactionView) {
+        if let session = wcSession {
+            log(
+                WCTransactionDeclinedEvent(
+                    transactionCount: transactions.count,
+                    dappName: session.peerMeta.name,
+                    dappURL: session.peerMeta.url.absoluteString,
+                    address: session.walletMeta?.accounts?.first
+                )
+            )
+        }
+
         rejectTransactionRequest(with: .rejected)
     }
 }
@@ -276,8 +287,25 @@ extension WCMainTransactionViewController: WCTransactionSignerDelegate {
 
     private func sendSignedTransactions() {
         walletConnector.signTransactionRequest(transactionRequest, with: signedTransactions)
+        logAllTransactions()
         delegate?.wcMainTransactionViewController(self, didCompleted: transactionRequest)
         dismissScreen()
+    }
+
+    private func logAllTransactions() {
+        transactions.forEach { transaction in
+            if let transactionData = transaction.unparsedTransactionDetail,
+               let session = wcSession {
+                let transactionID = AlgorandSDK().getTransactionID(for: transactionData)
+                log(
+                    WCTransactionConfirmedEvent(
+                        transactionID: transactionID,
+                        dappName: session.peerMeta.name,
+                        dappURL: session.peerMeta.url.absoluteString
+                    )
+                )
+            }
+        }
     }
 
     func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didFailedWith error: WCTransactionSigner.WCSignError) {
