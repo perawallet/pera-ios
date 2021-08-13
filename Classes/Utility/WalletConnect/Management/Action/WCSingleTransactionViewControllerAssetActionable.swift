@@ -26,8 +26,17 @@ protocol WCSingleTransactionViewControllerAssetActionable: WCSingleTransactionVi
 extension WCSingleTransactionViewControllerAssetActionable where Self: WCSingleTransactionViewController {
     func openInExplorer(_ assetDetail: AssetDetail?) {
         if let assetId = assetDetail?.id,
-           let url = URL(string: "https://algoexplorer.io/asset/\(String(assetId))") {
-            open(url)
+           let currentNetwork = api?.network {
+            if currentNetwork == .mainnet {
+                if let url = URL(string: "https://algoexplorer.io/asset/\(String(assetId))") {
+                    open(url)
+                }
+                return
+            }
+
+            if let url = URL(string: "https://testnet.algoexplorer.io/asset/\(String(assetId))") {
+                open(url)
+            }
         }
     }
 

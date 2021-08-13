@@ -41,6 +41,22 @@ class WCAppCallTransactionViewController: WCSingleTransactionViewController {
 }
 
 extension WCAppCallTransactionViewController: WCAppCallTransactionViewDelegate {
+    func wcAppCallTransactionViewDidOpenAlgoExplorer(_ wcAppCallTransactionView: WCAppCallTransactionView) {
+        if let appId = transaction.transactionDetail?.appCallId,
+           let currentNetwork = api?.network {
+            if currentNetwork == .mainnet {
+                if let url = URL(string: "https://algoexplorer.io/application/\(String(appId))") {
+                    open(url)
+                }
+                return
+            }
+
+            if let url = URL(string: "https://testnet.algoexplorer.io/application/\(String(appId))") {
+                open(url)
+            }
+        }
+    }
+
     func wcAppCallTransactionViewDidOpenRawTransaction(_ wcAppCallTransactionView: WCAppCallTransactionView) {
         displayRawTransaction()
     }
