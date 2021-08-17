@@ -64,6 +64,7 @@ extension WCTransactionSigner {
         ledgerTransactionOperation.startTimer()
         ledgerTransactionOperation.setUnsignedTransactionData(unsignedTransaction)
 
+        // Needs a bit delay since the bluetooth scanning for the first time is working initially
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.ledgerTransactionOperation.startScan()
         }
