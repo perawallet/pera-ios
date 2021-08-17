@@ -71,7 +71,7 @@ class WCTransactionDetail: Model {
         assetId = try container.decodeIfPresent(Int64.self, forKey: .assetId)
         appCallArguments = try container.decodeIfPresent([String].self, forKey: .appCallArguments)
         appCallOnComplete = try container.decodeIfPresent(AppCallOnComplete.self, forKey: .appCallOnComplete) ?? .noOp
-        appCallId = try container.decodeIfPresent(Int64.self, forKey: .appCallId)
+        appCallId = try container.decodeIfPresent(Int64.self, forKey: .appCallId) ?? 0
 
         if let senderMsgpack = try container.decodeIfPresent(Data.self, forKey: .sender) {
             sender = parseAddress(from: senderMsgpack)
