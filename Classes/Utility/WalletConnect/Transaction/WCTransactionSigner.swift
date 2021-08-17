@@ -63,7 +63,10 @@ extension WCTransactionSigner {
         ledgerTransactionOperation.delegate = self
         ledgerTransactionOperation.startTimer()
         ledgerTransactionOperation.setUnsignedTransactionData(unsignedTransaction)
-        ledgerTransactionOperation.startScan()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            self.ledgerTransactionOperation.startScan()
+        }
     }
 
     private func signStandardTransaction(_ transaction: WCTransaction, with request: WalletConnectRequest, for account: Account) {
