@@ -18,10 +18,20 @@
 import Foundation
 
 class WCAppCallTransactionItemViewModel {
+    private(set) var hasWarning = false
     private(set) var title: String?
 
     init(transaction: WCTransaction) {
+        setHasWarning(from: transaction)
         setTitle(from: transaction)
+    }
+
+    private func setHasWarning(from transaction: WCTransaction) {
+        guard let transactionDetail = transaction.transactionDetail else {
+            return
+        }
+
+        hasWarning = transactionDetail.hasRekeyOrCloseAddress
     }
 
     private func setTitle(from transaction: WCTransaction) {

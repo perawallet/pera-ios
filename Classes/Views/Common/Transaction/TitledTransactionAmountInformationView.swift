@@ -89,7 +89,7 @@ extension TitledTransactionAmountInformationView {
 extension TitledTransactionAmountInformationView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let horizontalInset: CGFloat = 20.0
-        let transactionAmountViewOffset: CGFloat = 20.0
+        let transactionAmountViewOffset: CGFloat = 18.0
         let labelTopInset: CGFloat = 20.0
         let separatorHeight: CGFloat = 1.0
     }

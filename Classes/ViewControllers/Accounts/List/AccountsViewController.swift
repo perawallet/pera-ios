@@ -62,6 +62,14 @@ class AccountsViewController: BaseViewController {
             initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
         )
     }()
+
+    private lazy var wcConnectionModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 454.0))
+    )
     
     private lazy var pushNotificationController: PushNotificationController = {
         guard let api = api else {
@@ -86,6 +94,8 @@ class AccountsViewController: BaseViewController {
     private(set) var localAuthenticator = LocalAuthenticator()
     
     private(set) var accountsDataSource: AccountsDataSource
+
+    private let onceWhenViewDidAppear = Once()
     
     override var name: AnalyticsScreenName? {
         return .accounts
@@ -123,6 +133,13 @@ class AccountsViewController: BaseViewController {
             self,
             selector: #selector(didUpdateAccount(notification:)),
             name: .AccountUpdate,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
             object: nil
         )
     }
@@ -180,11 +197,13 @@ class AccountsViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        walletConnector.reconnectToSavedSessionsIfPossible()
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.presentQRTooltipIfNeeded()
         }
+
+        reconnectToOldWCSessions()
+        connectToWCSessionRequestFromDeeplink()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -334,12 +353,7 @@ extension AccountsViewController {
             return
         }
 
-        let wcRequestHandler = TransactionSignRequestHandler()
-        if let rootViewController = UIApplication.shared.rootViewController() {
-            wcRequestHandler.delegate = rootViewController
-        }
-        walletConnector.register(for: wcRequestHandler)
-        
+        registerWCRequests()
         accountsDataSource.reload()
         setAccountsCollectionViewContentState()
         accountsView.accountsCollectionView.reloadData()
@@ -357,7 +371,12 @@ extension AccountsViewController {
         setAccountsCollectionViewContentState()
         accountsView.accountsCollectionView.reloadData()
     }
-    
+
+    @objc
+    private func didBecomeActive() {
+        connectToWCSessionRequestFromDeeplink()
+    }
+
     @objc
     private func didRefreshList() {
         if !isConnectedToInternet {
@@ -378,6 +397,77 @@ extension AccountsViewController {
         accountsDataSource.refresh()
         setAccountsCollectionViewContentState()
         accountsView.accountsCollectionView.reloadData()
+    }
+
+    private func reconnectToOldWCSessions() {
+        if !isConnectedToInternet {
+            return
+        }
+
+        onceWhenViewDidAppear.execute {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.walletConnector.reconnectToSavedSessionsIfPossible()
+            }
+        }
+    }
+
+    private func registerWCRequests() {
+        let wcRequestHandler = TransactionSignRequestHandler()
+        if let rootViewController = UIApplication.shared.rootViewController() {
+            wcRequestHandler.delegate = rootViewController
+        }
+        walletConnector.register(for: wcRequestHandler)
+    }
+
+    private func connectToWCSessionRequestFromDeeplink() {
+        if let appDelegate = UIApplication.shared.appDelegate,
+           let incominWCSession = appDelegate.incomingWCSessionRequest {
+            walletConnector.delegate = self
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.walletConnector.connect(to: incominWCSession)
+            }
+
+            appDelegate.resetWCSessionRequest()
+        }
+    }
+}
+
+extension AccountsViewController: WalletConnectorDelegate {
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        shouldStart session: WalletConnectSession,
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
+    ) {
+        guard let accounts = self.session?.accounts,
+              accounts.contains(where: { $0.type != .watch }) else {
+            NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-error-no-account".localized)
+            return
+        }
+
+        let controller = open(
+            .wcConnectionApproval(walletConnectSession: session, completion: completion),
+            by: .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: wcConnectionModalPresenter
+            )
+        ) as? WCConnectionApprovalViewController
+        controller?.delegate = self
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
+        walletConnector.saveConnectedWCSession(session)
+    }
+}
+
+extension AccountsViewController: WCConnectionApprovalViewControllerDelegate {
+    func wcConnectionApprovalViewControllerDidApproveConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
+        wcConnectionApprovalViewController.dismissScreen()
+    }
+
+    func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
+        wcConnectionApprovalViewController.dismissScreen()
     }
 }
 

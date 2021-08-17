@@ -1550,6 +1550,21 @@
 		2B83502A26B335EC0014F9CD /* WCContainedTransactionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83502926B335EC0014F9CD /* WCContainedTransactionWarningView.swift */; };
 		2B83502B26B335EC0014F9CD /* WCContainedTransactionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83502926B335EC0014F9CD /* WCContainedTransactionWarningView.swift */; };
 		2B83502C26B335EC0014F9CD /* WCContainedTransactionWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83502926B335EC0014F9CD /* WCContainedTransactionWarningView.swift */; };
+		2B83D04726C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D04626C41521005A35AF /* WCTransactionConfirmedEvent.swift */; };
+		2B83D04826C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D04626C41521005A35AF /* WCTransactionConfirmedEvent.swift */; };
+		2B83D04926C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D04626C41521005A35AF /* WCTransactionConfirmedEvent.swift */; };
+		2B83D04B26C41533005A35AF /* WCTransactionDeclinedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D04A26C41533005A35AF /* WCTransactionDeclinedEvent.swift */; };
+		2B83D04C26C41533005A35AF /* WCTransactionDeclinedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D04A26C41533005A35AF /* WCTransactionDeclinedEvent.swift */; };
+		2B83D04D26C41533005A35AF /* WCTransactionDeclinedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D04A26C41533005A35AF /* WCTransactionDeclinedEvent.swift */; };
+		2B83D04F26C41546005A35AF /* WCSessionApprovedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D04E26C41546005A35AF /* WCSessionApprovedEvent.swift */; };
+		2B83D05026C41546005A35AF /* WCSessionApprovedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D04E26C41546005A35AF /* WCSessionApprovedEvent.swift */; };
+		2B83D05126C41546005A35AF /* WCSessionApprovedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D04E26C41546005A35AF /* WCSessionApprovedEvent.swift */; };
+		2B83D05326C41554005A35AF /* WCSessionRejectedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D05226C41554005A35AF /* WCSessionRejectedEvent.swift */; };
+		2B83D05426C41554005A35AF /* WCSessionRejectedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D05226C41554005A35AF /* WCSessionRejectedEvent.swift */; };
+		2B83D05526C41554005A35AF /* WCSessionRejectedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D05226C41554005A35AF /* WCSessionRejectedEvent.swift */; };
+		2B83D05726C41567005A35AF /* WCSessionDisconnectedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D05626C41567005A35AF /* WCSessionDisconnectedEvent.swift */; };
+		2B83D05826C41567005A35AF /* WCSessionDisconnectedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D05626C41567005A35AF /* WCSessionDisconnectedEvent.swift */; };
+		2B83D05926C41567005A35AF /* WCSessionDisconnectedEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B83D05626C41567005A35AF /* WCSessionDisconnectedEvent.swift */; };
 		2B857632247E988E002F9DA8 /* QRCreationDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B857631247E988E002F9DA8 /* QRCreationDraft.swift */; };
 		2B857633247E988E002F9DA8 /* QRCreationDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B857631247E988E002F9DA8 /* QRCreationDraft.swift */; };
 		2B85F3EA257A71D100C871A5 /* LedgerOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B85F3E9257A71D100C871A5 /* LedgerOperation.swift */; };
@@ -2986,6 +3001,11 @@
 		2B83502126AC23540014F9CD /* WCSingleTransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSingleTransactionViewModel.swift; sourceTree = "<group>"; };
 		2B83502526B1D9420014F9CD /* WCTransactionValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionValidator.swift; sourceTree = "<group>"; };
 		2B83502926B335EC0014F9CD /* WCContainedTransactionWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCContainedTransactionWarningView.swift; sourceTree = "<group>"; };
+		2B83D04626C41521005A35AF /* WCTransactionConfirmedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionConfirmedEvent.swift; sourceTree = "<group>"; };
+		2B83D04A26C41533005A35AF /* WCTransactionDeclinedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionDeclinedEvent.swift; sourceTree = "<group>"; };
+		2B83D04E26C41546005A35AF /* WCSessionApprovedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionApprovedEvent.swift; sourceTree = "<group>"; };
+		2B83D05226C41554005A35AF /* WCSessionRejectedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionRejectedEvent.swift; sourceTree = "<group>"; };
+		2B83D05626C41567005A35AF /* WCSessionDisconnectedEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionDisconnectedEvent.swift; sourceTree = "<group>"; };
 		2B857631247E988E002F9DA8 /* QRCreationDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationDraft.swift; sourceTree = "<group>"; };
 		2B85F3E9257A71D100C871A5 /* LedgerOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerOperation.swift; sourceTree = "<group>"; };
 		2B85F3F0257A721D00C871A5 /* LedgerTransactionOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerTransactionOperation.swift; sourceTree = "<group>"; };
@@ -6113,6 +6133,34 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
+		2B83D04326C414F4005A35AF /* WalletConnect */ = {
+			isa = PBXGroup;
+			children = (
+				2B83D04426C414FC005A35AF /* Session */,
+				2B83D04526C41502005A35AF /* Transaction */,
+			);
+			path = WalletConnect;
+			sourceTree = "<group>";
+		};
+		2B83D04426C414FC005A35AF /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				2B83D04E26C41546005A35AF /* WCSessionApprovedEvent.swift */,
+				2B83D05226C41554005A35AF /* WCSessionRejectedEvent.swift */,
+				2B83D05626C41567005A35AF /* WCSessionDisconnectedEvent.swift */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
+		2B83D04526C41502005A35AF /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				2B83D04626C41521005A35AF /* WCTransactionConfirmedEvent.swift */,
+				2B83D04A26C41533005A35AF /* WCTransactionDeclinedEvent.swift */,
+			);
+			path = Transaction;
+			sourceTree = "<group>";
+		};
 		2B857630247E987C002F9DA8 /* QR */ = {
 			isa = PBXGroup;
 			children = (
@@ -7016,6 +7064,7 @@
 				2B57D8ED25587F26006E6FCE /* Send */,
 				2BE4D0A025938D94005F5764 /* Settings */,
 				2BE4D09E25938D78005F5764 /* Transaction */,
+				2B83D04326C414F4005A35AF /* WalletConnect */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -10058,6 +10107,7 @@
 				2B4486FE2379591A00C19FDE /* AccountsView.swift in Sources */,
 				2BBA1991231FF7CF0080A6F6 /* Device.swift in Sources */,
 				2B2A9F48232AE23F00450DB0 /* RewardCell.swift in Sources */,
+				2B83D05126C41546005A35AF /* WCSessionApprovedEvent.swift in Sources */,
 				2B4BD9FE238AD7F400491149 /* API+Assets.swift in Sources */,
 				2B3A95EA239011EB00A3DF44 /* AssetTransactionSendDraft.swift in Sources */,
 				2BA4B4132678D8EF0041586B /* WCSession.swift in Sources */,
@@ -10215,6 +10265,7 @@
 				17BD4E3B2292F1260003E49A /* SettingsViewController.swift in Sources */,
 				2B2AACAB250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */,
 				2BED6573266FA23400EC089B /* TransactionSignRequestHandler.swift in Sources */,
+				2B83D05926C41567005A35AF /* WCSessionDisconnectedEvent.swift in Sources */,
 				17BD4E3C2292F1260003E49A /* IntroductionView.swift in Sources */,
 				2BECB4F325A30A0E0081870A /* NotificationFilterResponse.swift in Sources */,
 				2B77470F25FFDB640083EFFA /* InputSuggestionViewController.swift in Sources */,
@@ -10546,6 +10597,7 @@
 				2BB93BC725BEF34F001F1D6C /* RemoveAssetTransactionDataBuilder.swift in Sources */,
 				17BD4EB92292F1260003E49A /* Sequence+AttributedString.swift in Sources */,
 				2BB93BD725BEF37B001F1D6C /* SendAlgosTransactionDataBuilder.swift in Sources */,
+				2B83D05526C41554005A35AF /* WCSessionRejectedEvent.swift in Sources */,
 				17BD4EBA2292F1260003E49A /* Screen.swift in Sources */,
 				17BD4EBB2292F1260003E49A /* QRScannerViewController.swift in Sources */,
 				2B9F063824B5E469006880F0 /* AnalyticsEvent.swift in Sources */,
@@ -10598,6 +10650,7 @@
 				2BA4B42026793A2D0041586B /* WalletConnectSessionSource.swift in Sources */,
 				2B4BD9F42389F17400491149 /* AssetSupportViewController.swift in Sources */,
 				17BD4ECE2292F1260003E49A /* PassphraseMnemonicCell.swift in Sources */,
+				2B83D04D26C41533005A35AF /* WCTransactionDeclinedEvent.swift in Sources */,
 				2B25700523F1D8620005CBA2 /* SendAlgosTransactionPreviewViewModel.swift in Sources */,
 				2BDD43C92513A7F600C6D3B5 /* SingleSelectionViewModel.swift in Sources */,
 				2BB93C1025BF2421001F1D6C /* TransactionSignable.swift in Sources */,
@@ -10659,6 +10712,7 @@
 				2B2703862638C422006BAF75 /* LedgerDeviceConnectionView.swift in Sources */,
 				2B3A95E7238FF99C00A3DF44 /* TransactionControllerDelegate.swift in Sources */,
 				2B7E3052267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */,
+				2B83D04926C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */,
 				2BA4B3F2267819840041586B /* WCSessionItemViewModel.swift in Sources */,
 				2BA4B3DE2673F0E60041586B /* WCConnectionApprovalViewModel.swift in Sources */,
 				2B288ADA269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */,
@@ -10842,6 +10896,7 @@
 				2B0F616124EC129D00DA22A6 /* SendTransactionViewModel.swift in Sources */,
 				2B0F616224EC129D00DA22A6 /* ContactsViewController.swift in Sources */,
 				2B0F616424EC129D00DA22A6 /* TestNetTitleDisplayable.swift in Sources */,
+				2B83D05026C41546005A35AF /* WCSessionApprovedEvent.swift in Sources */,
 				2B0F616524EC129D00DA22A6 /* AssetAlertDraft.swift in Sources */,
 				2B0F616624EC129D00DA22A6 /* Snapkit+SafeArea.swift in Sources */,
 				2BA4B4122678D8EF0041586B /* WCSession.swift in Sources */,
@@ -10999,6 +11054,7 @@
 				2B0F61CA24EC129D00DA22A6 /* AssetSupportViewModel.swift in Sources */,
 				2B0F61CB24EC129D00DA22A6 /* SendTransactionViewController.swift in Sources */,
 				2BED6572266FA23400EC089B /* TransactionSignRequestHandler.swift in Sources */,
+				2B83D05826C41567005A35AF /* WCSessionDisconnectedEvent.swift in Sources */,
 				2B2AACAA250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */,
 				2BF0FAC825387C5E00D704D5 /* AlgosCardCell.swift in Sources */,
 				2B77470E25FFDB640083EFFA /* InputSuggestionViewController.swift in Sources */,
@@ -11330,6 +11386,7 @@
 				2BB93BC625BEF34F001F1D6C /* RemoveAssetTransactionDataBuilder.swift in Sources */,
 				2B0F629C24EC129D00DA22A6 /* AccountListView.swift in Sources */,
 				2BB93BD625BEF37B001F1D6C /* SendAlgosTransactionDataBuilder.swift in Sources */,
+				2B83D05426C41554005A35AF /* WCSessionRejectedEvent.swift in Sources */,
 				2B0F629D24EC129D00DA22A6 /* NoInternetConnectionView.swift in Sources */,
 				2B0F629E24EC129D00DA22A6 /* PinLimitViewController.swift in Sources */,
 				2B0F629F24EC129D00DA22A6 /* PendingTransactionList.swift in Sources */,
@@ -11382,6 +11439,7 @@
 				2BA4B41F26793A2D0041586B /* WalletConnectSessionSource.swift in Sources */,
 				2B0F62C224EC129D00DA22A6 /* BottomInformationViewController.swift in Sources */,
 				2B0F62C324EC129D00DA22A6 /* NodeController.swift in Sources */,
+				2B83D04C26C41533005A35AF /* WCTransactionDeclinedEvent.swift in Sources */,
 				2BDD43C82513A7F600C6D3B5 /* SingleSelectionViewModel.swift in Sources */,
 				2B0F62C424EC129D00DA22A6 /* AccountFetchOperation.swift in Sources */,
 				2BB93C0F25BF2421001F1D6C /* TransactionSignable.swift in Sources */,
@@ -11443,6 +11501,7 @@
 				2B2703852638C422006BAF75 /* LedgerDeviceConnectionView.swift in Sources */,
 				2B0F62DE24EC129D00DA22A6 /* NotificationView.swift in Sources */,
 				2B7E3051267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */,
+				2B83D04826C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */,
 				2BA4B3F1267819840041586B /* WCSessionItemViewModel.swift in Sources */,
 				2BA4B3DD2673F0E60041586B /* WCConnectionApprovalViewModel.swift in Sources */,
 				2B288AD9269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */,
@@ -11626,6 +11685,7 @@
 				171111A9225DD1A200DAF55C /* SettingsDetailCell.swift in Sources */,
 				2B66870B2248DB35009F21E7 /* NavigationBarConfigurable.swift in Sources */,
 				2B79A14D23167CA300766021 /* RewardAmountContainerView.swift in Sources */,
+				2B83D04F26C41546005A35AF /* WCSessionApprovedEvent.swift in Sources */,
 				2B0F5F0824E19A8700DA22A6 /* LedgerAccountSelectionViewController.swift in Sources */,
 				2B6607DF240D170F002AC00F /* LedgerDetail.swift in Sources */,
 				2BA4B4112678D8EF0041586B /* WCSession.swift in Sources */,
@@ -11783,6 +11843,7 @@
 				2B7E3065267A5E4400E89EE3 /* WCAssetAdditionTransactionViewModel.swift in Sources */,
 				2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */,
 				2B2AACA9250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */,
+				2B83D05726C41567005A35AF /* WCSessionDisconnectedEvent.swift in Sources */,
 				179B93DA225E460500DD03E9 /* NodeSettingsHeaderView.swift in Sources */,
 				2BECB4F125A30A0E0081870A /* NotificationFilterResponse.swift in Sources */,
 				2B77470D25FFDB640083EFFA /* InputSuggestionViewController.swift in Sources */,
@@ -12114,6 +12175,7 @@
 				17D50AA1225C755E00CA9C6E /* ApplicationConfiguration.swift in Sources */,
 				2BB93BC525BEF34F001F1D6C /* RemoveAssetTransactionDataBuilder.swift in Sources */,
 				2BA0C39822677E430037AE13 /* Sequence+AttributedString.swift in Sources */,
+				2B83D05326C41554005A35AF /* WCSessionRejectedEvent.swift in Sources */,
 				2BB93BD525BEF37B001F1D6C /* SendAlgosTransactionDataBuilder.swift in Sources */,
 				2BF34C9B2239AB130052CAD3 /* Screen.swift in Sources */,
 				2B66871A22491A5E009F21E7 /* QRScannerViewController.swift in Sources */,
@@ -12166,6 +12228,7 @@
 				2B03D6A625C23C270079A973 /* MaximumBalanceWarningView.swift in Sources */,
 				2BA4B41E26793A2D0041586B /* WalletConnectSessionSource.swift in Sources */,
 				2B7572A6225CA1E3009E0253 /* SendTransactionView.swift in Sources */,
+				2B83D04B26C41533005A35AF /* WCTransactionDeclinedEvent.swift in Sources */,
 				2B4BDA21238D3A6800491149 /* AssetSearchQuery.swift in Sources */,
 				2B25700423F1D8620005CBA2 /* SendAlgosTransactionPreviewViewModel.swift in Sources */,
 				2BDD43C72513A7F600C6D3B5 /* SingleSelectionViewModel.swift in Sources */,
@@ -12227,6 +12290,7 @@
 				2BF71918224ED0C5001E8420 /* ContactInfoViewController.swift in Sources */,
 				2B2703842638C422006BAF75 /* LedgerDeviceConnectionView.swift in Sources */,
 				2BEE061623E03761004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift in Sources */,
+				2B83D04726C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */,
 				2B7E3050267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */,
 				2BA4B3F0267819840041586B /* WCSessionItemViewModel.swift in Sources */,
 				2BA4B3DC2673F0E60041586B /* WCConnectionApprovalViewModel.swift in Sources */,
@@ -12434,7 +12498,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
@@ -12465,7 +12529,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -12495,7 +12559,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -12525,7 +12589,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
@@ -12557,7 +12621,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -12588,7 +12652,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -12738,7 +12802,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
@@ -12770,7 +12834,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -12927,7 +12991,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (

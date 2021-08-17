@@ -137,6 +137,13 @@ extension WCSessionListViewController {
         )
 
         let disconnectAction = UIAlertAction(title: "title-disconnect".localized, style: .destructive) { _ in
+            self.log(
+                WCSessionDisconnectedEvent(
+                    dappName: session.peerMeta.name,
+                    dappURL: session.peerMeta.url.absoluteString,
+                    address: session.walletMeta?.accounts?.first
+                )
+            )
             self.dataSource.disconnectFromSession(session)
         }
 

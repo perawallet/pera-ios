@@ -25,6 +25,8 @@ class WCAppCallTransactionView: WCSingleTransactionView {
 
     private lazy var idInformationView = WCTransactionTextInformationView()
 
+    private lazy var onCompletionInformationView = WCTransactionTextInformationView()
+
     private lazy var authAccountInformationView = WCTransactionTextInformationView()
 
     private lazy var closeWarningInformationView = WCTransactionAddressWarningInformationView()
@@ -39,6 +41,8 @@ class WCAppCallTransactionView: WCSingleTransactionView {
 
     private lazy var rawTransactionInformationView = WCTransactionActionableInformationView()
 
+    private lazy var algoExplorerInformationView = WCTransactionActionableInformationView()
+
     override func prepareLayout() {
         super.prepareLayout()
         addParticipantInformationViews()
@@ -48,6 +52,7 @@ class WCAppCallTransactionView: WCSingleTransactionView {
 
     override func setListeners() {
         rawTransactionInformationView.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
+        algoExplorerInformationView.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
     }
 }
 
@@ -55,6 +60,7 @@ extension WCAppCallTransactionView {
     private func addParticipantInformationViews() {
         addParticipantInformationView(accountInformationView)
         addParticipantInformationView(idInformationView)
+        addParticipantInformationView(onCompletionInformationView)
         addParticipantInformationView(authAccountInformationView)
         addParticipantInformationView(closeWarningInformationView)
         addParticipantInformationView(rekeyWarningInformationView)
@@ -68,6 +74,7 @@ extension WCAppCallTransactionView {
     private func addDetailedInformationViews() {
         addDetailedInformationView(noteInformationView)
         addDetailedInformationView(rawTransactionInformationView)
+        addDetailedInformationView(algoExplorerInformationView)
     }
 }
 
@@ -75,6 +82,11 @@ extension WCAppCallTransactionView {
     @objc
     private func notifyDelegateToOpenRawTransaction() {
         delegate?.wcAppCallTransactionViewDidOpenRawTransaction(self)
+    }
+
+    @objc
+    private func notifyDelegateToOpenAlgoExplorer() {
+        delegate?.wcAppCallTransactionViewDidOpenAlgoExplorer(self)
     }
 }
 
@@ -84,6 +96,10 @@ extension WCAppCallTransactionView {
 
         if let idInformationViewModel = viewModel.idInformationViewModel {
             idInformationView.bind(idInformationViewModel)
+        }
+
+        if let onCompletionInformationViewModel = viewModel.onCompletionInformationViewModel {
+            onCompletionInformationView.bind(onCompletionInformationViewModel)
         }
 
         if let authAccountInformationViewModel = viewModel.authAccountInformationViewModel {
@@ -121,9 +137,14 @@ extension WCAppCallTransactionView {
         if let rawTransactionInformationViewModel = viewModel.rawTransactionInformationViewModel {
             rawTransactionInformationView.bind(rawTransactionInformationViewModel)
         }
+
+        if let algoExplorerInformationViewModel = viewModel.algoExplorerInformationViewModel {
+            algoExplorerInformationView.bind(algoExplorerInformationViewModel)
+        }
     }
 }
 
 protocol WCAppCallTransactionViewDelegate: AnyObject {
     func wcAppCallTransactionViewDidOpenRawTransaction(_ wcAppCallTransactionView: WCAppCallTransactionView)
+    func wcAppCallTransactionViewDidOpenAlgoExplorer(_ wcAppCallTransactionView: WCAppCallTransactionView)
 }

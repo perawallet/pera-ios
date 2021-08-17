@@ -43,7 +43,7 @@ extension TitledTransactionAccountNameView {
         addSubview(titleLabel)
 
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.defaultInset)
+            make.top.equalToSuperview().inset(layout.current.titleTopInset)
             make.leading.equalToSuperview().inset(layout.current.defaultInset)
         }
     }
@@ -52,10 +52,10 @@ extension TitledTransactionAccountNameView {
         addSubview(accountNameView)
 
         accountNameView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.defaultInset)
+            make.top.equalToSuperview().inset(layout.current.verticalInset)
             make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(layout.current.minimumOffset)
             make.trailing.equalToSuperview().inset(layout.current.defaultInset)
-            make.bottom.equalToSuperview().inset(layout.current.defaultInset)
+            make.bottom.equalToSuperview().inset(layout.current.verticalInset)
         }
     }
 
@@ -89,6 +89,8 @@ extension TitledTransactionAccountNameView {
 extension TitledTransactionAccountNameView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 20.0
+        let titleTopInset: CGFloat = 22.0
+        let verticalInset: CGFloat = 18.0
         let minimumOffset: CGFloat = 4.0
         let separatorHeight: CGFloat = 1.0
     }

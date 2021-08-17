@@ -236,6 +236,23 @@ extension WCTransactionDetail {
         case clearState = 3
         case update = 4
         case delete = 5
+
+        var representation: String {
+            switch self {
+            case .noOp:
+                return "NoOp"
+            case .optIn:
+                return "OptIn"
+            case .close:
+                return "CloseOut"
+            case .clearState:
+                return "ClearState"
+            case .update:
+                return "UpdateApplication"
+            case .delete:
+                return "DeleteApplication"
+            }
+        }
     }
 }
 

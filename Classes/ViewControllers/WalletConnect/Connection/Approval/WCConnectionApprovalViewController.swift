@@ -68,6 +68,15 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
             return
         }
 
+        log(
+            WCSessionApprovedEvent(
+                topic: walletConnectSession.url.topic,
+                dappName: walletConnectSession.dAppInfo.peerMeta.name,
+                dappURL: walletConnectSession.dAppInfo.peerMeta.url.absoluteString,
+                address: account.address
+            )
+        )
+
         DispatchQueue.main.async {
             self.walletConnectSessionConnectionCompletionHandler(
                 self.walletConnectSession.getApprovedWalletConnectionInfo(
@@ -79,6 +88,14 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
     }
 
     func wcConnectionApprovalViewDidRejectConnection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
+        log(
+            WCSessionRejectedEvent(
+                topic: walletConnectSession.url.topic,
+                dappName: walletConnectSession.dAppInfo.peerMeta.name,
+                dappURL: walletConnectSession.dAppInfo.peerMeta.url.absoluteString
+            )
+        )
+
         DispatchQueue.main.async {
             self.walletConnectSessionConnectionCompletionHandler(self.walletConnectSession.getDeclinedWalletConnectionInfo())
             self.delegate?.wcConnectionApprovalViewControllerDidRejectConnection(self)
@@ -88,6 +105,10 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
     func wcConnectionApprovalViewDidSelectAccountSelection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
         let accountListViewController = open(.accountList(mode: .walletConnect), by: .push) as? AccountListViewController
         accountListViewController?.delegate = self
+    }
+
+    func wcConnectionApprovalViewDidOpenURL(_ wcConnectionApprovalView: WCConnectionApprovalView) {
+        open(walletConnectSession.dAppInfo.peerMeta.url)
     }
 }
 
