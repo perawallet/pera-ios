@@ -45,7 +45,7 @@ class WCGroupTransactionViewController: BaseViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "wallet-connect-transaction-title-atomic".localized
+        title = "wallet-connect-transaction-title-multiple".localized
     }
 
     override func linkInteractors() {
