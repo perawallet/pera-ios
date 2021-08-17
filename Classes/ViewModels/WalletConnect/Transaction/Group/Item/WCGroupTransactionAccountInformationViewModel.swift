@@ -57,7 +57,7 @@ class WCGroupTransactionAccountInformationViewModel {
 
     private func setAssetName(from assetDetail: AssetDetail?) {
         if let assetDetail = assetDetail {
-            assetName = assetDetail.getDisplayNames().0
+            assetName = assetDetail.getDisplayNames().1
         }
     }
 }

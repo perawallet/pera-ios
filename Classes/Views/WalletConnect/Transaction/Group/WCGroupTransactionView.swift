@@ -85,6 +85,6 @@ extension WCGroupTransactionView {
 
 extension WCGroupTransactionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let verticalInset: CGFloat = 16.0
+        let verticalInset: CGFloat = 20.0
     }
 }

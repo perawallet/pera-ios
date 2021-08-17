@@ -81,15 +81,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         decideToInvalidateSessionInBackground()
-        removeBlurOnWindow()
-    }
-    
-    func applicationWillResignActive(_ application: UIApplication) {
-        showBlurOnWindow()
-    }
-    
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        removeBlurOnWindow()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -266,11 +257,13 @@ extension AppDelegate {
         let parser = DeepLinkParser(url: url)
 
         if let sessionRequest = parser.wcSessionRequestText {
-            if appConfiguration.session.authenticatedUser != nil {
+            if let user = appConfiguration.session.authenticatedUser,
+               !user.accounts.isEmpty {
                 incomingWCSessionRequest = sessionRequest
+                return true
             }
-
-            return true
+            
+            return false
         }
 
         guard let screen = parser.expectedScreen,

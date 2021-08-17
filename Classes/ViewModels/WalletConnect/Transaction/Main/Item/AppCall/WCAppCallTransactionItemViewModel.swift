@@ -35,7 +35,21 @@ class WCAppCallTransactionItemViewModel {
     }
 
     private func setTitle(from transaction: WCTransaction) {
-        if let appCallId = transaction.transactionDetail?.appCallId {
+        guard let appCallId = transaction.transactionDetail?.appCallId else {
+            return
+        }
+
+        guard let appCallOnComplete = transaction.transactionDetail?.appCallOnComplete else {
+            title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
+            return
+        }
+
+        switch appCallOnComplete {
+        case .close:
+            title = "wallet-connect-transaction-group-app-close-title".localized(params: "\(appCallId)")
+        case .optIn:
+            title = "wallet-connect-transaction-group-app-opt-in-title".localized(params: "\(appCallId)")
+        default:
             title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
         }
     }

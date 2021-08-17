@@ -47,6 +47,11 @@ class WCSessionListViewController: BaseViewController {
         rightBarButtonItems = [qrBarButtonItem]
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        walletConnector.delegate = self
+    }
+
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.tertiary
         title = "settings-wallet-connect-title".localized
