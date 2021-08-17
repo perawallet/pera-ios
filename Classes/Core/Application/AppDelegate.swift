@@ -81,15 +81,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func applicationDidEnterBackground(_ application: UIApplication) {
         decideToInvalidateSessionInBackground()
-        removeBlurOnWindow()
-    }
-    
-    func applicationWillResignActive(_ application: UIApplication) {
-        showBlurOnWindow()
-    }
-    
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        removeBlurOnWindow()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
