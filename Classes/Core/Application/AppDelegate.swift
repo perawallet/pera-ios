@@ -266,11 +266,13 @@ extension AppDelegate {
         let parser = DeepLinkParser(url: url)
 
         if let sessionRequest = parser.wcSessionRequestText {
-            if appConfiguration.session.authenticatedUser != nil {
+            if let user = appConfiguration.session.authenticatedUser,
+               !user.accounts.isEmpty {
                 incomingWCSessionRequest = sessionRequest
+                return true
             }
-
-            return true
+            
+            return false
         }
 
         guard let screen = parser.expectedScreen,

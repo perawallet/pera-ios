@@ -81,7 +81,6 @@ class WCGroupTransactionItemViewModel {
             default:
                 title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
             }
-
         }
     }
 
@@ -98,11 +97,20 @@ class WCGroupTransactionItemViewModel {
             return
         }
 
+        let sign = transactionDetail.isReceiverTransaction ? "+" : "-"
+        var amountText = ""
+
         if let assetDetail = assetDetail {
             let decimals = assetDetail.fractionDecimals
-            amount = transactionDetail.amount.assetAmount(fromFraction: decimals).toFractionStringForLabel(fraction: decimals)
+            amountText = transactionDetail.amount.assetAmount(fromFraction: decimals).toFractionStringForLabel(fraction: decimals) ?? ""
         } else {
-            amount = transactionDetail.amount.toAlgos.toAlgosStringForLabel
+            amountText = transactionDetail.amount.toAlgos.toAlgosStringForLabel ?? ""
+        }
+
+        if transactionDetail.amount == 0 {
+            amount = amountText
+        } else {
+            amount = "\(sign) \(amountText)"
         }
     }
 
@@ -111,7 +119,7 @@ class WCGroupTransactionItemViewModel {
             return
         }
 
-        assetName = assetDetail.getDisplayNames().0
+        assetName = assetDetail.getDisplayNames().1
     }
 
     private func setAccountInformationViewModel(from account: Account?, with assetDetail: AssetDetail?) {

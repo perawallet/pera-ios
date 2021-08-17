@@ -18,10 +18,16 @@
 import Foundation
 
 class WCMultipleTransactionItemViewModel {
+    private(set) var hasWarning = false
     private(set) var detail: String?
 
     init(transactions: [WCTransaction]) {
+        setHasWarning(from: transactions)
         setDetail(from: transactions)
+    }
+
+    private func setHasWarning(from transactions: [WCTransaction]) {
+        hasWarning = transactions.contains { $0.transactionDetail?.hasRekeyOrCloseAddress ?? false }
     }
 
     private func setDetail(from transactions: [WCTransaction]) {

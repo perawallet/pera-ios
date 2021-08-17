@@ -218,6 +218,15 @@ extension WCTransactionDetail {
 
          return fee > Transaction.Constant.minimumFee
     }
+
+    var isReceiverTransaction: Bool {
+        guard let accounts = UIApplication.shared.appConfiguration?.session.accounts,
+              let receiverAddress = receiver else {
+            return false
+        }
+
+        return accounts.contains { $0.address == receiverAddress }
+    }
 }
 
 extension WCTransactionDetail {

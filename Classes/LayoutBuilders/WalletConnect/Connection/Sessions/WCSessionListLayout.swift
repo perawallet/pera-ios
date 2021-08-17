@@ -54,7 +54,7 @@ extension WCSessionListLayout: UICollectionViewDelegateFlowLayout {
 
 extension WCSessionListLayout {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let constantHeight: CGFloat = 120.0
+        let constantHeight: CGFloat = 128.0
         let horizontalInset: CGFloat = 100.0
     }
 }
