@@ -114,6 +114,7 @@ extension WCAssetTransactionView {
 
         if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
             closeWarningInformationView.bind(closeWarningInformationViewModel)
+            unhideViewAnimatedIfNeeded(closeWarningInformationView)
         } else {
             closeWarningInformationView.hideViewInStack()
         }
