@@ -137,7 +137,7 @@ extension WCTransactionValidator {
     }
 
     private func hasInvalidGroupedTransaction(in transactionGroups: [Int64: [WCTransaction]]) -> Bool {
-        for group in transactionGroups where group.value.count > 1 {
+        for group in transactionGroups {
             let signableTransactions = group.value.filter { $0.signerAccount != nil }
             if signableTransactions.isEmpty {
                 return true

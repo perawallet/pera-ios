@@ -40,11 +40,10 @@ class WCConnectionApprovalView: BaseView {
             .withFont(UIFont.font(withWeight: .regular(size: 18.0)))
     }()
 
-    private lazy var urlLabel: UILabel = {
-        UILabel()
+    private lazy var urlButton: UIButton = {
+        UIButton(type: .custom)
             .withAlignment(.center)
-            .withLine(.single)
-            .withTextColor(Colors.Text.link)
+            .withTitleColor(Colors.Text.link)
             .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
     }()
 
@@ -76,7 +75,7 @@ class WCConnectionApprovalView: BaseView {
         super.prepareLayout()
         setupDappImageViewLayout()
         setupTitleLabelLayout()
-        setupURLLabelLayout()
+        setupURLButtonLayout()
         setupAccountSelectionViewLayout()
         setupConnectButtonLayout()
         setupCancelButtonLayout()
@@ -84,6 +83,7 @@ class WCConnectionApprovalView: BaseView {
 
     override func setListeners() {
         accountSelectionView.addTarget(self, action: #selector(notifyDelegateToOpenAccountSelection), for: .touchUpInside)
+        urlButton.addTarget(self, action: #selector(notifyDelegateToOpenURL), for: .touchUpInside)
         connectButton.addTarget(self, action: #selector(notifyDelegateToApproveConnection), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(notifyDelegateToRejectConnection), for: .touchUpInside)
     }
@@ -109,10 +109,10 @@ extension WCConnectionApprovalView {
         }
     }
 
-    private func setupURLLabelLayout() {
-        addSubview(urlLabel)
+    private func setupURLButtonLayout() {
+        addSubview(urlButton)
 
-        urlLabel.snp.makeConstraints { make in
+        urlButton.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.urlTopInset)
             make.centerX.equalToSuperview()
             make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
@@ -124,7 +124,7 @@ extension WCConnectionApprovalView {
 
         accountSelectionView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.selectionHorizontalInset)
-            make.top.equalTo(urlLabel.snp.bottom).offset(layout.current.verticalInset)
+            make.top.equalTo(urlButton.snp.bottom).offset(layout.current.verticalInset)
         }
     }
 
@@ -164,13 +164,18 @@ extension WCConnectionApprovalView {
     private func notifyDelegateToOpenAccountSelection() {
         delegate?.wcConnectionApprovalViewDidSelectAccountSelection(self)
     }
+
+    @objc
+    private func notifyDelegateToOpenURL() {
+        delegate?.wcConnectionApprovalViewDidOpenURL(self)
+    }
 }
 
 extension WCConnectionApprovalView {
     func bind(_ viewModel: WCConnectionApprovalViewModel) {
         dappImageView.load(from: viewModel.image)
         titleLabel.attributedText = viewModel.description
-        urlLabel.text = viewModel.urlString
+        urlButton.setTitle(viewModel.urlString, for: .normal)
 
         if let accountSelectionViewModel = viewModel.connectionAccountSelectionViewModel {
             accountSelectionView.bind(accountSelectionViewModel)
@@ -200,4 +205,5 @@ protocol WCConnectionApprovalViewDelegate: AnyObject {
     func wcConnectionApprovalViewDidApproveConnection(_ wcConnectionApprovalView: WCConnectionApprovalView)
     func wcConnectionApprovalViewDidRejectConnection(_ wcConnectionApprovalView: WCConnectionApprovalView)
     func wcConnectionApprovalViewDidSelectAccountSelection(_ wcConnectionApprovalView: WCConnectionApprovalView)
+    func wcConnectionApprovalViewDidOpenURL(_ wcConnectionApprovalView: WCConnectionApprovalView)
 }

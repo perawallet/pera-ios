@@ -25,9 +25,19 @@ extension WalletConnectSession {
         return ClientMeta(
             name: "Algorand Wallet",
             description: "Algorand’s official wallet, built by the team that brought you the Algorand Blockchain.",
-            icons: dAppInfo.peerMeta.icons,
+            icons: getIconURLs(),
             url: URL(string: "https://algorandwallet.com") ?? dAppInfo.peerMeta.url
         )
+    }
+
+    private func getIconURLs() -> [URL] {
+        let icons = [
+            "https://algorand-app.s3.amazonaws.com/app-icons/Algorand-WalletConnect-128.png",
+            "https://algorand-app.s3.amazonaws.com/app-icons/Algorand-WalletConnect-192.png",
+            "https://algorand-app.s3.amazonaws.com/app-icons/Algorand-WalletConnect-512.png"
+        ]
+
+        return icons.compactMap { URL(string: $0) }
     }
 
     func getApprovedWalletConnectionInfo(for account: String) -> WalletInfo {

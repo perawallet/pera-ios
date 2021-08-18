@@ -76,7 +76,7 @@ extension WCSingleTransactionViewController {
         transactionView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
 }
@@ -110,9 +110,6 @@ extension WCSingleTransactionViewController: WCSingleTransactionViewDelegate {
 extension WCSingleTransactionViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let topInset: CGFloat = 8.0
-        let buttonInset: CGFloat = 16.0
-        let buttonHeight: CGFloat = 52.0
-        let horizontalInset: CGFloat = 20.0
-        let verticalInset: CGFloat = 16.0
+        let bottomInset: CGFloat = 40.0
     }
 }

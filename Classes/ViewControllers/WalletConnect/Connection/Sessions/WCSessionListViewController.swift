@@ -47,6 +47,11 @@ class WCSessionListViewController: BaseViewController {
         rightBarButtonItems = [qrBarButtonItem]
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        walletConnector.delegate = self
+    }
+
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.tertiary
         title = "settings-wallet-connect-title".localized
@@ -137,6 +142,13 @@ extension WCSessionListViewController {
         )
 
         let disconnectAction = UIAlertAction(title: "title-disconnect".localized, style: .destructive) { _ in
+            self.log(
+                WCSessionDisconnectedEvent(
+                    dappName: session.peerMeta.name,
+                    dappURL: session.peerMeta.url.absoluteString,
+                    address: session.walletMeta?.accounts?.first
+                )
+            )
             self.dataSource.disconnectFromSession(session)
         }
 

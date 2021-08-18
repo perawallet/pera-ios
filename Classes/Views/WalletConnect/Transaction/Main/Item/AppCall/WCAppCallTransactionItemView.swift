@@ -21,10 +21,21 @@ class WCAppCallTransactionItemView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
+    private lazy var senderStackView: HStackView = {
+        let stackView = HStackView()
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 8.0
+        stackView.alignment = .leading
+        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        return stackView
+    }()
+
+    private lazy var warningImageView = UIImageView(image: img("icon-orange-warning"))
+
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
+            .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
     }()
@@ -38,7 +49,7 @@ class WCAppCallTransactionItemView: BaseView {
 
     override func prepareLayout() {
         setupArrowImageViewLayout()
-        setupTitleLabelLayout()
+        setupSenderStackViewLayout()
     }
 }
 
@@ -47,35 +58,40 @@ extension WCAppCallTransactionItemView {
         addSubview(arrowImageView)
 
         arrowImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
             make.centerY.equalToSuperview()
             make.size.equalTo(layout.current.arrowImageSize)
         }
     }
 
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
+    private func setupSenderStackViewLayout() {
+        addSubview(senderStackView)
 
-        titleLabel.snp.makeConstraints { make in
+        senderStackView.snp.makeConstraints { make in
             make.top.bottom.equalToSuperview().inset(layout.current.defaultInset)
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.trailing.lessThanOrEqualTo(arrowImageView.snp.leading).offset(-layout.current.minimumOffset)
+            make.trailing.lessThanOrEqualToSuperview().offset(layout.current.stackTrailingOffset)
         }
+
+        senderStackView.addArrangedSubview(warningImageView)
+        senderStackView.addArrangedSubview(titleLabel)
     }
 }
 
 extension WCAppCallTransactionItemView {
     func bind(_ viewModel: WCAppCallTransactionItemViewModel) {
+        warningImageView.isHidden = !viewModel.hasWarning
         titleLabel.text = viewModel.title
     }
 }
 
 extension WCAppCallTransactionItemView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let defaultInset: CGFloat = 20.0
-        let horizontalInset: CGFloat = 24.0
+        let defaultInset: CGFloat = 24.0
+        let horizontalInset: CGFloat = 20.0
         let arrowImageSize = CGSize(width: 24.0, height: 24.0)
-        let minimumOffset: CGFloat = 4.0
+        let stackTrailingOffset: CGFloat = 44.0
+        let senderStackHeight: CGFloat = 20.0
         let detailTopInset: CGFloat = 8.0
     }
 }

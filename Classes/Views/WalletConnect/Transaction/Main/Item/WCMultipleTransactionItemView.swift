@@ -21,10 +21,22 @@ class WCMultipleTransactionItemView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
+    private lazy var titleStackView: HStackView = {
+        let stackView = HStackView()
+        stackView.distribution = .equalSpacing
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = 8.0
+        stackView.alignment = .center
+        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        return stackView
+    }()
+
+    private lazy var warningImageView = UIImageView(image: img("icon-orange-warning"))
+
     private lazy var titleLabel: UILabel = {
         UILabel()
             .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
+            .withLine(.single)
             .withAlignment(.left)
             .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
             .withText("wallet-connect-transaction-title-multiple".localized)
@@ -47,7 +59,7 @@ class WCMultipleTransactionItemView: BaseView {
 
     override func prepareLayout() {
         setupArrowImageViewLayout()
-        setupTitleLabelLayout()
+        setupTitleStackViewLayout()
         setupDetailLabelLayout()
     }
 }
@@ -63,21 +75,24 @@ extension WCMultipleTransactionItemView {
         }
     }
 
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
+    private func setupTitleStackViewLayout() {
+        addSubview(titleStackView)
 
-        titleLabel.snp.makeConstraints { make in
+        titleStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.defaultInset)
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.trailing.lessThanOrEqualTo(arrowImageView.snp.leading).offset(-layout.current.minimumOffset)
+            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.stackTrailingOffset)
         }
+
+        titleStackView.addArrangedSubview(warningImageView)
+        titleStackView.addArrangedSubview(titleLabel)
     }
 
     private func setupDetailLabelLayout() {
         addSubview(detailLabel)
 
         detailLabel.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel)
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.trailing.lessThanOrEqualTo(arrowImageView.snp.leading).offset(-layout.current.minimumOffset)
             make.bottom.equalToSuperview().inset(layout.current.defaultInset)
         }
@@ -86,6 +101,7 @@ extension WCMultipleTransactionItemView {
 
 extension WCMultipleTransactionItemView {
     func bind(_ viewModel: WCMultipleTransactionItemViewModel) {
+        warningImageView.isHidden = !viewModel.hasWarning
         detailLabel.text = viewModel.detail
     }
 }
@@ -95,6 +111,7 @@ extension WCMultipleTransactionItemView {
         let defaultInset: CGFloat = 20.0
         let horizontalInset: CGFloat = 24.0
         let arrowImageSize = CGSize(width: 24.0, height: 24.0)
+        let stackTrailingOffset: CGFloat = 44.0
         let minimumOffset: CGFloat = 4.0
         let detailTopInset: CGFloat = 8.0
     }

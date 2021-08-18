@@ -21,7 +21,7 @@ class WCTransactionWarningView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
-    private lazy var imageView = UIImageView(image: img("icon-orange-warning"))
+    private lazy var imageView = UIImageView(image: img("icon-orange-warning-24"))
 
     private lazy var warningLabel: UILabel = {
         UILabel()

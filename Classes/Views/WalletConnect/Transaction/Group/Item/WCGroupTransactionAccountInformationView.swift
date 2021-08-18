@@ -21,12 +21,13 @@ class WCGroupTransactionAccountInformationView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
-    private lazy var accountNameView = AccountNameView()
+    private lazy var accountNameView = WCAccountInformationNameView()
 
     private lazy var dotImage = UIImageView(image: img("img-round-separator"))
 
     private lazy var balanceStackView: HStackView = {
         let stackView = HStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .equalSpacing
         stackView.spacing = 4.0
         stackView.alignment = .leading

@@ -86,9 +86,14 @@ extension WCMainTransactionView {
     private func setupTransactionViewLayout() {
         addSubview(collectionView)
 
+        let listBottomInset = (layout.current.buttonHeight * 2) +
+            layout.current.buttonInset +
+            safeAreaBottom +
+            (layout.current.verticalInset * 2)
+
         collectionView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.verticalInset)
+            make.bottom.equalToSuperview().inset(listBottomInset)
         }
     }
 

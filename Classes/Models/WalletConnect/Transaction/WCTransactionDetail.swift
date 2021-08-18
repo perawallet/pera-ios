@@ -71,7 +71,7 @@ class WCTransactionDetail: Model {
         assetId = try container.decodeIfPresent(Int64.self, forKey: .assetId)
         appCallArguments = try container.decodeIfPresent([String].self, forKey: .appCallArguments)
         appCallOnComplete = try container.decodeIfPresent(AppCallOnComplete.self, forKey: .appCallOnComplete) ?? .noOp
-        appCallId = try container.decodeIfPresent(Int64.self, forKey: .appCallId)
+        appCallId = try container.decodeIfPresent(Int64.self, forKey: .appCallId) ?? 0
 
         if let senderMsgpack = try container.decodeIfPresent(Data.self, forKey: .sender) {
             sender = parseAddress(from: senderMsgpack)
@@ -218,6 +218,15 @@ extension WCTransactionDetail {
 
          return fee > Transaction.Constant.minimumFee
     }
+
+    var isReceiverTransaction: Bool {
+        guard let accounts = UIApplication.shared.appConfiguration?.session.accounts,
+              let receiverAddress = receiver else {
+            return false
+        }
+
+        return accounts.contains { $0.address == receiverAddress }
+    }
 }
 
 extension WCTransactionDetail {
@@ -236,6 +245,23 @@ extension WCTransactionDetail {
         case clearState = 3
         case update = 4
         case delete = 5
+
+        var representation: String {
+            switch self {
+            case .noOp:
+                return "NoOp"
+            case .optIn:
+                return "OptIn"
+            case .close:
+                return "CloseOut"
+            case .clearState:
+                return "ClearState"
+            case .update:
+                return "UpdateApplication"
+            case .delete:
+                return "DeleteApplication"
+            }
+        }
     }
 }
 
