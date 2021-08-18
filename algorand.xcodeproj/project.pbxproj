@@ -274,6 +274,9 @@
 		18058CAB26B150CE009E89D8 /* WarningAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18F34B2F26B149C3007488DF /* WarningAlertViewModel.swift */; };
 		18138464269F234E00AEEC2F /* WarningAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18138463269F234E00AEEC2F /* WarningAlertView.swift */; };
 		18138467269F2E2500AEEC2F /* WarningAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18138466269F2E2500AEEC2F /* WarningAlertViewController.swift */; };
+		1828816526CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1828816426CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift */; };
+		1828816626CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1828816426CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift */; };
+		1828816726CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1828816426CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift */; };
 		186C6F6626A025EE00E28AE1 /* WarningAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18138463269F234E00AEEC2F /* WarningAlertView.swift */; };
 		186C6F6726A025EE00E28AE1 /* WarningAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18138463269F234E00AEEC2F /* WarningAlertView.swift */; };
 		186C6F6826A025F500E28AE1 /* WarningAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18138466269F2E2500AEEC2F /* WarningAlertViewController.swift */; };
@@ -2626,6 +2629,7 @@
 		17F9E926225796DA004CDF24 /* AccountManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountManager.swift; sourceTree = "<group>"; };
 		18138463269F234E00AEEC2F /* WarningAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningAlertView.swift; sourceTree = "<group>"; };
 		18138466269F2E2500AEEC2F /* WarningAlertViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningAlertViewController.swift; sourceTree = "<group>"; };
+		1828816426CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectViewWithCustomIntensity.swift; sourceTree = "<group>"; };
 		18E9EF0326B4114200F2192F /* WarningAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningAlert.swift; sourceTree = "<group>"; };
 		18F34B2F26B149C3007488DF /* WarningAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningAlertViewModel.swift; sourceTree = "<group>"; };
 		1FBA4CE73FF1117B608D16D7 /* Pods-algorand-staging.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.app store.xcconfig"; path = "Target Support Files/Pods-algorand-staging/Pods-algorand-staging.app store.xcconfig"; sourceTree = "<group>"; };
@@ -3662,6 +3666,14 @@
 				2B3E226C26BC310500ED0AAF /* ActionableWarningAlertViewController.swift */,
 			);
 			path = WarningAlert;
+			sourceTree = "<group>";
+		};
+		1828816326CA85EB000C4D3D /* CustomVisualEffectView */ = {
+			isa = PBXGroup;
+			children = (
+				1828816426CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift */,
+			);
+			path = CustomVisualEffectView;
 			sourceTree = "<group>";
 		};
 		186C6F6B26A02CA900E28AE1 /* WarningModal */ = {
@@ -6464,6 +6476,7 @@
 		2B8BE4F1223935C6005D8565 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				1828816326CA85EB000C4D3D /* CustomVisualEffectView */,
 				2B8BE4F2223935CA005D8565 /* Base */,
 				2B59F15F22563F78005203DD /* Container */,
 				95E3156324335F8B008D79D4 /* Segment */,
@@ -10324,6 +10337,7 @@
 				2B2A9F45232AE20A00450DB0 /* RewardView.swift in Sources */,
 				2BB93C2525BF2461001F1D6C /* SDKTransactionSigner.swift in Sources */,
 				17BD4E512292F1260003E49A /* ALGBarButtonItem.swift in Sources */,
+				1828816726CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
 				17BD4E522292F1260003E49A /* TransactionList.swift in Sources */,
 				2B1CFA0D2554113300D60B73 /* Dictionary+ErrorLogParamKeys.swift in Sources */,
 				2BE9372E2463272500322C1E /* SelectAssetViewModel.swift in Sources */,
@@ -11114,6 +11128,7 @@
 				2B0F61EC24EC129D00DA22A6 /* AssetSearchResult.swift in Sources */,
 				2BB93C2425BF2461001F1D6C /* SDKTransactionSigner.swift in Sources */,
 				2B0F61ED24EC129D00DA22A6 /* ChoosePasswordViewModel.swift in Sources */,
+				1828816626CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
 				2B1CFA0C2554113300D60B73 /* Dictionary+ErrorLogParamKeys.swift in Sources */,
 				2B0F61EE24EC129D00DA22A6 /* BaseInputView.swift in Sources */,
 				2B0F61EF24EC129D00DA22A6 /* AssetInputView.swift in Sources */,
@@ -11904,6 +11919,7 @@
 				2BB93C2325BF2461001F1D6C /* SDKTransactionSigner.swift in Sources */,
 				2B82B1C522535F4300A8909F /* Contact.swift in Sources */,
 				2BDE31E32279A319002E8235 /* ContactSelectionCell.swift in Sources */,
+				1828816526CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
 				2BF53159224A46C500A7455F /* ModalPresenterInteractable.swift in Sources */,
 				2B1CFA0B2554113300D60B73 /* Dictionary+ErrorLogParamKeys.swift in Sources */,
 				2BBA198C231FF7650080A6F6 /* DeviceRegistrationDraft.swift in Sources */,
