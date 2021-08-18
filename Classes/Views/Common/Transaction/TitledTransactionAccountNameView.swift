@@ -42,6 +42,9 @@ extension TitledTransactionAccountNameView {
     private func setupTitleLabelLayout() {
         addSubview(titleLabel)
 
+        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+
         titleLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.titleTopInset)
             make.leading.equalToSuperview().inset(layout.current.defaultInset)

@@ -24,7 +24,7 @@ class AccountNameViewModel {
     
     init(account: Account, hasImage: Bool = true) {
         setImage(from: account, with: hasImage)
-        setName(from: account)
+        setName(from: account, with: hasImage)
     }
     
     private func setImage(from account: Account, with hasImage: Bool) {
@@ -35,7 +35,12 @@ class AccountNameViewModel {
         image = account.accountImage()
     }
     
-    private func setName(from account: Account) {
+    private func setName(from account: Account, with hasImage: Bool) {
+        if !hasImage {
+            name = account.address
+            return
+        }
+
         name = account.name.unwrap(or: account.address.shortAddressDisplay())
     }
 }

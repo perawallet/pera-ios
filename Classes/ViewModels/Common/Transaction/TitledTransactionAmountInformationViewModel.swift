@@ -44,9 +44,9 @@ class TitledTransactionAmountInformationViewModel {
             }
         case let .amount(value, isAlgos, fraction):
             if isAlgos {
-                amountMode = .negative(amount: value.toAlgos)
+                amountMode = .normal(amount: value.toAlgos)
             } else {
-                amountMode = .negative(amount: value.assetAmount(fromFraction: fraction ?? 0), isAlgos: false, fraction: fraction)
+                amountMode = .normal(amount: value.assetAmount(fromFraction: fraction ?? 0), isAlgos: false, fraction: fraction)
             }
         }
     }

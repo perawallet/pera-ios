@@ -42,9 +42,10 @@ class WCGroupTransactionItemView: BaseView {
 
     private lazy var balanceStackView: HStackView = {
         let stackView = HStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .equalSpacing
         stackView.spacing = 4.0
-        stackView.alignment = .leading
+        stackView.alignment = .center
         stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         return stackView
     }()
