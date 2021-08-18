@@ -405,6 +405,7 @@ extension SettingsViewController: SettingsToggleCellDelegate {
     
     private func logout() {
         session?.reset(isContactIncluded: true)
+        walletConnector.resetAllSessions()
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()
         open(.introduction(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
