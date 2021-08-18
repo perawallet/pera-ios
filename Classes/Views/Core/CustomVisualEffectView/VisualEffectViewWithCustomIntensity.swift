@@ -22,7 +22,7 @@ final class VisualEffectViewWithCustomIntensity: UIVisualEffectView {
     
     init(effect: UIVisualEffect, intensity: CGFloat) {
         super.init(effect: nil)
-        animator = UIViewPropertyAnimator(duration: 2, curve: .linear) { [unowned self] in
+        animator = UIViewPropertyAnimator(duration: 2.0, curve: .linear) { [unowned self] in
             self.effect = effect
         }
         animator?.fractionComplete = intensity
