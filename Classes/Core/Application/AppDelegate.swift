@@ -188,7 +188,7 @@ extension AppDelegate {
     private func showBlurOnWindow() {
         containerBlurView.effect = nil
         UIView.animate(withDuration: 3) {
-            self.containerBlurView = CustomIntensityVisualEffectView(effect: UIBlurEffect(style: .light), intensity: 0.25)
+            self.containerBlurView = VisualEffectViewWithCustomIntensity(effect: UIBlurEffect(style: .light), intensity: 0.25)
         }
         containerBlurView.frame = UIScreen.main.bounds
         window?.addSubview(containerBlurView)
