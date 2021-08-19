@@ -71,6 +71,8 @@ class WCMainTransactionViewController: BaseViewController {
     private let wcSession: WCSession?
     private let transactionOption: WCTransactionOption?
 
+    private var transactionParams: TransactionParams?
+
     private var signedTransactions: [Data?] = []
 
     init(
@@ -90,6 +92,7 @@ class WCMainTransactionViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         getAssetDetailsIfNeeded()
+        getTransactionParams()
         validateTransactions(transactions, with: dataSource.groupedTransactions)
     }
 
@@ -144,6 +147,17 @@ extension WCMainTransactionViewController {
         }
     }
 
+    private func getTransactionParams() {
+        api?.getTransactionParams { response in
+            switch response {
+            case .failure:
+                break
+            case let .success(params):
+                self.transactionParams = params
+            }
+        }
+    }
+
     private func presentInitialWarningAlertIfNeeded() {
         let oneTimeDisplayStorage = OneTimeDisplayStorage()
 
@@ -171,7 +185,7 @@ extension WCMainTransactionViewController {
     }
 
     private func presentConfirmationAlert() {
-        guard let params = UIApplication.shared.accountManager?.params else {
+        guard let params = transactionParams ?? UIApplication.shared.accountManager?.params else {
             return
         }
 

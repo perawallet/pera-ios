@@ -96,21 +96,12 @@ class WCGroupTransactionItemViewModel {
         guard let transactionDetail = transaction.transactionDetail else {
             return
         }
-
-        let sign = transactionDetail.isReceiverTransaction ? "+" : "-"
-        var amountText = ""
-
+        
         if let assetDetail = assetDetail {
             let decimals = assetDetail.fractionDecimals
-            amountText = transactionDetail.amount.assetAmount(fromFraction: decimals).toFractionStringForLabel(fraction: decimals) ?? ""
+            amount = transactionDetail.amount.assetAmount(fromFraction: decimals).toFractionStringForLabel(fraction: decimals) ?? ""
         } else {
-            amountText = transactionDetail.amount.toAlgos.toAlgosStringForLabel ?? ""
-        }
-
-        if transactionDetail.amount == 0 {
-            amount = amountText
-        } else {
-            amount = "\(sign) \(amountText)"
+            amount = transactionDetail.amount.toAlgos.toAlgosStringForLabel ?? ""
         }
     }
 
