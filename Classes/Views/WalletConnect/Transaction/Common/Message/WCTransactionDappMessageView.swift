@@ -106,8 +106,12 @@ extension WCTransactionDappMessageView {
     }
 
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        delegate?.wcTransactionDappMessageViewDidTapped(self)
-        return super.hitTest(point, with: event)
+        if frame.contains(point) {
+            delegate?.wcTransactionDappMessageViewDidTapped(self)
+            return super.hitTest(point, with: event)
+        }
+
+        return nil
     }
 }
 
