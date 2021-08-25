@@ -28,7 +28,7 @@ extension BannerViewModel {
     var icon: Image? {
         return nil
     }
-    
+
     var message: EditText? {
         return nil
     }

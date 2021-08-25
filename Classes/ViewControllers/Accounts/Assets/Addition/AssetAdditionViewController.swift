@@ -273,7 +273,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
             break
         }
     }
-    
+
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
         loadingController?.stopLoading()
         switch error {

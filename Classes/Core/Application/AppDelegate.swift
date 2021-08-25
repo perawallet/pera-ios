@@ -45,6 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     private lazy var pushNotificationController = PushNotificationController(api: api, bannerController: bannerController)
+
     private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
     
     private var rootViewController: RootViewController?
