@@ -183,9 +183,8 @@ extension LedgerTransactionOperation: LedgerAccountFetchOperationDelegate {
         if isCorrectLedgerAddressFetched {
             sendTransactionSignInstruction()
         } else {
-            NotificationBanner.showError(
-                "ble-error-ledger-connection-title".localized,
-                message: "ledger-transaction-account-match-error".localized
+            AppDelegate.shared?.bannerController.presentErrorBanner(
+                "ble-error-ledger-connection-title".localized, "ledger-transaction-account-match-error".localized
             )
             reset()
             delegate?.ledgerTransactionOperation(self, didFailed: .unmatchedAddress)

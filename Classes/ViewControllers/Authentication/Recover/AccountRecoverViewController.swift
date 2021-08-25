@@ -334,7 +334,10 @@ extension AccountRecoverViewController {
         }
 
         // Invalid copy/paste action for mnemonics.
-        NotificationBanner.showError("title-error".localized, message: "recover-copy-error".localized)
+        AppDelegate.shared?.bannerController.presentErrorBanner(
+            "title-error".localized,
+            "recover-copy-error".localized
+        )
         return false
     }
 
@@ -407,7 +410,7 @@ extension AccountRecoverViewController {
         }
 
         // Invalid copy/paste action for mnemonics.
-        NotificationBanner.showError("title-error".localized, message: "recover-copy-error".localized)
+        AppDelegate.shared?.bannerController.presentErrorBanner("title-error".localized, "recover-copy-error".localized)
     }
 }
 
@@ -470,14 +473,20 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
     private func displayRecoverError(_ error: AccountRecoverDataController.RecoverError) {
         switch error {
         case .alreadyExist:
-            NotificationBanner.showError("title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
+            AppDelegate.shared?.bannerController.presentErrorBanner(
+                "title-error".localized,
+                "recover-from-seed-verify-exist-error".localized
+            )
         case .invalid:
-            NotificationBanner.showError(
+            AppDelegate.shared?.bannerController.presentErrorBanner(
                 "passphrase-verify-invalid-title".localized,
-                message: "pass-phrase-verify-invalid-passphrase".localized
+                "pass-phrase-verify-invalid-passphrase".localized
             )
         case .sdk:
-            NotificationBanner.showError("title-error".localized, message: "pass-phrase-verify-sdk-error".localized)
+            AppDelegate.shared?.bannerController.presentErrorBanner(
+                "title-error".localized,
+                "pass-phrase-verify-sdk-error".localized
+            )
         }
     }
 }

@@ -109,10 +109,10 @@ extension SendTransactionViewController: TransactionControllerDelegate {
             case .connection:
                 displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
             default:
-                NotificationBanner.showError("title-error".localized, message: apiError.debugDescription)
+                AppDelegate.shared?.bannerController.presentErrorBanner("title-error".localized, apiError.debugDescription)
             }
         default:
-            NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+            AppDelegate.shared?.bannerController.presentErrorBanner("title-error".localized, error.localizedDescription)
         }
     }
 }

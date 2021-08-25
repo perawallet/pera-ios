@@ -275,14 +275,14 @@ extension TransactionController: LedgerTransactionOperationDelegate {
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError) {
         switch error {
         case .cancelled:
-            NotificationBanner.showError(
+            AppDelegate.shared?.bannerController.presentErrorBanner(
                 "ble-error-transaction-cancelled-title".localized,
-                message: "ble-error-fail-sign-transaction".localized
+                "ble-error-fail-sign-transaction".localized
             )
         case .closedApp:
-            NotificationBanner.showError(
+            AppDelegate.shared?.bannerController.presentErrorBanner(
                 "ble-error-ledger-connection-title".localized,
-                message: "ble-error-ledger-connection-open-app-error".localized
+                "ble-error-ledger-connection-open-app-error".localized
             )
         default:
             break

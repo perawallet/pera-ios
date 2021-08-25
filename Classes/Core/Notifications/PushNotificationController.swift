@@ -193,7 +193,7 @@ extension PushNotificationController {
                             results.first?.name ?? receiverName
                         )
                     }
-                    NotificationBanner.showInformation(message, completion: handler)
+                    AppDelegate.shared?.bannerController.presentInfoBanner(message, handler)
                 default:
                     var message: String
                     
@@ -218,7 +218,7 @@ extension PushNotificationController {
                             receiverName
                         )
                     }
-                    NotificationBanner.showInformation(message, completion: handler)
+                    AppDelegate.shared?.bannerController.presentInfoBanner(message, handler)
                 }
             }
         }
@@ -266,7 +266,7 @@ extension PushNotificationController {
                             results.first?.name ?? senderName
                         )
                     }
-                    NotificationBanner.showInformation(message, completion: handler)
+                    AppDelegate.shared?.bannerController.presentInfoBanner(message, handler)
                 default:
                     var message: String
                     
@@ -291,7 +291,7 @@ extension PushNotificationController {
                             senderName
                         )
                     }
-                    NotificationBanner.showInformation(message, completion: handler)
+                    AppDelegate.shared?.bannerController.presentInfoBanner(message, handler)
                 }
             }
         }
@@ -318,7 +318,7 @@ extension PushNotificationController {
                         "\(name) (\(code))"
                     )
                 )
-                NotificationBanner.showInformation(message)
+                AppDelegate.shared?.bannerController.presentInfoBanner(message)
             default:
                 let name = asset.name ?? ""
                 let code = asset.code ?? ""
@@ -328,7 +328,7 @@ extension PushNotificationController {
                         "\(name) (\(code))"
                     )
                 )
-                NotificationBanner.showInformation(message)
+                AppDelegate.shared?.bannerController.presentInfoBanner(message)
             }
         }
     }

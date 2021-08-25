@@ -303,14 +303,22 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
-            NotificationBanner.showError(
+            AppDelegate.shared?.bannerController.presentErrorBanner(
                 "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+                "asset-min-transaction-error-message".localized(
+                    params: amount.toAlgos.toAlgosStringForLabel ?? ""
+                )
             )
         case .invalidAddress:
-            NotificationBanner.showError("title-error".localized, message: "send-algos-receiver-address-validation".localized)
+            AppDelegate.shared?.bannerController.presentErrorBanner(
+                "title-error".localized,
+                "send-algos-receiver-address-validation".localized
+            )
         case let .sdkError(error):
-            NotificationBanner.showError("title-error".localized, message: error.debugDescription)
+            AppDelegate.shared?.bannerController.presentErrorBanner(
+                "title-error".localized,
+                error.debugDescription
+            )
         default:
             break
         }
@@ -320,9 +328,9 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         loadingController?.stopLoading()
         switch error {
         case let .network(apiError):
-            NotificationBanner.showError("title-error".localized, message: apiError.debugDescription)
+            AppDelegate.shared?.bannerController.presentErrorBanner("title-error".localized, apiError.debugDescription)
         default:
-            NotificationBanner.showError("title-error".localized, message: error.localizedDescription)
+            AppDelegate.shared?.bannerController.presentErrorBanner("title-error".localized, error.localizedDescription)
         }
     }
     

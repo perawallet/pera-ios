@@ -49,7 +49,10 @@ extension LedgerOperation {
             DispatchQueue.main.async {
                 (self.topMostController as? BaseViewController)?.loadingController?.stopLoading()
                 self.bleConnectionManager.stopScan()
-                NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
+                AppDelegate.shared?.bannerController.presentErrorBanner(
+                    "ble-error-connection-title".localized,
+                    "ble-error-fail-connect-peripheral".localized
+                )
             }
             
             self.stopTimer()
@@ -112,12 +115,15 @@ extension LedgerOperation where Self: BLEConnectionManagerDelegate {
                     return
             }
             
-            NotificationBanner.showError(errorTitle, message: errorSubtitle)
+            AppDelegate.shared?.bannerController.presentErrorBanner(errorTitle, errorSubtitle)
             stopTimer()
             (self.topMostController as? BaseViewController)?.loadingController?.stopLoading()
         default:
             reset()
-            NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
+            AppDelegate.shared?.bannerController.presentErrorBanner(
+                "ble-error-connection-title".localized,
+                "ble-error-fail-connect-peripheral".localized
+            )
         }
     }
 }

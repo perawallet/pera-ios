@@ -349,14 +349,12 @@ extension WCMainTransactionViewController: WCTransactionSignerDelegate {
     private func showLedgerError(_ ledgerError: LedgerOperationError) {
         switch ledgerError {
         case .cancelled:
-            NotificationBanner.showError(
-                "ble-error-transaction-cancelled-title".localized,
-                message: "ble-error-fail-sign-transaction".localized
+            AppDelegate.shared?.bannerController.presentErrorBanner(
+                "ble-error-transaction-cancelled-title".localized, "ble-error-fail-sign-transaction".localized
             )
         case .closedApp:
-            NotificationBanner.showError(
-                "ble-error-ledger-connection-title".localized,
-                message: "ble-error-ledger-connection-open-app-error".localized
+            AppDelegate.shared?.bannerController.presentErrorBanner(
+                "ble-error-ledger-connection-title".localized, "ble-error-ledger-connection-open-app-error".localized
             )
         default:
             break

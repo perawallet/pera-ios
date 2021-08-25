@@ -24,6 +24,9 @@ import FirebaseCrashlytics
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    static var shared: AppDelegate? {
+        return UIApplication.shared.delegate as? AppDelegate
+    }
 
     var window: UIWindow?
 
@@ -38,7 +41,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         loadingController: loadingController
     )
     private lazy var pushNotificationController = PushNotificationController(api: api)
-    
+    private(set) lazy var bannerController = BannerController(window: window ?? UIWindow())
+
     private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
     
     private var rootViewController: RootViewController?
@@ -229,7 +233,7 @@ extension AppDelegate {
     private func getNotificationAccountId(from algorandNotification: AlgorandNotification) -> String? {
         guard let accountId = algorandNotification.getAccountId() else {
             if let message = algorandNotification.alert {
-                NotificationBanner.showInformation(message)
+                AppDelegate.shared?.bannerController.presentInfoBanner(message)
             }
             return nil
         }
