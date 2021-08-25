@@ -13,47 +13,47 @@
 // limitations under the License.
 
 //
-//   BannerViewErrorStyleSheet.swift
+//   BannerViewInfoTheme.swift
 
 import Foundation
 import Macaroon
 import UIKit
 
-struct BannerViewErrorStyleSheet: BannerViewStyleSheet {
+struct BannerViewInfoTheme: BannerViewTheme {
+    let iconSize: LayoutSize
+    let horizontalStackViewPaddings: LayoutPaddings
+    let horizontalStackViewSpacing: LayoutMetric
+    let verticalStackViewSpacing: LayoutMetric
+
     let title: TextStyle
     let background: ViewStyle
     let backgroundShadow: Macaroon.Shadow?
-    let message: TextStyle?
-    let icon: ImageStyle?
 
-    private let textColor = Colors.ButtonText.primary
+    private let textColor = Colors.Text.primary
 
     init() {
+        let commonTheme = BannerViewCommonTheme()
+        self.horizontalStackViewPaddings = commonTheme.horizontalStackViewPaddings
+        self.horizontalStackViewSpacing = commonTheme.horizontalStackViewSpacing
+        self.verticalStackViewSpacing = commonTheme.verticalStackViewSpacing
+        self.background = commonTheme.background
+        self.iconSize = commonTheme.iconSize
+
         self.title = [
             .font(UIFont.font(withWeight: .semiBold(size: 16.0))),
             .textAlignment(.left),
             .textOverflow(.fitting),
             .textColor(textColor)
         ]
-        self.background = []
         self.backgroundShadow =
             Macaroon.Shadow(
-                color: Colors.Shadow.error,
+                color: rgba(0.0, 0.0, 0.0, 0.1),
                 opacity: 1.0,
                 offset: (0, 8),
                 radius: 6,
-                fillColor: Colors.General.error,
+                fillColor: Colors.Background.secondary,
                 cornerRadii: (12, 12),
                 corners: .allCorners
             )
-        self.message = [
-            .font(UIFont.font(withWeight: .regular(size: 14.0))),
-            .textAlignment(.left),
-            .textOverflow(.fitting),
-            .textColor(textColor)
-        ]
-        self.icon = [
-            .contentMode(.scaleAspectFill)
-        ]
     }
 }

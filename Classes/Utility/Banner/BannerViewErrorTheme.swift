@@ -13,36 +13,58 @@
 // limitations under the License.
 
 //
-//   BannerViewInfoStyleSheet.swift
+//   BannerViewErrorTheme.swift
 
 import Foundation
 import Macaroon
 import UIKit
 
-struct BannerViewInfoStyleSheet: BannerViewStyleSheet {
-    let title: TextStyle
-    let background: ViewStyle
-    let backgroundShadow: Macaroon.Shadow?
+struct BannerViewErrorTheme: BannerViewTheme {
+    let horizontalStackViewPaddings: LayoutPaddings
+    let horizontalStackViewSpacing: LayoutMetric
+    let verticalStackViewSpacing: LayoutMetric
+    let iconSize: LayoutSize
 
-    private let textColor = Colors.Text.primary
+    let background: ViewStyle
+    let title: TextStyle
+    let backgroundShadow: Macaroon.Shadow?
+    let message: TextStyle
+    let icon: ImageStyle
+
+    private let textColor = Colors.ButtonText.primary
 
     init() {
+        let commonTheme = BannerViewCommonTheme()
+        self.horizontalStackViewPaddings = commonTheme.horizontalStackViewPaddings
+        self.horizontalStackViewSpacing = commonTheme.horizontalStackViewSpacing
+        self.verticalStackViewSpacing = commonTheme.verticalStackViewSpacing
+        self.background = commonTheme.background
+        self.iconSize = commonTheme.iconSize
+
         self.title = [
             .font(UIFont.font(withWeight: .semiBold(size: 16.0))),
             .textAlignment(.left),
             .textOverflow(.fitting),
             .textColor(textColor)
         ]
-        self.background = []
         self.backgroundShadow =
             Macaroon.Shadow(
-                color: rgba(0.0, 0.0, 0.0, 0.1),
+                color: Colors.Shadow.error,
                 opacity: 1.0,
                 offset: (0, 8),
                 radius: 6,
-                fillColor: Colors.Background.secondary,
+                fillColor: Colors.General.error,
                 cornerRadii: (12, 12),
                 corners: .allCorners
             )
+        self.message = [
+            .font(UIFont.font(withWeight: .regular(size: 14.0))),
+            .textAlignment(.left),
+            .textOverflow(.fitting),
+            .textColor(textColor)
+        ]
+        self.icon = [
+            .contentMode(.scaleAspectFill)
+        ]
     }
 }

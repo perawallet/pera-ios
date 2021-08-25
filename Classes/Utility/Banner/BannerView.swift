@@ -34,100 +34,59 @@ final class BannerView: View, ViewModelBindable {
     private lazy var messageLabel = Label()
     private lazy var iconView = UIImageView()
 
-    func customize(
-        for mode: Style
-    ) {
-        self.style = mode
+    func customize(for style: Style) {
+        self.style = style
 
-        switch mode {
-        case .info:
-            customizeAppearance(
-                BannerViewInfoStyleSheet()
-            )
-        case .error:
-            customizeAppearance(
-                BannerViewErrorStyleSheet()
-            )
-        }
-        prepareLayout(
-            BannerViewCommonLayoutSheet()
-        )
+        customizeAppearance()
+        prepareLayout(BannerViewCommonTheme())
     }
 
-    func customizeAppearance(
-        _ styleSheet: BannerViewStyleSheet
-    ) {
-        customizeAppearance(
-            styleSheet.background
-        )
-        customizeTitleAppearance(
-            styleSheet
-        )
-        customizeMessageAppearance(
-            styleSheet
-        )
-        customizeIconAppearance(
-            styleSheet
-        )
-
-        drawAppearance(
-            shadow: styleSheet.backgroundShadow
-        )
-    }
-
-    func prepareLayout(
-        _ layoutSheet: BannerViewLayoutSheet
-    ) {
-        addHorizontalStackView(
-            layoutSheet
-        )
-
+    func customizeAppearance() {
         switch style {
         case .info:
-            addVerticalStackView(
-                layoutSheet
-            )
-            addTitle(
-                layoutSheet
-            )
+            let theme = BannerViewInfoTheme()
+            customizeTitleAppearance(theme.title)
+            customizeAppearance(theme.background)
+            drawAppearance(shadow: theme.backgroundShadow)
         case .error:
-            addIcon(
-                layoutSheet
-            )
-            addVerticalStackView(
-                layoutSheet
-            )
-            addTitle(
-                layoutSheet
-            )
-            addMessage(
-                layoutSheet
-            )
+            let theme = BannerViewErrorTheme()
+            customizeTitleAppearance(theme.title)
+            customizeMessageAppearance(theme.message)
+            customizeIconAppearance(theme.icon)
+            customizeAppearance(theme.background)
+            drawAppearance(shadow: theme.backgroundShadow)
         case .none:
             return
         }
     }
 
-    func bindData(
-        _ viewModel: BannerViewModel?
-    ) {
-        bindTitle(
-            viewModel
-        )
-        bindMessage(
-            viewModel
-        )
-        bindIcon(
-            viewModel
-        )
+    func prepareLayout(_ theme: BannerViewTheme) {
+        addHorizontalStackView(theme)
+
+        switch style {
+        case .info:
+            addVerticalStackView(theme)
+            addTitle(theme)
+        case .error:
+            addIcon(theme)
+            addVerticalStackView(theme)
+            addTitle(theme)
+            addMessage(theme)
+        case .none:
+            return
+        }
+    }
+
+    func bindData(_ viewModel: BannerViewModel?) {
+        bindTitle(viewModel)
+        bindMessage(viewModel)
+        bindIcon(viewModel)
     }
 }
 
 extension BannerView {
     private func addBannerTapGesture() {
-        addGestureRecognizer(
-            UITapGestureRecognizer(target: self, action: #selector(didTapBanner))
-        )
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapBanner)))
     }
 
     @objc
@@ -137,115 +96,67 @@ extension BannerView {
 }
 
 extension BannerView {
-    private func customizeTitleAppearance(
-        _ styleSheet: BannerViewStyleSheet
-    ) {
-        titleLabel.customizeAppearance(
-            styleSheet.title
-        )
+    private func customizeTitleAppearance(_ textStyle: TextStyle) {
+        titleLabel.customizeAppearance(textStyle)
     }
 
-    private func customizeMessageAppearance(
-        _ styleSheet: BannerViewStyleSheet
-    ) {
-        guard let message = styleSheet.message else {
-            messageLabel.isHidden = true
-            return
-        }
-
-        messageLabel.customizeAppearance(
-            message
-        )
+    private func customizeMessageAppearance(_ messageStyle: TextStyle) {
+        messageLabel.customizeAppearance(messageStyle)
     }
 
-    private func customizeIconAppearance(
-        _ styleSheet: BannerViewStyleSheet
-    ) {
-        guard let icon = styleSheet.icon else {
-            iconView.isHidden = true
-            return
-        }
-
-        iconView.customizeAppearance(
-            icon
-        )
+    private func customizeIconAppearance(_ imageStyle: ImageStyle) {
+        iconView.customizeAppearance(imageStyle)
     }
 }
 
 extension BannerView {
-    private func addHorizontalStackView(
-        _ layoutSheet: BannerViewLayoutSheet
-    ) {
-        addSubview(
-            horizontalStackView
-        )
+    private func addHorizontalStackView(_ theme: BannerViewTheme) {
+        addSubview(horizontalStackView)
 
-        horizontalStackView.spacing = layoutSheet.horizontalStackViewSpacing
+        horizontalStackView.spacing = theme.horizontalStackViewSpacing
         horizontalStackView.distribution = .fillProportionally
         horizontalStackView.alignment = .top
 
         horizontalStackView.snp.makeConstraints {
             $0.setPaddings(
-                layoutSheet.horizontalStackViewPaddings
+                theme.horizontalStackViewPaddings
             )
         }
     }
 
-    private func addVerticalStackView(
-        _ layoutSheet: BannerViewLayoutSheet
-    ) {
-        horizontalStackView.addArrangedSubview(
-            verticalStackView
-        )
+    private func addVerticalStackView(_ theme: BannerViewTheme) {
+        horizontalStackView.addArrangedSubview(verticalStackView)
 
-        verticalStackView.spacing = layoutSheet.verticalStackViewSpacing
+        verticalStackView.spacing = theme.verticalStackViewSpacing
     }
 
-    private func addTitle(
-        _ layoutSheet: BannerViewLayoutSheet
-    ) {
-        verticalStackView.addArrangedSubview(
-            titleLabel
-        )
+    private func addTitle(_ theme: BannerViewTheme) {
+        verticalStackView.addArrangedSubview(titleLabel)
     }
 
-    private func addMessage(
-        _ layoutSheet: BannerViewLayoutSheet
-    ) {
-        verticalStackView.addArrangedSubview(
-            messageLabel
-        )
+    private func addMessage(_ theme: BannerViewTheme) {
+        verticalStackView.addArrangedSubview(messageLabel)
     }
 
-    private func addIcon(
-        _ layoutSheet: BannerViewLayoutSheet
-    ) {
-        horizontalStackView.addArrangedSubview(
-            iconView
-        )
+    private func addIcon(_ theme: BannerViewTheme) {
+        horizontalStackView.addArrangedSubview(iconView)
         
         iconView.snp.makeConstraints {
-            $0.fitToSize(layoutSheet.iconSize)
+            $0.fitToSize(theme.iconSize)
         }
     }
 }
 
 extension BannerView {
-    private func bindTitle(
-        _ viewModel: BannerViewModel?
-    ) {
+    private func bindTitle(_ viewModel: BannerViewModel?) {
         titleLabel.editText = viewModel?.title
     }
 
-    private func bindMessage(
-        _ viewModel: BannerViewModel?
-    ) {
+    private func bindMessage(_ viewModel: BannerViewModel?) {
         messageLabel.editText = viewModel?.message
     }
 
-    private func bindIcon(
-        _ viewModel: BannerViewModel?
-    ) {
+    private func bindIcon(_ viewModel: BannerViewModel?) {
         iconView.image = viewModel?.icon?.image
     }
 }

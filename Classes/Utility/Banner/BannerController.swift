@@ -19,12 +19,8 @@ import Foundation
 import Macaroon
 
 final class BannerController: Macaroon.BannerController {
-    init(
-        window: UIWindow
-    ) {
-        super.init(
-            presentingView: window
-        )
+    init(window: UIWindow) {
+        super.init(presentingView: window)
 
         configuration.contentHorizontalPaddings = (24, 24)
         configuration.contentTopPadding = window.safeAreaInsets.top + 12
@@ -32,58 +28,36 @@ final class BannerController: Macaroon.BannerController {
         activate()
     }
 
-    func presentErrorBanner(
-        _ title: String,
-        _ message: String,
-        _ icon: Image = img("icon-warning-circle")
+    func presentErrorBanner(_ title: String, _ message: String, _ icon: Image = img("icon-warning-circle")
     ) {
         let bannerView = makeErrorBanner()
-        bannerView.bindData(
-            BannerErrorViewModel(
-                title,
-                message,
-                icon
-            )
-        )
+        bannerView.bindData(BannerErrorViewModel(title, message, icon))
 
-        enqueue(
-            bannerView
-        )
+        enqueue(bannerView)
     }
 
-    func presentInfoBanner(
-        _ title: String,
-        _ completion: (() -> Void)? = nil
-    ) {
+    func presentInfoBanner(_ title: String, _ completion: (() -> Void)? = nil) {
         let bannerView = makeInfoBanner()
-        bannerView.bindData(
-            BannerInfoViewModel(title)
-        )
+        bannerView.bindData(BannerInfoViewModel(title))
 
         if completion != nil {
             bannerView.completion = completion
         }
 
-        enqueue(
-            bannerView
-        )
+        enqueue(bannerView)
     }
 }
 
 extension BannerController {
     private func makeErrorBanner() -> BannerView {
         let view = BannerView()
-        view.customize(
-            for: .error
-        )
+        view.customize(for: .error)
         return view
     }
 
     private func makeInfoBanner() -> BannerView {
         let view = BannerView()
-        view.customize(
-            for: .info
-        )
+        view.customize(for: .info)
         return view
     }
 }
