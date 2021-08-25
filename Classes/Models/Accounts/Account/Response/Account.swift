@@ -31,8 +31,8 @@ class Account: Model {
     var createdAssets: [AssetDetail]?
     var assets: [Asset]?
     var authAddress: String?
-    var createdRound: Int64?
-    var closedRound: Int64?
+    var createdRound: UInt64?
+    var closedRound: UInt64?
     var isDeleted: Bool?
 
     var appsLocalState: [ApplicationLocalState]?
@@ -69,8 +69,8 @@ class Account: Model {
         ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
         receivesNotification = try container.decodeIfPresent(Bool.self, forKey: .receivesNotification) ?? true
         rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
-        createdRound = try container.decodeIfPresent(Int64.self, forKey: .createdRound)
-        closedRound = try container.decodeIfPresent(Int64.self, forKey: .closedRound)
+        createdRound = try container.decodeIfPresent(UInt64.self, forKey: .createdRound)
+        closedRound = try container.decodeIfPresent(UInt64.self, forKey: .closedRound)
         isDeleted = try container.decodeIfPresent(Bool.self, forKey: .isDeleted)
         appsLocalState = try container.decodeIfPresent([ApplicationLocalState].self, forKey: .appsLocalState)
         appsTotalExtraPages = try container.decodeIfPresent(Int.self, forKey: .appsTotalExtraPages)

@@ -20,7 +20,7 @@ import Magpie
 class NotificationDetail: Model {
     let senderAddress: String?
     let receiverAddress: String?
-    let amount: Int64?
+    let amount: UInt64?
     let asset: NotificationAsset?
     let notificationType: NotificationType?
 }

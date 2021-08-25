@@ -110,8 +110,8 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         }
             
         if let algosAmountText = sendTransactionPreviewView.amountInputView.inputTextField.text,
-            let doubleValue = algosAmountText.doubleForSendSeparator(with: algosFraction) {
-            amount = doubleValue
+            let decimalValue = algosAmountText.decimalForSendSeparator(with: algosFraction) {
+            amount = decimalValue
         }
             
         if !isTransactionValid() {
@@ -195,7 +195,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         viewModel.update(sendTransactionPreviewView, with: account, isMaxTransaction: isMaxTransaction)
     }
     
-    private func displayQRAlert(for amountFromQR: Int64, with asset: Int64?) {
+    private func displayQRAlert(for amountFromQR: UInt64, with asset: Int64?) {
         let configurator = BottomInformationBundle(
             title: "send-qr-scan-alert-title".localized,
             image: img("icon-qr-alert"),
@@ -253,7 +253,7 @@ extension SendAlgosTransactionPreviewViewController {
             sendTransactionPreviewView.transactionReceiverView.state = assetReceiverState
         case let .address(_, amount):
             if let sendAmount = amount,
-                let amountInt = Int(sendAmount) {
+                let amountInt = UInt64(sendAmount) {
                 
                 self.amount = amountInt.toAlgos
                 sendTransactionPreviewView.amountInputView.inputTextField.text = self.amount.toAlgosStringForLabel

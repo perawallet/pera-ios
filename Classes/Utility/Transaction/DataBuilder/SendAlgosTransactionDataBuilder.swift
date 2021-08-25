@@ -20,8 +20,8 @@ import Foundation
 class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
 
     private let initialSize: Int?
-    private(set) var calculatedTransactionAmount: Int64?
-    private(set) var minimumAccountBalance: Int64?
+    private(set) var calculatedTransactionAmount: UInt64?
+    private(set) var minimumAccountBalance: UInt64?
 
     init(params: TransactionParams?, draft: TransactionSendDraft?, initialSize: Int?) {
         self.initialSize = initialSize
@@ -77,7 +77,7 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         }
     }
 
-    private func calculateTransactionAmount(isMaxTransaction: Bool) -> Int64 {
+    private func calculateTransactionAmount(isMaxTransaction: Bool) -> UInt64 {
         guard let params = params,
               let algosTransactionDraft = draft as? AlgosTransactionSendDraft,
               var transactionAmount = algosTransactionDraft.amount?.toMicroAlgos else {

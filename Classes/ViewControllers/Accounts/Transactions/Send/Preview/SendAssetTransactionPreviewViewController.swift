@@ -232,7 +232,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
         viewModel.update(sendTransactionPreviewView, with: account, isMaxTransaction: isMaxTransaction)
     }
     
-    private func displayQRAlert(for qrAmount: Int64, to qrAddress: String, with assetId: Int64?) {
+    private func displayQRAlert(for qrAmount: UInt64, to qrAddress: String, with assetId: Int64?) {
         let configurator = BottomInformationBundle(
             title: "send-qr-scan-alert-title".localized,
             image: img("icon-qr-alert"),
@@ -344,8 +344,8 @@ extension SendAssetTransactionPreviewViewController {
     
     private func validateTransaction() {
         if let amountText = sendTransactionPreviewView.amountInputView.inputTextField.text,
-            let doubleValue = amountText.doubleForSendSeparator(with: assetDetail.fractionDecimals) {
-            amount = doubleValue
+            let decimalValue = amountText.decimalForSendSeparator(with: assetDetail.fractionDecimals) {
+            amount = decimalValue
         }
             
         if !isTransactionValid() {
@@ -405,7 +405,7 @@ extension SendAssetTransactionPreviewViewController {
             sendTransactionPreviewView.transactionReceiverView.state = assetReceiverState
         case let .address(_, amount):
             if let sendAmount = amount,
-                let amountValue = Double(sendAmount) {
+               let amountValue = Decimal(string: sendAmount) {
                 self.amount = amountValue
                 sendTransactionPreviewView.amountInputView.inputTextField.text
                     = self.amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
