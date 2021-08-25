@@ -63,7 +63,8 @@ class TransactionFeeCalculator: NSObject {
             calculatedFee: calculatedFee,
             isAfterTransaction: true
         )
-        if UInt64(account.amount) - transactionAmount < minimumAmount {
+        
+        if UInt64(account.amount) < minimumAmount + transactionAmount {
             delegate?.transactionFeeCalculator(self, didFailedWith: minimumAmount)
             return false
         }

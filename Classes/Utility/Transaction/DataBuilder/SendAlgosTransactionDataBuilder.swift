@@ -93,16 +93,24 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
             isAfterTransaction: true
         )
 
-        self.minimumAccountBalance = minimumAmountForAccount - calculatedFee
+        let result = minimumAmountForAccount.subtractingReportingOverflow(calculatedFee)
+        self.minimumAccountBalance = result.overflow ? minimumAmountForAccount : result.partialValue
 
         if isMaxTransaction {
             if isMaxTransactionFromRekeyedAccount() || hasAdditionalAssetsForMaxTransaction() {
                 // Reduce fee and minimum amount possible for the account from transaction amount
-                transactionAmount -= (calculatedFee + (minimumAccountBalance ?? minimumAmountForAccount))
+                let reduceAmount = calculatedFee + (minimumAccountBalance ?? minimumAmountForAccount)
+                let result = transactionAmount.subtractingReportingOverflow(reduceAmount)
+                transactionAmount = result.overflow ? 0 : result.partialValue
             } else {
                 // Reduce fee from transaction amount
-                transactionAmount -= calculatedFee
+                let result = transactionAmount.subtractingReportingOverflow(calculatedFee)
+                transactionAmount = result.overflow ? 0 : result.partialValue
             }
+        }
+
+        if transactionAmount.isBelowZero {
+            transactionAmount = 0
         }
 
         return transactionAmount
