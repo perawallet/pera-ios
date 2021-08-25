@@ -108,10 +108,9 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
                 )
             }
         }
-            
-        if let algosAmountText = sendTransactionPreviewView.amountInputView.inputTextField.text,
-            let decimalValue = algosAmountText.decimalForSendSeparator(with: algosFraction) {
-            amount = decimalValue
+
+        if let algosAmountText = sendTransactionPreviewView.amountInputView.inputTextField.text {
+            amount = algosAmountText.decimal / pow(10, algosFraction)
         }
             
         if !isTransactionValid() {
