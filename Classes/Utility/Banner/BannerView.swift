@@ -60,7 +60,7 @@ final class BannerView: View, ViewModelBindable {
         }
     }
 
-    func prepareLayout(_ theme: BannerViewTheme) {
+    func prepareLayout(_ theme: BannerViewCommonTheme) {
         addHorizontalStackView(theme)
 
         switch style {
@@ -110,7 +110,7 @@ extension BannerView {
 }
 
 extension BannerView {
-    private func addHorizontalStackView(_ theme: BannerViewTheme) {
+    private func addHorizontalStackView(_ theme: BannerViewCommonTheme) {
         addSubview(horizontalStackView)
 
         horizontalStackView.spacing = theme.horizontalStackViewSpacing
@@ -124,21 +124,21 @@ extension BannerView {
         }
     }
 
-    private func addVerticalStackView(_ theme: BannerViewTheme) {
+    private func addVerticalStackView(_ theme: BannerViewCommonTheme) {
         horizontalStackView.addArrangedSubview(verticalStackView)
 
         verticalStackView.spacing = theme.verticalStackViewSpacing
     }
 
-    private func addTitle(_ theme: BannerViewTheme) {
+    private func addTitle(_ theme: BannerViewCommonTheme) {
         verticalStackView.addArrangedSubview(titleLabel)
     }
 
-    private func addMessage(_ theme: BannerViewTheme) {
+    private func addMessage(_ theme: BannerViewCommonTheme) {
         verticalStackView.addArrangedSubview(messageLabel)
     }
 
-    private func addIcon(_ theme: BannerViewTheme) {
+    private func addIcon(_ theme: BannerViewCommonTheme) {
         horizontalStackView.addArrangedSubview(iconView)
         
         iconView.snp.makeConstraints {

@@ -25,11 +25,7 @@ struct BannerErrorViewModel: BannerViewModel {
     private(set) var message: EditText?
 
     init(_ someTitle: String, _ someMessage: String, _ someIcon: Image) {
-        bind(
-            someTitle,
-            someMessage,
-            someIcon
-        )
+        bind(someTitle, someMessage, someIcon)
     }
 
     private mutating func bind(_ someTitle: String, _ someMessage: String, _ someIcon: Image) {

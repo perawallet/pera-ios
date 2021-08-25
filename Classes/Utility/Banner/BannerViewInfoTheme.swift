@@ -19,12 +19,7 @@ import Foundation
 import Macaroon
 import UIKit
 
-struct BannerViewInfoTheme: BannerViewTheme {
-    let iconSize: LayoutSize
-    let horizontalStackViewPaddings: LayoutPaddings
-    let horizontalStackViewSpacing: LayoutMetric
-    let verticalStackViewSpacing: LayoutMetric
-
+struct BannerViewInfoTheme {
     let title: TextStyle
     let background: ViewStyle
     let backgroundShadow: Macaroon.Shadow?
@@ -32,13 +27,7 @@ struct BannerViewInfoTheme: BannerViewTheme {
     private let textColor = Colors.Text.primary
 
     init() {
-        let commonTheme = BannerViewCommonTheme()
-        self.horizontalStackViewPaddings = commonTheme.horizontalStackViewPaddings
-        self.horizontalStackViewSpacing = commonTheme.horizontalStackViewSpacing
-        self.verticalStackViewSpacing = commonTheme.verticalStackViewSpacing
-        self.background = commonTheme.background
-        self.iconSize = commonTheme.iconSize
-
+        self.background = []
         self.title = [
             .font(UIFont.font(withWeight: .semiBold(size: 16.0))),
             .textAlignment(.left),

@@ -23,9 +23,7 @@ struct BannerInfoViewModel: BannerViewModel, BindableViewModel {
     private(set) var title: EditText?
 
     init<T>(_ model: T) {
-        bind(
-            model
-        )
+        bind(model)
     }
 
     mutating func bind<T>(_ model: T) {

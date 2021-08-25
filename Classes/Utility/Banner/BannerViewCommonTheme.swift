@@ -19,29 +19,16 @@ import Foundation
 import Macaroon
 import UIKit
 
-protocol BannerViewTheme {
-    var horizontalStackViewPaddings: LayoutPaddings { get }
-    var horizontalStackViewSpacing: LayoutMetric { get }
-    var verticalStackViewSpacing: LayoutMetric { get }
-    var iconSize: LayoutSize { get }
-
-    var background: ViewStyle { get }
-}
-
-struct BannerViewCommonTheme: BannerViewTheme {
+struct BannerViewCommonTheme {
     let horizontalStackViewPaddings: LayoutPaddings
     let horizontalStackViewSpacing: LayoutMetric
     let verticalStackViewSpacing: LayoutMetric
     let iconSize: LayoutSize
-
-    let background: ViewStyle
 
     init() {
         self.iconSize = (20, 16)
         self.horizontalStackViewPaddings = (20, 20, 20, 20)
         self.horizontalStackViewSpacing = 14
         self.verticalStackViewSpacing = 4
-
-        self.background = []
     }
 }
