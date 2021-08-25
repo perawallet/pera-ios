@@ -24,11 +24,7 @@ struct BannerErrorViewModel: BannerViewModel {
     private(set) var title: EditText?
     private(set) var message: EditText?
 
-    init(
-        _ someTitle: String,
-        _ someMessage: String,
-        _ someIcon: Image
-    ) {
+    init(_ someTitle: String, _ someMessage: String, _ someIcon: Image) {
         bind(
             someTitle,
             someMessage,
@@ -36,39 +32,23 @@ struct BannerErrorViewModel: BannerViewModel {
         )
     }
 
-    private mutating func bind(
-        _ someTitle: String,
-        _ someMessage: String,
-        _ someIcon: Image
-    ) {
-        bindIcon(
-            someIcon
-        )
-        bindTitle(
-            someTitle
-        )
-        bindMessage(
-            someMessage
-        )
+    private mutating func bind(_ someTitle: String, _ someMessage: String, _ someIcon: Image) {
+        bindIcon(someIcon)
+        bindTitle(someTitle)
+        bindMessage(someMessage)
     }
 }
 
 extension BannerErrorViewModel {
-    private mutating func bindIcon(
-        _ someIcon: Image
-    ) {
+    private mutating func bindIcon(_ someIcon: Image) {
         icon = someIcon
     }
 
-    private mutating func bindTitle(
-        _ someTitle: String
-    ) {
+    private mutating func bindTitle(_ someTitle: String) {
         title = someTitle.text
     }
 
-    private mutating func bindMessage(
-        _ someMessage: String
-    ) {
+    private mutating func bindMessage(_ someMessage: String) {
         message = someMessage.text
     }
 }

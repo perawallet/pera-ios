@@ -22,29 +22,21 @@ import UIKit
 struct BannerInfoViewModel: BannerViewModel, BindableViewModel {
     private(set) var title: EditText?
 
-    init<T>(
-        _ model: T
-    ) {
+    init<T>(_ model: T) {
         bind(
             model
         )
     }
 
-    mutating func bind<T>(
-        _ model: T
-    ) {
+    mutating func bind<T>(_ model: T) {
         if let title = model as? String {
-            bindTitle(
-                title
-            )
+            bindTitle(title)
         }
     }
 }
 
 extension BannerInfoViewModel {
-    private mutating func bindTitle(
-        _ someTitle: String
-    ) {
+    private mutating func bindTitle(_ someTitle: String) {
         title = someTitle.text
     }
 }

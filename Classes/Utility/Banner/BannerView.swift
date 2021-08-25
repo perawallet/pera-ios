@@ -151,7 +151,7 @@ extension BannerView {
     private func bindTitle(_ viewModel: BannerViewModel?) {
         titleLabel.editText = viewModel?.title
     }
-
+    
     private func bindMessage(_ viewModel: BannerViewModel?) {
         messageLabel.editText = viewModel?.message
     }
