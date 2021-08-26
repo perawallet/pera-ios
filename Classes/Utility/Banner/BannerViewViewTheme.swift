@@ -19,7 +19,7 @@ import Foundation
 import Macaroon
 import UIKit
 
-protocol BannerViewTheme {
+protocol BannerViewTheme: StyleSheet, LayoutSheet {
     var horizontalStackViewPaddings: LayoutPaddings { get }
     var horizontalStackViewSpacing: LayoutMetric { get }
     var verticalStackViewSpacing: LayoutMetric { get }

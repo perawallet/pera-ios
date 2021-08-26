@@ -33,7 +33,7 @@ struct BannerViewInfoTheme: BannerViewTheme {
 
     private let textColor = Colors.Text.primary
 
-    init() {
+    init(_ family: LayoutFamily) {
         self.iconSize = (20, 16)
         self.horizontalStackViewPaddings = (20, 20, 20, 20)
         self.horizontalStackViewSpacing = 14
