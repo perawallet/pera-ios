@@ -1718,7 +1718,7 @@
 "wallet-connect-transaction-warning-future" = "Cette transaction sera soumise à l'avenir.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-high-fee" = "Ces frais de transaction sont supérieurs aux frais habituels de 0,01 Algos.";
+"wallet-connect-transaction-warning-high-fee" = "Ces frais de transaction sont supérieurs aux frais habituels de 0,001 Algos.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial" = "Les demandes de transaction suivantes proviennent d'applications externes que le portefeuille Algorand ne contrôle pas. Veuillez vous assurer d'examiner attentivement ces transactions avant de signer, car les transactions sont irréversibles.";
