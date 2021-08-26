@@ -19,16 +19,24 @@ import Foundation
 import Macaroon
 import UIKit
 
-struct BannerViewErrorTheme {
+struct BannerViewErrorTheme: BannerViewTheme {
+    let horizontalStackViewPaddings: LayoutPaddings
+    let horizontalStackViewSpacing: LayoutMetric
+    let verticalStackViewSpacing: LayoutMetric
+    let iconSize: LayoutSize
+    let title: TextStyle?
     let background: ViewStyle
-    let title: TextStyle
-    let backgroundShadow: Macaroon.Shadow?
-    let message: TextStyle
-    let icon: ImageStyle
+    let backgroundShadow: Macaroon.Shadow
+    let message: TextStyle?
+    let icon: ImageStyle?
 
     private let textColor = Colors.ButtonText.primary
 
     init() {
+        self.iconSize = (20, 16)
+        self.horizontalStackViewPaddings = (20, 20, 20, 20)
+        self.horizontalStackViewSpacing = 14
+        self.verticalStackViewSpacing = 4
         self.background = []
         self.title = [
             .font(UIFont.font(withWeight: .semiBold(size: 16.0))),

@@ -51,13 +51,13 @@ final class BannerController: Macaroon.BannerController {
 extension BannerController {
     private func makeErrorBanner() -> BannerView {
         let view = BannerView()
-        view.customize(for: .error)
+        view.customize(BannerViewErrorTheme())
         return view
     }
 
     private func makeInfoBanner() -> BannerView {
         let view = BannerView()
-        view.customize(for: .info)
+        view.customize(BannerViewInfoTheme())
         return view
     }
 }

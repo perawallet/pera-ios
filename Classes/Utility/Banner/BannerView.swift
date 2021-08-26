@@ -26,55 +26,25 @@ final class BannerView: View, ViewModelBindable {
         }
     }
 
-    private var style: Style?
-
     private lazy var horizontalStackView = UIStackView()
     private lazy var verticalStackView = VStackView()
     private lazy var titleLabel = Label()
     private lazy var messageLabel = Label()
     private lazy var iconView = UIImageView()
 
-    func customize(for style: Style) {
-        self.style = style
-
-        customizeAppearance()
-        prepareLayout(BannerViewCommonTheme())
+    func customize(_ theme: BannerViewTheme) {
+        prepareLayout(theme)
     }
 
-    func customizeAppearance() {
-        switch style {
-        case .info:
-            let theme = BannerViewInfoTheme()
-            customizeTitleAppearance(theme.title)
-            customizeAppearance(theme.background)
-            drawAppearance(shadow: theme.backgroundShadow)
-        case .error:
-            let theme = BannerViewErrorTheme()
-            customizeTitleAppearance(theme.title)
-            customizeMessageAppearance(theme.message)
-            customizeIconAppearance(theme.icon)
-            customizeAppearance(theme.background)
-            drawAppearance(shadow: theme.backgroundShadow)
-        case .none:
-            return
-        }
-    }
-
-    func prepareLayout(_ theme: BannerViewCommonTheme) {
+    func prepareLayout(_ theme: BannerViewTheme) {
         addHorizontalStackView(theme)
+        addIcon(theme)
+        addVerticalStackView(theme)
+        addTitle(theme)
+        addMessage(theme)
 
-        switch style {
-        case .info:
-            addVerticalStackView(theme)
-            addTitle(theme)
-        case .error:
-            addIcon(theme)
-            addVerticalStackView(theme)
-            addTitle(theme)
-            addMessage(theme)
-        case .none:
-            return
-        }
+        customizeAppearance(theme.background)
+        drawAppearance(shadow: theme.backgroundShadow)
     }
 
     func bindData(_ viewModel: BannerViewModel?) {
@@ -96,21 +66,7 @@ extension BannerView {
 }
 
 extension BannerView {
-    private func customizeTitleAppearance(_ textStyle: TextStyle) {
-        titleLabel.customizeAppearance(textStyle)
-    }
-
-    private func customizeMessageAppearance(_ messageStyle: TextStyle) {
-        messageLabel.customizeAppearance(messageStyle)
-    }
-
-    private func customizeIconAppearance(_ imageStyle: ImageStyle) {
-        iconView.customizeAppearance(imageStyle)
-    }
-}
-
-extension BannerView {
-    private func addHorizontalStackView(_ theme: BannerViewCommonTheme) {
+    private func addHorizontalStackView(_ theme: BannerViewTheme) {
         addSubview(horizontalStackView)
 
         horizontalStackView.spacing = theme.horizontalStackViewSpacing
@@ -124,21 +80,30 @@ extension BannerView {
         }
     }
 
-    private func addVerticalStackView(_ theme: BannerViewCommonTheme) {
+    private func addVerticalStackView(_ theme: BannerViewTheme) {
         horizontalStackView.addArrangedSubview(verticalStackView)
 
         verticalStackView.spacing = theme.verticalStackViewSpacing
     }
 
-    private func addTitle(_ theme: BannerViewCommonTheme) {
+    private func addTitle(_ theme: BannerViewTheme) {
+        guard let titleTextStyle = theme.title else { return }
+        titleLabel.customizeAppearance(titleTextStyle)
+
         verticalStackView.addArrangedSubview(titleLabel)
     }
 
-    private func addMessage(_ theme: BannerViewCommonTheme) {
+    private func addMessage(_ theme: BannerViewTheme) {
+        guard let messageTextStyle = theme.message else { return }
+        messageLabel.customizeAppearance(messageTextStyle)
+
         verticalStackView.addArrangedSubview(messageLabel)
     }
 
-    private func addIcon(_ theme: BannerViewCommonTheme) {
+    private func addIcon(_ theme: BannerViewTheme) {
+        guard let iconImageStyle = theme.icon else { return }
+        iconView.customizeAppearance(iconImageStyle)
+
         horizontalStackView.addArrangedSubview(iconView)
         
         iconView.snp.makeConstraints {

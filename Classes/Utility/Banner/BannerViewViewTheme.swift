@@ -13,22 +13,21 @@
 // limitations under the License.
 
 //
-//   BannerViewCommonTheme.swift
+//   BannerViewTheme.swift
 
 import Foundation
 import Macaroon
 import UIKit
 
-struct BannerViewCommonTheme {
-    let horizontalStackViewPaddings: LayoutPaddings
-    let horizontalStackViewSpacing: LayoutMetric
-    let verticalStackViewSpacing: LayoutMetric
-    let iconSize: LayoutSize
-
-    init() {
-        self.iconSize = (20, 16)
-        self.horizontalStackViewPaddings = (20, 20, 20, 20)
-        self.horizontalStackViewSpacing = 14
-        self.verticalStackViewSpacing = 4
-    }
+protocol BannerViewTheme {
+    var horizontalStackViewPaddings: LayoutPaddings { get }
+    var horizontalStackViewSpacing: LayoutMetric { get }
+    var verticalStackViewSpacing: LayoutMetric { get }
+    var iconSize: LayoutSize { get }
+    
+    var title: TextStyle? { get }
+    var background: ViewStyle { get }
+    var backgroundShadow: Macaroon.Shadow { get }
+    var message: TextStyle? { get }
+    var icon: ImageStyle? { get }
 }
