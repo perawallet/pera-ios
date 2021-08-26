@@ -125,10 +125,3 @@ extension BannerView {
         iconView.image = viewModel?.icon?.image
     }
 }
-
-extension BannerView {
-    enum Style {
-        case info
-        case error
-    }
-}
