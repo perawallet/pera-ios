@@ -43,8 +43,14 @@ final class BannerView: View, ViewModelBindable {
         addTitle(theme)
         addMessage(theme)
 
-        customizeAppearance(theme.background)
         drawAppearance(shadow: theme.backgroundShadow)
+
+        guard let background = theme.background,
+              let corner = theme.corner else {
+            return
+        }
+        customizeAppearance(background)
+        draw(corner: corner)
     }
 
     func bindData(_ viewModel: BannerViewModel?) {

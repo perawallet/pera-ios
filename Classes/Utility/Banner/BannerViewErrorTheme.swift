@@ -25,10 +25,11 @@ struct BannerViewErrorTheme: BannerViewTheme {
     let verticalStackViewSpacing: LayoutMetric
     let iconSize: LayoutSize
     let title: TextStyle?
-    let background: ViewStyle
-    let backgroundShadow: Macaroon.Shadow
+    let background: ViewStyle?
+    let backgroundShadow: Macaroon.Shadow?
     let message: TextStyle?
     let icon: ImageStyle?
+    let corner: Corner?
 
     private let textColor = Colors.ButtonText.primary
 
@@ -37,23 +38,34 @@ struct BannerViewErrorTheme: BannerViewTheme {
         self.horizontalStackViewPaddings = (20, 20, 20, 20)
         self.horizontalStackViewSpacing = 14
         self.verticalStackViewSpacing = 4
-        self.background = []
         self.title = [
             .font(UIFont.font(withWeight: .semiBold(size: 16.0))),
             .textAlignment(.left),
             .textOverflow(.fitting),
             .textColor(textColor)
         ]
-        self.backgroundShadow =
-            Macaroon.Shadow(
-                color: Colors.Shadow.error,
-                opacity: 1.0,
-                offset: (0, 8),
-                radius: 6,
-                fillColor: Colors.General.error,
-                cornerRadii: (12, 12),
-                corners: .allCorners
-            )
+
+        if UIApplication.shared.isDarkModeDisplay {
+            self.corner = Corner(radius: 12)
+            self.background = [
+                .backgroundColor(Colors.General.error)
+            ]
+            self.backgroundShadow = nil
+        } else {
+            self.backgroundShadow =
+                Macaroon.Shadow(
+                    color: Colors.Shadow.error,
+                    opacity: 1.0,
+                    offset: (0, 8),
+                    radius: 6,
+                    fillColor: Colors.General.error,
+                    cornerRadii: (12, 12),
+                    corners: .allCorners
+                )
+            self.background = nil
+            self.corner = nil
+        }
+
         self.message = [
             .font(UIFont.font(withWeight: .regular(size: 14.0))),
             .textAlignment(.left),

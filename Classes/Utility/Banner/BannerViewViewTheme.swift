@@ -26,8 +26,9 @@ protocol BannerViewTheme {
     var iconSize: LayoutSize { get }
     
     var title: TextStyle? { get }
-    var background: ViewStyle { get }
-    var backgroundShadow: Macaroon.Shadow { get }
+    var background: ViewStyle? { get }
+    var backgroundShadow: Macaroon.Shadow? { get }
     var message: TextStyle? { get }
     var icon: ImageStyle? { get }
+    var corner: Corner? { get }
 }
