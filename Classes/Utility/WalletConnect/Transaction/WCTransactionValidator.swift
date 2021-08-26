@@ -53,12 +53,7 @@ extension WCTransactionValidator {
             rejectTransactionRequest(with: .unsupported)
             return
         }
-
-        if hasInvalidApplicationCallTransaction(in: transactions) {
-            rejectTransactionRequest(with: .unsupported)
-            return
-        }
-
+        
         if hasInvalidGroupedTransaction(in: transactionGroups) {
             rejectTransactionRequest(with: .invalidInput)
             return
@@ -122,18 +117,6 @@ extension WCTransactionValidator {
         }
 
         return false
-    }
-
-    private func hasInvalidApplicationCallTransaction(in transactions: [WCTransaction]) -> Bool {
-        let appCallTransactions = transactions.filter { $0.transactionDetail?.isAppCallTransaction ?? false }
-
-        if appCallTransactions.isEmpty {
-            return false
-        }
-
-        return appCallTransactions.contains { transaction in
-            return !(transaction.transactionDetail?.isSupportedAppCallTransaction ?? true)
-        }
     }
 
     private func hasInvalidGroupedTransaction(in transactionGroups: [Int64: [WCTransaction]]) -> Bool {
