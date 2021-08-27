@@ -17,20 +17,31 @@
 
 import Foundation
 
-class AppConfiguration {
-
+final class AppConfiguration {
     let api: AlgorandAPI
     let session: Session
     let walletConnector: WalletConnector
+    let loadingController: BlockingLoadingController
     
-    init(api: AlgorandAPI, session: Session, walletConnector: WalletConnector) {
+    init(
+        api: AlgorandAPI,
+        session: Session,
+        walletConnector: WalletConnector,
+        loadingController: BlockingLoadingController
+    ) {
         self.api = api
         self.session = session
         self.walletConnector = walletConnector
+        self.loadingController = loadingController
     }
     
     func all() -> ViewControllerConfiguration {
-        let configuration = ViewControllerConfiguration(api: api, session: session, walletConnector: walletConnector)
+        let configuration = ViewControllerConfiguration(
+            api: api,
+            session: session,
+            walletConnector: walletConnector,
+            loadingControlller: loadingController
+        )
         return configuration
     }
     

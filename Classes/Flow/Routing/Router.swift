@@ -178,7 +178,8 @@ class Router {
         let configuration = ViewControllerConfiguration(
             api: rootViewController.appConfiguration.api,
             session: rootViewController.appConfiguration.session,
-            walletConnector: rootViewController.appConfiguration.walletConnector
+            walletConnector: rootViewController.appConfiguration.walletConnector,
+            loadingControlller: rootViewController.appConfiguration.loadingController
         )
         
         switch screen {

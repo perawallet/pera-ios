@@ -26,11 +26,17 @@ import FirebaseCrashlytics
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    
-    private lazy var session = Session()
+
     private lazy var api = AlgorandAPI(session: session, base: "")
+    private lazy var session = Session()
     private lazy var walletConnector = WalletConnector()
-    private lazy var appConfiguration = AppConfiguration(api: api, session: session, walletConnector: walletConnector)
+    private lazy var loadingController = BlockingLoadingController(presentingView: window ?? UIWindow())
+    private lazy var appConfiguration = AppConfiguration(
+        api: api,
+        session: session,
+        walletConnector: walletConnector,
+        loadingController: loadingController
+    )
     private lazy var pushNotificationController = PushNotificationController(api: api)
     
     private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
@@ -47,7 +53,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private(set) var incomingWCSessionRequest: String?
     
     private lazy var containerBlurView = UIVisualEffectView()
-    private(set) lazy var loadingController = BlockingLoadingController(presentingView: window ?? UIWindow())
     
     func application(
         _ application: UIApplication,
