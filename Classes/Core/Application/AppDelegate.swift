@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private(set) var incomingWCSessionRequest: String?
     
     private lazy var containerBlurView = UIVisualEffectView()
+    private(set) lazy var loadingController = BlockingLoadingController(presentingView: window ?? UIWindow())
     
     func application(
         _ application: UIApplication,
