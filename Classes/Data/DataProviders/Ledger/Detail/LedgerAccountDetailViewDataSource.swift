@@ -16,16 +16,16 @@
 //  LedgerAccountDetailViewDataSource.swift
 
 import UIKit
-import SVProgressHUD
 
-class LedgerAccountDetailViewDataSource: NSObject {
-
+final class LedgerAccountDetailViewDataSource: NSObject {
     weak var delegate: LedgerAccountDetailViewDataSourceDelegate?
 
     private let api: AlgorandAPI
+    private let loadingController: BlockingLoadingController?
 
-    init(api: AlgorandAPI) {
+    init(api: AlgorandAPI, loadingController: BlockingLoadingController?) {
         self.api = api
+        self.loadingController = loadingController
         super.init()
     }
 
@@ -36,20 +36,18 @@ class LedgerAccountDetailViewDataSource: NSObject {
             return
         }
 
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
 
         for (index, asset) in assets.enumerated() {
             if let assetDetail = api.session.assetDetails[asset.id] {
                 account.assetDetails.append(assetDetail)
 
                 if index == assets.count - 1 {
-                    SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-                    SVProgressHUD.dismiss()
+                    loadingController?.stopLoading()
                     delegate?.ledgerAccountDetailViewDataSource(self, didReturn: account)
                 }
             } else {
-
-                self.api.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
+                api.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
                     switch assetResponse {
                     case .success(let assetDetailResponse):
                         self.composeAssetDetail(assetDetailResponse.assetDetail, of: account, with: asset.id)
@@ -58,8 +56,7 @@ class LedgerAccountDetailViewDataSource: NSObject {
                     }
 
                     if index == assets.count - 1 {
-                        SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-                        SVProgressHUD.dismiss()
+                        self.loadingController?.stopLoading()
                         self.delegate?.ledgerAccountDetailViewDataSource(self, didReturn: account)
                     }
                 }

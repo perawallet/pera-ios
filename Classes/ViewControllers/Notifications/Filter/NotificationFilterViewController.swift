@@ -17,7 +17,6 @@
 
 import UIKit
 import Magpie
-import SVProgressHUD
 
 class NotificationFilterViewController: BaseViewController {
 
@@ -125,7 +124,7 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
         didChangeAccountNotificationsToggleValue value: Bool,
         from cell: AccountNameSwitchCell
     ) {
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         updateNotificationFilter(of: cell, with: value)
     }
 
@@ -133,8 +132,7 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
         _ notificationFilterDataSource: NotificationFilterDataSource,
         didUpdateFilterValueFor account: Account
     ) {
-        SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-        SVProgressHUD.dismiss()
+        loadingController?.stopLoading()
         updateAccount(account)
         log(NotificationFilterChangeEvent(isReceivingNotifications: account.receivesNotification, address: account.address))
     }
@@ -144,8 +142,7 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
         didFailToUpdateFilterValueFor account: Account,
         with error: HIPAPIError?
     ) {
-        SVProgressHUD.showError(withStatus: nil)
-        SVProgressHUD.dismiss()
+        loadingController?.stopLoading()
         NotificationBanner.showError("title-error".localized, message: error?.fallbackMessage ?? "transaction-filter-error-title".localized)
         revertFilterSwitch(for: account)
     }

@@ -17,7 +17,6 @@
 
 import UIKit
 import Magpie
-import SVProgressHUD
 
 protocol SendTransactionViewControllerDelegate: AnyObject {
     func sendTransactionViewController(_ viewController: SendTransactionViewController, didCompleteTransactionFor asset: Int64?)
@@ -74,14 +73,14 @@ extension SendTransactionViewController {
 
 extension SendTransactionViewController: SendTransactionViewDelegate {
     func sendTransactionViewDidTapSendButton(_ sendTransactionView: SendTransactionView) {
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         transactionController.uploadTransaction()
     }
 }
 
 extension SendTransactionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID) {
-        SVProgressHUD.dismiss()
+        loadingController?.stopLoading()
         completeTransaction(with: id)
         
         if isSenderEditable {
@@ -103,7 +102,7 @@ extension SendTransactionViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
-        SVProgressHUD.dismiss()
+        loadingController?.stopLoading()
         switch error {
         case let .network(apiError):
             switch apiError {

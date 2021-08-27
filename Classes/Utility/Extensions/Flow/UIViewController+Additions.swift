@@ -16,7 +16,6 @@
 //  UIViewController+Additions.swift
 
 import UIKit
-import SVProgressHUD
 import SafariServices
 
 extension UIViewController {
@@ -116,14 +115,6 @@ extension UIViewController {
                 completion?()
             }
         )
-    }
-}
-
-extension UIViewController {
-    func dismissProgressIfNeeded() {
-        if SVProgressHUD.isVisible() {
-            SVProgressHUD.dismiss()
-        }
     }
 }
 

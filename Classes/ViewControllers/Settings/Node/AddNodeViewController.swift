@@ -17,7 +17,6 @@
 
 import UIKit
 import SnapKit
-import SVProgressHUD
 
 protocol AddNodeViewControllerDelegate: AnyObject {
     func addNodeViewController(_ controller: AddNodeViewController, didChangeNodeFor action: AddNodeViewController.ActionType)
@@ -217,9 +216,9 @@ class AddNodeViewController: BaseScrollViewController {
             break
         }
         
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         api?.checkNodeHealth(with: testDraft) { isValidated in
-            SVProgressHUD.dismiss()
+            self.loadingController?.stopLoading()
             
             if isValidated {
                 switch self.mode {

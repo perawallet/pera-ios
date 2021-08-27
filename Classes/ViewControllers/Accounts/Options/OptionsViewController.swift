@@ -16,7 +16,6 @@
 //  OptionsViewController.swift
 
 import UIKit
-import SVProgressHUD
 import Magpie
 
 class OptionsViewController: BaseViewController {
@@ -155,7 +154,7 @@ extension OptionsViewController {
             return
         }
 
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
 
         let draft = NotificationFilterDraft(
             deviceId: deviceId,
@@ -175,8 +174,7 @@ extension OptionsViewController {
 
     private func updateNotificationFiltering(with result: NotificationFilterResponse) {
         self.account.receivesNotification = result.receivesNotification
-        SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-        SVProgressHUD.dismiss()
+        loadingController?.stopLoading()
         updateAccountForNotificationFilters()
         updateNotificationFilterCell()
     }
@@ -199,8 +197,7 @@ extension OptionsViewController {
     }
 
     private func displayNotificationFilterError(_ error: HIPAPIError?) {
-        SVProgressHUD.showError(withStatus: nil)
-        SVProgressHUD.dismiss()
+        loadingController?.stopLoading()
         NotificationBanner.showError(
             "title-error".localized,
             message: error?.fallbackMessage ?? "transaction-filter-error-title".localized

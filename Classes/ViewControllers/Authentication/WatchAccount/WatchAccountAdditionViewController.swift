@@ -16,7 +16,6 @@
 //  WatchAccountAdditionViewController.swift
 
 import UIKit
-import SVProgressHUD
 
 class WatchAccountAdditionViewController: BaseScrollViewController {
     
@@ -153,10 +152,9 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
     }
     
     private func launchHome(with account: AccountInformation) {
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-            SVProgressHUD.dismiss(withDelay: 1.0) {
+            self.loadingController?.stopLoadingAfter(seconds: 1) {
                 switch self.accountSetupFlow {
                 case .initializeAccount:
                     DispatchQueue.main.async {

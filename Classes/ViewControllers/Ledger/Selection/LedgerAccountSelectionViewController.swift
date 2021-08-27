@@ -16,7 +16,6 @@
 //  LedgerAccountSelectionViewController.swift
 
 import UIKit
-import SVProgressHUD
 
 class LedgerAccountSelectionViewController: BaseViewController {
     
@@ -64,13 +63,13 @@ class LedgerAccountSelectionViewController: BaseViewController {
         super.viewDidLoad()
         ledgerAccountSelectionView.setLoadingState()
         
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         dataSource.loadData()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        dismissProgressIfNeeded()
+        loadingController?.stopLoading()
     }
     
     override func configureAppearance() {
@@ -107,16 +106,14 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
         _ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource,
         didFetch accounts: [Account]
     ) {
-        SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-        SVProgressHUD.dismiss()
+        loadingController?.stopLoading()
         
         ledgerAccountSelectionView.setNormalState()
         ledgerAccountSelectionView.reloadData()
     }
     
     func ledgerAccountSelectionDataSourceDidFailToFetch(_ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource) {
-        SVProgressHUD.showError(withStatus: nil)
-        SVProgressHUD.dismiss()
+        loadingController?.stopLoading()
         
         ledgerAccountSelectionView.setErrorState()
         ledgerAccountSelectionView.reloadData()

@@ -17,7 +17,6 @@
 
 import UIKit
 import SnapKit
-import SVProgressHUD
 import Magpie
 import Alamofire
 
@@ -132,7 +131,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
-        dismissProgressIfNeeded()
+        loadingController?.stopLoading()
         transactionController.stopTimer()
     }
 
@@ -410,7 +409,7 @@ extension SendTransactionPreviewViewController {
 
 extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
-        SVProgressHUD.dismiss()
+        loadingController?.stopLoading()
         switch error {
         case .network:
             displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)

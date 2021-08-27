@@ -16,7 +16,6 @@
 //  SendAlgosTransactionPreviewViewController.swift
 
 import UIKit
-import SVProgressHUD
 
 class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewController, TestNetTitleDisplayable {
     
@@ -320,28 +319,28 @@ extension SendAlgosTransactionPreviewViewController {
             
             let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
                    
-            SVProgressHUD.show(withStatus: "title-loading".localized)
+            loadingController?.startLoadingWithMessage("title-loading".localized)
             self.api?.fetchAccount(with: receiverFetchDraft) { accountResponse in
                 if !selectedAccount.requiresLedgerConnection() {
-                    self.dismissProgressIfNeeded()
+                    self.loadingController?.stopLoading()
                 }
                 
                 switch accountResponse {
                 case let .failure(error, _):
                     if error.isHttpNotFound {
-                        self.dismissProgressIfNeeded()
+                        self.loadingController?.stopLoading()
                         self.displaySimpleAlertWith(
                             title: "title-error".localized,
                             message: "send-algos-minimum-amount-error-new-account".localized
                         )
                     } else {
-                        self.dismissProgressIfNeeded()
+                        self.loadingController?.stopLoading()
                         self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
                     }
                 case let .success(accountWrapper):
                     accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                     if accountWrapper.account.amount == 0 {
-                        self.dismissProgressIfNeeded()
+                        self.loadingController?.stopLoading()
                         
                         self.displaySimpleAlertWith(
                             title: "title-error".localized,
@@ -354,7 +353,7 @@ extension SendAlgosTransactionPreviewViewController {
             }
             return
         } else {
-            SVProgressHUD.show(withStatus: "title-loading".localized)
+            loadingController?.startLoadingWithMessage("title-loading".localized)
             composeAlgosTransactionData(for: selectedAccount)
         }
     }

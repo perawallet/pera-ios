@@ -16,7 +16,6 @@
 //   WCGroupTransactionViewController.swift
 
 import UIKit
-import SVProgressHUD
 
 class WCGroupTransactionViewController: BaseViewController {
 

@@ -16,7 +16,6 @@
 //  NodeSettingsViewController.swift
 
 import UIKit
-import SVProgressHUD
 
 class NodeSettingsViewController: BaseViewController {
     
@@ -107,7 +106,7 @@ extension NodeSettingsViewController: UICollectionViewDelegateFlowLayout {
 
 extension NodeSettingsViewController {
     private func changeNode(at indexPath: IndexPath) {
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         setActionsEnabled(false)
         
         let selectedNode = nodes[indexPath.item]
@@ -119,7 +118,7 @@ extension NodeSettingsViewController {
                 if isCompleted {
                     self.switchNetwork(for: selectedNode, at: indexPath)
                 } else {
-                    SVProgressHUD.dismiss(withDelay: 1.0) {
+                    self.loadingController?.stopLoadingAfter(seconds: 1) {
                         self.setActionsEnabled(true)
                     }
                 }
@@ -136,9 +135,7 @@ extension NodeSettingsViewController {
         }
         
         UIApplication.shared.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-            
-            SVProgressHUD.dismiss(withDelay: 1.0) {
+            self.loadingController?.stopLoadingAfter(seconds: 1) {
                 self.setActionsEnabled(true)
                 self.setSelected(at: indexPath, in: self.nodeSettingsView.collectionView)
             }

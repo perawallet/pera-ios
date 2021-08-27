@@ -17,9 +17,8 @@
 
 import UIKit
 import Magpie
-import SVProgressHUD
 
-class AssetRemovalViewController: BaseViewController {
+final class AssetRemovalViewController: BaseViewController {
     
     private let layout = Layout<LayoutConstants>()
     
@@ -88,7 +87,7 @@ class AssetRemovalViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
-        dismissProgressIfNeeded()
+        loadingController?.stopLoading()
         transactionController.stopTimer()
     }
 }
@@ -269,7 +268,7 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
         
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
 
         if account.requiresLedgerConnection() {
             transactionController.initializeLedgerTransactionAccount()
@@ -291,7 +290,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
-        SVProgressHUD.dismiss()
+        loadingController?.stopLoading()
         
         switch error {
         case let .inapp(transactionError):
@@ -318,7 +317,7 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
-        SVProgressHUD.dismiss()
+        loadingController?.stopLoading()
         switch error {
         case let .network(apiError):
             NotificationBanner.showError("title-error".localized, message: apiError.debugDescription)

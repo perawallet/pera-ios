@@ -16,7 +16,6 @@
 //  LedgerAccountDetailViewController.swift
 
 import UIKit
-import SVProgressHUD
 
 class LedgerAccountDetailViewController: BaseScrollViewController {
     
@@ -26,7 +25,7 @@ class LedgerAccountDetailViewController: BaseScrollViewController {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return LedgerAccountDetailViewDataSource(api: api)
+        return LedgerAccountDetailViewDataSource(api: api, loadingController: loadingController)
     }()
 
     private let account: Account

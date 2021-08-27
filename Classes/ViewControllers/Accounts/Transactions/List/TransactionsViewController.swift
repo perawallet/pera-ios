@@ -17,7 +17,6 @@
 
 import UIKit
 import Magpie
-import SVProgressHUD
 
 class TransactionsViewController: BaseViewController {
     
@@ -412,22 +411,20 @@ extension TransactionsViewController: TooltipPresenter {
 
 extension TransactionsViewController: CSVExportable {
     private func fetchAllTransactionsForCSV() {
-        SVProgressHUD.show(withStatus: "csv-download-title".localized)
-        
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+
         transactionHistoryDataSource.fetchAllTransactions(
             for: account,
             between: getTransactionFilterDates(),
             nextToken: nil
         ) { transactions, error in
             if error != nil {
-                SVProgressHUD.showError(withStatus: "csv-download-error".localized)
-                SVProgressHUD.dismiss()
+                self.loadingController?.stopLoading()
                 return
             }
             
             guard let transactions = transactions else {
-                SVProgressHUD.showError(withStatus: "csv-download-error".localized)
-                SVProgressHUD.dismiss()
+                self.loadingController?.stopLoading()
                 return
             }
             
@@ -452,8 +449,7 @@ extension TransactionsViewController: CSVExportable {
         let config = CSVConfig(fileName: formCSVFileName(), keys: NSOrderedSet(array: keys))
         
         if let fileUrl = exportCSV(from: createCSVData(from: transactions), with: config) {
-            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-            SVProgressHUD.dismiss()
+            loadingController?.stopLoading()
             
             let activityViewController = UIActivityViewController(activityItems: [fileUrl], applicationActivities: nil)
             activityViewController.completionWithItemsHandler = { _, _, _, _ in
@@ -461,8 +457,7 @@ extension TransactionsViewController: CSVExportable {
             }
             present(activityViewController, animated: true)
         } else {
-            SVProgressHUD.showError(withStatus: "csv-download-error".localized)
-            SVProgressHUD.dismiss()
+            loadingController?.stopLoading()
         }
     }
     

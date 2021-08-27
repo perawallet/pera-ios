@@ -16,7 +16,6 @@
 //  ContactInfoViewController.swift
 
 import UIKit
-import SVProgressHUD
 
 class ContactInfoViewController: BaseScrollViewController {
     
@@ -104,7 +103,7 @@ extension ContactInfoViewController {
             return
         }
         
-        SVProgressHUD.show()
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         
         api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { [weak self] response in
             switch response {
@@ -131,8 +130,7 @@ extension ContactInfoViewController {
                                     account.assetDetails.append(assetDetail)
                                     
                                     if assets.count == account.assetDetails.count + failedAssetFetchCount {
-                                        SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-                                        SVProgressHUD.dismiss()
+                                        self?.loadingController?.stopLoading()
                                         
                                         guard let strongSelf = self else {
                                             return
@@ -146,21 +144,18 @@ extension ContactInfoViewController {
                             }
                         }
                     } else {
-                        SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-                        SVProgressHUD.dismiss()
+                        self?.loadingController?.stopLoading()
                     }
                 } else {
-                    SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-                    SVProgressHUD.dismiss()
+                    self?.loadingController?.stopLoading()
                 }
             case let .failure(error, _):
                 if error.isHttpNotFound {
                     self?.contactAccount = Account(address: address, type: .standard)
-                    SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-                    SVProgressHUD.dismiss()
+                    self?.loadingController?.stopLoading()
                 } else {
                     self?.contactAccount = nil
-                    SVProgressHUD.dismiss()
+                    self?.loadingController?.stopLoading()
                 }
             }
         }

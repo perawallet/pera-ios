@@ -17,7 +17,6 @@
 
 import UIKit
 import Magpie
-import SVProgressHUD
 
 class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     
@@ -80,7 +79,7 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
-        dismissProgressIfNeeded()
+        loadingController?.stopLoading()
         transactionController.stopTimer()
     }
     
@@ -280,8 +279,8 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: assetDetail.id)
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
-        
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         
         if account.requiresLedgerConnection() {
             transactionController.initializeLedgerTransactionAccount()
@@ -292,7 +291,7 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
-        SVProgressHUD.dismiss()
+        loadingController?.stopLoading()
         
         switch error {
         case let .inapp(transactionError):
@@ -319,7 +318,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
-        SVProgressHUD.dismiss()
+        loadingController?.stopLoading()
         switch error {
         case let .network(apiError):
             NotificationBanner.showError("title-error".localized, message: apiError.debugDescription)

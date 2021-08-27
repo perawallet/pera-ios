@@ -16,7 +16,6 @@
 //  AssetActionConfirmationViewController.swift
 
 import UIKit
-import SVProgressHUD
 
 class AssetActionConfirmationViewController: BaseViewController {
     
@@ -66,15 +65,14 @@ extension AssetActionConfirmationViewController {
             if let assetDetail = session?.assetDetails[assetAlertDraft.assetIndex] {
                 self.handleAssetDetailSetup(with: assetDetail)
             } else {
-                SVProgressHUD.show(withStatus: "title-loading".localized)
-                
+                loadingController?.startLoadingWithMessage("title-loading".localized)
+
                 api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { response in
                     switch response {
                     case let .success(assetResponse):
                         self.handleAssetDetailSetup(with: assetResponse.assetDetail)
                     case .failure:
-                        SVProgressHUD.showError(withStatus: nil)
-                        SVProgressHUD.dismiss()
+                        self.loadingController?.stopLoading()
                     }
                 }
             }
@@ -82,8 +80,7 @@ extension AssetActionConfirmationViewController {
     }
     
     private func handleAssetDetailSetup(with asset: AssetDetail) {
-        SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-        SVProgressHUD.dismiss()
+        self.loadingController?.stopLoading()
         var assetDetail = asset
         setVerifiedIfNeeded(&assetDetail)
         assetAlertDraft.assetDetail = assetDetail

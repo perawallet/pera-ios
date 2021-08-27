@@ -47,7 +47,7 @@ extension LedgerOperation {
             }
             
             DispatchQueue.main.async {
-                self.topMostController?.dismissProgressIfNeeded()
+                (self.topMostController as? BaseViewController)?.loadingController?.stopLoading()
                 self.bleConnectionManager.stopScan()
                 NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
             }
@@ -91,7 +91,7 @@ extension LedgerOperation where Self: BLEConnectionManagerDelegate {
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral) {
         connectedDevice = peripheral
-        topMostController?.dismissProgressIfNeeded()
+        (self.topMostController as? BaseViewController)?.loadingController?.stopLoading()
         stopTimer()
         presentLedgerApprovalModal()
     }
@@ -114,7 +114,7 @@ extension LedgerOperation where Self: BLEConnectionManagerDelegate {
             
             NotificationBanner.showError(errorTitle, message: errorSubtitle)
             stopTimer()
-            topMostController?.dismissProgressIfNeeded()
+            (self.topMostController as? BaseViewController)?.loadingController?.stopLoading()
         default:
             reset()
             NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)

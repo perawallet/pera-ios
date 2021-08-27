@@ -17,7 +17,6 @@
 
 import UIKit
 import Magpie
-import SVProgressHUD
 
 class WCMainTransactionViewController: BaseViewController {
 
@@ -105,10 +104,7 @@ class WCMainTransactionViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        if SVProgressHUD.isVisible() {
-            SVProgressHUD.showError(withStatus: "title-done".localized)
-            SVProgressHUD.dismiss()
-        }
+        loadingController?.stopLoading()
         
         if !transactions.allSatisfy({ ($0.signerAccount?.requiresLedgerConnection() ?? false) }) {
             return
@@ -391,28 +387,21 @@ extension WCMainTransactionViewController: AssetCachable {
     private func getAssetDetailsIfNeeded() {
         let assetTransactions = transactions.filter { $0.transactionDetail?.type == .assetTransfer }
         for (index, transaction) in assetTransactions.enumerated() {
-            if !SVProgressHUD.isVisible() {
-                SVProgressHUD.show(withStatus: "title-loading".localized)
-            }
-
             guard let assetId = transaction.transactionDetail?.assetId else {
-                SVProgressHUD.showError(withStatus: "title-done".localized)
-                SVProgressHUD.dismiss()
-                self.rejectTransactionRequest(with: .invalidInput(.asset))
+                loadingController?.stopLoading()
+                 self.rejectTransactionRequest(with: .invalidInput(.asset))
                 return
             }
 
             cacheAssetDetail(with: assetId) { assetDetail in
                 if assetDetail == nil {
-                    SVProgressHUD.showError(withStatus: "title-done".localized)
-                    SVProgressHUD.dismiss()
+                    self.loadingController?.stopLoading()
                     self.rejectTransactionRequest(with: .invalidInput(.asset))
                     return
                 }
 
                 if index == assetTransactions.count - 1 {
-                    SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-                    SVProgressHUD.dismiss()
+                    self.loadingController?.stopLoading()
                     self.mainTransactionView.reloadData()
                 }
             }

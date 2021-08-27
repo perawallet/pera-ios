@@ -17,7 +17,6 @@
 
 import UIKit
 import SnapKit
-import SVProgressHUD
 
 class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewController, TestNetTitleDisplayable {
     
@@ -278,14 +277,14 @@ extension SendAssetTransactionPreviewViewController {
             return
         }
         
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
             switch fetchAccountResponse {
             case let .success(receiverAccountWrapper):
                 receiverAccountWrapper.account.assets = receiverAccountWrapper.account.nonDeletedAssets()
                 let receiverAccount = receiverAccountWrapper.account
                 if !selectedAccount.requiresLedgerConnection() {
-                    self.dismissProgressIfNeeded()
+                    self.loadingController?.stopLoading()
                 }
                 
                 if let assets = receiverAccount.assets {
@@ -302,11 +301,11 @@ extension SendAssetTransactionPreviewViewController {
             case let .failure(error, _):
                 if error.isHttpNotFound {
                     if !selectedAccount.requiresLedgerConnection() {
-                        self.dismissProgressIfNeeded()
+                        self.loadingController?.stopLoading()
                     }
                     self.presentAssetNotSupportedAlert(receiverAddress: address)
                 } else {
-                    self.dismissProgressIfNeeded()
+                    self.loadingController?.stopLoading()
                 }
             }
         }
@@ -374,7 +373,7 @@ extension SendAssetTransactionPreviewViewController {
             return
         }
 
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         
         transactionController.delegate = self
         let transaction = AssetTransactionSendDraft(

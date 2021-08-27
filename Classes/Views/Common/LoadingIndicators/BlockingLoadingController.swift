@@ -44,4 +44,12 @@ final class BlockingLoadingController: Macaroon.BlockingLoadingController {
             screenLoadingIndicator.attributedTitle = attributedTitle
         }
     }
+
+    func stopLoadingAfter(seconds: Double, on queue: DispatchQueue = .main, execute: @escaping () -> Void) {
+        let time: DispatchTime = .now() + seconds
+        queue.asyncAfter(deadline: time) {
+            self.stopLoading()
+            execute()
+        }
+    }
 }

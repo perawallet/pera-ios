@@ -245,6 +245,10 @@ extension BaseViewController {
     var walletConnector: WalletConnector {
         return configuration.walletConnector
     }
+
+    var loadingController: BlockingLoadingController? {
+        return configuration.loadingController
+    }
 }
 
 extension BaseViewController: NavigationBarConfigurable {

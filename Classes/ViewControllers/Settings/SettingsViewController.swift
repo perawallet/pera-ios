@@ -16,7 +16,6 @@
 //  SettingsViewController.swift
 
 import UIKit
-import SVProgressHUD
 
 class SettingsViewController: BaseViewController {
     

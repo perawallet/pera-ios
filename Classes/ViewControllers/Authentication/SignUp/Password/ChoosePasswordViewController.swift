@@ -17,7 +17,6 @@
 
 import UIKit
 import AVFoundation
-import SVProgressHUD
 
 protocol ChoosePasswordViewControllerDelegate: AnyObject {
     func choosePasswordViewController(_ choosePasswordViewController: ChoosePasswordViewController, didConfirmPassword isConfirmed: Bool)
@@ -141,19 +140,16 @@ extension ChoosePasswordViewController {
     }
     
     private func launchHome() {
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
             self.setupRouteFromNotification()
             DispatchQueue.main.async {
                 UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
             }
-            
-            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-            SVProgressHUD.dismiss(withDelay: 1.0) {
-                DispatchQueue.main.async {
-                    self.dismiss(animated: false) {
-                        UIApplication.shared.rootViewController()?.setupTabBarController()
-                    }
+
+            self.loadingController?.stopLoadingAfter(seconds: 1) {
+                self.dismiss(animated: false) {
+                    UIApplication.shared.rootViewController()?.setupTabBarController()
                 }
             }
         }

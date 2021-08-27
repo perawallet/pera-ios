@@ -17,7 +17,6 @@
 
 import UIKit
 import Magpie
-import SVProgressHUD
 
 class AccountsViewController: BaseViewController {
     
@@ -173,14 +172,11 @@ class AccountsViewController: BaseViewController {
             return
         }
 
-        SVProgressHUD.show(withStatus: "title-loading".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         accountManager.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-            SVProgressHUD.dismiss(withDelay: 1.0) {
-                DispatchQueue.main.async {
-                    self.accountsView.accountsCollectionView.reloadData()
-                    self.setAccountsCollectionViewContentState(isInitialEmptyStateIncluded: true)
-                }
+            self.loadingController?.stopLoadingAfter(seconds: 1) {
+                self.accountsView.accountsCollectionView.reloadData()
+                self.setAccountsCollectionViewContentState(isInitialEmptyStateIncluded: true)
             }
         }
     }
