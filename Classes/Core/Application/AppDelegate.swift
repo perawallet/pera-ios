@@ -128,18 +128,11 @@ extension AppDelegate {
     }
 
     private func setupWindow() {
-        let window = UIWindow(frame: UIScreen.main.bounds)
-
-        rootViewController = RootViewController(appConfiguration: appConfiguration)
-
-        guard let rootViewController = rootViewController else {
-            return
-        }
-
-        window.backgroundColor = .clear
-        window.rootViewController = rootViewController
-        window.makeKeyAndVisible()
-        self.window = window
+        window = UIWindow(frame: UIScreen.main.bounds)
+        self.rootViewController = RootViewController(appConfiguration: appConfiguration)
+        window?.rootViewController = rootViewController
+        window?.backgroundColor = .clear
+        window?.makeKeyAndVisible()
     }
 }
 
