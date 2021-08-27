@@ -387,7 +387,7 @@ extension WCMainTransactionViewController: AssetCachable {
         for (index, transaction) in assetTransactions.enumerated() {
             guard let assetId = transaction.transactionDetail?.assetId else {
                 loadingController?.stopLoading()
-                 self.rejectTransactionRequest(with: .invalidInput(.asset))
+                self.rejectTransactionRequest(with: .invalidInput(.asset))
                 return
             }
 
