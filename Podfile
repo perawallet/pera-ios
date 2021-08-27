@@ -19,7 +19,6 @@ def main_pods
   pod 'SwiftDate'
   
   #UI
-  pod 'SVProgressHUD'
   pod 'lottie-ios'
   pod 'NotificationBannerSwift'
   pod 'BetterSegmentedControl', '~> 1.3'
