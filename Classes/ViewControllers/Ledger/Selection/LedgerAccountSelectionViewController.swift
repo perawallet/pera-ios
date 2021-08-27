@@ -111,14 +111,12 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
         didFetch accounts: [Account]
     ) {
         loadingController?.stopLoading()
-
         ledgerAccountSelectionView.setNormalState()
         ledgerAccountSelectionView.reloadData()
     }
     
     func ledgerAccountSelectionDataSourceDidFailToFetch(_ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource) {
         loadingController?.stopLoading()
-
         ledgerAccountSelectionView.setErrorState()
         ledgerAccountSelectionView.reloadData()
     }
