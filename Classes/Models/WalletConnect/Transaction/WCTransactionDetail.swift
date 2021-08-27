@@ -18,9 +18,9 @@
 import Magpie
 
 class WCTransactionDetail: Model {
-    let fee: Int64?
-    let firstValidRound: Int64?
-    let lastValidRound: Int64?
+    let fee: UInt64?
+    let firstValidRound: UInt64?
+    let lastValidRound: UInt64?
     let genesisHashData: Data?
     let genesisId: String?
     let note: Data?
@@ -28,9 +28,9 @@ class WCTransactionDetail: Model {
     private(set) var sender: String?
     let type: Transaction.TransferType?
 
-    private let algosAmount: Int64?
-    private let assetAmount: Int64?
-    var amount: Int64 {
+    private let algosAmount: UInt64?
+    private let assetAmount: UInt64?
+    var amount: UInt64 {
         return assetAmount ?? algosAmount ?? 0
     }
 
@@ -55,9 +55,9 @@ class WCTransactionDetail: Model {
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        fee = try container.decodeIfPresent(Int64.self, forKey: .fee)
-        firstValidRound = try container.decodeIfPresent(Int64.self, forKey: .firstValidRound)
-        lastValidRound = try container.decodeIfPresent(Int64.self, forKey: .lastValidRound)
+        fee = try container.decodeIfPresent(UInt64.self, forKey: .fee)
+        firstValidRound = try container.decodeIfPresent(UInt64.self, forKey: .firstValidRound)
+        lastValidRound = try container.decodeIfPresent(UInt64.self, forKey: .lastValidRound)
         if let genesisHashBase64String = try container.decodeIfPresent(String.self, forKey: .genesisHash) {
             genesisHashData = Data(base64Encoded: genesisHashBase64String)
         } else {
@@ -66,8 +66,8 @@ class WCTransactionDetail: Model {
         genesisId = try container.decodeIfPresent(String.self, forKey: .genesisId)
         note = try container.decodeIfPresent(Data.self, forKey: .note)
         type = try container.decodeIfPresent(Transaction.TransferType.self, forKey: .type)
-        assetAmount = try container.decodeIfPresent(Int64.self, forKey: .assetAmount)
-        algosAmount = try container.decodeIfPresent(Int64.self, forKey: .algosAmount)
+        assetAmount = try container.decodeIfPresent(UInt64.self, forKey: .assetAmount)
+        algosAmount = try container.decodeIfPresent(UInt64.self, forKey: .algosAmount)
         assetId = try container.decodeIfPresent(Int64.self, forKey: .assetId)
         appCallArguments = try container.decodeIfPresent([String].self, forKey: .appCallArguments)
         appCallOnComplete = try container.decodeIfPresent(AppCallOnComplete.self, forKey: .appCallOnComplete) ?? .noOp

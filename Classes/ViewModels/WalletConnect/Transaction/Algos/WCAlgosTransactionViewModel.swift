@@ -88,7 +88,7 @@ class WCAlgosTransactionViewModel {
 
         balanceInformationViewModel = TitledTransactionAmountInformationViewModel(
             title: "transaction-detail-balance".localized,
-            mode: .balance(value: Int64(senderAccount.amount)),
+            mode: .balance(value: UInt64(senderAccount.amount)),
             isLastElement: transaction.hasValidAuthAddressForSigner && !transactionDetail.hasRekeyOrCloseAddress
         )
     }

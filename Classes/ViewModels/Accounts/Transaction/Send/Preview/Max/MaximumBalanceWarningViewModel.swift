@@ -44,7 +44,7 @@ class MaximumBalanceWarningViewModel {
         description = "maximum-balance-warning-description".localized(params: minimumAmountForAccount)
     }
 
-    private func calculateMininmumAmount(for account: Account) -> Int64 {
+    private func calculateMininmumAmount(for account: Account) -> UInt64 {
         let params = UIApplication.shared.accountManager?.params
         let feeCalculator = TransactionFeeCalculator(transactionDraft: nil, transactionData: nil, params: params)
         let calculatedFee = params?.getProjectedTransactionFee() ?? Transaction.Constant.minimumFee

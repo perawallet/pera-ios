@@ -24,18 +24,18 @@ extension Account {
 }
 
 extension Account {
-    func amount(for assetDetail: AssetDetail) -> Double? {
+    func amount(for assetDetail: AssetDetail) -> Decimal? {
         guard let asset = assets?.first(where: { $0.id == assetDetail.id }) else {
             return nil
         }
         return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
     }
 
-    func amountWithoutFraction(for assetDetail: AssetDetail) -> Int64? {
+    func amountWithoutFraction(for assetDetail: AssetDetail) -> UInt64? {
         guard let asset = assets?.first(where: { $0.id == assetDetail.id }) else {
             return nil
         }
-        return Int64(asset.amount)
+        return UInt64(asset.amount)
     }
     
     func amountDisplayWithFraction(for assetDetail: AssetDetail) -> String? {
