@@ -99,7 +99,7 @@ extension AssetSupportViewController: AssetSupportViewDelegate {
         dismissScreen()
     }
 
-    func presentInfoBanner(_ view: AssetSupportView, title: String) {
+    func assetSupportViewDidPresentInfoBanner(_ assetSupportView: AssetSupportView, title: String) {
         bannerController?.presentInfoBanner(title)
     }
 }

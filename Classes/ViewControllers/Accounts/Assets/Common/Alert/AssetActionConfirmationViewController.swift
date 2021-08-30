@@ -109,7 +109,7 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
         dismissScreen()
     }
 
-    func presentInfoBanner(_ view: AssetActionConfirmationView, title: String) {
+    func assetActionConfirmationViewDidPresentInfoBanner(_ assetActionConfirmationView: AssetActionConfirmationView, title: String) {
         bannerController?.presentInfoBanner(title)
     }
 }

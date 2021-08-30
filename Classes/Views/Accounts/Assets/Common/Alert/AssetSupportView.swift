@@ -17,7 +17,7 @@
 
 import UIKit
 
-class AssetSupportView: BaseView, AssetDisplayViewDelegate {
+class AssetSupportView: BaseView {
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: AssetSupportViewDelegate?
@@ -134,11 +134,11 @@ extension AssetSupportView {
 
 protocol AssetSupportViewDelegate: AnyObject {
     func assetSupportViewDidTapOKButton(_ assetSupportView: AssetSupportView)
-    func presentInfoBanner(_ view: AssetSupportView, title: String)
+    func assetSupportViewDidPresentInfoBanner(_ assetSupportView: AssetSupportView, title: String)
 }
 
-extension AssetSupportView {
-    func presentInfoBanner(_ view: AssetDisplayView, title: String) {
-        delegate?.presentInfoBanner(self, title: title)
+extension AssetSupportView: AssetDisplayViewDelegate {
+    func assetDisplayViewDidPresentInfoBanner(_ assetDisplayView: AssetDisplayView, title: String) {
+        delegate?.assetSupportViewDidPresentInfoBanner(self, title: title)
     }
 }

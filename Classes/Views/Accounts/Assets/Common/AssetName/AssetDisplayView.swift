@@ -105,7 +105,7 @@ class AssetDisplayView: BaseView {
 extension AssetDisplayView {
     @objc
     private func didTapCopyButton() {
-        delegate?.presentInfoBanner(self, title: "asset-id-copied-title".localized)
+        delegate?.assetDisplayViewDidPresentInfoBanner(self, title: "asset-id-copied-title".localized)
         UIPasteboard.general.string = assetIndexLabel.text
     }
 }
@@ -203,5 +203,5 @@ extension AssetDisplayView {
 }
 
 protocol AssetDisplayViewDelegate: AnyObject {
-    func presentInfoBanner(_ view: AssetDisplayView, title: String)
+    func assetDisplayViewDidPresentInfoBanner(_ assetDisplayView: AssetDisplayView, title: String)
 }
