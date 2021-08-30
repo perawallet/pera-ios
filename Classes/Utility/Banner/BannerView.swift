@@ -33,18 +33,14 @@ final class BannerView: View, ViewModelBindable {
     private lazy var iconView = UIImageView()
 
     func customize(_ theme: BannerViewTheme) {
-        prepareLayout(theme)
-    }
-
-    func prepareLayout(_ theme: BannerViewTheme) {
         addHorizontalStackView(theme)
         addIcon(theme)
         addVerticalStackView(theme)
         addTitle(theme)
         addMessage(theme)
-
+        
         drawAppearance(shadow: theme.backgroundShadow)
-
+        
         guard let background = theme.background,
               let corner = theme.corner else {
             return
@@ -52,6 +48,10 @@ final class BannerView: View, ViewModelBindable {
         customizeAppearance(background)
         draw(corner: corner)
     }
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func bindData(_ viewModel: BannerViewModel?) {
         bindTitle(viewModel)
