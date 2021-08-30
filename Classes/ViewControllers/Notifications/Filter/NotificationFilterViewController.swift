@@ -144,8 +144,8 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
     ) {
         loadingController?.stopLoading()
         AppDelegate.shared?.bannerController.presentErrorBanner(
-            "title-error".localized,
-            error?.fallbackMessage ?? "transaction-filter-error-title".localized
+            title: "title-error".localized,
+            message: error?.fallbackMessage ?? "transaction-filter-error-title".localized
         )
         revertFilterSwitch(for: account)
     }

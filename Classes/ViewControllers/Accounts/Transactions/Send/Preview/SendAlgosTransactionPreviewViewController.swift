@@ -314,8 +314,8 @@ extension SendAlgosTransactionPreviewViewController {
             
             if !AlgorandSDK().isValidAddress(receiverAddress) {
                 AppDelegate.shared?.bannerController.presentErrorBanner(
-                    "title-error".localized,
-                    "send-algos-receiver-address-validation".localized
+                    title: "title-error".localized,
+                    message: "send-algos-receiver-address-validation".localized
                 )
                 return
             }

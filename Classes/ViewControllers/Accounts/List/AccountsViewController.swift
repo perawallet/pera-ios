@@ -451,8 +451,8 @@ extension AccountsViewController: WalletConnectorDelegate {
         guard let accounts = self.session?.accounts,
               accounts.contains(where: { $0.type != .watch }) else {
             AppDelegate.shared?.bannerController.presentErrorBanner(
-                "title-error".localized,
-                "wallet-connect-session-error-no-account".localized
+                title: "title-error".localized,
+                message: "wallet-connect-session-error-no-account".localized
             )
             return
         }

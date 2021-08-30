@@ -169,8 +169,8 @@ extension WCSessionListViewController {
         switch error {
         case let .failedToDisconnect(session):
             AppDelegate.shared?.bannerController.presentErrorBanner(
-                "title-error".localized,
-                "wallet-connect-session-disconnect-fail-message".localized(session.peerMeta.name)
+                title: "title-error".localized,
+                message: "wallet-connect-session-disconnect-fail-message".localized(session.peerMeta.name)
             )
         default:
             break

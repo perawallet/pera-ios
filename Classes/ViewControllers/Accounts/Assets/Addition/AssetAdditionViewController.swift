@@ -305,19 +305,19 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         switch transactionError {
         case let .minimumAmount(amount):
             AppDelegate.shared?.bannerController.presentErrorBanner(
-                "asset-min-transaction-error-title".localized,
-                "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? ""
+                title: "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? ""
                 )
             )
         case .invalidAddress:
             AppDelegate.shared?.bannerController.presentErrorBanner(
-                "title-error".localized,
-                "send-algos-receiver-address-validation".localized
+                title: "title-error".localized,
+                message: "send-algos-receiver-address-validation".localized
             )
         case let .sdkError(error):
             AppDelegate.shared?.bannerController.presentErrorBanner(
-                "title-error".localized,
-                error.debugDescription
+                title: "title-error".localized,
+                message: error.debugDescription
             )
         default:
             break
@@ -328,9 +328,9 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         loadingController?.stopLoading()
         switch error {
         case let .network(apiError):
-            AppDelegate.shared?.bannerController.presentErrorBanner("title-error".localized, apiError.debugDescription)
+            AppDelegate.shared?.bannerController.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
         default:
-            AppDelegate.shared?.bannerController.presentErrorBanner("title-error".localized, error.localizedDescription)
+            AppDelegate.shared?.bannerController.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
         }
     }
     

@@ -335,8 +335,8 @@ extension AccountRecoverViewController {
 
         // Invalid copy/paste action for mnemonics.
         AppDelegate.shared?.bannerController.presentErrorBanner(
-            "title-error".localized,
-            "recover-copy-error".localized
+            title: "title-error".localized,
+            message: "recover-copy-error".localized
         )
         return false
     }
@@ -410,7 +410,7 @@ extension AccountRecoverViewController {
         }
 
         // Invalid copy/paste action for mnemonics.
-        AppDelegate.shared?.bannerController.presentErrorBanner("title-error".localized, "recover-copy-error".localized)
+        AppDelegate.shared?.bannerController.presentErrorBanner(title: "title-error".localized, message: "recover-copy-error".localized)
     }
 }
 
@@ -474,18 +474,18 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
         switch error {
         case .alreadyExist:
             AppDelegate.shared?.bannerController.presentErrorBanner(
-                "title-error".localized,
-                "recover-from-seed-verify-exist-error".localized
+                title: "title-error".localized,
+                message: "recover-from-seed-verify-exist-error".localized
             )
         case .invalid:
             AppDelegate.shared?.bannerController.presentErrorBanner(
-                "passphrase-verify-invalid-title".localized,
-                "pass-phrase-verify-invalid-passphrase".localized
+                title: "passphrase-verify-invalid-title".localized,
+                message: "pass-phrase-verify-invalid-passphrase".localized
             )
         case .sdk:
             AppDelegate.shared?.bannerController.presentErrorBanner(
-                "title-error".localized,
-                "pass-phrase-verify-sdk-error".localized
+                title: "title-error".localized,
+                message: "pass-phrase-verify-sdk-error".localized
             )
         }
     }

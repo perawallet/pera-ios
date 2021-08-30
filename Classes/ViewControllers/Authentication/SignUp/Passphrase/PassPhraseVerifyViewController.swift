@@ -76,7 +76,10 @@ extension PassphraseVerifyViewController: PassphraseVerifyDataSourceDelegate {
 
         if !isValidated {
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            AppDelegate.shared?.bannerController.presentErrorBanner("title-error".localized, "passphrase-verify-wrong-message".localized)
+            AppDelegate.shared?.bannerController.presentErrorBanner(
+                title: "title-error".localized,
+                message: "passphrase-verify-wrong-message".localized
+            )
             dataSource.resetVerificationData()
             passphraseVerifyView.resetSelectionStatesAndReloadData()
         }

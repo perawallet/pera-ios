@@ -73,7 +73,7 @@ extension LedgerAccountFetchOperation {
 
         guard let address = parseAddress(from: data) else {
             AppDelegate.shared?.bannerController.presentErrorBanner(
-                "ble-error-transmission-title".localized, "ble-error-fail-fetch-account-address".localized
+                title: "ble-error-transmission-title".localized, message: "ble-error-fail-fetch-account-address".localized
             )
             reset()
             delegate?.ledgerAccountFetchOperation(self, didFailed: .failedToFetchAddress)
@@ -117,7 +117,10 @@ extension LedgerAccountFetchOperation {
                         self.ledgerAccounts.append(account)
                     }
                 } else {
-                    AppDelegate.shared?.bannerController.presentErrorBanner("title-error".localized, "ledger-account-fetct-error".localized)
+                    AppDelegate.shared?.bannerController.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "ledger-account-fetct-error".localized
+                    )
                 }
                 self.returnAccounts()
             }

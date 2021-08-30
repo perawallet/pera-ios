@@ -24,7 +24,7 @@ struct BannerErrorViewModel: BannerViewModel {
     private(set) var title: EditText?
     private(set) var message: EditText?
 
-    init(_ someTitle: String, _ someMessage: String, _ someIcon: Image) {
+    init(someTitle: String, someMessage: String, someIcon: Image) {
         bind(someTitle, someMessage, someIcon)
     }
 

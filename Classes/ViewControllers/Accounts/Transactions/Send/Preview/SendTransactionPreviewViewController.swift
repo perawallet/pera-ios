@@ -259,8 +259,8 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
 
         if isClosingToSameAccount() {
             AppDelegate.shared?.bannerController.presentErrorBanner(
-                "title-error".localized,
-                "send-transaction-max-same-account-error".localized
+                title: "title-error".localized,
+                message: "send-transaction-max-same-account-error".localized
             )
             return
         }
@@ -425,19 +425,19 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
         switch transactionError {
         case let .minimumAmount(amount):
             AppDelegate.shared?.bannerController.presentErrorBanner(
-                "asset-min-transaction-error-title".localized,
-                "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toAlgosStringForLabel ?? ""
+                title: "asset-min-transaction-error-title".localized,
+                message: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toAlgosStringForLabel ?? ""
                 )
             )
         case .invalidAddress:
             AppDelegate.shared?.bannerController.presentErrorBanner(
-                "title-error".localized,
-                "send-algos-receiver-address-validation".localized
+                title: "title-error".localized,
+                message: "send-algos-receiver-address-validation".localized
             )
         case let .sdkError(error):
             AppDelegate.shared?.bannerController.presentErrorBanner(
-                "title-error".localized,
-                error.debugDescription
+                title: "title-error".localized,
+                message: error.debugDescription
             )
         default:
             displaySimpleAlertWith(
