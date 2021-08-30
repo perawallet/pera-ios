@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private lazy var api = AlgorandAPI(session: session, base: "")
     private lazy var session = Session()
     private lazy var walletConnector = WalletConnector()
-    private lazy var loadingController = BlockingLoadingController(presentingView: window ?? UIWindow())
+    private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window ?? UIWindow())
     private lazy var appConfiguration = AppConfiguration(
         api: api,
         session: session,
@@ -129,7 +129,7 @@ extension AppDelegate {
 
     private func setupWindow() {
         window = UIWindow(frame: UIScreen.main.bounds)
-        self.rootViewController = RootViewController(appConfiguration: appConfiguration)
+        rootViewController = RootViewController(appConfiguration: appConfiguration)
         window?.rootViewController = rootViewController
         window?.backgroundColor = .clear
         window?.makeKeyAndVisible()

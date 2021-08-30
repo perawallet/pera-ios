@@ -21,9 +21,9 @@ final class LedgerAccountDetailViewDataSource: NSObject {
     weak var delegate: LedgerAccountDetailViewDataSourceDelegate?
 
     private let api: AlgorandAPI
-    private let loadingController: BlockingLoadingController?
+    private let loadingController: LoadingController?
 
-    init(api: AlgorandAPI, loadingController: BlockingLoadingController?) {
+    init(api: AlgorandAPI, loadingController: LoadingController?) {
         self.api = api
         self.loadingController = loadingController
         super.init()

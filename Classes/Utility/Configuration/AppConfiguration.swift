@@ -21,13 +21,13 @@ final class AppConfiguration {
     let api: AlgorandAPI
     let session: Session
     let walletConnector: WalletConnector
-    let loadingController: BlockingLoadingController
+    let loadingController: LoadingController
     
     init(
         api: AlgorandAPI,
         session: Session,
         walletConnector: WalletConnector,
-        loadingController: BlockingLoadingController
+        loadingController: LoadingController
     ) {
         self.api = api
         self.session = session

@@ -154,7 +154,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
     private func launchHome(with account: AccountInformation) {
         loadingController?.startLoadingWithMessage("title-loading".localized)
         accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            self.loadingController?.stopLoadingAfter(seconds: 1) {
+            self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
                 switch self.accountSetupFlow {
                 case .initializeAccount:
                     DispatchQueue.main.async {

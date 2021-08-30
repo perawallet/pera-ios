@@ -174,7 +174,7 @@ class AccountsViewController: BaseViewController {
 
         loadingController?.startLoadingWithMessage("title-loading".localized)
         accountManager.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            self.loadingController?.stopLoadingAfter(seconds: 1) {
+            self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
                 self.accountsView.accountsCollectionView.reloadData()
                 self.setAccountsCollectionViewContentState(isInitialEmptyStateIncluded: true)
             }

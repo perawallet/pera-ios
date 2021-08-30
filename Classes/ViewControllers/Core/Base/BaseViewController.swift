@@ -246,7 +246,7 @@ extension BaseViewController {
         return configuration.walletConnector
     }
 
-    var loadingController: BlockingLoadingController? {
+    var loadingController: LoadingController? {
         return configuration.loadingController
     }
 }

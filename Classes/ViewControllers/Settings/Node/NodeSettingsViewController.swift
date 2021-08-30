@@ -118,7 +118,7 @@ extension NodeSettingsViewController {
                 if isCompleted {
                     self.switchNetwork(for: selectedNode, at: indexPath)
                 } else {
-                    self.loadingController?.stopLoadingAfter(seconds: 1) {
+                    self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
                         self.setActionsEnabled(true)
                     }
                 }
@@ -135,7 +135,7 @@ extension NodeSettingsViewController {
         }
         
         UIApplication.shared.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            self.loadingController?.stopLoadingAfter(seconds: 1) {
+            self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
                 self.setActionsEnabled(true)
                 self.setSelected(at: indexPath, in: self.nodeSettingsView.collectionView)
             }
