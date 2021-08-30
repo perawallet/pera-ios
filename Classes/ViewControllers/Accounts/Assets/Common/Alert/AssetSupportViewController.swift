@@ -98,4 +98,8 @@ extension AssetSupportViewController: AssetSupportViewDelegate {
     func assetSupportViewDidTapOKButton(_ assetSupportView: AssetSupportView) {
         dismissScreen()
     }
+
+    func presentInfoBanner(_ view: AssetSupportView, title: String) {
+        bannerController?.presentInfoBanner(title)
+    }
 }

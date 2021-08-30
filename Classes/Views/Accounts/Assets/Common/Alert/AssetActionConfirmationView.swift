@@ -17,8 +17,7 @@
 
 import UIKit
 
-class AssetActionConfirmationView: BaseView {
-    
+class AssetActionConfirmationView: BaseView, AssetDisplayViewDelegate {
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: AssetActionConfirmationViewDelegate?
@@ -63,6 +62,8 @@ class AssetActionConfirmationView: BaseView {
     }
     
     override func setListeners() {
+        assetDisplayView.delegate = self
+        
         actionButton.addTarget(self, action: #selector(notifyDelegateToHandleAction), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(notifyDelegateToCancelScreen), for: .touchUpInside)
     }
@@ -163,4 +164,11 @@ extension AssetActionConfirmationView {
 protocol AssetActionConfirmationViewDelegate: AnyObject {
     func assetActionConfirmationViewDidTapActionButton(_ assetActionConfirmationView: AssetActionConfirmationView)
     func assetActionConfirmationViewDidTapCancelButton(_ assetActionConfirmationView: AssetActionConfirmationView)
+    func presentInfoBanner(_ view: AssetActionConfirmationView, title: String)
+}
+
+extension AssetActionConfirmationView {
+    func presentInfoBanner(_ view: AssetDisplayView, title: String) {
+        delegate?.presentInfoBanner(self, title: title)
+    }
 }

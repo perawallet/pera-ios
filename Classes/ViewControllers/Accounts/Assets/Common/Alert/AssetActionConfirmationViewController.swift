@@ -108,6 +108,10 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
     func assetActionConfirmationViewDidTapCancelButton(_ assetActionConfirmationView: AssetActionConfirmationView) {
         dismissScreen()
     }
+
+    func presentInfoBanner(_ view: AssetActionConfirmationView, title: String) {
+        bannerController?.presentInfoBanner(title)
+    }
 }
 
 protocol AssetActionConfirmationViewControllerDelegate: AnyObject {

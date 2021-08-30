@@ -25,7 +25,7 @@ class LedgerAccountVerificationViewController: BaseScrollViewController {
 
     private lazy var addButton = MainButton(title: "ledger-verified-add".localized)
 
-    private lazy var ledgerAccountVerificationOperation = LedgerAccountVerifyOperation()
+    private lazy var ledgerAccountVerificationOperation = LedgerAccountVerifyOperation(bannerController: bannerController)
     private lazy var dataController = LedgerAccountVerificationDataController(accounts: selectedAccounts)
 
     private var currentVerificationStatusView: LedgerAccountVerificationStatusView?

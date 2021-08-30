@@ -40,7 +40,10 @@ class LedgerAccountVerifyOperation: LedgerOperation, BLEConnectionManagerDelegat
 
     private var ledgerDetail: LedgerDetail?
 
-    init() {
+    private let bannerController: BannerController?
+
+    init(bannerController: BannerController?) {
+        self.bannerController = bannerController
         bleConnectionManager.delegate = self
         ledgerBleController.delegate = self
     }
@@ -72,7 +75,7 @@ extension LedgerAccountVerifyOperation {
         }
 
         guard let address = parseAddress(from: data) else {
-            AppDelegate.shared?.appConfiguration.bannerController.presentErrorBanner(
+           bannerController?.presentErrorBanner(
                 title: "ble-error-transmission-title".localized,
                 message: "ble-error-fail-fetch-account-address".localized
             )

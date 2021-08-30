@@ -17,8 +17,7 @@
 
 import UIKit
 
-class AssetSupportView: BaseView {
-    
+class AssetSupportView: BaseView, AssetDisplayViewDelegate {
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: AssetSupportViewDelegate?
@@ -49,6 +48,8 @@ class AssetSupportView: BaseView {
     }
     
     override func setListeners() {
+        assetDisplayView.delegate = self
+
         okButton.addTarget(self, action: #selector(notifyDelegateToCloseScreen), for: .touchUpInside)
     }
     
@@ -133,4 +134,11 @@ extension AssetSupportView {
 
 protocol AssetSupportViewDelegate: AnyObject {
     func assetSupportViewDidTapOKButton(_ assetSupportView: AssetSupportView)
+    func presentInfoBanner(_ view: AssetSupportView, title: String)
+}
+
+extension AssetSupportView {
+    func presentInfoBanner(_ view: AssetDisplayView, title: String) {
+        delegate?.presentInfoBanner(self, title: title)
+    }
 }

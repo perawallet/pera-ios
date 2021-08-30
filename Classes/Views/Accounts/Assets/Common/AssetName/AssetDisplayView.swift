@@ -61,6 +61,8 @@ class AssetDisplayView: BaseView {
             .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
             .withTextColor(Colors.Text.primary)
     }()
+
+    weak var delegate: AssetDisplayViewDelegate?
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -103,7 +105,7 @@ class AssetDisplayView: BaseView {
 extension AssetDisplayView {
     @objc
     private func didTapCopyButton() {
-        AppDelegate.shared?.appConfiguration.bannerController.presentInfoBanner("asset-id-copied-title".localized)
+        delegate?.presentInfoBanner(self, title: "asset-id-copied-title".localized)
         UIPasteboard.general.string = assetIndexLabel.text
     }
 }
@@ -198,4 +200,8 @@ extension AssetDisplayView {
         let verticalInset: CGFloat = 20.0
         let imageSize = CGSize(width: 20.0, height: 20.0)
     }
+}
+
+protocol AssetDisplayViewDelegate: AnyObject {
+    func presentInfoBanner(_ view: AssetDisplayView, title: String)
 }
