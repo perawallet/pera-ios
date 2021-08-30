@@ -52,10 +52,10 @@ extension AppColors.Shared {
 }
 
 extension AppColors.Components {
-    enum Text {
-        case main
-        case gray
-        case grayLighter
+    enum Text: String, Color {
+        case main = "Components/Text/main"
+        case gray = "Components/Text/gray"
+        case grayLighter = "Components/Text/grayLighter"
     }
 }
 
