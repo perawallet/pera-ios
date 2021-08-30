@@ -90,6 +90,18 @@
 		<string>PublicSans-SemiBoldItalic.ttf</string>
 		<string>PublicSans-Thin.ttf</string>
 		<string>PublicSans-ThinItalic.ttf</string>
+		<string>DMMono-Italic.ttf</string>
+		<string>DMMono-Light.ttf</string>
+		<string>DMMono-LightItalic.ttf</string>
+		<string>DMMono-Medium.ttf</string>
+		<string>DMMono-MediumItalic.ttf</string>
+		<string>DMMono-Regular.ttf</string>
+		<string>DMSans-Bold.ttf</string>
+		<string>DMSans-BoldItalic.ttf</string>
+		<string>DMSans-Italic.ttf</string>
+		<string>DMSans-Medium.ttf</string>
+		<string>DMSans-MediumItalic.ttf</string>
+		<string>DMSans-Regular.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
