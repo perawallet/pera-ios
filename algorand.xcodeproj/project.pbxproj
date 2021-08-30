@@ -2617,6 +2617,45 @@
 		D4CC46EA26DD099000AA1BFE /* AppColors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46E926DD099000AA1BFE /* AppColors.xcassets */; };
 		D4CC46EB26DD099000AA1BFE /* AppColors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46E926DD099000AA1BFE /* AppColors.xcassets */; };
 		D4CC46EC26DD099000AA1BFE /* AppColors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46E926DD099000AA1BFE /* AppColors.xcassets */; };
+		D4CC46F026DD17DD00AA1BFE /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46EF26DD17DD00AA1BFE /* Fonts.swift */; };
+		D4CC46F126DD17DD00AA1BFE /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46EF26DD17DD00AA1BFE /* Fonts.swift */; };
+		D4CC46F226DD17DD00AA1BFE /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46EF26DD17DD00AA1BFE /* Fonts.swift */; };
+		D4CC46FC26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
+		D4CC46FD26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
+		D4CC46FE26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */; };
+		D4CC46FF26DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F726DD18D700AA1BFE /* DMMono-Italic.ttf */; };
+		D4CC470026DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F726DD18D700AA1BFE /* DMMono-Italic.ttf */; };
+		D4CC470126DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F726DD18D700AA1BFE /* DMMono-Italic.ttf */; };
+		D4CC470226DD18D800AA1BFE /* DMMono-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F826DD18D800AA1BFE /* DMMono-LightItalic.ttf */; };
+		D4CC470326DD18D800AA1BFE /* DMMono-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F826DD18D800AA1BFE /* DMMono-LightItalic.ttf */; };
+		D4CC470426DD18D800AA1BFE /* DMMono-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F826DD18D800AA1BFE /* DMMono-LightItalic.ttf */; };
+		D4CC470526DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F926DD18D800AA1BFE /* DMMono-MediumItalic.ttf */; };
+		D4CC470626DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F926DD18D800AA1BFE /* DMMono-MediumItalic.ttf */; };
+		D4CC470726DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F926DD18D800AA1BFE /* DMMono-MediumItalic.ttf */; };
+		D4CC470826DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46FA26DD18D800AA1BFE /* DMMono-Medium.ttf */; };
+		D4CC470926DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46FA26DD18D800AA1BFE /* DMMono-Medium.ttf */; };
+		D4CC470A26DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46FA26DD18D800AA1BFE /* DMMono-Medium.ttf */; };
+		D4CC470B26DD18D800AA1BFE /* DMMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46FB26DD18D800AA1BFE /* DMMono-Regular.ttf */; };
+		D4CC470C26DD18D800AA1BFE /* DMMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46FB26DD18D800AA1BFE /* DMMono-Regular.ttf */; };
+		D4CC470D26DD18D800AA1BFE /* DMMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46FB26DD18D800AA1BFE /* DMMono-Regular.ttf */; };
+		D4CC471426DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC470E26DD18E600AA1BFE /* DMSans-BoldItalic.ttf */; };
+		D4CC471526DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC470E26DD18E600AA1BFE /* DMSans-BoldItalic.ttf */; };
+		D4CC471626DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC470E26DD18E600AA1BFE /* DMSans-BoldItalic.ttf */; };
+		D4CC471726DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC470F26DD18E700AA1BFE /* DMSans-MediumItalic.ttf */; };
+		D4CC471826DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC470F26DD18E700AA1BFE /* DMSans-MediumItalic.ttf */; };
+		D4CC471926DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC470F26DD18E700AA1BFE /* DMSans-MediumItalic.ttf */; };
+		D4CC471A26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471026DD18E700AA1BFE /* DMSans-Regular.ttf */; };
+		D4CC471B26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471026DD18E700AA1BFE /* DMSans-Regular.ttf */; };
+		D4CC471C26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471026DD18E700AA1BFE /* DMSans-Regular.ttf */; };
+		D4CC471D26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */; };
+		D4CC471E26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */; };
+		D4CC471F26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */; };
+		D4CC472026DD18E900AA1BFE /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471226DD18E800AA1BFE /* DMSans-Bold.ttf */; };
+		D4CC472126DD18E900AA1BFE /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471226DD18E800AA1BFE /* DMSans-Bold.ttf */; };
+		D4CC472226DD18E900AA1BFE /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471226DD18E800AA1BFE /* DMSans-Bold.ttf */; };
+		D4CC472326DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471326DD18E900AA1BFE /* DMSans-Medium.ttf */; };
+		D4CC472426DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471326DD18E900AA1BFE /* DMSans-Medium.ttf */; };
+		D4CC472526DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471326DD18E900AA1BFE /* DMSans-Medium.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3560,6 +3599,19 @@
 		D421178F26D8EDF400C032B2 /* ViewLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLoadingIndicator.swift; sourceTree = "<group>"; };
 		D4CC46E526DCF80E00AA1BFE /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		D4CC46E926DD099000AA1BFE /* AppColors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppColors.xcassets; sourceTree = "<group>"; };
+		D4CC46EF26DD17DD00AA1BFE /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
+		D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Light.ttf"; sourceTree = "<group>"; };
+		D4CC46F726DD18D700AA1BFE /* DMMono-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Italic.ttf"; sourceTree = "<group>"; };
+		D4CC46F826DD18D800AA1BFE /* DMMono-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-LightItalic.ttf"; sourceTree = "<group>"; };
+		D4CC46F926DD18D800AA1BFE /* DMMono-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-MediumItalic.ttf"; sourceTree = "<group>"; };
+		D4CC46FA26DD18D800AA1BFE /* DMMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Medium.ttf"; sourceTree = "<group>"; };
+		D4CC46FB26DD18D800AA1BFE /* DMMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Regular.ttf"; sourceTree = "<group>"; };
+		D4CC470E26DD18E600AA1BFE /* DMSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-BoldItalic.ttf"; sourceTree = "<group>"; };
+		D4CC470F26DD18E700AA1BFE /* DMSans-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-MediumItalic.ttf"; sourceTree = "<group>"; };
+		D4CC471026DD18E700AA1BFE /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
+		D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Italic.ttf"; sourceTree = "<group>"; };
+		D4CC471226DD18E800AA1BFE /* DMSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Bold.ttf"; sourceTree = "<group>"; };
+		D4CC471326DD18E900AA1BFE /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
 		EC9412FF22BD6D4C00745662 /* Info-Demo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Demo.plist"; sourceTree = "<group>"; };
 		EFAFF961ADA8DD7AFE65EB88 /* Pods_algorand_prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand_prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7B9432C7341B69AC9550A3A /* Pods-algorand-staging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.debug.xcconfig"; path = "Target Support Files/Pods-algorand-staging/Pods-algorand-staging.debug.xcconfig"; sourceTree = "<group>"; };
@@ -6682,7 +6734,7 @@
 		2B8BE4FB2239392C005D8565 /* Styling */ = {
 			isa = PBXGroup;
 			children = (
-				2B8AD0482244F81500939ECE /* Colors */,
+				D4CC46F526DD182600AA1BFE /* Resources */,
 				2B8BE4FC22393954005D8565 /* Core */,
 			);
 			path = Styling;
@@ -9654,6 +9706,51 @@
 			path = LoadingIndicators;
 			sourceTree = "<group>";
 		};
+		D4CC46EE26DD17D100AA1BFE /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				D4CC46F426DD17FB00AA1BFE /* DMMono */,
+				D4CC46F326DD17F600AA1BFE /* DMSans */,
+				D4CC46EF26DD17DD00AA1BFE /* Fonts.swift */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		D4CC46F326DD17F600AA1BFE /* DMSans */ = {
+			isa = PBXGroup;
+			children = (
+				D4CC471226DD18E800AA1BFE /* DMSans-Bold.ttf */,
+				D4CC470E26DD18E600AA1BFE /* DMSans-BoldItalic.ttf */,
+				D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */,
+				D4CC471326DD18E900AA1BFE /* DMSans-Medium.ttf */,
+				D4CC470F26DD18E700AA1BFE /* DMSans-MediumItalic.ttf */,
+				D4CC471026DD18E700AA1BFE /* DMSans-Regular.ttf */,
+			);
+			path = DMSans;
+			sourceTree = "<group>";
+		};
+		D4CC46F426DD17FB00AA1BFE /* DMMono */ = {
+			isa = PBXGroup;
+			children = (
+				D4CC46F726DD18D700AA1BFE /* DMMono-Italic.ttf */,
+				D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */,
+				D4CC46F826DD18D800AA1BFE /* DMMono-LightItalic.ttf */,
+				D4CC46FA26DD18D800AA1BFE /* DMMono-Medium.ttf */,
+				D4CC46F926DD18D800AA1BFE /* DMMono-MediumItalic.ttf */,
+				D4CC46FB26DD18D800AA1BFE /* DMMono-Regular.ttf */,
+			);
+			path = DMMono;
+			sourceTree = "<group>";
+		};
+		D4CC46F526DD182600AA1BFE /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2B8AD0482244F81500939ECE /* Colors */,
+				D4CC46EE26DD17D100AA1BFE /* Fonts */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		EC59E2CE8B21B82B62B16954 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -9828,10 +9925,14 @@
 				2B95420725B07FCC0098805B /* RekeyedAccountInformation.json in Resources */,
 				2B9541B525AF161C0098805B /* TransactionParams.json in Resources */,
 				2B03D6EA25CBD4B80079A973 /* lock_animation.json in Resources */,
+				D4CC470A26DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */,
 				2B9541E525AF217F0098805B /* AccountInformationB.json in Resources */,
 				2B9540FB25A8617B0098805B /* AccountB.json in Resources */,
 				2B516180243F739D006DEA54 /* PublicSans-BoldItalic.ttf in Resources */,
+				D4CC470D26DD18D800AA1BFE /* DMMono-Regular.ttf in Resources */,
+				D4CC470426DD18D800AA1BFE /* DMMono-LightItalic.ttf in Resources */,
 				2B51617E243F739D006DEA54 /* PublicSans-Light.ttf in Resources */,
+				D4CC472226DD18E900AA1BFE /* DMSans-Bold.ttf in Resources */,
 				2B95421925B07FDF0098805B /* LedgerAccount.json in Resources */,
 				17BD4F192292F1260003E49A /* GoogleService-Info.plist in Resources */,
 				2B95410125A861810098805B /* TurkishLiraAsset.json in Resources */,
@@ -9841,6 +9942,8 @@
 				2BF811F925E7AD1E00D6B406 /* account_animation.json in Resources */,
 				2BDE962025E93B6100FAA4FB /* account_animation_dark.json in Resources */,
 				2B51618A243F739D006DEA54 /* PublicSans-MediumItalic.ttf in Resources */,
+				D4CC471926DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */,
+				D4CC471626DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */,
 				2B51616E243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */,
 				95E31530243234A4008D79D4 /* bluetooth_animation.json in Resources */,
 				2B9541D325AF1B8F0098805B /* Payment.json in Resources */,
@@ -9848,6 +9951,7 @@
 				2B516190243F739D006DEA54 /* PublicSans-SemiBoldItalic.ttf in Resources */,
 				2B03D6FA25CBD4C50079A973 /* shield_animation.json in Resources */,
 				2B516184243F739D006DEA54 /* PublicSans-LightItalic.ttf in Resources */,
+				D4CC472526DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */,
 				2B9541CB25AF16BD0098805B /* AlgoTransaction.json in Resources */,
 				2B516186243F739D006DEA54 /* PublicSans-ExtraBoldItalic.ttf in Resources */,
 				2BA8490B2620A2E3007A75CA /* recover_animation_dark.json in Resources */,
@@ -9862,6 +9966,7 @@
 				2B51617A243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */,
 				2B9541DE25AF21730098805B /* AccountInformationA.json in Resources */,
 				2B95411625A89C9D0098805B /* NotificationMessage.json in Resources */,
+				D4CC471F26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */,
 				2B98844425B8804D004532CE /* Asset.json in Resources */,
 				2B7747942600D6B80083EFFA /* local_auth_animation.json in Resources */,
 				2B95410025A8617E0098805B /* HipoCoinAsset.json in Resources */,
@@ -9869,6 +9974,7 @@
 				2B9540F625A861770098805B /* AccountA.json in Resources */,
 				2B77479D26012E670083EFFA /* mnemonics.txt in Resources */,
 				2B516159243CE5DD006DEA54 /* Colors.xcassets in Resources */,
+				D4CC46FE26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */,
 				2B51617C243F739D006DEA54 /* PublicSans-ExtraBold.ttf in Resources */,
 				2B03D6E225CBD4B20079A973 /* transfer_animation.json in Resources */,
 				2B516172243F739D006DEA54 /* PublicSans-ExtraLight.ttf in Resources */,
@@ -9878,9 +9984,12 @@
 				2B77478C2600D6B10083EFFA /* watch_animation.json in Resources */,
 				2BA8490E2620A2E3007A75CA /* recover_animation_light.json in Resources */,
 				2B516170243F739D006DEA54 /* PublicSans-BlackItalic.ttf in Resources */,
+				D4CC470126DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
 				2B03D6F225CBD4BE0079A973 /* pen_animation.json in Resources */,
+				D4CC471C26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */,
 				17BD4F1D2292F1260003E49A /* Assets.xcassets in Resources */,
 				2B51618C243F739D006DEA54 /* PublicSans-ThinItalic.ttf in Resources */,
+				D4CC470726DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */,
 				2B4E85AE260A6A8900FC04BB /* ledger_animation.json in Resources */,
 				2B9541FC25B07E160098805B /* LedgerDetail.json in Resources */,
 			);
@@ -9891,12 +10000,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BA8490D2620A2E3007A75CA /* recover_animation_light.json in Resources */,
+				D4CC470C26DD18D800AA1BFE /* DMMono-Regular.ttf in Resources */,
 				D4CC46EB26DD099000AA1BFE /* AppColors.xcassets in Resources */,
 				2B77478B2600D6B10083EFFA /* watch_animation.json in Resources */,
 				2B0F632D24EC129D00DA22A6 /* LoadingAnimation.json in Resources */,
 				2B0F632E24EC129D00DA22A6 /* PublicSans-Regular.ttf in Resources */,
 				2B0F632F24EC129D00DA22A6 /* images in Resources */,
 				2B0F633024EC129D00DA22A6 /* PublicSans-BoldItalic.ttf in Resources */,
+				D4CC470926DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */,
 				2B0F633124EC129D00DA22A6 /* PublicSans-Light.ttf in Resources */,
 				2B0F633224EC129D00DA22A6 /* GoogleService-Info.plist in Resources */,
 				2B0F633324EC129D00DA22A6 /* PublicSans-Black.ttf in Resources */,
@@ -9908,13 +10019,17 @@
 				2B0F633824EC129D00DA22A6 /* PublicSans-SemiBoldItalic.ttf in Resources */,
 				2B03D6E925CBD4B80079A973 /* lock_animation.json in Resources */,
 				2B0F633924EC129D00DA22A6 /* PublicSans-LightItalic.ttf in Resources */,
+				D4CC470026DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
 				2B03D6F925CBD4C50079A973 /* shield_animation.json in Resources */,
 				2B0F633A24EC129D00DA22A6 /* PublicSans-ExtraBoldItalic.ttf in Resources */,
 				2B0F633B24EC129D00DA22A6 /* LaunchScreen.storyboard in Resources */,
 				2BA8490A2620A2E3007A75CA /* recover_animation_dark.json in Resources */,
+				D4CC472426DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */,
+				D4CC471526DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */,
 				2B03D6E125CBD4B20079A973 /* transfer_animation.json in Resources */,
 				2B77479C26012E670083EFFA /* mnemonics.txt in Resources */,
 				2B0F633C24EC129D00DA22A6 /* PublicSans-Thin.ttf in Resources */,
+				D4CC471B26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */,
 				2B6811E025345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B0F633D24EC129D00DA22A6 /* PublicSans-Bold.ttf in Resources */,
 				2B03D6F125CBD4BE0079A973 /* pen_animation.json in Resources */,
@@ -9927,9 +10042,15 @@
 				2B0F634224EC129D00DA22A6 /* PublicSans-ExtraLightItalic.ttf in Resources */,
 				2B0F634324EC129D00DA22A6 /* Localizable.strings in Resources */,
 				2B0F634424EC129D00DA22A6 /* PublicSans-BlackItalic.ttf in Resources */,
+				D4CC471E26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */,
+				D4CC472126DD18E900AA1BFE /* DMSans-Bold.ttf in Resources */,
+				D4CC470326DD18D800AA1BFE /* DMMono-LightItalic.ttf in Resources */,
 				2B0F634524EC129D00DA22A6 /* Assets.xcassets in Resources */,
 				2BDE961F25E93B6100FAA4FB /* account_animation_dark.json in Resources */,
+				D4CC470626DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */,
+				D4CC471826DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */,
 				2B0F634624EC129D00DA22A6 /* PublicSans-ThinItalic.ttf in Resources */,
+				D4CC46FD26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -9938,12 +10059,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BA8490C2620A2E3007A75CA /* recover_animation_light.json in Resources */,
+				D4CC470B26DD18D800AA1BFE /* DMMono-Regular.ttf in Resources */,
 				D4CC46EA26DD099000AA1BFE /* AppColors.xcassets in Resources */,
 				2B77478A2600D6B10083EFFA /* watch_animation.json in Resources */,
 				2BFBAB72227B349E008BBB31 /* LoadingAnimation.json in Resources */,
 				2B516173243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */,
 				2BFBAB75227B35B7008BBB31 /* images in Resources */,
 				2B51617F243F739D006DEA54 /* PublicSans-BoldItalic.ttf in Resources */,
+				D4CC470826DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */,
 				2B51617D243F739D006DEA54 /* PublicSans-Light.ttf in Resources */,
 				2B09603822578C990005BE27 /* GoogleService-Info.plist in Resources */,
 				2B516187243F739D006DEA54 /* PublicSans-Black.ttf in Resources */,
@@ -9955,13 +10078,17 @@
 				2B51618F243F739D006DEA54 /* PublicSans-SemiBoldItalic.ttf in Resources */,
 				2B03D6E825CBD4B80079A973 /* lock_animation.json in Resources */,
 				2B516183243F739D006DEA54 /* PublicSans-LightItalic.ttf in Resources */,
+				D4CC46FF26DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
 				2B03D6F825CBD4C50079A973 /* shield_animation.json in Resources */,
 				2B516185243F739D006DEA54 /* PublicSans-ExtraBoldItalic.ttf in Resources */,
 				2B8BE4DC22391C3B005D8565 /* LaunchScreen.storyboard in Resources */,
 				2BA849092620A2E3007A75CA /* recover_animation_dark.json in Resources */,
+				D4CC472326DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */,
+				D4CC471426DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */,
 				2B03D6E025CBD4B20079A973 /* transfer_animation.json in Resources */,
 				2B77479B26012E670083EFFA /* mnemonics.txt in Resources */,
 				2B51618D243F739D006DEA54 /* PublicSans-Thin.ttf in Resources */,
+				D4CC471A26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */,
 				2B6811DF25345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B516179243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */,
 				2B03D6F025CBD4BE0079A973 /* pen_animation.json in Resources */,
@@ -9974,9 +10101,15 @@
 				2B516177243F739D006DEA54 /* PublicSans-ExtraLightItalic.ttf in Resources */,
 				2BF34CC9223AA63D0052CAD3 /* Localizable.strings in Resources */,
 				2B51616F243F739D006DEA54 /* PublicSans-BlackItalic.ttf in Resources */,
+				D4CC471D26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */,
+				D4CC472026DD18E900AA1BFE /* DMSans-Bold.ttf in Resources */,
+				D4CC470226DD18D800AA1BFE /* DMMono-LightItalic.ttf in Resources */,
 				2B8BE4D922391C3B005D8565 /* Assets.xcassets in Resources */,
 				2BDE961E25E93B6100FAA4FB /* account_animation_dark.json in Resources */,
+				D4CC470526DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */,
+				D4CC471726DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */,
 				2B51618B243F739D006DEA54 /* PublicSans-ThinItalic.ttf in Resources */,
+				D4CC46FC26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10421,6 +10554,7 @@
 				17BD4E272292F1260003E49A /* DBStorable.swift in Sources */,
 				2BED6575266FA23800EC089B /* WalletConnectRequestHandler.swift in Sources */,
 				2B4BDA11238CA1BD00491149 /* AssetSupportViewModel.swift in Sources */,
+				D4CC46F226DD17DD00AA1BFE /* Fonts.swift in Sources */,
 				2B7E580E257E56BE00731C97 /* Int+Byte.swift in Sources */,
 				17BD4E282292F1260003E49A /* CardModalAnimator.swift in Sources */,
 				2B298D1824F47FCF0047408A /* LedgerAccountNameViewModel.swift in Sources */,
@@ -11233,6 +11367,7 @@
 				2B0F61AD24EC129D00DA22A6 /* NotificationMessage.swift in Sources */,
 				2BED6574266FA23700EC089B /* WalletConnectRequestHandler.swift in Sources */,
 				2B0F61AE24EC129D00DA22A6 /* AccountRecoverViewController.swift in Sources */,
+				D4CC46F126DD17DD00AA1BFE /* Fonts.swift in Sources */,
 				2B0F61AF24EC129D00DA22A6 /* LedgerTroubleshootInstallAppViewController.swift in Sources */,
 				2B0F61B024EC129D00DA22A6 /* AccountNameSetupViewController.swift in Sources */,
 				2B57D8FE25587FDF006E6FCE /* SendTabEvent.swift in Sources */,
@@ -12045,6 +12180,7 @@
 				2BE937442464B01D00322C1E /* TransactionTitleInformationView.swift in Sources */,
 				2BF53163224A478E00A7455F /* CardModalAnimator.swift in Sources */,
 				2B5DA9CC224CB4AA00EE41B4 /* OptionsContextView.swift in Sources */,
+				D4CC46F026DD17DD00AA1BFE /* Fonts.swift in Sources */,
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2B7E580C257E56BE00731C97 /* Int+Byte.swift in Sources */,
 				2BF53155224A468400A7455F /* ModalPresentable.swift in Sources */,

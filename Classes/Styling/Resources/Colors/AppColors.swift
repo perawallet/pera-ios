@@ -18,7 +18,8 @@
 import Foundation
 import Macaroon
 
-enum AppColors { // This naming is temporary to not coincide with current `Colors`
+/// <note>  This naming is temporary to not coincide with current `Colors` file.
+enum AppColors {
     enum Shared {}
     enum Components {}
 }
