@@ -27,7 +27,10 @@ class RootViewController: UIViewController {
         return statusBarStyleForNetwork(isTestNet: appConfiguration.api.isTestNet)
     }
     
-    private lazy var pushNotificationController = PushNotificationController(api: appConfiguration.api)
+    private lazy var pushNotificationController = PushNotificationController(
+        api: appConfiguration.api,
+        bannerController: appConfiguration.bannerController
+    )
     
     lazy var statusBarView: UIView = {
         let view = UIView()

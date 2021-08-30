@@ -221,7 +221,7 @@ extension AssetCardDisplayViewController: AssetCardCellDelegate {
               let assetDetail = account.assetDetails[safe: index - 1] else {
             return
         }
-        AppDelegate.shared?.bannerController.presentInfoBanner("asset-id-copied-title".localized)
+        bannerController?.presentInfoBanner("asset-id-copied-title".localized)
         UIPasteboard.general.string = "\(assetDetail.id)"
     }
 }

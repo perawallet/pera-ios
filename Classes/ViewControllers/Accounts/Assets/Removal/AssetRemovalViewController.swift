@@ -48,7 +48,7 @@ final class AssetRemovalViewController: BaseViewController {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return TransactionController(api: api)
+        return TransactionController(api: api, bannerController: bannerController)
     }()
     
     weak var delegate: AssetRemovalViewControllerDelegate?
@@ -303,19 +303,19 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
                 message: "asset-min-transaction-error-message".localized(
                     params: amount.toAlgos.toAlgosStringForLabel ?? ""
                 )
             )
         case .invalidAddress:
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: "send-algos-receiver-address-validation".localized
             )
         case let .sdkError(error):
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: error.debugDescription
             )
@@ -328,9 +328,9 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
         loadingController?.stopLoading()
         switch error {
         case let .network(apiError):
-            AppDelegate.shared?.bannerController.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+            bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
         default:
-            AppDelegate.shared?.bannerController.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+            bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
         }
     }
     

@@ -74,7 +74,7 @@ class AccountsViewController: BaseViewController {
         guard let api = api else {
             fatalError("Api must be set before accessing this view controller.")
         }
-        return PushNotificationController(api: api)
+        return PushNotificationController(api: api, bannerController: bannerController)
     }()
 
     private lazy var accountManager: AccountManager = {
@@ -450,7 +450,7 @@ extension AccountsViewController: WalletConnectorDelegate {
     ) {
         guard let accounts = self.session?.accounts,
               accounts.contains(where: { $0.type != .watch }) else {
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: "wallet-connect-session-error-no-account".localized
             )

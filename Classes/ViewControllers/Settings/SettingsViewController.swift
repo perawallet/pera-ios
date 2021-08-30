@@ -35,7 +35,7 @@ class SettingsViewController: BaseViewController {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return PushNotificationController(api: api)
+        return PushNotificationController(api: api, bannerController: bannerController)
     }()
     
     private lazy var settings: [[GeneralSettings]] = [securitySettings, preferenceSettings, appSettings, developerSettings]

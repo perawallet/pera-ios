@@ -62,7 +62,7 @@ class WCMainTransactionViewController: BaseViewController {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return WCTransactionSigner(api: api)
+        return WCTransactionSigner(api: api, bannerController: bannerController)
     }()
 
     private let transactions: [WCTransaction]
@@ -349,11 +349,11 @@ extension WCMainTransactionViewController: WCTransactionSignerDelegate {
     private func showLedgerError(_ ledgerError: LedgerOperationError) {
         switch ledgerError {
         case .cancelled:
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "ble-error-transaction-cancelled-title".localized, message: "ble-error-fail-sign-transaction".localized
             )
         case .closedApp:
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "ble-error-ledger-connection-title".localized, message: "ble-error-ledger-connection-open-app-error".localized
             )
         default:

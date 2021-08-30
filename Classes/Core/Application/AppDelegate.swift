@@ -34,15 +34,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private lazy var session = Session()
     private lazy var walletConnector = WalletConnector()
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window ?? UIWindow())
-    private lazy var appConfiguration = AppConfiguration(
+    private lazy var bannerController = BannerController(window: window ?? UIWindow())
+
+    private(set) lazy var appConfiguration = AppConfiguration(
         api: api,
         session: session,
         walletConnector: walletConnector,
-        loadingController: loadingController
+        loadingController: loadingController,
+        bannerController: bannerController
     )
-    private lazy var pushNotificationController = PushNotificationController(api: api)
-    private(set) lazy var bannerController = BannerController(window: window ?? UIWindow())
 
+    private lazy var pushNotificationController = PushNotificationController(api: api, bannerController: bannerController)
     private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
     
     private var rootViewController: RootViewController?
@@ -233,7 +235,7 @@ extension AppDelegate {
     private func getNotificationAccountId(from algorandNotification: AlgorandNotification) -> String? {
         guard let accountId = algorandNotification.getAccountId() else {
             if let message = algorandNotification.alert {
-                AppDelegate.shared?.bannerController.presentInfoBanner(message)
+                bannerController.presentInfoBanner(message)
             }
             return nil
         }

@@ -72,8 +72,9 @@ extension LedgerAccountVerifyOperation {
         }
 
         guard let address = parseAddress(from: data) else {
-            AppDelegate.shared?.bannerController.presentErrorBanner(
-                title: "ble-error-transmission-title".localized, message: "ble-error-fail-fetch-account-address".localized
+            AppDelegate.shared?.appConfiguration.bannerController.presentErrorBanner(
+                title: "ble-error-transmission-title".localized,
+                message: "ble-error-fail-fetch-account-address".localized
             )
             reset()
             delegate?.ledgerAccountVerifyOperation(self, didFailed: .failedToFetchAddress)

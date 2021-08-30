@@ -28,7 +28,7 @@ class LedgerDeviceListViewController: BaseViewController {
         guard let api = api else {
             fatalError("Api must be set before accessing this view controller.")
         }
-        return LedgerAccountFetchOperation(api: api, ledgerApprovalMode: .connection)
+        return LedgerAccountFetchOperation(api: api, ledgerApprovalMode: .connection, bannerController: bannerController)
     }()
     
     private let accountSetupFlow: AccountSetupFlow
@@ -149,12 +149,12 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
     func ledgerAccountFetchOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation, didFailed error: LedgerOperationError) {
         switch error {
         case .cancelled:
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "ble-error-transaction-cancelled-title".localized,
                 message: "ble-error-fail-sign-transaction".localized
             )
         case .closedApp:
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "ble-error-ledger-connection-title".localized,
                 message: "ble-error-ledger-connection-open-app-error".localized
             )

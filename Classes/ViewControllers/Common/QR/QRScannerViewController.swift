@@ -301,7 +301,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
     ) {
         guard let accounts = self.session?.accounts,
               accounts.contains(where: { $0.type != .watch }) else {
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: "wallet-connect-session-error-no-account".localized
             )
@@ -335,7 +335,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
             captureSessionQueue.async {
                 self.captureSession?.startRunning()
             }
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: "wallet-connect-session-invalid-qr-message".localized
             )

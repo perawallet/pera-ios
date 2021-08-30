@@ -41,7 +41,7 @@ class RekeyConfirmationViewController: BaseScrollViewController {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return TransactionController(api: api)
+        return TransactionController(api: api, bannerController: bannerController)
     }()
     
     init(account: Account, ledger: LedgerDetail?, ledgerAddress: String, configuration: ViewControllerConfiguration) {
@@ -134,7 +134,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
         default:
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: error.asAFError?.errorDescription ?? error.localizedDescription
             )
@@ -144,9 +144,9 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
         switch error {
         case let .network(apiError):
-            AppDelegate.shared?.bannerController.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+            bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
         default:
-            AppDelegate.shared?.bannerController.presentErrorBanner(title: "title-error".localized, message: error.debugDescription)
+            bannerController?.presentErrorBanner(title: "title-error".localized, message: error.debugDescription)
         }
     }
 }
@@ -188,18 +188,18 @@ extension RekeyConfirmationViewController {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
                 message: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toAlgosStringForLabel ?? ""
                 )
             )
         case .invalidAddress:
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: "send-algos-receiver-address-validation".localized
             )
         case let .sdkError(error):
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "title-error".localized, message: error.debugDescription
             )
         default:

@@ -44,11 +44,13 @@ class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDelegate
     weak var delegate: LedgerAccountFetchOperationDelegate?
     
     private let api: AlgorandAPI
+    private let bannerController: BannerController?
     private let ledgerApprovalMode: LedgerApprovalViewController.Mode
     
-    init(api: AlgorandAPI, ledgerApprovalMode: LedgerApprovalViewController.Mode) {
+    init(api: AlgorandAPI, ledgerApprovalMode: LedgerApprovalViewController.Mode, bannerController: BannerController?) {
         self.api = api
         self.ledgerApprovalMode = ledgerApprovalMode
+        self.bannerController = bannerController
         bleConnectionManager.delegate = self
         ledgerBleController.delegate = self
     }
@@ -72,7 +74,7 @@ extension LedgerAccountFetchOperation {
         }
 
         guard let address = parseAddress(from: data) else {
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            self.bannerController?.presentErrorBanner(
                 title: "ble-error-transmission-title".localized, message: "ble-error-fail-fetch-account-address".localized
             )
             reset()
@@ -117,7 +119,7 @@ extension LedgerAccountFetchOperation {
                         self.ledgerAccounts.append(account)
                     }
                 } else {
-                    AppDelegate.shared?.bannerController.presentErrorBanner(
+                    self.bannerController?.presentErrorBanner(
                         title: "title-error".localized,
                         message: "ledger-account-fetct-error".localized
                     )

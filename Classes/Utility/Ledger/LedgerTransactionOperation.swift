@@ -47,14 +47,20 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
     private var ledgerAccountIndex = 0
     
     private let api: AlgorandAPI
+    private let bannerController: BannerController?
     
     private var account: Account?
     private var unsignedTransactionData: Data?
     
-    private lazy var accountFetchOperation = LedgerAccountFetchOperation(api: api, ledgerApprovalMode: .approve)
+    private lazy var accountFetchOperation = LedgerAccountFetchOperation(
+        api: api,
+        ledgerApprovalMode: .approve,
+        bannerController: bannerController
+    )
     
-    init(api: AlgorandAPI) {
+    init(api: AlgorandAPI, bannerController: BannerController?) {
         self.api = api
+        self.bannerController = bannerController
         bleConnectionManager.delegate = self
         ledgerBleController.delegate = self
         accountFetchOperation.delegate = self
@@ -183,7 +189,7 @@ extension LedgerTransactionOperation: LedgerAccountFetchOperationDelegate {
         if isCorrectLedgerAddressFetched {
             sendTransactionSignInstruction()
         } else {
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "ble-error-ledger-connection-title".localized, message: "ledger-transaction-account-match-error".localized
             )
             reset()

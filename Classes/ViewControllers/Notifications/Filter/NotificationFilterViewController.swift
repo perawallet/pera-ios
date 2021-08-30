@@ -143,7 +143,7 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
         with error: HIPAPIError?
     ) {
         loadingController?.stopLoading()
-        AppDelegate.shared?.bannerController.presentErrorBanner(
+        bannerController?.presentErrorBanner(
             title: "title-error".localized,
             message: error?.fallbackMessage ?? "transaction-filter-error-title".localized
         )

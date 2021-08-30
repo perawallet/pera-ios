@@ -53,7 +53,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return TransactionController(api: api)
+        return TransactionController(api: api, bannerController: bannerController)
     }()
     
     private(set) lazy var sendTransactionPreviewView = SendTransactionPreviewView(account: selectedAccount,
@@ -258,7 +258,7 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
         }
 
         if isClosingToSameAccount() {
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: "send-transaction-max-same-account-error".localized
             )
@@ -424,18 +424,18 @@ extension SendTransactionPreviewViewController: TransactionControllerDelegate {
     private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "asset-min-transaction-error-title".localized,
                 message: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toAlgosStringForLabel ?? ""
                 )
             )
         case .invalidAddress:
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: "send-algos-receiver-address-validation".localized
             )
         case let .sdkError(error):
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: error.debugDescription
             )

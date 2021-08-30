@@ -249,6 +249,10 @@ extension BaseViewController {
     var loadingController: LoadingController? {
         return configuration.loadingController
     }
+
+    var bannerController: BannerController? {
+        return configuration.bannerController
+    }
 }
 
 extension BaseViewController: NavigationBarConfigurable {

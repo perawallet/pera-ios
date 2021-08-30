@@ -21,9 +21,9 @@ class WarningAlert {
     let title: String
     let image: UIImage?
     let description: String
-    let actionTitle: String
+    let actionTitle: String?
 
-    init(title: String, image: UIImage?, description: String, actionTitle: String) {
+    init(title: String, image: UIImage?, description: String, actionTitle: String? = nil) {
         self.title = title
         self.image = image
         self.description = description

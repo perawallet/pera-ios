@@ -30,9 +30,11 @@ class PushNotificationController: NSObject {
     }
     
     private var api: AlgorandAPI
+    private let bannerController: BannerController?
     
-    init(api: AlgorandAPI) {
+    init(api: AlgorandAPI, bannerController: BannerController?) {
         self.api = api
+        self.bannerController = bannerController
     }
 }
 
@@ -193,7 +195,7 @@ extension PushNotificationController {
                             results.first?.name ?? receiverName
                         )
                     }
-                    AppDelegate.shared?.bannerController.presentInfoBanner(message, handler)
+                    self.bannerController?.presentInfoBanner(message, handler)
                 default:
                     var message: String
                     
@@ -218,7 +220,7 @@ extension PushNotificationController {
                             receiverName
                         )
                     }
-                    AppDelegate.shared?.bannerController.presentInfoBanner(message, handler)
+                    self.bannerController?.presentInfoBanner(message, handler)
                 }
             }
         }
@@ -266,7 +268,7 @@ extension PushNotificationController {
                             results.first?.name ?? senderName
                         )
                     }
-                    AppDelegate.shared?.bannerController.presentInfoBanner(message, handler)
+                    self.bannerController?.presentInfoBanner(message, handler)
                 default:
                     var message: String
                     
@@ -291,7 +293,7 @@ extension PushNotificationController {
                             senderName
                         )
                     }
-                    AppDelegate.shared?.bannerController.presentInfoBanner(message, handler)
+                    self.bannerController?.presentInfoBanner(message, handler)
                 }
             }
         }
@@ -318,7 +320,7 @@ extension PushNotificationController {
                         "\(name) (\(code))"
                     )
                 )
-                AppDelegate.shared?.bannerController.presentInfoBanner(message)
+                self.bannerController?.presentInfoBanner(message)
             default:
                 let name = asset.name ?? ""
                 let code = asset.code ?? ""
@@ -328,7 +330,7 @@ extension PushNotificationController {
                         "\(name) (\(code))"
                     )
                 )
-                AppDelegate.shared?.bannerController.presentInfoBanner(message)
+                self.bannerController?.presentInfoBanner(message)
             }
         }
     }

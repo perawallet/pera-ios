@@ -266,11 +266,12 @@ extension TabBarController: AssetActionConfirmationViewControllerDelegate {
     ) {
         guard let account = assetAlertDraft?.account,
             let assetId = assetAlertDraft?.assetIndex,
-            let api = UIApplication.shared.appConfiguration?.api else {
+            let api = AppDelegate.shared?.appConfiguration.api,
+            let bannerController = AppDelegate.shared?.appConfiguration.bannerController else {
                 return
         }
         
-        let transactionController = TransactionController(api: api)
+        let transactionController = TransactionController(api: api, bannerController: bannerController)
         
         let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: Int64(assetId))
         transactionController.setTransactionDraft(assetTransactionDraft)

@@ -307,7 +307,7 @@ extension Session {
                 }
             }
 
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            AppDelegate.shared?.appConfiguration.bannerController.presentErrorBanner(
                 title: "title-error".localized, message: "ledger-rekey-error-add-auth".localized(params: authAddress.shortAddressDisplay())
             )
             return false
@@ -316,7 +316,7 @@ extension Session {
         /// Check whether ledger details of the selected ledger account exists.
         if selectedAccount.isLedger() {
             if selectedAccount.ledgerDetail == nil {
-                AppDelegate.shared?.bannerController.presentErrorBanner(
+                AppDelegate.shared?.appConfiguration.bannerController.presentErrorBanner(
                     title: "title-error".localized,
                     message: "ledger-rekey-error-not-found".localized
                 )
@@ -327,7 +327,7 @@ extension Session {
         
         /// Check whether private key of the selected account exists.
         if privateData(for: selectedAccount.address) == nil {
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            AppDelegate.shared?.appConfiguration.bannerController.presentErrorBanner(
                 title: "title-error".localized,
                 message: "ledger-rekey-error-not-found".localized
             )

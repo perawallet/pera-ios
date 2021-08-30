@@ -22,17 +22,20 @@ final class AppConfiguration {
     let session: Session
     let walletConnector: WalletConnector
     let loadingController: LoadingController
+    let bannerController: BannerController
     
     init(
         api: AlgorandAPI,
         session: Session,
         walletConnector: WalletConnector,
-        loadingController: LoadingController
+        loadingController: LoadingController,
+        bannerController: BannerController
     ) {
         self.api = api
         self.session = session
         self.walletConnector = walletConnector
         self.loadingController = loadingController
+        self.bannerController = bannerController
     }
     
     func all() -> ViewControllerConfiguration {
@@ -40,7 +43,8 @@ final class AppConfiguration {
             api: api,
             session: session,
             walletConnector: walletConnector,
-            loadingControlller: loadingController
+            loadingControlller: loadingController,
+            bannerController: bannerController
         )
         return configuration
     }

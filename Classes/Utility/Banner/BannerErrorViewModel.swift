@@ -19,24 +19,26 @@ import Foundation
 import Macaroon
 import UIKit
 
-struct BannerErrorViewModel: BannerViewModel {
+struct BannerErrorViewModel: BannerViewModel, BindableViewModel {
+    init<T>(_ model: T) {
+        bind(model)
+    }
+
+    mutating func bind<T>(_ model: T) {
+        if let model = model as? WarningAlert {
+            bindIcon(model.image)
+            bindTitle(model.title)
+            bindMessage(model.description)
+        }
+    }
+
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var message: EditText?
-
-    init(someTitle: String, someMessage: String, someIcon: Image) {
-        bind(someTitle, someMessage, someIcon)
-    }
-
-    private mutating func bind(_ someTitle: String, _ someMessage: String, _ someIcon: Image) {
-        bindIcon(someIcon)
-        bindTitle(someTitle)
-        bindMessage(someMessage)
-    }
 }
 
 extension BannerErrorViewModel {
-    private mutating func bindIcon(_ someIcon: Image) {
+    private mutating func bindIcon(_ someIcon: UIImage?) {
         icon = someIcon
     }
 

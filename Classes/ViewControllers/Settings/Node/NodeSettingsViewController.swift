@@ -36,7 +36,7 @@ class NodeSettingsViewController: BaseViewController {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return PushNotificationController(api: api)
+        return PushNotificationController(api: api, bannerController: bannerController)
     }()
     
     override func linkInteractors() {

@@ -273,7 +273,7 @@ extension SendAssetTransactionPreviewViewController {
         }
         
         if !AlgorandSDK().isValidAddress(address) {
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: "send-algos-receiver-address-validation".localized
             )

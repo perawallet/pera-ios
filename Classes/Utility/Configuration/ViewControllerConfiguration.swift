@@ -22,16 +22,19 @@ final class ViewControllerConfiguration {
     var session: Session?
     let walletConnector: WalletConnector
     let loadingController: LoadingController?
+    let bannerController: BannerController?
     
     init(
         api: AlgorandAPI?,
         session: Session?,
         walletConnector: WalletConnector,
-        loadingControlller: LoadingController?
+        loadingControlller: LoadingController?,
+        bannerController: BannerController?
     ) {
         self.api = api
         self.session = session
         self.walletConnector = walletConnector
         self.loadingController = loadingControlller
+        self.bannerController = bannerController
     }
 }

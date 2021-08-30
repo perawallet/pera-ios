@@ -230,7 +230,7 @@ extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationD
 
     func ledgerAccountVerifyOperation(_ ledgerAccountVerifyOperation: LedgerAccountVerifyOperation, didFailed error: LedgerOperationError) {
         if error != .cancelled {
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "ble-error-ledger-connection-title".localized,
                 message: "ble-error-ledger-connection-open-app-error".localized
             )

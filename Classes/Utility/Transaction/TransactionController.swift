@@ -21,12 +21,13 @@ class TransactionController {
     weak var delegate: TransactionControllerDelegate?
     
     private var api: AlgorandAPI
+    private let bannerController: BannerController?
     private var params: TransactionParams?
     private var transactionDraft: TransactionSendDraft?
     
     private let transactionData = TransactionData()
     
-    private lazy var ledgerTransactionOperation = LedgerTransactionOperation(api: api)
+    private lazy var ledgerTransactionOperation = LedgerTransactionOperation(api: api, bannerController: bannerController)
 
     private lazy var transactionAPIConnector = TransactionAPIConnector(api: api)
     
@@ -36,8 +37,9 @@ class TransactionController {
         return transactionDraft?.from.requiresLedgerConnection() ?? false
     }
     
-    init(api: AlgorandAPI) {
+    init(api: AlgorandAPI, bannerController: BannerController?) {
         self.api = api
+        self.bannerController = bannerController
     }
 }
 
@@ -275,12 +277,12 @@ extension TransactionController: LedgerTransactionOperationDelegate {
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError) {
         switch error {
         case .cancelled:
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "ble-error-transaction-cancelled-title".localized,
                 message: "ble-error-fail-sign-transaction".localized
             )
         case .closedApp:
-            AppDelegate.shared?.bannerController.presentErrorBanner(
+            bannerController?.presentErrorBanner(
                 title: "ble-error-ledger-connection-title".localized,
                 message: "ble-error-ledger-connection-open-app-error".localized
             )
