@@ -39,17 +39,13 @@ final class BlockingLoadingController: Macaroon.BlockingLoadingController, Loadi
     func startLoadingWithMessage(_ title: String) {
         super.startLoading()
 
-        if let screenLoadingIndicator = loadingIndicator as? ScreenLoadingIndicator {
-            screenLoadingIndicator.title = title
-        }
+        setTitle(title)
     }
 
     func startLoadingWithMessage(_ attributedTitle: NSAttributedString) {
         super.startLoading()
 
-        if let screenLoadingIndicator = loadingIndicator as? ScreenLoadingIndicator {
-            screenLoadingIndicator.attributedTitle = attributedTitle
-        }
+        setAttributedTitle(attributedTitle)
     }
 
     func stopLoadingAfter(seconds: Double, on queue: DispatchQueue = .main, execute: @escaping () -> Void) {
@@ -57,6 +53,20 @@ final class BlockingLoadingController: Macaroon.BlockingLoadingController, Loadi
         queue.asyncAfter(deadline: time) {
             self.stopLoading()
             execute()
+        }
+    }
+}
+
+extension BlockingLoadingController {
+    private func setTitle(_ title: String) {
+        if let screenLoadingIndicator = loadingIndicator as? ScreenLoadingIndicator {
+            screenLoadingIndicator.title = title
+        }
+    }
+
+    private func setAttributedTitle(_ attributedTitle: NSAttributedString) {
+        if let screenLoadingIndicator = loadingIndicator as? ScreenLoadingIndicator {
+            screenLoadingIndicator.attributedTitle = attributedTitle
         }
     }
 }
