@@ -2611,6 +2611,12 @@
 		D421179026D8EDF400C032B2 /* ViewLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D421178F26D8EDF400C032B2 /* ViewLoadingIndicator.swift */; };
 		D421179126D8EDF400C032B2 /* ViewLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D421178F26D8EDF400C032B2 /* ViewLoadingIndicator.swift */; };
 		D421179226D8EDF400C032B2 /* ViewLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D421178F26D8EDF400C032B2 /* ViewLoadingIndicator.swift */; };
+		D4CC46E626DCF80E00AA1BFE /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46E526DCF80E00AA1BFE /* AppColors.swift */; };
+		D4CC46E726DD06E200AA1BFE /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46E526DCF80E00AA1BFE /* AppColors.swift */; };
+		D4CC46E826DD06E200AA1BFE /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46E526DCF80E00AA1BFE /* AppColors.swift */; };
+		D4CC46EA26DD099000AA1BFE /* AppColors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46E926DD099000AA1BFE /* AppColors.xcassets */; };
+		D4CC46EB26DD099000AA1BFE /* AppColors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46E926DD099000AA1BFE /* AppColors.xcassets */; };
+		D4CC46EC26DD099000AA1BFE /* AppColors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46E926DD099000AA1BFE /* AppColors.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -3552,6 +3558,8 @@
 		D421178726D8ED9700C032B2 /* ScreenLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingIndicator.swift; sourceTree = "<group>"; };
 		D421178B26D8EDBA00C032B2 /* ScreenLoadingIndicatorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingIndicatorTheme.swift; sourceTree = "<group>"; };
 		D421178F26D8EDF400C032B2 /* ViewLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewLoadingIndicator.swift; sourceTree = "<group>"; };
+		D4CC46E526DCF80E00AA1BFE /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		D4CC46E926DD099000AA1BFE /* AppColors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppColors.xcassets; sourceTree = "<group>"; };
 		EC9412FF22BD6D4C00745662 /* Info-Demo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Demo.plist"; sourceTree = "<group>"; };
 		EFAFF961ADA8DD7AFE65EB88 /* Pods_algorand_prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand_prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7B9432C7341B69AC9550A3A /* Pods-algorand-staging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.debug.xcconfig"; path = "Target Support Files/Pods-algorand-staging/Pods-algorand-staging.debug.xcconfig"; sourceTree = "<group>"; };
@@ -6404,6 +6412,8 @@
 		2B8AD0482244F81500939ECE /* Colors */ = {
 			isa = PBXGroup;
 			children = (
+				D4CC46E526DCF80E00AA1BFE /* AppColors.swift */,
+				D4CC46E926DD099000AA1BFE /* AppColors.xcassets */,
 				2B8AD0492244F82600939ECE /* Colors.swift */,
 			);
 			path = Colors;
@@ -9848,6 +9858,7 @@
 				2B98844F25B880D5004532CE /* AssetSearchResult.json in Resources */,
 				2B6811E125345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B95421225B07FD60098805B /* RekeyedAccount.json in Resources */,
+				D4CC46EC26DD099000AA1BFE /* AppColors.xcassets in Resources */,
 				2B51617A243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */,
 				2B9541DE25AF21730098805B /* AccountInformationA.json in Resources */,
 				2B95411625A89C9D0098805B /* NotificationMessage.json in Resources */,
@@ -9880,6 +9891,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BA8490D2620A2E3007A75CA /* recover_animation_light.json in Resources */,
+				D4CC46EB26DD099000AA1BFE /* AppColors.xcassets in Resources */,
 				2B77478B2600D6B10083EFFA /* watch_animation.json in Resources */,
 				2B0F632D24EC129D00DA22A6 /* LoadingAnimation.json in Resources */,
 				2B0F632E24EC129D00DA22A6 /* PublicSans-Regular.ttf in Resources */,
@@ -9926,6 +9938,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BA8490C2620A2E3007A75CA /* recover_animation_light.json in Resources */,
+				D4CC46EA26DD099000AA1BFE /* AppColors.xcassets in Resources */,
 				2B77478A2600D6B10083EFFA /* watch_animation.json in Resources */,
 				2BFBAB72227B349E008BBB31 /* LoadingAnimation.json in Resources */,
 				2B516173243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */,
@@ -10623,6 +10636,7 @@
 				2B3A34F1246F7289001C8F22 /* TransactionReceiverButton.swift in Sources */,
 				2B3D73BA23C3621F00597D32 /* VerifiedAsset.swift in Sources */,
 				2B7E586225866DA400731C97 /* LedgerAccountView.swift in Sources */,
+				D4CC46E826DD06E200AA1BFE /* AppColors.swift in Sources */,
 				D421178A26D8ED9700C032B2 /* ScreenLoadingIndicator.swift in Sources */,
 				17BD4E772292F1260003E49A /* PassphraseVerifyView.swift in Sources */,
 				2B3D73BD23C3638A00597D32 /* LimitQuery.swift in Sources */,
@@ -11434,6 +11448,7 @@
 				2B0F623024EC129D00DA22A6 /* Feedback.swift in Sources */,
 				2B7E586125866DA400731C97 /* LedgerAccountView.swift in Sources */,
 				2B0F623124EC129D00DA22A6 /* AccountFetchDraft.swift in Sources */,
+				D4CC46E726DD06E200AA1BFE /* AppColors.swift in Sources */,
 				D421178926D8ED9700C032B2 /* ScreenLoadingIndicator.swift in Sources */,
 				2B0F623224EC129D00DA22A6 /* AlgorandNotification.swift in Sources */,
 				2B0F623324EC129D00DA22A6 /* BaseControl.swift in Sources */,
@@ -12245,6 +12260,7 @@
 				2BA4B3D12673F09A0041586B /* WCConnectionApprovalViewController.swift in Sources */,
 				2B0823DE23B668DB00D52BCF /* NotificationAsset.swift in Sources */,
 				2B7E586025866DA400731C97 /* LedgerAccountView.swift in Sources */,
+				D4CC46E626DCF80E00AA1BFE /* AppColors.swift in Sources */,
 				D421178826D8ED9700C032B2 /* ScreenLoadingIndicator.swift in Sources */,
 				2BB021E9224E828E0039D78A /* UICollectionView+Additions.swift in Sources */,
 				1751261D223BEA320095AF4F /* Session.swift in Sources */,
