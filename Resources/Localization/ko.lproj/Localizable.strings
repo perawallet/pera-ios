@@ -1718,7 +1718,7 @@
 "wallet-connect-transaction-warning-future" = "이 트랜잭션은 추후 제출됩니다.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-high-fee" = "이 트랜잭션 수수료는 일반적인 수수료(0.01알고)보다 높습니다.";
+"wallet-connect-transaction-warning-high-fee" = "이 트랜잭션 수수료는 일반적인 수수료(0.001알고)보다 높습니다.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial" = "다음 트랜잭션 요청은 알고랜드 지갑이 관리하지 않는 외부 애플리케이션에서 전송한 것입니다. 트랜잭션을 실행한 후에는 되돌릴 수 없으므로, 서명하기 전에 트랜잭션의 상세 정보를 신중히 검토하시기 바랍니다.";

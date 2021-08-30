@@ -52,6 +52,11 @@ class WCTransactionDetail: Model {
     let appCallArguments: [String]?
     let appCallOnComplete: AppCallOnComplete?
     let appCallId: Int64?
+    let appGlobalSchema: WCTransactionAppSchema?
+    let appLocalSchema: WCTransactionAppSchema?
+    let appExtraPages: Int?
+    let approvalHash: Data?
+    let stateHash: Data?
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -72,6 +77,11 @@ class WCTransactionDetail: Model {
         appCallArguments = try container.decodeIfPresent([String].self, forKey: .appCallArguments)
         appCallOnComplete = try container.decodeIfPresent(AppCallOnComplete.self, forKey: .appCallOnComplete) ?? .noOp
         appCallId = try container.decodeIfPresent(Int64.self, forKey: .appCallId) ?? 0
+        appGlobalSchema = try container.decodeIfPresent(WCTransactionAppSchema.self, forKey: .appGlobalSchema)
+        appLocalSchema = try container.decodeIfPresent(WCTransactionAppSchema.self, forKey: .appLocalSchema)
+        appExtraPages = try container.decodeIfPresent(Int.self, forKey: .appExtraPages)
+        approvalHash = try container.decodeIfPresent(Data.self, forKey: .approvalHash)
+        stateHash = try container.decodeIfPresent(Data.self, forKey: .stateHash)
 
         if let senderMsgpack = try container.decodeIfPresent(Data.self, forKey: .sender) {
             sender = parseAddress(from: senderMsgpack)
@@ -194,17 +204,8 @@ extension WCTransactionDetail {
         return String(data: noteData, encoding: .utf8) ?? noteData.base64EncodedString()
     }
 
-    var isSupportedAppCallTransaction: Bool {
-        guard let appCallOnComplete = appCallOnComplete else {
-            return false
-        }
-
-        return appCallId != 0 && (
-            appCallOnComplete == .noOp ||
-                appCallOnComplete == .optIn ||
-                appCallOnComplete == .close ||
-                appCallOnComplete == .clearState
-        )
+    var isAppCreateTransaction: Bool {
+        return isAppCallTransaction && appCallId == 0
     }
 
     var validationAddresses: [String?] {
@@ -248,9 +249,9 @@ extension WCTransactionDetail {
             case .clearState:
                 return "ClearState"
             case .update:
-                return "UpdateApplication"
+                return "Update"
             case .delete:
-                return "DeleteApplication"
+                return "Delete"
             }
         }
     }
@@ -277,6 +278,11 @@ extension WCTransactionDetail {
         case appCallArguments = "apaa"
         case appCallOnComplete = "apan"
         case appCallId = "apid"
+        case appGlobalSchema = "apgs"
+        case appLocalSchema = "apls"
+        case appExtraPages = "apep"
+        case approvalHash = "apap"
+        case stateHash = "apsu"
     }
 }
 
@@ -289,5 +295,23 @@ extension WCTransactionDetail: Equatable {
             lhs.amount == rhs.amount &&
             lhs.genesisHashData == rhs.genesisHashData &&
             lhs.type == rhs.type
+    }
+}
+
+class WCTransactionAppSchema: Model {
+    let numberOfBytes: Int?
+    let numberofInts: Int?
+
+    var representation: String {
+        let numberOfBytes = numberOfBytes ?? 0
+        let numberOfInts = numberofInts ?? 0
+        return "\(numberOfBytes) Bytes / \(numberOfInts) Uint"
+    }
+}
+
+extension WCTransactionAppSchema {
+    private enum CodingKeys: String, CodingKey {
+        case numberOfBytes = "nbs"
+        case numberofInts = "nui"
     }
 }

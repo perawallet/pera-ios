@@ -1718,7 +1718,7 @@
 "wallet-connect-transaction-warning-future" = "交易会在未来提交。";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-high-fee" = "此交易费用高于平时的 0.01 ALGO。";
+"wallet-connect-transaction-warning-high-fee" = "此交易费用高于平时的 0.001 ALGO。";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial" = "以下交易请求来自Algorand钱包无法控制的外部应用程序。由于交易发生后不可逆转，请在签署交易前仔细检查。";

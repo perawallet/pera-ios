@@ -1718,7 +1718,7 @@
 "wallet-connect-transaction-warning-future" = "このトランザクションは後ほど提出されます。";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-high-fee" = "このトランザクション手数料は、通常の手数料（0.01 Algos）よりも高くなっています。";
+"wallet-connect-transaction-warning-high-fee" = "このトランザクション手数料は、通常の手数料（0.001 Algos）よりも高くなっています。";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial" = "以下のトランザクションリクエストは、Algorand Walletが管理していない外部アプリケーションからのものです。トランザクションは元に戻すことができないため、署名する前にトランザクション内容を慎重にご確認ください。";

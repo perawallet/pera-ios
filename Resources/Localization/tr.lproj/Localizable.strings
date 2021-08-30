@@ -1718,7 +1718,7 @@
 "wallet-connect-transaction-warning-future" = "Bu işlem ileride gönderilecek.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-high-fee" = "Bu işlem ücreti, normalde 0,01 Algo olan ücretten daha yüksek.";
+"wallet-connect-transaction-warning-high-fee" = "Bu işlem ücreti, normalde 0,001 Algo olan ücretten daha yüksek.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial" = "Aşağıdaki işlem istekleri, Algorand Wallet'ın kontrol etmediği harici uygulamalardan gelmektedir. İşlemler geri alınamaz olduğundan imzalamadan önce bu işlemleri gözden geçirdiğinizden lütfen emin olun.";
