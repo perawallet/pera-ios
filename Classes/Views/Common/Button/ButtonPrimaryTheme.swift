@@ -23,6 +23,7 @@ struct ButtonPrimaryTheme: ButtonTheme {
     let icon: ImageStyle
     let titleColorSet: ColorSet
     let backgroundColorSet: ColorSet
+    let indicator: ImageStyle
 
     let titleEdgeInsets: LayoutPaddings
 
@@ -42,6 +43,10 @@ struct ButtonPrimaryTheme: ButtonTheme {
         )
         self.corner = Corner(radius: 4)
         self.icon = []
+        self.indicator = [
+            .content(img("button-loading-indicator")),
+            .contentMode(.scaleAspectFill)
+        ]
 
         self.titleEdgeInsets = (0, 15, 0, 0)
     }

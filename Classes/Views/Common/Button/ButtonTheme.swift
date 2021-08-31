@@ -23,6 +23,7 @@ protocol ButtonTheme: LayoutSheet, StyleSheet {
     var titleColorSet: ColorSet { get }
     var backgroundColorSet: ColorSet { get }
     var corner: Corner { get }
+    var indicator: ImageStyle { get }
 
     var titleEdgeInsets: LayoutPaddings { get }
 }

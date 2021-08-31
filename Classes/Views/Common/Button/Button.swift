@@ -19,10 +19,14 @@ import UIKit
 import Macaroon
 
 final class Button: UIButton {
+    private lazy var indicatorView = ViewLoadingIndicator()
+
     func customize(_ theme: ButtonTheme) {
         customizeView(theme)
         customizeBackground(theme)
         customizeLabel(theme)
+
+        addIndicator(theme)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -55,6 +59,17 @@ extension Button {
 
         imageView?.customizeAppearance(theme.icon)
     }
+
+    private func addIndicator(_ theme: ButtonTheme) {
+        indicatorView.applyStyle(theme.indicator)
+
+        addSubview(indicatorView)
+        indicatorView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+        }
+
+        indicatorView.isHidden = true
+    }
 }
 
 extension Button {
@@ -63,8 +78,33 @@ extension Button {
     }
 
     private func bindIcon(_ viewModel: ButtonViewModel?) {
+        guard viewModel?.iconSet != nil else {
+            titleEdgeInsets = .zero
+            return
+        }
+
         setImage(viewModel?.iconSet?.image, for: .normal)
         setImage(viewModel?.iconSet?.disabled, for: .disabled)
+    }
+}
+
+extension Button {
+    func startLoading() {
+        guard !indicatorView.isAnimating else { return }
+
+        indicatorView.isHidden = false
+        isEnabled = false
+        titleLabel?.layer.opacity = .zero
+        indicatorView.startAnimating()
+    }
+
+    func stopLoading() {
+        guard indicatorView.isAnimating else { return }
+
+        indicatorView.isHidden = true
+        isEnabled = true
+        titleLabel?.layer.opacity = 1
+        indicatorView.stopAnimating()
     }
 }
 
