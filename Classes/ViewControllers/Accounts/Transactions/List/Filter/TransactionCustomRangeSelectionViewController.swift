@@ -64,7 +64,7 @@ class TransactionCustomRangeSelectionViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.secondary
-        setNavigationBarSecondaryBackgroundColor()
+        setSecondaryBackgroundColor()
         title = "transaction-filter-option-custom".localized
         transactionCustomRangeSelectionView.setFromDate(fromDate.toFormat("dd.MM.yyyy"))
         transactionCustomRangeSelectionView.setToDate(toDate.toFormat("dd.MM.yyyy"))

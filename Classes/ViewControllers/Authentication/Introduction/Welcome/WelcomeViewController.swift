@@ -17,9 +17,9 @@
 
 import UIKit
 
-final class WelcomeViewController: BaseViewController {
+class WelcomeViewController: BaseViewController {
+
     private lazy var welcomeView = WelcomeView()
-    private lazy var theme = WelcomeViewTheme()
 
     private let flow: AccountSetupFlow
 
@@ -32,27 +32,18 @@ final class WelcomeViewController: BaseViewController {
         addBarButtons()
     }
 
-    override func bindData() {
-        welcomeView.bindAddAccountView(AccountTypeViewModel(.add(type: .none)))
-        welcomeView.bindRecoverAccountView(AccountTypeViewModel(.recover))
+    override func configureAppearance() {
+        view.backgroundColor = Colors.Background.tertiary
+        setTertiaryBackgroundColor()
+        welcomeView.configureAddAccountView(with: AccountTypeViewModel(accountSetupMode: .add(type: .none)))
+        welcomeView.configureRecoverAccountView(with: AccountTypeViewModel(accountSetupMode: .recover))
     }
 
     override func linkInteractors() {
         welcomeView.delegate = self
-        welcomeView.linkInteractors()
-    }
-
-    override func setListeners() {
-        welcomeView.setListeners()
-    }
-
-    override func configureAppearance() {
-        setNavigationBarTertiaryBackgroundColor()
     }
 
     override func prepareLayout() {
-        welcomeView.customize(theme)
-
         prepareWholeScreenLayoutFor(welcomeView)
     }
 }
