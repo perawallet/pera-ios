@@ -57,7 +57,7 @@ class PassphraseDisplayViewController: BaseScrollViewController {
         super.configureAppearance()
         view.backgroundColor = Colors.Background.secondary
         title = "options-view-passphrase".localized
-        setSecondaryBackgroundColor()
+        setNavigationBarSecondaryBackgroundColor()
     }
 
     override func setListeners() {

@@ -16,58 +16,44 @@
 //  AccountTypeView.swift
 
 import UIKit
+import Macaroon
 
-class AccountTypeView: BaseControl {
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    private lazy var typeImageView = UIImageView()
-    
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withLine(.contained)
-            .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-            .withTextColor(Colors.Text.primary)
-            .withAlignment(.left)
-    }()
+final class AccountTypeView: Control {
+    private lazy var theme = AccountTypeViewTheme()
+    private lazy var imageView = UIImageView()
+    private lazy var titleLabel = UILabel()
+    private lazy var detailLabel = UILabel()
 
-    private lazy var detailLabel: UILabel = {
-        UILabel()
-            .withLine(.contained)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.secondary)
-            .withAlignment(.left)
-    }()
-    
-    private lazy var arrowImageView = UIImageView(image: img("icon-introduction-arrow-right"))
-    
-    private lazy var separatorView = LineSeparatorView()
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
+    func customize(_ theme: AccountTypeViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addTitleLabel(theme)
+        addDetailLabel(theme)
+        addImageView(theme)
     }
-    
-    override func prepareLayout() {
-        setupTitleLabelLayout()
-        setupDetailLabelLayout()
-        setupSeparatorViewLayout()
-        setupTypeImageViewLayout()
-        setupArrowImageViewLayout()
-    }
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
 
 extension AccountTypeView {
-    private func setupTitleLabelLayout() {
+    private func addTitleLabel(_ theme: AccountTypeViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
         addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.titleLeadingInset)
-            make.top.equalToSuperview().inset(layout.current.verticalInset)
-            make.trailing.equalToSuperview().inset(layout.current.titleTrailingInset)
+
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.titleLeadingInset)
+            $0.top.equalToSuperview().inset(theme.verticalInset)
+            $0.trailing.equalToSuperview().inset(theme.titleTrailingInset)
         }
+
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
-    
-    private func setupDetailLabelLayout() {
+
+    private func addDetailLabel(_ theme: AccountTypeViewTheme) {
+        detailLabel.customizeAppearance(theme.detail)
+
         addSubview(detailLabel)
         detailLabel.snp.makeConstraints {
             $0.leading.equalTo(titleLabel.snp.leading)
@@ -110,25 +96,22 @@ extension AccountTypeView {
             make.size.equalTo(layout.current.arrowIconSize)
         }
     }
-}
 
-extension AccountTypeView {
-    func bind(_ viewModel: AccountTypeViewModel) {
-        typeImageView.image = viewModel.typeImage
-        titleLabel.text = viewModel.title
-        detailLabel.text = viewModel.detail
+    private func addImageView(_ theme: AccountTypeViewTheme) {
+        addSubview(imageView)
+
+        imageView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.fitToSize(theme.iconSize)
+            $0.centerY.equalToSuperview()
+        }
     }
 }
 
-extension AccountTypeView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let iconSize = CGSize(width: 48.0, height: 48.0)
-        let titleLeadingInset: CGFloat = 88.0
-        let titleTrailingInset: CGFloat = 60.0
-        let arrowIconSize = CGSize(width: 24.0, height: 24.0)
-        let separatorHeight: CGFloat = 1.0
-        let horizontalInset: CGFloat = 20.0
-        let verticalInset: CGFloat = 24.0
-        let minimumInset: CGFloat = 4.0
+extension AccountTypeView: ViewModelBindable {
+    func bindData(_ viewModel: AccountTypeViewModel?) {
+        imageView.image = viewModel?.image
+        titleLabel.text = viewModel?.title
+        detailLabel.text = viewModel?.detail
     }
 }

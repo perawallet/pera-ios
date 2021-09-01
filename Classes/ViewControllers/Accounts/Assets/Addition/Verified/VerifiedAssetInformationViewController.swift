@@ -23,7 +23,7 @@ class VerifiedAssetInformationViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.tertiary
-        setTertiaryBackgroundColor()
+        setNavigationBarTertiaryBackgroundColor()
         navigationItem.title = "verified-assets-title".localized
     }
     
