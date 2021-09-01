@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+<<<<<<< HEAD
       "filename" : "icon-black-algorand.pdf",
 <<<<<<< HEAD
       "idiom" : "universal"
@@ -15,6 +16,9 @@
       "filename" : "icon-logo-dark.pdf",
 =======
 >>>>>>> 6c0069d0 (✨ Implement Launch, Welcome & AddAccount Screens)
+=======
+      "filename" : "icon-logo.pdf",
+>>>>>>> 3e4cea59 (Revert "✨ Implement Launch, Welcome & AddAccount Screens")
       "idiom" : "universal"
     }
   ],

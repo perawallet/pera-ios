@@ -43,7 +43,7 @@ class PassphraseVerifyViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        setNavigationBarTertiaryBackgroundColor()
+        setTertiaryBackgroundColor()
         view.backgroundColor = Colors.Background.tertiary
         scrollView.backgroundColor = Colors.Background.tertiary
         passphraseVerifyView.setVerificationEnabled(false)

@@ -16,36 +16,83 @@
 //  WelcomeView.swift
 
 import UIKit
-import Macaroon
 
-final class WelcomeView: View {
+class WelcomeView: BaseView {
+
+    private let layout = Layout<LayoutConstants>()
+
     weak var delegate: WelcomeViewDelegate?
 
-    private lazy var titleLabel = UILabel()
-    private lazy var stackView = UIStackView()
-    private lazy var termsAndConditionsTextView = UITextView()
+    private lazy var titleLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
+            .withTextColor(Colors.Text.primary)
+            .withLine(.contained)
+            .withAlignment(.center)
+            .withText("account-welcome-wallet-title".localized)
+    }()
+
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.distribution = .fillProportionally
+        stackView.spacing = 0.0
+        stackView.alignment = .fill
+        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        stackView.axis = .vertical
+        stackView.isUserInteractionEnabled = true
+        return stackView
+    }()
+
+    private lazy var termsAndConditionsTextView: UITextView = {
+        let textView = UITextView()
+        textView.isEditable = false
+        textView.backgroundColor = .clear
+        textView.isScrollEnabled = false
+        textView.dataDetectorTypes = .link
+        textView.textContainerInset = .zero
+        textView.textAlignment = .center
+        textView.linkTextAttributes = [
+            .foregroundColor: Colors.Text.link,
+            .underlineColor: UIColor.clear,
+            .font: UIFont.font(withWeight: .semiBold(size: 14.0))
+        ]
+
+        let centerParagraphStyle = NSMutableParagraphStyle()
+        centerParagraphStyle.alignment = .center
+
+        textView.bindHtml(
+            "introduction-title-terms-and-services".localized,
+            with: [
+                .font: UIFont.font(withWeight: .regular(size: 14.0)),
+                .foregroundColor: Colors.Text.tertiary,
+                .paragraphStyle: centerParagraphStyle
+            ]
+        )
+        return textView
+    }()
+
     private lazy var addAccountView = AccountTypeView()
+
     private lazy var recoverAccountView = AccountTypeView()
 
-    func customize(_ theme: WelcomeViewTheme) {
-        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-
-        addTitle(theme)
-        addTermsAndConditionsTextView(theme)
-        addStackView(theme)
+    override func configureAppearance() {
+        backgroundColor = Colors.Background.tertiary
     }
 
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
-
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
-
-    func setListeners() {
+    override func setListeners() {
         addAccountView.addTarget(self, action: #selector(notifyDelegateToAddAccount), for: .touchUpInside)
         recoverAccountView.addTarget(self, action: #selector(notifyDelegateToRecoverAccount), for: .touchUpInside)
     }
 
-    func linkInteractors() {
+    override func linkInteractors() {
         termsAndConditionsTextView.delegate = self
+    }
+
+    override func prepareLayout() {
+        setupTitleLabelLayout()
+        setupTermsAndConditionsTextViewLayout()
+        setupStackViewLayout()
     }
 }
 
@@ -62,67 +109,36 @@ extension WelcomeView {
 }
 
 extension WelcomeView {
-    private func addTitle(_ theme: WelcomeViewTheme) {
-        titleLabel.customizeAppearance(theme.title)
-
+    private func setupTitleLabelLayout() {
         addSubview(titleLabel)
-        titleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(theme.horizontalInset)
-            $0.top.equalToSuperview().inset(theme.topInset)
+
+        titleLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
         }
     }
 
-    private func addTermsAndConditionsTextView(_ theme: WelcomeViewTheme) {
+    private func setupTermsAndConditionsTextViewLayout() {
         addSubview(termsAndConditionsTextView)
 
-        termsAndConditionsTextView.isEditable = false
-        termsAndConditionsTextView.backgroundColor = .clear
-        termsAndConditionsTextView.isScrollEnabled = false
-        termsAndConditionsTextView.dataDetectorTypes = .link
-        termsAndConditionsTextView.textContainerInset = .zero
-        termsAndConditionsTextView.textAlignment = .center
-        termsAndConditionsTextView.linkTextAttributes = [
-            .foregroundColor: AppColors.Components.Link.primary.color,
-            .underlineColor: UIColor.clear,
-            .font: Fonts.DMSans.medium.make(13).font
-        ]
-
-        let centerParagraphStyle = NSMutableParagraphStyle()
-        centerParagraphStyle.alignment = .center
-
-        termsAndConditionsTextView.bindHtml(
-            "introduction-title-terms-and-services".localized,
-            with: [
-                .font: Fonts.DMSans.regular.make(13).font,
-                .foregroundColor: AppColors.Components.Text.gray.color,
-                .paragraphStyle: centerParagraphStyle
-            ]
-        )
-
-        termsAndConditionsTextView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
-            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.verticalInset)
-            $0.centerX.equalToSuperview()
+        termsAndConditionsTextView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.verticalInset)
+            make.centerX.equalToSuperview()
         }
     }
 
-    private func addStackView(_ theme: WelcomeViewTheme) {
+    private func setupStackViewLayout() {
         addSubview(stackView)
 
-        stackView.distribution = .fillProportionally
-        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        stackView.axis = .vertical
-
-        stackView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(theme.verticalInset)
-            $0.bottom.lessThanOrEqualTo(termsAndConditionsTextView.snp.top).offset(-theme.verticalInset)
-            $0.centerY.equalToSuperview()
+        stackView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
+            make.bottom.lessThanOrEqualTo(termsAndConditionsTextView.snp.top).offset(-layout.current.verticalInset)
+            make.centerY.equalToSuperview()
         }
 
-        addAccountView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(addAccountView)
-        recoverAccountView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(recoverAccountView)
     }
 }
@@ -140,12 +156,20 @@ extension WelcomeView: UITextViewDelegate {
 }
 
 extension WelcomeView {
-    func bindAddAccountView(_ viewModel: AccountTypeViewModel) {
-        addAccountView.bindData(viewModel)
+    func configureAddAccountView(with viewModel: AccountTypeViewModel) {
+        addAccountView.bind(viewModel)
     }
 
-    func bindRecoverAccountView(_ viewModel: AccountTypeViewModel) {
-        recoverAccountView.bindData(viewModel)
+    func configureRecoverAccountView(with viewModel: AccountTypeViewModel) {
+        recoverAccountView.bind(viewModel)
+    }
+}
+
+extension WelcomeView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 24.0
+        let topInset: CGFloat = 12.0
+        let verticalInset: CGFloat = 20.0
     }
 }
 

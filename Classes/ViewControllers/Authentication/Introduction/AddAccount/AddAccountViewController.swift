@@ -17,7 +17,8 @@
 
 import UIKit
 
-final class AddAccountViewController: BaseViewController {
+class AddAccountViewController: BaseViewController {
+    
     private lazy var addAccountView = AddAccountView()
     private lazy var theme = Theme()
     
@@ -26,10 +27,6 @@ final class AddAccountViewController: BaseViewController {
     init(flow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
         self.flow = flow
         super.init(configuration: configuration)
-    }
-
-    override func configureNavigationBarAppearance() {
-        addBarButtons()
     }
     
     override func configureAppearance() {
@@ -45,50 +42,11 @@ final class AddAccountViewController: BaseViewController {
     override func linkInteractors() {
         addAccountView.delegate = self
     }
-
-    override func setListeners() {
-        addAccountView.setListeners()
-    }
     
     override func prepareLayout() {
         addAccountView.customize(theme.addAccountViewTheme)
 
         prepareWholeScreenLayoutFor(addAccountView)
-    }
-}
-
-extension AddAccountViewController {
-    private func addBarButtons() {
-        switch flow {
-        case .addNewAccount:
-            addCloseBarButtonItem()
-        case .initializeAccount:
-            addSkipBarButtonItem()
-        case .none:
-            break
-        }
-    }
-
-    private func addCloseBarButtonItem() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
-    }
-
-    private func addSkipBarButtonItem() {
-        let skipBarButtonItem = ALGBarButtonItem(kind: .skip) { [unowned self] in
-            session?.createUser()
-
-            DispatchQueue.main.async {
-                self.dismiss(animated: false) {
-                    UIApplication.shared.rootViewController()?.setupTabBarController()
-                }
-            }
-        }
-
-        rightBarButtonItems = [skipBarButtonItem]
     }
 }
 

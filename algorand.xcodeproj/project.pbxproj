@@ -4881,7 +4881,6 @@
 			isa = PBXGroup;
 			children = (
 				2B0F7DFE25D6DBE800B16B85 /* WelcomeView.swift */,
-				D44EB6AE26DF73FF0008E234 /* WelcomeViewTheme.swift */,
 			);
 			path = Welcome;
 			sourceTree = "<group>";
@@ -4890,7 +4889,6 @@
 			isa = PBXGroup;
 			children = (
 				2B5BE09E251938E100324BEE /* AddAccountView.swift */,
-				D430A40026DF9F8200F34804 /* AddAccountViewTheme.swift */,
 			);
 			path = AddAccount;
 			sourceTree = "<group>";
@@ -6400,7 +6398,6 @@
 			isa = PBXGroup;
 			children = (
 				2B5BE06625190B7D00324BEE /* AccountTypeView.swift */,
-				D44EB6B226DF7A390008E234 /* AccountTypeViewTheme.swift */,
 			);
 			path = AccountType;
 			sourceTree = "<group>";
@@ -11474,7 +11471,6 @@
 				D4F8F290273EA74D003DCE1D /* PassphraseViewTheme.swift in Sources */,
 				17BD4E242292F1260003E49A /* RequestParameter.swift in Sources */,
 				2B7747A926026F9C0083EFFA /* InputSuggestionsDataController.swift in Sources */,
-				D44EB6B126DF73FF0008E234 /* WelcomeViewTheme.swift in Sources */,
 				D479D10F26D4FD7100110E04 /* BannerViewErrorTheme.swift in Sources */,
 				D46C648B26E6151800FBAC6D /* AddAccountViewController+Theme.swift in Sources */,
 				2B3E227326BC317600ED0AAF /* ActionableWarningAlertView.swift in Sources */,
@@ -11645,7 +11641,6 @@
 				17BD4E592292F1260003E49A /* QRView.swift in Sources */,
 				2B4487182379635900C19FDE /* AssetActionConfirmationView.swift in Sources */,
 				17BD4E5B2292F1260003E49A /* CardModalPresenter.swift in Sources */,
-				D44EB6B526DF7A390008E234 /* AccountTypeViewTheme.swift in Sources */,
 				2BF0FAEF25387CBF00D704D5 /* AssetCardDisplayView.swift in Sources */,
 				2BA4B3C92673629A0041586B /* String+QR.swift in Sources */,
 				17BD4E5C2292F1260003E49A /* BaseScrollViewController.swift in Sources */,
@@ -12446,7 +12441,6 @@
 				2B0F61A924EC129D00DA22A6 /* StatusBarConfigurable.swift in Sources */,
 				2B7747A826026F9C0083EFFA /* InputSuggestionsDataController.swift in Sources */,
 				D479D10E26D4FD7100110E04 /* BannerViewErrorTheme.swift in Sources */,
-				D44EB6B026DF73FF0008E234 /* WelcomeViewTheme.swift in Sources */,
 				2B3E227226BC317600ED0AAF /* ActionableWarningAlertView.swift in Sources */,
 				D46C648A26E6151800FBAC6D /* AddAccountViewController+Theme.swift in Sources */,
 				2B0F61AA24EC129D00DA22A6 /* AlgosTransactionDraft.swift in Sources */,
@@ -12614,7 +12608,6 @@
 				2B0F620024EC129D00DA22A6 /* LedgerTroubleshootOption.swift in Sources */,
 				2BF0FAEE25387CBF00D704D5 /* AssetCardDisplayView.swift in Sources */,
 				2B0F620224EC129D00DA22A6 /* TransactionHistoryContextView.swift in Sources */,
-				D44EB6B426DF7A390008E234 /* AccountTypeViewTheme.swift in Sources */,
 				2BA4B3C82673629A0041586B /* String+QR.swift in Sources */,
 				2B0F620324EC129D00DA22A6 /* API+Notification.swift in Sources */,
 				2B2AACE1250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */,
@@ -13417,7 +13410,6 @@
 				2B7E3071267A5E9C00E89EE3 /* WCTransactionWarningViewModel.swift in Sources */,
 				2BB37B1924069F7500F58662 /* LedgerBLEController.swift in Sources */,
 				1751261A223BE5930095AF4F /* RequestParameter.swift in Sources */,
-				D44EB6AF26DF73FF0008E234 /* WelcomeViewTheme.swift in Sources */,
 				D479D10D26D4FD7100110E04 /* BannerViewErrorTheme.swift in Sources */,
 				D46C648926E6151800FBAC6D /* AddAccountViewController+Theme.swift in Sources */,
 				2B3E227126BC317600ED0AAF /* ActionableWarningAlertView.swift in Sources */,

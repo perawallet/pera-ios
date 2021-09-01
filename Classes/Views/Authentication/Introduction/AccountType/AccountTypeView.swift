@@ -16,7 +16,6 @@
 //  AccountTypeView.swift
 
 import UIKit
-import Macaroon
 
 final class AccountTypeView: Control {
     private lazy var theme = AccountTypeViewTheme()
@@ -31,10 +30,6 @@ final class AccountTypeView: Control {
         addTitleLabel(theme)
         addDetailLabel(theme)
     }
-
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
-
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
 
 extension AccountTypeView {
@@ -57,10 +52,8 @@ extension AccountTypeView {
             $0.trailing.equalToSuperview().inset(theme.titleTrailingInset)
         }
     }
-
-    private func addDetailLabel(_ theme: AccountTypeViewTheme) {
-        detailLabel.customizeAppearance(theme.detail)
-
+    
+    private func setupDetailLabelLayout() {
         addSubview(detailLabel)
         detailLabel.snp.makeConstraints {
             $0.leading.equalTo(titleLabel.snp.leading)
@@ -73,10 +66,23 @@ extension AccountTypeView {
     }
 }
 
-extension AccountTypeView: ViewModelBindable {
-    func bindData(_ viewModel: AccountTypeViewModel?) {
-        imageView.image = viewModel?.image
-        titleLabel.text = viewModel?.title
-        detailLabel.text = viewModel?.detail
+extension AccountTypeView {
+    func bind(_ viewModel: AccountTypeViewModel) {
+        typeImageView.image = viewModel.typeImage
+        titleLabel.text = viewModel.title
+        detailLabel.text = viewModel.detail
+    }
+}
+
+extension AccountTypeView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let iconSize = CGSize(width: 48.0, height: 48.0)
+        let titleLeadingInset: CGFloat = 88.0
+        let titleTrailingInset: CGFloat = 60.0
+        let arrowIconSize = CGSize(width: 24.0, height: 24.0)
+        let separatorHeight: CGFloat = 1.0
+        let horizontalInset: CGFloat = 20.0
+        let verticalInset: CGFloat = 24.0
+        let minimumInset: CGFloat = 4.0
     }
 }

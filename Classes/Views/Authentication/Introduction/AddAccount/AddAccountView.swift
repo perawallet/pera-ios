@@ -16,32 +16,53 @@
 //  AddAccountView.swift
 
 import UIKit
-import Macaroon
 
-final class AddAccountView: View {
+class AddAccountView: BaseView {
+
+    private let layout = Layout<LayoutConstants>()
+
     weak var delegate: AddAccountViewDelegate?
 
-    private lazy var titleLabel = UILabel()
-    private lazy var stackView = UIStackView()
+    private lazy var titleLabel: UILabel = {
+        UILabel()
+            .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
+            .withTextColor(Colors.Text.primary)
+            .withLine(.contained)
+            .withAlignment(.center)
+            .withText("introduction-add-account-text".localized)
+    }()
+
+    private lazy var stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.distribution = .fillProportionally
+        stackView.spacing = 0.0
+        stackView.alignment = .fill
+        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        stackView.axis = .vertical
+        stackView.isUserInteractionEnabled = true
+        return stackView
+    }()
+
     private lazy var createNewAccountView = AccountTypeView()
+
     private lazy var watchAccountView = AccountTypeView()
+
     private lazy var pairAccountView = AccountTypeView()
 
-    func customize(_ theme: AddAccountViewTheme) {
-        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-
-        addTitleLabel(theme)
-        addStackView(theme)
+    override func configureAppearance() {
+        backgroundColor = Colors.Background.tertiary
     }
 
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
-
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
-
-    func setListeners() {
+    override func setListeners() {
         createNewAccountView.addTarget(self, action: #selector(notifyDelegateToSelectCreateNewAccount), for: .touchUpInside)
         watchAccountView.addTarget(self, action: #selector(notifyDelegateToSelectWatchAccount), for: .touchUpInside)
         pairAccountView.addTarget(self, action: #selector(notifyDelegateToSelectPairAccount), for: .touchUpInside)
+    }
+
+    override func prepareLayout() {
+        setupTitleLabelLayout()
+        setupStackViewLayout()
     }
 }
 
@@ -63,9 +84,7 @@ extension AddAccountView {
 }
 
 extension AddAccountView {
-    private func addTitleLabel(_ theme: AddAccountViewTheme) {
-        titleLabel.customizeAppearance(theme.title)
-
+    private func setupTitleLabelLayout() {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
@@ -85,26 +104,32 @@ extension AddAccountView {
             $0.centerY.equalToSuperview()
         }
 
-        createNewAccountView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(createNewAccountView)
         watchAccountView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(watchAccountView)
-        pairAccountView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(pairAccountView)
     }
 }
 
 extension AddAccountView {
-    func bindCreateNewAccountView(_ viewModel: AccountTypeViewModel) {
-        createNewAccountView.bindData(viewModel)
+    func configureCreateNewAccountView(with viewModel: AccountTypeViewModel) {
+        createNewAccountView.bind(viewModel)
     }
 
-    func bindWatchAccountView(_ viewModel: AccountTypeViewModel) {
-        watchAccountView.bindData(viewModel)
+    func configureWatchAccountView(with viewModel: AccountTypeViewModel) {
+        watchAccountView.bind(viewModel)
     }
 
-    func bindPairAccountView(_ viewModel: AccountTypeViewModel) {
-        pairAccountView.bindData(viewModel)
+    func configurePairAccountView(with viewModel: AccountTypeViewModel) {
+        pairAccountView.bind(viewModel)
+    }
+}
+
+extension AddAccountView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let horizontalInset: CGFloat = 32.0
+        let topInset: CGFloat = 12.0
+        let verticalInset: CGFloat = 20.0
     }
 }
 

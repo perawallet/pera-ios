@@ -20,9 +20,10 @@ import UIKit
 class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen {
     var isTabBarHidden = true
     var tabBarSnapshot: UIView?
-    var isStatusBarHidden = false
-    var hidesStatusBarWhenAppeared = false
-    var hidesStatusBarWhenPresented = false
+    
+    var isStatusBarHidden: Bool = false
+    var hidesStatusBarWhenAppeared: Bool = false
+    var hidesStatusBarWhenPresented: Bool = false
     
     var name: AnalyticsScreenName? {
         return nil
@@ -80,11 +81,12 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
         endTracking()
     }
     
-    func customizeTabBarAppearence() {}
+    func customizeTabBarAppearence() { }
     
-    func configureNavigationBarAppearance() {}
+    func configureNavigationBarAppearance() {
+    }
     
-    func beginTracking() {}
+    func beginTracking() { }
 
     func endTracking() {
         NotificationCenter.unobserve(self)
@@ -93,7 +95,7 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setNavigationBarPrimaryBackgroundColor()
+        setPrimaryBackgroundColor()
         setNeedsNavigationBarAppearanceUpdate()
         linkInteractors()
         setListeners()
@@ -109,16 +111,21 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
     
     func configureAppearance() {}
 
-    func linkInteractors() {}
+    func linkInteractors() {
+    }
     
-    func setListeners() {}
+    func setListeners() {
+    }
 
-    func prepareLayout() {}
+    func prepareLayout() {
+    }
     
-    func bindData() {}
+    func bindData() {
+    }
     
     @available(iOS 12.0, *)
-    func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {}
+    func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -193,7 +200,8 @@ extension BaseViewController {
     }
 }
 
-extension BaseViewController: StatusBarConfigurable {}
+extension BaseViewController: StatusBarConfigurable {
+}
 
 extension BaseViewController {
     var session: Session? {

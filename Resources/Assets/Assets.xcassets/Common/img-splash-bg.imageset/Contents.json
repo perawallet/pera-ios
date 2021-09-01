@@ -1,9 +1,7 @@
 {
   "images" : [
     {
-<<<<<<< HEAD
-      "filename" : "icon-create-new-account.pdf",
-<<<<<<< HEAD
+      "filename" : "img-splash-bg.pdf",
       "idiom" : "universal"
     },
     {
@@ -13,12 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-add-account.pdf",
-=======
->>>>>>> 6c0069d0 (✨ Implement Launch, Welcome & AddAccount Screens)
-=======
-      "filename" : "icon-add-account.pdf",
->>>>>>> 3e4cea59 (Revert "✨ Implement Launch, Welcome & AddAccount Screens")
+      "filename" : "img-splash-bg-1.pdf",
       "idiom" : "universal"
     }
   ],
