@@ -58,7 +58,7 @@ class SelectAssetViewController: BaseViewController {
     
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.tertiary
-        setTertiaryBackgroundColor()
+        setNavigationBarTertiaryBackgroundColor()
         navigationItem.title = "send-select-asset".localized
         emptyStateView.setTitle("asset-not-found-title".localized)
     }

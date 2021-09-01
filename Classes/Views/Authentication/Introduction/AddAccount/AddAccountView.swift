@@ -16,53 +16,32 @@
 //  AddAccountView.swift
 
 import UIKit
+import Macaroon
 
-class AddAccountView: BaseView {
-
-    private let layout = Layout<LayoutConstants>()
-
+final class AddAccountView: View {
     weak var delegate: AddAccountViewDelegate?
 
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
-            .withAlignment(.center)
-            .withText("introduction-add-account-text".localized)
-    }()
-
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fillProportionally
-        stackView.spacing = 0.0
-        stackView.alignment = .fill
-        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        stackView.axis = .vertical
-        stackView.isUserInteractionEnabled = true
-        return stackView
-    }()
-
+    private lazy var titleLabel = UILabel()
+    private lazy var stackView = UIStackView()
     private lazy var createNewAccountView = AccountTypeView()
-
     private lazy var watchAccountView = AccountTypeView()
-
     private lazy var pairAccountView = AccountTypeView()
 
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
+    func customize(_ theme: AddAccountViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addTitleLabel(theme)
+        addStackView(theme)
     }
 
-    override func setListeners() {
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func setListeners() {
         createNewAccountView.addTarget(self, action: #selector(notifyDelegateToSelectCreateNewAccount), for: .touchUpInside)
         watchAccountView.addTarget(self, action: #selector(notifyDelegateToSelectWatchAccount), for: .touchUpInside)
         pairAccountView.addTarget(self, action: #selector(notifyDelegateToSelectPairAccount), for: .touchUpInside)
-    }
-
-    override func prepareLayout() {
-        setupTitleLabelLayout()
-        setupStackViewLayout()
     }
 }
 
@@ -84,50 +63,50 @@ extension AddAccountView {
 }
 
 extension AddAccountView {
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
+    private func addTitleLabel(_ theme: AddAccountViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
 
-        titleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.topInset)
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalToSuperview().inset(theme.topInset)
         }
     }
 
-    private func setupStackViewLayout() {
+    private func addStackView(_ theme: AddAccountViewTheme) {
         addSubview(stackView)
+
+        stackView.distribution = .fillProportionally
+        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        stackView.axis = .vertical
 
         stackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
-            make.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + layout.current.verticalInset)
+            make.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(theme.verticalInset)
+            make.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.verticalInset)
             make.centerY.equalToSuperview()
         }
 
+        createNewAccountView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(createNewAccountView)
+        watchAccountView.customize(AccountTypeViewTheme())
         stackView.addArrangedSubview(watchAccountView)
+        pairAccountView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(pairAccountView)
     }
 }
 
 extension AddAccountView {
-    func configureCreateNewAccountView(with viewModel: AccountTypeViewModel) {
-        createNewAccountView.bind(viewModel)
+    func bindCreateNewAccountView(_ viewModel: AccountTypeViewModel) {
+        createNewAccountView.bindData(viewModel)
     }
 
-    func configureWatchAccountView(with viewModel: AccountTypeViewModel) {
-        watchAccountView.bind(viewModel)
+    func bindWatchAccountView(_ viewModel: AccountTypeViewModel) {
+        watchAccountView.bindData(viewModel)
     }
 
-    func configurePairAccountView(with viewModel: AccountTypeViewModel) {
-        pairAccountView.bind(viewModel)
-    }
-}
-
-extension AddAccountView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 32.0
-        let topInset: CGFloat = 12.0
-        let verticalInset: CGFloat = 20.0
+    func bindPairAccountView(_ viewModel: AccountTypeViewModel) {
+        pairAccountView.bindData(viewModel)
     }
 }
 
