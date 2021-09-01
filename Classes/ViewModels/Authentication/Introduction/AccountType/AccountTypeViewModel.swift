@@ -16,42 +16,42 @@
 //  AccountTypeViewModel.swift
 
 import UIKit
-import Macaroon
 
-struct AccountTypeViewModel: PairedViewModel {
-    private(set) var image: UIImage?
+class AccountTypeViewModel {
+    
+    private(set) var typeImage: UIImage?
     private(set) var title: String?
     private(set) var detail: String?
     
-    init(_ model: AccountSetupMode) {
-        bindImage(model)
-        bindTitle(model)
-        bindDetail(model)
+    init(accountSetupMode: AccountSetupMode) {
+        setTypeImage(for: accountSetupMode)
+        setTitle(for: accountSetupMode)
+        setDetail(for: accountSetupMode)
     }
-}
-
-extension AccountTypeViewModel {
-    private mutating func bindImage(_ mode: AccountSetupMode) {
-        switch mode {
+    
+    private func setTypeImage(for accountSetupMode: AccountSetupMode) {
+        switch accountSetupMode {
         case let .add(type):
             switch type {
+            case .create:
+                typeImage = img("icon-create-new-account")
             case .watch:
-                image = img("icon-add-watch-account")
+                typeImage = img("icon-add-watch-account")
             case .pair:
-                image = img("icon-pair-ledger-account")
-            case .none, .create:
-                image = img("icon-add-account")
+                typeImage = img("icon-pair-ledger-account")
+            case .none:
+                typeImage = img("icon-add-account")
             }
         case .recover:
-            image = img("icon-recover-passphrase")
+            typeImage = img("icon-recover-passphrase")
         case .rekey,
              .none:
             break
         }
     }
     
-    private mutating func bindTitle(_ mode: AccountSetupMode) {
-        switch mode {
+    private func setTitle(for accountSetupMode: AccountSetupMode) {
+        switch accountSetupMode {
         case let .add(type):
             switch type {
             case .create:
@@ -71,8 +71,8 @@ extension AccountTypeViewModel {
         }
     }
 
-    private mutating func bindDetail(_ mode: AccountSetupMode) {
-        switch mode {
+    private func setDetail(for accountSetupMode: AccountSetupMode) {
+        switch accountSetupMode {
         case let .add(type):
             switch type {
             case .create:

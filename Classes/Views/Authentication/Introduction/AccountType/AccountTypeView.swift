@@ -16,44 +16,58 @@
 //  AccountTypeView.swift
 
 import UIKit
-import Macaroon
 
-final class AccountTypeView: Control {
-    private lazy var theme = AccountTypeViewTheme()
-    private lazy var imageView = UIImageView()
-    private lazy var titleLabel = UILabel()
-    private lazy var detailLabel = UILabel()
+class AccountTypeView: BaseControl {
+    
+    private let layout = Layout<LayoutConstants>()
+    
+    private lazy var typeImageView = UIImageView()
+    
+    private lazy var titleLabel: UILabel = {
+        UILabel()
+            .withLine(.contained)
+            .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
+            .withTextColor(Colors.Text.primary)
+            .withAlignment(.left)
+    }()
 
-    func customize(_ theme: AccountTypeViewTheme) {
-        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-
-        addTitleLabel(theme)
-        addDetailLabel(theme)
-        addImageView(theme)
+    private lazy var detailLabel: UILabel = {
+        UILabel()
+            .withLine(.contained)
+            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withTextColor(Colors.Text.secondary)
+            .withAlignment(.left)
+    }()
+    
+    private lazy var arrowImageView = UIImageView(image: img("icon-introduction-arrow-right"))
+    
+    private lazy var separatorView = LineSeparatorView()
+    
+    override func configureAppearance() {
+        backgroundColor = Colors.Background.tertiary
     }
-
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
-
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    
+    override func prepareLayout() {
+        setupTitleLabelLayout()
+        setupDetailLabelLayout()
+        setupSeparatorViewLayout()
+        setupTypeImageViewLayout()
+        setupArrowImageViewLayout()
+    }
 }
 
 extension AccountTypeView {
-    private func addTitleLabel(_ theme: AccountTypeViewTheme) {
-        titleLabel.customizeAppearance(theme.title)
+    private func setupTitleLabelLayout() {
         addSubview(titleLabel)
-
-        titleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(theme.titleLeadingInset)
-            $0.top.equalToSuperview().inset(theme.verticalInset)
-            $0.trailing.equalToSuperview().inset(theme.titleTrailingInset)
+        
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.titleLeadingInset)
+            make.top.equalToSuperview().inset(layout.current.verticalInset)
+            make.trailing.equalToSuperview().inset(layout.current.titleTrailingInset)
         }
-
-        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
-
-    private func addDetailLabel(_ theme: AccountTypeViewTheme) {
-        detailLabel.customizeAppearance(theme.detail)
-
+    
+    private func setupDetailLabelLayout() {
         addSubview(detailLabel)
         detailLabel.snp.makeConstraints {
             $0.leading.equalTo(titleLabel.snp.leading)
@@ -64,22 +78,57 @@ extension AccountTypeView {
 
         detailLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
-
-    private func addImageView(_ theme: AccountTypeViewTheme) {
-        addSubview(imageView)
-
-        imageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(theme.horizontalInset)
-            $0.fitToSize(theme.iconSize)
-            $0.centerY.equalToSuperview()
+    
+    private func setupSeparatorViewLayout() {
+        addSubview(separatorView)
+        
+        separatorView.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel)
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.bottom.equalToSuperview()
+            make.height.equalTo(layout.current.separatorHeight)
+            make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.verticalInset)
+        }
+    }
+    
+    private func setupTypeImageViewLayout() {
+        addSubview(typeImageView)
+        
+        typeImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+            make.size.equalTo(layout.current.iconSize)
+            make.centerY.equalToSuperview()
+        }
+    }
+    
+    private func setupArrowImageViewLayout() {
+        addSubview(arrowImageView)
+        
+        arrowImageView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.centerY.equalTo(typeImageView)
+            make.size.equalTo(layout.current.arrowIconSize)
         }
     }
 }
 
-extension AccountTypeView: ViewModelBindable {
-    func bindData(_ viewModel: AccountTypeViewModel?) {
-        imageView.image = viewModel?.image
-        titleLabel.text = viewModel?.title
-        detailLabel.text = viewModel?.detail
+extension AccountTypeView {
+    func bind(_ viewModel: AccountTypeViewModel) {
+        typeImageView.image = viewModel.typeImage
+        titleLabel.text = viewModel.title
+        detailLabel.text = viewModel.detail
+    }
+}
+
+extension AccountTypeView {
+    private struct LayoutConstants: AdaptiveLayoutConstants {
+        let iconSize = CGSize(width: 48.0, height: 48.0)
+        let titleLeadingInset: CGFloat = 88.0
+        let titleTrailingInset: CGFloat = 60.0
+        let arrowIconSize = CGSize(width: 24.0, height: 24.0)
+        let separatorHeight: CGFloat = 1.0
+        let horizontalInset: CGFloat = 20.0
+        let verticalInset: CGFloat = 24.0
+        let minimumInset: CGFloat = 4.0
     }
 }

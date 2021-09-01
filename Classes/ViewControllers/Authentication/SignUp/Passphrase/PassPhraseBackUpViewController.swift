@@ -49,7 +49,7 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        setNavigationBarTertiaryBackgroundColor()
+        setTertiaryBackgroundColor()
         customizeBackground()
 
         passphraseView.nextButton.isEnabled = false

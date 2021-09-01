@@ -44,8 +44,8 @@ struct ALGBarButtonItem: BarButtonItem {
         case .skip:
             return BarButtonItemTitleContent(
                 text: "title-skip".localized,
-                textColor: AppColors.Components.Text.main.color,
-                font: Fonts.DMSans.medium.make(15).font
+                textColor: Colors.Main.primary700,
+                font: UIFont.font(withWeight: .semiBold(size: 14.0))
             )
         case .dontAskAgain:
             return BarButtonItemTitleContent(
