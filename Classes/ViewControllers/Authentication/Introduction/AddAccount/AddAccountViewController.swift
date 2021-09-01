@@ -17,9 +17,9 @@
 
 import UIKit
 
-class AddAccountViewController: BaseViewController {
-    
+final class AddAccountViewController: BaseViewController {
     private lazy var addAccountView = AddAccountView()
+    private lazy var theme = AddAccountViewTheme()
     
     private let flow: AccountSetupFlow
     
@@ -27,21 +27,67 @@ class AddAccountViewController: BaseViewController {
         self.flow = flow
         super.init(configuration: configuration)
     }
+
+    override func configureNavigationBarAppearance() {
+        addBarButtons()
+    }
     
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.tertiary
-        setTertiaryBackgroundColor()
-        addAccountView.configureCreateNewAccountView(with: AccountTypeViewModel(accountSetupMode: .add(type: .create)))
-        addAccountView.configureWatchAccountView(with: AccountTypeViewModel(accountSetupMode: .add(type: .watch)))
-        addAccountView.configurePairAccountView(with: AccountTypeViewModel(accountSetupMode: .add(type: .pair)))
+        setNavigationBarTertiaryBackgroundColor()
+    }
+
+    override func bindData() {
+        addAccountView.bindCreateNewAccountView(AccountTypeViewModel(.add(type: .create)))
+        addAccountView.bindWatchAccountView(AccountTypeViewModel(.add(type: .watch)))
+        addAccountView.bindPairAccountView(AccountTypeViewModel(.add(type: .pair)))
     }
     
     override func linkInteractors() {
         addAccountView.delegate = self
     }
+
+    override func setListeners() {
+        addAccountView.setListeners()
+    }
     
     override func prepareLayout() {
+        addAccountView.customize(theme)
         prepareWholeScreenLayoutFor(addAccountView)
+    }
+}
+
+extension AddAccountViewController {
+    private func addBarButtons() {
+        switch flow {
+        case .addNewAccount:
+            addCloseBarButtonItem()
+        case .initializeAccount:
+            addSkipBarButtonItem()
+        case .none:
+            break
+        }
+    }
+
+    private func addCloseBarButtonItem() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            closeScreen(by: .dismiss, animated: true)
+        }
+
+        leftBarButtonItems = [closeBarButtonItem]
+    }
+
+    private func addSkipBarButtonItem() {
+        let skipBarButtonItem = ALGBarButtonItem(kind: .skip) { [unowned self] in
+            session?.createUser()
+
+            DispatchQueue.main.async {
+                self.dismiss(animated: false) {
+                    UIApplication.shared.rootViewController()?.setupTabBarController()
+                }
+            }
+        }
+
+        rightBarButtonItems = [skipBarButtonItem]
     }
 }
 

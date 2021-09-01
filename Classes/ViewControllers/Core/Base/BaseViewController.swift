@@ -20,10 +20,9 @@ import UIKit
 class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen {
     var isTabBarHidden = true
     var tabBarSnapshot: UIView?
-    
-    var isStatusBarHidden: Bool = false
-    var hidesStatusBarWhenAppeared: Bool = false
-    var hidesStatusBarWhenPresented: Bool = false
+    var isStatusBarHidden = false
+    var hidesStatusBarWhenAppeared = false
+    var hidesStatusBarWhenPresented = false
     
     var name: AnalyticsScreenName? {
         return nil
@@ -81,12 +80,11 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
         endTracking()
     }
     
-    func customizeTabBarAppearence() { }
+    func customizeTabBarAppearence() {}
     
-    func configureNavigationBarAppearance() {
-    }
+    func configureNavigationBarAppearance() {}
     
-    func beginTracking() { }
+    func beginTracking() {}
 
     func endTracking() {
         NotificationCenter.unobserve(self)
@@ -95,7 +93,7 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setPrimaryBackgroundColor()
+        setNavigationBarPrimaryBackgroundColor()
         setNeedsNavigationBarAppearanceUpdate()
         linkInteractors()
         setListeners()
@@ -113,21 +111,16 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
         view.backgroundColor = Colors.Background.primary
     }
 
-    func linkInteractors() {
-    }
+    func linkInteractors() {}
     
-    func setListeners() {
-    }
+    func setListeners() {}
 
-    func prepareLayout() {
-    }
+    func prepareLayout() {}
     
-    func bindData() {
-    }
+    func bindData() {}
     
     @available(iOS 12.0, *)
-    func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
-    }
+    func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {}
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -227,11 +220,23 @@ extension BaseViewController {
             navigationController?.navigationBar.barTintColor = Colors.Background.tertiary
             navigationController?.navigationBar.tintColor = Colors.Background.tertiary
         }
+    func setNavigationBarPrimaryBackgroundColor() {
+        navigationController?.navigationBar.barTintColor = Colors.Background.primary
+        navigationController?.navigationBar.tintColor = Colors.Background.primary
+    }
+    
+    func setNavigationBarSecondaryBackgroundColor() {
+        navigationController?.navigationBar.barTintColor = Colors.Background.secondary
+        navigationController?.navigationBar.tintColor = Colors.Background.secondary
+    }
+    
+    func setNavigationBarTertiaryBackgroundColor() {
+        navigationController?.navigationBar.barTintColor = Colors.Background.tertiary
+        navigationController?.navigationBar.tintColor = Colors.Background.tertiary
     }
 }
 
-extension BaseViewController: StatusBarConfigurable {
-}
+extension BaseViewController: StatusBarConfigurable {}
 
 extension BaseViewController {
     var session: Session? {

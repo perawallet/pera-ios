@@ -50,7 +50,7 @@ class PassphraseBackUpViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        setTertiaryBackgroundColor()
+        setNavigationBarTertiaryBackgroundColor()
         view.backgroundColor = Colors.Background.tertiary
         scrollView.backgroundColor = Colors.Background.tertiary
         contentView.backgroundColor = Colors.Background.tertiary

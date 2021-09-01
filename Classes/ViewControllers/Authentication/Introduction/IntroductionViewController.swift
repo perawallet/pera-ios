@@ -49,7 +49,7 @@ class IntroductionViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         view.backgroundColor = Colors.Background.tertiary
-        setTertiaryBackgroundColor()
+        setNavigationBarTertiaryBackgroundColor()
         
         switch accountSetupFlow {
         case .addNewAccount:

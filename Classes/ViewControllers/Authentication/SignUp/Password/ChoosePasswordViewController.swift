@@ -56,7 +56,7 @@ class ChoosePasswordViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setTertiaryBackgroundColor()
+        setNavigationBarTertiaryBackgroundColor()
         displayPinLimitScreenIfNeeded()
     }
     
