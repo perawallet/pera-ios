@@ -2481,9 +2481,9 @@
 		CB3AEBD32743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB3AEBD22743A6F500F85246 /* AlgoSDK.xcframework */; };
 		CB3AEBD42743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB3AEBD22743A6F500F85246 /* AlgoSDK.xcframework */; };
 		CB3AEBD52743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB3AEBD22743A6F500F85246 /* AlgoSDK.xcframework */; };
-		CB3AEBD62745282800F85246 /* PassphraseVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */; };
-		CB3AEBD72745282900F85246 /* PassphraseVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */; };
-		CB3AEBD82745282900F85246 /* PassphraseVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */; };
+		CB3AEBD927452B4700F85246 /* PassphraseVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */; };
+		CB3AEBDA27452B4800F85246 /* PassphraseVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */; };
+		CB3AEBDB27452B4800F85246 /* PassphraseVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */; };
 		CB624417B8B29A26FE98B92E /* Pods_algorand_staging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 030F6B1A27825B4720C008C6 /* Pods_algorand_staging.framework */; };
 		D4006DDF2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4006DDE2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift */; };
 		D4006DE02710A5530018695D /* LedgerAccountDetailViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4006DDE2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift */; };
@@ -11810,7 +11810,7 @@
 				D4194311273541170055EC70 /* PageContainer.swift in Sources */,
 				2BD36DF0267E6E0E00C57728 /* TitledTransactionAmountInformationViewModel.swift in Sources */,
 				2BAD929525B5D0DD00DE56D5 /* PendingAssetViewModel.swift in Sources */,
-				CB3AEBD82745282900F85246 /* PassphraseVerifyViewController.swift in Sources */,
+				CB3AEBD927452B4700F85246 /* PassphraseVerifyViewController.swift in Sources */,
 				D49B45762724A449005158B1 /* LedgerApprovalViewModel.swift in Sources */,
 				17BD4E8A2292F1260003E49A /* ContactCell.swift in Sources */,
 				17BD4E8C2292F1260003E49A /* Environment.swift in Sources */,
@@ -12781,7 +12781,7 @@
 				D4194312273541170055EC70 /* PageContainer.swift in Sources */,
 				2B0F625024EC129D00DA22A6 /* NodeHealthOperation.swift in Sources */,
 				2BAD929425B5D0DD00DE56D5 /* PendingAssetViewModel.swift in Sources */,
-				CB3AEBD72745282900F85246 /* PassphraseVerifyViewController.swift in Sources */,
+				CB3AEBDA27452B4800F85246 /* PassphraseVerifyViewController.swift in Sources */,
 				D49B45752724A449005158B1 /* LedgerApprovalViewModel.swift in Sources */,
 				2B0F625124EC129D00DA22A6 /* TransactionContactInformationView.swift in Sources */,
 				2B288AE22693A56900BC6FB6 /* WCSingleTransactionViewControllerAssetManagable.swift in Sources */,
@@ -13752,7 +13752,7 @@
 				2BAD929325B5D0DD00DE56D5 /* PendingAssetViewModel.swift in Sources */,
 				2BD36DEE267E6E0E00C57728 /* TitledTransactionAmountInformationViewModel.swift in Sources */,
 				D49B45742724A449005158B1 /* LedgerApprovalViewModel.swift in Sources */,
-				CB3AEBD62745282800F85246 /* PassphraseVerifyViewController.swift in Sources */,
+				CB3AEBDB27452B4800F85246 /* PassphraseVerifyViewController.swift in Sources */,
 				2B432A52237C56F0009191BF /* BaseSupplementaryView.swift in Sources */,
 				17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */,
 				2BF5315F224A472800A7455F /* ModalAnimator.swift in Sources */,

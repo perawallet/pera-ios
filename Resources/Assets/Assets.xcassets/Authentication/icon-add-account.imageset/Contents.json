@@ -2,6 +2,7 @@
   "images" : [
     {
       "filename" : "icon-create-new-account.pdf",
+<<<<<<< HEAD
       "idiom" : "universal"
     },
     {
@@ -12,6 +13,8 @@
         }
       ],
       "filename" : "icon-add-account.pdf",
+=======
+>>>>>>> 6c0069d0 (✨ Implement Launch, Welcome & AddAccount Screens)
       "idiom" : "universal"
     }
   ],

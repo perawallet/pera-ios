@@ -1,0 +1,452 @@
+{
+  "name": "Macaroon",
+  "version": "0.1.0",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "homepage": "https://github.com/Hipo/macaroon",
+  "summary": "iOS UIKit extension framework for providing structural interface functionality",
+  "source": {
+    "git": "https://github.com/Hipo/macaroon.git",
+    "tag": "0.1.0"
+  },
+  "authors": {
+    "Hipo": "hello@hipolabs.com"
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "swift_versions": "5.0",
+  "default_subspecs": "Core",
+  "subspecs": [
+    {
+      "name": "Banner",
+      "source_files": "macaroon/Classes/Banner/*.swift",
+      "dependencies": {
+        "Macaroon/Concurrency": [
+
+        ]
+      }
+    },
+    {
+      "name": "BottomSheet",
+      "source_files": "macaroon/Classes/BottomSheet/*.swift"
+    },
+    {
+      "name": "BottomOverlay",
+      "source_files": "macaroon/Classes/BottomOverlay/*.swift"
+    },
+    {
+      "name": "BarcodeScanner",
+      "source_files": "macaroon/Classes/BarcodeScanner/*.swift"
+    },
+    {
+      "name": "Biometrics",
+      "source_files": "macaroon/Classes/Biometrics/*.swift"
+    },
+    {
+      "name": "Concurrency",
+      "source_files": "macaroon/Classes/Concurrency/*.swift"
+    },
+    {
+      "name": "Core",
+      "dependencies": {
+        "SnapKit": [
+          "~> 5.0.0"
+        ]
+      },
+      "subspecs": [
+        {
+          "name": "App",
+          "source_files": "macaroon/Classes/App/*.swift",
+          "subspecs": [
+            {
+              "name": "Dependencies",
+              "source_files": "macaroon/Classes/App/Dependencies/*.swift"
+            },
+            {
+              "name": "Launching",
+              "source_files": "macaroon/Classes/App/Launching/*.swift"
+            },
+            {
+              "name": "Routing",
+              "source_files": "macaroon/Classes/App/Routing/*.swift",
+              "subspecs": [
+                {
+                  "name": "Transition",
+                  "source_files": "macaroon/Classes/App/Routing/Transition/*.swift"
+                },
+                {
+                  "name": "Deeplink",
+                  "source_files": "macaroon/Classes/App/Routing/Deeplink/*.swift"
+                }
+              ]
+            },
+            {
+              "name": "Target",
+              "source_files": "macaroon/Classes/App/Target/*.swift"
+            }
+          ]
+        },
+        {
+          "name": "Error",
+          "source_files": "macaroon/Classes/Error/*.swift"
+        },
+        {
+          "name": "Managers",
+          "source_files": "macaroon/Classes/Managers/*.swift",
+          "subspecs": [
+            {
+              "name": "Loading",
+              "source_files": "macaroon/Classes/Managers/Loading/*.swift"
+            }
+          ]
+        },
+        {
+          "name": "Screens",
+          "source_files": "macaroon/Classes/Screens/*.swift",
+          "subspecs": [
+            {
+              "name": "Configuration",
+              "source_files": "macaroon/Classes/Screens/Configuration/*.swift",
+              "subspecs": [
+                {
+                  "name": "NavigationBar",
+                  "source_files": "macaroon/Classes/Screens/Configuration/NavigationBar/*.swift"
+                },
+                {
+                  "name": "StatusBar",
+                  "source_files": "macaroon/Classes/Screens/Configuration/StatusBar/*.swift"
+                }
+              ]
+            },
+            {
+              "name": "Containers",
+              "source_files": "macaroon/Classes/Screens/Containers/*.swift"
+            },
+            {
+              "name": "List",
+              "source_files": "macaroon/Classes/Screens/List/*.swift",
+              "subspecs": [
+                {
+                  "name": "Configuration",
+                  "source_files": "macaroon/Classes/Screens/List/Configuration/*.swift"
+                },
+                {
+                  "name": "ListLayouts",
+                  "source_files": "macaroon/Classes/Screens/List/ListLayouts/*.swift"
+                }
+              ]
+            },
+            {
+              "name": "CustomTransition",
+              "source_files": "macaroon/Classes/Screens/CustomTransition/*.swift",
+              "subspecs": [
+                {
+                  "name": "Modal",
+                  "source_files": "macaroon/Classes/Screens/CustomTransition/Modal/*.swift"
+                }
+              ]
+            },
+            {
+              "name": "Other",
+              "source_files": "macaroon/Classes/Screens/Other/*.swift"
+            }
+          ]
+        },
+        {
+          "name": "Utils",
+          "source_files": "macaroon/Classes/Utils/*.swift",
+          "subspecs": [
+            {
+              "name": "DataStructures",
+              "source_files": "macaroon/Classes/Utils/DataStructures/*.swift"
+            },
+            {
+              "name": "Debugging",
+              "source_files": "macaroon/Classes/Utils/Debugging/*.swift"
+            },
+            {
+              "name": "Extensions",
+              "subspecs": [
+                {
+                  "name": "Foundation",
+                  "source_files": "macaroon/Classes/Utils/Extensions/Foundation/*.swift"
+                },
+                {
+                  "name": "UI",
+                  "source_files": "macaroon/Classes/Utils/Extensions/UI/*.swift"
+                }
+              ]
+            },
+            {
+              "name": "Gestures",
+              "source_files": "macaroon/Classes/Utils/Gestures/*.swift"
+            },
+            {
+              "name": "Image",
+              "source_files": "macaroon/Classes/Utils/Image/*.swift"
+            },
+            {
+              "name": "List",
+              "source_files": "macaroon/Classes/Utils/List/*.swift"
+            },
+            {
+              "name": "Notification",
+              "source_files": "macaroon/Classes/Utils/Notification/*.swift"
+            },
+            {
+              "name": "Performance",
+              "source_files": "macaroon/Classes/Utils/Performance/*.swift"
+            },
+            {
+              "name": "Text",
+              "source_files": "macaroon/Classes/Utils/Text/*.swift",
+              "subspecs": [
+                {
+                  "name": "Attributed",
+                  "source_files": "macaroon/Classes/Utils/Text/Attributed/*.swift"
+                }
+              ]
+            },
+            {
+              "name": "Time",
+              "source_files": "macaroon/Classes/Utils/Time/*.swift"
+            }
+          ]
+        },
+        {
+          "name": "Views",
+          "subspecs": [
+            {
+              "name": "BaseComponents",
+              "source_files": "macaroon/Classes/Views/BaseComponents/*.swift"
+            },
+            {
+              "name": "Components",
+              "source_files": "macaroon/Classes/Views/Components/*.swift",
+              "subspecs": [
+                {
+                  "name": "EmptyStateView",
+                  "source_files": "macaroon/Classes/Views/Components/EmptyStateView/*.swift"
+                },
+                {
+                  "name": "SegmentedControl",
+                  "source_files": "macaroon/Classes/Views/Components/SegmentedControl/*.swift"
+                }
+              ]
+            },
+            {
+              "name": "Configuration",
+              "subspecs": [
+                {
+                  "name": "Data",
+                  "source_files": "macaroon/Classes/Views/Configuration/Data/*.swift"
+                },
+                {
+                  "name": "Layout",
+                  "source_files": "macaroon/Classes/Views/Configuration/Layout/*.swift"
+                },
+                {
+                  "name": "Styling",
+                  "source_files": "macaroon/Classes/Views/Configuration/Styling/*.swift",
+                  "subspecs": [
+                    {
+                      "name": "Customizables",
+                      "source_files": "macaroon/Classes/Views/Configuration/Styling/Customizables/*.swift"
+                    },
+                    {
+                      "name": "Drawables",
+                      "source_files": "macaroon/Classes/Views/Configuration/Styling/Drawables/*.swift"
+                    },
+                    {
+                      "name": "StyleElements",
+                      "source_files": "macaroon/Classes/Views/Configuration/Styling/StyleElements/*.swift"
+                    },
+                    {
+                      "name": "Styles",
+                      "source_files": "macaroon/Classes/Views/Configuration/Styling/Styles/*.swift"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "ListComponents",
+              "source_files": "macaroon/Classes/Views/ListComponents/*.swift"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "HIPCore",
+      "source_files": "macaroon/Classes/HIPCore/**/*.swift"
+    },
+    {
+      "name": "CustomUI",
+      "source_files": "macaroon/Classes/CustomUI/*.swift"
+    },
+    {
+      "name": "Form",
+      "dependencies": {
+        "AnyFormatKit": [
+          "~> 2.2.1"
+        ]
+      },
+      "subspecs": [
+        {
+          "name": "Configuration",
+          "source_files": "macaroon/Classes/Form/Configuration/*.swift"
+        },
+        {
+          "name": "UI",
+          "source_files": "macaroon/Classes/Form/UI/*.swift",
+          "subspecs": [
+            {
+              "name": "Screens",
+              "source_files": "macaroon/Classes/Form/UI/Screens/*.swift"
+            },
+            {
+              "name": "Views",
+              "source_files": "macaroon/Classes/Form/UI/Views/*.swift"
+            }
+          ]
+        },
+        {
+          "name": "Utils",
+          "source_files": "macaroon/Classes/Form/Utils/*.swift",
+          "subspecs": [
+            {
+              "name": "Formatter",
+              "source_files": "macaroon/Classes/Form/Utils/Formatter/*.swift"
+            },
+            {
+              "name": "Keyboard",
+              "source_files": "macaroon/Classes/Form/Utils/Keyboard/*.swift"
+            },
+            {
+              "name": "Validator",
+              "source_files": "macaroon/Classes/Form/Utils/Validator/*.swift"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Map",
+      "source_files": "macaroon/Classes/Map/*.swift"
+    },
+    {
+      "name": "MediaPicker",
+      "source_files": "macaroon/Classes/MediaPicker/*.swift"
+    },
+    {
+      "name": "Mixpanel",
+      "source_files": "macaroon/Classes/Mixpanel/*.swift",
+      "dependencies": {
+        "Mixpanel-swift": [
+          "~> 2.7"
+        ]
+      }
+    },
+    {
+      "name": "Vendors",
+      "source_files": "macaroon/Classes/Vendors/**/*.swift"
+    },
+    {
+      "name": "PushNotification",
+      "source_files": "macaroon/Classes/PushNotification/*.swift"
+    },
+    {
+      "name": "SVGImage",
+      "source_files": "macaroon/Classes/SVGImage/*.swift",
+      "dependencies": {
+        "Macaroon/URLImage": [
+
+        ],
+        "Macaw": [
+          "0.9.7"
+        ]
+      }
+    },
+    {
+      "name": "SwiftLint",
+      "script_phases": {
+        "name": "Run SwiftLint",
+        "script": "echo \"Hello\""
+      },
+      "dependencies": {
+        "SwiftLint": [
+          "~> 0.40"
+        ]
+      }
+    },
+    {
+      "name": "TabBar",
+      "source_files": "macaroon/Classes/TabBar/*.swift"
+    },
+    {
+      "name": "URLImage",
+      "source_files": "macaroon/Classes/URLImage/*.swift",
+      "dependencies": {
+        "Kingfisher": [
+          "~> 5.0"
+        ]
+      },
+      "subspecs": [
+        {
+          "name": "Utils",
+          "source_files": "macaroon/Classes/URLImage/Utils/*.swift",
+          "subspecs": [
+            {
+              "name": "Extensions",
+              "source_files": "macaroon/Classes/URLImage/Utils/Extensions/*.swift"
+            },
+            {
+              "name": "Properties",
+              "source_files": "macaroon/Classes/URLImage/Utils/Properties/*.swift"
+            }
+          ]
+        },
+        {
+          "name": "ViewModels",
+          "source_files": "macaroon/Classes/URLImage/ViewModels/*.swift"
+        },
+        {
+          "name": "Views",
+          "subspecs": [
+            {
+              "name": "URLImagePlaceholderView",
+              "source_files": "macaroon/Classes/URLImage/Views/URLImagePlaceholderView/*.swift"
+            },
+            {
+              "name": "URLImageView",
+              "source_files": "macaroon/Classes/URLImage/Views/URLImageView/*.swift"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Zendesk-Chat",
+      "source_files": "macaroon/Classes/ZendeskChat/*.swift",
+      "dependencies": {
+        "ZendeskChatSDK": [
+          "~> 2.9"
+        ]
+      }
+    },
+    {
+      "name": "Zendesk-Support",
+      "source_files": "macaroon/Classes/ZendeskSupport/*.swift",
+      "dependencies": {
+        "ZendeskSupportSDK": [
+          "~> 5.0"
+        ]
+      }
+    }
+  ],
+  "swift_version": "5.0"
+}
