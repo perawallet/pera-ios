@@ -37,14 +37,6 @@ class AccountRecoverViewController: BaseScrollViewController {
 
     private var keyboardController = KeyboardController()
     
-    private lazy var bottomModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 338.0))
-    )
-    
     private lazy var accountRecoverView = AccountRecoverView()
 
     private lazy var recoverButton = MainButton(title: "recover-title".localized)
