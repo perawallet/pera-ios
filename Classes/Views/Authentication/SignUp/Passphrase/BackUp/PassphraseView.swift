@@ -110,7 +110,7 @@ extension PassphraseView {
     }
 
     private func addVerifyButton(_ theme: PassphraseViewTheme) {
-        verifyButton.customize(ButtonPrimaryTheme())
+        verifyButton.customize(theme.mainButtonTheme)
         verifyButton.bindData(ButtonCommonViewModel(title: "title-next".localized))
 
         addSubview(verifyButton)

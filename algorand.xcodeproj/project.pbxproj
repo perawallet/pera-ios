@@ -2638,6 +2638,9 @@
 		D473CA4C26E15F0C00558598 /* PassphraseBackUpOrderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4B26E15F0C00558598 /* PassphraseBackUpOrderViewTheme.swift */; };
 		D473CA4D26E15F0C00558598 /* PassphraseBackUpOrderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4B26E15F0C00558598 /* PassphraseBackUpOrderViewTheme.swift */; };
 		D473CA4E26E15F0C00558598 /* PassphraseBackUpOrderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4B26E15F0C00558598 /* PassphraseBackUpOrderViewTheme.swift */; };
+		D473CA5026E1733700558598 /* ScreenShotWarningViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4F26E1733700558598 /* ScreenShotWarningViewTheme.swift */; };
+		D473CA5126E1733700558598 /* ScreenShotWarningViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4F26E1733700558598 /* ScreenShotWarningViewTheme.swift */; };
+		D473CA5226E1733700558598 /* ScreenShotWarningViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4F26E1733700558598 /* ScreenShotWarningViewTheme.swift */; };
 		D479D0F426D4F64500110E04 /* BannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D479D0F326D4F64500110E04 /* BannerController.swift */; };
 		D479D0F526D4F64500110E04 /* BannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D479D0F326D4F64500110E04 /* BannerController.swift */; };
 		D479D0F626D4F64500110E04 /* BannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D479D0F326D4F64500110E04 /* BannerController.swift */; };
@@ -3675,6 +3678,7 @@
 		D44EEEE926D54740009998FA /* BannerInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerInfoViewModel.swift; sourceTree = "<group>"; };
 		D473CA4726E1537100558598 /* PassphraseViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseViewTheme.swift; sourceTree = "<group>"; };
 		D473CA4B26E15F0C00558598 /* PassphraseBackUpOrderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpOrderViewTheme.swift; sourceTree = "<group>"; };
+		D473CA4F26E1733700558598 /* ScreenShotWarningViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShotWarningViewTheme.swift; sourceTree = "<group>"; };
 		D479D0F326D4F64500110E04 /* BannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerController.swift; sourceTree = "<group>"; };
 		D479D0F726D4FAD900110E04 /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
 		D479D0FB26D4FB1F00110E04 /* BannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewModel.swift; sourceTree = "<group>"; };
@@ -8260,6 +8264,7 @@
 			isa = PBXGroup;
 			children = (
 				2BD063EC25CEC8E5008BD15E /* ScreenshotWarningView.swift */,
+				D473CA4F26E1733700558598 /* ScreenShotWarningViewTheme.swift */,
 			);
 			path = Screenshot;
 			sourceTree = "<group>";
@@ -11328,6 +11333,7 @@
 				17BD4F012292F1260003E49A /* NSAttributedString+Additions.swift in Sources */,
 				2BA4B3E42673F8D50041586B /* WCConnectionAccountSelectionView.swift in Sources */,
 				2BEE061B23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */,
+				D473CA5226E1733700558598 /* ScreenShotWarningViewTheme.swift in Sources */,
 				2BB6EE56239339D800CF7874 /* ContactAssetView.swift in Sources */,
 				17BD4F022292F1260003E49A /* ConfirmationBottomInformationView.swift in Sources */,
 				17BD4F032292F1260003E49A /* SingleLineInputField.swift in Sources */,
@@ -12164,6 +12170,7 @@
 				2B0F631F24EC129D00DA22A6 /* LocalAuthenticator.swift in Sources */,
 				2BA4B3E32673F8D50041586B /* WCConnectionAccountSelectionView.swift in Sources */,
 				2B0F632024EC129D00DA22A6 /* NSAttributedString+Additions.swift in Sources */,
+				D473CA5126E1733700558598 /* ScreenShotWarningViewTheme.swift in Sources */,
 				2B0F632124EC129D00DA22A6 /* TouchDetectingScrollView.swift in Sources */,
 				2B0F632224EC129D00DA22A6 /* ContactAssetView.swift in Sources */,
 				2B0F632324EC129D00DA22A6 /* ConfirmationBottomInformationView.swift in Sources */,
@@ -13000,6 +13007,7 @@
 				2B8C127A2241970F00E34D37 /* NSAttributedString+Additions.swift in Sources */,
 				2BA4B3E22673F8D50041586B /* WCConnectionAccountSelectionView.swift in Sources */,
 				2BEE061A23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */,
+				D473CA5026E1733700558598 /* ScreenShotWarningViewTheme.swift in Sources */,
 				2BB6EE55239339D800CF7874 /* ContactAssetView.swift in Sources */,
 				2B8954AE2243D55200D6D068 /* ConfirmationBottomInformationView.swift in Sources */,
 				2B8954C2224404B700D6D068 /* SingleLineInputField.swift in Sources */,

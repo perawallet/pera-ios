@@ -17,8 +17,7 @@
 
 import UIKit
 
-class ScreenshotWarningViewController: BaseViewController {
-
+final class ScreenshotWarningViewController: BaseViewController {
     override var shouldShowNavigationBar: Bool {
         return false
     }
@@ -30,10 +29,12 @@ class ScreenshotWarningViewController: BaseViewController {
     }
 
     override func setListeners() {
+        screenshotWarningView.setListeners()
         screenshotWarningView.delegate = self
     }
 
     override func prepareLayout() {
+        screenshotWarningView.customize(ScreenShotWarningViewTheme())
         prepareWholeScreenLayoutFor(screenshotWarningView)
     }
 }

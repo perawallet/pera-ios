@@ -32,7 +32,7 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
             animationMode: .normal(duration: 0.25),
             dismissMode: .backgroundTouch
         ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 338.0))
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 382.0))
     )
     
     init(address: String, configuration: ViewControllerConfiguration) {
@@ -45,6 +45,14 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateVerifyButtonAfterScroll()
+        open(
+            .screenshotWarning,
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: bottomModalPresenter
+            )
+        )
     }
     
     override func configureAppearance() {
