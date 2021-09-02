@@ -29,6 +29,7 @@ final class TutorialViewController: BaseScrollViewController {
 
     private let flow: AccountSetupFlow
     private let tutorial: Tutorial
+
     private let localAuthenticator = LocalAuthenticator()
 
     init(flow: AccountSetupFlow, tutorial: Tutorial, configuration: ViewControllerConfiguration) {
