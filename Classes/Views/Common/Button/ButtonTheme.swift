@@ -25,5 +25,5 @@ protocol ButtonTheme: LayoutSheet, StyleSheet {
     var corner: Corner { get }
     var indicator: ImageStyle { get }
 
-    var titleEdgeInsets: LayoutPaddings { get }
+    var contentEdgeInsets: LayoutPaddings { get }
 }

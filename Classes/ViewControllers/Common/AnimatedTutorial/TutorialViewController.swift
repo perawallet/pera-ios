@@ -13,20 +13,21 @@
 // limitations under the License.
 
 //
-//  AnimatedTutorialViewController.swift
+//  TutorialViewController.swift
 
 import UIKit
 
-class AnimatedTutorialViewController: BaseScrollViewController {
-
+final class TutorialViewController: BaseScrollViewController {
     override var hidesCloseBarButtonItem: Bool {
         return tutorial == .localAuthentication
     }
 
-    weak var delegate: AnimatedTutorialViewControllerDelegate?
+    private lazy var tutorialView = TutorialView()
+
+    weak var delegate: TutorialViewControllerDelegate?
 
     private let flow: AccountSetupFlow
-    private let tutorial: AnimatedTutorial
+    private let tutorial: Tutorial
     private let isActionable: Bool
 
     private lazy var bottomModalPresenter = CardModalPresenter(
@@ -39,9 +40,7 @@ class AnimatedTutorialViewController: BaseScrollViewController {
 
     private let localAuthenticator = LocalAuthenticator()
 
-    private lazy var animatedTutorialView = AnimatedTutorialView(isActionable: isActionable)
-
-    init(flow: AccountSetupFlow, tutorial: AnimatedTutorial, isActionable: Bool, configuration: ViewControllerConfiguration) {
+    init(flow: AccountSetupFlow, tutorial: Tutorial, isActionable: Bool, configuration: ViewControllerConfiguration) {
         self.flow = flow
         self.tutorial = tutorial
         self.isActionable = isActionable
@@ -54,13 +53,11 @@ class AnimatedTutorialViewController: BaseScrollViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        animatedTutorialView.startAnimating(with: LottieConfiguration())
         setPopGestureEnabledInLocalAuthenticationTutorial(false)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        animatedTutorialView.stopAnimating()
         setPopGestureEnabledInLocalAuthenticationTutorial(true)
     }
 
@@ -70,28 +67,24 @@ class AnimatedTutorialViewController: BaseScrollViewController {
         view.backgroundColor = Colors.Background.tertiary
         scrollView.backgroundColor = Colors.Background.tertiary
         contentView.backgroundColor = Colors.Background.tertiary
-        animatedTutorialView.bind(AnimatedTutorialViewModel(tutorial: tutorial))
+        tutorialView.bindData(TutorialViewModel(tutorial))
     }
 
-    override func linkInteractors() {
-        super.linkInteractors()
-        animatedTutorialView.delegate = self
+    override func setListeners() {
+        super.setListeners()
+        tutorialView.delegate = self
+        tutorialView.setListeners()
     }
 
     override func prepareLayout() {
         super.prepareLayout()
-        setupAnimatedTutorialViewLayout()
+        tutorialView.customize(TutorialViewTheme(), isActionable: isActionable)
+        contentView.addSubview(tutorialView)
+        tutorialView.pinToSuperview()
     }
 }
 
-extension AnimatedTutorialViewController {
-    private func setupAnimatedTutorialViewLayout() {
-        contentView.addSubview(animatedTutorialView)
-        animatedTutorialView.pinToSuperview()
-    }
-}
-
-extension AnimatedTutorialViewController {
+extension TutorialViewController {
     private func addBarButtons() {
         switch tutorial {
         case .recover,
@@ -116,17 +109,11 @@ extension AnimatedTutorialViewController {
     private func openWalletSupport() {
         switch tutorial {
         case .backUp:
-            if let url = AlgorandWeb.backUpSupport.link {
-                open(url)
-            }
+            open(AlgorandWeb.backUpSupport.link)
         case .recover:
-            if let url = AlgorandWeb.recoverSupport.link {
-                open(url)
-            }
+            open(AlgorandWeb.recoverSupport.link)
         case .watchAccount:
-            if let url = AlgorandWeb.watchAccountSupport.link {
-                open(url)
-            }
+            open(AlgorandWeb.watchAccountSupport.link)
         default:
             break
         }
@@ -134,22 +121,20 @@ extension AnimatedTutorialViewController {
 
     private func addDontAskAgainBarButton() {
         let dontAskAgainBarButtonItem = ALGBarButtonItem(kind: .dontAskAgain) { [weak self] in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
             
-            self.delegate?.animatedTutorialViewControllerDidTapDontAskAgain(self)
+            self.delegate?.tutorialViewControllerDidTapDontAskAgain(self)
         }
 
         rightBarButtonItems = [dontAskAgainBarButtonItem]
     }
 }
 
-extension AnimatedTutorialViewController: AnimatedTutorialViewDelegate {
-    func animatedTutorialViewDidApproveTutorial(_ animatedTutorialView: AnimatedTutorialView) {
+extension TutorialViewController: TutorialViewDelegate {
+    func tutorialViewDidApproveTutorial(_ tutorialView: TutorialView) {
         switch tutorial {
         case .backUp:
-            open(.animatedTutorial(flow: flow, tutorial: .writePassphrase, isActionable: false), by: .push)
+            open(.tutorial(flow: flow, tutorial: .writePassphrase, isActionable: false), by: .push)
         case .writePassphrase:
             open(.passphraseView(address: "temp"), by: .push)
         case .watchAccount:
@@ -163,7 +148,7 @@ extension AnimatedTutorialViewController: AnimatedTutorialViewDelegate {
         }
     }
 
-    func animatedTutorialViewDidTakeAction(_ animatedTutorialView: AnimatedTutorialView) {
+    func tutorialViewDidTakeAction(_ tutorialView: TutorialView) {
         switch tutorial {
         case .passcode:
             dismissScreen()
@@ -175,7 +160,7 @@ extension AnimatedTutorialViewController: AnimatedTutorialViewDelegate {
     }
 }
 
-extension AnimatedTutorialViewController {
+extension TutorialViewController {
     private func setPopGestureEnabledInLocalAuthenticationTutorial(_ isEnabled: Bool) {
         if tutorial == .localAuthentication {
             navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
@@ -236,11 +221,11 @@ extension AnimatedTutorialViewController {
     }
 }
 
-protocol AnimatedTutorialViewControllerDelegate: AnyObject {
-    func animatedTutorialViewControllerDidTapDontAskAgain(_ animatedTutorialViewController: AnimatedTutorialViewController)
+protocol TutorialViewControllerDelegate: AnyObject {
+    func tutorialViewControllerDidTapDontAskAgain(_ tutorialViewController: TutorialViewController)
 }
 
-enum AnimatedTutorial {
+enum Tutorial {
     case backUp
     case writePassphrase
     case watchAccount

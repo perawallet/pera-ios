@@ -133,7 +133,8 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    func open(_ url: URL) {
+    func open(_ url: URL?) {
+        guard let url = url else { return }
         let safariViewController = SFSafariViewController(url: url)
         present(safariViewController, animated: true, completion: nil)
     }

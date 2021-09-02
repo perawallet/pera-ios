@@ -97,7 +97,7 @@ indirect enum Screen {
     case screenshotWarning
     case warningAlert(warningAlert: WarningAlert)
     case actionableWarningAlert(warningAlert: WarningAlert)
-    case animatedTutorial(flow: AccountSetupFlow, tutorial: AnimatedTutorial, isActionable: Bool)
+    case tutorial(flow: AccountSetupFlow, tutorial: Tutorial, isActionable: Bool)
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions
     case algoUSDAnalytics(account: Account, currency: Currency)

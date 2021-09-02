@@ -265,17 +265,17 @@ extension AccountsViewController {
 
         if passcodeSettingDisplayStore.shouldAskForPasscode {
             let controller = open(
-                .animatedTutorial(flow: .none, tutorial: .passcode, isActionable: true),
+                .tutorial(flow: .none, tutorial: .passcode, isActionable: true),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-            ) as? AnimatedTutorialViewController
+            ) as? TutorialViewController
             controller?.delegate = self
         }
     }
 }
 
-extension AccountsViewController: AnimatedTutorialViewControllerDelegate {
-    func animatedTutorialViewControllerDidTapDontAskAgain(_ animatedTutorialViewController: AnimatedTutorialViewController) {
-        animatedTutorialViewController.dismissScreen()
+extension AccountsViewController: TutorialViewControllerDelegate {
+    func tutorialViewControllerDidTapDontAskAgain(_ tutorialViewController: TutorialViewController) {
+        tutorialViewController.dismissScreen()
         var passcodeSettingDisplayStore = PasscodeSettingDisplayStore()
         passcodeSettingDisplayStore.disableAskingPasscode()
     }

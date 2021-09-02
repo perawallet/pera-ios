@@ -98,7 +98,7 @@ extension WelcomeViewController: WelcomeViewDelegate {
         case .add:
             open(.addAccount(flow: flow), by: .push)
         case .recover:
-            open(.animatedTutorial(flow: flow, tutorial: .recover, isActionable: false), by: .push)
+            open(.tutorial(flow: flow, tutorial: .recover, isActionable: false), by: .push)
         default:
             break
         }

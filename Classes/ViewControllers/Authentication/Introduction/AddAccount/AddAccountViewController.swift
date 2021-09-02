@@ -95,9 +95,9 @@ extension AddAccountViewController: AddAccountViewDelegate {
     func addAccountView(_ addAccountView: AddAccountView, didSelect type: AccountAdditionType) {
         switch type {
         case .create:
-            open(.animatedTutorial(flow: flow, tutorial: .backUp, isActionable: false), by: .push)
+            open(.tutorial(flow: flow, tutorial: .backUp, isActionable: false), by: .push)
         case .watch:
-            open(.animatedTutorial(flow: flow, tutorial: .watchAccount, isActionable: false), by: .push)
+            open(.tutorial(flow: flow, tutorial: .watchAccount, isActionable: false), by: .push)
         case .pair:
             open(.ledgerTutorial(flow: .addNewAccount(mode: .add(type: .pair))), by: .push)
         default:

@@ -18,7 +18,7 @@
 import UIKit
 import Macaroon
 
-final class Button: UIButton {
+final class Button: Macaroon.Button {
     private lazy var indicatorView = ViewLoadingIndicator()
 
     func customize(_ theme: ButtonTheme) {
@@ -41,6 +41,7 @@ final class Button: UIButton {
 
 extension Button {
     private func customizeView(_ theme: ButtonTheme) {
+        contentEdgeInsets = UIEdgeInsets(theme.contentEdgeInsets)
         layer.draw(corner: theme.corner)
         layer.masksToBounds = true
     }
@@ -54,9 +55,6 @@ extension Button {
         titleLabel?.customizeAppearance(theme.label)
         setTitleColor(theme.titleColorSet.color, for: .normal)
         setTitleColor(theme.titleColorSet.disabled, for: .disabled)
-
-        titleEdgeInsets = UIEdgeInsets(theme.titleEdgeInsets)
-
         imageView?.customizeAppearance(theme.icon)
     }
 
@@ -79,7 +77,6 @@ extension Button {
 
     private func bindIcon(_ viewModel: ButtonViewModel?) {
         guard viewModel?.iconSet != nil else {
-            titleEdgeInsets = .zero
             return
         }
 

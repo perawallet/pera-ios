@@ -21,7 +21,7 @@ struct ButtonCommonViewModel: ButtonViewModel {
     private(set) var iconSet: ImageSet?
     private(set) var title: EditText?
 
-    init(iconSet: ImageSet?, title: String?) {
+    init(title: String?, iconSet: ImageSet? = nil) {
         bindIconSet(iconSet)
         bindTitle(title)
     }

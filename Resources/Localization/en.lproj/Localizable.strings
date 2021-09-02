@@ -563,11 +563,11 @@
 
 "tutorial-description-back-up" = "Without your recovery passphrase, if you lose your device or delete the app, you will permanently lose access to your Algorand account.";
 "tutorial-description-recover" = "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.";
-"tutorial-description-write" = "The only way to recover an Algorand account is with this recovery passphrase.\n\nWarning: Do not share this passphrase with anyone, as it grants full access to your account.";
-"tutorial-description-write-italic" = "Warning: Do not share this passphrase with anyone, as it grants full access to your account.";
-"tutorial-description-watch" =  "Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage.\n\nWarning: If you do not have the corresponding recovery passphrase, do not send assets to this account.";
+"tutorial-description-write" = "The only way to recover an Algorand account is with this recovery passphrase.";
+"tutorial-description-write-warning" = "Do not share this passphrase with anyone, as it grants full access to your account.";
+"tutorial-description-watch" =  "Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage";
 "tutorial-description-warning-title" = "Warning:";
-"tutorial-description-watch-italic" = "Warning: If you do not have the corresponding recovery passphrase, do not send assets to this account.";
+"tutorial-description-watch-warning" = "If you do not have the corresponding recovery passphrase, do not send assets to this account.";
 "tutorial-description-passcode" = "This 6-digit PIN will be required to use the Algorand Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 

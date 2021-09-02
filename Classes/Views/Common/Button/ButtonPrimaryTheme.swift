@@ -25,7 +25,7 @@ struct ButtonPrimaryTheme: ButtonTheme {
     let backgroundColorSet: ColorSet
     let indicator: ImageStyle
 
-    let titleEdgeInsets: LayoutPaddings
+    let contentEdgeInsets: LayoutPaddings
 
     init(_ family: LayoutFamily) {
         self.label = [
@@ -48,6 +48,6 @@ struct ButtonPrimaryTheme: ButtonTheme {
             .contentMode(.scaleAspectFill)
         ]
 
-        self.titleEdgeInsets = (0, 15, 0, 0)
+        self.contentEdgeInsets = (14, 0, 14, 0)
     }
 }
