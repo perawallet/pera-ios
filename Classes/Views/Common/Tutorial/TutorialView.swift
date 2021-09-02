@@ -135,7 +135,7 @@ extension TutorialView: ViewModelBindable {
         titleLabel.text = viewModel?.title
         descriptionLabel.text = viewModel?.description
         imageView.image = viewModel?.image
-        mainButton.bindData(ButtonCommonViewModel(title: viewModel?.mainTitle))
+        mainButton.bindData(ButtonCommonViewModel(title: viewModel?.mainButtonTitle))
         actionButton.bindData(ButtonCommonViewModel(title: viewModel?.actionTitle))
         
         if let warningDescription = viewModel?.warningDescription {

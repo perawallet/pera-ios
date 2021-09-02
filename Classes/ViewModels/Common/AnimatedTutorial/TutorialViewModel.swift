@@ -22,7 +22,7 @@ final class TutorialViewModel: PairedViewModel {
     private(set) var image: UIImage?
     private(set) var title: String?
     private(set) var description: String?
-    private(set) var mainTitle: String?
+    private(set) var mainButtonTitle: String?
     private(set) var actionTitle: String?
     private(set) var warningDescription: String?
 
@@ -30,7 +30,7 @@ final class TutorialViewModel: PairedViewModel {
         bindImage(model)
         bindTitle(model)
         bindDescription(model)
-        bindMainTitle(model)
+        bindMainButtonTitle(model)
         bindActionTitle(model)
         bindWarningTitle(model)
     }
@@ -51,8 +51,10 @@ extension TutorialViewModel {
             image = img("locked")
         case .localAuthentication:
             image = img("faceid")
-        case .biometricAuthenticationEnabled:
+        case .biometricAuthenticationEnabled, .accountVerified:
             image = img("check")
+        case .passphraseVerified:
+            image = img("shield-check")
         }
     }
 
@@ -72,6 +74,10 @@ extension TutorialViewModel {
             title = "local-authentication-preference-title".localized
         case .biometricAuthenticationEnabled:
             title = "local-authentication-enabled-title".localized
+        case .passphraseVerified:
+            title = "pass-phrase-verify-pop-up-title".localized
+        case .accountVerified:
+            title = "recover-from-seed-verify-pop-up-title".localized
         }
     }
 
@@ -91,25 +97,33 @@ extension TutorialViewModel {
             description = "tutorial-description-local".localized
         case .biometricAuthenticationEnabled:
             description = "local-authentication-enabled-subtitle".localized
+        case .passphraseVerified:
+            description = "pass-phrase-verify-pop-up-explanation".localized
+        case .accountVerified:
+            description = "recover-from-seed-verify-pop-up-explanation".localized
         }
     }
 
-    private func bindMainTitle(_ tutorial: Tutorial) {
+    private func bindMainButtonTitle(_ tutorial: Tutorial) {
         switch tutorial {
         case .backUp:
-            mainTitle = "tutorial-main-title-back-up".localized
+            mainButtonTitle = "tutorial-main-title-back-up".localized
         case .recover:
-            mainTitle = "tutorial-main-title-recover".localized
+            mainButtonTitle = "tutorial-main-title-recover".localized
         case .watchAccount:
-            mainTitle = "watch-account-create".localized
+            mainButtonTitle = "watch-account-create".localized
         case .writePassphrase:
-            mainTitle = "tutorial-main-title-write".localized
+            mainButtonTitle = "tutorial-main-title-write".localized
         case .passcode:
-            mainTitle = "tutorial-main-title-passcode".localized
+            mainButtonTitle = "tutorial-main-title-passcode".localized
         case .localAuthentication:
-            mainTitle = "local-authentication-enable".localized
+            mainButtonTitle = "local-authentication-enable".localized
         case .biometricAuthenticationEnabled:
-            mainTitle = "title-go-to-accounts".localized
+            mainButtonTitle = "title-go-to-accounts".localized
+        case .passphraseVerified:
+            mainButtonTitle = "title-next".localized
+        case .accountVerified:
+            mainButtonTitle = "title-go-home".localized
         }
     }
 

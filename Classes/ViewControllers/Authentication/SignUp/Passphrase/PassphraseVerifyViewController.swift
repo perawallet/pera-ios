@@ -92,22 +92,9 @@ extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
     }
 
     private func openValidatedBottomInformation() {
-        let configurator = BottomInformationBundle(
-            title: "pass-phrase-verify-pop-up-title".localized,
-            image: img("img-green-checkmark"),
-            explanation: "pass-phrase-verify-pop-up-explanation".localized,
-            actionTitle: "title-next".localized,
-            actionImage: img("bg-main-button")) {
-                self.open(.accountNameSetup, by: .push)
-        }
-
         open(
-            .bottomInformation(mode: .confirmation, configurator: configurator),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: bottomModalPresenter
-            )
+            .tutorial(flow: .none, tutorial: .passphraseVerified, isActionable: false),
+            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
         )
     }
 }

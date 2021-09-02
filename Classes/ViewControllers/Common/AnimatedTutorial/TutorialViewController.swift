@@ -22,22 +22,13 @@ final class TutorialViewController: BaseScrollViewController {
         return tutorial == .localAuthentication
     }
 
-    private lazy var tutorialView = TutorialView()
+    lazy var uiHandlers = TutorialViewControllerUIHandlers()
 
-    weak var delegate: TutorialViewControllerDelegate?
+    private lazy var tutorialView = TutorialView()
 
     private let flow: AccountSetupFlow
     private let tutorial: Tutorial
     private let isActionable: Bool
-
-    private lazy var bottomModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 358.0))
-    )
-
     private let localAuthenticator = LocalAuthenticator()
 
     init(flow: AccountSetupFlow, tutorial: Tutorial, isActionable: Bool, configuration: ViewControllerConfiguration) {
@@ -64,9 +55,9 @@ final class TutorialViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         setNavigationBarTertiaryBackgroundColor()
-        view.backgroundColor = Colors.Background.tertiary
-        scrollView.backgroundColor = Colors.Background.tertiary
-        contentView.backgroundColor = Colors.Background.tertiary
+    }
+
+    override func bindData() {
         tutorialView.bindData(TutorialViewModel(tutorial))
     }
 
@@ -122,8 +113,8 @@ extension TutorialViewController {
     private func addDontAskAgainBarButton() {
         let dontAskAgainBarButtonItem = ALGBarButtonItem(kind: .dontAskAgain) { [weak self] in
             guard let self = self else { return }
-            
-            self.delegate?.tutorialViewControllerDidTapDontAskAgain(self)
+
+            self.uiHandlers.didTapDontAskAgain?(self)
         }
 
         rightBarButtonItems = [dontAskAgainBarButtonItem]
@@ -147,6 +138,10 @@ extension TutorialViewController: TutorialViewDelegate {
             askLocalAuthentication()
         case .biometricAuthenticationEnabled:
             dismissScreen()
+        case .passphraseVerified:
+            open(.accountNameSetup, by: .push)
+        case .accountVerified:
+            uiHandlers.didTapButton?(self)
         }
     }
 
@@ -210,8 +205,9 @@ extension TutorialViewController {
     }
 }
 
-protocol TutorialViewControllerDelegate: AnyObject {
-    func tutorialViewControllerDidTapDontAskAgain(_ tutorialViewController: TutorialViewController)
+struct TutorialViewControllerUIHandlers {
+    var didTapDontAskAgain: ((TutorialViewController) -> Void)?
+    var didTapButton: ((TutorialViewController) -> Void)?
 }
 
 enum Tutorial {
@@ -222,4 +218,6 @@ enum Tutorial {
     case passcode
     case localAuthentication
     case biometricAuthenticationEnabled
+    case passphraseVerified
+    case accountVerified
 }

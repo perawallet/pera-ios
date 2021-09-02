@@ -18,15 +18,6 @@
 import UIKit
 
 class WatchAccountAdditionViewController: BaseScrollViewController {
-    
-    private lazy var bottomModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 338.0))
-    )
-    
     private lazy var watchAccountAdditionView = WatchAccountAdditionView()
     
     private var keyboardController = KeyboardController()
@@ -132,25 +123,15 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
     }
     
     private func openSuccessModal(for account: AccountInformation) {
-        let configurator = BottomInformationBundle(
-            title: "recover-from-seed-verify-pop-up-title".localized,
-            image: img("img-green-checkmark"),
-            explanation: "recover-from-seed-verify-pop-up-explanation".localized,
-            actionTitle: "title-go-home".localized,
-            actionImage: img("bg-main-button")) {
-                self.launchHome(with: account)
+        let controller = open(
+            .tutorial(flow: .none, tutorial: .accountVerified, isActionable: false),
+            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+        ) as? TutorialViewController
+        controller?.uiHandlers.didTapButton = { _ in
+            self.launchHome(with: account)
         }
-        
-        open(
-            .bottomInformation(mode: .confirmation, configurator: configurator),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: bottomModalPresenter
-            )
-        )
     }
-    
+
     private func launchHome(with account: AccountInformation) {
         loadingController?.startLoadingWithMessage("title-loading".localized)
         accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {

@@ -268,16 +268,12 @@ extension AccountsViewController {
                 .tutorial(flow: .none, tutorial: .passcode, isActionable: true),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             ) as? TutorialViewController
-            controller?.delegate = self
+            controller?.uiHandlers.didTapDontAskAgain = { tutorialViewController in
+                tutorialViewController.dismissScreen()
+                var passcodeSettingDisplayStore = PasscodeSettingDisplayStore()
+                passcodeSettingDisplayStore.disableAskingPasscode()
+            }
         }
-    }
-}
-
-extension AccountsViewController: TutorialViewControllerDelegate {
-    func tutorialViewControllerDidTapDontAskAgain(_ tutorialViewController: TutorialViewController) {
-        tutorialViewController.dismissScreen()
-        var passcodeSettingDisplayStore = PasscodeSettingDisplayStore()
-        passcodeSettingDisplayStore.disableAskingPasscode()
     }
 }
 
