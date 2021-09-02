@@ -127,7 +127,7 @@
 "recover-from-seed-passphrase-title" = "Passphrase";
 "pass-pharase-enter-placeholder" = "Enter Passphrase or Scan QR";
 "recover-from-seed-verify-pop-up-explanation" = "Welcome to Algorand!\nYour account is ready to use.";
-"recover-from-seed-verify-pop-up-title" = "Account Verified";
+"recover-from-seed-verify-pop-up-title" = "Account is Verified";
 "recover-from-seed-verify-exist-error" = "This account already exists";
 "recover-title" = "Recover";
 "recover-fill-all-error" = "Please fill all passphrase";

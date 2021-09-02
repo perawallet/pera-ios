@@ -431,23 +431,13 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
     }
 
     private func openSuccessfulRecoverModal(for recoveredAccount: AccountInformation) {
-        let configurator = BottomInformationBundle(
-            title: "recover-from-seed-verify-pop-up-title".localized,
-            image: img("img-green-checkmark"),
-            explanation: "recover-from-seed-verify-pop-up-explanation".localized,
-            actionTitle: "title-go-home".localized,
-            actionImage: img("bg-main-button")) {
-                self.launchHome(with: recoveredAccount)
+        let controller = open(
+            .tutorial(flow: .none, tutorial: .accountVerified, isActionable: false),
+            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+        ) as? TutorialViewController
+        controller?.uiHandlers.didTapButton = { _ in
+            self.launchHome(with: recoveredAccount)
         }
-
-        open(
-            .bottomInformation(mode: .confirmation, configurator: configurator),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: bottomModalPresenter
-            )
-        )
     }
 
     private func launchHome(with account: AccountInformation) {
