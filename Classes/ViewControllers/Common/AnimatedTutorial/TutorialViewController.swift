@@ -145,6 +145,8 @@ extension TutorialViewController: TutorialViewDelegate {
             open(.choosePassword(mode: .setup, flow: flow, route: nil), by: .push)
         case .localAuthentication:
             askLocalAuthentication()
+        case .biometricAuthenticationEnabled:
+            dismissScreen()
         }
     }
 
@@ -201,22 +203,9 @@ extension TutorialViewController {
     }
 
     private func openModalWhenAuthenticationUpdatesCompleted() {
-        let configurator = BottomInformationBundle(
-            title: "local-authentication-enabled-title".localized,
-            image: img("img-green-checkmark"),
-            explanation: "local-authentication-enabled-subtitle".localized,
-            actionTitle: "title-go-to-accounts".localized,
-            actionImage: img("bg-main-button")) {
-                self.dismissScreen()
-        }
-
         open(
-            .bottomInformation(mode: .confirmation, configurator: configurator),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: bottomModalPresenter
-            )
+            .tutorial(flow: .none, tutorial: .biometricAuthenticationEnabled, isActionable: false),
+            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
         )
     }
 }
@@ -232,4 +221,5 @@ enum Tutorial {
     case recover
     case passcode
     case localAuthentication
+    case biometricAuthenticationEnabled
 }

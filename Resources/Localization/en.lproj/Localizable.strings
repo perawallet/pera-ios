@@ -84,7 +84,7 @@
 "local-authentication-go-settings-text" = "You have disabled biometric authentication. Please go to Settings and enable this option.";
 "local-authentication-enable" = "Enable Face ID/Touch ID";
 "local-authentication-no" = "Do not use Face ID/Touch ID";
-"local-authentication-enabled-title" = "Biometric Authentication Enabled";
+"local-authentication-enabled-title" = "Biometric\nAuthentication\nEnabled";
 "local-authentication-enabled-subtitle" = "Your passcode has been verified. Your Algorand account is more secure now.";
 "title-go-to-accounts" = "Go to Accounts";
 

@@ -51,6 +51,8 @@ extension TutorialViewModel {
             image = img("locked")
         case .localAuthentication:
             image = img("faceid")
+        case .biometricAuthenticationEnabled:
+            image = img("check")
         }
     }
 
@@ -68,6 +70,8 @@ extension TutorialViewModel {
             title = "tutorial-title-passcode".localized
         case .localAuthentication:
             title = "local-authentication-preference-title".localized
+        case .biometricAuthenticationEnabled:
+            title = "local-authentication-enabled-title".localized
         }
     }
 
@@ -85,6 +89,8 @@ extension TutorialViewModel {
             description = "tutorial-description-passcode".localized
         case .localAuthentication:
             description = "tutorial-description-local".localized
+        case .biometricAuthenticationEnabled:
+            description = "local-authentication-enabled-subtitle".localized
         }
     }
 
@@ -102,6 +108,8 @@ extension TutorialViewModel {
             mainTitle = "tutorial-main-title-passcode".localized
         case .localAuthentication:
             mainTitle = "local-authentication-enable".localized
+        case .biometricAuthenticationEnabled:
+            mainTitle = "title-go-to-accounts".localized
         }
     }
 
