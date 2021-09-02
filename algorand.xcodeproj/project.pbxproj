@@ -4381,12 +4381,12 @@
 			path = Notifications;
 			sourceTree = "<group>";
 		};
-		2B18BAF1247DB28300BFDBC6 /* Tutorial */ = {
+		2B18BAF1247DB28300BFDBC6 /* Tooltip */ = {
 			isa = PBXGroup;
 			children = (
 				2B18BAF2247DB2AE00BFDBC6 /* TooltipViewController.swift */,
 			);
-			path = Tutorial;
+			path = Tooltip;
 			sourceTree = "<group>";
 		};
 		2B1A1D5524B351B400CB4E78 /* State */ = {
@@ -6466,9 +6466,9 @@
 		2B8954A922438FA400D6D068 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				2B9EF31925D57698004BCCC4 /* AnimatedTutorial */,
+				2B9EF31925D57698004BCCC4 /* Tutorial */,
 				2B8954AA22438FA900D6D068 /* BottomInformation */,
-				2B18BAF1247DB28300BFDBC6 /* Tutorial */,
+				2B18BAF1247DB28300BFDBC6 /* Tooltip */,
 				2B66871822491A46009F21E7 /* QR */,
 				18138465269F2E1000AEEC2F /* WarningAlert */,
 			);
@@ -7366,12 +7366,12 @@
 			path = AnimatedTutorial;
 			sourceTree = "<group>";
 		};
-		2B9EF31925D57698004BCCC4 /* AnimatedTutorial */ = {
+		2B9EF31925D57698004BCCC4 /* Tutorial */ = {
 			isa = PBXGroup;
 			children = (
 				2B9EF31A25D576A1004BCCC4 /* TutorialViewController.swift */,
 			);
-			path = AnimatedTutorial;
+			path = Tutorial;
 			sourceTree = "<group>";
 		};
 		2B9F063924B5E481006880F0 /* Events */ = {
