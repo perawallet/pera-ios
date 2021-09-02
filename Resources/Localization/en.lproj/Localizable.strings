@@ -89,7 +89,7 @@
 "title-go-to-accounts" = "Go to Accounts";
 
 // MARK: Passphrase Back Up
-"recover-passphrase-title" = "Recovery passphrase";
+"recover-passphrase-title" = "Recovery Passphrase";
 "back-up-phrase-qr" = "Show QR";
 "passphrase-bottom-title" = "Make sure to record these words in the correct order, using the corresponding numbers.";
 

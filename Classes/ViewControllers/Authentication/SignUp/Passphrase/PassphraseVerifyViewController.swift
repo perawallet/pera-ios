@@ -19,27 +19,18 @@ import UIKit
 import AVFoundation
 
 class PassphraseVerifyViewController: BaseScrollViewController {
-    
-    private lazy var bottomModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 358.0))
-    )
+    private lazy var passphraseVerifyView = PassphraseVerifyView()
     
     private lazy var layoutBuilder: PassphraseVerifyLayoutBuilder = {
         return PassphraseVerifyLayoutBuilder(dataSource: dataSource)
     }()
-
+    
     private lazy var dataSource: PassphraseVerifyDataSource = {
         if let privateKey = session?.privateData(for: "temp") {
             return PassphraseVerifyDataSource(privateKey: privateKey)
         }
         fatalError("Private key should be set.")
     }()
-    
-    private lazy var passphraseVerifyView = PassphraseVerifyView()
     
     override func configureAppearance() {
         super.configureAppearance()
@@ -59,12 +50,6 @@ class PassphraseVerifyViewController: BaseScrollViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupPassphraseViewLayout()
-    }
-}
-
-extension PassphraseVerifyViewController {
-    private func setupPassphraseViewLayout() {
         contentView.addSubview(passphraseVerifyView)
         passphraseVerifyView.pinToSuperview()
     }
@@ -73,7 +58,7 @@ extension PassphraseVerifyViewController {
 extension PassphraseVerifyViewController: PassphraseVerifyDataSourceDelegate {
     func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isValidated: Bool) {
         passphraseVerifyView.setVerificationEnabled(isValidated)
-
+        
         if !isValidated {
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             bannerController?.presentErrorBanner(
@@ -90,7 +75,7 @@ extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
     func passphraseVerifyViewDidVerifyPassphrase(_ passphraseVerifyView: PassphraseVerifyView) {
         openValidatedBottomInformation()
     }
-
+    
     private func openValidatedBottomInformation() {
         open(
             .tutorial(flow: .none, tutorial: .passphraseVerified, isActionable: false),

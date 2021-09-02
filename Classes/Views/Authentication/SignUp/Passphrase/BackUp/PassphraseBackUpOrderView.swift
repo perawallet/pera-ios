@@ -16,73 +16,56 @@
 //  PassphraseBackUpOrderView.swift
 
 import UIKit
+import Macaroon
 
-class PassphraseBackUpOrderView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    private lazy var numberLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(Colors.General.success)
-            .withAlignment(.left)
-    }()
-    
-    private lazy var phraseLabel: UILabel = {
-        let label = UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 16.0)))
-            .withTextColor(Colors.Text.primary)
-            .withAlignment(.left)
-        
-        label.numberOfLines = 1
-        label.adjustsFontSizeToFitWidth = true
-        label.minimumScaleFactor = 0.7
-        return label
-    }()
-    
-    override func configureAppearance() {
-        backgroundColor = .clear
+final class PassphraseBackUpOrderView: View {
+    private lazy var numberLabel = UILabel()
+    private lazy var phraseLabel = UILabel()
+
+    func customize(_ theme: PassphraseBackUpOrderViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addNumberLabel(theme)
+        addPhraseLabel(theme)
     }
-    
-    override func prepareLayout() {
-        setupNumberLabelLayout()
-        setupPhraseLabelLayout()
-    }
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
 
 extension PassphraseBackUpOrderView {
-    private func setupNumberLabelLayout() {
+    private func addNumberLabel(_ theme: PassphraseBackUpOrderViewTheme) {
+        numberLabel.customizeAppearance(theme.numberLabel)
+
         addSubview(numberLabel)
-        
-        numberLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.centerY.equalToSuperview()
+        numberLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview()
+            $0.centerY.equalToSuperview()
         }
     }
     
-    private func setupPhraseLabelLayout() {
+    private func addPhraseLabel(_ theme: PassphraseBackUpOrderViewTheme) {
+        phraseLabel.customizeAppearance(theme.phraseLabel)
+        phraseLabel.numberOfLines = 1
+        phraseLabel.adjustsFontSizeToFitWidth = true
+        phraseLabel.minimumScaleFactor = 0.7
+
         addSubview(phraseLabel)
+        phraseLabel.snp.makeConstraints {
+            $0.centerY.equalTo(numberLabel)
+            $0.leading.equalTo(numberLabel.snp.trailing).offset(theme.leadingInset)
+            $0.trailing.lessThanOrEqualToSuperview()
+        }
 
         phraseLabel.setContentHuggingPriority(.required, for: .horizontal)
         phraseLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-
-        phraseLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(numberLabel)
-            make.leading.equalTo(numberLabel.snp.trailing).offset(layout.current.leadingInset)
-            make.trailing.lessThanOrEqualToSuperview()
-        }
     }
 }
 
-extension PassphraseBackUpOrderView {
-    func bind(_ viewModel: PassphraseBackUpOrderViewModel) {
-        numberLabel.text = viewModel.number
-        phraseLabel.text = viewModel.phrase
-    }
-}
-
-extension PassphraseBackUpOrderView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let leadingInset: CGFloat = 16.0 * horizontalScale
+extension PassphraseBackUpOrderView: ViewModelBindable {
+    func bindData(_ viewModel: PassphraseBackUpOrderViewModel?) {
+        numberLabel.text = viewModel?.number
+        phraseLabel.text = viewModel?.phrase
     }
 }

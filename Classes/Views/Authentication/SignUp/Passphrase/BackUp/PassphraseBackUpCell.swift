@@ -17,9 +17,13 @@
 
 import UIKit
 
-class PassphraseBackUpCell: BaseCollectionViewCell<PassphraseBackUpOrderView> {
-
-    func bind(_ viewModel: PassphraseBackUpOrderViewModel) {
-        contextView.bind(viewModel)
+final class PassphraseBackUpCell: BaseCollectionViewCell<PassphraseBackUpOrderView> {
+    override func configureAppearance() {
+        super.configureAppearance()
+        contextView.customize(PassphraseBackUpOrderViewTheme())
+    }
+    
+    func bindData(_ viewModel: PassphraseBackUpOrderViewModel) {
+        contextView.bindData(viewModel)
     }
 }

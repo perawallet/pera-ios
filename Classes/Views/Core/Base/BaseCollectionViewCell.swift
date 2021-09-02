@@ -18,13 +18,10 @@
 import UIKit
 
 class BaseCollectionViewCell<T: UIView>: UICollectionViewCell {
-    
     typealias ContextView = T
     
     private(set) lazy var contextView = ContextView()
 
-    // MARK: Initialization
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -39,8 +36,7 @@ class BaseCollectionViewCell<T: UIView>: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configureAppearance() {
-    }
+    func configureAppearance() {}
     
     func prepareLayout() {
         setupContextViewLayout()
@@ -49,16 +45,14 @@ class BaseCollectionViewCell<T: UIView>: UICollectionViewCell {
     private func setupContextViewLayout() {
         contentView.addSubview(contextView)
         
-        contextView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        contextView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
-    func linkInteractors() {
-    }
+    func linkInteractors() {}
     
-    func setListeners() {
-    }
+    func setListeners() {}
 
     static func getContext() -> ContextView.Type {
         return ContextView.self

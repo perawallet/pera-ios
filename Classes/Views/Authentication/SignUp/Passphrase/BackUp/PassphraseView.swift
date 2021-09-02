@@ -16,71 +16,47 @@
 //  PassPhraseBackUpView.swift
 
 import UIKit
+import Macaroon
 
-class PassphraseView: BaseView {
-    
+final class PassphraseView: View {
     weak var delegate: PassphraseBackUpViewDelegate?
-    
-    private let layout = Layout<LayoutConstants>()
 
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
-            .withAlignment(.center)
-            .withText("recover-passphrase-title".localized)
-    }()
-    
-    private lazy var passphraseContainerView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 12.0
-        view.backgroundColor = Colors.PassphraseView.containerBackground
-        return view
-    }()
-    
+    private lazy var titleLabel = UILabel()
+    private lazy var descriptionLabel = UILabel()
+    private lazy var passphraseContainerView = UIView()
     private lazy var passphraseCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
-        flowLayout.sectionInset = .zero
         flowLayout.minimumLineSpacing = 0.0
         flowLayout.minimumInteritemSpacing = 8.0
-        
+
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.isScrollEnabled = false
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.contentInset = .zero
         collectionView.backgroundColor = .clear
         collectionView.register(PassphraseBackUpCell.self, forCellWithReuseIdentifier: PassphraseBackUpCell.reusableIdentifier)
         return collectionView
     }()
+    
+    private(set) lazy var verifyButton = Button()
 
-    private lazy var bottomLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.secondary)
-            .withLine(.contained)
-            .withAlignment(.left)
-            .withText("passphrase-bottom-title".localized)
-    }()
-    
-    private(set) lazy var verifyButton = MainButton(title: "title-next".localized)
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
+    func customize(_ theme: PassphraseViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addTitleLabel(theme)
+        addDescriptionLabel(theme)
+        addPassphraseContainerView(theme)
+        addPassphraseCollectionView(theme)
+        addVerifyButton(theme)
     }
-    
-    override func setListeners() {
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func setListeners() {
         verifyButton.addTarget(self, action: #selector(notifyDelegateToActionButtonTapped), for: .touchUpInside)
-    }
-    
-    override func prepareLayout() {
-        setupTitleLabelLayout()
-        setupPassphraseContainerViewLayout()
-        setupPassphraseCollectionViewLayout()
-        setupBottomLabelLayout()
-        setupVerifyButtonLayout()
     }
 }
 
@@ -92,51 +68,57 @@ extension PassphraseView {
 }
 
 extension PassphraseView {
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
+    private func addTitleLabel(_ theme: PassphraseViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
 
-        titleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.titleHorizontalInset)
-            make.top.equalToSuperview().inset(layout.current.topInset)
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.titleHorizontalInset)
+            $0.top.equalToSuperview().inset(theme.topInset)
         }
     }
 
-    private func setupPassphraseContainerViewLayout() {
+    private func addDescriptionLabel(_ theme: PassphraseViewTheme) {
+        descriptionLabel.customizeAppearance(theme.description)
+
+        addSubview(descriptionLabel)
+        descriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.bottomInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+        }
+    }
+
+    private func addPassphraseContainerView(_ theme: PassphraseViewTheme) {
+        passphraseContainerView.customizeAppearance(theme.passphraseContainerView)
+        passphraseContainerView.layer.cornerRadius = theme.passphraseContainerCorner.radius
+
         addSubview(passphraseContainerView)
-        
-        passphraseContainerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.containerTopInset)
-            make.height.equalTo(layout.current.collectionViewHeight)
+        passphraseContainerView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.containerTopInset)
+            $0.height.equalTo(theme.collectionViewHeight)
         }
     }
     
-    private func setupPassphraseCollectionViewLayout() {
+    private func addPassphraseCollectionView(_ theme: PassphraseViewTheme) {
         passphraseContainerView.addSubview(passphraseCollectionView)
         
-        passphraseCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.collectionViewHorizontalInset)
-            make.top.bottom.equalToSuperview().inset(layout.current.verticalInset)
+        passphraseCollectionView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.collectionViewHorizontalInset)
+            $0.top.bottom.equalToSuperview().inset(theme.verticalInset)
         }
     }
 
-    private func setupBottomLabelLayout() {
-        addSubview(bottomLabel)
+    private func addVerifyButton(_ theme: PassphraseViewTheme) {
+        verifyButton.customize(ButtonPrimaryTheme())
+        verifyButton.bindData(ButtonCommonViewModel(title: "title-next".localized))
 
-        bottomLabel.snp.makeConstraints { make in
-            make.top.equalTo(passphraseContainerView.snp.bottom).offset(layout.current.bottomInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-
-    private func setupVerifyButtonLayout() {
         addSubview(verifyButton)
-        
         verifyButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.greaterThanOrEqualTo(bottomLabel.snp.bottom).offset(layout.current.containerTopInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+            make.top.greaterThanOrEqualTo(descriptionLabel.snp.bottom).offset(theme.containerTopInset)
+            make.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
+            make.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
 }
@@ -148,19 +130,6 @@ extension PassphraseView {
 
     func setDataSource(_ dataSource: UICollectionViewDataSource?) {
         passphraseCollectionView.dataSource = dataSource
-    }
-}
-
-extension PassphraseView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleHorizontalInset: CGFloat = 24.0
-        let topInset: CGFloat = 12.0
-        let containerTopInset: CGFloat = 28.0
-        let collectionViewHeight: CGFloat = 448.0
-        let verticalInset: CGFloat = 20.0
-        let bottomInset: CGFloat = 16.0
-        let collectionViewHorizontalInset: CGFloat = 20.0 * horizontalScale
-        let horizontalInset: CGFloat = 20.0
     }
 }
 

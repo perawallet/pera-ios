@@ -18,8 +18,7 @@
 import UIKit
 import AVFoundation
 
-class PassphraseBackUpViewController: BaseScrollViewController {
-    
+final class PassphraseBackUpViewController: BaseScrollViewController {
     private var mnemonics: [String]?
     private var address: String
     private var maxCellWidth: CGFloat?
@@ -64,6 +63,7 @@ class PassphraseBackUpViewController: BaseScrollViewController {
 
     override func setListeners() {
         super.setListeners()
+        passphraseView.setListeners()
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(displayScreenshotWarning),
@@ -82,8 +82,9 @@ class PassphraseBackUpViewController: BaseScrollViewController {
 
 extension PassphraseBackUpViewController {
     private func setupPassphraseViewLayout() {
+        passphraseView.customize(PassphraseViewTheme())
+
         contentView.addSubview(passphraseView)
-        
         passphraseView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
@@ -100,7 +101,7 @@ extension PassphraseBackUpViewController: UICollectionViewDataSource {
             withReuseIdentifier: PassphraseBackUpCell.reusableIdentifier,
             for: indexPath
         ) as? PassphraseBackUpCell {
-            cell.bind(PassphraseBackUpOrderViewModel(mnemonics: mnemonics, index: indexPath.item))
+            cell.bindData(PassphraseBackUpOrderViewModel(mnemonics: mnemonics, index: indexPath.item))
             return cell
         }
 
@@ -166,9 +167,9 @@ extension PassphraseBackUpViewController {
 
 extension PassphraseBackUpViewController {
     private func generatePrivateKey() {
-        guard let session = self.session,
-            let privateKey = session.generatePrivateKey() else {
-                return
+        guard let session = session,
+              let privateKey = session.generatePrivateKey() else {
+            return
         }
         
         session.savePrivate(privateKey, for: address)
