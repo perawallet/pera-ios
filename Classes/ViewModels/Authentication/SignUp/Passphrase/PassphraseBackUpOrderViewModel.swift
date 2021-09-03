@@ -17,22 +17,22 @@
 
 import Foundation
 
-class PassphraseBackUpOrderViewModel {
+final class PassphraseBackUpOrderViewModel {
     private(set) var number: String?
     private(set) var phrase: String?
 
     init(mnemonics: [String]?, index: Int) {
-        setNumber(from: index)
-        setPhrase(from: mnemonics, at: index)
+        bindNumber(index)
+        bindPhrase(mnemonics, at: index)
     }
+}
 
-    private func setNumber(from index: Int) {
+extension PassphraseBackUpOrderViewModel {
+    private func bindNumber(_ index: Int) {
         number = "\(index + 1)"
     }
 
-    private func setPhrase(from mnemonics: [String]?, at index: Int) {
-        if let mnemonics = mnemonics {
-            phrase = mnemonics[index]
-        }
+    private func bindPhrase(_ mnemonics: [String]?, at index: Int) {
+        phrase = mnemonics?[index]
     }
 }

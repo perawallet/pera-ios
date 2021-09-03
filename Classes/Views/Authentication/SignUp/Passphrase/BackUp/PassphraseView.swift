@@ -25,7 +25,7 @@ final class PassphraseView: View {
     private lazy var descriptionLabel = UILabel()
     private lazy var passphraseContainerView = UIView()
     private lazy var passphraseCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
-    private(set) lazy var verifyButton = Button()
+    private(set) lazy var nextButton = Button()
 
     func customize(_ theme: PassphraseViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -34,7 +34,7 @@ final class PassphraseView: View {
         addDescriptionLabel(theme)
         addPassphraseContainerView(theme)
         addPassphraseCollectionView(theme)
-        addVerifyButton(theme)
+        addNextButton(theme)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -42,7 +42,7 @@ final class PassphraseView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func setListeners() {
-        verifyButton.addTarget(self, action: #selector(notifyDelegateToActionButtonTapped), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(notifyDelegateToActionButtonTapped), for: .touchUpInside)
     }
 }
 
@@ -107,12 +107,12 @@ extension PassphraseView {
         }
     }
 
-    private func addVerifyButton(_ theme: PassphraseViewTheme) {
-        verifyButton.customize(theme.mainButtonTheme)
-        verifyButton.bindData(ButtonCommonViewModel(title: "title-next".localized))
+    private func addNextButton(_ theme: PassphraseViewTheme) {
+        nextButton.customize(theme.mainButtonTheme)
+        nextButton.bindData(ButtonCommonViewModel(title: "title-next".localized))
 
-        addSubview(verifyButton)
-        verifyButton.snp.makeConstraints {
+        addSubview(nextButton)
+        nextButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.greaterThanOrEqualTo(passphraseCollectionView.snp.bottom).offset(theme.containerTopInset)
             $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)

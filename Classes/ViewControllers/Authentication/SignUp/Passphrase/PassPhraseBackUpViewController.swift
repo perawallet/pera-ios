@@ -52,7 +52,7 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
         setNavigationBarTertiaryBackgroundColor()
         customizeBackground()
 
-        passphraseView.verifyButton.isEnabled = false
+        passphraseView.nextButton.isEnabled = false
     }
 
     private func customizeBackground() {
@@ -137,27 +137,26 @@ extension PassphraseBackUpViewController: UIScrollViewDelegate {
     }
 
     private func updateVerifyButtonAfterScroll() {
-        // Enable moving to next screen if the whole screen is displayed by scrolling. 
-
+        /// <note> Enable moving to next screen if the whole screen is displayed by scrolling.
         if isDisplayedAllScreen {
             return
         }
 
         if isVerifyButtonDisplayed() {
             isDisplayedAllScreen = true
-            passphraseView.verifyButton.isEnabled = true
+            passphraseView.nextButton.isEnabled = true
         }
     }
 
     private func isVerifyButtonDisplayed() -> Bool {
-        return scrollView.bounds.contains(passphraseView.verifyButton.frame)
+        return scrollView.bounds.contains(passphraseView.nextButton.frame)
     }
 }
 
 extension PassphraseBackUpViewController {
     @objc
     private func displayScreenshotWarning() {
-        // Display screenshot detection warning if the user takes a screenshot of passphrase
+        /// <note> Display screenshot detection warning if the user takes a screenshot of passphrase
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
         
         open(
