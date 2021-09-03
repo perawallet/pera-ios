@@ -2650,6 +2650,12 @@
 		D473CA5C26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5B26E24A3400558598 /* NumpadButtonViewTheme.swift */; };
 		D473CA5D26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5B26E24A3400558598 /* NumpadButtonViewTheme.swift */; };
 		D473CA5E26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5B26E24A3400558598 /* NumpadButtonViewTheme.swift */; };
+		D473CA6026E2668F00558598 /* PassphraseVerifyViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5F26E2668F00558598 /* PassphraseVerifyViewTheme.swift */; };
+		D473CA6126E2668F00558598 /* PassphraseVerifyViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5F26E2668F00558598 /* PassphraseVerifyViewTheme.swift */; };
+		D473CA6226E2668F00558598 /* PassphraseVerifyViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5F26E2668F00558598 /* PassphraseVerifyViewTheme.swift */; };
+		D473CA6426E278A900558598 /* PassphraseMnemonicViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */; };
+		D473CA6526E278A900558598 /* PassphraseMnemonicViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */; };
+		D473CA6626E278A900558598 /* PassphraseMnemonicViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */; };
 		D479D0F426D4F64500110E04 /* BannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D479D0F326D4F64500110E04 /* BannerController.swift */; };
 		D479D0F526D4F64500110E04 /* BannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D479D0F326D4F64500110E04 /* BannerController.swift */; };
 		D479D0F626D4F64500110E04 /* BannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D479D0F326D4F64500110E04 /* BannerController.swift */; };
@@ -3691,6 +3697,8 @@
 		D473CA5326E20C5100558598 /* ChoosePasswordViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePasswordViewTheme.swift; sourceTree = "<group>"; };
 		D473CA5726E2412300558598 /* NumpadViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadViewTheme.swift; sourceTree = "<group>"; };
 		D473CA5B26E24A3400558598 /* NumpadButtonViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadButtonViewTheme.swift; sourceTree = "<group>"; };
+		D473CA5F26E2668F00558598 /* PassphraseVerifyViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyViewTheme.swift; sourceTree = "<group>"; };
+		D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseMnemonicViewTheme.swift; sourceTree = "<group>"; };
 		D479D0F326D4F64500110E04 /* BannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerController.swift; sourceTree = "<group>"; };
 		D479D0F726D4FAD900110E04 /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
 		D479D0FB26D4FB1F00110E04 /* BannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewModel.swift; sourceTree = "<group>"; };
@@ -7338,8 +7346,10 @@
 			isa = PBXGroup;
 			children = (
 				17BEC45F2248C81E00AAF370 /* PassphraseVerifyView.swift */,
+				D473CA5F26E2668F00558598 /* PassphraseVerifyViewTheme.swift */,
 				17BEC4652248D39900AAF370 /* PassphraseMnemonicCell.swift */,
 				17F6E684224B3F99006DD31F /* PassphraseMnemonicView.swift */,
+				D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */,
 				2B9EF2BB25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift */,
 				2B9EF2C725D3D15F004BCCC4 /* PasshraseMnemonicNumberHeaderSupplementaryView.swift */,
 			);
@@ -10923,6 +10933,7 @@
 				17BD4E742292F1260003E49A /* AccountFetchDraft.swift in Sources */,
 				2BA4B3ED267819530041586B /* WCSessionListView.swift in Sources */,
 				2BF0FAF725387D2D00D704D5 /* AssetCardDisplayViewController.swift in Sources */,
+				D473CA6626E278A900558598 /* PassphraseMnemonicViewTheme.swift in Sources */,
 				D421178226D8D3D500C032B2 /* BottomSheetTransitionController.swift in Sources */,
 				2BCBBAF024A66B25002CD56F /* TransactionFilterViewModel.swift in Sources */,
 				2BD36E072681DBC400C57728 /* WCAppCallTransactionViewModel.swift in Sources */,
@@ -11154,6 +11165,7 @@
 				2B3E39F12478372E00E8AEB7 /* PassphraseDisplayView.swift in Sources */,
 				2B3A34DB246D7998001C8F22 /* NodeSelectionView.swift in Sources */,
 				175CE59922955CEE003F7C02 /* WaitRoundDraft.swift in Sources */,
+				D473CA6226E2668F00558598 /* PassphraseVerifyViewTheme.swift in Sources */,
 				2BE9373C2464AF9E00322C1E /* TransactionStatusView.swift in Sources */,
 				17BD4EC22292F1260003E49A /* AdaptiveLayoutConstants.swift in Sources */,
 				2B4EEEBB24BDFFD500059A16 /* NotificationsView.swift in Sources */,
@@ -11763,6 +11775,7 @@
 				2BA4B3EC267819530041586B /* WCSessionListView.swift in Sources */,
 				2B8E5F962548318C001D8E30 /* AnalyticsScreen.swift in Sources */,
 				2B0F622C24EC129D00DA22A6 /* LedgerApprovalViewController.swift in Sources */,
+				D473CA6526E278A900558598 /* PassphraseMnemonicViewTheme.swift in Sources */,
 				D421178126D8D3D400C032B2 /* BottomSheetTransitionController.swift in Sources */,
 				2BD36E062681DBC400C57728 /* WCAppCallTransactionViewModel.swift in Sources */,
 				2B88CC872618A509000027B4 /* Array+View.swift in Sources */,
@@ -11994,6 +12007,7 @@
 				2B0F62AC24EC129D00DA22A6 /* Notification.Name+Additions.swift in Sources */,
 				2B0F62AD24EC129D00DA22A6 /* UIViewController+Flow.swift in Sources */,
 				2B0F62AE24EC129D00DA22A6 /* AlignedButton.swift in Sources */,
+				D473CA6126E2668F00558598 /* PassphraseVerifyViewTheme.swift in Sources */,
 				2B0F62AF24EC129D00DA22A6 /* TabBarItems.swift in Sources */,
 				2B0F62B124EC129D00DA22A6 /* TransactionID.swift in Sources */,
 				2B0F62B224EC129D00DA22A6 /* OptionsView.swift in Sources */,
@@ -12603,6 +12617,7 @@
 				17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */,
 				2BF0FAF525387D2D00D704D5 /* AssetCardDisplayViewController.swift in Sources */,
 				2BA4B3EB267819530041586B /* WCSessionListView.swift in Sources */,
+				D473CA6426E278A900558598 /* PassphraseMnemonicViewTheme.swift in Sources */,
 				D42A022726D7A52F00CEFC16 /* BottomSheetTransitionController.swift in Sources */,
 				2BCBBAEF24A66B25002CD56F /* TransactionFilterViewModel.swift in Sources */,
 				2B88CC862618A509000027B4 /* Array+View.swift in Sources */,
@@ -12834,6 +12849,7 @@
 				2B6811EF2534614800D4437F /* Locale+Preference.swift in Sources */,
 				2B3E39F02478372E00E8AEB7 /* PassphraseDisplayView.swift in Sources */,
 				2B3A34DA246D7998001C8F22 /* NodeSelectionView.swift in Sources */,
+				D473CA6026E2668F00558598 /* PassphraseVerifyViewTheme.swift in Sources */,
 				175CE59822955CEE003F7C02 /* WaitRoundDraft.swift in Sources */,
 				2BE9373B2464AF9E00322C1E /* TransactionStatusView.swift in Sources */,
 				2B8BE50122393999005D8565 /* AdaptiveLayoutConstants.swift in Sources */,

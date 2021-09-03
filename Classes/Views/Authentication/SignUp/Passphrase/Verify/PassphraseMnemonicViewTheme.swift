@@ -13,22 +13,26 @@
 // limitations under the License.
 
 //
-//  PassphraseMnemonicCell.swift
+//   PassphraseMnemonicViewTheme.swift
 
+import Foundation
+import Macaroon
 import UIKit
 
-final class PassphraseMnemonicCell: BaseCollectionViewCell<PassphraseMnemonicView> {
-    override var isSelected: Bool {
-        didSet {
-            contextView.isSelected = isSelected
-        }
-    }
+struct PassphraseMnemonicViewTheme: StyleSheet, LayoutSheet {
+    let backgroundColor: Color
+    let title: TextStyle
 
-    func customize(_ theme: PassphraseMnemonicViewTheme) {
-        contextView.customize(theme)
-    }
+    let nextButtonTheme: ButtonTheme
 
-    func bindData(_ viewModel: PassphraseMnemonicViewModel) {
-        contextView.bindData(viewModel)
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = UIColor.clear
+        self.title = [
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.medium.make(15)),
+            .textAlignment(.center),
+            .textOverflow(.fitting)
+        ]
+        self.nextButtonTheme = ButtonPrimaryTheme()
     }
 }

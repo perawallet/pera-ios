@@ -18,26 +18,26 @@
 import UIKit
 import AVFoundation
 
-class PassphraseVerifyViewController: BaseScrollViewController {
+final class PassphraseVerifyViewController: BaseScrollViewController {
     private lazy var passphraseVerifyView = PassphraseVerifyView()
-    
+
     private lazy var layoutBuilder: PassphraseVerifyLayoutBuilder = {
         return PassphraseVerifyLayoutBuilder(dataSource: dataSource)
     }()
-    
+
     private lazy var dataSource: PassphraseVerifyDataSource = {
         if let privateKey = session?.privateData(for: "temp") {
             return PassphraseVerifyDataSource(privateKey: privateKey)
         }
         fatalError("Private key should be set.")
     }()
-    
+
     override func configureAppearance() {
         super.configureAppearance()
         setNavigationBarTertiaryBackgroundColor()
         view.backgroundColor = Colors.Background.tertiary
         scrollView.backgroundColor = Colors.Background.tertiary
-        passphraseVerifyView.setVerificationEnabled(false)
+        passphraseVerifyView.setNextButtonEnabled(false)
     }
     
     override func linkInteractors() {
@@ -47,9 +47,15 @@ class PassphraseVerifyViewController: BaseScrollViewController {
         passphraseVerifyView.delegate = self
         dataSource.delegate = self
     }
+
+    override func setListeners() {
+        passphraseVerifyView.setListeners()
+    }
     
     override func prepareLayout() {
         super.prepareLayout()
+        passphraseVerifyView.customize(PassphraseVerifyViewTheme())
+        
         contentView.addSubview(passphraseVerifyView)
         passphraseVerifyView.pinToSuperview()
     }
@@ -57,8 +63,8 @@ class PassphraseVerifyViewController: BaseScrollViewController {
 
 extension PassphraseVerifyViewController: PassphraseVerifyDataSourceDelegate {
     func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isValidated: Bool) {
-        passphraseVerifyView.setVerificationEnabled(isValidated)
-        
+        passphraseVerifyView.setNextButtonEnabled(isValidated)
+
         if !isValidated {
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             bannerController?.presentErrorBanner(
@@ -75,7 +81,7 @@ extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
     func passphraseVerifyViewDidVerifyPassphrase(_ passphraseVerifyView: PassphraseVerifyView) {
         openValidatedBottomInformation()
     }
-    
+
     private func openValidatedBottomInformation() {
         open(
             .tutorial(flow: .none, tutorial: .passphraseVerified, isActionable: false),

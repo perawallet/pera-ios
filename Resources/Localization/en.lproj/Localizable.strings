@@ -110,7 +110,7 @@
 "passphrase-qeustion-counter" = "Question %@ of %@";
 "passphrase-verify-wrong-message" = "Selected words are wrong. Please try again.";
 
-"passphrase-verify-title" = "Verify recovery passphrase backup";
+"passphrase-verify-title" = "Verify recovery\npassphrase backup";
 "passphrase-verify-select-word" = "Select word #%@";
 
 // MARK: Account Name Setup

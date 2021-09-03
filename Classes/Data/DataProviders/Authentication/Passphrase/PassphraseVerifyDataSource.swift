@@ -17,8 +17,7 @@
 
 import UIKit
 
-class PassphraseVerifyDataSource: NSObject {
-
+final class PassphraseVerifyDataSource: NSObject {
     weak var delegate: PassphraseVerifyDataSourceDelegate?
 
     private let privateKey: Data
@@ -135,7 +134,8 @@ extension PassphraseVerifyDataSource: UICollectionViewDataSource {
             fatalError("Index path is out of bounds")
         }
 
-        cell.bind(PassphraseMnemonicViewModel(mnemonic: mnemonic))
+        cell.customize(PassphraseMnemonicViewTheme())
+        cell.bindData(PassphraseMnemonicViewModel(mnemonic: mnemonic))
         return cell
     }
 

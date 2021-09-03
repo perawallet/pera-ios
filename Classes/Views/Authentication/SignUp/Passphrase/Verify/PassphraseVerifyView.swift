@@ -16,85 +16,79 @@
 //  PassPhraseVerifyView.swift
 
 import UIKit
+import Macaroon
 
-class PassphraseVerifyView: BaseView {
-
+final class PassphraseVerifyView: View {
     weak var delegate: PassphraseVerifyViewDelegate?
     
-    private let layout = Layout<LayoutConstants>()
-    
-    private lazy var titleLabel: UILabel = {
-        UILabel(frame: .zero)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 28.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
-            .withAlignment(.center)
-            .withText("passphrase-verify-title".localized)
-    }()
-    
-    private lazy var passphraseCollectionView: UICollectionView = {
-        let collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.minimumLineSpacing = 0.0
-        collectionViewLayout.minimumInteritemSpacing = layout.current.cellSpacing
-        collectionViewLayout.scrollDirection = .vertical
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-        collectionView.register(PassphraseMnemonicCell.self, forCellWithReuseIdentifier: PassphraseMnemonicCell.reusableIdentifier)
-        collectionView.register(
-            PasshraseMnemonicNumberHeaderSupplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: PasshraseMnemonicNumberHeaderSupplementaryView.reusableIdentifier
-        )
-        collectionView.backgroundColor = .clear
-        collectionView.allowsMultipleSelection = true
-        collectionView.isScrollEnabled = false
-        return collectionView
-    }()
-    
-    private lazy var verifyButton = MainButton(title: "title-next".localized)
+    private lazy var titleLabel = UILabel()
+    private lazy var passphraseCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+    private lazy var nextButton = Button()
 
-    override func prepareLayout() {
-        setuptTitleLabelLayout()
-        setupCollectionViewLayout()
-        setupWrongChoiceLabelLayout()
+    func customize(_ theme: PassphraseVerifyViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addTitleLabel(theme)
+        addCollectionView(theme)
+        addNextButton(theme)
     }
 
-    override func setListeners() {
-        verifyButton.addTarget(self, action: #selector(notifyDelegateToVerifyPassphrase), for: .touchUpInside)
-    }
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func setListeners() {
+        nextButton.addTarget(self, action: #selector(notifyDelegateToVerifyPassphrase), for: .touchUpInside)
     }
 }
 
 extension PassphraseVerifyView {
-    private func setuptTitleLabelLayout() {
+    private func addTitleLabel(_ theme: PassphraseVerifyViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
         addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { maker in
-            maker.top.equalToSuperview().inset(layout.current.titleTopInset)
-            maker.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.titleTopInset)
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
         }
     }
     
-    private func setupCollectionViewLayout() {
+    private func addCollectionView(_ theme: PassphraseVerifyViewTheme) {
+        let collectionViewLayout = UICollectionViewFlowLayout()
+        collectionViewLayout.minimumLineSpacing = 0
+        collectionViewLayout.minimumInteritemSpacing = theme.cellSpacing
+        passphraseCollectionView.collectionViewLayout = collectionViewLayout
+        passphraseCollectionView.register(
+            PassphraseMnemonicCell.self,
+            forCellWithReuseIdentifier: PassphraseMnemonicCell.reusableIdentifier
+        )
+        passphraseCollectionView.register(
+            PasshraseMnemonicNumberHeaderSupplementaryView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: PasshraseMnemonicNumberHeaderSupplementaryView.reusableIdentifier
+        )
+        passphraseCollectionView.backgroundColor = .clear
+        passphraseCollectionView.allowsMultipleSelection = true
+        passphraseCollectionView.isScrollEnabled = false
+
         addSubview(passphraseCollectionView)
-        
-        passphraseCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.listTopOffset)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(layout.current.listHeight)
+        passphraseCollectionView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.listTopOffset)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(theme.listHeight)
         }
     }
     
-    private func setupWrongChoiceLabelLayout() {
-        addSubview(verifyButton)
-        
-        verifyButton.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(passphraseCollectionView.snp.bottom).offset(layout.current.buttonVerticalInset)
-            make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.buttonVerticalInset)
+    private func addNextButton(_ theme: PassphraseVerifyViewTheme) {
+        nextButton.customize(theme.nextButtonTheme)
+        nextButton.bindData(ButtonCommonViewModel(title: "title-next".localized))
+
+        addSubview(nextButton)
+        nextButton.snp.makeConstraints {
+            $0.top.greaterThanOrEqualTo(passphraseCollectionView.snp.bottom).offset(theme.buttonVerticalInset)
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.buttonVerticalInset)
         }
     }
 }
@@ -108,8 +102,8 @@ extension PassphraseVerifyView {
         passphraseCollectionView.dataSource = dataSource
     }
 
-    func setVerificationEnabled(_ isEnabled: Bool) {
-        verifyButton.isEnabled = isEnabled
+    func setNextButtonEnabled(_ isEnabled: Bool) {
+        nextButton.isEnabled = isEnabled
     }
 
     func resetSelectionStatesAndReloadData() {
@@ -122,17 +116,6 @@ extension PassphraseVerifyView {
     @objc
     private func notifyDelegateToVerifyPassphrase() {
         delegate?.passphraseVerifyViewDidVerifyPassphrase(self)
-    }
-}
-
-extension PassphraseVerifyView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleTopInset: CGFloat = 12.0
-        let horizontalInset: CGFloat = 20.0
-        let buttonVerticalInset: CGFloat = 16.0
-        let listTopOffset: CGFloat = 60.0
-        let listHeight: CGFloat = 440.0
-        let cellSpacing: CGFloat = 18.0
     }
 }
 
