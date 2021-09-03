@@ -16,11 +16,11 @@
 //  PasswordInputCircle.swift
 
 import UIKit
+import Macaroon
 
-class PasswordInputCircleView: UIImageView {
-    
+final class PasswordInputCircleView: UIImageView, ViewComposable {
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: 20.0, height: 20.0)
+        return CGSize(width: 20, height: 20)
     }
     
     var state: State = .empty {
@@ -32,21 +32,20 @@ class PasswordInputCircleView: UIImageView {
                 image = img("gray-button-border", isTemplate: true)
                 tintColor = Colors.General.error
             case .filled:
-                image = img("green-button-filled")
+                image = img("black-button-filled")
             }
         }
     }
-    
-    init() {
-        super.init(image: img("gray-button-border"))
-        layer.cornerRadius = 10.0
+
+    func customize() {
+        image = img("gray-button-border")
+        layer.cornerRadius = 10
         contentMode = .center
     }
-    
-    @available(*, unavailable)
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 }
 
 extension PasswordInputCircleView {

@@ -2641,6 +2641,15 @@
 		D473CA5026E1733700558598 /* ScreenShotWarningViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4F26E1733700558598 /* ScreenShotWarningViewTheme.swift */; };
 		D473CA5126E1733700558598 /* ScreenShotWarningViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4F26E1733700558598 /* ScreenShotWarningViewTheme.swift */; };
 		D473CA5226E1733700558598 /* ScreenShotWarningViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4F26E1733700558598 /* ScreenShotWarningViewTheme.swift */; };
+		D473CA5426E20C5100558598 /* ChoosePasswordViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5326E20C5100558598 /* ChoosePasswordViewTheme.swift */; };
+		D473CA5526E20C5100558598 /* ChoosePasswordViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5326E20C5100558598 /* ChoosePasswordViewTheme.swift */; };
+		D473CA5626E20C5100558598 /* ChoosePasswordViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5326E20C5100558598 /* ChoosePasswordViewTheme.swift */; };
+		D473CA5826E2412300558598 /* NumpadViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5726E2412300558598 /* NumpadViewTheme.swift */; };
+		D473CA5926E2412300558598 /* NumpadViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5726E2412300558598 /* NumpadViewTheme.swift */; };
+		D473CA5A26E2412300558598 /* NumpadViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5726E2412300558598 /* NumpadViewTheme.swift */; };
+		D473CA5C26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5B26E24A3400558598 /* NumpadButtonViewTheme.swift */; };
+		D473CA5D26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5B26E24A3400558598 /* NumpadButtonViewTheme.swift */; };
+		D473CA5E26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA5B26E24A3400558598 /* NumpadButtonViewTheme.swift */; };
 		D479D0F426D4F64500110E04 /* BannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D479D0F326D4F64500110E04 /* BannerController.swift */; };
 		D479D0F526D4F64500110E04 /* BannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D479D0F326D4F64500110E04 /* BannerController.swift */; };
 		D479D0F626D4F64500110E04 /* BannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D479D0F326D4F64500110E04 /* BannerController.swift */; };
@@ -3679,6 +3688,9 @@
 		D473CA4726E1537100558598 /* PassphraseViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseViewTheme.swift; sourceTree = "<group>"; };
 		D473CA4B26E15F0C00558598 /* PassphraseBackUpOrderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpOrderViewTheme.swift; sourceTree = "<group>"; };
 		D473CA4F26E1733700558598 /* ScreenShotWarningViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShotWarningViewTheme.swift; sourceTree = "<group>"; };
+		D473CA5326E20C5100558598 /* ChoosePasswordViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePasswordViewTheme.swift; sourceTree = "<group>"; };
+		D473CA5726E2412300558598 /* NumpadViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadViewTheme.swift; sourceTree = "<group>"; };
+		D473CA5B26E24A3400558598 /* NumpadButtonViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadButtonViewTheme.swift; sourceTree = "<group>"; };
 		D479D0F326D4F64500110E04 /* BannerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerController.swift; sourceTree = "<group>"; };
 		D479D0F726D4FAD900110E04 /* BannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
 		D479D0FB26D4FB1F00110E04 /* BannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewModel.swift; sourceTree = "<group>"; };
@@ -8651,6 +8663,7 @@
 			isa = PBXGroup;
 			children = (
 				2BD739DC223F9E9F00B66EEF /* ChoosePasswordView.swift */,
+				D473CA5326E20C5100558598 /* ChoosePasswordViewTheme.swift */,
 				2BD739F92240527B00B66EEF /* PasswordInputView.swift */,
 				2BD739FB2241052500B66EEF /* PasswordInputCircleView.swift */,
 			);
@@ -8726,7 +8739,9 @@
 			isa = PBXGroup;
 			children = (
 				2BD739F3223FF08000B66EEF /* NumpadView.swift */,
+				D473CA5726E2412300558598 /* NumpadViewTheme.swift */,
 				2BE936FB24534F5600322C1E /* NumpadButton.swift */,
+				D473CA5B26E24A3400558598 /* NumpadButtonViewTheme.swift */,
 			);
 			path = Numpad;
 			sourceTree = "<group>";
@@ -10842,6 +10857,7 @@
 				17BD4E5F2292F1260003E49A /* PassphraseVerifyViewController.swift in Sources */,
 				2B2AACE2250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */,
 				2B5739F726F3F752007E0252 /* WCAssetReconfigurationTransactionView.swift in Sources */,
+				D473CA5E26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */,
 				2B18BAF4247DB2AF00BFDBC6 /* TooltipViewController.swift in Sources */,
 				17BD4E622292F1260003E49A /* ContactContextView.swift in Sources */,
 				2BECB4A825A0F0930081870A /* ToggleTitleHeaderView.swift in Sources */,
@@ -11032,6 +11048,7 @@
 				2B2AACB0250A7E5F00B8C5C5 /* DeveloperSettingsView.swift in Sources */,
 				2B5739E726F3F293007E0252 /* WCAssetDeletionTransactionViewController.swift in Sources */,
 				17BD4E992292F1260003E49A /* CIImage+Additions.swift in Sources */,
+				D473CA5626E20C5100558598 /* ChoosePasswordViewTheme.swift in Sources */,
 				D430A40326DF9F8200F34804 /* AddAccountViewTheme.swift in Sources */,
 				17BD4E9A2292F1260003E49A /* User.swift in Sources */,
 				2BB68F54261261250070FFE9 /* EmptyStateViewModel.swift in Sources */,
@@ -11182,6 +11199,7 @@
 				2B5715B92634F1FF002C876D /* AlgorandChartViewCustomizable.swift in Sources */,
 				2B68A23F26A82F660076BD82 /* WalletConnectSingleTransactionRequestPresentable.swift in Sources */,
 				2B68A23126A5D8E50076BD82 /* WCMultipleTransactionItemCell.swift in Sources */,
+				D473CA5A26E2412300558598 /* NumpadViewTheme.swift in Sources */,
 				2B4EEECD24C105E100059A16 /* NotificationsDataSource.swift in Sources */,
 				2BB68F47261260DB0070FFE9 /* AccountsEmptyStateView.swift in Sources */,
 				2B3E228126C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
@@ -11679,6 +11697,7 @@
 				2B0F620524EC129D00DA22A6 /* PendingTransactionView.swift in Sources */,
 				2B5739F626F3F752007E0252 /* WCAssetReconfigurationTransactionView.swift in Sources */,
 				2B0F620624EC129D00DA22A6 /* LedgerTutorialInstructionView.swift in Sources */,
+				D473CA5D26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */,
 				2B0F620724EC129D00DA22A6 /* RewardView.swift in Sources */,
 				2BECB4A725A0F0930081870A /* ToggleTitleHeaderView.swift in Sources */,
 				2B344B18268A0F8200DA7B25 /* WCTransactionDetail.swift in Sources */,
@@ -11869,6 +11888,7 @@
 				2B0F627324EC129D00DA22A6 /* TransactionReceiverView.swift in Sources */,
 				2B5739E626F3F293007E0252 /* WCAssetDeletionTransactionViewController.swift in Sources */,
 				2B0F627424EC129D00DA22A6 /* SendAssetTransactionPreviewViewController.swift in Sources */,
+				D473CA5526E20C5100558598 /* ChoosePasswordViewTheme.swift in Sources */,
 				D430A40226DF9F8200F34804 /* AddAccountViewTheme.swift in Sources */,
 				2B0F627524EC129D00DA22A6 /* PasswordInputView.swift in Sources */,
 				2BB68F53261261250070FFE9 /* EmptyStateViewModel.swift in Sources */,
@@ -12019,6 +12039,7 @@
 				2B5715B82634F1FF002C876D /* AlgorandChartViewCustomizable.swift in Sources */,
 				2B68A23E26A82F660076BD82 /* WalletConnectSingleTransactionRequestPresentable.swift in Sources */,
 				2B68A23026A5D8E50076BD82 /* WCMultipleTransactionItemCell.swift in Sources */,
+				D473CA5926E2412300558598 /* NumpadViewTheme.swift in Sources */,
 				2B0F62CC24EC129D00DA22A6 /* TransactionDetailView.swift in Sources */,
 				2BB68F46261260DB0070FFE9 /* AccountsEmptyStateView.swift in Sources */,
 				2B3E228026C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
@@ -12516,6 +12537,7 @@
 				2B2AACE0250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */,
 				2B82B1CA2253A50100A8909F /* ContactContextView.swift in Sources */,
 				2B5739F526F3F752007E0252 /* WCAssetReconfigurationTransactionView.swift in Sources */,
+				D473CA5C26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */,
 				2B4487172379635900C19FDE /* AssetActionConfirmationView.swift in Sources */,
 				2B18BAF3247DB2AF00BFDBC6 /* TooltipViewController.swift in Sources */,
 				2BECB4A625A0F0930081870A /* ToggleTitleHeaderView.swift in Sources */,
@@ -12706,6 +12728,7 @@
 				2B2AACAE250A7E5F00B8C5C5 /* DeveloperSettingsView.swift in Sources */,
 				2B5739E526F3F293007E0252 /* WCAssetDeletionTransactionViewController.swift in Sources */,
 				17F6E68A224B71A6006DD31F /* User.swift in Sources */,
+				D473CA5426E20C5100558598 /* ChoosePasswordViewTheme.swift in Sources */,
 				D430A40126DF9F8200F34804 /* AddAccountViewTheme.swift in Sources */,
 				2B448741237B0AFB00C19FDE /* AccountsViewController+Options.swift in Sources */,
 				2BB68F52261261250070FFE9 /* EmptyStateViewModel.swift in Sources */,
@@ -12856,6 +12879,7 @@
 				2B288AD42691128A00BC6FB6 /* JSONDisplayViewController.swift in Sources */,
 				2B5715B72634F1FF002C876D /* AlgorandChartViewCustomizable.swift in Sources */,
 				2B68A23D26A82F660076BD82 /* WalletConnectSingleTransactionRequestPresentable.swift in Sources */,
+				D473CA5826E2412300558598 /* NumpadViewTheme.swift in Sources */,
 				2B68A22F26A5D8E50076BD82 /* WCMultipleTransactionItemCell.swift in Sources */,
 				2B4EEECC24C105E100059A16 /* NotificationsDataSource.swift in Sources */,
 				2B3E227F26C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,

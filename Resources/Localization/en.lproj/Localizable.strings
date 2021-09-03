@@ -69,8 +69,8 @@
 "choose-password-title" = "Choose PIN";
 "password-set-subtitle" = "Choose your 6-digit PIN";
 "password-verify-title" = "Verify PIN";
-"password-change-subtitle" = "Enter 6-digit PIN";
-"password-verify-subtitle" = "Re-enter your 6-digit PIN";
+"password-change-subtitle" = "Choose your\n6-digit PIN";
+"password-verify-subtitle" = "Re-enter your\n6-digit PIN";
 "password-verify-fail-title" = "Wrong PIN";
 "password-verify-fail-message" = "PIN did not match with previous PIN.";
 "password-change-title" = "Change PIN";

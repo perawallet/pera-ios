@@ -18,26 +18,21 @@
 import UIKit
 import AVFoundation
 
-protocol ChoosePasswordViewControllerDelegate: AnyObject {
-    func choosePasswordViewController(_ choosePasswordViewController: ChoosePasswordViewController, didConfirmPassword isConfirmed: Bool)
-}
-
-class ChoosePasswordViewController: BaseViewController {
-    
-    private lazy var choosePasswordView = ChoosePasswordView(mode: mode)
-    
+final class ChoosePasswordViewController: BaseViewController {
     private let viewModel: ChoosePasswordViewModel
     private let accountSetupFlow: AccountSetupFlow?
     private let mode: Mode
     private var route: Screen?
+
+    private lazy var choosePasswordView = ChoosePasswordView()
     
     private let localAuthenticator = LocalAuthenticator()
     
     private var pinLimitStore = PinLimitStore()
     
     private lazy var accountManager: AccountManager? = {
-        guard let api = self.api,
-            mode == .login else {
+        guard let api = api,
+              mode == .login else {
             return nil
         }
         let manager = AccountManager(api: api)
@@ -87,16 +82,17 @@ class ChoosePasswordViewController: BaseViewController {
     
     override func linkInteractors() {
         super.linkInteractors()
+        choosePasswordView.linkInteractors()
         choosePasswordView.delegate = self
     }
 }
 
 extension ChoosePasswordViewController {
     private func setupChoosePasswordViewLayout() {
+        choosePasswordView.customize(ChoosePasswordViewTheme())
         view.addSubview(choosePasswordView)
-        
-        choosePasswordView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        choosePasswordView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
@@ -175,7 +171,7 @@ extension ChoosePasswordViewController {
             route = .assetDetail(account: account, assetDetail: assetDetail)
         case let .assetActionConfirmationNotification(address, assetId):
             guard let account = session?.account(from: address),
-                let assetId = assetId else {
+                  let assetId = assetId else {
                 return
             }
             
@@ -328,4 +324,8 @@ extension ChoosePasswordViewController {
         case resetVerify(String)
         case confirm(String)
     }
+}
+
+protocol ChoosePasswordViewControllerDelegate: AnyObject {
+    func choosePasswordViewController(_ choosePasswordViewController: ChoosePasswordViewController, didConfirmPassword isConfirmed: Bool)
 }

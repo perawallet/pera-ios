@@ -16,93 +16,62 @@
 //  ChoosePasswordView.swift
 
 import UIKit
+import Macaroon
 
-class ChoosePasswordView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
+final class ChoosePasswordView: View {
     weak var delegate: ChoosePasswordViewDelegate?
-    
-    private let mode: ChoosePasswordViewController.Mode
-    
-    private lazy var unlockImageView = UIImageView(image: img("icon-lock"))
-    
-    private(set) lazy var titleLabel: UILabel = {
-        UILabel()
-            .withTextColor(Colors.Text.primary)
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .regular(size: 16.0 * verticalScale)))
-    }()
-    
+
+    private(set) lazy var titleLabel = UILabel()
     private(set) lazy var passwordInputView = PasswordInputView()
-    
     private(set) lazy var numpadView = NumpadView()
     
-    init(mode: ChoosePasswordViewController.Mode) {
-        self.mode = mode
-        super.init(frame: .zero)
+    func customize(_ theme: ChoosePasswordViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addTitleLabel(theme)
+        addPasswordView(theme)
+        addNumpadView(theme)
     }
-    
-    override func linkInteractors() {
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func linkInteractors() {
+        numpadView.linkInteractors()
         numpadView.delegate = self
-    }
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
-    }
-    
-    override func prepareLayout() {
-        setupUnlockImageViewLayout()
-        setupTitleLabelLayout()
-        setupPasswordViewLayout()
-        setupNumpadViewLayout()
     }
 }
 
 extension ChoosePasswordView {
-    private func setupUnlockImageViewLayout() {
-        if mode != .login {
-            return
-        }
-        
-        addSubview(unlockImageView)
-        
-        unlockImageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.imageViewTopInset)
-            make.size.equalTo(layout.current.unlockImageSize)
-        }
-    }
-    
-    private func setupTitleLabelLayout() {
+    private func addTitleLabel(_ theme: ChoosePasswordViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
         addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            if mode == .login {
-                make.top.equalTo(unlockImageView.snp.bottom).offset(layout.current.titleLabelImageOffset)
-            } else {
-                make.top.equalToSuperview().inset(layout.current.titleLabelTopInset)
-            }
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalToSuperview().inset(theme.topInset)
         }
     }
     
-    private func setupPasswordViewLayout() {
+    private func addPasswordView(_ theme: ChoosePasswordViewTheme) {
+        passwordInputView.customize(ChoosePasswordViewTheme())
+
         addSubview(passwordInputView)
-        
-        passwordInputView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.inputViewTopInset)
-            make.centerX.equalToSuperview()
+        passwordInputView.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.inputViewTopInset)
+            $0.centerX.equalToSuperview()
         }
     }
     
-    private func setupNumpadViewLayout() {
+    private func addNumpadView(_ theme: ChoosePasswordViewTheme) {
+        numpadView.customize(NumpadViewTheme())
+
         addSubview(numpadView)
-        
-        numpadView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().inset(layout.current.numpadBottomInset + safeAreaBottom)
-            make.centerX.equalToSuperview()
-            make.leading.trailing.lessThanOrEqualToSuperview()
+        numpadView.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(theme.numpadBottomInset + safeAreaBottom)
+            $0.centerX.equalToSuperview()
+            $0.leading.trailing.lessThanOrEqualToSuperview()
         }
     }
 }
@@ -110,19 +79,6 @@ extension ChoosePasswordView {
 extension ChoosePasswordView: NumpadViewDelegate {
     func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey) {
         delegate?.choosePasswordView(self, didSelect: value)
-    }
-}
-
-extension ChoosePasswordView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let imageViewHorizontalInset: CGFloat = 20.0
-        let imageViewTopInset: CGFloat = 70.0 * verticalScale
-        let titleLabelImageOffset: CGFloat = 40.0 * verticalScale
-        let titleLabelTopInset: CGFloat = 100.0 * verticalScale
-        let inputViewTopInset: CGFloat = 20.0 * verticalScale
-        let numpadBottomInset: CGFloat = 32.0 * verticalScale
-        let unlockImageSize = CGSize(width: 48.0 * verticalScale, height: 48.0 * verticalScale)
-        let passwordInputViewInset: CGFloat = -10.0
     }
 }
 

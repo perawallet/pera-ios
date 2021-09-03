@@ -16,57 +16,45 @@
 //  NumpadButton.swift
 
 import UIKit
+import Macaroon
 
-class NumpadButton: UIButton {
-    
-    private let layout = Layout<LayoutConstants>()
-    
+final class NumpadButton: UIButton, ViewComposable {
     override var intrinsicContentSize: CGSize {
-        return layout.current.size
+        return theme.size
     }
-    
+
+    private lazy var theme = NumpadButtonViewTheme()
+
     private(set) var numpadKey: NumpadKey
     
     init(numpadKey: NumpadKey) {
         self.numpadKey = numpadKey
         super.init(frame: .zero)
         
-        configureAppearance()
-        setNumpadKey()
+        customize(theme)
     }
     
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func configureAppearance() {
+
+    func customize(_ theme: NumpadButtonViewTheme) {
         switch numpadKey {
-        case .number:
-            setBackgroundImage(img("bg-passcode-number"), for: .normal)
-            setBackgroundImage(img("bg-passcode-number-selected"), for: .highlighted)
-            setTitleColor(Colors.Text.primary, for: .normal)
-            titleLabel?.font = UIFont.font(withWeight: .medium(size: 24.0))
+        case .number(let value):
+            customizeBaseAppearance(title: value)
+            setBackgroundImage(theme.buttonBackgroundHighlightedImage.content?.image, for: .highlighted)
             titleLabel?.textAlignment = .center
-        default:
-            break
-        }
-    }
-    
-    private func setNumpadKey() {
-        switch numpadKey {
+            customizeAppearance(theme.button)
+            customizeBaseAppearance(title: value)
+        case .delete:
+            customizeBaseAppearance(icon: theme.deleteImage.content)
         case .spacing:
             break
-        case let .number(value):
-            setTitle(value, for: .normal)
-        case .delete:
-            setImage(img("icon-delete-number"), for: .normal)
         }
     }
-}
 
-extension NumpadButton {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let size = CGSize(width: 72.0 * verticalScale, height: 72.0 * verticalScale)
-    }
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }

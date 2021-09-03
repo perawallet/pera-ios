@@ -16,69 +16,53 @@
 //  NumpadView.swift
 
 import UIKit
+import Macaroon
 
-class NumpadView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
+final class NumpadView: View {
     weak var delegate: NumpadViewDelegate?
     
-    private lazy var firstRowStackView: UIStackView = {
-        createRow()
-    }()
-    
+    private lazy var firstRowStackView = UIStackView()
     private lazy var numberOneButton = NumpadButton(numpadKey: .number("1"))
-    
     private lazy var numberTwoButton = NumpadButton(numpadKey: .number("2"))
-    
     private lazy var numberThreeButton = NumpadButton(numpadKey: .number("3"))
     
-    private lazy var secondRowStackView: UIStackView = {
-        createRow()
-    }()
-    
+    private lazy var secondRowStackView = UIStackView()
     private lazy var numberFourButton = NumpadButton(numpadKey: .number("4"))
-    
     private lazy var numberFiveButton = NumpadButton(numpadKey: .number("5"))
-    
     private lazy var numberSixButton = NumpadButton(numpadKey: .number("6"))
     
-    private lazy var thirdRowStackView: UIStackView = {
-        createRow()
-    }()
-    
+    private lazy var thirdRowStackView = UIStackView()
     private lazy var numberSevenButton = NumpadButton(numpadKey: .number("7"))
-    
     private lazy var numberEightButton = NumpadButton(numpadKey: .number("8"))
-    
     private lazy var numberNineButton = NumpadButton(numpadKey: .number("9"))
     
-    private lazy var fourthRowStackView: UIStackView = {
-        createRow()
-    }()
-    
+    private lazy var fourthRowStackView = UIStackView()
     private lazy var spacingButton = NumpadButton(numpadKey: .spacing)
-    
     private lazy var zeroButton = NumpadButton(numpadKey: .number("0"))
-    
     private lazy var deleteButton = NumpadButton(numpadKey: .delete)
-    
-    override func configureAppearance() {
+
+    func customize(_ theme: NumpadViewTheme) {
         backgroundColor = Colors.Background.tertiary
+
+        addFirstRowStackView(theme)
+        addSecondRowStackView(theme)
+        addThirdRowStackView(theme)
+        addFourthRowStackView(theme)
     }
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
     
-    override func linkInteractors() {
+    func linkInteractors() {
         [
-            numberOneButton, numberTwoButton, numberThreeButton, numberFourButton, numberFiveButton, numberSixButton, numberSevenButton,
-            numberEightButton, numberNineButton, zeroButton, deleteButton
-        ].forEach { $0.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside) }
-    }
-    
-    override func prepareLayout() {
-        setupFirstRowStackViewLayout()
-        setupSecondRowStackViewLayout()
-        setupThirdRowStackViewLayout()
-        setupFourthRowStackViewLayout()
+            numberOneButton, numberTwoButton, numberThreeButton,
+            numberFourButton, numberFiveButton, numberSixButton,
+            numberSevenButton, numberEightButton, numberNineButton,
+            zeroButton, deleteButton
+        ].forEach {
+            $0.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
+        }
     }
 }
 
@@ -90,13 +74,14 @@ extension NumpadView {
 }
 
 extension NumpadView {
-    private func setupFirstRowStackViewLayout() {
+    private func addFirstRowStackView(_ theme: NumpadViewTheme) {
+        configureStackView(firstRowStackView, with: theme)
+
         addSubview(firstRowStackView)
-        
-        firstRowStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.height.equalTo(layout.current.stackViewHeight)
-            make.centerX.equalToSuperview()
+        firstRowStackView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.height.equalTo(theme.stackViewHeight)
+            $0.centerX.equalToSuperview()
         }
         
         firstRowStackView.addArrangedSubview(numberOneButton)
@@ -104,13 +89,14 @@ extension NumpadView {
         firstRowStackView.addArrangedSubview(numberThreeButton)
     }
     
-    private func setupSecondRowStackViewLayout() {
+    private func addSecondRowStackView(_ theme: NumpadViewTheme) {
+        configureStackView(secondRowStackView, with: theme)
+
         addSubview(secondRowStackView)
-        
-        secondRowStackView.snp.makeConstraints { make in
-            make.top.equalTo(firstRowStackView.snp.bottom).offset(layout.current.stackViewSpacing)
-            make.height.equalTo(layout.current.stackViewHeight)
-            make.centerX.equalToSuperview()
+        secondRowStackView.snp.makeConstraints {
+            $0.top.equalTo(firstRowStackView.snp.bottom).offset(theme.stackViewSpacing)
+            $0.height.equalTo(theme.stackViewHeight)
+            $0.centerX.equalToSuperview()
         }
         
         secondRowStackView.addArrangedSubview(numberFourButton)
@@ -118,13 +104,14 @@ extension NumpadView {
         secondRowStackView.addArrangedSubview(numberSixButton)
     }
     
-    private func setupThirdRowStackViewLayout() {
+    private func addThirdRowStackView(_ theme: NumpadViewTheme) {
+        configureStackView(thirdRowStackView, with: theme)
+
         addSubview(thirdRowStackView)
-        
-        thirdRowStackView.snp.makeConstraints { make in
-            make.top.equalTo(secondRowStackView.snp.bottom).offset(layout.current.stackViewSpacing)
-            make.height.equalTo(layout.current.stackViewHeight)
-            make.centerX.equalToSuperview()
+        thirdRowStackView.snp.makeConstraints {
+            $0.top.equalTo(secondRowStackView.snp.bottom).offset(theme.stackViewSpacing)
+            $0.height.equalTo(theme.stackViewHeight)
+            $0.centerX.equalToSuperview()
         }
         
         thirdRowStackView.addArrangedSubview(numberSevenButton)
@@ -132,14 +119,15 @@ extension NumpadView {
         thirdRowStackView.addArrangedSubview(numberNineButton)
     }
     
-    private func setupFourthRowStackViewLayout() {
+    private func addFourthRowStackView(_ theme: NumpadViewTheme) {
+        configureStackView(fourthRowStackView, with: theme)
+
         addSubview(fourthRowStackView)
-        
-        fourthRowStackView.snp.makeConstraints { make in
-            make.top.equalTo(thirdRowStackView.snp.bottom).offset(layout.current.stackViewSpacing)
-            make.bottom.equalToSuperview()
-            make.height.equalTo(layout.current.stackViewHeight)
-            make.centerX.equalToSuperview()
+        fourthRowStackView.snp.makeConstraints {
+            $0.top.equalTo(thirdRowStackView.snp.bottom).offset(theme.stackViewSpacing)
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(theme.stackViewHeight)
+            $0.centerX.equalToSuperview()
         }
         
         fourthRowStackView.addArrangedSubview(spacingButton)
@@ -149,22 +137,10 @@ extension NumpadView {
 }
 
 extension NumpadView {
-    private func createRow() -> UIStackView {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+    private func configureStackView(_ stackView: UIStackView, with theme: NumpadViewTheme) {
         stackView.distribution = .fillEqually
         stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = layout.current.stackViewSpacing
-        stackView.isUserInteractionEnabled = true
-        return stackView
-    }
-}
-
-extension NumpadView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let stackViewSpacing: CGFloat = 24.0 * verticalScale
-        let stackViewHeight: CGFloat = 72.0 * verticalScale
+        stackView.spacing = theme.stackViewSpacing
     }
 }
 

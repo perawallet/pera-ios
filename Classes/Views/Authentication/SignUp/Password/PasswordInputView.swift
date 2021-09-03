@@ -16,45 +16,43 @@
 //  PasswordInputView.swift
 
 import UIKit
+import Macaroon
 
-class PasswordInputView: BaseView {
-    
+final class PasswordInputView: View {
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: 220.0, height: 20.0)
+        return CGSize(width: 220, height: 20)
     }
     
-    private(set) var passwordInputCircleViews = [PasswordInputCircleView]()
+    private(set) var passwordInputCircleViews: [PasswordInputCircleView] = []
+    private lazy var stackView = UIStackView()
 
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .horizontal
-        stackView.distribution = .fillEqually
-        stackView.alignment = .center
-        return stackView
-    }()
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
+    func customize(_ theme: ChoosePasswordViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addStackView()
+        addCircleViews()
     }
-    
-    override func prepareLayout() {
-        setupStackViewLayout()
-        configureStackView()
-    }
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 }
 
 extension PasswordInputView {
-    private func setupStackViewLayout() {
+    private func addStackView() {
+        stackView.distribution = .fillEqually
+        stackView.alignment = .center
+
         addSubview(stackView)
-        
-        stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        stackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
-    private func configureStackView() {
+    private func addCircleViews() {
         for _ in 1...6 {
             let circleView = PasswordInputCircleView()
+            circleView.customize()
             passwordInputCircleViews.append(circleView)
             stackView.addArrangedSubview(circleView)
         }
