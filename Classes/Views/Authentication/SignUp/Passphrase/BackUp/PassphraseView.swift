@@ -24,21 +24,7 @@ final class PassphraseView: View {
     private lazy var titleLabel = UILabel()
     private lazy var descriptionLabel = UILabel()
     private lazy var passphraseContainerView = UIView()
-    private lazy var passphraseCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumLineSpacing = 0.0
-        flowLayout.minimumInteritemSpacing = 8.0
-
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.isScrollEnabled = false
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .clear
-        collectionView.register(PassphraseBackUpCell.self, forCellWithReuseIdentifier: PassphraseBackUpCell.reusableIdentifier)
-        return collectionView
-    }()
-    
+    private lazy var passphraseCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
     private(set) lazy var verifyButton = Button()
 
     func customize(_ theme: PassphraseViewTheme) {
@@ -101,6 +87,18 @@ extension PassphraseView {
     }
     
     private func addPassphraseCollectionView(_ theme: PassphraseViewTheme) {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .horizontal
+        flowLayout.minimumLineSpacing = 0
+        flowLayout.minimumInteritemSpacing = 8
+
+        passphraseCollectionView.collectionViewLayout = flowLayout
+        passphraseCollectionView.isScrollEnabled = false
+        passphraseCollectionView.showsVerticalScrollIndicator = false
+        passphraseCollectionView.showsHorizontalScrollIndicator = false
+        passphraseCollectionView.backgroundColor = .clear
+        passphraseCollectionView.register(PassphraseBackUpCell.self, forCellWithReuseIdentifier: PassphraseBackUpCell.reusableIdentifier)
+
         passphraseContainerView.addSubview(passphraseCollectionView)
         
         passphraseCollectionView.snp.makeConstraints {
@@ -114,28 +112,22 @@ extension PassphraseView {
         verifyButton.bindData(ButtonCommonViewModel(title: "title-next".localized))
 
         addSubview(verifyButton)
-        verifyButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.greaterThanOrEqualTo(descriptionLabel.snp.bottom).offset(theme.containerTopInset)
-            make.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
-            make.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+        verifyButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.greaterThanOrEqualTo(passphraseCollectionView.snp.bottom).offset(theme.containerTopInset)
+            $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
 }
 
 extension PassphraseView {
-    func setDelegate(_ delegate: UICollectionViewDelegate?) {
+    func setPassphraseCollectionViewDelegate(_ delegate: UICollectionViewDelegate?) {
         passphraseCollectionView.delegate = delegate
     }
 
-    func setDataSource(_ dataSource: UICollectionViewDataSource?) {
+    func setPassphraseCollectionViewDataSource(_ dataSource: UICollectionViewDataSource?) {
         passphraseCollectionView.dataSource = dataSource
-    }
-}
-
-extension Colors {
-    fileprivate enum PassphraseView {
-        static let containerBackground = color("passphraseContainerBackground")
     }
 }
 

@@ -21,23 +21,23 @@ import AVFoundation
 final class PassphraseBackUpViewController: BaseScrollViewController {
     private var mnemonics: [String]?
     private var address: String
-    private var maxCellWidth: CGFloat?
-
     private var isDisplayedAllScreen = false
     
     private lazy var passphraseView = PassphraseView()
+    private lazy var theme = Theme()
 
     private lazy var bottomModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
             dismissMode: .backgroundTouch
         ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 382.0))
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 338))
     )
     
     init(address: String, configuration: ViewControllerConfiguration) {
         self.address = address
         super.init(configuration: configuration)
+
         generatePrivateKey()
         mnemonics = session?.mnemonics(forAccount: address)
     }
@@ -50,15 +50,20 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         setNavigationBarTertiaryBackgroundColor()
-        view.backgroundColor = Colors.Background.tertiary
-        scrollView.backgroundColor = Colors.Background.tertiary
-        contentView.backgroundColor = Colors.Background.tertiary
+        customizeBackground()
+
         passphraseView.verifyButton.isEnabled = false
+    }
+
+    private func customizeBackground() {
+        view.backgroundColor = theme.backgroundColor.color
+        scrollView.backgroundColor = theme.backgroundColor.color
+        contentView.backgroundColor = theme.backgroundColor.color
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupPassphraseViewLayout()
+        addPassphraseView()
     }
 
     override func setListeners() {
@@ -74,19 +79,19 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     
     override func linkInteractors() {
         passphraseView.delegate = self
-        passphraseView.setDelegate(self)
-        passphraseView.setDataSource(self)
+        passphraseView.setPassphraseCollectionViewDelegate(self)
+        passphraseView.setPassphraseCollectionViewDataSource(self)
         scrollView.delegate = self
     }
 }
 
 extension PassphraseBackUpViewController {
-    private func setupPassphraseViewLayout() {
-        passphraseView.customize(PassphraseViewTheme())
+    private func addPassphraseView() {
+        passphraseView.customize(theme.passphraseViewTheme)
 
         contentView.addSubview(passphraseView)
-        passphraseView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        passphraseView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
@@ -101,6 +106,7 @@ extension PassphraseBackUpViewController: UICollectionViewDataSource {
             withReuseIdentifier: PassphraseBackUpCell.reusableIdentifier,
             for: indexPath
         ) as? PassphraseBackUpCell {
+            cell.customize(PassphraseBackUpOrderViewTheme())
             cell.bindData(PassphraseBackUpOrderViewModel(mnemonics: mnemonics, index: indexPath.item))
             return cell
         }
@@ -115,7 +121,7 @@ extension PassphraseBackUpViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: collectionView.frame.width / 2.0, height: 24.0)
+        return CGSize(width: collectionView.frame.width / 2, height: 24)
     }
 }
 

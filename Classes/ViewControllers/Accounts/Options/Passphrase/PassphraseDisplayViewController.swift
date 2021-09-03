@@ -99,6 +99,7 @@ extension PassphraseDisplayViewController: UICollectionViewDataSource {
             withReuseIdentifier: PassphraseBackUpCell.reusableIdentifier,
             for: indexPath
         ) as? PassphraseBackUpCell {
+            cell.customize(PassphraseBackUpOrderViewTheme())
             cell.bindData(PassphraseBackUpOrderViewModel(mnemonics: mnemonics, index: indexPath.item))
             return cell
         }
