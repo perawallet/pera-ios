@@ -45,14 +45,6 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateVerifyButtonAfterScroll()
-        open(
-            .screenshotWarning,
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: bottomModalPresenter
-            )
-        )
     }
     
     override func configureAppearance() {
