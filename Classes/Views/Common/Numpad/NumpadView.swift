@@ -43,7 +43,7 @@ final class NumpadView: View {
 
     func customize(_ theme: NumpadViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        
+
         addFirstRowStackView(theme)
         addSecondRowStackView(theme)
         addThirdRowStackView(theme)
