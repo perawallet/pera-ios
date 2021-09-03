@@ -22,7 +22,7 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     private var mnemonics: [String]?
     private var address: String
     private var isDisplayedAllScreen = false
-    
+
     private lazy var passphraseBackUpView = PassphraseBackUpView()
     private lazy var theme = Theme()
 
