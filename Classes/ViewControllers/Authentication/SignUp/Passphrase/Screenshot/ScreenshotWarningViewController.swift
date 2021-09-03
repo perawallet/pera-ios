@@ -23,9 +23,14 @@ final class ScreenshotWarningViewController: BaseViewController {
     }
 
     private lazy var screenshotWarningView = ScreenshotWarningView()
+    private lazy var theme = Theme()
 
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.secondary
+        customizeBackground()
+    }
+    
+    private func customizeBackground() {
+        view.backgroundColor = theme.backgroundColor.color
     }
 
     override func setListeners() {
@@ -34,7 +39,7 @@ final class ScreenshotWarningViewController: BaseViewController {
     }
 
     override func prepareLayout() {
-        screenshotWarningView.customize(ScreenShotWarningViewTheme())
+        screenshotWarningView.customize(theme.screenshotWarningViewTheme)
         prepareWholeScreenLayoutFor(screenshotWarningView)
     }
 }

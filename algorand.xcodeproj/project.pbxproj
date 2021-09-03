@@ -2599,6 +2599,9 @@
 		D401293426D5359B00BB55D1 /* BannerErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D401293326D5359B00BB55D1 /* BannerErrorViewModel.swift */; };
 		D401293526D5359B00BB55D1 /* BannerErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D401293326D5359B00BB55D1 /* BannerErrorViewModel.swift */; };
 		D401293626D5359B00BB55D1 /* BannerErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D401293326D5359B00BB55D1 /* BannerErrorViewModel.swift */; };
+		D40C295126E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C295026E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift */; };
+		D40C295226E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C295026E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift */; };
+		D40C295326E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C295026E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift */; };
 		D421177F26D8D3D000C032B2 /* BottomSheetTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022426D7A50A00CEFC16 /* BottomSheetTransition.swift */; };
 		D421178026D8D3D100C032B2 /* BottomSheetTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022426D7A50A00CEFC16 /* BottomSheetTransition.swift */; };
 		D421178126D8D3D400C032B2 /* BottomSheetTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022626D7A52F00CEFC16 /* BottomSheetTransitionController.swift */; };
@@ -3680,6 +3683,7 @@
 		A03FA65A2602E9C7A1240972 /* Pods-algorand-prod.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-prod.debug.xcconfig"; path = "Target Support Files/Pods-algorand-prod/Pods-algorand-prod.debug.xcconfig"; sourceTree = "<group>"; };
 		B23C40C68DA858CD7433E4E5 /* Pods_algorand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D401293326D5359B00BB55D1 /* BannerErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerErrorViewModel.swift; sourceTree = "<group>"; };
+		D40C295026E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScreenshotWarningViewController+Theme.swift"; sourceTree = "<group>"; };
 		D421178326D8ED6800C032B2 /* BlockingLoadingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingLoadingController.swift; sourceTree = "<group>"; };
 		D421178726D8ED9700C032B2 /* ScreenLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingIndicator.swift; sourceTree = "<group>"; };
 		D421178B26D8EDBA00C032B2 /* ScreenLoadingIndicatorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingIndicatorTheme.swift; sourceTree = "<group>"; };
@@ -8278,6 +8282,7 @@
 			isa = PBXGroup;
 			children = (
 				2BD063E325CEC8B6008BD15E /* ScreenshotWarningViewController.swift */,
+				D40C295026E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift */,
 			);
 			path = Screenshot;
 			sourceTree = "<group>";
@@ -11098,6 +11103,7 @@
 				2BD5A4A126305F530048FA5E /* AlgosCardAnalyticsContainerView.swift in Sources */,
 				2B5BE06125190A0500324BEE /* AddAccountViewController.swift in Sources */,
 				2BDD43E32513A87800C6D3B5 /* SingleSelectionCell.swift in Sources */,
+				D40C295326E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift in Sources */,
 				95C4C16F242CE01B005A57BB /* CBManagerState+Error.swift in Sources */,
 				17BD4EAD2292F1260003E49A /* TransactionDetailViewModel.swift in Sources */,
 				2B5739F326F3F73F007E0252 /* WCAssetDeletionTransactionView.swift in Sources */,
@@ -11940,6 +11946,7 @@
 				2BD5A4A026305F530048FA5E /* AlgosCardAnalyticsContainerView.swift in Sources */,
 				2BDD43E22513A87800C6D3B5 /* SingleSelectionCell.swift in Sources */,
 				2B0F628A24EC129D00DA22A6 /* Node.swift in Sources */,
+				D40C295226E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift in Sources */,
 				2B0F628B24EC129D00DA22A6 /* TransactionSignature.swift in Sources */,
 				2B0F628C24EC129D00DA22A6 /* KeyboardController.swift in Sources */,
 				2B5739F226F3F73F007E0252 /* WCAssetDeletionTransactionView.swift in Sources */,
@@ -12782,6 +12789,7 @@
 				2BD5A49F26305F530048FA5E /* AlgosCardAnalyticsContainerView.swift in Sources */,
 				2B5BE05F25190A0500324BEE /* AddAccountViewController.swift in Sources */,
 				2BDD43E12513A87800C6D3B5 /* SingleSelectionCell.swift in Sources */,
+				D40C295126E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift in Sources */,
 				2BB64BE62402B47200519981 /* LedgerDeviceView.swift in Sources */,
 				95C4C16E242CE01B005A57BB /* CBManagerState+Error.swift in Sources */,
 				2B5739F126F3F73F007E0252 /* WCAssetDeletionTransactionView.swift in Sources */,
