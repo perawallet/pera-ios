@@ -1,7 +1,11 @@
 {
   "images" : [
     {
+<<<<<<< HEAD:Resources/Assets/Assets.xcassets/Accounts/Options/icon-circle-check.imageset/Contents.json
       "filename" : "icon-circle-check.pdf",
+=======
+      "filename" : "black-button-filled.pdf",
+>>>>>>> 81dbedd3 (✨ Implement Password Screens):Resources/Assets/Assets.xcassets/Authentication/black-button-filled.imageset/Contents.json
       "idiom" : "universal"
     }
   ],
