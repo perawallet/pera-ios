@@ -55,7 +55,7 @@ extension ChoosePasswordView {
     }
     
     private func addPasswordView(_ theme: ChoosePasswordViewTheme) {
-        passwordInputView.customize(ChoosePasswordViewTheme())
+        passwordInputView.customize()
 
         addSubview(passwordInputView)
         passwordInputView.snp.makeConstraints {
