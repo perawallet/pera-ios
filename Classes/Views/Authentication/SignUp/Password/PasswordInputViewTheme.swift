@@ -13,22 +13,20 @@
 // limitations under the License.
 
 //
-//   NumpadViewTheme.swift
+//   PasswordInputViewTheme.swift
 
 import Foundation
 import Macaroon
 import UIKit
 
-struct NumpadViewTheme: StyleSheet, LayoutSheet {
+struct PasswordInputViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
 
-    let stackViewSpacing: LayoutMetric
-    let stackViewHeight: LayoutMetric
+    let size: LayoutSize
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-        
-        self.stackViewSpacing = 24 * verticalScale
-        self.stackViewHeight = 72 * verticalScale
+
+        self.size = (220, 20)
     }
 }

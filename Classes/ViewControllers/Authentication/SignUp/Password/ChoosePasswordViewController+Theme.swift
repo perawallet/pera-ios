@@ -13,22 +13,18 @@
 // limitations under the License.
 
 //
-//   NumpadViewTheme.swift
+//   ChoosePasswordViewController+Theme.swift
 
-import Foundation
 import Macaroon
-import UIKit
 
-struct NumpadViewTheme: StyleSheet, LayoutSheet {
-    let backgroundColor: Color
+extension ChoosePasswordViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let choosePasswordViewTheme: ChoosePasswordViewTheme
+        let backgroundColor: Color
 
-    let stackViewSpacing: LayoutMetric
-    let stackViewHeight: LayoutMetric
-
-    init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
-        
-        self.stackViewSpacing = 24 * verticalScale
-        self.stackViewHeight = 72 * verticalScale
+        init(_ family: LayoutFamily) {
+            choosePasswordViewTheme = ChoosePasswordViewTheme()
+            backgroundColor = AppColors.Shared.System.background
+        }
     }
 }

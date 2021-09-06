@@ -2599,12 +2599,12 @@
 		D401293426D5359B00BB55D1 /* BannerErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D401293326D5359B00BB55D1 /* BannerErrorViewModel.swift */; };
 		D401293526D5359B00BB55D1 /* BannerErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D401293326D5359B00BB55D1 /* BannerErrorViewModel.swift */; };
 		D401293626D5359B00BB55D1 /* BannerErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D401293326D5359B00BB55D1 /* BannerErrorViewModel.swift */; };
-		D40C295126E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C295026E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift */; };
-		D40C295226E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C295026E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift */; };
-		D40C295326E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C295026E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift */; };
 		D40C294D26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C294C26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift */; };
 		D40C294E26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C294C26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift */; };
 		D40C294F26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C294C26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift */; };
+		D40C295126E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C295026E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift */; };
+		D40C295226E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C295026E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift */; };
+		D40C295326E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D40C295026E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift */; };
 		D421177F26D8D3D000C032B2 /* BottomSheetTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022426D7A50A00CEFC16 /* BottomSheetTransition.swift */; };
 		D421178026D8D3D100C032B2 /* BottomSheetTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022426D7A50A00CEFC16 /* BottomSheetTransition.swift */; };
 		D421178126D8D3D400C032B2 /* BottomSheetTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022626D7A52F00CEFC16 /* BottomSheetTransitionController.swift */; };
@@ -2638,6 +2638,12 @@
 		D44EEEEA26D54740009998FA /* BannerInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EEEE926D54740009998FA /* BannerInfoViewModel.swift */; };
 		D44EEEEB26D54740009998FA /* BannerInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EEEE926D54740009998FA /* BannerInfoViewModel.swift */; };
 		D44EEEEC26D54740009998FA /* BannerInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EEEE926D54740009998FA /* BannerInfoViewModel.swift */; };
+		D46C647126E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */; };
+		D46C647226E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */; };
+		D46C647326E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */; };
+		D46C647526E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */; };
+		D46C647626E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */; };
+		D46C647726E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */; };
 		D473CA4826E1537100558598 /* PassphraseViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4726E1537100558598 /* PassphraseViewTheme.swift */; };
 		D473CA4926E1537100558598 /* PassphraseViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4726E1537100558598 /* PassphraseViewTheme.swift */; };
 		D473CA4A26E1537100558598 /* PassphraseViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4726E1537100558598 /* PassphraseViewTheme.swift */; };
@@ -3686,8 +3692,8 @@
 		A03FA65A2602E9C7A1240972 /* Pods-algorand-prod.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-prod.debug.xcconfig"; path = "Target Support Files/Pods-algorand-prod/Pods-algorand-prod.debug.xcconfig"; sourceTree = "<group>"; };
 		B23C40C68DA858CD7433E4E5 /* Pods_algorand.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D401293326D5359B00BB55D1 /* BannerErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerErrorViewModel.swift; sourceTree = "<group>"; };
-		D40C295026E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScreenshotWarningViewController+Theme.swift"; sourceTree = "<group>"; };
 		D40C294C26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassphraseBackUpViewController+Theme.swift"; sourceTree = "<group>"; };
+		D40C295026E2A25C0037A0F4 /* ScreenshotWarningViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScreenshotWarningViewController+Theme.swift"; sourceTree = "<group>"; };
 		D421178326D8ED6800C032B2 /* BlockingLoadingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingLoadingController.swift; sourceTree = "<group>"; };
 		D421178726D8ED9700C032B2 /* ScreenLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingIndicator.swift; sourceTree = "<group>"; };
 		D421178B26D8EDBA00C032B2 /* ScreenLoadingIndicatorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenLoadingIndicatorTheme.swift; sourceTree = "<group>"; };
@@ -3699,6 +3705,8 @@
 		D44EB6AE26DF73FF0008E234 /* WelcomeViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewTheme.swift; sourceTree = "<group>"; };
 		D44EB6B226DF7A390008E234 /* AccountTypeViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeViewTheme.swift; sourceTree = "<group>"; };
 		D44EEEE926D54740009998FA /* BannerInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerInfoViewModel.swift; sourceTree = "<group>"; };
+		D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChoosePasswordViewController+Theme.swift"; sourceTree = "<group>"; };
+		D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordInputViewTheme.swift; sourceTree = "<group>"; };
 		D473CA4726E1537100558598 /* PassphraseViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseViewTheme.swift; sourceTree = "<group>"; };
 		D473CA4B26E15F0C00558598 /* PassphraseBackUpOrderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpOrderViewTheme.swift; sourceTree = "<group>"; };
 		D473CA4F26E1733700558598 /* ScreenShotWarningViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShotWarningViewTheme.swift; sourceTree = "<group>"; };
@@ -8684,6 +8692,7 @@
 				2BD739DC223F9E9F00B66EEF /* ChoosePasswordView.swift */,
 				D473CA5326E20C5100558598 /* ChoosePasswordViewTheme.swift */,
 				2BD739F92240527B00B66EEF /* PasswordInputView.swift */,
+				D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */,
 				2BD739FB2241052500B66EEF /* PasswordInputCircleView.swift */,
 			);
 			path = Password;
@@ -8741,6 +8750,7 @@
 			isa = PBXGroup;
 			children = (
 				2BD739E9223FA0BD00B66EEF /* ChoosePasswordViewController.swift */,
+				D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */,
 			);
 			path = Password;
 			sourceTree = "<group>";
@@ -10889,6 +10899,7 @@
 				2B9EEB69264ED202007A112D /* RewardCalculationViewModel.swift in Sources */,
 				2BD36DEC267E6D2200C57728 /* TitledTransactionAmountInformationView.swift in Sources */,
 				2BD063EF25CEC8E5008BD15E /* ScreenshotWarningView.swift in Sources */,
+				D46C647726E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */,
 				2BF0FB32253D154C00D704D5 /* RewardViewModel.swift in Sources */,
 				2BECB48C25A0C64B0081870A /* TitledToggleView.swift in Sources */,
 				2BD5477823184704007179FE /* FeedbackDraft.swift in Sources */,
@@ -11283,6 +11294,7 @@
 				2B7E3033267A514B00E89EE3 /* WCSingleTransactionView.swift in Sources */,
 				17BD4EE42292F1260003E49A /* ModalPresenter.swift in Sources */,
 				2B7E589325878BCE00731C97 /* LedgerAccountAssetCountViewModel.swift in Sources */,
+				D46C647326E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift in Sources */,
 				2B44873B237AB67700C19FDE /* AssetListLayoutBuilder.swift in Sources */,
 				2B7E305B267A5DBF00E89EE3 /* WCAssetTransactionViewModel.swift in Sources */,
 				2BE9372324630A7D00322C1E /* SelectAssetView.swift in Sources */,
@@ -11733,6 +11745,7 @@
 				2BD36DEB267E6D2200C57728 /* TitledTransactionAmountInformationView.swift in Sources */,
 				2B9EEB68264ED202007A112D /* RewardCalculationViewModel.swift in Sources */,
 				2B0F620A24EC129D00DA22A6 /* BaseScrollViewController.swift in Sources */,
+				D46C647626E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */,
 				2BD063EE25CEC8E5008BD15E /* ScreenshotWarningView.swift in Sources */,
 				2B0F620B24EC129D00DA22A6 /* AssetCell.swift in Sources */,
 				2BECB48B25A0C64B0081870A /* TitledToggleView.swift in Sources */,
@@ -12127,6 +12140,7 @@
 				2B7E3032267A514B00E89EE3 /* WCSingleTransactionView.swift in Sources */,
 				2B0F62E324EC129D00DA22A6 /* SendTransactionPreviewViewController+Keyboard.swift in Sources */,
 				2B7E589225878BCE00731C97 /* LedgerAccountAssetCountViewModel.swift in Sources */,
+				D46C647226E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift in Sources */,
 				2B0F62E424EC129D00DA22A6 /* TransactionControllerDelegate.swift in Sources */,
 				2B7E305A267A5DBF00E89EE3 /* WCAssetTransactionViewModel.swift in Sources */,
 				2B0F62E524EC129D00DA22A6 /* AccountNameSetupView.swift in Sources */,
@@ -12577,6 +12591,7 @@
 				2B01FE5926147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
 				2B9EEB67264ED202007A112D /* RewardCalculationViewModel.swift in Sources */,
 				2BD36DEA267E6D2200C57728 /* TitledTransactionAmountInformationView.swift in Sources */,
+				D46C647526E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */,
 				2BD063ED25CEC8E5008BD15E /* ScreenshotWarningView.swift in Sources */,
 				2BF0FB30253D154C00D704D5 /* RewardViewModel.swift in Sources */,
 				2BECB48A25A0C64B0081870A /* TitledToggleView.swift in Sources */,
@@ -12971,6 +12986,7 @@
 				2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */,
 				2B7E3031267A514B00E89EE3 /* WCSingleTransactionView.swift in Sources */,
 				2BF53157224A46A400A7455F /* ModalPresenter.swift in Sources */,
+				D46C647126E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift in Sources */,
 				2B7E589125878BCE00731C97 /* LedgerAccountAssetCountViewModel.swift in Sources */,
 				2B44873A237AB67700C19FDE /* AssetListLayoutBuilder.swift in Sources */,
 				2B7E3059267A5DBF00E89EE3 /* WCAssetTransactionViewModel.swift in Sources */,

@@ -19,14 +19,16 @@ import UIKit
 import Macaroon
 
 final class PasswordInputView: View {
+    private lazy var theme = PasswordInputViewTheme()
+
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: 220, height: 20)
+        return CGSize(width: theme.size.w, height: theme.size.h)
     }
     
     private(set) var passwordInputCircleViews: [PasswordInputCircleView] = []
     private lazy var stackView = UIStackView()
 
-    func customize(_ theme: ChoosePasswordViewTheme) {
+    func customize() {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addStackView()

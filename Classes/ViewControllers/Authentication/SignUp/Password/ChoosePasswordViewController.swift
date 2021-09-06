@@ -25,6 +25,7 @@ final class ChoosePasswordViewController: BaseViewController {
     private var route: Screen?
 
     private lazy var choosePasswordView = ChoosePasswordView()
+    private lazy var theme = Theme()
     
     private let localAuthenticator = LocalAuthenticator()
     
@@ -70,7 +71,7 @@ final class ChoosePasswordViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        view.backgroundColor = Colors.Background.tertiary
+        view.backgroundColor = theme.backgroundColor.color
         setTitle()
         viewModel.configure(choosePasswordView)
     }
@@ -89,7 +90,8 @@ final class ChoosePasswordViewController: BaseViewController {
 
 extension ChoosePasswordViewController {
     private func setupChoosePasswordViewLayout() {
-        choosePasswordView.customize(ChoosePasswordViewTheme())
+        choosePasswordView.customize(theme.choosePasswordViewTheme)
+
         view.addSubview(choosePasswordView)
         choosePasswordView.snp.makeConstraints {
             $0.edges.equalToSuperview()

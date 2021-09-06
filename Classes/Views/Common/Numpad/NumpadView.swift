@@ -41,9 +41,10 @@ final class NumpadView: View {
     private lazy var zeroButton = NumpadButton(numpadKey: .number("0"))
     private lazy var deleteButton = NumpadButton(numpadKey: .delete)
 
-    func customize(_ theme: NumpadViewTheme) {
-        backgroundColor = Colors.Background.tertiary
 
+    func customize(_ theme: NumpadViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        
         addFirstRowStackView(theme)
         addSecondRowStackView(theme)
         addThirdRowStackView(theme)
