@@ -15,7 +15,7 @@
 //
 //   ColorSet+Additions.swift
 
-import Macaroon
+import MacaroonUIKit
 
 extension Macaroon.ColorSet {
     init(normal: Color, disabled: Color) {

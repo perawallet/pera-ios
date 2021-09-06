@@ -16,7 +16,7 @@
 //   WCSessionItemViewModel.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 import SwiftDate
 
 class WCSessionItemViewModel {

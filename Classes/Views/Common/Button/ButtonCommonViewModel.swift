@@ -15,7 +15,7 @@
 //
 //   ButtonCommonViewModel.swift
 
-import  Macaroon
+import MacaroonUIKit
 
 struct ButtonCommonViewModel: ButtonViewModel {
     private(set) var iconSet: ImageSet?

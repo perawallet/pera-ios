@@ -16,7 +16,7 @@
 //   WCTransactionDappMessageView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 class WCTransactionDappMessageView: BaseView {
 

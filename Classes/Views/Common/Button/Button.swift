@@ -16,7 +16,7 @@
 //   Button.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class Button: Macaroon.Button {
     private var theme: ButtonTheme?

@@ -17,7 +17,7 @@
 
 import UIKit
 import AVFoundation
-import Macaroon
+import MacaroonUIKit
 
 class QRScannerViewController: BaseViewController {
     

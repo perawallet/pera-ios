@@ -16,6 +16,7 @@
 //   ChartCircleMarker.swift
 
 import Charts
+import UIKit
 
 class ChartCircleMarker: MarkerImage {
 

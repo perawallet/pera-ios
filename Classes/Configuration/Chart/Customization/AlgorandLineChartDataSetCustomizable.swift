@@ -15,6 +15,8 @@
 //
 //   AlgorandLineChartDataSetCustomizable.swift
 
+import Foundation
+import UIKit
 import Charts
 
 protocol AlgorandLineChartDataSetCustomizable {

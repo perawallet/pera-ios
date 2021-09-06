@@ -16,7 +16,7 @@
 //   BannerViewInfoTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct BannerViewInfoTheme: BannerViewTheme {

@@ -15,6 +15,7 @@
 //
 //  Reusable.swift
 
+import Foundation
 import UIKit
 
 protocol Reusable: AnyObject {

@@ -15,6 +15,8 @@
 //
 //  TransactionSigner.swift
 
+import Foundation
+import UIKit
 import Magpie
 
 class TransactionSigner: NSObject, TransactionSignable {

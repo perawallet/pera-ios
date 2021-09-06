@@ -16,7 +16,7 @@
 //   BannerViewErrorTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct BannerViewErrorTheme: BannerViewTheme {

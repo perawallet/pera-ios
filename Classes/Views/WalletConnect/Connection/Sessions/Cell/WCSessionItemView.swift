@@ -16,7 +16,7 @@
 //   WCSessionItemView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 class WCSessionItemView: BaseView {
 

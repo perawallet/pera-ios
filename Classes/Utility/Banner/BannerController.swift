@@ -16,7 +16,7 @@
 //   BannerController.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 
 final class BannerController: Macaroon.BannerController {
     init(window: UIWindow) {

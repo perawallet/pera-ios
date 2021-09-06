@@ -15,6 +15,8 @@
 //
 //   AlgoUSDValueChartDataSetCustomizer.swift
 
+import Foundation
+import UIKit
 import Charts
 
 struct AlgoUSDValueChartDataSetCustomizer: AlgorandLineChartDataSetCustomizable {

@@ -15,6 +15,7 @@
 //
 //   AlgorandLineChartDataComposer.swift
 
+import Foundation
 import Charts
 
 struct AlgorandLineChartDataComposer {

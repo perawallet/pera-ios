@@ -15,6 +15,7 @@
 //
 //  ALGBarButtonItem.swift
 
+import Foundation
 import UIKit
 
 struct ALGBarButtonItem: BarButtonItem {

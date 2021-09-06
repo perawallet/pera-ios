@@ -16,7 +16,7 @@
 //   WCConnectionApprovalView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 class WCConnectionApprovalView: BaseView {
 

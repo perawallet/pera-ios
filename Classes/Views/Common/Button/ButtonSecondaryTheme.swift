@@ -15,7 +15,7 @@
 //
 //   ButtonSecondaryTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct ButtonSecondaryTheme: ButtonTheme {
     var corner: Corner

@@ -15,6 +15,7 @@
 //
 //  TransactionDataBuilder.swift
 
+import Foundation
 import Magpie
 
 class TransactionDataBuilder: NSObject, TransactionDataBuildable {

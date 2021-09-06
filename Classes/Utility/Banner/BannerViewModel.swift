@@ -16,7 +16,7 @@
 //   BannerViewModel.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 
 protocol BannerViewModel: ViewModel {
     var icon: Image? { get }

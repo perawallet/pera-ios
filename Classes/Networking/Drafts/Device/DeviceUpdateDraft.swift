@@ -15,6 +15,8 @@
 //
 //  DeviceUpdateDraft.swift
 
+import Foundation
+import UIKit
 import Magpie
 
 struct DeviceUpdateDraft: JSONObjectBody {

@@ -15,6 +15,8 @@
 //
 //   AlgoUSDValueFormatter.swift
 
+import Foundation
+import UIKit
 import Charts
 
 class AlgoUSDValueFormatter: IValueFormatter {

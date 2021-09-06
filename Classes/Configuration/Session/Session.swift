@@ -15,6 +15,8 @@
 //
 //  Session.swift
 
+import Foundation
+import UIKit
 import Magpie
 import KeychainAccess
 

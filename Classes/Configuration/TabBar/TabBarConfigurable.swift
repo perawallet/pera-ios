@@ -15,6 +15,7 @@
 //
 //  TabBarConfigurable.swift
 
+import Foundation
 import UIKit
 
 protocol TabBarConfigurable: AnyObject {

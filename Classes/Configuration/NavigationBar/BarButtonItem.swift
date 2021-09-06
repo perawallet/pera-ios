@@ -15,6 +15,7 @@
 //
 //  BarButtonItem.swift
 
+import Foundation
 import UIKit
 
 protocol BarButtonItem {

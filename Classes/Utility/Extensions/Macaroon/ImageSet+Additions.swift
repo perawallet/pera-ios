@@ -15,7 +15,7 @@
 //
 //   ImageSet+Additions.swift
 
-import Macaroon
+import MacaroonUIKit
 
 extension Macaroon.ImageSet {
     init(normal: Image, disabled: Image) {

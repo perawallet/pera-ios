@@ -16,7 +16,7 @@
 //   BannerInfoViewModel.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct BannerInfoViewModel: BannerViewModel, BindableViewModel {

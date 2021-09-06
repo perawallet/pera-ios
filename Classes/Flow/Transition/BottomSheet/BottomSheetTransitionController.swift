@@ -16,7 +16,7 @@
 //   BottomSheetTransitionController.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 final class BottomSheetTransitionController: Macaroon.BottomSheetTransitionController {

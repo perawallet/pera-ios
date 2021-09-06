@@ -16,7 +16,7 @@
 //   WCTransactionFullDappDetailView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 class WCTransactionFullDappDetailView: BaseView {
 

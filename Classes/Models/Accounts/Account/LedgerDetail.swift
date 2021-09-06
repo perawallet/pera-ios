@@ -15,6 +15,8 @@
 //
 //  LedgerDetail.swift
 
+import Foundation
+import UIKit
 import Magpie
 
 class LedgerDetail: Model {

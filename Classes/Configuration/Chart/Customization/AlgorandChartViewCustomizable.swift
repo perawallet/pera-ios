@@ -15,6 +15,8 @@
 //
 //   AlgorandChartViewCustomizable.swift
 
+import Foundation
+import UKit
 import Charts
 
 protocol AlgorandChartViewCustomizable {

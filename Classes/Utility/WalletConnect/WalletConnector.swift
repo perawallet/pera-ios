@@ -15,6 +15,8 @@
 //
 //   WalletConnector.swift
 
+import Foundation
+import UIKit
 import WalletConnectSwift
 
 class WalletConnector {

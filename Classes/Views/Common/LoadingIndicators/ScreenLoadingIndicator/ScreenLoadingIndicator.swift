@@ -16,7 +16,7 @@
 //   ScreenLoadingIndicator.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 final class ScreenLoadingIndicator: View, Macaroon.LoadingIndicator {
