@@ -845,6 +845,45 @@
 		2B1336DB2576987D00371CFB /* AppearanceSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1336D82576987D00371CFB /* AppearanceSelectionViewController.swift */; };
 		2B13952E24C605E0002F66D3 /* CursorQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B13952D24C605E0002F66D3 /* CursorQuery.swift */; };
 		2B13952F24C605E0002F66D3 /* CursorQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B13952D24C605E0002F66D3 /* CursorQuery.swift */; };
+		2B187D9926E546CE005BEDFD /* MagpieAlamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187D9826E546CE005BEDFD /* MagpieAlamofire */; };
+		2B187D9B26E546CE005BEDFD /* MagpieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187D9A26E546CE005BEDFD /* MagpieCore */; };
+		2B187D9D26E546CE005BEDFD /* MagpieExceptions in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187D9C26E546CE005BEDFD /* MagpieExceptions */; };
+		2B187D9F26E546CE005BEDFD /* MagpieHipo in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187D9E26E546CE005BEDFD /* MagpieHipo */; };
+		2B187DA226E54734005BEDFD /* SwiftLint in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DA126E54734005BEDFD /* SwiftLint */; };
+		2B187DA526E5486E005BEDFD /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DA426E5486E005BEDFD /* FirebaseAnalytics */; };
+		2B187DA726E5486E005BEDFD /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DA626E5486E005BEDFD /* FirebaseCrashlytics */; };
+		2B187DAA26E548C2005BEDFD /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DA926E548C2005BEDFD /* SwiftDate */; };
+		2B187DAD26E54AFA005BEDFD /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DAC26E54AFA005BEDFD /* Lottie */; };
+		2B187DB026E54B18005BEDFD /* BetterSegmentedControl in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DAF26E54B18005BEDFD /* BetterSegmentedControl */; };
+		2B187DB326E54B39005BEDFD /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DB226E54B39005BEDFD /* Charts */; };
+		2B187DB626E54B6F005BEDFD /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DB526E54B6F005BEDFD /* WalletConnectSwift */; };
+		2B187DB926E54B9C005BEDFD /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DB826E54B9C005BEDFD /* KeychainAccess */; };
+		2B187DBC26E54C4F005BEDFD /* MagpieAlamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DBB26E54C4F005BEDFD /* MagpieAlamofire */; };
+		2B187DBE26E54C4F005BEDFD /* MagpieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DBD26E54C4F005BEDFD /* MagpieCore */; };
+		2B187DC026E54C4F005BEDFD /* MagpieExceptions in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DBF26E54C4F005BEDFD /* MagpieExceptions */; };
+		2B187DC226E54C4F005BEDFD /* MagpieHipo in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DC126E54C4F005BEDFD /* MagpieHipo */; };
+		2B187DC426E54C4F005BEDFD /* SwiftLint in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DC326E54C4F005BEDFD /* SwiftLint */; };
+		2B187DC626E54C4F005BEDFD /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DC526E54C4F005BEDFD /* SwiftDate */; };
+		2B187DC826E54C4F005BEDFD /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DC726E54C4F005BEDFD /* Lottie */; };
+		2B187DCA26E54C4F005BEDFD /* BetterSegmentedControl in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DC926E54C4F005BEDFD /* BetterSegmentedControl */; };
+		2B187DCC26E54C4F005BEDFD /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DCB26E54C4F005BEDFD /* Charts */; };
+		2B187DCE26E54C4F005BEDFD /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DCD26E54C4F005BEDFD /* WalletConnectSwift */; };
+		2B187DD026E54C4F005BEDFD /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DCF26E54C4F005BEDFD /* KeychainAccess */; };
+		2B187DD226E54C6D005BEDFD /* MagpieAlamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DD126E54C6D005BEDFD /* MagpieAlamofire */; };
+		2B187DD426E54C6D005BEDFD /* MagpieCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DD326E54C6D005BEDFD /* MagpieCore */; };
+		2B187DD626E54C6D005BEDFD /* MagpieExceptions in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DD526E54C6D005BEDFD /* MagpieExceptions */; };
+		2B187DD826E54C6D005BEDFD /* MagpieHipo in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DD726E54C6D005BEDFD /* MagpieHipo */; };
+		2B187DDA26E54C6D005BEDFD /* SwiftLint in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DD926E54C6D005BEDFD /* SwiftLint */; };
+		2B187DDC26E54C6D005BEDFD /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DDB26E54C6D005BEDFD /* SwiftDate */; };
+		2B187DDE26E54C6D005BEDFD /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DDD26E54C6D005BEDFD /* Lottie */; };
+		2B187DE026E54C6D005BEDFD /* BetterSegmentedControl in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DDF26E54C6D005BEDFD /* BetterSegmentedControl */; };
+		2B187DE226E54C6D005BEDFD /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DE126E54C6D005BEDFD /* Charts */; };
+		2B187DE426E54C6D005BEDFD /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DE326E54C6D005BEDFD /* WalletConnectSwift */; };
+		2B187DE626E54C6D005BEDFD /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DE526E54C6D005BEDFD /* KeychainAccess */; };
+		2B187DE826E54CD5005BEDFD /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DE726E54CD5005BEDFD /* FirebaseAnalytics */; };
+		2B187DEA26E54CD5005BEDFD /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DE926E54CD5005BEDFD /* FirebaseCrashlytics */; };
+		2B187DEC26E54CDE005BEDFD /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DEB26E54CDE005BEDFD /* FirebaseAnalytics */; };
+		2B187DEE26E54CDE005BEDFD /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DED26E54CDE005BEDFD /* FirebaseCrashlytics */; };
 		2B18BAF3247DB2AF00BFDBC6 /* TooltipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B18BAF2247DB2AE00BFDBC6 /* TooltipViewController.swift */; };
 		2B18BAF4247DB2AF00BFDBC6 /* TooltipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B18BAF2247DB2AE00BFDBC6 /* TooltipViewController.swift */; };
 		2B191C82232150C900EAB1B8 /* PushNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B191C81232150C900EAB1B8 /* PushNotificationController.swift */; };
@@ -2468,7 +2507,6 @@
 		2BFFEA0425DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
 		2BFFEA0525DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
 		2BFFEA0625DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */; };
-		34E10EEDAEE4C90E51BCBBB2 /* Pods_algorand.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B23C40C68DA858CD7433E4E5 /* Pods_algorand.framework */; };
 		9511C297242E2B3C003211ED /* BaseControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C296242E2B3C003211ED /* BaseControl.swift */; };
 		9511C298242E2B3C003211ED /* BaseControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C296242E2B3C003211ED /* BaseControl.swift */; };
 		9511C29B242E2B6C003211ED /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C29A242E2B6C003211ED /* Checkbox.swift */; };
@@ -3228,7 +3266,6 @@
 		1828816426CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectViewWithCustomIntensity.swift; sourceTree = "<group>"; };
 		18E9EF0326B4114200F2192F /* WarningAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningAlert.swift; sourceTree = "<group>"; };
 		18F34B2F26B149C3007488DF /* WarningAlertViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarningAlertViewModel.swift; sourceTree = "<group>"; };
-		1FBA4CE73FF1117B608D16D7 /* Pods-algorand-staging.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.app store.xcconfig"; path = "Target Support Files/Pods-algorand-staging/Pods-algorand-staging.app store.xcconfig"; sourceTree = "<group>"; };
 		2B01E2C424EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionListLayout.swift; sourceTree = "<group>"; };
 		2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionDataSource.swift; sourceTree = "<group>"; };
 		2B01FE5826147FD7006C3C56 /* AccountRecoverOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverOptionsViewController.swift; sourceTree = "<group>"; };
@@ -4032,7 +4069,6 @@
 		2BFBAB74227B35B7008BBB31 /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		2BFFE9ED25DD33A70009F30C /* PassphraseVerifyLayoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyLayoutBuilder.swift; sourceTree = "<group>"; };
 		2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyDataSource.swift; sourceTree = "<group>"; };
-		76FC9E9E99F106708B4AFC85 /* Pods-algorand.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.debug.xcconfig"; path = "Target Support Files/Pods-algorand/Pods-algorand.debug.xcconfig"; sourceTree = "<group>"; };
 		9511C296242E2B3C003211ED /* BaseControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseControl.swift; sourceTree = "<group>"; };
 		9511C29A242E2B6C003211ED /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
 		95C4C16D242CE01B005A57BB /* CBManagerState+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CBManagerState+Error.swift"; sourceTree = "<group>"; };
@@ -4261,9 +4297,6 @@
 		D4FC47522714909A00FC5E3B /* LedgerAccountDetailLayoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailLayoutBuilder.swift; sourceTree = "<group>"; };
 		D4FC47562714940600FC5E3B /* LedgerAccountDetailDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailDataSource.swift; sourceTree = "<group>"; };
 		EC9412FF22BD6D4C00745662 /* Info-Demo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Demo.plist"; sourceTree = "<group>"; };
-		EFAFF961ADA8DD7AFE65EB88 /* Pods_algorand_prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand_prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		F7B9432C7341B69AC9550A3A /* Pods-algorand-staging.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-staging.debug.xcconfig"; path = "Target Support Files/Pods-algorand-staging/Pods-algorand-staging.debug.xcconfig"; sourceTree = "<group>"; };
-		FA7EFB93A97BCEEBD15E548B /* Pods-algorand-prod.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-prod.app store.xcconfig"; path = "Target Support Files/Pods-algorand-prod/Pods-algorand-prod.app store.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -7172,7 +7205,6 @@
 				2B95407825A75FB20098805B /* algorand-tests */,
 				9F18DC6D0E56430348850CDE /* Frameworks */,
 				17512612223BDC2B0095AF4F /* Libraries */,
-				EC59E2CE8B21B82B62B16954 /* Pods */,
 				2B8BE4CF22391C38005D8565 /* Products */,
 				2B8BE4E5223924DB005D8565 /* Resources */,
 				2B8BE4E42239248A005D8565 /* Support */,
@@ -10334,9 +10366,6 @@
 			isa = PBXGroup;
 			children = (
 				2B0F5F5A24EAECB700DA22A6 /* Crypto.framework */,
-				B23C40C68DA858CD7433E4E5 /* Pods_algorand.framework */,
-				EFAFF961ADA8DD7AFE65EB88 /* Pods_algorand_prod.framework */,
-				030F6B1A27825B4720C008C6 /* Pods_algorand_staging.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -10669,19 +10698,44 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 17BD4F212292F1260003E49A /* Build configuration list for PBXNativeTarget "algorand-staging" */;
 			buildPhases = (
-				8055C3F9ED3441ACFB17D7C5 /* [CP] Check Pods Manifest.lock */,
 				17BD4DF02292F1260003E49A /* Sources */,
 				17BD4F072292F1260003E49A /* Frameworks */,
 				17BD4F0A2292F1260003E49A /* Resources */,
 				17BD4F1E2292F1260003E49A /* ShellScript */,
 				17BD4F202292F1260003E49A /* ShellScript */,
-				389594EC7503C048CF39AF9C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "algorand-staging";
+			packageProductDependencies = (
+				2B187DD126E54C6D005BEDFD /* MagpieAlamofire */,
+				2B187DD326E54C6D005BEDFD /* MagpieCore */,
+				2B187DD526E54C6D005BEDFD /* MagpieExceptions */,
+				2B187DD726E54C6D005BEDFD /* MagpieHipo */,
+				2B187DD926E54C6D005BEDFD /* SwiftLint */,
+				2B187DDB26E54C6D005BEDFD /* SwiftDate */,
+				2B187DDD26E54C6D005BEDFD /* Lottie */,
+				2B187DDF26E54C6D005BEDFD /* BetterSegmentedControl */,
+				2B187DE126E54C6D005BEDFD /* Charts */,
+				2B187DE326E54C6D005BEDFD /* WalletConnectSwift */,
+				2B187DE526E54C6D005BEDFD /* KeychainAccess */,
+				2B187DE726E54CD5005BEDFD /* FirebaseAnalytics */,
+				2B187DE926E54CD5005BEDFD /* FirebaseCrashlytics */,
+				2B9A3E5E26E607D800B050ED /* MacaroonApplication */,
+				2B9A3E6026E607D800B050ED /* MacaroonBanner */,
+				2B9A3E6226E607D800B050ED /* MacaroonBottomOverlay */,
+				2B9A3E6426E607D800B050ED /* MacaroonBottomSheet */,
+				2B9A3E6626E607D800B050ED /* MacaroonForm */,
+				2B9A3E6826E607D800B050ED /* MacaroonMedia */,
+				2B9A3E6A26E607D800B050ED /* MacaroonResources */,
+				2B9A3E6C26E607D800B050ED /* MacaroonSwiftUI */,
+				2B9A3E6E26E607D800B050ED /* MacaroonTabBarController */,
+				2B9A3E7026E607D800B050ED /* MacaroonUIKit */,
+				2B9A3E7226E607D800B050ED /* MacaroonURLImage */,
+				2B9A3E7426E607D800B050ED /* MacaroonVendors */,
+			);
 			productName = algorand;
 			productReference = 17BD4F252292F1260003E49A /* algorand-staging.app */;
 			productType = "com.apple.product-type.application";
@@ -10690,19 +10744,44 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2B0F634A24EC129D00DA22A6 /* Build configuration list for PBXNativeTarget "algorand-prod" */;
 			buildPhases = (
-				EC8AFDA76BAE4F54289C908D /* [CP] Check Pods Manifest.lock */,
 				2B0F615C24EC129D00DA22A6 /* Sources */,
 				2B0F632824EC129D00DA22A6 /* Frameworks */,
 				2B0F632C24EC129D00DA22A6 /* Resources */,
 				2B0F634724EC129D00DA22A6 /* ShellScript */,
 				2B0F634924EC129D00DA22A6 /* ShellScript */,
-				9EF233B2B80FA8D222781C13 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = "algorand-prod";
+			packageProductDependencies = (
+				2B187DBB26E54C4F005BEDFD /* MagpieAlamofire */,
+				2B187DBD26E54C4F005BEDFD /* MagpieCore */,
+				2B187DBF26E54C4F005BEDFD /* MagpieExceptions */,
+				2B187DC126E54C4F005BEDFD /* MagpieHipo */,
+				2B187DC326E54C4F005BEDFD /* SwiftLint */,
+				2B187DC526E54C4F005BEDFD /* SwiftDate */,
+				2B187DC726E54C4F005BEDFD /* Lottie */,
+				2B187DC926E54C4F005BEDFD /* BetterSegmentedControl */,
+				2B187DCB26E54C4F005BEDFD /* Charts */,
+				2B187DCD26E54C4F005BEDFD /* WalletConnectSwift */,
+				2B187DCF26E54C4F005BEDFD /* KeychainAccess */,
+				2B187DEB26E54CDE005BEDFD /* FirebaseAnalytics */,
+				2B187DED26E54CDE005BEDFD /* FirebaseCrashlytics */,
+				2B9A3E4626E607BD00B050ED /* MacaroonApplication */,
+				2B9A3E4826E607BD00B050ED /* MacaroonBanner */,
+				2B9A3E4A26E607BD00B050ED /* MacaroonBottomOverlay */,
+				2B9A3E4C26E607BD00B050ED /* MacaroonBottomSheet */,
+				2B9A3E4E26E607BD00B050ED /* MacaroonForm */,
+				2B9A3E5026E607BD00B050ED /* MacaroonMedia */,
+				2B9A3E5226E607BD00B050ED /* MacaroonResources */,
+				2B9A3E5426E607BD00B050ED /* MacaroonSwiftUI */,
+				2B9A3E5626E607BD00B050ED /* MacaroonTabBarController */,
+				2B9A3E5826E607BD00B050ED /* MacaroonUIKit */,
+				2B9A3E5A26E607BD00B050ED /* MacaroonURLImage */,
+				2B9A3E5C26E607BD00B050ED /* MacaroonVendors */,
+			);
 			productName = algorand;
 			productReference = 2B0F634E24EC129D00DA22A6 /* algorand-prod.app */;
 			productType = "com.apple.product-type.application";
@@ -10711,19 +10790,44 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2B8BE4E022391C3B005D8565 /* Build configuration list for PBXNativeTarget "algorand" */;
 			buildPhases = (
-				643201A94AB4D4D6F2CEFD0A /* [CP] Check Pods Manifest.lock */,
 				2B8BE4CA22391C38005D8565 /* Sources */,
 				2B8BE4CB22391C38005D8565 /* Frameworks */,
 				2B8BE4CC22391C38005D8565 /* Resources */,
 				2B8BE4E322392001005D8565 /* ShellScript */,
 				2B096039225795170005BE27 /* Run Script */,
-				F65394278C0CB0A4CFC10D23 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = algorand;
+			packageProductDependencies = (
+				2B187D9826E546CE005BEDFD /* MagpieAlamofire */,
+				2B187D9A26E546CE005BEDFD /* MagpieCore */,
+				2B187D9C26E546CE005BEDFD /* MagpieExceptions */,
+				2B187D9E26E546CE005BEDFD /* MagpieHipo */,
+				2B187DA126E54734005BEDFD /* SwiftLint */,
+				2B187DA426E5486E005BEDFD /* FirebaseAnalytics */,
+				2B187DA626E5486E005BEDFD /* FirebaseCrashlytics */,
+				2B187DA926E548C2005BEDFD /* SwiftDate */,
+				2B187DAC26E54AFA005BEDFD /* Lottie */,
+				2B187DAF26E54B18005BEDFD /* BetterSegmentedControl */,
+				2B187DB226E54B39005BEDFD /* Charts */,
+				2B187DB526E54B6F005BEDFD /* WalletConnectSwift */,
+				2B187DB826E54B9C005BEDFD /* KeychainAccess */,
+				2B9A3E2C26E6077000B050ED /* MacaroonApplication */,
+				2B9A3E2E26E6077000B050ED /* MacaroonBanner */,
+				2B9A3E3026E6077000B050ED /* MacaroonBottomOverlay */,
+				2B9A3E3226E6077000B050ED /* MacaroonBottomSheet */,
+				2B9A3E3426E6077000B050ED /* MacaroonForm */,
+				2B9A3E3626E6077000B050ED /* MacaroonMedia */,
+				2B9A3E3826E6077000B050ED /* MacaroonResources */,
+				2B9A3E3C26E6077000B050ED /* MacaroonSwiftUI */,
+				2B9A3E3E26E6077000B050ED /* MacaroonTabBarController */,
+				2B9A3E4026E6077000B050ED /* MacaroonUIKit */,
+				2B9A3E4226E6077000B050ED /* MacaroonURLImage */,
+				2B9A3E4426E6077000B050ED /* MacaroonVendors */,
+			);
 			productName = algorand;
 			productReference = 2B8BE4CE22391C38005D8565 /* algorand.app */;
 			productType = "com.apple.product-type.application";
@@ -10796,6 +10900,18 @@
 				"ja-JP",
 			);
 			mainGroup = 2B8BE4C522391C38005D8565;
+			packageReferences = (
+				2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */,
+				2B187DA026E54734005BEDFD /* XCRemoteSwiftPackageReference "swiftlint" */,
+				2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				2B187DA826E548C1005BEDFD /* XCRemoteSwiftPackageReference "SwiftDate" */,
+				2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				2B187DAE26E54B18005BEDFD /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */,
+				2B187DB126E54B39005BEDFD /* XCRemoteSwiftPackageReference "Charts" */,
+				2B187DB426E54B6F005BEDFD /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
+				2B187DB726E54B9C005BEDFD /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */,
+			);
 			productRefGroup = 2B8BE4CF22391C38005D8565 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -11157,123 +11273,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\" lint --strict\n";
-		};
-		389594EC7503C048CF39AF9C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-algorand-staging/Pods-algorand-staging-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-algorand-staging/Pods-algorand-staging-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-algorand-staging/Pods-algorand-staging-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		643201A94AB4D4D6F2CEFD0A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-algorand-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8055C3F9ED3441ACFB17D7C5 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-algorand-staging-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9EF233B2B80FA8D222781C13 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-algorand-prod/Pods-algorand-prod-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-algorand-prod/Pods-algorand-prod-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-algorand-prod/Pods-algorand-prod-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EC8AFDA76BAE4F54289C908D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-algorand-prod-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F65394278C0CB0A4CFC10D23 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-algorand/Pods-algorand-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-algorand/Pods-algorand-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-algorand/Pods-algorand-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -14276,7 +14275,6 @@
 /* Begin XCBuildConfiguration section */
 		17BD4F222292F1260003E49A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F7B9432C7341B69AC9550A3A /* Pods-algorand-staging.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Staging";
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
@@ -14291,7 +14289,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Support/Info-Demo.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -14307,7 +14305,6 @@
 		};
 		17BD4F232292F1260003E49A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 99CD25304410760C91ECEEEC /* Pods-algorand-staging.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Staging";
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
@@ -14321,7 +14318,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Support/Info-Demo.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -14337,7 +14334,6 @@
 		};
 		17BD4F242292F1260003E49A /* App Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1FBA4CE73FF1117B608D16D7 /* Pods-algorand-staging.app store.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Staging";
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
@@ -14351,7 +14347,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Support/Info-Demo.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -14368,7 +14364,6 @@
 		};
 		2B0F634B24EC129D00DA22A6 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A03FA65A2602E9C7A1240972 /* Pods-algorand-prod.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
@@ -14382,7 +14377,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Support/Info-Prod.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -14399,7 +14394,6 @@
 		};
 		2B0F634C24EC129D00DA22A6 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0A0D3580FD8AFA3672317C5F /* Pods-algorand-prod.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
@@ -14413,7 +14407,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Support/Info-Prod.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -14430,7 +14424,6 @@
 		};
 		2B0F634D24EC129D00DA22A6 /* App Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FA7EFB93A97BCEEBD15E548B /* Pods-algorand-prod.app store.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
@@ -14444,7 +14437,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Support/Info-Prod.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -14513,7 +14506,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -14571,7 +14564,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -14583,7 +14576,6 @@
 		};
 		2B8BE4E122391C3B005D8565 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 76FC9E9E99F106708B4AFC85 /* Pods-algorand.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
@@ -14597,7 +14589,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Support/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -14614,7 +14606,6 @@
 		};
 		2B8BE4E222391C3B005D8565 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 15FA165BDF6ABD213FF820E3 /* Pods-algorand.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
@@ -14628,7 +14619,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Support/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -14760,7 +14751,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -14772,7 +14763,6 @@
 		};
 		EC6B733522541CA8006D146B /* App Store */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0DE1E4BC8EACAFB035745309 /* Pods-algorand.app store.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
@@ -14786,7 +14776,7 @@
 					"$(PROJECT_DIR)/Libraries",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/Support/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -14855,6 +14845,467 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "http://github.com/Hipo/magpie";
+			requirement = {
+				branch = dev;
+				kind = branch;
+			};
+		};
+		2B187DA026E54734005BEDFD /* XCRemoteSwiftPackageReference "swiftlint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "http://github.com/swiftlint/swiftlint";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
+		2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.9.0;
+			};
+		};
+		2B187DA826E548C1005BEDFD /* XCRemoteSwiftPackageReference "SwiftDate" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/malcommac/SwiftDate";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+		2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		2B187DAE26E54B18005BEDFD /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gmarm/BetterSegmentedControl";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+		2B187DB126E54B39005BEDFD /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+		2B187DB426E54B6F005BEDFD /* XCRemoteSwiftPackageReference "WalletConnectSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WalletConnect/WalletConnectSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.0;
+			};
+		};
+		2B187DB726E54B9C005BEDFD /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+		2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Hipo/macaroon/";
+			requirement = {
+				branch = dev;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2B187D9826E546CE005BEDFD /* MagpieAlamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
+			productName = MagpieAlamofire;
+		};
+		2B187D9A26E546CE005BEDFD /* MagpieCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
+			productName = MagpieCore;
+		};
+		2B187D9C26E546CE005BEDFD /* MagpieExceptions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
+			productName = MagpieExceptions;
+		};
+		2B187D9E26E546CE005BEDFD /* MagpieHipo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
+			productName = MagpieHipo;
+		};
+		2B187DA126E54734005BEDFD /* SwiftLint */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA026E54734005BEDFD /* XCRemoteSwiftPackageReference "swiftlint" */;
+			productName = SwiftLint;
+		};
+		2B187DA426E5486E005BEDFD /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		2B187DA626E5486E005BEDFD /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		2B187DA926E548C2005BEDFD /* SwiftDate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA826E548C1005BEDFD /* XCRemoteSwiftPackageReference "SwiftDate" */;
+			productName = SwiftDate;
+		};
+		2B187DAC26E54AFA005BEDFD /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		2B187DAF26E54B18005BEDFD /* BetterSegmentedControl */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DAE26E54B18005BEDFD /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */;
+			productName = BetterSegmentedControl;
+		};
+		2B187DB226E54B39005BEDFD /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DB126E54B39005BEDFD /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = Charts;
+		};
+		2B187DB526E54B6F005BEDFD /* WalletConnectSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DB426E54B6F005BEDFD /* XCRemoteSwiftPackageReference "WalletConnectSwift" */;
+			productName = WalletConnectSwift;
+		};
+		2B187DB826E54B9C005BEDFD /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DB726E54B9C005BEDFD /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
+		2B187DBB26E54C4F005BEDFD /* MagpieAlamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
+			productName = MagpieAlamofire;
+		};
+		2B187DBD26E54C4F005BEDFD /* MagpieCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
+			productName = MagpieCore;
+		};
+		2B187DBF26E54C4F005BEDFD /* MagpieExceptions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
+			productName = MagpieExceptions;
+		};
+		2B187DC126E54C4F005BEDFD /* MagpieHipo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
+			productName = MagpieHipo;
+		};
+		2B187DC326E54C4F005BEDFD /* SwiftLint */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA026E54734005BEDFD /* XCRemoteSwiftPackageReference "swiftlint" */;
+			productName = SwiftLint;
+		};
+		2B187DC526E54C4F005BEDFD /* SwiftDate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA826E548C1005BEDFD /* XCRemoteSwiftPackageReference "SwiftDate" */;
+			productName = SwiftDate;
+		};
+		2B187DC726E54C4F005BEDFD /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		2B187DC926E54C4F005BEDFD /* BetterSegmentedControl */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DAE26E54B18005BEDFD /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */;
+			productName = BetterSegmentedControl;
+		};
+		2B187DCB26E54C4F005BEDFD /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DB126E54B39005BEDFD /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = Charts;
+		};
+		2B187DCD26E54C4F005BEDFD /* WalletConnectSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DB426E54B6F005BEDFD /* XCRemoteSwiftPackageReference "WalletConnectSwift" */;
+			productName = WalletConnectSwift;
+		};
+		2B187DCF26E54C4F005BEDFD /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DB726E54B9C005BEDFD /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
+		2B187DD126E54C6D005BEDFD /* MagpieAlamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
+			productName = MagpieAlamofire;
+		};
+		2B187DD326E54C6D005BEDFD /* MagpieCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
+			productName = MagpieCore;
+		};
+		2B187DD526E54C6D005BEDFD /* MagpieExceptions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
+			productName = MagpieExceptions;
+		};
+		2B187DD726E54C6D005BEDFD /* MagpieHipo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187D9726E546CE005BEDFD /* XCRemoteSwiftPackageReference "magpie" */;
+			productName = MagpieHipo;
+		};
+		2B187DD926E54C6D005BEDFD /* SwiftLint */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA026E54734005BEDFD /* XCRemoteSwiftPackageReference "swiftlint" */;
+			productName = SwiftLint;
+		};
+		2B187DDB26E54C6D005BEDFD /* SwiftDate */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA826E548C1005BEDFD /* XCRemoteSwiftPackageReference "SwiftDate" */;
+			productName = SwiftDate;
+		};
+		2B187DDD26E54C6D005BEDFD /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		2B187DDF26E54C6D005BEDFD /* BetterSegmentedControl */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DAE26E54B18005BEDFD /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */;
+			productName = BetterSegmentedControl;
+		};
+		2B187DE126E54C6D005BEDFD /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DB126E54B39005BEDFD /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = Charts;
+		};
+		2B187DE326E54C6D005BEDFD /* WalletConnectSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DB426E54B6F005BEDFD /* XCRemoteSwiftPackageReference "WalletConnectSwift" */;
+			productName = WalletConnectSwift;
+		};
+		2B187DE526E54C6D005BEDFD /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DB726E54B9C005BEDFD /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
+		};
+		2B187DE726E54CD5005BEDFD /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		2B187DE926E54CD5005BEDFD /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		2B187DEB26E54CDE005BEDFD /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		2B187DED26E54CDE005BEDFD /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		2B9A3E2C26E6077000B050ED /* MacaroonApplication */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonApplication;
+		};
+		2B9A3E2E26E6077000B050ED /* MacaroonBanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBanner;
+		};
+		2B9A3E3026E6077000B050ED /* MacaroonBottomOverlay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBottomOverlay;
+		};
+		2B9A3E3226E6077000B050ED /* MacaroonBottomSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBottomSheet;
+		};
+		2B9A3E3426E6077000B050ED /* MacaroonForm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonForm;
+		};
+		2B9A3E3626E6077000B050ED /* MacaroonMedia */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonMedia;
+		};
+		2B9A3E3826E6077000B050ED /* MacaroonResources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonResources;
+		};
+		2B9A3E3C26E6077000B050ED /* MacaroonSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonSwiftUI;
+		};
+		2B9A3E3E26E6077000B050ED /* MacaroonTabBarController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonTabBarController;
+		};
+		2B9A3E4026E6077000B050ED /* MacaroonUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonUIKit;
+		};
+		2B9A3E4226E6077000B050ED /* MacaroonURLImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonURLImage;
+		};
+		2B9A3E4426E6077000B050ED /* MacaroonVendors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonVendors;
+		};
+		2B9A3E4626E607BD00B050ED /* MacaroonApplication */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonApplication;
+		};
+		2B9A3E4826E607BD00B050ED /* MacaroonBanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBanner;
+		};
+		2B9A3E4A26E607BD00B050ED /* MacaroonBottomOverlay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBottomOverlay;
+		};
+		2B9A3E4C26E607BD00B050ED /* MacaroonBottomSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBottomSheet;
+		};
+		2B9A3E4E26E607BD00B050ED /* MacaroonForm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonForm;
+		};
+		2B9A3E5026E607BD00B050ED /* MacaroonMedia */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonMedia;
+		};
+		2B9A3E5226E607BD00B050ED /* MacaroonResources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonResources;
+		};
+		2B9A3E5426E607BD00B050ED /* MacaroonSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonSwiftUI;
+		};
+		2B9A3E5626E607BD00B050ED /* MacaroonTabBarController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonTabBarController;
+		};
+		2B9A3E5826E607BD00B050ED /* MacaroonUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonUIKit;
+		};
+		2B9A3E5A26E607BD00B050ED /* MacaroonURLImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonURLImage;
+		};
+		2B9A3E5C26E607BD00B050ED /* MacaroonVendors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonVendors;
+		};
+		2B9A3E5E26E607D800B050ED /* MacaroonApplication */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonApplication;
+		};
+		2B9A3E6026E607D800B050ED /* MacaroonBanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBanner;
+		};
+		2B9A3E6226E607D800B050ED /* MacaroonBottomOverlay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBottomOverlay;
+		};
+		2B9A3E6426E607D800B050ED /* MacaroonBottomSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonBottomSheet;
+		};
+		2B9A3E6626E607D800B050ED /* MacaroonForm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonForm;
+		};
+		2B9A3E6826E607D800B050ED /* MacaroonMedia */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonMedia;
+		};
+		2B9A3E6A26E607D800B050ED /* MacaroonResources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonResources;
+		};
+		2B9A3E6C26E607D800B050ED /* MacaroonSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonSwiftUI;
+		};
+		2B9A3E6E26E607D800B050ED /* MacaroonTabBarController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonTabBarController;
+		};
+		2B9A3E7026E607D800B050ED /* MacaroonUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonUIKit;
+		};
+		2B9A3E7226E607D800B050ED /* MacaroonURLImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonURLImage;
+		};
+		2B9A3E7426E607D800B050ED /* MacaroonVendors */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
+			productName = MacaroonVendors;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		2B59F1372254BABF005203DD /* algorand.xcdatamodeld */ = {
