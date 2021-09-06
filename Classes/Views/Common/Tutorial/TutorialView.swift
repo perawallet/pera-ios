@@ -26,22 +26,21 @@ final class TutorialView: View {
     private lazy var descriptionLabel = UILabel()
     private lazy var warningImage = UIImageView()
     private lazy var warningLabel = UILabel()
-    private lazy var mainButton = Button()
-    private lazy var actionButton = Button()
+    private lazy var verticalStackView = UIStackView()
+    private lazy var primaryActionButton = Button()
+    private lazy var secondaryActionButton = Button()
 
-    func customize(_ theme: TutorialViewTheme, isActionable: Bool) {
+    func customize(_ theme: TutorialViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addImageView(theme)
         addTitleLabel(theme)
         addDescriptionLabel(theme)
-        addMainButton(theme, isActionable: isActionable)
+        addVerticalStackView(theme)
+        addPrimaryActionButton(theme)
+        addSecondaryActionButton(theme)
         addWarningLabel(theme)
         addWarningImage(theme)
-        
-        if isActionable {
-            addActionButton(theme)
-        }
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -49,8 +48,8 @@ final class TutorialView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func setListeners() {
-        mainButton.addTarget(self, action: #selector(notifyDelegateToTutorialApprovaed), for: .touchUpInside)
-        actionButton.addTarget(self, action: #selector(notifyDelegateToTakeAction), for: .touchUpInside)
+        primaryActionButton.addTarget(self, action: #selector(notifyDelegateToHandlePrimaryActionButton), for: .touchUpInside)
+        secondaryActionButton.addTarget(self, action: #selector(notifyDelegateToHandleSecondaryActionButton), for: .touchUpInside)
     }
 }
 
@@ -85,48 +84,45 @@ extension TutorialView {
 
     private func addWarningLabel(_ theme: TutorialViewTheme) {
         warningLabel.customizeAppearance(theme.warningTitle)
-        addSubview(warningLabel)
 
+        addSubview(warningLabel)
         warningLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(theme.warningTitlePaddings.leading)
             $0.trailing.equalToSuperview().inset(theme.horizontalInset)
-            $0.bottom.equalTo(mainButton.snp.top).offset(-theme.warningTitlePaddings.bottom)
+            $0.bottom.equalTo(primaryActionButton.snp.top).offset(-theme.warningTitlePaddings.bottom)
         }
     }
 
     private func addWarningImage(_ theme: TutorialViewTheme) {
         warningImage.customizeAppearance(theme.warningImage)
-        addSubview(warningImage)
 
+        addSubview(warningImage)
         warningImage.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(theme.horizontalInset)
             $0.top.equalTo(warningLabel.snp.top)
         }
     }
 
-    private func addMainButton(_ theme: TutorialViewTheme, isActionable: Bool) {
-        mainButton.customize(theme.mainButtonTheme)
-
-        addSubview(mainButton)
-        mainButton.snp.makeConstraints {
+    private func addVerticalStackView(_ theme: TutorialViewTheme) {
+        addSubview(verticalStackView)
+        verticalStackView.spacing = theme.buttonInset
+        verticalStackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.top.greaterThanOrEqualTo(descriptionLabel.snp.bottom).offset(theme.buttonInset)
-
-            if !isActionable {
-                $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
-            }
+            $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
         }
     }
 
-    private func addActionButton(_ theme: TutorialViewTheme) {
-        actionButton.customize(theme.actionButtonTheme)
+    private func addPrimaryActionButton(_ theme: TutorialViewTheme) {
+        primaryActionButton.customize(theme.mainButtonTheme)
 
-        addSubview(actionButton)
-        actionButton.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
-            $0.top.equalTo(mainButton.snp.bottom).offset(theme.buttonInset)
-            $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
-        }
+        verticalStackView.addArrangedSubview(primaryActionButton)
+    }
+
+    private func addSecondaryActionButton(_ theme: TutorialViewTheme) {
+        secondaryActionButton.customize(theme.actionButtonTheme)
+
+        verticalStackView.addArrangedSubview(secondaryActionButton)
     }
 }
 
@@ -135,8 +131,15 @@ extension TutorialView: ViewModelBindable {
         titleLabel.text = viewModel?.title
         descriptionLabel.text = viewModel?.description
         imageView.image = viewModel?.image
-        mainButton.bindData(ButtonCommonViewModel(title: viewModel?.mainButtonTitle))
-        actionButton.bindData(ButtonCommonViewModel(title: viewModel?.actionTitle))
+        primaryActionButton.bindData(ButtonCommonViewModel(title: viewModel?.primaryActionButtonTitle))
+
+        if let secondaryActionButtonTitle = viewModel?.secondaryActionButtonTitle {
+            secondaryActionButton.bindData(ButtonCommonViewModel(title: secondaryActionButtonTitle))
+        } else {
+            secondaryActionButton.isHidden = true
+        }
+
+        secondaryActionButton.bindData(ButtonCommonViewModel(title: viewModel?.secondaryActionButtonTitle))
         
         if let warningDescription = viewModel?.warningDescription {
             warningLabel.text = warningDescription
@@ -149,17 +152,17 @@ extension TutorialView: ViewModelBindable {
 
 extension TutorialView {
     @objc
-    private func notifyDelegateToTutorialApprovaed() {
-        delegate?.tutorialViewDidApproveTutorial(self)
+    private func notifyDelegateToHandlePrimaryActionButton() {
+        delegate?.tutorialViewDidTapPrimaryActionButton(self)
     }
 
     @objc
-    private func notifyDelegateToTakeAction() {
-        delegate?.tutorialViewDidTakeAction(self)
+    private func notifyDelegateToHandleSecondaryActionButton() {
+        delegate?.tutorialViewDidTapSecondaryActionButton(self)
     }
 }
 
 protocol TutorialViewDelegate: AnyObject {
-    func tutorialViewDidApproveTutorial(_ tutorialView: TutorialView)
-    func tutorialViewDidTakeAction(_ tutorialView: TutorialView)
+    func tutorialViewDidTapPrimaryActionButton(_ tutorialView: TutorialView)
+    func tutorialViewDidTapSecondaryActionButton(_ tutorialView: TutorialView)
 }

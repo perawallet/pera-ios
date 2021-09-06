@@ -19,7 +19,7 @@ import UIKit
 
 final class AddAccountViewController: BaseViewController {
     private lazy var addAccountView = AddAccountView()
-    private lazy var theme = AddAccountViewTheme()
+    private lazy var theme = Theme()
     
     private let flow: AccountSetupFlow
     
@@ -34,6 +34,7 @@ final class AddAccountViewController: BaseViewController {
     
     override func configureAppearance() {
         setNavigationBarTertiaryBackgroundColor()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
     override func bindData() {
@@ -51,7 +52,8 @@ final class AddAccountViewController: BaseViewController {
     }
     
     override func prepareLayout() {
-        addAccountView.customize(theme)
+        addAccountView.customize(theme.addAccountViewTheme)
+        
         prepareWholeScreenLayoutFor(addAccountView)
     }
 }
@@ -95,9 +97,9 @@ extension AddAccountViewController: AddAccountViewDelegate {
     func addAccountView(_ addAccountView: AddAccountView, didSelect type: AccountAdditionType) {
         switch type {
         case .create:
-            open(.tutorial(flow: flow, tutorial: .backUp, isActionable: false), by: .push)
+            open(.tutorial(flow: flow, tutorial: .backUp), by: .push)
         case .watch:
-            open(.tutorial(flow: flow, tutorial: .watchAccount, isActionable: false), by: .push)
+            open(.tutorial(flow: flow, tutorial: .watchAccount), by: .push)
         case .pair:
             open(.ledgerTutorial(flow: .addNewAccount(mode: .add(type: .pair))), by: .push)
         default:

@@ -47,10 +47,7 @@ extension PassphraseBackUpOrderView {
     
     private func addPhraseLabel(_ theme: PassphraseBackUpOrderViewTheme) {
         phraseLabel.customizeAppearance(theme.phraseLabel)
-        phraseLabel.numberOfLines = 1
-        phraseLabel.adjustsFontSizeToFitWidth = true
-        phraseLabel.minimumScaleFactor = 0.7
-
+        
         addSubview(phraseLabel)
         phraseLabel.snp.makeConstraints {
             $0.centerY.equalTo(numberLabel)

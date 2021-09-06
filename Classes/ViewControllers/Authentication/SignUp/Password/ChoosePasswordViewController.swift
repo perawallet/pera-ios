@@ -255,7 +255,7 @@ extension ChoosePasswordViewController {
                 return
             }
             configuration.session?.savePassword(password)
-            open(.tutorial(flow: flow, tutorial: .localAuthentication, isActionable: true), by: .push)
+            open(.tutorial(flow: flow, tutorial: .localAuthentication), by: .push)
         }
     }
 

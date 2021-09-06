@@ -100,7 +100,8 @@ extension PassphraseDisplayViewController: UICollectionViewDataSource {
             for: indexPath
         ) as? PassphraseBackUpCell {
             cell.customize(PassphraseBackUpOrderViewTheme())
-            cell.bindData(PassphraseBackUpOrderViewModel(mnemonics: mnemonics, index: indexPath.item))
+            let passphrase = Passphrase(index: indexPath.item, mnemonics: mnemonics)
+            cell.bindData(PassphraseBackUpOrderViewModel(passphrase))
             return cell
         }
 

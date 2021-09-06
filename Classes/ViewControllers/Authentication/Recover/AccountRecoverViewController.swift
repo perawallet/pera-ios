@@ -424,10 +424,10 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
 
     private func openSuccessfulRecoverModal(for recoveredAccount: AccountInformation) {
         let controller = open(
-            .tutorial(flow: .none, tutorial: .accountVerified, isActionable: false),
+            .tutorial(flow: .none, tutorial: .accountVerified),
             by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
         ) as? TutorialViewController
-        controller?.uiHandlers.didTapButton = { _ in
+        controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
             self.launchHome(with: recoveredAccount)
         }
     }

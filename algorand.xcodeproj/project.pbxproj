@@ -2650,6 +2650,15 @@
 		D46C647D26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647C26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift */; };
 		D46C647E26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647C26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift */; };
 		D46C647F26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647C26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift */; };
+		D46C648126E613FB00FBAC6D /* TutorialViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C648026E613FB00FBAC6D /* TutorialViewController+Theme.swift */; };
+		D46C648226E613FB00FBAC6D /* TutorialViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C648026E613FB00FBAC6D /* TutorialViewController+Theme.swift */; };
+		D46C648326E613FB00FBAC6D /* TutorialViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C648026E613FB00FBAC6D /* TutorialViewController+Theme.swift */; };
+		D46C648526E614C500FBAC6D /* WelcomeViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C648426E614C500FBAC6D /* WelcomeViewController+Theme.swift */; };
+		D46C648626E614C500FBAC6D /* WelcomeViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C648426E614C500FBAC6D /* WelcomeViewController+Theme.swift */; };
+		D46C648726E614C500FBAC6D /* WelcomeViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C648426E614C500FBAC6D /* WelcomeViewController+Theme.swift */; };
+		D46C648926E6151800FBAC6D /* AddAccountViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C648826E6151800FBAC6D /* AddAccountViewController+Theme.swift */; };
+		D46C648A26E6151800FBAC6D /* AddAccountViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C648826E6151800FBAC6D /* AddAccountViewController+Theme.swift */; };
+		D46C648B26E6151800FBAC6D /* AddAccountViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C648826E6151800FBAC6D /* AddAccountViewController+Theme.swift */; };
 		D473CA4826E1537100558598 /* PassphraseViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4726E1537100558598 /* PassphraseViewTheme.swift */; };
 		D473CA4926E1537100558598 /* PassphraseViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4726E1537100558598 /* PassphraseViewTheme.swift */; };
 		D473CA4A26E1537100558598 /* PassphraseViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4726E1537100558598 /* PassphraseViewTheme.swift */; };
@@ -3715,6 +3724,9 @@
 		D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordInputViewTheme.swift; sourceTree = "<group>"; };
 		D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassphraseVerifyViewController+Theme.swift"; sourceTree = "<group>"; };
 		D46C647C26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordInputCircleViewTheme.swift; sourceTree = "<group>"; };
+		D46C648026E613FB00FBAC6D /* TutorialViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TutorialViewController+Theme.swift"; sourceTree = "<group>"; };
+		D46C648426E614C500FBAC6D /* WelcomeViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WelcomeViewController+Theme.swift"; sourceTree = "<group>"; };
+		D46C648826E6151800FBAC6D /* AddAccountViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddAccountViewController+Theme.swift"; sourceTree = "<group>"; };
 		D473CA4726E1537100558598 /* PassphraseViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseViewTheme.swift; sourceTree = "<group>"; };
 		D473CA4B26E15F0C00558598 /* PassphraseBackUpOrderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpOrderViewTheme.swift; sourceTree = "<group>"; };
 		D473CA4F26E1733700558598 /* ScreenShotWarningViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShotWarningViewTheme.swift; sourceTree = "<group>"; };
@@ -4400,6 +4412,7 @@
 			isa = PBXGroup;
 			children = (
 				2B0F7E1C25D6E3C100B16B85 /* WelcomeViewController.swift */,
+				D46C648426E614C500FBAC6D /* WelcomeViewController+Theme.swift */,
 			);
 			path = Welcome;
 			sourceTree = "<group>";
@@ -4408,6 +4421,7 @@
 			isa = PBXGroup;
 			children = (
 				2B5BE05E25190A0500324BEE /* AddAccountViewController.swift */,
+				D46C648826E6151800FBAC6D /* AddAccountViewController+Theme.swift */,
 			);
 			path = AddAccount;
 			sourceTree = "<group>";
@@ -7430,6 +7444,7 @@
 			isa = PBXGroup;
 			children = (
 				2B9EF31A25D576A1004BCCC4 /* TutorialViewController.swift */,
+				D46C648026E613FB00FBAC6D /* TutorialViewController+Theme.swift */,
 			);
 			path = Tutorial;
 			sourceTree = "<group>";
@@ -10704,6 +10719,7 @@
 				2B343D0D259D17B0001EA8C8 /* NotificationFilterViewController.swift in Sources */,
 				2BE4D0702593845F005F5764 /* FirebaseAnalytics.swift in Sources */,
 				2B4EEEC224BE001D00059A16 /* NotificationCell.swift in Sources */,
+				D46C648326E613FB00FBAC6D /* TutorialViewController+Theme.swift in Sources */,
 				2B05A677251E3BED008A8791 /* UITextView+Additions.swift in Sources */,
 				2BA172E32649998100A613C4 /* ChartTimeFrameButton.swift in Sources */,
 				17BD4E192292F1260003E49A /* UserInformationView.swift in Sources */,
@@ -10746,6 +10762,7 @@
 				2B7747A926026F9C0083EFFA /* InputSuggestionsDataController.swift in Sources */,
 				D44EB6B126DF73FF0008E234 /* WelcomeViewTheme.swift in Sources */,
 				D479D10F26D4FD7100110E04 /* BannerViewErrorTheme.swift in Sources */,
+				D46C648B26E6151800FBAC6D /* AddAccountViewController+Theme.swift in Sources */,
 				2B3E227326BC317600ED0AAF /* ActionableWarningAlertView.swift in Sources */,
 				2B98233C231EC207009560CD /* TransactionsQuery.swift in Sources */,
 				17BD4E252292F1260003E49A /* AccountViewCell.swift in Sources */,
@@ -11326,6 +11343,7 @@
 				2B9EF31025D5767B004BCCC4 /* TutorialViewModel.swift in Sources */,
 				2B44C383247419CB0074D57D /* TransactionListView.swift in Sources */,
 				17BD4EEB2292F1260003E49A /* QRText.swift in Sources */,
+				D46C648726E614C500FBAC6D /* WelcomeViewController+Theme.swift in Sources */,
 				2B7ABF75233386B60050B64B /* LoadingSpinnerView.swift in Sources */,
 				D4BC641126DE4844000CFD28 /* ButtonSecondaryTheme.swift in Sources */,
 				17BD4EED2292F1260003E49A /* ContactsView.swift in Sources */,
@@ -11552,6 +11570,7 @@
 				2B0F618D24EC129D00DA22A6 /* SettingsFooterView.swift in Sources */,
 				2B0F618E24EC129D00DA22A6 /* NotificationsViewController.swift in Sources */,
 				2B343D0C259D17B0001EA8C8 /* NotificationFilterViewController.swift in Sources */,
+				D46C648226E613FB00FBAC6D /* TutorialViewController+Theme.swift in Sources */,
 				2B05A676251E3BED008A8791 /* UITextView+Additions.swift in Sources */,
 				2BA172E22649998100A613C4 /* ChartTimeFrameButton.swift in Sources */,
 				2B0F618F24EC129D00DA22A6 /* Formatter+Additions.swift in Sources */,
@@ -11594,6 +11613,7 @@
 				D479D10E26D4FD7100110E04 /* BannerViewErrorTheme.swift in Sources */,
 				D44EB6B026DF73FF0008E234 /* WelcomeViewTheme.swift in Sources */,
 				2B3E227226BC317600ED0AAF /* ActionableWarningAlertView.swift in Sources */,
+				D46C648A26E6151800FBAC6D /* AddAccountViewController+Theme.swift in Sources */,
 				2B0F61AA24EC129D00DA22A6 /* AlgosTransactionDraft.swift in Sources */,
 				2B0F61AB24EC129D00DA22A6 /* Router.swift in Sources */,
 				2B0F61AC24EC129D00DA22A6 /* DateWithTextImageView.swift in Sources */,
@@ -12174,6 +12194,7 @@
 				2B9EF30F25D5767B004BCCC4 /* TutorialViewModel.swift in Sources */,
 				2B0F62F124EC129D00DA22A6 /* AccountsDataSource.swift in Sources */,
 				2B0F62F224EC129D00DA22A6 /* BaseView.swift in Sources */,
+				D46C648626E614C500FBAC6D /* WelcomeViewController+Theme.swift in Sources */,
 				2B0F62F424EC129D00DA22A6 /* TransactionListView.swift in Sources */,
 				D4BC641026DE4844000CFD28 /* ButtonSecondaryTheme.swift in Sources */,
 				2B0F62F524EC129D00DA22A6 /* QRText.swift in Sources */,
@@ -12400,6 +12421,7 @@
 				2B25700623F1D8620005CBA2 /* SendAssetTransactionPreviewViewModel.swift in Sources */,
 				2B343D0B259D17B0001EA8C8 /* NotificationFilterViewController.swift in Sources */,
 				2BE4D06E2593845F005F5764 /* FirebaseAnalytics.swift in Sources */,
+				D46C648126E613FB00FBAC6D /* TutorialViewController+Theme.swift in Sources */,
 				2B4EEEC124BE001D00059A16 /* NotificationCell.swift in Sources */,
 				2B05A675251E3BED008A8791 /* UITextView+Additions.swift in Sources */,
 				2BA172E12649998100A613C4 /* ChartTimeFrameButton.swift in Sources */,
@@ -12442,6 +12464,7 @@
 				1751261A223BE5930095AF4F /* RequestParameter.swift in Sources */,
 				D44EB6AF26DF73FF0008E234 /* WelcomeViewTheme.swift in Sources */,
 				D479D10D26D4FD7100110E04 /* BannerViewErrorTheme.swift in Sources */,
+				D46C648926E6151800FBAC6D /* AddAccountViewController+Theme.swift in Sources */,
 				2B3E227126BC317600ED0AAF /* ActionableWarningAlertView.swift in Sources */,
 				2B656E9B224BC5370064A49B /* AccountViewCell.swift in Sources */,
 				2B7747A726026F9B0083EFFA /* InputSuggestionsDataController.swift in Sources */,
@@ -13022,6 +13045,7 @@
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
 				2B9EF30E25D5767B004BCCC4 /* TutorialViewModel.swift in Sources */,
 				2B44C382247419CB0074D57D /* TransactionListView.swift in Sources */,
+				D46C648526E614C500FBAC6D /* WelcomeViewController+Theme.swift in Sources */,
 				170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */,
 				D4BC640F26DE4844000CFD28 /* ButtonSecondaryTheme.swift in Sources */,
 				2B7ABF74233386B60050B64B /* LoadingSpinnerView.swift in Sources */,

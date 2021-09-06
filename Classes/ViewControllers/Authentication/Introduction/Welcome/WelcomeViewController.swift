@@ -19,7 +19,7 @@ import UIKit
 
 final class WelcomeViewController: BaseViewController {
     private lazy var welcomeView = WelcomeView()
-    private lazy var theme = WelcomeViewTheme()
+    private lazy var theme = Theme()
 
     private let flow: AccountSetupFlow
 
@@ -48,10 +48,11 @@ final class WelcomeViewController: BaseViewController {
 
     override func configureAppearance() {
         setNavigationBarTertiaryBackgroundColor()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
     override func prepareLayout() {
-        welcomeView.customize(theme)
+        welcomeView.customize(theme.welcomeViewTheme)
 
         prepareWholeScreenLayoutFor(welcomeView)
     }
@@ -98,7 +99,7 @@ extension WelcomeViewController: WelcomeViewDelegate {
         case .add:
             open(.addAccount(flow: flow), by: .push)
         case .recover:
-            open(.tutorial(flow: flow, tutorial: .recover, isActionable: false), by: .push)
+            open(.tutorial(flow: flow, tutorial: .recover), by: .push)
         default:
             break
         }

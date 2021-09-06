@@ -16,14 +16,20 @@
 //  PassphraseBackUpOrderViewModel.swift
 
 import Foundation
+import Macaroon
 
-final class PassphraseBackUpOrderViewModel {
+struct Passphrase {
+    let index: Int
+    let mnemonics: [String]?
+}
+
+final class PassphraseBackUpOrderViewModel: PairedViewModel {
     private(set) var number: String?
     private(set) var phrase: String?
 
-    init(mnemonics: [String]?, index: Int) {
-        bindNumber(index)
-        bindPhrase(mnemonics, at: index)
+    init(_ model: Passphrase) {
+        bindNumber(model.index)
+        bindPhrase(model.mnemonics, at: model.index)
     }
 }
 

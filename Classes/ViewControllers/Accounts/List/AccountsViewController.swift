@@ -265,7 +265,7 @@ extension AccountsViewController {
 
         if passcodeSettingDisplayStore.shouldAskForPasscode {
             let controller = open(
-                .tutorial(flow: .none, tutorial: .passcode, isActionable: true),
+                .tutorial(flow: .none, tutorial: .passcode),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
             ) as? TutorialViewController
             controller?.uiHandlers.didTapDontAskAgain = { tutorialViewController in

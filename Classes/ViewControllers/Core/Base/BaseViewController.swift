@@ -232,8 +232,8 @@ extension BaseViewController {
     }
     
     func setNavigationBarTertiaryBackgroundColor() {
-        navigationController?.navigationBar.barTintColor = Colors.Background.tertiary
-        navigationController?.navigationBar.tintColor = Colors.Background.tertiary
+        navigationController?.navigationBar.barTintColor = AppColors.Shared.System.background.color
+        navigationController?.navigationBar.tintColor = AppColors.Shared.System.background.color
     }
 }
 

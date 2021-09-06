@@ -368,11 +368,10 @@ class Router {
             viewController = WarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
         case let .actionableWarningAlert(warningAlert):
             viewController = ActionableWarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
-        case let .tutorial(flow, tutorial, isActionable):
+        case let .tutorial(flow, tutorial):
             viewController = TutorialViewController(
                 flow: flow,
                 tutorial: tutorial,
-                isActionable: isActionable,
                 configuration: configuration
             )
         case let .transactionTutorial(isInitialDisplay):

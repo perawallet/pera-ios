@@ -32,7 +32,7 @@ struct PassphraseBackUpOrderViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMMono.regular.make(13)),
             .textAlignment(.left),
-            .textOverflow(.fitting)
+            .textOverflow(.singleLineFitting)
         ]
         self.phraseLabel = [
             .textColor(AppColors.Components.Text.main),

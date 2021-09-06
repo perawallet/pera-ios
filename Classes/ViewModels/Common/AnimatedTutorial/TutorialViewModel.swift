@@ -22,16 +22,16 @@ final class TutorialViewModel: PairedViewModel {
     private(set) var image: UIImage?
     private(set) var title: String?
     private(set) var description: String?
-    private(set) var mainButtonTitle: String?
-    private(set) var actionTitle: String?
+    private(set) var primaryActionButtonTitle: String?
+    private(set) var secondaryActionButtonTitle: String?
     private(set) var warningDescription: String?
 
     init(_ model: Tutorial) {
         bindImage(model)
         bindTitle(model)
         bindDescription(model)
-        bindMainButtonTitle(model)
-        bindActionTitle(model)
+        bindPrimaryActionButtonTitle(model)
+        bindSecondaryActionButtonTitle(model)
         bindWarningTitle(model)
     }
 }
@@ -104,26 +104,26 @@ extension TutorialViewModel {
         }
     }
 
-    private func bindMainButtonTitle(_ tutorial: Tutorial) {
+    private func bindPrimaryActionButtonTitle(_ tutorial: Tutorial) {
         switch tutorial {
         case .backUp:
-            mainButtonTitle = "tutorial-main-title-back-up".localized
+            primaryActionButtonTitle = "tutorial-main-title-back-up".localized
         case .recover:
-            mainButtonTitle = "tutorial-main-title-recover".localized
+            primaryActionButtonTitle = "tutorial-main-title-recover".localized
         case .watchAccount:
-            mainButtonTitle = "watch-account-create".localized
+            primaryActionButtonTitle = "watch-account-create".localized
         case .writePassphrase:
-            mainButtonTitle = "tutorial-main-title-write".localized
+            primaryActionButtonTitle = "tutorial-main-title-write".localized
         case .passcode:
-            mainButtonTitle = "tutorial-main-title-passcode".localized
+            primaryActionButtonTitle = "tutorial-main-title-passcode".localized
         case .localAuthentication:
-            mainButtonTitle = "local-authentication-enable".localized
+            primaryActionButtonTitle = "local-authentication-enable".localized
         case .biometricAuthenticationEnabled:
-            mainButtonTitle = "title-go-to-accounts".localized
+            primaryActionButtonTitle = "title-go-to-accounts".localized
         case .passphraseVerified:
-            mainButtonTitle = "title-next".localized
+            primaryActionButtonTitle = "title-next".localized
         case .accountVerified:
-            mainButtonTitle = "title-go-home".localized
+            primaryActionButtonTitle = "title-go-home".localized
         }
     }
 
@@ -138,12 +138,12 @@ extension TutorialViewModel {
         }
     }
 
-    private func bindActionTitle(_ tutorial: Tutorial) {
+    private func bindSecondaryActionButtonTitle(_ tutorial: Tutorial) {
         switch tutorial {
         case .passcode:
-            actionTitle = "tutorial-action-title-passcode".localized
+            secondaryActionButtonTitle = "tutorial-action-title-passcode".localized
         case .localAuthentication:
-            actionTitle = "local-authentication-no".localized
+            secondaryActionButtonTitle = "local-authentication-no".localized
         default:
             break
         }

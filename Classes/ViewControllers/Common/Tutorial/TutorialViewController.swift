@@ -25,16 +25,15 @@ final class TutorialViewController: BaseScrollViewController {
     lazy var uiHandlers = TutorialViewControllerUIHandlers()
 
     private lazy var tutorialView = TutorialView()
+    private lazy var theme = Theme()
 
     private let flow: AccountSetupFlow
     private let tutorial: Tutorial
-    private let isActionable: Bool
     private let localAuthenticator = LocalAuthenticator()
 
-    init(flow: AccountSetupFlow, tutorial: Tutorial, isActionable: Bool, configuration: ViewControllerConfiguration) {
+    init(flow: AccountSetupFlow, tutorial: Tutorial, configuration: ViewControllerConfiguration) {
         self.flow = flow
         self.tutorial = tutorial
-        self.isActionable = isActionable
         super.init(configuration: configuration)
     }
 
@@ -55,6 +54,9 @@ final class TutorialViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         setNavigationBarTertiaryBackgroundColor()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
     override func bindData() {
@@ -69,7 +71,8 @@ final class TutorialViewController: BaseScrollViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
-        tutorialView.customize(TutorialViewTheme(), isActionable: isActionable)
+        tutorialView.customize(theme.tutorialViewTheme)
+
         contentView.addSubview(tutorialView)
         tutorialView.pinToSuperview()
     }
@@ -122,10 +125,10 @@ extension TutorialViewController {
 }
 
 extension TutorialViewController: TutorialViewDelegate {
-    func tutorialViewDidApproveTutorial(_ tutorialView: TutorialView) {
+    func tutorialViewDidTapPrimaryActionButton(_ tutorialView: TutorialView) {
         switch tutorial {
         case .backUp:
-            open(.tutorial(flow: flow, tutorial: .writePassphrase, isActionable: false), by: .push)
+            open(.tutorial(flow: flow, tutorial: .writePassphrase), by: .push)
         case .writePassphrase:
             open(.passphraseView(address: "temp"), by: .push)
         case .watchAccount:
@@ -141,11 +144,11 @@ extension TutorialViewController: TutorialViewDelegate {
         case .passphraseVerified:
             open(.accountNameSetup, by: .push)
         case .accountVerified:
-            uiHandlers.didTapButton?(self)
+            uiHandlers.didTapButtonPrimaryActionButton?(self)
         }
     }
 
-    func tutorialViewDidTakeAction(_ tutorialView: TutorialView) {
+    func tutorialViewDidTapSecondaryActionButton(_ tutorialView: TutorialView) {
         switch tutorial {
         case .passcode:
             dismissScreen()
@@ -199,7 +202,7 @@ extension TutorialViewController {
 
     private func openModalWhenAuthenticationUpdatesCompleted() {
         open(
-            .tutorial(flow: .none, tutorial: .biometricAuthenticationEnabled, isActionable: false),
+            .tutorial(flow: .none, tutorial: .biometricAuthenticationEnabled),
             by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
         )
     }
@@ -207,7 +210,7 @@ extension TutorialViewController {
 
 struct TutorialViewControllerUIHandlers {
     var didTapDontAskAgain: ((TutorialViewController) -> Void)?
-    var didTapButton: ((TutorialViewController) -> Void)?
+    var didTapButtonPrimaryActionButton: ((TutorialViewController) -> Void)?
 }
 
 enum Tutorial {
