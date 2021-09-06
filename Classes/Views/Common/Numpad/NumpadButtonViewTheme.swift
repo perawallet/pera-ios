@@ -31,7 +31,7 @@ struct NumpadButtonViewTheme: StyleSheet, LayoutSheet {
     let size = CGSize(width: 72.0 * verticalScale, height: 72.0 * verticalScale)
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Background.tertiary
+        self.backgroundColor = AppColors.Shared.System.background
         self.deleteImage = [
             .content(img("icon-delete-number"))
         ]

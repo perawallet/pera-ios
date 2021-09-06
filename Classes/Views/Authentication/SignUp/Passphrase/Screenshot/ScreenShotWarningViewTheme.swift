@@ -35,7 +35,7 @@ struct ScreenShotWarningViewTheme: StyleSheet, LayoutSheet {
     let titleTopInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Background.secondary
+        self.backgroundColor = AppColors.Shared.System.background
         self.title = [
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(19)),

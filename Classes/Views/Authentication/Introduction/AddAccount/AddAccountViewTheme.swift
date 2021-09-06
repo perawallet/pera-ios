@@ -29,7 +29,7 @@ struct AddAccountViewTheme: StyleSheet, LayoutSheet {
     let verticalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Background.tertiary
+        self.backgroundColor = AppColors.Shared.System.background
         self.title = [
             .textAlignment(.center),
             .content("introduction-add-account-text".localized),

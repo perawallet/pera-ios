@@ -30,7 +30,7 @@ struct ChoosePasswordViewTheme: StyleSheet, LayoutSheet {
     let topInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = Colors.Background.tertiary
+        self.backgroundColor = AppColors.Shared.System.background
         self.title = [
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
