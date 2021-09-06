@@ -34,7 +34,7 @@ struct AddAccountViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.center),
             .content("introduction-add-account-text".localized),
             .textOverflow(.fitting),
-            .textColor(Colors.Text.primary),
+            .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32))
         ]
         self.accountTypeViewTheme = AccountTypeViewTheme()
