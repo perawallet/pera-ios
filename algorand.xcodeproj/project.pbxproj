@@ -2647,6 +2647,9 @@
 		D46C647926E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */; };
 		D46C647A26E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */; };
 		D46C647B26E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */; };
+		D46C647D26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647C26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift */; };
+		D46C647E26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647C26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift */; };
+		D46C647F26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647C26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift */; };
 		D473CA4826E1537100558598 /* PassphraseViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4726E1537100558598 /* PassphraseViewTheme.swift */; };
 		D473CA4926E1537100558598 /* PassphraseViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4726E1537100558598 /* PassphraseViewTheme.swift */; };
 		D473CA4A26E1537100558598 /* PassphraseViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4726E1537100558598 /* PassphraseViewTheme.swift */; };
@@ -3711,6 +3714,7 @@
 		D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChoosePasswordViewController+Theme.swift"; sourceTree = "<group>"; };
 		D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordInputViewTheme.swift; sourceTree = "<group>"; };
 		D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassphraseVerifyViewController+Theme.swift"; sourceTree = "<group>"; };
+		D46C647C26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordInputCircleViewTheme.swift; sourceTree = "<group>"; };
 		D473CA4726E1537100558598 /* PassphraseViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseViewTheme.swift; sourceTree = "<group>"; };
 		D473CA4B26E15F0C00558598 /* PassphraseBackUpOrderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpOrderViewTheme.swift; sourceTree = "<group>"; };
 		D473CA4F26E1733700558598 /* ScreenShotWarningViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShotWarningViewTheme.swift; sourceTree = "<group>"; };
@@ -8698,6 +8702,7 @@
 				2BD739F92240527B00B66EEF /* PasswordInputView.swift */,
 				D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */,
 				2BD739FB2241052500B66EEF /* PasswordInputCircleView.swift */,
+				D46C647C26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift */,
 			);
 			path = Password;
 			sourceTree = "<group>";
@@ -10598,6 +10603,7 @@
 				17BD4DF82292F1260003E49A /* ContactsViewController.swift in Sources */,
 				2BD36E342686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,
 				2B0F5F0024DD50C600DA22A6 /* RekeyConfirmationListLayout.swift in Sources */,
+				D46C647F26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */,
 				2BE9372624630AC800322C1E /* SelectAssetHeaderView.swift in Sources */,
 				2B2AACDA250B6C6E00B8C5C5 /* SettingsDetailViewModel.swift in Sources */,
 				2B56715023FFFA3A0037FCFA /* VerifiedAssetInformationView.swift in Sources */,
@@ -11445,6 +11451,7 @@
 				2BD36E332686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,
 				2B56B8362505013600AC7B8D /* LedgerAccountSelectionHeaderSupplementaryViewModel.swift in Sources */,
 				2B56B8372505013600AC7B8D /* LedgerAccountNameViewModel.swift in Sources */,
+				D46C647E26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */,
 				2B56B8382505013600AC7B8D /* RekeyConfirmationFooterView.swift in Sources */,
 				2B56B8392505013600AC7B8D /* RekeyConfirmationFooterSupplementaryView.swift in Sources */,
 				2BA172CA2649651700A613C4 /* AlgoAnalyticsHeaderView.swift in Sources */,
@@ -12292,6 +12299,7 @@
 				2BE9372524630AC800322C1E /* SelectAssetHeaderView.swift in Sources */,
 				2BD36E322686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,
 				2B56714F23FFFA3A0037FCFA /* VerifiedAssetInformationView.swift in Sources */,
+				D46C647D26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */,
 				2B0F5F0C24E19ABA00DA22A6 /* LedgerAccountSelectionView.swift in Sources */,
 				2B2AACD8250B6C6E00B8C5C5 /* SettingsDetailViewModel.swift in Sources */,
 				2B8954C4224404C900D6D068 /* MultiLineInputField.swift in Sources */,

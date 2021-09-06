@@ -22,7 +22,7 @@ final class PasswordInputView: View {
     private lazy var theme = PasswordInputViewTheme()
 
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: theme.size.w, height: theme.size.h)
+        return CGSize(theme.size)
     }
     
     private(set) var passwordInputCircleViews: [PasswordInputCircleView] = []

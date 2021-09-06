@@ -18,29 +18,31 @@
 import UIKit
 import Macaroon
 
-final class PasswordInputCircleView: UIImageView, ViewComposable {
+final class PasswordInputCircleView: ImageView, ViewComposable {
+    private lazy var theme = PasswordInputCircleViewTheme()
+    
     override var intrinsicContentSize: CGSize {
-        return CGSize(width: 20, height: 20)
+        return CGSize(theme.size)
     }
     
     var state: State = .empty {
         didSet {
             switch state {
             case .empty:
-                image = img("gray-button-border")
+                image = theme.imageSet.image
             case .error:
-                image = img("gray-button-border", isTemplate: true)
-                tintColor = AppColors.Shared.Helpers.negative.color
+                image = theme.imageSet.image.withRenderingMode(.alwaysTemplate)
+                customizeBaseAppearance(tintColor: theme.negativeTintColor)
             case .filled:
-                image = img("black-button-filled")
+                image = theme.imageSet.selected
             }
         }
     }
 
     func customize() {
-        image = img("gray-button-border")
-        layer.cornerRadius = 10
-        contentMode = .center
+        image = theme.imageSet.image
+        layer.draw(corner: theme.corner)
+        customizeBaseAppearance(contentMode: theme.contentMode)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
