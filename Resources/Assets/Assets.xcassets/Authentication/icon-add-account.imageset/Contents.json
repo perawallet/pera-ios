@@ -3,6 +3,16 @@
     {
       "filename" : "icon-create-new-account.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-add-account.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

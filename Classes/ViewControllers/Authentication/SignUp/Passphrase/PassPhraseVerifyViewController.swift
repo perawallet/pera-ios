@@ -90,7 +90,7 @@ extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
     private func openValidatedBottomInformation() {
         open(
             .tutorial(flow: .none, tutorial: .passphraseVerified),
-            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+            by: .push
         )
     }
 }

@@ -77,14 +77,13 @@ extension AddAccountView {
         addSubview(stackView)
 
         stackView.distribution = .fillProportionally
-        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         stackView.axis = .vertical
 
-        stackView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(theme.verticalInset)
-            make.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.verticalInset)
-            make.centerY.equalToSuperview()
+        stackView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(theme.verticalInset)
+            $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.verticalInset)
+            $0.centerY.equalToSuperview()
         }
 
         createNewAccountView.customize(theme.accountTypeViewTheme)

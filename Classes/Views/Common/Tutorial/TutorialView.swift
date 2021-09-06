@@ -106,6 +106,8 @@ extension TutorialView {
     private func addVerticalStackView(_ theme: TutorialViewTheme) {
         addSubview(verticalStackView)
         verticalStackView.spacing = theme.buttonInset
+        verticalStackView.axis = .vertical
+        
         verticalStackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.top.greaterThanOrEqualTo(descriptionLabel.snp.bottom).offset(theme.buttonInset)

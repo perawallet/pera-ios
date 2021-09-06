@@ -50,8 +50,8 @@ struct ALGBarButtonItem: BarButtonItem {
         case .dontAskAgain:
             return BarButtonItemTitleContent(
                 text: "title-dont-ask".localized,
-                textColor: Colors.Main.primary700,
-                font: UIFont.font(withWeight: .semiBold(size: 14.0))
+                textColor: AppColors.Components.Text.main.color,
+                font: Fonts.DMSans.medium.make(15).font
             )
         case .copy:
             return BarButtonItemTitleContent(

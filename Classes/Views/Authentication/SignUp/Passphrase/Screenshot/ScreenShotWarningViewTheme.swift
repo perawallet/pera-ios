@@ -33,6 +33,7 @@ struct ScreenShotWarningViewTheme: StyleSheet, LayoutSheet {
     let descriptionTopInset: LayoutMetric
     let imageSize: LayoutSize
     let titleTopInset: LayoutMetric
+    let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -62,5 +63,6 @@ struct ScreenShotWarningViewTheme: StyleSheet, LayoutSheet {
         self.titleTopInset = 28
         self.descriptionTopInset = 12
         self.imageSize = (80, 80)
+        self.bottomInset = 16
     }
 }

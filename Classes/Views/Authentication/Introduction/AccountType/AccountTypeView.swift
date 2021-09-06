@@ -56,11 +56,13 @@ extension AccountTypeView {
 
         addSubview(detailLabel)
         detailLabel.snp.makeConstraints {
-            $0.leading.equalTo(titleLabel)
+            $0.leading.equalTo(titleLabel.snp.leading)
             $0.trailing.equalToSuperview().inset(theme.titleTrailingInset)
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.minimumInset)
             $0.bottom.equalToSuperview().offset(-theme.verticalInset)
         }
+
+        detailLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func addImageView(_ theme: AccountTypeViewTheme) {

@@ -81,33 +81,8 @@ final class TutorialViewController: BaseScrollViewController {
 extension TutorialViewController {
     private func addBarButtons() {
         switch tutorial {
-        case .recover,
-             .backUp,
-             .watchAccount:
-            addInfoBarButton()
         case .passcode:
             addDontAskAgainBarButton()
-        default:
-            break
-        }
-    }
-
-    private func addInfoBarButton() {
-        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
-            self?.openWalletSupport()
-        }
-
-        rightBarButtonItems = [infoBarButtonItem]
-    }
-
-    private func openWalletSupport() {
-        switch tutorial {
-        case .backUp:
-            open(AlgorandWeb.backUpSupport.link)
-        case .recover:
-            open(AlgorandWeb.recoverSupport.link)
-        case .watchAccount:
-            open(AlgorandWeb.watchAccountSupport.link)
         default:
             break
         }
