@@ -56,9 +56,9 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     }
 
     private func customizeBackground() {
-        view.backgroundColor = theme.backgroundColor.color
-        scrollView.backgroundColor = theme.backgroundColor.color
-        contentView.backgroundColor = theme.backgroundColor.color
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     
     override func prepareLayout() {

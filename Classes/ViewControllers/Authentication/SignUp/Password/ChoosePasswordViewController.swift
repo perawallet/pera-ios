@@ -71,7 +71,7 @@ final class ChoosePasswordViewController: BaseViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        view.backgroundColor = theme.backgroundColor.color
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         setTitle()
         viewModel.configure(choosePasswordView)
     }

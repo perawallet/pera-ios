@@ -30,7 +30,7 @@ final class ScreenshotWarningViewController: BaseViewController {
     }
     
     private func customizeBackground() {
-        view.backgroundColor = theme.backgroundColor.color
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
     override func setListeners() {

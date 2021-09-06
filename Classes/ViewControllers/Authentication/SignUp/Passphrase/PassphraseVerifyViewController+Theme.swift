@@ -23,9 +23,8 @@ extension PassphraseVerifyViewController {
         let backgroundColor: Color
 
         init(_ family: LayoutFamily) {
-            passphraseVerifyViewTheme = PassphraseVerifyViewController()
+            passphraseVerifyViewTheme = PassphraseVerifyViewTheme()
             backgroundColor = AppColors.Shared.System.background
         }
     }
 }
-
