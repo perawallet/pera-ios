@@ -2644,6 +2644,9 @@
 		D46C647526E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */; };
 		D46C647626E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */; };
 		D46C647726E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */; };
+		D46C647926E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */; };
+		D46C647A26E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */; };
+		D46C647B26E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */; };
 		D473CA4826E1537100558598 /* PassphraseViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4726E1537100558598 /* PassphraseViewTheme.swift */; };
 		D473CA4926E1537100558598 /* PassphraseViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4726E1537100558598 /* PassphraseViewTheme.swift */; };
 		D473CA4A26E1537100558598 /* PassphraseViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA4726E1537100558598 /* PassphraseViewTheme.swift */; };
@@ -3707,6 +3710,7 @@
 		D44EEEE926D54740009998FA /* BannerInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerInfoViewModel.swift; sourceTree = "<group>"; };
 		D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChoosePasswordViewController+Theme.swift"; sourceTree = "<group>"; };
 		D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordInputViewTheme.swift; sourceTree = "<group>"; };
+		D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassphraseVerifyViewController+Theme.swift"; sourceTree = "<group>"; };
 		D473CA4726E1537100558598 /* PassphraseViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseViewTheme.swift; sourceTree = "<group>"; };
 		D473CA4B26E15F0C00558598 /* PassphraseBackUpOrderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpOrderViewTheme.swift; sourceTree = "<group>"; };
 		D473CA4F26E1733700558598 /* ScreenShotWarningViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenShotWarningViewTheme.swift; sourceTree = "<group>"; };
@@ -8884,6 +8888,7 @@
 				2B79A13C23147A4900766021 /* PassphraseBackUpViewController.swift */,
 				D40C294C26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift */,
 				17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */,
+				D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */,
 			);
 			path = Passphrase;
 			sourceTree = "<group>";
@@ -11284,6 +11289,7 @@
 				2B83D04926C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */,
 				2BA4B3F2267819840041586B /* WCSessionItemViewModel.swift in Sources */,
 				2BA4B3DE2673F0E60041586B /* WCConnectionApprovalViewModel.swift in Sources */,
+				D46C647B26E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */,
 				2B288ADA269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */,
 				2B0F5EFB24DD509D00DA22A6 /* RekeyConfirmationViewModel.swift in Sources */,
 				2BECB4DF25A12C3A0081870A /* NotificationFilterListLayout.swift in Sources */,
@@ -12130,6 +12136,7 @@
 				2B83D04826C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */,
 				2BA4B3F1267819840041586B /* WCSessionItemViewModel.swift in Sources */,
 				2BA4B3DD2673F0E60041586B /* WCConnectionApprovalViewModel.swift in Sources */,
+				D46C647A26E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */,
 				2B288AD9269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */,
 				2B0F62DF24EC129D00DA22A6 /* PassphraseBackUpOrderView.swift in Sources */,
 				2BECB4DE25A12C3A0081870A /* NotificationFilterListLayout.swift in Sources */,
@@ -12976,6 +12983,7 @@
 				2B83D04726C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */,
 				2B7E3050267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */,
 				2BA4B3F0267819840041586B /* WCSessionItemViewModel.swift in Sources */,
+				D46C647926E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */,
 				2BA4B3DC2673F0E60041586B /* WCConnectionApprovalViewModel.swift in Sources */,
 				2B288AD8269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */,
 				2B0F5EFA24DD509D00DA22A6 /* RekeyConfirmationViewModel.swift in Sources */,

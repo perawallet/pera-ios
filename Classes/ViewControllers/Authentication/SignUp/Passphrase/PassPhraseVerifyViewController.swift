@@ -20,6 +20,7 @@ import AVFoundation
 
 final class PassphraseVerifyViewController: BaseScrollViewController {
     private lazy var passphraseVerifyView = PassphraseVerifyView()
+    private lazy var theme = Theme()
 
     private lazy var layoutBuilder: PassphraseVerifyLayoutBuilder = {
         return PassphraseVerifyLayoutBuilder(dataSource: dataSource)
@@ -35,9 +36,13 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         setNavigationBarTertiaryBackgroundColor()
-        view.backgroundColor = Colors.Background.tertiary
-        scrollView.backgroundColor = Colors.Background.tertiary
+        customizeBackground()
         passphraseVerifyView.setNextButtonEnabled(false)
+    }
+
+    private func customizeBackground() {
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     
     override func linkInteractors() {
@@ -54,7 +59,7 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        passphraseVerifyView.customize(PassphraseVerifyViewTheme())
+        passphraseVerifyView.customize(theme.passphraseVerifyViewTheme)
         
         contentView.addSubview(passphraseVerifyView)
         passphraseVerifyView.pinToSuperview()
