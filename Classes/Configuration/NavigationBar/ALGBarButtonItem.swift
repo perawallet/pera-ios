@@ -94,7 +94,7 @@ struct ALGBarButtonItem: BarButtonItem {
             }
             return nil
         case .info:
-            if let icon = img("icon-info-green") {
+            if let icon = img("icon-info") {
                 return ImageContent(normal: icon)
             }
             return nil

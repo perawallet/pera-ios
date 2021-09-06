@@ -63,7 +63,9 @@ extension WelcomeViewController {
         switch flow {
         case .addNewAccount:
             addCloseBarButtonItem()
-        case .none, .initializeAccount:
+        case .initializeAccount:
+            addSkipBarButtonItem()
+        case .none:
             break
         }
     }
@@ -74,6 +76,20 @@ extension WelcomeViewController {
         }
 
         leftBarButtonItems = [closeBarButtonItem]
+    }
+
+    private func addSkipBarButtonItem() {
+        let skipBarButtonItem = ALGBarButtonItem(kind: .skip) { [unowned self] in
+            session?.createUser()
+
+            DispatchQueue.main.async {
+                self.dismiss(animated: false) {
+                    UIApplication.shared.rootViewController()?.setupTabBarController()
+                }
+            }
+        }
+
+        rightBarButtonItems = [skipBarButtonItem]
     }
 }
 
