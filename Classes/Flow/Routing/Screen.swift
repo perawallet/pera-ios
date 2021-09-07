@@ -18,7 +18,6 @@
 import UIKit
 
 indirect enum Screen {
-    case introduction(flow: AccountSetupFlow)
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?, route: Screen?)

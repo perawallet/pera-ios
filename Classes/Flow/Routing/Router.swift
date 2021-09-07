@@ -184,8 +184,6 @@ class Router {
         )
         
         switch screen {
-        case let .introduction(flow):
-            viewController = IntroductionViewController(accountSetupFlow: flow, configuration: configuration)
         case let .welcome(flow):
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
         case let .addAccount(flow):

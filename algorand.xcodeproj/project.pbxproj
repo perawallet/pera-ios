@@ -99,7 +99,6 @@
 		17BD4E362292F1260003E49A /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739FD22411A0100B66EEF /* Reusable.swift */; };
 		17BD4E372292F1260003E49A /* SettingsToggleContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171111B5225E093400DAF55C /* SettingsToggleContextView.swift */; };
 		17BD4E3B2292F1260003E49A /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5317B224AA89B00A7455F /* SettingsViewController.swift */; };
-		17BD4E3C2292F1260003E49A /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CF223F97F600B66EEF /* IntroductionView.swift */; };
 		17BD4E3D2292F1260003E49A /* NodeSettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */; };
 		17BD4E3F2292F1260003E49A /* PassphraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1B2241636C00B66EEF /* PassphraseView.swift */; };
 		17BD4E402292F1260003E49A /* String+Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AA1B0722662BAB000B0BB0 /* String+Number.swift */; };
@@ -207,7 +206,7 @@
 		17BD4ECD2292F1260003E49A /* AccountFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E923225789E7004CDF24 /* AccountFetchOperation.swift */; };
 		17BD4ECE2292F1260003E49A /* PassphraseMnemonicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC4652248D39900AAF370 /* PassphraseMnemonicCell.swift */; };
 		17BD4ECF2292F1260003E49A /* SendTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7572A5225CA1E3009E0253 /* SendTransactionView.swift */; };
-		17BD4ED02292F1260003E49A /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */; };
+		17BD4ED02292F1260003E49A /* AccountFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CA223F97B100B66EEF /* AccountFlow.swift */; };
 		17BD4ED12292F1260003E49A /* TransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3D834226F0FAA00716C09 /* TransactionDetailView.swift */; };
 		17BD4ED22292F1260003E49A /* OptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B656E92224BAF2E0064A49B /* OptionsViewController.swift */; };
 		17BD4ED32292F1260003E49A /* algorand.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2B59F1372254BABF005203DD /* algorand.xcdatamodeld */; };
@@ -511,7 +510,6 @@
 		2B0F61D824EC129D00DA22A6 /* AccountInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEE061C23E856F7004EBD6F /* AccountInformation.swift */; };
 		2B0F61D924EC129D00DA22A6 /* TransactionFilterOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBBAE924A66AFD002CD56F /* TransactionFilterOptionCell.swift */; };
 		2B0F61DA24EC129D00DA22A6 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5317B224AA89B00A7455F /* SettingsViewController.swift */; };
-		2B0F61DB24EC129D00DA22A6 /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CF223F97F600B66EEF /* IntroductionView.swift */; };
 		2B0F61DC24EC129D00DA22A6 /* NodeSettingsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */; };
 		2B0F61DD24EC129D00DA22A6 /* TabBarButtonItemConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E39FF247966D300E8AEB7 /* TabBarButtonItemConvertible.swift */; };
 		2B0F61DE24EC129D00DA22A6 /* PassphraseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD73A1B2241636C00B66EEF /* PassphraseView.swift */; };
@@ -730,7 +728,7 @@
 		2B0F62C824EC129D00DA22A6 /* AssetSearchQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA20238D3A6800491149 /* AssetSearchQuery.swift */; };
 		2B0F62C924EC129D00DA22A6 /* SendAlgosTransactionPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B25700223F1D8620005CBA2 /* SendAlgosTransactionPreviewViewModel.swift */; };
 		2B0F62CA24EC129D00DA22A6 /* AssetSupportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9F22389F17400491149 /* AssetSupportViewController.swift */; };
-		2B0F62CB24EC129D00DA22A6 /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */; };
+		2B0F62CB24EC129D00DA22A6 /* AccountFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CA223F97B100B66EEF /* AccountFlow.swift */; };
 		2B0F62CC24EC129D00DA22A6 /* TransactionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF3D834226F0FAA00716C09 /* TransactionDetailView.swift */; };
 		2B0F62CD24EC129D00DA22A6 /* AccountHeaderSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A54237C5793009191BF /* AccountHeaderSupplementaryView.swift */; };
 		2B0F62CE24EC129D00DA22A6 /* AccountHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4487032379596300C19FDE /* AccountHeaderView.swift */; };
@@ -2277,8 +2275,7 @@
 		2BD6A06724A50D3E00D2D28D /* PinLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD6A06524A50D3E00D2D28D /* PinLimitView.swift */; };
 		2BD6A06A24A50D6A00D2D28D /* PinLimitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD6A06924A50D6A00D2D28D /* PinLimitViewController.swift */; };
 		2BD6A06B24A50D6A00D2D28D /* PinLimitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD6A06924A50D6A00D2D28D /* PinLimitViewController.swift */; };
-		2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */; };
-		2BD739D1223F97F600B66EEF /* IntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CF223F97F600B66EEF /* IntroductionView.swift */; };
+		2BD739CC223F97B100B66EEF /* AccountFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739CA223F97B100B66EEF /* AccountFlow.swift */; };
 		2BD739D6223F985E00B66EEF /* UIColor+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739D5223F985E00B66EEF /* UIColor+Additions.swift */; };
 		2BD739D9223F987E00B66EEF /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739D8223F987E00B66EEF /* Utils.swift */; };
 		2BD739DD223F9E9F00B66EEF /* ChoosePasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD739DC223F9E9F00B66EEF /* ChoosePasswordView.swift */; };
@@ -3559,8 +3556,7 @@
 		2BD5A6C62633543E0048FA5E /* AssetCardDisplayDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCardDisplayDataController.swift; sourceTree = "<group>"; };
 		2BD6A06524A50D3E00D2D28D /* PinLimitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinLimitView.swift; sourceTree = "<group>"; };
 		2BD6A06924A50D6A00D2D28D /* PinLimitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinLimitViewController.swift; sourceTree = "<group>"; };
-		2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionViewController.swift; sourceTree = "<group>"; };
-		2BD739CF223F97F600B66EEF /* IntroductionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntroductionView.swift; sourceTree = "<group>"; };
+		2BD739CA223F97B100B66EEF /* AccountFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountFlow.swift; sourceTree = "<group>"; };
 		2BD739D5223F985E00B66EEF /* UIColor+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+Additions.swift"; sourceTree = "<group>"; };
 		2BD739D8223F987E00B66EEF /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		2BD739DC223F9E9F00B66EEF /* ChoosePasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoosePasswordView.swift; sourceTree = "<group>"; };
@@ -8675,7 +8671,7 @@
 			children = (
 				2B0F7E1325D6E37500B16B85 /* AddAccount */,
 				2B0F7E1225D6E36F00B16B85 /* Welcome */,
-				2BD739CA223F97B100B66EEF /* IntroductionViewController.swift */,
+				2BD739CA223F97B100B66EEF /* AccountFlow.swift */,
 			);
 			path = Introduction;
 			sourceTree = "<group>";
@@ -8698,7 +8694,6 @@
 				2B5BE06525190B7200324BEE /* AccountType */,
 				2B0F7DFD25D6DBD200B16B85 /* AddAccount */,
 				2B0F7DFC25D6DBC900B16B85 /* Welcome */,
-				2BD739CF223F97F600B66EEF /* IntroductionView.swift */,
 			);
 			path = Introduction;
 			sourceTree = "<group>";
@@ -10885,7 +10880,6 @@
 				2B2AACAB250A6D6600B8C5C5 /* RekeyEvent.swift in Sources */,
 				2BED6573266FA23400EC089B /* TransactionSignRequestHandler.swift in Sources */,
 				2B83D05926C41567005A35AF /* WCSessionDisconnectedEvent.swift in Sources */,
-				17BD4E3C2292F1260003E49A /* IntroductionView.swift in Sources */,
 				2BECB4F325A30A0E0081870A /* NotificationFilterResponse.swift in Sources */,
 				2B77470F25FFDB640083EFFA /* InputSuggestionViewController.swift in Sources */,
 				2B77473725FFE92E0083EFFA /* InputSuggestionView.swift in Sources */,
@@ -11315,7 +11309,7 @@
 				2B432A56237C5793009191BF /* AccountHeaderSupplementaryView.swift in Sources */,
 				2BB93BE925BEF3B9001F1D6C /* TransactionData.swift in Sources */,
 				2B4487052379596300C19FDE /* AccountHeaderView.swift in Sources */,
-				17BD4ED02292F1260003E49A /* IntroductionViewController.swift in Sources */,
+				17BD4ED02292F1260003E49A /* AccountFlow.swift in Sources */,
 				17BD4ED12292F1260003E49A /* TransactionDetailView.swift in Sources */,
 				2B2A9F42232A403600450DB0 /* TransactionTrackDraft.swift in Sources */,
 				2B7E306F267A5E8900E89EE3 /* WCTransactionDappMessageViewModel.swift in Sources */,
@@ -11764,7 +11758,6 @@
 				2BA1732A264B190E00A613C4 /* AlgoAnalyticsHeaderViewModel.swift in Sources */,
 				2B0F61D924EC129D00DA22A6 /* TransactionFilterOptionCell.swift in Sources */,
 				2B0F61DA24EC129D00DA22A6 /* SettingsViewController.swift in Sources */,
-				2B0F61DB24EC129D00DA22A6 /* IntroductionView.swift in Sources */,
 				2B0F61DC24EC129D00DA22A6 /* NodeSettingsHeaderView.swift in Sources */,
 				2B343CF1259D174A001EA8C8 /* AccountNameSwitchViewModel.swift in Sources */,
 				2B0F61DD24EC129D00DA22A6 /* TabBarButtonItemConvertible.swift in Sources */,
@@ -12178,7 +12171,7 @@
 				2B0F62C924EC129D00DA22A6 /* SendAlgosTransactionPreviewViewModel.swift in Sources */,
 				2B0F62CA24EC129D00DA22A6 /* AssetSupportViewController.swift in Sources */,
 				2B7E306E267A5E8900E89EE3 /* WCTransactionDappMessageViewModel.swift in Sources */,
-				2B0F62CB24EC129D00DA22A6 /* IntroductionViewController.swift in Sources */,
+				2B0F62CB24EC129D00DA22A6 /* AccountFlow.swift in Sources */,
 				2B288AD52691128A00BC6FB6 /* JSONDisplayViewController.swift in Sources */,
 				2B5715B82634F1FF002C876D /* AlgorandChartViewCustomizable.swift in Sources */,
 				2B68A23E26A82F660076BD82 /* WalletConnectSingleTransactionRequestPresentable.swift in Sources */,
@@ -13031,7 +13024,7 @@
 				2BB93C0E25BF2421001F1D6C /* TransactionSignable.swift in Sources */,
 				2B4BD9F32389F17400491149 /* AssetSupportViewController.swift in Sources */,
 				2B5BE09F251938E100324BEE /* AddAccountView.swift in Sources */,
-				2BD739CC223F97B100B66EEF /* IntroductionViewController.swift in Sources */,
+				2BD739CC223F97B100B66EEF /* AccountFlow.swift in Sources */,
 				2BB93BE725BEF3B9001F1D6C /* TransactionData.swift in Sources */,
 				2BF3D835226F0FAA00716C09 /* TransactionDetailView.swift in Sources */,
 				2B432A55237C5793009191BF /* AccountHeaderSupplementaryView.swift in Sources */,

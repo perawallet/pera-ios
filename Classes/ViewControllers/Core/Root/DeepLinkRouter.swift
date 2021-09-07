@@ -54,7 +54,7 @@ extension DeepLinkRouter {
                 }
             } else {
                 appConfiguration.session.reset(isContactIncluded: false)
-                rootViewController?.open(.introduction(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
+                rootViewController?.open(.welcome(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
             }
         } else {
             rootViewController?.setupTabBarController()
@@ -82,7 +82,7 @@ extension DeepLinkRouter {
                 return true
             }
         } else {
-            return rootViewController?.open(.introduction(flow: .initializeAccount(mode: .none)), by: .launch, animated: false) != nil
+            return rootViewController?.open(.welcome(flow: .initializeAccount(mode: .none)), by: .launch, animated: false) != nil
         }
     }
 
@@ -121,7 +121,7 @@ extension DeepLinkRouter {
                 rootViewController?.setupTabBarController(withInitial: getRoute(from: notification, for: address))
             }
         } else {
-            rootViewController?.open(.introduction(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
+            rootViewController?.open(.welcome(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
         }
     }
 

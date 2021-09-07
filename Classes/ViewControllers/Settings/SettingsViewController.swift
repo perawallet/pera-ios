@@ -407,7 +407,7 @@ extension SettingsViewController: SettingsToggleCellDelegate {
         walletConnector.resetAllSessions()
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()
-        open(.introduction(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
+        open(.welcome(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
      }
 }
 

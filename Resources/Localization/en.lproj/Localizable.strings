@@ -60,7 +60,6 @@
 
 // MARK: Introduction
 
-"introduction-title-text" = "Manage all assets\nfrom one app";
 "introduction-title-add-text" = "Add New Account";
 "introduction-add-account-text" = "Add New Account";
 "introduction-title-terms-and-services" = "By creating an account, you agree to Algorand’s<br><a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Conditions</a> and <a href=\"https://www.algorand.com/wallet-privacy-policy\">Privacy Policy</a>";
