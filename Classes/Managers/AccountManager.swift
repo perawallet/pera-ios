@@ -80,7 +80,8 @@ extension AccountManager {
                 
                 if fetchedAccount.amount == currentAccount.amount &&
                     fetchedAccount.rewards == currentAccount.rewards &&
-                    !fetchedAccount.hasDifferentAssets(than: currentAccount) {
+                    !fetchedAccount.hasDifferentAssets(than: currentAccount) &&
+                    !fetchedAccount.hasDifferentApps(than: currentAccount) {
                     return
                 }
                 

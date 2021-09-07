@@ -48,14 +48,42 @@ extension Account {
         return !(participation == nil || participation?.voteParticipationKey == defaultParticipationKey)
     }
 
-    func isThereAnyDifferentAsset() -> Bool {
+    var isThereAnyDifferentAsset: Bool {
         return !assets.isNilOrEmpty
     }
     
     func hasDifferentAssets(than account: Account) -> Bool {
         return assets != account.assets || !assetDetails.containsSameElements(as: account.assetDetails)
     }
-    
+
+    func hasDifferentApps(than account: Account) -> Bool {
+        return createdApps?.count != account.createdApps?.count || appsLocalState?.count != account.appsLocalState?.count
+    }
+
+    var hasMinAmountFields: Bool {
+        return isThereAnyDifferentAsset || isThereAnyCreatedApps || isThereAnyOptedApps || isThereSchemaValues || isThereAnyAppExtraPages
+    }
+
+   private var isThereAnyCreatedApps: Bool {
+        return !createdApps.isNilOrEmpty
+    }
+
+    private var isThereAnyOptedApps: Bool {
+        return !appsLocalState.isNilOrEmpty
+    }
+
+    private var isThereSchemaValues: Bool {
+        guard let schema = appsTotalSchema else {
+            return false
+        }
+
+        return schema.intValue.unwrap(or: 0) > 0 || schema.byteSliceCount.unwrap(or: 0) > 0
+    }
+
+    private var isThereAnyAppExtraPages: Bool {
+        return appsTotalExtraPages.unwrap(or: 0) > 0
+    }
+
     func removeAsset(_ id: Int64?) {
         assetDetails.removeAll { assetDetail -> Bool in
             assetDetail.id == id
@@ -148,7 +176,15 @@ extension Account {
         signatureType = account.signatureType
         authAddress = account.authAddress
         rekeyDetail = account.rekeyDetail
-        
+        receivesNotification = account.receivesNotification
+        createdRound = account.createdRound
+        closedRound = account.closedRound
+        isDeleted = account.isDeleted
+        appsLocalState = account.appsLocalState
+        appsTotalExtraPages = account.appsTotalExtraPages
+        appsTotalSchema = account.appsTotalSchema
+        createdApps = account.createdApps
+
         if let updatedName = account.name {
             name = updatedName
         }

@@ -97,7 +97,7 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         self.minimumAccountBalance = result.overflow ? minimumAmountForAccount : result.partialValue
 
         if isMaxTransaction {
-            if isMaxTransactionFromRekeyedAccount() || hasAdditionalAssetsForMaxTransaction() {
+            if isMaxTransactionFromRekeyedAccount() || hasMinAmountFieldsForMaxTransaction() {
                 // Reduce fee and minimum amount possible for the account from transaction amount
                 let reduceAmount = calculatedFee + (minimumAccountBalance ?? minimumAmountForAccount)
                 let result = transactionAmount.subtractingReportingOverflow(reduceAmount)
@@ -117,7 +117,7 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
     }
 
     private func canSendMaxTransactions() -> Bool {
-        return !isMaxTransactionFromRekeyedAccount() && !hasAdditionalAssetsForMaxTransaction() && hasMaximumAccountAmountForTransaction()
+        return !isMaxTransactionFromRekeyedAccount() && !hasMinAmountFieldsForMaxTransaction() && hasMaximumAccountAmountForTransaction()
     }
 
     private func isMaxTransactionFromRekeyedAccount() -> Bool {
@@ -128,12 +128,12 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         return algosTransactionDraft.isMaxTransactionFromRekeyedAccount
     }
 
-    private func hasAdditionalAssetsForMaxTransaction() -> Bool {
+    private func hasMinAmountFieldsForMaxTransaction() -> Bool {
         guard let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
             return false
         }
 
-        return !algosTransactionDraft.from.assetDetails.isEmpty && algosTransactionDraft.isMaxTransaction
+        return algosTransactionDraft.from.hasMinAmountFields && algosTransactionDraft.isMaxTransaction
     }
 
     private func hasMaximumAccountAmountForTransaction() -> Bool {

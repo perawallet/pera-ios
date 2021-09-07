@@ -137,7 +137,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             if selectedAccount.doesAccountHasParticipationKey() {
                 presentParticipationKeyWarningForMaxTransaction()
                 return
-            } else if selectedAccount.isThereAnyDifferentAsset() || isMaxTransactionFromRekeyedAccount {
+            } else if selectedAccount.hasMinAmountFields || isMaxTransactionFromRekeyedAccount {
                 displayMaxTransactionWarning()
                 return
             }
