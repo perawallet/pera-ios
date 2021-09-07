@@ -16,7 +16,8 @@
 //  NumpadView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class NumpadView: View {
     weak var delegate: NumpadViewDelegate?

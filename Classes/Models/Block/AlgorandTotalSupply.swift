@@ -15,9 +15,9 @@
 //
 //   AlgorandTotalSupply.swift
 
-import Magpie
+import MagpieCore
 
-class AlgorandTotalSupply: Model {
+class AlgorandTotalSupply: ResponseModel {
     let currentRound: UInt64
     let onlineMoney: UInt64
     let totalMoney: UInt64

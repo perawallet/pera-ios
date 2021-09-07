@@ -15,9 +15,9 @@
 //
 //  NotificationFilterResponse.swift
 
-import Magpie
+import MagpieCore
 
-class NotificationFilterResponse: Model {
+class NotificationFilterResponse: ResponseModel {
     let receivesNotification: Bool
 }
 

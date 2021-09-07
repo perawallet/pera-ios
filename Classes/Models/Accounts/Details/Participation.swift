@@ -15,9 +15,9 @@
 //
 //  Participation.swift
 
-import Magpie
+import MagpieCore
 
-class Participation: Model {
+class Participation: ResponseModel {
     var selectionParticipationKey: String?
     var voteParticipationKey: String?
     

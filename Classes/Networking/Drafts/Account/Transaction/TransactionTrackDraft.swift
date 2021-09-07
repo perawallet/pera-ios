@@ -15,7 +15,7 @@
 //
 //  TransactionTrackDraft.swift
 
-import Magpie
+import MagpieCore
 
 struct TransactionTrackDraft: JSONObjectBody {
     let transactionId: String

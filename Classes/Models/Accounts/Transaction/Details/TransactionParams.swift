@@ -15,9 +15,10 @@
 //
 //  TransactionParams.swift
 
-import Magpie
+import MagpieCore
+import Foundation
 
-class TransactionParams: Model {
+class TransactionParams: ResponseModel {
     let fee: UInt64
     let minFee: UInt64
     let lastRound: UInt64

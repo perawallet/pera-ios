@@ -15,9 +15,9 @@
 //
 //  PendingTransactions.swift
 
-import Magpie
+import MagpieCore
 
-class PendingTransaction: Model, TransactionItem {
+class PendingTransaction: ResponseModel, TransactionItem {
     let signature: String?
     private let algosAmount: UInt64?
     private let assetAmount: UInt64?

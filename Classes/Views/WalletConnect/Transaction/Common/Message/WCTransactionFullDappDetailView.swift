@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonURLImage
 
 class WCTransactionFullDappDetailView: BaseView {
 

@@ -16,7 +16,8 @@
 //  ChoosePasswordView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class ChoosePasswordView: View {
     weak var delegate: ChoosePasswordViewDelegate?

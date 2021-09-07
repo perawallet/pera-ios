@@ -16,7 +16,7 @@
 //   WCMainTransactionViewController.swift
 
 import UIKit
-import Magpie
+import MagpieCore
 
 class WCMainTransactionViewController: BaseViewController {
 

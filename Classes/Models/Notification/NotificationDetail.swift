@@ -15,9 +15,9 @@
 //
 //  NotificationDetail.swift
 
-import Magpie
+import MagpieCore
 
-class NotificationDetail: Model {
+class NotificationDetail: ResponseModel {
     let senderAddress: String?
     let receiverAddress: String?
     private let amount: UInt64?

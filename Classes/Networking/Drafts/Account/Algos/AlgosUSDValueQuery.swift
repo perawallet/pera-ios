@@ -15,7 +15,7 @@
 //
 //   AlgosUSDValueQuery.swift
 
-import Magpie
+import MagpieCore
 
 struct AlgosUSDValueQuery: ObjectQuery {
     let valueInterval: AlgosUSDValueInterval

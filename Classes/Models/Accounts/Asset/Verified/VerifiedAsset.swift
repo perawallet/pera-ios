@@ -15,9 +15,9 @@
 //
 //  VerifiedAsset.swift
 
-import Magpie
+import MagpieCore
 
-class VerifiedAsset: Model {
+class VerifiedAsset: ResponseModel {
     let id: Int64
 }
 

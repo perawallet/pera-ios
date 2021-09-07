@@ -16,7 +16,7 @@
 //  ManageAssetsViewController.swift
 
 import UIKit
-import Magpie
+import MagpieHipo
 
 final class ManageAssetsViewController: BaseViewController {
     weak var delegate: ManageAssetsViewControllerDelegate?

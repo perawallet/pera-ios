@@ -15,7 +15,7 @@
 //
 //  DeviceDeletionDraft.swift
 
-import Magpie
+import MagpieCore
 
 struct DeviceDeletionDraft: JSONObjectBody {
     let pushToken: String

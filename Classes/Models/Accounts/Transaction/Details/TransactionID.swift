@@ -15,9 +15,9 @@
 //
 //  TransactionID.swift
 
-import Magpie
+import MagpieCore
 
-class TransactionID: Model {
+class TransactionID: ResponseModel {
     let identifier: String
     
     init(identifier: String) {

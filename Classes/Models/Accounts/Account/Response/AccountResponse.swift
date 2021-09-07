@@ -15,9 +15,9 @@
 //
 //  AccountResponse.swift
 
-import Magpie
+import MagpieCore
 
-class AccountResponse: Model {
+class AccountResponse: ResponseModel {
     let account: Account
     let currentRound: UInt64
 }

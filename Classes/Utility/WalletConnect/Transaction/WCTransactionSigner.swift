@@ -16,7 +16,7 @@
 //   WCTransactionSigner.swift
 
 import Foundation
-import Magpie
+import MagpieHipo
 
 class WCTransactionSigner {
 

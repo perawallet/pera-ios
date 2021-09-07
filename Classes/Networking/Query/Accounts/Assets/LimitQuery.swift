@@ -15,7 +15,7 @@
 //
 //  VerifiedAssetQuery.swift
 
-import Magpie
+import MagpieCore
 
 struct LimitQuery: ObjectQuery {
     var limit = "all"

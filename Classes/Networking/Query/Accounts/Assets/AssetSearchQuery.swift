@@ -15,7 +15,7 @@
 //
 //  AssetFetchQuery.swift
 
-import Magpie
+import MagpieCore
 
 struct AssetSearchQuery: ObjectQuery {
     let status: AssetSearchFilter

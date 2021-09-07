@@ -15,7 +15,7 @@
 //
 //  FeedbackDraft.swift
 
-import Magpie
+import MagpieCore
 
 struct FeedbackDraft: JSONObjectBody {
     var note: String

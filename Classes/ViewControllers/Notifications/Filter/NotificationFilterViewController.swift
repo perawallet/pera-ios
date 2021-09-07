@@ -16,7 +16,8 @@
 //  NotificationFilterViewController.swift
 
 import UIKit
-import Magpie
+import MagpieCore
+import MagpieHipo
 
 final class NotificationFilterViewController: BaseViewController {
     private lazy var notificationFilterView = NotificationFilterView()

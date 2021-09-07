@@ -16,6 +16,8 @@
 //   AlgorandChartView.swift
 
 import Charts
+import UIKit
+import Foundation
 
 class AlgorandChartView: BaseView {
 

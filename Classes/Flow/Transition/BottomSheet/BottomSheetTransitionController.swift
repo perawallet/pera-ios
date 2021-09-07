@@ -19,7 +19,7 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class BottomSheetTransitionController: Macaroon.BottomSheetTransitionController {
+final class BottomSheetTransitionController: MacaroonUIKit.BottomSheetTransitionController {
     init(presentingViewController: UIViewController, completion: @escaping () -> Void) {
         super.init(
             presentingViewController: presentingViewController,

@@ -15,7 +15,8 @@
 //
 //   ScreenshotWarningViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 extension ScreenshotWarningViewController {
     struct Theme: LayoutSheet, StyleSheet {

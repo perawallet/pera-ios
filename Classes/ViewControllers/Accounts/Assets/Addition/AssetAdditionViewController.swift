@@ -16,7 +16,8 @@
 //  AssetAdditionViewController.swift
 
 import UIKit
-import Magpie
+import MagpieHipo
+import MagpieExceptions
 
 final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable {
     weak var delegate: AssetAdditionViewControllerDelegate?
@@ -263,7 +264,7 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
 }
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError, HIPAPIErrorDetail>) {
         loadingController?.stopLoading()
         
         switch error {

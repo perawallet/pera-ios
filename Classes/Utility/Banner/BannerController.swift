@@ -17,8 +17,9 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-final class BannerController: Macaroon.BannerController {
+final class BannerController: MacaroonUIKit.BannerController {
     init(window: UIWindow) {
         super.init(presentingView: window)
 

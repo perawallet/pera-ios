@@ -15,7 +15,7 @@
 //
 //  TransactionsQuery.swift
 
-import Magpie
+import MagpieCore
 
 struct TransactionsQuery: ObjectQuery {
     let limit: Int?

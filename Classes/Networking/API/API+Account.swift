@@ -15,7 +15,7 @@
 //
 //  API+Account.swift
 
-import Magpie
+import MagpieCore
 
 extension AlgorandAPI {
     @discardableResult

@@ -16,7 +16,8 @@
 //  AccountTypeView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class AccountTypeView: Control {
     private lazy var theme = AccountTypeViewTheme()

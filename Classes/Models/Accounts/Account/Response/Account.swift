@@ -15,9 +15,9 @@
 //
 //  Account.swift
 
-import Magpie
+import MagpieCore
 
-class Account: Model {
+class Account: ResponseModel {
     let address: String
     var amount: UInt64
     var amountWithoutRewards: UInt64

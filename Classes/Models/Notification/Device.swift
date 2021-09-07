@@ -15,9 +15,9 @@
 //
 //  Device.swift
 
-import Magpie
+import MagpieCore
 
-class Device: Model {
+class Device: ResponseModel {
     let id: String?
     let pushToken: String?
     let platform: String?

@@ -15,12 +15,13 @@
 //
 //  AccountInformation.swift
 
-import Magpie
+import MagpieCore
+import UIKit
 
 typealias PublicKey = String
 typealias RekeyDetail = [PublicKey: LedgerDetail]
 
-class AccountInformation: Model {
+class AccountInformation: ResponseModel {
     let address: String
     var name: String
     var type: AccountType = .standard

@@ -19,7 +19,7 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class ScreenLoadingIndicator: View, Macaroon.LoadingIndicator {
+final class ScreenLoadingIndicator: View, MacaroonUIKit.LoadingIndicator {
     var title: String? {
         get { titleView.text }
         set { titleView.text = newValue }

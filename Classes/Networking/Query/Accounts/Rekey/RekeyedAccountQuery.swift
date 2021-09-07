@@ -15,7 +15,7 @@
 //
 //  RekeyedAccountQuery.swift
 
-import Magpie
+import MagpieCore
 
 struct RekeyedAccountQuery: ObjectQuery {
     let authAddress: String

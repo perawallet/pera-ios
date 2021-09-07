@@ -15,9 +15,9 @@
 //
 //   WCMultisigMetadata.swift
 
-import Magpie
+import MagpieCore
 
-class WCMultisigMetadata: Model {
+class WCMultisigMetadata: ResponseModel {
     let version: Int?
     let threshold: UInt64?
     let address: String?

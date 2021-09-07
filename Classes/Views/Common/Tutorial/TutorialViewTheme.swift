@@ -16,7 +16,7 @@
 //   TutorialViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct TutorialViewTheme: StyleSheet, LayoutSheet {
@@ -52,7 +52,7 @@ struct TutorialViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(.fitting)
         ]
         self.warningImage = [
-            .content(img("icon-red-warning"))
+            .image("icon-red-warning")
         ]
         self.warningTitle = [
             .textColor(AppColors.Shared.Helpers.negative),

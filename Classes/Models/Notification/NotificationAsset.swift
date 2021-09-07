@@ -15,9 +15,9 @@
 //
 //  NotificationAsset.swift
 
-import Magpie
+import MagpieCore
 
-class NotificationAsset: Model {
+class NotificationAsset: ResponseModel {
     let id: Int64?
     let name: String?
     let code: String?

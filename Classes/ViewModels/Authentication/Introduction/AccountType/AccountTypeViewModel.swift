@@ -16,7 +16,8 @@
 //  AccountTypeViewModel.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 struct AccountTypeViewModel: PairedViewModel {
     private(set) var image: UIImage?

@@ -15,7 +15,8 @@
 //
 //   PassphraseVerifyViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 extension PassphraseVerifyViewController {
     struct Theme: LayoutSheet, StyleSheet {

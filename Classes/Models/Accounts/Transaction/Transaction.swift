@@ -15,11 +15,12 @@
 //
 //  Transaction.swift
 
-import Magpie
+import MagpieCore
+import Foundation
 
 protocol TransactionItem {}
 
-class Transaction: Model, TransactionItem {
+class Transaction: ResponseModel, TransactionItem {
     let closeRewards: UInt64?
     let closeAmount: UInt64?
     let confirmedRound: UInt64?

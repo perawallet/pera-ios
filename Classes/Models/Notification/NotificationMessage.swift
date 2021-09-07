@@ -15,9 +15,10 @@
 //
 //  Notification.swift
 
-import Magpie
+import MagpieCore
+import Foundation
 
-class NotificationMessage: Model {
+class NotificationMessage: ResponseModel {
     let id: Int
     let account: Int?
     let notificationType: NotificationType?

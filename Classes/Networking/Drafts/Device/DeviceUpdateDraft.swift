@@ -17,7 +17,7 @@
 
 import Foundation
 import UIKit
-import Magpie
+import MagpieCore
 
 struct DeviceUpdateDraft: JSONObjectBody {
     let id: String

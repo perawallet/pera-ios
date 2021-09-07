@@ -15,9 +15,9 @@
 //
 //   AlgosValueResponse.swift
 
-import Magpie
+import MagpieCore
 
-class AlgosValueResponse: Model {
+class AlgosValueResponse: ResponseModel {
     let coin: String
     let history: [AlgosUSDValue]
 }

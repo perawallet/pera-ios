@@ -17,9 +17,9 @@
 
 import Foundation
 import UIKit
-import Magpie
+import MagpieCore
 
-class LedgerDetail: Model {
+class LedgerDetail: ResponseModel {
     let id: UUID?
     let name: String?
     var indexInLedger: Int?

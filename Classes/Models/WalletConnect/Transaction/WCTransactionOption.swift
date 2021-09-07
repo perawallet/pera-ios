@@ -15,9 +15,9 @@
 //
 //   WCTransactionOption.swift
 
-import Magpie
+import MagpieCore
 
-class WCTransactionOption: Model {
+class WCTransactionOption: ResponseModel {
     let message: String?
 }
 

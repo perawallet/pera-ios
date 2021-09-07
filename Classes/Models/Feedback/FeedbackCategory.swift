@@ -15,9 +15,9 @@
 //
 //  FeedbackCategory.swift
 
-import Magpie
+import MagpieCore
 
-class FeedbackCategory: Model {
+class FeedbackCategory: ResponseModel {
     let name: String
     let slug: String
 }

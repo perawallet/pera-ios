@@ -15,7 +15,10 @@
 //
 //  API.swift
 
-import Magpie
+import MagpieCore
+import MagpieAlamofire
+import MacaroonUtils
+import MagpieHipo
 
 class AlgorandAPI: API {
     private lazy var application = HIPApplication()

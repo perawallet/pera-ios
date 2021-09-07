@@ -15,9 +15,9 @@
 //
 //  AssetFreezeTransaction.swift
 
-import Magpie
+import MagpieCore
 
-class AssetFreezeTransaction: Model {
+class AssetFreezeTransaction: ResponseModel {
     let address: String?
     let isFreeze: Bool?
     let assetId: Int64?

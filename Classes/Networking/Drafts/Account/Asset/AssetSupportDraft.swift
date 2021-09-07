@@ -15,7 +15,7 @@
 //
 //  AssetSupportDraft.swift
 
-import Magpie
+import MagpieCore
 
 struct AssetSupportDraft: JSONObjectBody {
     let sender: String

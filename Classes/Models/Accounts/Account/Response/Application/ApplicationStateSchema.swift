@@ -15,9 +15,9 @@
 //
 //   ApplicationStateSchema.swift
 
-import Magpie
+import MagpieCore
 
-class ApplicationStateSchema: Model {
+class ApplicationStateSchema: ResponseModel {
     let intValue: Int?
     let byteSliceCount: Int?
 }

@@ -16,7 +16,7 @@
 //  NotificationsViewController.swift
 
 import UIKit
-import Magpie
+import MagpieCore
 
 final class NotificationsViewController: BaseViewController {
     private var isInitialFetchCompleted = false

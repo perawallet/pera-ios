@@ -15,9 +15,9 @@
 //
 //  Currency.swift
 
-import Magpie
+import MagpieCore
 
-class Currency: Model {
+class Currency: ResponseModel {
     let id: String
     let name: String?
     let price: String?

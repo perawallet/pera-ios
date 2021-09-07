@@ -15,9 +15,10 @@
 //
 //  User.swift
 
-import Magpie
+import MagpieCore
+import UIKit
 
-class User: Model {
+class User: ResponseModel {
     private(set) var accounts: [AccountInformation] = []
     private(set) var defaultNode: String?
     private(set) var deviceId: String?

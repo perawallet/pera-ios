@@ -15,8 +15,9 @@
 //
 //  API+Transaction.swift
 
-import Magpie
+import MagpieCore
 import SwiftDate
+import Foundation
 
 extension AlgorandAPI {
     @discardableResult

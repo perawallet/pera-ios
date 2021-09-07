@@ -15,9 +15,9 @@
 //
 //   AlgorandBlock.swift
 
-import Magpie
+import MagpieCore
 
-class AlgorandBlock: Model {
+class AlgorandBlock: ResponseModel {
     let rewardsRate: UInt64
     let rewardsResidue: UInt64
 

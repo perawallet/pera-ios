@@ -15,9 +15,9 @@
 //
 //  TransactionList.swift
 
-import Magpie
+import MagpieCore
 
-class TransactionList: Model {
+class TransactionList: ResponseModel {
     let currentRound: UInt64
     let nextToken: String?
     let transactions: [Transaction]

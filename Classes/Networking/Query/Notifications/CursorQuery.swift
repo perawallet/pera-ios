@@ -15,7 +15,7 @@
 //
 //  CursorQuery.swift
 
-import Magpie
+import MagpieCore
 
 struct CursorQuery: ObjectQuery {
     let cursor: String?

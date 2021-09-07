@@ -18,6 +18,7 @@
 import UIKit
 import MacaroonUIKit
 import SwiftDate
+import MacaroonURLImage
 
 class WCSessionItemViewModel {
     private(set) var image: ImageSource?

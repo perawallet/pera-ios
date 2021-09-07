@@ -15,9 +15,9 @@
 //
 //   ApplicationLocalState.swift
 
-import Magpie
+import MagpieCore
 
-class ApplicationLocalState: Model {
+class ApplicationLocalState: ResponseModel {
     var closedAtRound: UInt64?
     var isDeleted: Bool?
     var id: Int64?

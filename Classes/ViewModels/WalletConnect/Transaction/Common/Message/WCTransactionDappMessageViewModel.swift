@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonURLImage
 
 class WCTransactionDappMessageViewModel {
     private(set) var image: ImageSource?

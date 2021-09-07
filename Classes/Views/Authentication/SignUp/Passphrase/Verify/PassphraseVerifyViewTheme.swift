@@ -16,7 +16,7 @@
 //   PassphraseVerifyViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct PassphraseVerifyViewTheme: StyleSheet, LayoutSheet {
@@ -39,7 +39,7 @@ struct PassphraseVerifyViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
             .textOverflow(.fitting),
-            .content("passphrase-verify-title".localized)
+            .text("passphrase-verify-title".localized)
         ]
         self.nextButtonTheme = ButtonPrimaryTheme()
 

@@ -15,11 +15,12 @@
 //
 //  TransactionControllerDelegate.swift
 
-import Magpie
+import MagpieHipo
+import MagpieExceptions
 
 protocol TransactionControllerDelegate: AnyObject {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?)
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>)
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError, HIPAPIErrorDetail>)
     func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID)
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>)
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController)

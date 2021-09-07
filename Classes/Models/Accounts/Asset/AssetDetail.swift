@@ -15,9 +15,9 @@
 //
 //  AssetDetail.swift
 
-import Magpie
+import MagpieCore
 
-class AssetDetailResponse: Model {
+class AssetDetailResponse: ResponseModel {
     let assetDetail: AssetDetail
     let currentRound: UInt64
 }
@@ -29,7 +29,7 @@ extension AssetDetailResponse {
     }
 }
 
-class AssetDetail: Model {
+class AssetDetail: ResponseModel {
     let creator: String
     let total: UInt64
     let isDefaultFrozen: Bool?

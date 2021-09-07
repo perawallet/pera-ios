@@ -15,9 +15,9 @@
 //
 //  RekeyedAccountsResponse.swift
 
-import Magpie
+import MagpieCore
 
-class RekeyedAccountsResponse: Model {
+class RekeyedAccountsResponse: ResponseModel {
     let accounts: [Account]
     let currentRound: UInt64
     let nextToken: String?

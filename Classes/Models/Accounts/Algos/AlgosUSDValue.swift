@@ -15,7 +15,7 @@
 //
 //   AlgosUSDValue.swift
 
-import Magpie
+import MagpieCore
 
 class AlgosUSDValue: Model {
     let timestamp: Double?

@@ -16,7 +16,7 @@
 //  RekeyConfirmationViewController.swift
 
 import UIKit
-import Magpie
+import MagpieHipo
 
 final class RekeyConfirmationViewController: BaseViewController {
     private lazy var rekeyConfirmationView = RekeyConfirmationView()
@@ -109,7 +109,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
         }
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError, >) {
         switch error {
         case let .network(apiError):
             bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)

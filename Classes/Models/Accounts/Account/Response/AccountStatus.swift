@@ -15,7 +15,7 @@
 //
 //  AccountStatus.swift
 
-import Magpie
+import MagpieCore
 
 enum AccountStatus: String, Model {
     case offline = "Offline"

@@ -15,9 +15,9 @@
 //
 //  Asset.swift
 
-import Magpie
+import MagpieCore
 
-class Asset: Model {
+class Asset: ResponseModel {
     let creator: String?
     let amount: UInt64
     let isFrozen: Bool?

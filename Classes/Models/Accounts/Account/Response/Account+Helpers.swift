@@ -15,7 +15,7 @@
 //
 //  Account+Helpers.swift
 
-import Magpie
+import MagpieCore
 import UIKit
 
 extension Account {

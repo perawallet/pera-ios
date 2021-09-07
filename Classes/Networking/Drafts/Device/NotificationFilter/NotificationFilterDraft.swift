@@ -15,7 +15,7 @@
 //
 //  NotificationFilterDraft.swift
 
-import Magpie
+import MagpieCore
 
 struct NotificationFilterDraft: JSONObjectBody {
     let deviceId: String

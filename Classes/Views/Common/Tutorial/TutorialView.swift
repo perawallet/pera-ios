@@ -16,7 +16,8 @@
 //  TutorialView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class TutorialView: View {
     weak var delegate: TutorialViewDelegate?

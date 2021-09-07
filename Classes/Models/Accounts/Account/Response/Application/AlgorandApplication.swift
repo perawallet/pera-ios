@@ -15,9 +15,9 @@
 //
 //   AlgorandApplication.swift
 
-import Magpie
+import MagpieCore
 
-class AlgorandApplication: Model {
+class AlgorandApplication: ResponseModel {
     var createdAtRound: UInt64?
     var isDeleted: Bool?
     var id: Int64?

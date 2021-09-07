@@ -15,8 +15,8 @@
 //
 //   PasswordInputCircleViewTheme.swift
 
+import MacaroonUIKit
 import Foundation
-import Macaroon
 import UIKit
 
 struct PasswordInputCircleViewTheme: StyleSheet, LayoutSheet {
@@ -30,9 +30,8 @@ struct PasswordInputCircleViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-        let filledButtonImage: UIImage = img("black-button-filled")
-        self.imageSet = ImageSet(
-            img("gray-button-border"),
+        let filledButtonImage: Image = "black-button-filled"
+        self.imageSet = ImageSet("gray-button-border",
             highlighted: filledButtonImage,
             selected: filledButtonImage,
             disabled: filledButtonImage

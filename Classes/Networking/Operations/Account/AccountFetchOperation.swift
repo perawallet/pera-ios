@@ -16,7 +16,7 @@
 //  AccountFetchOperation.swift
 
 import UIKit
-import Magpie
+import MagpieCore
 
 typealias AccountFetchHandler = (Account?, Error?) -> Void
 

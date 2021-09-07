@@ -16,6 +16,7 @@
 //   TransactionSignRequestHandler.swift
 
 import WalletConnectSwift
+import Foundation
 
 class TransactionSignRequestHandler: WalletConnectRequestHandler {
 

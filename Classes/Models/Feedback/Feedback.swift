@@ -15,9 +15,9 @@
 //
 //  Feedback.swift
 
-import Magpie
+import MagpieCore
 
-class Feedback: Model {
+class Feedback: ResponseModel {
     let id: Int
     let note: String
     let email: String?

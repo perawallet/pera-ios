@@ -16,7 +16,7 @@
 //  CurrencySelectionDataSource.swift
 
 import UIKit
-import Magpie
+import MagpieCore
 
 class CurrencySelectionDataSource: NSObject {
     

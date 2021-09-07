@@ -15,9 +15,10 @@
 //
 //  PaginatedList.swift
 
-import Magpie
+import MagpieCore
+import Foundation
 
-class PaginatedList<T: Model>: Model {
+class PaginatedList<T: ResponseModel>: ResponseModel {
     let count: Int
     let next: URL?
     let previous: String?

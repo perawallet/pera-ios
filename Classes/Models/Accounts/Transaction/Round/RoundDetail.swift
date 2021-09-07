@@ -15,9 +15,9 @@
 //
 //  RoundDetail.swift
 
-import Magpie
+import MagpieCore
 
-class RoundDetail: Model {
+class RoundDetail: ResponseModel {
     let lastRound: UInt64
     let nextVersionRound: UInt64
 }

@@ -15,9 +15,9 @@
 //
 //  PendingTransactionList.swift
 
-import Magpie
+import MagpieCore
 
-class PendingTransactionList: Model {
+class PendingTransactionList: ResponseModel {
     var pendingTransactions: [PendingTransaction]
     var count: Int
 }

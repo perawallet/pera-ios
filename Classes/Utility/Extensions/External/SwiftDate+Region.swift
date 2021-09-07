@@ -16,6 +16,7 @@
 //  SwiftDate+Region.swift
 
 import SwiftDate
+import Foundation
 
 extension SwiftDate {
     static func setupDateRegion() {

@@ -15,9 +15,9 @@
 //
 //  IndexerError.swift
 
-import Magpie
+import MagpieCore
 
-class IndexerError: Model {
+class IndexerError: ResponseModel {
     let message: String
 }
 

@@ -16,7 +16,8 @@
 //  NumpadButton.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class NumpadButton: UIButton, ViewComposable {
     override var intrinsicContentSize: CGSize {
@@ -43,12 +44,12 @@ final class NumpadButton: UIButton, ViewComposable {
         switch numpadKey {
         case .number(let value):
             customizeBaseAppearance(title: value)
-            setBackgroundImage(theme.buttonBackgroundHighlightedImage.content?.image, for: .highlighted)
+            setBackgroundImage(theme.buttonBackgroundHighlightedImage.image?.image, for: .highlighted)
             titleLabel?.textAlignment = .center
             customizeAppearance(theme.button)
             customizeBaseAppearance(title: value)
         case .delete:
-            customizeBaseAppearance(icon: theme.deleteImage.content)
+            customizeBaseAppearance(icon: theme.deleteImage.image)
         case .spacing:
             break
         }

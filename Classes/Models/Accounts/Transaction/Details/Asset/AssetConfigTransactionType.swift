@@ -15,9 +15,9 @@
 //
 //  AssetConfigTransaction.swift
 
-import Magpie
+import MagpieCore
 
-class AssetConfigTransaction: Model {
+class AssetConfigTransaction: ResponseModel {
     let id: Int64?
 }
 

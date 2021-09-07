@@ -16,7 +16,7 @@
 //   PassphraseViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct PassphraseViewTheme: StyleSheet, LayoutSheet {
@@ -26,6 +26,21 @@ struct PassphraseViewTheme: StyleSheet, LayoutSheet {
     let verticalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
+        self.title = [
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.medium.make(32)),
+            .textAlignment(.left),
+            .textOverflow(.fitting),
+            .text("recover-passphrase-title".localized)
+        ]
+        self.description = [
+            .textColor(AppColors.Components.Text.gray),
+            .font(Fonts.DMSans.regular.make(15)),
+            .textAlignment(.left),
+            .textOverflow(.fitting),
+            .text("passphrase-bottom-title".localized)
+        ]
         self.passphraseContainerView = [
             .backgroundColor(AppColors.Shared.Layer.grayLightest)
         ]

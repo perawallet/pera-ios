@@ -15,7 +15,7 @@
 //
 //  Contact.swift
 
-import Magpie
+import MagpieCore
 import CoreData
 
 @objc(Contact)

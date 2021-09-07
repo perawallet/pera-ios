@@ -15,8 +15,8 @@
 //
 //   WelcomeViewTheme.swift
 
+import MacaroonUIKit
 import Foundation
-import Macaroon
 import UIKit
 
 struct WelcomeViewTheme: StyleSheet, LayoutSheet {
@@ -32,7 +32,7 @@ struct WelcomeViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
             .textAlignment(.center),
-            .content("account-welcome-wallet-title".localized),
+            .text("account-welcome-wallet-title".localized),
             .textOverflow(.fitting),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32))

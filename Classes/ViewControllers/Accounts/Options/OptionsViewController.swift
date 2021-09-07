@@ -16,7 +16,8 @@
 //  OptionsViewController.swift
 
 import UIKit
-import Magpie
+import MagpieCore
+import MagpieHipo
 
 final class OptionsViewController: BaseViewController {
     weak var delegate: OptionsViewControllerDelegate?

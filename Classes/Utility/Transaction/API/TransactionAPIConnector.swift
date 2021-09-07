@@ -15,7 +15,8 @@
 //
 //  TransactionAPIConnector.swift
 
-import Magpie
+import MagpieCore
+import Foundation
 
 class TransactionAPIConnector {
 

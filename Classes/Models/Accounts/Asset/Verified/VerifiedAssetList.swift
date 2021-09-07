@@ -15,9 +15,9 @@
 //
 //  VerifiedAssetList.swift
 
-import Magpie
+import MagpieCore
 
-class VerifiedAssetList: Model {
+class VerifiedAssetList: ResponseModel {
     let count: Int
     let next: String?
     let previous: String?

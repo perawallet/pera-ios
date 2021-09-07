@@ -15,7 +15,8 @@
 //
 //  transactionController.swift
 
-import Magpie
+import MagpieHipo
+import UIKit
 
 class TransactionController {
     weak var delegate: TransactionControllerDelegate?
@@ -360,7 +361,7 @@ extension TransactionController: TransactionSignerDelegate {
 
 extension TransactionController: TransactionFeeCalculatorDelegate {
     func transactionFeeCalculator(_ transactionFeeCalculator: TransactionFeeCalculator, didFailedWith minimumAmount: UInt64) {
-        handleTransactionComposingError(.inapp(TransactionError.minimumAmount(amount: minimumAmount)))
+        handleTransactionComposingError( .inapp(TransactionError.minimumAmount(amount: minimumAmount)))
     }
 }
 

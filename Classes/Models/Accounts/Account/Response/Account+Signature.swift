@@ -15,7 +15,7 @@
 //
 //  Acount+Signature.swift
 
-import Magpie
+import MagpieCore
 
 extension Account {
     enum SignatureType: String, Model {

@@ -15,9 +15,9 @@
 //
 //  Payment.swift
 
-import Magpie
+import MagpieCore
 
-class Payment: Model {
+class Payment: ResponseModel {
     let amount: UInt64
     let receiver: String
     let closeAmount: UInt64?

@@ -15,7 +15,7 @@
 //
 //  AlgorandParamPairKey.swift
 
-import Magpie
+import MagpieCore
 
 enum RequestParameter: String, CodingKey {
     case address = "address"

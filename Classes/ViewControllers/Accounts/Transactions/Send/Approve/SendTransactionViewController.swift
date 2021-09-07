@@ -16,7 +16,7 @@
 //  SendTransactionViewController.swift
 
 import UIKit
-import Magpie
+import MagpieHipo
 
 protocol SendTransactionViewControllerDelegate: AnyObject {
     func sendTransactionViewController(_ viewController: SendTransactionViewController, didCompleteTransactionFor asset: Int64?)

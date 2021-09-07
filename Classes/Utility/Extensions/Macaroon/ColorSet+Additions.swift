@@ -17,7 +17,7 @@
 
 import MacaroonUIKit
 
-extension Macaroon.ColorSet {
+extension MacaroonUIKit.ColorSet {
     init(normal: Color, disabled: Color) {
         self.init(normal, highlighted: nil, selected: nil, disabled: disabled)
     }

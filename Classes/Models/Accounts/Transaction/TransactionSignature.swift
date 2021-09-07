@@ -15,9 +15,9 @@
 //
 //  TransactionSignature.swift
 
-import Magpie
+import MagpieCore
 
-class TransactionSignature: Model {
+class TransactionSignature: ResponseModel {
     let signature: String?
 }
 

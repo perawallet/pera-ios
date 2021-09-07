@@ -16,7 +16,7 @@
 //  NotificationsDataSource.swift
 
 import UIKit
-import Magpie
+import MagpieCore
 
 final class NotificationsDataSource: NSObject {
     weak var delegate: NotificationsDataSourceDelegate?

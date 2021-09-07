@@ -15,9 +15,9 @@
 //
 //  AssetTransferTransaction.swift
 
-import Magpie
+import MagpieCore
 
-class AssetTransferTransaction: Model {
+class AssetTransferTransaction: ResponseModel {
     let amount: UInt64
     let closeAmount: UInt64?
     let closeToAddress: String?

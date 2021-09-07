@@ -15,9 +15,9 @@
 //
 //  AlgorandError.swift
 
-import Magpie
+import MagpieCore
 
-class AlgorandError: Model & Encodable {
+class AlgorandError: ResponseModel & Encodable {
     let type: String
     let message: String?
 }

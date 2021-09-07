@@ -15,9 +15,9 @@
 //
 //  AlgorandNotification.swift
 
-import Magpie
+import MagpieCore
 
-class AlgorandNotification: Model {
+class AlgorandNotification: ResponseModel {
     let badge: Int?
     let alert: String?
     let details: NotificationDetail?

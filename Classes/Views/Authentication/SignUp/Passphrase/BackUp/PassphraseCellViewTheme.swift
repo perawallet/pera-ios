@@ -15,8 +15,8 @@
 //
 //   PassphraseBackUpCellViewTheme.swift
 
+import MacaroonUIKit
 import Foundation
-import Macaroon
 import UIKit
 
 struct PassphraseCellViewTheme: StyleSheet, LayoutSheet {

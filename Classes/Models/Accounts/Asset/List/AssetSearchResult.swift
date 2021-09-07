@@ -15,9 +15,9 @@
 //
 //  AssetQueryItem.swift
 
-import Magpie
+import MagpieCore
 
-class AssetSearchResult: Model {
+class AssetSearchResult: ResponseModel {
     let id: Int64
     let name: String?
     let unitName: String?

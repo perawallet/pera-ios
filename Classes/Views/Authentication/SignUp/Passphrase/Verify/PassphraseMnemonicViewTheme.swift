@@ -16,7 +16,7 @@
 //   PassphraseMnemonicViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct PassphraseMnemonicViewTheme: StyleSheet, LayoutSheet {

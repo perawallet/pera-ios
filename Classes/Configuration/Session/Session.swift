@@ -17,7 +17,7 @@
 
 import Foundation
 import UIKit
-import Magpie
+import MagpieCore
 import KeychainAccess
 
 class Session: Storable {

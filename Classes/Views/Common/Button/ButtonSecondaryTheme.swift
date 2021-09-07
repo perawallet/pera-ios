@@ -44,7 +44,7 @@ struct ButtonSecondaryTheme: ButtonTheme {
         self.corner = Corner(radius: 4)
         self.icon = []
         self.indicator = [
-            .content(img("button-loading-indicator")),
+            .image("button-loading-indicator"),
             .contentMode(.scaleAspectFill)
         ]
         
