@@ -3,6 +3,16 @@
     {
       "filename" : "icon-black-algorand.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-logo-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
