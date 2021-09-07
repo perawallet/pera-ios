@@ -175,9 +175,7 @@ extension WCTransactionDetail {
     }
 
     func isAssetAdditionTransaction() -> Bool {
-        return type == .assetTransfer &&
-            (assetAmount == nil || assetAmount == 0) &&
-            sender == assetReceiver
+        return type == .assetTransfer && amount == 0 && sender == assetReceiver
     }
 
     var isAppCallTransaction: Bool {
