@@ -16,24 +16,21 @@
 //  AccountNameSettingViewController.swift
 
 import UIKit
+import Macaroon
 
-class AccountNameSetupViewController: BaseScrollViewController {
-    
+final class AccountNameSetupViewController: BaseScrollViewController {
     private lazy var accountNameSetupView = AccountNameSetupView()
     
     private var keyboardController = KeyboardController()
     
-    override func configureAppearance() {
-        super.configureAppearance()
-        title = "account-details-title".localized
-    }
-    
     override func setListeners() {
         super.setListeners()
         keyboardController.beginTracking()
+        accountNameSetupView.setListeners()
     }
     
     override func linkInteractors() {
+        accountNameSetupView.linkInteractors()
         scrollView.touchDetectingDelegate = self
         keyboardController.dataSource = self
         accountNameSetupView.delegate = self
@@ -52,10 +49,11 @@ class AccountNameSetupViewController: BaseScrollViewController {
 
 extension AccountNameSetupViewController {
     private func setupAccountNameSetupViewLayout() {
+        accountNameSetupView.customize(AccountNameSetupViewTheme())
+
         contentView.addSubview(accountNameSetupView)
-        
-        accountNameSetupView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        accountNameSetupView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
@@ -65,8 +63,7 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
         setupAccountName()
     }
     
-    func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView) {
-    }
+    func accountNameSetupViewDidChangeValue(_ accountNameSetupView: AccountNameSetupView) {}
 }
 
 extension AccountNameSetupViewController {
@@ -78,7 +75,7 @@ extension AccountNameSetupViewController {
 
         log(RegistrationEvent(type: .create))
 
-        let nameInput = accountNameSetupView.accountNameInputView.inputTextField.text.unwrap(or: "")
+        let nameInput = accountNameSetupView.accountNameInputView.text.unwrap(or: "")
         let accountName = nameInput.isEmptyOrBlank ? address.shortAddressDisplay() : nameInput
         let account = AccountInformation(address: address, name: accountName, type: .standard)
         session?.savePrivate(tempPrivateKey, for: account.address)
@@ -92,7 +89,7 @@ extension AccountNameSetupViewController {
             let user = User(accounts: [account])
             session?.authenticatedUser = user
             
-            self.dismiss(animated: false) {
+            dismiss(animated: false) {
                 UIApplication.shared.rootViewController()?.setupTabBarController()
             }
         }
@@ -101,7 +98,7 @@ extension AccountNameSetupViewController {
 
 extension AccountNameSetupViewController: KeyboardControllerDataSource {
     func bottomInsetWhenKeyboardPresented(for keyboardController: KeyboardController) -> CGFloat {
-        return 20.0
+        return 20
     }
     
     func firstResponder(for keyboardController: KeyboardController) -> UIView? {
@@ -113,7 +110,7 @@ extension AccountNameSetupViewController: KeyboardControllerDataSource {
     }
     
     func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
-        return 20.0
+        return 20
     }
 }
 

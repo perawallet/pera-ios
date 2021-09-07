@@ -16,45 +16,37 @@
 //  AccountNameSetupView.swift
 
 import UIKit
+import Macaroon
 
-class AccountNameSetupView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
+final class AccountNameSetupView: View {
     weak var delegate: AccountNameSetupViewDelegate?
-    
-    private(set) lazy var accountNameInputView: SingleLineInputField = {
-        let accountNameInputView = SingleLineInputField()
-        accountNameInputView.explanationLabel.text = "account-name-setup-explanation".localized
-        accountNameInputView.placeholderText = "account-name-setup-placeholder".localized
-        accountNameInputView.nextButtonMode = .submit
-        accountNameInputView.inputTextField.autocorrectionType = .no
-        return accountNameInputView
-    }()
 
-    private lazy var descriptionLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.secondary)
-            .withLine(.contained)
-            .withAlignment(.left)
-            .withText("account-name-setup-description".localized)
-    }()
+    private(set) lazy var accountNameInputView = createAccountNameTextInput(
+        placeholder: "account-name-setup-explanation".localized,
+        floatingPlaceholder: "account-name-setup-placeholder".localized
+    )
+    private lazy var titleLabel = UILabel()
+    private lazy var descriptionLabel = UILabel()
+    private(set) lazy var nextButton = Button()
 
-    private(set) lazy var nextButton = MainButton(title: "account-name-setup-finish".localized)
-    
-    override func linkInteractors() {
+    func customize(_ theme: AccountNameSetupViewTheme) {
+        addTitle(theme)
+        addDescriptionLabel(theme)
+        addAccountNameInputView(theme)
+        addFinishAccountCreationButton(theme)
+    }
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func linkInteractors() {
+        accountNameInputView.editingDelegate = self
         accountNameInputView.delegate = self
     }
     
-    override func setListeners() {
+    func setListeners() {
         nextButton.addTarget(self, action: #selector(notifyDelegateToFinishAccountCreation), for: .touchUpInside)
-    }
-    
-    override func prepareLayout() {
-        setupAccountNameInputViewLayout()
-        setupDescriptionLabelLayout()
-        setupNextButtonLayout()
     }
 }
 
@@ -66,33 +58,75 @@ extension AccountNameSetupView {
 }
 
 extension AccountNameSetupView {
-    private func setupAccountNameInputViewLayout() {
-        addSubview(accountNameInputView)
-        
-        accountNameInputView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.verticalInset)
+    private func addTitle(_ theme: AccountNameSetupViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalToSuperview().inset(theme.topInset)
         }
     }
 
-    private func setupDescriptionLabelLayout() {
+    private func addDescriptionLabel(_ theme: AccountNameSetupViewTheme) {
+        descriptionLabel.customizeAppearance(theme.description)
+
         addSubview(descriptionLabel)
-
-        descriptionLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(accountNameInputView.snp.bottom).offset(layout.current.verticalInset)
+        descriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.bottomInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
 
-    private func setupNextButtonLayout() {
-        addSubview(nextButton)
-        
-        nextButton.snp.makeConstraints { make in
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(layout.current.buttonVerticalInset)
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.verticalInset + safeAreaBottom)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerX.equalToSuperview()
+    private func addAccountNameInputView(_ theme: AccountNameSetupViewTheme) {
+        addSubview(accountNameInputView)
+        accountNameInputView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.textInputVerticalInset)
         }
+    }
+
+    private func addFinishAccountCreationButton(_ theme: AccountNameSetupViewTheme) {
+        nextButton.customize(theme.mainButtonTheme)
+        nextButton.bindData(ButtonCommonViewModel(title: "account-name-setup-finish".localized))
+
+        addSubview(nextButton)
+        nextButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.greaterThanOrEqualTo(accountNameInputView.snp.bottom).offset(theme.containerTopInset)
+            $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+        }
+    }
+}
+
+extension AccountNameSetupView {
+    func createAccountNameTextInput(
+        placeholder: String,
+        floatingPlaceholder: String?
+    ) -> FloatingTextInputFieldView {
+        let view = FloatingTextInputFieldView()
+        let textInputBaseStyle: TextInputStyle = [
+            .font(Fonts.DMSans.regular.make(15, .body)),
+            .tintColor(AppColors.Components.Text.main),
+            .textColor(AppColors.Components.Text.main),
+            .clearButtonMode(.whileEditing),
+            .returnKeyType(.done),
+            .autocapitalizationType(.words),
+            .textContentType(.name)
+        ]
+
+        let theme =
+            FloatingTextInputFieldViewCommonTheme(
+                textInput: textInputBaseStyle,
+                placeholder: placeholder,
+                floatingPlaceholder: floatingPlaceholder
+            )
+        view.customize(theme)
+        view.snp.makeConstraints {
+            $0.greaterThanHeight(48)
+        }
+        return view
     }
 }
 
@@ -102,18 +136,23 @@ extension AccountNameSetupView {
     }
 }
 
-extension AccountNameSetupView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let verticalInset: CGFloat = 20.0
-        let buttonVerticalInset: CGFloat = 60.0
-        let horizontalInset: CGFloat = 20.0
+extension AccountNameSetupView: FloatingTextInputFieldViewDelegate {
+    func floatingTextInputFieldViewShouldReturn(_ view: FloatingTextInputFieldView) -> Bool {
+        view.endEditing()
+        return true
     }
 }
 
-extension AccountNameSetupView: InputViewDelegate {
-    func inputViewDidChangeValue(inputView: BaseInputView) {
+extension AccountNameSetupView: FormInputFieldViewEditingDelegate {
+    func formInputFieldViewDidBeginEditing(_ view: FloatingTextInputFieldView) {
         delegate?.accountNameSetupViewDidChangeValue(self)
     }
+
+    func formInputFieldViewDidEdit(_ view: FloatingTextInputFieldView) {
+        delegate?.accountNameSetupViewDidChangeValue(self)
+    }
+
+    func formInputFieldViewDidEndEditing(_ view: FloatingTextInputFieldView) {}
 }
 
 protocol AccountNameSetupViewDelegate: AnyObject {
