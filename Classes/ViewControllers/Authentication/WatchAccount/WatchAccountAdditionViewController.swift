@@ -19,6 +19,7 @@ import UIKit
 
 final class WatchAccountAdditionViewController: BaseScrollViewController {
     private lazy var watchAccountAdditionView = WatchAccountAdditionView()
+    private lazy var theme = Theme()
     
     private var keyboardController = KeyboardController()
     
@@ -52,12 +53,24 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        watchAccountAdditionView.customize(WatchAccountAdditionViewTheme())
+        watchAccountAdditionView.customize(theme.watchAccountAdditionViewTheme)
 
         contentView.addSubview(watchAccountAdditionView)
         watchAccountAdditionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+        setNavigationBarTertiaryBackgroundColor()
+        customizeBackground()
+    }
+
+    private func customizeBackground() {
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
     override func bindData() {
