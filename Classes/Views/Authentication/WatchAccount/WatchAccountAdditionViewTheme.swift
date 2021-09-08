@@ -55,9 +55,8 @@ struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
             .content("watch-account-explanation-title".localized)
         ]
         self.pasteButton = [
-            .backgroundColor(AppColors.Components.Button.Primary.background), /// Change
-            .font(Fonts.DMMono.regular.make(15)),
-            .titleColor(UIColor.white)
+            .backgroundColor(AppColors.Shared.Global.gray800),
+            .font(Fonts.DMMono.regular.make(15))
         ]
         self.pasteButtonCorner = Corner(radius: 20)
         self.qr = [

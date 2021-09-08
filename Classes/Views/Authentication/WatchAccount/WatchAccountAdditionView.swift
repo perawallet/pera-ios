@@ -86,7 +86,7 @@ extension WatchAccountAdditionView {
         let pasteText = "\("watch-account-paste".localized + " ")".attributed(
             [
                 .font(Fonts.DMSans.regular.make(15).font),
-                .textColor(AppColors.Components.Button.Primary.text.color)
+                .textColor(AppColors.Shared.Global.white.color)
             ]
         )
 
