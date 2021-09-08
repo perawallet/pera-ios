@@ -20,6 +20,7 @@ import Macaroon
 
 final class AccountNameSetupViewController: BaseScrollViewController {
     private lazy var accountNameSetupView = AccountNameSetupView()
+    private lazy var theme = Theme()
     
     private var keyboardController = KeyboardController()
     
@@ -38,7 +39,19 @@ final class AccountNameSetupViewController: BaseScrollViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupAccountNameSetupViewLayout()
+        addAccountNameSetupView()
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+        setNavigationBarTertiaryBackgroundColor()
+        customizeBackground()
+    }
+
+    private func customizeBackground() {
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -48,8 +61,8 @@ final class AccountNameSetupViewController: BaseScrollViewController {
 }
 
 extension AccountNameSetupViewController {
-    private func setupAccountNameSetupViewLayout() {
-        accountNameSetupView.customize(AccountNameSetupViewTheme())
+    private func addAccountNameSetupView() {
+        accountNameSetupView.customize(theme.accountNameSetupViewViewTheme)
 
         contentView.addSubview(accountNameSetupView)
         accountNameSetupView.snp.makeConstraints {
