@@ -18,7 +18,6 @@
 import UIKit
 
 extension String {
-    
     enum Attribute {
         case textColor(UIColor)
         case font(UIFont)
@@ -29,8 +28,8 @@ extension String {
     func attributed(_ attributes: [Attribute] = []) -> NSAttributedString {
         var theAttributes: [NSAttributedString.Key: Any] = [:]
         
-        for attr in attributes {
-            switch attr {
+        for attribute in attributes {
+            switch attribute {
             case .textColor(let color):
                 theAttributes[.foregroundColor] = color
             case .font(let font):

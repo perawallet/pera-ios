@@ -2642,6 +2642,9 @@
 		D4241FDD26E7999C0064CDD0 /* AccountNameSetupViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4241FDC26E7999C0064CDD0 /* AccountNameSetupViewTheme.swift */; };
 		D4241FDE26E7999C0064CDD0 /* AccountNameSetupViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4241FDC26E7999C0064CDD0 /* AccountNameSetupViewTheme.swift */; };
 		D4241FDF26E7999C0064CDD0 /* AccountNameSetupViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4241FDC26E7999C0064CDD0 /* AccountNameSetupViewTheme.swift */; };
+		D4241FE526E7D69B0064CDD0 /* WatchAccountAdditionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4241FE426E7D69B0064CDD0 /* WatchAccountAdditionViewTheme.swift */; };
+		D4241FE626E7D69B0064CDD0 /* WatchAccountAdditionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4241FE426E7D69B0064CDD0 /* WatchAccountAdditionViewTheme.swift */; };
+		D4241FE726E7D69B0064CDD0 /* WatchAccountAdditionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4241FE426E7D69B0064CDD0 /* WatchAccountAdditionViewTheme.swift */; };
 		D42A022526D7A50A00CEFC16 /* BottomSheetTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022426D7A50A00CEFC16 /* BottomSheetTransition.swift */; };
 		D42A022726D7A52F00CEFC16 /* BottomSheetTransitionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42A022626D7A52F00CEFC16 /* BottomSheetTransitionController.swift */; };
 		D430A40126DF9F8200F34804 /* AddAccountViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D430A40026DF9F8200F34804 /* AddAccountViewTheme.swift */; };
@@ -3741,6 +3744,7 @@
 		D4241FCF26E764940064CDD0 /* FormInputFieldAssistiveViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormInputFieldAssistiveViewTheme.swift; sourceTree = "<group>"; };
 		D4241FD826E76BFF0064CDD0 /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		D4241FDC26E7999C0064CDD0 /* AccountNameSetupViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNameSetupViewTheme.swift; sourceTree = "<group>"; };
+		D4241FE426E7D69B0064CDD0 /* WatchAccountAdditionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchAccountAdditionViewTheme.swift; sourceTree = "<group>"; };
 		D42A022426D7A50A00CEFC16 /* BottomSheetTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTransition.swift; sourceTree = "<group>"; };
 		D42A022626D7A52F00CEFC16 /* BottomSheetTransitionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetTransitionController.swift; sourceTree = "<group>"; };
 		D430A40026DF9F8200F34804 /* AddAccountViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountViewTheme.swift; sourceTree = "<group>"; };
@@ -5892,6 +5896,7 @@
 			isa = PBXGroup;
 			children = (
 				2B5BE03B2518E4A900324BEE /* WatchAccountAdditionView.swift */,
+				D4241FE426E7D69B0064CDD0 /* WatchAccountAdditionViewTheme.swift */,
 			);
 			path = WatchAccount;
 			sourceTree = "<group>";
@@ -11022,6 +11027,7 @@
 				2B0823DF23B668DB00D52BCF /* NotificationAsset.swift in Sources */,
 				17BD4E6F2292F1260003E49A /* Decimal+Additions.swift in Sources */,
 				2BA4B40E2678A9C70041586B /* WCSessionListLayout.swift in Sources */,
+				D4241FE726E7D69B0064CDD0 /* WatchAccountAdditionViewTheme.swift in Sources */,
 				2BB93BBF25BEF338001F1D6C /* AddAssetTransactionDataBuilder.swift in Sources */,
 				2BFFE9F025DD33A70009F30C /* PassphraseVerifyLayoutBuilder.swift in Sources */,
 				9511C298242E2B3C003211ED /* BaseControl.swift in Sources */,
@@ -11880,6 +11886,7 @@
 				2B0F622524EC129D00DA22A6 /* Decimal+Additions.swift in Sources */,
 				2BA4B40D2678A9C70041586B /* WCSessionListLayout.swift in Sources */,
 				2BB93BBE25BEF338001F1D6C /* AddAssetTransactionDataBuilder.swift in Sources */,
+				D4241FE626E7D69B0064CDD0 /* WatchAccountAdditionViewTheme.swift in Sources */,
 				2BFFE9EF25DD33A70009F30C /* PassphraseVerifyLayoutBuilder.swift in Sources */,
 				2B0F622624EC129D00DA22A6 /* AssetFetchDraft.swift in Sources */,
 				2B0F622724EC129D00DA22A6 /* AssetRemovalViewController.swift in Sources */,
@@ -12739,6 +12746,7 @@
 				17B7D8AB2240E19600A6FF9E /* AccountFetchDraft.swift in Sources */,
 				2B1B536823279CD500D54029 /* AlgorandNotification.swift in Sources */,
 				2BB93BBD25BEF338001F1D6C /* AddAssetTransactionDataBuilder.swift in Sources */,
+				D4241FE526E7D69B0064CDD0 /* WatchAccountAdditionViewTheme.swift in Sources */,
 				2BA4B40C2678A9C70041586B /* WCSessionListLayout.swift in Sources */,
 				2BFFE9EE25DD33A70009F30C /* PassphraseVerifyLayoutBuilder.swift in Sources */,
 				9511C297242E2B3C003211ED /* BaseControl.swift in Sources */,

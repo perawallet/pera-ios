@@ -1,0 +1,79 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//
+//   WatchAccountAdditionViewTheme.swift
+
+import Foundation
+import Macaroon
+import UIKit
+
+struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
+    let title: TextStyle
+    let description: TextStyle
+    let pasteButton: ButtonStyle
+    let qr: ButtonStyle
+
+    let mainButtonTheme: ButtonTheme
+
+    let textInputVerticalInset: LayoutMetric
+    let buttonVerticalInset: LayoutMetric
+    let horizontalInset: LayoutMetric
+    let bottomInset: LayoutMetric
+    let topInset: LayoutMetric
+    let containerTopInset: LayoutMetric
+    let pasteButtonTopInset: LayoutMetric
+    let pasteButtonSize: LayoutSize
+    let pasteButtonCorner: Corner
+    let pasteButtonContentEdgeInsets: LayoutPaddings
+
+    init(_ family: LayoutFamily) {
+        self.title = [
+            .textAlignment(.left),
+            .textOverflow(.fitting),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.medium.make(32)),
+            .content("watch-account-create".localized)
+        ]
+
+        self.description = [
+            .textColor(AppColors.Components.Text.gray),
+            .font(Fonts.DMSans.regular.make(15)),
+            .textAlignment(.left),
+            .textOverflow(.fitting),
+            .content("watch-account-explanation-title".localized)
+        ]
+        self.pasteButton = [
+            .backgroundColor(AppColors.Components.Button.Primary.background), /// Change
+            .font(Fonts.DMMono.regular.make(15)),
+            .titleColor(UIColor.white)
+        ]
+        self.pasteButtonCorner = Corner(radius: 20)
+        self.qr = [
+            .icon("icon-qr-scan")
+        ]
+
+        self.mainButtonTheme = ButtonPrimaryTheme()
+
+        self.textInputVerticalInset = 40
+        self.buttonVerticalInset = 60
+        self.horizontalInset = 20
+        self.bottomInset = 16
+        self.topInset = 12
+        self.containerTopInset = 32
+        self.pasteButtonTopInset = 20
+        self.pasteButtonSize = (175, 40)
+        self.pasteButtonContentEdgeInsets = (10, 16, 10, 16)
+    }
+}

@@ -17,7 +17,7 @@
 
 import UIKit
 
-class WatchAccountAdditionViewController: BaseScrollViewController {
+final class WatchAccountAdditionViewController: BaseScrollViewController {
     private lazy var watchAccountAdditionView = WatchAccountAdditionView()
     
     private var keyboardController = KeyboardController()
@@ -37,17 +37,14 @@ class WatchAccountAdditionViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
     
-    override func configureAppearance() {
-        super.configureAppearance()
-        title = "watch-account-create".localized
-    }
-    
     override func setListeners() {
         super.setListeners()
+        watchAccountAdditionView.setListeners()
         keyboardController.beginTracking()
     }
     
     override func linkInteractors() {
+        watchAccountAdditionView.linkInteractors()
         keyboardController.dataSource = self
         watchAccountAdditionView.delegate = self
         scrollView.touchDetectingDelegate = self
@@ -55,17 +52,16 @@ class WatchAccountAdditionViewController: BaseScrollViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupWatchAccountAdditionViewLayout()
-    }
-}
+        watchAccountAdditionView.customize(WatchAccountAdditionViewTheme())
 
-extension WatchAccountAdditionViewController {
-    private func setupWatchAccountAdditionViewLayout() {
         contentView.addSubview(watchAccountAdditionView)
-        
-        watchAccountAdditionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        watchAccountAdditionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
+    }
+
+    override func bindData() {
+        watchAccountAdditionView.bindData()
     }
 }
 
@@ -84,7 +80,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
     }
     
     func watchAccountAdditionViewDidAddAccount(_ watchAccountAdditionView: WatchAccountAdditionView) {
-        guard let address = watchAccountAdditionView.addressInputView.inputTextView.text,
+        guard let address = watchAccountAdditionView.addressInputView.text,
             !address.isEmpty,
             address.isValidatedAddress() else {
             displaySimpleAlertWith(title: "title-error".localized, message: "watch-account-error-address".localized)
@@ -164,7 +160,7 @@ extension WatchAccountAdditionViewController: QRScannerViewControllerDelegate {
             return
         }
         
-        watchAccountAdditionView.addressInputView.value = qrText.qrText()
+        watchAccountAdditionView.addressInputView.text = qrText.qrText()
     }
     
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
@@ -196,7 +192,7 @@ extension WatchAccountAdditionViewController: KeyboardControllerDataSource {
 
 extension WatchAccountAdditionViewController: TouchDetectingScrollViewDelegate {
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
-        if watchAccountAdditionView.nextButton.frame.contains(point) ||
+        if watchAccountAdditionView.createWatchAccountButton.frame.contains(point) ||
             watchAccountAdditionView.addressInputView.frame.contains(point) {
             return
         }

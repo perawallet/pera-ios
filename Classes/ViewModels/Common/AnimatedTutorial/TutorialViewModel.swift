@@ -111,7 +111,7 @@ extension TutorialViewModel {
         case .recover:
             primaryActionButtonTitle = "tutorial-main-title-recover".localized
         case .watchAccount:
-            primaryActionButtonTitle = "watch-account-create".localized
+            primaryActionButtonTitle = "watch-account-button".localized
         case .writePassphrase:
             primaryActionButtonTitle = "tutorial-main-title-write".localized
         case .passcode:

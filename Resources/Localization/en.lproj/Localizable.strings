@@ -527,9 +527,11 @@
 
 // MARK: Watch Account
 "title-watch-account" = "Watch Account";
-"watch-account-create" = "Create a Watch Account";
-"watch-account-input-explanation" = "Account Address to Watch";
-"watch-account-explanation-title" = "You are creating a read-only view of an Algorand account. If you send assets to this account and you do not have the corresponding recovery passphrase, those assets will be lost.";
+"watch-account-create" = "Create a watch\naccount";
+"watch-account-button" = "Create a Watch Account";
+"watch-account-paste" = "Paste";
+"watch-account-input-explanation" = "Account Address";
+"watch-account-explanation-title" = "You are creating a read-only view of an Algorand account.";
 "watch-account-input-placeholder" = "Paste Address or Scan QR";
 "watch-account-error-address" = "Please enter a valid address.";
 
