@@ -2662,6 +2662,15 @@
 		D44EEEEA26D54740009998FA /* BannerInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EEEE926D54740009998FA /* BannerInfoViewModel.swift */; };
 		D44EEEEB26D54740009998FA /* BannerInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EEEE926D54740009998FA /* BannerInfoViewModel.swift */; };
 		D44EEEEC26D54740009998FA /* BannerInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D44EEEE926D54740009998FA /* BannerInfoViewModel.swift */; };
+		D46AC87526E8DEB8008CDE68 /* AccountRecoverViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AC87426E8DEB8008CDE68 /* AccountRecoverViewTheme.swift */; };
+		D46AC87626E8DEB8008CDE68 /* AccountRecoverViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AC87426E8DEB8008CDE68 /* AccountRecoverViewTheme.swift */; };
+		D46AC87726E8DEB8008CDE68 /* AccountRecoverViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AC87426E8DEB8008CDE68 /* AccountRecoverViewTheme.swift */; };
+		D46AC87926E8E416008CDE68 /* RecoverInputViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AC87826E8E416008CDE68 /* RecoverInputViewTheme.swift */; };
+		D46AC87A26E8E416008CDE68 /* RecoverInputViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AC87826E8E416008CDE68 /* RecoverInputViewTheme.swift */; };
+		D46AC87B26E8E416008CDE68 /* RecoverInputViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AC87826E8E416008CDE68 /* RecoverInputViewTheme.swift */; };
+		D46AC87D26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AC87C26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift */; };
+		D46AC87E26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AC87C26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift */; };
+		D46AC87F26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46AC87C26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift */; };
 		D46C647126E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */; };
 		D46C647226E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */; };
 		D46C647326E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */; };
@@ -3752,6 +3761,9 @@
 		D44EB6AE26DF73FF0008E234 /* WelcomeViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewTheme.swift; sourceTree = "<group>"; };
 		D44EB6B226DF7A390008E234 /* AccountTypeViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountTypeViewTheme.swift; sourceTree = "<group>"; };
 		D44EEEE926D54740009998FA /* BannerInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerInfoViewModel.swift; sourceTree = "<group>"; };
+		D46AC87426E8DEB8008CDE68 /* AccountRecoverViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverViewTheme.swift; sourceTree = "<group>"; };
+		D46AC87826E8E416008CDE68 /* RecoverInputViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoverInputViewTheme.swift; sourceTree = "<group>"; };
+		D46AC87C26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountRecoverViewController+Theme.swift"; sourceTree = "<group>"; };
 		D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChoosePasswordViewController+Theme.swift"; sourceTree = "<group>"; };
 		D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordInputViewTheme.swift; sourceTree = "<group>"; };
 		D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PassphraseVerifyViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -6641,6 +6653,7 @@
 				2BF90F3725FA39A70033F348 /* Input */,
 				2B77473325FFE9220083EFFA /* Suggestion */,
 				2B8954CA224430DC00D6D068 /* AccountRecoverView.swift */,
+				D46AC87426E8DEB8008CDE68 /* AccountRecoverViewTheme.swift */,
 			);
 			path = Recover;
 			sourceTree = "<group>";
@@ -6651,6 +6664,7 @@
 				2B01FE5726147FC8006C3C56 /* Options */,
 				2B77470B25FFDB430083EFFA /* Suggestion */,
 				2B8954CD2244323700D6D068 /* AccountRecoverViewController.swift */,
+				D46AC87C26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift */,
 			);
 			path = Recover;
 			sourceTree = "<group>";
@@ -9750,6 +9764,7 @@
 			isa = PBXGroup;
 			children = (
 				2BF90F3C25FA3B100033F348 /* RecoverInputView.swift */,
+				D46AC87826E8E416008CDE68 /* RecoverInputViewTheme.swift */,
 			);
 			path = Input;
 			sourceTree = "<group>";
@@ -10985,6 +11000,7 @@
 				2B01FE5B26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
 				2B9EEB69264ED202007A112D /* RewardCalculationViewModel.swift in Sources */,
 				2BD36DEC267E6D2200C57728 /* TitledTransactionAmountInformationView.swift in Sources */,
+				D46AC87B26E8E416008CDE68 /* RecoverInputViewTheme.swift in Sources */,
 				2BD063EF25CEC8E5008BD15E /* ScreenshotWarningView.swift in Sources */,
 				D46C647726E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */,
 				2BF0FB32253D154C00D704D5 /* RewardViewModel.swift in Sources */,
@@ -11071,6 +11087,7 @@
 				17BD4E7E2292F1260003E49A /* Colors.swift in Sources */,
 				D421178E26D8EDBA00C032B2 /* ScreenLoadingIndicatorTheme.swift in Sources */,
 				2BC1827823D8DF2400888476 /* AssetRemovalDraft.swift in Sources */,
+				D46AC87F26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift in Sources */,
 				2B3A34ED246EDA9C001C8F22 /* AccountNameView.swift in Sources */,
 				2BD36E242684675200C57728 /* WCMainTransactionHeaderView.swift in Sources */,
 				2B95413625AC96100098805B /* AlgorandNetworkUpdatable.swift in Sources */,
@@ -11106,6 +11123,7 @@
 				2BD36DB2267CCB4D00C57728 /* WCAlgosTransactionView.swift in Sources */,
 				2B68A23A26A6D96E0076BD82 /* WCMainTransactionView.swift in Sources */,
 				17BD4E882292F1260003E49A /* API+Account.swift in Sources */,
+				D46AC87726E8DEB8008CDE68 /* AccountRecoverViewTheme.swift in Sources */,
 				2BD36DF0267E6E0E00C57728 /* TitledTransactionAmountInformationViewModel.swift in Sources */,
 				2BAD929525B5D0DD00DE56D5 /* PendingAssetViewModel.swift in Sources */,
 				17BD4E8A2292F1260003E49A /* ContactCell.swift in Sources */,
@@ -11844,6 +11862,7 @@
 				2B01FE5A26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
 				2BD36DEB267E6D2200C57728 /* TitledTransactionAmountInformationView.swift in Sources */,
 				2B9EEB68264ED202007A112D /* RewardCalculationViewModel.swift in Sources */,
+				D46AC87A26E8E416008CDE68 /* RecoverInputViewTheme.swift in Sources */,
 				2B0F620A24EC129D00DA22A6 /* BaseScrollViewController.swift in Sources */,
 				D46C647626E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */,
 				2BD063EE25CEC8E5008BD15E /* ScreenshotWarningView.swift in Sources */,
@@ -11930,6 +11949,7 @@
 				D421178D26D8EDBA00C032B2 /* ScreenLoadingIndicatorTheme.swift in Sources */,
 				2B0F623D24EC129D00DA22A6 /* TransactionReceiverButton.swift in Sources */,
 				2B0F623E24EC129D00DA22A6 /* NotificationAsset.swift in Sources */,
+				D46AC87E26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift in Sources */,
 				2BD36E232684675200C57728 /* WCMainTransactionHeaderView.swift in Sources */,
 				2B0F623F24EC129D00DA22A6 /* UICollectionView+Additions.swift in Sources */,
 				2B95413525AC96100098805B /* AlgorandNetworkUpdatable.swift in Sources */,
@@ -11965,6 +11985,7 @@
 				2B68A23926A6D96E0076BD82 /* WCMainTransactionView.swift in Sources */,
 				2B0F624F24EC129D00DA22A6 /* QRScannerOverlayView.swift in Sources */,
 				2BD36DEF267E6E0E00C57728 /* TitledTransactionAmountInformationViewModel.swift in Sources */,
+				D46AC87626E8DEB8008CDE68 /* AccountRecoverViewTheme.swift in Sources */,
 				2B0F625024EC129D00DA22A6 /* NodeHealthOperation.swift in Sources */,
 				2BAD929425B5D0DD00DE56D5 /* PendingAssetViewModel.swift in Sources */,
 				2B0F625124EC129D00DA22A6 /* TransactionContactInformationView.swift in Sources */,
@@ -12704,6 +12725,7 @@
 				175CE59B2295709F003F7C02 /* RoundDetail.swift in Sources */,
 				2B01FE5926147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
 				2B9EEB67264ED202007A112D /* RewardCalculationViewModel.swift in Sources */,
+				D46AC87926E8E416008CDE68 /* RecoverInputViewTheme.swift in Sources */,
 				2BD36DEA267E6D2200C57728 /* TitledTransactionAmountInformationView.swift in Sources */,
 				D46C647526E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */,
 				2BD063ED25CEC8E5008BD15E /* ScreenshotWarningView.swift in Sources */,
@@ -12790,6 +12812,7 @@
 				2B3D73B923C3621F00597D32 /* VerifiedAsset.swift in Sources */,
 				D421178C26D8EDBA00C032B2 /* ScreenLoadingIndicatorTheme.swift in Sources */,
 				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
+				D46AC87D26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift in Sources */,
 				2BC1827723D8DF2400888476 /* AssetRemovalDraft.swift in Sources */,
 				2B3A34EC246EDA9C001C8F22 /* AccountNameView.swift in Sources */,
 				2BD36E222684675200C57728 /* WCMainTransactionHeaderView.swift in Sources */,
@@ -12825,6 +12848,7 @@
 				2BD5477A23192E15007179FE /* AlgorandError.swift in Sources */,
 				2BD36DB0267CCB4D00C57728 /* WCAlgosTransactionView.swift in Sources */,
 				2B68A23826A6D96E0076BD82 /* WCMainTransactionView.swift in Sources */,
+				D46AC87526E8DEB8008CDE68 /* AccountRecoverViewTheme.swift in Sources */,
 				2BAD929325B5D0DD00DE56D5 /* PendingAssetViewModel.swift in Sources */,
 				2BD36DEE267E6E0E00C57728 /* TitledTransactionAmountInformationViewModel.swift in Sources */,
 				2B432A52237C56F0009191BF /* BaseSupplementaryView.swift in Sources */,

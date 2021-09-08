@@ -120,7 +120,7 @@
 "account-name-setup-finish" = "Finish Account Creation";
 
 // MARK: Recover From Seed
-"recover-from-seed-title" = "Enter Your Recovery Passphrase";
+"recover-from-seed-title" = "Enter Your Recovery\nPassphrase";
 "recover-from-seed-name-title" = "Name";
 "recover-from-seed-name-placeholder" = "Example name";
 "recover-from-seed-passphrase-title" = "Passphrase";

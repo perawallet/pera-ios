@@ -16,78 +16,71 @@
 //  AccountRecoverView.swift
 
 import UIKit
+import Macaroon
 
-class AccountRecoverView: BaseView {
-
-    private let layout = Layout<LayoutConstants>()
-
+final class AccountRecoverView: View {
     weak var delegate: AccountRecoverViewDelegate?
+
+    private lazy var titleLabel = UILabel()
+    private(set) var currentInputView: RecoverInputView?
+    private lazy var horizontalStackView = UIStackView()
+    private lazy var firstColumnStackView = UIStackView()
+    private lazy var secondColumnStackView = UIStackView()
 
     private(set) var recoverInputViews = [RecoverInputView]()
 
-    private(set) var currentInputView: RecoverInputView?
+    private(set) lazy var constants = Constants()
 
-    private lazy var horizontalStackView: HStackView = {
-        let stackView = HStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fillEqually
-        stackView.spacing = 20.0
-        stackView.alignment = .leading
-        stackView.clipsToBounds = true
-        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        stackView.axis = .horizontal
-        stackView.isUserInteractionEnabled = true
-        return stackView
-    }()
-
-    private lazy var firstColumnStackView: VStackView = {
-        let stackView = VStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 8.0
-        stackView.alignment = .fill
-        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        stackView.axis = .vertical
-        stackView.isUserInteractionEnabled = true
-        return stackView
-    }()
-
-    private lazy var secondColumnStackView: VStackView = {
-        let stackView = VStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 8.0
-        stackView.alignment = .fill
-        stackView.clipsToBounds = true
-        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        stackView.axis = .vertical
-        stackView.isUserInteractionEnabled = true
-        return stackView
-    }()
-
-    override func prepareLayout() {
-        setupStackViewLayout()
+    func customize(_ theme: AccountRecoverViewTheme) {
+        addTitle(theme)
+        addHorizontalStackView(theme)
         addInputViews()
     }
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 }
 
 extension AccountRecoverView {
-    private func setupStackViewLayout() {
-        addSubview(horizontalStackView)
+    private func addTitle(_ theme: AccountRecoverViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
 
-        horizontalStackView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.stackTopInset)
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalToSuperview().inset(theme.topInset)
+        }
+    }
+
+    private func addHorizontalStackView(_ theme: AccountRecoverViewTheme) {
+        horizontalStackView.distribution = .fillEqually
+        horizontalStackView.spacing = theme.horizontalStackViewSpacing
+        horizontalStackView.alignment = .leading
+        horizontalStackView.clipsToBounds = true
+        horizontalStackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        addSubview(horizontalStackView)
+        horizontalStackView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.horizontalStackViewTopInset)
         }
 
+        configureVerticalStackViews(firstColumnStackView, secondColumnStackView, with: theme)
         horizontalStackView.addArrangedSubview(firstColumnStackView)
         horizontalStackView.addArrangedSubview(secondColumnStackView)
     }
 }
 
 extension AccountRecoverView {
-    func index(of recoverInputView: RecoverInputView) -> Int? {
-        return recoverInputViews.firstIndex(of: recoverInputView)
+    private func configureVerticalStackViews(_ stackViews: UIStackView..., with theme: AccountRecoverViewTheme) {
+        stackViews.forEach { stackView in
+            stackView.distribution = .equalSpacing
+            stackView.spacing = theme.verticalStackViewSpacing
+            stackView.clipsToBounds = true
+            stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            stackView.axis = .vertical
+        }
     }
 }
 
@@ -98,17 +91,19 @@ extension AccountRecoverView {
     }
 
     private func fillTheFirstColumnOfInputViews() {
-        for index in 0...Constants.firstColumnCount - 1 {
+        for index in 0..<constants.firstColumnCount {
             let inputView = composeInputView()
+
             if index == 0 {
                 currentInputView = inputView
             }
+
             firstColumnStackView.addArrangedSubview(inputView)
         }
     }
 
     private func fillTheSecondColumnOfInputViews() {
-        for _ in 0...Constants.secondColumnCount - 1 {
+        for _ in 0..<constants.secondColumnCount {
             let inputView = composeInputView()
             secondColumnStackView.addArrangedSubview(inputView)
         }
@@ -117,16 +112,22 @@ extension AccountRecoverView {
     private func composeInputView() -> RecoverInputView {
         let inputView = RecoverInputView()
         inputView.delegate = self
-        inputView.bind(RecoverInputViewModel(state: .empty, index: recoverInputViews.count))
+        inputView.bindData(RecoverInputViewModel(state: .empty, index: recoverInputViews.count))
         recoverInputViews.append(inputView)
 
-        if recoverInputViews.count == Constants.totalMnemonicCount {
+        if recoverInputViews.count == constants.totalMnemonicCount {
             inputView.returnKey = .go
         } else {
             inputView.returnKey = .next
         }
 
         return inputView
+    }
+}
+
+extension AccountRecoverView {
+    func index(of recoverInputView: RecoverInputView) -> Int? {
+        return recoverInputViews.firstIndex(of: recoverInputView)
     }
 }
 
@@ -166,17 +167,10 @@ extension AccountRecoverView: RecoverInputViewDelegate {
 }
 
 extension AccountRecoverView {
-    enum Constants {
-        static let totalMnemonicCount = 25
-        static let firstColumnCount = 13
-        static let secondColumnCount = 12
-    }
-}
-
-extension AccountRecoverView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let stackTopInset: CGFloat = 32.0
-        let horizontalInset: CGFloat = 20.0
+    struct Constants {
+        let totalMnemonicCount = 25
+        let firstColumnCount = 13
+        let secondColumnCount = 12
     }
 }
 

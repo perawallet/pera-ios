@@ -75,3 +75,20 @@ extension Optional {
         }
     }
 }
+
+extension Optional {
+    func ifNil(_ value: @autoclosure () -> Wrapped) -> Wrapped {
+        switch self {
+        case .none:
+            return value()
+        case .some(let value):
+            return value
+        }
+    }
+}
+
+extension Optional where Wrapped == String {
+  var emptyIfNil: Wrapped {
+    return ifNil(.empty)
+  }
+}

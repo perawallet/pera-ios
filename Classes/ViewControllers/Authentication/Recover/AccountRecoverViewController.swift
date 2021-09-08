@@ -17,36 +17,33 @@
 
 import UIKit
 
-class AccountRecoverViewController: BaseScrollViewController {
-
-    private let layout = Layout<LayoutConstants>()
-
+final class AccountRecoverViewController: BaseScrollViewController {
     private lazy var optionsModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
             dismissMode: .scroll
         ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.optionsModalHeight))
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: theme.optionsModalHeight))
     )
 
     private lazy var inputSuggestionsViewController: InputSuggestionViewController = {
         let inputSuggestionViewController = InputSuggestionViewController(configuration: configuration)
-        inputSuggestionViewController.view.frame = layout.current.inputSuggestionsFrame
+        inputSuggestionViewController.view.frame = theme.inputSuggestionsFrame
         return inputSuggestionViewController
     }()
 
     private var keyboardController = KeyboardController()
     
     private lazy var accountRecoverView = AccountRecoverView()
-
-    private lazy var recoverButton = MainButton(title: "recover-title".localized)
+    private lazy var recoverButton = Button()
+    private lazy var theme = Theme()
 
     private var isRecoverEnabled: Bool {
         return getMnemonics() != nil
     }
     
     private lazy var accountManager: AccountManager? = {
-        guard let api = self.api else {
+        guard let api = api else {
             return nil
         }
         let manager = AccountManager(api: api)
@@ -54,7 +51,7 @@ class AccountRecoverViewController: BaseScrollViewController {
     }()
 
     private lazy var dataController: AccountRecoverDataController = {
-        guard let session = self.session else {
+        guard let session = session else {
             fatalError("Session should be set")
         }
         let dataController = AccountRecoverDataController(session: session)
@@ -83,8 +80,16 @@ class AccountRecoverViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "recover-from-seed-title".localized
+        setNavigationBarTertiaryBackgroundColor()
+        customizeBackground()
+
         recoverButton.isEnabled = false
+    }
+
+    private func customizeBackground() {
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
     override func linkInteractors() {
@@ -104,52 +109,55 @@ class AccountRecoverViewController: BaseScrollViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
-        setupAccountRecoverViewLayout()
-        setupRecoverButtonLayout()
+        addAccountRecoverView()
+        addRecoverButton()
     }
 }
 
 extension AccountRecoverViewController {
-    private func setupAccountRecoverViewLayout() {
+    private func addAccountRecoverView() {
+        accountRecoverView.customize(theme.accountRecoverViewTheme)
+
         contentView.addSubview(accountRecoverView)
-        
-        accountRecoverView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.height.equalTo(layout.current.inputViewHeight)
-            make.bottom.equalToSuperview()
+        accountRecoverView.snp.makeConstraints {
+            $0.leading.trailing.top.equalToSuperview()
+            $0.height.equalTo(theme.inputViewHeight)
+            $0.bottom.equalToSuperview()
         }
     }
 
-    private func setupRecoverButtonLayout() {
-        view.addSubview(recoverButton)
+    private func addRecoverButton() {
+        recoverButton.customize(ButtonPrimaryTheme())
+        recoverButton.bindData(ButtonCommonViewModel(title: "recover-title".localized))
 
-        recoverButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
-            make.bottom.equalToSuperview().inset(layout.current.defaultInset + view.safeAreaBottom)
+        view.addSubview(recoverButton)
+        recoverButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.defaultInset)
+            $0.bottom.equalToSuperview().inset(theme.defaultInset + view.safeAreaBottom)
         }
     }
 }
 
 extension AccountRecoverViewController {
     private func setKeyboardNotificationListeners() {
-        keyboardController.notificationHandlerWhenKeyboardShown = { keyboard in
-            self.updateRecoverButtonLayoutWhenKeyboardIsShown(keyboard)
+        keyboardController.notificationHandlerWhenKeyboardShown = { [weak self] keyboard in
+            self?.updateRecoverButtonLayoutWhenKeyboardIsShown(keyboard)
         }
 
-        keyboardController.notificationHandlerWhenKeyboardHidden = { _ in
-            self.updateRecoverButtonLayoutWhenKeyboardIsHidden()
+        keyboardController.notificationHandlerWhenKeyboardHidden = { [weak self] _ in
+            self?.updateRecoverButtonLayoutWhenKeyboardIsHidden()
         }
     }
 
     private func updateRecoverButtonLayoutWhenKeyboardIsShown(_ keyboard: KeyboardController.UserInfo) {
-        recoverButton.snp.updateConstraints { make in
-            make.bottom.equalToSuperview().inset(layout.current.defaultInset + keyboard.height)
+        recoverButton.snp.updateConstraints {
+            $0.bottom.equalToSuperview().inset(theme.defaultInset + keyboard.height)
         }
     }
 
     private func updateRecoverButtonLayoutWhenKeyboardIsHidden() {
-        recoverButton.snp.updateConstraints { make in
-            make.bottom.equalToSuperview().inset(layout.current.defaultInset + view.safeAreaBottom)
+        recoverButton.snp.updateConstraints {
+            $0.bottom.equalToSuperview().inset(theme.defaultInset + view.safeAreaBottom)
         }
     }
 }
@@ -164,9 +172,7 @@ extension AccountRecoverViewController {
 extension AccountRecoverViewController {
     private func addBarButtons() {
         let optionsBarButtonItem = ALGBarButtonItem(kind: .options) { [weak self] in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
             self.openRecoverOptions()
         }
 
@@ -195,9 +201,7 @@ extension AccountRecoverViewController: AccountRecoverOptionsViewControllerDeleg
     }
 
     func accountRecoverOptionsViewControllerDidOpenMoreInfo(_ viewController: AccountRecoverOptionsViewController) {
-        if let url = AlgorandWeb.recoverSupport.link {
-            open(url)
-        }
+        open(AlgorandWeb.recoverSupport.link)
     }
 }
 
@@ -235,7 +239,7 @@ extension AccountRecoverViewController {
 extension AccountRecoverViewController: AccountRecoverViewDelegate {
     func accountRecoverView(_ view: AccountRecoverView, didBeginEditing recoverInputView: RecoverInputView) {
         if let index = view.index(of: recoverInputView) {
-            recoverInputView.bind(RecoverInputViewModel(state: .active, index: index))
+            recoverInputView.bindData(RecoverInputViewModel(state: .active, index: index))
         }
     }
 
@@ -266,9 +270,9 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         }
 
         if !inputSuggestionsViewController.hasSuggestions && !view.input.isNilOrEmpty {
-            view.bind(RecoverInputViewModel(state: .wrong, index: index))
+            view.bindData(RecoverInputViewModel(state: .wrong, index: index))
         } else {
-            view.bind(RecoverInputViewModel(state: .active, index: index))
+            view.bindData(RecoverInputViewModel(state: .active, index: index))
         }
     }
 
@@ -278,11 +282,11 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
         }
 
         if recoverInputView.input.isNilOrEmpty {
-            recoverInputView.bind(RecoverInputViewModel(state: .empty, index: index))
+            recoverInputView.bindData(RecoverInputViewModel(state: .empty, index: index))
         } else if !hasValidSuggestion(for: recoverInputView) {
-            recoverInputView.bind(RecoverInputViewModel(state: .filledWrongly, index: index))
+            recoverInputView.bindData(RecoverInputViewModel(state: .filledWrongly, index: index))
         } else {
-            recoverInputView.bind(RecoverInputViewModel(state: .filled, index: index))
+            recoverInputView.bindData(RecoverInputViewModel(state: .filled, index: index))
         }
     }
 
@@ -338,14 +342,14 @@ extension AccountRecoverViewController {
     }
 
     private func isValidMnemonicCount(_ mnemonics: [String]) -> Bool {
-        return mnemonics.count == AccountRecoverView.Constants.totalMnemonicCount
+        return mnemonics.count == accountRecoverView.constants.totalMnemonicCount
     }
 }
 
 extension AccountRecoverViewController {
     private func getMnemonics() -> String? {
         let inputs = recoverInputViews.compactMap { $0.input }.filter { !$0.isEmpty }
-        if inputs.count == AccountRecoverView.Constants.totalMnemonicCount {
+        if inputs.count == accountRecoverView.constants.totalMnemonicCount {
             return inputs.joined(separator: " ")
         }
         return nil
@@ -483,11 +487,9 @@ extension AccountRecoverViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         guard qrText.mode == .mnemonic else {
             displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-mnemonics-message".localized) { _ in
-                if let handler = completionHandler {
-                    handler()
-                }
+                completionHandler?()
             }
-            
+
             return
         }
 
@@ -502,16 +504,14 @@ extension AccountRecoverViewController: QRScannerViewControllerDelegate {
     
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
         displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
-            if let handler = completionHandler {
-                handler()
-            }
+            completionHandler?()
         }
     }
 }
 
 extension AccountRecoverViewController: KeyboardControllerDataSource {
     func bottomInsetWhenKeyboardPresented(for keyboardController: KeyboardController) -> CGFloat {
-        return layout.current.keyboardInset
+        return theme.keyboardInset
     }
 
     func firstResponder(for keyboardController: KeyboardController) -> UIView? {
@@ -523,16 +523,6 @@ extension AccountRecoverViewController: KeyboardControllerDataSource {
     }
 
     func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
-        return layout.current.defaultInset
-    }
-}
-
-extension AccountRecoverViewController {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let defaultInset: CGFloat = 20.0
-        let inputSuggestionsFrame = CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.width, height: 44.0)
-        let keyboardInset: CGFloat = 92.0
-        let inputViewHeight: CGFloat = 732.0
-        let optionsModalHeight: CGFloat = 294.0
+        return theme.defaultInset
     }
 }

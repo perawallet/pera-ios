@@ -90,7 +90,7 @@ extension WatchAccountAdditionView {
             ]
         )
 
-        let copiedText = "(\(UIPasteboard.general.string ?? ""))".attributed(
+        let copiedText = "(\(UIPasteboard.general.string.emptyIfNil))".attributed(
             [
                 .font(Fonts.DMMono.regular.make(11).font),
                 .textColor(AppColors.Components.Text.gray.color)

@@ -16,28 +16,20 @@
 //   RecoverInputView.swift
 
 import UIKit
+import Macaroon
 
-class RecoverInputView: BaseView {
+final class RecoverInputView: View {
+    override var intrinsicContentSize: CGSize {
+        return CGSize(theme.size)
+    }
 
     weak var delegate: RecoverInputViewDelegate?
 
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: 158.0, height: 48.0)
-    }
+    private lazy var theme = RecoverInputViewTheme()
 
-    private let layout = Layout<LayoutConstants>()
-
-    var isFilled: Bool {
-        return !input.isNilOrEmpty
-    }
-
-    var input: String? {
-        return inputTextField.text
-    }
-
-    var isEditing: Bool {
-        return inputTextField.isFirstResponder
-    }
+    private lazy var numberLabel = UILabel()
+    private lazy var inputTextField = UITextField()
+    private lazy var separatorView = UIView()
 
     var returnKey: ReturnKey = .next {
        didSet {
@@ -50,49 +42,32 @@ class RecoverInputView: BaseView {
        }
    }
 
-    private lazy var backgroundImageView = UIImageView()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
-    private lazy var numberLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.hint)
-            .withAlignment(.left)
-    }()
+        customize()
+        setListeners()
+        linkInteractors()
+    }
 
-    private lazy var inputTextField: UITextField = {
-        let textField = UITextField()
-        textField.backgroundColor = .clear
-        textField.textColor = Colors.Text.primary
-        textField.tintColor = Colors.General.success
-        textField.font = UIFont.font(withWeight: .regular(size: 16.0))
-        textField.autocorrectionType = .no
-        textField.autocapitalizationType = .none
-        return textField
-    }()
+    func customize() {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.RecoverInputView.separatorColor
-        return view
-    }()
+        addNumberLabel(theme)
+        addInputTextField(theme)
+        addSeparatorView(theme)
+    }
 
-    override func setListeners() {
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func setListeners() {
         inputTextField.addTarget(self, action: #selector(didChange(textField:)), for: .editingChanged)
     }
 
-    override func linkInteractors() {
+    func linkInteractors() {
         inputTextField.delegate = self
-    }
-
-    override func configureAppearance() {
-        backgroundColor = .clear
-    }
-
-    override func prepareLayout() {
-        setupBackgroundImageViewLayout()
-        setupNumberLabelLayout()
-        setupInputTextFieldLayout()
-        setupSeparatorViewLayout()
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -102,51 +77,60 @@ class RecoverInputView: BaseView {
 }
 
 extension RecoverInputView {
-    private func setupBackgroundImageViewLayout() {
-        addSubview(backgroundImageView)
+    private func addNumberLabel(_ theme: RecoverInputViewTheme) {
+        numberLabel.customizeAppearance(theme.number)
 
-        backgroundImageView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.top.equalToSuperview()
-        }
-    }
-
-    private func setupNumberLabelLayout() {
         addSubview(numberLabel)
+        numberLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.defaultInset)
+            $0.top.bottom.equalToSuperview().inset(theme.numberVerticalInset)
+        }
 
         numberLabel.setContentHuggingPriority(.required, for: .horizontal)
         numberLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-
-        numberLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.defaultInset)
-            make.top.bottom.equalToSuperview().inset(layout.current.numberVerticalInset)
-        }
     }
 
-    private func setupInputTextFieldLayout() {
+    private func addInputTextField(_ theme: RecoverInputViewTheme) {
+        inputTextField.customizeAppearance(theme.inputTextField)
+
         addSubview(inputTextField)
-
-        inputTextField.snp.makeConstraints { make in
-            make.leading.equalTo(numberLabel.snp.trailing).offset(layout.current.defaultInset)
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
-            make.centerY.equalTo(numberLabel)
+        inputTextField.snp.makeConstraints {
+           $0.leading.equalTo(numberLabel.snp.trailing).offset(theme.defaultInset)
+           $0.trailing.equalToSuperview().inset(theme.defaultInset)
+           $0.centerY.equalTo(numberLabel)
         }
     }
 
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
+    private func addSeparatorView(_ theme: RecoverInputViewTheme) {
+        separatorView.customizeAppearance(theme.seperator)
 
-        separatorView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.leading.equalTo(numberLabel.snp.trailing).offset(layout.current.defaultInset)
-            make.bottom.equalTo(numberLabel)
-            make.height.equalTo(layout.current.separatorHeight)
+        addSubview(separatorView)
+        separatorView.snp.makeConstraints {
+            $0.trailing.equalToSuperview()
+            $0.leading.equalTo(numberLabel.snp.trailing).offset(theme.defaultInset)
+            $0.bottom.equalTo(numberLabel)
+            $0.height.equalTo(theme.separatorHeight)
         }
     }
 }
 
 extension RecoverInputView {
+    var isFilled: Bool {
+        return !input.isNilOrEmpty
+    }
+
+    var input: String? {
+        return inputTextField.text
+    }
+
+    var isEditing: Bool {
+        return inputTextField.isFirstResponder
+    }
+}
+
+extension RecoverInputView {
     func beginEditing() {
-        _ = inputTextField.becomeFirstResponder()
+        inputTextField.becomeFirstResponder()
     }
 
     func setText(_ text: String) {
@@ -186,21 +170,20 @@ extension RecoverInputView: UITextFieldDelegate {
     }
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        return delegate?.recoverInputViewShouldReturn(self) ?? true
+        return (delegate?.recoverInputViewShouldReturn(self)).ifNil(true)
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        delegate?.recoverInputView(self, shouldChangeCharactersIn: range, replacementString: string) ?? true
+        (delegate?.recoverInputView(self, shouldChangeCharactersIn: range, replacementString: string)).ifNil(true)
     }
 }
 
-extension RecoverInputView {
-    func bind(_ viewModel: RecoverInputViewModel) {
-        backgroundImageView.image = viewModel.backgroundImage
-        numberLabel.text = viewModel.number
-        numberLabel.textColor = viewModel.numberColor
-        inputTextField.textColor = viewModel.passphraseColor
-        separatorView.isHidden = viewModel.isSeparatorHidden
+extension RecoverInputView: ViewModelBindable {
+    func bindData(_ viewModel: RecoverInputViewModel?) {
+        numberLabel.text = viewModel?.number
+        numberLabel.textColor = viewModel?.numberColor
+        inputTextField.textColor = viewModel?.passphraseColor
+        separatorView.backgroundColor = viewModel?.seperatorColor
     }
 }
 
@@ -218,20 +201,6 @@ extension RecoverInputView {
     enum ReturnKey {
         case next
         case go
-    }
-}
-
-extension Colors {
-    fileprivate enum RecoverInputView {
-        static let separatorColor = color("recoverSeparatorColor")
-    }
-}
-
-extension RecoverInputView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let defaultInset: CGFloat = 8.0
-        let numberVerticalInset: CGFloat = 12.0
-        let separatorHeight: CGFloat = 1.0
     }
 }
 

@@ -18,6 +18,8 @@
 import Foundation
 
 extension String {
+    static let empty = ""
+
     func isUnknown() -> Bool {
         return self == "title-unknown".localized
     }

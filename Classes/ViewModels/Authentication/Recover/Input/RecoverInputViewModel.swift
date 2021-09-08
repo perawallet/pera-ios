@@ -17,23 +17,17 @@
 
 import UIKit
 
-class RecoverInputViewModel {
-    private(set) var backgroundImage: UIImage?
+final class RecoverInputViewModel {
     private(set) var number: String?
     private(set) var numberColor: UIColor?
     private(set) var passphraseColor: UIColor?
-    private(set) var isSeparatorHidden: Bool = false
+    private(set) var seperatorColor: UIColor?
 
     init(state: RecoverInputView.State, index: Int) {
-        setBackgroundImage(from: state)
         setNumber(from: index)
         setNumberColor(from: state)
         setPassphraseColor(from: state)
-        setIsHiddenSeparator(from: state)
-    }
-
-    private func setBackgroundImage(from state: RecoverInputView.State) {
-        backgroundImage = (state == .active || state == .wrong) ? img("bg-recover-input") : nil
+        setSeparatorColor(from: state)
     }
 
     private func setNumber(from index: Int) {
@@ -44,11 +38,11 @@ class RecoverInputViewModel {
         switch state {
         case .wrong,
              .filledWrongly:
-            numberColor = Colors.General.error
+            numberColor = AppColors.Shared.Helpers.negative.color
         case .active,
              .empty,
              .filled:
-            numberColor = Colors.Text.hint
+            numberColor = AppColors.Components.Text.main.color
         }
     }
 
@@ -56,15 +50,24 @@ class RecoverInputViewModel {
         switch state {
         case .wrong,
              .filledWrongly:
-            passphraseColor = Colors.General.error
+            passphraseColor = AppColors.Shared.Helpers.negative.color
         case .active,
              .empty,
              .filled:
-            passphraseColor = Colors.Text.primary
+            passphraseColor = AppColors.Components.Text.main.color
         }
     }
 
-    private func setIsHiddenSeparator(from state: RecoverInputView.State) {
-        isSeparatorHidden = state != .empty
+    private func setSeparatorColor(from state: RecoverInputView.State) {
+        switch state {
+        case .wrong,
+             .filledWrongly:
+            seperatorColor = AppColors.Shared.Helpers.negative.color
+        case .active:
+            seperatorColor = AppColors.Components.Text.main.color
+        case .empty,
+             .filled:
+            seperatorColor = AppColors.Shared.Layer.gray.color
+        }
     }
 }
