@@ -17,8 +17,16 @@
 
 import Macaroon
 
+enum AccountImageType {
+    case blush(AccountType)
+    case orange(AccountType)
+    case purple(AccountType)
+    case turquoise(AccountType)
+    case salmon(AccountType)
+}
+
 struct AccountPreviewModel {
-    let image: UIImage
+    let image: AccountImageType
     let accountName: String
     let assetsAndNFTs: String
     let assetValue: String
@@ -42,8 +50,59 @@ final class AccountPreviewViewModel: PairedViewModel {
 }
 
 extension AccountPreviewViewModel {
-    private func bindImage(_ image: UIImage) {
-        self.image = image
+    private func bindImage(_ image: AccountImageType) {
+        let accountImage: UIImage?
+
+        switch image {
+        case .blush(.standard):
+            accountImage = img("account-blush")
+        case .blush(.ledger):
+            accountImage = img("ledger-blush")
+        case .blush(.watch):
+            accountImage = img("watch-blush")
+        case .blush(.rekeyed):
+            accountImage = img("rekey-blush")
+
+        case .orange(.standard):
+            accountImage = img("account-orange")
+        case .orange(.ledger):
+            accountImage = img("ledger-orange")
+        case .orange(.watch):
+            accountImage = img("watch-orange")
+        case .orange(.rekeyed):
+            accountImage = img("rekey-orange")
+
+        case .purple(.standard):
+            accountImage = img("standard-purple")
+        case .purple(.ledger):
+            accountImage = img("ledger-purple")
+        case .purple(.watch):
+            accountImage = img("watch-purple")
+        case .purple(.rekeyed):
+            accountImage = img("rekey-purple")
+
+        case .turquoise(.standard):
+            accountImage = img("account-turquoise")
+        case .turquoise(.ledger):
+            accountImage = img("ledger-turquoise")
+        case .turquoise(.watch):
+            accountImage = img("watch-turquoise")
+        case .turquoise(.rekeyed):
+            accountImage = img("rekey-turquoise")
+
+        case .salmon(.standard):
+            accountImage = img("account-salmon")
+        case .salmon(.ledger):
+            accountImage = img("ledger-salmon")
+        case .salmon(.watch):
+            accountImage = img("watch-salmon")
+        case .salmon(.rekeyed):
+            accountImage = img("rekey-salmon")
+        default:
+            accountImage = nil
+        }
+
+        self.image = accountImage
     }
 
     private func bindAccountName(_ name: String) {
