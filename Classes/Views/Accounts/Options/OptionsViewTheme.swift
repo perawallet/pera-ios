@@ -13,20 +13,22 @@
 // limitations under the License.
 
 //
-//  OptionsCell.swift
+//   OptionsViewTheme.swift
 
+import Foundation
+import Macaroon
 import UIKit
 
-final class OptionsCell: BaseCollectionViewCell<OptionsContextView> {
-    func customize(_ theme: OptionsContextViewTheme) {
-        contextView.customize(theme)
-    }
+struct OptionsViewTheme: StyleSheet, LayoutSheet {
+    let backgroundColor: Color
 
-    func bind(_ viewModel: OptionsViewModel) {
-        contextView.bind(viewModel)
-    }
+    let bottomInset: LayoutMetric
+    let topInset: LayoutMetric 
 
-    func bind(_ viewModel: AccountRecoverOptionsViewModel) {
-        contextView.bind(viewModel)
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
+
+        self.bottomInset = 20
+        self.topInset = 10
     }
 }

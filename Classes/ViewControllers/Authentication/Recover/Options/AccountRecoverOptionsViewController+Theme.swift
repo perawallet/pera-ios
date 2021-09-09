@@ -13,30 +13,21 @@
 // limitations under the License.
 
 //
-//   AccountRecoverViewController+Theme.swift
+//   AccountRecoverOptionsViewController+Theme.swift
 
 import Macaroon
 
-extension AccountRecoverViewController {
+extension AccountRecoverOptionsViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let accountRecoverViewTheme: AccountRecoverViewTheme
+        let optionsViewTheme: OptionsViewTheme
         let backgroundColor: Color
 
-        let defaultInset: LayoutMetric
-        let inputSuggestionsFrame: CGRect
-        let keyboardInset: LayoutMetric
-        let inputViewHeight: LayoutMetric
-        let optionsModalHeight: LayoutMetric
+        let cellHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            self.accountRecoverViewTheme = AccountRecoverViewTheme()
+            self.optionsViewTheme = OptionsViewTheme()
             self.backgroundColor = AppColors.Shared.System.background
-
-            self.defaultInset = 20
-            self.inputSuggestionsFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44)
-            self.keyboardInset = 92
-            self.inputViewHeight = 732
-            self.optionsModalHeight = 254
+            self.cellHeight = 56
         }
     }
 }

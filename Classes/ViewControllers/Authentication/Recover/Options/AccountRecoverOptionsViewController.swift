@@ -17,49 +17,35 @@
 
 import UIKit
 
-class AccountRecoverOptionsViewController: BaseViewController {
-
+final class AccountRecoverOptionsViewController: BaseViewController {
     override var shouldShowNavigationBar: Bool {
         return false
     }
 
     weak var delegate: AccountRecoverOptionsViewControllerDelegate?
 
-    private let layout = Layout<LayoutConstants>()
-
     private lazy var optionsView = OptionsView()
+    private lazy var theme = Theme()
 
     private let options: [Option] = [.paste, .scanQR, .info]
 
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.secondary
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
     override func linkInteractors() {
         optionsView.optionsCollectionView.delegate = self
-        optionsView.delegate = self
         optionsView.optionsCollectionView.dataSource = self
     }
 
     override func prepareLayout() {
-        setupOptionsViewLayout()
-    }
-}
-
-extension AccountRecoverOptionsViewController {
-    private func setupOptionsViewLayout() {
+        optionsView.customize(theme.optionsViewTheme)
         view.addSubview(optionsView)
 
-        optionsView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.safeEqualToBottom(of: self)
+        optionsView.snp.makeConstraints {
+            $0.leading.trailing.top.equalToSuperview()
+            $0.bottom.safeEqualToBottom(of: self)
         }
-    }
-}
-
-extension AccountRecoverOptionsViewController: OptionsViewDelegate {
-    func optionsViewDidTapCancelButton(_ optionsView: OptionsView) {
-        dismissScreen()
     }
 }
 
@@ -76,6 +62,7 @@ extension AccountRecoverOptionsViewController: UICollectionViewDataSource {
         }
 
         if let option = options[safe: indexPath.item] {
+            cell.customize(OptionsContextViewTheme())
             cell.bind(AccountRecoverOptionsViewModel(option: option))
         }
 
@@ -89,7 +76,7 @@ extension AccountRecoverOptionsViewController: UICollectionViewDelegateFlowLayou
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: view.frame.width, height: layout.current.cellHeight)
+        return CGSize(width: view.frame.width, height: theme.cellHeight)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -116,12 +103,6 @@ extension AccountRecoverOptionsViewController {
         case paste = 0
         case scanQR = 1
         case info = 2
-    }
-}
-
-extension AccountRecoverOptionsViewController {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellHeight: CGFloat = 56.0
     }
 }
 

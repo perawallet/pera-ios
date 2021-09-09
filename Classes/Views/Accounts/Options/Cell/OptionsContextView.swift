@@ -16,48 +16,41 @@
 //  OptionsContextView.swift
 
 import UIKit
+import Macaroon
 
-class OptionsContextView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
+final class OptionsContextView: View {
     private(set) lazy var iconImageView = UIImageView()
-    
-    private(set) lazy var optionLabel: UILabel = {
-        UILabel()
-            .withLine(.single)
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-    }()
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+    private(set) lazy var optionLabel = UILabel()
+
+    func customize(_ theme: OptionsContextViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addIconImageView(theme)
+        addOptionLabel(theme)
     }
-    
-    override func prepareLayout() {
-        setupIconImageViewLayout()
-        setupOptionLabelLayout()
-    }
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 }
 
 extension OptionsContextView {
-    private func setupIconImageViewLayout() {
+    private func addIconImageView(_ theme: OptionsContextViewTheme) {
         addSubview(iconImageView)
-        
-        iconImageView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+        iconImageView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
         }
     }
     
-    private func setupOptionLabelLayout() {
+    private func addOptionLabel(_ theme: OptionsContextViewTheme) {
+        optionLabel.customizeAppearance(theme.label)
+
         addSubview(optionLabel)
-        
-        optionLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.labelLefInset)
-            make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        optionLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.labelLeftInset)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
 }
@@ -72,12 +65,5 @@ extension OptionsContextView {
     func bind(_ viewModel: AccountRecoverOptionsViewModel) {
         iconImageView.image = viewModel.image
         optionLabel.text = viewModel.title
-    }
-}
-
-extension OptionsContextView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let labelLefInset: CGFloat = 56.0
     }
 }

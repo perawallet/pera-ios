@@ -68,29 +68,17 @@ class OptionsViewController: BaseViewController {
     
     override func linkInteractors() {
         optionsView.optionsCollectionView.delegate = self
-        optionsView.delegate = self
         optionsView.optionsCollectionView.dataSource = self
     }
     
     override func prepareLayout() {
-        setupOptionsViewLayout()
-    }
-}
-
-extension OptionsViewController {
-    private func setupOptionsViewLayout() {
+        optionsView.customize(OptionsViewTheme())
         view.addSubview(optionsView)
-        
+
         optionsView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
             make.bottom.safeEqualToBottom(of: self)
         }
-    }
-}
-
-extension OptionsViewController: OptionsViewDelegate {
-    func optionsViewDidTapCancelButton(_ optionsView: OptionsView) {
-        dismissScreen()
     }
 }
 
@@ -107,6 +95,7 @@ extension OptionsViewController: UICollectionViewDataSource {
         }
         
         let option = options[indexPath.item]
+        cell.customize(OptionsContextViewTheme())
         cell.bind(OptionsViewModel(option: option, account: account))
         return cell
     }
@@ -192,6 +181,7 @@ extension OptionsViewController {
     private func updateNotificationFilterCell() {
         if let index = options.firstIndex(of: .notificationSetting),
            let cell = optionsView.optionsCollectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? OptionsCell {
+            cell.customize(OptionsContextViewTheme())
             cell.bind(OptionsViewModel(option: .notificationSetting, account: self.account))
         }
     }

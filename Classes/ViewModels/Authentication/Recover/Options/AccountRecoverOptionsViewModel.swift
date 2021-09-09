@@ -17,8 +17,7 @@
 
 import UIKit
 
-class AccountRecoverOptionsViewModel {
-
+final class AccountRecoverOptionsViewModel {
     private(set) var image: UIImage?
     private(set) var title: String?
 
@@ -32,7 +31,7 @@ class AccountRecoverOptionsViewModel {
         case .paste:
             image = img("icon-paste")
         case .scanQR:
-            image = img("icon-scan-qr-options")
+            image = img("icon-qr-scan")
         case .info:
             image = img("icon-info-24")
         }
