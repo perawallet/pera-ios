@@ -73,7 +73,7 @@ extension AccountPreviewViewModel {
             accountImage = img("rekey-orange")
 
         case .purple(.standard):
-            accountImage = img("standard-purple")
+            accountImage = img("account-purple")
         case .purple(.ledger):
             accountImage = img("ledger-purple")
         case .purple(.watch):
