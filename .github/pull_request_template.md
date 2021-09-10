@@ -11,7 +11,7 @@ Please include the instructions unless they are written somewhere else, e.g. tic
 - [   ] Performed a self-review of the code
 - [   ] Added necessary comments to the hard-to-understand areas
 - [   ] Made/Planned necessary changes to the documentation 
-- [   ] Tested on an device
+- [   ] Tested on a device
 - [   ] Tested on the different screen sizes
 - [   ] Tested on the different themes
 - [   ] Used localized strings
@@ -25,5 +25,5 @@ Please include the necessary demo materials to review the UI-driven task.
 - Screenshots (You may need to include SS(s) for different configs or before & after states)
 
 **For animated UI components & animated transitions & flows:**
-- Gif (Preferred)
+- GIF (Preferred)
 - Video
