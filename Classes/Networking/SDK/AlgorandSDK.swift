@@ -140,6 +140,10 @@ extension AlgorandSDK {
     func getTransactionID(for transaction: Data) -> String {
         return AlgoMobileGetTxID(transaction)
     }
+
+    func getAddressfromProgram(_ program: Data?) -> String {
+        return AlgoMobileAddressFromProgram(program)
+    }
 }
 
 extension AlgorandSDK {

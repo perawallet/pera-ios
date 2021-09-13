@@ -300,9 +300,6 @@
 		2B02A2EC266CE07E002DD8AB /* WalletConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02A2EB266CE07E002DD8AB /* WalletConnector.swift */; };
 		2B02A2ED266CE07E002DD8AB /* WalletConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02A2EB266CE07E002DD8AB /* WalletConnector.swift */; };
 		2B02A2EE266CE07E002DD8AB /* WalletConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B02A2EB266CE07E002DD8AB /* WalletConnector.swift */; };
-		2B0322D3269F1B3100C9B2F5 /* AlgoSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0322D2269F1B3100C9B2F5 /* AlgoSDK.framework */; };
-		2B0322D4269F1B3100C9B2F5 /* AlgoSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0322D2269F1B3100C9B2F5 /* AlgoSDK.framework */; };
-		2B0322D5269F1B3100C9B2F5 /* AlgoSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B0322D2269F1B3100C9B2F5 /* AlgoSDK.framework */; };
 		2B0322D9269F1BB600C9B2F5 /* WCMainTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0322D8269F1BB600C9B2F5 /* WCMainTransactionViewController.swift */; };
 		2B0322DA269F1BB600C9B2F5 /* WCMainTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0322D8269F1BB600C9B2F5 /* WCMainTransactionViewController.swift */; };
 		2B0322DB269F1BB600C9B2F5 /* WCMainTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0322D8269F1BB600C9B2F5 /* WCMainTransactionViewController.swift */; };
@@ -1721,6 +1718,9 @@
 		2B98844525B8804D004532CE /* Asset.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B98844325B8804D004532CE /* Asset.json */; };
 		2B98844F25B880D5004532CE /* AssetSearchResult.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B98844E25B880D5004532CE /* AssetSearchResult.json */; };
 		2B98845025B880D5004532CE /* AssetSearchResult.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B98844E25B880D5004532CE /* AssetSearchResult.json */; };
+		2B9E2F3326EFBBFE003D824A /* AlgoSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B9E2F3226EFBBFE003D824A /* AlgoSDK.framework */; };
+		2B9E2F3426EFBBFE003D824A /* AlgoSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B9E2F3226EFBBFE003D824A /* AlgoSDK.framework */; };
+		2B9E2F3526EFBBFE003D824A /* AlgoSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B9E2F3226EFBBFE003D824A /* AlgoSDK.framework */; };
 		2B9EEAC2264D337F007A112D /* AlgorandBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEAC1264D337F007A112D /* AlgorandBlock.swift */; };
 		2B9EEAC3264D337F007A112D /* AlgorandBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEAC1264D337F007A112D /* AlgorandBlock.swift */; };
 		2B9EEAC4264D337F007A112D /* AlgorandBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEAC1264D337F007A112D /* AlgorandBlock.swift */; };
@@ -2639,7 +2639,6 @@
 		2B01FE6526148482006C3C56 /* AccountRecoverOptionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverOptionsViewModel.swift; sourceTree = "<group>"; };
 		2B02536D23C6101A003D5FDD /* QRBottomInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRBottomInformationView.swift; sourceTree = "<group>"; };
 		2B02A2EB266CE07E002DD8AB /* WalletConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnector.swift; sourceTree = "<group>"; };
-		2B0322D2269F1B3100C9B2F5 /* AlgoSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlgoSDK.framework; sourceTree = "<group>"; };
 		2B0322D8269F1BB600C9B2F5 /* WCMainTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMainTransactionViewController.swift; sourceTree = "<group>"; };
 		2B0322DC269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMainTransactionViewModel.swift; sourceTree = "<group>"; };
 		2B0322E1269F1DE900C9B2F5 /* WCMainTransactionLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMainTransactionLayout.swift; sourceTree = "<group>"; };
@@ -3104,6 +3103,7 @@
 		2B98233A231EC207009560CD /* TransactionsQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsQuery.swift; sourceTree = "<group>"; };
 		2B98844325B8804D004532CE /* Asset.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Asset.json; sourceTree = "<group>"; };
 		2B98844E25B880D5004532CE /* AssetSearchResult.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AssetSearchResult.json; sourceTree = "<group>"; };
+		2B9E2F3226EFBBFE003D824A /* AlgoSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlgoSDK.framework; sourceTree = "<group>"; };
 		2B9EEAC1264D337F007A112D /* AlgorandBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandBlock.swift; sourceTree = "<group>"; };
 		2B9EEACD264D3393007A112D /* AlgorandTotalSupply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandTotalSupply.swift; sourceTree = "<group>"; };
 		2B9EEAD5264D33B1007A112D /* API+Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "API+Block.swift"; sourceTree = "<group>"; };
@@ -3483,7 +3483,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B0322D5269F1B3100C9B2F5 /* AlgoSDK.framework in Frameworks */,
+				2B9E2F3526EFBBFE003D824A /* AlgoSDK.framework in Frameworks */,
 				CB624417B8B29A26FE98B92E /* Pods_algorand_staging.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3492,7 +3492,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B0322D4269F1B3100C9B2F5 /* AlgoSDK.framework in Frameworks */,
+				2B9E2F3426EFBBFE003D824A /* AlgoSDK.framework in Frameworks */,
 				97F637CB9A81E02C6567D1FE /* Pods_algorand_prod.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3501,7 +3501,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B0322D3269F1B3100C9B2F5 /* AlgoSDK.framework in Frameworks */,
+				2B9E2F3326EFBBFE003D824A /* AlgoSDK.framework in Frameworks */,
 				34E10EEDAEE4C90E51BCBBB2 /* Pods_algorand.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3562,7 +3562,7 @@
 		17512612223BDC2B0095AF4F /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				2B0322D2269F1B3100C9B2F5 /* AlgoSDK.framework */,
+				2B9E2F3226EFBBFE003D824A /* AlgoSDK.framework */,
 			);
 			path = Libraries;
 			sourceTree = "<group>";
