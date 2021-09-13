@@ -15,16 +15,22 @@
 //
 //   TutorialNumberViewModel.swift
 
-import Foundation
+import Macaroon
 
-class TutorialNumberViewModel {
+final class TutorialNumberViewModel: BindableViewModel {
     private(set) var number: String?
 
-    init(number: Int) {
-        setNumber(from: number)
+    init<T>(_ model: T) {
+        bind(model)
     }
 
-    private func setNumber(from number: Int) {
-        self.number = "\(number)"
+    func bind<T>(_ model: T) {
+        if let number = model as? Int {
+            bindNumber(number)
+        }
+    }
+
+    private func bindNumber(_ number: Int) {
+        self.number = "\(number)."
     }
 }

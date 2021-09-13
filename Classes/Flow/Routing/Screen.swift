@@ -71,10 +71,6 @@ indirect enum Screen {
     case ledgerDeviceList(flow: AccountSetupFlow)
     case ledgerTroubleshoot
     case ledgerApproval(mode: LedgerApprovalViewController.Mode)
-    case ledgerTroubleshootBluetooth
-    case ledgerTroubleshootLedgerConnection
-    case ledgerTroubleshootInstallApp
-    case ledgerTroubleshootOpenApp
     case selectAsset(transactionAction: TransactionAction, filterOption: SelectAssetViewController.FilterOption = .none)
     case passphraseDisplay(address: String)
     case tooltip(title: String)
@@ -97,6 +93,7 @@ indirect enum Screen {
     case warningAlert(warningAlert: WarningAlert)
     case actionableWarningAlert(warningAlert: WarningAlert)
     case tutorial(flow: AccountSetupFlow, tutorial: Tutorial)
+    case tutorialSteps(step: Troubleshot.Step)
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions
     case algoUSDAnalytics(account: Account, currency: Currency)

@@ -55,6 +55,8 @@ extension TutorialViewModel {
             image = img("check")
         case .passphraseVerified:
             image = img("shield-check")
+        case .ledger:
+            image = img("ledger")
         }
     }
 
@@ -78,6 +80,8 @@ extension TutorialViewModel {
             title = "pass-phrase-verify-pop-up-title".localized
         case .accountVerified:
             title = "recover-from-seed-verify-pop-up-title".localized
+        case .ledger:
+            title = "ledger-tutorial-title-text".localized
         }
     }
 
@@ -101,6 +105,8 @@ extension TutorialViewModel {
             description = "pass-phrase-verify-pop-up-explanation".localized
         case .accountVerified:
             description = "recover-from-seed-verify-pop-up-explanation".localized
+        case .ledger:
+            description = "tutorial-description-ledger".localized
         }
     }
 
@@ -124,6 +130,8 @@ extension TutorialViewModel {
             primaryActionButtonTitle = "account-name-setup-finish".localized
         case .accountVerified:
             primaryActionButtonTitle = "title-go-home".localized
+        case .ledger:
+            primaryActionButtonTitle = "ledger-tutorial-title-text".localized
         }
     }
 
@@ -144,6 +152,8 @@ extension TutorialViewModel {
             secondaryActionButtonTitle = "tutorial-action-title-passcode".localized
         case .localAuthentication:
             secondaryActionButtonTitle = "local-authentication-no".localized
+        case .ledger:
+            secondaryActionButtonTitle = "tutorial-action-title-ledger".localized
         default:
             break
         }

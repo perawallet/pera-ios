@@ -395,7 +395,7 @@
 // MARK: Ledger Tutorial
 "ledger-pair-title" = "Create Ledger Account";
 "ledger-tutorial-title-text" = "Pair with Ledger";
-"ledger-tutorial-turned-on" = "Make sure that your ledger device is on and has Bluetooth enabled.";
+"ledger-tutorial-turned-on" = "Make sure that your ledger device is on\nand has Bluetooth enabled.";
 "ledger-tutorial-install-app" = "Install the Algorand app (version 1.2.9 or later) onto your Ledger.";
 "ledger-tutorial-open-app" = "Open the Algorand app on your Ledger.";
 "ledger-tutorial-bluetooth" = "Make sure Bluetooth is enabled on your smartphone.";
@@ -571,6 +571,7 @@
 "tutorial-description-watch-warning" = "If you do not have the corresponding recovery passphrase, do not send assets to this account.";
 "tutorial-description-passcode" = "This 6-digit PIN will be required to use the Algorand Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
+"tutorial-description-ledger" = "Please make sure your Ledger is unlocked with Bluetooth enabled";
 
 "tutorial-main-title-back-up" = "I Understand";
 "tutorial-main-title-recover" = "Recover an Algorand Account";
@@ -578,6 +579,7 @@
 "tutorial-main-title-passcode" = "Set PIN Code";
 
 "tutorial-action-title-passcode" = "Not now";
+"tutorial-action-title-ledger" = "How does it work?";
 
 "maximum-balance-warning-description" = "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
 "maximum-balance-standard-account-warning-description" = "Based on your account configuration, your minimum balance is %@.\n\n\nBy hitting continue, your transaction amount will be updated to maintain the Algorand Blockchain’s minimum required balance. You’ll be able to preview this change in the next step.";

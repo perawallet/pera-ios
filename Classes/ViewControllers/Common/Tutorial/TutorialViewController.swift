@@ -145,6 +145,8 @@ extension TutorialViewController: TutorialViewDelegate {
             open(.accountNameSetup, by: .push)
         case .accountVerified:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
+        case .ledger:
+            open(.ledgerDeviceList(flow: flow), by: .push)
         }
     }
 
@@ -154,6 +156,8 @@ extension TutorialViewController: TutorialViewDelegate {
             dismissScreen()
         case .localAuthentication:
             dismissScreen()
+        case .ledger:
+            open(.ledgerTutorial(flow: .addNewAccount(mode: .add(type: .pair))), by: .push)
         default:
             break
         }
@@ -223,4 +227,5 @@ enum Tutorial {
     case biometricAuthenticationEnabled
     case passphraseVerified
     case accountVerified
+    case ledger
 }

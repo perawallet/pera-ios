@@ -13,29 +13,31 @@
 // limitations under the License.
 
 //
-//  LedgerTroubleshootingViewController.swift
+//  LedgerTutorialInstructionListViewController.swift
 
 import UIKit
 
-/// <note>: This should be refactored -> LedgerTutorialInstructionListViewController
-final class LedgerTroubleshootingViewController: BaseScrollViewController {
+final class LedgerTutorialInstructionListViewController: BaseScrollViewController {
     private lazy var ledgerTutorialInstructionListView = LedgerTutorialInstructionListView()
+    private lazy var theme = Theme()
     
+    private let accountSetupFlow: AccountSetupFlow
+    
+    init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
+        self.accountSetupFlow = accountSetupFlow
+        super.init(configuration: configuration)
+    }
+
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
-        
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-        
-        leftBarButtonItems = [closeBarButtonItem]
+        addBarButtons()
     }
     
     override func configureAppearance() {
         super.configureAppearance()
+        title = "tutorial-action-title-ledger".localized
         setNavigationBarTertiaryBackgroundColor()
-        view.backgroundColor = Colors.Background.tertiary
-        title = "ledger-troubleshooting-title".localized
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     
     override func linkInteractors() {
@@ -43,31 +45,39 @@ final class LedgerTroubleshootingViewController: BaseScrollViewController {
         ledgerTutorialInstructionListView.linkInteractors()
         ledgerTutorialInstructionListView.delegate = self
     }
+
+    override func bindData() {
+        super.bindData()
+        ledgerTutorialInstructionListView.bindData()
+    }
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupLedgerTroubleshootingViewLayout()
-    }
-}
-
-extension LedgerTroubleshootingViewController {
-    private func setupLedgerTroubleshootingViewLayout() {
-        ledgerTutorialInstructionListView.customize(LedgerTutorialInstructionListViewTheme())
-        ledgerTutorialInstructionListView.bindData()
-        ledgerTutorialInstructionListView.backgroundColor = Colors.Background.tertiary
+        ledgerTutorialInstructionListView.customize(theme.ledgerTutorialInstructionViewTheme)
 
         contentView.addSubview(ledgerTutorialInstructionListView)
         ledgerTutorialInstructionListView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview().inset(20)
+            $0.edges.equalToSuperview()
         }
     }
 }
 
-extension LedgerTroubleshootingViewController: LedgerTutorialViewDelegate {
-    func ledgerTutorialInstructionListView(
-        _ ledgerTutorialInstructionListView: LedgerTutorialInstructionListView,
-        didTap section: LedgerTutorialSection
-    ) {
+extension LedgerTutorialInstructionListViewController {
+    func addBarButtons() {
+        addInfoBarButton()
+    }
+
+    func addInfoBarButton() {
+        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
+            self?.openWalletSupport()
+        }
+
+        rightBarButtonItems = [infoBarButtonItem]
+    }
+}
+
+extension LedgerTutorialInstructionListViewController: LedgerTutorialViewDelegate {
+    func ledgerTutorialInstructionListView(_ ledgerTutorialView: LedgerTutorialInstructionListView, didTap section: LedgerTutorialSection) {
         switch section {
         case .ledgerBluetoothConnection:
             open(.tutorialSteps(step: .bluetoothConnection), by: .present)
@@ -78,5 +88,11 @@ extension LedgerTroubleshootingViewController: LedgerTutorialViewDelegate {
         case .bluetoothConnection:
             open(.tutorialSteps(step: .bluetoothConnection), by: .present)
         }
+    }
+}
+
+extension LedgerTutorialInstructionListViewController {
+    private func openWalletSupport() {
+        open(AlgorandWeb.ledgerSupport.link)
     }
 }

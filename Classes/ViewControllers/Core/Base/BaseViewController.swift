@@ -102,8 +102,8 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
         bindData()
         
         navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: UIFont.font(withWeight: .semiBold(size: 16.0)),
-            NSAttributedString.Key.foregroundColor: Colors.Text.primary
+            NSAttributedString.Key.font: Fonts.DMSans.regular.make(15).font,
+            NSAttributedString.Key.foregroundColor: AppColors.Components.Text.main.color
         ]
     }
     

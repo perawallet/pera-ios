@@ -101,7 +101,7 @@ extension AddAccountViewController: AddAccountViewDelegate {
         case .watch:
             open(.tutorial(flow: flow, tutorial: .watchAccount), by: .push)
         case .pair:
-            open(.ledgerTutorial(flow: .addNewAccount(mode: .add(type: .pair))), by: .push)
+            open(.tutorial(flow: flow, tutorial: .ledger), by: .push)
         default:
             break
         }

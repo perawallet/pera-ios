@@ -13,26 +13,22 @@
 // limitations under the License.
 
 //
-//   LedgerTutorialInstructionViewModel.swift
+//   TutorialNumberViewTheme.swift
 
+import Foundation
 import Macaroon
+import UIKit
 
-final class LedgerTutorialInstructionViewModel: BindableViewModel {
-    private(set) var title: String?
+struct TutorialNumberViewTheme: StyleSheet, LayoutSheet {
+    let label: TextStyle
+    let backgroundColor: Color
 
-    init<T>(_ model: T) {
-        bind(model)
-    }
-
-    func bind<T>(_ model: T) {
-        if let title = model as? String {
-            bindTitle(title)
-        }
-    }
-}
-
-extension LedgerTutorialInstructionViewModel {
-    private func bindTitle(_ someTitle: String) {
-        self.title = someTitle
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = UIColor.clear
+        self.label = [
+            .textOverflow(.singleLineFitting),
+            .font(Fonts.DMSans.regular.make(15)),
+            .textColor(AppColors.Components.Text.main.color)
+        ]
     }
 }

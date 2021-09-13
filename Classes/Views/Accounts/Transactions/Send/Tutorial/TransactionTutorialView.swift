@@ -61,7 +61,8 @@ class TransactionTutorialView: BaseView {
 
     private lazy var numberOneView: TutorialNumberView = {
         let numberView = TutorialNumberView()
-        numberView.bind(TutorialNumberViewModel(number: 1))
+        numberView.customize(TutorialNumberViewTheme())
+        numberView.bindData(TutorialNumberViewModel(1))
         return numberView
     }()
 
@@ -76,7 +77,8 @@ class TransactionTutorialView: BaseView {
 
     private lazy var numberTwoView: TutorialNumberView = {
         let numberView = TutorialNumberView()
-        numberView.bind(TutorialNumberViewModel(number: 2))
+        numberView.customize(TutorialNumberViewTheme())
+        numberView.bindData(TutorialNumberViewModel(2))
         return numberView
     }()
 

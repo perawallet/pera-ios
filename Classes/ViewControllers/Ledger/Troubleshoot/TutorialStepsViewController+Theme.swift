@@ -13,26 +13,16 @@
 // limitations under the License.
 
 //
-//   LedgerTutorialInstructionViewModel.swift
+//   TutorialStepsViewController+Theme.swift
 
 import Macaroon
 
-final class LedgerTutorialInstructionViewModel: BindableViewModel {
-    private(set) var title: String?
+extension TutorialStepsViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: Color
 
-    init<T>(_ model: T) {
-        bind(model)
-    }
-
-    func bind<T>(_ model: T) {
-        if let title = model as? String {
-            bindTitle(title)
+        init(_ family: LayoutFamily) {
+            backgroundColor = AppColors.Shared.System.background
         }
-    }
-}
-
-extension LedgerTutorialInstructionViewModel {
-    private func bindTitle(_ someTitle: String) {
-        self.title = someTitle
     }
 }

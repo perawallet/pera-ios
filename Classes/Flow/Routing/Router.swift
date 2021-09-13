@@ -292,21 +292,18 @@ class Router {
         case .verifiedAssetInformation:
             viewController = VerifiedAssetInformationViewController(configuration: configuration)
         case let .ledgerTutorial(flow):
-            viewController = LedgerTutorialViewController(accountSetupFlow: flow, configuration: configuration)
+            viewController = LedgerTutorialInstructionListViewController(accountSetupFlow: flow, configuration: configuration)
         case let .ledgerDeviceList(flow):
             viewController = LedgerDeviceListViewController(accountSetupFlow: flow, configuration: configuration)
         case .ledgerTroubleshoot:
             viewController = LedgerTroubleshootingViewController(configuration: configuration)
         case let .ledgerApproval(mode):
             viewController = LedgerApprovalViewController(mode: mode, configuration: configuration)
-        case .ledgerTroubleshootBluetooth:
-            viewController = LedgerTroubleshootBluetoothConnectionViewController(configuration: configuration)
-        case .ledgerTroubleshootLedgerConnection:
-            viewController = LedgerTroubleshootBluetoothViewController(configuration: configuration)
-        case .ledgerTroubleshootInstallApp:
-            viewController = LedgerTroubleshootInstallAppViewController(configuration: configuration)
-        case .ledgerTroubleshootOpenApp:
-            viewController = LedgerTroubleshootOpenAppViewController(configuration: configuration)
+        case let .tutorialSteps(step):
+            viewController = TutorialStepsViewController(
+                step: step,
+                configuration: configuration
+            )
         case let .selectAsset(transactionAction, filterOption):
             viewController = SelectAssetViewController(
                 transactionAction: transactionAction,

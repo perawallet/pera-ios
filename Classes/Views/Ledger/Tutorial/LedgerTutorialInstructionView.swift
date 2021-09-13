@@ -16,80 +16,50 @@
 //  LedgerTutorialInstructionView.swift
 
 import UIKit
+import Macaroon
 
-class LedgerTutorialInstructionView: BaseView {
+final class LedgerTutorialInstructionView: View {
+    private lazy var titleLabel = UILabel()
+    private lazy var arrowImageView = UIImageView()
     
-    private let layout = Layout<LayoutConstants>()
-    
-    private lazy var tutorialNumberView = TutorialNumberView()
-    
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withLine(.contained)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withAlignment(.left)
-            .withTextColor(Colors.Text.primary)
-    }()
-    
-    private lazy var arrowImageView = UIImageView(image: img("icon-arrow-gray-24"))
+    func customize(_ theme: LedgerTutorialInstructionViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-    override func configureAppearance() {
-        backgroundColor = .clear
+        addArrowImageView(theme)
+        addTitleLabel(theme)
     }
-    
-    override func prepareLayout() {
-        setupTutorialNumberViewLayout()
-        setupArrowImageViewLayout()
-        setupTitleLabelLayout()
-    }
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 }
 
 extension LedgerTutorialInstructionView {
-    private func setupTutorialNumberViewLayout() {
-        addSubview(tutorialNumberView)
-        
-        tutorialNumberView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
-            make.size.equalTo(layout.current.numberSize)
-        }
-    }
-    
-    private func setupArrowImageViewLayout() {
+    private func addArrowImageView(_ theme: LedgerTutorialInstructionViewTheme) {
+        arrowImageView.customizeAppearance(theme.arrowImage)
+
         addSubview(arrowImageView)
-        
-        arrowImageView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.size.equalTo(layout.current.iconSize)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        arrowImageView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.fitToSize(theme.iconSize)
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
 
-    private func setupTitleLabelLayout() {
+    private func addTitleLabel(_ theme: LedgerTutorialInstructionViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
         addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(tutorialNumberView)
-            make.leading.equalTo(tutorialNumberView.snp.trailing).offset(layout.current.horizontalInset)
-            make.trailing.equalTo(arrowImageView.snp.leading).offset(layout.current.titleHorizontalInset)
+        titleLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().offset(theme.horizontalInset)
+            $0.trailing.equalTo(arrowImageView.snp.leading).offset(theme.titleHorizontalInset)
         }
     }
 }
 
-extension LedgerTutorialInstructionView {
-    func bind(_ viewModel: LedgerTutorialInstructionViewModel) {
-        if let number = viewModel.number {
-            tutorialNumberView.bind(TutorialNumberViewModel(number: number))
-        }
-        titleLabel.text = viewModel.title
-    }
-}
-
-extension LedgerTutorialInstructionView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 16.0
-        let iconSize = CGSize(width: 24.0, height: 24.0)
-        let numberSize = CGSize(width: 32.0, height: 32.0)
-        let titleHorizontalInset: CGFloat = -12.0
+extension LedgerTutorialInstructionView: ViewModelBindable {
+    func bindData(_ viewModel: LedgerTutorialInstructionViewModel?) {
+        titleLabel.text = viewModel?.title
     }
 }

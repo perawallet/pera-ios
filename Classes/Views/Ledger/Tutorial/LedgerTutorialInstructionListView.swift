@@ -16,49 +16,28 @@
 //  LedgerTutorialInstructionListView.swift
 
 import UIKit
+import Macaroon
 
-class LedgerTutorialInstructionListView: BaseView {
-    private let layout = Layout<LayoutConstants>()
-    
-    private lazy var openLedgerInstructionView: LedgerTutorialInstructionView = {
-        let view = LedgerTutorialInstructionView()
-        view.bind(LedgerTutorialInstructionViewModel(number: 1, title: "ledger-tutorial-turned-on".localized))
-        view.isUserInteractionEnabled = true
-        return view
-    }()
-    
-    private lazy var installAppInstructionView: LedgerTutorialInstructionView = {
-        let view = LedgerTutorialInstructionView()
-        view.bind(LedgerTutorialInstructionViewModel(number: 2, title: "ledger-tutorial-install-app".localized))
-        view.isUserInteractionEnabled = true
-        return view
-    }()
-    
-    private lazy var openAppInstructionView: LedgerTutorialInstructionView = {
-        let view = LedgerTutorialInstructionView()
-        view.bind(LedgerTutorialInstructionViewModel(number: 3, title: "ledger-tutorial-open-app".localized))
-        view.isUserInteractionEnabled = true
-        return view
-    }()
-    
-    private lazy var turnOnBluetoohInstructionView: LedgerTutorialInstructionView = {
-        let view = LedgerTutorialInstructionView()
-        view.bind(LedgerTutorialInstructionViewModel(number: 4, title: "ledger-tutorial-bluetooth".localized))
-        view.isUserInteractionEnabled = true
-        return view
-    }()
-    
-    weak var delegate: LedgerTutorialInstructionListViewDelegate?
-        
-    override func prepareLayout() {
-        setupOpenLedgerInstructionViewLayout()
-        setupInstallAppInstructionViewLayout()
-        setupOpenAppInstructionViewLayout()
-        setupTurnOnBluetoohInstructionViewLayout()
+final class LedgerTutorialInstructionListView: View {
+    weak var delegate: LedgerTutorialViewDelegate?
+
+    private lazy var openLedgerInstructionView = LedgerTutorialInstructionView()
+    private lazy var installAppInstructionView = LedgerTutorialInstructionView()
+    private lazy var openAppInstructionView = LedgerTutorialInstructionView()
+    private lazy var turnOnBluetoothInstructionView = LedgerTutorialInstructionView()
+
+    func customize(_ theme: LedgerTutorialInstructionListViewTheme) {
+        addOpenLedgerInstructionView(theme)
+        addInstallAppInstructionView(theme)
+        addOpenAppInstructionView(theme)
+        addTurnOnBluetoothInstructionView(theme)
     }
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
     
-    override func linkInteractors() {
-        super.linkInteractors()
+    func linkInteractors() {
         let ledgerBluetoothTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapLedgerBluetoothConnection))
         openLedgerInstructionView.addGestureRecognizer(ledgerBluetoothTapGestureRecognizer)
         
@@ -69,49 +48,60 @@ class LedgerTutorialInstructionListView: BaseView {
         openAppInstructionView.addGestureRecognizer(openAppTapGestureRecognizer)
         
         let bluetoothTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapBluetoothConnection))
-        turnOnBluetoohInstructionView.addGestureRecognizer(bluetoothTapGestureRecognizer)
+        turnOnBluetoothInstructionView.addGestureRecognizer(bluetoothTapGestureRecognizer)
+    }
+
+    func bindData() {
+        openLedgerInstructionView.bindData(LedgerTutorialInstructionViewModel("ledger-tutorial-turned-on".localized))
+        installAppInstructionView.bindData(LedgerTutorialInstructionViewModel("ledger-tutorial-install-app".localized))
+        openAppInstructionView.bindData(LedgerTutorialInstructionViewModel("ledger-tutorial-open-app".localized))
+        turnOnBluetoothInstructionView.bindData(LedgerTutorialInstructionViewModel("ledger-tutorial-bluetooth".localized))
     }
 }
 
 extension LedgerTutorialInstructionListView {
-    private func setupOpenLedgerInstructionViewLayout() {
+    private func addOpenLedgerInstructionView(_ theme: LedgerTutorialInstructionListViewTheme) {
+        openLedgerInstructionView.customize(LedgerTutorialInstructionViewTheme())
+
         addSubview(openLedgerInstructionView)
-        
-        openLedgerInstructionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
-            make.height.equalTo(layout.current.instructionHeight)
+        openLedgerInstructionView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalToSuperview().offset(theme.listTopInset)
+            $0.height.equalTo(theme.instructionHeight)
         }
     }
 
-    private func setupInstallAppInstructionViewLayout() {
+    private func addInstallAppInstructionView(_ theme: LedgerTutorialInstructionListViewTheme) {
+        installAppInstructionView.customize(LedgerTutorialInstructionViewTheme())
+
         addSubview(installAppInstructionView)
-        
-        installAppInstructionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(openLedgerInstructionView.snp.bottom).offset(layout.current.instructionOffset)
-            make.height.equalTo(openLedgerInstructionView)
+        installAppInstructionView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(openLedgerInstructionView.snp.bottom).offset(theme.instructionOffset)
+            $0.height.equalTo(openLedgerInstructionView)
         }
     }
 
-    private func setupOpenAppInstructionViewLayout() {
+    private func addOpenAppInstructionView(_ theme: LedgerTutorialInstructionListViewTheme) {
+        openAppInstructionView.customize(LedgerTutorialInstructionViewTheme())
+
         addSubview(openAppInstructionView)
-        
-        openAppInstructionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(installAppInstructionView.snp.bottom).offset(layout.current.instructionOffset)
-            make.height.equalTo(openLedgerInstructionView)
+        openAppInstructionView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(installAppInstructionView.snp.bottom).offset(theme.instructionOffset)
+            $0.height.equalTo(openLedgerInstructionView)
         }
     }
 
-    private func setupTurnOnBluetoohInstructionViewLayout() {
-        addSubview(turnOnBluetoohInstructionView)
-        
-        turnOnBluetoohInstructionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(openAppInstructionView.snp.bottom).offset(layout.current.instructionOffset)
-            make.height.equalTo(openLedgerInstructionView)
-            make.bottom.equalToSuperview()
+    private func addTurnOnBluetoothInstructionView(_ theme: LedgerTutorialInstructionListViewTheme) {
+        turnOnBluetoothInstructionView.customize(LedgerTutorialInstructionViewTheme())
+
+        addSubview(turnOnBluetoothInstructionView)
+        turnOnBluetoothInstructionView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(openAppInstructionView.snp.bottom).offset(theme.instructionOffset)
+            $0.height.equalTo(openLedgerInstructionView)
+            $0.bottom.equalToSuperview()
         }
     }
 }
@@ -119,35 +109,35 @@ extension LedgerTutorialInstructionListView {
 extension LedgerTutorialInstructionListView {
     @objc
     private func didTapLedgerBluetoothConnection() {
-        delegate?.ledgerTutorialInstructionListViewDidTapLedgerBluetoothConnection(self)
+        delegate?.ledgerTutorialInstructionListView(self, didTap: .ledgerBluetoothConnection)
     }
     
     @objc
     private func didTapInstallApp() {
-        delegate?.ledgerTutorialInstructionListViewDidTapInstallApp(self)
+        delegate?.ledgerTutorialInstructionListView(self, didTap: .installApp)
     }
     
     @objc
     private func didTapOpenApp() {
-        delegate?.ledgerTutorialInstructionListViewDidTapOpenApp(self)
+        delegate?.ledgerTutorialInstructionListView(self, didTap: .openApp)
     }
     
     @objc
     private func didTapBluetoothConnection() {
-        delegate?.ledgerTutorialInstructionListViewDidTapBluetoothConnection(self)
+        delegate?.ledgerTutorialInstructionListView(self, didTap: .bluetoothConnection)
     }
 }
 
-extension LedgerTutorialInstructionListView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let instructionHeight: CGFloat = 64.0
-        let instructionOffset: CGFloat = 12.0
-    }
+protocol LedgerTutorialViewDelegate: AnyObject {
+    func ledgerTutorialInstructionListView(
+        _ ledgerTutorialInstructionListView: LedgerTutorialInstructionListView,
+        didTap section: LedgerTutorialSection
+    )
 }
 
-protocol LedgerTutorialInstructionListViewDelegate: AnyObject {
-    func ledgerTutorialInstructionListViewDidTapLedgerBluetoothConnection(_ view: LedgerTutorialInstructionListView)
-    func ledgerTutorialInstructionListViewDidTapInstallApp(_ view: LedgerTutorialInstructionListView)
-    func ledgerTutorialInstructionListViewDidTapOpenApp(_ view: LedgerTutorialInstructionListView)
-    func ledgerTutorialInstructionListViewDidTapBluetoothConnection(_ view: LedgerTutorialInstructionListView)
+enum LedgerTutorialSection {
+    case ledgerBluetoothConnection
+    case openApp
+    case installApp
+    case bluetoothConnection
 }
