@@ -163,10 +163,12 @@ class WCAppCallTransactionViewModel {
             return
         }
 
+        let sdk = AlgorandSDK()
+        
         approvalHashInformationViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
                 title: "wallet-connect-transaction-title-app-call-approval-hash".localized,
-                detail: String(data: approvalHash, encoding: .utf8) ?? approvalHash.base64EncodedString()
+                detail: sdk.getAddressfromProgram(approvalHash.base64EncodedData())
             ),
             isLastElement: false
         )
@@ -179,10 +181,12 @@ class WCAppCallTransactionViewModel {
             return
         }
 
+        let sdk = AlgorandSDK()
+
         clearStateHashInformationViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
                 title: "wallet-connect-transaction-title-app-call-clear-hash".localized,
-                detail: String(data: stateHash, encoding: .utf8) ?? stateHash.base64EncodedString()
+                detail: sdk.getAddressfromProgram(stateHash.base64EncodedData())
             ),
             isLastElement: transaction.hasValidAuthAddressForSigner && !transactionDetail.hasRekeyOrCloseAddress
         )
@@ -263,11 +267,21 @@ class WCAppCallTransactionViewModel {
     }
 
     private func setRawTransactionInformationViewModel(from transaction: WCTransaction) {
-        rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(information: .rawTransaction, isLastElement: false)
+        rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(
+            information: .rawTransaction,
+            isLastElement: transaction.transactionDetail?.isAppCreateTransaction ?? false
+        )
     }
 
     private func setAlgoExplorerInformationViewModel(from transaction: WCTransaction) {
-        algoExplorerInformationViewModel = WCTransactionActionableInformationViewModel(information: .algoExplorer, isLastElement: true)
+        guard let transactionDetail = transaction.transactionDetail,
+              !transactionDetail.isAppCreateTransaction else {
+            return
+        }
+
+        algoExplorerInformationViewModel = WCTransactionActionableInformationViewModel(
+            information: .algoExplorer,
+            isLastElement: true)
     }
 }
 

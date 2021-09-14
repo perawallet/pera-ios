@@ -187,6 +187,8 @@ extension WCAppCallTransactionView {
 
         if let algoExplorerInformationViewModel = viewModel.algoExplorerInformationViewModel {
             algoExplorerInformationView.bind(algoExplorerInformationViewModel)
+        } else {
+            algoExplorerInformationView.hideViewInStack()
         }
     }
 }

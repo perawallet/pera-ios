@@ -77,11 +77,19 @@ class WCTransactionDetail: Model {
         appCallArguments = try container.decodeIfPresent([String].self, forKey: .appCallArguments)
         appCallOnComplete = try container.decodeIfPresent(AppCallOnComplete.self, forKey: .appCallOnComplete) ?? .noOp
         appCallId = try container.decodeIfPresent(Int64.self, forKey: .appCallId) ?? 0
-        appGlobalSchema = try container.decodeIfPresent(WCTransactionAppSchema.self, forKey: .appGlobalSchema)
-        appLocalSchema = try container.decodeIfPresent(WCTransactionAppSchema.self, forKey: .appLocalSchema)
-        appExtraPages = try container.decodeIfPresent(Int.self, forKey: .appExtraPages)
         approvalHash = try container.decodeIfPresent(Data.self, forKey: .approvalHash)
         stateHash = try container.decodeIfPresent(Data.self, forKey: .stateHash)
+
+        if type == .applicationCall {
+            let defaultAppSchema = WCTransactionAppSchema()
+            appGlobalSchema = try container.decodeIfPresent(WCTransactionAppSchema.self, forKey: .appGlobalSchema) ?? defaultAppSchema
+            appLocalSchema = try container.decodeIfPresent(WCTransactionAppSchema.self, forKey: .appLocalSchema) ?? defaultAppSchema
+            appExtraPages = try container.decodeIfPresent(Int.self, forKey: .appExtraPages) ?? 0
+        } else {
+            appGlobalSchema = nil
+            appLocalSchema = nil
+            appExtraPages = nil
+        }
 
         if let senderMsgpack = try container.decodeIfPresent(Data.self, forKey: .sender) {
             sender = parseAddress(from: senderMsgpack)
@@ -299,6 +307,11 @@ extension WCTransactionDetail: Equatable {
 class WCTransactionAppSchema: Model {
     let numberOfBytes: Int?
     let numberofInts: Int?
+
+    init() {
+        numberOfBytes = 0
+        numberofInts = 0
+    }
 
     var representation: String {
         let numberOfBytes = numberOfBytes ?? 0
