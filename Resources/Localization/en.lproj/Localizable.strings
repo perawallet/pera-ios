@@ -700,3 +700,20 @@
 "wallet-connect-transaction-group-app-close-title" = "Application Close to #%@";
 "wallet-connect-transaction-group-app-update-title" = "Application Update to #%@";
 "wallet-connect-transaction-group-app-delete-title" = "Application Delete to #%@";
+
+"wallet-connect-asset-creation-title" = "Asset Creation Request";
+"wallet-connect-asset-name-title" = "Asset Name";
+"wallet-connect-asset-unit-title" = "Unit Name";
+"wallet-connect-asset-decimals-title" = "Decimal Places";
+"wallet-connect-asset-frozen-title" = "Default Frozen";
+"wallet-connect-asset-manager-title" = "Manager Account";
+"wallet-connect-asset-reserve-title" = "Reserve Account";
+"wallet-connect-asset-freeze-title" = "Freeze Account";
+"wallet-connect-asset-clawback-title" = "Clawback Account";
+"wallet-connect-asset-reconfiguration-title" = "Asset Reconfiguration Request";
+"wallet-connect-asset-deletion-title" = "Asset Deletion Request";
+"wallet-connect-asset-deletion-warning-title" = "This asset will be deleted.";
+
+"governance-banner-title" = "Algorand Governance Program is starting!";
+"governance-banner-detail" = "Become a governor. Vote on Algorand’s future. Earn rewards.";
+"governance-banner-action" = "Get Started";
