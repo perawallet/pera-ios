@@ -679,7 +679,7 @@
 "wallet-connect-transaction-title-app-call-extra-pages" = "App Extra Pages";
 "wallet-connect-transaction-title-app-call-approval-hash" = "Approval Hash";
 "wallet-connect-transaction-title-app-call-clear-hash" = "Clear State Hash";
-"wallet-connect-transaction-title-app-creation" = "Application Creation";
+"wallet-connect-transaction-title-app-creation" = "App Creation";
 "wallet-connect-transaction-title-app-id" = "Application ID";
 "wallet-connect-transaction-title-asset-url" = "Asset URL";
 "wallet-connect-transaction-detail-asset-url" = "Show Asset URL";
