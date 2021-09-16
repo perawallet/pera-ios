@@ -18,22 +18,20 @@
 import UIKit
 import CoreBluetooth
 
-class LedgerDeviceListViewController: BaseViewController {
-    
-    private let layout = Layout<LayoutConstants>()
-
+final class LedgerDeviceListViewController: BaseViewController {
     private lazy var ledgerDeviceListView = LedgerDeviceListView()
+    private lazy var theme = Theme()
     
     private lazy var ledgerAccountFetchOperation: LedgerAccountFetchOperation = {
         guard let api = api else {
             fatalError("Api must be set before accessing this view controller.")
         }
-        return LedgerAccountFetchOperation(api: api, ledgerApprovalMode: .connection, bannerController: bannerController)
+        return LedgerAccountFetchOperation(api: api, bannerController: bannerController)
     }()
     
     private let accountSetupFlow: AccountSetupFlow
     private var ledgerDevices = [CBPeripheral]()
-    
+
     init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
         self.accountSetupFlow = accountSetupFlow
         super.init(configuration: configuration)
@@ -41,40 +39,35 @@ class LedgerDeviceListViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        ledgerDeviceListView.startSearchSpinner()
+        ledgerDeviceListView.startAnimatingImageView()
+        ledgerDeviceListView.startAnimatingIndicatorView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         ledgerAccountFetchOperation.reset()
-        ledgerDeviceListView.stopSearchSpinner()
-    }
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        title = "ledger-device-list-title".localized
+        ledgerDeviceListView.stopAnimatingImageView()
+        ledgerDeviceListView.stopAnimatingIndicatorView()
     }
     
     override func linkInteractors() {
         super.linkInteractors()
-        ledgerDeviceListView.delegate = self
         ledgerAccountFetchOperation.delegate = self
         ledgerDeviceListView.devicesCollectionView.delegate = self
         ledgerDeviceListView.devicesCollectionView.dataSource = self
     }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+        setNavigationBarTertiaryBackgroundColor()
+        view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+    }
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupLedgerDeviceListViewLayout()
-    }
-}
-
-extension LedgerDeviceListViewController {
-    private func setupLedgerDeviceListViewLayout() {
         view.addSubview(ledgerDeviceListView)
-        
-        ledgerDeviceListView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        ledgerDeviceListView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
@@ -92,9 +85,13 @@ extension LedgerDeviceListViewController: UICollectionViewDataSource {
         }
         
         let device = ledgerDevices[indexPath.item]
-        cell.bind(LedgerDeviceListViewModel(peripheral: device))
-        cell.delegate = self
+        cell.customize(LedgerDeviceCellViewTheme())
+        cell.bindData(LedgerDeviceListViewModel(device))
         return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        ledgerAccountFetchOperation.connectToDevice(ledgerDevices[indexPath.item])
     }
 }
 
@@ -104,24 +101,7 @@ extension LedgerDeviceListViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return layout.current.cellSize
-    }
-}
-
-extension LedgerDeviceListViewController: LedgerDeviceCellDelegate {
-    func ledgerDeviceCellDidTapConnectButton(_ ledgerDeviceCell: LedgerDeviceCell) {
-        guard let indexPath = ledgerDeviceListView.devicesCollectionView.indexPath(for: ledgerDeviceCell) else {
-            return
-        }
-        
-        let ledgerDevice = ledgerDevices[indexPath.item]
-        ledgerAccountFetchOperation.connectToDevice(ledgerDevice)
-    }
-}
-
-extension LedgerDeviceListViewController: LedgerDeviceListViewDelegate {
-    func ledgerDeviceListViewDidTapTroubleshootButton(_ ledgerDeviceListView: LedgerDeviceListView) {
-        open(.ledgerTroubleshoot, by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil))
+        return CGSize(theme.cellSize)
     }
 }
 
@@ -142,7 +122,6 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
     
     func ledgerAccountFetchOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation, didDiscover peripherals: [CBPeripheral]) {
         ledgerDevices = peripherals
-        ledgerDeviceListView.invalidateContentSize(by: ledgerDevices.count)
         ledgerDeviceListView.devicesCollectionView.reloadData()
     }
     
@@ -161,11 +140,5 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
         default:
             break
         }
-    }
-}
-
-extension LedgerDeviceListViewController {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellSize = CGSize(width: UIScreen.main.bounds.width - 28.0, height: 60.0)
     }
 }

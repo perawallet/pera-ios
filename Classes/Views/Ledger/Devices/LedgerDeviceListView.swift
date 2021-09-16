@@ -15,145 +15,114 @@
 //
 //  LedgerDeviceListView.swift
 
-import UIKit
+import Macaroon
 
-class LedgerDeviceListView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    weak var delegate: LedgerDeviceListViewDelegate?
-    
+final class LedgerDeviceListView: View {
+    private lazy var theme = LedgerDeviceListViewTheme()
+
     private(set) lazy var devicesCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 4.0
+        flowLayout.minimumLineSpacing = theme.collectionViewMinimumLineSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.bounces = false
-        collectionView.isScrollEnabled = false
-        collectionView.backgroundColor = Colors.Background.primary
-        collectionView.contentInset = layout.current.listContentInset
+        collectionView.backgroundColor = theme.backgroundColor.color
+        collectionView.contentInset = UIEdgeInsets(theme.listContentInset)
         collectionView.register(LedgerDeviceCell.self, forCellWithReuseIdentifier: LedgerDeviceCell.reusableIdentifier)
         return collectionView
     }()
-    
-    private lazy var searchingDevicesLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.single)
-            .withAlignment(.left)
-            .withText("ledger-device-list-looking".localized)
-    }()
-    
-    private lazy var searchingSpinnerView = LoadingSpinnerView()
-    
-    private lazy var troubleshootButton: AlignedButton = {
-        let button = AlignedButton(.imageAtLeft(spacing: 8.0))
-        button.setImage(img("img-question-24"), for: .normal)
-        button.setTitle("ledger-device-list-troubleshoot".localized, for: .normal)
-        button.setTitleColor(Colors.Main.white, for: .normal)
-        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
-        button.setBackgroundImage(img("bg-gray-600-button"), for: .normal)
-        button.titleLabel?.textAlignment = .center
-        return button
-    }()
+    private lazy var verticalStackView = UIStackView()
+    private lazy var imageView = LottieImageView()
+    private lazy var titleLabel = UILabel()
+    private lazy var descriptionLabel = UILabel()
+    private lazy var indicatorView = ViewLoadingIndicator()
 
-    override func setListeners() {
-        troubleshootButton.addTarget(self, action: #selector(notifyDelegateToOpenTrobuleshooting), for: .touchUpInside)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(theme)
     }
-    
-    override func prepareLayout() {
-        setupTroubleshootButtonLayout()
-        setupDevicesCollectionViewLayout()
-        setupSearchingDevicesLabelLayout()
-        setupSearchingSpinnerViewLayout()
+
+    func customize(_ theme: LedgerDeviceListViewTheme) {
+        addVerticalStackView(theme)
+        addDevicesCollectionView(theme)
     }
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 }
 
 extension LedgerDeviceListView {
-    @objc
-    func notifyDelegateToOpenTrobuleshooting() {
-        delegate?.ledgerDeviceListViewDidTapTroubleshootButton(self)
-    }
-}
+    private func addVerticalStackView(_ theme: LedgerDeviceListViewTheme) {
+        addSubview(verticalStackView)
+        verticalStackView.axis = .vertical
+        verticalStackView.alignment = .center
+        verticalStackView.spacing = theme.verticalStackViewSpacing
+        verticalStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(theme.verticalStackViewTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+        }
 
-extension LedgerDeviceListView {
-    private func setupTroubleshootButtonLayout() {
-        addSubview(troubleshootButton)
-        
-        troubleshootButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.buttonBottomInset)
-        }
+        addImageView(theme)
+        addTitleLabel(theme)
+        addDescriptionLabel(theme)
     }
-    
-    private func setupDevicesCollectionViewLayout() {
-        addSubview(devicesCollectionView)
-        
-        devicesCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
-            make.height.equalTo(layout.current.collectionViewHeight)
-        }
+
+    private func addImageView(_ theme: LedgerDeviceListViewTheme) {
+        imageView.setAnimation(theme.lottie)
+
+        verticalStackView.addArrangedSubview(imageView)
+        verticalStackView.setCustomSpacing(theme.titleLabelTopPadding, after: imageView)
     }
-    
-    private func setupSearchingDevicesLabelLayout() {
-        addSubview(searchingDevicesLabel)
+
+    private func addTitleLabel(_ theme: LedgerDeviceListViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
         
-        searchingDevicesLabel.snp.makeConstraints { make in
-            make.top.equalTo(devicesCollectionView.snp.bottom).offset(layout.current.devicesLabelTopOffset)
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-        }
+        verticalStackView.addArrangedSubview(titleLabel)
     }
-    
-    private func setupSearchingSpinnerViewLayout() {
-        addSubview(searchingSpinnerView)
-        
-        searchingSpinnerView.snp.makeConstraints { make in
-            make.centerY.equalTo(searchingDevicesLabel)
-            make.leading.equalTo(searchingDevicesLabel.snp.trailing).offset(layout.current.spinnerLeadingInset)
-            make.size.equalTo(layout.current.spinnerSize)
+
+    private func addDescriptionLabel(_ theme: LedgerDeviceListViewTheme) {
+        descriptionLabel.customizeAppearance(theme.description)
+
+        verticalStackView.addArrangedSubview(descriptionLabel)
+    }
+
+    private func addDevicesCollectionView(_ theme: LedgerDeviceListViewTheme) {
+       addSubview(devicesCollectionView)
+        devicesCollectionView.snp.makeConstraints {
+            $0.top.equalTo(verticalStackView.snp.bottom).offset(theme.devicesListTopPadding)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+
+        addIndicatorView(theme)
+    }
+
+    private func addIndicatorView(_ theme: LedgerDeviceListViewTheme) {
+        indicatorView.applyStyle(theme.indicator)
+
+        devicesCollectionView.addSubview(indicatorView)
+        indicatorView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().offset(theme.indicatorViewTopPadding)
         }
     }
 }
 
 extension LedgerDeviceListView {
-    func startSearchSpinner() {
-        searchingSpinnerView.show()
+    func startAnimatingImageView() {
+        imageView.play(with: LottieImageView.Configuration())
     }
-    
-    func stopSearchSpinner() {
-        searchingSpinnerView.stop()
-    }
-    
-    func setSearchSpinner(visible isVisible: Bool) {
-        searchingDevicesLabel.isHidden = !isVisible
-        searchingSpinnerView.isHidden = !isVisible
-    }
-    
-    func invalidateContentSize(by size: Int) {
-        devicesCollectionView.snp.updateConstraints { make in
-            make.height.equalTo(size * layout.current.deviceItemTotalSize)
-        }
-    }
-}
 
-extension LedgerDeviceListView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let deviceItemTotalSize = 64
-        let buttonBottomInset: CGFloat = 60.0
-        let listContentInset = UIEdgeInsets(top: 10.0, left: 0.0, bottom: 0.0, right: 0.0)
-        let horizontalInset: CGFloat = 20.0
-        let spinnerLeadingInset: CGFloat = 13.0
-        let devicesLabelTopOffset: CGFloat = 12.0
-        let collectionViewHeight: CGFloat = 0.0
-        let spinnerSize = CGSize(width: 17.5, height: 17.5)
+    func stopAnimatingImageView() {
+        imageView.stop()
     }
-}
 
-protocol LedgerDeviceListViewDelegate: AnyObject {
-    func ledgerDeviceListViewDidTapTroubleshootButton(_ ledgerDeviceListView: LedgerDeviceListView)
+    func startAnimatingIndicatorView() {
+        indicatorView.startAnimating()
+    }
+    
+    func stopAnimatingIndicatorView() {
+        indicatorView.stopAnimating()
+    }
 }

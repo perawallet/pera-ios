@@ -21,7 +21,7 @@ class LedgerAccountVerificationHeaderView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
-    private lazy var ledgerDeviceConnectionView = LedgerDeviceConnectionView()
+    private lazy var ledgerDeviceConnectionView = LottieImageView()
 
     private lazy var titleLabel: UILabel = {
         UILabel()
@@ -54,8 +54,10 @@ class LedgerAccountVerificationHeaderView: BaseView {
 
 extension LedgerAccountVerificationHeaderView {
     private func setupLedgerDeviceConnectionViewLayout() {
-        addSubview(ledgerDeviceConnectionView)
+        let lottie = UIApplication.shared.isDarkModeDisplay ? "dark-ledger" : "light-ledger" /// <note>:  Refactor
+        ledgerDeviceConnectionView.setAnimation(lottie)
 
+        addSubview(ledgerDeviceConnectionView)
         ledgerDeviceConnectionView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().inset(layout.current.connectionViewTopInset)
@@ -85,11 +87,11 @@ extension LedgerAccountVerificationHeaderView {
 
 extension LedgerAccountVerificationHeaderView {
     func startConnectionAnimation() {
-        ledgerDeviceConnectionView.startAnimation()
+        ledgerDeviceConnectionView.play(with: LottieImageView.Configuration())
     }
 
     func stopConnectionAnimation() {
-        ledgerDeviceConnectionView.stopAnimation()
+        ledgerDeviceConnectionView.stop()
     }
 }
 

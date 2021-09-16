@@ -17,25 +17,26 @@
 
 import UIKit
 
-class AccountNameViewModel {
-    
+final class AccountNameViewModel {
     private(set) var image: UIImage?
     private(set) var name: String?
     
     init(account: Account, hasImage: Bool = true) {
-        setImage(from: account, with: hasImage)
-        setName(from: account, with: hasImage)
+        bindImage(from: account, with: hasImage)
+        bindName(from: account, with: hasImage)
     }
-    
-    private func setImage(from account: Account, with hasImage: Bool) {
+}
+
+extension AccountNameViewModel {
+    private func bindImage(from account: Account, with hasImage: Bool) {
         if !hasImage {
             return
         }
 
         image = account.accountImage()
     }
-    
-    private func setName(from account: Account, with hasImage: Bool) {
+
+    private func bindName(from account: Account, with hasImage: Bool) {
         if !hasImage {
             name = account.address
             return

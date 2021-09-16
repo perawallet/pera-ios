@@ -1,17 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-checkbox-selected.pdf",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "icon-checkbox-selected-1.pdf",
+      "filename" : "checkbox.pdf",
       "idiom" : "universal"
     }
   ],

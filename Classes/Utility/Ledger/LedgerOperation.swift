@@ -26,7 +26,6 @@ protocol LedgerOperation: AnyObject {
 
     var shouldDisplayLedgerApprovalModal: Bool { get }
     var ledgerApprovalViewController: LedgerApprovalViewController? { get set }
-    var ledgerMode: LedgerApprovalViewController.Mode { get }
     
     var timer: Timer? { get set }
     func startTimer()
@@ -164,12 +163,12 @@ extension LedgerOperation {
         let ledgerApprovalPresenter = CardModalPresenter(
             config: ModalConfiguration(
                 animationMode: .normal(duration: 0.25),
-                dismissMode: .none
+                dismissMode: .backgroundTouch
             ),
-            initialModalSize: .custom(CGSize(width: UIScreen.main.bounds.width, height: 354.0))
+            initialModalSize: .custom(CGSize(width: UIScreen.main.bounds.width, height: 362))
         )
         ledgerApprovalViewController = topMostController?.open(
-            .ledgerApproval(mode: ledgerMode),
+            .ledgerApproval(deviceName: (connectedDevice?.name).emptyIfNil),
             by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
         ) as? LedgerApprovalViewController
     }

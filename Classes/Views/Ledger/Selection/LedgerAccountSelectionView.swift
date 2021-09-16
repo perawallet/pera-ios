@@ -15,59 +15,56 @@
 //
 //  LedgerAccountSelectionView.swift
 
-import UIKit
+import Macaroon
 
-class LedgerAccountSelectionView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
+final class LedgerAccountSelectionView: View {
     weak var delegate: LedgerAccountSelectionViewDelegate?
-    
+
+    private lazy var theme = LedgerAccountSelectionViewTheme()
     private lazy var errorView = ListErrorView()
-    
     private lazy var accountsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.sectionInset = UIEdgeInsets(top: 24.0, left: 0.0, bottom: layout.current.bottomInset + safeAreaBottom + 60.0, right: 0.0)
-        flowLayout.minimumLineSpacing = 20.0
+        flowLayout.minimumLineSpacing = theme.collectionViewMinimumLineSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = false
         collectionView.allowsMultipleSelection = isMultiSelect
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = Colors.Background.primary
-        collectionView.contentInset = .zero
+        collectionView.backgroundColor = theme.backgroundColor.color
+        collectionView.contentInset = UIEdgeInsets(theme.listContentInset)
         collectionView.register(LedgerAccountCell.self, forCellWithReuseIdentifier: LedgerAccountCell.reusableIdentifier)
-        collectionView.register(
-            LedgerAccountSelectionHeaderSupplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: LedgerAccountSelectionHeaderSupplementaryView.reusableIdentifier
-        )
         return collectionView
     }()
-    
-    private lazy var addButton = MainButton(title: "ledger-account-selection-verify".localized)
+    private lazy var verticalStackView = UIStackView()
+    private lazy var imageView = UIImageView()
+    private lazy var titleLabel = UILabel()
+    private lazy var descriptionLabel = UILabel()
+    private lazy var verifyButton = Button()
     
     private let isMultiSelect: Bool
     
     init(isMultiSelect: Bool) {
         self.isMultiSelect = isMultiSelect
         super.init(frame: .zero)
+
+        customize(theme)
     }
-    
-    override func configureAppearance() {
-        super.configureAppearance()
+
+    private func customize(_ theme: LedgerAccountSelectionViewTheme) {
         errorView.setImage(img("icon-warning-error"))
         errorView.setTitle("transaction-filter-error-title".localized)
         errorView.setSubtitle("transaction-filter-error-subtitle".localized)
+
+        addVerticalStackView(theme)
+        addAccountsCollectionView(theme)
+        addVerifyButton(theme)
     }
-    
-    override func setListeners() {
-        addButton.addTarget(self, action: #selector(notifyDelegateToAddAccount), for: .touchUpInside)
-    }
-    
-    override func prepareLayout() {
-        setupAccountsCollectionViewLayout()
-        setupAddButtonLayout()
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func setListeners() {
+        verifyButton.addTarget(self, action: #selector(notifyDelegateToAddAccount), for: .touchUpInside)
     }
 }
 
@@ -79,22 +76,58 @@ extension LedgerAccountSelectionView {
 }
 
 extension LedgerAccountSelectionView {
-    private func setupAccountsCollectionViewLayout() {
+    private func addVerticalStackView(_ theme: LedgerAccountSelectionViewTheme) {
+        addSubview(verticalStackView)
+        verticalStackView.axis = .vertical
+        verticalStackView.alignment = .center
+        verticalStackView.spacing = theme.verticalStackViewSpacing
+        verticalStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(theme.verticalStackViewTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+        }
+
+        addImageView(theme)
+        addTitleLabel(theme)
+        addDescriptionLabel(theme)
+    }
+
+    private func addImageView(_ theme: LedgerAccountSelectionViewTheme) {
+        imageView.customizeAppearance(theme.image)
+
+        verticalStackView.addArrangedSubview(imageView)
+        verticalStackView.setCustomSpacing(theme.titleLabelTopPadding, after: imageView)
+    }
+
+    private func addTitleLabel(_ theme: LedgerAccountSelectionViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
+        verticalStackView.addArrangedSubview(titleLabel)
+    }
+
+    private func addDescriptionLabel(_ theme: LedgerAccountSelectionViewTheme) {
+        descriptionLabel.customizeAppearance(theme.description)
+
+        verticalStackView.addArrangedSubview(descriptionLabel)
+    }
+    
+    private func addAccountsCollectionView(_ theme: LedgerAccountSelectionViewTheme) {
         addSubview(accountsCollectionView)
         
-        accountsCollectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()
+        accountsCollectionView.snp.makeConstraints {
+            $0.top.equalTo(verticalStackView.snp.bottom).offset(theme.devicesListTopPadding)
+            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
     
-    private func setupAddButtonLayout() {
-        addSubview(addButton)
-        
-        addButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
+    private func addVerifyButton(_ theme: LedgerAccountSelectionViewTheme) {
+        verifyButton.customize(theme.verifyButtonTheme)
+        verifyButton.bindData(ButtonCommonViewModel(title: "ledger-account-selection-verify".localized))
+
+        addSubview(verifyButton)
+        verifyButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomInset)
         }
     }
 }
@@ -131,18 +164,14 @@ extension LedgerAccountSelectionView {
     var selectedIndexes: [IndexPath] {
         return accountsCollectionView.indexPathsForSelectedItems ?? []
     }
-
-    func bind(_ viewModel: LedgerAccountSelectionViewModel) {
-        addButton.isEnabled = viewModel.isEnabled
-        addButton.setTitle(viewModel.buttonText, for: .normal)
-    }
 }
 
-extension LedgerAccountSelectionView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let bottomInset: CGFloat = 16.0
-        let listBottomInset: CGFloat = -4.0
+extension LedgerAccountSelectionView: ViewModelBindable {
+    func bindData(_ viewModel: LedgerAccountSelectionViewModel?) {
+        titleLabel.text = viewModel?.accountCount
+        descriptionLabel.text = viewModel?.detail
+        verifyButton.isEnabled = (viewModel?.isEnabled).ifNil(false)
+        verifyButton.setTitle(viewModel?.buttonText, for: .normal)
     }
 }
 

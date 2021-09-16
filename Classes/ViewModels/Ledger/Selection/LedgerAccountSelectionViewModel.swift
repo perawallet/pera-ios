@@ -15,18 +15,22 @@
 //
 //   LedgerAccountSelectionViewModel.swift
 
-import Foundation
+import Macaroon
 
-class LedgerAccountSelectionViewModel {
+final class LedgerAccountSelectionViewModel: ViewModel {
+    private(set) var detail: String?
+    private(set) var accountCount: String?
     private(set) var buttonText: String?
     private(set) var isEnabled: Bool = false
 
-    init(isMultiSelect: Bool, selectedCount: Int) {
-        setButtonText(from: isMultiSelect, and: selectedCount)
-        setIsEnabled(from: selectedCount)
+    init(accounts: [Account], isMultiSelect: Bool, selectedCount: Int) {
+        bindDetail(isMultiSelect)
+        bindAccountCount(accounts)
+        bindButtonText(from: isMultiSelect, and: selectedCount)
+        bindIsEnabled(from: selectedCount)
     }
 
-    private func setButtonText(from isMultiSelect: Bool, and selectedCount: Int) {
+    private func bindButtonText(from isMultiSelect: Bool, and selectedCount: Int) {
         if isMultiSelect {
             buttonText = selectedCount <= 1
                 ? "ledger-account-selection-verify".localized.localized
@@ -36,7 +40,17 @@ class LedgerAccountSelectionViewModel {
         }
     }
 
-    private func setIsEnabled(from selectedCount: Int) {
+    private func bindIsEnabled(from selectedCount: Int) {
         isEnabled = selectedCount > 0
+    }
+
+    private func bindDetail(_ isMultiSelect: Bool) {
+        detail = isMultiSelect ? "ledger-account-selection-detail".localized : "ledger-account-selection-detail-rekey".localized
+    }
+
+    private func bindAccountCount(_ accounts: [Account]) {
+        accountCount = accounts.count == 1 ?
+            "ledger-account-selection-title-singular".localized(params: accounts.count) :
+            "ledger-account-selection-title-plural".localized(params: accounts.count)
     }
 }

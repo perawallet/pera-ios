@@ -18,20 +18,13 @@
 import UIKit
 import CoreBluetooth
 
-class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDelegate, LedgerBLEControllerDelegate {
-    
+final class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDelegate, LedgerBLEControllerDelegate {
     let bleConnectionManager = BLEConnectionManager()
     let ledgerBleController = LedgerBLEController()
     
     var ledgerApprovalViewController: LedgerApprovalViewController?
 
-    var shouldDisplayLedgerApprovalModal: Bool {
-        return true
-    }
-
-    var ledgerMode: LedgerApprovalViewController.Mode {
-        return ledgerApprovalMode
-    }
+    let shouldDisplayLedgerApprovalModal = true
     
     var timer: Timer?
     var connectedDevice: CBPeripheral?
@@ -40,19 +33,17 @@ class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDelegate
     private var accountIndex: Int {
         return ledgerAccounts.count
     }
-    
+
     weak var delegate: LedgerAccountFetchOperationDelegate?
     
     private let api: AlgorandAPI
     private let bannerController: BannerController?
-    private let ledgerApprovalMode: LedgerApprovalViewController.Mode
-    
-    init(api: AlgorandAPI, ledgerApprovalMode: LedgerApprovalViewController.Mode, bannerController: BannerController?) {
+
+    init(api: AlgorandAPI, bannerController: BannerController?) {
         self.api = api
-        self.ledgerApprovalMode = ledgerApprovalMode
         self.bannerController = bannerController
-        bleConnectionManager.delegate = self
-        ledgerBleController.delegate = self
+        self.bleConnectionManager.delegate = self
+        self.ledgerBleController.delegate = self
     }
 }
 
@@ -93,7 +84,7 @@ extension LedgerAccountFetchOperation {
         stopScan()
         disconnectFromCurrentDevice()
         connectedDevice = nil
-        ledgerApprovalViewController?.dismissIfNeeded()
+        ledgerApprovalViewController?.dismissScreen()
         ledgerAccounts.removeAll()
     }
 }

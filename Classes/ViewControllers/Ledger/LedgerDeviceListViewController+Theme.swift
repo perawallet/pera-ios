@@ -13,16 +13,18 @@
 // limitations under the License.
 
 //
-//  LedgerAccountSelectionHeaderSupplementaryView.swift
+//   LedgerDeviceListViewController+Theme.swift
 
-import UIKit
+import Macaroon
 
-class LedgerAccountSelectionHeaderSupplementaryView: BaseSupplementaryView<LedgerAccountSelectionHeaderView> {
-    static func calculatePreferredSize() -> CGSize {
-        return LedgerAccountSelectionHeaderView.calculatePreferredSize(with: Layout<LedgerAccountSelectionHeaderView.LayoutConstants>())
-    }
-    
-    func bind(_ viewModel: LedgerAccountSelectionHeaderSupplementaryViewModel) {
-        contextView.bind(viewModel)
+extension LedgerDeviceListViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: Color
+        let cellSize: LayoutSize
+
+        init(_ family: LayoutFamily) {
+            backgroundColor = AppColors.Shared.System.background
+            cellSize = (UIScreen.main.bounds.width - 48, 76)
+        }
     }
 }

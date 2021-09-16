@@ -29,10 +29,6 @@ class LedgerAccountVerifyOperation: LedgerOperation, BLEConnectionManagerDelegat
         return false
     }
 
-    var ledgerMode: LedgerApprovalViewController.Mode {
-        return .connection
-    }
-
     var timer: Timer?
     var connectedDevice: CBPeripheral?
 
@@ -100,7 +96,7 @@ extension LedgerAccountVerifyOperation {
         connectedDevice = nil
         stopScan()
         disconnectFromCurrentDevice()
-        ledgerApprovalViewController?.dismissIfNeeded()
+        ledgerApprovalViewController?.dismissScreen()
     }
 }
 

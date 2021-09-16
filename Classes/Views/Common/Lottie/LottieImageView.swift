@@ -15,33 +15,46 @@
 //
 //  LottieImageView.swift
 
+import Macaroon
 import Lottie
 
-class LottieImageView: BaseView {
+final class LottieImageView: View {
+    private lazy var animationView = AnimationView()
 
-    private lazy var animationView: AnimationView = {
-        let animationView = AnimationView()
-        animationView.contentMode = .scaleAspectFit
-        return animationView
-    }()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
-    override func configureAppearance() {
-        backgroundColor = .clear
+        addAnimationView()
     }
 
-    override func prepareLayout() {
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+}
+
+extension LottieImageView {
+    func addAnimationView() {
+        animationView.contentMode = .scaleAspectFit
+
         prepareWholeScreenLayoutFor(animationView)
     }
 }
 
 extension LottieImageView {
-    func setAnimation(_ animation: String) {
-        let animation = Animation.named(animation)
-        animationView.animation = animation
+    func setAnimation(_ jsonName: String) {
+        animationView.animation = Animation.named(jsonName)
     }
 
-    func show(with configuration: LottieConfiguration) {
+    func play(with configuration: LottieImageView.Configuration) {
         animationView.play(fromProgress: configuration.from, toProgress: configuration.to, loopMode: configuration.loopMode)
+    }
+
+    func play() {
+        animationView.play()
+    }
+
+    func pause() {
+        animationView.pause()
     }
 
     func stop() {
@@ -49,8 +62,10 @@ extension LottieImageView {
     }
 }
 
-struct LottieConfiguration {
-    var from: AnimationProgressTime = 0
-    var to: AnimationProgressTime = 1
-    var loopMode: LottieLoopMode = .playOnce
+extension LottieImageView {
+    struct Configuration {
+        var from: AnimationProgressTime = 0
+        var to: AnimationProgressTime = 1
+        var loopMode: LottieLoopMode = .loop
+    }
 }

@@ -17,9 +17,9 @@
 
 import UIKit
 
-class LedgerAccountSelectionViewController: BaseViewController {
-    
+final class LedgerAccountSelectionViewController: BaseViewController {
     private lazy var ledgerAccountSelectionView = LedgerAccountSelectionView(isMultiSelect: isMultiSelect)
+    private lazy var theme = Theme()
 
     private let ledgerAccounts: [Account]
     private let accountSetupFlow: AccountSetupFlow
@@ -51,7 +51,7 @@ class LedgerAccountSelectionViewController: BaseViewController {
         return LedgerAccountSelectionDataSource(api: api, accounts: ledgerAccounts, isMultiSelect: isMultiSelect)
     }()
     
-    private lazy var listLayout = LedgerAccountSelectionListLayout(dataSource: dataSource, isMultiSelect: isMultiSelect)
+    private lazy var listLayout = LedgerAccountSelectionListLayout(dataSource: dataSource)
     
     init(accountSetupFlow: AccountSetupFlow, accounts: [Account], configuration: ViewControllerConfiguration) {
         self.accountSetupFlow = accountSetupFlow
@@ -61,9 +61,8 @@ class LedgerAccountSelectionViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        ledgerAccountSelectionView.setLoadingState()
-        
         loadingController?.startLoadingWithMessage("title-loading".localized)
+        ledgerAccountSelectionView.setLoadingState()
         dataSource.loadData()
     }
 
@@ -75,7 +74,9 @@ class LedgerAccountSelectionViewController: BaseViewController {
     override func configureAppearance() {
         super.configureAppearance()
         title = ledgerAccounts.first?.ledgerDetail?.name
-        ledgerAccountSelectionView.bind(LedgerAccountSelectionViewModel(isMultiSelect: isMultiSelect, selectedCount: selectedAccountCount))
+
+        setNavigationBarTertiaryBackgroundColor()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     
     override func linkInteractors() {
@@ -85,18 +86,21 @@ class LedgerAccountSelectionViewController: BaseViewController {
         dataSource.delegate = self
         listLayout.delegate = self
     }
+
+    override func bindData() {
+        ledgerAccountSelectionView.bindData(
+            LedgerAccountSelectionViewModel(
+                accounts: ledgerAccounts,
+                isMultiSelect: isMultiSelect,
+                selectedCount: selectedAccountCount
+            )
+        )
+    }
     
     override func prepareLayout() {
-        setupLedgerAccountSelectionViewLayout()
-    }
-}
-
-extension LedgerAccountSelectionViewController {
-    private func setupLedgerAccountSelectionViewLayout() {
         view.addSubview(ledgerAccountSelectionView)
-        
-        ledgerAccountSelectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        ledgerAccountSelectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
@@ -107,14 +111,14 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
         didFetch accounts: [Account]
     ) {
         loadingController?.stopLoading()
-        
+
         ledgerAccountSelectionView.setNormalState()
         ledgerAccountSelectionView.reloadData()
     }
     
     func ledgerAccountSelectionDataSourceDidFailToFetch(_ ledgerAccountSelectionDataSource: LedgerAccountSelectionDataSource) {
         loadingController?.stopLoading()
-        
+
         ledgerAccountSelectionView.setErrorState()
         ledgerAccountSelectionView.reloadData()
     }
@@ -177,13 +181,25 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionListLayout
         _ ledgerAccountSelectionListLayout: LedgerAccountSelectionListLayout,
         didSelectItemAt indexPath: IndexPath
     ) {
-        ledgerAccountSelectionView.bind(LedgerAccountSelectionViewModel(isMultiSelect: isMultiSelect, selectedCount: selectedAccountCount))
+        ledgerAccountSelectionView.bindData(
+            LedgerAccountSelectionViewModel(
+                accounts: ledgerAccounts,
+                isMultiSelect: isMultiSelect,
+                selectedCount: selectedAccountCount
+            )
+        )
     }
     
     func ledgerAccountSelectionListLayout(
         _ ledgerAccountSelectionListLayout: LedgerAccountSelectionListLayout,
         didDeselectItemAt indexPath: IndexPath
     ) {
-        ledgerAccountSelectionView.bind(LedgerAccountSelectionViewModel(isMultiSelect: isMultiSelect, selectedCount: selectedAccountCount))
+        ledgerAccountSelectionView.bindData(
+            LedgerAccountSelectionViewModel(
+                accounts: ledgerAccounts,
+                isMultiSelect: isMultiSelect,
+                selectedCount: selectedAccountCount
+            )
+        )
     }
 }

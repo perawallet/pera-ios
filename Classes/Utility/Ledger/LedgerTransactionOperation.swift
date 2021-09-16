@@ -33,10 +33,6 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
         return true
     }
 
-    var ledgerMode: LedgerApprovalViewController.Mode {
-        return .approve
-    }
-    
     var timer: Timer?
     var connectedDevice: CBPeripheral?
     
@@ -54,7 +50,6 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
     
     private lazy var accountFetchOperation = LedgerAccountFetchOperation(
         api: api,
-        ledgerApprovalMode: .approve,
         bannerController: bannerController
     )
     
@@ -129,7 +124,7 @@ extension LedgerTransactionOperation {
         stopScan()
         disconnectFromCurrentDevice()
         unsignedTransactionData = nil
-        ledgerApprovalViewController?.dismissIfNeeded()
+        ledgerApprovalViewController?.dismissScreen()
         connectedDevice = nil
         isCorrectLedgerAddressFetched = false
     }

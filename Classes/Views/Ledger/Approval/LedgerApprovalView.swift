@@ -16,54 +16,31 @@
 //  LedgerApprovalView.swift
 
 import UIKit
+import Macaroon
 
-class LedgerApprovalView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
+final class LedgerApprovalView: View {
     weak var delegate: LedgerApprovalViewDelegate?
-    
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withLine(.single)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withAlignment(.center)
-            .withTextColor(Colors.Text.primary)
-    }()
-    
-    private lazy var ledgerDeviceConnectionView = LedgerDeviceConnectionView()
-    
-    private lazy var detailLabel: UILabel = {
-        UILabel()
-            .withLine(.contained)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withAlignment(.center)
-            .withTextColor(Colors.Text.primary)
-    }()
-    
-    private lazy var cancelButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("bg-light-gray-button"))
-            .withTitle("title-cancel".localized)
-            .withTitleColor(Colors.ButtonText.secondary)
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-    }()
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+
+    private lazy var titleLabel = UILabel()
+    private lazy var imageView = LottieImageView()
+    private lazy var descriptionLabel = UILabel()
+    private lazy var cancelButton = Button()
+
+    func customize(_ theme: LedgerApprovalViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addImageView(theme)
+        addTitleLabel(theme)
+        addDescriptionLabel(theme)
+        addCancelButton(theme)
     }
-    
-    override func setListeners() {
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func setListeners() {
         cancelButton.addTarget(self, action: #selector(notifyDelegateToCancel), for: .touchUpInside)
-    }
-    
-    override func prepareLayout() {
-        super.prepareLayout()
-        setupTitleLabelLayout()
-        setupLedgerDeviceConnectionViewLayout()
-        setupDetailLabelLayout()
-        setupCancelButtonLayout()
     }
 }
 
@@ -75,73 +52,66 @@ extension LedgerApprovalView {
 }
 
 extension LedgerApprovalView {
-    private func setupTitleLabelLayout() {
+    private func addImageView(_ theme: LedgerApprovalViewTheme) {
+        imageView.setAnimation(theme.lottie)
+        
+        addSubview(imageView)
+        imageView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().inset(theme.topInset)
+        }
+    }
+
+    private func addTitleLabel(_ theme: LedgerApprovalViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
         addSubview(titleLabel)
-            
-        titleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.titleVerticalInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.titleHorizontalInset)
+        titleLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(imageView.snp.bottom).offset(theme.titleTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
-    
-    private func setupLedgerDeviceConnectionViewLayout() {
-        addSubview(ledgerDeviceConnectionView)
-            
-        ledgerDeviceConnectionView.snp.makeConstraints { make in
-            make.centerX.equalTo(titleLabel)
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.bluetoothTopInset)
-            make.leading.trailing.equalToSuperview()
+
+    private func addDescriptionLabel(_ theme: LedgerApprovalViewTheme) {
+        descriptionLabel.customizeAppearance(theme.description)
+
+        addSubview(descriptionLabel)
+        descriptionLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.descriptionTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
-        
-    private func setupDetailLabelLayout() {
-        addSubview(detailLabel)
-            
-        detailLabel.snp.makeConstraints { make in
-            make.top.equalTo(ledgerDeviceConnectionView.snp.bottom).offset(layout.current.detailLabelTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-        
-    private func setupCancelButtonLayout() {
+
+    private func addCancelButton(_ theme: LedgerApprovalViewTheme) {
+        cancelButton.customize(theme.cancelButtonTheme)
+        cancelButton.bindData(ButtonCommonViewModel(title: "ledger-approval-cancel-title".localized))
+
         addSubview(cancelButton)
-            
-        cancelButton.snp.makeConstraints { make in
-            make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.buttonVerticalInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerX.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.buttonVerticalInset + safeAreaBottom)
+        cancelButton.fitToVerticalIntrinsicSize()
+        cancelButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.greaterThanOrEqualTo(descriptionLabel.snp.bottom).offset(theme.verticalInset)
         }
     }
 }
 
 extension LedgerApprovalView {
-    func setTitle(_ title: String) {
-        titleLabel.text = title
+    func bind(_ deviceName: String) {
+        self.descriptionLabel.text = "ledger-approval-message".localized(deviceName)
     }
-    
-    func setDetail(_ detail: String) {
-        detailLabel.text = detail
-    }
+}
 
+extension LedgerApprovalView {
     func startConnectionAnimation() {
-        ledgerDeviceConnectionView.startAnimation()
+        imageView.play(with: LottieImageView.Configuration())
     }
 
     func stopConnectionAnimation() {
-        ledgerDeviceConnectionView.stopAnimation()
-    }
-}
-
-extension LedgerApprovalView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleVerticalInset: CGFloat = 16.0
-        let titleHorizontalInset: CGFloat = 25.0
-        let bluetoothTopInset: CGFloat = 36.0
-        let buttonVerticalInset: CGFloat = 28.0
-        let horizontalInset: CGFloat = 30.0
-        let detailLabelTopInset: CGFloat = 20.0
+        imageView.stop()
     }
 }
 

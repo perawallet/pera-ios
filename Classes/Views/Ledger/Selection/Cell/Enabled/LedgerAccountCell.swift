@@ -17,33 +17,29 @@
 
 import UIKit
 
-class LedgerAccountCell: BaseCollectionViewCell<LedgerAccountView> {
-    
+final class LedgerAccountCell: BaseCollectionViewCell<LedgerAccountCellView> {
     weak var delegate: LedgerAccountCellDelegate?
     
     override func linkInteractors() {
         super.linkInteractors()
-        contextView.delegate = self
+        self.contextView.delegate = self
     }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contextView.clear()
+
+    override var isSelected: Bool {
+        didSet {
+            self.contextView.didSelectCell(isSelected)
+        }
     }
 }
 
 extension LedgerAccountCell {
     func bind(_ viewModel: LedgerAccountViewModel) {
-        contextView.bind(viewModel)
-    }
-    
-    func bind(_ viewModel: LedgerAccountNameViewModel) {
-        contextView.bind(viewModel)
+        contextView.bindData(viewModel)
     }
 }
 
 extension LedgerAccountCell: LedgerAccountViewDelegate {
-    func ledgerAccountViewDidOpenMoreInfo(_ ledgerAccountView: LedgerAccountView) {
+    func ledgerAccountViewDidOpenMoreInfo(_ ledgerAccountView: LedgerAccountCellView) {
         delegate?.ledgerAccountCellDidOpenMoreInfo(self)
     }
 }

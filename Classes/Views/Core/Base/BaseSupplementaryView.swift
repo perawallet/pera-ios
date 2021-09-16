@@ -18,7 +18,6 @@
 import UIKit
 
 class BaseSupplementaryView<T: UIView>: UICollectionReusableView {
-   
     typealias ContextView = T
     
     private(set) lazy var contextView = ContextView()
@@ -37,26 +36,18 @@ class BaseSupplementaryView<T: UIView>: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configureAppearance() {
-    }
+    func configureAppearance() {}
     
     func prepareLayout() {
-        setupContextViewLayout()
-    }
-    
-    private func setupContextViewLayout() {
         addSubview(contextView)
-        
-        contextView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        contextView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
     
-    func linkInteractors() {
-    }
+    func linkInteractors() {}
     
-    func setListeners() {
-    }
+    func setListeners() {}
 
     static func getContext() -> ContextView.Type {
         return ContextView.self

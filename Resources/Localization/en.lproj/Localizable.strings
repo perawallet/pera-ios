@@ -403,7 +403,7 @@
 
 // MARK: Ledger Device List
 "ledger-device-list-title" = "Pair Ledger Device";
-"ledger-device-list-looking" = "Looking for Other Ledger Devices";
+"ledger-device-list-looking" = "Looking for devices";
 "ledger-device-list-connect" = "Connect";
 "ledger-device-list-troubleshoot" = "Troubleshoot";
 
@@ -453,8 +453,10 @@
 "ble-error-fail-ble-connection-resetting" = "Failed BLE connection for Resetting";
 
 // MARK: Ledger Approval
-"ledger-approval-title" = "Preview and Sign";
-"ledger-approval-message" = "Please review and sign the transaction on your ledger device.";
+"ledger-approval-title" = "Ledger Approval";
+"ledger-approval-cancel-title" = "Cancel Approval";
+"ledger-approval-message" = "Please verify the account address
+on your Ledger device (%d)";
 "ledger-approval-connection-title" = "Ledger Connection";
 "ledger-approval-connection-message" = "Waiting for ledger to connect.";
 
@@ -517,7 +519,7 @@
 // MARK: Ledger Account Selection
 "ledger-account-selection-title-singular" = "%d Account Found";
 "ledger-account-selection-title-plural" = "%d Accounts Found";
-"ledger-account-selection-detail" = "This ledger device can sign transactions for the following account. Select the account to add to your Algorand Wallet.";
+"ledger-account-selection-detail" = "This ledger device can sign transactions for the following accounts. Select the accounts to add to your Algorand Wallet.";
 "ledger-account-selection-detail-rekey" = "Choose the account you want to use for signing this account.";
 "ledger-account-selection-verify" = "Verify Selected Account";
 "ledger-account-selection-verify-plural" = "Verify Selected Accounts";

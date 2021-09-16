@@ -17,16 +17,13 @@
 
 import UIKit
 
-class LedgerAccountSelectionListLayout: NSObject {
-    
+final class LedgerAccountSelectionListLayout: NSObject {
     weak var delegate: LedgerAccountSelectionListLayoutDelegate?
     
     private weak var dataSource: LedgerAccountSelectionDataSource?
-    private let isMultiSelect: Bool
-    
-    init(dataSource: LedgerAccountSelectionDataSource, isMultiSelect: Bool) {
+
+    init(dataSource: LedgerAccountSelectionDataSource) {
         self.dataSource = dataSource
-        self.isMultiSelect = isMultiSelect
         super.init()
     }
 }
@@ -37,50 +34,16 @@ extension LedgerAccountSelectionListLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        var height: CGFloat = 0.0
-        let headerHeight: CGFloat = 64.0
-        let algosHeight: CGFloat = 52.0
-        let assetCountHeight: CGFloat = 44.0
-        height += headerHeight + algosHeight
-        
-        if let account = dataSource?.account(at: indexPath.item),
-           !account.assets.isNilOrEmpty {
-            height += assetCountHeight
-        }
-        
-        return CGSize(width: UIScreen.main.bounds.width, height: height)
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        return LedgerAccountSelectionHeaderSupplementaryView.calculatePreferredSize()
+        let cellSize = CGSize(width: UIScreen.main.bounds.width - 48, height: 76)
+        return cellSize
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         delegate?.ledgerAccountSelectionListLayout(self, didSelectItemAt: indexPath)
-        
-        guard let cell = collectionView.cellForItem(at: indexPath) as? LedgerAccountCell,
-              let account = dataSource?.account(at: indexPath.item) else {
-            return
-        }
-        
-        cell.contextView.state = .selected
-        cell.bind(LedgerAccountNameViewModel(account: account, isMultiSelect: isMultiSelect, isSelected: true))
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         delegate?.ledgerAccountSelectionListLayout(self, didDeselectItemAt: indexPath)
-        
-        guard let cell = collectionView.cellForItem(at: indexPath) as? LedgerAccountCell,
-              let account = dataSource?.account(at: indexPath.item) else {
-            return
-        }
-        
-        cell.contextView.state = .unselected
-        cell.bind(LedgerAccountNameViewModel(account: account, isMultiSelect: isMultiSelect, isSelected: false))
     }
 }
 

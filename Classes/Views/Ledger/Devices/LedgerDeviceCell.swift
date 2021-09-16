@@ -17,26 +17,12 @@
 
 import Foundation
 
-class LedgerDeviceCell: BaseCollectionViewCell<LedgerDeviceView> {
-    
-    weak var delegate: LedgerDeviceCellDelegate?
-    
-    override func linkInteractors() {
-        super.linkInteractors()
-        contextView.delegate = self
+final class LedgerDeviceCell: BaseCollectionViewCell<LedgerDeviceCellView> {
+    func customize(_ theme: LedgerDeviceCellViewTheme) {
+        contextView.customize(theme)
     }
 
-    func bind(_ viewModel: LedgerDeviceListViewModel) {
-        contextView.bind(viewModel)
+    func bindData(_ viewModel: LedgerDeviceListViewModel?) {
+        contextView.bindData(viewModel)
     }
-}
-
-extension LedgerDeviceCell: LedgerDeviceViewDelegate {
-    func ledgerDeviceViewDidTapConnectButton(_ ledgerDeviceView: LedgerDeviceView) {
-        delegate?.ledgerDeviceCellDidTapConnectButton(self)
-    }
-}
-
-protocol LedgerDeviceCellDelegate: AnyObject {
-    func ledgerDeviceCellDidTapConnectButton(_ ledgerDeviceCell: LedgerDeviceCell)
 }

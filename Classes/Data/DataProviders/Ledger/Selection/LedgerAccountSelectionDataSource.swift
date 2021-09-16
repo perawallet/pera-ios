@@ -17,8 +17,7 @@
 
 import UIKit
 
-class LedgerAccountSelectionDataSource: NSObject {
-    
+final class LedgerAccountSelectionDataSource: NSObject {
     weak var delegate: LedgerAccountSelectionDataSourceDelegate?
     
     private let accountsFetchGroup = DispatchGroup()
@@ -91,29 +90,10 @@ extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
                 for: indexPath
             ) as? LedgerAccountCell {
             cell.delegate = self
-            let isSelected = collectionView.indexPathsForSelectedItems?.contains(indexPath) ?? false
-            cell.bind(LedgerAccountViewModel(account: account, isMultiSelect: isMultiSelect, isSelected: isSelected))
+            cell.bind(LedgerAccountViewModel(account))
             return cell
         }
         fatalError("Index path is out of bounds")
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        viewForSupplementaryElementOfKind kind: String,
-        at indexPath: IndexPath
-    ) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader,
-            let headerView = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: LedgerAccountSelectionHeaderSupplementaryView.reusableIdentifier,
-                for: indexPath
-        ) as? LedgerAccountSelectionHeaderSupplementaryView {
-            headerView.bind(LedgerAccountSelectionHeaderSupplementaryViewModel(accounts: accounts, isMultiSelect: isMultiSelect))
-            return headerView
-        }
-        
-        fatalError("Unexpected element kind")
     }
 }
 
@@ -124,10 +104,6 @@ extension LedgerAccountSelectionDataSource: LedgerAccountCellDelegate {
 }
 
 extension LedgerAccountSelectionDataSource {
-    var isEmpty: Bool {
-        return accounts.isEmpty
-    }
-    
     func account(at index: Int) -> Account? {
         return accounts[safe: index]
     }
@@ -140,10 +116,6 @@ extension LedgerAccountSelectionDataSource {
         return accounts.firstIndex { account -> Bool in
             account.type == .ledger && account.address == address
         }
-    }
-    
-    func clear() {
-        accounts.removeAll()
     }
 
     func getSelectedAccounts(_ indexes: [IndexPath]) -> [Account] {

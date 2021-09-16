@@ -15,16 +15,19 @@
 //
 //  LedgerDeviceListViewModel.swift
 
+import Macaroon
 import CoreBluetooth
 
-class LedgerDeviceListViewModel {
+final class LedgerDeviceListViewModel: PairedViewModel {
     private(set) var ledgerName: String?
 
-    init(peripheral: CBPeripheral) {
-        setLedgerName(from: peripheral)
+    init(_ model: CBPeripheral) {
+        bindLedgerName(model)
     }
+}
 
-    private func setLedgerName(from peripheral: CBPeripheral) {
+extension LedgerDeviceListViewModel {
+    private func bindLedgerName(_ peripheral: CBPeripheral) {
         self.ledgerName = peripheral.name
     }
 }

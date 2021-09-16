@@ -13,23 +13,16 @@
 // limitations under the License.
 
 //
-//  LedgerAccountAssetCountViewModel.swift
+//   LedgerAccountSelectionViewController+Theme.swift
 
 import Macaroon
 
-final class LedgerAccountAssetCountViewModel: PairedViewModel {
-    private(set) var assetCount: String?
-    
-    init(_ model: Account) {
-        bindAssetCount(model)
-    }
-    
-    private func bindAssetCount(_ account: Account) {
-        guard let assets = account.assets,
-              !assets.isEmpty else {
-            return
+extension LedgerAccountSelectionViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: Color
+
+        init(_ family: LayoutFamily) {
+            backgroundColor = AppColors.Shared.System.background
         }
-        
-        assetCount = "title-plus-asset-count".localized(params: "\(assets.count)")
     }
 }

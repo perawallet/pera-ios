@@ -18,7 +18,7 @@
 import UIKit
 import CoreBluetooth
 
-class BLEConnectionManager: NSObject {
+final class BLEConnectionManager: NSObject {
     weak var delegate: BLEConnectionManagerDelegate?
     
     private var centralManager: CBCentralManager?
