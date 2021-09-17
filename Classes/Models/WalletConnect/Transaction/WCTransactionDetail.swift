@@ -57,6 +57,8 @@ class WCTransactionDetail: Model {
     let appExtraPages: Int?
     let approvalHash: Data?
     let stateHash: Data?
+    let assetIdBeingConfigured: Int64?
+    let assetConfigParams: WCAssetConfigParameters?
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -91,28 +93,31 @@ class WCTransactionDetail: Model {
             appExtraPages = nil
         }
 
+        assetIdBeingConfigured = try container.decodeIfPresent(Int64.self, forKey: .assetIdBeingConfigured)
+        assetConfigParams = try container.decodeIfPresent(WCAssetConfigParameters.self, forKey: .assetConfigParams)
+
         if let senderMsgpack = try container.decodeIfPresent(Data.self, forKey: .sender) {
-            sender = parseAddress(from: senderMsgpack)
+            sender = senderMsgpack.getAlgorandAddressFromPublicKey()
         }
 
         if let assetReceiverMsgpack = try container.decodeIfPresent(Data.self, forKey: .assetReceiver) {
-            assetReceiver = parseAddress(from: assetReceiverMsgpack)
-        } else
+            assetReceiver = assetReceiverMsgpack.getAlgorandAddressFromPublicKey()
+        }
 
         if let algosReceiverMsgpack = try container.decodeIfPresent(Data.self, forKey: .algosReceiver) {
-            algosReceiver = parseAddress(from: algosReceiverMsgpack)
+            algosReceiver = algosReceiverMsgpack.getAlgorandAddressFromPublicKey()
         }
 
         if let assetCloseAddressMsgpack = try container.decodeIfPresent(Data.self, forKey: .assetCloseAddress) {
-            assetCloseAddress = parseAddress(from: assetCloseAddressMsgpack)
+            assetCloseAddress = assetCloseAddressMsgpack.getAlgorandAddressFromPublicKey()
         }
 
         if let algosCloseAddressMsgpack = try container.decodeIfPresent(Data.self, forKey: .algosCloseAddress) {
-            algosCloseAddress = parseAddress(from: algosCloseAddressMsgpack)
+            algosCloseAddress = algosCloseAddressMsgpack.getAlgorandAddressFromPublicKey()
         }
 
         if let rekeyAddressMsgpack = try container.decodeIfPresent(Data.self, forKey: .rekeyAddress) {
-            rekeyAddress = parseAddress(from: rekeyAddressMsgpack)
+            rekeyAddress = rekeyAddressMsgpack.getAlgorandAddressFromPublicKey()
         }
     }
 
@@ -163,6 +168,20 @@ extension WCTransactionDetail {
             return .algos
         }
 
+        if isAssetConfigTransaction {
+            if isAssetCreationTransaction {
+                return .assetConfig(type: .create)
+            }
+
+            if isAssetReconfigurationTransaction {
+                return .assetConfig(type: .reconfig)
+            }
+
+            if isAssetDeletionTransaction {
+                return .assetConfig(type: .delete)
+            }
+        }
+
         return nil
     }
 
@@ -189,6 +208,22 @@ extension WCTransactionDetail {
     var isAppCallTransaction: Bool {
         return type == .applicationCall
     }
+
+    var isAssetConfigTransaction: Bool {
+        return type == .assetConfig
+    }
+
+    var isAssetCreationTransaction: Bool {
+        return type == .assetConfig && (assetIdBeingConfigured == 0 || assetIdBeingConfigured == nil)
+     }
+
+    var isAssetReconfigurationTransaction: Bool {
+         return type == .assetConfig && assetConfigParams != nil && assetIdBeingConfigured != 0
+     }
+
+     var isAssetDeletionTransaction: Bool {
+         return type == .assetConfig && assetConfigParams == nil && assetIdBeingConfigured != 0
+     }
 
     var hasRekeyOrCloseAddress: Bool {
         return isRekeyTransaction || isCloseTransaction
@@ -224,14 +259,6 @@ extension WCTransactionDetail {
         }
 
          return fee > Transaction.Constant.minimumFee
-    }
-}
-
-extension WCTransactionDetail {
-    private func parseAddress(from msgpack: Data) -> String? {
-        var error: NSError?
-        let addressString = AlgorandSDK().addressFromPublicKey(msgpack, error: &error)
-        return error == nil ? addressString : nil
     }
 }
 
@@ -289,6 +316,8 @@ extension WCTransactionDetail {
         case appExtraPages = "apep"
         case approvalHash = "apap"
         case stateHash = "apsu"
+        case assetIdBeingConfigured = "caid"
+        case assetConfigParams = "apar"
     }
 }
 

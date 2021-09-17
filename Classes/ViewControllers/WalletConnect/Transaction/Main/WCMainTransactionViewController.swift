@@ -452,4 +452,11 @@ enum WCTransactionType {
     case assetAddition
     case possibleAssetAddition
     case appCall
+    case assetConfig(type: AssetConfigType)
+}
+
+enum AssetConfigType {
+    case create
+    case delete
+    case reconfig
 }
