@@ -42,6 +42,19 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
         super.setListeners()
         watchAccountAdditionView.setListeners()
         keyboardController.beginTracking()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(pasteFromClipboard),
+            name: UIPasteboard.changedNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(pasteFromClipboard),
+            name: UIApplication.willEnterForegroundNotification,
+            object: nil
+        )
     }
     
     override func linkInteractors() {
@@ -53,8 +66,6 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        watchAccountAdditionView.customize(theme.watchAccountAdditionViewTheme)
-
         contentView.addSubview(watchAccountAdditionView)
         watchAccountAdditionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -74,7 +85,14 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
     }
 
     override func bindData() {
-        watchAccountAdditionView.bindData()
+        pasteFromClipboard()
+    }
+}
+
+extension WatchAccountAdditionViewController {
+    @objc
+    func pasteFromClipboard() {
+        watchAccountAdditionView.bindData(WatchAccountAdditionViewModel(UIPasteboard.general.string))
     }
 }
 

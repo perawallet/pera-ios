@@ -27,6 +27,9 @@ struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
 
     let mainButtonTheme: ButtonTheme
 
+    let pasteTextAttributes: [AttributedTextBuilder.Attribute]
+    let copiedTextAttributes: [AttributedTextBuilder.Attribute]
+
     let textInputVerticalInset: LayoutMetric
     let buttonVerticalInset: LayoutMetric
     let horizontalInset: LayoutMetric
@@ -64,6 +67,15 @@ struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
         ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()
+        self.pasteTextAttributes =  [
+            .font(Fonts.DMSans.regular.make(15).font),
+            .textColor(AppColors.Shared.Global.white.color)
+        ]
+
+        self.copiedTextAttributes =  [
+            .font(Fonts.DMMono.regular.make(11).font),
+            .textColor(AppColors.Components.Text.gray.color)
+        ]
 
         self.textInputVerticalInset = 40
         self.buttonVerticalInset = 60

@@ -20,7 +20,8 @@ import Macaroon
 
 final class WatchAccountAdditionView: View {
     weak var delegate: WatchAccountAdditionViewDelegate?
-    
+
+    private lazy var theme = WatchAccountAdditionViewTheme()
     private(set) lazy var addressInputView =
         createAccountAddressTextInput(
             placeholder: "watch-account-input-explanation".localized,
@@ -31,6 +32,12 @@ final class WatchAccountAdditionView: View {
     private lazy var qrButton = Button()
     private(set) lazy var createWatchAccountButton = Button()
     private lazy var pasteButton = Button()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(theme)
+    }
     
     func customize(_ theme: WatchAccountAdditionViewTheme) {
         addTitle(theme)
@@ -53,52 +60,22 @@ final class WatchAccountAdditionView: View {
         createWatchAccountButton.addTarget(self, action: #selector(notifyDelegateToOpenNextScreen), for: .touchUpInside)
         qrButton.addTarget(self, action: #selector(notifyDelegateToOpenQrScanner), for: .touchUpInside)
         pasteButton.addTarget(self, action: #selector(didTapPaste), for: .touchUpInside)
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(pasteFromClipboard),
-            name: UIPasteboard.changedNotification,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(pasteFromClipboard),
-            name: UIApplication.willEnterForegroundNotification,
-            object: nil
-        )
     }
+}
 
-    func bindData() {
-        pasteFromClipboard()
+extension WatchAccountAdditionView: ViewModelBindable {
+    func bindData(_ viewModel: WatchAccountAdditionViewModel?) {
+        pasteButton.isHidden = (viewModel?.pasteButtonIsHidden).ifNil(true)
+
+        guard !pasteButton.isHidden else { return }
+
+        let pasteText = "\("watch-account-paste".localized + " ")".attributed(theme.pasteTextAttributes)
+        let copiedText = "(\((viewModel?.copiedString).emptyIfNil))".attributed(theme.copiedTextAttributes)
+        pasteButton.setAttributedTitle(pasteText + copiedText, for: .normal)
     }
 }
 
 extension WatchAccountAdditionView {
-    @objc
-    func pasteFromClipboard() {
-        guard UIPasteboard.general.string != nil else {
-            pasteButton.isHidden = true
-            return
-        }
-
-        pasteButton.isHidden = false
-
-        let pasteText = "\("watch-account-paste".localized + " ")".attributed(
-            [
-                .font(Fonts.DMSans.regular.make(15).font),
-                .textColor(AppColors.Shared.Global.white.color)
-            ]
-        )
-
-        let copiedText = "(\(UIPasteboard.general.string.emptyIfNil))".attributed(
-            [
-                .font(Fonts.DMMono.regular.make(11).font),
-                .textColor(AppColors.Components.Text.gray.color)
-            ]
-        )
-        pasteButton.setAttributedTitle(pasteText + copiedText, for: .normal)
-    }
-
     @objc
     private func didTapPaste() {
         addressInputView.text = UIPasteboard.general.string

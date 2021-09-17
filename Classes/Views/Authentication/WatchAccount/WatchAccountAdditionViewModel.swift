@@ -13,16 +13,24 @@
 // limitations under the License.
 
 //
-//   WatchAccountAdditionViewController+Theme.swift
+//   WatchAccountAdditionViewModel.swift
 
 import Macaroon
 
-extension WatchAccountAdditionViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
+final class WatchAccountAdditionViewModel: PairedViewModel {
+    private(set) var copiedString: String?
 
-        init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
-        }
+    var pasteButtonIsHidden: Bool {
+        return copiedString == nil
+    }
+
+    init(_ model: String?) {
+        bindCopiedString(model)
+    }
+}
+
+extension WatchAccountAdditionViewModel {
+    func bindCopiedString(_ string: String?) {
+        self.copiedString = string
     }
 }
