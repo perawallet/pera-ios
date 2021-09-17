@@ -45,6 +45,7 @@ extension AssetPreviewView {
 
         imageView.snp.makeConstraints {
             $0.leading.equalToSuperview()
+            $0.fitToSize(theme.imageSize)
             $0.centerY.equalToSuperview()
         }
     }

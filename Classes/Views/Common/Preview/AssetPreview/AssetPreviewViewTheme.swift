@@ -25,6 +25,7 @@ struct AssetPreviewViewTheme: StyleSheet, LayoutSheet {
     let assetValue: TextStyle
     let secondaryAssetValue: TextStyle
 
+    let imageSize: LayoutSize
     let horizontalPadding: LayoutMetric
     let secondaryImageLeadingPadding: LayoutMetric
 
@@ -54,6 +55,7 @@ struct AssetPreviewViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMMono.regular.make(13))
         ]
 
+        self.imageSize = (40, 40)
         self.horizontalPadding = 16
         self.secondaryImageLeadingPadding = 8
     }

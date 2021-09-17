@@ -18,7 +18,7 @@
 import Macaroon
 
 struct AssetPreviewModel {
-    let image: UIImage
+    let image: UIImage?
     let secondaryImage: UIImage?
     let assetName: String
     let assetShortName: String
@@ -45,7 +45,7 @@ final class AssetPreviewViewModel: PairedViewModel {
 }
 
 extension AssetPreviewViewModel {
-    private func bindImage(_ image: UIImage) {
+    private func bindImage(_ image: UIImage?) {
         self.image = image
     }
 

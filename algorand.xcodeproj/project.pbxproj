@@ -9982,10 +9982,10 @@
 			isa = PBXGroup;
 			children = (
 				D411B38026EA22F2004FF980 /* AssetPreviewView.swift */,
-				D4BF4A2326F4F6C5009B53D8 /* AssetImageView.swift */,
-				D4BF4A2726F4FC0D009B53D8 /* AssetImageViewTheme.swift */,
 				D411B38426EA232F004FF980 /* AssetPreviewViewTheme.swift */,
 				D411B38826EA2341004FF980 /* AssetPreviewViewModel.swift */,
+				D4BF4A2326F4F6C5009B53D8 /* AssetImageView.swift */,
+				D4BF4A2726F4FC0D009B53D8 /* AssetImageViewTheme.swift */,
 			);
 			path = AssetPreview;
 			sourceTree = "<group>";

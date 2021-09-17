@@ -35,6 +35,12 @@ final class AssetImageView: View {
         }
     }
 
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        draw(corner: Corner(radius: frame.height / 2))
+    }
+
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -67,12 +73,13 @@ extension AssetImageView {
 
 extension AssetImageView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
-        if let assetName = viewModel?.assetName {
-            self.assetName = assetName
-        }
-
         if let image = viewModel?.image {
             self.image = image
+            return
+        }
+
+        if let assetName = viewModel?.assetName {
+            self.assetName = assetName /// <note>: This should be abbreviation
         }
     }
 }
