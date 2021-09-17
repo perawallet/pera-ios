@@ -45,6 +45,15 @@ extension WalletConnectSingleTransactionRequestPresentable where Self: BaseViewC
             open(.wcAssetAdditionTransaction( transaction: transaction, transactionRequest: request), by: .push)
         case .appCall:
             open(.wcAppCall(transaction: transaction, transactionRequest: request), by: .push)
+        case let .assetConfig(type):
+            switch type {
+            case .create:
+                open(.wcAssetCreationTransaction(transaction: transaction, transactionRequest: request), by: .push)
+            case .reconfig:
+                open(.wcAssetReconfigurationTransaction(transaction: transaction, transactionRequest: request), by: .push)
+            case .delete:
+                open(.wcAssetDeletionTransaction(transaction: transaction, transactionRequest: request), by: .push)
+            }
         }
     }
 }

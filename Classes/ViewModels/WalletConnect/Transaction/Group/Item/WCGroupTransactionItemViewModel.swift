@@ -90,6 +90,8 @@ class WCGroupTransactionItemViewModel {
             default:
                 title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
             }
+        case .assetConfig:
+            break
         }
     }
 
