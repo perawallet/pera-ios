@@ -19,7 +19,7 @@ import Macaroon
 
 final class AccountPreviewView: View {
     private lazy var imageView = UIImageView()
-    private lazy var verticalStackView = UIStackView()
+    private lazy var accountNameAndAssetsNFTsVerticalStackView = UIStackView()
     private lazy var accountNameLabel = UILabel()
     private lazy var assetsAndNFTsLabel = UILabel()
     private lazy var valueVerticalStackView = UIStackView()
@@ -28,7 +28,7 @@ final class AccountPreviewView: View {
 
     func customize(_ theme: AccountPreviewViewTheme) {
         addImage(theme)
-        addVerticalStackView(theme)
+        addAccountNameAndAssetsNFTsVerticalStackView(theme)
         addValueVerticalStackView(theme)
     }
 
@@ -47,11 +47,11 @@ extension AccountPreviewView {
         }
     }
 
-    private func addVerticalStackView(_ theme: AccountPreviewViewTheme) {
-        addSubview(verticalStackView)
-        verticalStackView.axis = .vertical
+    private func addAccountNameAndAssetsNFTsVerticalStackView(_ theme: AccountPreviewViewTheme) {
+        addSubview(accountNameAndAssetsNFTsVerticalStackView)
+        accountNameAndAssetsNFTsVerticalStackView.axis = .vertical
 
-        verticalStackView.snp.makeConstraints {
+        accountNameAndAssetsNFTsVerticalStackView.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)
             $0.centerY.equalTo(imageView.snp.centerY)
         }
@@ -63,13 +63,13 @@ extension AccountPreviewView {
     private func addAccountNameLabel(_ theme: AccountPreviewViewTheme) {
         accountNameLabel.customizeAppearance(theme.accountName)
 
-        verticalStackView.addArrangedSubview(accountNameLabel)
+        accountNameAndAssetsNFTsVerticalStackView.addArrangedSubview(accountNameLabel)
     }
 
     private func addAssetsAndNFTsLabel(_ theme: AccountPreviewViewTheme) {
         assetsAndNFTsLabel.customizeAppearance(theme.assetAndNFTs)
 
-        verticalStackView.addArrangedSubview(assetsAndNFTsLabel)
+        accountNameAndAssetsNFTsVerticalStackView.addArrangedSubview(assetsAndNFTsLabel)
     }
 
     private func addValueVerticalStackView(_ theme: AccountPreviewViewTheme) {
@@ -79,8 +79,8 @@ extension AccountPreviewView {
 
         valueVerticalStackView.snp.makeConstraints {
             $0.trailing.equalToSuperview()
-            $0.leading.equalTo(verticalStackView.snp.trailing).offset(theme.horizontalPadding)
-            $0.centerY.equalTo(verticalStackView.snp.centerY)
+            $0.leading.equalTo(accountNameAndAssetsNFTsVerticalStackView.snp.trailing).offset(theme.horizontalPadding)
+            $0.centerY.equalTo(accountNameAndAssetsNFTsVerticalStackView.snp.centerY)
         }
 
         addAssetValueLabel(theme)

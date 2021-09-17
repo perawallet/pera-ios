@@ -18,9 +18,9 @@
 import Macaroon
 
 final class AssetPreviewView: View {
-    private lazy var imageView = UIImageView()
-    private lazy var verticalStackView = UIStackView()
-    private lazy var assetNamehorizontalStackView = UIStackView()
+    private lazy var imageView = AssetImageView()
+    private lazy var assetNameVerticalStackView = UIStackView()
+    private lazy var assetNameHorizontalStackView = UIStackView()
     private lazy var assetNameLabel = UILabel()
     private lazy var secondaryImageView = UIImageView()
     private lazy var assetShortNameLabel = UILabel()
@@ -30,7 +30,7 @@ final class AssetPreviewView: View {
 
     func customize(_ theme: AssetPreviewViewTheme) {
         addImage(theme)
-        addVerticalStackView(theme)
+        addAssetNameVerticalStackView(theme)
         addValueVerticalStackView(theme)
     }
 
@@ -49,11 +49,11 @@ extension AssetPreviewView {
         }
     }
 
-    private func addVerticalStackView(_ theme: AssetPreviewViewTheme) {
-        addSubview(verticalStackView)
-        verticalStackView.axis = .vertical
+    private func addAssetNameVerticalStackView(_ theme: AssetPreviewViewTheme) {
+        addSubview(assetNameVerticalStackView)
+        assetNameVerticalStackView.axis = .vertical
 
-        verticalStackView.snp.makeConstraints {
+        assetNameVerticalStackView.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)
             $0.centerY.equalTo(imageView.snp.centerY)
         }
@@ -63,8 +63,8 @@ extension AssetPreviewView {
     }
 
     private func addAssetNameHorizontalStackView(_ theme: AssetPreviewViewTheme) {
-        verticalStackView.addArrangedSubview(assetNamehorizontalStackView)
-        assetNamehorizontalStackView.spacing = theme.secondaryImageLeadingPadding
+        assetNameVerticalStackView.addArrangedSubview(assetNameHorizontalStackView)
+        assetNameHorizontalStackView.spacing = theme.secondaryImageLeadingPadding
 
         addAssetNameLabel(theme)
         addSecondaryImage(theme)
@@ -73,17 +73,17 @@ extension AssetPreviewView {
     private func addAssetNameLabel(_ theme: AssetPreviewViewTheme) {
         assetNameLabel.customizeAppearance(theme.accountName)
 
-        assetNamehorizontalStackView.addArrangedSubview(assetNameLabel)
+        assetNameHorizontalStackView.addArrangedSubview(assetNameLabel)
     }
 
     private func addSecondaryImage(_ theme: AssetPreviewViewTheme) {
-        assetNamehorizontalStackView.addArrangedSubview(secondaryImageView)
+        assetNameHorizontalStackView.addArrangedSubview(secondaryImageView)
     }
 
     private func addAssetShortNameLabel(_ theme: AssetPreviewViewTheme) {
         assetShortNameLabel.customizeAppearance(theme.assetAndNFTs)
 
-        verticalStackView.addArrangedSubview(assetShortNameLabel)
+        assetNameVerticalStackView.addArrangedSubview(assetShortNameLabel)
     }
 
     private func addValueVerticalStackView(_ theme: AssetPreviewViewTheme) {
@@ -93,8 +93,8 @@ extension AssetPreviewView {
 
         valueVerticalStackView.snp.makeConstraints {
             $0.trailing.equalToSuperview()
-            $0.leading.equalTo(verticalStackView.snp.trailing).offset(theme.horizontalPadding)
-            $0.centerY.equalTo(verticalStackView.snp.centerY)
+            $0.leading.equalTo(assetNameVerticalStackView.snp.trailing).offset(theme.horizontalPadding)
+            $0.centerY.equalTo(assetNameVerticalStackView.snp.centerY)
         }
 
         addAssetValueLabel(theme)
@@ -116,7 +116,7 @@ extension AssetPreviewView {
 
 extension AssetPreviewView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
-        imageView.image = viewModel?.image
+        imageView.bindData(viewModel)
         assetNameLabel.text = viewModel?.assetName
         secondaryImageView.image = viewModel?.secondaryImage
         assetShortNameLabel.text = viewModel?.assetShortName
