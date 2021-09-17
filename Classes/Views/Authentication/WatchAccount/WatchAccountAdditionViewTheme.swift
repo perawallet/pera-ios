@@ -67,12 +67,12 @@ struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
         ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()
-        self.pasteTextAttributes =  [
+        self.pasteTextAttributes = [
             .font(Fonts.DMSans.regular.make(15).font),
             .textColor(AppColors.Shared.Global.white.color)
         ]
 
-        self.copiedTextAttributes =  [
+        self.copiedTextAttributes = [
             .font(Fonts.DMMono.regular.make(11).font),
             .textColor(AppColors.Components.Text.gray.color)
         ]
