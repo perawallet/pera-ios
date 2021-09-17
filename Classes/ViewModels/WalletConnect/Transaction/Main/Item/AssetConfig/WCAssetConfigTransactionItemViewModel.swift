@@ -49,11 +49,11 @@ class WCAssetConfigTransactionItemViewModel {
         case let .assetConfig(type):
             switch type {
             case .create:
-                title = "".localized
+                title = "wallet-connect-asset-creation-title".localized
             case .reconfig:
-                title = "".localized
+                title = "wallet-connect-asset-reconfiguration-title".localized
             case .delete:
-                title = "".localized
+                title = "wallet-connect-asset-deletion-title".localized
             }
         default:
             break

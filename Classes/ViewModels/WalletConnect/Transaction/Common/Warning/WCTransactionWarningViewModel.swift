@@ -36,7 +36,7 @@ class WCTransactionWarningViewModel {
         case .fee:
             title = "wallet-connect-transaction-warning-high-fee".localized
         case .assetDelete:
-            title = "".localized
+            title = "wallet-connect-asset-deletion-warning-title".localized
         }
     }
 }

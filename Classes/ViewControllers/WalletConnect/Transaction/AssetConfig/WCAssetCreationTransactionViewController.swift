@@ -29,7 +29,7 @@ class WCAssetCreationTransactionViewController: WCSingleTransactionViewControlle
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "".localized
+        title = "wallet-connect-asset-creation-title".localized
     }
 
     override func linkInteractors() {
@@ -48,7 +48,10 @@ extension WCAssetCreationTransactionViewController: WCAssetCreationTransactionVi
     }
 
     func wcAssetCreationTransactionViewDidOpenAssetURL(_ wcAssetCreationTransactionView: WCAssetCreationTransactionView) {
-
+        if let urlString = transaction.transactionDetail?.assetConfigParams?.url,
+           let url = URL(string: urlString) {
+            open(url)
+        }
     }
 }
 

@@ -70,7 +70,7 @@ extension WCAssetConfigTransactionItemView {
         addSubview(senderStackView)
 
         senderStackView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview().inset(layout.current.defaultInset)
+            make.top.equalToSuperview().inset(layout.current.defaultInset)
             make.leading.equalToSuperview().inset(layout.current.horizontalInset)
             make.trailing.lessThanOrEqualToSuperview().offset(layout.current.stackTrailingOffset)
         }
@@ -95,7 +95,6 @@ extension WCAssetConfigTransactionItemView {
         detailLabel.snp.makeConstraints { make in
             make.top.equalTo(senderStackView.snp.bottom).offset(layout.current.detailTopInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.accountInformationViewInset)
         }
     }
 

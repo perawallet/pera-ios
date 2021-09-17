@@ -29,7 +29,7 @@ class WCAssetReconfigurationTransactionViewController: WCSingleTransactionViewCo
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "".localized
+        title = "wallet-connect-asset-reconfiguration-title".localized
     }
 
     override func linkInteractors() {

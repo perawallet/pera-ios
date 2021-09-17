@@ -158,7 +158,7 @@ class WCAssetReconfigurationTransactionViewModel {
 
         managerAccountViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
-                title: "".localized,
+                title: "wallet-connect-asset-manager-title".localized,
                 detail: manager
             ),
             isLastElement: false
@@ -172,7 +172,7 @@ class WCAssetReconfigurationTransactionViewModel {
 
         reserveAccountViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
-                title: "".localized,
+                title: "wallet-connect-asset-reserve-title".localized,
                 detail: reserve
             ),
             isLastElement: false
@@ -186,7 +186,7 @@ class WCAssetReconfigurationTransactionViewModel {
 
         freezeAccountViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
-                title: "".localized,
+                title: "wallet-connect-asset-freeze-title".localized,
                 detail: frozen
             ),
             isLastElement: false
@@ -200,7 +200,7 @@ class WCAssetReconfigurationTransactionViewModel {
 
         clawbackAccountViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
-                title: "".localized,
+                title: "wallet-connect-asset-clawback-title".localized,
                 detail: clawback
             ),
             isLastElement: true

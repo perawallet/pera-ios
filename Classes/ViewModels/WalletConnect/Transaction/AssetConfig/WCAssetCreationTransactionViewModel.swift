@@ -88,7 +88,7 @@ class WCAssetCreationTransactionViewModel {
 
         assetNameViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
-                title: "".localized,
+                title: "wallet-connect-asset-name-title".localized,
                 detail: assetName
             ),
             isLastElement: false
@@ -103,7 +103,7 @@ class WCAssetCreationTransactionViewModel {
 
         unitNameViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
-                title: "".localized,
+                title: "wallet-connect-asset-unit-title".localized,
                 detail: unitName
             ),
             isLastElement: transaction.hasValidAuthAddressForSigner && !transactionDetail.hasRekeyOrCloseAddress
@@ -171,7 +171,7 @@ class WCAssetCreationTransactionViewModel {
         feeInformationViewModel = TitledTransactionAmountInformationViewModel(
             title: "transaction-detail-fee".localized,
             mode: .fee(value: fee),
-            isLastElement: !transactionDetail.hasHighFee
+            isLastElement: false
         )
     }
 
@@ -189,7 +189,7 @@ class WCAssetCreationTransactionViewModel {
 
         decimalPlacesViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
-                title: "".localized,
+                title: "wallet-connect-asset-decimals-title".localized,
                 detail: "\(decimals)"
             ),
             isLastElement: false
@@ -201,8 +201,8 @@ class WCAssetCreationTransactionViewModel {
 
         defaultFrozenViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
-                title: "".localized,
-                detail: isFrozen ? "".localized : "".localized
+                title: "wallet-connect-asset-frozen-title".localized,
+                detail: isFrozen ? "title-on".localized : "title-off".localized
             ),
             isLastElement: false
         )
@@ -215,7 +215,7 @@ class WCAssetCreationTransactionViewModel {
 
         managerAccountViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
-                title: "".localized,
+                title: "wallet-connect-asset-manager-title".localized,
                 detail: manager
             ),
             isLastElement: false
@@ -229,7 +229,7 @@ class WCAssetCreationTransactionViewModel {
 
         reserveAccountViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
-                title: "".localized,
+                title: "wallet-connect-asset-reserve-title".localized,
                 detail: reserve
             ),
             isLastElement: false
@@ -243,7 +243,7 @@ class WCAssetCreationTransactionViewModel {
 
         freezeAccountViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
-                title: "".localized,
+                title: "wallet-connect-asset-freeze-title".localized,
                 detail: frozen
             ),
             isLastElement: false
@@ -257,7 +257,7 @@ class WCAssetCreationTransactionViewModel {
 
         clawbackAccountViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
-                title: "".localized,
+                title: "wallet-connect-asset-clawback-title".localized,
                 detail: clawback
             ),
             isLastElement: true
@@ -280,8 +280,8 @@ class WCAssetCreationTransactionViewModel {
             return
         }
 
-        noteInformationViewModel = WCTransactionTextInformationViewModel(
-            information: TitledInformation(title: "".localized, detail: metadataHash),
+        metadataInformationViewModel = WCTransactionTextInformationViewModel(
+            information: TitledInformation(title: "wallet-connect-transaction-title-metadata".localized, detail: metadataHash),
             isLastElement: false
         )
     }

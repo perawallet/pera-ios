@@ -29,7 +29,7 @@ class WCAssetDeletionTransactionViewController: WCSingleTransactionViewControlle
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "".localized
+        title = "wallet-connect-asset-deletion-title".localized
     }
 
     override func linkInteractors() {
