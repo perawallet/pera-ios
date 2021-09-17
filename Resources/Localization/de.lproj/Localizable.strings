@@ -620,9 +620,6 @@
 "maximum-balance-standard-account-warning-description" = "Da Sie %@ andere Assets in diesem Konto %@ haben, verlangt die Algorand-Blockchain, dass Sie ein Mindestguthaben von %@ Algos haben.\n\n\nWenn Sie auf „Weiter“ klicken, wird Ihr Transaktionsbetrag automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können diese Änderung im nächsten Schritt in der Vorschau sehen.";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description-singular" = "Da Sie %@ andere Assets in diesem Konto %@ haben, verlangt die Algorand-Blockchain, dass Sie ein Mindestguthaben von %@ Algos haben.\n\n\nWenn Sie auf „Weiter“ klicken, wird Ihr Transaktionsbetrag automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können diese Änderung im nächsten Schritt in der Vorschau sehen.";
-
-/* (No Comment) */
 "maximum-balance-warning-description" = "Das Senden Ihres maximalen Guthabens auf einem Konto nach dem Rekeying erfordert, dass Sie ein Mindestguthaben von %@ Algos aufrechterhalten. Damit soll sichergestellt werden, dass sich bei Ihrem Konto nach dem Rekeying nichts ändert.\n\n\nIhr Transaktionsbetrag wird automatisch aktualisiert, um diese Änderung widerzuspiegeln. Sie können die Transaktion im nächsten Schritt in der Vorschau anzeigen.";
 
 /* (No Comment) */
@@ -855,9 +852,6 @@
 
 /* (No Comment) */
 "pin-limit-try-again" = "Erneut versuchen in";
-
-/* No comment provided by engineer. */
-"primaryText" = "primaryText";
 
 /* (No Comment) */
 "privacy-policy-title" = "Datenschutzbestimmungen";
@@ -1643,7 +1637,13 @@
 "wallet-connect-transaction-group-app-close-title" = "Anwendungsbeendigung an %@";
 
 /* (No Comment) */
+"wallet-connect-transaction-group-app-delete-title" = "Anwendung löschen auf #%@";
+
+/* (No Comment) */
 "wallet-connect-transaction-group-app-opt-in-title" = "Anwendungs-Opt-in an %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-update-title" = "Update der Anwendung auf #%@";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-addition-title" = "Opt-in für Asset %@";
@@ -1662,6 +1662,27 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call" = "App-Anrufanfrage";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-approval-hash" = "Genehmigungs-Hash";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-clear-hash" = "Status-Hash löschen";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-extra-pages" = "App-Zusatzseiten";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-global-schema" = "Globales App-Schema";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-local-schema" = "Lokales App-Schema";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-creation" = "Anwendungserstellung";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-id" = "Anwendungs-ID";
@@ -1718,7 +1739,7 @@
 "wallet-connect-transaction-warning-future" = "Diese Transaktion wird in Zukunft eingereicht werden. ";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-high-fee" = "Diese Transaktionsgebühr ist höher als die übliche Gebühr von 0,001 Algos.";
+"wallet-connect-transaction-warning-high-fee" = "Diese Transaktionsgebühr ist höher als die übliche Gebühr von 0,01 Algos.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial" = "Die folgenden Transaktionsanfragen stammen von externen Anwendungen, die von der Algorand Wallet nicht kontrolliert werden. Bitte stellen Sie sicher, dass Sie diese Transaktionen sorgfältig prüfen, bevor Sie sie signieren, da die Transaktionen nicht rückgängig gemacht werden können.";

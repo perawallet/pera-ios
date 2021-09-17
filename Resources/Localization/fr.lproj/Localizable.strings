@@ -620,9 +620,6 @@
 "maximum-balance-standard-account-warning-description" = "Parce que vous avez %@ autres actifs dans ce compte %@ , la chaîne de blocs Algorand vous oblige à maintenir un solde minimum de %@ ALGO. \n\n\nEn appuyant sur Continuer, le montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser ce changement à l'étape suivante.";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description-singular" = "Parce que vous avez %@ autres actifs dans ce compte %@ , la blockchain Algorand vous oblige à maintenir un solde minimum de %@ ALGO. \n\n\nEn appuyant sur Continuer, le montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser ce changement à l'étape suivante.";
-
-/* (No Comment) */
 "maximum-balance-warning-description" = "L'envoi de votre solde maximum sur ce compte renouvelé vous oblige à maintenir un solde minimum de %@ ALGO. Cela permet de garantir que rien ne change avec votre compte renouvelé. \n\n\nLe montant de votre transaction sera automatiquement mis à jour pour refléter ce changement. Vous pourrez prévisualiser la transaction à l'étape suivante.";
 
 /* (No Comment) */
@@ -855,9 +852,6 @@
 
 /* (No Comment) */
 "pin-limit-try-again" = "Réessayez dans";
-
-/* No comment provided by engineer. */
-"primaryText" = "primaryText";
 
 /* (No Comment) */
 "privacy-policy-title" = "Politique de confidentialité";
@@ -1643,7 +1637,13 @@
 "wallet-connect-transaction-group-app-close-title" = "Clôture Application pour  %@";
 
 /* (No Comment) */
+"wallet-connect-transaction-group-app-delete-title" = "Suppression de l'application pour #%@";
+
+/* (No Comment) */
 "wallet-connect-transaction-group-app-opt-in-title" = "Inscription à l'application %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-update-title" = "Mise à jour de l'application vers # %@";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-addition-title" = "Activer l'actif %@";
@@ -1662,6 +1662,27 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call" = "Demande d'appel de l'application";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-approval-hash" = "Hachage d'approbation";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-clear-hash" = "Effacer le hachage d'état";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-extra-pages" = "Pages supplémentaires de l'application";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-global-schema" = "Schéma global de l'application";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-local-schema" = "Schéma local de l'application";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-creation" = "Création de l'application";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-id" = "ID d'application";
@@ -1718,7 +1739,7 @@
 "wallet-connect-transaction-warning-future" = "Cette transaction sera soumise à l'avenir.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-high-fee" = "Ces frais de transaction sont supérieurs aux frais habituels de 0,001 Algos.";
+"wallet-connect-transaction-warning-high-fee" = "Ces frais de transaction sont supérieurs aux frais habituels de 0,01 Algos.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial" = "Les demandes de transaction suivantes proviennent d'applications externes que le portefeuille Algorand ne contrôle pas. Veuillez vous assurer d'examiner attentivement ces transactions avant de signer, car les transactions sont irréversibles.";

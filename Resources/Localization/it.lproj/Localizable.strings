@@ -59,7 +59,7 @@
 "accounts-dollar-value-title" = "Valore in dollari";
 
 /* (No Comment) */
-"accounts-qr-tooltip" = "Il QR dell'indirizzo del tuo conto è disponibile qui";
+"accounts-qr-tooltip" = "Il QR relativo all'indirizzo di questo conto è disponibile qui";
 
 /* (No Comment) */
 "accounts-title" = "Conti";
@@ -620,9 +620,6 @@
 "maximum-balance-standard-account-warning-description" = "Poiché sono disponibili %@ altre Risorse in questo conto %@, la Blockchain di Algorand ti richiede di mantenere un saldo minimo di %@ Algo.\n\nSelezionando Continua, l'importo della transazione sarà  automaticamente aggiornato per riflettere questa modifica. Sarai in grado di vedere in anteprima questa modifica nel passaggio successivo.";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description-singular" = "Poiché sono disponibili %@ altre Risorse in questo conto %@, la Blockchain di Algorand ti richiede di mantenere un saldo minimo di %@ Algo.\n\nSelezionando Continua, l'importo della transazione sarà  automaticamente aggiornato per riflettere questa modifica. Sarai in grado di vedere in anteprima questa modifica nel passaggio successivo.";
-
-/* (No Comment) */
 "maximum-balance-warning-description" = "L'invio del tuo saldo massimo su un conto ricodificato richiede che tu disponga di un saldo minimo di %@ Algo. Questo per garantire che non vi siano variazioni nel tuo conto ricodificato.\n\n\nL'importo della transazione verrà automaticamente aggiornato per riflettere questa variazione. Potrai vedere l'anteprima della transazione nel passaggio successivo.";
 
 /* (No Comment) */
@@ -856,9 +853,6 @@
 /* (No Comment) */
 "pin-limit-try-again" = "Riprova";
 
-/* No comment provided by engineer. */
-"primaryText" = "primaryText";
-
 /* (No Comment) */
 "privacy-policy-title" = "Informativa sulla privacy";
 
@@ -1037,7 +1031,7 @@
 "send-algos-minimum-amount-error-new-account" = "Stai tentando di inviare denaro a un nuovo conto. L'importo deve essere almeno 0,1 algo.";
 
 /* (No Comment) */
-"send-algos-receiver-address-validation" = "Chiave non valida, assicurati di avere la chiave giusta.";
+"send-algos-receiver-address-validation" = "L'indirizzo del destinatario non è un indirizzo Algorand valido. Riprova.";
 
 /* (No Comment) */
 "send-algos-scan" = "Scansiona QR";
@@ -1613,7 +1607,7 @@
 "wallet-connect-transaction-detail-asset-url" = "Mostra URL risorsa";
 
 /* (No Comment) */
-"wallet-connect-transaction-detail-explorer" = "Mostra Esplora risorse";
+"wallet-connect-transaction-detail-explorer" = "Mostra Explorer";
 
 /* (No Comment) */
 "wallet-connect-transaction-detail-metadata" = "Mostra i metadati delle risorse";
@@ -1643,7 +1637,13 @@
 "wallet-connect-transaction-group-app-close-title" = "Chiusura applicazione in %@";
 
 /* (No Comment) */
-"wallet-connect-transaction-group-app-opt-in-title" = "Opt-in di applicazione  a % @";
+"wallet-connect-transaction-group-app-delete-title" = "Eliminazione dell'applicazione a #%@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-opt-in-title" = "Opt-in di applicazione  a %@";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-update-title" = "Aggiornamento dell'applicazione a #%@";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-addition-title" = "Opting in alla risorsa %@";
@@ -1662,6 +1662,27 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call" = "Richiesta di chiamata dell'app";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-approval-hash" = "Hash di approvazione";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-clear-hash" = "Hash di cancellazione stato";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-extra-pages" = "Pagine extra dell'app";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-global-schema" = "Schema globale dell'app";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-local-schema" = "Schema locale dell'app";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-creation" = "Creazione dell'applicazione";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-id" = "ID applicazione";
@@ -1718,7 +1739,7 @@
 "wallet-connect-transaction-warning-future" = "Questa transazione verrà inviata in futuro. ";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-high-fee" = "Questa commissione di transazione è superiore alla normale commissione di 0,001 Algo.";
+"wallet-connect-transaction-warning-high-fee" = "Questa commissione di transazione è superiore alla normale commissione di 0,01 Algo.";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial" = "Le seguenti richieste di transazione provengono da applicazioni esterne che Algorand Wallet non controlla. Assicurati di esaminare attentamente queste transazioni prima di firmare, poiché le transazioni sono irreversibili.";

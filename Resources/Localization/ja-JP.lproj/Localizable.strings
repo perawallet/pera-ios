@@ -620,9 +620,6 @@
 "maximum-balance-standard-account-warning-description" = "お客様のアカウント%@に他の資産%@が存在するため、Algorandブロックチェーンでは最小残高%@ Algosを維持する必要があります。\n\n\n続行をクリックすることで、お客様の取引額が自動的に更新され、変更が反映されます。次のステップでこの変更をプレビューできます。";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description-singular" = "お客様のアカウント%@に他の資産%@が存在するため、Algorandブロックチェーンでは最小残高%@ Algosを維持する必要があります。\n\n\n続行をクリックすることで、お客様の取引額が自動的に更新され、変更が反映されます。次のステップでこの変更をプレビューできます。";
-
-/* (No Comment) */
 "maximum-balance-warning-description" = "この再キー化アカウントで最大残高を送信するには、%@ Algosの最低残高を維持する必要があります。これは、再キー化されたアカウントに何も変化がないことを確認するためです。\n\n\nこの変更を反映して、お客様の取引額が自動的に更新されます。次のステップでトランザクションをプレビューできます。";
 
 /* (No Comment) */
@@ -855,9 +852,6 @@
 
 /* (No Comment) */
 "pin-limit-try-again" = "やり直してください";
-
-/* No comment provided by engineer. */
-"primaryText" = "primaryText";
 
 /* (No Comment) */
 "privacy-policy-title" = "個人情報保護方針";
@@ -1643,7 +1637,13 @@
 "wallet-connect-transaction-group-app-close-title" = "%@へのアプリケーションクローズ";
 
 /* (No Comment) */
+"wallet-connect-transaction-group-app-delete-title" = "#%@へのアプリケーション削除";
+
+/* (No Comment) */
 "wallet-connect-transaction-group-app-opt-in-title" = "%@へのアプリケーションオプトイン";
+
+/* (No Comment) */
+"wallet-connect-transaction-group-app-update-title" = "#%@へのアプリケーション更新";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-asset-addition-title" = "アセット%@へのオプトイン";
@@ -1662,6 +1662,27 @@
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-call" = "アプリコールリクエスト";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-approval-hash" = "承認ハッシュ";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-clear-hash" = "ステートハッシュのクリア";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-extra-pages" = "アプリの追加ページ";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-global-schema" = "アプリのグローバルスキーマ";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-local-schema" = "アプリのローカルスキーマ";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-call-on-complete" = "OnComplete";
+
+/* (No Comment) */
+"wallet-connect-transaction-title-app-creation" = "アプリケーション作成";
 
 /* (No Comment) */
 "wallet-connect-transaction-title-app-id" = "アプリケーションID";
@@ -1718,7 +1739,7 @@
 "wallet-connect-transaction-warning-future" = "このトランザクションは後ほど提出されます。";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-high-fee" = "このトランザクション手数料は、通常の手数料（0.001 Algos）よりも高くなっています。";
+"wallet-connect-transaction-warning-high-fee" = "このトランザクション手数料は、通常の手数料（0.01 Algos）よりも高くなっています。";
 
 /* (No Comment) */
 "wallet-connect-transaction-warning-initial" = "以下のトランザクションリクエストは、Algorand Walletが管理していない外部アプリケーションからのものです。トランザクションは元に戻すことができないため、署名する前にトランザクション内容を慎重にご確認ください。";

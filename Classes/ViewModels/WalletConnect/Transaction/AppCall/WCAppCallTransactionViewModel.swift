@@ -163,12 +163,10 @@ class WCAppCallTransactionViewModel {
             return
         }
 
-        let sdk = AlgorandSDK()
-        
         approvalHashInformationViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
                 title: "wallet-connect-transaction-title-app-call-approval-hash".localized,
-                detail: sdk.getAddressfromProgram(approvalHash.base64EncodedData())
+                detail: AlgorandSDK().getAddressfromProgram(approvalHash)
             ),
             isLastElement: false
         )
@@ -181,12 +179,10 @@ class WCAppCallTransactionViewModel {
             return
         }
 
-        let sdk = AlgorandSDK()
-
         clearStateHashInformationViewModel = WCTransactionTextInformationViewModel(
             information: TitledInformation(
                 title: "wallet-connect-transaction-title-app-call-clear-hash".localized,
-                detail: sdk.getAddressfromProgram(stateHash.base64EncodedData())
+                detail: AlgorandSDK().getAddressfromProgram(stateHash)
             ),
             isLastElement: transaction.hasValidAuthAddressForSigner && !transactionDetail.hasRekeyOrCloseAddress
         )
