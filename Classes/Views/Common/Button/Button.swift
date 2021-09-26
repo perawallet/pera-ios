@@ -19,12 +19,21 @@ import UIKit
 import Macaroon
 
 final class Button: Macaroon.Button {
+    private var theme: ButtonTheme?
     private lazy var indicatorView = ViewLoadingIndicator()
 
+    override var isEnabled: Bool {
+        didSet {
+            customizeBackgroundColor(theme ?? ButtonPrimaryTheme(), isEnabled: isEnabled)
+        }
+    }
+
     func customize(_ theme: ButtonTheme) {
+        self.theme = theme
+
         customizeView(theme)
-        customizeBackground(theme)
         customizeLabel(theme)
+        customizeBackgroundColor(theme, isEnabled: isEnabled)
 
         addIndicator(theme)
     }
@@ -44,11 +53,6 @@ extension Button {
         contentEdgeInsets = UIEdgeInsets(theme.contentEdgeInsets)
         layer.draw(corner: theme.corner)
         layer.masksToBounds = true
-    }
-
-    private func customizeBackground(_ theme: ButtonTheme) {
-        setBackgroundColor(theme.backgroundColorSet.color, for: .normal)
-        setBackgroundColor(theme.backgroundColorSet.disabled, for: .disabled)
     }
 
     private func customizeLabel(_ theme: ButtonTheme) {
@@ -92,6 +96,7 @@ extension Button {
         indicatorView.isHidden = false
         isEnabled = false
         titleLabel?.layer.opacity = .zero
+        imageView?.layer.opacity = .zero
         indicatorView.startAnimating()
     }
 
@@ -101,19 +106,14 @@ extension Button {
         indicatorView.isHidden = true
         isEnabled = true
         titleLabel?.layer.opacity = 1
+        imageView?.layer.opacity = 1
         indicatorView.stopAnimating()
     }
 }
 
 extension Button {
-    private func setBackgroundColor(_ color: UIColor?, for state: UIControl.State) {
-        guard let color = color else { return }
-
-        let renderer = UIGraphicsImageRenderer(size: CGSize(width: 1, height: 1))
-        let colorImage = renderer.image { _ in
-            color.setFill()
-            UIBezierPath(rect: CGRect(x: 0, y: 0, width: 1, height: 1)).fill()
-        }
-        setBackgroundImage(colorImage, for: state)
+    private func customizeBackgroundColor(_ theme: ButtonTheme, isEnabled: Bool) {
+        let backgroundColor = isEnabled ? theme.backgroundColorSet.color : theme.backgroundColorSet.disabled
+        customizeBaseAppearance(backgroundColor: backgroundColor)
     }
 }
