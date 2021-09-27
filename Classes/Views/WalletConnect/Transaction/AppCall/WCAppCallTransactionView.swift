@@ -167,7 +167,11 @@ extension WCAppCallTransactionView {
             rekeyWarningInformationView.hideViewInStack()
         }
 
-        feeInformationView.bind(viewModel.feeInformationViewModel)
+        if let feeInformationViewModel = viewModel.feeInformationViewModel {
+            feeInformationView.bind(feeInformationViewModel)
+        } else {
+            feeInformationView.hideViewInStack()
+        }
 
         if let feeWarningViewModel = viewModel.feeWarningViewModel {
             feeWarningView.bind(feeWarningViewModel)

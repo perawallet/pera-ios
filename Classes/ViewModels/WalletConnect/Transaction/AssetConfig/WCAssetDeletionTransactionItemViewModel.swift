@@ -74,7 +74,7 @@ class WCAssetDeletionTransactionViewModel {
     }
 
     private func setAssetWarningViewModel() {
-        assetWarningViewModel = WCTransactionWarningViewModel(warning: .fee)
+        assetWarningViewModel = WCTransactionWarningViewModel(warning: .assetDelete)
     }
 
     private func setAuthAccountInformationViewModel(from transaction: WCTransaction) {
@@ -121,7 +121,8 @@ class WCAssetDeletionTransactionViewModel {
 
     private func setFeeInformationViewModel(from transaction: WCTransaction) {
         guard let transactionDetail = transaction.transactionDetail,
-              let fee = transactionDetail.fee else {
+              let fee = transactionDetail.fee,
+              fee != 0 else {
             return
         }
 
@@ -157,6 +158,6 @@ class WCAssetDeletionTransactionViewModel {
     }
 
     private func setAlgoExplorerInformationViewModel(from transaction: WCTransaction) {
-        rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(information: .algoExplorer, isLastElement: true)
+        algoExplorerInformationViewModel = WCTransactionActionableInformationViewModel(information: .algoExplorer, isLastElement: true)
     }
 }
