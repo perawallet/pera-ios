@@ -125,6 +125,10 @@ class WCGroupTransactionItemViewModel {
     }
 
     private func setAccountInformationViewModel(from account: Account?, with assetDetail: AssetDetail?) {
-        accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(account: account, assetDetail: assetDetail)
+        accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
+            account: account,
+            assetDetail: assetDetail,
+            isDisplayingAmount: true
+        )
     }
 }

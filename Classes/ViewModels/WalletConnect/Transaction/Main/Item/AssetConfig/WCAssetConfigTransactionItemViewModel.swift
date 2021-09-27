@@ -72,11 +72,11 @@ class WCAssetConfigTransactionItemViewModel {
             switch type {
             case .create:
                 if let assetConfigParams = transactionDetail.assetConfigParams {
-                    detail = "\(assetConfigParams.unitName ?? assetConfigParams.name ?? "")"
+                    detail = "\(assetConfigParams.name ?? assetConfigParams.unitName ?? "title-unknown".localized)"
                 }
             case .reconfig:
                 if let assetConfigParams = transactionDetail.assetConfigParams {
-                    detail = "\(assetConfigParams.unitName ?? assetConfigParams.name ?? "")"
+                    detail = "\(assetConfigParams.name ?? assetConfigParams.unitName ?? "title-unknown".localized)"
                 }
             case .delete:
                 if let assetId = transactionDetail.assetIdBeingConfigured {
@@ -89,6 +89,10 @@ class WCAssetConfigTransactionItemViewModel {
     }
 
     private func setAccountInformationViewModel(from account: Account?, with assetDetail: AssetDetail?) {
-        accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(account: account, assetDetail: assetDetail)
+        accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
+            account: account,
+            assetDetail: nil,
+            isDisplayingAmount: false
+        )
     }
 }
