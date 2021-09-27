@@ -43,6 +43,8 @@ class RootViewController: UIViewController {
 
     private let onceWhenViewDidAppear = Once()
 
+    private var isDisplayingGovernanceBanner = true
+
     private lazy var deepLinkRouter = DeepLinkRouter(rootViewController: self, appConfiguration: appConfiguration)
     
     private(set) lazy var tabBarViewController = TabBarController(configuration: appConfiguration.all())
@@ -117,6 +119,10 @@ extension RootViewController {
 
     func openAsset(from notification: NotificationDetail, for account: String) {
         deepLinkRouter.openAsset(from: notification, for: account)
+    }
+
+    func hideGovernanceBanner() {
+        isDisplayingGovernanceBanner = false
     }
 }
 
