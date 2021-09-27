@@ -389,6 +389,15 @@
 "feedback-title-note" = "メモ";
 
 /* (No Comment) */
+"governance-banner-action" = "始める";
+
+/* (No Comment) */
+"governance-banner-detail" = "統治者になりましょう。Algorandの未来を投票で決めましょう。報酬を獲得しましょう。";
+
+/* (No Comment) */
+"governance-banner-title" = "Algorandガバナンス・プログラムが始まります！";
+
+/* (No Comment) */
 "internet-connection-error-detail" = "サーバーにアクセスできません。インターネットに接続されていることを確認してください";
 
 /* (No Comment) */
@@ -1557,6 +1566,42 @@
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "検証済み資産";
+
+/* (No Comment) */
+"wallet-connect-asset-clawback-title" = "クローバックアカウント";
+
+/* (No Comment) */
+"wallet-connect-asset-creation-title" = "資産作成リクエスト";
+
+/* (No Comment) */
+"wallet-connect-asset-decimals-title" = "小数点";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-title" = "資産削除リクエスト";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-warning-title" = "この資産は削除されます。";
+
+/* (No Comment) */
+"wallet-connect-asset-freeze-title" = "アカウントの凍結";
+
+/* (No Comment) */
+"wallet-connect-asset-frozen-title" = "デフォルトで凍結";
+
+/* (No Comment) */
+"wallet-connect-asset-manager-title" = "管理者アカウント";
+
+/* (No Comment) */
+"wallet-connect-asset-name-title" = "資産名";
+
+/* (No Comment) */
+"wallet-connect-asset-reconfiguration-title" = "資産再構成リクエスト";
+
+/* (No Comment) */
+"wallet-connect-asset-reserve-title" = "リザーブアカウント";
+
+/* (No Comment) */
+"wallet-connect-asset-unit-title" = "ユニット名";
 
 /* (No Comment) */
 "wallet-connect-raw-transaction-title" = "Rawトランザクション";

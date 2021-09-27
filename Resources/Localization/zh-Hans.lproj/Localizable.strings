@@ -389,6 +389,15 @@
 "feedback-title-note" = "备注";
 
 /* (No Comment) */
+"governance-banner-action" = "开始";
+
+/* (No Comment) */
+"governance-banner-detail" = "成为治理者，为Algorand的未来投票，获取奖励。";
+
+/* (No Comment) */
+"governance-banner-title" = "Algorand 治理计划已经启动了！";
+
+/* (No Comment) */
 "internet-connection-error-detail" = "无法连接到服务器，请确认已连接到网络";
 
 /* (No Comment) */
@@ -1557,6 +1566,42 @@
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "已验证的资产";
+
+/* (No Comment) */
+"wallet-connect-asset-clawback-title" = "回拨账户";
+
+/* (No Comment) */
+"wallet-connect-asset-creation-title" = "资产创建请求";
+
+/* (No Comment) */
+"wallet-connect-asset-decimals-title" = "小数位数";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-title" = "资产删除请求";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-warning-title" = "该资产将被删除。";
+
+/* (No Comment) */
+"wallet-connect-asset-freeze-title" = "冻结账户";
+
+/* (No Comment) */
+"wallet-connect-asset-frozen-title" = "默认冻结";
+
+/* (No Comment) */
+"wallet-connect-asset-manager-title" = "经理账户";
+
+/* (No Comment) */
+"wallet-connect-asset-name-title" = "资产名称";
+
+/* (No Comment) */
+"wallet-connect-asset-reconfiguration-title" = "重新配置资产请求";
+
+/* (No Comment) */
+"wallet-connect-asset-reserve-title" = "储备账户";
+
+/* (No Comment) */
+"wallet-connect-asset-unit-title" = "单位名称";
 
 /* (No Comment) */
 "wallet-connect-raw-transaction-title" = "原始交易";

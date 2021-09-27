@@ -389,6 +389,15 @@
 "feedback-title-note" = "Bemerkung";
 
 /* (No Comment) */
+"governance-banner-action" = "Los geht's";
+
+/* (No Comment) */
+"governance-banner-detail" = "Governor werden. Über die Zukunft von Algorand abstimmen. Belohnungen verdienen.";
+
+/* (No Comment) */
+"governance-banner-title" = "Das Algorand-Governance-Programm beginnt!";
+
+/* (No Comment) */
 "internet-connection-error-detail" = "Wir konnten den Server nicht erreichen. Stellen Sie sicher, dass Sie mit dem Internet verbunden sind";
 
 /* (No Comment) */
@@ -1557,6 +1566,42 @@
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "Verifizierte Assets";
+
+/* (No Comment) */
+"wallet-connect-asset-clawback-title" = "Clawback-Konto";
+
+/* (No Comment) */
+"wallet-connect-asset-creation-title" = "Anfrage zur Asset-Erstellung";
+
+/* (No Comment) */
+"wallet-connect-asset-decimals-title" = "Dezimalstellen";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-title" = "Anfrage zur Asset-Löschung";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-warning-title" = "Dieses Asset wird gelöscht.";
+
+/* (No Comment) */
+"wallet-connect-asset-freeze-title" = "Konto einfrieren";
+
+/* (No Comment) */
+"wallet-connect-asset-frozen-title" = "Standard eingefroren";
+
+/* (No Comment) */
+"wallet-connect-asset-manager-title" = "Manager-Konto";
+
+/* (No Comment) */
+"wallet-connect-asset-name-title" = "Asset-Name";
+
+/* (No Comment) */
+"wallet-connect-asset-reconfiguration-title" = "Anfrage zur Neukonfiguration von Assets";
+
+/* (No Comment) */
+"wallet-connect-asset-reserve-title" = "Reserve-Konto";
+
+/* (No Comment) */
+"wallet-connect-asset-unit-title" = "Name der Einheit";
 
 /* (No Comment) */
 "wallet-connect-raw-transaction-title" = "Rohtransaktion";

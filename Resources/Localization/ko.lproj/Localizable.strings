@@ -389,6 +389,15 @@
 "feedback-title-note" = "참조";
 
 /* (No Comment) */
+"governance-banner-action" = "시작";
+
+/* (No Comment) */
+"governance-banner-detail" = "거버너가 되어 알고랜드의 미래에 투표하고 보상을 받으세요.";
+
+/* (No Comment) */
+"governance-banner-title" = "알고랜드 거버넌스 프로그램이 시작됩니다!";
+
+/* (No Comment) */
 "internet-connection-error-detail" = "서버에 접속할 수 없습니다, 인터넷에 연결되어 있는지 확인해 주세요.";
 
 /* (No Comment) */
@@ -1557,6 +1566,42 @@
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "인증된 자산";
+
+/* (No Comment) */
+"wallet-connect-asset-clawback-title" = "환수 계정";
+
+/* (No Comment) */
+"wallet-connect-asset-creation-title" = "자산 생성 요청";
+
+/* (No Comment) */
+"wallet-connect-asset-decimals-title" = "소수점";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-title" = "자산 삭제 요청";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-warning-title" = "자산이 삭제됩니다.";
+
+/* (No Comment) */
+"wallet-connect-asset-freeze-title" = "계정 동결";
+
+/* (No Comment) */
+"wallet-connect-asset-frozen-title" = "기본 동결";
+
+/* (No Comment) */
+"wallet-connect-asset-manager-title" = "관리자 계정";
+
+/* (No Comment) */
+"wallet-connect-asset-name-title" = "자산 이름";
+
+/* (No Comment) */
+"wallet-connect-asset-reconfiguration-title" = "자산 재구성 요청";
+
+/* (No Comment) */
+"wallet-connect-asset-reserve-title" = "보유 계정";
+
+/* (No Comment) */
+"wallet-connect-asset-unit-title" = "단위 이름";
 
 /* (No Comment) */
 "wallet-connect-raw-transaction-title" = "원시 트랜잭션";
