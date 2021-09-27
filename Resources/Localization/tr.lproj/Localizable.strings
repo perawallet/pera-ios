@@ -389,6 +389,15 @@
 "feedback-title-note" = "Not";
 
 /* (No Comment) */
+"governance-banner-action" = "Başlayın";
+
+/* (No Comment) */
+"governance-banner-detail" = "Yönetici olun. Algorand'ın geleceği için oy verin. Ödül kazanın.";
+
+/* (No Comment) */
+"governance-banner-title" = "Algorand Yönetişim Programı başlıyor!";
+
+/* (No Comment) */
 "internet-connection-error-detail" = "Sunucuya ulaşamadık. İnternete bağlı olduğunuzdan emin olun";
 
 /* (No Comment) */
@@ -1557,6 +1566,42 @@
 
 /* MARK: Verified Asset Information */
 "verified-assets-title" = "Doğrulanan Varlıklar";
+
+/* (No Comment) */
+"wallet-connect-asset-clawback-title" = "Geri Alma Hesabı";
+
+/* (No Comment) */
+"wallet-connect-asset-creation-title" = "Varlık Oluşturma Talebi";
+
+/* (No Comment) */
+"wallet-connect-asset-decimals-title" = "Ondalık Basamaklar";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-title" = "Varlık Silme Talebi";
+
+/* (No Comment) */
+"wallet-connect-asset-deletion-warning-title" = "Bu varlık silinecek.";
+
+/* (No Comment) */
+"wallet-connect-asset-freeze-title" = "Hesabı Dondur";
+
+/* (No Comment) */
+"wallet-connect-asset-frozen-title" = "Varsayılan Dondurulmuş";
+
+/* (No Comment) */
+"wallet-connect-asset-manager-title" = "Yönetici Hesabı";
+
+/* (No Comment) */
+"wallet-connect-asset-name-title" = "Varlık Adı";
+
+/* (No Comment) */
+"wallet-connect-asset-reconfiguration-title" = "Yeniden Varlık Yapılandırma Talebi";
+
+/* (No Comment) */
+"wallet-connect-asset-reserve-title" = "Yedek Hesap";
+
+/* (No Comment) */
+"wallet-connect-asset-unit-title" = "Birim Adı";
 
 /* (No Comment) */
 "wallet-connect-raw-transaction-title" = "Ham İşlem";
