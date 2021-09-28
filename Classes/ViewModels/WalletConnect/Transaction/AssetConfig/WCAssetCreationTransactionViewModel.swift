@@ -277,7 +277,7 @@ class WCAssetCreationTransactionViewModel {
     }
 
     private func setMetadataInformationViewModel(from transaction: WCTransaction) {
-        guard let metadataHash = transaction.transactionDetail?.assetConfigParams?.metadataHash else {
+        guard let metadataHash = transaction.transactionDetail?.assetConfigParams?.metadataHash?.toHexString() else {
             return
         }
 

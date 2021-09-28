@@ -24,7 +24,7 @@ final class WCAssetConfigParameters: Model {
     let unitName: String?
     let name: String?
     let url: String?
-    let metadataHash: String?
+    let metadataHash: Data?
     let managerAddress: String?
     let reserveAddress: String?
     let frozenAddress: String?
@@ -38,7 +38,7 @@ final class WCAssetConfigParameters: Model {
         unitName = try container.decodeIfPresent(String.self, forKey: .unitName)
         name = try container.decodeIfPresent(String.self, forKey: .name)
         url = try container.decodeIfPresent(String.self, forKey: .url)
-        metadataHash = try container.decodeIfPresent(String.self, forKey: .metadataHash)
+        metadataHash = try container.decodeIfPresent(Data.self, forKey: .metadataHash)
 
         if let managerAddressMsgpack = try container.decodeIfPresent(Data.self, forKey: .managerAddress) {
             managerAddress = managerAddressMsgpack.getAlgorandAddressFromPublicKey()

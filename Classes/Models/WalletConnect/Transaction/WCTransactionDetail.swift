@@ -142,6 +142,13 @@ class WCTransactionDetail: Model {
         try container.encodeIfPresent(appCallArguments, forKey: .appCallArguments)
         try container.encodeIfPresent(appCallOnComplete, forKey: .appCallOnComplete)
         try container.encodeIfPresent(appCallId, forKey: .appCallId)
+        try container.encodeIfPresent(appGlobalSchema, forKey: .appGlobalSchema)
+        try container.encodeIfPresent(appLocalSchema, forKey: .appLocalSchema)
+        try container.encodeIfPresent(appExtraPages, forKey: .appExtraPages)
+        try container.encodeIfPresent(approvalHash, forKey: .approvalHash)
+        try container.encodeIfPresent(stateHash, forKey: .stateHash)
+        try container.encodeIfPresent(assetIdBeingConfigured, forKey: .assetIdBeingConfigured)
+        try container.encodeIfPresent(assetConfigParams, forKey: .assetConfigParams)
     }
 }
 
@@ -250,7 +257,16 @@ extension WCTransactionDetail {
     }
 
     var validationAddresses: [String?] {
-        return [sender, receiver, closeAddress, rekeyAddress]
+        return [
+            sender,
+            receiver,
+            closeAddress,
+            rekeyAddress,
+            assetConfigParams?.managerAddress,
+            assetConfigParams?.reserveAddress,
+            assetConfigParams?.frozenAddress,
+            assetConfigParams?.clawbackAddress
+        ]
     }
 
     var hasHighFee: Bool {
