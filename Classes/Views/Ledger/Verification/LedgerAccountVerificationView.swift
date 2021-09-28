@@ -16,80 +16,85 @@
 //   LedgerAccountVerificationView.swift
 
 import UIKit
+import Macaroon
 
-class LedgerAccountVerificationView: BaseView {
+final class LedgerAccountVerificationView: View {
+    private lazy var verticalStackView = UIStackView()
+    private lazy var imageView = UIImageView()
+    private lazy var titleLabel = UILabel()
+    private lazy var descriptionLabel = UILabel()
+    private lazy var accountVerificationsStackView = UIStackView()
 
-    private let layout = Layout<LayoutConstants>()
-
-    private lazy var headerView = LedgerAccountVerificationHeaderView()
-
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fillEqually
-        stackView.spacing = 12.0
-        stackView.alignment = .fill
-        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        stackView.axis = .vertical
-        return stackView
-    }()
-
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.primary
+    func customize(_ theme: LedgerAccountVerificationViewTheme) {
+        addVerticalStackView(theme)
+        addAccountVerificationsStackView(theme)
     }
 
-    override func prepareLayout() {
-        setupHeaderViewLayout()
-        setupStackViewLayout()
-    }
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 }
 
 extension LedgerAccountVerificationView {
-    private func setupHeaderViewLayout() {
-        addSubview(headerView)
-
-        headerView.snp.makeConstraints { make in
-            make.leading.top.trailing.equalToSuperview()
+    private func addVerticalStackView(_ theme: LedgerAccountVerificationViewTheme) {
+        addSubview(verticalStackView)
+        verticalStackView.axis = .vertical
+        verticalStackView.alignment = .center
+        verticalStackView.spacing = theme.verticalStackViewSpacing
+        verticalStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(theme.verticalStackViewTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
+
+        addImageView(theme)
+        addTitleLabel(theme)
+        addDescriptionLabel(theme)
     }
 
-    private func setupStackViewLayout() {
-        addSubview(stackView)
+    private func addImageView(_ theme: LedgerAccountVerificationViewTheme) {
+        imageView.customizeAppearance(theme.image)
 
-        stackView.snp.makeConstraints { make in
-            make.top.equalTo(headerView.snp.bottom).offset(layout.current.stackTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.stackHorizontalInset)
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
+        verticalStackView.addArrangedSubview(imageView)
+        verticalStackView.setCustomSpacing(theme.titleLabelTopPadding, after: imageView)
+    }
+
+    private func addTitleLabel(_ theme: LedgerAccountVerificationViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
+        verticalStackView.addArrangedSubview(titleLabel)
+    }
+
+    private func addDescriptionLabel(_ theme: LedgerAccountVerificationViewTheme) {
+        descriptionLabel.customizeAppearance(theme.description)
+
+        verticalStackView.addArrangedSubview(descriptionLabel)
+    }
+
+    private func addAccountVerificationsStackView(_ theme: LedgerAccountVerificationViewTheme) {
+        accountVerificationsStackView.distribution = .fillEqually
+        accountVerificationsStackView.spacing = theme.accountVerificationsStackViewVerticalPadding
+        accountVerificationsStackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        accountVerificationsStackView.axis = .vertical
+
+        addSubview(accountVerificationsStackView)
+        accountVerificationsStackView.snp.makeConstraints {
+            $0.top.equalTo(verticalStackView.snp.bottom).offset(theme.accountVerificationListTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.bottom.equalToSuperview()
         }
     }
 }
 
 extension LedgerAccountVerificationView {
     func addArrangedSubview(_ statusView: LedgerAccountVerificationStatusView) {
-        stackView.addArrangedSubview(statusView)
+        accountVerificationsStackView.addArrangedSubview(statusView)
     }
 
     var isStackViewEmpty: Bool {
-        return stackView.arrangedSubviews.isEmpty
+        return accountVerificationsStackView.arrangedSubviews.isEmpty
     }
-    
+
     var statusViews: [UIView] {
-        return stackView.arrangedSubviews
-    }
-
-    func startConnectionAnimation() {
-        headerView.startConnectionAnimation()
-    }
-
-    func stopConnectionAnimation() {
-        headerView.stopConnectionAnimation()
-    }
-}
-
-extension LedgerAccountVerificationView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let stackHorizontalInset: CGFloat = 20.0
-        let stackTopInset: CGFloat = 48.0
-        let bottomInset: CGFloat = 16.0
+        return accountVerificationsStackView.arrangedSubviews
     }
 }

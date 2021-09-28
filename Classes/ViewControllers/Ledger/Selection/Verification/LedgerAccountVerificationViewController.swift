@@ -17,13 +17,10 @@
 
 import UIKit
 
-class LedgerAccountVerificationViewController: BaseScrollViewController {
-
-    private let layout = Layout<LayoutConstants>()
-
+final class LedgerAccountVerificationViewController: BaseScrollViewController {
+    private lazy var theme = Theme()
     private lazy var ledgerAccountVerificationView = LedgerAccountVerificationView()
-
-    private lazy var addButton = MainButton(title: "ledger-verified-add".localized)
+    private lazy var verifyButton = Button()
 
     private lazy var ledgerAccountVerificationOperation = LedgerAccountVerifyOperation(bannerController: bannerController)
     private lazy var dataController = LedgerAccountVerificationDataController(accounts: selectedAccounts)
@@ -36,7 +33,7 @@ class LedgerAccountVerificationViewController: BaseScrollViewController {
         }
     }
 
-    private lazy var accountManager: AccountManager?  = {
+    private lazy var accountManager: AccountManager? = {
         guard let api = api else {
             return nil
         }
@@ -58,46 +55,49 @@ class LedgerAccountVerificationViewController: BaseScrollViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        ledgerAccountVerificationView.startConnectionAnimation()
         startVerification()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         ledgerAccountVerificationOperation.reset()
-        ledgerAccountVerificationView.stopConnectionAnimation()
     }
 
     override func configureAppearance() {
         super.configureAppearance()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         addVerificationAccountsToStack()
         setAddButtonHidden(true)
     }
 
     override func setListeners() {
         super.setListeners()
-        addButton.addTarget(self, action: #selector(addVerifiedAccounts), for: .touchUpInside)
+        verifyButton.addTarget(self, action: #selector(addVerifiedAccounts), for: .touchUpInside)
     }
 
     override func prepareLayout() {
         super.prepareLayout()
-        setupLedgerAccountVerificationViewLayout()
-        setupAddButtonLayout()
+        addLedgerAccountVerificationView(theme)
+        addVerifyButton(theme)
     }
 }
 
 extension LedgerAccountVerificationViewController {
-    private func setupLedgerAccountVerificationViewLayout() {
+    private func addLedgerAccountVerificationView(_ theme: Theme) {
+        ledgerAccountVerificationView.customize(theme.ledgerAccountVerificationViewTheme)
+
         contentView.addSubview(ledgerAccountVerificationView)
         ledgerAccountVerificationView.pinToSuperview()
     }
 
-    private func setupAddButtonLayout() {
-        view.addSubview(addButton)
+    private func addVerifyButton(_ theme: Theme) {
+        verifyButton.customize(theme.verifyButtonTheme)
+        verifyButton.bindData(ButtonCommonViewModel(title: "ledger-verified-add".localized))
 
-        addButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview().inset(view.safeAreaBottom + layout.current.bottomInset)
+        view.addSubview(verifyButton)
+        verifyButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.bottom.equalToSuperview().inset(view.safeAreaBottom + theme.bottomInset)
         }
     }
 }
@@ -106,11 +106,12 @@ extension LedgerAccountVerificationViewController {
     private func addVerificationAccountsToStack() {
         dataController.displayedVerificationAccounts.forEach { account in
             let statusView = LedgerAccountVerificationStatusView()
+            statusView.customize(LedgerAccountVerificationStatusViewTheme())
             let viewModel = LedgerAccountVerificationStatusViewModel(
                 account: account,
                 status: ledgerAccountVerificationView.isStackViewEmpty ? .awaiting : .pending
             )
-            statusView.bind(viewModel)
+            statusView.bindData(viewModel)
 
             if ledgerAccountVerificationView.isStackViewEmpty {
                 currentVerificationStatusView = statusView
@@ -131,7 +132,7 @@ extension LedgerAccountVerificationViewController {
     }
 
     private func setAddButtonHidden(_ isHidden: Bool) {
-        addButton.isHidden = isHidden
+        verifyButton.isHidden = isHidden
     }
 }
 
@@ -139,7 +140,14 @@ extension LedgerAccountVerificationViewController {
     @objc
     private func addVerifiedAccounts() {
         saveVerifiedAccounts()
-        launchHome()
+
+        let controller = open(
+            .tutorial(flow: .none, tutorial: .ledgerSuccessfullyConnected),
+            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+        ) as? TutorialViewController
+        controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
+            self.launchHome()
+        }
     }
 
     private func saveVerifiedAccounts() {
@@ -193,19 +201,17 @@ extension LedgerAccountVerificationViewController {
         guard let accountManager = accountManager else {
             return
         }
-        
+
         loadingController?.startLoadingWithMessage("title-loading".localized)
         accountManager.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
             self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
                 switch self.accountSetupFlow {
                 case .initializeAccount:
-                    DispatchQueue.main.async {
-                        self.dismiss(animated: false) {
-                            UIApplication.shared.rootViewController()?.setupTabBarController()
-                        }
+                    self.closeScreen(by: .dismiss, animated: false) {
+                        UIApplication.shared.rootViewController()?.setupTabBarController()
                     }
                 case .addNewAccount:
-                    self.closeScreen(by: .dismiss, animated: false)
+                    self.closeScreen(by: .dismiss, animated: true)
                 case .none:
                     break
                 }
@@ -250,7 +256,7 @@ extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationD
 
     private func updateCurrentVerificationStatusView(with status: LedgerVerificationStatus) {
         if let account = currentVerificationAccount {
-            currentVerificationStatusView?.bind(LedgerAccountVerificationStatusViewModel(account: account, status: status))
+            currentVerificationStatusView?.bindData(LedgerAccountVerificationStatusViewModel(account: account, status: status))
         }
     }
 
@@ -274,8 +280,10 @@ extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationD
               let currentVerificationStatusView = currentVerificationStatusView else {
             return
         }
-
-        currentVerificationStatusView.bind(LedgerAccountVerificationStatusViewModel(account: currentVerificationAccount, status: .awaiting))
+        
+        currentVerificationStatusView.bindData(
+            LedgerAccountVerificationStatusViewModel(account: currentVerificationAccount, status: .awaiting)
+        )
         setVerificationLedgerDetail(for: currentVerificationAccount)
         ledgerAccountVerificationOperation.startOperation()
     }
@@ -296,13 +304,6 @@ extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationD
         }
 
         ledgerAccountVerificationOperation.setLedgerDetail(account.currentLedgerDetail)
-    }
-}
-
-extension LedgerAccountVerificationViewController {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let bottomInset: CGFloat = 16.0
     }
 }
 

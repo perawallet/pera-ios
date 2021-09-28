@@ -47,6 +47,7 @@ final class LedgerAccountSelectionView: View {
         super.init(frame: .zero)
 
         customize(theme)
+        setListeners()
     }
 
     private func customize(_ theme: LedgerAccountSelectionViewTheme) {
@@ -115,7 +116,6 @@ extension LedgerAccountSelectionView {
         
         accountsCollectionView.snp.makeConstraints {
             $0.top.equalTo(verticalStackView.snp.bottom).offset(theme.devicesListTopPadding)
-            $0.leading.trailing.equalToSuperview()
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }

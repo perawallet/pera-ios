@@ -37,8 +37,9 @@ final class LedgerDeviceListViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
         ledgerDeviceListView.startAnimatingImageView()
         ledgerDeviceListView.startAnimatingIndicatorView()
     }
@@ -111,6 +112,8 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
         didReceive accounts: [Account],
         in ledgerApprovalViewController: LedgerApprovalViewController?
     ) {
+        ledgerDeviceListView.stopAnimatingIndicatorView()
+
         if isViewDisappearing {
             return
         }
@@ -121,11 +124,13 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
     }
     
     func ledgerAccountFetchOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation, didDiscover peripherals: [CBPeripheral]) {
+        ledgerDeviceListView.stopAnimatingIndicatorView()
         ledgerDevices = peripherals
         ledgerDeviceListView.devicesCollectionView.reloadData()
     }
     
     func ledgerAccountFetchOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation, didFailed error: LedgerOperationError) {
+        ledgerDeviceListView.stopAnimatingIndicatorView()
         switch error {
         case .cancelled:
             bannerController?.presentErrorBanner(

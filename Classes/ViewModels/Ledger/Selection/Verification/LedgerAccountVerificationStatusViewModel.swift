@@ -16,48 +16,73 @@
 //   LedgerAccountVerificationStatusViewModel.swift
 
 import UIKit
+import Macaroon
 
-class LedgerAccountVerificationStatusViewModel {
-
+final class LedgerAccountVerificationStatusViewModel: ViewModel {
     private(set) var address: String?
-    private(set) var backgroundColor: UIColor?
-    private(set) var borderColor: UIColor?
-    private(set) var verificationStatusViewModel: VerificationStatusViewModel?
+    private let status: LedgerVerificationStatus
 
-    init(account: Account, status: LedgerVerificationStatus) {
-        setAddress(from: account)
-        setBackgroundColor(from: status)
-        setBorderColor(from: status)
-        setVerificationStatusViewModel(from: status)
+    var isWaitingForVerification: Bool {
+        status == .awaiting
     }
 
-    private func setAddress(from account: Account) {
-        address = getVerificationAddress(of: account)
+    var isStatusImageHidden: Bool {
+        status == .awaiting
+    }
+    
+    var statusImage: Image? {
+        switch status {
+        case .pending:
+            return "icon-clock-gray"
+        case .verified:
+            return "icon-check"
+        case .unverified:
+            return "icon-warning-red"
+        case .awaiting:
+            return nil
+        }
     }
 
-    private func setBackgroundColor(from status: LedgerVerificationStatus) {
+    var statusText: String {
         switch status {
         case .awaiting:
-            backgroundColor = Colors.Background.secondary
+            return "ledger-account-verification-status-awaiting".localized
         case .pending:
-            backgroundColor = .clear
-        case .unverified:
-            backgroundColor = Colors.General.error.withAlphaComponent(0.1)
+            return "ledger-account-verification-status-pending".localized
         case .verified:
-            backgroundColor = Colors.Background.secondary
+            return "ledger-account-verification-status-verified".localized
+        case .unverified:
+            return "ledger-account-verification-status-not-verified".localized
+        }
+    }
+    
+    var statusColor: Color {
+        switch status {
+        case .awaiting:
+            return AppColors.Shared.Helpers.negative
+        case .pending:
+            return AppColors.Components.Text.gray
+        case .verified:
+            return AppColors.Components.Link.primary
+        case .unverified:
+            return AppColors.Shared.Helpers.negative
         }
     }
 
-    private func setBorderColor(from status: LedgerVerificationStatus) {
-        if status == .awaiting {
-            borderColor = Colors.Main.yellow700
-        } else {
-            borderColor = .clear
-        }
+    var borderColor: Color {
+        status == .awaiting ? AppColors.Shared.Helpers.negative : UIColor.clear
     }
 
-    private func setVerificationStatusViewModel(from status: LedgerVerificationStatus) {
-        verificationStatusViewModel = VerificationStatusViewModel(status: status)
+    init(account: Account, status: LedgerVerificationStatus) {
+        self.status = status
+
+        bindAddress(account)
+    }
+}
+
+extension LedgerAccountVerificationStatusViewModel {
+    private func bindAddress(_ account: Account) {
+        address = getVerificationAddress(of: account)
     }
 }
 
@@ -66,7 +91,7 @@ extension LedgerAccountVerificationStatusViewModel {
         if let authAddress = account.authAddress,
            let rekeyedLedgerDetail = account.rekeyDetail?[authAddress] {
             if let ledgerDetail = account.ledgerDetail,
-                rekeyedLedgerDetail.id != ledgerDetail.id {
+               rekeyedLedgerDetail.id != ledgerDetail.id {
                 return account.address
             } else {
                 return authAddress

@@ -119,10 +119,16 @@ extension LedgerDeviceListView {
     }
 
     func startAnimatingIndicatorView() {
+        if indicatorView.isAnimating { return }
+
         indicatorView.startAnimating()
+        indicatorView.isHidden = false
     }
     
     func stopAnimatingIndicatorView() {
+        if !indicatorView.isAnimating { return }
+
+        indicatorView.isHidden = true
         indicatorView.stopAnimating()
     }
 }

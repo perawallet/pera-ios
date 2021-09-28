@@ -51,7 +51,7 @@ extension TutorialViewModel {
             image = img("locked")
         case .localAuthentication:
             image = img("faceid")
-        case .biometricAuthenticationEnabled, .accountVerified:
+        case .biometricAuthenticationEnabled, .accountVerified, .ledgerSuccessfullyConnected:
             image = img("check")
         case .passphraseVerified:
             image = img("shield-check")
@@ -82,6 +82,8 @@ extension TutorialViewModel {
             title = "recover-from-seed-verify-pop-up-title".localized
         case .ledger:
             title = "ledger-tutorial-title-text".localized
+        case .ledgerSuccessfullyConnected:
+            title = "tutorial-title-ledger-connected".localized
         }
     }
 
@@ -107,6 +109,8 @@ extension TutorialViewModel {
             description = "recover-from-seed-verify-pop-up-explanation".localized
         case .ledger:
             description = "tutorial-description-ledger".localized
+        case .ledgerSuccessfullyConnected:
+            description = "tutorial-description-ledger-connected".localized
         }
     }
 
@@ -132,6 +136,8 @@ extension TutorialViewModel {
             primaryActionButtonTitle = "title-go-home".localized
         case .ledger:
             primaryActionButtonTitle = "ledger-tutorial-title-text".localized
+        case .ledgerSuccessfullyConnected:
+            primaryActionButtonTitle = "tutorial-main-title-ledger-connected".localized
         }
     }
 

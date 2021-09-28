@@ -54,6 +54,8 @@ final class LedgerAccountCellView: View {
 
 extension LedgerAccountCellView {
     private func addCheckboxImageView(_ theme: LedgerAccountCellViewTheme) {
+        checkboxImageView.customizeAppearance(theme.unselectedStateCheckbox)
+
         addSubview(checkboxImageView)
         checkboxImageView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
@@ -75,7 +77,6 @@ extension LedgerAccountCellView {
 
     private func addVerticalStackView(_ theme: LedgerAccountCellViewTheme) {
         addSubview(verticalStackView)
-        verticalStackView.spacing = theme.verticalInset
         verticalStackView.axis = .vertical
 
         verticalStackView.snp.makeConstraints {
@@ -95,8 +96,9 @@ extension LedgerAccountCellView {
     }
 
     private func addAssetInfoLabel(_ theme: LedgerAccountCellViewTheme) {
-        assetInfoLabel.customizeAppearance(theme.nameLabel)
+        assetInfoLabel.customizeAppearance(theme.assetInfoLabel)
 
+        assetInfoLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         verticalStackView.addArrangedSubview(assetInfoLabel)
     }
 }

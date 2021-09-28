@@ -545,8 +545,8 @@ on your Ledger device (%d)";
 "notification-filter-show-title" = "Push Notifications";
 "notification-filter-show-for" = "Show notification for";
 
-"title-plus-asset-count" = "+%@ Assets";
-"ledger-account-details-title" = "Ledger details";
+"title-plus-asset-count" = "%@ Assets";
+"ledger-account-detail-title" = "Ledger Account";
 "ledger-account-detail-can-sign" = "Can sign for these accounts";
 "ledger-account-detail-can-signed" = "Can be signed by";
 "ledger-account-fetct-error" = "A network error occured while fetching account details. Restart the process.";
@@ -563,6 +563,7 @@ on your Ledger device (%d)";
 "tutorial-title-recover" = "Recover an Algorand Account";
 "tutorial-title-write" = "Prepare to write\ndown your recovery passphrase";
 "tutorial-title-passcode" = "Increase your security with a PIN";
+"tutorial-title-ledger-connected" = "Ledger successfully connected";
 
 "tutorial-description-back-up" = "Without your recovery passphrase, if you lose your device or delete the app, you will permanently lose access to your Algorand account.";
 "tutorial-description-recover" = "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.";
@@ -574,11 +575,13 @@ on your Ledger device (%d)";
 "tutorial-description-passcode" = "This 6-digit PIN will be required to use the Algorand Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-ledger" = "Please make sure your Ledger is unlocked with Bluetooth enabled";
+"tutorial-description-ledger-connected" = "Welcome to Algorand! Your account is ready to use";
 
 "tutorial-main-title-back-up" = "I Understand";
 "tutorial-main-title-recover" = "Recover an Algorand Account";
 "tutorial-main-title-write" = "I'm Ready to Begin";
 "tutorial-main-title-passcode" = "Set PIN Code";
+"tutorial-main-title-ledger-connected" = "Start Using Algorand";
 
 "tutorial-action-title-passcode" = "Not now";
 "tutorial-action-title-ledger" = "How does it work?";
@@ -632,7 +635,7 @@ on your Ledger device (%d)";
 "ledger-account-verification-status-verified" = "Account Verified";
 "ledger-account-verification-status-not-verified" = "Not Verified";
 "ledger-verified-add" = "Add Verified Accounts";
-"ledger-verify-header-title" = "Verify Account Addresses via Ledger";
+"ledger-verify-header-title" = "Verify Account Addresses\nvia Ledger";
 "ledger-verify-header-subtitle" = "The following account addresses will display on your Ledger device. Please carefully compare and verify each address in order to finalize device pairing.";
 
 // MARK: Wallet Connect Session

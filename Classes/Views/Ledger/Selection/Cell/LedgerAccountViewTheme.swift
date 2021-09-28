@@ -71,7 +71,7 @@ struct LedgerAccountCellViewTheme: StyleSheet, LayoutSheet {
         ]
 
         self.horizontalInset = 20
-        self.nameHorizontalOffset = 16
+        self.nameHorizontalOffset = 20
         self.infoIconSize = (24, 24)
         self.checkboxIconSize = (20, 20)
         self.verticalInset = 16

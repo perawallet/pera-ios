@@ -16,94 +16,95 @@
 //   LedgerAccountVerificationStatusView.swift
 
 import UIKit
+import Macaroon
 
-class LedgerAccountVerificationStatusView: BaseView {
+final class LedgerAccountVerificationStatusView: View {
+    private lazy var indicatorView = ViewLoadingIndicator()
+    private lazy var imageView = UIImageView()
+    private lazy var verticalStackView = UIStackView()
+    private lazy var statusLabel = UILabel()
+    private lazy var addressLabel = UILabel()
 
-    private let layout = Layout<LayoutConstants>()
+    func customize(_ theme: LedgerAccountVerificationStatusViewTheme) {
+        draw(corner: theme.corner)
 
-    private lazy var backgroundView = UIView()
-
-    private lazy var verificationStatusView = VerificationStatusView()
-
-    private lazy var addressLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
-            .withAlignment(.left)
-    }()
-
-    override func configureAppearance() {
-        backgroundView.layer.cornerRadius = 12.0
-        backgroundColor = .clear
+        addIndicatorView(theme)
+        addVerticalStackView(theme)
+        addImageView(theme)
     }
 
-    override func prepareLayout() {
-        setupBackgroundViewLayout()
-        setupVerificationStatusViewLayout()
-        setupAddressLabelLayout()
-    }
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 }
 
 extension LedgerAccountVerificationStatusView {
-    private func setupBackgroundViewLayout() {
-        addSubview(backgroundView)
+    private func addIndicatorView(_ theme: LedgerAccountVerificationStatusViewTheme) {
+        indicatorView.applyStyle(theme.indicator)
 
-        backgroundView.snp.makeConstraints { make in
-            make.leading.trailing.top.bottom.equalToSuperview()
+        addSubview(indicatorView)
+        indicatorView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.centerY.equalToSuperview()
         }
     }
 
-    private func setupVerificationStatusViewLayout() {
-        backgroundView.addSubview(verificationStatusView)
+    private func addVerticalStackView(_ theme: LedgerAccountVerificationStatusViewTheme) {
+        addSubview(verticalStackView)
+        verticalStackView.axis = .vertical
+        verticalStackView.spacing = theme.verticalStackViewSpacing
 
-        verificationStatusView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.topInset)
+        verticalStackView.snp.makeConstraints {
+            $0.leading.equalTo(indicatorView.snp.trailing).offset(theme.horizontalInset)
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.bottom.equalToSuperview().inset(theme.verticalInset)
         }
+
+        addStatusLabel(theme)
+        addAddressLabel(theme)
     }
 
-    private func setupAddressLabelLayout() {
-        backgroundView.addSubview(addressLabel)
+    private func addStatusLabel(_ theme: LedgerAccountVerificationStatusViewTheme) {
+        statusLabel.customizeAppearance(theme.statusLabel)
 
-        addressLabel.snp.makeConstraints { make in
-            make.top.equalTo(verificationStatusView.snp.bottom).offset(layout.current.addressLabelTopInset)
-            make.leading.equalToSuperview().inset(layout.current.addressLabelLeadingInset)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+        statusLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        verticalStackView.addArrangedSubview(statusLabel)
+    }
+
+    private func addAddressLabel(_ theme: LedgerAccountVerificationStatusViewTheme) {
+        addressLabel.customizeAppearance(theme.addressLabel)
+
+        verticalStackView.addArrangedSubview(addressLabel)
+    }
+    
+    private func addImageView(_ theme: LedgerAccountVerificationStatusViewTheme) {
+        addSubview(imageView)
+
+        imageView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.centerY.equalToSuperview()
+            $0.fitToSize(theme.imageSize)
         }
     }
 }
 
-extension LedgerAccountVerificationStatusView {
-    func showLoading() {
-        verificationStatusView.showLoading()
-    }
+extension LedgerAccountVerificationStatusView: ViewModelBindable {
+    func bindData(_ viewModel: LedgerAccountVerificationStatusViewModel?) {
+        guard let viewModel = viewModel else { return }
 
-    func stopLoading() {
-        verificationStatusView.stopLoading()
-    }
-}
-
-extension LedgerAccountVerificationStatusView {
-    func bind(_ viewModel: LedgerAccountVerificationStatusViewModel) {
         addressLabel.text = viewModel.address
-        backgroundView.backgroundColor = viewModel.backgroundColor
-        backgroundView.layer.borderColor = viewModel.borderColor?.cgColor
+        draw(border: Border(color: viewModel.borderColor.color, width: 2))
+        indicatorView.isHidden = !viewModel.isWaitingForVerification
 
-        if let verificationStatusViewModel = viewModel.verificationStatusViewModel {
-            verificationStatusView.bind(verificationStatusViewModel)
+        if viewModel.isWaitingForVerification {
+            indicatorView.startAnimating()
+        } else {
+            indicatorView.stopAnimating()
         }
-    }
-}
 
-extension LedgerAccountVerificationStatusView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let addressLabelLeadingInset: CGFloat = 60.0
-        let addressLabelTopInset: CGFloat = 4.0
-        let topInset: CGFloat = 16.0
-        let bottomInset: CGFloat = 20.0
+        imageView.isHidden = viewModel.isStatusImageHidden
+        imageView.image = viewModel.statusImage?.image
+        statusLabel.text = viewModel.statusText
+        statusLabel.textColor = viewModel.statusColor.color
     }
 }

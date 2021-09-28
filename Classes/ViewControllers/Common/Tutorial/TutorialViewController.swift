@@ -143,7 +143,7 @@ extension TutorialViewController: TutorialViewDelegate {
             dismissScreen()
         case .passphraseVerified:
             open(.accountNameSetup, by: .push)
-        case .accountVerified:
+        case .accountVerified, .ledgerSuccessfullyConnected:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case .ledger:
             open(.ledgerDeviceList(flow: flow), by: .push)
@@ -228,4 +228,5 @@ enum Tutorial {
     case passphraseVerified
     case accountVerified
     case ledger
+    case ledgerSuccessfullyConnected
 }

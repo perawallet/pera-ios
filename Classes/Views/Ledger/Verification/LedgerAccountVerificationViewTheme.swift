@@ -13,27 +13,23 @@
 // limitations under the License.
 
 //
-//   LedgerDeviceListViewTheme.swift
+//   LedgerAccountVerificationViewTheme.swift
 
 import Foundation
 import Macaroon
 import UIKit
 
-struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
+struct LedgerAccountVerificationViewTheme: StyleSheet, LayoutSheet {
+    let image: ImageStyle
     let title: TextStyle
     let description: TextStyle
     let backgroundColor: Color
-    let indicator: ImageStyle
-
-    let lottie: String
-
-    let collectionViewMinimumLineSpacing: LayoutMetric
+    
+    let accountVerificationsStackViewVerticalPadding: LayoutMetric
     let verticalStackViewTopPadding: LayoutMetric
     let verticalStackViewSpacing: LayoutMetric
-    let listContentInset: LayoutPaddings
     let titleLabelTopPadding: LayoutMetric
-    let devicesListTopPadding: LayoutMetric
-    let indicatorViewTopPadding: LayoutMetric
+    let accountVerificationListTopPadding: LayoutMetric
     let horizontalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
@@ -43,29 +39,25 @@ struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(.fitting),
             .font(Fonts.DMSans.medium.make(19)),
             .textColor(AppColors.Components.Text.main),
-            .content("ledger-device-list-looking".localized)
+            .content("ledger-verify-header-title".localized)
         ]
         self.description = [
             .textAlignment(.center),
             .textOverflow(.fitting),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.gray),
-            .content("tutorial-description-ledger".localized)
+            .content("ledger-verify-header-subtitle".localized)
         ]
-        self.indicator = [
-            .content(img("loading-indicator")),
-            .contentMode(.scaleAspectFill)
+        self.image = [
+            .content("icon-ledger"),
+            .contentMode(.scaleAspectFit)
         ]
 
-        self.lottie = UIApplication.shared.isDarkModeDisplay ? "dark-ledger" : "light-ledger" /// <note>:  Should be handled also on view.
-
-        self.collectionViewMinimumLineSpacing = 20
+        self.accountVerificationsStackViewVerticalPadding = 12
         self.verticalStackViewTopPadding = 66
-        self.verticalStackViewSpacing = 12
-        self.listContentInset = (10, 0, 0, 0)
+        self.verticalStackViewSpacing = 16
         self.titleLabelTopPadding = 30
-        self.devicesListTopPadding = 50
-        self.indicatorViewTopPadding = 60
+        self.accountVerificationListTopPadding = 60
         self.horizontalInset = 24
     }
 }

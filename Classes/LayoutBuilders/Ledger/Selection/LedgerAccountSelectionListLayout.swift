@@ -34,7 +34,7 @@ extension LedgerAccountSelectionListLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        let cellSize = CGSize(width: UIScreen.main.bounds.width - 48, height: 76)
+        let cellSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 76)
         return cellSize
     }
     

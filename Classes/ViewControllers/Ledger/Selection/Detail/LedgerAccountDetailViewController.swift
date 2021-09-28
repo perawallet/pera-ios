@@ -17,8 +17,7 @@
 
 import UIKit
 
-class LedgerAccountDetailViewController: BaseScrollViewController {
-    
+final class LedgerAccountDetailViewController: BaseScrollViewController {
     private lazy var ledgerAccountDetailView = LedgerAccountDetailView()
 
     private lazy var dataSource: LedgerAccountDetailViewDataSource = {
@@ -41,12 +40,7 @@ class LedgerAccountDetailViewController: BaseScrollViewController {
     
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
-        
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-        
-        leftBarButtonItems = [closeBarButtonItem]
+        addBarButtons()
     }
     
     override func viewDidLoad() {
@@ -56,17 +50,15 @@ class LedgerAccountDetailViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        
-        if let index = ledgerIndex {
-            title = "Ledger #\(index)"
-        } else {
-            title = account.address.shortAddressDisplay()
-        }
+        setTitle()
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupLedgerAccountDetailViewLayout()
+        contentView.addSubview(ledgerAccountDetailView)
+        ledgerAccountDetailView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 
     override func linkInteractors() {
@@ -76,11 +68,21 @@ class LedgerAccountDetailViewController: BaseScrollViewController {
 }
 
 extension LedgerAccountDetailViewController {
-    private func setupLedgerAccountDetailViewLayout() {
-        contentView.addSubview(ledgerAccountDetailView)
-        
-        ledgerAccountDetailView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+    private func addBarButtons() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
+        }
+
+        leftBarButtonItems = [closeBarButtonItem]
+    }
+}
+
+extension LedgerAccountDetailViewController {
+    private func setTitle() {
+        if let index = ledgerIndex {
+            title = "Ledger #\(index)"
+        } else {
+            title = account.address.shortAddressDisplay()
         }
     }
 }
