@@ -99,6 +99,7 @@ extension LedgerAccountCellView {
     private func addAssetInfoLabel(_ theme: LedgerAccountCellViewTheme) {
         assetInfoLabel.customizeAppearance(theme.assetInfoLabel)
 
+        assetInfoLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         verticalStackView.addArrangedSubview(assetInfoLabel)
     }
 }

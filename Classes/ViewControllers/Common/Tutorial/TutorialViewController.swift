@@ -143,7 +143,7 @@ extension TutorialViewController: TutorialViewDelegate {
             dismissScreen()
         case .passphraseVerified:
             open(.accountNameSetup, by: .push)
-        case .accountVerified:
+        case .accountVerified, .ledgerSuccessfullyConnected:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
