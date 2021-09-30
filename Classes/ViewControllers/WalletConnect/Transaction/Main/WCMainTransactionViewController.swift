@@ -28,7 +28,7 @@ class WCMainTransactionViewController: BaseViewController {
             animationMode: .normal(duration: 0.25),
             dismissMode: .scroll
         ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 350.0))
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 330.0))
     )
 
     private lazy var initialWarningModalPresenter = CardModalPresenter(
@@ -36,7 +36,7 @@ class WCMainTransactionViewController: BaseViewController {
             animationMode: .normal(duration: 0.25),
             dismissMode: .none
         ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 400.0))
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 380.0))
     )
 
     private lazy var confirmationModalPresenter = CardModalPresenter(
@@ -44,7 +44,7 @@ class WCMainTransactionViewController: BaseViewController {
             animationMode: .normal(duration: 0.25),
             dismissMode: .backgroundTouch
         ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 462.0))
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 442.0))
     )
 
     weak var delegate: WCMainTransactionViewControllerDelegate?
@@ -94,6 +94,7 @@ class WCMainTransactionViewController: BaseViewController {
         getAssetDetailsIfNeeded()
         getTransactionParams()
         validateTransactions(transactions, with: dataSource.groupedTransactions)
+        cacheAllAssetsInTheTransactions()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -212,6 +213,24 @@ extension WCMainTransactionViewController {
             by: transitionStyle
         ) as? ActionableWarningAlertViewController
         controller?.delegate = self
+    }
+
+    private func cacheAllAssetsInTheTransactions() {
+        for transaction in transactions where transaction.transactionDetail?.currentAssetId != nil {
+            guard let assetId = transaction.transactionDetail?.currentAssetId else {
+                continue
+            }
+
+            cacheAssetDetail(with: assetId) { [weak self] _ in
+                guard let self = self else {
+                    return
+                }
+
+                if self.transactions.last == transaction {
+                    self.mainTransactionView.reloadData()
+                }
+            }
+        }
     }
 }
 
@@ -452,4 +471,11 @@ enum WCTransactionType {
     case assetAddition
     case possibleAssetAddition
     case appCall
+    case assetConfig(type: AssetConfigType)
+}
+
+enum AssetConfigType {
+    case create
+    case delete
+    case reconfig
 }

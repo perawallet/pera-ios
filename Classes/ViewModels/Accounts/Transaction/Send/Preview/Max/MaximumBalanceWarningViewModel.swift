@@ -28,16 +28,7 @@ class MaximumBalanceWarningViewModel {
         let minimumAmountForAccount = "\(calculateMininmumAmount(for: account).toAlgos)"
 
         if !account.isRekeyed() {
-            let assetDetailCount = "\(account.assetDetails.count)"
-            if account.assetDetails.count > 1 {
-                description = "maximum-balance-standard-account-warning-description".localized(
-                    params: assetDetailCount, account.name ?? account.address.shortAddressDisplay(), minimumAmountForAccount
-                )
-            } else {
-                description = "maximum-balance-standard-account-warning-description-singular".localized(
-                    params: assetDetailCount, account.name ?? account.address.shortAddressDisplay(), minimumAmountForAccount
-                )
-            }
+            description = "maximum-balance-standard-account-warning-description".localized(params: minimumAmountForAccount)
             return
         }
 
