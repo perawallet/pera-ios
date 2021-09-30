@@ -1289,7 +1289,13 @@
 "title-no" = "NÃO";
 
 /* (No Comment) */
+"title-off" = "Desligado";
+
+/* (No Comment) */
 "title-ok" = "OK";
+
+/* (No Comment) */
+"title-on" = "Ligado";
 
 /* (No Comment) */
 "title-paste-passphrase" = "Colar Frase de Senha Completa";

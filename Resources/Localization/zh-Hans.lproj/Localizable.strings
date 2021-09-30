@@ -1289,7 +1289,13 @@
 "title-no" = "不是";
 
 /* (No Comment) */
+"title-off" = "关闭";
+
+/* (No Comment) */
 "title-ok" = "好的";
+
+/* (No Comment) */
+"title-on" = "启用";
 
 /* (No Comment) */
 "title-paste-passphrase" = "粘贴完整的助记词";
