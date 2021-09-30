@@ -48,7 +48,7 @@ class WCAssetReconfigurationTransactionViewModel {
         setClawbackAccountViewModel(from: transaction)
         setNoteInformationViewModel(from: transaction)
         setRawTransactionInformationViewModel(from: transaction)
-        setAssetURLInformationViewModel(from: transaction)
+        setAssetURLInformationViewModel(from: assetDetail)
         setAlgoExplorerInformationViewModel(from: transaction)
     }
 
@@ -223,8 +223,11 @@ class WCAssetReconfigurationTransactionViewModel {
         rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(information: .rawTransaction, isLastElement: false)
     }
 
-    private func setAssetURLInformationViewModel(from transaction: WCTransaction) {
-        assetURLInformationViewModel = WCTransactionActionableInformationViewModel(information: .assetUrl, isLastElement: true)
+    private func setAssetURLInformationViewModel(from assetDetail: AssetDetail?) {
+        if let url = assetDetail?.url,
+           !url.isEmpty {
+            assetURLInformationViewModel = WCTransactionActionableInformationViewModel(information: .assetUrl, isLastElement: false)
+        }
     }
 
     private func setAlgoExplorerInformationViewModel(from transaction: WCTransaction) {

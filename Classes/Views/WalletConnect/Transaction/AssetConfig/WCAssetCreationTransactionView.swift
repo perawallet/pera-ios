@@ -220,6 +220,8 @@ extension WCAssetCreationTransactionView {
 
         if let assetURLInformationViewModel = viewModel.assetURLInformationViewModel {
             assetURLInformationView.bind(assetURLInformationViewModel)
+        } else {
+            assetURLInformationView.hideViewInStack()
         }
     }
 }
