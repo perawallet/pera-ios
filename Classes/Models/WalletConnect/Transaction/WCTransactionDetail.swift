@@ -276,6 +276,10 @@ extension WCTransactionDetail {
 
          return fee > Transaction.Constant.minimumFee
     }
+
+    var currentAssetId: Int64? {
+        return assetId ?? assetIdBeingConfigured
+    }
 }
 
 extension WCTransactionDetail {

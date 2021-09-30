@@ -277,7 +277,7 @@ extension WCMainTransactionDataSource {
 
     private func assetDetail(from transaction: WCTransaction) -> AssetDetail? {
         guard let session = session,
-              let assetId = transaction.transactionDetail?.assetId else {
+              let assetId = transaction.transactionDetail?.assetId ?? transaction.transactionDetail?.assetIdBeingConfigured else {
             return nil
         }
 
