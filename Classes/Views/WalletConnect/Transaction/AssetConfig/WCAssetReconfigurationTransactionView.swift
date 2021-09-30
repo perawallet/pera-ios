@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//   WCAlgosTransactionView.swift
+//   WCAssetReconfigurationTransactionView.swift
 
 import UIKit
 
-class WCAlgosTransactionView: WCSingleTransactionView {
+class WCAssetReconfigurationTransactionView: WCSingleTransactionView {
 
-    weak var delegate: WCAlgosTransactionViewDelegate?
+    weak var delegate: WCAssetReconfigurationTransactionViewDelegate?
 
     private lazy var accountInformationView = TitledTransactionAccountNameView()
 
@@ -29,25 +29,31 @@ class WCAlgosTransactionView: WCSingleTransactionView {
         return assetInformationView
     }()
 
-    private lazy var receiverInformationView = WCTransactionTextInformationView()
-
     private lazy var authAccountInformationView = WCTransactionTextInformationView()
-
-    private lazy var rekeyWarningInformationView = WCTransactionAddressWarningInformationView()
 
     private lazy var closeWarningInformationView = WCTransactionAddressWarningInformationView()
 
-    private lazy var balanceInformationView = TitledTransactionAmountInformationView()
-
-    private lazy var amountInformationView = TitledTransactionAmountInformationView()
+    private lazy var rekeyWarningInformationView = WCTransactionAddressWarningInformationView()
 
     private lazy var feeInformationView = TitledTransactionAmountInformationView()
 
     private lazy var feeWarningView = WCContainedTransactionWarningView()
 
+    private lazy var managerAccountView = WCTransactionTextInformationView()
+
+    private lazy var reserveAccountView = WCTransactionTextInformationView()
+
+    private lazy var freezeAccountView = WCTransactionTextInformationView()
+
+    private lazy var clawbackAccountView = WCTransactionTextInformationView()
+
     private lazy var noteInformationView = WCTransactionTextInformationView()
 
     private lazy var rawTransactionInformationView = WCTransactionActionableInformationView()
+
+    private lazy var assetURLInformationView = WCTransactionActionableInformationView()
+
+    private lazy var algoExplorerInformationView = WCTransactionActionableInformationView()
 
     override func prepareLayout() {
         super.prepareLayout()
@@ -58,49 +64,63 @@ class WCAlgosTransactionView: WCSingleTransactionView {
 
     override func setListeners() {
         rawTransactionInformationView.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
+        assetURLInformationView.addTarget(self, action: #selector(notifyDelegateToOpenAssetURL), for: .touchUpInside)
+        algoExplorerInformationView.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
     }
 }
 
-extension WCAlgosTransactionView {
+extension WCAssetReconfigurationTransactionView {
     private func addParticipantInformationViews() {
         addParticipantInformationView(accountInformationView)
         addParticipantInformationView(assetInformationView)
-        addParticipantInformationView(balanceInformationView)
         addParticipantInformationView(authAccountInformationView)
         addParticipantInformationView(closeWarningInformationView)
         addParticipantInformationView(rekeyWarningInformationView)
     }
 
     private func addTransactionInformationViews() {
-        addTransactionInformationView(receiverInformationView)
-        addTransactionInformationView(amountInformationView)
         addTransactionInformationView(feeInformationView)
         addTransactionInformationView(feeWarningView)
+        addTransactionInformationView(managerAccountView)
+        addTransactionInformationView(reserveAccountView)
+        addTransactionInformationView(freezeAccountView)
+        addTransactionInformationView(clawbackAccountView)
     }
 
     private func addDetailedInformationViews() {
         addDetailedInformationView(noteInformationView)
         addDetailedInformationView(rawTransactionInformationView)
+        addDetailedInformationView(assetURLInformationView)
+        addDetailedInformationView(algoExplorerInformationView)
     }
 }
 
-extension WCAlgosTransactionView {
+extension WCAssetReconfigurationTransactionView {
     @objc
     private func notifyDelegateToOpenRawTransaction() {
-        delegate?.wcAlgosTransactionViewDidOpenRawTransaction(self)
+        delegate?.wcAssetReconfigurationTransactionViewDidOpenRawTransaction(self)
+    }
+    
+    @objc
+    private func notifyDelegateToOpenAssetURL() {
+        delegate?.wcAssetReconfigurationTransactionViewDidOpenAssetURL(self)
+    }
+
+    @objc
+    private func notifyDelegateToOpenAlgoExplorer() {
+        delegate?.wcAssetReconfigurationTransactionViewDidOpenAlgoExplorer(self)
     }
 }
 
-extension WCAlgosTransactionView {
-    func bind(_ viewModel: WCAlgosTransactionViewModel) {
+extension WCAssetReconfigurationTransactionView {
+    func bind(_ viewModel: WCAssetReconfigurationTransactionViewModel) {
         accountInformationView.bind(viewModel.senderInformationViewModel)
 
         if let assetInformationViewModel = viewModel.assetInformationViewModel {
             assetInformationView.bind(assetInformationViewModel)
-        }
-
-        if let receiverInformationViewModel = viewModel.receiverInformationViewModel {
-            receiverInformationView.bind(receiverInformationViewModel)
+            unhideViewAnimatedIfNeeded(assetInformationView)
+        } else {
+            assetInformationView.hideViewInStack()
         }
 
         if let authAccountInformationViewModel = viewModel.authAccountInformationViewModel {
@@ -111,6 +131,7 @@ extension WCAlgosTransactionView {
 
         if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
             closeWarningInformationView.bind(closeWarningInformationViewModel)
+            unhideViewAnimatedIfNeeded(closeWarningInformationView)
         } else {
             closeWarningInformationView.hideViewInStack()
         }
@@ -120,14 +141,6 @@ extension WCAlgosTransactionView {
         } else {
             rekeyWarningInformationView.hideViewInStack()
         }
-
-        if let balanceInformationViewModel = viewModel.balanceInformationViewModel {
-            balanceInformationView.bind(balanceInformationViewModel)
-        } else {
-            balanceInformationView.hideViewInStack()
-        }
-
-        amountInformationView.bind(viewModel.amountInformationViewModel)
 
         if let feeInformationViewModel = viewModel.feeInformationViewModel {
             feeInformationView.bind(feeInformationViewModel)
@@ -141,6 +154,30 @@ extension WCAlgosTransactionView {
             feeWarningView.hideViewInStack()
         }
 
+        if let managerAccountViewModel = viewModel.managerAccountViewModel {
+            managerAccountView.bind(managerAccountViewModel)
+        } else {
+            managerAccountView.hideViewInStack()
+        }
+
+        if let freezeAccountViewModel = viewModel.freezeAccountViewModel {
+            freezeAccountView.bind(freezeAccountViewModel)
+        } else {
+            freezeAccountView.hideViewInStack()
+        }
+
+        if let reserveAccountViewModel = viewModel.reserveAccountViewModel {
+            reserveAccountView.bind(reserveAccountViewModel)
+        } else {
+            reserveAccountView.hideViewInStack()
+        }
+
+        if let clawbackAccountViewModel = viewModel.clawbackAccountViewModel {
+            clawbackAccountView.bind(clawbackAccountViewModel)
+        } else {
+            clawbackAccountView.hideViewInStack()
+        }
+
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
             noteInformationView.bind(noteInformationViewModel)
         } else {
@@ -150,9 +187,33 @@ extension WCAlgosTransactionView {
         if let rawTransactionInformationViewModel = viewModel.rawTransactionInformationViewModel {
             rawTransactionInformationView.bind(rawTransactionInformationViewModel)
         }
+
+        if let assetURLInformationViewModel = viewModel.assetURLInformationViewModel {
+            assetURLInformationView.bind(assetURLInformationViewModel)
+        }
+
+        if let algoExplorerInformationViewModel = viewModel.algoExplorerInformationViewModel {
+            algoExplorerInformationView.bind(algoExplorerInformationViewModel)
+        }
+    }
+
+    private func unhideViewAnimatedIfNeeded(_ view: UIView) {
+        if view.isHidden {
+            UIView.animate(withDuration: 0.3) {
+                view.showViewInStack()
+            }
+        }
     }
 }
 
-protocol WCAlgosTransactionViewDelegate: AnyObject {
-    func wcAlgosTransactionViewDidOpenRawTransaction(_ wcAlgosTransactionView: WCAlgosTransactionView)
+protocol WCAssetReconfigurationTransactionViewDelegate: AnyObject {
+    func wcAssetReconfigurationTransactionViewDidOpenRawTransaction(
+        _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
+    )
+    func wcAssetReconfigurationTransactionViewDidOpenAssetURL(
+        _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
+    )
+    func wcAssetReconfigurationTransactionViewDidOpenAlgoExplorer(
+        _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
+    )
 }

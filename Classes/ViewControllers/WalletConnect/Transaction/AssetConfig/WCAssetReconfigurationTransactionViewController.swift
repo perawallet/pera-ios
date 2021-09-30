@@ -13,28 +13,28 @@
 // limitations under the License.
 
 //
-//   WCAssetAdditionTransactionViewController.swift
+//   WCAssetReconfigurationTransactionViewController.swift
 
 import UIKit
 
-class WCAssetAdditionTransactionViewController: WCSingleTransactionViewController {
+class WCAssetReconfigurationTransactionViewController: WCSingleTransactionViewController {
 
-    private lazy var assetAdditionTransactionView = WCAssetAdditionTransactionView()
+    private lazy var assetReconfigurationTransactionView = WCAssetReconfigurationTransactionView()
 
     override var transactionView: WCSingleTransactionView? {
-        return assetAdditionTransactionView
+        return assetReconfigurationTransactionView
     }
 
     var assetDetail: AssetDetail?
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "wallet-connect-transaction-title-opt-in".localized
+        title = "wallet-connect-asset-reconfiguration-title".localized
     }
 
     override func linkInteractors() {
         super.linkInteractors()
-        assetAdditionTransactionView.delegate = self
+        assetReconfigurationTransactionView.delegate = self
     }
 
     override func bindData() {
@@ -53,10 +53,10 @@ class WCAssetAdditionTransactionViewController: WCSingleTransactionViewControlle
     }
 }
 
-extension WCAssetAdditionTransactionViewController {
+extension WCAssetReconfigurationTransactionViewController {
     private func bindView() {
-        assetAdditionTransactionView.bind(
-            WCAssetAdditionTransactionViewModel(
+        assetReconfigurationTransactionView.bind(
+            WCAssetReconfigurationTransactionViewModel(
                 transaction: transaction,
                 senderAccount: account,
                 assetDetail: assetDetail
@@ -65,22 +65,24 @@ extension WCAssetAdditionTransactionViewController {
     }
 }
 
-extension WCAssetAdditionTransactionViewController: WCAssetAdditionTransactionViewDelegate {
-    func wcAssetAdditionTransactionViewDidOpenRawTransaction(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
+extension WCAssetReconfigurationTransactionViewController: WCAssetReconfigurationTransactionViewDelegate {
+    func wcAssetReconfigurationTransactionViewDidOpenRawTransaction(
+        _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
+    ) {
         displayRawTransaction()
     }
 
-    func wcAssetAdditionTransactionViewDidOpenAlgoExplorer(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
-        openInExplorer(assetDetail)
-    }
-
-    func wcAssetAdditionTransactionViewDidOpenAssetURL(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
+    func wcAssetReconfigurationTransactionViewDidOpenAssetURL(
+        _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
+    ) {
         openAssetURL(assetDetail)
     }
 
-    func wcAssetAdditionTransactionViewDidOpenAssetMetadata(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
-        displayAssetMetadata(assetDetail)
+    func wcAssetReconfigurationTransactionViewDidOpenAlgoExplorer(
+        _ wcAssetReconfigurationTransactionView: WCAssetReconfigurationTransactionView
+    ) {
+        openInExplorer(assetDetail)
     }
 }
 
-extension WCAssetAdditionTransactionViewController: WCSingleTransactionViewControllerAssetManagable { }
+extension WCAssetReconfigurationTransactionViewController: WCSingleTransactionViewControllerAssetManagable { }

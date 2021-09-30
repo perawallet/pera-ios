@@ -42,6 +42,8 @@
 "title-decline" = "Decline";
 "title-decline-all" = "Decline All";
 "title-got-it" = "Got it!";
+"title-off" = "Off";
+"title-on" = "On";
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";

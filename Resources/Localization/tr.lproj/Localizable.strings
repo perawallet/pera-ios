@@ -1289,7 +1289,13 @@
 "title-no" = "HAYIR";
 
 /* (No Comment) */
+"title-off" = "Kapalı";
+
+/* (No Comment) */
 "title-ok" = "Tamam";
+
+/* (No Comment) */
+"title-on" = "Açık";
 
 /* (No Comment) */
 "title-paste-passphrase" = "Parolanın Tamamını Yapıştır";

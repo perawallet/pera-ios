@@ -1289,7 +1289,13 @@
 "title-no" = "いいえ";
 
 /* (No Comment) */
+"title-off" = "オフ";
+
+/* (No Comment) */
 "title-ok" = "OK";
+
+/* (No Comment) */
+"title-on" = "オン";
 
 /* (No Comment) */
 "title-paste-passphrase" = "パスフレーズ全体の貼り付け";

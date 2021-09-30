@@ -1289,7 +1289,13 @@
 "title-no" = "아니요";
 
 /* (No Comment) */
+"title-off" = "끄기";
+
+/* (No Comment) */
 "title-ok" = "확인";
+
+/* (No Comment) */
+"title-on" = "켜기";
 
 /* (No Comment) */
 "title-paste-passphrase" = "비밀문구 전체 붙여넣기";
