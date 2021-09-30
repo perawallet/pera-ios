@@ -23,6 +23,8 @@ class GovernanceComingSoonView: BaseView {
 
     weak var delegate: GovernanceComingSoonViewDelegate?
 
+    private lazy var containerView = UIView()
+
     private lazy var imageView = UIImageView(image: img("governance-algo-icon"))
 
     private lazy var closeButton: UIButton = {
@@ -59,8 +61,9 @@ class GovernanceComingSoonView: BaseView {
     }()
 
     override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
-        layer.cornerRadius = 12.0
+        super.configureAppearance()
+        containerView.backgroundColor = Colors.Background.secondary
+        containerView.layer.cornerRadius = 12.0
     }
 
     override func setListeners() {
@@ -69,6 +72,7 @@ class GovernanceComingSoonView: BaseView {
     }
 
     override func prepareLayout() {
+        setupContainerViewLayout()
         setupImageViewLayout()
         setupCloseButtonLayout()
         setupTitleLabelLayout()
@@ -90,8 +94,17 @@ extension GovernanceComingSoonView {
 }
 
 extension GovernanceComingSoonView {
+    private func setupContainerViewLayout() {
+        addSubview(containerView)
+
+        containerView.snp.makeConstraints { make in
+            make.leading.trailing.top.equalToSuperview()
+            make.bottom.equalToSuperview().inset(layout.current.containerBottomInset)
+        }
+    }
+
     private func setupImageViewLayout() {
-        addSubview(imageView)
+        containerView.addSubview(imageView)
 
         imageView.snp.makeConstraints { make in
             make.leading.top.equalToSuperview().inset(layout.current.horizontalInset)
@@ -100,7 +113,7 @@ extension GovernanceComingSoonView {
     }
 
     private func setupCloseButtonLayout() {
-        addSubview(closeButton)
+        containerView.addSubview(closeButton)
 
         closeButton.snp.makeConstraints { make in
             make.top.trailing.equalToSuperview()
@@ -109,7 +122,7 @@ extension GovernanceComingSoonView {
     }
 
     private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
+        containerView.addSubview(titleLabel)
 
         titleLabel.snp.makeConstraints { make in
             make.leading.equalTo(imageView.snp.trailing).offset(layout.current.horizontalInset)
@@ -119,7 +132,7 @@ extension GovernanceComingSoonView {
     }
 
     private func setupDetailLabelLayout() {
-        addSubview(detailLabel)
+        containerView.addSubview(detailLabel)
 
         detailLabel.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel)
@@ -129,7 +142,7 @@ extension GovernanceComingSoonView {
     }
 
     private func setupGetStartedButtonLayout() {
-        addSubview(getStartedButton)
+        containerView.addSubview(getStartedButton)
 
         getStartedButton.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel)
@@ -143,6 +156,7 @@ extension GovernanceComingSoonView {
         let horizontalInset: CGFloat = 24.0
         let imageSize = CGSize(width: 44.0, height: 44.0)
         let detailTopInset: CGFloat = 8.0
+        let containerBottomInset: CGFloat = 24.0
         let buttonTopInset: CGFloat = 12.0
         let titleTrailingOffset: CGFloat = -12.0
     }

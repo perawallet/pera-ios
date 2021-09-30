@@ -21,11 +21,6 @@ class GovernanceComingSoonCell: BaseCollectionViewCell<GovernanceComingSoonView>
     
     weak var delegate: GovernanceComingSoonCellDelegate?
 
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
-        layer.cornerRadius = 12.0
-    }
-
     override func setListeners() {
         contextView.delegate = self
     }

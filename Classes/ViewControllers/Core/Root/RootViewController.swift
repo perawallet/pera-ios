@@ -43,7 +43,7 @@ class RootViewController: UIViewController {
 
     private let onceWhenViewDidAppear = Once()
 
-    private var isDisplayingGovernanceBanner = true
+    private(set) var isDisplayingGovernanceBanner = true
 
     private lazy var deepLinkRouter = DeepLinkRouter(rootViewController: self, appConfiguration: appConfiguration)
     

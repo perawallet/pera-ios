@@ -3,6 +3,16 @@
     {
       "filename" : "governance-algo-icon.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "governance-algo-icon-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
