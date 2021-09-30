@@ -13,28 +13,28 @@
 // limitations under the License.
 
 //
-//   WCAssetAdditionTransactionViewController.swift
+//   WCAssetConfigTransactionViewController.swift
 
 import UIKit
 
-class WCAssetAdditionTransactionViewController: WCSingleTransactionViewController {
+class WCAssetCreationTransactionViewController: WCSingleTransactionViewController {
 
-    private lazy var assetAdditionTransactionView = WCAssetAdditionTransactionView()
+    private lazy var assetCreationTransactionView = WCAssetCreationTransactionView()
 
     override var transactionView: WCSingleTransactionView? {
-        return assetAdditionTransactionView
+        return assetCreationTransactionView
     }
 
     var assetDetail: AssetDetail?
 
     override func configureAppearance() {
         super.configureAppearance()
-        title = "wallet-connect-transaction-title-opt-in".localized
+        title = "wallet-connect-asset-creation-title".localized
     }
 
     override func linkInteractors() {
         super.linkInteractors()
-        assetAdditionTransactionView.delegate = self
+        assetCreationTransactionView.delegate = self
     }
 
     override func bindData() {
@@ -53,10 +53,10 @@ class WCAssetAdditionTransactionViewController: WCSingleTransactionViewControlle
     }
 }
 
-extension WCAssetAdditionTransactionViewController {
+extension WCAssetCreationTransactionViewController {
     private func bindView() {
-        assetAdditionTransactionView.bind(
-            WCAssetAdditionTransactionViewModel(
+        assetCreationTransactionView.bind(
+            WCAssetCreationTransactionViewModel(
                 transaction: transaction,
                 senderAccount: account,
                 assetDetail: assetDetail
@@ -65,22 +65,17 @@ extension WCAssetAdditionTransactionViewController {
     }
 }
 
-extension WCAssetAdditionTransactionViewController: WCAssetAdditionTransactionViewDelegate {
-    func wcAssetAdditionTransactionViewDidOpenRawTransaction(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
+extension WCAssetCreationTransactionViewController: WCAssetCreationTransactionViewDelegate {
+    func wcAssetCreationTransactionViewDidOpenRawTransaction(_ wcAssetCreationTransactionView: WCAssetCreationTransactionView) {
         displayRawTransaction()
     }
 
-    func wcAssetAdditionTransactionViewDidOpenAlgoExplorer(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
-        openInExplorer(assetDetail)
-    }
-
-    func wcAssetAdditionTransactionViewDidOpenAssetURL(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
-        openAssetURL(assetDetail)
-    }
-
-    func wcAssetAdditionTransactionViewDidOpenAssetMetadata(_ wcAssetAdditionTransactionView: WCAssetAdditionTransactionView) {
-        displayAssetMetadata(assetDetail)
+    func wcAssetCreationTransactionViewDidOpenAssetURL(_ wcAssetCreationTransactionView: WCAssetCreationTransactionView) {
+        if let urlString = transaction.transactionDetail?.assetConfigParams?.url,
+           let url = URL(string: urlString) {
+            open(url)
+        }
     }
 }
 
-extension WCAssetAdditionTransactionViewController: WCSingleTransactionViewControllerAssetManagable { }
+extension WCAssetCreationTransactionViewController: WCSingleTransactionViewControllerAssetManagable { }
