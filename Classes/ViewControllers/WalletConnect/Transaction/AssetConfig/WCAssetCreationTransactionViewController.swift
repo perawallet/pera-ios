@@ -38,30 +38,7 @@ class WCAssetCreationTransactionViewController: WCSingleTransactionViewControlle
     }
 
     override func bindData() {
-        bindView()
-
-        setCachedAsset {
-            if self.assetDetail == nil {
-                self.dismissScreen()
-                return
-            }
-
-            DispatchQueue.main.async {
-                self.bindView()
-            }
-        }
-    }
-}
-
-extension WCAssetCreationTransactionViewController {
-    private func bindView() {
-        assetCreationTransactionView.bind(
-            WCAssetCreationTransactionViewModel(
-                transaction: transaction,
-                senderAccount: account,
-                assetDetail: assetDetail
-            )
-        )
+        assetCreationTransactionView.bind(WCAssetCreationTransactionViewModel(transaction: transaction, senderAccount: account))
     }
 }
 

@@ -38,7 +38,7 @@ class WCAssetCreationTransactionViewModel {
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var assetURLInformationViewModel: WCTransactionActionableInformationViewModel?
 
-    init(transaction: WCTransaction, senderAccount: Account?, assetDetail: AssetDetail?) {
+    init(transaction: WCTransaction, senderAccount: Account?) {
         setSenderInformationViewModel(from: senderAccount, and: transaction)
         setAssetNameViewModel(from: transaction)
         setUnitNameViewModel(from: transaction)
@@ -56,8 +56,8 @@ class WCAssetCreationTransactionViewModel {
         setClawbackAccountViewModel(from: transaction)
         setNoteInformationViewModel(from: transaction)
         setMetadataInformationViewModel(from: transaction)
-        setRawTransactionInformationViewModel(from: assetDetail)
-        setAssetURLInformationViewModel(from: assetDetail)
+        setRawTransactionInformationViewModel(from: transaction)
+        setAssetURLInformationViewModel(from: transaction)
     }
 
     private func setSenderInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
@@ -287,21 +287,21 @@ class WCAssetCreationTransactionViewModel {
         )
     }
 
-    private func setRawTransactionInformationViewModel(from assetDetail: AssetDetail?) {
+    private func setRawTransactionInformationViewModel(from transaction: WCTransaction) {
         rawTransactionInformationViewModel = WCTransactionActionableInformationViewModel(
             information: .rawTransaction,
-            isLastElement: !hasURLForAsset(assetDetail)
+            isLastElement: !hasURLForAsset(transaction)
         )
     }
 
-    private func setAssetURLInformationViewModel(from assetDetail: AssetDetail?) {
-        if hasURLForAsset(assetDetail) {
+    private func setAssetURLInformationViewModel(from transaction: WCTransaction) {
+        if hasURLForAsset(transaction) {
             assetURLInformationViewModel = WCTransactionActionableInformationViewModel(information: .assetUrl, isLastElement: true)
         }
     }
 
-    private func hasURLForAsset(_ assetDetail: AssetDetail?) -> Bool {
-        if let url = assetDetail?.url,
+    private func hasURLForAsset(_ transaction: WCTransaction) -> Bool {
+        if let url = transaction.transactionDetail?.assetConfigParams?.url,
            !url.isEmpty {
             return true
         }
