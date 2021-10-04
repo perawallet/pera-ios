@@ -626,7 +626,7 @@
 "login-title" = "解锁";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "由于您在此账户%@中还有%@其余资产，Algorand区块链要求您维持%@ALGO的最低余额。\n\n\n\n点击继续，您的交易金额将自动更新以反映此更改。您将可以在下一步中预览此更改。";
+"maximum-balance-standard-account-warning-description" = "由于您在此账户中还有其余资产，Algorand区块链要求您维持%@ALGO的最低余额。\n\n\n\n点击继续，您的交易金额将自动更新以反映此更改。您将可以在下一步中预览此更改。";
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "如果您要将最高余额发送到重置密钥的账户上，请您保持%@ ALGO的最低余额。此举能够确保您重置密钥的账户没有任何变化。\n\n\n您的交易金额将自动更新以反映这一变化。您可以在下一步中预览交易。";

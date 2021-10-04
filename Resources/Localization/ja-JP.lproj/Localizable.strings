@@ -626,7 +626,7 @@
 "login-title" = "ロック解除";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "お客様のアカウント%@に他の資産%@が存在するため、Algorandブロックチェーンでは最小残高%@ Algosを維持する必要があります。\n\n\n続行をクリックすることで、お客様の取引額が自動的に更新され、変更が反映されます。次のステップでこの変更をプレビューできます。";
+"maximum-balance-standard-account-warning-description" = "お客様のアカウントに他の資産が存在するため、Algorandブロックチェーンでは最小残高%@ Algosを維持する必要があります。\n\n\n続行をクリックすることで、お客様の取引額が自動的に更新され、変更が反映されます。次のステップでこの変更をプレビューできます。";
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "この再キー化アカウントで最大残高を送信するには、%@ Algosの最低残高を維持する必要があります。これは、再キー化されたアカウントに何も変化がないことを確認するためです。\n\n\nこの変更を反映して、お客様の取引額が自動的に更新されます。次のステップでトランザクションをプレビューできます。";

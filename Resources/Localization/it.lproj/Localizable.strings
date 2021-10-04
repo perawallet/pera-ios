@@ -626,7 +626,7 @@
 "login-title" = "Sblocca";
 
 /* (No Comment) */
-"maximum-balance-standard-account-warning-description" = "Poiché sono disponibili %@ altre Risorse in questo conto %@, la Blockchain di Algorand ti richiede di mantenere un saldo minimo di %@ Algo.\n\nSelezionando Continua, l'importo della transazione sarà  automaticamente aggiornato per riflettere questa modifica. Sarai in grado di vedere in anteprima questa modifica nel passaggio successivo.";
+"maximum-balance-standard-account-warning-description" = "Poiché sono disponibili altre Risorse in questo conto, la Blockchain di Algorand ti richiede di mantenere un saldo minimo di %@ Algo.\n\nSelezionando Continua, l'importo della transazione sarà  automaticamente aggiornato per riflettere questa modifica. Sarai in grado di vedere in anteprima questa modifica nel passaggio successivo.";
 
 /* (No Comment) */
 "maximum-balance-warning-description" = "L'invio del tuo saldo massimo su un conto ricodificato richiede che tu disponga di un saldo minimo di %@ Algo. Questo per garantire che non vi siano variazioni nel tuo conto ricodificato.\n\n\nL'importo della transazione verrà automaticamente aggiornato per riflettere questa variazione. Potrai vedere l'anteprima della transazione nel passaggio successivo.";
