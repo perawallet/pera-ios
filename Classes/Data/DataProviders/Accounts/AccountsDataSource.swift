@@ -312,7 +312,7 @@ extension AccountsDataSource {
         // Check whether the asset is added to account in block.
         // If it's added, remove from the pending list. If it's not, add to current list again.
         for (account, addedAssets) in addedAssetDetails {
-            if let index = section(for: account) {
+            if let index = accounts.firstIndex(of: account) {
                 filterAddedAssets(at: index, for: account, in: addedAssets)
                 addedAssetDetails.clearValuesIfEmpty(for: account)
             }
@@ -334,7 +334,7 @@ extension AccountsDataSource {
     private func configureRemovedAssetDetails() {
         // Check whether the asset is removed from account in block. If it's removed, remove from the pending list as well.
         for (account, removedAssets) in removedAssetDetails {
-            if let index = section(for: account) {
+            if let index = accounts.firstIndex(of: account) {
                 removedAssetDetails[account] = removedAssets.filter { !accounts[index].assetDetails.contains($0) }
                 removedAssetDetails.clearValuesIfEmpty(for: account)
             }
