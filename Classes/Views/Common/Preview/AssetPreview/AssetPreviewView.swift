@@ -47,6 +47,7 @@ extension AssetPreviewView {
             $0.leading.equalToSuperview()
             $0.fitToSize(theme.imageSize)
             $0.centerY.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(theme.verticalPadding)
         }
     }
 
@@ -123,5 +124,35 @@ extension AssetPreviewView: ViewModelBindable {
         assetShortNameLabel.text = viewModel?.assetShortName
         assetValueLabel.text = viewModel?.assetValue
         secondaryAssetValueLabel.text = viewModel?.secondaryAssetValue
+    }
+ 
+    func bindData(_ viewModel: AlgoAssetViewModel) {
+        bindData(
+            AssetPreviewViewModel(
+                AssetPreviewModel(
+                    image: img("icon-algo-circle-green"),
+                    secondaryImage: img("icon-verified-shield"),
+                    assetName: "asset-algos-title".localized,
+                    assetShortName: "ALGO",
+                    assetValue: viewModel.amount,
+                    secondaryAssetValue: "$6.06"
+                )
+            )
+        )
+    }
+
+    func bindData(_ viewModel: AssetViewModel) {
+        bindData(
+            AssetPreviewViewModel(
+                AssetPreviewModel(
+                    image: nil,
+                    secondaryImage: viewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
+                    assetName: viewModel.assetDetail?.assetName,
+                    assetShortName: viewModel.assetDetail?.unitName,
+                    assetValue: viewModel.amount,
+                    secondaryAssetValue: "$16,000.09"
+                )
+            )
+        )
     }
 }

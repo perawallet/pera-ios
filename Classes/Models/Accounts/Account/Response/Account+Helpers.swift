@@ -16,6 +16,7 @@
 //  Account+Helpers.swift
 
 import Magpie
+import UIKit
 
 extension Account {
     func mnemonics() -> [String] {

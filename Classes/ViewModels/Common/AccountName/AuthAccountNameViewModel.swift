@@ -16,22 +16,24 @@
 //  AuthAccountNameViewModel.swift
 
 import UIKit
+import Macaroon
 
-class AuthAccountNameViewModel {
-    
-    private(set) var image: UIImage?
+final class AuthAccountNameViewModel: PairedViewModel {
+    private(set) var accountType: AccountType?
     private(set) var address: String?
     
-    init(account: Account) {
-        setImage(from: account)
-        setAddress(from: account)
+    init(_ model: Account) {
+        bindAccountType(model)
+        bindAddress(model)
     }
-    
-    private func setImage(from account: Account) {
-        image = account.accountImage()
+}
+
+extension AuthAccountNameViewModel {
+    private func bindAccountType(_ account: Account) {
+        accountType = account.type
     }
-    
-    private func setAddress(from account: Account) {
+
+    private func bindAddress(_ account: Account) {
         address = account.authAddress.unwrap(or: account.address).shortAddressDisplay()
     }
 }

@@ -113,6 +113,10 @@ enum AccountType: String, Model {
     case ledger = "ledger"
     case multiSig = "multiSig"
     case rekeyed = "rekeyed"
+
+    func image(for accountImageType: AccountImageType) -> UIImage? {
+        return img("\(rawValue)-\(accountImageType.rawValue)")
+    }
 }
 
 extension AccountType: Encodable { }

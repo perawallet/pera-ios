@@ -16,24 +16,26 @@
 //   AccountPreviewViewModel.swift
 
 import Macaroon
+import UIKit
 
 struct AccountPreviewModel {
-    let image: AccountImageType
-    let accountName: String
-    let assetsAndNFTs: String
-    let assetValue: String
-    let secondaryAssetValue: String
+    let accountType: AccountType
+    let accountImageType: AccountImageType
+    let accountName: String?
+    var assetsAndNFTs: String?
+    var assetValue: String?
+    var secondaryAssetValue: String?
 }
 
 final class AccountPreviewViewModel: PairedViewModel {
-    var image: UIImage?
+    var accountImageTypeImage: UIImage?
     var accountName: String?
     var assetsAndNFTs: String?
     var assetValue: String?
     var secondaryAssetValue: String?
 
     init(_ model: AccountPreviewModel) {
-        bindImage(model.image)
+        bindAccountImageTypeImage(accountImageType: model.accountImageType, accountType: model.accountType)
         bindAccountName(model.accountName)
         bindAssetsAndNFTs(model.assetsAndNFTs)
         bindAssetValue(model.assetValue)
@@ -42,23 +44,23 @@ final class AccountPreviewViewModel: PairedViewModel {
 }
 
 extension AccountPreviewViewModel {
-    private func bindImage(_ accountImageType: AccountImageType) {
-        self.image = accountImageType.image
+    private func bindAccountImageTypeImage(accountImageType: AccountImageType, accountType: AccountType) {
+        self.accountImageTypeImage = accountType.image(for: accountImageType)
     }
 
-    private func bindAccountName(_ name: String) {
-        self.accountName = name
+    private func bindAccountName(_ name: String?) {
+        self.accountName = name ?? "title-unknown".localized
     }
 
-    private func bindAssetsAndNFTs(_ assets: String) {
+    private func bindAssetsAndNFTs(_ assets: String?) {
         self.assetsAndNFTs = assets
     }
 
-    private func bindAssetValue(_ value: String) {
+    private func bindAssetValue(_ value: String?) {
         self.assetValue = value
     }
 
-    private func bindSecondaryAssetValue(_ value: String) {
+    private func bindSecondaryAssetValue(_ value: String?) {
         self.secondaryAssetValue = value
     }
 }

@@ -547,6 +547,7 @@ on your Ledger device (%d)";
 
 "title-plus-asset-count" = "%@ Assets";
 "ledger-account-detail-title" = "Ledger Account";
+"ledger-account-details-assets" = "Assets";
 "ledger-account-detail-can-sign" = "Can sign for these accounts";
 "ledger-account-detail-can-signed" = "Can be signed by";
 "ledger-account-fetct-error" = "A network error occured while fetching account details. Restart the process.";
@@ -575,7 +576,7 @@ on your Ledger device (%d)";
 "tutorial-description-passcode" = "This 6-digit PIN will be required to use the Algorand Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-ledger" = "Please make sure your Ledger is unlocked with Bluetooth enabled";
-"tutorial-description-ledger-connected" = "Welcome to Algorand! Your account is ready to use";
+"tutorial-description-ledger-connected" = "Welcome to Algorand! Your account is\nready to use";
 
 "tutorial-main-title-back-up" = "I Understand";
 "tutorial-main-title-recover" = "Recover an Algorand Account";

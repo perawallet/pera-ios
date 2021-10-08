@@ -13,14 +13,18 @@
 // limitations under the License.
 
 //
-//   AccountImageType.swift
+//   LedgerAccountDetailViewController+Theme.swift
 
-import UIKit
+import Macaroon
 
-enum AccountImageType: String {
-    case blush = "blush"
-    case orange = "orange"
-    case purple = "purple"
-    case turquoise = "turquoise"
-    case salmon = "salmon"
+extension LedgerAccountDetailViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let ledgerAccountDetailViewTheme: LedgerAccountDetailViewTheme
+        let backgroundColor: Color
+        
+        init(_ family: LayoutFamily) {
+            ledgerAccountDetailViewTheme = LedgerAccountDetailViewTheme()
+            backgroundColor = AppColors.Shared.System.background
+        }
+    }
 }

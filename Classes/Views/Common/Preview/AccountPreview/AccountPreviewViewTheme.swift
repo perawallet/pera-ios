@@ -24,8 +24,9 @@ struct AccountPreviewViewTheme: StyleSheet, LayoutSheet {
     let assetAndNFTs: TextStyle
     let assetValue: TextStyle
     let secondaryAssetValue: TextStyle
-
+    
     let horizontalPadding: LayoutMetric
+    let verticalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.accountName = [
@@ -54,5 +55,6 @@ struct AccountPreviewViewTheme: StyleSheet, LayoutSheet {
         ]
 
         self.horizontalPadding = 16
+        self.verticalPadding = 16
     }
 }

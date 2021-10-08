@@ -44,6 +44,7 @@ extension AccountPreviewView {
         imageView.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.centerY.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(theme.verticalPadding)
         }
     }
 
@@ -100,9 +101,9 @@ extension AccountPreviewView {
     }
 }
 
-extension AccountPreviewView: ViewModelBindable {
+extension AccountPreviewView {
     func bindData(_ viewModel: AccountPreviewViewModel?) {
-        imageView.image = viewModel?.image
+        imageView.image = viewModel?.accountImageTypeImage
         accountNameLabel.text = viewModel?.accountName
         assetsAndNFTsLabel.text = viewModel?.assetsAndNFTs
         assetValueLabel.text = viewModel?.assetValue

@@ -18,6 +18,7 @@
 import UIKit
 
 final class LedgerAccountDetailViewController: BaseScrollViewController {
+    private lazy var theme = Theme()
     private lazy var ledgerAccountDetailView = LedgerAccountDetailView()
 
     private lazy var dataSource: LedgerAccountDetailViewDataSource = {
@@ -50,11 +51,15 @@ final class LedgerAccountDetailViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         setTitle()
     }
     
     override func prepareLayout() {
         super.prepareLayout()
+        ledgerAccountDetailView.customize(theme.ledgerAccountDetailViewTheme)
         contentView.addSubview(ledgerAccountDetailView)
         ledgerAccountDetailView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -92,6 +97,6 @@ extension LedgerAccountDetailViewController: LedgerAccountDetailViewDataSourceDe
         _ ledgerAccountDetailViewDataSource: LedgerAccountDetailViewDataSource,
         didReturn account: Account
     ) {
-        ledgerAccountDetailView.bind(LedgerAccountDetailViewModel(account: account, rekeyedAccounts: rekeyedAccounts))
+        ledgerAccountDetailView.bindData(LedgerAccountDetailViewModel(account: account, rekeyedAccounts: rekeyedAccounts))
     }
 }

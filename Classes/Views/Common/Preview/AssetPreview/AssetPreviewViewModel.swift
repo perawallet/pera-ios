@@ -20,10 +20,10 @@ import Macaroon
 struct AssetPreviewModel {
     let image: UIImage?
     let secondaryImage: UIImage?
-    let assetName: String
-    let assetShortName: String
-    let assetValue: String
-    let secondaryAssetValue: String
+    let assetName: String?
+    let assetShortName: String?
+    let assetValue: String?
+    let secondaryAssetValue: String?
 }
 
 final class AssetPreviewViewModel: PairedViewModel {
@@ -53,19 +53,19 @@ extension AssetPreviewViewModel {
         self.secondaryImage = image
     }
 
-    private func bindAssetName(_ name: String) {
-        self.assetName = name
+    private func bindAssetName(_ name: String?) {
+        self.assetName = name ?? "title-unknown".localized
     }
 
-    private func bindAssetShortName(_ assets: String) {
-        self.assetShortName = assets
+    private func bindAssetShortName(_ name: String?) {
+        self.assetShortName = name
     }
 
-    private func bindAssetValue(_ value: String) {
+    private func bindAssetValue(_ value: String?) {
         self.assetValue = value
     }
 
-    private func bindSecondaryAssetValue(_ value: String) {
+    private func bindSecondaryAssetValue(_ value: String?) {
         self.secondaryAssetValue = value
     }
 }

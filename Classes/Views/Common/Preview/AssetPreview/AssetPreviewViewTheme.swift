@@ -27,6 +27,7 @@ struct AssetPreviewViewTheme: StyleSheet, LayoutSheet {
 
     let imageSize: LayoutSize
     let horizontalPadding: LayoutMetric
+    let verticalPadding: LayoutMetric
     let secondaryImageLeadingPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
@@ -58,5 +59,6 @@ struct AssetPreviewViewTheme: StyleSheet, LayoutSheet {
         self.imageSize = (40, 40)
         self.horizontalPadding = 16
         self.secondaryImageLeadingPadding = 8
+        self.verticalPadding = 16
     }
 }

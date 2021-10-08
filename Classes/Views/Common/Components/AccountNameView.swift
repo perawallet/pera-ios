@@ -76,11 +76,6 @@ extension AccountNameView {
         imageView.image = viewModel.image
         nameLabel.text = viewModel.name
     }
-    
-    func bind(_ viewModel: AuthAccountNameViewModel) {
-        imageView.image = viewModel.image
-        nameLabel.text = viewModel.address
-    }
 }
 
 extension AccountNameView {
