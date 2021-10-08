@@ -20,7 +20,7 @@ import Macaroon
 
 final class LedgerAccountDetailView: View {
     private lazy var ledgerAccountTitleLabel = UILabel()
-    private lazy var ledgerAccountInfo = AccountPreviewView()
+    private lazy var ledgerAccountView = AccountPreviewView()
     private lazy var assetTitleLabel = UILabel()
     private lazy var assetStackView = UIStackView()
     private lazy var signedByTitleLabel = UILabel()
@@ -28,7 +28,7 @@ final class LedgerAccountDetailView: View {
 
     func customize(_ theme: LedgerAccountDetailViewTheme) {
         addTitleLabel(theme)
-        addLedgerAccountInfo(theme)
+        addLedgerAccountView(theme)
         addAssetTitleLabel(theme)
         addAssetStackView(theme)
         addSignedByTitleLabel(theme)
@@ -51,11 +51,11 @@ extension LedgerAccountDetailView {
         }
     }
 
-    private func addLedgerAccountInfo(_ theme: LedgerAccountDetailViewTheme) {
-        addSubview(ledgerAccountInfo)
-        ledgerAccountInfo.customize(AccountPreviewViewTheme())
+    private func addLedgerAccountView(_ theme: LedgerAccountDetailViewTheme) {
+        addSubview(ledgerAccountView)
+        ledgerAccountView.customize(AccountPreviewViewTheme())
 
-        ledgerAccountInfo.snp.makeConstraints {
+        ledgerAccountView.snp.makeConstraints {
             $0.top.equalTo(ledgerAccountTitleLabel.snp.bottom).offset(theme.stackViewTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
@@ -66,7 +66,7 @@ extension LedgerAccountDetailView {
 
         addSubview(assetTitleLabel)
         assetTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(ledgerAccountInfo.snp.bottom).offset(theme.titleTopPadding)
+            $0.top.equalTo(ledgerAccountView.snp.bottom).offset(theme.titleTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
@@ -166,7 +166,7 @@ extension LedgerAccountDetailView {
 
     private func bindLedgerInfoAccountNameView(_ account: Account) {
         let accountNameViewModel = AccountNameViewModel(account: account)
-        ledgerAccountInfo.bindData(
+        ledgerAccountView.bindData(
             AccountPreviewViewModel(
                 AccountPreviewModel(
                     accountType: account.type,
