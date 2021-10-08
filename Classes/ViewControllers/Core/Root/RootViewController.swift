@@ -50,6 +50,8 @@ class RootViewController: UIViewController {
     private(set) lazy var tabBarViewController = TabBarController(configuration: appConfiguration.all())
 
     private var currentWCTransactionRequest: WalletConnectRequest?
+
+    private var wcMainTransactionViewController: WCMainTransactionViewController?
     
     init(appConfiguration: AppConfiguration) {
         self.appConfiguration = appConfiguration
@@ -156,33 +158,46 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         for request: WalletConnectRequest,
         with transactionOption: WCTransactionOption?
     ) {
+        if let currentWCTransactionRequest = currentWCTransactionRequest {
+            if currentWCTransactionRequest.isSameTransactionRequest(with: request) {
+                return
+            }
+
+            appConfiguration.walletConnector.rejectTransactionRequest(currentWCTransactionRequest, with: .rejected)
+
+            wcMainTransactionViewController?.closeScreen(by: .dismiss, animated: false) {
+                self.openMainViewController(animated: false, for: transactions, with: request, and: transactionOption)
+            }
+        } else {
+            openMainViewController(animated: true, for: transactions, with: request, and: transactionOption)
+        }
+    }
+
+    private func openMainViewController(
+        animated: Bool,
+        for transactions: [WCTransaction],
+        with request: WalletConnectRequest,
+        and transactionOption: WCTransactionOption?
+    ) {
         let fullScreenPresentation = Screen.Transition.Open.customPresent(
             presentationStyle: .fullScreen,
             transitionStyle: nil,
             transitioningDelegate: nil
         )
 
-        if isWCTransactionRequestDisplayed() {
-            appConfiguration.walletConnector.rejectTransactionRequest(request, with: .rejected)
-            return
-        }
-
         currentWCTransactionRequest = request
 
-        let controller = open(
+        wcMainTransactionViewController = open(
             .wcMainTransaction(
                 transactions: transactions,
                 transactionRequest: request,
                 transactionOption: transactionOption
             ),
-            by: fullScreenPresentation
+            by: fullScreenPresentation,
+            animated: animated
         ) as? WCMainTransactionViewController
 
-        controller?.delegate = self
-    }
-
-    private func isWCTransactionRequestDisplayed() -> Bool {
-        return currentWCTransactionRequest != nil
+        wcMainTransactionViewController?.delegate = self
     }
 }
 
@@ -196,6 +211,7 @@ extension RootViewController: WCMainTransactionViewControllerDelegate {
 
     private func resetCurrentWCTransaction() {
         currentWCTransactionRequest = nil
+        wcMainTransactionViewController = nil
     }
 }
 
@@ -207,5 +223,26 @@ extension RootViewController {
         appConfiguration.walletConnector.resetAllSessions()
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()
+    }
+}
+
+extension WalletConnectRequest {
+    func isSameTransactionRequest(with request: WalletConnectRequest) -> Bool {
+        if let firstId = id as? Int,
+           let secondId = request.id as? Int {
+            return firstId == secondId
+        }
+
+        if let firstId = id as? String,
+           let secondId = request.id as? String {
+            return firstId == secondId
+        }
+
+        if let firstId = id as? Double,
+           let secondId = request.id as? Double {
+            return firstId == secondId
+        }
+
+        return false
     }
 }
