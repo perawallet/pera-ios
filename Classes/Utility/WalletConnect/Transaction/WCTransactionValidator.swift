@@ -48,11 +48,6 @@ extension WCTransactionValidator {
             rejectTransactionRequest(with: .invalidInput)
             return
         }
-
-        if requiresLedgerInAtomicTransaction(for: transactionGroups) {
-            rejectTransactionRequest(with: .unsupported)
-            return
-        }
         
         if hasInvalidGroupedTransaction(in: transactionGroups) {
             rejectTransactionRequest(with: .invalidInput)
@@ -104,19 +99,6 @@ extension WCTransactionValidator {
         }
 
         return true
-    }
-
-    private func requiresLedgerInAtomicTransaction(for transactionGroups: [Int64: [WCTransaction]]) -> Bool {
-        for group in transactionGroups where group.value.count > 1 {
-            for transaction in group.value {
-                if let signerAccount = transaction.signerAccount,
-                   signerAccount.requiresLedgerConnection() {
-                    return true
-                }
-            }
-        }
-
-        return false
     }
 
     private func hasInvalidGroupedTransaction(in transactionGroups: [Int64: [WCTransaction]]) -> Bool {
