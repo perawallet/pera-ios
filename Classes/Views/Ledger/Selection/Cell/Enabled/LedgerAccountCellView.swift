@@ -78,6 +78,7 @@ extension LedgerAccountCellView {
     private func addVerticalStackView(_ theme: LedgerAccountCellViewTheme) {
         addSubview(verticalStackView)
         verticalStackView.axis = .vertical
+        verticalStackView.distribution = .fillProportionally
 
         verticalStackView.snp.makeConstraints {
             $0.leading.equalTo(checkboxImageView.snp.trailing).offset(theme.nameHorizontalOffset)
@@ -98,7 +99,6 @@ extension LedgerAccountCellView {
     private func addAssetInfoLabel(_ theme: LedgerAccountCellViewTheme) {
         assetInfoLabel.customizeAppearance(theme.assetInfoLabel)
 
-        assetInfoLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         verticalStackView.addArrangedSubview(assetInfoLabel)
     }
 }

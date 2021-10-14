@@ -27,7 +27,7 @@ final class LedgerAccountDetailView: View {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = AppColors.Shared.System.background.color
+        collectionView.backgroundColor = theme.backgroundColor.color
         collectionView.contentInset = UIEdgeInsets(theme.contentInset)
         collectionView.registerCells(AccountPreviewCell.self, AssetPreviewCell.self)
         collectionView.registerSupplementaryView(LedgerAccountDetailSectionHeaderReusableView.self, of: .header)
@@ -77,7 +77,7 @@ final class AssetPreviewCell: BaseCollectionViewCell<AssetPreviewView> {
         contextView.customize(theme)
     }
 
-    func bindData(_ viewModel: AssetViewModel) {
+    func bindData(_ viewModel: AssetPreviewViewModel) {
         contextView.bindData(viewModel)
     }
 }

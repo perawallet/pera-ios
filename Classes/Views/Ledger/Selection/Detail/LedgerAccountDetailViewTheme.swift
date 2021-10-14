@@ -19,10 +19,12 @@ import Macaroon
 import CoreGraphics
 
 struct LedgerAccountDetailViewTheme: LayoutSheet, StyleSheet {
+    let backgroundColor: Color
     let cellSpacing: LayoutMetric
     let contentInset: LayoutPaddings
 
     init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
         self.cellSpacing = 0
         self.contentInset = (40, 0, 0, 0)
     }

@@ -24,9 +24,7 @@ final class LedgerAccountDetailDataSource: NSObject {
     private let account: Account
     private let rekeyedAccounts: [Account]
 
-    private var assetDetails: [AssetDetail] {
-        Array(account.assetDetails.prefix(account.assets?.count ?? .zero))
-    }
+    private var assetPreviews: [AssetPreviewModel] = []
 
     init(api: AlgorandAPI, loadingController: LoadingController?, account: Account, rekeyedAccounts: [Account]) {
         self.api = api
@@ -42,7 +40,7 @@ final class LedgerAccountDetailDataSource: NSObject {
 extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
     private var sections: [Section] {
         var sections: [Section] = [.ledgerAccount]
-        if !assetDetails.isEmpty { sections.append(.assets) }
+        if !assetPreviews.isEmpty { sections.append(.assets) }
         if !rekeyedAccounts.isEmpty { sections.append(.rekeyedAccounts) }
         return sections
     }
@@ -56,7 +54,7 @@ extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
         case .ledgerAccount:
             return 1
         case .assets:
-            return assetDetails.count
+            return assetPreviews.count
         case .rekeyedAccounts:
             return account.isRekeyed() ? 1 : rekeyedAccounts.count
         }
@@ -110,12 +108,7 @@ extension LedgerAccountDetailDataSource {
     func cellForAsset(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: AssetPreviewCell = collectionView.dequeueReusableCell(for: indexPath)
         cell.customize(AssetPreviewViewTheme())
-        cell.bindData(
-            AssetViewModel(
-                assetDetail: assetDetails[safe: indexPath.row],
-                asset: account.assets?[safe: indexPath.row]
-            )
-        )
+        cell.bindData(AssetPreviewViewModel(assetPreviews[indexPath.row]))
         return cell
     }
 
@@ -145,6 +138,10 @@ extension LedgerAccountDetailDataSource {
 
 extension LedgerAccountDetailDataSource {
     private func fetchAssets(for account: Account) {
+        let adapter = AssetPreviewModelAdapter()
+        let assetPreviewModel = adapter.adapt(account)
+        assetPreviews.append(assetPreviewModel)
+
         guard let assets = account.assets,
               !assets.isEmpty else { return }
 
@@ -153,11 +150,13 @@ extension LedgerAccountDetailDataSource {
         assets.forEach { asset in
             if let assetDetail = api.session.assetDetails[asset.id] {
                 account.assetDetails.append(assetDetail)
+                let assetPreviewModel = adapter.adapt((assetDetail: assetDetail, asset: asset))
+                assetPreviews.append(assetPreviewModel)
             } else {
                 api.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { [weak self] assetResponse in
                     switch assetResponse {
                     case .success(let assetDetailResponse):
-                        self?.composeAssetDetail(assetDetailResponse.assetDetail, of: account, with: asset.id)
+                        self?.composeAssetDetail(assetDetailResponse.assetDetail, of: account, with: asset)
                     case .failure:
                         account.removeAsset(asset.id)
                     }
@@ -167,11 +166,14 @@ extension LedgerAccountDetailDataSource {
         loadingController?.stopLoading()
     }
 
-    private func composeAssetDetail(_ assetDetail: AssetDetail, of account: Account, with id: Int64) {
+    private func composeAssetDetail(_ assetDetail: AssetDetail, of account: Account, with asset: Asset) {
         var assetDetail = assetDetail
-        setVerifiedIfNeeded(&assetDetail, with: id)
+        setVerifiedIfNeeded(&assetDetail, with: asset.id)
         account.assetDetails.append(assetDetail)
-        api.session.assetDetails[id] = assetDetail
+        api.session.assetDetails[asset.id] = assetDetail
+        let adapter = AssetPreviewModelAdapter()
+        let assetPreviewModel = adapter.adapt((assetDetail: assetDetail, asset: asset))
+        assetPreviews.append(assetPreviewModel)
     }
 
     private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail, with id: Int64) {
