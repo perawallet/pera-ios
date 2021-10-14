@@ -17,10 +17,10 @@
 
 import Foundation
 
-final class AssetPreviewModelAdapter {
+enum AssetPreviewModelAdapter {
     typealias OtherAssetsAdaptee = (assetDetail: AssetDetail, asset: Asset)
 
-    func adapt(_ adaptee: OtherAssetsAdaptee) -> AssetPreviewModel {
+    static func adapt(_ adaptee: OtherAssetsAdaptee) -> AssetPreviewModel {
         let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset)
         return AssetPreviewModel(
             image: nil,
@@ -32,7 +32,7 @@ final class AssetPreviewModelAdapter {
         )
     }
 
-    func adapt(_ adaptee: Account) -> AssetPreviewModel {
+    static func adapt(_ adaptee: Account) -> AssetPreviewModel {
         let algoAssetViewModel = AlgoAssetViewModel(account: adaptee)
         return  AssetPreviewModel(
             image: img("icon-algo-circle-green"),

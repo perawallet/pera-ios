@@ -138,8 +138,7 @@ extension LedgerAccountDetailDataSource {
 
 extension LedgerAccountDetailDataSource {
     private func fetchAssets(for account: Account) {
-        let adapter = AssetPreviewModelAdapter()
-        let assetPreviewModel = adapter.adapt(account)
+        let assetPreviewModel = AssetPreviewModelAdapter.adapt(account)
         assetPreviews.append(assetPreviewModel)
 
         guard let assets = account.assets,
@@ -150,7 +149,7 @@ extension LedgerAccountDetailDataSource {
         assets.forEach { asset in
             if let assetDetail = api.session.assetDetails[asset.id] {
                 account.assetDetails.append(assetDetail)
-                let assetPreviewModel = adapter.adapt((assetDetail: assetDetail, asset: asset))
+                let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset))
                 assetPreviews.append(assetPreviewModel)
             } else {
                 api.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { [weak self] assetResponse in
@@ -171,8 +170,7 @@ extension LedgerAccountDetailDataSource {
         setVerifiedIfNeeded(&assetDetail, with: asset.id)
         account.assetDetails.append(assetDetail)
         api.session.assetDetails[asset.id] = assetDetail
-        let adapter = AssetPreviewModelAdapter()
-        let assetPreviewModel = adapter.adapt((assetDetail: assetDetail, asset: asset))
+        let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset))
         assetPreviews.append(assetPreviewModel)
     }
 
