@@ -19,20 +19,23 @@ import UIKit
 import Macaroon
 
 final class LedgerAccountDetailView: View {
-    private lazy var ledgerAccountTitleLabel = UILabel()
-    private lazy var ledgerAccountView = AccountPreviewView()
-    private lazy var assetTitleLabel = UILabel()
-    private lazy var assetStackView = UIStackView()
-    private lazy var signedByTitleLabel = UILabel()
-    private lazy var rekeyedAccountsStackView = UIStackView()
+    private lazy var theme = LedgerAccountDetailViewTheme()
+
+    private(set) lazy var collectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = theme.cellSpacing
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = AppColors.Shared.System.background.color
+        collectionView.contentInset = UIEdgeInsets(theme.contentInset)
+        collectionView.registerCells(AccountPreviewCell.self, AssetPreviewCell.self)
+        collectionView.registerSupplementaryView(LedgerAccountDetailSectionHeaderReusableView.self, of: .header)
+        return collectionView
+    }()
 
     func customize(_ theme: LedgerAccountDetailViewTheme) {
-        addTitleLabel(theme)
-        addLedgerAccountView(theme)
-        addAssetTitleLabel(theme)
-        addAssetStackView(theme)
-        addSignedByTitleLabel(theme)
-        addRekeyedAccountsStackView(theme)
+        addCollectionView(theme)
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -41,161 +44,48 @@ final class LedgerAccountDetailView: View {
 }
 
 extension LedgerAccountDetailView {
-    private func addTitleLabel(_ theme: LedgerAccountDetailViewTheme) {
-        ledgerAccountTitleLabel.customizeAppearance(theme.ledgerAccountTitle)
-
-        addSubview(ledgerAccountTitleLabel)
-        ledgerAccountTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.topPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-        }
-    }
-
-    private func addLedgerAccountView(_ theme: LedgerAccountDetailViewTheme) {
-        addSubview(ledgerAccountView)
-        ledgerAccountView.customize(AccountPreviewViewTheme())
-
-        ledgerAccountView.snp.makeConstraints {
-            $0.top.equalTo(ledgerAccountTitleLabel.snp.bottom).offset(theme.stackViewTopPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-        }
-    }
-
-    private func addAssetTitleLabel(_ theme: LedgerAccountDetailViewTheme) {
-        assetTitleLabel.customizeAppearance(theme.assetsTitle)
-
-        addSubview(assetTitleLabel)
-        assetTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(ledgerAccountView.snp.bottom).offset(theme.titleTopPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-        }
-    }
-    
-    private func addAssetStackView(_ theme: LedgerAccountDetailViewTheme) {
-        assetStackView.distribution = .fillProportionally
-        assetStackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        assetStackView.axis = .vertical
-
-        addSubview(assetStackView)
-        assetStackView.snp.makeConstraints {
-            $0.top.equalTo(assetTitleLabel.snp.bottom).offset(theme.stackViewTopPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-        }
-    }
-    
-    private func addSignedByTitleLabel(_ theme: LedgerAccountDetailViewTheme) {
-        signedByTitleLabel.customizeAppearance(theme.signedByTitle)
-
-        addSubview(signedByTitleLabel)
-        signedByTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(assetStackView.snp.bottom).offset(theme.titleTopPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-        }
-    }
-    
-    private func addRekeyedAccountsStackView(_ theme: LedgerAccountDetailViewTheme) {
-        rekeyedAccountsStackView.distribution = .fillProportionally
-        rekeyedAccountsStackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        rekeyedAccountsStackView.axis = .vertical
-
-        addSubview(rekeyedAccountsStackView)
-        rekeyedAccountsStackView.snp.makeConstraints {
-            $0.top.equalTo(signedByTitleLabel.snp.bottom).offset(theme.stackViewTopPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-        }
+    private func addCollectionView(_ theme: LedgerAccountDetailViewTheme) {
+        addSubview(collectionView)
+        collectionView.pinToSuperview()
     }
 }
 
-extension LedgerAccountDetailView: ViewModelBindable {
-    func bindData(_ viewModel: LedgerAccountDetailViewModel?) {
-        guard let viewModel = viewModel else { return }
+// MARK: - AccountPreviewCell
 
-        setAssetViews(viewModel.account)
-        
-        if let rekeyedAccounts = viewModel.rekeyedAccounts {
-            signedByTitleLabel.text = viewModel.subtitle
-            setRekeyedAccountViews(from: viewModel.account, and: rekeyedAccounts)
-        }
+final class AccountPreviewCell: BaseCollectionViewCell<AccountPreviewView> {
+    func customize(_ theme: AccountPreviewViewTheme) {
+        contextView.customize(theme)
+    }
+
+    func bindData(_ viewModel: AccountPreviewViewModel) {
+        contextView.bindData(viewModel)
+    }
+
+    func bindData(_ viewModel: AccountNameViewModel) {
+        contextView.bindData(viewModel)
+    }
+
+    func bindData(_ viewModel: AuthAccountNameViewModel) {
+        contextView.bindData(viewModel)
     }
 }
 
-extension LedgerAccountDetailView {
-    private func setRekeyedAccountViews(from account: Account, and rekeyedAccounts: [Account]) {
-        if account.isRekeyed() {
-            let accountPreviewView = AccountPreviewView()
-            accountPreviewView.customize(AccountPreviewViewTheme())
-            let accountNameViewModel = AuthAccountNameViewModel(account)
-            accountPreviewView.bindData(
-                AccountPreviewViewModel(
-                    AccountPreviewModel(
-                        accountType: account.type,
-                        accountImageType: .orange,
-                        accountName: accountNameViewModel.address
-                    )
-                )
-            )
-            rekeyedAccountsStackView.addArrangedSubview(accountPreviewView)
-        } else {
-            guard !rekeyedAccounts.isEmpty else { return }
+// MARK: - AssetPreviewCell
 
-            rekeyedAccounts.forEach { rekeyedAccount in
-                let accountPreviewView = AccountPreviewView()
-                accountPreviewView.customize(AccountPreviewViewTheme())
-                let accountNameViewModel = AccountNameViewModel(account: rekeyedAccount)
-                accountPreviewView.bindData(
-                    AccountPreviewViewModel(
-                        AccountPreviewModel(
-                            accountType: rekeyedAccount.type,
-                            accountImageType: .orange,
-                            accountName: accountNameViewModel.name
-                        )
-                    )
-                )
-                rekeyedAccountsStackView.addArrangedSubview(accountPreviewView)
-            }
-        }
+final class AssetPreviewCell: BaseCollectionViewCell<AssetPreviewView> {
+    func customize(_ theme: AssetPreviewViewTheme) {
+        contextView.customize(theme)
+    }
+
+    func bindData(_ viewModel: AssetViewModel) {
+        contextView.bindData(viewModel)
     }
 }
 
-extension LedgerAccountDetailView {
-    private func setAssetViews(_ account: Account) {
-        bindLedgerInfoAccountNameView(account)
-        addAlgoView(account)
-        addAssetViews(account)
-    }
+// MARK: - LedgerAccountDetailSectionHeaderReusableView
 
-    private func bindLedgerInfoAccountNameView(_ account: Account) {
-        let accountNameViewModel = AccountNameViewModel(account: account)
-        ledgerAccountView.bindData(
-            AccountPreviewViewModel(
-                AccountPreviewModel(
-                    accountType: account.type,
-                    accountImageType: .orange,
-                    accountName: accountNameViewModel.name,
-                    assetsAndNFTs: "1 asset",
-                    assetValue: "6.06 ALGO",
-                    secondaryAssetValue: "$16,000.09")
-            )
-        )
-    }
-
-    private func addAlgoView(_ account: Account) {
-        let assetView = AssetPreviewView()
-        assetView.customize(AssetPreviewViewTheme())
-        assetView.bindData(AlgoAssetViewModel(account: account))
-
-        assetStackView.addArrangedSubview(assetView)
-    }
-
-    private func addAssetViews(_ account: Account) {
-        for (index, assetDetail) in account.assetDetails.enumerated() {
-            guard let asset = account.assets?[safe: index] else { continue }
-
-            let assetView = AssetPreviewView()
-            assetView.customize(AssetPreviewViewTheme())
-            assetView.bindData(AssetViewModel(assetDetail: assetDetail, asset: asset))
-
-            assetStackView.addArrangedSubview(assetView)
-        }
+final class LedgerAccountDetailSectionHeaderReusableView: BaseSupplementaryView<LedgerAccountDetailSectionHeaderView> {
+    func bindData(_ viewModel: LedgerAccountDetailSectionHeaderViewModel?) {
+        contextView.bindData(viewModel)
     }
 }

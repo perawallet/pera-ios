@@ -22,7 +22,7 @@ final class TutorialStepsView: View {
 
     weak var delegate: TutorialStepsViewDelegate?
 
-    var troubleshots: [Troubleshot] = [] {
+    var troubleshoots: [Troubleshoot] = [] {
         didSet {
             customize(TutorialStepsViewTheme())
         }
@@ -32,7 +32,7 @@ final class TutorialStepsView: View {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         addVerticalStackView(theme)
 
-        for (index, step) in troubleshots.enumerated() {
+        for (index, step) in troubleshoots.enumerated() {
             let horizontalStackView = UIStackView()
             horizontalStackView.spacing = theme.horizontalSpacing
             horizontalStackView.distribution = .fillProportionally
@@ -87,7 +87,7 @@ extension TutorialStepsView: UITextViewDelegate {
         in characterRange: NSRange,
         interaction: UITextItemInteraction
     ) -> Bool {
-        delegate?.tutorialStepsViewView(self, didTapURL: URL)
+        delegate?.tutorialStepsView(self, didTapURL: URL)
         return false
     }
 }
@@ -115,10 +115,10 @@ extension TutorialStepsView {
 
 extension TutorialStepsView: ViewModelBindable {
     func bindData(_ viewModel: TutorialStepViewModel?) {
-        self.troubleshots = viewModel?.steps ?? []
+        self.troubleshoots = viewModel?.steps ?? []
     }
 }
 
 protocol TutorialStepsViewDelegate: AnyObject {
-    func tutorialStepsViewView(_ view: TutorialStepsView, didTapURL URL: URL)
+    func tutorialStepsView(_ view: TutorialStepsView, didTapURL URL: URL)
 }

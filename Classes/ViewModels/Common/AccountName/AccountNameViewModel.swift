@@ -18,10 +18,12 @@
 import UIKit
 
 final class AccountNameViewModel {
+    private(set) var accountType: AccountType
     private(set) var image: UIImage?
     private(set) var name: String?
     
     init(account: Account, hasImage: Bool = true) {
+        accountType = account.type
         bindImage(from: account, with: hasImage)
         bindName(from: account, with: hasImage)
     }

@@ -20,18 +20,21 @@ import UIKit
 final class LedgerAccountDetailViewController: BaseScrollViewController {
     private lazy var theme = Theme()
     private lazy var ledgerAccountDetailView = LedgerAccountDetailView()
-
-    private lazy var dataSource: LedgerAccountDetailViewDataSource = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return LedgerAccountDetailViewDataSource(api: api, loadingController: loadingController)
+    private lazy var ledgerAccountDetailLayoutBuilder = LedgerAccountDetailLayoutBuilder()
+    private lazy var ledgerAccountDetailDataSource: LedgerAccountDetailDataSource = {
+        guard let api = api else { fatalError("API should be set.") }
+        return LedgerAccountDetailDataSource(
+            api: api,
+            loadingController: loadingController,
+            account: account,
+            rekeyedAccounts: rekeyedAccounts ?? []
+        )
     }()
 
     private let account: Account
     private let ledgerIndex: Int?
     private let rekeyedAccounts: [Account]?
-    
+
     init(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?, configuration: ViewControllerConfiguration) {
         self.account = account
         self.ledgerIndex = ledgerIndex
@@ -43,12 +46,7 @@ final class LedgerAccountDetailViewController: BaseScrollViewController {
         super.configureNavigationBarAppearance()
         addBarButtons()
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        dataSource.fetchAssets(for: account)
-    }
-    
+
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -68,7 +66,8 @@ final class LedgerAccountDetailViewController: BaseScrollViewController {
 
     override func linkInteractors() {
         super.linkInteractors()
-        dataSource.delegate = self
+        ledgerAccountDetailView.collectionView.delegate = ledgerAccountDetailLayoutBuilder
+        ledgerAccountDetailView.collectionView.dataSource = ledgerAccountDetailDataSource
     }
 }
 
@@ -85,18 +84,9 @@ extension LedgerAccountDetailViewController {
 extension LedgerAccountDetailViewController {
     private func setTitle() {
         if let index = ledgerIndex {
-            title = "Ledger #\(index)"
+            title = "ledger-account-detail-name".localized(params: "\(index)")
         } else {
             title = account.address.shortAddressDisplay()
         }
-    }
-}
-
-extension LedgerAccountDetailViewController: LedgerAccountDetailViewDataSourceDelegate {
-    func ledgerAccountDetailViewDataSource(
-        _ ledgerAccountDetailViewDataSource: LedgerAccountDetailViewDataSource,
-        didReturn account: Account
-    ) {
-        ledgerAccountDetailView.bindData(LedgerAccountDetailViewModel(account: account, rekeyedAccounts: rekeyedAccounts))
     }
 }

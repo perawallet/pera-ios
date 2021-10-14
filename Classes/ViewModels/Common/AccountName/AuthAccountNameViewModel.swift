@@ -19,20 +19,16 @@ import UIKit
 import Macaroon
 
 final class AuthAccountNameViewModel: PairedViewModel {
-    private(set) var accountType: AccountType?
+    private(set) var accountType: AccountType
     private(set) var address: String?
     
     init(_ model: Account) {
-        bindAccountType(model)
+        accountType = model.type
         bindAddress(model)
     }
 }
 
 extension AuthAccountNameViewModel {
-    private func bindAccountType(_ account: Account) {
-        accountType = account.type
-    }
-
     private func bindAddress(_ account: Account) {
         address = account.authAddress.unwrap(or: account.address).shortAddressDisplay()
     }

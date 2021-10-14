@@ -546,8 +546,9 @@ on your Ledger device (%d)";
 "notification-filter-show-for" = "Show notification for";
 
 "title-plus-asset-count" = "%@ Assets";
+"ledger-account-detail-name" = "Ledger #%@";
 "ledger-account-detail-title" = "Ledger Account";
-"ledger-account-details-assets" = "Assets";
+"ledger-account-detail-assets" = "Assets";
 "ledger-account-detail-can-sign" = "Can sign for these accounts";
 "ledger-account-detail-can-signed" = "Can be signed by";
 "ledger-account-fetct-error" = "A network error occured while fetching account details. Restart the process.";

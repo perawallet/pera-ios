@@ -45,3 +45,47 @@ extension UICollectionView {
         reloadSections(IndexSet(integersIn: section...section))
     }
 }
+
+extension UICollectionView {
+    // swiftlint:disable force_cast
+    func dequeueReusableCell<T: UICollectionViewCell>(for indexPath: IndexPath) -> T {
+        return dequeueReusableCell(withReuseIdentifier: T.reusableIdentifier, for: indexPath) as! T
+    }
+
+    func dequeueReusableSupplementaryView<T: UICollectionReusableView>(of kind: SectionType, for indexPath: IndexPath) -> T {
+        return dequeueReusableSupplementaryView(ofKind: kind.identifier, withReuseIdentifier: T.reusableIdentifier, for: indexPath) as! T
+    }
+
+    enum SectionType {
+        case header
+        case footer
+
+        var identifier: String {
+            switch self {
+            case .header:
+                return  UICollectionView.elementKindSectionHeader
+            case .footer:
+                return UICollectionView.elementKindSectionFooter
+            }
+        }
+    }
+
+    func registerSupplementaryView(_ type: UICollectionReusableView.Type, of kind: SectionType) {
+        register(
+            type.self,
+            forSupplementaryViewOfKind: kind.identifier,
+            withReuseIdentifier: String(describing: type.self)
+        )
+    }
+
+    func registerCells(_ types: UICollectionViewCell.Type...) {
+        types.forEach {
+            registerCell($0)
+        }
+    }
+
+    func registerCell(_ type: UICollectionViewCell.Type) {
+         register(type.self, forCellWithReuseIdentifier: String(describing: type.self))
+    }
+    // swiftlint:enable force_cast
+}

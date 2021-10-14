@@ -17,11 +17,11 @@
 
 import Macaroon
 
-struct Troubleshot {
+struct Troubleshoot {
     let explanation: String
 }
 
-extension Troubleshot {
+extension Troubleshoot {
     enum Step {
         case openApp
         case installApp
@@ -31,47 +31,47 @@ extension Troubleshot {
 }
 
 final class TutorialStepViewModel: PairedViewModel {
-    private(set) var steps: [Troubleshot]?
+    private(set) var steps: [Troubleshoot]?
 
-    init(_ model: Troubleshot.Step) {
+    init(_ model: Troubleshoot.Step) {
         bindSteps(model)
     }
 }
 
 extension TutorialStepViewModel {
-    func bindSteps(_ tutorial: Troubleshot.Step) {
+    func bindSteps(_ tutorial: Troubleshoot.Step) {
         switch tutorial {
         case .openApp:
             self.steps = [
-                Troubleshot(
+                Troubleshoot(
                     explanation: "ledger-troubleshooting-open-app-first-html".localized
                 ),
-                Troubleshot(
+                Troubleshoot(
                     explanation: "ledger-troubleshooting-open-app-second-html".localized
                 )
             ]
         case .installApp:
             self.steps = [
-                Troubleshot(
+                Troubleshoot(
                     explanation: "ledger-troubleshooting-install-app-first-html".localized
                 ),
-                Troubleshot(
+                Troubleshoot(
                     explanation: "ledger-troubleshooting-install-app-second-html".localized
                 )
             ]
         case .bluetoothConnection:
             self.steps = [
-                Troubleshot(
+                Troubleshoot(
                     explanation: "ledger-troubleshooting-bluetooth-connection-html".localized.localized
                 )
             ]
 
         case .bluetooth:
             self.steps = [
-                Troubleshot(
+                Troubleshoot(
                     explanation: "ledger-troubleshooting-ledger-bluetooth-connection-guide-html".localized
                 ),
-                Troubleshot(
+                Troubleshoot(
                     explanation: "ledger-troubleshooting-ledger-bluetooth-connection-advanced-guide-html".localized
                 )
             ]

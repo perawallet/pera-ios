@@ -31,25 +31,25 @@ struct AccountPreviewViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.accountName = [
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(.singleLineFitting),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.assetAndNFTs = [
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(.singleLineFitting),
             .textColor(AppColors.Components.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]
         self.assetValue = [
             .textAlignment(.right),
-            .textOverflow(.fitting),
+            .textOverflow(.singleLineFitting),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMMono.regular.make(15))
         ]
         self.secondaryAssetValue = [
             .textAlignment(.right),
-            .textOverflow(.fitting),
+            .textOverflow(.singleLineFitting),
             .textColor(AppColors.Components.Text.grayLighter),
             .font(Fonts.DMMono.regular.make(13))
         ]

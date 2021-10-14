@@ -13,17 +13,20 @@
 // limitations under the License.
 
 //
-//   LedgerAccountDetailViewTheme.swift
+//   LedgerAccountDetailSectionHeaderViewTheme.swift
 
 import Macaroon
-import CoreGraphics
 
-struct LedgerAccountDetailViewTheme: LayoutSheet, StyleSheet {
-    let cellSpacing: LayoutMetric
-    let contentInset: LayoutPaddings
-
+struct LedgerAccountDetailSectionHeaderViewTheme: LayoutSheet, StyleSheet {
+    let title: TextStyle
+    let horizontalPadding: LayoutMetric
+    
     init(_ family: LayoutFamily) {
-        self.cellSpacing = 0
-        self.contentInset = (40, 0, 0, 0)
+        self.title = [
+            .textAlignment(.left),
+            .font(Fonts.DMSans.medium.make(15)),
+            .textColor(AppColors.Components.Text.main)
+        ]
+        self.horizontalPadding = 24
     }
 }

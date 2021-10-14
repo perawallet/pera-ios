@@ -21,9 +21,9 @@ final class TutorialStepsViewController: BaseScrollViewController {
     private lazy var tutorialStepsView = TutorialStepsView()
     private lazy var theme = Theme()
 
-    private let step: Troubleshot.Step
+    private let step: Troubleshoot.Step
 
-    init(step: Troubleshot.Step, configuration: ViewControllerConfiguration) {
+    init(step: Troubleshoot.Step, configuration: ViewControllerConfiguration) {
         self.step = step
         super.init(configuration: configuration)
     }
@@ -77,7 +77,7 @@ extension TutorialStepsViewController {
 }
 
 extension TutorialStepsViewController: TutorialStepsViewDelegate {
-    func tutorialStepsViewView(_ view: TutorialStepsView, didTapURL URL: URL) {
+    func tutorialStepsView(_ view: TutorialStepsView, didTapURL URL: URL) {
         open(URL)
     }
 }
