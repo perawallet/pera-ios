@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "tabbar-icon-notifications-selected.pdf",
+      "filename" : "tabbar-icon-statistics-selected.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "tabbar-icon-notifications-selected-1.pdf",
+      "filename" : "tabbar-icon-statistics-selected-dark.pdf",
       "idiom" : "universal"
     }
   ],
