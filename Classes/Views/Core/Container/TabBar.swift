@@ -48,7 +48,7 @@ class TabBar: BaseView {
     }
     
     override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
+        backgroundColor = AppColors.Shared.System.background.color
     }
     
     override func prepareLayout() {

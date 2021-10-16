@@ -17,8 +17,7 @@
 
 import UIKit
 
-class TabBarController: UIViewController {
-    
+final class TabBarController: UIViewController {
     override var childForStatusBarHidden: UIViewController? {
         return selectedContent
     }
@@ -56,7 +55,7 @@ class TabBarController: UIViewController {
             if isDisplayingTransactionButtons {
                 presentTransactionFlow()
             } else {
-                hideTransactionFlow()
+                dismissTransactionFlow()
             }
         }
     }
@@ -73,29 +72,6 @@ class TabBarController: UIViewController {
     
     private(set) lazy var tabBar = TabBar()
 
-    private(set) lazy var sendButton: AlignedButton = {
-        let button = AlignedButton(.imageAtLeft(spacing: 4.0))
-        button.setBackgroundImage(img("img-tabbar-send"), for: .normal)
-        button.setImage(img("icon-arrow-up"), for: .normal)
-        button.setTitle("title-send".localized, for: .normal)
-        button.setTitleColor(Colors.ButtonText.primary, for: .normal)
-        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
-        button.titleLabel?.textAlignment = .center
-        return button
-    }()
-    
-    private(set) lazy var receiveButton: AlignedButton = {
-        let button = AlignedButton(.imageAtLeft(spacing: 4.0))
-        button.setBackgroundImage(img("img-tabbar-receive"), for: .normal)
-        button.setImage(img("icon-qr-20", isTemplate: true), for: .normal)
-        button.tintColor = Colors.Background.secondary
-        button.setTitle("title-receive".localized, for: .normal)
-        button.setTitleColor(Colors.ButtonText.primary, for: .normal)
-        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 14.0))
-        button.titleLabel?.textAlignment = .center
-        return button
-    }()
-    
     private lazy var accountsViewController = AccountsViewController(configuration: configuration)
     private lazy var contactsViewController = ContactsViewController(configuration: configuration)
     private lazy var notificationsViewController = NotificationsViewController(configuration: configuration)
@@ -130,11 +106,7 @@ class TabBarController: UIViewController {
         super.viewWillAppear(animated)
         
         navigationController?.setNavigationBarHidden(true, animated: true)
-        
-        if let appConfiguration = UIApplication.shared.appConfiguration {
-            appConfiguration.session.isValid = true
-        }
-        
+        UIApplication.shared.appConfiguration?.session.isValid = true
         routeForDeeplink()
     }
     
@@ -162,16 +134,11 @@ class TabBarController: UIViewController {
         tabBar.centerButtonDidTap = { [unowned self] _ in
             self.isDisplayingTransactionButtons = !self.isDisplayingTransactionButtons
         }
-        
-        sendButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetSelectionForSendFlow), for: .touchUpInside)
-        receiveButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetSelectionForRequestFlow), for: .touchUpInside)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if !isDarkModeDisplay {
-            sendButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 24.0)
-            receiveButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 24.0)
             tabBar.updateShadowLayoutWhenViewDidLayoutSubviews()
         }
     }
@@ -182,8 +149,6 @@ class TabBarController: UIViewController {
         if #available(iOS 12.0, *) {
             if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
                 if traitCollection.userInterfaceStyle == .dark {
-                    sendButton.removeShadow()
-                    receiveButton.removeShadow()
                     tabBar.removeShadow()
                 } else {
                     applyShadows()
@@ -193,12 +158,6 @@ class TabBarController: UIViewController {
     }
     
     private func applyShadows() {
-        sendButton.applyShadow(
-            Shadow(color: ShadowColors.sendShadow, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0)
-        )
-        receiveButton.applyShadow(
-            Shadow(color: ShadowColors.requestShadow, offset: CGSize(width: 0.0, height: 8.0), radius: 20.0, opacity: 1.0)
-        )
         tabBar.applyShadow(tabBarShadow)
     }
 }
@@ -436,14 +395,39 @@ extension TabBarController {
     }
 }
 
-extension TabBarController {
-    private enum ShadowColors {
-        static let sendShadow = rgba(0.96, 0.44, 0.32, 0.25)
-        static let requestShadow = rgba(0.34, 0.75, 0.71, 0.25)
-    }
-}
-
 enum TransactionAction {
     case send
     case request
+}
+
+extension TabBarController {
+    private func dismissTransactionFlow() {
+        animateCenterButtonAsSelected(false)
+        selectedContent?.dismiss(animated: true)
+    }
+
+    private func presentTransactionFlow() {
+        animateCenterButtonAsSelected(true)
+        let transactionModalViewController = selectedContent?.open(
+            .transactionModal,
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
+        ) as? TransactionModalViewController
+        transactionModalViewController?.delegate = self
+    }
+}
+
+extension TabBarController: TransactionModalViewControllerDelegate {
+    func transactionModalViewControllerDidSend(_ transactionModalViewController: TransactionModalViewController) {
+        let controller = open(.selectAsset(transactionAction: .send), by: .present) as? SelectAssetViewController
+        controller?.delegate = self
+    }
+
+    func transactionModalViewControllerDidReceive(_ transactionModalViewController: TransactionModalViewController) {
+        let controller = open(.selectAsset(transactionAction: .request), by: .present) as? SelectAssetViewController
+        controller?.delegate = self
+    }
 }
