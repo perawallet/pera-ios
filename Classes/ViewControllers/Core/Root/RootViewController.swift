@@ -150,7 +150,7 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         _ walletConnectRequestHandler: WalletConnectRequestHandler,
         didInvalidate request: WalletConnectRequest
     ) {
-        appConfiguration.walletConnector.rejectTransactionRequest(request, with: .invalidInput)
+        appConfiguration.walletConnector.rejectTransactionRequest(request, with: .invalidInput(.parse))
     }
 
     private func openMainTransactionScreen(
@@ -163,7 +163,7 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
                 return
             }
 
-            appConfiguration.walletConnector.rejectTransactionRequest(currentWCTransactionRequest, with: .rejected)
+            appConfiguration.walletConnector.rejectTransactionRequest(currentWCTransactionRequest, with: .rejected(.alreadyDisplayed))
 
             wcMainTransactionViewController?.closeScreen(by: .dismiss, animated: false) {
                 self.openMainViewController(animated: false, for: transactions, with: request, and: transactionOption)

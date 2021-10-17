@@ -668,8 +668,8 @@
 "wallet-connect-transaction-all-count-singular" = "All transaction (1)";
 "wallet-connect-transaction-request-count" = "Transaction Requests (%d)";
 "wallet-connect-transaction-request-count-singular" = "Transaction Request (1)";
-"wallet-connect-transaction-count" = "%d transactions";
-"wallet-connect-transaction-count-singular" = "1 transaction";
+"wallet-connect-transaction-count" = "%d Txns  ·  Group ID: %@";
+"wallet-connect-transaction-count-singular" = "1 Txn  ·  Group ID: %@";
 "wallet-connect-transaction-title-raw" = "Raw Txns";
 "wallet-connect-transaction-detail-raw" = "Show Raw Transaction";
 "wallet-connect-transaction-title-explorer" = "AlgoExplorer";
@@ -692,6 +692,21 @@
 "wallet-connect-transaction-error-unsupported" = "The wallet does not support the requested operation.";
 "wallet-connect-transaction-error-invalid" = "The input provided is invalid.";
 "wallet-connect-raw-transaction-title" = "Raw Transaction";
+"wallet-connect-transaction-error-rejected-user" = "Transaction Request Rejected: The User has rejected the transaction request.";
+"wallet-connect-transaction-error-group-validation" = "Transaction Request Rejected: The transaction group has failed validation by the Algorand SDK.";
+"wallet-connect-transaction-error-already-displayed" = "Transaction Request Rejected: The User currently has another transaction request that is in progress.";
+"wallet-connect-transaction-error-group-unauthorized-user" = "The requested operation and/or account has not been authorized by the user.";
+"wallet-connect-transaction-error-transaction-size" = "Invalid Input: Transaction request contains more than 16 transactions";
+"wallet-connect-transaction-error-invalid-signer" = "Signing Error: A transaction in the transaction request requires a private key (signer) that does not exist in the connected Wallet.";
+"wallet-connect-transaction-error-node" = "Signing Error: Network mismatch between dApp and Wallet. For example, Wallet is connected to TestNet and dApp connected to MainNet (or vice versa).";
+"wallet-connect-transaction-error-group" = "Invalid Input: Group transaction does not need to be signed by Wallet user.";
+"wallet-connect-transaction-error-account-not-exist" = "Invalid Input: The requested signer is not in the User Wallet";
+"wallet-connect-transaction-error-unsupported-type" = "The transaction request contains an Unsupported Transaction Type";
+"wallet-connect-transaction-error-parse" = "Invalid Input: Unable to parse transaction";
+"wallet-connect-transaction-error-invalid-key" = "Invalid Input: Invalid Public Key";
+"wallet-connect-transaction-error-invalid-asset" = "Invalid Input: Invalid Asset";
+"wallet-connect-transaction-error-multisig" = "The transaction request contains an Unsupported Transaction Type: Multi-sig";
+"wallet-connect-transaction-error-unable-sign" = "Invalid Input: Unable to be signed";
 
 "wallet-connect-transaction-group-algos-title" = "Payment to %@";
 "wallet-connect-transaction-group-asset-title" = "Asset Transfer to %@";

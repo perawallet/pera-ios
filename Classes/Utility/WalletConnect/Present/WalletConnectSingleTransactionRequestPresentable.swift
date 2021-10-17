@@ -30,7 +30,7 @@ extension WalletConnectSingleTransactionRequestPresentable where Self: BaseViewC
         let account = session?.accounts.first(of: \.address, equalsTo: transactionDetail.sender)
         
         guard let transactionType = transactionDetail.transactionType(for: account) else {
-            walletConnector.rejectTransactionRequest(request, with: .unsupported)
+            walletConnector.rejectTransactionRequest(request, with: .unsupported(.unknownTransaction))
             dismissScreen()
             return
         }

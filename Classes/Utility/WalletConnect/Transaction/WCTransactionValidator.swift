@@ -25,32 +25,32 @@ protocol WCTransactionValidator {
 extension WCTransactionValidator {
     func validateTransactions(_ transactions: [WCTransaction], with transactionGroups: [Int64: [WCTransaction]]) {
         if !hasValidTransactionCount(for: transactions) {
-            rejectTransactionRequest(with: .unsupported)
+            rejectTransactionRequest(with: .invalidInput(.transactionCount))
             return
         }
 
         if !hasValidNetwork(for: transactions) {
-            rejectTransactionRequest(with: .unauthorized)
+            rejectTransactionRequest(with: .unauthorized(.nodeMismatch))
             return
         }
 
         if !hasValidAddresses(in: transactions) {
-            rejectTransactionRequest(with: .invalidInput)
+            rejectTransactionRequest(with: .invalidInput(.publicKey))
             return
         }
 
         if containsMultisigTransaction(in: transactions) {
-            rejectTransactionRequest(with: .unsupported)
+            rejectTransactionRequest(with: .unsupported(.multisig))
             return
         }
 
         if !hasValidSignerAddress(in: transactions) {
-            rejectTransactionRequest(with: .invalidInput)
+            rejectTransactionRequest(with: .invalidInput(.signer))
             return
         }
         
         if hasInvalidGroupedTransaction(in: transactionGroups) {
-            rejectTransactionRequest(with: .invalidInput)
+            rejectTransactionRequest(with: .invalidInput(.group))
             return
         }
     }

@@ -287,7 +287,7 @@ extension WCMainTransactionViewController: WCMainTransactionViewDelegate {
             )
         }
 
-        rejectTransactionRequest(with: .rejected)
+        rejectTransactionRequest(with: .rejected(.user))
     }
 }
 
@@ -311,7 +311,7 @@ extension WCMainTransactionViewController: WCTransactionSignerDelegate {
         }
 
         if transactions.count != signedTransactions.count {
-            rejectTransactionRequest(with: .rejected)
+            rejectTransactionRequest(with: .invalidInput(.unsignable))
             return
         }
 
@@ -344,7 +344,7 @@ extension WCMainTransactionViewController: WCTransactionSignerDelegate {
     func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didFailedWith error: WCTransactionSigner.WCSignError) {
         switch error {
         case .api:
-            rejectTransactionRequest(with: .rejected)
+            rejectTransactionRequest(with: .rejected(.unsignable))
         case let .ledger(ledgerError):
             showLedgerError(ledgerError)
         }
@@ -398,7 +398,7 @@ extension WCMainTransactionViewController: AssetCachable {
             guard let assetId = transaction.transactionDetail?.assetId else {
                 SVProgressHUD.showError(withStatus: "title-done".localized)
                 SVProgressHUD.dismiss()
-                self.rejectTransactionRequest(with: .invalidInput)
+                self.rejectTransactionRequest(with: .invalidInput(.asset))
                 return
             }
 
@@ -406,7 +406,7 @@ extension WCMainTransactionViewController: AssetCachable {
                 if assetDetail == nil {
                     SVProgressHUD.showError(withStatus: "title-done".localized)
                     SVProgressHUD.dismiss()
-                    self.rejectTransactionRequest(with: .invalidInput)
+                    self.rejectTransactionRequest(with: .invalidInput(.asset))
                     return
                 }
 
@@ -422,7 +422,7 @@ extension WCMainTransactionViewController: AssetCachable {
 
 extension WCMainTransactionViewController: WCMainTransactionDataSourceDelegate {
     func wcMainTransactionDataSourceDidFailedGroupingValidation(_ wcMainTransactionDataSource: WCMainTransactionDataSource) {
-        rejectTransactionRequest(with: .rejected)
+        rejectTransactionRequest(with: .rejected(.failedValidation))
     }
 
     func wcMainTransactionDataSourceDidOpenLongDappMessageView(_ wcMainTransactionDataSource: WCMainTransactionDataSource) {
