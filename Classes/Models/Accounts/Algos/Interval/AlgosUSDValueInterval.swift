@@ -17,7 +17,7 @@
 
 import Foundation
 
-enum AlgosUSDValueInterval {
+enum AlgosUSDValueInterval: CaseIterable {
     case hourly
     case daily
     case weekly

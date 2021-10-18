@@ -74,7 +74,7 @@ final class TabBarController: UIViewController {
 
     private lazy var accountsViewController = AccountsViewController(configuration: configuration)
     private lazy var contactsViewController = ContactsViewController(configuration: configuration)
-    private lazy var notificationsViewController = NotificationsViewController(configuration: configuration)
+    private lazy var statisticsViewController = StatisticsViewController(configuration: configuration)
     private lazy var settingsViewController = SettingsViewController(configuration: configuration)
     
     private let configuration: ViewControllerConfiguration
@@ -166,9 +166,9 @@ extension TabBarController {
     private func setupTabBarController() {
         items = [
             AccountsTabBarItem(content: NavigationController(rootViewController: accountsViewController)),
-            ContactsTabBarItem(content: NavigationController(rootViewController: contactsViewController)),
+            StatisticsTabBarItem(content: NavigationController(rootViewController: statisticsViewController)),
             TransactionTabBarItem(),
-            NotificationsTabBarItem(content: NavigationController(rootViewController: notificationsViewController)),
+            ContactsTabBarItem(content: NavigationController(rootViewController: contactsViewController)),
             SettingsTabBarItem(content: NavigationController(rootViewController: settingsViewController))
         ]
     }

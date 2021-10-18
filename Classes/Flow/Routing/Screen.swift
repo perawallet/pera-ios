@@ -95,7 +95,7 @@ indirect enum Screen {
     case tutorialSteps(step: Troubleshoot.Step)
     case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions
-    case algoUSDAnalytics(account: Account, currency: Currency)
+    case statistics
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
     case wcConnectionApproval(walletConnectSession: WalletConnectSession, completion: WalletConnectSessionConnectionCompletionHandler)
     case walletConnectSessions
@@ -115,6 +115,7 @@ indirect enum Screen {
     case wcAssetDeletionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case jsonDisplay(jsonData: Data, title: String)
     case transactionModal
+    case dateSelection(option: AlgosUSDValueInterval)
 }
 
 extension Screen {

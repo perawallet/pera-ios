@@ -47,11 +47,11 @@ class TransactionTabBarItem: TabBarItem {
     }
 }
 
-class NotificationsTabBarItem: TabBarItem {
+class StatisticsTabBarItem: TabBarItem {
     init(content: UIViewController) {
         super.init(
-            name: "notifications",
-            style: TabBarButtonItemStyle(icon: img("tabbar-icon-notifications"), selectedIcon: img("tabbar-icon-notifications-selected")),
+            name: "statistics",
+            style: TabBarButtonItemStyle(icon: img("tabbar-icon-statistics"), selectedIcon: img("tabbar-icon-statistics-selected")),
             content: content
         )
     }

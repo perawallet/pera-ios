@@ -107,9 +107,9 @@ extension Colors {
 extension Colors {
     enum Chart {
         enum Line {
-            static let increasing = color("chartLineIncreasingColor")
-            static let decreasing = color("chartLineDecreasingColor")
-            static let stable = color("chartLineStableColor")
+            static let increasing = AppColors.Shared.Helpers.positive.color
+            static let decreasing = AppColors.Shared.Helpers.negative.color
+            static let stable = AppColors.Components.Text.gray.color
         }
     }
 }
