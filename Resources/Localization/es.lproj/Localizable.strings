@@ -1667,16 +1667,61 @@
 "wallet-connect-transaction-detail-raw" = "Mostrar transacción cruda";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-account-not-exist" = "Entrada inválida: El firmante solicitado no está en el monedero del usuario";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-already-displayed" = "Solicitud de transacción rechazada: El usuario tiene otra solicitud de transacción en curso.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group" = "Entrada inválida: El grupo de transacciones no necesita ser firmado por el usuario del monedero.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-unauthorized-user" = "La operación y/o la cuenta solicitada no ha sido autorizada por el usuario.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-validation" = "Solicitud de transacción rechazada: El SDK de Algorand ha fallado en la validación del grupo de transacciones.";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid" = "La entrada ingresada no es válida.";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-asset" = "Entrada inválida: Activo inválido";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-key" = "Entrada inválida: Clave pública inválida";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-signer" = "Error de firma: Una transacción en la solicitud de transacción requiere una clave privada (firmante) que no existe en el monedero conectado.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-multisig" = "La solicitud de transacción contiene un tipo de transacción no admitido: Multifirma";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-node" = "Error de firma: No coincide la conexión de red entre la dApp y el monedero. Por ejemplo, el monedero está conectado a la TestNet y la dApp conectada a la MainNet (o viceversa).";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-parse" = "Entrada inválida: No se ha podido analizar la transacción";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-rejected" = "El usuario rechazó la solicitud.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected-user" = "Solicitud de transacción rechazada: El usuario ha rechazado la solicitud de transacción.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-transaction-size" = "Entrada inválida: La solicitud de transacción contiene más de 16 transacciones";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-sign" = "Entrada inválida: No se puede firmar";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unauthorized" = "La operación y/o cuenta solicitada no ha sido autorizada por el usuario.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unsupported" = "El monedero no admite la operación solicitada.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported-type" = "La solicitud de transacción contiene un tipo de transacción no admitido";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-algos-title" = "Pago a %@";

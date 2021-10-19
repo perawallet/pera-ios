@@ -1667,16 +1667,61 @@
 "wallet-connect-transaction-detail-raw" = "Afficher la transaction brute";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-account-not-exist" = "Entrée non valide : le signataire demandé n'est pas dans le portefeuille utilisateur";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-already-displayed" = "Demande de transaction rejetée : l'utilisateur a actuellement une autre demande de transaction en cours.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group" = "Entrée non valide : la transaction de groupe n'a pas besoin d'être signée par l'utilisateur du portefeuille.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-unauthorized-user" = "L'opération et/ou le compte demandé n'a pas été autorisé par l'utilisateur.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-validation" = "Demande de transaction rejetée : le groupe de transactions n'a pas été validé par le SDK d'Algorand.";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid" = "L'entrée fournie est invalide.";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-asset" = "Entrée non valide : actif non valide";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-key" = "Entrée non valide : clé publique non valide";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-signer" = "Erreur de signature : une transaction dans la demande de transaction nécessite une clé privée (signataire) qui n'existe pas dans le portefeuille connecté.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-multisig" = "La demande de transaction contient un type de transaction non pris en charge : Multi-sig";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-node" = "Erreur de signature : discordance de réseau entre dApp et le Wallet. Par exemple, le Wallet est connecté à TestNet et dApp connecté à MainNet (ou vice versa).";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-parse" = "Entrée non valide : impossible d'analyser la transaction";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-rejected" = "L'utilisateur a rejeté la demande.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected-user" = "Demande de transaction rejetée : l'utilisateur a rejeté la demande de transaction.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-transaction-size" = "Entrée non valide : la demande de transaction contient plus de 16 transactions";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-sign" = "Entrée invalide : Impossible à signer";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unauthorized" = "L'opération et/ou le compte demandé n'a pas été autorisé par l'utilisateur.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unsupported" = "Le portefeuille ne prend pas en charge l'opération demandée.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported-type" = "La demande de transaction contient un type de transaction non pris en charge";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-algos-title" = "Paiement à %@";

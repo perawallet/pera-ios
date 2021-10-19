@@ -1667,16 +1667,61 @@
 "wallet-connect-transaction-detail-raw" = "Ham İşlemleri Göster";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-account-not-exist" = "Geçersiz Giriş: İstenen imzalayan Kullanıcı Cüzdanında yok";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-already-displayed" = "İşlem İsteği Reddedildi: Kullanıcının sürmekte olan başka bir işlem isteği bulunuyor.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group" = "Geçersiz Giriş: Grup işlemlerinin Cüzdan kullanıcısı tarafından imzalanmasına gerek yoktur.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-unauthorized-user" = "İstenen işlem ve/veya hesap kullanıcı tarafından yetkilendirilmemiş.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-validation" = "İşlem İsteği Reddedildi: İşlem grubunun Algorand SDK tarafından doğrulaması yapılamadı.";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid" = "Sağlanan giriş geçersiz.";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-asset" = "Geçersiz Giriş: Geçersiz Varlık";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-key" = "Geçersiz Giriş: Ortak Anahtar Geçersiz";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-signer" = "İmzalama Hatası: İşlem isteği sürecindeki bir işlem, bağlı olan Cüzdanda bulunmayan bir özel anahtarı (imzalayan) gerektiriyor.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-multisig" = "İşlem isteği, Desteklenmeyen İşlem Türünü içeriyor: Çoklu imza";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-node" = "İmzalama Hatası: dApp ile Cüzdan arasında ağ uyuşmazlığı bulunuyor. Örneğin, Cüzdan Test Ağına bağlı durumdayken dApp Ana Ağa bağlı durumda (veya tam tersi).";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-parse" = "Geçersiz Giriş: İşlem ayrıştırılamıyor";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-rejected" = "Kullanıcı isteği reddetti.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected-user" = "İşlem İsteği Reddedildi: Kullanıcı işlem isteğini reddetti.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-transaction-size" = "Geçersiz Giriş: İşlem isteği 16'dan fazla işlemi içeriyor";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-sign" = "Geçersiz Giriş: İmzalanamıyor";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unauthorized" = "İstenen işlem ve/veya hesap kullanıcı tarafından yetkilendirilmemiş.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unsupported" = "Cüzdan, istenen işlemi desteklemiyor.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported-type" = "İşlem isteği, Desteklenmeyen İşlem Türünü içeriyor";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-algos-title" = "%@ için Ödeme";

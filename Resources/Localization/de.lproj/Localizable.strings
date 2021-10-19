@@ -1667,16 +1667,61 @@
 "wallet-connect-transaction-detail-raw" = "Rohtransaktion anzeigen";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-account-not-exist" = "Ungültige Eingabe: Der angeforderte Unterzeichner befindet sich nicht in der Benutzer-Wallet";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-already-displayed" = "Transaktionsanforderung abgelehnt: Der Benutzer hat derzeit eine andere Transaktionsanforderung, die in Bearbeitung ist.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group" = "Ungültige Eingabe: Die Gruppentransaktion muss nicht vom Wallet-Benutzer signiert werden.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-unauthorized-user" = "Der angeforderte Vorgang und/oder das Konto wurde vom Benutzer nicht genehmigt.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-validation" = "Transaktionsanforderung abgelehnt: Die Validierung der Transaktionsgruppe durch das Algorand SDK ist fehlgeschlagen.";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid" = "Die eingegebenen Daten sind ungültig.";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-asset" = "Ungültige Eingabe: Ungültiges Asset";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-key" = "Ungültige Eingabe: Ungültiger öffentlicher Schlüssel";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-signer" = "Fehler beim Signieren: Eine Transaktion in der Transaktionsanforderung erfordert einen privaten Schlüssel (Unterzeichner), der in der verbundenen Wallet nicht existiert.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-multisig" = "Die Transaktionsanforderung enthält eine nicht unterstützte Transaktionsart: Multi-Sig";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-node" = "Fehler beim Signieren: Netzwerkübereinstimmung zwischen dApp und Wallet. Zum Beispiel ist Wallet mit dem TestNet verbunden und dApp mit dem MainNet (oder andersherum).";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-parse" = "Ungültige Eingabe: Transaktion kann nicht geparst werden";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-rejected" = "Der Benutzer hat die Anfrage abgelehnt.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected-user" = "Transaktionsanforderung abgelehnt: Der Benutzer hat die Transaktionsanforderung abgelehnt.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-transaction-size" = "Ungültige Eingabe: Transaktionsanforderung enthält mehr als 16 Transaktionen";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-sign" = "Ungültige Eingabe: Kann nicht signiert werden";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unauthorized" = "Der angeforderte Vorgang und/oder das Konto wurde vom Benutzer nicht genehmigt.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unsupported" = "Die Wallet unterstützt den angeforderten Vorgang nicht.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported-type" = "Die Transaktionsanforderung enthält eine nicht unterstützte Transaktionsart";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-algos-title" = "Zahlung an %@";

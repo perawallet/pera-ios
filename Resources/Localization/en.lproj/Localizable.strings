@@ -670,6 +670,7 @@
 "wallet-connect-transaction-request-count-singular" = "Transaction Request (1)";
 "wallet-connect-transaction-count" = "%d Txns  ·  Group ID: %@";
 "wallet-connect-transaction-count-singular" = "1 Txn  ·  Group ID: %@";
+"wallet-connect-transaction-group-id" = "Group ID";
 "wallet-connect-transaction-title-raw" = "Raw Txns";
 "wallet-connect-transaction-detail-raw" = "Show Raw Transaction";
 "wallet-connect-transaction-title-explorer" = "AlgoExplorer";

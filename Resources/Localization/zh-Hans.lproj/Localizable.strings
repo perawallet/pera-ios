@@ -1667,16 +1667,61 @@
 "wallet-connect-transaction-detail-raw" = "显示原始交易";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-account-not-exist" = "无效输入：所请求的签署人不在用户钱包内";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-already-displayed" = "交易请求被拒：用户还有另一笔正在处理的交易。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group" = "无效输入：群组交易不需要钱包用户签名。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-unauthorized-user" = "请求的操作和/或账户没有获得用户授权。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-validation" = "交易请求被拒：交易群组无法通过Algorand SDK的验证。";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid" = "输入无效。";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-asset" = "无效输入：资产无效";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-key" = "无效输入：公钥无效";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-signer" = "签名出错：交易请求中的交易需要的私钥（签署人），而该私钥并不存在连接的钱包中。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-multisig" = "交易请求含有一个不被支持的交易类型：多重签名";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-node" = "签名出错：dApp和钱包之间的网络不匹配。例如，钱包连接到测试网，dApp连接到主网（或相反）。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-parse" = "无效输入：无法解析交易";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-rejected" = "该用户拒绝了请求。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected-user" = "交易请求被拒：用户拒绝了该交易请求。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-transaction-size" = "无效输入：交易请求含有超过 16 笔交易";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-sign" = "无效输入：无法签署";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unauthorized" = "请求的操作和/或账户没有用户授权。";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unsupported" = "钱包不支持所要求的操作。";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported-type" = "该交易请求含有不被支持的交易类型";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-algos-title" = "支付给%@";

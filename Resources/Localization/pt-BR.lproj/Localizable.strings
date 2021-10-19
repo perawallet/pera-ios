@@ -1667,16 +1667,61 @@
 "wallet-connect-transaction-detail-raw" = "Exibir Transação Bruta";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-account-not-exist" = "Entrada Inválida: O assinante solicitado não está na Carteira do Usuário";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-already-displayed" = "Solicitação de Transação Recusada: O Usuário atualmente possui outra solicitação de transação em andamento.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group" = "Entrada Inválida: A transação de grupo não precisa ser assinada pelo usuário da Carteira. ";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-unauthorized-user" = "A operação e/ou conta solicitada não foi autorizada pelo usuário.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-group-validation" = "Solicitação de Transação Recusada: O grupo de transação não foi validado pelo SDK Algorand.";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-invalid" = "A entrada fornecida é inválida.";
 
 /* (No Comment) */
+"wallet-connect-transaction-error-invalid-asset" = "Entrada Inválida: Ativo Inválido";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-key" = "Entrada Inválida: Chave Pública Inválida";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-invalid-signer" = "Erro de Assinatura: Uma transação na solicitação de transação requer uma chave privada (assinante) que não existe na Carteira conectada.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-multisig" = "A solicitação de transação contém um Tipo de Transação não Suportado: Múltipla Assinatura";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-node" = "Erro de Assinatura: Incompatibilidade de redes entre DApp e Carteira. Por exemplo, a Carteira está conectada à TestNet e a DApp está conectada à MainNet (ou vice-versa).";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-parse" = "Entrada Inválida: Incapaz de analisar a transação";
+
+/* (No Comment) */
 "wallet-connect-transaction-error-rejected" = "O usuário recusou a solicitação.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-rejected-user" = "Solicitação de Transação Recusada: O Usuário recusou a solicitação de transação.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-transaction-size" = "Entrada Inválida: A solicitação de transação contém mais de 16 transações";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unable-sign" = "Entrada Inválida: Incapaz de ser assinada";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unauthorized" = "A operação e/ou conta solicitada não foi autorizada pelo usuário.";
 
 /* (No Comment) */
 "wallet-connect-transaction-error-unsupported" = "A carteira não suporta a operação solicitada.";
+
+/* (No Comment) */
+"wallet-connect-transaction-error-unsupported-type" = "A solicitação de transação contém um Tipo de Transação não Suportado";
 
 /* (No Comment) */
 "wallet-connect-transaction-group-algos-title" = "Pagamento para %@";
