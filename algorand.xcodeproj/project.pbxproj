@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		046E823A271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */; };
+		046E823B271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */; };
+		046E823C271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */; };
+		046E823E271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */; };
+		046E823F271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */; };
+		046E8240271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */; };
 		170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */; };
 		170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFB224CC70A00520EA5 /* QRText.swift */; };
 		170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFD224CCBF300520EA5 /* QRView.swift */; };
@@ -3024,6 +3030,8 @@
 
 /* Begin PBXFileReference section */
 		030F6B1A27825B4720C008C6 /* Pods_algorand_staging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand_staging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAssetInformationViewTheme.swift; sourceTree = "<group>"; };
+		046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VerifiedAssetInformationViewController+Theme.swift"; sourceTree = "<group>"; };
 		0A0D3580FD8AFA3672317C5F /* Pods-algorand-prod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-prod.release.xcconfig"; path = "Target Support Files/Pods-algorand-prod/Pods-algorand-prod.release.xcconfig"; sourceTree = "<group>"; };
 		0DE1E4BC8EACAFB035745309 /* Pods-algorand.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.app store.xcconfig"; path = "Target Support Files/Pods-algorand/Pods-algorand.app store.xcconfig"; sourceTree = "<group>"; };
 		15FA165BDF6ABD213FF820E3 /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
@@ -5990,6 +5998,7 @@
 			isa = PBXGroup;
 			children = (
 				2B56714E23FFFA3A0037FCFA /* VerifiedAssetInformationView.swift */,
+				046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */,
 			);
 			path = Verified;
 			sourceTree = "<group>";
@@ -5998,6 +6007,7 @@
 			isa = PBXGroup;
 			children = (
 				2B567152240019D30037FCFA /* VerifiedAssetInformationViewController.swift */,
+				046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */,
 			);
 			path = Verified;
 			sourceTree = "<group>";
@@ -11061,6 +11071,7 @@
 				2B0D84FB2395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift in Sources */,
 				2B0322F8269F426E00C9B2F5 /* WCGroupTransactionSupplementaryHeaderView.swift in Sources */,
 				D41F933C2722B45000E9F2E7 /* UICollectionView+Layout.swift in Sources */,
+				046E8240271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */,
 				17BD4DF82292F1260003E49A /* ContactsViewController.swift in Sources */,
 				2BD36E342686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,
 				D46C647F26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */,
@@ -11774,6 +11785,7 @@
 				2B3E228126C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				2B0322DB269F1BB600C9B2F5 /* WCMainTransactionViewController.swift in Sources */,
 				D44EF48F271ADB6A00AF0D5C /* AlgoStatisticsViewTheme.swift in Sources */,
+				046E823C271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */,
 				2BF90F7625FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
 				2BB350C625892BD900A03BAC /* WrappedStackView.swift in Sources */,
 				2B3A34DE246D79A3001C8F22 /* NodeSelectionCell.swift in Sources */,
@@ -11986,6 +11998,7 @@
 				2B56B8342505013600AC7B8D /* LedgerAccountSelectionViewController.swift in Sources */,
 				2B0322F7269F426E00C9B2F5 /* WCGroupTransactionSupplementaryHeaderView.swift in Sources */,
 				D41F933B2722B45000E9F2E7 /* UICollectionView+Layout.swift in Sources */,
+				046E823F271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */,
 				2B56B8352505013600AC7B8D /* RekeyConfirmationViewModel.swift in Sources */,
 				2BD36E332686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,
 				D46C647E26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */,
@@ -12701,6 +12714,7 @@
 				2B3E228026C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				2B0322DA269F1BB600C9B2F5 /* WCMainTransactionViewController.swift in Sources */,
 				D44EF48E271ADB6A00AF0D5C /* AlgoStatisticsViewTheme.swift in Sources */,
+				046E823B271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */,
 				2BF90F7525FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
 				2BB350C525892BD900A03BAC /* WrappedStackView.swift in Sources */,
 				2B0F62CD24EC129D00DA22A6 /* AccountHeaderSupplementaryView.swift in Sources */,
@@ -12914,6 +12928,7 @@
 				2B8D383226B6EC2700E7351D /* ApplicationLocalState.swift in Sources */,
 				2B0322F6269F426E00C9B2F5 /* WCGroupTransactionSupplementaryHeaderView.swift in Sources */,
 				D41F933A2722B45000E9F2E7 /* UICollectionView+Layout.swift in Sources */,
+				046E823E271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */,
 				2BE9372524630AC800322C1E /* SelectAssetHeaderView.swift in Sources */,
 				2BD36E322686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,
 				2B56714F23FFFA3A0037FCFA /* VerifiedAssetInformationView.swift in Sources */,
@@ -13628,6 +13643,7 @@
 				2B3E227F26C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				2BB68F45261260DB0070FFE9 /* AccountsEmptyStateView.swift in Sources */,
 				D44EF48D271ADB6A00AF0D5C /* AlgoStatisticsViewTheme.swift in Sources */,
+				046E823A271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */,
 				2B0322D9269F1BB600C9B2F5 /* WCMainTransactionViewController.swift in Sources */,
 				2BF90F7425FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
 				2BB350C425892BD900A03BAC /* WrappedStackView.swift in Sources */,

@@ -18,38 +18,40 @@
 import UIKit
 
 class VerifiedAssetInformationViewController: BaseViewController {
-    
     private lazy var verifiedAssetInformationView = VerifiedAssetInformationView()
+    private lazy var theme = Theme()
     
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.tertiary
-        navigationItem.title = "verified-assets-title".localized
+        setNavigationBarTertiaryBackgroundColor()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        title = "verified-assets-title".localized
+    }
+    
+    override func configureNavigationBarAppearance() {
+        addBackBarButtonItem()
+    }
+
+    override func prepareLayout() {
+        verifiedAssetInformationView.customize(theme.verifiedAssetInformationViewTheme)
+        prepareWholeScreenLayoutFor(verifiedAssetInformationView)
+    }
+    
+    override func setListeners() {
+        verifiedAssetInformationView.setListeners()
     }
     
     override func linkInteractors() {
         verifiedAssetInformationView.delegate = self
     }
-    
-    override func prepareLayout() {
-        setupVerifiedAssetInformationViewLayout()
-    }
-    
-    override func configureNavigationBarAppearance() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.closeScreen(by: .dismiss, animated: true)
-        }
-        
-        leftBarButtonItems = [closeBarButtonItem]
-    }
 }
 
 extension VerifiedAssetInformationViewController {
-    private func setupVerifiedAssetInformationViewLayout() {
-        view.addSubview(verifiedAssetInformationView)
-        
-        verifiedAssetInformationView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+    private func addBackBarButtonItem() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .back) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
         }
+        
+        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 
