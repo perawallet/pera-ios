@@ -39,7 +39,7 @@ extension Account {
     }
     
     func amountDisplayWithFraction(for assetDetail: AssetDetail) -> String? {
-        return amount(for: assetDetail)?.toExactFractionLabel(fraction: assetDetail.fractionDecimals)
+        return amount(for: assetDetail)?.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
     }
 }
 

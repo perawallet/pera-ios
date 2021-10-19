@@ -343,8 +343,9 @@ extension SendAssetTransactionPreviewViewController {
     }
     
     private func validateTransaction() {
-        if let amountText = sendTransactionPreviewView.amountInputView.inputTextField.text {
-            amount = amountText.decimal / pow(10, assetDetail.fractionDecimals)
+        if let amountText = sendTransactionPreviewView.amountInputView.inputTextField.text,
+           let decimalValue = amountText.decimalForSendSeparator(with: assetDetail.fractionDecimals) {
+            amount = decimalValue
         }
             
         if !isTransactionValid() {
@@ -404,8 +405,8 @@ extension SendAssetTransactionPreviewViewController {
             sendTransactionPreviewView.transactionReceiverView.state = assetReceiverState
         case let .address(_, amount):
             if let sendAmount = amount,
-               let amountValue = Decimal(string: sendAmount) {
-                self.amount = amountValue
+                let amountInt = UInt64(sendAmount) {
+                self.amount = amountInt.assetAmount(fromFraction: assetDetail.fractionDecimals)
                 sendTransactionPreviewView.amountInputView.inputTextField.text
                     = self.amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
             }
