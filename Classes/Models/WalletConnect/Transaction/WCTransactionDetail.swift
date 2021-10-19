@@ -59,6 +59,7 @@ class WCTransactionDetail: Model {
     let stateHash: Data?
     let assetIdBeingConfigured: Int64?
     let assetConfigParams: WCAssetConfigParameters?
+    let transactionGroupId: String?
 
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -81,6 +82,7 @@ class WCTransactionDetail: Model {
         appCallId = try container.decodeIfPresent(Int64.self, forKey: .appCallId) ?? 0
         approvalHash = try container.decodeIfPresent(Data.self, forKey: .approvalHash)
         stateHash = try container.decodeIfPresent(Data.self, forKey: .stateHash)
+        transactionGroupId = try container.decodeIfPresent(String.self, forKey: .transactionGroupId)
 
         if type == .applicationCall {
             let defaultAppSchema = WCTransactionAppSchema()
@@ -149,6 +151,7 @@ class WCTransactionDetail: Model {
         try container.encodeIfPresent(stateHash, forKey: .stateHash)
         try container.encodeIfPresent(assetIdBeingConfigured, forKey: .assetIdBeingConfigured)
         try container.encodeIfPresent(assetConfigParams, forKey: .assetConfigParams)
+        try container.encodeIfPresent(transactionGroupId, forKey: .transactionGroupId)
     }
 }
 
@@ -338,6 +341,7 @@ extension WCTransactionDetail {
         case stateHash = "apsu"
         case assetIdBeingConfigured = "caid"
         case assetConfigParams = "apar"
+        case transactionGroupId = "grp"
     }
 }
 

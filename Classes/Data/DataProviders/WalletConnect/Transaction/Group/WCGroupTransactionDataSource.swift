@@ -185,7 +185,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected element kind")
         }
 
-        headerView.bind(WCGroupTransactionHeaderViewModel(transactionCount: transactions.count))
+        headerView.bind(WCGroupTransactionHeaderViewModel(transactions: transactions))
         return headerView
     }
 }
