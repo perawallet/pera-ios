@@ -13,25 +13,25 @@
 // limitations under the License.
 
 //
-//   StatisticsFooterView.swift
+//   AlgoStatisticsFooterView.swift
 
 import Macaroon
 import UIKit
 
-final class StatisticsFooterView: View {
+final class AlgoStatisticsFooterView: View {
     private lazy var titleLabel = UILabel()
-    private lazy var last24hVolumeInfoView = StatisticsInfoView()
-    private lazy var marketCapInfoView = StatisticsInfoView()
-    private lazy var previousCloseVolumeInfoView = StatisticsInfoView()
-    private lazy var openInfoView = StatisticsInfoView()
+    private lazy var last24hVolumeInfoView = AlgoStatisticsInfoView()
+    private lazy var marketCapInfoView = AlgoStatisticsInfoView()
+    private lazy var previousCloseVolumeInfoView = AlgoStatisticsInfoView()
+    private lazy var openInfoView = AlgoStatisticsInfoView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        customize(StatisticsFooterViewTheme())
+        customize(AlgoStatisticsFooterViewTheme())
     }
 
-    func customize(_ theme: StatisticsFooterViewTheme) {
+    func customize(_ theme: AlgoStatisticsFooterViewTheme) {
         addTitleLabel(theme)
         addLast24hVolumeInfoView(theme)
         addMarketCapInfoView(theme)
@@ -44,8 +44,8 @@ final class StatisticsFooterView: View {
     func customizeAppearance(_ styleSheet: StyleSheet) {}
 }
 
-extension StatisticsFooterView {
-    private func addTitleLabel(_ theme: StatisticsFooterViewTheme) {
+extension AlgoStatisticsFooterView {
+    private func addTitleLabel(_ theme: AlgoStatisticsFooterViewTheme) {
         titleLabel.customizeAppearance(theme.title)
 
         addSubview(titleLabel)
@@ -54,7 +54,7 @@ extension StatisticsFooterView {
         }
     }
 
-    private func addLast24hVolumeInfoView(_ theme: StatisticsFooterViewTheme) {
+    private func addLast24hVolumeInfoView(_ theme: AlgoStatisticsFooterViewTheme) {
         addSubview(last24hVolumeInfoView)
         last24hVolumeInfoView.snp.makeConstraints {
             $0.top == titleLabel.snp.bottom + theme.infoViewPaddings.top
@@ -63,7 +63,7 @@ extension StatisticsFooterView {
         }
     }
 
-    private func addMarketCapInfoView(_ theme: StatisticsFooterViewTheme) {
+    private func addMarketCapInfoView(_ theme: AlgoStatisticsFooterViewTheme) {
         addSubview(marketCapInfoView)
         marketCapInfoView.snp.makeConstraints {
             $0.top == last24hVolumeInfoView
@@ -73,7 +73,7 @@ extension StatisticsFooterView {
         }
     }
 
-    private func addPreviousCloseVolumeInfoView(_ theme: StatisticsFooterViewTheme) {
+    private func addPreviousCloseVolumeInfoView(_ theme: AlgoStatisticsFooterViewTheme) {
         addSubview(previousCloseVolumeInfoView)
         previousCloseVolumeInfoView.snp.makeConstraints {
             $0.top == last24hVolumeInfoView.snp.bottom + theme.infoViewPaddings.top
@@ -83,7 +83,7 @@ extension StatisticsFooterView {
         }
     }
 
-    private func addOpenInfoView(_ theme: StatisticsFooterViewTheme) {
+    private func addOpenInfoView(_ theme: AlgoStatisticsFooterViewTheme) {
         addSubview(openInfoView)
         openInfoView.snp.makeConstraints {
             $0.top == previousCloseVolumeInfoView
@@ -95,8 +95,8 @@ extension StatisticsFooterView {
     }
 }
 
-extension StatisticsFooterView {
-    func bindData(_ viewModel: StatisticsFooterViewModel) {
+extension AlgoStatisticsFooterView {
+    func bindData(_ viewModel: AlgoStatisticsFooterViewModel) {
         last24hVolumeInfoView.bindData(viewModel.last24hVolumeViewModel)
         marketCapInfoView.bindData(viewModel.marketCapViewModel)
         previousCloseVolumeInfoView.bindData(viewModel.previousCloseViewModel)

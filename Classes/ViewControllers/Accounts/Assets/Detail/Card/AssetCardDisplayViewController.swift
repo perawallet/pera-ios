@@ -201,7 +201,7 @@ extension AssetCardDisplayViewController: AlgosCardCellDelegate {
 
     func algosCardCellDidOpenAnalytics(_ algosCardCell: AlgosCardCell) {
         open(
-            .statistics,
+            .algoStatistics,
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,

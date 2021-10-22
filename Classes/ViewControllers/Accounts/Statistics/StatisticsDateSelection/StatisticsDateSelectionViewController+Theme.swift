@@ -13,11 +13,11 @@
 // limitations under the License.
 
 //
-//   StatisticsDateSelectionViewController+Theme.swift
+//   AlgoStatisticsDateSelectionViewController+Theme.swift
 
 import Macaroon
 
-extension StatisticsDateSelectionViewController {
+extension AlgoStatisticsDateSelectionViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
         let cellSize: LayoutSize

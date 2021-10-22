@@ -13,33 +13,33 @@
 // limitations under the License.
 
 //
-//   StatisticsInfoView.swift
+//   AlgoStatisticsInfoView.swift
 
 import Macaroon
 import UIKit
 
-final class StatisticsInfoView: View {
+final class AlgoStatisticsInfoView: View {
     private lazy var titleLabel = UILabel()
     private lazy var valueLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        customize(StatisticsInfoViewTheme())
+        customize(AlgoStatisticsInfoViewTheme())
     }
 
-    func customize(_ theme: StatisticsInfoViewTheme) {
+    func customize(_ theme: AlgoStatisticsInfoViewTheme) {
         addTitleLabel(theme)
         addValueLabel(theme)
     }
 
-    func prepareLayout(_ layoutSheet: StatisticsInfoViewTheme) {}
+    func prepareLayout(_ layoutSheet: AlgoStatisticsInfoViewTheme) {}
 
-    func customizeAppearance(_ styleSheet: StatisticsInfoViewTheme) {}
+    func customizeAppearance(_ styleSheet: AlgoStatisticsInfoViewTheme) {}
 }
 
-extension StatisticsInfoView {
-    func addTitleLabel(_ theme: StatisticsInfoViewTheme) {
+extension AlgoStatisticsInfoView {
+    func addTitleLabel(_ theme: AlgoStatisticsInfoViewTheme) {
         titleLabel.customizeAppearance(theme.title)
 
         addSubview(titleLabel)
@@ -48,7 +48,7 @@ extension StatisticsInfoView {
         }
     }
 
-    func addValueLabel(_ theme: StatisticsInfoViewTheme) {
+    func addValueLabel(_ theme: AlgoStatisticsInfoViewTheme) {
         valueLabel.customizeAppearance(theme.value)
 
         addSubview(valueLabel)
@@ -59,8 +59,8 @@ extension StatisticsInfoView {
     }
 }
 
-extension StatisticsInfoView: ViewModelBindable {
-    func bindData(_ viewModel: StatisticsInfoViewModel?) {
+extension AlgoStatisticsInfoView: ViewModelBindable {
+    func bindData(_ viewModel: AlgoStatisticsInfoViewModel?) {
         valueLabel.text = viewModel?.value
         titleLabel.text = viewModel?.title
     }

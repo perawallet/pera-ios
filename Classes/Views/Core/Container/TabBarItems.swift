@@ -47,11 +47,14 @@ class TransactionTabBarItem: TabBarItem {
     }
 }
 
-class StatisticsTabBarItem: TabBarItem {
+class AlgoStatisticsTabBarItem: TabBarItem {
     init(content: UIViewController) {
         super.init(
-            name: "statistics",
-            style: TabBarButtonItemStyle(icon: img("tabbar-icon-statistics"), selectedIcon: img("tabbar-icon-statistics-selected")),
+            name: "algo-statistics",
+            style: TabBarButtonItemStyle(
+                icon: img("tabbar-icon-algo-statistics"),
+                selectedIcon: img("tabbar-icon-algo-statistics-selected")
+            ),
             content: content
         )
     }

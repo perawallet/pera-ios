@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//   TransactionModalViewTheme.swift
+//   TabBarModalViewTheme.swift
 
 import Foundation
 import Macaroon
 import UIKit
 
-struct TransactionModalViewTheme: StyleSheet, LayoutSheet {
+struct TabBarModalViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let sendButton: ButtonStyle
     let receiveButton: ButtonStyle

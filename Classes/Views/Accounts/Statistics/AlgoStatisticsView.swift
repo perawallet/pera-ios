@@ -13,19 +13,19 @@
 // limitations under the License.
 
 //
-//   StatisticsView.swift
+//   AlgoStatisticsView.swift
 
 import UIKit
 import Macaroon
 
-final class StatisticsView: View {
-    weak var delegate: StatisticsViewDelegate?
+final class AlgoStatisticsView: View {
+    weak var delegate: AlgoStatisticsViewDelegate?
 
-    private lazy var theme = StatisticsViewTheme()
+    private lazy var theme = AlgoStatisticsViewTheme()
     private lazy var titleView = MainHeaderView()
-    private lazy var statisticsHeaderView = StatisticsHeaderView()
+    private lazy var algoStatisticsHeaderView = AlgoStatisticsHeaderView()
     private lazy var lineChartView = AlgorandChartView(chartCustomizer: AlgoUSDValueChartCustomizer())
-    private lazy var statisticsFooterView = StatisticsFooterView()
+    private lazy var algoStatisticsFooterView = AlgoStatisticsFooterView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,27 +34,27 @@ final class StatisticsView: View {
         linkInteractors()
     }
 
-    func customize(_ theme: StatisticsViewTheme) {
+    func customize(_ theme: AlgoStatisticsViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addTitleView(theme)
-        addStatisticsHeaderView(theme)
+        addAlgoStatisticsHeaderView(theme)
         addLineChartView(theme)
-        addStatisticsFooterView(theme)
+        addAlgoStatisticsFooterView(theme)
     }
 
-    func prepareLayout(_ layoutSheet: StatisticsViewTheme) {}
+    func prepareLayout(_ layoutSheet: AlgoStatisticsViewTheme) {}
 
-    func customizeAppearance(_ styleSheet: StatisticsViewTheme) {}
+    func customizeAppearance(_ styleSheet: AlgoStatisticsViewTheme) {}
 
     func linkInteractors() {
-        statisticsHeaderView.delegate = self
+        algoStatisticsHeaderView.delegate = self
         lineChartView.delegate = self
     }
 }
 
-extension StatisticsView {
-    private func addTitleView(_ theme: StatisticsViewTheme) {
+extension AlgoStatisticsView {
+    private func addTitleView(_ theme: AlgoStatisticsViewTheme) {
         titleView.setTitle("title-algorand".localized)
         titleView.setQRButtonHidden(true)
         titleView.setAddButtonHidden(true)
@@ -68,26 +68,26 @@ extension StatisticsView {
         }
     }
 
-    private func addStatisticsHeaderView(_ theme: StatisticsViewTheme) {
-        addSubview(statisticsHeaderView)
-        statisticsHeaderView.snp.makeConstraints {
+    private func addAlgoStatisticsHeaderView(_ theme: AlgoStatisticsViewTheme) {
+        addSubview(algoStatisticsHeaderView)
+        algoStatisticsHeaderView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.headerHorizontalInset)
             $0.top.equalTo(titleView.snp.bottom).offset(theme.headerTopInset)
         }
     }
 
-    private func addLineChartView(_ theme: StatisticsViewTheme) {
+    private func addLineChartView(_ theme: AlgoStatisticsViewTheme) {
         addSubview(lineChartView)
         lineChartView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(theme.chartHeight)
-            $0.top.equalTo(statisticsHeaderView.snp.bottom).offset(theme.chartVerticalInset)
+            $0.top.equalTo(algoStatisticsHeaderView.snp.bottom).offset(theme.chartVerticalInset)
         }
     }
 
-    private func addStatisticsFooterView(_ theme: StatisticsViewTheme) {
-        addSubview(statisticsFooterView)
-        statisticsFooterView.snp.makeConstraints {
+    private func addAlgoStatisticsFooterView(_ theme: AlgoStatisticsViewTheme) {
+        addSubview(algoStatisticsFooterView)
+        algoStatisticsFooterView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(theme.footerViewPaddings.leading)
             $0.trailing.equalToSuperview().inset(theme.footerViewPaddings.trailing)
             $0.top.equalTo(lineChartView.snp.bottom).offset(theme.footerViewPaddings.top)
@@ -96,26 +96,26 @@ extension StatisticsView {
     }
 }
 
-extension StatisticsView: AlgorandChartViewDelegate {
+extension AlgoStatisticsView: AlgorandChartViewDelegate {
     func algorandChartView(_ algorandChartView: AlgorandChartView, didSelectItemAt index: Int) {
-        delegate?.statisticsView(self, didSelectItemAt: index)
+        delegate?.algoStatisticsView(self, didSelectItemAt: index)
     }
 
     func algorandChartViewDidDeselect(_ algorandChartView: AlgorandChartView) {
-        delegate?.statisticsViewDidDeselect(self)
+        delegate?.algoStatisticsViewDidDeselect(self)
     }
 }
 
-extension StatisticsView: AlgoAnalyticsHeaderViewDelegate {
-    func algoAnalyticsHeaderViewDidTapDate(_ view: StatisticsHeaderView) {
-        delegate?.statisticsViewDidTapDate(self)
+extension AlgoStatisticsView: AlgoStatisticsHeaderViewDelegate {
+    func algoStatisticsHeaderViewDidTapDate(_ view: AlgoStatisticsHeaderView) {
+        delegate?.algoStatisticsViewDidTapDate(self)
     }
 }
 
-extension StatisticsView {
-    func bind(_ viewModel: StatisticsViewModel) {
+extension AlgoStatisticsView {
+    func bind(_ viewModel: AlgoStatisticsViewModel) {
         if let headerViewModel = viewModel.headerViewModel {
-            statisticsHeaderView.bindData(headerViewModel)
+            algoStatisticsHeaderView.bindData(headerViewModel)
         }
 
         if let chartViewModel = viewModel.chartViewModel {
@@ -123,17 +123,17 @@ extension StatisticsView {
         }
 
         if let footerViewModel = viewModel.footerViewModel {
-            statisticsFooterView.bindData(footerViewModel)
+            algoStatisticsFooterView.bindData(footerViewModel)
         }
     }
 
-    func bind(_ viewModel: StatisticsHeaderViewModel) {
-        statisticsHeaderView.bindData(viewModel)
+    func bind(_ viewModel: AlgoStatisticsHeaderViewModel) {
+        algoStatisticsHeaderView.bindData(viewModel)
     }
 }
 
-protocol StatisticsViewDelegate: AnyObject {
-    func statisticsView(_ view: StatisticsView, didSelectItemAt index: Int)
-    func statisticsViewDidDeselect(_ view: StatisticsView)
-    func statisticsViewDidTapDate(_ view: StatisticsView)
+protocol AlgoStatisticsViewDelegate: AnyObject {
+    func algoStatisticsView(_ view: AlgoStatisticsView, didSelectItemAt index: Int)
+    func algoStatisticsViewDidDeselect(_ view: AlgoStatisticsView)
+    func algoStatisticsViewDidTapDate(_ view: AlgoStatisticsView)
 }

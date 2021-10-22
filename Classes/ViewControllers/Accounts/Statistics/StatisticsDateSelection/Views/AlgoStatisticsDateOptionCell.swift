@@ -13,18 +13,17 @@
 // limitations under the License.
 
 //
-//   StatisticsViewController+Theme.swift
+//   AlgoStatisticsDateOptionCell.swift
 
-import Macaroon
+import UIKit
 
-extension StatisticsViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        let dateSelectionModalHeight: LayoutSize
+final class AlgoStatisticsDateOptionCell: BaseCollectionViewCell<AlgoStatisticsDateOptionView> {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        contextView.deselect()
+    }
 
-        init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
-            self.dateSelectionModalHeight = (UIScreen.main.bounds.width, 434)
-        }
+    func bindData(_ viewModel: AlgoStatisticsDateOptionViewModel) {
+        contextView.bindData(viewModel)
     }
 }

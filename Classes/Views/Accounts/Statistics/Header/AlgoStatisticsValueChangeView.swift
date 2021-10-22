@@ -13,29 +13,29 @@
 // limitations under the License.
 
 //
-//   StatisticsValueChangeView.swift
+//   AlgoStatisticsValueChangeView.swift
 
 import UIKit
 import Macaroon
 
-final class StatisticsValueChangeView: View {
+final class AlgoStatisticsValueChangeView: View {
     private lazy var changeImageView = UIImageView()
     private lazy var changeLabel = UILabel()
 
-    func customize(_ theme: StatisticsValueChangeViewTheme) {
+    func customize(_ theme: AlgoStatisticsValueChangeViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addChangeImageView(theme)
         addChangeLabel(theme)
     }
 
-    func prepareLayout(_ layoutSheet: StatisticsValueChangeViewTheme) {}
+    func prepareLayout(_ layoutSheet: AlgoStatisticsValueChangeViewTheme) {}
 
-    func customizeAppearance(_ styleSheet: StatisticsValueChangeViewTheme) {}
+    func customizeAppearance(_ styleSheet: AlgoStatisticsValueChangeViewTheme) {}
 }
 
-extension StatisticsValueChangeView {
-    private func addChangeImageView(_ theme: StatisticsValueChangeViewTheme) {
+extension AlgoStatisticsValueChangeView {
+    private func addChangeImageView(_ theme: AlgoStatisticsValueChangeViewTheme) {
         addSubview(changeImageView)
         changeImageView.snp.makeConstraints {
             $0.leading.top.bottom.equalToSuperview()
@@ -43,7 +43,7 @@ extension StatisticsValueChangeView {
         }
     }
 
-    private func addChangeLabel(_ theme: StatisticsValueChangeViewTheme) {
+    private func addChangeLabel(_ theme: AlgoStatisticsValueChangeViewTheme) {
         changeLabel.customizeAppearance(theme.changeLabel)
 
         addSubview(changeLabel)
@@ -55,8 +55,8 @@ extension StatisticsValueChangeView {
     }
 }
 
-extension StatisticsValueChangeView: ViewModelBindable {
-    func bindData(_ viewModel: StatisticsValueChangeViewModel?) {
+extension AlgoStatisticsValueChangeView: ViewModelBindable {
+    func bindData(_ viewModel: AlgoStatisticsValueChangeViewModel?) {
         changeImageView.image = viewModel?.image
         changeLabel.textColor = viewModel?.valueColor
         changeLabel.text = viewModel?.value

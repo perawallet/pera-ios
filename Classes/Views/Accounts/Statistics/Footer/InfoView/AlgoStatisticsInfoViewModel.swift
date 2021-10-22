@@ -13,17 +13,27 @@
 // limitations under the License.
 
 //
-//   StatisticsDateOptionCell.swift
+//   StatisticsInfoViewModel.swift
 
-import UIKit
+import Foundation
+import Macaroon
 
-final class StatisticsDateOptionCell: BaseCollectionViewCell<StatisticsDateOptionView> {
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contextView.deselect()
+final class AlgoStatisticsInfoViewModel {
+    private(set) var title: String?
+    private(set) var value: String?
+
+    init(title: String, value: String) {
+        bindTitle(title)
+        bindValue(value)
+    }
+}
+
+extension AlgoStatisticsInfoViewModel {
+    private func bindTitle(_ title: String) {
+        self.title = title
     }
 
-    func bindData(_ viewModel: StatisticsDateOptionViewModel) {
-        contextView.bindData(viewModel)
+    private func bindValue(_ value: String) {
+        self.value = value
     }
 }

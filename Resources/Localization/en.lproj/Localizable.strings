@@ -632,12 +632,12 @@ on your Ledger device (%d)";
 "chart-time-last-year" = "Last 1 Year";
 "chart-time-all" = "All Time";
 
-// MARK: Statistics Footer
-"statistics-title" = "Statistics";
-"statistics-24h-volume" = "24h Volume";
-"statistics-market-cap" = "Market Cap";
-"statistics-previous-close" = "Previous Close";
-"statistics-open" = "Open";
+// MARK: Algo Statistics Footer
+"algo-statistics-title" = "Statistics";
+"algo-statistics-24h-volume" = "24h Volume";
+"algo-statistics-market-cap" = "Market Cap";
+"algo-statistics-previous-close" = "Previous Close";
+"algo-statistics-open" = "Open";
 
 "ledger-account-verification-status-awaiting" = "Awaiting Verification";
 "ledger-account-verification-status-pending" = "Pending";

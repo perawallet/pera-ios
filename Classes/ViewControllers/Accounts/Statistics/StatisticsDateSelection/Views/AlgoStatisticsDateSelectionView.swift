@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//   StatisticsDateSelectionView.swift
+//   AlgoStatisticsDateSelectionView.swift
 
 import Macaroon
-import CoreGraphics
 
-final class StatisticsDateSelectionView: View {
+final class AlgoStatisticsDateSelectionView: View {
     private lazy var theme = StatisticsDateSelectionViewTheme()
+    
     private(set) lazy var dateOptionsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = theme.cellSpacing
@@ -28,7 +28,7 @@ final class StatisticsDateSelectionView: View {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.color
         collectionView.contentInset = UIEdgeInsets(theme.contentInset)
-        collectionView.registerCell(StatisticsDateOptionCell.self)
+        collectionView.registerCell(AlgoStatisticsDateOptionCell.self)
         return collectionView
     }()
 

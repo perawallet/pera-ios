@@ -13,14 +13,14 @@
 // limitations under the License.
 
 //
-//   StatisticsViewModel.swift
+//   AlgoStatisticsViewModel.swift
 
 import UIKit
 
-final class StatisticsViewModel {
-    private(set) var headerViewModel: StatisticsHeaderViewModel?
+final class AlgoStatisticsViewModel {
+    private(set) var headerViewModel: AlgoStatisticsHeaderViewModel?
     private(set) var chartViewModel: AlgosUSDChartViewModel?
-    private(set) var footerViewModel: StatisticsFooterViewModel?
+    private(set) var footerViewModel: AlgoStatisticsFooterViewModel?
 
     init(
         values: [AlgosUSDValue],
@@ -38,7 +38,7 @@ final class StatisticsViewModel {
         and timeInterval: AlgosUSDValueInterval,
         and currency: Currency
     ) {
-        headerViewModel = StatisticsHeaderViewModel(priceChange: priceChange, timeInterval: timeInterval, currency: currency)
+        headerViewModel = AlgoStatisticsHeaderViewModel(priceChange: priceChange, timeInterval: timeInterval, currency: currency)
     }
 
     private func bindChartViewModel(
@@ -50,6 +50,6 @@ final class StatisticsViewModel {
     }
 
     private func bindFooterViewModel() {
-        footerViewModel = StatisticsFooterViewModel("TODO") // Remove Mock Data
+        footerViewModel = AlgoStatisticsFooterViewModel("TODO") // Remove Mock Data
     }
 }

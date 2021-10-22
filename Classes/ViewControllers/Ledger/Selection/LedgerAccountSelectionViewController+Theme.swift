@@ -20,9 +20,11 @@ import Macaroon
 extension LedgerAccountSelectionViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
+        let cellSize: LayoutSize
 
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
+            cellSize = (UIScreen.main.bounds.width - 40, 76)
         }
     }
 }

@@ -13,18 +13,18 @@
 // limitations under the License.
 
 //
-//   TransactionModalView.swift
+//   TabBarModalView.swift
 
 import UIKit
 import Macaroon
 
-final class TransactionModalView: View {
+final class TabBarModalView: View {
     private(set) lazy var sendButton = UIButton()
     private lazy var sendLabel = UILabel()
     private(set) lazy var receiveButton = UIButton()
     private lazy var receiveLabel = UILabel()
 
-    func customize(_ theme: TransactionModalViewTheme) {
+    func customize(_ theme: TabBarModalViewTheme) {
         draw(corner: theme.corner)
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
@@ -39,8 +39,8 @@ final class TransactionModalView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 }
 
-extension TransactionModalView {
-    private func addSendButton(_ theme: TransactionModalViewTheme) {
+extension TabBarModalView {
+    private func addSendButton(_ theme: TabBarModalViewTheme) {
         sendButton.customizeAppearance(theme.sendButton)
 
         addSubview(sendButton)
@@ -50,7 +50,7 @@ extension TransactionModalView {
         }
     }
 
-    private func addSendLabel(_ theme: TransactionModalViewTheme) {
+    private func addSendLabel(_ theme: TabBarModalViewTheme) {
         sendLabel.customizeAppearance(theme.sendLabel)
 
         addSubview(sendLabel)
@@ -60,7 +60,7 @@ extension TransactionModalView {
         }
     }
 
-    private func addReceiveButton(_ theme: TransactionModalViewTheme) {
+    private func addReceiveButton(_ theme: TabBarModalViewTheme) {
         receiveButton.customizeAppearance(theme.receiveButton)
 
         addSubview(receiveButton)
@@ -70,7 +70,7 @@ extension TransactionModalView {
         }
     }
 
-    private func addReceiveLabel(_ theme: TransactionModalViewTheme) {
+    private func addReceiveLabel(_ theme: TabBarModalViewTheme) {
         receiveLabel.customizeAppearance(theme.receiveLabel)
 
         addSubview(receiveLabel)

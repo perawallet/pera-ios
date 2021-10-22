@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   StatisticsValueChangeViewModel.swift
+//   AlgoStatisticsValueChangeViewModel.swift
 
 import UIKit
 import Macaroon
 
-final class StatisticsValueChangeViewModel: PairedViewModel {
+final class AlgoStatisticsValueChangeViewModel: PairedViewModel {
     private(set) var image: UIImage?
     private(set) var valueColor: UIColor?
     private(set) var value: String?
@@ -30,7 +30,7 @@ final class StatisticsValueChangeViewModel: PairedViewModel {
     }
 }
 
-extension StatisticsValueChangeViewModel {
+extension AlgoStatisticsValueChangeViewModel {
     private func bindImage(_ priceChange: AlgoUSDPriceChange) {
         switch priceChange.getValueChangeStatus() {
         case .increased:

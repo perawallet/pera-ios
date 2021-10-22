@@ -26,6 +26,12 @@ extension Optional where Wrapped == String {
     }
 }
 
+extension Optional where Wrapped == Bool {
+    var falseIfNil: Wrapped {
+        return ifNil(false)
+    }
+}
+
 extension Optional where Wrapped: Collection {
     var isNilOrEmpty: Bool {
         self?.isEmpty ?? true

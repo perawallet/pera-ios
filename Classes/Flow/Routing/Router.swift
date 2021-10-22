@@ -371,8 +371,8 @@ class Router {
             viewController = TransactionTutorialViewController(isInitialDisplay: isInitialDisplay, configuration: configuration)
         case .recoverOptions:
             viewController = AccountRecoverOptionsViewController(configuration: configuration)
-        case .statistics:
-            viewController = StatisticsViewController(configuration: configuration)
+        case .algoStatistics:
+            viewController = AlgoStatisticsViewController(configuration: configuration)
         case let .ledgerAccountVerification(flow, selectedAccounts):
             viewController = LedgerAccountVerificationViewController(
                 accountSetupFlow: flow,
@@ -450,10 +450,10 @@ class Router {
             )
         case let .jsonDisplay(jsonData, title):
             viewController = JSONDisplayViewController(jsonData: jsonData, title: title, configuration: configuration)
-        case .transactionModal:
-            viewController = TransactionModalViewController(configuration: configuration)
-        case let .dateSelection(option):
-            viewController = StatisticsDateSelectionViewController(selectedOption: option, configuration: configuration)
+        case .tabBarModal:
+            viewController = TabBarModalViewController(configuration: configuration)
+        case let .algoStatisticsDateSelection(option):
+            viewController = AlgoStatisticsDateSelectionViewController(selectedOption: option, configuration: configuration)
         }
         
         return viewController as? T

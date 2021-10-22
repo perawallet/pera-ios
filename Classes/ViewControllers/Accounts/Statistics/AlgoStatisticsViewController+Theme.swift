@@ -13,24 +13,18 @@
 // limitations under the License.
 
 //
-//   TransactionModalViewController+Theme.swift
+//   AlgoStatisticsViewController+Theme.swift
 
 import Macaroon
 
-extension TransactionModalViewController {
+extension AlgoStatisticsViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
-        let chromeStyle: ViewStyle
-        let transactionModalViewTheme: TransactionModalViewTheme
-        let modalHeight: LayoutMetric
+        let dateSelectionModalHeight: LayoutSize
 
         init(_ family: LayoutFamily) {
-            backgroundColor = UIColor.clear
-            transactionModalViewTheme = TransactionModalViewTheme()
-            chromeStyle = [
-                .backgroundColor(color("bottomOverlayBackground"))
-            ]
-            modalHeight = 200
+            self.backgroundColor = AppColors.Shared.System.background
+            self.dateSelectionModalHeight = (UIScreen.main.bounds.width, 434)
         }
     }
 }

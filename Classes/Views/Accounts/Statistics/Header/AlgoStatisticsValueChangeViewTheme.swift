@@ -13,31 +13,27 @@
 // limitations under the License.
 
 //
-//   StatisticsViewTheme.swift
+//   AlgoStatisticsValueChangeViewTheme.swift
 
 import Foundation
 import Macaroon
 import UIKit
 
-struct StatisticsViewTheme: StyleSheet, LayoutSheet {
+struct AlgoStatisticsValueChangeViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
-
-    let headerTopInset: LayoutMetric 
-    let headerHorizontalInset: LayoutMetric
-    let chartVerticalInset: LayoutMetric
-    let chartHeight: LayoutMetric
-    let bottomInset: LayoutMetric
-    let footerViewHorizontalPadding: LayoutMetric
-    let footerViewPaddings: LayoutPaddings
+    let changeLabel: TextStyle
+    let imageSize: LayoutSize
+    let horizontalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
-        self.footerViewHorizontalPadding = 21
-        self.headerTopInset = 22
-        self.headerHorizontalInset = 24
-        self.chartVerticalInset = 75
-        self.chartHeight = 130
-        self.footerViewPaddings = (42, 21, .noMetric, 21)
-        self.bottomInset = 24
+        self.backgroundColor = UIColor.clear
+        self.changeLabel = [
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMMono.medium.make(13)),
+            .textAlignment(.left),
+            .textOverflow(.singleLineFitting)
+        ]
+        self.imageSize = (16, 16)
+        self.horizontalInset = 4
     }
 }

@@ -13,27 +13,28 @@
 // limitations under the License.
 
 //
-//   StatisticsDateOptionViewTheme.swift
+//   AlgoStatisticsInfoViewTheme.swift
 
 import Macaroon
 
-struct StatisticsDateOptionViewTheme: LayoutSheet, StyleSheet {
+struct AlgoStatisticsInfoViewTheme: LayoutSheet, StyleSheet {
     let title: TextStyle
-    let selectedImage: ImageStyle
-    let selectedImageSize: LayoutSize
-
-    let horizontalPadding: LayoutMetric
+    let value: TextStyle
+    let verticalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.title = [
-            .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main)
+            .font(Fonts.DMSans.regular.make(13)),
+            .textColor(AppColors.Components.Text.gray),
+            .textOverflow(.singleLineFitting),
+            .textAlignment(.left)
         ]
-        self.selectedImage = [
-            .content("icon-circle-check")
+        self.value = [
+            .font(Fonts.DMMono.regular.make(19)),
+            .textColor(AppColors.Components.Text.main),
+            .textOverflow(.singleLineFitting),
+            .textAlignment(.left)
         ]
-
-        self.selectedImageSize = (40, 40)
-        self.horizontalPadding = 24
+        self.verticalPadding = 12
     }
 }

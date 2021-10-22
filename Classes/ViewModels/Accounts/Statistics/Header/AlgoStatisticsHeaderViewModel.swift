@@ -13,16 +13,16 @@
 // limitations under the License.
 
 //
-//   StatisticsHeaderViewModel.swift
+//   AlgoStatisticsHeaderViewModel.swift
 
 import UIKit
 import SwiftDate
 import Macaroon
 
-final class StatisticsHeaderViewModel: ViewModel {
+final class AlgoStatisticsHeaderViewModel: ViewModel {
     private(set) var amount: String?
     private(set) var isValueChangeDisplayed = true
-    private(set) var valueChangeViewModel: StatisticsValueChangeViewModel?
+    private(set) var valueChangeViewModel: AlgoStatisticsValueChangeViewModel?
     private(set) var date: String?
 
     private let priceChange: AlgoUSDPriceChange?
@@ -41,7 +41,7 @@ final class StatisticsHeaderViewModel: ViewModel {
     }
 }
 
-extension StatisticsHeaderViewModel {
+extension AlgoStatisticsHeaderViewModel {
     private func bindAmount(from priceChange: AlgoUSDPriceChange, and currency: Currency) {
         guard let currentAlgosUSDValue = priceChange.lastPrice else { return }
 
@@ -63,7 +63,7 @@ extension StatisticsHeaderViewModel {
     }
 
     private func bindValueChangeViewModel(from priceChange: AlgoUSDPriceChange) {
-        valueChangeViewModel = StatisticsValueChangeViewModel(priceChange)
+        valueChangeViewModel = AlgoStatisticsValueChangeViewModel(priceChange)
     }
 
     private func bindDate(from priceChange: AlgoUSDPriceChange, and timeInterval: AlgosUSDValueInterval) {

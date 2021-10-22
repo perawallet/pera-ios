@@ -13,22 +13,25 @@
 // limitations under the License.
 
 //
-//   StatisticsDateOptionViewModel.swift
+//   AlgoStatisticsFooterViewTheme.swift]
 
 import Macaroon
 
-final class StatisticsDateOptionViewModel {
-    private(set) var title: String?
-    private(set) var isSelected: Bool?
+struct AlgoStatisticsFooterViewTheme: LayoutSheet, StyleSheet {
+    let title: TextStyle
+    let infoViewPaddings: LayoutPaddings
+    let infoViewWidth: LayoutMetric
 
-    init(_ option: AlgosUSDValueInterval, isSelected: Bool) {
-        bindTitle(option)
-        self.isSelected = isSelected
-    }
-}
+    init(_ family: LayoutFamily) {
+        self.title = [
+            .content("algo-statistics-title".localized),
+            .font(Fonts.DMSans.medium.make(15)),
+            .textColor(AppColors.Components.Text.main),
+            .textOverflow(.singleLineFitting),
+            .textAlignment(.left)
+        ]
 
-extension StatisticsDateOptionViewModel {
-    private func bindTitle(_ option: AlgosUSDValueInterval) {
-        title = option.toString()
+        self.infoViewPaddings = (20, 17, 20, 17)
+        self.infoViewWidth = 155
     }
 }

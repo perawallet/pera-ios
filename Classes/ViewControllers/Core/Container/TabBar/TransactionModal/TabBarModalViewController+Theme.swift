@@ -13,27 +13,24 @@
 // limitations under the License.
 
 //
-//   StatisticsInfoViewModel.swift
+//   TabBarModalViewController+Theme.swift
 
-import Foundation
 import Macaroon
 
-final class StatisticsInfoViewModel {
-    private(set) var title: String?
-    private(set) var value: String?
+extension TabBarModalViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: Color
+        let chromeStyle: ViewStyle
+        let tabBarModalViewTheme: TabBarModalViewTheme
+        let modalHeight: LayoutMetric
 
-    init(title: String, value: String) {
-        bindTitle(title)
-        bindValue(value)
-    }
-}
-
-extension StatisticsInfoViewModel {
-    private func bindTitle(_ title: String) {
-        self.title = title
-    }
-
-    private func bindValue(_ value: String) {
-        self.value = value
+        init(_ family: LayoutFamily) {
+            backgroundColor = UIColor.clear
+            tabBarModalViewTheme = TabBarModalViewTheme()
+            chromeStyle = [
+                .backgroundColor(color("bottomOverlayBackground"))
+            ]
+            modalHeight = 200
+        }
     }
 }

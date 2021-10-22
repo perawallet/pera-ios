@@ -13,22 +13,22 @@
 // limitations under the License.
 
 //
-//   StatisticsDateOptionView.swift
+//   AlgoStatisticsDateOptionView.swift
 
 import UIKit
 import Macaroon
 
-final class StatisticsDateOptionView: View {
+final class AlgoStatisticsDateOptionView: View {
     private lazy var titleLabel = UILabel()
     private lazy var selectedIconImageView = UIImageView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        customize(StatisticsDateOptionViewTheme())
+        customize(AlgoStatisticsDateOptionViewTheme())
     }
 
-    func customize(_ theme: StatisticsDateOptionViewTheme) {
+    func customize(_ theme: AlgoStatisticsDateOptionViewTheme) {
         addTitleLabel(theme)
         addSelectedIconImageView(theme)
     }
@@ -38,8 +38,8 @@ final class StatisticsDateOptionView: View {
     func customizeAppearance(_ styleSheet: StyleSheet) {}
 }
 
-extension StatisticsDateOptionView {
-    private func addTitleLabel(_ theme: StatisticsDateOptionViewTheme) {
+extension AlgoStatisticsDateOptionView {
+    private func addTitleLabel(_ theme: AlgoStatisticsDateOptionViewTheme) {
         titleLabel.customizeAppearance(theme.title)
 
         addSubview(titleLabel)
@@ -51,7 +51,7 @@ extension StatisticsDateOptionView {
         }
     }
 
-    private func addSelectedIconImageView(_ theme: StatisticsDateOptionViewTheme) {
+    private func addSelectedIconImageView(_ theme: AlgoStatisticsDateOptionViewTheme) {
         selectedIconImageView.customizeAppearance(theme.selectedImage)
 
         addSubview(selectedIconImageView)
@@ -65,10 +65,10 @@ extension StatisticsDateOptionView {
     }
 }
 
-extension StatisticsDateOptionView {
-    func bindData(_ viewModel: StatisticsDateOptionViewModel) {
+extension AlgoStatisticsDateOptionView {
+    func bindData(_ viewModel: AlgoStatisticsDateOptionViewModel) {
         titleLabel.text = viewModel.title
-        selectedIconImageView.isHidden = !(viewModel.isSelected ?? false)
+        selectedIconImageView.isHidden = !(viewModel.isSelected.falseIfNil)
     }
 
     func select() {

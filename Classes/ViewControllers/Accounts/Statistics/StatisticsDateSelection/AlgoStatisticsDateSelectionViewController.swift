@@ -13,20 +13,20 @@
 // limitations under the License.
 
 //
-//   StatisticsDateSelectionViewController.swift
+//   AlgoStatisticsDateSelectionViewController.swift
 
 import UIKit
 import Macaroon
 
-final class StatisticsDateSelectionViewController: BaseViewController {
-    weak var delegate: StatisticsDateSelectionViewControllerDelegate?
+final class AlgoStatisticsDateSelectionViewController: BaseViewController {
+    weak var delegate: AlgoStatisticsDateSelectionViewControllerDelegate?
 
     override var shouldShowNavigationBar: Bool {
         return false
     }
 
     private lazy var theme = Theme()
-    private lazy var statisticsDateSelectionView = StatisticsDateSelectionView()
+    private lazy var algoStatisticsDateSelectionView = AlgoStatisticsDateSelectionView()
 
     private var selectedOption: AlgosUSDValueInterval
 
@@ -40,34 +40,34 @@ final class StatisticsDateSelectionViewController: BaseViewController {
     }
 
     override func linkInteractors() {
-        statisticsDateSelectionView.dateOptionsCollectionView.delegate = self
-        statisticsDateSelectionView.dateOptionsCollectionView.dataSource = self
+        algoStatisticsDateSelectionView.dateOptionsCollectionView.delegate = self
+        algoStatisticsDateSelectionView.dateOptionsCollectionView.dataSource = self
     }
 
     override func prepareLayout() {
-        addTransactionFilterView()
+        addAlgoStatisticsDateSelectionView()
     }
 }
 
-extension StatisticsDateSelectionViewController {
-    private func addTransactionFilterView() {
-        view.addSubview(statisticsDateSelectionView)
-        statisticsDateSelectionView.snp.makeConstraints {
+extension AlgoStatisticsDateSelectionViewController {
+    private func addAlgoStatisticsDateSelectionView() {
+        view.addSubview(algoStatisticsDateSelectionView)
+        algoStatisticsDateSelectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
 }
 
-extension StatisticsDateSelectionViewController: UICollectionViewDataSource {
+extension AlgoStatisticsDateSelectionViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return AlgosUSDValueInterval.allCases.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: StatisticsDateOptionCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell: AlgoStatisticsDateOptionCell = collectionView.dequeueReusableCell(for: indexPath)
         let selectedOption = AlgosUSDValueInterval.allCases[indexPath.item]
         cell.bindData(
-            StatisticsDateOptionViewModel(
+            AlgoStatisticsDateOptionViewModel(
                 selectedOption,
                 isSelected: self.selectedOption == selectedOption)
         )
@@ -75,10 +75,10 @@ extension StatisticsDateSelectionViewController: UICollectionViewDataSource {
     }
 }
 
-extension StatisticsDateSelectionViewController: UICollectionViewDelegateFlowLayout {
+extension AlgoStatisticsDateSelectionViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         selectedOption = AlgosUSDValueInterval.allCases[indexPath.item]
-        delegate?.statisticsDateSelectionViewController(self, didSelect: selectedOption)
+        delegate?.algoStatisticsDateSelectionViewController(self, didSelect: selectedOption)
         dismissScreen()
     }
 
@@ -91,9 +91,9 @@ extension StatisticsDateSelectionViewController: UICollectionViewDelegateFlowLay
     }
 }
 
-protocol StatisticsDateSelectionViewControllerDelegate: AnyObject {
-    func statisticsDateSelectionViewController(
-        _ statisticsDateSelectionViewController: StatisticsDateSelectionViewController,
+protocol AlgoStatisticsDateSelectionViewControllerDelegate: AnyObject {
+    func algoStatisticsDateSelectionViewController(
+        _ algoStatisticsDateSelectionViewController: AlgoStatisticsDateSelectionViewController,
         didSelect selectedOption: AlgosUSDValueInterval
     )
 }

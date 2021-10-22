@@ -13,32 +13,32 @@
 // limitations under the License.
 
 //
-//   TransactionModalViewController.swift
+//   TabBarModalViewController.swift
 
 import Macaroon
 import UIKit
 
-final class TransactionModalViewController: BaseViewController {
-    weak var delegate: TransactionModalViewControllerDelegate?
+final class TabBarModalViewController: BaseViewController {
+    weak var delegate: TabBarModalViewControllerDelegate?
 
     private lazy var chromeView = UIView()
-    private lazy var transactionModalView = TransactionModalView()
+    private lazy var tabBarModalView = TabBarModalView()
     private lazy var theme = Theme()
     
     override func setListeners() {
-        transactionModalView.sendButton.addTarget(self, action: #selector(notifyDelegateToSend), for: .touchUpInside)
-        transactionModalView.receiveButton.addTarget(self, action: #selector(notifyDelegateToReceive), for: .touchUpInside)
+        tabBarModalView.sendButton.addTarget(self, action: #selector(notifyDelegateToSend), for: .touchUpInside)
+        tabBarModalView.receiveButton.addTarget(self, action: #selector(notifyDelegateToReceive), for: .touchUpInside)
     }
 
     override func prepareLayout() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addChrome(theme)
-        addTransacationModal(theme)
+        addTabBarModal(theme)
     }
 }
 
-extension TransactionModalViewController {
+extension TabBarModalViewController {
     func addChrome(_ theme: Theme) {
         chromeView.customizeAppearance(theme.chromeStyle)
 
@@ -48,30 +48,30 @@ extension TransactionModalViewController {
         }
     }
 
-    func addTransacationModal(_ theme: Theme) {
-        transactionModalView.customize(theme.transactionModalViewTheme)
+    func addTabBarModal(_ theme: Theme) {
+        tabBarModalView.customize(theme.tabBarModalViewTheme)
 
-        view.addSubview(transactionModalView)
-        transactionModalView.snp.makeConstraints {
+        view.addSubview(tabBarModalView)
+        tabBarModalView.snp.makeConstraints {
             $0.fitToHeight(theme.modalHeight)
             $0.bottom.leading.trailing.equalToSuperview()
         }
     }
 }
 
-extension TransactionModalViewController {
+extension TabBarModalViewController {
     @objc
     private func notifyDelegateToSend() {
-        delegate?.transactionModalViewControllerDidSend(self)
+        delegate?.tabBarModalViewControllerDidSend(self)
     }
 
     @objc
     private func notifyDelegateToReceive() {
-        delegate?.transactionModalViewControllerDidReceive(self)
+        delegate?.tabBarModalViewControllerDidReceive(self)
     }
 }
 
-protocol TransactionModalViewControllerDelegate: AnyObject {
-    func transactionModalViewControllerDidSend(_ transactionModalViewController: TransactionModalViewController)
-    func transactionModalViewControllerDidReceive(_ transactionModalViewController: TransactionModalViewController)
+protocol TabBarModalViewControllerDelegate: AnyObject {
+    func tabBarModalViewControllerDidSend(_ tabBarModalViewController: TabBarModalViewController)
+    func tabBarModalViewControllerDidReceive(_ tabBarModalViewController: TabBarModalViewController)
 }

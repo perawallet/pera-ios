@@ -13,11 +13,11 @@
 // limitations under the License.
 
 //
-//   StatisticsViewController.swift
+//   AlgoStatisticsViewController.swift
 
 import UIKit
 
-final class StatisticsViewController: BaseScrollViewController {
+final class AlgoStatisticsViewController: BaseScrollViewController {
     override var shouldShowNavigationBar: Bool {
         return false
     }
@@ -31,9 +31,9 @@ final class StatisticsViewController: BaseScrollViewController {
     )
 
     private lazy var theme = Theme()
-    private lazy var statisticsView = StatisticsView()
+    private lazy var algoStatisticsView = AlgoStatisticsView()
 
-    private lazy var dataController = StatisticsDataController(api: api)
+    private lazy var algoStatisticsDataController = AlgoStatisticsDataController(api: api)
     private lazy var assetCardDisplayDataController: AssetCardDisplayDataController = {
         guard let api = api else {
             fatalError("Api must be set before accessing this view controller.")
@@ -64,27 +64,27 @@ final class StatisticsViewController: BaseScrollViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
-        addStatisticsView()
+        addAlgoStatisticsView()
     }
 
     override func linkInteractors() {
         super.linkInteractors()
-        statisticsView.delegate = self
-        dataController.delegate = self
+        algoStatisticsView.delegate = self
+        algoStatisticsDataController.delegate = self
     }
 }
 
-extension StatisticsViewController {
-    private func addStatisticsView() {
-        contentView.addSubview(statisticsView)
-        statisticsView.snp.makeConstraints {
+extension AlgoStatisticsViewController {
+    private func addAlgoStatisticsView() {
+        contentView.addSubview(algoStatisticsView)
+        algoStatisticsView.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.top.safeEqualToTop(of: self)
         }
     }
 }
 
-extension StatisticsViewController {
+extension AlgoStatisticsViewController {
     private func fetchCurrency(then completion: @escaping () -> Void) {
         assetCardDisplayDataController.getCurrency { [weak self] currency in
             if let currency = currency {
@@ -95,25 +95,25 @@ extension StatisticsViewController {
     }
     
     private func getChartData(for interval: AlgosUSDValueInterval = .hourly) {
-        dataController.getChartData(for: interval)
+        algoStatisticsDataController.getChartData(for: interval)
     }
 }
 
-extension StatisticsViewController: StatisticsViewDelegate {
-    func statisticsViewDidTapDate(_ view: StatisticsView) {
+extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
+    func algoStatisticsViewDidTapDate(_ view: AlgoStatisticsView) {
         let controller = open(
-            .dateSelection(option: selectedTimeInterval),
+            .algoStatisticsDateSelection(option: selectedTimeInterval),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
                 transitioningDelegate: filterOptionsPresenter
             )
-        ) as? StatisticsDateSelectionViewController
+        ) as? AlgoStatisticsDateSelectionViewController
 
         controller?.delegate = self
     }
 
-    func statisticsView(_ view: StatisticsView, didSelectItemAt index: Int) {
+    func algoStatisticsView(_ view: AlgoStatisticsView, didSelectItemAt index: Int) {
         guard let values = chartEntries,
               !values.isEmpty,
               let selectedPrice = values[safe: index] else { return }
@@ -121,7 +121,7 @@ extension StatisticsViewController: StatisticsViewDelegate {
         bindHeaderView(with: values, selectedPrice: selectedPrice)
     }
     
-    func statisticsViewDidDeselect(_ view: StatisticsView) {
+    func algoStatisticsViewDidDeselect(_ view: AlgoStatisticsView) {
         guard let values = chartEntries,
               !values.isEmpty else { return }
 
@@ -137,8 +137,8 @@ extension StatisticsViewController: StatisticsViewDelegate {
             selectedPrice: selectedPrice,
             currency: currency
         )
-        statisticsView.bind(
-            StatisticsHeaderViewModel(
+        algoStatisticsView.bind(
+            AlgoStatisticsHeaderViewModel(
                 priceChange: priceChange,
                 timeInterval: selectedTimeInterval,
                 currency: currency
@@ -147,9 +147,9 @@ extension StatisticsViewController: StatisticsViewDelegate {
     }
 }
 
-extension StatisticsViewController: StatisticsDateSelectionViewControllerDelegate {
-    func statisticsDateSelectionViewController(
-        _ statisticsDateSelectionViewController: StatisticsDateSelectionViewController,
+extension AlgoStatisticsViewController: AlgoStatisticsDateSelectionViewControllerDelegate {
+    func algoStatisticsDateSelectionViewController(
+        _ algoStatisticsDateSelectionViewController: AlgoStatisticsDateSelectionViewController,
         didSelect selectedOption: AlgosUSDValueInterval
     ) {
         selectedTimeInterval = selectedOption
@@ -157,13 +157,13 @@ extension StatisticsViewController: StatisticsDateSelectionViewControllerDelegat
     }
 }
 
-extension StatisticsViewController: StatisticsDataControllerDelegate {
-    func statisticsDataController(_ dataController: StatisticsDataController, didFetch values: [AlgosUSDValue]) {
+extension AlgoStatisticsViewController: AlgoStatisticsDataControllerDelegate {
+    func algoStatisticsDataController(_ dataController: AlgoStatisticsDataController, didFetch values: [AlgosUSDValue]) {
         chartEntries = values
         bindView(with: values)
     }
 
-    func statisticsDataControllerDidFailToFetch(_ dataController: StatisticsDataController) {
+    func algoStatisticsDataControllerDidFailToFetch(_ dataController: AlgoStatisticsDataController) {
         chartEntries = nil
     }
 
@@ -171,8 +171,8 @@ extension StatisticsViewController: StatisticsDataControllerDelegate {
         guard let currency = currency else { return }
 
         let priceChange = AlgoUSDPriceChange(firstPrice: values.first, lastPrice: values.last, selectedPrice: nil, currency: currency)
-        statisticsView.bind(
-            StatisticsViewModel(
+        algoStatisticsView.bind(
+            AlgoStatisticsViewModel(
                 values: values,
                 priceChange: priceChange,
                 timeInterval: selectedTimeInterval,

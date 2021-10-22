@@ -21,9 +21,11 @@ final class LedgerAccountSelectionListLayout: NSObject {
     weak var delegate: LedgerAccountSelectionListLayoutDelegate?
     
     private weak var dataSource: LedgerAccountSelectionDataSource?
+    private let theme: LedgerAccountSelectionViewController.Theme
 
-    init(dataSource: LedgerAccountSelectionDataSource) {
+    init(theme: LedgerAccountSelectionViewController.Theme, dataSource: LedgerAccountSelectionDataSource) {
         self.dataSource = dataSource
+        self.theme = theme
         super.init()
     }
 }
@@ -34,8 +36,7 @@ extension LedgerAccountSelectionListLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        let cellSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 76)
-        return cellSize
+        return  CGSize(theme.cellSize)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

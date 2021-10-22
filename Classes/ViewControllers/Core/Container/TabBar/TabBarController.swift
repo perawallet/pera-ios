@@ -53,9 +53,9 @@ final class TabBarController: UIViewController {
     private var isDisplayingTransactionButtons = false {
         didSet {
             if isDisplayingTransactionButtons {
-                presentTransactionFlow()
+                presentTabBarModal()
             } else {
-                dismissTransactionFlow()
+                dismissTabBarModal()
             }
         }
     }
@@ -74,7 +74,7 @@ final class TabBarController: UIViewController {
 
     private lazy var accountsViewController = AccountsViewController(configuration: configuration)
     private lazy var contactsViewController = ContactsViewController(configuration: configuration)
-    private lazy var statisticsViewController = StatisticsViewController(configuration: configuration)
+    private lazy var algoStatisticsViewController = AlgoStatisticsViewController(configuration: configuration)
     private lazy var settingsViewController = SettingsViewController(configuration: configuration)
     
     private let configuration: ViewControllerConfiguration
@@ -166,7 +166,7 @@ extension TabBarController {
     private func setupTabBarController() {
         items = [
             AccountsTabBarItem(content: NavigationController(rootViewController: accountsViewController)),
-            StatisticsTabBarItem(content: NavigationController(rootViewController: statisticsViewController)),
+            AlgoStatisticsTabBarItem(content: NavigationController(rootViewController: algoStatisticsViewController)),
             TransactionTabBarItem(),
             ContactsTabBarItem(content: NavigationController(rootViewController: contactsViewController)),
             SettingsTabBarItem(content: NavigationController(rootViewController: settingsViewController))
@@ -401,32 +401,32 @@ enum TransactionAction {
 }
 
 extension TabBarController {
-    private func dismissTransactionFlow() {
+    private func dismissTabBarModal() {
         animateCenterButtonAsSelected(false)
         selectedContent?.dismiss(animated: true)
     }
 
-    private func presentTransactionFlow() {
+    private func presentTabBarModal() {
         animateCenterButtonAsSelected(true)
-        let transactionModalViewController = selectedContent?.open(
-            .transactionModal,
+        let tabBarModalViewController = selectedContent?.open(
+            .tabBarModal,
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .overCurrentContext,
                 transitionStyle: nil,
                 transitioningDelegate: nil
             )
-        ) as? TransactionModalViewController
-        transactionModalViewController?.delegate = self
+        ) as? TabBarModalViewController
+        tabBarModalViewController?.delegate = self
     }
 }
 
-extension TabBarController: TransactionModalViewControllerDelegate {
-    func transactionModalViewControllerDidSend(_ transactionModalViewController: TransactionModalViewController) {
+extension TabBarController: TabBarModalViewControllerDelegate {
+    func tabBarModalViewControllerDidSend(_ tabBarModalViewController: TabBarModalViewController) {
         let controller = open(.selectAsset(transactionAction: .send), by: .present) as? SelectAssetViewController
         controller?.delegate = self
     }
 
-    func transactionModalViewControllerDidReceive(_ transactionModalViewController: TransactionModalViewController) {
+    func tabBarModalViewControllerDidReceive(_ tabBarModalViewController: TabBarModalViewController) {
         let controller = open(.selectAsset(transactionAction: .request), by: .present) as? SelectAssetViewController
         controller?.delegate = self
     }

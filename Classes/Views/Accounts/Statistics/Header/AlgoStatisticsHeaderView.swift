@@ -13,17 +13,17 @@
 // limitations under the License.
 
 //
-//   StatisticsHeaderView.swift
+//   AlgoStatisticsHeaderView.swift
 
 import UIKit
 import Macaroon
 
-final class StatisticsHeaderView: View {
-    weak var delegate: AlgoAnalyticsHeaderViewDelegate?
+final class AlgoStatisticsHeaderView: View {
+    weak var delegate: AlgoStatisticsHeaderViewDelegate?
 
     private lazy var amountLabel = UILabel()
     private lazy var informationStackView = UIStackView()
-    private lazy var valueChangeView = StatisticsValueChangeView()
+    private lazy var valueChangeView = AlgoStatisticsValueChangeView()
     private lazy var dateStackView = UIStackView()
     private lazy var dateLabel = UILabel()
     private lazy var arrowDownImageView = UIImageView()
@@ -31,35 +31,35 @@ final class StatisticsHeaderView: View {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        customize(StatisticsHeaderViewTheme())
+        customize(AlgoStatisticsHeaderViewTheme())
         linkInteractors()
     }
 
-    func customize(_ theme: StatisticsHeaderViewTheme) {
+    func customize(_ theme: AlgoStatisticsHeaderViewTheme) {
         customizeBaseAppearance(backgroundColor: UIColor.clear)
 
         addAmountLabel(theme)
         addInformationStackView(theme)
     }
 
-    func prepareLayout(_ layoutSheet: StatisticsHeaderViewTheme) {}
+    func prepareLayout(_ layoutSheet: AlgoStatisticsHeaderViewTheme) {}
 
-    func customizeAppearance(_ styleSheet: StatisticsHeaderViewTheme) {}
+    func customizeAppearance(_ styleSheet: AlgoStatisticsHeaderViewTheme) {}
 
     func linkInteractors() {
         dateStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapDate)))
     }
 }
 
-extension StatisticsHeaderView {
+extension AlgoStatisticsHeaderView {
     @objc
     private func didTapDate() {
-        delegate?.algoAnalyticsHeaderViewDidTapDate(self)
+        delegate?.algoStatisticsHeaderViewDidTapDate(self)
     }
 }
 
-extension StatisticsHeaderView {
-    private func addAmountLabel(_ theme: StatisticsHeaderViewTheme) {
+extension AlgoStatisticsHeaderView {
+    private func addAmountLabel(_ theme: AlgoStatisticsHeaderViewTheme) {
         amountLabel.customizeAppearance(theme.amountLabel)
 
         addSubview(amountLabel)
@@ -68,7 +68,7 @@ extension StatisticsHeaderView {
         }
     }
 
-    private func addInformationStackView(_ theme: StatisticsHeaderViewTheme) {
+    private func addInformationStackView(_ theme: AlgoStatisticsHeaderViewTheme) {
         informationStackView.distribution = .equalSpacing
         informationStackView.alignment = .center
         informationStackView.spacing = theme.horizontalSpacing
@@ -83,7 +83,7 @@ extension StatisticsHeaderView {
         addDateStackView(theme)
     }
 
-    private func addValueChangeView(_ theme: StatisticsHeaderViewTheme) {
+    private func addValueChangeView(_ theme: AlgoStatisticsHeaderViewTheme) {
         valueChangeView.customize(theme.valueChangeViewTheme)
 
         valueChangeView.setContentHuggingPriority(.required, for: .horizontal)
@@ -91,7 +91,7 @@ extension StatisticsHeaderView {
         informationStackView.addArrangedSubview(valueChangeView)
     }
 
-    private func addDateStackView(_ theme: StatisticsHeaderViewTheme) {
+    private func addDateStackView(_ theme: AlgoStatisticsHeaderViewTheme) {
         informationStackView.addArrangedSubview(dateStackView)
         dateStackView.spacing = theme.dateStackViewSpacing
 
@@ -99,7 +99,7 @@ extension StatisticsHeaderView {
         addArrowDownImageView(theme)
     }
 
-    private func addDateLabel(_ theme: StatisticsHeaderViewTheme) {
+    private func addDateLabel(_ theme: AlgoStatisticsHeaderViewTheme) {
         dateLabel.customizeAppearance(theme.dateLabel)
 
         dateLabel.setContentHuggingPriority(.required, for: .horizontal)
@@ -107,7 +107,7 @@ extension StatisticsHeaderView {
         dateStackView.addArrangedSubview(dateLabel)
     }
 
-    private func addArrowDownImageView(_ theme: StatisticsHeaderViewTheme) {
+    private func addArrowDownImageView(_ theme: AlgoStatisticsHeaderViewTheme) {
         arrowDownImageView.customizeAppearance(theme.arrowDown)
         arrowDownImageView.isHidden = true
 
@@ -115,8 +115,8 @@ extension StatisticsHeaderView {
     }
 }
 
-extension StatisticsHeaderView: ViewModelBindable {
-    func bindData(_ viewModel: StatisticsHeaderViewModel?) {
+extension AlgoStatisticsHeaderView: ViewModelBindable {
+    func bindData(_ viewModel: AlgoStatisticsHeaderViewModel?) {
         guard let viewModel = viewModel else { return }
 
         amountLabel.text = viewModel.amount
@@ -136,6 +136,6 @@ enum ValueChangeStatus {
     case stable
 }
 
-protocol AlgoAnalyticsHeaderViewDelegate: AnyObject {
-    func algoAnalyticsHeaderViewDidTapDate(_ view: StatisticsHeaderView)
+protocol AlgoStatisticsHeaderViewDelegate: AnyObject {
+    func algoStatisticsHeaderViewDidTapDate(_ view: AlgoStatisticsHeaderView)
 }

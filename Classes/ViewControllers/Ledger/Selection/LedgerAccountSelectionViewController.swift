@@ -51,7 +51,7 @@ final class LedgerAccountSelectionViewController: BaseViewController {
         return LedgerAccountSelectionDataSource(api: api, accounts: ledgerAccounts, isMultiSelect: isMultiSelect)
     }()
     
-    private lazy var listLayout = LedgerAccountSelectionListLayout(dataSource: dataSource)
+    private lazy var listLayout = LedgerAccountSelectionListLayout(theme: theme, dataSource: dataSource)
     
     init(accountSetupFlow: AccountSetupFlow, accounts: [Account], configuration: ViewControllerConfiguration) {
         self.accountSetupFlow = accountSetupFlow

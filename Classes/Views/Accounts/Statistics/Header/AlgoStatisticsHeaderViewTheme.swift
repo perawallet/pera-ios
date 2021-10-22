@@ -13,17 +13,17 @@
 // limitations under the License.
 
 //
-//   StatisticsHeaderViewTheme.swift
+//   AlgoStatisticsHeaderViewTheme.swift
 
 import Foundation
 import Macaroon
 import UIKit
 
-struct StatisticsHeaderViewTheme: StyleSheet, LayoutSheet {
+struct AlgoStatisticsHeaderViewTheme: StyleSheet, LayoutSheet {
     let amountLabel: TextStyle
     let dateLabel: TextStyle
     let arrowDown: ImageStyle
-    let valueChangeViewTheme: StatisticsValueChangeViewTheme
+    let valueChangeViewTheme: AlgoStatisticsValueChangeViewTheme
     let stackViewTopPadding: LayoutMetric 
     let horizontalSpacing: LayoutMetric
     let dateStackViewSpacing: LayoutMetric
@@ -44,7 +44,7 @@ struct StatisticsHeaderViewTheme: StyleSheet, LayoutSheet {
         self.arrowDown = [
             .content("icon-arrow-down-grey")
         ]
-        self.valueChangeViewTheme = StatisticsValueChangeViewTheme()
+        self.valueChangeViewTheme = AlgoStatisticsValueChangeViewTheme()
 
         self.horizontalSpacing = 12
         self.stackViewTopPadding = 10

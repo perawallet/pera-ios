@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   StatisticsDataController.swift
+//   AlgoStatisticsDataController.swift
 
 import UIKit
 
-final class StatisticsDataController {
-    weak var delegate: StatisticsDataControllerDelegate?
+final class AlgoStatisticsDataController {
+    weak var delegate: AlgoStatisticsDataControllerDelegate?
 
     private let chartDispatchGroup = DispatchGroup()
 
@@ -55,7 +55,7 @@ final class StatisticsDataController {
             case let .success(result):
                 self.values = result.history
             case .failure:
-                self.delegate?.statisticsDataControllerDidFailToFetch(self)
+                self.delegate?.algoStatisticsDataControllerDidFailToFetch(self)
             }
 
             self.chartDispatchGroup.leave()
@@ -75,7 +75,7 @@ final class StatisticsDataController {
             case let .success(result):
                 self.lastFiveMinutesValues = result.history.last
             case .failure:
-                self.delegate?.statisticsDataControllerDidFailToFetch(self)
+                self.delegate?.algoStatisticsDataControllerDidFailToFetch(self)
             }
 
             self.chartDispatchGroup.leave()
@@ -92,11 +92,11 @@ final class StatisticsDataController {
     }
 
     private func returnValues() {
-        delegate?.statisticsDataController(self, didFetch: values)
+        delegate?.algoStatisticsDataController(self, didFetch: values)
     }
 }
 
-protocol StatisticsDataControllerDelegate: AnyObject {
-    func statisticsDataController(_ dataController: StatisticsDataController, didFetch values: [AlgosUSDValue])
-    func statisticsDataControllerDidFailToFetch(_ dataController: StatisticsDataController)
+protocol AlgoStatisticsDataControllerDelegate: AnyObject {
+    func algoStatisticsDataController(_ dataController: AlgoStatisticsDataController, didFetch values: [AlgosUSDValue])
+    func algoStatisticsDataControllerDidFailToFetch(_ dataController: AlgoStatisticsDataController)
 }
