@@ -21,7 +21,6 @@ struct AssetPreviewModel {
     let image: UIImage?
     let secondaryImage: UIImage?
     let assetName: String?
-    let assetShortName: String?
     let assetValue: String?
     let secondaryAssetValue: String?
 }
@@ -38,7 +37,7 @@ final class AssetPreviewViewModel: PairedViewModel {
         bindImage(model.image)
         bindSecondaryImage(model.secondaryImage)
         bindAssetName(model.assetName)
-        bindAssetShortName(model.assetShortName)
+        bindAssetShortName(model.assetName)
         bindAssetValue(model.assetValue)
         bindSecondaryAssetValue(model.secondaryAssetValue)
     }
@@ -58,7 +57,7 @@ extension AssetPreviewViewModel {
     }
 
     private func bindAssetShortName(_ name: String?) {
-        self.assetShortName = name
+        self.assetShortName = name?.components(separatedBy: .whitespacesAndDashes).map { $0.prefix(1) }.prefix(3).joined()
     }
 
     private func bindAssetValue(_ value: String?) {
