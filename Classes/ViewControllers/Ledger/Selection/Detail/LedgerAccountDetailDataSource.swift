@@ -97,9 +97,9 @@ extension LedgerAccountDetailDataSource {
                     accountType: account.type,
                     accountImageType: .orange,
                     accountName: accountNameViewModel.name,
-                    assetsAndNFTs: "1 asset",
-                    assetValue: "6.06 ALGO",
-                    secondaryAssetValue: "$16,000.09")
+                    assetsAndNFTs: nil,
+                    assetValue: nil,
+                    secondaryAssetValue: nil)
             )
         )
         return cell
