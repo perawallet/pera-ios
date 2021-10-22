@@ -26,9 +26,8 @@ enum AssetPreviewModelAdapter {
             image: nil,
             secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
             assetName: assetViewModel.assetDetail?.assetName,
-            assetShortName: assetViewModel.assetDetail?.unitName,
             assetValue: assetViewModel.amount,
-            secondaryAssetValue: "$6.06"
+            secondaryAssetValue: nil
         )
     }
 
@@ -38,9 +37,8 @@ enum AssetPreviewModelAdapter {
             image: img("icon-algo-circle-green"),
             secondaryImage: img("icon-verified-shield"),
             assetName: "asset-algos-title".localized,
-            assetShortName: "ALGO",
             assetValue: algoAssetViewModel.amount,
-            secondaryAssetValue: "$6.06"
+            secondaryAssetValue: nil
         )
     }
 }
