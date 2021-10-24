@@ -142,7 +142,9 @@ extension LedgerAccountDetailDataSource {
         assetPreviews.append(assetPreviewModel)
 
         guard let assets = account.assets,
-              !assets.isEmpty else { return }
+              !assets.isEmpty else {
+                  return
+              }
 
         loadingController?.startLoadingWithMessage("title-loading".localized)
 

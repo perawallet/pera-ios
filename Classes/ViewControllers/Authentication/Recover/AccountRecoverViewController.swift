@@ -172,7 +172,10 @@ extension AccountRecoverViewController {
 extension AccountRecoverViewController {
     private func addBarButtons() {
         let optionsBarButtonItem = ALGBarButtonItem(kind: .options) { [weak self] in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
+            
             self.openRecoverOptions()
         }
 

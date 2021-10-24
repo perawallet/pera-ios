@@ -91,7 +91,9 @@ extension Button {
 
 extension Button {
     func startLoading() {
-        guard !indicatorView.isAnimating else { return }
+        guard !indicatorView.isAnimating else {
+            return
+        }
 
         indicatorView.isHidden = false
         isEnabled = false
@@ -101,7 +103,9 @@ extension Button {
     }
 
     func stopLoading() {
-        guard indicatorView.isAnimating else { return }
+        guard indicatorView.isAnimating else {
+            return
+        }
 
         indicatorView.isHidden = true
         isEnabled = true

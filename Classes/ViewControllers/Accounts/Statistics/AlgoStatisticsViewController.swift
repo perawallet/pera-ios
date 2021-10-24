@@ -116,20 +116,26 @@ extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
     func algoStatisticsView(_ view: AlgoStatisticsView, didSelectItemAt index: Int) {
         guard let values = chartEntries,
               !values.isEmpty,
-              let selectedPrice = values[safe: index] else { return }
+              let selectedPrice = values[safe: index] else {
+                  return
+              }
 
         bindHeaderView(with: values, selectedPrice: selectedPrice)
     }
     
     func algoStatisticsViewDidDeselect(_ view: AlgoStatisticsView) {
         guard let values = chartEntries,
-              !values.isEmpty else { return }
+              !values.isEmpty else {
+                  return
+              }
 
         bindHeaderView(with: values, selectedPrice: nil)
     }
 
     private func bindHeaderView(with values: [AlgosUSDValue], selectedPrice: AlgosUSDValue?) {
-        guard let currency = currency else { return }
+        guard let currency = currency else {
+            return
+        }
 
         let priceChange = AlgoUSDPriceChange(
             firstPrice: values.first,
@@ -168,7 +174,9 @@ extension AlgoStatisticsViewController: AlgoStatisticsDataControllerDelegate {
     }
 
     private func bindView(with values: [AlgosUSDValue]) {
-        guard let currency = currency else { return }
+        guard let currency = currency else {
+            return
+        }
 
         let priceChange = AlgoUSDPriceChange(firstPrice: values.first, lastPrice: values.last, selectedPrice: nil, currency: currency)
         algoStatisticsView.bind(

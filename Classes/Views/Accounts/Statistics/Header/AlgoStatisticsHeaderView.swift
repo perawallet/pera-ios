@@ -117,7 +117,9 @@ extension AlgoStatisticsHeaderView {
 
 extension AlgoStatisticsHeaderView: ViewModelBindable {
     func bindData(_ viewModel: AlgoStatisticsHeaderViewModel?) {
-        guard let viewModel = viewModel else { return }
+        guard let viewModel = viewModel else {
+            return
+        }
 
         amountLabel.text = viewModel.amount
         dateLabel.text = viewModel.date

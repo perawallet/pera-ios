@@ -93,21 +93,29 @@ extension BannerView {
     }
 
     private func addTitle(_ theme: BannerViewTheme) {
-        guard let titleTextStyle = theme.title else { return }
+        guard let titleTextStyle = theme.title else {
+            return
+        }
+        
         titleLabel.customizeAppearance(titleTextStyle)
 
         verticalStackView.addArrangedSubview(titleLabel)
     }
 
     private func addMessage(_ theme: BannerViewTheme) {
-        guard let messageTextStyle = theme.message else { return }
+        guard let messageTextStyle = theme.message else {
+            return
+        }
+        
         messageLabel.customizeAppearance(messageTextStyle)
 
         verticalStackView.addArrangedSubview(messageLabel)
     }
 
     private func addIcon(_ theme: BannerViewTheme) {
-        guard let iconImageStyle = theme.icon else { return }
+        guard let iconImageStyle = theme.icon else {
+            return
+        }
         iconView.customizeAppearance(iconImageStyle)
 
         horizontalStackView.addArrangedSubview(iconView)

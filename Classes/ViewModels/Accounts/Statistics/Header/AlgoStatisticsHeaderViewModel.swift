@@ -58,7 +58,9 @@ extension AlgoStatisticsHeaderViewModel {
 extension StatisticsHeaderViewModel {
 >>>>>>> 44279ccd (✨ Implement algo price):Classes/ViewModels/Accounts/Statistics/Header/StatisticsHeaderViewModel.swift
     private func bindAmount(from priceChange: AlgoUSDPriceChange, and currency: Currency) {
-        guard let currentAlgosUSDValue = priceChange.lastPrice else { return }
+        guard let currentAlgosUSDValue = priceChange.lastPrice else {
+            return
+        }
 
         if let selectedPrice = priceChange.selectedPrice?.getCurrencyScaledChartHighValue(with: currentAlgosUSDValue, for: currency),
            let currencyValue = selectedPrice.toCurrencyStringForLabel {

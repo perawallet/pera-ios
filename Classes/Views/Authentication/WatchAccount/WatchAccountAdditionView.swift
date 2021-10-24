@@ -67,7 +67,9 @@ extension WatchAccountAdditionView: ViewModelBindable {
     func bindData(_ viewModel: WatchAccountAdditionViewModel?) {
         pasteButton.isHidden = (viewModel?.pasteButtonIsHidden).ifNil(true)
 
-        guard !pasteButton.isHidden else { return }
+        guard !pasteButton.isHidden else {
+            return
+        }
 
         let pasteText = "\("watch-account-paste".localized + " ")".attributed(theme.pasteTextAttributes)
         let copiedText = "(\((viewModel?.copiedString).emptyIfNil))".attributed(theme.copiedTextAttributes)

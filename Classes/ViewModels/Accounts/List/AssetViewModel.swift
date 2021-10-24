@@ -31,7 +31,9 @@ final class AssetViewModel {
     }
 
     private func setAmount(from assetDetail: AssetDetail?, with asset: Asset?) {
-        guard let assetDetail = assetDetail else { return }
+        guard let assetDetail = assetDetail else {
+            return
+        }
 
         amount = asset?.amount
             .assetAmount(fromFraction: assetDetail.fractionDecimals)

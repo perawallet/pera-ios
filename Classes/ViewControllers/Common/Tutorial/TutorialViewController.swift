@@ -102,7 +102,9 @@ extension TutorialViewController {
 
     private func addDontAskAgainBarButton() {
         let dontAskAgainBarButtonItem = ALGBarButtonItem(kind: .dontAskAgain) { [weak self] in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
 
             self.uiHandlers.didTapDontAskAgain?(self)
         }
