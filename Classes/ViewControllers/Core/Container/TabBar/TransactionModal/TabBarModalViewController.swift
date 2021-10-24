@@ -48,7 +48,7 @@ final class TabBarModalViewController: BaseViewController {
 }
 
 extension TabBarModalViewController {
-    func addChrome(_ theme: Theme) {
+    private func addChrome(_ theme: Theme) {
         chromeView.customizeAppearance(theme.chromeStyle)
         chromeView.alpha = .zero
 
@@ -58,7 +58,7 @@ extension TabBarModalViewController {
         }
     }
 
-    func addContainerView(_ theme: Theme) {
+    private func addContainerView(_ theme: Theme) {
         containerView.customize(theme.tabBarModalViewTheme)
 
         view.addSubview(containerView)
