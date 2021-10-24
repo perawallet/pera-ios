@@ -25,9 +25,11 @@ final class LedgerApprovalViewController: BaseViewController {
     private lazy var ledgerApprovalView = LedgerApprovalView()
     private lazy var theme = Theme()
 
+    private let mode: Mode
     private let deviceName: String
 
-    init(deviceName: String, configuration: ViewControllerConfiguration) {
+    init(mode: Mode, deviceName: String, configuration: ViewControllerConfiguration) {
+        self.mode = mode
         self.deviceName = deviceName
         super.init(configuration: configuration)
     }
@@ -55,7 +57,7 @@ final class LedgerApprovalViewController: BaseViewController {
     }
 
     override func bindData() {
-        ledgerApprovalView.bind(deviceName)
+        ledgerApprovalView.bindData(LedgerApprovalViewModel(mode: mode, deviceName: deviceName))
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -76,8 +78,8 @@ extension LedgerApprovalViewController: LedgerApprovalViewDelegate {
 }
 
 extension LedgerApprovalViewController {
-//    private func setConnectionModeTexts() {
-//        ledgerApprovalView.setTitle("ledger-approval-connection-title".localized)
-//        ledgerApprovalView.setDetail("ledger-approval-connection-message".localized)
-//    }
+    enum Mode {
+        case connection
+        case approve
+    }
 }

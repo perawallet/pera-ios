@@ -27,7 +27,7 @@ final class LedgerAccountSelectionViewModel: ViewModel {
         bindDetail(isMultiSelect)
         bindAccountCount(accounts)
         bindButtonText(from: isMultiSelect, and: selectedCount)
-        bindIsEnabled(from: selectedCount)
+        bindIsEnabled(selectedCount)
     }
 
     private func bindButtonText(from isMultiSelect: Bool, and selectedCount: Int) {
@@ -36,11 +36,11 @@ final class LedgerAccountSelectionViewModel: ViewModel {
                 ? "ledger-account-selection-verify".localized.localized
                 : "ledger-account-selection-verify-plural".localized.localized
         } else {
-            buttonText = "send-algos-select".localized
+            buttonText = "ledger-account-selection-verify".localized
         }
     }
 
-    private func bindIsEnabled(from selectedCount: Int) {
+    private func bindIsEnabled(_ selectedCount: Int) {
         isEnabled = selectedCount > 0
     }
 

@@ -498,7 +498,7 @@ on your Ledger device (%d)";
 "rekey-instruction-title" = "Rekey Account";
 "rekey-instruction-subtitle-ledger" = "Replace your account ledger with a new Ledger Device";
 "rekey-instruction-subtitle-standard" = "Replace your account’s passphrase with a Ledger Device.";
-"rekey-instruction-header" = "What to expect:";
+"rekey-instruction-header" = "What to expect";
 "rekey-instruction-first" = "Future transactions will be signed by your new Ledger Device.";
 "rekey-instruction-second-ledger" = "Your old Ledger will no longer function for this account.";
 "rekey-instruction-second-standard" = "This account's passphrase will no longer function for this account";
@@ -513,8 +513,8 @@ on your Ledger device (%d)";
 "ledger-rekey-finalize" = "Finalize Rekeying";
 "ledger-rekey-total-fee" = "Total Rekeying fee of %@ Algos";
 "ledger-rekey-more-assets" = "+%@ more assets";
-"ledger-rekey-success-title" = "Account Rekeyed";
-"ledger-rekey-success-message" = "The account %@ has been successfully rekeyed";
+"ledger-rekey-success-title" = "Account successfully\nrekeyed";
+"ledger-rekey-success-message" = "The account \"%@\" has been successfully rekeyed";
 
 // MARK: Ledger Account Selection
 "ledger-account-selection-title-singular" = "%d Account Found";

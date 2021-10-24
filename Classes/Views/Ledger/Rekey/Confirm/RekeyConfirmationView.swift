@@ -16,75 +16,37 @@
 //  RekeyConfirmationView.swift
 
 import UIKit
-import SnapKit
+import Macaroon
 
-class RekeyConfirmationView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
+final class RekeyConfirmationView: View {
     weak var delegate: RekeyConfirmationViewDelegate?
-    
-    private var collectionViewHeight: Constraint?
-    
-    private lazy var assetsCollectionView: AssetsCollectionView = {
-        let collectionView = AssetsCollectionView(containsPendingAssets: false)
-        collectionView.showsVerticalScrollIndicator = false
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = Colors.Background.secondary
-        collectionView.contentInset = .zero
-        collectionView.layer.cornerRadius = 12.0
-        collectionView.register(AlgoAssetCell.self, forCellWithReuseIdentifier: AlgoAssetCell.reusableIdentifier)
-        collectionView.register(
-            AccountHeaderSupplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: AccountHeaderSupplementaryView.reusableIdentifier
-        )
-        collectionView.register(
-            RekeyConfirmationFooterSupplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-            withReuseIdentifier: RekeyConfirmationFooterSupplementaryView.reusableIdentifier
-        )
-        
-        return collectionView
-    }()
-    
-    private lazy var transitionTitleLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.single)
-            .withAlignment(.left)
-            .withText("ledger-rekey-transaction-title".localized)
-    }()
-    
-    private lazy var rekeyTransitionView = RekeyTransitionView()
-    
-    private lazy var feeLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.tertiary)
-            .withLine(.contained)
-            .withAlignment(.left)
-    }()
-    
-    private lazy var finalizeButton = MainButton(title: "ledger-rekey-finalize".localized)
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        rekeyTransitionView.setNewTitleLabel("ledger-rekey-ledger-new".localized)
-    }
-    
-    override func setListeners() {
+
+    private lazy var titleLabel = UILabel()
+    private lazy var rekeyOldTransitionView = RekeyTransitionItemView()
+    private lazy var loadingImage = LottieImageView()
+    private lazy var rekeyNewTransitionView = RekeyTransitionItemView()
+    private lazy var infoImage = UIImageView()
+    private lazy var feeLabel = UILabel()
+    private lazy var finalizeButton = Button()
+
+    func setListeners() {
         finalizeButton.addTarget(self, action: #selector(notifyDelegateToFinalizeRekeyConfirmation), for: .touchUpInside)
     }
-    
-    override func prepareLayout() {
-        setupAssetsCollectionViewLayout()
-        setupTransitionTitleLabelLayout()
-        setupRekeyTransitionViewLayout()
-        setupFeeLabelLayout()
-        setupFinalizeButtonLayout()
+
+    func customize(_ theme: RekeyConfirmationViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        addTitleLabel(theme)
+        addRekeyOldTransitionView(theme)
+        addLoadingImage(theme)
+        addRekeyNewTransitionView(theme)
+        addFinalizeButton(theme)
+        addFeeLabel(theme)
+        addInfoImage(theme)
     }
+
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
 extension RekeyConfirmationView {
@@ -95,95 +57,104 @@ extension RekeyConfirmationView {
 }
 
 extension RekeyConfirmationView {
-    private func setupAssetsCollectionViewLayout() {
-        addSubview(assetsCollectionView)
-        
-        assetsCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview().inset(layout.current.horizontalInset)
-            collectionViewHeight = make.height.equalTo(layout.current.collectionViewHeight).priority(.high).constraint
-        }
-    }
-    
-    private func setupTransitionTitleLabelLayout() {
-        addSubview(transitionTitleLabel)
-        
-        transitionTitleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(assetsCollectionView.snp.bottom).offset(layout.current.transitionTitleLabelTopInset)
-        }
-    }
-    
-    private func setupRekeyTransitionViewLayout() {
-        addSubview(rekeyTransitionView)
-        
-        rekeyTransitionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(transitionTitleLabel.snp.bottom).offset(layout.current.transitionViewTopInset)
+    private func addTitleLabel(_ theme: RekeyConfirmationViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalToSuperview().inset(theme.titleTopPadding)
         }
     }
 
-    private func setupFeeLabelLayout() {
-        addSubview(feeLabel)
-        
-        feeLabel.snp.makeConstraints { make in
-            make.top.equalTo(rekeyTransitionView.snp.bottom).offset(layout.current.feeLabelTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+    private func addRekeyOldTransitionView(_ theme: RekeyConfirmationViewTheme) {
+        rekeyOldTransitionView.customize(RekeyTransitionItemViewTheme())
+
+        addSubview(rekeyOldTransitionView)
+        rekeyOldTransitionView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.lessThanOrEqualTo(titleLabel.snp.bottom).offset(theme.rekeyOldTransitionViewTopPadding)
+        }
+    }
+
+    private func addLoadingImage(_ theme: RekeyConfirmationViewTheme) {
+        loadingImage.setAnimation(theme.lottie)
+
+        addSubview(loadingImage)
+        loadingImage.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(rekeyOldTransitionView.snp.bottom).offset(theme.loadingImageVerticalPadding)
         }
     }
     
-    private func setupFinalizeButtonLayout() {
+    private func addRekeyNewTransitionView(_ theme: RekeyConfirmationViewTheme) {
+        rekeyNewTransitionView.customize(RekeyTransitionItemViewTheme())
+
+        addSubview(rekeyNewTransitionView)
+        rekeyNewTransitionView.snp.makeConstraints {
+            $0.centerX.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(loadingImage.snp.bottom).offset(theme.loadingImageVerticalPadding)
+        }
+    }
+
+    private func addFinalizeButton(_ theme: RekeyConfirmationViewTheme) {
+        finalizeButton.customize(theme.finalizeButtonTheme)
+        finalizeButton.bindData(ButtonCommonViewModel(title: "ledger-rekey-finalize".localized))
+
         addSubview(finalizeButton)
-        
-        finalizeButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.greaterThanOrEqualTo(feeLabel.snp.bottom).offset(layout.current.finalizeButtonTopInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
+        finalizeButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.greaterThanOrEqualTo(rekeyNewTransitionView.snp.bottom).offset(theme.bottomPadding)
+            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomPadding)
+        }
+    }
+
+    private func addFeeLabel(_ theme: RekeyConfirmationViewTheme) {
+        feeLabel.customizeAppearance(theme.feeTitle)
+
+        addSubview(feeLabel)
+        feeLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(theme.feeTitlePaddings.leading)
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.bottom.equalTo(finalizeButton.snp.top).offset(-theme.feeTitlePaddings.bottom)
+        }
+    }
+
+    private func addInfoImage(_ theme: RekeyConfirmationViewTheme) {
+        infoImage.customizeAppearance(theme.infoImage)
+
+        addSubview(infoImage)
+        infoImage.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(theme.horizontalInset)
+            $0.centerY.equalTo(feeLabel)
         }
     }
 }
 
 extension RekeyConfirmationView {
-    func setTransitionOldTitleLabel(_ title: String?) {
-        rekeyTransitionView.setOldTitleLabel(title)
-    }
-    
-    func setTransitionOldValueLabel(_ value: String?) {
-        rekeyTransitionView.setOldValueLabel(value)
-    }
-    
-    func setTransitionNewValueLabel(_ value: String?) {
-        rekeyTransitionView.setNewValueLabel(value)
-    }
-    
-    func reloadData() {
-        assetsCollectionView.reloadData()
-        let height = assetsCollectionView.collectionViewLayout.collectionViewContentSize.height
-        collectionViewHeight?.update(offset: height)
-        layoutIfNeeded()
-    }
-    
-    func setListDelegate(_ delegate: UICollectionViewDelegate?) {
-        assetsCollectionView.delegate = delegate
-    }
-    
-    func setDataSource(_ dataSource: UICollectionViewDataSource?) {
-        assetsCollectionView.dataSource = dataSource
-    }
-    
-    func setFeeAmount(_ fee: String?) {
-        feeLabel.text = fee
+    func bindData(_ viewModel: RekeyConfirmationViewModel) {
+        rekeyOldTransitionView.bindData(
+            image: viewModel.oldImage,
+            title: viewModel.oldTransitionTitle,
+            value: viewModel.oldTransitionValue
+        )
+        rekeyNewTransitionView.bindData(
+            image: viewModel.newLedgerImage,
+            title: viewModel.newTransitionTitle,
+            value: viewModel.newTransitionValue
+        )
+
+        feeLabel.text = viewModel.feeValue
     }
 }
 
 extension RekeyConfirmationView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let collectionViewHeight: CGFloat = 104.0
-        let transitionTitleLabelTopInset: CGFloat = 30.0
-        let transitionViewTopInset: CGFloat = 10.0
-        let feeLabelTopInset: CGFloat = 16.0
-        let finalizeButtonTopInset: CGFloat = 40.0
-        let bottomInset: CGFloat = 16.0
+    func startAnimatingImageView() {
+        loadingImage.play(with: LottieImageView.Configuration())
+    }
+
+    func stopAnimatingImageView() {
+        loadingImage.stop()
     }
 }
 

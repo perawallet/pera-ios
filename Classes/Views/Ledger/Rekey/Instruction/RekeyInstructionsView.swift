@@ -16,65 +16,35 @@
 //  RekeyInstructionsView.swift
 
 import UIKit
+import Macaroon
 
-class RekeyInstructionsView: BaseView {
-    
+final class RekeyInstructionsView: View {
     weak var delegate: RekeyInstructionsViewDelegate?
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withLine(.single)
-            .withFont(UIFont.font(withWeight: .bold(size: 28.0)))
-            .withAlignment(.left)
-            .withTextColor(Colors.Text.primary)
-            .withText("rekey-instruction-title".localized)
-    }()
-    
-    private lazy var subtitleLabel: UILabel = {
-        UILabel()
-            .withLine(.contained)
-            .withFont(UIFont.font(withWeight: .regular(size: 16.0)))
-            .withAlignment(.left)
-            .withTextColor(Colors.Text.tertiary)
-    }()
-    
-    private lazy var instructionHeaderLabel: UILabel = {
-        UILabel()
-            .withLine(.single)
-            .withFont(UIFont.font(withWeight: .regular(size: 16.0)))
-            .withAlignment(.left)
-            .withTextColor(Colors.Text.tertiary)
-            .withText("rekey-instruction-header".localized)
-    }()
-    
+
+    private lazy var titleLabel = UILabel()
+    private lazy var subtitleLabel = UILabel()
+    private lazy var instructionHeaderLabel = UILabel()
     private lazy var firstInstructionView = RekeyInstructionItemView()
-   
     private lazy var secondInstructionView = RekeyInstructionItemView()
-    
     private lazy var thirdInstructionView = RekeyInstructionItemView()
-    
-    private lazy var startButton = MainButton(title: "rekey-instruction-start".localized)
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        firstInstructionView.setTitle("rekey-instruction-first".localized)
-        thirdInstructionView.setTitle("rekey-instruction-third".localized)
+    private lazy var startButton = Button()
+
+    func customize(_ theme: RekeyInstructionsViewTheme) {
+        addTitleLabel(theme)
+        addSubitleLabel(theme)
+        addInstructionHeaderLabel(theme)
+        addFirstInstructionView(theme)
+        addSecondInstructionView(theme)
+        addThirdInstructionView(theme)
+        addStartButton(theme)
     }
+
+    func prepareLayout(_ layoutSheet: RekeyInstructionsViewTheme) {}
+
+    func customizeAppearance(_ styleSheet: RekeyInstructionsViewTheme) {}
     
-    override func setListeners() {
+    func setListeners() {
         startButton.addTarget(self, action: #selector(notifyDelegateToStartRekeying), for: .touchUpInside)
-    }
-    
-    override func prepareLayout() {
-        setupTitleLabelLayout()
-        setupSubitleLabelLayout()
-        setupInstructionHeaderLabelLayout()
-        setupFirstInstructionViewLayout()
-        setupSecondInstructionViewLayout()
-        setupThirdInstructionViewLayout()
-        setupStartButtonLayout()
     }
 }
 
@@ -86,88 +56,79 @@ extension RekeyInstructionsView {
 }
 
 extension RekeyInstructionsView {
-    private func setupTitleLabelLayout() {
+    private func addTitleLabel(_ theme: RekeyInstructionsViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
         addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.titleInset)
+        titleLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalToSuperview().inset(theme.titleTopPadding)
         }
     }
     
-    private func setupSubitleLabelLayout() {
+    private func addSubitleLabel(_ theme: RekeyInstructionsViewTheme) {
+        subtitleLabel.customizeAppearance(theme.subtitle)
+
         addSubview(subtitleLabel)
-        
-        subtitleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.titleInset)
+        subtitleLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.subtitleTopPadding)
         }
     }
     
-    private func setupInstructionHeaderLabelLayout() {
+    private func addInstructionHeaderLabel(_ theme: RekeyInstructionsViewTheme) {
+        instructionHeaderLabel.customizeAppearance(theme.headerTitle)
+
         addSubview(instructionHeaderLabel)
-        
-        instructionHeaderLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(layout.current.headerTopInset)
+        instructionHeaderLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalTo(subtitleLabel.snp.bottom).offset(theme.headerTopPadding)
         }
     }
     
-    private func setupFirstInstructionViewLayout() {
+    private func addFirstInstructionView(_ theme: RekeyInstructionsViewTheme) {
         addSubview(firstInstructionView)
-        
-        firstInstructionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(instructionHeaderLabel.snp.bottom).offset(layout.current.titleInset)
+        firstInstructionView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalTo(instructionHeaderLabel.snp.bottom).offset(theme.firstInstructionTopPadding)
         }
     }
     
-    private func setupSecondInstructionViewLayout() {
+    private func addSecondInstructionView(_ theme: RekeyInstructionsViewTheme) {
         addSubview(secondInstructionView)
-        
-        secondInstructionView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(firstInstructionView)
-            make.top.equalTo(firstInstructionView.snp.bottom).offset(layout.current.instructionInset)
+        secondInstructionView.snp.makeConstraints {
+            $0.leading.trailing.equalTo(firstInstructionView)
+            $0.top.equalTo(firstInstructionView.snp.bottom).offset(theme.instructionSpacing)
         }
     }
     
-    private func setupThirdInstructionViewLayout() {
+    private func addThirdInstructionView(_ theme: RekeyInstructionsViewTheme) {
         addSubview(thirdInstructionView)
-        
-        thirdInstructionView.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(firstInstructionView)
-            make.top.equalTo(secondInstructionView.snp.bottom).offset(layout.current.instructionInset)
+        thirdInstructionView.snp.makeConstraints {
+            $0.leading.trailing.equalTo(firstInstructionView)
+            $0.top.equalTo(secondInstructionView.snp.bottom).offset(theme.instructionSpacing)
         }
     }
     
-    private func setupStartButtonLayout() {
+    private func addStartButton(_ theme: RekeyInstructionsViewTheme) {
+        startButton.customize(theme.startButtonTheme)
+        startButton.bindData(ButtonCommonViewModel(title: "rekey-instruction-start".localized))
+
         addSubview(startButton)
-        
-        startButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.greaterThanOrEqualTo(thirdInstructionView.snp.bottom).offset(layout.current.buttonInset)
-            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.buttonInset)
+        startButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.greaterThanOrEqualTo(thirdInstructionView.snp.bottom).offset(theme.bottomPadding)
+            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomPadding)
         }
     }
 }
 
-extension RekeyInstructionsView {
-    func setSubtitleText(_ text: String) {
-        subtitleLabel.text = text
-    }
-    
-    func setSecondInstructionViewTitle(_ title: String) {
-        secondInstructionView.setTitle(title)
-    }
-}
-
-extension RekeyInstructionsView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let titleInset: CGFloat = 16.0
-        let headerTopInset: CGFloat = 60.0
-        let instructionInset: CGFloat = 12.0
-        let buttonInset: CGFloat = 16.0
+extension RekeyInstructionsView: ViewModelBindable {
+    func bindData(_ viewModel: RekeyInstructionsViewModel?) {
+        subtitleLabel.text = viewModel?.subtitle
+        firstInstructionView.bindTitle(viewModel?.firstInstructionViewTitle)
+        secondInstructionView.bindTitle(viewModel?.secondInstructionViewTitle)
+        thirdInstructionView.bindTitle(viewModel?.thirdInstructionViewTitle)
     }
 }
 

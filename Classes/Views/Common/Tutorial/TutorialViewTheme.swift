@@ -67,8 +67,8 @@ struct TutorialViewTheme: StyleSheet, LayoutSheet {
         self.buttonInset = 20
         self.descriptionHorizontalInset = 24
         self.descriptionTopInset = 16
-        self.horizontalInset = 20
-        self.warningTitlePaddings = (0, 52, 32, 0)
+        self.horizontalInset = 24
+        self.warningTitlePaddings = (0, 56, 32, 0)
         self.bottomInset = 16
         self.imagePaddings = (48, 12, 0, 0)
     }

@@ -46,6 +46,15 @@ extension LedgerAccountSelectionListLayout: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         delegate?.ledgerAccountSelectionListLayout(self, didDeselectItemAt: indexPath)
     }
+
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        if collectionView.indexPathsForSelectedItems?.contains(indexPath) ?? false {
+            collectionView.deselectItem(at: indexPath, animated: false)
+            collectionView.delegate?.collectionView?(collectionView, didDeselectItemAt: indexPath)
+            return false
+        }
+        return true
+    }
 }
 
 protocol LedgerAccountSelectionListLayoutDelegate: AnyObject {

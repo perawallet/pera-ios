@@ -295,8 +295,8 @@ class Router {
             viewController = LedgerTutorialInstructionListViewController(accountSetupFlow: flow, configuration: configuration)
         case let .ledgerDeviceList(flow):
             viewController = LedgerDeviceListViewController(accountSetupFlow: flow, configuration: configuration)
-        case let .ledgerApproval(deviceName):
-            viewController = LedgerApprovalViewController(deviceName: deviceName, configuration: configuration)
+        case let .ledgerApproval(mode, deviceName):
+            viewController = LedgerApprovalViewController(mode: mode, deviceName: deviceName, configuration: configuration)
         case let .tutorialSteps(step):
             viewController = TutorialStepsViewController(
                 step: step,

@@ -168,7 +168,7 @@ extension LedgerOperation {
             initialModalSize: .custom(CGSize(width: UIScreen.main.bounds.width, height: 362))
         )
         ledgerApprovalViewController = topMostController?.open(
-            .ledgerApproval(deviceName: (connectedDevice?.name).emptyIfNil),
+            .ledgerApproval(mode: .approve, deviceName: (connectedDevice?.name).emptyIfNil),
             by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
         ) as? LedgerApprovalViewController
     }

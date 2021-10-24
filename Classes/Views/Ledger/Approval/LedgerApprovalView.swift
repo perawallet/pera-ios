@@ -99,9 +99,10 @@ extension LedgerApprovalView {
     }
 }
 
-extension LedgerApprovalView {
-    func bind(_ deviceName: String) {
-        self.descriptionLabel.text = "ledger-approval-message".localized(deviceName)
+extension LedgerApprovalView: ViewModelBindable {
+    func bindData(_ viewModel: LedgerApprovalViewModel?) {
+        titleLabel.text = viewModel?.title
+        descriptionLabel.text = viewModel?.description
     }
 }
 

@@ -51,7 +51,7 @@ extension TutorialViewModel {
             image = img("locked")
         case .localAuthentication:
             image = img("faceid")
-        case .biometricAuthenticationEnabled, .accountVerified, .ledgerSuccessfullyConnected:
+        case .biometricAuthenticationEnabled, .accountVerified, .ledgerSuccessfullyConnected, .accountSuccessfullyRekeyed:
             image = img("check")
         case .passphraseVerified:
             image = img("shield-check")
@@ -84,6 +84,8 @@ extension TutorialViewModel {
             title = "ledger-tutorial-title-text".localized
         case .ledgerSuccessfullyConnected:
             title = "tutorial-title-ledger-connected".localized
+        case .accountSuccessfullyRekeyed:
+            title = "ledger-rekey-success-title".localized
         }
     }
 
@@ -111,6 +113,8 @@ extension TutorialViewModel {
             description = "tutorial-description-ledger".localized
         case .ledgerSuccessfullyConnected:
             description = "tutorial-description-ledger-connected".localized
+        case .accountSuccessfullyRekeyed(let accountName):
+            description = "ledger-rekey-success-message".localized(params: accountName)
         }
     }
 
@@ -138,6 +142,8 @@ extension TutorialViewModel {
             primaryActionButtonTitle = "ledger-tutorial-title-text".localized
         case .ledgerSuccessfullyConnected:
             primaryActionButtonTitle = "tutorial-main-title-ledger-connected".localized
+        case .accountSuccessfullyRekeyed:
+            primaryActionButtonTitle = "title-go-home".localized
         }
     }
 

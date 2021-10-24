@@ -16,38 +16,46 @@
 //  RekeyConfirmationViewModel.swift
 
 import Foundation
+import UIKit
 
-class RekeyConfirmationViewModel {
-    
-    private(set) var assetText: String?
+final class RekeyConfirmationViewModel {
+    private(set) var oldImage: UIImage?
     private(set) var oldTransitionTitle: String?
     private(set) var oldTransitionValue: String?
+    private(set) var newTransitionTitle: String?
     private(set) var newTransitionValue: String?
+    private(set) var newLedgerImage: UIImage?
     private(set) var feeValue: String?
     
     init(account: Account, ledgerName: String?) {
-        setAssetCount(for: account)
-        setOldTransitionTitle(for: account)
-        setOldTransitionValue(for: account)
-        setNewTransitionValue(with: ledgerName)
-        setFeeValue()
+        bindOldImage(account)
+        bindOldTransitionTitle(account)
+        bindOldTransitionValue(account)
+        bindNewTransitionTitle()
+        bindNewTransitionValue(ledgerName)
+        bindNewLedgerImage(account)
+        bindFeeValue()
     }
-    
-    private func setAssetCount(for account: Account) {
-        if account.assetDetails.count > 1 {
-            assetText = "ledger-rekey-more-assets".localized(params: "\(account.assetDetails.count - 1)")
+}
+
+extension RekeyConfirmationViewModel {
+    private func bindOldImage(_ account: Account) {
+        if account.requiresLedgerConnection() {
+            oldImage = "ledger-gray".image
+        } else {
+            oldImage = "standard-gray".image
         }
     }
-    
-    private func setOldTransitionTitle(for account: Account) {
+
+    private func bindOldTransitionTitle(_ account: Account) {
         if account.requiresLedgerConnection() {
             oldTransitionTitle = "ledger-rekey-ledger-old".localized
         } else {
             oldTransitionTitle = "ledger-rekey-ledger-passphrase".localized
         }
     }
-    
-    private func setOldTransitionValue(for account: Account) {
+
+    private func bindOldTransitionValue(_ account: Account) {
         if account.requiresLedgerConnection() {
             if let ledgerName = account.currentLedgerDetail?.name {
                 oldTransitionValue = ledgerName
@@ -55,30 +63,25 @@ class RekeyConfirmationViewModel {
                 oldTransitionValue = account.name
             }
         } else {
-            oldTransitionValue = "*********"
+            oldTransitionValue = "*************"
         }
     }
-    
-    private func setNewTransitionValue(with ledgerName: String?) {
+
+    private func bindNewTransitionTitle() {
+        newTransitionTitle = "ledger-rekey-ledger-new".localized
+    }
+
+    private func bindNewTransitionValue(_ ledgerName: String?) {
         newTransitionValue = ledgerName
     }
-    
-    private func setFeeValue() {
+
+    private func bindNewLedgerImage(_ account: Account) {
+        newLedgerImage = account.type.image(for: .purple)
+    }
+
+    private func bindFeeValue() {
         /// <todo> This calculation will be updated when its details are clear.
         let fee = max(UInt64(minimumFee), 0)
         feeValue = "ledger-rekey-total-fee".localized(params: "\(fee.toAlgos)")
-    }
-}
-
-extension RekeyConfirmationViewModel {
-    func configure(_ view: RekeyConfirmationView) {
-        view.setTransitionOldTitleLabel(oldTransitionTitle)
-        view.setTransitionOldValueLabel(oldTransitionValue)
-        view.setTransitionNewValueLabel(newTransitionValue)
-        view.setFeeAmount(feeValue)
-    }
-    
-    func configure(_ view: RekeyConfirmationFooterSupplementaryView) {
-        view.contextView.setMoreAssetsButtonTitle(assetText)
     }
 }

@@ -40,8 +40,7 @@ struct LedgerApprovalViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(19)),
             .textAlignment(.center),
-            .textOverflow(.fitting),
-            .content("ledger-approval-title".localized)
+            .textOverflow(.fitting) 
         ]
         self.description = [
             .textColor(AppColors.Components.Text.gray),

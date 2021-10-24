@@ -149,6 +149,8 @@ extension TutorialViewController: TutorialViewDelegate {
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case .ledger:
             open(.ledgerDeviceList(flow: flow), by: .push)
+        case .accountSuccessfullyRekeyed:
+            uiHandlers.didTapButtonPrimaryActionButton?(self)
         }
     }
 
@@ -219,7 +221,7 @@ struct TutorialViewControllerUIHandlers {
     var didTapButtonPrimaryActionButton: ((TutorialViewController) -> Void)?
 }
 
-enum Tutorial {
+enum Tutorial: Equatable {
     case backUp
     case writePassphrase
     case watchAccount
@@ -231,4 +233,5 @@ enum Tutorial {
     case accountVerified
     case ledger
     case ledgerSuccessfullyConnected
+    case accountSuccessfullyRekeyed(accountName: String)
 }

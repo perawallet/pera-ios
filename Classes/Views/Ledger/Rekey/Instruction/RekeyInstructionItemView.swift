@@ -16,83 +16,53 @@
 //  RekeyInstructionItemView.swift
 
 import UIKit
+import Macaroon
 
-class RekeyInstructionItemView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    private lazy var informationImageView = UIImageView(image: img("icon-rekey-info"))
-    
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withLine(.contained)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withAlignment(.left)
-            .withTextColor(Colors.Text.primary)
-    }()
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
-        layer.cornerRadius = 12.0
-        if !isDarkModeDisplay {
-            applySmallShadow()
-        }
+final class RekeyInstructionItemView: View {
+    private lazy var informationImageView = UIImageView()
+    private lazy var titleLabel = UILabel()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(RekeyInstructionItemViewTheme())
     }
-    
-    override func prepareLayout() {
-        setupInformationImageViewLayout()
-        setupTitleLabelLayout()
+
+    func customize(_ theme: RekeyInstructionItemViewTheme) {
+        addInformationImageView(theme)
+        addTitleLabel(theme)
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if !isDarkModeDisplay {
-            updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 12.0)
-        }
-    }
-    
-    @available(iOS 12.0, *)
-    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
-        if userInterfaceStyle == .dark {
-            removeShadows()
-        } else {
-            applySmallShadow()
-        }
-    }
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: BaseStyle<ViewStyleAttribute>) {}
 }
 
 extension RekeyInstructionItemView {
-    private func setupInformationImageViewLayout() {
+    private func addInformationImageView(_ theme: RekeyInstructionItemViewTheme) {
+        informationImageView.customizeAppearance(theme.image)
+
         addSubview(informationImageView)
-        
-        informationImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
-            make.size.equalTo(layout.current.infoImageSize)
+        informationImageView.snp.makeConstraints {
+            $0.leading.centerY.bottom.top.equalToSuperview()
+            $0.fitToSize(theme.infoImageSize)
         }
     }
     
-    private func setupTitleLabelLayout() {
+    private func addTitleLabel(_ theme: RekeyInstructionItemViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
         addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(informationImageView.snp.trailing).offset(layout.current.titleInset)
-            make.top.bottom.equalToSuperview().inset(layout.current.titleInset)
-            make.trailing.equalToSuperview().inset(layout.current.titleInset)
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalTo(informationImageView.snp.trailing).offset(theme.horizontalPadding)
+            $0.centerY.equalTo(informationImageView)
+            $0.trailing.equalToSuperview()
         }
     }
 }
 
 extension RekeyInstructionItemView {
-    func setTitle(_ title: String) {
+    func bindTitle(_ title: String?) {
         titleLabel.text = title
-    }
-}
-
-extension RekeyInstructionItemView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let infoImageSize = CGSize(width: 24.0, height: 24.0)
-        let horizontalInset: CGFloat = 20.0
-        let titleInset: CGFloat = 16.0
     }
 }

@@ -18,24 +18,12 @@
 import UIKit
 import Magpie
 
-class RekeyConfirmationViewController: BaseScrollViewController {
-    
+final class RekeyConfirmationViewController: BaseViewController {
     private lazy var rekeyConfirmationView = RekeyConfirmationView()
 
     private var account: Account
     private let ledger: LedgerDetail?
     private let ledgerAddress: String
-    private var rekeyConfirmationDataSource: RekeyConfirmationDataSource
-    private var rekeyConfirmationListLayout: RekeyConfirmationListLayout
-    private let viewModel: RekeyConfirmationViewModel
-    
-    private lazy var cardModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
-    )
     
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
@@ -48,68 +36,48 @@ class RekeyConfirmationViewController: BaseScrollViewController {
         self.account = account
         self.ledger = ledger
         self.ledgerAddress = ledgerAddress
-        self.viewModel = RekeyConfirmationViewModel(account: account, ledgerName: ledger?.name)
-        rekeyConfirmationDataSource = RekeyConfirmationDataSource(account: account, rekeyConfirmationViewModel: viewModel)
-        rekeyConfirmationListLayout = RekeyConfirmationListLayout(account: account)
         super.init(configuration: configuration)
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        if rekeyConfirmationDataSource.allAssetsDisplayed {
-            setFooterHidden()
-        } else {
-            rekeyConfirmationView.reloadData()
-        }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        rekeyConfirmationView.startAnimatingImageView()
     }
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        title = "ledger-rekey-confirm-title".localized
-        viewModel.configure(rekeyConfirmationView)
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        rekeyConfirmationView.stopAnimatingImageView()
     }
     
     override func linkInteractors() {
         rekeyConfirmationView.delegate = self
-        rekeyConfirmationDataSource.delegate = self
         transactionController.delegate = self
-        rekeyConfirmationView.setDataSource(rekeyConfirmationDataSource)
-        rekeyConfirmationView.setListDelegate(rekeyConfirmationListLayout)
+    }
+
+    override func setListeners() {
+        rekeyConfirmationView.setListeners()
+    }
+
+    override func bindData() {
+        rekeyConfirmationView.bindData(RekeyConfirmationViewModel(account: account, ledgerName: ledger?.name))
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupRekeyConfirmationViewLayout()
-    }
-}
-
-extension RekeyConfirmationViewController {
-    private func setupRekeyConfirmationViewLayout() {
-        contentView.addSubview(rekeyConfirmationView)
-        
-        rekeyConfirmationView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        rekeyConfirmationView.customize(RekeyConfirmationViewTheme())
+        view.addSubview(rekeyConfirmationView)
+        rekeyConfirmationView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
-    }
-}
-
-extension RekeyConfirmationViewController: RekeyConfirmationDataSourceDelegate {
-    func rekeyConfirmationDataSourceDidShowMoreAssets(_ rekeyConfirmationDataSource: RekeyConfirmationDataSource) {
-        setFooterHidden()
-    }
-    
-    private func setFooterHidden() {
-        rekeyConfirmationListLayout.setFooterHidden(true)
-        rekeyConfirmationView.reloadData()
     }
 }
 
 extension RekeyConfirmationViewController: RekeyConfirmationViewDelegate {
     func rekeyConfirmationViewDidFinalizeConfirmation(_ rekeyConfirmationView: RekeyConfirmationView) {
         guard let session = session,
-            session.canSignTransaction(for: &account) else {
-            return
-        }
+              session.canSignTransaction(for: &account) else {
+                  return
+              }
         
         let rekeyTransactionDraft = RekeyTransactionSendDraft(account: account, rekeyedTo: ledgerAddress)
         transactionController.setTransactionDraft(rekeyTransactionDraft)
@@ -165,24 +133,13 @@ extension RekeyConfirmationViewController {
     }
 
     private func openRekeyConfirmationAlert() {
-        let accountName = account.name ?? ""
-        let configurator = BottomInformationBundle(
-            title: "ledger-rekey-success-title".localized,
-            image: img("img-green-checkmark"),
-            explanation: "ledger-rekey-success-message".localized(params: accountName),
-            actionTitle: "title-go-home".localized,
-            actionImage: img("bg-main-button")) {
-                self.dismissScreen()
+        let controller = open(
+            .tutorial(flow: .none, tutorial: .accountSuccessfullyRekeyed(accountName: account.name.ifNil(.empty))),
+            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+        ) as? TutorialViewController
+        controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
+            self.dismissScreen()
         }
-        
-        open(
-            .bottomInformation(mode: .confirmation, configurator: configurator),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: cardModalPresenter
-            )
-        )
     }
     
     private func displayTransactionError(from transactionError: TransactionError) {
