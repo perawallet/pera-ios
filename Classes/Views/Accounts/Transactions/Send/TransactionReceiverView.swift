@@ -175,8 +175,8 @@ extension TransactionReceiverView {
     }
     
     private func setupReceiverContactViewLayout() {
+        receiverContactView.customize(ContactContextViewTheme())
         receiverContainerView.addSubview(receiverContactView)
-        
         receiverContactView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.contactHorizontalInset)
             make.top.bottom.equalToSuperview()
@@ -184,7 +184,7 @@ extension TransactionReceiverView {
     }
     
     private func configureReceiverContactView(with contact: Contact) {
-        receiverContactView.bind(ContactsViewModel(contact: contact, imageSize: CGSize(width: 44.0, height: 44.0)))
+        receiverContactView.bindData(ContactsViewModel(contact: contact, imageSize: CGSize(width: 44.0, height: 44.0)))
     }
 }
 

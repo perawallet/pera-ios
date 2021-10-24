@@ -16,60 +16,35 @@
 //  ContactContextView.swift
 
 import UIKit
+import Macaroon
 
-class ContactContextView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    private(set) lazy var userImageView: UIImageView = {
-        let imageView = UIImageView(image: img("icon-user-placeholder"))
-        imageView.backgroundColor = Colors.Background.reversePrimary
-        imageView.layer.cornerRadius = layout.current.imageSize / 2
-        imageView.clipsToBounds = true
-        imageView.contentMode = .center
-        return imageView
-    }()
-    
-    private lazy var nameLabel: UILabel = {
-        UILabel()
-            .withTextColor(Colors.Text.primary)
-            .withLine(.single)
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-    }()
-    
-    private lazy var addressLabel: UILabel = {
-        UILabel()
-            .withTextColor(Colors.Text.secondary)
-            .withAlignment(.left)
-            .withLine(.single)
-            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-    }()
-    
-    private(set) lazy var qrDisplayButton: UIButton = {
-        let button = UIButton(type: .custom)
-            .withImage(img("icon-qr", isTemplate: true))
-            .withBackgroundColor(Colors.Background.reversePrimary)
-        button.layer.cornerRadius = 20.0
-        button.tintColor = Colors.Text.secondary
-        return button
-    }()
-    
+final class ContactContextView: View {
     weak var delegate: ContactContextViewDelegate?
-    
-    override func setListeners() {
+
+    private(set) lazy var userImageView = UIImageView()
+    private lazy var nameLabel = UILabel()
+    private lazy var addressLabel = UILabel()
+    private(set) lazy var qrDisplayButton = UIButton()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        setListeners()
+    }
+
+    func customize(_ theme: ContactContextViewTheme) {
+        addUserImageView(theme)
+        addNameLabel(theme)
+        addAddressLabel(theme)
+        addQRDisplayButton(theme)
+    }
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: BaseStyle<ViewStyleAttribute>) {}
+
+    func setListeners() {
         qrDisplayButton.addTarget(self, action: #selector(notifyDelegateToQRDisplayButtonTapped), for: .touchUpInside)
-    }
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
-    }
-    
-    override func prepareLayout() {
-        setupUserImageViewLayout()
-        setupNameLabelLayout()
-        setupAddressLabelLayout()
-        setupQRDisplayButtonLayout()
     }
 }
 
@@ -81,62 +56,59 @@ extension ContactContextView {
 }
 
 extension ContactContextView {
-    private func setupUserImageViewLayout() {
+    private func addUserImageView(_ theme: ContactContextViewTheme) {
+        userImageView.customizeAppearance(theme.userImage)
+        userImageView.layer.cornerRadius = theme.userImageCorner.radius
+        userImageView.clipsToBounds = true
+
         addSubview(userImageView)
-        
-        userImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.width.height.equalTo(layout.current.imageSize)
-            make.centerY.equalToSuperview()
+        userImageView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalPadding)
+            $0.fitToSize(theme.imageSize)
+            $0.centerY.equalToSuperview()
         }
     }
     
-    private func setupNameLabelLayout() {
+    private func addNameLabel(_ theme: ContactContextViewTheme) {
+        nameLabel.customizeAppearance(theme.nameLabel)
+
         addSubview(nameLabel)
-        
-        nameLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(userImageView.snp.centerY).inset(-layout.current.minimumOffset)
-            make.leading.equalTo(userImageView.snp.trailing).offset(layout.current.labelLeftInset)
+        nameLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.verticalPadding)
+            $0.leading.equalTo(userImageView.snp.trailing).offset(theme.labelHorizontalPaddings.leading)
+            $0.trailing.equalToSuperview().offset(theme.labelHorizontalPaddings.trailing)
         }
     }
     
-    private func setupAddressLabelLayout() {
+    private func addAddressLabel(_ theme: ContactContextViewTheme) {
+        addressLabel.customizeAppearance(theme.addressLabel)
+
         addSubview(addressLabel)
-        
-        addressLabel.snp.makeConstraints { make in
-            make.top.equalTo(userImageView.snp.centerY).offset(layout.current.minimumOffset)
-            make.leading.equalTo(nameLabel)
+        addressLabel.snp.makeConstraints {
+            $0.top.equalTo(nameLabel.snp.bottom)
+            $0.bottom.equalToSuperview().inset(theme.verticalPadding)
+            $0.leading.equalTo(nameLabel)
+            $0.trailing.equalToSuperview().offset(theme.labelHorizontalPaddings.trailing)
         }
     }
     
-    private func setupQRDisplayButtonLayout() {
+    private func addQRDisplayButton(_ theme: ContactContextViewTheme) {
+        qrDisplayButton.customizeAppearance(theme.qrButton)
+
         addSubview(qrDisplayButton)
-        
-        qrDisplayButton.snp.makeConstraints { make in
-            make.width.height.equalTo(layout.current.buttonSize)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalTo(userImageView)
-            make.leading.greaterThanOrEqualTo(addressLabel.snp.trailing).offset(layout.current.minimumOffset)
+        qrDisplayButton.snp.makeConstraints {
+            $0.fitToSize(theme.buttonSize)
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.centerY.equalTo(userImageView)
         }
     }
 }
 
-extension ContactContextView {
-    func bind(_ viewModel: ContactsViewModel) {
-        userImageView.image = viewModel.image
-        nameLabel.text = viewModel.name
-        addressLabel.text = viewModel.address
-    }
-}
-
-extension ContactContextView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let verticalInset: CGFloat = 10.0
-        let imageSize: CGFloat = 44.0
-        let buttonSize: CGFloat = 40.0
-        let labelLeftInset: CGFloat = 12.0
-        let minimumOffset: CGFloat = 4.0
+extension ContactContextView: ViewModelBindable {
+    func bindData(_ viewModel: ContactsViewModel?) {
+        userImageView.image = viewModel?.image
+        nameLabel.text = viewModel?.name
+        addressLabel.text = viewModel?.address
     }
 }
 

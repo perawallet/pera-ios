@@ -277,7 +277,7 @@
 "contacts-title-assets" = "Assets:";
 "title-select-asset" = "Select Asset";
 "contact-search-empty-title" = "No contact found";
-"contact-search-empty-detail" = "Please try a different contact name";
+"contact-search-empty-detail" = "Try different contact name";
 
 // MARK: Settings
 "settings-title" = "Settings";

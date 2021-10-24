@@ -18,7 +18,6 @@
 import UIKit
 
 class ContactCell: BaseCollectionViewCell<ContactContextView> {
-    
     weak var delegate: ContactCellDelegate?
     
     override func linkInteractors() {
@@ -30,8 +29,12 @@ class ContactCell: BaseCollectionViewCell<ContactContextView> {
         contextView.userImageView.image = img("icon-user-placeholder")
     }
 
-    func bind(_ viewModel: ContactsViewModel) {
-        contextView.bind(viewModel)
+    func bindData(_ viewModel: ContactsViewModel) {
+        contextView.bindData(viewModel)
+    }
+
+    func customize(_ theme: ContactContextViewTheme) {
+        contextView.customize(theme)
     }
 }
 

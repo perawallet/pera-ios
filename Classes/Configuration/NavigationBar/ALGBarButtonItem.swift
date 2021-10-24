@@ -128,7 +128,7 @@ struct ALGBarButtonItem: BarButtonItem {
                 height: .equal(44.0)
             )
         case .add:
-            return .explicit(CGSize(width: 44.0, height: 44.0))
+            return .explicit(CGSize(width: 40, height: 40))
         case .close:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .qr:

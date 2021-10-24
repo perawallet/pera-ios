@@ -18,7 +18,8 @@
 import UIKit
 
 class ContactsViewController: BaseViewController {
-    
+    weak var delegate: ContactsViewControllerDelegate?
+
     override var shouldShowNavigationBar: Bool {
         return false
     }
@@ -45,9 +46,7 @@ class ContactsViewController: BaseViewController {
     
     private var contacts = [Contact]()
     private var searchResults = [Contact]()
-    
-    weak var delegate: ContactsViewControllerDelegate?
-    
+
     override func customizeTabBarAppearence() {
         isTabBarHidden = false
     }
@@ -115,11 +114,11 @@ class ContactsViewController: BaseViewController {
     }
     
     override func prepareLayout() {
+        contactsView.customize(ContactsViewTheme())
         view.addSubview(contactsView)
-        
-        contactsView.snp.makeConstraints { make in
-            make.top.safeEqualToTop(of: self)
-            make.leading.trailing.bottom.equalToSuperview()
+        contactsView.snp.makeConstraints {
+            $0.top.safeEqualToTop(of: self)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
     
@@ -184,11 +183,12 @@ extension ContactsViewController: UICollectionViewDataSource {
     }
     
     func configure(_ cell: ContactCell, at indexPath: IndexPath) {
+        cell.customize(ContactContextViewTheme())
         cell.delegate = self
         
         if indexPath.item < searchResults.count {
             let contact = searchResults[indexPath.item]
-            cell.bind(ContactsViewModel(contact: contact, imageSize: CGSize(width: 50.0, height: 50.0)))
+            cell.bindData(ContactsViewModel(contact: contact, imageSize: CGSize(width: 40, height: 40)))
         }
     }
 }
@@ -199,8 +199,7 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        
-        return CGSize(width: UIScreen.main.bounds.width, height: 86.0)
+        return CGSize(width: UIScreen.main.bounds.width, height: 68)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

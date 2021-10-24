@@ -16,89 +16,88 @@
 //  ContactsView.swift
 
 import UIKit
+import Macaroon
 
-class ContactsView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    override var endsEditingAfterTouches: Bool {
-        return true
-    }
-    
+final class ContactsView: View {
     weak var delegate: ContactsViewDelegate?
-    
-    private lazy var contactsHeaderView: MainHeaderView = {
-        let view = MainHeaderView()
-        view.setTitle("contacts-title".localized)
-        view.setQRButtonHidden(true)
-        view.setTestNetLabelHidden(true)
-        return view
-    }()
-    
-    private(set) lazy var contactNameInputView: SingleLineInputField = {
-        let contactNameInputView = SingleLineInputField(displaysExplanationText: false)
-        contactNameInputView.placeholderText = "contacts-search".localized
-        contactNameInputView.nextButtonMode = .next
-        contactNameInputView.inputTextField.autocorrectionType = .no
-        return contactNameInputView
-    }()
+
+    private lazy var contactsHeaderView = MainHeaderView()
+    private(set) lazy var contactNameInputView = SingleLineInputField(displaysExplanationText: false)
     
     private(set) lazy var contactsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
+        flowLayout.minimumLineSpacing = 0
         flowLayout.minimumInteritemSpacing = 0.0
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = Colors.Background.tertiary
-        collectionView.contentInset = UIEdgeInsets(top: 16.0, left: 0.0, bottom: 0.0, right: 0.0)
+        collectionView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
         collectionView.keyboardDismissMode = .onDrag
-        collectionView.register(ContactCell.self, forCellWithReuseIdentifier: ContactCell.reusableIdentifier)
-        collectionView.register(ContactSelectionCell.self, forCellWithReuseIdentifier: ContactSelectionCell.reusableIdentifier)
+        collectionView.registerCells(ContactCell.self, ContactSelectionCell.self)
         return collectionView
     }()
     
     private lazy var contentStateView = ContentStateView()
-    
-    override func linkInteractors() {
-        contactsHeaderView.delegate = self
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        linkInteractors()
     }
     
-    override func prepareLayout() {
-        setupContactsHeaderViewLayout()
-        setupContactNameInputViewLayout()
-        setupContactsCollectionViewLayout()
+    func linkInteractors() {
+        contactsHeaderView.delegate = self
+    }
+
+    func customize(_ theme: ContactsViewTheme) {
+        addContactsHeaderView()
+        addContactNameInputView(theme)
+        addContactsCollectionView(theme)
+    }
+
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        endEditing(true)
+        return super.hitTest(point, with: event)
     }
 }
 
 extension ContactsView {
-    private func setupContactsHeaderViewLayout() {
+    private func addContactsHeaderView() {
+        contactsHeaderView.backgroundColor = AppColors.Shared.System.background.color
+        contactsHeaderView.setTitle("contacts-title".localized)
+        contactsHeaderView.setQRButtonHidden(true)
+        contactsHeaderView.setTestNetLabelHidden(true)
+
         addSubview(contactsHeaderView)
-        
-        contactsHeaderView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
+        contactsHeaderView.snp.makeConstraints {
+            $0.leading.trailing.top.equalToSuperview()
         }
     }
     
-    private func setupContactNameInputViewLayout() {
+    private func addContactNameInputView(_ theme: ContactsViewTheme) {
+        contactNameInputView.placeholderText = "contacts-search".localized
+        contactNameInputView.nextButtonMode = .next
+        contactNameInputView.inputTextField.autocorrectionType = .no
+
         addSubview(contactNameInputView)
-        
-        contactNameInputView.snp.makeConstraints { make in
-            make.top.equalTo(contactsHeaderView.snp.bottom).offset(layout.current.topInset)
-            make.top.equalToSuperview().inset(layout.current.topInset).priority(.low)
-            make.leading.trailing.equalToSuperview()
+        contactNameInputView.snp.makeConstraints {
+            $0.top.equalTo(contactsHeaderView.snp.bottom).offset(theme.topInset)
+            $0.top.equalToSuperview().inset(theme.topInset).priority(.low)
+            $0.leading.trailing.equalToSuperview()
         }
     }
 
-    private func setupContactsCollectionViewLayout() {
+    private func addContactsCollectionView(_ theme: ContactsViewTheme) {
         addSubview(contactsCollectionView)
-        
-        contactsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(contactNameInputView.snp.bottom).offset(layout.current.listOffset)
-            make.leading.trailing.bottom.equalToSuperview()
+        contactsCollectionView.snp.makeConstraints {
+            $0.top.equalTo(contactNameInputView.snp.bottom).offset(theme.listOffset)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
         
         contactsCollectionView.backgroundView = contentStateView
@@ -116,16 +115,7 @@ extension ContactsView: MainHeaderViewDelegate {
         delegate?.contactsViewDidTapAddButton(self)
     }
     
-    func mainHeaderViewDidTapQRButton(_ mainHeaderView: MainHeaderView) {
-        
-    }
-}
-
-extension ContactsView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 4.0
-        let listOffset: CGFloat = 16.0
-    }
+    func mainHeaderViewDidTapQRButton(_ mainHeaderView: MainHeaderView) {}
 }
 
 protocol ContactsViewDelegate: AnyObject {
