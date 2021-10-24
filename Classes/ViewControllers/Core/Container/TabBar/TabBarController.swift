@@ -403,7 +403,8 @@ enum TransactionAction {
 extension TabBarController {
     private func dismissTabBarModal() {
         animateCenterButtonAsSelected(false)
-        selectedContent?.dismiss(animated: true)
+        let tabBarModalViewController = selectedContent?.presentedViewController as? TabBarModalViewController
+        tabBarModalViewController?.dismissWithAnimation()
     }
 
     private func presentTabBarModal() {
