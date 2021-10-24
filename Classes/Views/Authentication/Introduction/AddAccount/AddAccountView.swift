@@ -69,16 +69,15 @@ extension AddAccountView {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalToSuperview().inset(theme.topInset)
         }
     }
 
     private func addStackView(_ theme: AddAccountViewTheme) {
-        addSubview(stackView)
-
-        stackView.distribution = .fillProportionally
         stackView.axis = .vertical
 
+        addSubview(stackView)
         stackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(theme.verticalInset)
@@ -88,7 +87,7 @@ extension AddAccountView {
 
         createNewAccountView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(createNewAccountView)
-        watchAccountView.customize(AccountTypeViewTheme())
+        watchAccountView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(watchAccountView)
         pairAccountView.customize(theme.accountTypeViewTheme)
         stackView.addArrangedSubview(pairAccountView)

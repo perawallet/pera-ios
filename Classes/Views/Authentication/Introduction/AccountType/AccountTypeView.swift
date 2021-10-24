@@ -27,9 +27,9 @@ final class AccountTypeView: Control {
     func customize(_ theme: AccountTypeViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
+        addImageView(theme)
         addTitleLabel(theme)
         addDetailLabel(theme)
-        addImageView(theme)
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -38,17 +38,24 @@ final class AccountTypeView: Control {
 }
 
 extension AccountTypeView {
+    private func addImageView(_ theme: AccountTypeViewTheme) {
+        addSubview(imageView)
+        imageView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.fitToSize(theme.iconSize)
+            $0.centerY.equalToSuperview()
+        }
+    }
+
     private func addTitleLabel(_ theme: AccountTypeViewTheme) {
         titleLabel.customizeAppearance(theme.title)
-        addSubview(titleLabel)
 
+        addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(theme.titleLeadingInset)
+            $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalInset)
             $0.top.equalToSuperview().inset(theme.verticalInset)
             $0.trailing.equalToSuperview().inset(theme.titleTrailingInset)
         }
-
-        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func addDetailLabel(_ theme: AccountTypeViewTheme) {
