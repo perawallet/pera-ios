@@ -92,7 +92,7 @@ extension RekeyConfirmationView {
 
         addSubview(rekeyNewTransitionView)
         rekeyNewTransitionView.snp.makeConstraints {
-            $0.centerX.equalToSuperview().inset(theme.horizontalInset)
+            $0.centerX.equalToSuperview().inset(theme.horizontalPadding)
             $0.top.equalTo(loadingImage.snp.bottom).offset(theme.loadingImageVerticalPadding)
         }
     }
@@ -115,7 +115,7 @@ extension RekeyConfirmationView {
         addSubview(feeLabel)
         feeLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(theme.feeTitlePaddings.leading)
-            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.equalTo(finalizeButton.snp.top).offset(-theme.feeTitlePaddings.bottom)
         }
     }
@@ -125,7 +125,7 @@ extension RekeyConfirmationView {
 
         addSubview(infoImage)
         infoImage.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(theme.horizontalInset)
+            $0.leading.equalToSuperview().offset(theme.horizontalPadding)
             $0.centerY.equalTo(feeLabel)
         }
     }
