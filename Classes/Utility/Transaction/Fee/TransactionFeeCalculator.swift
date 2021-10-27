@@ -78,7 +78,7 @@ class TransactionFeeCalculator: NSObject {
         calculatedFee: UInt64,
         isAfterTransaction: Bool
     ) -> UInt64 {
-        var assetCount = account.assetDetails.count + 1
+        var assetCount = (account.assets?.count ?? 0) + 1
 
         switch transactionType {
         case .algosTransaction:
