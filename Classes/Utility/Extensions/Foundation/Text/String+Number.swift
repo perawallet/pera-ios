@@ -21,6 +21,12 @@ extension String {
     var digits: String { return filter(("0"..."9").contains) }
     var decimal: Decimal { return Decimal(string: digits) ?? 0 }
 
+    /// <note> Number formatters are not able to get the decimal values properly sometimes.
+    var decimalAmount: Decimal? {
+        let locale = Locale.preferred()
+        return Decimal(string: without(locale.groupingSeparator ?? ","), locale: locale)
+    }
+
     func decimalForSendSeparator(with fraction: Int) -> Decimal? {
         return Formatter.separatorWith(fraction: fraction).number(from: self)?.decimalValue
     }
@@ -29,4 +35,8 @@ extension String {
         let decimal = self.decimal / pow(10, fraction)
         return Formatter.separatorForInputWith(fraction: fraction).string(for: decimal)
     }
+
+    func without<T: StringProtocol>(_ string: T) -> String {
+        return replacingOccurrences(of: string, with: "")
+      }
 }

@@ -344,8 +344,8 @@ extension SendAssetTransactionPreviewViewController {
     
     private func validateTransaction() {
         if let amountText = sendTransactionPreviewView.amountInputView.inputTextField.text,
-           let decimalValue = amountText.decimalForSendSeparator(with: assetDetail.fractionDecimals) {
-            amount = decimalValue
+           let decimalAmount = amountText.decimalAmount {
+            amount = decimalAmount
         }
             
         if !isTransactionValid() {
