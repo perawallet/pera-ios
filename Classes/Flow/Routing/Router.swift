@@ -222,7 +222,7 @@ class Router {
         case let .addContact(mode):
             viewController = AddContactViewController(mode: mode, configuration: configuration)
         case let .contactDetail(contact):
-            viewController = ContactInfoViewController(contact: contact, configuration: configuration)
+            viewController = ContactDetailViewController(contact: contact, configuration: configuration)
         case let .sendAlgosTransactionPreview(account, receiver, isSenderEditable, qrText):
             viewController = SendAlgosTransactionPreviewViewController(
                 account: account,

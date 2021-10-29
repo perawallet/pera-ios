@@ -209,7 +209,7 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
             let contact = searchResults[indexPath.item]
             
             guard let delegate = delegate else {
-                let controller = open(.contactDetail(contact: contact), by: .push) as? ContactInfoViewController
+                let controller = open(.contactDetail(contact: contact), by: .push) as? ContactDetailViewController
                 controller?.delegate = self
                 
                 return
@@ -310,8 +310,8 @@ extension ContactsViewController: AddContactViewControllerDelegate {
     }
 }
 
-extension ContactsViewController: ContactInfoViewControllerDelegate {
-    func contactInfoViewController(_ contactInfoViewController: ContactInfoViewController, didUpdate contact: Contact) {
+extension ContactsViewController: ContactDetailViewControllerDelegate {
+    func contactDetailViewController(_ contactDetailViewController: ContactDetailViewController, didUpdate contact: Contact) {
         if let updatedContact = contacts.firstIndex(of: contact) {
             contacts[updatedContact] = contact
         }

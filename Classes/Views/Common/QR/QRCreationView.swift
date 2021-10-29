@@ -28,7 +28,7 @@ class QRCreationView: BaseView {
     private lazy var shareButton: AlignedButton = {
         let button = AlignedButton(.imageAtLeft(spacing: 8.0))
         button.setBackgroundImage(img("bg-main-button"), for: .normal)
-        button.setImage(img("icon-share-24"), for: .normal)
+        button.setImage(img("icon-share"), for: .normal)
         button.setTitle("title-share-qr".localized, for: .normal)
         button.setTitleColor(Colors.ButtonText.primary, for: .normal)
         button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))

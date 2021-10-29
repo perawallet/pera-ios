@@ -13,46 +13,39 @@
 // limitations under the License.
 
 //
-//  ContactInfoViewController.swift
+//  ContactDetailViewController.swift
 
 import UIKit
 
-class ContactInfoViewController: BaseScrollViewController {
+final class ContactDetailViewController: BaseScrollViewController {
+    weak var delegate: ContactDetailViewControllerDelegate?
     
+    override var name: AnalyticsScreenName? {
+        return .contactDetail
+    }
+
     private lazy var accountListModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
             dismissMode: .scroll
         )
     )
+
+    private lazy var theme = Theme()
+    private lazy var contactDetailView = ContactDetailView()
     
-    override var name: AnalyticsScreenName? {
-        return .contactDetail
-    }
-    
-    private lazy var contactInfoView = ContactInfoView()
-    
-    private let viewModel = ContactInfoViewModel()
     private let contact: Contact
     private var contactAccount: Account?
     private var selectedAsset: AssetDetail?
-    
-    weak var delegate: ContactInfoViewControllerDelegate?
-    
+    private var assetPreviews: [AssetPreviewModel] = []
+
     init(contact: Contact, configuration: ViewControllerConfiguration) {
         self.contact = contact
         super.init(configuration: configuration)
     }
     
     override func configureNavigationBarAppearance() {
-        let editBarButtonItem = ALGBarButtonItem(kind: .edit) { [unowned self] in
-            let controller = self.open(
-                .addContact(mode: .edit(contact: self.contact)),
-                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-            ) as? AddContactViewController
-            controller?.delegate = self
-        }
-        rightBarButtonItems = [editBarButtonItem]
+        addBarButtons()
     }
     
     override func viewDidLoad() {
@@ -62,14 +55,13 @@ class ContactInfoViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        title = "contacts-info".localized
-        viewModel.configure(contactInfoView.userInformationView, with: contact)
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        contactDetailView.contactInformationView.bindData(ContactInformationViewModel(contact))
     }
     
     override func linkInteractors() {
-        contactInfoView.delegate = self
-        contactInfoView.assetsCollectionView.delegate = self
-        contactInfoView.assetsCollectionView.dataSource = self
+        contactDetailView.assetsCollectionView.delegate = self
+        contactDetailView.assetsCollectionView.dataSource = self
     }
     
     override func setListeners() {
@@ -79,25 +71,36 @@ class ContactInfoViewController: BaseScrollViewController {
             name: .ContactDeletion,
             object: nil
         )
+
+        contactDetailView.contactInformationView.onTapQRButton = contactInfoViewDidTapQRCodeButton
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupContactInfoViewLayout()
-    }
-}
-
-extension ContactInfoViewController {
-    private func setupContactInfoViewLayout() {
-        contentView.addSubview(contactInfoView)
-        
-        contactInfoView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        contentView.addSubview(contactDetailView)
+        contactDetailView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
 
-extension ContactInfoViewController {
+extension ContactDetailViewController {
+    private func addBarButtons() {
+        let editBarButtonItem = ALGBarButtonItem(kind: .edit) { [unowned self] in
+            let controller = self.open(
+                .addContact(mode: .edit(contact: self.contact)),
+                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+            ) as? AddContactViewController
+            controller?.delegate = self
+        }
+        let shareBarButtonItem = ALGBarButtonItem(kind: .share) { [unowned self] in
+            self.shareContact()
+        }
+        rightBarButtonItems = [editBarButtonItem, shareBarButtonItem]
+    }
+}
+
+extension ContactDetailViewController {
     private func fetchContactAccount() {
         guard let address = contact.address else {
             return
@@ -111,6 +114,8 @@ extension ContactInfoViewController {
                 accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                 let account = accountWrapper.account
                 self?.contactAccount = account
+                let assetPreviewModel = AssetPreviewModelAdapter.adapt(account)
+                self?.assetPreviews.append(assetPreviewModel)
                 
                 if account.isThereAnyDifferentAsset {
                     if let assets = account.assets {
@@ -128,7 +133,9 @@ extension ContactInfoViewController {
                                     }
                                     
                                     account.assetDetails.append(assetDetail)
-                                    
+                                    let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset))
+                                    self?.assetPreviews.append(assetPreviewModel)
+
                                     if assets.count == account.assetDetails.count + failedAssetFetchCount {
                                         self?.loadingController?.stopLoading()
                                         
@@ -136,7 +143,7 @@ extension ContactInfoViewController {
                                             return
                                         }
                                         strongSelf.contactAccount = account
-                                        strongSelf.configureViewForContactAssets()
+                                        strongSelf.contactDetailView.assetsCollectionView.reloadData()
                                     }
                                 case .failure:
                                     failedAssetFetchCount += 1
@@ -153,6 +160,10 @@ extension ContactInfoViewController {
                 if error.isHttpNotFound {
                     self?.contactAccount = Account(address: address, type: .standard)
                     self?.loadingController?.stopLoading()
+
+                    guard let account = self?.contactAccount else { return }
+                    let assetPreviewModel = AssetPreviewModelAdapter.adapt(account)
+                    self?.assetPreviews.append(assetPreviewModel)
                 } else {
                     self?.contactAccount = nil
                     self?.loadingController?.stopLoading()
@@ -161,61 +172,39 @@ extension ContactInfoViewController {
         }
     }
     
-    private func configureViewForContactAssets() {
-        guard let account = contactAccount else {
-            return
-        }
-        
-        let collectionViewHeight = CGFloat((account.assetDetails.count + 1) * 72) + CGFloat((account.assetDetails.count + 1) * 8)
-        
-        contactInfoView.assetsCollectionView.snp.updateConstraints { make in
-            make.height.equalTo(collectionViewHeight)
-        }
-        
-        contactInfoView.assetsCollectionView.reloadData()
-    }
-    
     @objc
     private func didContactDeleted(notification: Notification) {
         closeScreen(by: .pop, animated: false)
     }
 }
 
-extension ContactInfoViewController: UICollectionViewDataSource {
+extension ContactDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let account = contactAccount else {
-            return 1
-        }
-        
-        return account.assetDetails.count + 1
+        return assetPreviews.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ContactAssetCell.reusableIdentifier,
-            for: indexPath) as? ContactAssetCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
-        viewModel.configure(cell, at: indexPath, with: contactAccount)
+        let cell: AssetPreviewSendCell = collectionView.dequeueReusableCell(for: indexPath)
+        cell.customize(AssetPreviewSendViewTheme())
+        cell.bindData(AssetPreviewViewModel(assetPreviews[indexPath.row]))
         cell.delegate = self
         return cell
     }
 }
 
-extension ContactInfoViewController: UICollectionViewDelegateFlowLayout {
+extension ContactDetailViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: view.frame.width - 40.0, height: 72.0)
+        return CGSize(theme.cellSize)
     }
 }
 
-extension ContactInfoViewController: ContactAssetCellDelegate {
-    func contactAssetCellDidTapSendButton(_ contactAssetCell: ContactAssetCell) {
-        guard let itemIndex = contactInfoView.assetsCollectionView.indexPath(for: contactAssetCell),
+extension ContactDetailViewController: AssetPreviewSendCellDelegate {
+    func assetPreviewSendCellDidTapSendButton(_ assetPreviewSendCell: AssetPreviewSendCell) {
+        guard let itemIndex = contactDetailView.assetsCollectionView.indexPath(for: assetPreviewSendCell),
             let contactAccount = contactAccount else {
             return
         }
@@ -237,7 +226,7 @@ extension ContactInfoViewController: ContactAssetCellDelegate {
     }
 }
 
-extension ContactInfoViewController {
+extension ContactDetailViewController {
     private func shareContact() {
         guard let address = contact.address else {
             return
@@ -251,8 +240,8 @@ extension ContactInfoViewController {
     }
 }
 
-extension ContactInfoViewController: ContactInfoViewDelegate {
-    func contactInfoViewDidTapQRCodeButton(_ contactInfoView: ContactInfoView) {
+extension ContactDetailViewController {
+    func contactInfoViewDidTapQRCodeButton() {
         guard let address = contact.address else {
             return
         }
@@ -260,20 +249,16 @@ extension ContactInfoViewController: ContactInfoViewDelegate {
         let draft = QRCreationDraft(address: address, mode: .address)
         open(.qrGenerator(title: contact.name, draft: draft, isTrackable: true), by: .present)
     }
-    
-    func contactInfoViewDidTapShareButton(_ contactInfoView: ContactInfoView) {
-        shareContact()
-    }
 }
 
-extension ContactInfoViewController: AddContactViewControllerDelegate {
+extension ContactDetailViewController: AddContactViewControllerDelegate {
     func addContactViewController(_ addContactViewController: AddContactViewController, didSave contact: Contact) {
-        viewModel.configure(contactInfoView.userInformationView, with: contact)
-        delegate?.contactInfoViewController(self, didUpdate: contact)
+        contactDetailView.contactInformationView.bindData(ContactInformationViewModel(contact))
+        delegate?.contactDetailViewController(self, didUpdate: contact)
     }
 }
 
-extension ContactInfoViewController: AccountListViewControllerDelegate {
+extension ContactDetailViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
         viewController.dismissScreen()
         
@@ -299,6 +284,6 @@ extension ContactInfoViewController: AccountListViewControllerDelegate {
     }
 }
 
-protocol ContactInfoViewControllerDelegate: AnyObject {
-    func contactInfoViewController(_ contactInfoViewController: ContactInfoViewController, didUpdate contact: Contact)
+protocol ContactDetailViewControllerDelegate: AnyObject {
+    func contactDetailViewController(_ contactDetailViewController: ContactDetailViewController, didUpdate contact: Contact)
 }

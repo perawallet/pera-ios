@@ -27,6 +27,7 @@ final class RekeyInstructionsView: View {
     private lazy var firstInstructionView = RekeyInstructionItemView()
     private lazy var secondInstructionView = RekeyInstructionItemView()
     private lazy var thirdInstructionView = RekeyInstructionItemView()
+    private lazy var fourthInstructionView = RekeyInstructionItemView()
     private lazy var startButton = Button()
 
     func customize(_ theme: RekeyInstructionsViewTheme) {
@@ -36,6 +37,7 @@ final class RekeyInstructionsView: View {
         addFirstInstructionView(theme)
         addSecondInstructionView(theme)
         addThirdInstructionView(theme)
+        addFourthInstructionView(theme)
         addStartButton(theme)
     }
 
@@ -109,6 +111,14 @@ extension RekeyInstructionsView {
             $0.top.equalTo(secondInstructionView.snp.bottom).offset(theme.instructionSpacing)
         }
     }
+
+    private func addFourthInstructionView(_ theme: RekeyInstructionsViewTheme) {
+        addSubview(fourthInstructionView)
+        fourthInstructionView.snp.makeConstraints {
+            $0.leading.trailing.equalTo(firstInstructionView)
+            $0.top.equalTo(thirdInstructionView.snp.bottom).offset(theme.instructionSpacing)
+        }
+    }
     
     private func addStartButton(_ theme: RekeyInstructionsViewTheme) {
         startButton.customize(theme.startButtonTheme)
@@ -117,7 +127,7 @@ extension RekeyInstructionsView {
         addSubview(startButton)
         startButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.top.greaterThanOrEqualTo(thirdInstructionView.snp.bottom).offset(theme.bottomPadding)
+            $0.top.greaterThanOrEqualTo(fourthInstructionView.snp.bottom).offset(theme.bottomPadding)
             $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomPadding)
         }
     }
@@ -129,6 +139,7 @@ extension RekeyInstructionsView: ViewModelBindable {
         firstInstructionView.bindTitle(viewModel?.firstInstructionViewTitle)
         secondInstructionView.bindTitle(viewModel?.secondInstructionViewTitle)
         thirdInstructionView.bindTitle(viewModel?.thirdInstructionViewTitle)
+        fourthInstructionView.bindTitle(viewModel?.fourthInstructionViewTitle)
     }
 }
 

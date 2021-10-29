@@ -34,7 +34,7 @@ class TransactionHistoryHeaderView: BaseView {
     }()
     
     private lazy var shareButton: UIButton = {
-        let button = UIButton(type: .custom).withImage(img("icon-share-24", isTemplate: true))
+        let button = UIButton(type: .custom).withImage(img("icon-share", isTemplate: true))
         button.tintColor = Colors.TransactionHistoryHeader.filterShare
         return button
     }()

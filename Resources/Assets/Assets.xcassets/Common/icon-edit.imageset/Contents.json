@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-arrow-up-25.pdf",
+      "filename" : "icon-edit.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-arrow-up-24.pdf",
+      "filename" : "icon-edit-dark.pdf",
       "idiom" : "universal"
     }
   ],
