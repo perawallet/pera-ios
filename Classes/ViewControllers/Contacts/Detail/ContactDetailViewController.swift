@@ -88,9 +88,9 @@ extension ContactDetailViewController {
     private func addBarButtons() {
         let editBarButtonItem = ALGBarButtonItem(kind: .edit) { [unowned self] in
             let controller = self.open(
-                .addContact(mode: .edit(contact: self.contact)),
+                .editContact(contact: self.contact),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-            ) as? AddContactViewController
+            ) as? EditContactViewController
             controller?.delegate = self
         }
         let shareBarButtonItem = ALGBarButtonItem(kind: .share) { [unowned self] in
@@ -253,6 +253,13 @@ extension ContactDetailViewController {
 
 extension ContactDetailViewController: AddContactViewControllerDelegate {
     func addContactViewController(_ addContactViewController: AddContactViewController, didSave contact: Contact) {
+        contactDetailView.contactInformationView.bindData(ContactInformationViewModel(contact))
+        delegate?.contactDetailViewController(self, didUpdate: contact)
+    }
+}
+
+extension ContactDetailViewController: EditContactViewControllerDelegate {
+    func editContactViewController(_ editContactViewController: EditContactViewController, didSave contact: Contact) {
         contactDetailView.contactInformationView.bindData(ContactInformationViewModel(contact))
         delegate?.contactDetailViewController(self, didUpdate: contact)
     }

@@ -22,11 +22,10 @@ final class WatchAccountAdditionView: View {
     weak var delegate: WatchAccountAdditionViewDelegate?
 
     private lazy var theme = WatchAccountAdditionViewTheme()
-    private(set) lazy var addressInputView =
-        createAccountAddressTextInput(
-            placeholder: "watch-account-input-explanation".localized,
-            floatingPlaceholder: "watch-account-input-explanation".localized
-        )
+    private(set) lazy var addressInputView = createAccountAddressTextInput(
+        placeholder: "watch-account-input-explanation".localized,
+        floatingPlaceholder: "watch-account-input-explanation".localized
+    )
     private lazy var titleLabel = UILabel()
     private lazy var descriptionLabel = UILabel()
     private lazy var qrButton = Button()

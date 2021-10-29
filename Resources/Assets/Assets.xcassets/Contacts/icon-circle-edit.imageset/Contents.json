@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-edit-white.pdf",
+      "filename" : "icon-circle-edit.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-edit.pdf",
+      "filename" : "icon-circle-edit-dark.pdf",
       "idiom" : "universal"
     }
   ],

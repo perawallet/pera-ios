@@ -33,7 +33,8 @@ indirect enum Screen {
     case accountList(mode: AccountListViewController.Mode)
     case editAccount(account: Account)
     case contactSelection
-    case addContact(mode: AddContactViewController.Mode)
+    case addContact(address: String? = nil, name: String? = nil)
+    case editContact(contact: Contact)
     case contactDetail(contact: Contact)
     case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState, isSenderEditable: Bool, qrText: QRText? = nil)
     case sendAssetTransactionPreview(

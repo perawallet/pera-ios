@@ -38,7 +38,6 @@ final class ContactDetailView: View {
         super.init(frame: frame)
 
         customize(theme)
-        linkInteractors()
     }
 
     func customize(_ theme: ContactDetailViewTheme) {

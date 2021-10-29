@@ -55,7 +55,7 @@ struct DeepLinkParser {
         
         switch qrText.mode {
         case .address:
-            return .addContact(mode: .new(address: accountAddress, name: qrText.label))
+            return .addContact(address: accountAddress, name: qrText.label)
         case .algosRequest:
             if let amount = qrText.amount {
                 return .sendAlgosTransactionPreview(

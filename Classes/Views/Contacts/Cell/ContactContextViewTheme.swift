@@ -56,7 +56,7 @@ struct ContactContextViewTheme: StyleSheet, LayoutSheet {
         self.imageSize = (40, 40)
         self.userImageCorner = Corner(radius: imageSize.h / 2)
         self.verticalPadding = 12
-        self.labelHorizontalPaddings = (15, 39)
+        self.labelHorizontalPaddings = (15, 54)
         self.buttonSize = (24, 24)
     }
 }

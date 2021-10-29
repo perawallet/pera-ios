@@ -13,16 +13,15 @@
 // limitations under the License.
 
 //
-//  AddContactView.swift
+//   EditContactView.swift
 
 import UIKit
 import Macaroon
 
-final class AddContactView: View {
-    weak var delegate: AddContactViewDelegate?
+final class EditContactView: View {
+    weak var delegate: EditContactViewDelegate?
 
     private(set) lazy var badgedImageView = BadgedImageView()
-    private lazy var addPhotoLabel = UILabel()
     private(set) lazy var nameInputView = createAccountNameTextInput(
         placeholder: "contacts-input-name-placeholder".localized,
         floatingPlaceholder: "contacts-input-name-placeholder".localized
@@ -32,7 +31,7 @@ final class AddContactView: View {
         floatingPlaceholder: "watch-account-input-explanation".localized
     )
     private lazy var qrButton = Button()
-    private(set) lazy var addContactButton = Button()
+    private(set) lazy var deleteContactButton = Button()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,45 +39,44 @@ final class AddContactView: View {
         setListeners()
     }
 
-    func customize(_ theme: AddContactViewTheme) {
+    func customize(_ theme: EditContactViewTheme) {
         addBadgedImageView(theme)
-        addPhotoLabel(theme)
         addNameInputView(theme)
         addAddressInputView(theme)
         addQrButton(theme)
-        addAddButton(theme)
+        addDeleteContactButton(theme)
     }
 
-    func prepareLayout(_ layoutSheet: AddContactViewTheme) {}
+    func prepareLayout(_ layoutSheet: EditContactViewTheme) {}
 
-    func customizeAppearance(_ styleSheet: AddContactViewTheme) {}
+    func customizeAppearance(_ styleSheet: EditContactViewTheme) {}
 
     func setListeners() {
         qrButton.addTarget(self, action: #selector(notifyDelegateToOpenQrScanner), for: .touchUpInside)
         badgedImageView.addTarget(self, action: #selector(didDelegateToAddImage), for: .touchUpInside)
-        addContactButton.addTarget(self, action: #selector(notifyDelegateToAddContact), for: .touchUpInside)
+        deleteContactButton.addTarget(self, action: #selector(notifyDelegateToDeleteContact), for: .touchUpInside)
     }
 }
 
-extension AddContactView {
+extension EditContactView {
     @objc
     private func didDelegateToAddImage() {
-        delegate?.addContactViewDidTapAddImageButton(self)
+        delegate?.editContactViewDidTapAddImageButton(self)
     }
 
     @objc
-    private func notifyDelegateToAddContact() {
-        delegate?.addContactViewDidTapAddContactButton(self)
+    private func notifyDelegateToDeleteContact() {
+        delegate?.editContactViewDidTapDeleteButton(self)
     }
 
     @objc
     func notifyDelegateToOpenQrScanner() {
-        delegate?.addContactViewDidTapQRCodeButton(self)
+        delegate?.editContactViewDidTapQRCodeButton(self)
     }
 }
 
-extension AddContactView {
-    private func addBadgedImageView(_ theme: AddContactViewTheme) {
+extension EditContactView {
+    private func addBadgedImageView(_ theme: EditContactViewTheme) {
         badgedImageView.customize(BadgedImageViewTheme())
 
         addSubview(badgedImageView)
@@ -88,25 +86,15 @@ extension AddContactView {
         }
     }
 
-    private func addPhotoLabel(_ theme: AddContactViewTheme) {
-        addPhotoLabel.customizeAppearance(theme.photoLabel)
-
-        addSubview(addPhotoLabel)
-        addPhotoLabel.snp.makeConstraints {
-            $0.top.equalTo(badgedImageView.snp.bottom).offset(theme.addPhotoLabelTopPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-        }
-    }
-
-    private func addNameInputView(_ theme: AddContactViewTheme) {
+    private func addNameInputView(_ theme: EditContactViewTheme) {
         addSubview(nameInputView)
         nameInputView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.top.equalTo(addPhotoLabel.snp.bottom).offset(theme.inputTopPadding)
+            $0.top.equalTo(badgedImageView.snp.bottom).offset(theme.inputTopPadding)
         }
     }
 
-    private func addAddressInputView(_ theme: AddContactViewTheme) {
+    private func addAddressInputView(_ theme: EditContactViewTheme) {
         addSubview(addressInputView)
         addressInputView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
@@ -114,7 +102,7 @@ extension AddContactView {
         }
     }
 
-    private func addQrButton(_ theme: AddContactViewTheme) {
+    private func addQrButton(_ theme: EditContactViewTheme) {
         qrButton.customizeAppearance(theme.qrButton)
 
         #warning("This should be in the text input's right accessory")
@@ -124,22 +112,22 @@ extension AddContactView {
             $0.trailing.equalToSuperview()
         }
     }
-    
-    private func addAddButton(_ theme: AddContactViewTheme) {
-        addContactButton.customize(theme.addContactButtonViewTheme)
-        addContactButton.bindData(ButtonCommonViewModel(title: "contacts-add".localized))
 
-        addSubview(addContactButton)
-        addContactButton.snp.makeConstraints {
-            $0.top.greaterThanOrEqualTo(addressInputView.snp.bottom).offset(theme.topPadding)
+    private func addDeleteContactButton(_ theme: EditContactViewTheme) {
+        deleteContactButton.draw(corner: theme.deleteButtonCorner)
+        deleteContactButton.customizeAppearance(theme.deleteButton)
+
+        addSubview(deleteContactButton)
+        deleteContactButton.snp.makeConstraints {
+            $0.top.equalTo(addressInputView.snp.bottom).offset(theme.topPadding)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(theme.bottomPadding + safeAreaBottom)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.bottom.lessThanOrEqualToSuperview().inset(theme.bottomPadding + safeAreaBottom)
+            $0.fitToSize(theme.deleteButtonSize)
         }
     }
 }
 
-extension AddContactView {
+extension EditContactView {
     func createAddressTextInput(
         placeholder: String,
         floatingPlaceholder: String?
@@ -192,8 +180,8 @@ extension AddContactView {
     }
 }
 
-protocol AddContactViewDelegate: AnyObject {
-    func addContactViewDidTapAddContactButton(_ addContactView: AddContactView)
-    func addContactViewDidTapAddImageButton(_ addContactView: AddContactView)
-    func addContactViewDidTapQRCodeButton(_ addContactView: AddContactView)
+protocol EditContactViewDelegate: AnyObject {
+    func editContactViewDidTapDeleteButton(_ editContactView: EditContactView)
+    func editContactViewDidTapAddImageButton(_ editContactView: EditContactView)
+    func editContactViewDidTapQRCodeButton(_ editContactView: EditContactView)
 }

@@ -328,14 +328,14 @@ extension ContactsViewController: ContactDetailViewControllerDelegate {
 
 extension ContactsViewController: ContactsEmptyViewDelegate {
     func contactsEmptyViewDidTapAddContactButton(_ contactsEmptyView: ContactsEmptyView) {
-        let controller = self.open(.addContact(mode: .new()), by: .push) as? AddContactViewController
+        let controller = self.open(.addContact(), by: .push) as? AddContactViewController
         controller?.delegate = self
     }
 }
 
 extension ContactsViewController: ContactsViewDelegate {
     func contactsViewDidTapAddButton(_ contactsView: ContactsView) {
-        let controller = open(.addContact(mode: .new()), by: .push) as? AddContactViewController
+        let controller = open(.addContact(), by: .push) as? AddContactViewController
         controller?.delegate = self
     }
 }

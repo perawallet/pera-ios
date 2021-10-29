@@ -83,6 +83,7 @@ extension ContactInformationView {
         addSubview(nameLabel)
         nameLabel.snp.makeConstraints {
             $0.top.equalTo(imageView.snp.bottom).offset(theme.nameLabelTopPadding)
+            $0.leading.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalPadding)
             $0.centerX.equalToSuperview()
         }
     }

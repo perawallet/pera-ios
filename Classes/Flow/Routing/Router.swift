@@ -219,8 +219,10 @@ class Router {
             viewController = EditAccountViewController(account: account, configuration: configuration)
         case .contactSelection:
             viewController = ContactSelectionViewController(configuration: configuration)
-        case let .addContact(mode):
-            viewController = AddContactViewController(mode: mode, configuration: configuration)
+        case let .addContact(address, name):
+            viewController = AddContactViewController(address: address, name: name, configuration: configuration)
+        case let .editContact(contact):
+            viewController = EditContactViewController(contact: contact, configuration: configuration)
         case let .contactDetail(contact):
             viewController = ContactDetailViewController(contact: contact, configuration: configuration)
         case let .sendAlgosTransactionPreview(account, receiver, isSenderEditable, qrText):

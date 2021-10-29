@@ -76,7 +76,7 @@ extension ContactContextView {
         nameLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.verticalPadding)
             $0.leading.equalTo(userImageView.snp.trailing).offset(theme.labelHorizontalPaddings.leading)
-            $0.trailing.equalToSuperview().offset(theme.labelHorizontalPaddings.trailing)
+            $0.trailing.equalToSuperview().inset(theme.labelHorizontalPaddings.trailing)
         }
     }
     

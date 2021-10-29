@@ -32,8 +32,8 @@ struct ALGBarButtonItem: BarButtonItem {
         case .done:
             return BarButtonItemTitleContent(
                 text: "title-done".localized,
-                textColor: Colors.ButtonText.actionButton,
-                font: UIFont.font(withWeight: .semiBold(size: 16.0))
+                textColor: AppColors.Components.Text.main.color,
+                font: Fonts.DMSans.medium.make(15).font
             )
         case .skip:
             return BarButtonItemTitleContent(

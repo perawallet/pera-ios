@@ -40,13 +40,13 @@ struct ContactInformationViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = AppColors.Shared.System.background
         self.nameLabel = [
             .textOverflow(.fitting),
-            .textAlignment(.left),
+            .textAlignment(.center),
             .font(Fonts.DMSans.medium.make(19)),
             .textColor(AppColors.Components.Text.main)
         ]
         self.accountShortAddressLabel = [
             .textOverflow(.fitting),
-            .textAlignment(.left),
+            .textAlignment(.center),
             .font(Fonts.DMMono.regular.make(13)),
             .textColor(AppColors.Components.Text.grayLighter)
         ]
