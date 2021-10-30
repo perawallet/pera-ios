@@ -85,16 +85,6 @@ extension BottomWarningView {
         }
     }
 
-//    private func addCloseButton(_ theme: BottomWarningViewTheme) {
-//        closeButton.fitToVerticalIntrinsicSize()
-//        closeButton.snp.makeConstraints {
-//            $0.centerX.equalToSuperview()
-//            $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
-//            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
-//            $0.top.greaterThanOrEqualTo(descriptionLabel.snp.bottom).offset(theme.verticalInset)
-//        }
-//    }
-
     private func addVerticalStackView(_ theme: BottomWarningViewTheme) {
         addSubview(verticalStackView)
         verticalStackView.spacing = theme.buttonInset
