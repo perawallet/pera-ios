@@ -13,13 +13,21 @@
 // limitations under the License.
 
 //
-//  AccountViewCell.swift
+//   AccountListViewModel.swift
 
-import UIKit
+import Macaroon
 
-class AccountViewCell: BaseCollectionViewCell<AccountContextView> {
+struct AccountListViewModel {
+    private(set) var title: String
 
-    func bind(_ viewModel: AccountListViewModel) {
-        contextView.bind(viewModel)
+    init(_ mode: AccountListViewController.Mode) {
+        switch mode {
+        case .contact, .transactionSender:
+            title = "send-sending-algos-select".localized
+        case .transactionReceiver:
+            title = "send-receiving-algos-select".localized
+        case .walletConnect:
+            title = "accounts-title".localized
+        }
     }
 }

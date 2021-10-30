@@ -17,83 +17,53 @@
 
 import UIKit
 
-class AccountListViewController: BaseViewController {
-    
+final class AccountListViewController: BaseViewController {
+    weak var delegate: AccountListViewControllerDelegate?
+
     override var shouldShowNavigationBar: Bool {
         return false
     }
-    
+
+    private lazy var theme = Theme()
     private lazy var accountListView = AccountListView()
-
-    private lazy var emptyStateView = SearchEmptyView()
-
-    weak var delegate: AccountListViewControllerDelegate?
     
-    private var accountListLayoutBuilder: AccountListLayoutBuilder
-    private var accountListDataSource: AccountListDataSource
+    private lazy var accountListLayoutBuilder = AccountListLayoutBuilder()
+    private lazy var accountListDataSource = AccountListDataSource(mode: mode)
     private var mode: Mode
     
     init(mode: Mode, configuration: ViewControllerConfiguration) {
         self.mode = mode
-        accountListLayoutBuilder = AccountListLayoutBuilder()
-        accountListDataSource = AccountListDataSource(mode: mode)
         super.init(configuration: configuration)
     }
     
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.secondary
-        emptyStateView.setTitle("asset-not-found-title".localized)
-        setTitle()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         updateContentStateView()
     }
     
     override func setListeners() {
         accountListLayoutBuilder.delegate = self
-        accountListView.delegate = self
         accountListView.accountsCollectionView.dataSource = accountListDataSource
         accountListView.accountsCollectionView.delegate = accountListLayoutBuilder
     }
+
+    override func bindData() {
+        super.bindData()
+        accountListView.bindData(AccountListViewModel(mode))
+    }
     
     override func prepareLayout() {
-        setupAccountListViewLayout()
-    }
-}
-
-extension AccountListViewController {
-    private func setupAccountListViewLayout() {
+        accountListView.customize(theme.accountListViewTheme)
         view.addSubview(accountListView)
-        
-        accountListView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        accountListView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
 
 extension AccountListViewController {
-    private func setTitle() {
-        switch mode {
-        case .contact,
-             .transactionSender:
-            accountListView.titleLabel.text = "send-sending-algos-select".localized
-        case .transactionReceiver:
-            accountListView.titleLabel.text = "send-receiving-algos-select".localized
-        case .walletConnect:
-            accountListView.titleLabel.text = "accounts-title".localized
-        }
-    }
-
     private func updateContentStateView() {
-        if accountListDataSource.accounts.isEmpty {
-            accountListView.accountsCollectionView.contentState = .empty(emptyStateView)
-        } else {
-            accountListView.accountsCollectionView.contentState = .none
-        }
-    }
-}
-
-extension AccountListViewController: AccountListViewDelegate {
-    func accountListViewDidTapCancelButton(_ accountListView: AccountListView) {
-        delegate?.accountListViewControllerDidCancelScreen(self)
+        accountListView.updateContentStateView(isEmpty: accountListDataSource.accounts.isEmpty)
     }
 }
 
@@ -121,5 +91,4 @@ extension AccountListViewController {
 
 protocol AccountListViewControllerDelegate: AnyObject {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account)
-    func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController)
 }

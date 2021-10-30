@@ -28,7 +28,8 @@ final class ContactDetailViewController: BaseScrollViewController {
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
             dismissMode: .scroll
-        )
+        ),
+        initialModalSize: .custom(CGSize(theme.modalSize))
     )
 
     private lazy var theme = Theme()

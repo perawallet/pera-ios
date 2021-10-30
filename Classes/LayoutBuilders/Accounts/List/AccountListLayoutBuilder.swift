@@ -16,27 +16,32 @@
 //  AccountListLayoutBuilder.swift
 
 import UIKit
+import Macaroon
 
-class AccountListLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
-    
+final class AccountListLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
     weak var delegate: AccountListLayoutBuilderDelegate?
+
+    private lazy var theme = Theme()
     
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
-        ) -> CGSize {
-        
-        return CGSize(width: UIScreen.main.bounds.width, height: 50.0)
+    ) -> CGSize {
+        return CGSize(theme.cellSize)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if collectionView.cellForItem(at: indexPath) is AccountViewCell {
-            delegate?.accountListLayoutBuilder(self, didSelectAt: indexPath)
-        }
+        delegate?.accountListLayoutBuilder(self, didSelectAt: indexPath)
     }
 }
 
 protocol AccountListLayoutBuilderDelegate: AnyObject {
     func accountListLayoutBuilder(_ layoutBuilder: AccountListLayoutBuilder, didSelectAt indexPath: IndexPath)
+}
+
+extension AccountListLayoutBuilder {
+    struct Theme {
+        let cellSize: LayoutSize = (UIScreen.main.bounds.width - 48, 72)
+    }
 }

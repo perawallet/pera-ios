@@ -13,18 +13,27 @@
 // limitations under the License.
 
 //
-//   LedgerAccountDetailViewTheme.swift
+//   AccountListViewTheme.swift
 
 import Macaroon
 
-struct LedgerAccountDetailViewTheme: LayoutSheet, StyleSheet {
+struct AccountListViewTheme: LayoutSheet, StyleSheet {
+    let titleLabel: TextStyle
     let backgroundColor: Color
     let cellSpacing: LayoutMetric
-    let contentInset: LayoutPaddings
+    let verticalPadding: LayoutMetric
+    let accountListBottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
+        self.titleLabel = [
+            .textAlignment(.center),
+            .textOverflow(.fitting),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.medium.make(15))
+        ]
         self.backgroundColor = AppColors.Shared.System.background
         self.cellSpacing = 0
-        self.contentInset = (40, 0, 0, 0)
+        self.verticalPadding = 22
+        self.accountListBottomInset = -20.0
     }
 }

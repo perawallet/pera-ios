@@ -21,10 +21,12 @@ extension ContactDetailViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
         let cellSize: LayoutSize
+        let modalSize: LayoutSize
 
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
             cellSize = (UIScreen.main.bounds.width - 48, 72)
+            modalSize = (UIScreen.main.bounds.width, 294)
         }
     }
 }
