@@ -122,11 +122,16 @@ extension PassphraseDisplayViewController: UICollectionViewDelegateFlowLayout {
 extension PassphraseDisplayViewController {
     @objc
     private func displayScreenshotWarning() {
-        // Display screenshot detection warning if the user takes a screenshot of passphrase
+        /// <note> Display screenshot detection warning if the user takes a screenshot of passphrase
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
 
         open(
-            .screenshotWarning,
+            .bottomWarning(viewModel: BottomWarningViewModel(
+                image: "icon-info-red".image,
+                title: "screenshot-title".localized,
+                description: "screenshot-description".localized,
+                secondaryActionButtonTitle: "title-close".localized
+            )),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .custom,
                 transitionStyle: nil,

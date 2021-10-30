@@ -35,7 +35,7 @@ struct EditContactViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.deleteButton = [
-            .title("contacts-delete-contact".localized),
+            .title("contacts-delete-contact-button".localized),
             .backgroundColor(AppColors.Shared.Helpers.negative),
             .titleColor(AppColors.Shared.Global.white),
             .font(Fonts.DMSans.medium.make(15))

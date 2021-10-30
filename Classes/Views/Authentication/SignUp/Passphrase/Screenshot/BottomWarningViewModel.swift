@@ -13,18 +13,15 @@
 // limitations under the License.
 
 //
-//   BottomWarningViewController+Theme.swift
+//   BottomWarningViewModel.swift
 
-import Macaroon
+import UIKit
 
-extension BottomWarningViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let bottomWarningViewTheme: BottomWarningViewTheme
-        let backgroundColor: Color
-
-        init(_ family: LayoutFamily) {
-            bottomWarningViewTheme = BottomWarningViewTheme()
-            backgroundColor = AppColors.Shared.System.background
-        }
-    }
+struct BottomWarningViewModel {
+    private(set) var image: UIImage
+    private(set) var title: String
+    private(set) var description: String
+    private(set) var primaryActionButtonTitle: String?
+    private(set) var secondaryActionButtonTitle: String
+    private(set) var primaryAction: (() -> Void)?
 }

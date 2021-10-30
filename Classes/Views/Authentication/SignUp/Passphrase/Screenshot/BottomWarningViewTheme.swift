@@ -13,21 +13,21 @@
 // limitations under the License.
 
 //
-//   ScreenShotWarningViewTheme.swift
+//   BottomWarningViewTheme.swift
 
 import Foundation
 import Macaroon
 import UIKit
 
-struct ScreenShotWarningViewTheme: StyleSheet, LayoutSheet {
+struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
     let description: TextStyle
-    let image: ImageStyle
-
-    let closeButtonTheme: ButtonTheme
+    let mainButtonTheme: ButtonTheme
+    let secondaryButtonTheme: ButtonTheme
 
     let verticalInset: LayoutMetric
+    let buttonInset: LayoutMetric
     let horizontalInset: LayoutMetric
     let topInset: LayoutMetric
     let descriptionTopInset: LayoutMetric
@@ -41,24 +41,21 @@ struct ScreenShotWarningViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(19)),
             .textAlignment(.center),
-            .textOverflow(.fitting),
-            .content("screenshot-title".localized)
+            .textOverflow(.fitting)
         ]
         self.description = [
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.center),
-            .textOverflow(.fitting),
-            .content("screenshot-description".localized)
-        ]
-        self.image = [
-            .content(img("icon-info-red"))
+            .textOverflow(.fitting)
         ]
 
-        self.closeButtonTheme = ButtonSecondaryTheme()
+        self.mainButtonTheme = ButtonPrimaryTheme()
+        self.secondaryButtonTheme = ButtonSecondaryTheme()
 
+        self.buttonInset = 16
         self.verticalInset = 32
-        self.horizontalInset = 20
+        self.horizontalInset = 24
         self.topInset = 42
         self.titleTopInset = 28
         self.descriptionTopInset = 12

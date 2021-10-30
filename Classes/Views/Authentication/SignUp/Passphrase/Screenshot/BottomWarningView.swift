@@ -13,39 +13,39 @@
 // limitations under the License.
 
 //
-//  TutorialView.swift
+//  BottomWarningView.swift
 
 import UIKit
 import Macaroon
 
-final class TutorialView: View {
-    weak var delegate: TutorialViewDelegate?
+final class BottomWarningView: View {
+    weak var delegate: BottomWarningViewDelegate?
 
-    private lazy var imageView = UIImageView()
     private lazy var titleLabel = UILabel()
+    private lazy var imageView = UIImageView()
     private lazy var descriptionLabel = UILabel()
-    private lazy var warningImage = UIImageView()
-    private lazy var warningLabel = UILabel()
     private lazy var verticalStackView = UIStackView()
     private lazy var primaryActionButton = Button()
     private lazy var secondaryActionButton = Button()
 
-    func customize(_ theme: TutorialViewTheme) {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        setListeners()
+    }
+
+    func customize(_ theme: BottomWarningViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addImageView(theme)
         addTitleLabel(theme)
         addDescriptionLabel(theme)
         addVerticalStackView(theme)
-        addPrimaryActionButton(theme)
-        addSecondaryActionButton(theme)
-        addWarningLabel(theme)
-        addWarningImage(theme)
     }
 
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
-
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func setListeners() {
         primaryActionButton.addTarget(self, action: #selector(notifyDelegateToHandlePrimaryActionButton), for: .touchUpInside)
@@ -53,83 +53,80 @@ final class TutorialView: View {
     }
 }
 
-extension TutorialView {
-    private func addImageView(_ theme: TutorialViewTheme) {
+extension BottomWarningView {
+    private func addImageView(_ theme: BottomWarningViewTheme) {
         addSubview(imageView)
         imageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(theme.imagePaddings.leading)
-            $0.top.equalToSuperview().inset(theme.imagePaddings.top)
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().inset(theme.topInset)
+            $0.fitToSize(theme.imageSize)
         }
     }
 
-    private func addTitleLabel(_ theme: TutorialViewTheme) {
+    private func addTitleLabel(_ theme: BottomWarningViewTheme) {
         titleLabel.customizeAppearance(theme.title)
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.centerX.equalToSuperview()
             $0.top.equalTo(imageView.snp.bottom).offset(theme.titleTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
 
-    private func addDescriptionLabel(_ theme: TutorialViewTheme) {
+    private func addDescriptionLabel(_ theme: BottomWarningViewTheme) {
         descriptionLabel.customizeAppearance(theme.description)
 
         addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(theme.descriptionHorizontalInset)
+            $0.centerX.equalToSuperview()
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.descriptionTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
 
-    private func addWarningLabel(_ theme: TutorialViewTheme) {
-        warningLabel.customizeAppearance(theme.warningTitle)
+//    private func addCloseButton(_ theme: BottomWarningViewTheme) {
+//        closeButton.fitToVerticalIntrinsicSize()
+//        closeButton.snp.makeConstraints {
+//            $0.centerX.equalToSuperview()
+//            $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
+//            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+//            $0.top.greaterThanOrEqualTo(descriptionLabel.snp.bottom).offset(theme.verticalInset)
+//        }
+//    }
 
-        addSubview(warningLabel)
-        warningLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(theme.warningTitlePaddings.leading)
-            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
-            $0.bottom.equalTo(primaryActionButton.snp.top).offset(-theme.warningTitlePaddings.bottom)
-        }
-    }
-
-    private func addWarningImage(_ theme: TutorialViewTheme) {
-        warningImage.customizeAppearance(theme.warningImage)
-
-        addSubview(warningImage)
-        warningImage.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(theme.horizontalInset)
-            $0.top.equalTo(warningLabel.snp.top)
-        }
-    }
-
-    private func addVerticalStackView(_ theme: TutorialViewTheme) {
+    private func addVerticalStackView(_ theme: BottomWarningViewTheme) {
         addSubview(verticalStackView)
         verticalStackView.spacing = theme.buttonInset
         verticalStackView.axis = .vertical
-        
+
         verticalStackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
-            $0.top.greaterThanOrEqualTo(descriptionLabel.snp.bottom).offset(theme.buttonInset)
+            $0.top.greaterThanOrEqualTo(descriptionLabel.snp.bottom).offset(theme.verticalInset)
             $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
         }
+
+        addPrimaryActionButton(theme)
+        addSecondaryActionButton(theme)
     }
 
-    private func addPrimaryActionButton(_ theme: TutorialViewTheme) {
+    private func addPrimaryActionButton(_ theme: BottomWarningViewTheme) {
         primaryActionButton.customize(theme.mainButtonTheme)
 
+        primaryActionButton.fitToVerticalIntrinsicSize()
         verticalStackView.addArrangedSubview(primaryActionButton)
     }
 
-    private func addSecondaryActionButton(_ theme: TutorialViewTheme) {
-        secondaryActionButton.customize(theme.actionButtonTheme)
+    private func addSecondaryActionButton(_ theme: BottomWarningViewTheme) {
+        secondaryActionButton.customize(theme.secondaryButtonTheme)
 
+        secondaryActionButton.fitToVerticalIntrinsicSize()
         verticalStackView.addArrangedSubview(secondaryActionButton)
     }
 }
 
-extension TutorialView: ViewModelBindable {
-    func bindData(_ viewModel: TutorialViewModel?) {
+extension BottomWarningView: ViewModelBindable {
+    func bindData(_ viewModel: BottomWarningViewModel?) {
         titleLabel.text = viewModel?.title
         descriptionLabel.text = viewModel?.description
         imageView.image = viewModel?.image
@@ -140,29 +137,22 @@ extension TutorialView: ViewModelBindable {
         } else {
             secondaryActionButton.isHidden = true
         }
-        
-        if let warningDescription = viewModel?.warningDescription {
-            warningLabel.text = warningDescription
-        } else {
-            warningLabel.isHidden = true
-            warningImage.isHidden = true
-        }
     }
 }
 
-extension TutorialView {
+extension BottomWarningView {
     @objc
     private func notifyDelegateToHandlePrimaryActionButton() {
-        delegate?.tutorialViewDidTapPrimaryActionButton(self)
+        delegate?.bottomWarningViewDidTapPrimaryActionButton(self)
     }
 
     @objc
     private func notifyDelegateToHandleSecondaryActionButton() {
-        delegate?.tutorialViewDidTapSecondaryActionButton(self)
+        delegate?.bottomWarningViewDidTapSecondaryActionButton(self)
     }
 }
 
-protocol TutorialViewDelegate: AnyObject {
-    func tutorialViewDidTapPrimaryActionButton(_ tutorialView: TutorialView)
-    func tutorialViewDidTapSecondaryActionButton(_ tutorialView: TutorialView)
+protocol BottomWarningViewDelegate: AnyObject {
+    func bottomWarningViewDidTapPrimaryActionButton(_ bottomWarningView: BottomWarningView)
+    func bottomWarningViewDidTapSecondaryActionButton(_ bottomWarningView: BottomWarningView)
 }

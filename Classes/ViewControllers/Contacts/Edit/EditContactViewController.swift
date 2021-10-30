@@ -204,27 +204,29 @@ extension EditContactViewController: EditContactViewDelegate {
     }
 
     private func displayDeleteAlert(for contact: Contact) {
-         let configurator = BottomInformationBundle(
-             title: "contacts-delete-contact".localized,
-             image: img("img-remove-account"),
-             explanation: "contacts-delete-contact-alert-explanation".localized,
-             actionTitle: "contacts-delete-contact".localized,
-             actionImage: img("bg-button-red"),
-             closeTitle: "title-keep".localized) {
-                 contact.remove(entity: Contact.entityName)
-                 NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: ["contact": contact])
-                 self.dismissScreen()
-                 return
-         }
+        let bottomWarningViewModel = BottomWarningViewModel(
+            image: "icon-trash-red".image,
+            title: "contacts-delete-contact".localized,
+            description: "contacts-delete-contact-alert-explanation".localized,
+            primaryActionButtonTitle: "contacts-approve-delete-contact".localized,
+            secondaryActionButtonTitle: "title-keep".localized
+        ) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            contact.remove(entity: Contact.entityName)
+            NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: ["contact": contact])
+            self.dismissScreen()
+        }
 
-         open(
-             .bottomInformation(mode: .action, configurator: configurator),
-             by: .customPresentWithoutNavigationController(
-                 presentationStyle: .custom,
-                 transitionStyle: nil,
-                 transitioningDelegate: removeContactModalPresenter
-             )
-         )
+        open(
+            .bottomWarning(viewModel: bottomWarningViewModel),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: removeContactModalPresenter
+            )
+        )
      }
 
     func editContactViewDidTapQRCodeButton(_ editContactView: EditContactView) {

@@ -167,7 +167,14 @@ extension PassphraseBackUpViewController {
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
         
         open(
-            .screenshotWarning,
+            .bottomWarning(viewModel:
+                            BottomWarningViewModel(
+                                image: "icon-info-red".image,
+                                title: "screenshot-title".localized,
+                                description: "screenshot-description".localized,
+                                secondaryActionButtonTitle: "title-close".localized
+                            )
+                          ),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .custom,
                 transitionStyle: nil,

@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-info-red.pdf",
+      "filename" : "icon-trash-red.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-info-red-dark.pdf",
+      "filename" : "icon-trash-red-dark.pdf",
       "idiom" : "universal"
     }
   ],

@@ -25,7 +25,7 @@ extension EditContactViewController {
 
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
-            modalSize = (UIScreen.main.bounds.width, 382)
+            modalSize = (UIScreen.main.bounds.width, 402)
             editContactViewTheme = EditContactViewTheme()
         }
     }
