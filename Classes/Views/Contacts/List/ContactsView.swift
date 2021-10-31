@@ -21,19 +21,19 @@ import Macaroon
 final class ContactsView: View {
     weak var delegate: ContactsViewDelegate?
 
+    private lazy var theme = ContactsViewTheme()
     private lazy var contactsHeaderView = MainHeaderView()
-    private(set) lazy var contactNameInputView = SingleLineInputField(displaysExplanationText: false)
-    
+    private(set) lazy var searchInputView = SearchInputView()
+
     private(set) lazy var contactsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 0
-        flowLayout.minimumInteritemSpacing = 0.0
-        
+        flowLayout.minimumLineSpacing = theme.cellSpacing
+
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = Colors.Background.tertiary
-        collectionView.contentInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
+        collectionView.backgroundColor = theme.backgroundColor.color
+        collectionView.contentInset = UIEdgeInsets(theme.contentInset) 
         collectionView.keyboardDismissMode = .onDrag
         collectionView.registerCells(ContactCell.self, ContactSelectionCell.self)
         return collectionView
@@ -44,6 +44,7 @@ final class ContactsView: View {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        customize(theme)
         linkInteractors()
     }
     
@@ -52,19 +53,16 @@ final class ContactsView: View {
     }
 
     func customize(_ theme: ContactsViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
         addContactsHeaderView()
-        addContactNameInputView(theme)
+        addSearchInputView(theme)
         addContactsCollectionView(theme)
     }
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
-
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        endEditing(true)
-        return super.hitTest(point, with: event)
-    }
 }
 
 extension ContactsView {
@@ -80,23 +78,21 @@ extension ContactsView {
         }
     }
     
-    private func addContactNameInputView(_ theme: ContactsViewTheme) {
-        contactNameInputView.placeholderText = "contacts-search".localized
-        contactNameInputView.nextButtonMode = .next
-        contactNameInputView.inputTextField.autocorrectionType = .no
-
-        addSubview(contactNameInputView)
-        contactNameInputView.snp.makeConstraints {
+    private func addSearchInputView(_ theme: ContactsViewTheme) {
+        searchInputView.customize(theme.searchInputViewTheme)
+                                            
+        addSubview(searchInputView)
+        searchInputView.snp.makeConstraints {
             $0.top.equalTo(contactsHeaderView.snp.bottom).offset(theme.topInset)
             $0.top.equalToSuperview().inset(theme.topInset).priority(.low)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
 
     private func addContactsCollectionView(_ theme: ContactsViewTheme) {
         addSubview(contactsCollectionView)
         contactsCollectionView.snp.makeConstraints {
-            $0.top.equalTo(contactNameInputView.snp.bottom).offset(theme.listOffset)
+            $0.top.equalTo(searchInputView.snp.bottom)
             $0.leading.trailing.bottom.equalToSuperview()
         }
         

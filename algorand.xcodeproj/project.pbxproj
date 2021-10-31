@@ -2899,6 +2899,12 @@
 		D4C45BFB2726E2A600F4AE31 /* ContactInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C45BFA2726E2A600F4AE31 /* ContactInformationViewModel.swift */; };
 		D4C45BFC2726E2A600F4AE31 /* ContactInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C45BFA2726E2A600F4AE31 /* ContactInformationViewModel.swift */; };
 		D4C45BFD2726E2A600F4AE31 /* ContactInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C45BFA2726E2A600F4AE31 /* ContactInformationViewModel.swift */; };
+		D4C75BCD272E8C6B002BAA66 /* SearchInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C75BCC272E8C6B002BAA66 /* SearchInputView.swift */; };
+		D4C75BCF272E8C87002BAA66 /* SearchInputViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C75BCE272E8C87002BAA66 /* SearchInputViewTheme.swift */; };
+		D4C75BD6272E911D002BAA66 /* SearchInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C75BCC272E8C6B002BAA66 /* SearchInputView.swift */; };
+		D4C75BD7272E911E002BAA66 /* SearchInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C75BCC272E8C6B002BAA66 /* SearchInputView.swift */; };
+		D4C75BD8272E9125002BAA66 /* SearchInputViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C75BCE272E8C87002BAA66 /* SearchInputViewTheme.swift */; };
+		D4C75BD9272E9126002BAA66 /* SearchInputViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C75BCE272E8C87002BAA66 /* SearchInputViewTheme.swift */; };
 		D4CC46E626DCF80E00AA1BFE /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46E526DCF80E00AA1BFE /* AppColors.swift */; };
 		D4CC46E726DD06E200AA1BFE /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46E526DCF80E00AA1BFE /* AppColors.swift */; };
 		D4CC46E826DD06E200AA1BFE /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CC46E526DCF80E00AA1BFE /* AppColors.swift */; };
@@ -4038,6 +4044,8 @@
 		D4C45BF22726C54800F4AE31 /* ContactInformationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformationView.swift; sourceTree = "<group>"; };
 		D4C45BF62726C60500F4AE31 /* ContactInformationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformationViewTheme.swift; sourceTree = "<group>"; };
 		D4C45BFA2726E2A600F4AE31 /* ContactInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactInformationViewModel.swift; sourceTree = "<group>"; };
+		D4C75BCC272E8C6B002BAA66 /* SearchInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInputView.swift; sourceTree = "<group>"; };
+		D4C75BCE272E8C87002BAA66 /* SearchInputViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchInputViewTheme.swift; sourceTree = "<group>"; };
 		D4CC46E526DCF80E00AA1BFE /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		D4CC46E926DD099000AA1BFE /* AppColors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AppColors.xcassets; sourceTree = "<group>"; };
 		D4CC46EF26DD17DD00AA1BFE /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
@@ -6876,6 +6884,7 @@
 		2B8954BE2244044200D6D068 /* Input */ = {
 			isa = PBXGroup;
 			children = (
+				D4C75BCB272E8BE1002BAA66 /* SearchInputView */,
 				2B8954C1224404B700D6D068 /* SingleLineInputField.swift */,
 				2B8954C3224404C900D6D068 /* MultiLineInputField.swift */,
 				D4241FD726E76BF60064CDD0 /* Validator */,
@@ -10321,6 +10330,15 @@
 			path = Macaroon;
 			sourceTree = "<group>";
 		};
+		D4C75BCB272E8BE1002BAA66 /* SearchInputView */ = {
+			isa = PBXGroup;
+			children = (
+				D4C75BCC272E8C6B002BAA66 /* SearchInputView.swift */,
+				D4C75BCE272E8C87002BAA66 /* SearchInputViewTheme.swift */,
+			);
+			path = SearchInputView;
+			sourceTree = "<group>";
+		};
 		D4CC46EE26DD17D100AA1BFE /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -11298,6 +11316,7 @@
 				2BA17323264B18F200A613C4 /* AlgoStatisticsValueChangeViewModel.swift in Sources */,
 				D4822743272C5591004CB9BF /* AddContactViewController+Theme.swift in Sources */,
 				2B7E303B267A518800E89EE3 /* WCGroupTransactionView.swift in Sources */,
+				D4C75BD9272E9126002BAA66 /* SearchInputViewTheme.swift in Sources */,
 				17BD4E4D2292F1260003E49A /* SendTransactionPreviewView.swift in Sources */,
 				2BBA198D231FF7650080A6F6 /* DeviceRegistrationDraft.swift in Sources */,
 				17BD4E4F2292F1260003E49A /* API+Node.swift in Sources */,
@@ -11563,6 +11582,7 @@
 				2B448742237B0AFB00C19FDE /* AccountsViewController+Options.swift in Sources */,
 				17BD4E982292F1260003E49A /* ContentStateView.swift in Sources */,
 				2B9EEAC4264D337F007A112D /* AlgorandBlock.swift in Sources */,
+				D4C75BD7272E911E002BAA66 /* SearchInputView.swift in Sources */,
 				2B71EBBD246C4F4C002ACB63 /* TransactionHistoryHeaderSupplementaryView.swift in Sources */,
 				2BC7E9DE24B74C4400FED513 /* TransactionFetchDraft.swift in Sources */,
 				2B9F063C24B5E48A006880F0 /* RegistrationEvent.swift in Sources */,
@@ -12226,6 +12246,7 @@
 				2B0F61E624EC129D00DA22A6 /* AssetActionConfirmationViewModel.swift in Sources */,
 				D4822742272C5591004CB9BF /* AddContactViewController+Theme.swift in Sources */,
 				2B0F61E724EC129D00DA22A6 /* TransactionParams.swift in Sources */,
+				D4C75BD8272E9125002BAA66 /* SearchInputViewTheme.swift in Sources */,
 				2B1336DA2576987D00371CFB /* AppearanceSelectionViewController.swift in Sources */,
 				2B0F61E824EC129D00DA22A6 /* NotificationsViewModel.swift in Sources */,
 				2B0F61E924EC129D00DA22A6 /* AlgorandNode.swift in Sources */,
@@ -12490,6 +12511,7 @@
 				2B0F626D24EC129D00DA22A6 /* TransactionFilterOptionView.swift in Sources */,
 				2B9EEAC3264D337F007A112D /* AlgorandBlock.swift in Sources */,
 				2B0F626F24EC129D00DA22A6 /* NodeSettingsViewModel.swift in Sources */,
+				D4C75BD6272E911D002BAA66 /* SearchInputView.swift in Sources */,
 				2B0F627124EC129D00DA22A6 /* SelectAssetHeaderSupplementaryView.swift in Sources */,
 				2B4A9C41250782E900D58B6B /* TransactionIDLabel.swift in Sources */,
 				2B0F627224EC129D00DA22A6 /* CursorQuery.swift in Sources */,
@@ -13153,6 +13175,7 @@
 				2BA17321264B18F200A613C4 /* AlgoStatisticsValueChangeViewModel.swift in Sources */,
 				D4822741272C5591004CB9BF /* AddContactViewController+Theme.swift in Sources */,
 				2B56F7DA225B45B300E58737 /* SendTransactionPreviewView.swift in Sources */,
+				D4C75BCF272E8C87002BAA66 /* SearchInputViewTheme.swift in Sources */,
 				2B7E3039267A518800E89EE3 /* WCGroupTransactionView.swift in Sources */,
 				17D04F4A225F90B00051BC43 /* API+Node.swift in Sources */,
 				2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */,
@@ -13418,6 +13441,7 @@
 				2BDE9CD7224E2082007EFF30 /* ContentStateView.swift in Sources */,
 				170AFB02224D1CE100520EA5 /* CIImage+Additions.swift in Sources */,
 				2B9EEAC2264D337F007A112D /* AlgorandBlock.swift in Sources */,
+				D4C75BCD272E8C6B002BAA66 /* SearchInputView.swift in Sources */,
 				2B71EBBC246C4F4C002ACB63 /* TransactionHistoryHeaderSupplementaryView.swift in Sources */,
 				2BC7E9DD24B74C4400FED513 /* TransactionFetchDraft.swift in Sources */,
 				2B9F063B24B5E48A006880F0 /* RegistrationEvent.swift in Sources */,

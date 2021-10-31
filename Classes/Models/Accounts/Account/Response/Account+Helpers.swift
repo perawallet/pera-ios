@@ -85,8 +85,9 @@ extension Account {
         return appsTotalExtraPages.unwrap(or: 0) > 0
     }
 
-    func removeAsset(_ id: Int64?) {
-        assetDetails.removeAll { assetDetail -> Bool in
+    @discardableResult
+    func removeAsset(_ id: Int64?) -> [AssetDetail] {
+        return assetDetails.removeAll { assetDetail  in
             assetDetail.id == id
         }
     }

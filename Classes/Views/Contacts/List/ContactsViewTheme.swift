@@ -20,11 +20,19 @@ import Macaroon
 import UIKit
 
 struct ContactsViewTheme: StyleSheet, LayoutSheet {
+    let backgroundColor: Color
+    let searchInputViewTheme: SearchInputViewTheme
     let topInset: LayoutMetric
-    let listOffset: LayoutMetric
+    let horizontalPadding: LayoutMetric
+    let cellSpacing: LayoutMetric
+    let contentInset: LayoutPaddings
 
     init(_ family: LayoutFamily) {
-        self.topInset = 4
-        self.listOffset = 16
+        self.backgroundColor = AppColors.Shared.System.background
+        self.searchInputViewTheme = SearchInputViewTheme(placeholder: "contacts-search".localized, family: family)
+        self.topInset = 22
+        self.horizontalPadding = 24
+        self.cellSpacing = 0
+        self.contentInset = (28, 0, 0, 0)
     }
 }

@@ -256,7 +256,7 @@
 
 // MARK: Contacts
 "contacts-title" = "Contacts";
-"contacts-search" = "Search Contacts";
+"contacts-search" = "Search contacts or name";
 "contacts-add" = "Add Contact";
 "contacts-add-photo" = "Add Photo";
 "contacts-info" = "Contact Info";

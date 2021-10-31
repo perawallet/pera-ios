@@ -72,7 +72,7 @@ class ContactsViewController: BaseViewController {
     override func linkInteractors() {
         emptyStateView.delegate = self
         contactsView.delegate = self
-        contactsView.contactNameInputView.delegate = self
+        contactsView.searchInputView.delegate = self
         contactsView.contactsCollectionView.delegate = self
         contactsView.contactsCollectionView.dataSource = self
     }
@@ -85,79 +85,82 @@ class ContactsViewController: BaseViewController {
         fetchContacts()
     }
     
-    private func fetchContacts() {
-        Contact.fetchAll(entity: Contact.entityName) { response in
-            if self.refreshControl.isRefreshing {
-                self.refreshControl.endRefreshing()
-            }
-            
-            switch response {
-            case let .results(objects: objects):
-                guard let results = objects as? [Contact] else {
-                    return
-                }
-                
-                self.contacts.append(contentsOf: results)
-                self.searchResults = self.contacts
-                
-                if self.searchResults.isEmpty {
-                    self.contactsView.contactsCollectionView.contentState = .empty(self.emptyStateView)
-                } else {
-                    self.contactsView.contactsCollectionView.contentState = .none
-                }
-                
-                self.contactsView.contactsCollectionView.reloadData()
-            default:
-                break
-            }
-        }
-    }
-    
     override func prepareLayout() {
-        contactsView.customize(ContactsViewTheme())
         view.addSubview(contactsView)
         contactsView.snp.makeConstraints {
             $0.top.safeEqualToTop(of: self)
             $0.leading.trailing.bottom.equalToSuperview()
         }
     }
-    
+}
+
+extension ContactsViewController {
     @objc
     private func didRefreshList() {
         contacts.removeAll()
         fetchContacts()
     }
-    
+
+    private func fetchContacts() {
+        Contact.fetchAll(entity: Contact.entityName) { response in
+            if self.refreshControl.isRefreshing {
+                self.refreshControl.endRefreshing()
+            }
+
+            switch response {
+            case let .results(objects: objects):
+                guard let results = objects as? [Contact] else {
+                    return
+                }
+
+                self.contacts.append(contentsOf: results)
+                self.searchResults = self.contacts
+
+                if self.searchResults.isEmpty {
+                    self.contactsView.contactsCollectionView.contentState = .empty(self.emptyStateView)
+                } else {
+                    self.contactsView.contactsCollectionView.contentState = .none
+                }
+
+                self.contactsView.contactsCollectionView.reloadData()
+            default:
+                break
+            }
+        }
+    }
+}
+
+extension ContactsViewController {
     @objc
     private func didContactAdded(notification: Notification) {
         guard let userInfo = notification.userInfo as? [String: Contact],
             let contact = userInfo["contact"] else {
                 return
         }
-        
+
         if contacts.isEmpty {
             contactsView.contactsCollectionView.contentState = .none
         }
-        
+
         contacts.append(contact)
-        
+
         if let name = contact.name,
-            let currentQuery = contactsView.contactNameInputView.inputTextField.text,
+            let currentQuery = contactsView.searchInputView.text,
             !currentQuery.isEmpty {
-            
+
             if name.lowercased().contains(currentQuery.lowercased()) {
                 searchResults.append(contact)
             }
-            
+
             contactsView.contactsCollectionView.reloadData()
             return
         }
-        
+
         searchResults.append(contact)
-        
+
         contactsView.contactsCollectionView.reloadData()
     }
-    
+
     @objc
     private func didContactDeleted(notification: Notification) {
         contacts.removeAll()
@@ -221,27 +224,23 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension ContactsViewController: InputViewDelegate {
-    func inputViewDidReturn(inputView: BaseInputView) {
-        view.endEditing(true)
-    }
-    
-    func inputViewDidChangeValue(inputView: BaseInputView) {
+extension ContactsViewController: SearchInputViewDelegate {
+    func searchInputViewDidEdit(_ view: SearchInputView) {
         if contacts.isEmpty {
             contactsView.contactsCollectionView.contentState = .empty(emptyStateView)
             return
         }
-        
-        guard let query = contactsView.contactNameInputView.inputTextField.text,
+
+        guard let query = view.text,
             !query.isEmpty else {
                 contactsView.contactsCollectionView.contentState = .none
                 searchResults = contacts
                 contactsView.contactsCollectionView.reloadData()
                 return
         }
-        
+
         let predicate = NSPredicate(format: "name contains[c] %@", query)
-        
+
         Contact.fetchAll(entity: Contact.entityName, with: predicate) { response in
             switch response {
             case let .results(objects):
@@ -252,18 +251,20 @@ extension ContactsViewController: InputViewDelegate {
                 break
             }
         }
-        
+
         if searchResults.isEmpty {
             contactsView.contactsCollectionView.contentState = .empty(searchEmptyStateView)
         } else {
             contactsView.contactsCollectionView.contentState = .none
         }
-        
+
         contactsView.contactsCollectionView.reloadData()
     }
-}
 
-// MARK: ContactCellDelegate
+    func searchInputViewDidReturn(_ view: SearchInputView) {
+        view.endEditing()
+    }
+}
 
 extension ContactsViewController: ContactCellDelegate {
     func contactCellDidTapQRDisplayButton(_ cell: ContactCell) {
@@ -293,7 +294,7 @@ extension ContactsViewController: AddContactViewControllerDelegate {
         contacts.append(contact)
         
         if let name = contact.name,
-            let currentQuery = contactsView.contactNameInputView.inputTextField.text,
+           let currentQuery = contactsView.searchInputView.text,
             !currentQuery.isEmpty {
             
             if name.lowercased().contains(currentQuery.lowercased()) {
