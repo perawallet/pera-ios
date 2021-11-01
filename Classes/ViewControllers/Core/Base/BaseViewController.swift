@@ -220,7 +220,8 @@ extension BaseViewController {
             navigationController?.navigationBar.barTintColor = Colors.Background.tertiary
             navigationController?.navigationBar.tintColor = Colors.Background.tertiary
         }
-        
+    }
+
     func setNavigationBarPrimaryBackgroundColor() {
         navigationController?.navigationBar.barTintColor = Colors.Background.primary
         navigationController?.navigationBar.tintColor = Colors.Background.primary
