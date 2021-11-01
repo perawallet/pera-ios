@@ -107,9 +107,7 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
         ]
     }
     
-    func configureAppearance() {
-        view.backgroundColor = Colors.Background.primary
-    }
+    func configureAppearance() {}
 
     func linkInteractors() {}
     

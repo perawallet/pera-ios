@@ -124,10 +124,6 @@ extension TabBarConfigurable where Self: UIViewController {
             return
         }
         
-        if !isDarkModeDisplay {
-            newTabBarSnaphot.applyShadow(tabBarShadow)
-        }
-        
         view.addSubview(newTabBarSnaphot)
         newTabBarSnaphot.frame = CGRect(
             origin: CGPoint(x: 0.0, y: tabBarContainer.view.bounds.height - tabBar.bounds.height),

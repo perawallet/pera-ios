@@ -41,6 +41,13 @@ final class RekeyInstructionsViewController: BaseScrollViewController {
         super.setListeners()
         rekeyInstructionsView.setListeners()
     }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+        view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        scrollView.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+        contentView.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
+    }
     
     override func prepareLayout() {
         super.prepareLayout()
