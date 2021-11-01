@@ -37,7 +37,7 @@ struct EditContactViewTheme: StyleSheet, LayoutSheet {
         self.deleteButton = [
             .title("contacts-delete-contact-button".localized),
             .backgroundColor(AppColors.Shared.Helpers.negative),
-            .titleColor(AppColors.Shared.Global.white),
+            .titleColor(AppColors.Shared.System.background),
             .font(Fonts.DMSans.medium.make(15))
         ]
         self.qrButton = [
