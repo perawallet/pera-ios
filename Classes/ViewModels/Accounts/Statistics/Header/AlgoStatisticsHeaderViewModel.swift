@@ -12,28 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-<<<<<<< HEAD:Classes/ViewModels/Accounts/Statistics/Header/AlgoStatisticsHeaderViewModel.swift
 //   AlgoStatisticsHeaderViewModel.swift
-=======
-//   StatisticsHeaderViewModel.swift
->>>>>>> 44279ccd (✨ Implement algo price):Classes/ViewModels/Accounts/Statistics/Header/StatisticsHeaderViewModel.swift
 
 import UIKit
 import SwiftDate
 import Macaroon
 
-<<<<<<< HEAD:Classes/ViewModels/Accounts/Statistics/Header/AlgoStatisticsHeaderViewModel.swift
 final class AlgoStatisticsHeaderViewModel: ViewModel {
     private(set) var amount: String?
     private(set) var isValueChangeDisplayed = true
     private(set) var valueChangeViewModel: AlgoStatisticsValueChangeViewModel?
-=======
-final class StatisticsHeaderViewModel: ViewModel {
-    private(set) var amount: String?
-    private(set) var isValueChangeDisplayed = true
-    private(set) var valueChangeViewModel: StatisticsValueChangeViewModel?
->>>>>>> 44279ccd (✨ Implement algo price):Classes/ViewModels/Accounts/Statistics/Header/StatisticsHeaderViewModel.swift
     private(set) var date: String?
 
     private let priceChange: AlgoUSDPriceChange?
@@ -52,11 +40,7 @@ final class StatisticsHeaderViewModel: ViewModel {
     }
 }
 
-<<<<<<< HEAD:Classes/ViewModels/Accounts/Statistics/Header/AlgoStatisticsHeaderViewModel.swift
 extension AlgoStatisticsHeaderViewModel {
-=======
-extension StatisticsHeaderViewModel {
->>>>>>> 44279ccd (✨ Implement algo price):Classes/ViewModels/Accounts/Statistics/Header/StatisticsHeaderViewModel.swift
     private func bindAmount(from priceChange: AlgoUSDPriceChange, and currency: Currency) {
         guard let currentAlgosUSDValue = priceChange.lastPrice else {
             return
@@ -80,11 +64,7 @@ extension StatisticsHeaderViewModel {
     }
 
     private func bindValueChangeViewModel(from priceChange: AlgoUSDPriceChange) {
-<<<<<<< HEAD:Classes/ViewModels/Accounts/Statistics/Header/AlgoStatisticsHeaderViewModel.swift
         valueChangeViewModel = AlgoStatisticsValueChangeViewModel(priceChange)
-=======
-        valueChangeViewModel = StatisticsValueChangeViewModel(priceChange)
->>>>>>> 44279ccd (✨ Implement algo price):Classes/ViewModels/Accounts/Statistics/Header/StatisticsHeaderViewModel.swift
     }
 
     private func bindDate(from priceChange: AlgoUSDPriceChange, and timeInterval: AlgosUSDValueInterval) {

@@ -13,21 +13,12 @@
 // limitations under the License.
 
 //
-<<<<<<< HEAD:Classes/Data/DataProviders/Accounts/Statistics/AlgoStatisticsDataController.swift
 //   AlgoStatisticsDataController.swift
 
 import UIKit
 
 final class AlgoStatisticsDataController {
     weak var delegate: AlgoStatisticsDataControllerDelegate?
-=======
-//   StatisticsDataController.swift
-
-import UIKit
-
-final class StatisticsDataController {
-    weak var delegate: StatisticsDataControllerDelegate?
->>>>>>> 44279ccd (✨ Implement algo price):Classes/Data/DataProviders/Accounts/Statistics/StatisticsDataController.swift
 
     private let chartDispatchGroup = DispatchGroup()
 
@@ -66,11 +57,7 @@ final class StatisticsDataController {
             case let .success(result):
                 self.values = result.history
             case .failure:
-<<<<<<< HEAD:Classes/Data/DataProviders/Accounts/Statistics/AlgoStatisticsDataController.swift
                 self.delegate?.algoStatisticsDataControllerDidFailToFetch(self)
-=======
-                self.delegate?.statisticsDataControllerDidFailToFetch(self)
->>>>>>> 44279ccd (✨ Implement algo price):Classes/Data/DataProviders/Accounts/Statistics/StatisticsDataController.swift
             }
 
             self.chartDispatchGroup.leave()
@@ -90,11 +77,7 @@ final class StatisticsDataController {
             case let .success(result):
                 self.lastFiveMinutesValues = result.history.last
             case .failure:
-<<<<<<< HEAD:Classes/Data/DataProviders/Accounts/Statistics/AlgoStatisticsDataController.swift
                 self.delegate?.algoStatisticsDataControllerDidFailToFetch(self)
-=======
-                self.delegate?.statisticsDataControllerDidFailToFetch(self)
->>>>>>> 44279ccd (✨ Implement algo price):Classes/Data/DataProviders/Accounts/Statistics/StatisticsDataController.swift
             }
 
             self.chartDispatchGroup.leave()
@@ -111,7 +94,6 @@ final class StatisticsDataController {
     }
 
     private func returnValues() {
-<<<<<<< HEAD:Classes/Data/DataProviders/Accounts/Statistics/AlgoStatisticsDataController.swift
         delegate?.algoStatisticsDataController(self, didFetch: values)
     }
 }
@@ -119,13 +101,4 @@ final class StatisticsDataController {
 protocol AlgoStatisticsDataControllerDelegate: AnyObject {
     func algoStatisticsDataController(_ dataController: AlgoStatisticsDataController, didFetch values: [AlgosUSDValue])
     func algoStatisticsDataControllerDidFailToFetch(_ dataController: AlgoStatisticsDataController)
-=======
-        delegate?.statisticsDataController(self, didFetch: values)
-    }
-}
-
-protocol StatisticsDataControllerDelegate: AnyObject {
-    func statisticsDataController(_ dataController: StatisticsDataController, didFetch values: [AlgosUSDValue])
-    func statisticsDataControllerDidFailToFetch(_ dataController: StatisticsDataController)
->>>>>>> 44279ccd (✨ Implement algo price):Classes/Data/DataProviders/Accounts/Statistics/StatisticsDataController.swift
 }

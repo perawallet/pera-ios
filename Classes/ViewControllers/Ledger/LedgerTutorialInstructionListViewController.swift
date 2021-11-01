@@ -36,7 +36,6 @@ final class LedgerTutorialInstructionListViewController: BaseScrollViewControlle
     override func configureAppearance() {
         super.configureAppearance()
         title = "tutorial-action-title-ledger".localized
-        setNavigationBarTertiaryBackgroundColor()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     

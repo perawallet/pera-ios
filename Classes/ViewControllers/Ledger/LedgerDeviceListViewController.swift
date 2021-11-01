@@ -59,7 +59,6 @@ final class LedgerDeviceListViewController: BaseViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        setNavigationBarTertiaryBackgroundColor()
         view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
     }
     

@@ -74,7 +74,6 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        setNavigationBarTertiaryBackgroundColor()
         customizeBackground()
     }
 

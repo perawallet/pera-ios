@@ -133,7 +133,6 @@ extension AssetPreviewView: ViewModelBindable {
                     image: img("icon-algo-circle-green"),
                     secondaryImage: img("icon-verified-shield"),
                     assetName: "asset-algos-title".localized,
-                    assetShortName: "ALGO",
                     assetValue: viewModel.amount,
                     secondaryAssetValue: "$6.06"
                 )
@@ -148,7 +147,6 @@ extension AssetPreviewView: ViewModelBindable {
                     image: nil,
                     secondaryImage: viewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
                     assetName: viewModel.assetDetail?.assetName,
-                    assetShortName: viewModel.assetDetail?.unitName,
                     assetValue: viewModel.amount,
                     secondaryAssetValue: "$16,000.09"
                 )

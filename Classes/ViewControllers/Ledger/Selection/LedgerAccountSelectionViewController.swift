@@ -75,7 +75,6 @@ final class LedgerAccountSelectionViewController: BaseViewController {
         super.configureAppearance()
         title = ledgerAccounts.first?.ledgerDetail?.name
 
-        setNavigationBarTertiaryBackgroundColor()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     

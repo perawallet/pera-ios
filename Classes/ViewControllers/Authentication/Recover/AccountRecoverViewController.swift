@@ -80,7 +80,6 @@ final class AccountRecoverViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        setNavigationBarTertiaryBackgroundColor()
         customizeBackground()
 
         recoverButton.isEnabled = false

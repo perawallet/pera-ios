@@ -71,48 +71,6 @@ extension AccountTypeView {
 
         detailLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
-    
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-            make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.verticalInset)
-        }
-    }
-    
-    private func setupTypeImageViewLayout() {
-        addSubview(typeImageView)
-        
-        typeImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.size.equalTo(layout.current.iconSize)
-            make.centerY.equalToSuperview()
-        }
-    }
-    
-    private func setupArrowImageViewLayout() {
-        addSubview(arrowImageView)
-        
-        arrowImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalTo(typeImageView)
-            make.size.equalTo(layout.current.arrowIconSize)
-        }
-    }
-
-    private func addImageView(_ theme: AccountTypeViewTheme) {
-        addSubview(imageView)
-
-        imageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(theme.horizontalInset)
-            $0.fitToSize(theme.iconSize)
-            $0.centerY.equalToSuperview()
-        }
-    }
 }
 
 extension AccountTypeView: ViewModelBindable {

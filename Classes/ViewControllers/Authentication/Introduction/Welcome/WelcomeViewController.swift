@@ -47,7 +47,6 @@ final class WelcomeViewController: BaseViewController {
     }
 
     override func configureAppearance() {
-        setNavigationBarTertiaryBackgroundColor()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 

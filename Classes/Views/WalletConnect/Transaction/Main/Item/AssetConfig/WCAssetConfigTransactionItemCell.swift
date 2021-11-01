@@ -13,29 +13,13 @@
 // limitations under the License.
 
 //
-<<<<<<< HEAD:Classes/Views/WalletConnect/Transaction/Main/Item/AssetConfig/WCAssetConfigTransactionItemCell.swift
 //   WCAssetConfigTransactionItemCell.swift
-=======
-//   LedgerApprovalViewController+Theme.swift
->>>>>>> c705c479 (✨ Implement ledger connection):Classes/ViewControllers/Ledger/LedgerApprovalViewController+Theme.swift
 
-import Macaroon
+import UIKit
 
-<<<<<<< HEAD:Classes/Views/WalletConnect/Transaction/Main/Item/AssetConfig/WCAssetConfigTransactionItemCell.swift
 class WCAssetConfigTransactionItemCell: BaseCollectionViewCell<WCAssetConfigTransactionItemView> {
-
+    
     func bind(_ viewModel: WCAssetConfigTransactionItemViewModel) {
         contextView.bind(viewModel)
-=======
-extension LedgerApprovalViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let ledgerApprovalViewTheme: LedgerApprovalViewTheme
-        let backgroundColor: Color
-
-        init(_ family: LayoutFamily) {
-            ledgerApprovalViewTheme = LedgerApprovalViewTheme()
-            backgroundColor = AppColors.Shared.System.background
-        }
->>>>>>> c705c479 (✨ Implement ledger connection):Classes/ViewControllers/Ledger/LedgerApprovalViewController+Theme.swift
     }
 }

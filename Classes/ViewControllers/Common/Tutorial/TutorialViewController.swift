@@ -53,7 +53,6 @@ final class TutorialViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        setNavigationBarTertiaryBackgroundColor()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -145,7 +144,7 @@ extension TutorialViewController: TutorialViewDelegate {
             dismissScreen()
         case .passphraseVerified:
             open(.accountNameSetup, by: .push)
-        case .accountVerified, .ledgerSuccessfullyConnected:
+        case .accountVerified:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapButtonPrimaryActionButton?(self)

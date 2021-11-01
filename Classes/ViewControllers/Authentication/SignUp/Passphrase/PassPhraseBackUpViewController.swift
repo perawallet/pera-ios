@@ -49,7 +49,6 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        setTertiaryBackgroundColor()
         customizeBackground()
 
         passphraseView.nextButton.isEnabled = false
@@ -61,12 +60,6 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
         contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
-    private func customizeBackground() {
-        view.backgroundColor = theme.backgroundColor.color
-        scrollView.backgroundColor = theme.backgroundColor.color
-        contentView.backgroundColor = theme.backgroundColor.color
-    }
-    
     override func prepareLayout() {
         super.prepareLayout()
         addPassphraseView()

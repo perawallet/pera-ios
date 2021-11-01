@@ -35,7 +35,6 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        setTertiaryBackgroundColor()
         customizeBackground()
         passphraseVerifyView.setNextButtonEnabled(false)
     }

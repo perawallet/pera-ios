@@ -13,20 +13,12 @@
 // limitations under the License.
 
 //
-<<<<<<< HEAD:Classes/ViewModels/Accounts/Statistics/Header/AlgoStatisticsValueChangeViewModel.swift
 //   AlgoStatisticsValueChangeViewModel.swift
-=======
-//   StatisticsValueChangeViewModel.swift
->>>>>>> 44279ccd (✨ Implement algo price):Classes/ViewModels/Accounts/Statistics/Header/StatisticsValueChangeViewModel.swift
 
 import UIKit
 import Macaroon
 
-<<<<<<< HEAD:Classes/ViewModels/Accounts/Statistics/Header/AlgoStatisticsValueChangeViewModel.swift
 final class AlgoStatisticsValueChangeViewModel: PairedViewModel {
-=======
-final class StatisticsValueChangeViewModel: PairedViewModel {
->>>>>>> 44279ccd (✨ Implement algo price):Classes/ViewModels/Accounts/Statistics/Header/StatisticsValueChangeViewModel.swift
     private(set) var image: UIImage?
     private(set) var valueColor: UIColor?
     private(set) var value: String?
@@ -38,11 +30,7 @@ final class StatisticsValueChangeViewModel: PairedViewModel {
     }
 }
 
-<<<<<<< HEAD:Classes/ViewModels/Accounts/Statistics/Header/AlgoStatisticsValueChangeViewModel.swift
 extension AlgoStatisticsValueChangeViewModel {
-=======
-extension StatisticsValueChangeViewModel {
->>>>>>> 44279ccd (✨ Implement algo price):Classes/ViewModels/Accounts/Statistics/Header/StatisticsValueChangeViewModel.swift
     private func bindImage(_ priceChange: AlgoUSDPriceChange) {
         switch priceChange.getValueChangeStatus() {
         case .increased:
