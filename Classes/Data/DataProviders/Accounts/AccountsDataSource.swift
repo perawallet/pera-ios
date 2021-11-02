@@ -16,6 +16,7 @@
 //  AccountsDataSource.swift
 
 import UIKit
+import SwiftDate
 
 class AccountsDataSource: NSObject, UICollectionViewDataSource {
     
@@ -37,7 +38,13 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
     var isContentStateAvailableForBanner = true
 
     private var canDisplayGovernanceBanner: Bool {
-        return isDisplayingBanner && isContentStateAvailableForBanner
+        return isDisplayingBanner && isContentStateAvailableForBanner && isCurrentGovernanceStakingDate
+    }
+
+    private var isCurrentGovernanceStakingDate: Bool {
+        let governanceStartDate = Date(year: 2022, month: 1, day: 1, hour: 0, minute: 0)
+        let governanceEndDate = Date(year: 2022, month: 1, day: 15, hour: 23, minute: 59)
+        return Date().isInRange(date: governanceStartDate, and: governanceEndDate)
     }
     
     var hasPendingAssetAction: Bool {
