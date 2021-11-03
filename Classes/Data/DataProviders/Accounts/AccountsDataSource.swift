@@ -42,9 +42,10 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
     }
 
     private var isCurrentGovernanceStakingDate: Bool {
-        let governanceStartDate = Date(year: 2022, month: 1, day: 1, hour: 0, minute: 0)
-        let governanceEndDate = Date(year: 2022, month: 1, day: 15, hour: 23, minute: 59)
-        return Date().isInRange(date: governanceStartDate, and: governanceEndDate)
+        let governanceStartDate = TimeInterval(1640995200)
+        let governanceEndDate = TimeInterval(1642291199)
+        let currentDate = Date().timeIntervalSince1970
+        return currentDate >= governanceStartDate && currentDate <= governanceEndDate
     }
     
     var hasPendingAssetAction: Bool {
