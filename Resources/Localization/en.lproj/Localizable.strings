@@ -146,7 +146,7 @@
 // MARK: QR Creation
 "qr-creation-title" = "Passphrase QR";
 "qr-creation-sharing-title" = "Share QR and Address";
-"qr-creation-copy-address" = "Copy address";
+"qr-creation-copy-address" = "Copy Address";
 "qr-creation-copied" = "Address copied to clipboard";
 "qr-creation-address" = "Account address";
 
