@@ -52,7 +52,7 @@ extension QRAddressLabel {
         
         addressLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.spacing)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
         }
     }
 }
