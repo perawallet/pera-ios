@@ -125,32 +125,4 @@ extension AssetPreviewView: ViewModelBindable {
         assetValueLabel.text = viewModel?.assetValue
         secondaryAssetValueLabel.text = viewModel?.secondaryAssetValue
     }
- 
-    func bindData(_ viewModel: AlgoAssetViewModel) {
-        bindData(
-            AssetPreviewViewModel(
-                AssetPreviewModel(
-                    image: img("icon-algo-circle-green"),
-                    secondaryImage: img("icon-verified-shield"),
-                    assetName: "asset-algos-title".localized,
-                    assetValue: viewModel.amount,
-                    secondaryAssetValue: "$6.06"
-                )
-            )
-        )
-    }
-
-    func bindData(_ viewModel: AssetViewModel) {
-        bindData(
-            AssetPreviewViewModel(
-                AssetPreviewModel(
-                    image: nil,
-                    secondaryImage: viewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
-                    assetName: viewModel.assetDetail?.assetName,
-                    assetValue: viewModel.amount,
-                    secondaryAssetValue: "$16,000.09"
-                )
-            )
-        )
-    }
 }

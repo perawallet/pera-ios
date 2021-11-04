@@ -31,14 +31,10 @@ final class SearchInputView: View, UITextFieldDelegate {
     }
 
     override var intrinsicContentSize: CGSize {
-        // swiftlint:disable opening_brace
-        return intrinsicHeight.unwrap(
-            {
+        return intrinsicHeight.unwrap({
             CGSize((UIView.noIntrinsicMetric, $0))
-            },
-            or: super.intrinsicContentSize
+        }, or: super.intrinsicContentSize
         )
-        // swiftlint:enable opening_brace
     }
 
     private lazy var textInputBackgroundView = BaseView()
