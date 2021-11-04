@@ -398,7 +398,7 @@
 "ledger-tutorial-title-text" = "Pair with Ledger";
 "ledger-tutorial-turned-on" = "Make sure that your ledger device is on and has Bluetooth enabled.";
 "ledger-tutorial-install-app" = "Install the Algorand app (version 1.2.9 or later) onto your Ledger.";
-"ledger-tutorial-open-app" = "Open the Algorand app on your Ledger.";
+"ledger-tutorial-open-app" = "After confirming pairing on your Ledger device, open the Algorand app.";
 "ledger-tutorial-bluetooth" = "Make sure Bluetooth is enabled on your smartphone.";
 "ledger-search-button-title" = "Search for Ledger";
 
@@ -444,7 +444,7 @@
 "ble-error-unsupported-device-title" = "Unsupported Device";
 "ble-error-transaction-cancelled-title" = "Transaction Cancelled";
 "ble-error-transmission-title" = "Transmission Error";
-"ble-error-fail-connect-peripheral" = "Could not connect to the Ledger device. Make sure the device is unlocked, nearby and has bluetooth enabled.";
+"ble-error-fail-connect-peripheral" = "Could not connect to the Ledger device. Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone's bluetooth settings, remove the ledger account, and re-pair.";
 "ble-error-disconnected-peripheral" = "Disconnected from device";
 "ble-error-fail-fetch-account-address" = "We were unable to receive the public key of your ledger device. Please try again.";
 "ble-error-fail-sign-transaction" = "The paired ledger device has cancelled the transaction request.";
@@ -452,6 +452,8 @@
 "ble-error-fail-ble-connection-unsupported" = "The device you are trying to connect to is not supported with the Algorand Wallet.";
 "ble-error-fail-ble-connection-unauthorized" = "Bluetooth permission needs to be granted in order to search nearby Ledgers.";
 "ble-error-fail-ble-connection-resetting" = "Failed BLE connection for Resetting";
+"ble-error-fail-ble-connection-repairing" = "If you’re having Ledger Nano X connection issues, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.";
+"ble-error-fail-ble-connection-open-support" = "Open Ledger Support";
 
 // MARK: Ledger Approval
 "ledger-approval-title" = "Preview and Sign";

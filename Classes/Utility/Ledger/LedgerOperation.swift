@@ -118,6 +118,9 @@ extension LedgerOperation where Self: BLEConnectionManagerDelegate {
         default:
             reset()
             NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.presentConnectionSupportWarningAlert()
+            }
         }
     }
 }
@@ -166,6 +169,27 @@ extension LedgerOperation {
             .ledgerApproval(mode: ledgerMode),
             by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
         ) as? LedgerApprovalViewController
+    }
+
+    private func presentConnectionSupportWarningAlert() {
+        // This message won't be localized for now.
+        let message = """
+                If you’re having Ledger Nano X connection issues, please remove the device from your phone’s bluetooth settings,
+                remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.
+        """
+        let alertController = UIAlertController(title: "", message: message, preferredStyle: .alert)
+
+        let ledgerSupportAction = UIAlertAction(title: "title-proceed".localized, style: .default) { _ in
+            if let supportLink = AlgorandWeb.ledgerPairingSupport.link {
+                self.topMostController?.open(supportLink)
+            }
+        }
+        alertController.addAction(ledgerSupportAction)
+
+        let cancelAction = UIAlertAction(title: "title-close".localized, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+
+        topMostController?.present(alertController, animated: true)
     }
 }
 

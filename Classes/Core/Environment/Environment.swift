@@ -115,6 +115,7 @@ enum AlgorandWeb: String {
     case transactionSupport = "https://algorandwallet.com/support/transacting"
     case rewardsFAQ = "https://algorand.foundation/faq#participation-rewards"
     case governence = "https://governance.algorand.foundation/"
+    case ledgerPairingSupport = "https://support.ledger.com/hc/en-us/articles/360025864773-Fix-Bluetooth-pairing-issues?support=true"
 }
 
 extension AlgorandWeb {
