@@ -21,7 +21,11 @@ import Macaroon
 final class AccountListLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
     weak var delegate: AccountListLayoutBuilderDelegate?
 
-    private lazy var theme = Theme()
+    private let theme: AccountListViewController.Theme
+
+    init(theme: AccountListViewController.Theme) {
+        self.theme = theme
+    }
     
     func collectionView(
         _ collectionView: UICollectionView,
@@ -38,10 +42,4 @@ final class AccountListLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayo
 
 protocol AccountListLayoutBuilderDelegate: AnyObject {
     func accountListLayoutBuilder(_ layoutBuilder: AccountListLayoutBuilder, didSelectAt indexPath: IndexPath)
-}
-
-extension AccountListLayoutBuilder {
-    struct Theme {
-        let cellSize: LayoutSize = (UIScreen.main.bounds.width - 48, 72)
-    }
 }

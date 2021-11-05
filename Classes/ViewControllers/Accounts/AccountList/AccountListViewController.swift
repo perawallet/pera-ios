@@ -27,7 +27,7 @@ final class AccountListViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var accountListView = AccountListView()
     
-    private lazy var accountListLayoutBuilder = AccountListLayoutBuilder()
+    private lazy var accountListLayoutBuilder = AccountListLayoutBuilder(theme: theme)
     private lazy var accountListDataSource = AccountListDataSource(mode: mode)
     private var mode: Mode
     

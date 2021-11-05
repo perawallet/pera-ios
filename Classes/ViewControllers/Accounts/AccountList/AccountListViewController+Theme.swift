@@ -21,10 +21,12 @@ extension AccountListViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
         let accountListViewTheme: AccountListViewTheme
+        let cellSize: LayoutSize
 
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
             accountListViewTheme = AccountListViewTheme()
+            cellSize = (UIScreen.main.bounds.width - 48, 72)
         }
     }
 }
