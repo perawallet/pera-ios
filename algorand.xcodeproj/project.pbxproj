@@ -7,15 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0414ACC62721691100475F8E /* QRCreationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414ACC52721691100475F8E /* QRCreationViewTheme.swift */; };
+		0414ACC72721691100475F8E /* QRCreationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414ACC52721691100475F8E /* QRCreationViewTheme.swift */; };
+		0414ACC82721691100475F8E /* QRCreationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414ACC52721691100475F8E /* QRCreationViewTheme.swift */; };
 		046E823A271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */; };
 		046E823B271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */; };
 		046E823C271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */; };
 		046E823E271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */; };
 		046E823F271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */; };
 		046E8240271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */; };
-		0414ACC62721691100475F8E /* QRCreationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414ACC52721691100475F8E /* QRCreationViewTheme.swift */; };
-		0414ACC72721691100475F8E /* QRCreationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414ACC52721691100475F8E /* QRCreationViewTheme.swift */; };
-		0414ACC82721691100475F8E /* QRCreationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414ACC52721691100475F8E /* QRCreationViewTheme.swift */; };
 		048B3C1627228BC8003A5F5A /* QRAddressLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1527228BC8003A5F5A /* QRAddressLabel.swift */; };
 		048B3C1727228BC8003A5F5A /* QRAddressLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1527228BC8003A5F5A /* QRAddressLabel.swift */; };
 		048B3C1827228BC8003A5F5A /* QRAddressLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1527228BC8003A5F5A /* QRAddressLabel.swift */; };
@@ -3039,9 +3039,9 @@
 
 /* Begin PBXFileReference section */
 		030F6B1A27825B4720C008C6 /* Pods_algorand_staging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand_staging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0414ACC52721691100475F8E /* QRCreationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationViewTheme.swift; sourceTree = "<group>"; };
 		046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAssetInformationViewTheme.swift; sourceTree = "<group>"; };
 		046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VerifiedAssetInformationViewController+Theme.swift"; sourceTree = "<group>"; };
-		0414ACC52721691100475F8E /* QRCreationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationViewTheme.swift; sourceTree = "<group>"; };
 		048B3C1527228BC8003A5F5A /* QRAddressLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAddressLabel.swift; sourceTree = "<group>"; };
 		048B3C1927228CE5003A5F5A /* QRAddressLabelTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAddressLabelTheme.swift; sourceTree = "<group>"; };
 		048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QRCreationViewController+Theme.swift"; sourceTree = "<group>"; };
