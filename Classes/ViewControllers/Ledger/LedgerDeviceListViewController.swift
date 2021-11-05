@@ -115,7 +115,21 @@ extension LedgerDeviceListViewController: LedgerDeviceCellDelegate {
         }
         
         let ledgerDevice = ledgerDevices[indexPath.item]
-        ledgerAccountFetchOperation.connectToDevice(ledgerDevice)
+
+        // These texts won't be localized for now.
+        let title = "Pairing Ledger with Your Device"
+        let message = """
+        Is your Ledger paired with this device? If not, please follow these steps:
+
+        1. Open your Ledger.
+        2. Close the Algorand app on your Ledger before to continue.
+        3. A pairing confirmation should now appear to your screen.
+        4. You can open your Ledger Algorand App again after pairing.
+        """
+
+        displaySimpleAlertWith(title: title, message: message) { _ in
+            self.ledgerAccountFetchOperation.connectToDevice(ledgerDevice)
+        }
     }
 }
 

@@ -172,10 +172,10 @@ extension LedgerOperation {
     }
 
     private func presentConnectionSupportWarningAlert() {
-        // This texts won't be localized for now.
+        // These texts won't be localized for now.
         let message = """
                 If you’re having Ledger Nano X connection issues, please remove the device from your phone’s bluetooth settings,
-                remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.
+        remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.
         """
         let alertController = UIAlertController(title: "", message: message, preferredStyle: .alert)
 
