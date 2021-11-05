@@ -49,7 +49,7 @@ extension LedgerOperation {
             DispatchQueue.main.async {
                 self.topMostController?.dismissProgressIfNeeded()
                 self.bleConnectionManager.stopScan()
-                NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
+                NotificationBanner.showError("ble-error-connection-title".localized, message: "")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                     self.presentConnectionSupportWarningAlert()
                 }
@@ -120,7 +120,7 @@ extension LedgerOperation where Self: BLEConnectionManagerDelegate {
             topMostController?.dismissProgressIfNeeded()
         default:
             reset()
-            NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
+            NotificationBanner.showError("ble-error-connection-title".localized, message: "")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 self.presentConnectionSupportWarningAlert()
             }
@@ -177,19 +177,14 @@ extension LedgerOperation {
     private func presentConnectionSupportWarningAlert() {
         // These texts won't be localized for now.
         let message = """
-                If you’re having Ledger Nano X connection issues, please remove the device from your phone’s bluetooth settings,
-        remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.
+        Having Ledger Nano X connection issues?
+
+        If so, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger
+        following the Algorand Wallet instructions.
         """
-        let alertController = UIAlertController(title: "", message: message, preferredStyle: .alert)
+        let alertController = UIAlertController(title: "ble-error-connection-title".localized, message: message, preferredStyle: .alert)
 
-        let ledgerSupportAction = UIAlertAction(title: "Open Ledger Support", style: .default) { _ in
-            if let supportLink = AlgorandWeb.ledgerPairingSupport.link {
-                self.topMostController?.open(supportLink)
-            }
-        }
-        alertController.addAction(ledgerSupportAction)
-
-        let cancelAction = UIAlertAction(title: "title-close".localized, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: "title-ok".localized, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
 
         topMostController?.present(alertController, animated: true)
