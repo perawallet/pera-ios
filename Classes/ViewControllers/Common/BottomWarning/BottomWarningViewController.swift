@@ -22,10 +22,10 @@ final class BottomWarningViewController: BaseViewController {
         return false
     }
 
-    private let viewModel: BottomWarningViewModel
+    private let viewConfigurator: BottomWarningViewConfigurator
 
-    init(_ viewModel: BottomWarningViewModel, configuration: ViewControllerConfiguration) {
-        self.viewModel = viewModel
+    init(_ viewModel: BottomWarningViewConfigurator, configuration: ViewControllerConfiguration) {
+        self.viewConfigurator = viewModel
         super.init(configuration: configuration)
     }
 
@@ -47,13 +47,13 @@ final class BottomWarningViewController: BaseViewController {
     }
 
     override func bindData() {
-        bottomWarningView.bindData(viewModel)
+        bottomWarningView.bindData(viewConfigurator)
     }
 }
 
 extension BottomWarningViewController: BottomWarningViewDelegate {
     func bottomWarningViewDidTapPrimaryActionButton(_ bottomWarningView: BottomWarningView) {
-        viewModel.primaryAction?()
+        viewConfigurator.primaryAction?()
     }
 
     func bottomWarningViewDidTapSecondaryActionButton(_ bottomWarningView: BottomWarningView) {

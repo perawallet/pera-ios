@@ -13,11 +13,11 @@
 // limitations under the License.
 
 //
-//   BottomWarningViewModel.swift
+//   BottomWarningViewConfigurator.swift
 
 import UIKit
 
-struct BottomWarningViewModel {
+struct BottomWarningViewConfigurator {
     private(set) var image: UIImage
     private(set) var title: String
     private(set) var description: String

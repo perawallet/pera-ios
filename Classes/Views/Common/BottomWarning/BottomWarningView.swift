@@ -115,14 +115,14 @@ extension BottomWarningView {
     }
 }
 
-extension BottomWarningView: ViewModelBindable {
-    func bindData(_ viewModel: BottomWarningViewModel?) {
-        titleLabel.text = viewModel?.title
-        descriptionLabel.text = viewModel?.description
-        imageView.image = viewModel?.image
-        primaryActionButton.bindData(ButtonCommonViewModel(title: viewModel?.primaryActionButtonTitle))
+extension BottomWarningView {
+    func bindData(_ configurator: BottomWarningViewConfigurator?) {
+        titleLabel.text = configurator?.title
+        descriptionLabel.text = configurator?.description
+        imageView.image = configurator?.image
+        primaryActionButton.bindData(ButtonCommonViewModel(title: configurator?.primaryActionButtonTitle))
 
-        if let secondaryActionButtonTitle = viewModel?.secondaryActionButtonTitle {
+        if let secondaryActionButtonTitle = configurator?.secondaryActionButtonTitle {
             secondaryActionButton.bindData(ButtonCommonViewModel(title: secondaryActionButtonTitle))
         } else {
             secondaryActionButton.isHidden = true

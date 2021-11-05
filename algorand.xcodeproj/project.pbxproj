@@ -2830,9 +2830,9 @@
 		D4AC1FBE272D56760027353F /* AccountListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC1FBD272D56760027353F /* AccountListViewController+Theme.swift */; };
 		D4AC1FBF272D56760027353F /* AccountListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC1FBD272D56760027353F /* AccountListViewController+Theme.swift */; };
 		D4AC1FC0272D56760027353F /* AccountListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC1FBD272D56760027353F /* AccountListViewController+Theme.swift */; };
-		D4AC1FC2272D74A50027353F /* BottomWarningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC1FC1272D74A50027353F /* BottomWarningViewModel.swift */; };
-		D4AC1FC3272D74A50027353F /* BottomWarningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC1FC1272D74A50027353F /* BottomWarningViewModel.swift */; };
-		D4AC1FC4272D74A50027353F /* BottomWarningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC1FC1272D74A50027353F /* BottomWarningViewModel.swift */; };
+		D4AC1FC2272D74A50027353F /* BottomWarningViewConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC1FC1272D74A50027353F /* BottomWarningViewConfigurator.swift */; };
+		D4AC1FC3272D74A50027353F /* BottomWarningViewConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC1FC1272D74A50027353F /* BottomWarningViewConfigurator.swift */; };
+		D4AC1FC4272D74A50027353F /* BottomWarningViewConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC1FC1272D74A50027353F /* BottomWarningViewConfigurator.swift */; };
 		D4AEDD22271C48B200AD2725 /* AlgoStatisticsHeaderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AEDD21271C48B200AD2725 /* AlgoStatisticsHeaderViewTheme.swift */; };
 		D4AEDD23271C48B200AD2725 /* AlgoStatisticsHeaderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AEDD21271C48B200AD2725 /* AlgoStatisticsHeaderViewTheme.swift */; };
 		D4AEDD24271C48B200AD2725 /* AlgoStatisticsHeaderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AEDD21271C48B200AD2725 /* AlgoStatisticsHeaderViewTheme.swift */; };
@@ -4024,7 +4024,7 @@
 		D4AC1FB5272D3AB10027353F /* AccountListViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewTheme.swift; sourceTree = "<group>"; };
 		D4AC1FB9272D406C0027353F /* AccountListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountListViewModel.swift; sourceTree = "<group>"; };
 		D4AC1FBD272D56760027353F /* AccountListViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountListViewController+Theme.swift"; sourceTree = "<group>"; };
-		D4AC1FC1272D74A50027353F /* BottomWarningViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomWarningViewModel.swift; sourceTree = "<group>"; };
+		D4AC1FC1272D74A50027353F /* BottomWarningViewConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomWarningViewConfigurator.swift; sourceTree = "<group>"; };
 		D4AEDD21271C48B200AD2725 /* AlgoStatisticsHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoStatisticsHeaderViewTheme.swift; sourceTree = "<group>"; };
 		D4AEDD25271C556C00AD2725 /* AlgoStatisticsValueChangeViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoStatisticsValueChangeViewTheme.swift; sourceTree = "<group>"; };
 		D4AEDD2A271C6E0A00AD2725 /* AlgoStatisticsFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoStatisticsFooterView.swift; sourceTree = "<group>"; };
@@ -8587,7 +8587,7 @@
 			isa = PBXGroup;
 			children = (
 				2BD063EC25CEC8E5008BD15E /* BottomWarningView.swift */,
-				D4AC1FC1272D74A50027353F /* BottomWarningViewModel.swift */,
+				D4AC1FC1272D74A50027353F /* BottomWarningViewConfigurator.swift */,
 				D473CA4F26E1733700558598 /* BottomWarningViewTheme.swift */,
 			);
 			path = BottomWarning;
@@ -11541,7 +11541,7 @@
 				D400856F271D5188007C0C97 /* AlgoStatisticsDateSelectionView.swift in Sources */,
 				D41F93472722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift in Sources */,
 				2BD5A68D2632FA850048FA5E /* AlgosValueResponse.swift in Sources */,
-				D4AC1FC4272D74A50027353F /* BottomWarningViewModel.swift in Sources */,
+				D4AC1FC4272D74A50027353F /* BottomWarningViewConfigurator.swift in Sources */,
 				2B0D84F82395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift in Sources */,
 				2B0F5EF524DD4FAC00DA22A6 /* RekeyConfirmationFooterSupplementaryView.swift in Sources */,
 				2BE4D0842593864D005F5764 /* AnalyticsLog.swift in Sources */,
@@ -12468,7 +12468,7 @@
 				D400856E271D5188007C0C97 /* AlgoStatisticsDateSelectionView.swift in Sources */,
 				D41F93462722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift in Sources */,
 				2B0F625824EC129D00DA22A6 /* AssetView.swift in Sources */,
-				D4AC1FC3272D74A50027353F /* BottomWarningViewModel.swift in Sources */,
+				D4AC1FC3272D74A50027353F /* BottomWarningViewConfigurator.swift in Sources */,
 				2B0F625924EC129D00DA22A6 /* AssetRemovalViewModel.swift in Sources */,
 				2BE4D0832593864D005F5764 /* AnalyticsLog.swift in Sources */,
 				2B0F625A24EC129D00DA22A6 /* ContactCell.swift in Sources */,
@@ -13395,7 +13395,7 @@
 				D400856D271D5188007C0C97 /* AlgoStatisticsDateSelectionView.swift in Sources */,
 				D41F93452722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift in Sources */,
 				2BD5A68B2632FA850048FA5E /* AlgosValueResponse.swift in Sources */,
-				D4AC1FC2272D74A50027353F /* BottomWarningViewModel.swift in Sources */,
+				D4AC1FC2272D74A50027353F /* BottomWarningViewConfigurator.swift in Sources */,
 				17D04F51225FAD920051BC43 /* Double.swift in Sources */,
 				2B0F5EF424DD4FAC00DA22A6 /* RekeyConfirmationFooterSupplementaryView.swift in Sources */,
 				2BE4D0822593864D005F5764 /* AnalyticsLog.swift in Sources */,

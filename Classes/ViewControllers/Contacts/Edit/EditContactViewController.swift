@@ -195,7 +195,7 @@ extension EditContactViewController: EditContactViewDelegate {
     }
 
     private func displayDeleteAlert(for contact: Contact) {
-        let bottomWarningViewModel = BottomWarningViewModel(
+        let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
             image: "icon-trash-red".image,
             title: "contacts-delete-contact".localized,
             description: "contacts-delete-contact-alert-explanation".localized,
@@ -211,7 +211,7 @@ extension EditContactViewController: EditContactViewDelegate {
         }
 
         open(
-            .bottomWarning(viewModel: bottomWarningViewModel),
+            .bottomWarning(configurator: bottomWarningViewConfigurator),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .custom,
                 transitionStyle: nil,
