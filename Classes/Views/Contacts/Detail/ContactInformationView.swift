@@ -19,7 +19,7 @@ import Macaroon
 import UIKit
 
 final class ContactInformationView: View {
-    var onTapQRButton: (() -> Void)?
+    weak var delegate: ContactInformationViewDelegate?
 
     private lazy var imageView = UIImageView()
     private lazy var nameLabel = UILabel()
@@ -61,7 +61,7 @@ final class ContactInformationView: View {
 extension ContactInformationView {
     @objc
     private func didTapQRButton() {
-        onTapQRButton?()
+        delegate?.contactInformationViewDidTapQRButton(self)
     }
 }
 
@@ -160,4 +160,8 @@ extension ContactInformationView: ViewModelBindable {
         accountAddressValueLabel.text = viewModel?.address
         accountShortAddressLabel.text = viewModel?.shortAddress
     }
+}
+
+protocol ContactInformationViewDelegate: AnyObject {
+    func contactInformationViewDidTapQRButton(_ view: ContactInformationView)
 }

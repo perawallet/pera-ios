@@ -2642,6 +2642,9 @@
 		D430A40126DF9F8200F34804 /* AddAccountViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D430A40026DF9F8200F34804 /* AddAccountViewTheme.swift */; };
 		D430A40226DF9F8200F34804 /* AddAccountViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D430A40026DF9F8200F34804 /* AddAccountViewTheme.swift */; };
 		D430A40326DF9F8200F34804 /* AddAccountViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D430A40026DF9F8200F34804 /* AddAccountViewTheme.swift */; };
+		D4312D6B27351CDA00ABDA1E /* EditContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4312D6A27351CDA00ABDA1E /* EditContactViewModel.swift */; };
+		D4312D6C27351CDA00ABDA1E /* EditContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4312D6A27351CDA00ABDA1E /* EditContactViewModel.swift */; };
+		D4312D6D27351CDA00ABDA1E /* EditContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4312D6A27351CDA00ABDA1E /* EditContactViewModel.swift */; };
 		D432865726DFDCF6005D84E1 /* TutorialViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */; };
 		D432865826DFDCF6005D84E1 /* TutorialViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */; };
 		D432865926DFDCF6005D84E1 /* TutorialViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */; };
@@ -3959,6 +3962,7 @@
 		D430711127197CA100E38073 /* TabBarModalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarModalView.swift; sourceTree = "<group>"; };
 		D430711527197D9B00E38073 /* TabBarModalViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarModalViewTheme.swift; sourceTree = "<group>"; };
 		D430A40026DF9F8200F34804 /* AddAccountViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountViewTheme.swift; sourceTree = "<group>"; };
+		D4312D6A27351CDA00ABDA1E /* EditContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContactViewModel.swift; sourceTree = "<group>"; };
 		D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewTheme.swift; sourceTree = "<group>"; };
 		D43B23E327180AF600444F35 /* LedgerAccountDetailSectionHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailSectionHeaderViewModel.swift; sourceTree = "<group>"; };
 		D43B23E727180B2F00444F35 /* LedgerAccountDetailSectionHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailSectionHeaderViewTheme.swift; sourceTree = "<group>"; };
@@ -10296,6 +10300,7 @@
 			isa = PBXGroup;
 			children = (
 				D482274E272C5C86004CB9BF /* EditContactView.swift */,
+				D4312D6A27351CDA00ABDA1E /* EditContactViewModel.swift */,
 				D4822752272C67D4004CB9BF /* EditContactViewTheme.swift */,
 			);
 			path = Edit;
@@ -11543,6 +11548,7 @@
 				2BBB2E4C2471F30000EFB238 /* TransactionReceiverSelectionView.swift in Sources */,
 				D49D31DD2725742500AADE9A /* ContactContextViewTheme.swift in Sources */,
 				2B01E2C624EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift in Sources */,
+				D4312D6D27351CDA00ABDA1E /* EditContactViewModel.swift in Sources */,
 				2B68A24426A872540076BD82 /* WCTransactionSigner.swift in Sources */,
 				17BD4E902292F1260003E49A /* Double.swift in Sources */,
 				2B9EEAD8264D33B1007A112D /* API+Block.swift in Sources */,
@@ -12469,6 +12475,7 @@
 				2B0F625B24EC129D00DA22A6 /* CSVExportable.swift in Sources */,
 				D49D31DC2725742500AADE9A /* ContactContextViewTheme.swift in Sources */,
 				2B68A24326A872540076BD82 /* WCTransactionSigner.swift in Sources */,
+				D4312D6C27351CDA00ABDA1E /* EditContactViewModel.swift in Sources */,
 				2B0F625D24EC129D00DA22A6 /* AlgorandError.swift in Sources */,
 				2B9EEAD7264D33B1007A112D /* API+Block.swift in Sources */,
 				D4F068A626EF212B00C26F43 /* TutorialStepViewModel.swift in Sources */,
@@ -13395,6 +13402,7 @@
 				2BBB2E4B2471F30000EFB238 /* TransactionReceiverSelectionView.swift in Sources */,
 				D49D31DB2725742500AADE9A /* ContactContextViewTheme.swift in Sources */,
 				2B01E2C524EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift in Sources */,
+				D4312D6B27351CDA00ABDA1E /* EditContactViewModel.swift in Sources */,
 				173DA1E92255F7B500378A82 /* API+Transaction.swift in Sources */,
 				2B68A24226A872540076BD82 /* WCTransactionSigner.swift in Sources */,
 				2B9EEAD6264D33B1007A112D /* API+Block.swift in Sources */,

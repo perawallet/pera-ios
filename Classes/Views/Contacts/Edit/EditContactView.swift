@@ -180,6 +180,14 @@ extension EditContactView {
     }
 }
 
+extension EditContactView: ViewModelBindable {
+    func bindData(_ viewModel: EditContactViewModel?) {
+        badgedImageView.bindData(image: viewModel?.image, badgeImage: viewModel?.badgeImage)
+        nameInputView.text = viewModel?.name
+        addressInputView.text = viewModel?.address
+    }
+}
+
 protocol EditContactViewDelegate: AnyObject {
     func editContactViewDidTapDeleteButton(_ editContactView: EditContactView)
     func editContactViewDidTapAddImageButton(_ editContactView: EditContactView)

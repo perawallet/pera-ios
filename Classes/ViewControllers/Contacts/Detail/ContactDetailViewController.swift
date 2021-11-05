@@ -72,8 +72,7 @@ final class ContactDetailViewController: BaseScrollViewController {
             name: .ContactDeletion,
             object: nil
         )
-
-        contactDetailView.contactInformationView.onTapQRButton = contactInfoViewDidTapQRCodeButton
+        contactDetailView.delegate = self
     }
     
     override func prepareLayout() {
@@ -241,8 +240,8 @@ extension ContactDetailViewController {
     }
 }
 
-extension ContactDetailViewController {
-    func contactInfoViewDidTapQRCodeButton() {
+extension ContactDetailViewController: ContactDetailViewDelegate {
+    func contactDetailViewDidTapQRButton(_ view: ContactDetailView) {
         guard let address = contact.address else {
             return
         }

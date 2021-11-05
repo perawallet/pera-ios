@@ -19,6 +19,8 @@ import UIKit
 import Macaroon
 
 final class ContactDetailView: View {
+    weak var delegate: ContactDetailViewDelegate?
+
     private lazy var theme = ContactDetailViewTheme()
     private(set) lazy var contactInformationView = ContactInformationView()
     private lazy var assetsTitleLabel = UILabel()
@@ -38,6 +40,7 @@ final class ContactDetailView: View {
         super.init(frame: frame)
 
         customize(theme)
+        setListeners()
     }
 
     func customize(_ theme: ContactDetailViewTheme) {
@@ -49,6 +52,10 @@ final class ContactDetailView: View {
     func customizeAppearance(_ styleSheet: ContactDetailViewTheme) {}
 
     func prepareLayout(_ layoutSheet: ContactDetailViewTheme) {}
+
+    func setListeners() {
+        contactInformationView.delegate = self
+    }
 }
 
 extension ContactDetailView {
@@ -79,4 +86,14 @@ extension ContactDetailView {
             $0.top.equalTo(assetsTitleLabel.snp.bottom).offset(theme.collectionViewTopPadding)
         }
     }
+}
+
+extension ContactDetailView: ContactInformationViewDelegate {
+    func contactInformationViewDidTapQRButton(_ view: ContactInformationView) {
+        delegate?.contactDetailViewDidTapQRButton(self)
+    }
+}
+
+protocol ContactDetailViewDelegate: AnyObject {
+    func contactDetailViewDidTapQRButton(_ view: ContactDetailView)
 }

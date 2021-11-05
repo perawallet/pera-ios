@@ -74,16 +74,7 @@ final class EditContactViewController: BaseScrollViewController {
 
     override func bindData() {
         super.bindData()
-
-        if  let imageData = contact.image,
-            let resizedImage = UIImage(data: imageData)?.convert(to: CGSize(width: 80, height: 80)) {
-            editContactView.badgedImageView.bindData(image: resizedImage, badgeImage: "icon-circle-edit".image)
-        } else {
-            editContactView.badgedImageView.bindData(image: nil, badgeImage: "icon-circle-edit".image)
-        }
-
-        editContactView.nameInputView.text = contact.name
-        editContactView.addressInputView.text = contact.address
+        editContactView.bindData(EditContactViewModel(contact))
     }
 }
 
