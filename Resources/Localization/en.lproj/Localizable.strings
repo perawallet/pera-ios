@@ -256,10 +256,11 @@
 
 // MARK: Contacts
 "contacts-title" = "Contacts";
-"contacts-search" = "Search Contacts";
+"contacts-search" = "Search contacts or name";
 "contacts-add" = "Add Contact";
+"contacts-add-photo" = "Add Photo";
 "contacts-info" = "Contact Info";
-"contacts-info-edit" = "Edit Contact Info";
+"contacts-info-edit" = "Edit Contact";
 "contacts-input-name-explanation" = "Name";
 "contacts-input-name-placeholder" = "Contact name";
 "contacts-input-address-explanation" = "Address";
@@ -269,15 +270,17 @@
 "contacts-empty-detail-text" = "You can make the process of sending assets faster by adding new contacts.";
 "contacts-name-validation-error" = "Name is empty.";
 "contacts-address-validation-error" = "Address is wrong. Please make sure that you entered correct one.";
-"contacts-delete-contact" = "Delete Contact";
+"contacts-approve-delete-contact" = "Yes, delete contact";
+"contacts-delete-contact" = "Delete contact";
+"contacts-delete-contact-button" = "Delete this contact";
 "contacts-delete-contact-alert-explanation" = "Are you sure you want to delete this contact?";
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
 "accounts-title-assets" = "Assets";
-"contacts-title-assets" = "Assets:";
+"contacts-title-assets" = "Assets";
 "title-select-asset" = "Select Asset";
 "contact-search-empty-title" = "No contact found";
-"contact-search-empty-detail" = "Please try a different contact name";
+"contact-search-empty-detail" = "Try different contact name";
 
 // MARK: Settings
 "settings-title" = "Settings";

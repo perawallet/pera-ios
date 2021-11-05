@@ -31,7 +31,7 @@ struct AddAccountViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
-            .textAlignment(.center),
+            .textAlignment(.left),
             .content("introduction-add-account-text".localized),
             .textOverflow(.fitting),
             .textColor(AppColors.Components.Text.main),

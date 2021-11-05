@@ -52,7 +52,7 @@ struct RekeyConfirmationViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textOverflow(.fitting)
         ]
-        self.lottie = UIApplication.shared.isDarkModeDisplay ? "dark-ledger" : "light-ledger" /// <note>:  Should be handled also on view.
+        self.lottie = UIApplication.shared.isDarkModeDisplay ? "dark-rekey" : "light-rekey" /// <note>:  Should be handled also on view.
         self.finalizeButtonTheme = ButtonPrimaryTheme()
 
         self.titleTopPadding = 2

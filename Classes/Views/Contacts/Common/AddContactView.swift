@@ -16,110 +16,184 @@
 //  AddContactView.swift
 
 import UIKit
+import Macaroon
 
-class AddContactView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    private(set) lazy var userInformationView = UserInformationView()
-        
-    private(set) lazy var addContactButton = MainButton(title: "contacts-add".localized)
-    
-    private(set) lazy var deleteContactButton: AlignedButton = {
-        let button = AlignedButton(.imageAtLeft(spacing: 8.0))
-        button.setImage(img("icon-trash", isTemplate: true), for: .normal)
-        button.tintColor = Colors.General.error
-        button.setTitle("contacts-delete-contact".localized, for: .normal)
-        button.setTitleColor(Colors.General.error, for: .normal)
-        button.titleLabel?.font = UIFont.font(withWeight: .semiBold(size: 16.0))
-        return button
-    }()
-    
+final class AddContactView: View {
     weak var delegate: AddContactViewDelegate?
-    
-    override func setListeners() {
-        addContactButton.addTarget(self, action: #selector(notifyDelegateToHandleAction), for: .touchUpInside)
-        deleteContactButton.addTarget(self, action: #selector(notifyDelegateToHandleAction), for: .touchUpInside)
+
+    private(set) lazy var badgedImageView = BadgedImageView()
+    private lazy var addPhotoLabel = UILabel()
+    private(set) lazy var nameInputView = createAccountNameTextInput(
+        placeholder: "contacts-input-name-placeholder".localized,
+        floatingPlaceholder: "contacts-input-name-placeholder".localized
+    )
+    private(set) lazy var addressInputView = createAddressTextInput(
+        placeholder: "watch-account-input-explanation".localized,
+        floatingPlaceholder: "watch-account-input-explanation".localized
+    )
+    private lazy var qrButton = Button()
+    private(set) lazy var addContactButton = Button()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        setListeners()
     }
-    
-    override func linkInteractors() {
-        userInformationView.delegate = self
+
+    func customize(_ theme: AddContactViewTheme) {
+        addBadgedImageView(theme)
+        addPhotoLabel(theme)
+        addNameInputView(theme)
+        addAddressInputView(theme)
+        addQrButton(theme)
+        addAddButton(theme)
     }
-    
-    override func prepareLayout() {
-        setupUserInformationViewLayout()
-        setupAddButtonLayout()
-        setupDeleteContactButtonLayout()
+
+    func prepareLayout(_ layoutSheet: AddContactViewTheme) {}
+
+    func customizeAppearance(_ styleSheet: AddContactViewTheme) {}
+
+    func setListeners() {
+        qrButton.addTarget(self, action: #selector(notifyDelegateToOpenQrScanner), for: .touchUpInside)
+        badgedImageView.addTarget(self, action: #selector(didDelegateToAddImage), for: .touchUpInside)
+        addContactButton.addTarget(self, action: #selector(notifyDelegateToAddContact), for: .touchUpInside)
     }
 }
 
 extension AddContactView {
     @objc
-    private func notifyDelegateToHandleAction() {
-        delegate?.addContactViewDidTapActionButton(self)
-    }
-}
-
-extension AddContactView {
-    private func setupUserInformationViewLayout() {
-        addSubview(userInformationView)
-        
-        userInformationView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(safeAreaLayoutGuide.snp.top)
-        }
-    }
-    
-    private func setupAddButtonLayout() {
-        addSubview(addContactButton)
-        
-        addContactButton.snp.makeConstraints { make in
-            make.top.equalTo(userInformationView.snp.bottom).offset(layout.current.topInset)
-            make.centerX.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.buttonHorizontalInset)
-        }
-    }
-    
-    private func setupDeleteContactButtonLayout() {
-        addSubview(deleteContactButton)
-        
-        deleteContactButton.snp.makeConstraints { make in
-            make.top.equalTo(userInformationView.snp.bottom).offset(layout.current.topInset)
-            make.centerX.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
-            make.size.equalTo(layout.current.deleteButtonSize)
-        }
-    }
-}
-
-extension AddContactView: UserInformationViewDelegate {
-    func userInformationViewDidTapAddImageButton(_ userInformationView: UserInformationView) {
+    private func didDelegateToAddImage() {
         delegate?.addContactViewDidTapAddImageButton(self)
     }
-    
-    func userInformationViewDidTapQRCodeButton(_ userInformationView: UserInformationView) {
+
+    @objc
+    private func notifyDelegateToAddContact() {
+        delegate?.addContactViewDidTapAddContactButton(self)
+    }
+
+    @objc
+    func notifyDelegateToOpenQrScanner() {
         delegate?.addContactViewDidTapQRCodeButton(self)
     }
 }
 
 extension AddContactView {
-    func setUserActionButtonIcon(_ image: UIImage?) {
-        userInformationView.setAddButtonIcon(image)
+    private func addBadgedImageView(_ theme: AddContactViewTheme) {
+        badgedImageView.customize(BadgedImageViewTheme())
+
+        addSubview(badgedImageView)
+        badgedImageView.snp.makeConstraints {
+            $0.centerX == 0
+            $0.top.equalToSuperview().inset(theme.badgedImageViewTopPadding)
+        }
+    }
+
+    private func addPhotoLabel(_ theme: AddContactViewTheme) {
+        addPhotoLabel.customizeAppearance(theme.photoLabel)
+
+        addSubview(addPhotoLabel)
+        addPhotoLabel.snp.makeConstraints {
+            $0.top.equalTo(badgedImageView.snp.bottom).offset(theme.addPhotoLabelTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+        }
+    }
+
+    private func addNameInputView(_ theme: AddContactViewTheme) {
+        addSubview(nameInputView)
+        nameInputView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalTo(addPhotoLabel.snp.bottom).offset(theme.inputTopPadding)
+        }
+    }
+
+    private func addAddressInputView(_ theme: AddContactViewTheme) {
+        addSubview(addressInputView)
+        addressInputView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalTo(nameInputView.snp.bottom).offset(theme.inputSpacing)
+        }
+    }
+
+    private func addQrButton(_ theme: AddContactViewTheme) {
+        qrButton.customizeAppearance(theme.qrButton)
+
+        #warning("This should be in the text input's right accessory")
+        addressInputView.addSubview(qrButton)
+        qrButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview()
+        }
+    }
+    
+    private func addAddButton(_ theme: AddContactViewTheme) {
+        addContactButton.customize(theme.addContactButtonViewTheme)
+        addContactButton.bindData(ButtonCommonViewModel(title: "contacts-add".localized))
+
+        addSubview(addContactButton)
+        addContactButton.snp.makeConstraints {
+            $0.top.greaterThanOrEqualTo(addressInputView.snp.bottom).offset(theme.topPadding)
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(theme.bottomPadding + safeAreaBottom)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+        }
     }
 }
 
 extension AddContactView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let bottomInset: CGFloat = 15.0
-        let topInset: CGFloat = 28.0
-        let buttonHorizontalInset: CGFloat = 20.0
-        let deleteButtonSize = CGSize(width: 145.0, height: 44.0)
+    func createAddressTextInput(
+        placeholder: String,
+        floatingPlaceholder: String?
+    ) -> FloatingTextInputFieldView {
+        #warning("Multi line is not supported.")
+        let view = FloatingTextInputFieldView()
+        let textInputBaseStyle: TextInputStyle = [
+            .font(Fonts.DMSans.regular.make(15, .body)),
+            .tintColor(AppColors.Components.Text.main),
+            .textColor(AppColors.Components.Text.main),
+            .returnKeyType(.next)
+        ]
+
+        let theme =
+            FloatingTextInputFieldViewCommonTheme(
+                textInput: textInputBaseStyle,
+                placeholder: placeholder,
+                floatingPlaceholder: floatingPlaceholder
+            )
+        view.customize(theme)
+        view.snp.makeConstraints {
+            $0.greaterThanHeight(48)
+        }
+        return view
+    }
+
+    func createAccountNameTextInput(
+        placeholder: String,
+        floatingPlaceholder: String?
+    ) -> FloatingTextInputFieldView {
+        let view = FloatingTextInputFieldView()
+        let textInputBaseStyle: TextInputStyle = [
+            .font(Fonts.DMSans.regular.make(15, .body)),
+            .tintColor(AppColors.Components.Text.main),
+            .textColor(AppColors.Components.Text.main),
+            .returnKeyType(.done)
+        ]
+
+        let theme =
+            FloatingTextInputFieldViewCommonTheme(
+                textInput: textInputBaseStyle,
+                placeholder: placeholder,
+                floatingPlaceholder: floatingPlaceholder
+            )
+        view.customize(theme)
+        view.snp.makeConstraints {
+            $0.greaterThanHeight(48)
+        }
+        return view
     }
 }
 
 protocol AddContactViewDelegate: AnyObject {
-    func addContactViewDidTapActionButton(_ addContactView: AddContactView)
+    func addContactViewDidTapAddContactButton(_ addContactView: AddContactView)
     func addContactViewDidTapAddImageButton(_ addContactView: AddContactView)
     func addContactViewDidTapQRCodeButton(_ addContactView: AddContactView)
 }

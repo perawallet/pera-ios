@@ -16,110 +16,68 @@
 //  AccountListView.swift
 
 import UIKit
+import Macaroon
 
-class AccountListView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    weak var delegate: AccountListViewDelegate?
-    
-    private(set) lazy var titleLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.single)
-            .withAlignment(.center)
-    }()
-    
+final class AccountListView: View {
+    private lazy var theme = AccountListViewTheme()
+    private lazy var titleLabel = UILabel()
+
     private(set) lazy var accountsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        flowLayout.minimumInteritemSpacing = 0.0
-        
+        flowLayout.minimumLineSpacing = theme.cellSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = true
+        collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = Colors.Background.secondary
-        collectionView.contentInset = .zero
-        collectionView.register(AccountViewCell.self, forCellWithReuseIdentifier: AccountViewCell.reusableIdentifier)
+        collectionView.backgroundColor = theme.backgroundColor.color
+        collectionView.registerCells(AccountPreviewCell.self)
         return collectionView
     }()
-    
-    private lazy var cancelButton: UIButton = {
-        UIButton(type: .custom)
-            .withTitle("title-cancel".localized)
-            .withBackgroundImage(img("bg-light-gray-button"))
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTitleColor(Colors.Text.primary)
+
+    private lazy var emptyStateView: SearchEmptyView = {
+        let emptyStateView = SearchEmptyView()
+        emptyStateView.setTitle("asset-not-found-title".localized)
+        return emptyStateView
     }()
 
-    private lazy var contentStateView = ContentStateView()
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+    func customize(_ theme: AccountListViewTheme) {
+        addTitleLabel(theme)
+        addAccountCollectionView(theme)
     }
-    
-    override func setListeners() {
-        cancelButton.addTarget(self, action: #selector(notifyDelegateToCloseScreen), for: .touchUpInside)
-    }
-    
-    override func prepareLayout() {
-        setupTitleLabelLayout()
-        setupAccountCollectionViewLayout()
-        setupCancelButtonLayout()
-    }
+
+    func customizeAppearance(_ styleSheet: AccountListViewTheme) {}
+
+    func prepareLayout(_ layoutSheet: AccountListViewTheme) {}
 }
 
 extension AccountListView {
-    @objc
-    private func notifyDelegateToCloseScreen() {
-        delegate?.accountListViewDidTapCancelButton(self)
-    }
-}
+    private func addTitleLabel(_ theme: AccountListViewTheme) {
+        titleLabel.customizeAppearance(theme.titleLabel)
 
-extension AccountListView {
-    private func setupTitleLabelLayout() {
         addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.titleLabelOffset)
+        titleLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().inset(theme.verticalPadding)
         }
     }
     
-    private func setupAccountCollectionViewLayout() {
+    private func addAccountCollectionView(_ theme: AccountListViewTheme) {
         addSubview(accountsCollectionView)
-        
-        accountsCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
+        accountsCollectionView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.verticalPadding)
+            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(theme.accountListBottomInset)
         }
 
-        accountsCollectionView.backgroundView = contentStateView
-    }
-    
-    private func setupCancelButtonLayout() {
-        addSubview(cancelButton)
-        
-        cancelButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(accountsCollectionView.snp.bottom).offset(layout.current.verticalInset)
-            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(layout.current.accountListBottomInset)
-        }
+        accountsCollectionView.backgroundView = ContentStateView()
     }
 }
 
-extension AccountListView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let verticalInset: CGFloat = 28.0
-        let titleLabelOffset: CGFloat = 16.0
-        let accountListBottomInset: CGFloat = -20.0
+extension AccountListView: ViewModelBindable {
+    func bindData(_ viewModel: AccountListViewModel?) {
+        titleLabel.text = viewModel?.title
     }
-}
 
-protocol AccountListViewDelegate: AnyObject {
-    func accountListViewDidTapCancelButton(_ accountListView: AccountListView)
+    func updateContentStateView(isEmpty: Bool) {
+        accountsCollectionView.contentState = isEmpty ? .empty(emptyStateView) : .none
+    }
 }

@@ -541,7 +541,7 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         switch qrText.mode {
         case .address:
-            open(.addContact(mode: .new(address: qrText.address, name: qrText.label)), by: .push)
+            open(.addContact(address: qrText.address, name: qrText.label), by: .push)
         case .algosRequest:
             guard let address = qrText.address,
                 let amount = qrText.amount else {

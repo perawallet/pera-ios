@@ -140,8 +140,6 @@ extension TutorialView: ViewModelBindable {
         } else {
             secondaryActionButton.isHidden = true
         }
-
-        secondaryActionButton.bindData(ButtonCommonViewModel(title: viewModel?.secondaryActionButtonTitle))
         
         if let warningDescription = viewModel?.warningDescription {
             warningLabel.text = warningDescription

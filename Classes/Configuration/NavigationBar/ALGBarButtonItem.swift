@@ -32,14 +32,8 @@ struct ALGBarButtonItem: BarButtonItem {
         case .done:
             return BarButtonItemTitleContent(
                 text: "title-done".localized,
-                textColor: Colors.ButtonText.actionButton,
-                font: UIFont.font(withWeight: .semiBold(size: 16.0))
-            )
-        case .edit:
-            return BarButtonItemTitleContent(
-                text: "title-edit".localized,
-                textColor: Colors.Text.primary,
-                font: UIFont.font(withWeight: .semiBold(size: 16.0))
+                textColor: AppColors.Components.Text.main.color,
+                font: Fonts.DMSans.medium.make(15).font
             )
         case .skip:
             return BarButtonItemTitleContent(
@@ -101,6 +95,9 @@ struct ALGBarButtonItem: BarButtonItem {
         case .done:
             return nil
         case .edit:
+            if let icon = img("icon-edit") {
+                return ImageContent(normal: icon)
+            }
             return nil
         case .paste:
             if let icon = img("icon-paste") {
@@ -112,6 +109,11 @@ struct ALGBarButtonItem: BarButtonItem {
         case .dontAskAgain:
             return nil
         case .copy:
+            return nil
+        case .share:
+            if let icon = img("icon-share") {
+                return ImageContent(normal: icon)
+            }
             return nil
         }
     }
@@ -128,7 +130,7 @@ struct ALGBarButtonItem: BarButtonItem {
                 height: .equal(44.0)
             )
         case .add:
-            return .explicit(CGSize(width: 44.0, height: 44.0))
+            return .explicit(CGSize(width: 40, height: 40))
         case .close:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .qr:
@@ -152,13 +154,7 @@ struct ALGBarButtonItem: BarButtonItem {
                 height: .equal(44.0)
             )
         case .edit:
-            return .expanded(
-                width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
-                    contentInsets: (left: 0.0, right: 0.0),
-                    titleInsets: (left: 4.0, right: -4.0))
-                ),
-                height: .equal(44.0)
-            )
+            return .explicit(CGSize(width: 40, height: 40))
         case .paste:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .skip:
@@ -185,6 +181,8 @@ struct ALGBarButtonItem: BarButtonItem {
                 ),
                 height: .equal(44.0)
             )
+        case .share:
+            return .explicit(CGSize(width: 40, height: 40))
         }
     }
     
@@ -217,6 +215,7 @@ extension ALGBarButtonItem {
         case skip
         case dontAskAgain
         case copy
+        case share
     }
 }
 

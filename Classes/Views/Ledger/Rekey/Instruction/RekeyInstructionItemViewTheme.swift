@@ -27,7 +27,7 @@ struct RekeyInstructionItemViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.image = [
-            .content("icon-rekey-info") /// <note>: Add its dark mode image to assets
+            .content("icon-rekey-info")
         ]
         self.title = [
             .textOverflow(.fitting),

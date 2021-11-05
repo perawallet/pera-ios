@@ -53,7 +53,6 @@ final class TutorialViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        setNavigationBarTertiaryBackgroundColor()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -102,7 +101,9 @@ extension TutorialViewController {
 
     private func addDontAskAgainBarButton() {
         let dontAskAgainBarButtonItem = ALGBarButtonItem(kind: .dontAskAgain) { [weak self] in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
 
             self.uiHandlers.didTapDontAskAgain?(self)
         }

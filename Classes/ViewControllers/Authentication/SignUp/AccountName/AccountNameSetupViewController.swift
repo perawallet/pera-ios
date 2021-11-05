@@ -44,7 +44,6 @@ final class AccountNameSetupViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        setNavigationBarTertiaryBackgroundColor()
         customizeBackground()
     }
 

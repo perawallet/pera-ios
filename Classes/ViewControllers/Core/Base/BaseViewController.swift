@@ -93,7 +93,7 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setNavigationBarPrimaryBackgroundColor()
+        setPrimaryBackgroundColor()
         setNeedsNavigationBarAppearanceUpdate()
         linkInteractors()
         setListeners()
@@ -107,9 +107,7 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
         ]
     }
     
-    func configureAppearance() {
-        view.backgroundColor = Colors.Background.primary
-    }
+    func configureAppearance() {}
 
     func linkInteractors() {}
     
@@ -184,57 +182,14 @@ extension BaseViewController {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Colors.Background.primary
+            appearance.backgroundColor = AppColors.Shared.System.background.color
             appearance.shadowColor = .clear
             navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
         } else {
-            navigationController?.navigationBar.barTintColor = Colors.Background.primary
-            navigationController?.navigationBar.tintColor = Colors.Background.primary
+            navigationController?.navigationBar.barTintColor = AppColors.Shared.System.background.color
+            navigationController?.navigationBar.tintColor = AppColors.Shared.System.background.color
         }
-    }
-    
-    func setSecondaryBackgroundColor() {
-        if #available(iOS 13.0, *) {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Colors.Background.secondary
-            appearance.shadowColor = .clear
-            navigationController?.navigationBar.standardAppearance = appearance
-            navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
-        } else {
-            navigationController?.navigationBar.barTintColor = Colors.Background.secondary
-            navigationController?.navigationBar.tintColor = Colors.Background.secondary
-        }
-    }
-    
-    func setTertiaryBackgroundColor() {
-        if #available(iOS 13.0, *) {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = Colors.Background.tertiary
-            appearance.shadowColor = .clear
-            navigationController?.navigationBar.standardAppearance = appearance
-            navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
-        } else {
-            navigationController?.navigationBar.barTintColor = Colors.Background.tertiary
-            navigationController?.navigationBar.tintColor = Colors.Background.tertiary
-        }
-    }
-
-    func setNavigationBarPrimaryBackgroundColor() {
-        navigationController?.navigationBar.barTintColor = Colors.Background.primary
-        navigationController?.navigationBar.tintColor = Colors.Background.primary
-    }
-    
-    func setNavigationBarSecondaryBackgroundColor() {
-        navigationController?.navigationBar.barTintColor = Colors.Background.secondary
-        navigationController?.navigationBar.tintColor = Colors.Background.secondary
-    }
-    
-    func setNavigationBarTertiaryBackgroundColor() {
-        navigationController?.navigationBar.barTintColor = AppColors.Shared.System.background.color
-        navigationController?.navigationBar.tintColor = AppColors.Shared.System.background.color
     }
 }
 

@@ -17,30 +17,40 @@
 
 import Macaroon
 import UIKit
+import SnapKit
 
 final class TabBarModalViewController: BaseViewController {
     weak var delegate: TabBarModalViewControllerDelegate?
 
     private lazy var chromeView = UIView()
-    private lazy var tabBarModalView = TabBarModalView()
+    private lazy var containerView = TabBarModalView()
     private lazy var theme = Theme()
-    
+
+    private var containerViewBottomConstraint: Constraint?
+
     override func setListeners() {
-        tabBarModalView.sendButton.addTarget(self, action: #selector(notifyDelegateToSend), for: .touchUpInside)
-        tabBarModalView.receiveButton.addTarget(self, action: #selector(notifyDelegateToReceive), for: .touchUpInside)
+        containerView.sendButton.addTarget(self, action: #selector(notifyDelegateToSend), for: .touchUpInside)
+        containerView.receiveButton.addTarget(self, action: #selector(notifyDelegateToReceive), for: .touchUpInside)
+        chromeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapChromeView)))
     }
 
     override func prepareLayout() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addChrome(theme)
-        addTabBarModal(theme)
+        addContainerView(theme)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        animateView()
     }
 }
 
 extension TabBarModalViewController {
-    func addChrome(_ theme: Theme) {
+    private func addChrome(_ theme: Theme) {
         chromeView.customizeAppearance(theme.chromeStyle)
+        chromeView.alpha = .zero
 
         view.addSubview(chromeView)
         chromeView.snp.makeConstraints {
@@ -48,14 +58,59 @@ extension TabBarModalViewController {
         }
     }
 
-    func addTabBarModal(_ theme: Theme) {
-        tabBarModalView.customize(theme.tabBarModalViewTheme)
+    private func addContainerView(_ theme: Theme) {
+        containerView.customize(theme.tabBarModalViewTheme)
 
-        view.addSubview(tabBarModalView)
-        tabBarModalView.snp.makeConstraints {
+        view.addSubview(containerView)
+        containerView.snp.makeConstraints {
             $0.fitToHeight(theme.modalHeight)
-            $0.bottom.leading.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            containerViewBottomConstraint = $0.bottom.equalToSuperview().offset(theme.modalHeight).constraint
         }
+    }
+}
+
+extension TabBarModalViewController {
+    private func animateView() {
+        animateChromeView()
+        animateContainerView()
+    }
+
+    private func animateChromeView() {
+        updateChromeViewVisibility(to: 1)
+    }
+
+    private func animateContainerView() {
+        updateContainerViewBottomConstraint(to: .zero)
+    }
+
+    func dismissWithAnimation() {
+        updateChromeViewVisibility(to: .zero) {
+            self.dismiss(animated: false)
+        }
+        updateContainerViewBottomConstraint(to: theme.modalHeight)
+    }
+
+    private func updateChromeViewVisibility(to alpha: CGFloat, completion: (() -> Void)? = nil) {
+        // swiftlint:disable multiline_arguments
+        UIView.animate(withDuration: 0.2) {
+            self.chromeView.alpha = alpha
+        } completion: { _ in
+           completion?()
+        }
+        // swiftlint:enable multiline_arguments
+    }
+
+    private func updateContainerViewBottomConstraint(to value: LayoutMetric) {
+        UIView.animate(withDuration: 0.1) {
+            self.containerViewBottomConstraint?.update(offset: value)
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    @objc
+    private func didTapChromeView() {
+        dismissWithAnimation()
     }
 }
 

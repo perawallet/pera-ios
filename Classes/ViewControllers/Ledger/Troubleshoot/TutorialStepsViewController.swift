@@ -40,9 +40,8 @@ final class TutorialStepsViewController: BaseScrollViewController {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        setNavigationBarTertiaryBackgroundColor()
     }
-
+    
     override func linkInteractors() {
         super.linkInteractors()
         tutorialStepsView.delegate = self

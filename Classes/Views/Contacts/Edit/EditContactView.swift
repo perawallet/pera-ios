@@ -1,0 +1,195 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//
+//   EditContactView.swift
+
+import UIKit
+import Macaroon
+
+final class EditContactView: View {
+    weak var delegate: EditContactViewDelegate?
+
+    private(set) lazy var badgedImageView = BadgedImageView()
+    private(set) lazy var nameInputView = createAccountNameTextInput(
+        placeholder: "contacts-input-name-placeholder".localized,
+        floatingPlaceholder: "contacts-input-name-placeholder".localized
+    )
+    private(set) lazy var addressInputView = createAddressTextInput(
+        placeholder: "watch-account-input-explanation".localized,
+        floatingPlaceholder: "watch-account-input-explanation".localized
+    )
+    private lazy var qrButton = Button()
+    private(set) lazy var deleteContactButton = Button()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        setListeners()
+    }
+
+    func customize(_ theme: EditContactViewTheme) {
+        addBadgedImageView(theme)
+        addNameInputView(theme)
+        addAddressInputView(theme)
+        addQrButton(theme)
+        addDeleteContactButton(theme)
+    }
+
+    func prepareLayout(_ layoutSheet: EditContactViewTheme) {}
+
+    func customizeAppearance(_ styleSheet: EditContactViewTheme) {}
+
+    func setListeners() {
+        qrButton.addTarget(self, action: #selector(notifyDelegateToOpenQrScanner), for: .touchUpInside)
+        badgedImageView.addTarget(self, action: #selector(didDelegateToAddImage), for: .touchUpInside)
+        deleteContactButton.addTarget(self, action: #selector(notifyDelegateToDeleteContact), for: .touchUpInside)
+    }
+}
+
+extension EditContactView {
+    @objc
+    private func didDelegateToAddImage() {
+        delegate?.editContactViewDidTapAddImageButton(self)
+    }
+
+    @objc
+    private func notifyDelegateToDeleteContact() {
+        delegate?.editContactViewDidTapDeleteButton(self)
+    }
+
+    @objc
+    func notifyDelegateToOpenQrScanner() {
+        delegate?.editContactViewDidTapQRCodeButton(self)
+    }
+}
+
+extension EditContactView {
+    private func addBadgedImageView(_ theme: EditContactViewTheme) {
+        badgedImageView.customize(BadgedImageViewTheme())
+
+        addSubview(badgedImageView)
+        badgedImageView.snp.makeConstraints {
+            $0.centerX == 0
+            $0.top.equalToSuperview().inset(theme.badgedImageViewTopPadding)
+        }
+    }
+
+    private func addNameInputView(_ theme: EditContactViewTheme) {
+        addSubview(nameInputView)
+        nameInputView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalTo(badgedImageView.snp.bottom).offset(theme.inputTopPadding)
+        }
+    }
+
+    private func addAddressInputView(_ theme: EditContactViewTheme) {
+        addSubview(addressInputView)
+        addressInputView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalTo(nameInputView.snp.bottom).offset(theme.inputSpacing)
+        }
+    }
+
+    private func addQrButton(_ theme: EditContactViewTheme) {
+        qrButton.customizeAppearance(theme.qrButton)
+
+        #warning("This should be in the text input's right accessory")
+        addressInputView.addSubview(qrButton)
+        qrButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview()
+        }
+    }
+
+    private func addDeleteContactButton(_ theme: EditContactViewTheme) {
+        deleteContactButton.draw(corner: theme.deleteButtonCorner)
+        deleteContactButton.customizeAppearance(theme.deleteButton)
+
+        addSubview(deleteContactButton)
+        deleteContactButton.snp.makeConstraints {
+            $0.top.equalTo(addressInputView.snp.bottom).offset(theme.topPadding)
+            $0.centerX.equalToSuperview()
+            $0.bottom.lessThanOrEqualToSuperview().inset(theme.bottomPadding + safeAreaBottom)
+            $0.fitToSize(theme.deleteButtonSize)
+        }
+    }
+}
+
+extension EditContactView {
+    func createAddressTextInput(
+        placeholder: String,
+        floatingPlaceholder: String?
+    ) -> FloatingTextInputFieldView {
+        #warning("Multi line is not supported.")
+        let view = FloatingTextInputFieldView()
+        let textInputBaseStyle: TextInputStyle = [
+            .font(Fonts.DMSans.regular.make(15, .body)),
+            .tintColor(AppColors.Components.Text.main),
+            .textColor(AppColors.Components.Text.main),
+            .returnKeyType(.next)
+        ]
+
+        let theme =
+            FloatingTextInputFieldViewCommonTheme(
+                textInput: textInputBaseStyle,
+                placeholder: placeholder,
+                floatingPlaceholder: floatingPlaceholder
+            )
+        view.customize(theme)
+        view.snp.makeConstraints {
+            $0.greaterThanHeight(48)
+        }
+        return view
+    }
+
+    func createAccountNameTextInput(
+        placeholder: String,
+        floatingPlaceholder: String?
+    ) -> FloatingTextInputFieldView {
+        let view = FloatingTextInputFieldView()
+        let textInputBaseStyle: TextInputStyle = [
+            .font(Fonts.DMSans.regular.make(15, .body)),
+            .tintColor(AppColors.Components.Text.main),
+            .textColor(AppColors.Components.Text.main),
+            .returnKeyType(.done)
+        ]
+
+        let theme =
+            FloatingTextInputFieldViewCommonTheme(
+                textInput: textInputBaseStyle,
+                placeholder: placeholder,
+                floatingPlaceholder: floatingPlaceholder
+            )
+        view.customize(theme)
+        view.snp.makeConstraints {
+            $0.greaterThanHeight(48)
+        }
+        return view
+    }
+}
+
+extension EditContactView: ViewModelBindable {
+    func bindData(_ viewModel: EditContactViewModel?) {
+        badgedImageView.bindData(image: viewModel?.image, badgeImage: viewModel?.badgeImage)
+        nameInputView.text = viewModel?.name
+        addressInputView.text = viewModel?.address
+    }
+}
+
+protocol EditContactViewDelegate: AnyObject {
+    func editContactViewDidTapDeleteButton(_ editContactView: EditContactView)
+    func editContactViewDidTapAddImageButton(_ editContactView: EditContactView)
+    func editContactViewDidTapQRCodeButton(_ editContactView: EditContactView)
+}

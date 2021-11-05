@@ -96,7 +96,6 @@ final class TabBarController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        customizeAppearance()
         prepareLayout()
         setListeners()
         setupTabBarController()
@@ -114,12 +113,6 @@ final class TabBarController: UIViewController {
         super.viewDidAppear(animated)
         isAppeared = true
     }
-    
-    func customizeAppearance() {
-        if !isDarkModeDisplay {
-            applyShadows()
-        }
-    }
 
     func prepareLayout() {
         addTabBar()
@@ -134,31 +127,6 @@ final class TabBarController: UIViewController {
         tabBar.centerButtonDidTap = { [unowned self] _ in
             self.isDisplayingTransactionButtons = !self.isDisplayingTransactionButtons
         }
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        if !isDarkModeDisplay {
-            tabBar.updateShadowLayoutWhenViewDidLayoutSubviews()
-        }
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        if #available(iOS 12.0, *) {
-            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-                if traitCollection.userInterfaceStyle == .dark {
-                    tabBar.removeShadow()
-                } else {
-                    applyShadows()
-                }
-            }
-        }
-    }
-    
-    private func applyShadows() {
-        tabBar.applyShadow(tabBarShadow)
     }
 }
 
@@ -403,7 +371,8 @@ enum TransactionAction {
 extension TabBarController {
     private func dismissTabBarModal() {
         animateCenterButtonAsSelected(false)
-        selectedContent?.dismiss(animated: true)
+        let tabBarModalViewController = selectedContent?.presentedViewController as? TabBarModalViewController
+        tabBarModalViewController?.dismissWithAnimation()
     }
 
     private func presentTabBarModal() {

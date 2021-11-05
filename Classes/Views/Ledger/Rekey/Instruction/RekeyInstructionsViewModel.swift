@@ -22,12 +22,14 @@ final class RekeyInstructionsViewModel {
     private(set) var firstInstructionViewTitle: String?
     private(set) var secondInstructionViewTitle: String?
     private(set) var thirdInstructionViewTitle: String?
+    private(set) var fourthInstructionViewTitle: String?
 
     init(_ requiresLedgerConnection: Bool) {
         bindSubtitle(requiresLedgerConnection)
         bindFirstInstructionViewTitle()
         bindSecondInstructionViewTitle(requiresLedgerConnection)
         bindThirdInstructionViewTitle()
+        bindFourthInstructionViewTitle()
     }
 }
 
@@ -54,5 +56,9 @@ extension RekeyInstructionsViewModel {
 
     private func bindThirdInstructionViewTitle() {
         thirdInstructionViewTitle = "rekey-instruction-third".localized
+    }
+
+    private func bindFourthInstructionViewTitle() {
+        fourthInstructionViewTitle = "ledger-tutorial-bluetooth".localized
     }
 }

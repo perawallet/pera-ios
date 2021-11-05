@@ -18,7 +18,7 @@
 import UIKit
 
 class WCAssetConfigTransactionItemCell: BaseCollectionViewCell<WCAssetConfigTransactionItemView> {
-
+    
     func bind(_ viewModel: WCAssetConfigTransactionItemViewModel) {
         contextView.bind(viewModel)
     }

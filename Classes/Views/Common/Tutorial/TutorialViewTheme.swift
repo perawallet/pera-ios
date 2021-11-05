@@ -64,7 +64,7 @@ struct TutorialViewTheme: StyleSheet, LayoutSheet {
         self.actionButtonTheme = ButtonSecondaryTheme()
 
         self.titleTopInset = 24
-        self.buttonInset = 20
+        self.buttonInset = 16
         self.descriptionHorizontalInset = 24
         self.descriptionTopInset = 16
         self.horizontalInset = 24

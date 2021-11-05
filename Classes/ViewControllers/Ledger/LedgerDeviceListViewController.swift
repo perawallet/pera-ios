@@ -37,15 +37,14 @@ final class LedgerDeviceListViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         ledgerDeviceListView.startAnimatingImageView()
         ledgerDeviceListView.startAnimatingIndicatorView()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
         ledgerAccountFetchOperation.reset()
         ledgerDeviceListView.stopAnimatingImageView()
         ledgerDeviceListView.stopAnimatingIndicatorView()
@@ -60,7 +59,6 @@ final class LedgerDeviceListViewController: BaseViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        setNavigationBarTertiaryBackgroundColor()
         view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
     }
     

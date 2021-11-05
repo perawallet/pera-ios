@@ -33,7 +33,8 @@ indirect enum Screen {
     case accountList(mode: AccountListViewController.Mode)
     case editAccount(account: Account)
     case contactSelection
-    case addContact(mode: AddContactViewController.Mode)
+    case addContact(address: String? = nil, name: String? = nil)
+    case editContact(contact: Contact)
     case contactDetail(contact: Contact)
     case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState, isSenderEditable: Bool, qrText: QRText? = nil)
     case sendAssetTransactionPreview(
@@ -88,7 +89,7 @@ indirect enum Screen {
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
     case notificationFilter(flow: NotificationFilterViewController.Flow)
     case maximumBalanceWarning(account: Account)
-    case screenshotWarning
+    case bottomWarning(configurator: BottomWarningViewConfigurator)
     case warningAlert(warningAlert: WarningAlert)
     case actionableWarningAlert(warningAlert: WarningAlert)
     case tutorial(flow: AccountSetupFlow, tutorial: Tutorial)

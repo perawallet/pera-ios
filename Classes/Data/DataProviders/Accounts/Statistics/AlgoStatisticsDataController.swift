@@ -36,7 +36,9 @@ final class AlgoStatisticsDataController {
         fetchDataForLastFiveMinutes()
 
         chartDispatchGroup.notify(queue: .main) { [weak self] in
-            guard let self = self else { return }
+            guard let self = self else {
+                return
+            }
 
             self.addLastFiveMinutesToValuesIfNeeded()
             self.returnValues()

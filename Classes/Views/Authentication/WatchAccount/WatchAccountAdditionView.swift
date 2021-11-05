@@ -22,11 +22,10 @@ final class WatchAccountAdditionView: View {
     weak var delegate: WatchAccountAdditionViewDelegate?
 
     private lazy var theme = WatchAccountAdditionViewTheme()
-    private(set) lazy var addressInputView =
-        createAccountAddressTextInput(
-            placeholder: "watch-account-input-explanation".localized,
-            floatingPlaceholder: "watch-account-input-explanation".localized
-        )
+    private(set) lazy var addressInputView = createAccountAddressTextInput(
+        placeholder: "watch-account-input-explanation".localized,
+        floatingPlaceholder: "watch-account-input-explanation".localized
+    )
     private lazy var titleLabel = UILabel()
     private lazy var descriptionLabel = UILabel()
     private lazy var qrButton = Button()
@@ -67,7 +66,9 @@ extension WatchAccountAdditionView: ViewModelBindable {
     func bindData(_ viewModel: WatchAccountAdditionViewModel?) {
         pasteButton.isHidden = (viewModel?.pasteButtonIsHidden).ifNil(true)
 
-        guard !pasteButton.isHidden else { return }
+        guard !pasteButton.isHidden else {
+            return
+        }
 
         let pasteText = "\("watch-account-paste".localized + " ")".attributed(theme.pasteTextAttributes)
         let copiedText = "(\((viewModel?.copiedString).emptyIfNil))".attributed(theme.copiedTextAttributes)

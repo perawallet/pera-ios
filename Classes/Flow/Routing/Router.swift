@@ -219,10 +219,12 @@ class Router {
             viewController = EditAccountViewController(account: account, configuration: configuration)
         case .contactSelection:
             viewController = ContactSelectionViewController(configuration: configuration)
-        case let .addContact(mode):
-            viewController = AddContactViewController(mode: mode, configuration: configuration)
+        case let .addContact(address, name):
+            viewController = AddContactViewController(address: address, name: name, configuration: configuration)
+        case let .editContact(contact):
+            viewController = EditContactViewController(contact: contact, configuration: configuration)
         case let .contactDetail(contact):
-            viewController = ContactInfoViewController(contact: contact, configuration: configuration)
+            viewController = ContactDetailViewController(contact: contact, configuration: configuration)
         case let .sendAlgosTransactionPreview(account, receiver, isSenderEditable, qrText):
             viewController = SendAlgosTransactionPreviewViewController(
                 account: account,
@@ -355,8 +357,8 @@ class Router {
             viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
         case let .maximumBalanceWarning(account):
             viewController = MaximumBalanceWarningViewController(account: account, configuration: configuration)
-        case .screenshotWarning:
-            viewController = ScreenshotWarningViewController(configuration: configuration)
+        case let .bottomWarning(viewModel):
+            viewController = BottomWarningViewController(viewModel, configuration: configuration)
         case let .warningAlert(warningAlert):
             viewController = WarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
         case let .actionableWarningAlert(warningAlert):

@@ -133,4 +133,17 @@ extension AccountPreviewView {
             )
         )
     }
+
+    func bindData(_ viewModel: AccountCellViewModel) {
+        bindData(
+            AccountPreviewViewModel(
+                AccountPreviewModel(
+                    accountType: viewModel.accountType,
+                    accountImageType: .orange,
+                    accountName: viewModel.name,
+                    assetsAndNFTs: viewModel.detail ?? viewModel.attributedDetail?.string
+                )
+            )
+        )
+    }
 }

@@ -85,7 +85,6 @@ class TransactionDetailViewController: BaseScrollViewController {
         super.configureAppearance()
         title = "transaction-detail-title".localized
         contentView.backgroundColor = Colors.Background.tertiary
-        setNavigationBarTertiaryBackgroundColor()
         configureTransactionDetail()
     }
     
@@ -176,8 +175,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
                 by: .present
             )
         case let .address(address):
-            let viewController = open(.addContact(mode: .new()), by: .push) as? AddContactViewController
-            viewController?.addContactView.userInformationView.algorandAddressInputView.value = address
+            open(.addContact(address: address), by: .push)
         }
     }
     

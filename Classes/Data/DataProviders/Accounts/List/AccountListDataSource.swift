@@ -17,8 +17,7 @@
 
 import UIKit
 
-class AccountListDataSource: NSObject, UICollectionViewDataSource {
-
+final class AccountListDataSource: NSObject {
     private(set) var accounts = [Account]()
     private let mode: AccountListViewController.Mode
     
@@ -34,42 +33,35 @@ class AccountListDataSource: NSObject, UICollectionViewDataSource {
         case .walletConnect:
             accounts = userAccounts.filter { $0.type != .watch }
         case let .transactionReceiver(assetDetail),
-             let .transactionSender(assetDetail),
-             let .contact(assetDetail):
+            let .transactionSender(assetDetail),
+            let .contact(assetDetail):
             guard let assetDetail = assetDetail else {
                 accounts.append(contentsOf: userAccounts)
                 return
             }
             
-            let filteredAccounts = userAccounts.filter { account -> Bool in
-                account.assetDetails.contains { detail -> Bool in
-                     assetDetail.id == detail.id
+            let filteredAccounts = userAccounts.filter { account in
+                account.assetDetails.contains { detail in
+                    assetDetail.id == detail.id
                 }
             }
             accounts = filteredAccounts
         }
     }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
+}
+
+extension AccountListDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return accounts.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: AccountViewCell.reusableIdentifier,
-            for: indexPath) as? AccountViewCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
+        let cell: AccountPreviewCell = collectionView.dequeueReusableCell(for: indexPath)
+        cell.customize(AccountPreviewViewTheme())
         if indexPath.item < accounts.count {
             let account = accounts[indexPath.item]
-            cell.bind(AccountListViewModel(account: account, mode: mode))
+            cell.bindData(AccountCellViewModel(account: account, mode: mode))
         }
-        
         return cell
     }
 }

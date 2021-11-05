@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
 //   AlgoStatisticsHeaderViewModel.swift
 
 import UIKit
@@ -43,7 +42,9 @@ final class AlgoStatisticsHeaderViewModel: ViewModel {
 
 extension AlgoStatisticsHeaderViewModel {
     private func bindAmount(from priceChange: AlgoUSDPriceChange, and currency: Currency) {
-        guard let currentAlgosUSDValue = priceChange.lastPrice else { return }
+        guard let currentAlgosUSDValue = priceChange.lastPrice else {
+            return
+        }
 
         if let selectedPrice = priceChange.selectedPrice?.getCurrencyScaledChartHighValue(with: currentAlgosUSDValue, for: currency),
            let currencyValue = selectedPrice.toCurrencyStringForLabel {

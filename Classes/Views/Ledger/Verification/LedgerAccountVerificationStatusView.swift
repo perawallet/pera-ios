@@ -90,7 +90,9 @@ extension LedgerAccountVerificationStatusView {
 
 extension LedgerAccountVerificationStatusView: ViewModelBindable {
     func bindData(_ viewModel: LedgerAccountVerificationStatusViewModel?) {
-        guard let viewModel = viewModel else { return }
+        guard let viewModel = viewModel else {
+            return
+        }
 
         addressLabel.text = viewModel.address
         draw(border: Border(color: viewModel.borderColor.color, width: 2))

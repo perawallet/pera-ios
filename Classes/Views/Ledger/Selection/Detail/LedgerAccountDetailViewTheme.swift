@@ -16,7 +16,6 @@
 //   LedgerAccountDetailViewTheme.swift
 
 import Macaroon
-import CoreGraphics
 
 struct LedgerAccountDetailViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color

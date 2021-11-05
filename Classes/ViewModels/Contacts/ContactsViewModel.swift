@@ -17,31 +17,33 @@
 
 import UIKit
 
-class ContactsViewModel {
+final class ContactsViewModel {
     private(set) var image: UIImage?
     private(set) var name: String?
     private(set) var address: String?
 
     init(contact: Contact, imageSize: CGSize) {
-        setImage(from: contact, with: imageSize)
-        setName(from: contact)
-        setAddress(from: contact)
+        bindImage(from: contact, with: imageSize)
+        bindName(contact)
+        bindAddress(contact)
     }
+}
 
-    private func setImage(from contact: Contact, with imageSize: CGSize) {
+extension ContactsViewModel {
+    private func bindImage(from contact: Contact, with imageSize: CGSize) {
         if let imageData = contact.image,
-            let image = UIImage(data: imageData) {
+           let image = UIImage(data: imageData) {
             self.image = image.convert(to: imageSize)
         } else {
             self.image = img("icon-user-placeholder")
         }
     }
 
-    private func setName(from contact: Contact) {
+    private func bindName(_ contact: Contact) {
         name = contact.name
     }
 
-    private func setAddress(from contact: Contact) {
+    private func bindAddress(_ contact: Contact) {
         address = contact.address?.shortAddressDisplay()
     }
 }

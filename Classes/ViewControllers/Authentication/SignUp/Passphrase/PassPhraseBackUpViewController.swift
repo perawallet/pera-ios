@@ -49,7 +49,6 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
-        setNavigationBarTertiaryBackgroundColor()
         customizeBackground()
 
         passphraseView.nextButton.isEnabled = false
@@ -60,7 +59,7 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
         scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
-    
+
     override func prepareLayout() {
         super.prepareLayout()
         addPassphraseView()
@@ -161,7 +160,14 @@ extension PassphraseBackUpViewController {
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
         
         open(
-            .screenshotWarning,
+            .bottomWarning(configurator:
+                            BottomWarningViewConfigurator(
+                                image: "icon-info-red".image,
+                                title: "screenshot-title".localized,
+                                description: "screenshot-description".localized,
+                                secondaryActionButtonTitle: "title-close".localized
+                            )
+                          ),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .custom,
                 transitionStyle: nil,
