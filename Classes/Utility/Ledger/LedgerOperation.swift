@@ -50,6 +50,9 @@ extension LedgerOperation {
                 self.topMostController?.dismissProgressIfNeeded()
                 self.bleConnectionManager.stopScan()
                 NotificationBanner.showError("ble-error-connection-title".localized, message: "ble-error-fail-connect-peripheral".localized)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    self.presentConnectionSupportWarningAlert()
+                }
             }
             
             self.stopTimer()
