@@ -17,26 +17,22 @@
 
 import UIKit
 
-class QRCreationViewController: BaseScrollViewController {
-    
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
-    }
-    
-    override var hidesCloseBarButtonItem: Bool {
-        return true
-    }
+final class QRCreationViewController: BaseScrollViewController {
+    private lazy var qrCreationView = QRCreationView(draft: draft)
+    private lazy var theme = Theme()
     
     override var name: AnalyticsScreenName? {
         return isTrackable ? .showQR : nil
     }
     
-    private lazy var qrCreationView = QRCreationView(draft: draft)
-    
     private let draft: QRCreationDraft
     private let isTrackable: Bool
     
-    init(draft: QRCreationDraft, configuration: ViewControllerConfiguration, isTrackable: Bool = false) {
+    init(
+        draft: QRCreationDraft,
+        configuration: ViewControllerConfiguration,
+        isTrackable: Bool = false
+    ) {
         self.draft = draft
         self.isTrackable = isTrackable
         super.init(configuration: configuration)
@@ -44,20 +40,21 @@ class QRCreationViewController: BaseScrollViewController {
     
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
-        
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-        
-        leftBarButtonItems = [closeBarButtonItem]
+        addBarButtons()
     }
     
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.tertiary
+        super.configureAppearance()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
         if draft.isSelectable {
             qrCreationView.setAddress(draft.address)
         }
+    }
+    
+    override func setListeners() {
+        super.setListeners()
+        qrCreationView.setListeners()
     }
     
     override func linkInteractors() {
@@ -67,17 +64,19 @@ class QRCreationViewController: BaseScrollViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupQRCreationViewLayout()
+        qrCreationView.customize(theme.qrCreationViewTheme)
+        prepareWholeScreenLayoutFor(qrCreationView)
     }
 }
 
 extension QRCreationViewController {
-    private func setupQRCreationViewLayout() {
-        contentView.addSubview(qrCreationView)
-        
-        qrCreationView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+    private func addBarButtons() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
         }
+        
+        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 
@@ -88,7 +87,8 @@ extension QRCreationViewController: QRCreationViewDelegate {
         }
         
         let sharedItem = [qrImage]
-        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
+        let activityViewController =
+        UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
         
         activityViewController.completionWithItemsHandler = { [weak self] _, success, _, _ in

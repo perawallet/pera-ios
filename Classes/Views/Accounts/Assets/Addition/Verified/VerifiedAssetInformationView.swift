@@ -16,52 +16,73 @@
 //  VerifiedAssetInformationView.swift
 
 import UIKit
+import Macaroon
 
-class VerifiedAssetInformationView: BaseView {
-    
+class VerifiedAssetInformationView: View {
     weak var delegate: VerifiedAssetInformationViewDelegate?
-    
-    private let layout = Layout<LayoutConstants>()
     
     private lazy var labelTapGestureRecognizer = UITapGestureRecognizer(
         target: self,
         action: #selector(notifyDelegateToOpenFeedback(_:))
     )
     
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(Colors.Text.primary)
-            .withAlignment(.left)
-            .withText("verified-asset-information-title".localized)
-            .withLine(.contained)
-    }()
+    private lazy var titleLabel = UILabel()
+    private lazy var informationLabel = UILabel()
+    private lazy var verifiedImageView = UIImageView()
     
-    private lazy var verifiedImageView = UIImageView(image: img("icon-verified"))
+    func customize(_ theme: VerifiedAssetInformationViewTheme) {
+        customizeBaseAppearance(backgroundColor: Colors.Background.tertiary)
+        
+        addTitle(theme)
+        addImage(theme)
+        addInformation(theme)
+    }
     
-    private lazy var informationLabel: UILabel = {
-        let label = UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-            .withAlignment(.left)
-            .withLine(.contained)
-        label.isUserInteractionEnabled = true
-        return label
-    }()
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
     
-    override func setListeners() {
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    
+    func setListeners() {
         informationLabel.addGestureRecognizer(labelTapGestureRecognizer)
     }
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
-        addInformationTextAttributes()
+}
+
+extension VerifiedAssetInformationView {
+    private func addTitle(_ theme: VerifiedAssetInformationViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+        
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.topInset)
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalInset)
+        }
+        
+        titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
     }
     
-    override func prepareLayout() {
-        setupTitleLabelLayout()
-        setupVerifiedImageViewLayout()
-        setupInformationLabelLayout()
+    private func addImage(_ theme: VerifiedAssetInformationViewTheme) {
+        verifiedImageView.customizeAppearance(theme.image)
+        
+        addSubview(verifiedImageView)
+        verifiedImageView.snp.makeConstraints {
+            $0.leading.equalTo(titleLabel.snp.trailing).offset(theme.imageLeadingOffset)
+            $0.centerY.equalTo(titleLabel)
+        }
+    }
+    
+    private func addInformation(_ theme: VerifiedAssetInformationViewTheme) {
+        informationLabel.isUserInteractionEnabled = true
+        informationLabel.customizeAppearance(theme.information)
+        
+        addSubview(informationLabel)
+        
+        informationLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.verticalSpacing)
+            $0.bottom.lessThanOrEqualToSuperview()
+        }
     }
 }
 
@@ -74,66 +95,6 @@ extension VerifiedAssetInformationView {
         if gestureRecognizer.detectTouchForLabel(informationLabel, in: contactTextRange) {
             delegate?.verifiedAssetInformationViewDidVisitSite(self)
         }
-    }
-}
-
-extension VerifiedAssetInformationView {
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
-        
-        titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.titleTopInset)
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-    
-    private func setupVerifiedImageViewLayout() {
-        addSubview(verifiedImageView)
-        
-        verifiedImageView.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.trailing).offset(layout.current.imageLeadingOffset)
-            make.centerY.equalTo(titleLabel)
-        }
-    }
-    
-    private func setupInformationLabelLayout() {
-        addSubview(informationLabel)
-        
-        informationLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.horizontalInset)
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-}
-
-extension VerifiedAssetInformationView {
-    private func addInformationTextAttributes() {
-        let fullText = "verified-asset-information-text".localized
-        let doubleCheckText = "verified-asset-double-check".localized
-        let contactText = "verified-asset-information-visit-site".localized
-        
-        let fullAttributedText = NSMutableAttributedString(string: fullText)
-        
-        let doubleCheckTextRange = (fullText as NSString).range(of: doubleCheckText)
-        fullAttributedText.addAttribute(.foregroundColor, value: Colors.General.verified, range: doubleCheckTextRange)
-        
-        let contactTextRange = (fullText as NSString).range(of: contactText)
-        fullAttributedText.addAttribute(.foregroundColor, value: Colors.ButtonText.actionButton, range: contactTextRange)
-        
-        informationLabel.attributedText = fullAttributedText
-    }
-}
-
-extension VerifiedAssetInformationView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let titleTopInset: CGFloat = 28.0
-        let imageLeadingOffset: CGFloat = 12.0
     }
 }
 

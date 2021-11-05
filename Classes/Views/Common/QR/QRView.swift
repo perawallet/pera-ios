@@ -19,7 +19,7 @@ import UIKit
 
 class QRView: BaseView {
     
-    private let outputWidth: CGFloat = 200.0
+    private let outputWidth: CGFloat = 240.0
     
     private(set) lazy var imageView = UIImageView()
 

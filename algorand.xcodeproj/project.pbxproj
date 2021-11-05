@@ -7,6 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0414ACC62721691100475F8E /* QRCreationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414ACC52721691100475F8E /* QRCreationViewTheme.swift */; };
+		0414ACC72721691100475F8E /* QRCreationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414ACC52721691100475F8E /* QRCreationViewTheme.swift */; };
+		0414ACC82721691100475F8E /* QRCreationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0414ACC52721691100475F8E /* QRCreationViewTheme.swift */; };
+		046E823A271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */; };
+		046E823B271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */; };
+		046E823C271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */; };
+		046E823E271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */; };
+		046E823F271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */; };
+		046E8240271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */; };
+		048B3C1627228BC8003A5F5A /* QRAddressLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1527228BC8003A5F5A /* QRAddressLabel.swift */; };
+		048B3C1727228BC8003A5F5A /* QRAddressLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1527228BC8003A5F5A /* QRAddressLabel.swift */; };
+		048B3C1827228BC8003A5F5A /* QRAddressLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1527228BC8003A5F5A /* QRAddressLabel.swift */; };
+		048B3C1A27228CE5003A5F5A /* QRAddressLabelTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1927228CE5003A5F5A /* QRAddressLabelTheme.swift */; };
+		048B3C1B27228CE5003A5F5A /* QRAddressLabelTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1927228CE5003A5F5A /* QRAddressLabelTheme.swift */; };
+		048B3C1C27228CE5003A5F5A /* QRAddressLabelTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1927228CE5003A5F5A /* QRAddressLabelTheme.swift */; };
+		048B3C1E27229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */; };
+		048B3C1F27229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */; };
+		048B3C2027229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */; };
 		170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */; };
 		170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFB224CC70A00520EA5 /* QRText.swift */; };
 		170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFD224CCBF300520EA5 /* QRView.swift */; };
@@ -226,7 +244,6 @@
 		17BD4EEE2292F1260003E49A /* UIViewController+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B89549E2242D90000D6D068 /* UIViewController+Additions.swift */; };
 		17BD4EEF2292F1260003E49A /* NodeSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D7225E454100DD03E9 /* NodeSettingsView.swift */; };
 		17BD4EF02292F1260003E49A /* NodeTestDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F4B225F90D70051BC43 /* NodeTestDraft.swift */; };
-		17BD4EF32292F1260003E49A /* QRSelectableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E2E3C622524E4C0065957A /* QRSelectableLabel.swift */; };
 		17BD4EF62292F1260003E49A /* AssetDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53181224AA8E000A7455F /* AssetDetailViewController.swift */; };
 		17BD4EF72292F1260003E49A /* CGFloat+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53167224A48DF00A7455F /* CGFloat+Additions.swift */; };
 		17BD4EF82292F1260003E49A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17100B2B225CEC3600D13548 /* SettingsView.swift */; };
@@ -260,7 +277,6 @@
 		17D04F53226107D70051BC43 /* NodeSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D04F52226107D70051BC43 /* NodeSettingsViewModel.swift */; };
 		17D50AA1225C755E00CA9C6E /* ApplicationConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */; };
 		17E2E3C5225210390065957A /* Notification.Name+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E2E3C4225210390065957A /* Notification.Name+Additions.swift */; };
-		17E2E3C722524E4C0065957A /* QRSelectableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E2E3C622524E4C0065957A /* QRSelectableLabel.swift */; };
 		17F6E685224B3F99006DD31F /* PassphraseMnemonicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F6E684224B3F99006DD31F /* PassphraseMnemonicView.swift */; };
 		17F6E68A224B71A6006DD31F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F6E689224B71A6006DD31F /* User.swift */; };
 		17F9E9222257895A004CDF24 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9E9212257895A004CDF24 /* AsyncOperation.swift */; };
@@ -749,7 +765,6 @@
 		2B0F62FE24EC129D00DA22A6 /* LedgerDeviceListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB64BEB2402BBF600519981 /* LedgerDeviceListViewModel.swift */; };
 		2B0F62FF24EC129D00DA22A6 /* Array+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB6EE502392694800CF7874 /* Array+Additions.swift */; };
 		2B0F630024EC129D00DA22A6 /* QRCreationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BE93707245B38ED00322C1E /* QRCreationView.swift */; };
-		2B0F630124EC129D00DA22A6 /* QRSelectableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17E2E3C622524E4C0065957A /* QRSelectableLabel.swift */; };
 		2B0F630224EC129D00DA22A6 /* TransactionFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBBAE124A66A89002CD56F /* TransactionFilterViewController.swift */; };
 		2B0F630324EC129D00DA22A6 /* AssetPreviewSendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB6EE57239339E400CF7874 /* AssetPreviewSendCell.swift */; };
 		2B0F630424EC129D00DA22A6 /* AssetSearchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B56714723FABB550037FCFA /* AssetSearchFilter.swift */; };
@@ -3024,6 +3039,12 @@
 
 /* Begin PBXFileReference section */
 		030F6B1A27825B4720C008C6 /* Pods_algorand_staging.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_algorand_staging.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0414ACC52721691100475F8E /* QRCreationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationViewTheme.swift; sourceTree = "<group>"; };
+		046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedAssetInformationViewTheme.swift; sourceTree = "<group>"; };
+		046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VerifiedAssetInformationViewController+Theme.swift"; sourceTree = "<group>"; };
+		048B3C1527228BC8003A5F5A /* QRAddressLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAddressLabel.swift; sourceTree = "<group>"; };
+		048B3C1927228CE5003A5F5A /* QRAddressLabelTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAddressLabelTheme.swift; sourceTree = "<group>"; };
+		048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QRCreationViewController+Theme.swift"; sourceTree = "<group>"; };
 		0A0D3580FD8AFA3672317C5F /* Pods-algorand-prod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand-prod.release.xcconfig"; path = "Target Support Files/Pods-algorand-prod/Pods-algorand-prod.release.xcconfig"; sourceTree = "<group>"; };
 		0DE1E4BC8EACAFB035745309 /* Pods-algorand.app store.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.app store.xcconfig"; path = "Target Support Files/Pods-algorand/Pods-algorand.app store.xcconfig"; sourceTree = "<group>"; };
 		15FA165BDF6ABD213FF820E3 /* Pods-algorand.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-algorand.release.xcconfig"; path = "Target Support Files/Pods-algorand/Pods-algorand.release.xcconfig"; sourceTree = "<group>"; };
@@ -3080,7 +3101,6 @@
 		17D04F52226107D70051BC43 /* NodeSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingsViewModel.swift; sourceTree = "<group>"; };
 		17D50AA0225C755E00CA9C6E /* ApplicationConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplicationConfiguration.swift; sourceTree = "<group>"; };
 		17E2E3C4225210390065957A /* Notification.Name+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+Additions.swift"; sourceTree = "<group>"; };
-		17E2E3C622524E4C0065957A /* QRSelectableLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRSelectableLabel.swift; sourceTree = "<group>"; };
 		17F6E684224B3F99006DD31F /* PassphraseMnemonicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseMnemonicView.swift; sourceTree = "<group>"; };
 		17F6E689224B71A6006DD31F /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		17F9E9212257895A004CDF24 /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
@@ -4128,6 +4148,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		04A6FB372733653000922EC7 /* QRCreation */ = {
+			isa = PBXGroup;
+			children = (
+				2BE93707245B38ED00322C1E /* QRCreationView.swift */,
+				0414ACC52721691100475F8E /* QRCreationViewTheme.swift */,
+			);
+			path = QRCreation;
+			sourceTree = "<group>";
+		};
+		04A6FB382733654900922EC7 /* QRAddress */ = {
+			isa = PBXGroup;
+			children = (
+				048B3C1527228BC8003A5F5A /* QRAddressLabel.swift */,
+				048B3C1927228CE5003A5F5A /* QRAddressLabelTheme.swift */,
+			);
+			path = QRAddress;
+			sourceTree = "<group>";
+		};
+		04A6FB39273365A200922EC7 /* QRCreation */ = {
+			isa = PBXGroup;
+			children = (
+				170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */,
+				048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */,
+			);
+			path = QRCreation;
+			sourceTree = "<group>";
+		};
 		170AFB00224D1CD100520EA5 /* CoreImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -5990,6 +6037,7 @@
 			isa = PBXGroup;
 			children = (
 				2B56714E23FFFA3A0037FCFA /* VerifiedAssetInformationView.swift */,
+				046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */,
 			);
 			path = Verified;
 			sourceTree = "<group>";
@@ -5998,6 +6046,7 @@
 			isa = PBXGroup;
 			children = (
 				2B567152240019D30037FCFA /* VerifiedAssetInformationViewController.swift */,
+				046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */,
 			);
 			path = Verified;
 			sourceTree = "<group>";
@@ -6413,8 +6462,8 @@
 		2B66871822491A46009F21E7 /* QR */ = {
 			isa = PBXGroup;
 			children = (
+				04A6FB39273365A200922EC7 /* QRCreation */,
 				2B66871922491A5E009F21E7 /* QRScannerViewController.swift */,
-				170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */,
 			);
 			path = QR;
 			sourceTree = "<group>";
@@ -9788,10 +9837,10 @@
 		2BF5314C22491E6A00A7455F /* QR */ = {
 			isa = PBXGroup;
 			children = (
+				04A6FB382733654900922EC7 /* QRAddress */,
+				04A6FB372733653000922EC7 /* QRCreation */,
 				2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */,
 				170AFAFD224CCBF300520EA5 /* QRView.swift */,
-				17E2E3C622524E4C0065957A /* QRSelectableLabel.swift */,
-				2BE93707245B38ED00322C1E /* QRCreationView.swift */,
 			);
 			path = QR;
 			sourceTree = "<group>";
@@ -11061,6 +11110,7 @@
 				2B0D84FB2395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift in Sources */,
 				2B0322F8269F426E00C9B2F5 /* WCGroupTransactionSupplementaryHeaderView.swift in Sources */,
 				D41F933C2722B45000E9F2E7 /* UICollectionView+Layout.swift in Sources */,
+				046E8240271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */,
 				17BD4DF82292F1260003E49A /* ContactsViewController.swift in Sources */,
 				2BD36E342686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,
 				D46C647F26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */,
@@ -11448,6 +11498,7 @@
 				17BD4E732292F1260003E49A /* Keychain+Additions.swift in Sources */,
 				2BD36E0C2681DBE800C57728 /* WCAppCallTransactionViewController.swift in Sources */,
 				2BA172B726495C1800A613C4 /* AlgoStatisticsView.swift in Sources */,
+				048B3C2027229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */,
 				17BD4E742292F1260003E49A /* AccountFetchDraft.swift in Sources */,
 				D405058E26F0EE73001D0D11 /* LottieImageView.swift in Sources */,
 				2BA4B3ED267819530041586B /* WCSessionListView.swift in Sources */,
@@ -11586,6 +11637,7 @@
 				2B9EEAC4264D337F007A112D /* AlgorandBlock.swift in Sources */,
 				D4C75BD7272E911E002BAA66 /* SearchInputView.swift in Sources */,
 				2B71EBBD246C4F4C002ACB63 /* TransactionHistoryHeaderSupplementaryView.swift in Sources */,
+				048B3C1C27228CE5003A5F5A /* QRAddressLabelTheme.swift in Sources */,
 				2BC7E9DE24B74C4400FED513 /* TransactionFetchDraft.swift in Sources */,
 				2B9F063C24B5E48A006880F0 /* RegistrationEvent.swift in Sources */,
 				2B4A9C42250782E900D58B6B /* TransactionIDLabel.swift in Sources */,
@@ -11600,6 +11652,7 @@
 				17BD4E9A2292F1260003E49A /* User.swift in Sources */,
 				2BB68F54261261250070FFE9 /* EmptyStateViewModel.swift in Sources */,
 				17BD4E9B2292F1260003E49A /* UIColor+Additions.swift in Sources */,
+				048B3C1827228BC8003A5F5A /* QRAddressLabel.swift in Sources */,
 				17BD4E9C2292F1260003E49A /* AddContactViewController.swift in Sources */,
 				17BD4E9D2292F1260003E49A /* ChoosePasswordViewController.swift in Sources */,
 				17BD4E9E2292F1260003E49A /* ImagePicker.swift in Sources */,
@@ -11774,6 +11827,7 @@
 				2B3E228126C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				2B0322DB269F1BB600C9B2F5 /* WCMainTransactionViewController.swift in Sources */,
 				D44EF48F271ADB6A00AF0D5C /* AlgoStatisticsViewTheme.swift in Sources */,
+				046E823C271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */,
 				2BF90F7625FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
 				2BB350C625892BD900A03BAC /* WrappedStackView.swift in Sources */,
 				2B3A34DE246D79A3001C8F22 /* NodeSelectionCell.swift in Sources */,
@@ -11818,6 +11872,7 @@
 				2B7E3049267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */,
 				2B8FC7022670CF7F008D9845 /* WalletConnectBridge.swift in Sources */,
 				2B57158A263479BF002C876D /* AlgorandChartView.swift in Sources */,
+				0414ACC82721691100475F8E /* QRCreationViewTheme.swift in Sources */,
 				17BD4EDE2292F1260003E49A /* String+Attributes.swift in Sources */,
 				17BD4EDF2292F1260003E49A /* ContactDetailViewController.swift in Sources */,
 				2B3A95E7238FF99C00A3DF44 /* TransactionControllerDelegate.swift in Sources */,
@@ -11884,7 +11939,6 @@
 				2B0322F4269F421E00C9B2F5 /* WCGroupTransactionHeaderView.swift in Sources */,
 				2B9EF2DF25D3E222004BCCC4 /* PassphraseMnemonicViewModel.swift in Sources */,
 				18E9EF0626B4124900F2192F /* WarningAlert.swift in Sources */,
-				17BD4EF32292F1260003E49A /* QRSelectableLabel.swift in Sources */,
 				2BCBBAE324A66A89002CD56F /* TransactionFilterViewController.swift in Sources */,
 				2BA4B3D72673F0B20041586B /* WCConnectionApprovalView.swift in Sources */,
 				2B85F3FA257A723C00C871A5 /* LedgerAccountFetchOperation.swift in Sources */,
@@ -11986,6 +12040,7 @@
 				2B56B8342505013600AC7B8D /* LedgerAccountSelectionViewController.swift in Sources */,
 				2B0322F7269F426E00C9B2F5 /* WCGroupTransactionSupplementaryHeaderView.swift in Sources */,
 				D41F933B2722B45000E9F2E7 /* UICollectionView+Layout.swift in Sources */,
+				046E823F271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */,
 				2B56B8352505013600AC7B8D /* RekeyConfirmationViewModel.swift in Sources */,
 				2BD36E332686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,
 				D46C647E26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */,
@@ -12374,6 +12429,7 @@
 				D4176C2626F340590017A4AB /* LedgerAccountViewTheme.swift in Sources */,
 				2BA172B626495C1800A613C4 /* AlgoStatisticsView.swift in Sources */,
 				2B0F622B24EC129D00DA22A6 /* BaseViewController.swift in Sources */,
+				048B3C1F27229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */,
 				2BA4B3EC267819530041586B /* WCSessionListView.swift in Sources */,
 				D405058D26F0EE73001D0D11 /* LottieImageView.swift in Sources */,
 				2B8E5F962548318C001D8E30 /* AnalyticsScreen.swift in Sources */,
@@ -12513,6 +12569,7 @@
 				2B0F626F24EC129D00DA22A6 /* NodeSettingsViewModel.swift in Sources */,
 				D4C75BD6272E911D002BAA66 /* SearchInputView.swift in Sources */,
 				2B0F627124EC129D00DA22A6 /* SelectAssetHeaderSupplementaryView.swift in Sources */,
+				048B3C1B27228CE5003A5F5A /* QRAddressLabelTheme.swift in Sources */,
 				2B4A9C41250782E900D58B6B /* TransactionIDLabel.swift in Sources */,
 				2B0F627224EC129D00DA22A6 /* CursorQuery.swift in Sources */,
 				2B9EF2D225D3D185004BCCC4 /* PasshraseMnemonicNumberHeaderViewModel.swift in Sources */,
@@ -12527,6 +12584,7 @@
 				2BB68F53261261250070FFE9 /* EmptyStateViewModel.swift in Sources */,
 				2B0F627624EC129D00DA22A6 /* AssetNameView.swift in Sources */,
 				2B0F627724EC129D00DA22A6 /* ContentStateView.swift in Sources */,
+				048B3C1727228BC8003A5F5A /* QRAddressLabel.swift in Sources */,
 				2B0F627824EC129D00DA22A6 /* CIImage+Additions.swift in Sources */,
 				2B5BE134251B4EEC00324BEE /* UIView+Animation.swift in Sources */,
 				2B0F627924EC129D00DA22A6 /* TransactionHistoryHeaderSupplementaryView.swift in Sources */,
@@ -12701,6 +12759,7 @@
 				2B3E228026C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				2B0322DA269F1BB600C9B2F5 /* WCMainTransactionViewController.swift in Sources */,
 				D44EF48E271ADB6A00AF0D5C /* AlgoStatisticsViewTheme.swift in Sources */,
+				046E823B271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */,
 				2BF90F7525FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
 				2BB350C525892BD900A03BAC /* WrappedStackView.swift in Sources */,
 				2B0F62CD24EC129D00DA22A6 /* AccountHeaderSupplementaryView.swift in Sources */,
@@ -12745,6 +12804,7 @@
 				2B7E3048267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */,
 				2B8FC7012670CF7F008D9845 /* WalletConnectBridge.swift in Sources */,
 				2B571589263479BF002C876D /* AlgorandChartView.swift in Sources */,
+				0414ACC72721691100475F8E /* QRCreationViewTheme.swift in Sources */,
 				2B0F62DB24EC129D00DA22A6 /* UIView+SafeArea.swift in Sources */,
 				2B0F62DC24EC129D00DA22A6 /* NavigationController.swift in Sources */,
 				2B0F62DE24EC129D00DA22A6 /* NotificationView.swift in Sources */,
@@ -12815,7 +12875,6 @@
 				2B85F3F9257A723C00C871A5 /* LedgerAccountFetchOperation.swift in Sources */,
 				2BA4B3D62673F0B20041586B /* WCConnectionApprovalView.swift in Sources */,
 				2B0F630024EC129D00DA22A6 /* QRCreationView.swift in Sources */,
-				2B0F630124EC129D00DA22A6 /* QRSelectableLabel.swift in Sources */,
 				2B0F630224EC129D00DA22A6 /* TransactionFilterViewController.swift in Sources */,
 				2B0F630324EC129D00DA22A6 /* AssetPreviewSendCell.swift in Sources */,
 				2B0322ED269F3E0200C9B2F5 /* WCGroupTransactionHeaderViewModel.swift in Sources */,
@@ -12914,6 +12973,7 @@
 				2B8D383226B6EC2700E7351D /* ApplicationLocalState.swift in Sources */,
 				2B0322F6269F426E00C9B2F5 /* WCGroupTransactionSupplementaryHeaderView.swift in Sources */,
 				D41F933A2722B45000E9F2E7 /* UICollectionView+Layout.swift in Sources */,
+				046E823E271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */,
 				2BE9372524630AC800322C1E /* SelectAssetHeaderView.swift in Sources */,
 				2BD36E322686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,
 				2B56714F23FFFA3A0037FCFA /* VerifiedAssetInformationView.swift in Sources */,
@@ -13301,6 +13361,7 @@
 				D4176C2526F340590017A4AB /* LedgerAccountViewTheme.swift in Sources */,
 				2B5DA9D8224CE1BC00EE41B4 /* EditAccountView.swift in Sources */,
 				2BA172B526495C1800A613C4 /* AlgoStatisticsView.swift in Sources */,
+				048B3C1E27229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */,
 				2BD36E0A2681DBE800C57728 /* WCAppCallTransactionViewController.swift in Sources */,
 				17512623223BEB9D0095AF4F /* UserDefaults+Additions.swift in Sources */,
 				D405058C26F0EE73001D0D11 /* LottieImageView.swift in Sources */,
@@ -13440,6 +13501,7 @@
 				2B9EEAC2264D337F007A112D /* AlgorandBlock.swift in Sources */,
 				D4C75BCD272E8C6B002BAA66 /* SearchInputView.swift in Sources */,
 				2B71EBBC246C4F4C002ACB63 /* TransactionHistoryHeaderSupplementaryView.swift in Sources */,
+				048B3C1A27228CE5003A5F5A /* QRAddressLabelTheme.swift in Sources */,
 				2BC7E9DD24B74C4400FED513 /* TransactionFetchDraft.swift in Sources */,
 				2B9F063B24B5E48A006880F0 /* RegistrationEvent.swift in Sources */,
 				2B4A9C40250782E900D58B6B /* TransactionIDLabel.swift in Sources */,
@@ -13454,6 +13516,7 @@
 				2B448741237B0AFB00C19FDE /* AccountsViewController+Options.swift in Sources */,
 				2BB68F52261261250070FFE9 /* EmptyStateViewModel.swift in Sources */,
 				2BD739D6223F985E00B66EEF /* UIColor+Additions.swift in Sources */,
+				048B3C1627228BC8003A5F5A /* QRAddressLabel.swift in Sources */,
 				2BF71916224ED0A6001E8420 /* AddContactViewController.swift in Sources */,
 				2BD739EA223FA0BD00B66EEF /* ChoosePasswordViewController.swift in Sources */,
 				2BC45DEE225253A1000CDCE2 /* ImagePicker.swift in Sources */,
@@ -13628,6 +13691,7 @@
 				2B3E227F26C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				2BB68F45261260DB0070FFE9 /* AccountsEmptyStateView.swift in Sources */,
 				D44EF48D271ADB6A00AF0D5C /* AlgoStatisticsViewTheme.swift in Sources */,
+				046E823A271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */,
 				2B0322D9269F1BB600C9B2F5 /* WCMainTransactionViewController.swift in Sources */,
 				2BF90F7425FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
 				2BB350C425892BD900A03BAC /* WrappedStackView.swift in Sources */,
@@ -13672,6 +13736,7 @@
 				2BB350CB2589747D00A03BAC /* RoundedAccountNameView.swift in Sources */,
 				2B7E3047267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */,
 				2B8FC7002670CF7F008D9845 /* WalletConnectBridge.swift in Sources */,
+				0414ACC62721691100475F8E /* QRCreationViewTheme.swift in Sources */,
 				2B571588263479BF002C876D /* AlgorandChartView.swift in Sources */,
 				2B8C1278224196DF00E34D37 /* String+Attributes.swift in Sources */,
 				2BF71918224ED0C5001E8420 /* ContactDetailViewController.swift in Sources */,
@@ -13739,7 +13804,6 @@
 				18E9EF0426B4114200F2192F /* WarningAlert.swift in Sources */,
 				2B0322F2269F421E00C9B2F5 /* WCGroupTransactionHeaderView.swift in Sources */,
 				2B9EF2DD25D3E222004BCCC4 /* PassphraseMnemonicViewModel.swift in Sources */,
-				17E2E3C722524E4C0065957A /* QRSelectableLabel.swift in Sources */,
 				2BCBBAE224A66A89002CD56F /* TransactionFilterViewController.swift in Sources */,
 				2BA4B3D52673F0B20041586B /* WCConnectionApprovalView.swift in Sources */,
 				2B85F3F8257A723C00C871A5 /* LedgerAccountFetchOperation.swift in Sources */,
