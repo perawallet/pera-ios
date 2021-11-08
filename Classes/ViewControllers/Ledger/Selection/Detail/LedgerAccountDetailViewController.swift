@@ -20,7 +20,7 @@ import UIKit
 final class LedgerAccountDetailViewController: BaseScrollViewController {
     private lazy var theme = Theme()
     private lazy var ledgerAccountDetailView = LedgerAccountDetailView()
-    private lazy var ledgerAccountDetailLayoutBuilder = LedgerAccountDetailLayoutBuilder()
+    private lazy var ledgerAccountDetailLayoutBuilder = LedgerAccountDetailLayoutBuilder(theme: theme)
     private lazy var ledgerAccountDetailDataSource: LedgerAccountDetailDataSource = {
         guard let api = api else { fatalError("API should be set.") }
         return LedgerAccountDetailDataSource(

@@ -18,16 +18,15 @@
 import Foundation
 
 enum AssetPreviewModelAdapter {
-    typealias OtherAssetsAdaptee = (assetDetail: AssetDetail, asset: Asset)
-
-    static func adapt(_ adaptee: OtherAssetsAdaptee) -> AssetPreviewModel {
+    static func adapt(_ adaptee: (assetDetail: AssetDetail, asset: Asset)) -> AssetPreviewModel {
         let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset)
         return AssetPreviewModel(
             image: nil,
             secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
-            assetName: assetViewModel.assetDetail?.assetName,
-            assetValue: assetViewModel.amount,
-            secondaryAssetValue: nil
+            assetPrimaryTitle: assetViewModel.assetDetail?.assetName,
+            assetSecondaryTitle: TextFormatter.assetShortName.format(assetViewModel.assetDetail?.assetName),
+            assetPrimaryValue: assetViewModel.amount,
+            assetSecondaryValue: nil
         )
     }
 
@@ -36,9 +35,21 @@ enum AssetPreviewModelAdapter {
         return AssetPreviewModel(
             image: img("icon-algo-circle-green"),
             secondaryImage: img("icon-verified-shield"),
-            assetName: "asset-algos-title".localized,
-            assetValue: algoAssetViewModel.amount,
-            secondaryAssetValue: nil
+            assetPrimaryTitle: "asset-algos-title".localized,
+            assetSecondaryTitle: TextFormatter.assetShortName.format("asset-algos-title".localized),
+            assetPrimaryValue: algoAssetViewModel.amount,
+            assetSecondaryValue: nil
+        )
+    }
+
+    static func adapt(_ adaptee: AssetDetail) -> AssetPreviewModel {
+        return AssetPreviewModel(
+            image: nil,
+            secondaryImage: adaptee.isVerified ? img("icon-verified-shield") : nil,
+            assetPrimaryTitle: adaptee.assetName,
+            assetSecondaryTitle: adaptee.unitName,
+            assetPrimaryValue: String(adaptee.id),
+            assetSecondaryValue: nil
         )
     }
 }

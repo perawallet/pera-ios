@@ -43,6 +43,6 @@ class AssetSupportViewModel {
     }
 
     private func setAssetDisplayViewModel(from draft: AssetAlertDraft) {
-        assetDisplayViewModel = AssetDisplayViewModel(assetDetail: draft.assetDetail)
+        assetDisplayViewModel = AssetDisplayViewModel(draft.assetDetail)
     }
 }

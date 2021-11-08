@@ -364,7 +364,7 @@ extension AssetRemovalViewController {
         let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
         let itemHeight: CGFloat = 52.0
         let multiItemHeight: CGFloat = 72.0
-        let modalHeight: CGFloat = 490.0
+        let modalHeight: CGFloat = 562
         let footerHeight: CGFloat = 10.0
     }
 }

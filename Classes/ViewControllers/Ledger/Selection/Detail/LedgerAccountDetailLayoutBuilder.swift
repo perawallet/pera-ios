@@ -19,7 +19,11 @@ import Foundation
 import Macaroon
 
 final class LedgerAccountDetailLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
-    private lazy var theme = Theme()
+    private let theme: LedgerAccountDetailViewController.Theme
+
+    init(theme: LedgerAccountDetailViewController.Theme) {
+        self.theme = theme
+    }
 
     func collectionView(
         _ collectionView: UICollectionView,
@@ -43,13 +47,5 @@ final class LedgerAccountDetailLayoutBuilder: NSObject, UICollectionViewDelegate
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
         return UIEdgeInsets(theme.sectionInset)
-    }
-}
-
-extension LedgerAccountDetailLayoutBuilder {
-    struct Theme {
-        let sectionInset: LayoutPaddings = (0, 24, 32, 24)
-        let headerSize: LayoutSize = (UIScreen.main.bounds.width, 24)
-        let cellSize: LayoutSize = (UIScreen.main.bounds.width - 48, 72)
     }
 }

@@ -16,37 +16,40 @@
 //  AssetDisplayViewModel.swift
 
 import UIKit
+import Macaroon
 
-class AssetDisplayViewModel {
+final class AssetDisplayViewModel: PairedViewModel {
     private(set) var isVerified: Bool = false
     private(set) var name: String?
     private(set) var code: String?
     private(set) var codeColor: UIColor?
     private(set) var codeFont: UIFont?
 
-    init(assetDetail: AssetDetail?) {
-        if let assetDetail = assetDetail {
-            setIsVerified(from: assetDetail)
+    init(_ model: AssetDetail?) {
+        if let assetDetail = model {
+            bindIsVerified(assetDetail)
 
             let displayNames = assetDetail.getDisplayNames()
-            setName(from: displayNames)
-            setCode(from: displayNames)
-            setCodeFont(from: displayNames)
-            setCodeColor(from: displayNames)
+            bindName(displayNames)
+            bindCode(displayNames)
+            bindCodeFont(displayNames)
+            bindCodeColor(displayNames)
         }
     }
+}
 
-    private func setIsVerified(from assetDetail: AssetDetail) {
+extension AssetDisplayViewModel {
+    private func bindIsVerified(_ assetDetail: AssetDetail) {
         isVerified = assetDetail.isVerified
     }
 
-    private func setName(from displayNames: (String, String?)) {
+    private func bindName(_ displayNames: (String, String?)) {
         if !displayNames.0.isUnknown() {
             name = displayNames.0
         }
     }
 
-    private func setCode(from displayNames: (String, String?)) {
+    private func bindCode(_ displayNames: (String, String?)) {
         if displayNames.0.isUnknown() {
             code = displayNames.0
         } else {
@@ -54,13 +57,13 @@ class AssetDisplayViewModel {
         }
     }
 
-    private func setCodeFont(from displayNames: (String, String?)) {
+    private func bindCodeFont(_ displayNames: (String, String?)) {
         if displayNames.0.isUnknown() {
             codeFont = UIFont.font(withWeight: .semiBoldItalic(size: 40.0))
         }
     }
 
-    private func setCodeColor(from displayNames: (String, String?)) {
+    private func bindCodeColor(_ displayNames: (String, String?)) {
         if displayNames.0.isUnknown() {
             codeColor = Colors.General.unknown
         }

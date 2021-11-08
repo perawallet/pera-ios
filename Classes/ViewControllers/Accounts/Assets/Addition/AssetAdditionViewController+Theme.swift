@@ -13,24 +13,27 @@
 // limitations under the License.
 
 //
-//   LedgerAccountDetailViewController+Theme.swift
+//   AssetAdditionViewController+Theme.swift
 
 import Macaroon
 
-extension LedgerAccountDetailViewController {
+extension AssetAdditionViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let ledgerAccountDetailViewTheme: LedgerAccountDetailViewTheme
         let backgroundColor: Color
-        let sectionInset: LayoutPaddings
-        let headerSize: LayoutSize
-        let cellSize: LayoutSize
+        let searchInputViewTheme: SearchInputViewTheme
+        let horizontalPadding: LayoutMetric
+        let topPadding: LayoutMetric
+        let assetActionConfirmationModalSize: LayoutSize
 
         init(_ family: LayoutFamily) {
-            ledgerAccountDetailViewTheme = LedgerAccountDetailViewTheme()
             backgroundColor = AppColors.Shared.System.background
-            sectionInset = (0, 24, 32, 24)
-            headerSize = (UIScreen.main.bounds.width, 24)
-            cellSize = (UIScreen.main.bounds.width - 48, 72)
+            searchInputViewTheme = SearchInputViewTheme(
+                placeholder: "asset-search-placeholder".localized,
+                family: family
+            )
+            horizontalPadding = 24
+            topPadding = 16
+            assetActionConfirmationModalSize = (UIScreen.main.bounds.width, 562)
         }
     }
 }

@@ -169,7 +169,7 @@
 // MARK: Asset
 "asset-title" = "Asset";
 "asset-not-found-title" = "No asset found";
-"asset-not-found-detail" = "Please try a different asset name or asset ID";
+"asset-not-found-detail" = "Try different asset name or asset id";
 "asset-algos-title" = "Algos";
 "asset-remove-title" = "Removing an asset";
 "asset-remove-subtitle" = "To remove an asset, you must first transfer that asset’s balance to another account";
@@ -195,6 +195,7 @@
 "asset-support-add-title" = "You are about to receive an asset!";
 "asset-support-add-message" = "You are about to receive an asset to %@. Would you like to add this asset to this account to receive it?";
 "asset-id-copied-title" = "ID copied to clipboard";
+"asset-copy-id" = "Copy ID";
 "asset-verified-title" = "Verified";
 "asset-support-your-add-title" = "Your accounts do not contain this asset";
 "asset-support-your-add-message" = "Please add this asset and try again.";

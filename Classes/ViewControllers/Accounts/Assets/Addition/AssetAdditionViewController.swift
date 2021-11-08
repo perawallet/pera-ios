@@ -18,20 +18,17 @@
 import UIKit
 import Magpie
 
-class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
-    
-    private let layout = Layout<LayoutConstants>()
-    
+final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable {
     weak var delegate: AssetAdditionViewControllerDelegate?
-    
-    private let layoutBuilder = AssetListLayoutBuilder()
-    
+
+    private lazy var theme = Theme()
+
     private lazy var assetActionConfirmationPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
             dismissMode: .scroll
         ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.modalHeight))
+        initialModalSize: .custom(CGSize(theme.assetActionConfirmationModalSize))
     )
     
     private var account: Account
@@ -43,7 +40,7 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     }
 
     private let paginationRequestOffset = 3
-    private var assetSearchFilters = AssetSearchFilter.verified
+    private var assetSearchFilter: AssetSearchFilter = .verified
     
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
@@ -52,28 +49,15 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
         return TransactionController(api: api, bannerController: bannerController)
     }()
 
-    private lazy var contentStateView = ContentStateView()
-    
-    private lazy var assetAdditionView = AssetAdditionView()
-    
-    private lazy var emptyStateView = SearchEmptyView()
-    
+    private lazy var assetSearchInput = SearchInputView()
+
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         super.init(configuration: configuration)
     }
     
     override func configureNavigationBarAppearance() {
-        let infoBarButton = ALGBarButtonItem(kind: .info) { [weak self] in
-            self?.open(.verifiedAssetInformation, by: .present)
-        }
-
-        rightBarButtonItems = [infoBarButton]
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        fetchAssets(query: nil, isPaginated: false)
+        addBarButtons()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -85,133 +69,87 @@ class AssetAdditionViewController: BaseViewController, TestNetTitleDisplayable {
     
     override func configureAppearance() {
         super.configureAppearance()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        setPrimaryBackgroundColor()
         displayTestNetTitleView(with: "title-add-asset".localized)
-        emptyStateView.setTitle("asset-not-found-title".localized)
-        emptyStateView.setDetail("asset-not-found-detail".localized)
     }
-    
-    override func setListeners() {
-        assetAdditionView.delegate = self
-        assetAdditionView.assetInputView.delegate = self
-        assetAdditionView.assetsCollectionView.delegate = self
-        assetAdditionView.assetsCollectionView.dataSource = self
-        transactionController.delegate = self
-    }
-    
+
     override func prepareLayout() {
-        setupAssetAdditionViewLayout()
+        addAssetSearchInput()
+        super.prepareLayout()
+    }
+
+    override func addPageBar() {
+        view.addSubview(pageBar)
+        pageBar.prepareLayout(PageBarCommonLayoutSheet())
+        pageBar.snp.makeConstraints {
+            $0.top.equalTo(assetSearchInput.snp.bottom).offset(theme.topPadding)
+            $0.leading.trailing.equalToSuperview()
+        }
+    }
+
+    override func itemDidSelect(_ index: Int) {
+        assetSearchFilter = index == 0 ? .verified : .all
+        resetPagination()
+
+        let query = assetSearchInput.text
+        fetchAssets(query: query, isPaginated: false)
+    }
+
+    private lazy var verifiedAssetsScreen = AssetListViewController(configuration: configuration)
+    private lazy var allAssetsScreen = AssetListViewController(configuration: configuration)
+
+    override func linkInteractors() {
+        super.linkInteractors()
+
+        assetSearchInput.delegate = self
+        transactionController.delegate = self
+        verifiedAssetsScreen.delegate = self
+        allAssetsScreen.delegate = self
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchAssets(query: nil, isPaginated: false)
+
+        items = [
+            VerifiedAssetsPageBarItem(screen: verifiedAssetsScreen),
+            AllAssetsPageBarItem(screen: allAssetsScreen)
+        ]
     }
 }
 
 extension AssetAdditionViewController {
-    private func setupAssetAdditionViewLayout() {
-        view.addSubview(assetAdditionView)
-        
-        assetAdditionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+    private func addBarButtons() {
+        let infoBarButton = ALGBarButtonItem(kind: .info) { [weak self] in
+            self?.open(.verifiedAssetInformation, by: .present)
+        }
+
+        rightBarButtonItems = [infoBarButton]
+    }
+}
+
+extension AssetAdditionViewController {
+    private func addAssetSearchInput() {
+        assetSearchInput.customize(theme.searchInputViewTheme)
+        view.addSubview(assetSearchInput)
+        assetSearchInput.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.topPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
 }
 
 extension AssetAdditionViewController {
-    private func fetchAssets(query: String?, isPaginated: Bool) {
-        let searchDraft = AssetSearchQuery(status: assetSearchFilters, query: query, cursor: nextCursor)
-        api?.searchAssets(with: searchDraft) { [weak self] response in
-            switch response {
-            case let .success(searchResults):
-                guard let self = self else {
-                    return
-                }
-                
-                if isPaginated {
-                    self.assetResults.append(contentsOf: searchResults.results)
-                } else {
-                    self.assetResults = searchResults.results
-                }
-
-                self.nextCursor = searchResults.parsePaginationCursor()
-                
-                if self.assetResults.isEmpty {
-                    self.assetAdditionView.assetsCollectionView.contentState = .empty(self.emptyStateView)
-                } else {
-                    self.assetAdditionView.assetsCollectionView.contentState = .none
-                }
-                
-                self.assetAdditionView.assetsCollectionView.reloadData()
-            case .failure:
-                guard let self = self else {
-                    return
-                }
-                
-                self.assetAdditionView.assetsCollectionView.contentState = .empty(self.emptyStateView)
-                self.assetAdditionView.assetsCollectionView.reloadData()
-            }
-        }
+    private func resetPagination() {
+        nextCursor = nil
     }
 }
 
-extension AssetAdditionViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return assetResults.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let assetResult = assetResults[indexPath.item]
-        let assetDetail = AssetDetail(searchResult: assetResult)
-        let cell = layoutBuilder.dequeueAssetCells(in: collectionView, cellForItemAt: indexPath, for: assetDetail)
-        cell.bind(AssetAdditionViewModel(assetSearchResult: assetResult))
-        return cell
-    }
-}
-
-extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let assetResult = assetResults[indexPath.item]
-        
-        if account.containsAsset(assetResult.id) {
-            displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
-            return
-        }
-        
-        let assetAlertDraft = AssetAlertDraft(
-            account: account,
-            assetIndex: assetResult.id,
-            assetDetail: AssetDetail(searchResult: assetResult),
-            title: "asset-add-confirmation-title".localized,
-            detail: "asset-add-warning".localized,
-            actionTitle: "title-approve".localized
-        )
-        
-        let controller = open(
-            .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: assetActionConfirmationPresenter
-            )
-        ) as? AssetActionConfirmationViewController
-        
-        controller?.delegate = self
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        let assetResult = assetResults[indexPath.item]
-        let assetDetail = AssetDetail(searchResult: assetResult)
-        
-        if assetDetail.hasBothDisplayName() {
-            return CGSize(width: UIScreen.main.bounds.width, height: layout.current.multiItemHeight)
-        } else {
-            return CGSize(width: UIScreen.main.bounds.width, height: layout.current.itemHeight)
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+extension AssetAdditionViewController: AssetListViewControllerDelegate {
+    func assetListViewController(_ assetListViewController: AssetListViewController, willDisplayItemAt indexPath: IndexPath) {
         if indexPath.item == assetResults.count - paginationRequestOffset && hasNext {
-            guard let query = assetAdditionView.assetInputView.inputTextField.text else {
+            guard let query = assetSearchInput.text else {
                 return
             }
             fetchAssets(query: query.isEmpty ? nil : query, isPaginated: true)
@@ -219,50 +157,55 @@ extension AssetAdditionViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension AssetAdditionViewController: AssetAdditionViewDelegate {
-    func assetAdditionViewDidTapAllAssets(_ assetAdditionView: AssetAdditionView) {
-        updateFilteringOptions(with: .all)
-    }
-    
-    func assetAdditionViewDidTapVerifiedAssets(_ assetAdditionView: AssetAdditionView) {
-        updateFilteringOptions(with: .verified)
-    }
-    
-    private func updateFilteringOptions(with filterOption: AssetSearchFilter) {
-        assetSearchFilters = filterOption
-        resetPagination()
-        
-        let query = assetAdditionView.assetInputView.inputTextField.text
-        fetchAssets(query: query, isPaginated: false)
+extension AssetAdditionViewController {
+    private func fetchAssets(query: String?, isPaginated: Bool) {
+        let searchDraft = AssetSearchQuery(status: assetSearchFilter, query: query, cursor: nextCursor)
+        api?.searchAssets(with: searchDraft) { [weak self] response in
+            switch response {
+            case let .success(searchResults):
+                guard let self = self else {
+                    return
+                }
+
+                if isPaginated {
+                    self.assetResults.append(contentsOf: searchResults.results)
+                } else {
+                    self.assetResults = searchResults.results
+                }
+
+                self.nextCursor = searchResults.parsePaginationCursor()
+                self.render(for: self.assetSearchFilter, with: self.assetResults)
+            case .failure:
+                guard let self = self else {
+                    return
+                }
+                self.render(for: self.assetSearchFilter, with: self.assetResults)
+            }
+        }
     }
 }
 
-extension AssetAdditionViewController: InputViewDelegate {
-    func inputViewDidReturn(inputView: BaseInputView) {
-        view.endEditing(true)
-    }
-    
-    func inputViewDidChangeValue(inputView: BaseInputView) {
-        guard let query = assetAdditionView.assetInputView.inputTextField.text else {
-            assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = false
-            return
+extension AssetAdditionViewController {
+    func render(for filter: AssetSearchFilter, with assets: [AssetSearchResult]) {
+        switch filter {
+        case .all:
+            allAssetsScreen.assetResults = assets
+        case .verified:
+            verifiedAssetsScreen.assetResults = assets
+        default:
+            break
         }
-        
-        assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = query.isEmpty
-        
-        resetPagination()
-        fetchAssets(query: query, isPaginated: false)
     }
-    
-    private func resetPagination() {
-        nextCursor = nil
-    }
-    
-    func inputViewDidTapAccessoryButton(inputView: BaseInputView) {
-        assetAdditionView.assetInputView.rightInputAccessoryButton.isHidden = true
-        assetAdditionView.assetInputView.inputTextField.text = nil
+}
+
+extension AssetAdditionViewController: SearchInputViewDelegate {
+    func searchInputViewDidEdit(_ view: SearchInputView) {
         resetPagination()
-        fetchAssets(query: nil, isPaginated: false)
+        fetchAssets(query: view.text, isPaginated: false)
+    }
+
+    func searchInputViewDidReturn(_ view: SearchInputView) {
+        view.endEditing()
     }
 }
 
@@ -272,9 +215,9 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         didConfirmedActionFor assetDetail: AssetDetail
     ) {
         guard let session = session,
-            session.canSignTransaction(for: &account) else {
-            return
-        }
+              session.canSignTransaction(for: &account) else {
+                  return
+              }
         
         let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: assetDetail.id)
         transactionController.setTransactionDraft(assetTransactionDraft)
@@ -287,6 +230,35 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
             transactionController.startTimer()
         }
     }
+
+    func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItemAt indexPath: IndexPath) {
+        let assetResult = assetResults[indexPath.item]
+
+        if account.containsAsset(assetResult.id) {
+            displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
+            return
+        }
+
+        let assetAlertDraft = AssetAlertDraft(
+            account: account,
+            assetIndex: assetResult.id,
+            assetDetail: AssetDetail(searchResult: assetResult),
+            title: "asset-add-confirmation-title".localized,
+            detail: "asset-add-warning".localized,
+            actionTitle: "title-approve".localized
+        )
+
+        let controller = open(
+            .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: nil,
+                transitioningDelegate: assetActionConfirmationPresenter
+            )
+        ) as? AssetActionConfirmationViewController
+
+        controller?.delegate = self
+    }
 }
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
@@ -296,29 +268,6 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
-        default:
-            break
-        }
-    }
-    
-    private func displayTransactionError(from transactionError: TransactionError) {
-        switch transactionError {
-        case let .minimumAmount(amount):
-            bannerController?.presentErrorBanner(
-                title: "asset-min-transaction-error-title".localized,
-                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? ""
-                )
-            )
-        case .invalidAddress:
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "send-algos-receiver-address-validation".localized
-            )
-        case let .sdkError(error):
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: error.debugDescription
-            )
         default:
             break
         }
@@ -336,25 +285,39 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
         guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
-            let assetSearchResult = assetResults.first(where: { item -> Bool in
-                guard let assetIndex = assetTransactionDraft.assetIndex else {
-                    return false
-                }
-                return item.id == assetIndex
-            }) else {
-                return
-        }
+              let assetSearchResult = assetResults.first(where: { item -> Bool in
+                  guard let assetIndex = assetTransactionDraft.assetIndex else {
+                      return false
+                  }
+                  return item.id == assetIndex
+              }) else {
+                  return
+              }
         
         delegate?.assetAdditionViewController(self, didAdd: assetSearchResult, to: account)
         popScreen()
     }
-}
 
-extension AssetAdditionViewController {
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        let itemHeight: CGFloat = 52.0
-        let multiItemHeight: CGFloat = 72.0
-        let modalHeight: CGFloat = 510.0
+    private func displayTransactionError(from transactionError: TransactionError) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            bannerController?.presentErrorBanner(
+                title: "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+            )
+        case .invalidAddress:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "send-algos-receiver-address-validation".localized
+            )
+        case let .sdkError(error):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.debugDescription
+            )
+        default:
+            break
+        }
     }
 }
 

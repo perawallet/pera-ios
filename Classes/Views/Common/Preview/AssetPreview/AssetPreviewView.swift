@@ -19,19 +19,19 @@ import Macaroon
 
 final class AssetPreviewView: View {
     private lazy var imageView = AssetImageView()
-    private lazy var assetNameVerticalStackView = UIStackView()
-    private lazy var assetNameHorizontalStackView = UIStackView()
-    private lazy var assetNameLabel = UILabel()
+    private lazy var assetTitleVerticalStackView = UIStackView()
+    private lazy var assetTitleHorizontalStackView = UIStackView()
+    private lazy var primaryAssetTitleLabel = UILabel()
     private lazy var secondaryImageView = UIImageView()
-    private lazy var assetShortNameLabel = UILabel()
-    private lazy var valueVerticalStackView = UIStackView()
-    private lazy var assetValueLabel = UILabel()
+    private lazy var secondaryAssetTitleLabel = UILabel()
+    private lazy var assetValueVerticalStackView = UIStackView()
+    private lazy var primaryAssetValueLabel = UILabel()
     private lazy var secondaryAssetValueLabel = UILabel()
 
     func customize(_ theme: AssetPreviewViewTheme) {
         addImage(theme)
-        addAssetNameVerticalStackView(theme)
-        addValueVerticalStackView(theme)
+        addAssetTitleVerticalStackView(theme)
+        addAssetValueVerticalStackView(theme)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -51,78 +51,78 @@ extension AssetPreviewView {
         }
     }
 
-    private func addAssetNameVerticalStackView(_ theme: AssetPreviewViewTheme) {
-        addSubview(assetNameVerticalStackView)
-        assetNameVerticalStackView.axis = .vertical
+    private func addAssetTitleVerticalStackView(_ theme: AssetPreviewViewTheme) {
+        addSubview(assetTitleVerticalStackView)
+        assetTitleVerticalStackView.axis = .vertical
 
-        assetNameVerticalStackView.snp.makeConstraints {
+        assetTitleVerticalStackView.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)
             $0.centerY.equalTo(imageView.snp.centerY)
         }
 
-        addAssetNameHorizontalStackView(theme)
-        addAssetShortNameLabel(theme)
+        addAssetTitleHorizontalStackView(theme)
+        addSecondaryAssetTitleLabel(theme)
     }
 
-    private func addAssetNameHorizontalStackView(_ theme: AssetPreviewViewTheme) {
-        assetNameVerticalStackView.addArrangedSubview(assetNameHorizontalStackView)
-        assetNameHorizontalStackView.spacing = theme.secondaryImageLeadingPadding
+    private func addAssetTitleHorizontalStackView(_ theme: AssetPreviewViewTheme) {
+        assetTitleVerticalStackView.addArrangedSubview(assetTitleHorizontalStackView)
+        assetTitleHorizontalStackView.spacing = theme.secondaryImageLeadingPadding
 
-        addAssetNameLabel(theme)
+        addPrimaryAssetTitleLabel(theme)
         addSecondaryImage(theme)
     }
 
-    private func addAssetNameLabel(_ theme: AssetPreviewViewTheme) {
-        assetNameLabel.customizeAppearance(theme.accountName)
+    private func addPrimaryAssetTitleLabel(_ theme: AssetPreviewViewTheme) {
+        primaryAssetTitleLabel.customizeAppearance(theme.accountName)
 
-        assetNameHorizontalStackView.addArrangedSubview(assetNameLabel)
+        assetTitleHorizontalStackView.addArrangedSubview(primaryAssetTitleLabel)
     }
 
     private func addSecondaryImage(_ theme: AssetPreviewViewTheme) {
-        assetNameHorizontalStackView.addArrangedSubview(secondaryImageView)
+        assetTitleHorizontalStackView.addArrangedSubview(secondaryImageView)
     }
 
-    private func addAssetShortNameLabel(_ theme: AssetPreviewViewTheme) {
-        assetShortNameLabel.customizeAppearance(theme.assetAndNFTs)
+    private func addSecondaryAssetTitleLabel(_ theme: AssetPreviewViewTheme) {
+        secondaryAssetTitleLabel.customizeAppearance(theme.assetAndNFTs)
 
-        assetNameVerticalStackView.addArrangedSubview(assetShortNameLabel)
+        assetTitleVerticalStackView.addArrangedSubview(secondaryAssetTitleLabel)
     }
 
-    private func addValueVerticalStackView(_ theme: AssetPreviewViewTheme) {
-        addSubview(valueVerticalStackView)
-        valueVerticalStackView.axis = .vertical
-        valueVerticalStackView.alignment = .trailing
+    private func addAssetValueVerticalStackView(_ theme: AssetPreviewViewTheme) {
+        addSubview(assetValueVerticalStackView)
+        assetValueVerticalStackView.axis = .vertical
+        assetValueVerticalStackView.alignment = .trailing
 
-        valueVerticalStackView.snp.makeConstraints {
+        assetValueVerticalStackView.snp.makeConstraints {
             $0.trailing.equalToSuperview()
-            $0.leading.equalTo(assetNameVerticalStackView.snp.trailing).offset(theme.horizontalPadding)
-            $0.centerY.equalTo(assetNameVerticalStackView.snp.centerY)
+            $0.leading.equalTo(assetTitleVerticalStackView.snp.trailing).offset(theme.horizontalPadding)
+            $0.centerY.equalTo(assetTitleVerticalStackView.snp.centerY)
         }
 
-        addAssetValueLabel(theme)
+        addPrimaryAssetValueLabel(theme)
         addSecondaryAssetValueLabel(theme)
     }
 
-    private func addAssetValueLabel(_ theme: AssetPreviewViewTheme) {
-        assetValueLabel.customizeAppearance(theme.assetValue)
+    private func addPrimaryAssetValueLabel(_ theme: AssetPreviewViewTheme) {
+        primaryAssetValueLabel.customizeAppearance(theme.assetValue)
 
-        valueVerticalStackView.addArrangedSubview(assetValueLabel)
+        assetValueVerticalStackView.addArrangedSubview(primaryAssetValueLabel)
     }
 
     private func addSecondaryAssetValueLabel(_ theme: AssetPreviewViewTheme) {
         secondaryAssetValueLabel.customizeAppearance(theme.secondaryAssetValue)
 
-        valueVerticalStackView.addArrangedSubview(secondaryAssetValueLabel)
+        assetValueVerticalStackView.addArrangedSubview(secondaryAssetValueLabel)
     }
 }
 
 extension AssetPreviewView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
         imageView.bindData(viewModel)
-        assetNameLabel.text = viewModel?.assetName
+        primaryAssetTitleLabel.text = viewModel?.assetPrimaryTitle
         secondaryImageView.image = viewModel?.secondaryImage
-        assetShortNameLabel.text = viewModel?.assetShortName
-        assetValueLabel.text = viewModel?.assetValue
-        secondaryAssetValueLabel.text = viewModel?.secondaryAssetValue
+        secondaryAssetTitleLabel.text = viewModel?.assetSecondaryTitle
+        primaryAssetValueLabel.text = viewModel?.assetPrimaryValue
+        secondaryAssetValueLabel.text = viewModel?.assetSecondaryAssetValue
     }
 }

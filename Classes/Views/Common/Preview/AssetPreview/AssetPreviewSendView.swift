@@ -120,9 +120,9 @@ extension AssetPreviewSendView {
 extension AssetPreviewSendView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
         imageView.bindData(viewModel)
-        assetNameLabel.text = viewModel?.assetName
+        assetNameLabel.text = viewModel?.assetPrimaryTitle
         secondaryImageView.image = viewModel?.secondaryImage
-        assetShortNameLabel.text = viewModel?.assetShortName
+        assetShortNameLabel.text = viewModel?.assetSecondaryTitle
     }
 }
 
