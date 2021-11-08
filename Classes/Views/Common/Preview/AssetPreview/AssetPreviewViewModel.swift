@@ -33,6 +33,7 @@ final class AssetPreviewViewModel: PairedViewModel {
     var assetSecondaryTitle: String?
     var assetPrimaryValue: String?
     var assetSecondaryAssetValue: String?
+    var assetAbbreviationForImage: String?
     
     init(_ model: AssetPreviewModel) {
         bindImage(model.image)
@@ -41,6 +42,7 @@ final class AssetPreviewViewModel: PairedViewModel {
         bindAssetSecondaryTitle(model.assetSecondaryTitle)
         bindAssetPrimaryValue(model.assetPrimaryValue)
         bindAssetSecondaryValue(model.assetSecondaryValue)
+        bindAssetAbbreviationForImage(model.assetPrimaryTitle)
     }
 }
 
@@ -67,5 +69,9 @@ extension AssetPreviewViewModel {
     
     private func bindAssetSecondaryValue(_ value: String?) {
         self.assetSecondaryAssetValue = value
+    }
+
+    private func bindAssetAbbreviationForImage(_ title: String?) {
+        self.assetAbbreviationForImage = TextFormatter.assetShortName.format(title)
     }
 }
