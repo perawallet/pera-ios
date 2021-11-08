@@ -15,50 +15,15 @@
 //
 //   AssetPreviewViewTheme.swift
 
-import Foundation
 import Macaroon
-import UIKit
 
-struct AssetPreviewViewTheme: StyleSheet, LayoutSheet {
-    let accountName: TextStyle
-    let assetAndNFTs: TextStyle
-    let assetValue: TextStyle
-    let secondaryAssetValue: TextStyle
-
-    let imageSize: LayoutSize
-    let horizontalPadding: LayoutMetric
-    let verticalPadding: LayoutMetric
-    let secondaryImageLeadingPadding: LayoutMetric
-
-    init(_ family: LayoutFamily) {
-        self.accountName = [
-            .textAlignment(.left),
-            .textOverflow(.singleLineFitting),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.regular.make(15))
-        ]
-        self.assetAndNFTs = [
-            .textAlignment(.left),
-            .textOverflow(.singleLineFitting),
-            .textColor(AppColors.Components.Text.grayLighter),
-            .font(Fonts.DMSans.regular.make(13))
-        ]
-        self.assetValue = [
-            .textAlignment(.right),
-            .textOverflow(.singleLineFitting),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMMono.regular.make(15))
-        ]
-        self.secondaryAssetValue = [
-            .textAlignment(.right),
-            .textOverflow(.singleLineFitting),
-            .textColor(AppColors.Components.Text.grayLighter),
-            .font(Fonts.DMMono.regular.make(13))
-        ]
-
-        self.imageSize = (40, 40)
-        self.horizontalPadding = 16
-        self.secondaryImageLeadingPadding = 8
-        self.verticalPadding = 16
-    }
+protocol AssetPreviewViewTheme: StyleSheet, LayoutSheet {
+    var primaryAssetTitle: TextStyle { get }
+    var secondaryAssetTitle: TextStyle { get }
+    var primaryAssetValue: TextStyle { get }
+    var secondaryAssetValue: TextStyle { get }
+    var imageSize: LayoutSize { get }
+    var horizontalPadding: LayoutMetric { get }
+    var verticalPadding: LayoutMetric { get }
+    var secondaryImageLeadingPadding: LayoutMetric { get }
 }

@@ -2569,9 +2569,9 @@
 		D411B38126EA22F2004FF980 /* AssetPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38026EA22F2004FF980 /* AssetPreviewView.swift */; };
 		D411B38226EA22F2004FF980 /* AssetPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38026EA22F2004FF980 /* AssetPreviewView.swift */; };
 		D411B38326EA22F2004FF980 /* AssetPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38026EA22F2004FF980 /* AssetPreviewView.swift */; };
-		D411B38526EA232F004FF980 /* AssetPreviewViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38426EA232F004FF980 /* AssetPreviewViewTheme.swift */; };
-		D411B38626EA232F004FF980 /* AssetPreviewViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38426EA232F004FF980 /* AssetPreviewViewTheme.swift */; };
-		D411B38726EA232F004FF980 /* AssetPreviewViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38426EA232F004FF980 /* AssetPreviewViewTheme.swift */; };
+		D411B38526EA232F004FF980 /* AssetPreviewViewCommonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38426EA232F004FF980 /* AssetPreviewViewCommonTheme.swift */; };
+		D411B38626EA232F004FF980 /* AssetPreviewViewCommonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38426EA232F004FF980 /* AssetPreviewViewCommonTheme.swift */; };
+		D411B38726EA232F004FF980 /* AssetPreviewViewCommonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38426EA232F004FF980 /* AssetPreviewViewCommonTheme.swift */; };
 		D411B38926EA2341004FF980 /* AssetPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38826EA2341004FF980 /* AssetPreviewViewModel.swift */; };
 		D411B38A26EA2341004FF980 /* AssetPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38826EA2341004FF980 /* AssetPreviewViewModel.swift */; };
 		D411B38B26EA2341004FF980 /* AssetPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38826EA2341004FF980 /* AssetPreviewViewModel.swift */; };
@@ -2713,6 +2713,12 @@
 		D43B23EA27180B2F00444F35 /* LedgerAccountDetailSectionHeaderViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43B23E727180B2F00444F35 /* LedgerAccountDetailSectionHeaderViewTheme.swift */; };
 		D441D82527301589003461E0 /* TabBarModalViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D430711527197D9B00E38073 /* TabBarModalViewTheme.swift */; };
 		D441D8262730158A003461E0 /* TabBarModalViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D430711527197D9B00E38073 /* TabBarModalViewTheme.swift */; };
+		D442AA0827397331009E60D4 /* AssetPreviewViewAdditionTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D442AA0727397331009E60D4 /* AssetPreviewViewAdditionTheme.swift */; };
+		D442AA0927397331009E60D4 /* AssetPreviewViewAdditionTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D442AA0727397331009E60D4 /* AssetPreviewViewAdditionTheme.swift */; };
+		D442AA0A27397331009E60D4 /* AssetPreviewViewAdditionTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D442AA0727397331009E60D4 /* AssetPreviewViewAdditionTheme.swift */; };
+		D442AA0C27397381009E60D4 /* AssetPreviewViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D442AA0B27397381009E60D4 /* AssetPreviewViewTheme.swift */; };
+		D442AA0D27397381009E60D4 /* AssetPreviewViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D442AA0B27397381009E60D4 /* AssetPreviewViewTheme.swift */; };
+		D442AA0E27397381009E60D4 /* AssetPreviewViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D442AA0B27397381009E60D4 /* AssetPreviewViewTheme.swift */; };
 		D446A73D272A8BDD0081D60B /* AssetPreviewSendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A73C272A8BDD0081D60B /* AssetPreviewSendView.swift */; };
 		D446A73E272A8BDD0081D60B /* AssetPreviewSendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A73C272A8BDD0081D60B /* AssetPreviewSendView.swift */; };
 		D446A73F272A8BDD0081D60B /* AssetPreviewSendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A73C272A8BDD0081D60B /* AssetPreviewSendView.swift */; };
@@ -4012,7 +4018,7 @@
 		D411B37726EA1070004FF980 /* AccountPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPreviewViewModel.swift; sourceTree = "<group>"; };
 		D411B37B26EA126D004FF980 /* AccountPreviewViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPreviewViewTheme.swift; sourceTree = "<group>"; };
 		D411B38026EA22F2004FF980 /* AssetPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewView.swift; sourceTree = "<group>"; };
-		D411B38426EA232F004FF980 /* AssetPreviewViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewViewTheme.swift; sourceTree = "<group>"; };
+		D411B38426EA232F004FF980 /* AssetPreviewViewCommonTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewViewCommonTheme.swift; sourceTree = "<group>"; };
 		D411B38826EA2341004FF980 /* AssetPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewViewModel.swift; sourceTree = "<group>"; };
 		D4176C2426F340590017A4AB /* LedgerAccountViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountViewTheme.swift; sourceTree = "<group>"; };
 		D41942FF27353FE80055EC70 /* PageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageContainer.swift; sourceTree = "<group>"; };
@@ -4060,6 +4066,8 @@
 		D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewTheme.swift; sourceTree = "<group>"; };
 		D43B23E327180AF600444F35 /* LedgerAccountDetailSectionHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailSectionHeaderViewModel.swift; sourceTree = "<group>"; };
 		D43B23E727180B2F00444F35 /* LedgerAccountDetailSectionHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailSectionHeaderViewTheme.swift; sourceTree = "<group>"; };
+		D442AA0727397331009E60D4 /* AssetPreviewViewAdditionTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewViewAdditionTheme.swift; sourceTree = "<group>"; };
+		D442AA0B27397381009E60D4 /* AssetPreviewViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewViewTheme.swift; sourceTree = "<group>"; };
 		D446A73C272A8BDD0081D60B /* AssetPreviewSendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewSendView.swift; sourceTree = "<group>"; };
 		D446A740272A8BFA0081D60B /* AssetPreviewSendViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewSendViewTheme.swift; sourceTree = "<group>"; };
 		D446A744272AB3310081D60B /* ContactDetailViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactDetailViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -10306,7 +10314,9 @@
 			isa = PBXGroup;
 			children = (
 				D411B38026EA22F2004FF980 /* AssetPreviewView.swift */,
-				D411B38426EA232F004FF980 /* AssetPreviewViewTheme.swift */,
+				D442AA0B27397381009E60D4 /* AssetPreviewViewTheme.swift */,
+				D411B38426EA232F004FF980 /* AssetPreviewViewCommonTheme.swift */,
+				D442AA0727397331009E60D4 /* AssetPreviewViewAdditionTheme.swift */,
 				D411B38826EA2341004FF980 /* AssetPreviewViewModel.swift */,
 				D4BF4A2326F4F6C5009B53D8 /* AssetImageView.swift */,
 				D4BF4A2726F4FC0D009B53D8 /* AssetImageViewTheme.swift */,
@@ -11510,6 +11520,7 @@
 				1828816726CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
 				17BD4E522292F1260003E49A /* TransactionList.swift in Sources */,
 				2B1CFA0D2554113300D60B73 /* Dictionary+ErrorLogParamKeys.swift in Sources */,
+				D442AA0E27397381009E60D4 /* AssetPreviewViewTheme.swift in Sources */,
 				2BE9372E2463272500322C1E /* SelectAssetViewModel.swift in Sources */,
 				2B9EEBAC265185C1007A112D /* Dictionary+Additions.swift in Sources */,
 				17BD4E532292F1260003E49A /* TransactionHistoryCell.swift in Sources */,
@@ -11589,7 +11600,7 @@
 				2BA172AA26495B9400A613C4 /* AlgoStatisticsViewController.swift in Sources */,
 				2B448738237AAD1E00C19FDE /* AlgoAssetCell.swift in Sources */,
 				2BD547752318463E007179FE /* Feedback.swift in Sources */,
-				D411B38726EA232F004FF980 /* AssetPreviewViewTheme.swift in Sources */,
+				D411B38726EA232F004FF980 /* AssetPreviewViewCommonTheme.swift in Sources */,
 				2B8D383826B6EC3C00E7351D /* ApplicationStateSchema.swift in Sources */,
 				2BB93BAB25BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */,
 				17BD4E6B2292F1260003E49A /* BaseCollectionViewCell.swift in Sources */,
@@ -11601,6 +11612,7 @@
 				2B1B536C2328029F00D54029 /* NotificationDetail.swift in Sources */,
 				2B6607E7241147BE002AC00F /* LedgerApprovalViewController.swift in Sources */,
 				17BD4E6C2292F1260003E49A /* SettingsInfoContextView.swift in Sources */,
+				D442AA0A27397331009E60D4 /* AssetPreviewViewAdditionTheme.swift in Sources */,
 				2BF90F6125FBAAE70033F348 /* HStackView.swift in Sources */,
 				17BD4E6D2292F1260003E49A /* BarButton.swift in Sources */,
 				2B0823DC23B6677A00D52BCF /* AssetSupportDraft.swift in Sources */,
@@ -12462,6 +12474,7 @@
 				2B0F61EF24EC129D00DA22A6 /* AssetInputView.swift in Sources */,
 				2B9EEBAB265185C0007A112D /* Dictionary+Additions.swift in Sources */,
 				2B0F61F024EC129D00DA22A6 /* AssetViewModel.swift in Sources */,
+				D442AA0D27397381009E60D4 /* AssetPreviewViewTheme.swift in Sources */,
 				2BD36DF326810E0600C57728 /* TitledInformation.swift in Sources */,
 				2B0F61F124EC129D00DA22A6 /* AlgorandSDK.swift in Sources */,
 				2B57D8F025587F4F006E6FCE /* ReceiveAssetDetailEvent.swift in Sources */,
@@ -12541,7 +12554,7 @@
 				2B0F621824EC129D00DA22A6 /* RoundDetail.swift in Sources */,
 				2B0F621924EC129D00DA22A6 /* BottomInformationView.swift in Sources */,
 				2B0F621A24EC129D00DA22A6 /* Checkbox.swift in Sources */,
-				D411B38626EA232F004FF980 /* AssetPreviewViewTheme.swift in Sources */,
+				D411B38626EA232F004FF980 /* AssetPreviewViewCommonTheme.swift in Sources */,
 				2B8D383726B6EC3C00E7351D /* ApplicationStateSchema.swift in Sources */,
 				2BB93BAA25BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */,
 				2B0F621B24EC129D00DA22A6 /* CardModalPresentationController.swift in Sources */,
@@ -12553,6 +12566,7 @@
 				2B0F622024EC129D00DA22A6 /* SearchEmptyView.swift in Sources */,
 				2B0F622124EC129D00DA22A6 /* Codable+JSON.swift in Sources */,
 				2BF90F6025FBAAE70033F348 /* HStackView.swift in Sources */,
+				D442AA0927397331009E60D4 /* AssetPreviewViewAdditionTheme.swift in Sources */,
 				2B0F622224EC129D00DA22A6 /* SettingsInfoContextView.swift in Sources */,
 				2B0F622324EC129D00DA22A6 /* FeedbackDraft.swift in Sources */,
 				2B0F622424EC129D00DA22A6 /* BarButton.swift in Sources */,
@@ -13414,6 +13428,7 @@
 				2BDE31E32279A319002E8235 /* ContactSelectionCell.swift in Sources */,
 				1828816526CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
 				2BF53159224A46C500A7455F /* ModalPresenterInteractable.swift in Sources */,
+				D442AA0C27397381009E60D4 /* AssetPreviewViewTheme.swift in Sources */,
 				2B1CFA0B2554113300D60B73 /* Dictionary+ErrorLogParamKeys.swift in Sources */,
 				2BBA198C231FF7650080A6F6 /* DeviceRegistrationDraft.swift in Sources */,
 				2B9EEBAA265185C0007A112D /* Dictionary+Additions.swift in Sources */,
@@ -13495,7 +13510,7 @@
 				17AA1B0A22662BD1000B0BB0 /* Decimal+Additions.swift in Sources */,
 				2B4BDA25238D490300491149 /* AssetFetchDraft.swift in Sources */,
 				2B448723237964D700C19FDE /* AssetRemovalViewController.swift in Sources */,
-				D411B38526EA232F004FF980 /* AssetPreviewViewTheme.swift in Sources */,
+				D411B38526EA232F004FF980 /* AssetPreviewViewCommonTheme.swift in Sources */,
 				2B8D383626B6EC3C00E7351D /* ApplicationStateSchema.swift in Sources */,
 				2BB93BA925BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */,
 				2B44872C2379663C00C19FDE /* AssetRemovalView.swift in Sources */,
@@ -13505,6 +13520,7 @@
 				2B8BE4EE22393577005D8565 /* BaseViewController.swift in Sources */,
 				2BD36DCD267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift in Sources */,
 				2B6607E6241147BE002AC00F /* LedgerApprovalViewController.swift in Sources */,
+				D442AA0827397331009E60D4 /* AssetPreviewViewAdditionTheme.swift in Sources */,
 				2B448737237AAD1E00C19FDE /* AlgoAssetCell.swift in Sources */,
 				2BF90F5F25FBAAE70033F348 /* HStackView.swift in Sources */,
 				17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */,

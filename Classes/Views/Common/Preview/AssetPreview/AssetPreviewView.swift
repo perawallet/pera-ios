@@ -73,7 +73,7 @@ extension AssetPreviewView {
     }
 
     private func addPrimaryAssetTitleLabel(_ theme: AssetPreviewViewTheme) {
-        primaryAssetTitleLabel.customizeAppearance(theme.accountName)
+        primaryAssetTitleLabel.customizeAppearance(theme.primaryAssetTitle)
 
         assetTitleHorizontalStackView.addArrangedSubview(primaryAssetTitleLabel)
     }
@@ -83,7 +83,7 @@ extension AssetPreviewView {
     }
 
     private func addSecondaryAssetTitleLabel(_ theme: AssetPreviewViewTheme) {
-        secondaryAssetTitleLabel.customizeAppearance(theme.assetAndNFTs)
+        secondaryAssetTitleLabel.customizeAppearance(theme.secondaryAssetTitle)
 
         assetTitleVerticalStackView.addArrangedSubview(secondaryAssetTitleLabel)
     }
@@ -104,7 +104,7 @@ extension AssetPreviewView {
     }
 
     private func addPrimaryAssetValueLabel(_ theme: AssetPreviewViewTheme) {
-        primaryAssetValueLabel.customizeAppearance(theme.assetValue)
+        primaryAssetValueLabel.customizeAppearance(theme.primaryAssetValue)
 
         assetValueVerticalStackView.addArrangedSubview(primaryAssetValueLabel)
     }
