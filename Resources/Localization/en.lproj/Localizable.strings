@@ -528,6 +528,10 @@
 "ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
 "ledger-transaction-account-match-error" = "It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.";
 
+"ledger-pairing-issue-error-message" = "Having Ledger Nano X connection issues?\n\nIf so, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.";
+"ledger-pairing-first-warning-title" = "Pairing Ledger with Your Device";
+"ledger-pairing-first-warning-message" = "Is your Ledger paired with this device? If not, please follow these steps:\n\n1. Open your Ledger device.\n2. Close the Algorand app on the Ledger device.\n3. On the Ledger homescreen, confirm pairing.\n4. Once pairing is confirmed, open the Algorand Ledger app.";
+
 // MARK: Watch Account
 "title-watch-account" = "Watch Account";
 "watch-account-create" = "Create a Watch Account";
@@ -699,7 +703,7 @@
 "wallet-connect-transaction-error-group-validation" = "Transaction Request Rejected: The transaction group has failed validation by the Algorand SDK.";
 "wallet-connect-transaction-error-already-displayed" = "Transaction Request Rejected: The User currently has another transaction request that is in progress.";
 "wallet-connect-transaction-error-group-unauthorized-user" = "The requested operation and/or account has not been authorized by the user.";
-"wallet-connect-transaction-error-transaction-size" = "Invalid Input: Transaction request contains more than 16 transactions";
+"wallet-connect-transaction-error-transaction-size" = "Invalid Input: Transaction request contains more than 64 transactions";
 "wallet-connect-transaction-error-invalid-signer" = "Signing Error: A transaction in the transaction request requires a private key (signer) that does not exist in the connected Wallet.";
 "wallet-connect-transaction-error-node" = "Signing Error: Network mismatch between dApp and Wallet. For example, Wallet is connected to TestNet and dApp connected to MainNet (or vice versa).";
 "wallet-connect-transaction-error-group" = "Invalid Input: Group transaction does not need to be signed by Wallet user.";
