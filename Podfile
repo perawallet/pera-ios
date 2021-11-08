@@ -21,7 +21,6 @@ def main_pods
   #UI
   pod 'lottie-ios'
   pod 'NotificationBannerSwift'
-  pod 'BetterSegmentedControl', '~> 1.3'
   pod 'Charts'
 
   pod 'Macaroon/URLImage', :git => 'https://github.com/Hipo/macaroon.git', :tag => '2.12.0'
