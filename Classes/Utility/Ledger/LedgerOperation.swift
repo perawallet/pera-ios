@@ -175,19 +175,34 @@ extension LedgerOperation {
     }
 
     private func presentConnectionSupportWarningAlert() {
-        // These texts won't be localized for now.
-        let message = """
-        Having Ledger Nano X connection issues?
+        let warningModalPresenter = CardModalPresenter(
+            config: ModalConfiguration(
+                animationMode: .normal(duration: 0.25),
+                dismissMode: .backgroundTouch
+            ),
+            initialModalSize: .custom(CGSize(width: UIScreen.main.bounds.width, height: 380.0))
+        )
 
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: warningModalPresenter
+        )
+
+        // These texts won't be localized for now
+        let message = """
         If so, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger
         following the Algorand Wallet instructions.
         """
-        let alertController = UIAlertController(title: "ble-error-connection-title".localized, message: message, preferredStyle: .alert)
 
-        let cancelAction = UIAlertAction(title: "title-ok".localized, style: .cancel, handler: nil)
-        alertController.addAction(cancelAction)
+        let warningAlert = WarningAlert(
+            title: "Having Ledger Nano X connection issues?",
+            image: img("img-warning-circle"),
+            description: message,
+            actionTitle: "title-ok".localized
+        )
 
-        topMostController?.present(alertController, animated: true)
+        topMostController?.open(.warningAlert(warningAlert: warningAlert), by: transitionStyle)
     }
 }
 
