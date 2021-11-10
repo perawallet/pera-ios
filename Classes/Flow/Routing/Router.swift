@@ -456,6 +456,8 @@ class Router {
             )
         case let .jsonDisplay(jsonData, title):
             viewController = JSONDisplayViewController(jsonData: jsonData, title: title, configuration: configuration)
+        case .ledgerPairWarning:
+            viewController = LedgerPairWarningViewController(configuration: configuration)
         }
         
         return viewController as? T

@@ -32,5 +32,6 @@ class OneTimeDisplayStorage: Storable {
 extension OneTimeDisplayStorage {
     enum StorageKey: String {
         case wcInitialWarning = "com.algorand.algorand.wc.warning.displayed"
+        case ledgerPairingWarning = "com.algorand.algorand.ledger.pairing.warning.displayed"
     }
 }

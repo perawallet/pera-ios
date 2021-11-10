@@ -30,9 +30,18 @@ class LedgerDeviceListViewController: BaseViewController {
         }
         return LedgerAccountFetchOperation(api: api, ledgerApprovalMode: .connection)
     }()
-    
+
+    private lazy var initialPairingWarningModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 496.0))
+    )
+
     private let accountSetupFlow: AccountSetupFlow
     private var ledgerDevices = [CBPeripheral]()
+    private var selectedDevice: CBPeripheral?
     
     init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
         self.accountSetupFlow = accountSetupFlow
@@ -114,21 +123,33 @@ extension LedgerDeviceListViewController: LedgerDeviceCellDelegate {
             return
         }
         
-        let ledgerDevice = ledgerDevices[indexPath.item]
+        selectedDevice = ledgerDevices[indexPath.item]
 
-        // These texts won't be localized for now.
-        let title = "Pairing Ledger with Your Device"
-        let message = """
-        Is your Ledger paired with this device? If not, please follow these steps:
+        let oneTimeDisplayStorage = OneTimeDisplayStorage()
+        if oneTimeDisplayStorage.isDisplayedOnce(for: .ledgerPairingWarning) {
+            ledgerAccountFetchOperation.connectToDevice(ledgerDevices[indexPath.item])
+            selectedDevice = nil
+            return
+        }
 
-        1. Open your Ledger device.
-        2. Close the Algorand app on the Ledger device.
-        3. On the Ledger homescreen, confirm pairing.
-        4. Once pairing is confirmed, open the Algorand Ledger app.
-        """
+        oneTimeDisplayStorage.setDisplayedOnce(for: .ledgerPairingWarning)
 
-        displaySimpleAlertWith(title: title, message: message) { _ in
-            self.ledgerAccountFetchOperation.connectToDevice(ledgerDevice)
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: initialPairingWarningModalPresenter
+        )
+
+        let controller = open(.ledgerPairWarning, by: transitionStyle) as? LedgerPairWarningViewController
+        controller?.delegate = self
+    }
+}
+
+extension LedgerDeviceListViewController: LedgerPairWarningViewControllerDelegate {
+    func ledgerPairWarningViewControllerDidTakeAction(_ ledgerPairWarningViewController: LedgerPairWarningViewController) {
+        if let ledgerDevice = selectedDevice {
+            ledgerAccountFetchOperation.connectToDevice(ledgerDevice)
+            selectedDevice = nil
         }
     }
 }
