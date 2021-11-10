@@ -107,7 +107,7 @@ extension WCSessionListViewController {
 
 extension WCSessionListViewController {
     private func openQRScanner() {
-        let qrScannerViewController = open(.qrScanner, by: .push) as? QRScannerViewController
+        let qrScannerViewController = open(.qrScanner(canReadWCSession: true), by: .push) as? QRScannerViewController
         qrScannerViewController?.delegate = self
     }
 }

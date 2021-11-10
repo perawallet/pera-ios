@@ -143,6 +143,7 @@
 "qr-scan-should-scan-mnemonics-message" = "You should scan valid passphrases";
 "qr-scan-message-text" = "You can only scan your QR from this page, To view your QR please select the icon on your account";
 "qr-scan-should-scan-valid-qr" = "QR is not valid.";
+"qr-scan-invalid-wc-screen-error" = "The scanned QR is not a valid Algorand public address. For other types of QR (such as WalletConnect transactions), please use the scan QR button on the homepage.";
 
 // MARK: QR Creation
 "qr-creation-title" = "Passphrase QR";

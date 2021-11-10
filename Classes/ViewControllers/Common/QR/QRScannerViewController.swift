@@ -64,6 +64,13 @@ class QRScannerViewController: BaseViewController {
             }
         }
     }
+
+    private let canReadWCSession: Bool
+
+    init(canReadWCSession: Bool, configuration: ViewControllerConfiguration) {
+        self.canReadWCSession = canReadWCSession
+        super.init(configuration: configuration)
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -263,6 +270,19 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
 
             if qrString.isWalletConnectConnection {
+                if !canReadWCSession {
+                    let message = """
+                    The scanned QR is not a valid Algorand public address. For other types of QR (such as WalletConnect transactions),
+                    please use the scan QR button on the homepage.
+                    """
+                    NotificationBanner.showError("title-error".localized, message: message)
+
+                    captureSessionQueue.async {
+                        self.captureSession?.startRunning()
+                    }
+                    return
+                }
+
                 walletConnector.delegate = self
                 cancelButton.startLoading()
                 cancelButton.setBackgroundImage(img("button-bg-scan-qr"), for: .normal)

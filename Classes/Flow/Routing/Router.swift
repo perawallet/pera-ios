@@ -203,8 +203,8 @@ class Router {
             viewController = AccountNameSetupViewController(configuration: configuration)
         case let .accountRecover(flow):
             viewController = AccountRecoverViewController(accountSetupFlow: flow, configuration: configuration)
-        case .qrScanner:
-            viewController = QRScannerViewController(configuration: configuration)
+        case let .qrScanner(canReadWCSession):
+            viewController = QRScannerViewController(canReadWCSession: canReadWCSession, configuration: configuration)
         case let .qrGenerator(title, draft, isTrackable):
             let qrCreationController = QRCreationViewController(draft: draft, configuration: configuration, isTrackable: isTrackable)
             qrCreationController.title = title
