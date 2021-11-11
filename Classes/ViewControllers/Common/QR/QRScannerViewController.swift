@@ -276,10 +276,8 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                     please use the scan QR button on the homepage.
                     """
                     NotificationBanner.showError("title-error".localized, message: message)
-
-                    captureSessionQueue.async {
-                        self.captureSession?.startRunning()
-                    }
+                    captureSession = nil
+                    closeScreen(by: .pop)
                     return
                 }
 

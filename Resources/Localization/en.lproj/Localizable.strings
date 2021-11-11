@@ -529,9 +529,12 @@
 "ledger-rekey-error-not-found" = "This account has been rekeyed. Please recover this account with a passphrase or Ledger device.";
 "ledger-transaction-account-match-error" = "It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.";
 
-"ledger-pairing-issue-error-message" = "Having Ledger Nano X connection issues?\n\nIf so, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.";
+"ledger-pairing-issue-error-title" = "Having Ledger Nano X connection issues?";
+"ledger-pairing-issue-error-message" = "Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.";
 "ledger-pairing-first-warning-title" = "Pairing Ledger with Your Device";
-"ledger-pairing-first-warning-message" = "Is your Ledger paired with this device? If not, please follow these steps:\n\n1. Open your Ledger device.\n2. Close the Algorand app on the Ledger device.\n3. On the Ledger homescreen, confirm pairing.\n4. Once pairing is confirmed, open the Algorand Ledger app.";
+"ledger-pairing-first-warning-message-first" = "Is your Ledger paired with this device?";
+"ledger-pairing-first-warning-message-second" = "If not, please follow these steps:";
+"ledger-pairing-first-warning-message-description" = "· Open your Ledger device.\n· Close the Algorand app on the Ledger device.\n· On the Ledger homescreen, confirm pairing.\n· Once pairing is confirmed, open the Algorand Ledger app.";
 
 // MARK: Watch Account
 "title-watch-account" = "Watch Account";

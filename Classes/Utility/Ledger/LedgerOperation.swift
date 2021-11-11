@@ -191,8 +191,8 @@ extension LedgerOperation {
 
         // These texts won't be localized for now
         let message = """
-        If so, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger
-        following the Algorand Wallet instructions.
+        Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s
+        bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.
         """
 
         let warningAlert = WarningAlert(
