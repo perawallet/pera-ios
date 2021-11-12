@@ -65,8 +65,8 @@ extension AccountManager {
             accountFetchOperation.onCompleted = { fetchedAccount, _ in
                 guard let fetchedAccount = fetchedAccount,
                       fetchedAccount.address == account.address else {
-                    return
-                }
+                          return
+                      }
                 
                 fetchedAccount.name = account.name
                 fetchedAccount.type = account.type
