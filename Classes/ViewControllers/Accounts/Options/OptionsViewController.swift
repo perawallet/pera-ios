@@ -103,6 +103,7 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
         
         switch selectedOption {
         case .rekey:
+            dismissScreen()
             delegate?.optionsViewControllerDidOpenRekeying(self)
         case .removeAsset:
             dismissScreen()
