@@ -18,20 +18,17 @@
 import UIKit
 import Magpie
 
-class OptionsViewController: BaseViewController {
-    
+final class OptionsViewController: BaseViewController {
+    weak var delegate: OptionsViewControllerDelegate?
+
     override var shouldShowNavigationBar: Bool {
         return false
     }
     
-    private let layout = Layout<LayoutConstants>()
-    
+    private lazy var theme = Theme()
     private lazy var optionsView = OptionsView()
 
-    private var account: Account
-    
-    weak var delegate: OptionsViewControllerDelegate?
-    
+    private let account: Account
     private var options: [Options]
     
     init(account: Account, configuration: ViewControllerConfiguration) {
@@ -44,13 +41,13 @@ class OptionsViewController: BaseViewController {
         }
         
         if account.requiresLedgerConnection() {
-            options.removeAll { option -> Bool in
-                option == .passphrase
+            _ = options.removeAll { option in
+                option == .viewPassphrase
             }
         }
         
         if !account.isRekeyed() {
-            options.removeAll { option -> Bool in
+            _ = options.removeAll { option in
                 option == .rekeyInformation
             }
         }
@@ -62,22 +59,18 @@ class OptionsViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
-    override func configureAppearance() {
-        view.backgroundColor = Colors.Background.secondary
-    }
-    
     override func linkInteractors() {
         optionsView.optionsCollectionView.delegate = self
         optionsView.optionsCollectionView.dataSource = self
     }
     
     override func prepareLayout() {
-        optionsView.customize(OptionsViewTheme())
-        view.addSubview(optionsView)
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-        optionsView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.bottom.safeEqualToBottom(of: self)
+        view.addSubview(optionsView)
+        optionsView.snp.makeConstraints {
+            $0.leading.trailing.top.equalToSuperview()
+            $0.bottom.safeEqualToBottom(of: self)
         }
     }
 }
@@ -88,15 +81,9 @@ extension OptionsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: OptionsCell.reusableIdentifier,
-            for: indexPath) as? OptionsCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
-        let option = options[indexPath.item]
+        let cell: OptionsCell = collectionView.dequeueReusableCell(for: indexPath)
         cell.customize(OptionsContextViewTheme())
-        cell.bind(OptionsViewModel(option: option, account: account))
+        cell.bind(OptionsViewModel(option: options[indexPath.item], account: account))
         return cell
     }
 }
@@ -107,7 +94,8 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: view.frame.width, height: layout.current.cellHeight)
+        let isCopyAddressCell = indexPath.row == 0
+        return CGSize(isCopyAddressCell ? theme.copyAddressCellSize : theme.defaultCellSize)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -115,24 +103,26 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
         
         switch selectedOption {
         case .rekey:
-            dismissScreen()
             delegate?.optionsViewControllerDidOpenRekeying(self)
         case .removeAsset:
             dismissScreen()
             delegate?.optionsViewControllerDidRemoveAsset(self)
-        case .passphrase:
+        case .viewPassphrase:
             dismissScreen()
             delegate?.optionsViewControllerDidViewPassphrase(self)
         case .rekeyInformation:
             dismissScreen()
             delegate?.optionsViewControllerDidViewRekeyInformation(self)
-        case .notificationSetting:
+        case .muteNotifications:
             updateNotificationStatus()
-        case .edit:
+        case .renameAccount:
             open(.editAccount(account: account), by: .push)
         case .removeAccount:
             dismissScreen()
             delegate?.optionsViewControllerDidRemoveAccount(self)
+        case .copyAddress:
+            dismissScreen()
+            delegate?.optionsViewControllerDidCopyAddress(self)
         }
     }
 }
@@ -162,7 +152,7 @@ extension OptionsViewController {
     }
 
     private func updateNotificationFiltering(with result: NotificationFilterResponse) {
-        self.account.receivesNotification = result.receivesNotification
+        account.receivesNotification = result.receivesNotification
         loadingController?.stopLoading()
         updateAccountForNotificationFilters()
         updateNotificationFilterCell()
@@ -179,10 +169,10 @@ extension OptionsViewController {
     }
 
     private func updateNotificationFilterCell() {
-        if let index = options.firstIndex(of: .notificationSetting),
+        if let index = options.firstIndex(of: .muteNotifications),
            let cell = optionsView.optionsCollectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? OptionsCell {
             cell.customize(OptionsContextViewTheme())
-            cell.bind(OptionsViewModel(option: .notificationSetting, account: self.account))
+            cell.bind(OptionsViewModel(option: .muteNotifications, account: self.account))
         }
     }
 
@@ -196,43 +186,39 @@ extension OptionsViewController {
 
 extension OptionsViewController {
     enum Options: Int, CaseIterable {
-        case rekey = 0
-        case passphrase = 1
-        case rekeyInformation = 2
-        case notificationSetting = 3
-        case edit = 4
-        case removeAsset = 5
-        case removeAccount = 6
-        
+        case copyAddress = 0
+        case rekey = 1
+        case viewPassphrase = 2
+        case muteNotifications = 3
+        case rekeyInformation = 4
+        case renameAccount = 5
+        case removeAsset = 6
+        case removeAccount = 7
+
         static var optionsWithoutRemoveAsset: [Options] {
-            return [.rekey, .rekeyInformation, .passphrase, .notificationSetting, .edit, .removeAccount]
+            return [.copyAddress, .rekey, .rekeyInformation, .viewPassphrase, .muteNotifications, .renameAccount, .removeAccount]
         }
 
         static var optionsWithoutPassphrase: [Options] {
-            return [.rekey, .rekeyInformation, .notificationSetting, .edit, .removeAsset, .removeAccount]
+            return [.copyAddress, .rekey, .rekeyInformation, .muteNotifications, .renameAccount, .removeAsset, .removeAccount]
         }
         
         static var optionsWithoutPassphraseAndRemoveAsset: [Options] {
-            return [.rekey, .rekeyInformation, .notificationSetting, .edit, .removeAccount]
+            return [.copyAddress, .rekey, .rekeyInformation, .muteNotifications, .renameAccount, .removeAccount]
         }
         
         static var allOptions: [Options] {
-            return [.rekey, .passphrase, .rekeyInformation, .notificationSetting, .edit, .removeAsset, .removeAccount]
+            return allCases
         }
         
         static var watchAccountOptions: [Options] {
-            return [.notificationSetting, .edit, .removeAccount]
+            return [.muteNotifications, .renameAccount, .removeAccount]
         }
-    }
-}
-
-extension OptionsViewController {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellHeight: CGFloat = 56.0
     }
 }
 
 protocol OptionsViewControllerDelegate: AnyObject {
+    func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController)

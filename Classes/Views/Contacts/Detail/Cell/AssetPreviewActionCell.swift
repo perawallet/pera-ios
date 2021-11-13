@@ -13,19 +13,19 @@
 // limitations under the License.
 
 //
-//  AssetPreviewSendCell.swift
+//  AssetPreviewActionCell.swift
 
 import UIKit
 
-final class AssetPreviewSendCell: BaseCollectionViewCell<AssetPreviewSendView> {
-    weak var delegate: AssetPreviewSendCellDelegate?
+final class AssetPreviewActionCell: BaseCollectionViewCell<AssetPreviewActionView> {
+    weak var delegate: AssetPreviewActionCellDelegate?
     
     override func setListeners() {
         super.setListeners()
         contextView.delegate = self
     }
 
-    func customize(_ theme: AssetPreviewSendViewTheme) {
+    func customize(_ theme: AssetPreviewActionViewTheme) {
         contextView.customize(theme)
     }
 
@@ -34,12 +34,12 @@ final class AssetPreviewSendCell: BaseCollectionViewCell<AssetPreviewSendView> {
     }
 }
 
-extension AssetPreviewSendCell: AssetPreviewSendViewDelegate {
-    func assetPreviewSendViewDidTapSendButton(_ assetPreviewSendView: AssetPreviewSendView) {
+extension AssetPreviewActionCell: AssetPreviewActionViewDelegate {
+    func assetPreviewActionViewDidTapSendButton(_ assetPreviewActionView: AssetPreviewActionView) {
         delegate?.assetPreviewSendCellDidTapSendButton(self)
     }
 }
 
-protocol AssetPreviewSendCellDelegate: AnyObject {
-    func assetPreviewSendCellDidTapSendButton(_ assetPreviewSendCell: AssetPreviewSendCell)
+protocol AssetPreviewActionCellDelegate: AnyObject {
+    func assetPreviewSendCellDidTapSendButton(_ assetPreviewActionCell: AssetPreviewActionCell)
 }

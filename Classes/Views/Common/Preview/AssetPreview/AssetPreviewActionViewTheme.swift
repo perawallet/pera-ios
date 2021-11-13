@@ -13,17 +13,17 @@
 // limitations under the License.
 
 //
-//   AssetPreviewSendViewTheme.swift
+//   AssetPreviewActionViewTheme.swift
 
 import Foundation
 import Macaroon
 import UIKit
 
-struct AssetPreviewSendViewTheme: StyleSheet, LayoutSheet {
+struct AssetPreviewActionViewTheme: StyleSheet, LayoutSheet {
     let accountName: TextStyle
     let assetAndNFTs: TextStyle
     let secondaryAssetValue: TextStyle
-    let sendButton: ButtonStyle
+    let actionButton: ButtonStyle
 
     let imageSize: LayoutSize
     let horizontalPadding: LayoutMetric
@@ -31,7 +31,7 @@ struct AssetPreviewSendViewTheme: StyleSheet, LayoutSheet {
     let verticalPadding: LayoutMetric
     let secondaryImageLeadingPadding: LayoutMetric
 
-    init(_ family: LayoutFamily) {
+    init(actionButtonStyle: ButtonStyle, _ family: LayoutFamily = LayoutFamily.current) {
         self.accountName = [
             .textAlignment(.left),
             .textOverflow(.singleLineFitting),
@@ -50,14 +50,16 @@ struct AssetPreviewSendViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.grayLighter),
             .font(Fonts.DMMono.regular.make(13))
         ]
-        self.sendButton = [
-            .icon("icon-circle-arrow-up")
-        ]
+        self.actionButton = actionButtonStyle
 
         self.imageSize = (40, 40)
         self.horizontalPadding = 16
         self.secondaryImageLeadingPadding = 8
         self.verticalPadding = 16
         self.assetNameVerticalStackViewTrailingPadding = 80
+    }
+
+    init(_ family: LayoutFamily) {
+        self.init(actionButtonStyle: [], family)
     }
 }

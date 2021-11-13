@@ -22,13 +22,15 @@ import UIKit
 struct OptionsViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
 
-    let bottomInset: LayoutMetric
-    let topInset: LayoutMetric 
+    let cellSpacing: LayoutMetric
+    let topInset: LayoutMetric
+    let collectionViewEdgeInsets: LayoutPaddings
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
 
-        self.bottomInset = 20
+        self.cellSpacing = 0
+        self.collectionViewEdgeInsets = (0, 0, 20, 0)
         self.topInset = 10
     }
 }

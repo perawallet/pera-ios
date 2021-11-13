@@ -184,8 +184,8 @@ extension ContactDetailViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: AssetPreviewSendCell = collectionView.dequeueReusableCell(for: indexPath)
-        cell.customize(AssetPreviewSendViewTheme())
+        let cell: AssetPreviewActionCell = collectionView.dequeueReusableCell(for: indexPath)
+        cell.customize(theme.assetPreviewActionViewTheme)
         cell.bindData(AssetPreviewViewModel(assetPreviews[indexPath.row]))
         cell.delegate = self
         return cell
@@ -202,8 +202,8 @@ extension ContactDetailViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension ContactDetailViewController: AssetPreviewSendCellDelegate {
-    func assetPreviewSendCellDidTapSendButton(_ assetPreviewSendCell: AssetPreviewSendCell) {
+extension ContactDetailViewController: AssetPreviewActionCellDelegate {
+    func assetPreviewSendCellDidTapSendButton(_ assetPreviewSendCell: AssetPreviewActionCell) {
         guard let itemIndex = contactDetailView.assetsCollectionView.indexPath(for: assetPreviewSendCell),
             let contactAccount = contactAccount else {
             return

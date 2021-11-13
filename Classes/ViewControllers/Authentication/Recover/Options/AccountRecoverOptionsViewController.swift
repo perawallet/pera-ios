@@ -55,15 +55,10 @@ extension AccountRecoverOptionsViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: OptionsCell.reusableIdentifier,
-            for: indexPath) as? OptionsCell else {
-                fatalError("Index path is out of bounds")
-        }
-
+        let cell: OptionsCell = collectionView.dequeueReusableCell(for: indexPath)
         if let option = options[safe: indexPath.item] {
             cell.customize(OptionsContextViewTheme())
-            cell.bind(AccountRecoverOptionsViewModel(option: option))
+            cell.bind(AccountRecoverOptionsViewModel(option))
         }
 
         return cell
@@ -76,7 +71,7 @@ extension AccountRecoverOptionsViewController: UICollectionViewDelegateFlowLayou
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: view.frame.width, height: theme.cellHeight)
+        return CGSize(theme.cellSize)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

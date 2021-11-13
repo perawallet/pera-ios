@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-trash.pdf",
+      "filename" : "icon-polygon.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-trash-1.pdf",
+      "filename" : "settings-2.pdf",
       "idiom" : "universal"
     }
   ],

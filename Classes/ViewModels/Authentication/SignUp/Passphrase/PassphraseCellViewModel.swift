@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//  PassphraseBackUpOrderViewModel.swift
+//  PassphraseCellViewModel.swift
 
 import Foundation
 import Macaroon
@@ -23,7 +23,7 @@ struct Passphrase {
     let mnemonics: [String]?
 }
 
-final class PassphraseBackUpOrderViewModel: PairedViewModel {
+final class PassphraseCellViewModel: PairedViewModel {
     private(set) var number: String?
     private(set) var phrase: String?
 
@@ -33,7 +33,7 @@ final class PassphraseBackUpOrderViewModel: PairedViewModel {
     }
 }
 
-extension PassphraseBackUpOrderViewModel {
+extension PassphraseCellViewModel {
     private func bindNumber(_ index: Int) {
         number = "\(index + 1)"
     }

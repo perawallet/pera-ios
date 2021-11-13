@@ -19,17 +19,25 @@ import UIKit
 import Macaroon
 
 final class OptionsView: View {
+    private lazy var theme = OptionsViewTheme()
+    
     private(set) lazy var optionsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 0
-        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.minimumLineSpacing = theme.cellSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = AppColors.Shared.System.background.color
-        collectionView.register(OptionsCell.self, forCellWithReuseIdentifier: OptionsCell.reusableIdentifier)
+        collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
+        collectionView.backgroundColor = theme.backgroundColor.color
+        collectionView.register(OptionsCell.self)
         return collectionView
     }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(theme)
+    }
 
     func customize(_ theme: OptionsViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -45,11 +53,9 @@ final class OptionsView: View {
 extension OptionsView {
     private func addOptionsCollectionView(_ theme: OptionsViewTheme) {
         addSubview(optionsCollectionView)
-        
         optionsCollectionView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.topInset)
-            $0.leading.trailing.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(theme.bottomInset)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }

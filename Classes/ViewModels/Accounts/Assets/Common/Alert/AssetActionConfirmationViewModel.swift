@@ -22,6 +22,7 @@ final class AssetActionConfirmationViewModel: PairedViewModel {
     private(set) var title: String?
     private(set) var id: String?
     private(set) var actionTitle: String?
+    private(set) var cancelTitle: String?
     private(set) var detail: NSAttributedString?
     private(set) var assetDisplayViewModel: AssetDisplayViewModel?
 
@@ -29,6 +30,7 @@ final class AssetActionConfirmationViewModel: PairedViewModel {
         bindTitle(model)
         bindID(model)
         bindActionTitle(model)
+        bindCancelTitle(model)
         bindDetail(model)
         bindAssetDisplayViewModel(model)
     }
@@ -45,6 +47,10 @@ extension AssetActionConfirmationViewModel {
 
     private func bindActionTitle(_ draft: AssetAlertDraft) {
         actionTitle = draft.actionTitle
+    }
+
+    private func bindCancelTitle(_ draft: AssetAlertDraft) {
+        cancelTitle = draft.cancelTitle
     }
 
     private func bindDetail(_ draft: AssetAlertDraft) {

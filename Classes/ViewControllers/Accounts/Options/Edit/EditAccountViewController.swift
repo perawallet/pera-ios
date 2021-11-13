@@ -18,48 +18,37 @@
 import UIKit
 import SnapKit
 
-class EditAccountViewController: BaseViewController {
-    
+final class EditAccountViewController: BaseViewController {
+    private lazy var theme = Theme()
     private lazy var editAccountView = EditAccountView()
     
-    private var keyboard = Keyboard()
+    private lazy var keyboard = Keyboard()
     private var contentViewBottomConstraint: Constraint?
-    fileprivate let account: Account
-    
+
+    private lazy var modalSize: ModalSize = {
+        let keyboardHeight = keyboard.height ?? 0
+        let size = CGSize(
+            width: view.bounds.width,
+            height: keyboardHeight + 244
+        )
+        return .custom(size)
+    }()
+
+    private let account: Account
+
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         super.init(configuration: configuration)
     }
     
-    override func configureNavigationBarAppearance() {
-        let doneBarButtonItem = ALGBarButtonItem(kind: .done) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            guard let name = strongSelf.editAccountView.accountNameTextField.text else {
-                strongSelf.displaySimpleAlertWith(
-                    title: "title-error".localized,
-                    message: "account-name-setup-empty-error-message".localized
-                )
-                return
-            }
-            
-            strongSelf.account.name = name
-            strongSelf.session?.updateName(name, for: strongSelf.account.address)
-            strongSelf.dismissScreen()
-        }
-        
-        rightBarButtonItems = [doneBarButtonItem]
-    }
-    
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.secondary
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         title = "options-edit-account-name".localized
-        editAccountView.accountNameTextField.text = account.name
     }
     
     override func setListeners() {
+        editAccountView.delegate = self
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didReceive(keyboardWillShow:)),
@@ -69,32 +58,37 @@ class EditAccountViewController: BaseViewController {
     }
     
     override func prepareLayout() {
-        setupEditAccountViewLayout()
+        editAccountView.customize(theme.editAccountViewTheme)
+        view.addSubview(editAccountView)
+        editAccountView.snp.makeConstraints {
+            $0.leading.trailing.top.equalToSuperview()
+            contentViewBottomConstraint = $0.bottom.equalToSuperview().inset(0).constraint
+        }
+    }
+
+    override func bindData() {
+        editAccountView.bindData(account.name)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        editAccountView.accountNameTextField.becomeFirstResponder()
-    }
-    
-    private var modalSize: ModalSize {
-        let kbHeight = keyboard.height ?? 0.0
-        let size = CGSize(
-            width: self.view.bounds.width,
-            height: kbHeight + 154.0
-        )
-        return .custom(size)
+        editAccountView.beginEditing()
     }
 }
 
 extension EditAccountViewController {
-    private func setupEditAccountViewLayout() {
-        view.addSubview(editAccountView)
-        
-        editAccountView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            contentViewBottomConstraint = make.bottom.equalToSuperview().inset(0.0).constraint
+    private func didTapDoneButton() {
+        guard let name = editAccountView.accountNameInputView.text else {
+            displaySimpleAlertWith(
+                title: "title-error".localized,
+                message: "account-name-setup-empty-error-message".localized
+            )
+            return
         }
+
+        account.name = name
+        session?.updateName(name, for: account.address)
+        dismissScreen()
     }
 }
 
@@ -105,7 +99,7 @@ extension EditAccountViewController {
             return
         }
         
-        let kbHeight = notification.keyboardHeight ?? 0.0
+        let kbHeight = notification.keyboardHeight ?? 0
         
         keyboard.height = kbHeight
         
@@ -118,7 +112,7 @@ extension EditAccountViewController {
         
         UIView.animate(
             withDuration: duration,
-            delay: 0.0,
+            delay: 0,
             options: [curveAnimationOption],
             animations: {
                 self.modalPresenter?.changeModalSize(to: self.modalSize, animated: false)
@@ -127,4 +121,12 @@ extension EditAccountViewController {
             completion: nil
         )
     }
+}
+
+extension EditAccountViewController: EditAccountViewDelegate {
+    func editAccountViewDidTapDoneButton(_ editAccountView: EditAccountView) {
+        didTapDoneButton()
+    }
+
+    func editAccountViewDidChangeValue(_ editAccountView: EditAccountView) {}
 }

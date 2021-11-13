@@ -23,7 +23,7 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     private var address: String
     private var isDisplayedAllScreen = false
     
-    private lazy var passphraseView = PassphraseView()
+    private lazy var passphraseBackUpView = PassphraseBackUpView()
     private lazy var theme = Theme()
 
     private lazy var bottomModalPresenter = CardModalPresenter(
@@ -31,7 +31,7 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
             animationMode: .normal(duration: 0.25),
             dismissMode: .backgroundTouch
         ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 338))
+        initialModalSize: .custom(CGSize(theme.modalSize))
     )
     
     init(address: String, configuration: ViewControllerConfiguration) {
@@ -50,8 +50,7 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         customizeBackground()
-
-        passphraseView.nextButton.isEnabled = false
+        passphraseBackUpView.nextButton.isEnabled = false
     }
 
     private func customizeBackground() {
@@ -67,7 +66,7 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
 
     override func setListeners() {
         super.setListeners()
-        passphraseView.setListeners()
+        passphraseBackUpView.setListeners()
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(displayScreenshotWarning),
@@ -77,19 +76,19 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     }
     
     override func linkInteractors() {
-        passphraseView.delegate = self
-        passphraseView.setPassphraseCollectionViewDelegate(self)
-        passphraseView.setPassphraseCollectionViewDataSource(self)
+        passphraseBackUpView.delegate = self
+        passphraseBackUpView.setPassphraseCollectionViewDelegate(self)
+        passphraseBackUpView.setPassphraseCollectionViewDataSource(self)
         scrollView.delegate = self
     }
 }
 
 extension PassphraseBackUpViewController {
     private func addPassphraseView() {
-        passphraseView.customize(theme.passphraseViewTheme)
+        passphraseBackUpView.customize(theme.passphraseBackUpViewTheme)
 
-        contentView.addSubview(passphraseView)
-        passphraseView.snp.makeConstraints {
+        contentView.addSubview(passphraseBackUpView)
+        passphraseBackUpView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
@@ -101,17 +100,11 @@ extension PassphraseBackUpViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: PassphraseBackUpCell.reusableIdentifier,
-            for: indexPath
-        ) as? PassphraseBackUpCell {
-            cell.customize(PassphraseBackUpOrderViewTheme())
-            let passphrase = Passphrase(index: indexPath.item, mnemonics: mnemonics)
-            cell.bindData(PassphraseBackUpOrderViewModel(passphrase))
-            return cell
-        }
-
-        fatalError("Index path is out of bounds")
+        let cell: PassphraseCell = collectionView.dequeueReusableCell(for: indexPath)
+        cell.customize(PassphraseCellViewTheme())
+        let passphrase = Passphrase(index: indexPath.item, mnemonics: mnemonics)
+        cell.bindData(PassphraseCellViewModel(passphrase))
+        return cell
     }
 }
 
@@ -121,12 +114,12 @@ extension PassphraseBackUpViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: collectionView.frame.width / 2, height: 24)
+        return CGSize(width: collectionView.frame.width / 2, height: theme.cellHeight)
     }
 }
 
 extension PassphraseBackUpViewController: PassphraseBackUpViewDelegate {
-    func passphraseViewDidTapActionButton(_ passphraseView: PassphraseView) {
+    func passphraseBackUpViewDidTapActionButton(_ passphraseView: PassphraseBackUpView) {
         open(.passphraseVerify, by: .push)
     }
 }
@@ -144,12 +137,12 @@ extension PassphraseBackUpViewController: UIScrollViewDelegate {
 
         if isVerifyButtonDisplayed() {
             isDisplayedAllScreen = true
-            passphraseView.nextButton.isEnabled = true
+            passphraseBackUpView.nextButton.isEnabled = true
         }
     }
 
     private func isVerifyButtonDisplayed() -> Bool {
-        return scrollView.bounds.contains(passphraseView.nextButton.frame)
+        return scrollView.bounds.contains(passphraseBackUpView.nextButton.frame)
     }
 }
 

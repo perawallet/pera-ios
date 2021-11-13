@@ -164,7 +164,6 @@ extension AssetActionConfirmationView {
 
     private func addCancelButton(_ theme: AssetActionConfirmationViewTheme) {
         cancelButton.customize(theme.secondaryButtonTheme)
-        cancelButton.bindData(ButtonCommonViewModel(title: "title-cancel".localized))
 
         addSubview(cancelButton)
         cancelButton.fitToVerticalIntrinsicSize()
@@ -182,6 +181,7 @@ extension AssetActionConfirmationView: ViewModelBindable {
         assetIDLabel.text = viewModel?.id
         detailLabel.attributedText = viewModel?.detail
         actionButton.bindData(ButtonCommonViewModel(title: viewModel?.actionTitle))
+        cancelButton.bindData(ButtonCommonViewModel(title: viewModel?.cancelTitle))
 
         if !(viewModel?.assetDisplayViewModel?.isVerified ?? false) {
             verifiedImage.removeFromSuperview()

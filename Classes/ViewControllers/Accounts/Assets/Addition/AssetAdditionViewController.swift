@@ -245,7 +245,8 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
             assetDetail: AssetDetail(searchResult: assetResult),
             title: "asset-add-confirmation-title".localized,
             detail: "asset-add-warning".localized,
-            actionTitle: "title-approve".localized
+            actionTitle: "title-approve".localized,
+            cancelTitle: "title-cancel".localized
         )
 
         let controller = open(

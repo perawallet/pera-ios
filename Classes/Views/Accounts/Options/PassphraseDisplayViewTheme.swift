@@ -13,16 +13,20 @@
 // limitations under the License.
 
 //
-//  PassphraseBackUpCell.swift
+//   PassphraseDisplayViewTheme.swift
 
-import UIKit
+import Macaroon
 
-final class PassphraseBackUpCell: BaseCollectionViewCell<PassphraseBackUpOrderView> {
-    func customize(_ theme: PassphraseBackUpOrderViewTheme) {
-        contextView.customize(PassphraseBackUpOrderViewTheme())
-    }
-    
-    func bindData(_ viewModel: PassphraseBackUpOrderViewModel) {
-        contextView.bindData(viewModel)
+struct PassphraseDisplayViewTheme: StyleSheet, LayoutSheet {
+    let backgroundColor: Color
+    let topInset: LayoutMetric
+    let collectionViewHeight: LayoutMetric
+    let horizontalInset: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
+        self.topInset = 20
+        self.collectionViewHeight = 456
+        self.horizontalInset = 24
     }
 }

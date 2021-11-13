@@ -90,7 +90,7 @@ extension SelectAssetViewController {
 
         selectAssetView.accountsCollectionView.contentState = .none
         
-        allAccounts.removeAll { account -> Bool in
+        _ = allAccounts.removeAll { account -> Bool in
             account.isWatchAccount()
         }
         

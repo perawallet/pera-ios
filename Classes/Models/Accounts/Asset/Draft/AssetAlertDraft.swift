@@ -24,6 +24,7 @@ struct AssetAlertDraft {
     let title: String?
     let detail: String?
     let actionTitle: String?
+    let cancelTitle: String?
     
     init(
         account: Account?,
@@ -31,7 +32,8 @@ struct AssetAlertDraft {
         assetDetail: AssetDetail?,
         title: String? = nil,
         detail: String? = nil,
-        actionTitle: String? = nil
+        actionTitle: String? = nil,
+        cancelTitle: String? = nil
     ) {
         self.account = account
         self.assetIndex = assetIndex
@@ -39,6 +41,7 @@ struct AssetAlertDraft {
         self.title = title
         self.detail = detail
         self.actionTitle = actionTitle
+        self.cancelTitle = cancelTitle
     }
     
     func isValid() -> Bool {

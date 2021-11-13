@@ -16,84 +16,141 @@
 //  EditAccountView.swift
 
 import UIKit
+import Macaroon
 
-class EditAccountView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    private lazy var nameTitleLabel: UILabel = {
-        UILabel()
-            .withAlignment(.left)
-            .withLine(.single)
-            .withTextColor(Colors.Text.primary)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withText("account-name-setup-explanation".localized)
-    }()
-    
-    private(set) lazy var accountNameTextField: UITextField = {
-        let textField = UITextField()
-        textField.textColor = Colors.Text.primary
-        textField.tintColor = Colors.Text.primary
-        textField.font = UIFont.font(withWeight: .medium(size: 18.0))
-        return textField
-    }()
-    
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.Main.primary600
+final class EditAccountView: View {
+    weak var delegate: EditAccountViewDelegate?
+
+    private(set) lazy var accountNameInputView = createAccountNameTextInput(
+        placeholder: "account-name-setup-explanation".localized,
+        floatingPlaceholder: "account-name-setup-placeholder".localized
+    )
+
+    private lazy var doneButton = Button()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        setListeners()
+        linkInteractors()
+    }
+
+    func customize(_ theme: EditAccountViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        
+        addAccountNameInputView(theme)
+        addDoneButton(theme)
+    }
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func linkInteractors() {
+        accountNameInputView.editingDelegate = self
+        accountNameInputView.delegate = self
+    }
+
+    func setListeners() {
+        doneButton.addTarget(self, action: #selector(didTapDoneButton), for: .touchUpInside)
+    }
+}
+
+extension EditAccountView {
+    @objc
+    func didTapDoneButton() {
+        delegate?.editAccountViewDidTapDoneButton(self)
+    }
+}
+
+extension EditAccountView {
+    private func addAccountNameInputView(_ theme: EditAccountViewTheme) {
+        addSubview(accountNameInputView)
+        accountNameInputView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalToSuperview().offset(theme.verticalPadding)
+        }
+    }
+
+    private func addDoneButton(_ theme: EditAccountViewTheme) {
+        doneButton.customize(theme.mainButtonTheme)
+        doneButton.bindData(ButtonCommonViewModel(title: "title-done".localized))
+
+        addSubview(doneButton)
+        doneButton.fitToVerticalIntrinsicSize()
+        doneButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.greaterThanOrEqualTo(accountNameInputView.snp.bottom).offset(theme.verticalPadding)
+            $0.bottom.equalToSuperview().inset(theme.verticalPadding + safeAreaBottom)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+        }
+    }
+}
+
+extension EditAccountView {
+    func createAccountNameTextInput(
+        placeholder: String,
+        floatingPlaceholder: String?
+    ) -> FloatingTextInputFieldView {
+        let view = FloatingTextInputFieldView()
+        let textInputBaseStyle: TextInputStyle = [
+            .font(Fonts.DMSans.regular.make(15, .body)),
+            .tintColor(AppColors.Components.Text.main),
+            .textColor(AppColors.Components.Text.main),
+            .clearButtonMode(.whileEditing),
+            .returnKeyType(.done),
+            .autocapitalizationType(.words),
+            .textContentType(.name)
+        ]
+
+        let theme =
+            FloatingTextInputFieldViewCommonTheme(
+                textInput: textInputBaseStyle,
+                placeholder: placeholder,
+                floatingPlaceholder: floatingPlaceholder
+            )
+        view.customize(theme)
+        view.snp.makeConstraints {
+            $0.greaterThanHeight(48)
+        }
         return view
-    }()
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
-    }
-    
-    override func prepareLayout() {
-        setupNameTitleLabelLayout()
-        setupAccountNameInputViewLayout()
-        setupSeparatorViewLayout()
     }
 }
 
 extension EditAccountView {
-    private func setupNameTitleLabelLayout() {
-        addSubview(nameTitleLabel)
-        
-        nameTitleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.nameTitleTopInset)
-        }
-    }
-    
-    private func setupAccountNameInputViewLayout() {
-        addSubview(accountNameTextField)
-        
-        accountNameTextField.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(nameTitleLabel.snp.bottom).offset(layout.current.fieldTopInset)
-        }
-    }
-    
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.height.equalTo(layout.current.separatorHeight)
-            make.top.equalTo(accountNameTextField.snp.bottom).offset(layout.current.separatorInset)
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
-        }
+    func bindData(_ name: String?) {
+        accountNameInputView.text = name
     }
 }
 
 extension EditAccountView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let topInset: CGFloat = 16.0
-        let nameTitleTopInset: CGFloat = 20.0
-        let fieldTopInset: CGFloat = 7.0
-        let separatorHeight: CGFloat = 2.0
-        let separatorInset: CGFloat = 3.0
-        let bottomInset: CGFloat = 24.0
+    func beginEditing() {
+        accountNameInputView.beginEditing()
     }
+}
+
+extension EditAccountView: FloatingTextInputFieldViewDelegate {
+    func floatingTextInputFieldViewShouldReturn(_ view: FloatingTextInputFieldView) -> Bool {
+        view.endEditing()
+        return true
+    }
+}
+
+extension EditAccountView: FormInputFieldViewEditingDelegate {
+    func formInputFieldViewDidBeginEditing(_ view: FloatingTextInputFieldView) {
+        delegate?.editAccountViewDidChangeValue(self)
+    }
+
+    func formInputFieldViewDidEdit(_ view: FloatingTextInputFieldView) {
+        delegate?.editAccountViewDidChangeValue(self)
+    }
+
+    func formInputFieldViewDidEndEditing(_ view: FloatingTextInputFieldView) {
+        delegate?.editAccountViewDidTapDoneButton(self)
+    }
+}
+
+protocol EditAccountViewDelegate: AnyObject {
+    func editAccountViewDidTapDoneButton(_ editAccountView: EditAccountView)
+    func editAccountViewDidChangeValue(_ editAccountView: EditAccountView)
 }

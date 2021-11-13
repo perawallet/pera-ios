@@ -21,21 +21,30 @@ import UIKit
 
 struct OptionsContextViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
-    let label: TextStyle
+    let titleLabel: TextStyle
+    let subtitleLabel: TextStyle
 
     let horizontalInset: LayoutMetric
     let labelLeftInset: LayoutMetric
+    let verticalStackViewSpacing: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-        self.label = [
+        self.titleLabel = [
             .textOverflow(.singleLineFitting),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main)
         ]
+        self.subtitleLabel = [
+            .textOverflow(.singleLineFitting),
+            .textAlignment(.left),
+            .font(Fonts.DMMono.regular.make(11)),
+            .textColor(AppColors.Components.Text.gray)
+        ]
 
-        self.horizontalInset = 20
-        self.labelLeftInset = 56
+        self.horizontalInset = 24
+        self.labelLeftInset = 69
+        self.verticalStackViewSpacing = 2
     }
 }

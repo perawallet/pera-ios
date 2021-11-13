@@ -13,36 +13,27 @@
 // limitations under the License.
 
 //
-//  AssetRemovalViewController.swift
+//  ManageAssetsViewController.swift
 
 import UIKit
 import Magpie
 
-final class AssetRemovalViewController: BaseViewController {
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    private let layoutBuilder = AssetListLayoutBuilder()
-    
+final class ManageAssetsViewController: BaseViewController {
+    weak var delegate: ManageAssetsViewControllerDelegate?
+
+    private lazy var theme = Theme()
+
     private lazy var assetActionConfirmationPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
             dismissMode: .scroll
         ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.modalHeight))
+        initialModalSize: .custom(CGSize(theme.assetActionConfirmationModalSize))
     )
     
-    private lazy var assetRemovalView = AssetRemovalView()
+    private lazy var manageAssetsView = ManageAssetsView()
     
     private var account: Account
-    
-    private lazy var ledgerApprovalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
-    )
     
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
@@ -50,38 +41,28 @@ final class AssetRemovalViewController: BaseViewController {
         }
         return TransactionController(api: api, bannerController: bannerController)
     }()
-    
-    weak var delegate: AssetRemovalViewControllerDelegate?
-    
+
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         super.init(configuration: configuration)
     }
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        navigationItem.title = "title-remove-assets".localized
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        addBarButtons()
     }
     
     override func setListeners() {
-        assetRemovalView.assetsCollectionView.delegate = self
-        assetRemovalView.assetsCollectionView.dataSource = self
+        manageAssetsView.assetsCollectionView.delegate = self
+        manageAssetsView.assetsCollectionView.dataSource = self
         transactionController.delegate = self
     }
     
     override func prepareLayout() {
-        setupAssetRemovalViewLayout()
-    }
-    
-    override func configureNavigationBarAppearance() {
-        let doneBarButtonItem = ALGBarButtonItem(kind: .done) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            strongSelf.closeScreen(by: .dismiss, animated: true)
+        view.addSubview(manageAssetsView)
+        manageAssetsView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
-        
-        rightBarButtonItems = [doneBarButtonItem]
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -92,73 +73,55 @@ final class AssetRemovalViewController: BaseViewController {
     }
 }
 
-extension AssetRemovalViewController {
-    private func setupAssetRemovalViewLayout() {
-        view.addSubview(assetRemovalView)
-        
-        assetRemovalView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+extension ManageAssetsViewController {
+    private func addBarButtons() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
         }
+
+        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 
-extension AssetRemovalViewController: UICollectionViewDataSource {
+extension ManageAssetsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return account.assetDetails.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let assetDetail = account.assetDetails[indexPath.item]
-        let cell = layoutBuilder.dequeueAssetCells(in: collectionView, cellForItemAt: indexPath, for: assetDetail)
+        let cell: AssetPreviewActionCell = collectionView.dequeueReusableCell(for: indexPath)
+        cell.customize(theme.assetPreviewActionViewTheme)
+        cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(account.assetDetails[indexPath.item])))
         cell.delegate = self
-        cell.bind(AssetRemovalViewModel(assetDetail: assetDetail))
-        
-        if indexPath.item == account.assetDetails.count - 1 {
-            cell.contextView.setSeparatorViewHidden(true)
-        }
         return cell
     }
 }
 
-extension AssetRemovalViewController {
+extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
-        viewForSupplementaryElementOfKind kind: String,
-        at indexPath: IndexPath
-    ) -> UICollectionReusableView {
-        if kind == UICollectionView.elementKindSectionHeader {
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: AccountHeaderSupplementaryView.reusableIdentifier,
-                for: indexPath
-            ) as? AccountHeaderSupplementaryView else {
-                fatalError("Unexpected element kind")
-            }
-
-            headerView.bind(AccountHeaderSupplementaryViewModel(account: account, isActionEnabled: false))
-            return headerView
-        }
-        fatalError("Unexpected element kind")
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return CGSize(theme.cellSize)
     }
 }
 
-extension AssetRemovalViewController: BaseAssetCellDelegate {
-    func assetCellDidTapActionButton(_ assetCell: BaseAssetCell) {
-        guard let index = assetRemovalView.assetsCollectionView.indexPath(for: assetCell) else {
-            return
-        }
-        
-        guard index.item < account.assetDetails.count else {
-            return
-        }
-        
+extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
+    func assetPreviewSendCellDidTapSendButton(_ assetPreviewSendCell: AssetPreviewActionCell) {
+        guard let index = manageAssetsView.assetsCollectionView.indexPath(for: assetPreviewSendCell),
+              index.item < account.assetDetails.count else {
+                  return
+              }
+
         let assetDetail = account.assetDetails[index.item]
         guard let assetAmount = account.amount(for: assetDetail) else {
             return
         }
-        
+
         let assetAlertDraft: AssetAlertDraft
-        
+
         if assetAmount == 0 {
             assetAlertDraft = AssetAlertDraft(
                 account: account,
@@ -170,7 +133,8 @@ extension AssetRemovalViewController: BaseAssetCellDelegate {
                     "\(assetDetail.unitName ?? "title-unknown".localized)",
                     "\(account.name ?? "")"
                 ),
-                actionTitle: "title-proceed".localized
+                actionTitle: "title-remove".localized,
+                cancelTitle: "title-keep".localized
             )
         } else {
             assetAlertDraft = AssetAlertDraft(
@@ -183,63 +147,36 @@ extension AssetRemovalViewController: BaseAssetCellDelegate {
                     "\(assetDetail.unitName ?? "title-unknown".localized)",
                     "\(account.name ?? "")"
                 ),
-                actionTitle: "asset-transfer-balance".localized
+                actionTitle: "asset-transfer-balance".localized,
+                cancelTitle: "title-keep".localized
             )
         }
-        
+
         let controller = open(
             .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
             by: .customPresentWithoutNavigationController(
                 presentationStyle: .custom,
                 transitionStyle: nil,
                 transitioningDelegate: assetActionConfirmationPresenter
-                )
+            )
         ) as? AssetActionConfirmationViewController
-        
+
         controller?.delegate = self
     }
 }
 
-extension AssetRemovalViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        let width = UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right
-        let assetDetail = account.assetDetails[indexPath.item]
-        
-        if assetDetail.hasBothDisplayName() {
-            return CGSize(width: width, height: layout.current.multiItemHeight)
-        } else {
-            return CGSize(width: width, height: layout.current.itemHeight)
-        }
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        return CGSize(
-            width: UIScreen.main.bounds.width - layout.current.defaultSectionInsets.left - layout.current.defaultSectionInsets.right,
-            height: layout.current.itemHeight
-        )
-    }
-}
-
-extension AssetRemovalViewController: AssetActionConfirmationViewControllerDelegate {
+extension ManageAssetsViewController: AssetActionConfirmationViewControllerDelegate {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmedActionFor assetDetail: AssetDetail
     ) {
         guard let session = session,
-            session.canSignTransaction(for: &account) else {
-            return
-        }
+              session.canSignTransaction(for: &account) else {
+                  return
+              }
         
         if let assetAmount = account.amount(for: assetDetail),
-            assetAmount != 0 {
+           assetAmount != 0 {
             let controller = open(
                 .sendAssetTransactionPreview(
                     account: account,
@@ -277,15 +214,15 @@ extension AssetRemovalViewController: AssetActionConfirmationViewControllerDeleg
     }
 }
 
-extension AssetRemovalViewController: TransactionControllerDelegate {
+extension ManageAssetsViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
         guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
-            let removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
-            return
-        }
+              let removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
+                  return
+              }
 
         removedAssetDetail.isRemoved = true
-        delegate?.assetRemovalViewController(self, didRemove: removedAssetDetail, from: account)
+        delegate?.manageAssetsViewController(self, didRemove: removedAssetDetail, from: account)
         dismissScreen()
     }
     
@@ -348,30 +285,20 @@ extension AssetRemovalViewController: TransactionControllerDelegate {
     }
 }
 
-extension AssetRemovalViewController: SendAssetTransactionPreviewViewControllerDelegate {
+extension ManageAssetsViewController: SendAssetTransactionPreviewViewControllerDelegate {
     func sendAssetTransactionPreviewViewController(
         _ viewController: SendAssetTransactionPreviewViewController,
         didCompleteTransactionFor assetDetail: AssetDetail
     ) {
         removeAssetFromAccount(assetDetail)
-        delegate?.assetRemovalViewController(self, didRemove: assetDetail, from: account)
+        delegate?.manageAssetsViewController(self, didRemove: assetDetail, from: account)
         closeScreen(by: .dismiss, animated: false)
     }
 }
 
-extension AssetRemovalViewController {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
-        let itemHeight: CGFloat = 52.0
-        let multiItemHeight: CGFloat = 72.0
-        let modalHeight: CGFloat = 562
-        let footerHeight: CGFloat = 10.0
-    }
-}
-
-protocol AssetRemovalViewControllerDelegate: AnyObject {
-    func assetRemovalViewController(
-        _ assetRemovalViewController: AssetRemovalViewController,
+protocol ManageAssetsViewControllerDelegate: AnyObject {
+    func manageAssetsViewController(
+        _ manageAssetsViewController: ManageAssetsViewController,
         didRemove assetDetail: AssetDetail,
         from account: Account
     )

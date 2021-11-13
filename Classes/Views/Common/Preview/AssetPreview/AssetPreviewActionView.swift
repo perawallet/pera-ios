@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   AssetPreviewSendView.swift
+//   AssetPreviewActionView.swift
 
 import Macaroon
 
-final class AssetPreviewSendView: View {
-    weak var delegate: AssetPreviewSendViewDelegate?
+final class AssetPreviewActionView: View {
+    weak var delegate: AssetPreviewActionViewDelegate?
 
     private lazy var imageView = AssetImageView()
     private lazy var assetNameVerticalStackView = UIStackView()
@@ -26,7 +26,7 @@ final class AssetPreviewSendView: View {
     private lazy var assetNameLabel = UILabel()
     private lazy var secondaryImageView = UIImageView()
     private lazy var assetShortNameLabel = UILabel()
-    private lazy var sendButton = UIButton()
+    private lazy var actionButton = UIButton()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,10 +34,10 @@ final class AssetPreviewSendView: View {
         setListeners()
     }
 
-    func customize(_ theme: AssetPreviewSendViewTheme) {
+    func customize(_ theme: AssetPreviewActionViewTheme) {
         addImage(theme)
         addAssetNameVerticalStackView(theme)
-        addSendButton(theme)
+        addActionButton(theme)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -45,19 +45,19 @@ final class AssetPreviewSendView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func setListeners() {
-        sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
+        actionButton.addTarget(self, action: #selector(didTapActionButton), for: .touchUpInside)
     }
 }
 
-extension AssetPreviewSendView {
+extension AssetPreviewActionView {
     @objc
-    func didTapSendButton() {
-        delegate?.assetPreviewSendViewDidTapSendButton(self)
+    func didTapActionButton() {
+        delegate?.assetPreviewActionViewDidTapSendButton(self)
     }
 }
 
-extension AssetPreviewSendView {
-    private func addImage(_ theme: AssetPreviewSendViewTheme) {
+extension AssetPreviewActionView {
+    private func addImage(_ theme: AssetPreviewActionViewTheme) {
         addSubview(imageView)
 
         imageView.snp.makeConstraints {
@@ -68,7 +68,7 @@ extension AssetPreviewSendView {
         }
     }
 
-    private func addAssetNameVerticalStackView(_ theme: AssetPreviewSendViewTheme) {
+    private func addAssetNameVerticalStackView(_ theme: AssetPreviewActionViewTheme) {
         addSubview(assetNameVerticalStackView)
         assetNameVerticalStackView.axis = .vertical
 
@@ -82,7 +82,7 @@ extension AssetPreviewSendView {
         addAssetShortNameLabel(theme)
     }
 
-    private func addAssetNameHorizontalStackView(_ theme: AssetPreviewSendViewTheme) {
+    private func addAssetNameHorizontalStackView(_ theme: AssetPreviewActionViewTheme) {
         assetNameVerticalStackView.addArrangedSubview(assetNameHorizontalStackView)
         assetNameHorizontalStackView.spacing = theme.secondaryImageLeadingPadding
 
@@ -90,34 +90,34 @@ extension AssetPreviewSendView {
         addSecondaryImage(theme)
     }
 
-    private func addAssetNameLabel(_ theme: AssetPreviewSendViewTheme) {
+    private func addAssetNameLabel(_ theme: AssetPreviewActionViewTheme) {
         assetNameLabel.customizeAppearance(theme.accountName)
 
         assetNameHorizontalStackView.addArrangedSubview(assetNameLabel)
     }
 
-    private func addSecondaryImage(_ theme: AssetPreviewSendViewTheme) {
+    private func addSecondaryImage(_ theme: AssetPreviewActionViewTheme) {
         assetNameHorizontalStackView.addArrangedSubview(secondaryImageView)
     }
 
-    private func addAssetShortNameLabel(_ theme: AssetPreviewSendViewTheme) {
+    private func addAssetShortNameLabel(_ theme: AssetPreviewActionViewTheme) {
         assetShortNameLabel.customizeAppearance(theme.assetAndNFTs)
 
         assetNameVerticalStackView.addArrangedSubview(assetShortNameLabel)
     }
 
-    private func addSendButton(_ theme: AssetPreviewSendViewTheme) {
-        sendButton.customizeAppearance(theme.sendButton)
+    private func addActionButton(_ theme: AssetPreviewActionViewTheme) {
+        actionButton.customizeAppearance(theme.actionButton)
 
-        addSubview(sendButton)
-        sendButton.snp.makeConstraints {
+        addSubview(actionButton)
+        actionButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.centerY.equalTo(imageView.snp.centerY)
         }
     }
 }
 
-extension AssetPreviewSendView: ViewModelBindable {
+extension AssetPreviewActionView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
         imageView.bindData(viewModel)
         assetNameLabel.text = viewModel?.assetPrimaryTitle
@@ -126,6 +126,6 @@ extension AssetPreviewSendView: ViewModelBindable {
     }
 }
 
-protocol AssetPreviewSendViewDelegate: AnyObject {
-    func assetPreviewSendViewDidTapSendButton(_ assetPreviewSendView: AssetPreviewSendView)
+protocol AssetPreviewActionViewDelegate: AnyObject {
+    func assetPreviewActionViewDidTapSendButton(_ assetPreviewActionView: AssetPreviewActionView)
 }

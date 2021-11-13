@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//   PassphraseBackUpOrderViewTheme.swift
+//   PassphraseBackUpCellViewTheme.swift
 
 import Foundation
 import Macaroon
 import UIKit
 
-struct PassphraseBackUpOrderViewTheme: StyleSheet, LayoutSheet {
+struct PassphraseCellViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let numberLabel: TextStyle
     let phraseLabel: TextStyle

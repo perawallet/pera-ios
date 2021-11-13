@@ -17,62 +17,78 @@
 
 import UIKit
 
-class OptionsViewModel {
-
+final class OptionsViewModel {
     private(set) var image: UIImage?
     private(set) var title: String?
+    private(set) var subtitle: String?
     private(set) var titleColor: UIColor?
 
     init(option: OptionsViewController.Options, account: Account) {
-        setImage(for: option, with: account)
-        setTitle(for: option, with: account)
-        setTitleColor(for: option)
+        bindImage(for: option, with: account)
+        bindTitle(for: option, with: account)
+        bindSubtitle(for: option, with: account)
+        bindTitleColor(for: option)
     }
+}
 
-    private func setImage(for option: OptionsViewController.Options, with account: Account) {
+extension OptionsViewModel {
+    private func bindImage(for option: OptionsViewController.Options, with account: Account) {
         switch option {
         case .rekey:
             image = img("icon-options-rekey")
         case .rekeyInformation:
             image = img("icon-qr")
         case .removeAsset:
-            image = img("icon-trash")
-        case .passphrase:
-            image = img("icon-lock")
-        case .notificationSetting:
+            image = img("icon-polygon")
+        case .viewPassphrase:
+            image = img("icon-options-view-passphrase")
+        case .muteNotifications:
             image = account.receivesNotification ? img("icon-options-mute-notification") : img("icon-options-unmute-notification")
-        case .edit:
+        case .renameAccount:
             image = img("icon-edit-account")
         case .removeAccount:
             image = img("icon-remove-account")
+        case .copyAddress:
+            image = img("icon-copy")
         }
     }
 
-    private func setTitle(for option: OptionsViewController.Options, with account: Account) {
+    private func bindTitle(for option: OptionsViewController.Options, with account: Account) {
         switch option {
         case .rekey:
             title = "options-rekey".localized
         case .rekeyInformation:
             title = "options-auth-account".localized
         case .removeAsset:
-            title = "options-remove-assets".localized
-        case .passphrase:
+            title = "options-manage-assets".localized
+        case .viewPassphrase:
             title = "options-view-passphrase".localized
-        case .notificationSetting:
+        case .muteNotifications:
             title = account.receivesNotification ? "options-mute-notification".localized : "options-unmute-notification".localized
-        case .edit:
+        case .renameAccount:
             title = "options-edit-account-name".localized
         case .removeAccount:
             title = "options-remove-account".localized
+        case .copyAddress:
+            title = "options-copy-address".localized
         }
     }
 
-    private func setTitleColor(for option: OptionsViewController.Options) {
+    private func bindTitleColor(for option: OptionsViewController.Options) {
         switch option {
         case .removeAccount:
-            titleColor = Colors.General.error
+            titleColor = AppColors.Shared.Helpers.negative.color
         default:
-            titleColor = Colors.Text.primary
+            titleColor = AppColors.Components.Text.main.color
+        }
+    }
+
+    private func bindSubtitle(for option: OptionsViewController.Options, with account: Account) {
+        switch option {
+        case .copyAddress:
+            subtitle = account.address
+        default:
+            break
         }
     }
 }

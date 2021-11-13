@@ -13,16 +13,16 @@
 // limitations under the License.
 
 //
-//  PassphraseBackUpOrderView.swift
+//  PassphraseCellView.swift
 
 import UIKit
 import Macaroon
 
-final class PassphraseBackUpOrderView: View {
+final class PassphraseCellView: View {
     private lazy var numberLabel = UILabel()
     private lazy var phraseLabel = UILabel()
 
-    func customize(_ theme: PassphraseBackUpOrderViewTheme) {
+    func customize(_ theme: PassphraseCellViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addNumberLabel(theme)
@@ -34,8 +34,8 @@ final class PassphraseBackUpOrderView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
 
-extension PassphraseBackUpOrderView {
-    private func addNumberLabel(_ theme: PassphraseBackUpOrderViewTheme) {
+extension PassphraseCellView {
+    private func addNumberLabel(_ theme: PassphraseCellViewTheme) {
         numberLabel.customizeAppearance(theme.numberLabel)
 
         addSubview(numberLabel)
@@ -45,7 +45,7 @@ extension PassphraseBackUpOrderView {
         }
     }
     
-    private func addPhraseLabel(_ theme: PassphraseBackUpOrderViewTheme) {
+    private func addPhraseLabel(_ theme: PassphraseCellViewTheme) {
         phraseLabel.customizeAppearance(theme.phraseLabel)
         
         addSubview(phraseLabel)
@@ -60,8 +60,8 @@ extension PassphraseBackUpOrderView {
     }
 }
 
-extension PassphraseBackUpOrderView: ViewModelBindable {
-    func bindData(_ viewModel: PassphraseBackUpOrderViewModel?) {
+extension PassphraseCellView: ViewModelBindable {
+    func bindData(_ viewModel: PassphraseCellViewModel?) {
         numberLabel.text = viewModel?.number
         phraseLabel.text = viewModel?.phrase
     }

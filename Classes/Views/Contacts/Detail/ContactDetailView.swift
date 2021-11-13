@@ -32,7 +32,7 @@ final class ContactDetailView: View {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.color
-        collectionView.registerCell(AssetPreviewSendCell.self)
+        collectionView.registerCell(AssetPreviewActionCell.self)
         return collectionView
     }()
 

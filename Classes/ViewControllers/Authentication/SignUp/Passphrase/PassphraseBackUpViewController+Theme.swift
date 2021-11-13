@@ -19,12 +19,16 @@ import Macaroon
 
 extension PassphraseBackUpViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let passphraseViewTheme: PassphraseViewTheme
+        let passphraseBackUpViewTheme: PassphraseBackUpViewTheme
         let backgroundColor: Color
+        let modalSize: LayoutSize
+        let cellHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            passphraseViewTheme = PassphraseViewTheme()
+            passphraseBackUpViewTheme = PassphraseBackUpViewTheme()
             backgroundColor = AppColors.Shared.System.background
+            modalSize = (UIScreen.main.bounds.width, 338)
+            cellHeight = 24
         }
     }
 }
