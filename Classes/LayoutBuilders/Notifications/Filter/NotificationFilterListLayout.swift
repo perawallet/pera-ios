@@ -16,9 +16,10 @@
 //  NotificationFilterListLayout.swift
 
 import UIKit
+import Macaroon
 
 final class NotificationFilterListLayout: NSObject {
-    private let layout = Layout<LayoutConstants>()
+    private let theme = Theme()
 
     private weak var dataSource: NotificationFilterDataSource?
 
@@ -34,7 +35,7 @@ extension NotificationFilterListLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return layout.current.cellSize
+        return CGSize(theme.cellSize)
     }
 
     func collectionView(
@@ -46,13 +47,18 @@ extension NotificationFilterListLayout: UICollectionViewDelegateFlowLayout {
             return .zero
         }
 
-        return layout.current.headerSize
+        return CGSize(theme.headerSize)
     }
 }
 
 extension NotificationFilterListLayout {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellSize = CGSize(width: UIScreen.main.bounds.width, height: 64)
-        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 64)
+    private struct Theme: LayoutSheet, StyleSheet {
+        let cellSize: LayoutSize
+        let headerSize: LayoutSize
+
+        init(_ family: LayoutFamily) {
+            cellSize = (UIScreen.main.bounds.width, 64)
+            headerSize = (UIScreen.main.bounds.width, 64)
+        }
     }
 }
