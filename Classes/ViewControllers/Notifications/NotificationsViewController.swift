@@ -18,17 +18,11 @@
 import UIKit
 import Magpie
 
-class NotificationsViewController: BaseViewController {
-    
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-
-    private lazy var isConnectedToInternet = api?.networkMonitor?.isConnected ?? true
-    
-    private lazy var notificationsView = NotificationsView()
-    
+final class NotificationsViewController: BaseViewController {
     private var isInitialFetchCompleted = false
+    private lazy var isConnectedToInternet = api?.networkMonitor?.isConnected ?? true
+
+    private lazy var notificationsView = NotificationsView()
     
     private lazy var dataSource: NotificationsDataSource = {
         guard let api = api else {
@@ -36,10 +30,6 @@ class NotificationsViewController: BaseViewController {
         }
         return NotificationsDataSource(api: api)
     }()
-
-    override func customizeTabBarAppearence() {
-        isTabBarHidden = false
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +38,7 @@ class NotificationsViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         if isInitialFetchCompleted {
             reloadNotifications()
         }
@@ -78,18 +68,45 @@ class NotificationsViewController: BaseViewController {
     }
     
     override func prepareLayout() {
-        setupNotificationsViewLayout()
+        view.addSubview(notificationsView)
+        notificationsView.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.top.safeEqualToTop(of: self)
+        }
+    }
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        title = "notifications-title".localized
+        addBarButtons()
     }
 }
 
 extension NotificationsViewController {
-    private func setupNotificationsViewLayout() {
-        view.addSubview(notificationsView)
-        
-        notificationsView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.top.safeEqualToTop(of: self)
+    private func addBarButtons() {
+        let backBarButtonItem = ALGBarButtonItem(kind: .back) {
+            [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
         }
+
+        leftBarButtonItems = [backBarButtonItem]
+
+        let filterBarButtonItem = ALGBarButtonItem(kind: .filter) {
+            [unowned self] in
+            self.openNotificationFilters()
+        }
+
+        rightBarButtonItems = [filterBarButtonItem]
+    }
+
+    private func openNotificationFilters() {
+        open(
+            .notificationFilter(flow: .notifications),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
+        )
     }
 }
 
@@ -117,9 +134,9 @@ extension NotificationsViewController {
 extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let notification = dataSource.notification(at: indexPath.item),
-            let notificationDetail = notification.detail else {
-            return
-        }
+              let notificationDetail = notification.detail else {
+                  return
+              }
         
         openAssetDetail(from: notificationDetail)
     }
@@ -135,7 +152,7 @@ extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return NotificationCell.calculatePreferredSize(dataSource.viewModel(at: indexPath.item))
+        return NotificationCell.calculatePreferredSize(dataSource.viewModel(at: indexPath.item), with: NotificationViewTheme())
     }
     
     private func openAssetDetail(from notificationDetail: NotificationDetail) {
@@ -189,21 +206,6 @@ extension NotificationsViewController: NotificationsViewDelegate {
         dataSource.clear()
         notificationsView.reloadData()
         getNotifications()
-    }
-
-    func notificationsViewDidOpenNotificationFilters(_ notificationsView: NotificationsView) {
-        openNotificationFilters()
-    }
-
-    private func openNotificationFilters() {
-        open(
-            .notificationFilter(flow: .notifications),
-            by: .customPresent(
-                presentationStyle: .fullScreen,
-                transitionStyle: nil,
-                transitioningDelegate: nil
-            )
-        )
     }
 }
 

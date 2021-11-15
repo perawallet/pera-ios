@@ -18,8 +18,9 @@
 import UIKit
 import Magpie
 
-class NotificationsDataSource: NSObject {
-    
+final class NotificationsDataSource: NSObject {
+    weak var delegate: NotificationsDataSourceDelegate?
+
     private let api: AlgorandAPI
     private var notifications = [NotificationMessage]()
     private var viewModels = [NotificationsViewModel]()
@@ -28,11 +29,10 @@ class NotificationsDataSource: NSObject {
     
     private let paginationRequestThreshold = 3
     private var paginationCursor: String?
+
     var hasNext: Bool {
         return paginationCursor != nil
     }
-    
-    weak var delegate: NotificationsDataSourceDelegate?
 
     init(api: AlgorandAPI) {
         self.api = api
@@ -123,14 +123,9 @@ extension NotificationsDataSource: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.item < notifications.count {
-            if let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: NotificationCell.reusableIdentifier,
-                for: indexPath
-            ) as? NotificationCell,
-                let viewModel = viewModel(at: indexPath.item) {
-                viewModel.configure(cell)
-                return cell
-            }
+            let cell: NotificationCell = collectionView.dequeueReusableCell(for: indexPath)
+            cell.bindData(viewModel(at: indexPath.item))
+            return cell
         }
         fatalError("Index path is out of bounds")
     }

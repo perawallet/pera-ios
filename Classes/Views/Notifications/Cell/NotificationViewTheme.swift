@@ -1,0 +1,69 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//
+//   NotificationViewTheme.swift
+
+import Foundation
+import Macaroon
+import UIKit
+
+struct NotificationViewTheme: StyleSheet, LayoutSheet {
+    let backgroundColor: Color
+    let badgeImage: ImageStyle
+    let titleLabel: TextStyle
+    let timeLabel: TextStyle
+    let cellSpacing: LayoutMetric
+    let topInset: LayoutMetric
+    let collectionViewEdgeInsets: LayoutPaddings
+
+    let badgeImageSize: LayoutSize
+    let notificationImageSize: LayoutSize
+    let badgeImageTopPadding: LayoutMetric
+    let badgeImageHorizontalPaddings: LayoutHorizontalPaddings
+    let notificationImageTopPadding: LayoutMetric
+    let titleLabelLeadingPadding: LayoutMetric
+    let timeLabelVerticalPaddings: LayoutVerticalPaddings
+    let horizontalPadding: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
+        self.badgeImage = [
+            .content("img-nc-item-badge")
+        ]
+        self.titleLabel = [
+            .textAlignment(.left),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.regular.make(15))
+        ]
+        self.timeLabel = [
+            .textAlignment(.left),
+            .textOverflow(.singleLineFitting),
+            .textColor(AppColors.Components.Text.grayLighter),
+            .font(Fonts.DMSans.regular.make(13))
+        ]
+
+        self.badgeImageTopPadding = 36
+        self.badgeImageHorizontalPaddings = (12, 8)
+        self.notificationImageTopPadding = 16
+        self.titleLabelLeadingPadding = 12
+        self.timeLabelVerticalPaddings = (4, 16)
+        self.cellSpacing = 0
+        self.collectionViewEdgeInsets = (0, 0, 20, 0)
+        self.topInset = 10
+        self.horizontalPadding = 24
+        self.notificationImageSize = (40, 40)
+        self.badgeImageSize = (4, 4)
+    }
+}

@@ -13,21 +13,21 @@
 // limitations under the License.
 
 //
-//  NotificationCell.swift
+//   NotificationsViewTheme.swift
 
+import Foundation
+import Macaroon
 import UIKit
 
-final class NotificationCell: BaseCollectionViewCell<NotificationView> {
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contextView.reset()
-    }
-    
-    func bindData(_ viewModel: NotificationsViewModel?) {
-        contextView.bindData(viewModel)
-    }
-    
-    static func calculatePreferredSize(_ viewModel: NotificationsViewModel?, with theme: NotificationViewTheme) -> CGSize {
-        return NotificationView.calculatePreferredSize(viewModel, with: theme)
+struct NotificationsViewTheme: StyleSheet, LayoutSheet {
+    let backgroundColor: Color
+    let cellSpacing: LayoutMetric
+    let contentInset: LayoutPaddings
+
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
+
+        self.cellSpacing = 0
+        self.contentInset = (24, 0, 0, 0)
     }
 }

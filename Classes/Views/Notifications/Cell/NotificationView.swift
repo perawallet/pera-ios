@@ -16,166 +16,126 @@
 //  NotificationView.swift
 
 import UIKit
+import Macaroon
 
-class NotificationView: BaseView {
+final class NotificationView: View {
+    private lazy var theme = NotificationViewTheme()
     
-    private let layout = Layout<LayoutConstants>()
-    
-    private lazy var badgeImageView: UIImageView = {
-        let imageView = UIImageView(image: img("img-nc-item-badge"))
-        imageView.isHidden = true
-        return imageView
-    }()
-    
-    private lazy var notificationImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.backgroundColor = Colors.Background.reversePrimary
-        imageView.layer.cornerRadius = layout.current.notificationImageSize.width / 2
-        imageView.clipsToBounds = true
-        imageView.contentMode = .center
-        return imageView
-    }()
-    
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withLine(.contained)
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-    }()
-    
-    private lazy var timeLabel: UILabel = {
-        UILabel()
-            .withLine(.single)
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(Colors.Text.secondary)
-    }()
-    
-    private lazy var separatorView = LineSeparatorView()
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
+    private lazy var badgeImageView = UIImageView()
+    private lazy var notificationImageView = UIImageView()
+    private lazy var titleLabel = UILabel()
+    private lazy var timeLabel = UILabel()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(theme)
     }
-    
-    override func prepareLayout() {
-        setupBadgeImageViewLayout()
-        setupNotificationImageViewLayout()
-        setupTitleLabelLayout()
-        setupTimeLabelLayout()
-        setupSeparatorViewLayout()
+
+    func customize(_ theme: NotificationViewTheme) {
+        addBadgeImageView(theme)
+        addNotificationImageView(theme)
+        addTitleLabel(theme)
+        addTimeLabel(theme)
     }
+
+    func prepareLayout(_ layoutSheet: NotificationViewTheme) {}
+
+    func customizeAppearance(_ styleSheet: NotificationViewTheme) {}
 }
 
 extension NotificationView {
-    private func setupBadgeImageViewLayout() {
+    private func addBadgeImageView(_ theme: NotificationViewTheme) {
+        badgeImageView.customizeAppearance(theme.badgeImage)
+
         addSubview(badgeImageView)
-        
-        badgeImageView.snp.makeConstraints { make in
-            make.size.equalTo(layout.current.badgeImageSize)
-            make.top.equalToSuperview().inset(layout.current.badgeImageTopInset)
-            make.leading.equalToSuperview().inset(layout.current.badgeImageHorizontalInset)
+        badgeImageView.snp.makeConstraints {
+            $0.fitToSize(theme.badgeImageSize)
+            $0.top.equalToSuperview().inset(theme.badgeImageTopPadding)
+            $0.leading.equalToSuperview().inset(theme.badgeImageHorizontalPaddings.leading)
         }
+
+        badgeImageView.isHidden = true
     }
     
-    private func setupNotificationImageViewLayout() {
+    private func addNotificationImageView(_ theme: NotificationViewTheme) {
+        notificationImageView.layer.cornerRadius = theme.notificationImageSize.h / 2
+        notificationImageView.clipsToBounds = true
+        notificationImageView.contentMode = .center
+
         addSubview(notificationImageView)
-        
-        notificationImageView.snp.makeConstraints { make in
-            make.size.equalTo(layout.current.notificationImageSize)
-            make.top.equalToSuperview().inset(layout.current.notificationImageTopInset)
-            make.leading.equalTo(badgeImageView.snp.trailing).offset(layout.current.badgeImageHorizontalInset)
+        notificationImageView.snp.makeConstraints {
+            $0.fitToSize(theme.notificationImageSize)
+            $0.top.equalToSuperview().inset(theme.notificationImageTopPadding)
+            $0.leading.equalTo(badgeImageView.snp.trailing).offset(theme.badgeImageHorizontalPaddings.trailing)
         }
     }
     
-    private func setupTitleLabelLayout() {
+    private func addTitleLabel(_ theme: NotificationViewTheme) {
+        titleLabel.customizeAppearance(theme.titleLabel)
+
         addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.titleLabelInset)
-            make.leading.equalTo(notificationImageView.snp.trailing).offset(layout.current.titleLabelInset)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        titleLabel.snp.makeConstraints {
+            $0.top.equalTo(notificationImageView)
+            $0.leading.equalTo(notificationImageView.snp.trailing).offset(theme.titleLabelLeadingPadding)
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
     
-    private func setupTimeLabelLayout() {
+    private func addTimeLabel(_ theme: NotificationViewTheme) {
+        timeLabel.customizeAppearance(theme.timeLabel)
+
         addSubview(timeLabel)
-        
-        timeLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.timeLabelTopInset)
-            make.leading.equalTo(titleLabel)
-        }
-    }
-    
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        timeLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.timeLabelVerticalPaddings.top)
+            $0.bottom.equalToSuperview().inset(theme.timeLabelVerticalPaddings.bottom)
+            $0.leading.equalTo(titleLabel)
         }
     }
 }
 
 extension NotificationView {
-    func setBadgeHidden(_ hidden: Bool) {
-        badgeImageView.isHidden = hidden
-    }
-    
-    func setNotificationImage(_ image: UIImage?) {
-        notificationImageView.image = image
-    }
-    
-    func setAttributedTitle(_ title: NSAttributedString?) {
-        titleLabel.attributedText = title
-    }
-    
-    func setTime(_ time: String?) {
-        timeLabel.text = time
-    }
-    
     func reset() {
-        setBadgeHidden(true)
-        setNotificationImage(nil)
-        setAttributedTitle(nil)
-        setTime(nil)
+        badgeImageView.isHidden = true
+        notificationImageView.image = nil
+        titleLabel.attributedText = nil
+        timeLabel.text = nil
     }
-    
-    static func calculatePreferredSize(_ viewModel: NotificationsViewModel?, with layout: Layout<LayoutConstants>) -> CGSize {
+}
+
+extension NotificationView: ViewModelBindable {
+    func bindData(_ viewModel: NotificationsViewModel?) {
+        badgeImageView.isHidden = viewModel?.isRead ?? true
+        notificationImageView.image = viewModel?.notificationImage
+        titleLabel.attributedText = viewModel?.title
+        timeLabel.text = viewModel?.time
+    }
+}
+
+extension NotificationView {
+    static func calculatePreferredSize(_ viewModel: NotificationsViewModel?, with theme: NotificationViewTheme) -> CGSize {
         guard let viewModel = viewModel else {
             return .zero
         }
-        
+
         let width = UIScreen.main.bounds.width
-        let constantHeight = layout.current.timeLabelTopInset + layout.current.timeLabelBottomInset + layout.current.titleLabelInset
+        let constantHeight =
+        theme.timeLabelVerticalPaddings.top +
+        theme.timeLabelVerticalPaddings.bottom +
+        theme.notificationImageTopPadding
+
         let titleLabelHeight = viewModel.title?.string.height(
             withConstrained: width - (
-                layout.current.badgeImageSize.width +
-                    (layout.current.badgeImageHorizontalInset * 2) +
-                    layout.current.notificationImageSize.width +
-                    layout.current.titleLabelInset +
-                    layout.current.horizontalInset
+                theme.badgeImageSize.w +
+                (theme.badgeImageHorizontalPaddings.leading + theme.badgeImageHorizontalPaddings.trailing) +
+                theme.notificationImageSize.w +
+                theme.titleLabelLeadingPadding +
+                theme.horizontalPadding
             ),
-            font: UIFont.font(withWeight: .regular(size: 14.0))
-        ) ?? 40.0
-        let timeLabelHeight: CGFloat = 20.0
+            font: Fonts.DMSans.regular.make(15).font
+        ) ?? 40
+        let timeLabelHeight: CGFloat = 17
         let height: CGFloat = constantHeight + titleLabelHeight + timeLabelHeight
         return CGSize(width: width, height: height)
-    }
-}
-
-extension NotificationView {
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        let badgeImageSize = CGSize(width: 4.0, height: 4.0)
-        let badgeImageTopInset: CGFloat = 36.0
-        let badgeImageHorizontalInset: CGFloat = 8.0
-        let notificationImageTopInset: CGFloat = 20.0
-        let titleLabelInset: CGFloat = 16.0
-        let timeLabelTopInset: CGFloat = 4.0
-        let timeLabelBottomInset: CGFloat = 16.0
-        let notificationImageSize = CGSize(width: 36.0, height: 36.0)
-        let horizontalInset: CGFloat = 20.0
-        let separatorHeight: CGFloat = 1.0
     }
 }
