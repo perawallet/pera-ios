@@ -15,20 +15,38 @@
 //
 //   AlgorandApplication.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class AlgorandApplication: ResponseModel {
+final class AlgorandApplication: ALGResponseModel {
+    var debugData: Data?
+    
     var createdAtRound: UInt64?
     var isDeleted: Bool?
     var id: Int64?
-    var deletedInAtRound: UInt64?
+    var deletedAtRound: UInt64?
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.createdAtRound = apiModel.createdAtRound
+        self.isDeleted = apiModel.deleted
+        self.id = apiModel.id
+        self.deletedAtRound = apiModel.deletedAtRound
+    }
 }
 
 extension AlgorandApplication {
-    enum CodingKeys: String, CodingKey {
-        case createdAtRound = "created-at-round"
-        case isDeleted = "deleted"
-        case id = "id"
-        case deletedInAtRound = "deleted-at-round"
+    struct APIModel: ALGAPIModel {
+        let createdAtRound: UInt64?
+        let deleted: Bool?
+        let id: Int64?
+        let deletedAtRound: UInt64?
+
+        init() {
+            self.createdAtRound = nil
+            self.deleted = nil
+            self.id = nil
+            self.deletedAtRound = nil
+        }
     }
 }

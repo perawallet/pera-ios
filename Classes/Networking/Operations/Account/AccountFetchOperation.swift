@@ -22,12 +22,12 @@ typealias AccountFetchHandler = (Account?, Error?) -> Void
 
 class AccountFetchOperation: AsyncOperation {
     let accountInformation: AccountInformation
-    let api: AlgorandAPI
+    let api: ALGAPI
     
     var onStarted: EmptyHandler?
     var onCompleted: AccountFetchHandler?
     
-    init(accountInformation: AccountInformation, api: AlgorandAPI) {
+    init(accountInformation: AccountInformation, api: ALGAPI) {
         self.accountInformation = accountInformation
         self.api = api
         super.init()
@@ -38,7 +38,7 @@ class AccountFetchOperation: AsyncOperation {
             return
         }
         
-        api.fetchAccount(with: AccountFetchDraft(publicKey: accountInformation.address)) { response in
+        api.fetchAccount(AccountFetchDraft(publicKey: accountInformation.address)) { response in
             switch response {
             case .success(let accountWrapper):
                 accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
@@ -81,7 +81,7 @@ extension AccountFetchOperation {
                     self.onCompleted?(account, nil)
                 }
             } else {
-                self.api.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
+                self.api.getAssetDetails(AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
                     switch assetResponse {
                     case .success(let assetDetailResponse):
                         self.composeAssetDetail(

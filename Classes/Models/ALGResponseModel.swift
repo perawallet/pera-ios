@@ -13,13 +13,16 @@
 // limitations under the License.
 
 //
-//  Feedback.swift
+//   ALGResponseModel.swift
 
+import Foundation
 import MagpieCore
 
-class Feedback: ResponseModel {
-    let id: Int
-    let note: String
-    let email: String?
-    let category: String
+protocol ALGResponseModel: ResponseModel where APIModel: ALGAPIModel {}
+
+extension Array: ALGResponseModel where Element: ALGResponseModel {
+    typealias APIModel = [Element.APIModel]
 }
+
+extension Array: ALGAPIModel where Element: ALGAPIModel {}
+

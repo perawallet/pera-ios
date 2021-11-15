@@ -15,24 +15,40 @@
 //
 //  Currency.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class Currency: ResponseModel {
+final class Currency: ALGResponseModel {
+    var debugData: Data?
+
     let id: String
     let name: String?
     let price: String?
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.id = apiModel.currencyId
+        self.name = apiModel.name
+        self.price = apiModel.exchangePrice
+    }
+}
+
+extension Currency {
+    struct APIModel: ALGAPIModel {
+        let currencyId: String
+        let name: String?
+        let exchangePrice: String?
+
+        init() {
+            self.currencyId = "USD"
+            self.name = nil
+            self.exchangePrice = nil
+        }
+    }
 }
 
 extension Currency: Equatable {
     static func == (lhs: Currency, rhs: Currency) -> Bool {
         return lhs.id == rhs.id
-    }
-}
-
-extension Currency {
-    private enum CodingKeys: String, CodingKey {
-        case id = "currency_id"
-        case name = "name"
-        case price = "exchange_price"
     }
 }

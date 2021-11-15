@@ -15,22 +15,42 @@
 //
 //  NotificationAsset.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class NotificationAsset: ResponseModel {
+final class NotificationAsset: ALGResponseModel {
+    var debugData: Data?
+
     let id: Int64?
     let name: String?
     let code: String?
     let url: String?
     let fractionDecimals: Int?
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.id = apiModel.assetId
+        self.name = apiModel.assetName
+        self.code = apiModel.unitName
+        self.url = apiModel.url
+        self.fractionDecimals = apiModel.fractionDecimals
+    }
 }
 
 extension NotificationAsset {
-    enum CodingKeys: String, CodingKey {
-        case id = "asset_id"
-        case name = "asset_name"
-        case code = "unit_name"
-        case url = "url"
-        case fractionDecimals = "fraction_decimals"
+    struct APIModel: ALGAPIModel {
+        let assetId: Int64?
+        let assetName: String?
+        let unitName: String?
+        let url: String?
+        let fractionDecimals: Int?
+
+        init() {
+            self.assetId = nil
+            self.assetName = nil
+            self.unitName = nil
+            self.url = nil
+            self.fractionDecimals = nil
+        }
     }
 }

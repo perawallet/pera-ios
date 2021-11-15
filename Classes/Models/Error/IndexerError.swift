@@ -15,11 +15,30 @@
 //
 //  IndexerError.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class IndexerError: ResponseModel {
+final class IndexerError: ALGResponseModel {
+    var debugData: Data?
+
     let message: String
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.message = apiModel.message
+    }
 }
+
+extension IndexerError {
+    struct APIModel: ALGAPIModel {
+        let message: String
+
+        init() {
+            self.message = ""
+        }
+    }
+}
+
 
 extension IndexerError {
     func containsAccount(_ address: String) -> Bool {

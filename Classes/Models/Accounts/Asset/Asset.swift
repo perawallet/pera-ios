@@ -15,23 +15,43 @@
 //
 //  Asset.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class Asset: ResponseModel {
+final class Asset: ALGResponseModel {
+    var debugData: Data?
+    
     let creator: String?
     let amount: UInt64
     let isFrozen: Bool?
     let id: Int64
     let isDeleted: Bool?
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.creator = apiModel.creator
+        self.amount = apiModel.amount
+        self.isFrozen = apiModel.isFrozen
+        self.id = apiModel.assetId
+        self.isDeleted = apiModel.deleted
+    }
 }
 
 extension Asset {
-    enum CodingKeys: String, CodingKey {
-        case creator = "creator"
-        case amount = "amount"
-        case isFrozen = "is-frozen"
-        case id = "asset-id"
-        case isDeleted = "deleted"
+    struct APIModel: ALGAPIModel {
+        let creator: String?
+        let amount: UInt64
+        let isFrozen: Bool?
+        let assetId: Int64
+        let deleted: Bool?
+
+        init() {
+            self.creator = nil
+            self.amount = 10
+            self.isFrozen = nil
+            self.assetId = 1
+            self.deleted = nil
+        }
     }
 }
 

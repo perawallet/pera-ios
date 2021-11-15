@@ -20,9 +20,9 @@ import Foundation
 
 class TransactionAPIConnector {
 
-    private var api: AlgorandAPI
+    private var api: ALGAPI
 
-    init(api: AlgorandAPI) {
+    init(api: ALGAPI) {
         self.api = api
     }
 
@@ -38,7 +38,7 @@ class TransactionAPIConnector {
     }
 
     func uploadTransaction(_ signedTransaction: Data, then completion: @escaping (TransactionID?, APIError?) -> Void) {
-        api.sendTransaction(with: signedTransaction) { transactionIdResponse in
+        api.sendTransaction(signedTransaction) { transactionIdResponse in
             switch transactionIdResponse {
             case let .success(transactionId):
                 self.api.trackTransaction(with: TransactionTrackDraft(transactionId: transactionId.identifier))

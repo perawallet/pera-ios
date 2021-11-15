@@ -17,7 +17,10 @@
 
 import MagpieCore
 
-enum RequestParameter: String, CodingKey {
+typealias APIQueryParam = ObjectQueryParam<APIParamKey>
+typealias APIBodyParam = JSONObjectBodyParam<APIParamKey>
+
+enum APIParamKey: String, CodingKey {
     case address = "address"
     case firstRound = "firstRound"
     case lastRound = "lastRound"
@@ -66,6 +69,3 @@ enum RequestParameter: String, CodingKey {
     case interval = "interval"
     case includesAll = "include-all"
 }
-
-typealias QueryParam = ObjectQueryKeyedParam<RequestParameter>
-typealias BodyParam = JSONBodyKeyedParam<RequestParameter>

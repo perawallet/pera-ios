@@ -17,6 +17,7 @@
 
 import UIKit
 import MagpieCore
+import MacaroonUtils
 
 class WCMainTransactionViewController: BaseViewController {
 
@@ -294,9 +295,7 @@ extension WCMainTransactionViewController: WCTransactionSignerDelegate {
     }
 
     private func continueSigningTransactions(after transaction: WCTransaction) {
-        if let index = transactions.firstIndex(of: transaction),
-           let nextTransaction = transactions.nextElement(afterElementAt: index) {
-
+        if let nextTransaction = transactions.element(after: transaction) {
             if let signerAccount = nextTransaction.signerAccount {
                 wcTransactionSigner.signTransaction(nextTransaction, with: transactionRequest, for: signerAccount)
             } else {

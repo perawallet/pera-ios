@@ -16,10 +16,8 @@
 //  LedgerDetail.swift
 
 import Foundation
-import UIKit
-import MagpieCore
 
-class LedgerDetail: ResponseModel {
+final class LedgerDetail: Codable {
     let id: UUID?
     let name: String?
     var indexInLedger: Int?

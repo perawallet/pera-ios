@@ -17,31 +17,29 @@
 
 import MagpieCore
 
-extension AlgorandAPI {
+extension ALGAPI {
     @discardableResult
     func getCurrencies(
-        then handler: @escaping (Response.ModelResult<[Currency]>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<[Currency]>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(mobileApiBase)
-            .path("/api/currencies/")
-            .headers(mobileApiHeaders())
+            .base(.mobile)
+            .path(.currencies)
+            .method(.get)
             .completionHandler(handler)
-            .build()
-            .send()
+            .execute()
     }
     
     @discardableResult
     func getCurrencyValue(
-        for currencyId: String,
-        then handler: @escaping (Response.ModelResult<Currency>) -> Void
+        _ currencyId: String,
+        onCompleted handler: @escaping (Response.ModelResult<Currency>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(mobileApiBase)
-            .path("/api/currencies/\(currencyId)/")
-            .headers(mobileApiHeaders())
+            .base(.mobile)
+            .path(.currencyDetail, args: currencyId)
+            .method(.get)
             .completionHandler(handler)
-            .build()
-            .send()
+            .execute()
     }
 }

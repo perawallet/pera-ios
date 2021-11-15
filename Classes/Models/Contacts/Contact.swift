@@ -19,7 +19,7 @@ import MagpieCore
 import CoreData
 
 @objc(Contact)
-public final class Contact: NSManagedObject, Model {
+public final class Contact: NSManagedObject, Codable {
     @NSManaged public var identifier: String?
     @NSManaged public var address: String?
     @NSManaged public var image: Data?
@@ -62,8 +62,6 @@ extension Contact {
         case name = "name"
     }
 }
-
-extension Contact: Encodable { }
 
 extension Contact {
     static let entityName = "Contact"

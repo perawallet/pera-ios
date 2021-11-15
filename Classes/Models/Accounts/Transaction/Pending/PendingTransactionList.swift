@@ -15,16 +15,30 @@
 //
 //  PendingTransactionList.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class PendingTransactionList: ResponseModel {
+final class PendingTransactionList: ALGResponseModel {
+    var debugData: Data?
+
     var pendingTransactions: [PendingTransaction]
     var count: Int
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.pendingTransactions = apiModel.topTransactions.unwrapMap(PendingTransaction.init)
+        self.count = apiModel.totalTransactions
+    }
 }
 
 extension PendingTransactionList {
-    private enum CodingKeys: String, CodingKey {
-        case pendingTransactions = "top-transactions"
-        case count = "total-transactions"
+    struct APIModel: ALGAPIModel {
+        let topTransactions: [PendingTransaction.APIModel]?
+        let totalTransactions: Int
+
+        init() {
+            self.topTransactions = []
+            self.totalTransactions = 0
+        }
     }
 }

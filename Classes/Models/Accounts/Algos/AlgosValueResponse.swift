@@ -15,9 +15,30 @@
 //
 //   AlgosValueResponse.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class AlgosValueResponse: ResponseModel {
+final class AlgosValueResponse: ALGResponseModel {
+    var debugData: Data?
+    
     let coin: String
     let history: [AlgosUSDValue]
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.coin = apiModel.coin
+        self.history = apiModel.history.unwrapMap(AlgosUSDValue.init)
+    }
+}
+
+extension AlgosValueResponse {
+    struct APIModel: ALGAPIModel {
+        let coin: String
+        let history: [AlgosUSDValue.APIModel]?
+
+        init() {
+            self.coin = "ALGO"
+            self.history = []
+        }
+    }
 }

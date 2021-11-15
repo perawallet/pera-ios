@@ -17,7 +17,7 @@
 
 import Foundation
 
-class WCPeerMeta: Codable {
+final class WCPeerMeta: Codable {
     let id: String
     let name: String
     let description: String?

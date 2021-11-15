@@ -15,39 +15,33 @@
 //
 //  TransactionParams.swift
 
-import MagpieCore
 import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class TransactionParams: ResponseModel {
+final class TransactionParams: ALGResponseModel {
+    var debugData: Data?
+
     let fee: UInt64
     let minFee: UInt64
     let lastRound: UInt64
     let genesisHashData: Data?
     let genesisId: String?
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        fee = try container.decode(UInt64.self, forKey: .fee)
-        minFee = try container.decode(UInt64.self, forKey: .minFee)
-        lastRound = try container.decode(UInt64.self, forKey: .lastRound)
-        if let genesisHashBase64String = try container.decodeIfPresent(String.self, forKey: .genesisHash) {
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.fee = apiModel.fee
+        self.minFee = apiModel.minFee
+        self.lastRound = apiModel.lastRound
+        if let genesisHashBase64String = apiModel.genesisHash {
             genesisHashData = Data(base64Encoded: genesisHashBase64String)
         } else {
             genesisHashData = nil
         }
-        genesisId = try container.decode(String.self, forKey: .genesisId)
+        self.genesisId = apiModel.genesisId
     }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(fee, forKey: .fee)
-        try container.encode(minFee, forKey: .minFee)
-        try container.encode(lastRound, forKey: .lastRound)
-        try container.encodeIfPresent(genesisHashData, forKey: .genesisHash)
-        try container.encodeIfPresent(genesisId, forKey: .genesisId)
-    }
-    
+}
+
+extension TransactionParams {
     func getProjectedTransactionFee(from dataSize: Int? = nil) -> UInt64 {
         if let dataSize = dataSize {
             return max(UInt64(dataSize) * fee, Transaction.Constant.minimumFee)
@@ -57,11 +51,19 @@ class TransactionParams: ResponseModel {
 }
 
 extension TransactionParams {
-    private enum CodingKeys: String, CodingKey {
-        case lastRound = "last-round"
-        case fee = "fee"
-        case minFee = "min-fee"
-        case genesisHash = "genesis-hash"
-        case genesisId = "genesis-id"
+    struct APIModel: ALGAPIModel {
+        let lastRound: UInt64
+        let fee: UInt64
+        let minFee: UInt64
+        let genesisHash: String?
+        let genesisId: String?
+
+        init() {
+            self.lastRound = 0
+            self.fee = 0
+            self.minFee = 0
+            self.genesisHash = nil
+            self.genesisId = nil
+        }
     }
 }

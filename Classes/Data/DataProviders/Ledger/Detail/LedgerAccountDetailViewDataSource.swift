@@ -20,10 +20,10 @@ import UIKit
 final class LedgerAccountDetailViewDataSource: NSObject {
     weak var delegate: LedgerAccountDetailViewDataSourceDelegate?
 
-    private let api: AlgorandAPI
+    private let api: ALGAPI
     private let loadingController: LoadingController?
 
-    init(api: AlgorandAPI, loadingController: LoadingController?) {
+    init(api: ALGAPI, loadingController: LoadingController?) {
         self.api = api
         self.loadingController = loadingController
         super.init()
@@ -47,7 +47,7 @@ final class LedgerAccountDetailViewDataSource: NSObject {
                     delegate?.ledgerAccountDetailViewDataSource(self, didReturn: account)
                 }
             } else {
-                api.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
+                api.getAssetDetails(AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
                     switch assetResponse {
                     case .success(let assetDetailResponse):
                         self.composeAssetDetail(assetDetailResponse.assetDetail, of: account, with: asset.id)

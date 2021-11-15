@@ -15,22 +15,42 @@
 //
 //   ApplicationLocalState.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class ApplicationLocalState: ResponseModel {
+final class ApplicationLocalState: ALGResponseModel {
+    var debugData: Data?
+    
     var closedAtRound: UInt64?
     var isDeleted: Bool?
     var id: Int64?
     var optedInAtRound: UInt64?
     var schema: ApplicationStateSchema?
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.closedAtRound = apiModel.closedOutAtRound
+        self.isDeleted = apiModel.deleted
+        self.id = apiModel.id
+        self.optedInAtRound = apiModel.optedInAtRound
+        self.schema = apiModel.schema.unwrap(ApplicationStateSchema.init)
+    }
 }
 
 extension ApplicationLocalState {
-    enum CodingKeys: String, CodingKey {
-        case closedAtRound = "closed-out-at-round"
-        case isDeleted = "deleted"
-        case id = "id"
-        case optedInAtRound = "opted-in-at-round"
-        case schema = "schema"
+    struct APIModel: ALGAPIModel {
+        let closedOutAtRound: UInt64?
+        let deleted: Bool?
+        let id: Int64?
+        let optedInAtRound: UInt64?
+        let schema: ApplicationStateSchema.APIModel?
+
+        init() {
+            self.closedOutAtRound = nil
+            self.deleted = nil
+            self.id = nil
+            self.optedInAtRound = nil
+            self.schema = nil
+        }
     }
 }

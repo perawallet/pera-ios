@@ -23,5 +23,5 @@ struct AlgorandNode {
     let algodToken: String
     let indexerToken: String
     let name: String
-    let network: AlgorandAPI.BaseNetwork
+    let network: ALGAPI.Network
 }

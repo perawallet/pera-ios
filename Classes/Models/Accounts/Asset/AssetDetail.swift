@@ -15,21 +15,38 @@
 //
 //  AssetDetail.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class AssetDetailResponse: ResponseModel {
+final class AssetDetailResponse: ALGResponseModel {
+    var debugData: Data?
+    
     let assetDetail: AssetDetail
     let currentRound: UInt64
-}
 
-extension AssetDetailResponse {
-    enum CodingKeys: String, CodingKey {
-        case assetDetail = "asset"
-        case currentRound = "current-round"
+    init(_ apiModel: APIModel = APIModel()) {
+        self.assetDetail = apiModel.asset.unwrap(AssetDetail.init)
+        self.currentRound = apiModel.currentRound
     }
 }
 
-class AssetDetail: ResponseModel {
+extension AssetDetailResponse {
+    struct APIModel: ALGAPIModel {
+        let asset: AssetDetail.APIModel
+        let currentRound: UInt64
+
+        init() {
+            self.asset = AssetDetail.APIModel()
+            self.currentRound = 0
+        }
+    }
+}
+
+final class AssetDetail: ALGResponseModel {
+    var debugData: Data?
+
+    let id: Int64
     let creator: String
     let total: UInt64
     let isDefaultFrozen: Bool?
@@ -41,56 +58,26 @@ class AssetDetail: ResponseModel {
     let freezeAddress: String?
     let clawBackAddress: String?
     let fractionDecimals: Int
-    let id: Int64
     var isDeleted: Bool?
     
     var isVerified: Bool = false
     var isRemoved: Bool = false
     var isRecentlyAdded: Bool = false
 
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(Int64.self, forKey: .id)
-        let paramsContainer = try container.nestedContainer(keyedBy: ParamsCodingKeys.self, forKey: .params)
-        
-        creator = try paramsContainer.decode(String.self, forKey: .creator)
-        total = try paramsContainer.decode(UInt64.self, forKey: .total)
-        isDefaultFrozen = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isDefaultFrozen)
-        unitName = try paramsContainer.decodeIfPresent(String.self, forKey: .unitName)
-        assetName = try paramsContainer.decodeIfPresent(String.self, forKey: .assetName)
-        url = try paramsContainer.decodeIfPresent(String.self, forKey: .url)
-        managerKey = try paramsContainer.decodeIfPresent(String.self, forKey: .managerKey)
-        reserveAddress = try? paramsContainer.decodeIfPresent(String.self, forKey: .reserveAddress)
-        freezeAddress = try? paramsContainer.decodeIfPresent(String.self, forKey: .freezeAddress)
-        clawBackAddress = try paramsContainer.decodeIfPresent(String.self, forKey: .clawBackAddress)
-        fractionDecimals = try paramsContainer.decodeIfPresent(Int.self, forKey: .fractionDecimals) ?? 0
-        
-        isVerified = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isVerified) ?? false
-        isRemoved = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isRemoved) ?? false
-        isRecentlyAdded = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isRecentlyAdded) ?? false
-        isDeleted = try paramsContainer.decodeIfPresent(Bool.self, forKey: .isDeleted)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        
-        var paramsContainer = container.nestedContainer(keyedBy: ParamsCodingKeys.self, forKey: .params)
-        try paramsContainer.encode(creator, forKey: .creator)
-        try paramsContainer.encode(total, forKey: .total)
-        try paramsContainer.encodeIfPresent(isDefaultFrozen, forKey: .isDefaultFrozen)
-        try paramsContainer.encodeIfPresent(unitName, forKey: .unitName)
-        try paramsContainer.encodeIfPresent(assetName, forKey: .assetName)
-        try paramsContainer.encodeIfPresent(url, forKey: .url)
-        try paramsContainer.encodeIfPresent(managerKey, forKey: .managerKey)
-        try paramsContainer.encodeIfPresent(reserveAddress, forKey: .reserveAddress)
-        try paramsContainer.encodeIfPresent(freezeAddress, forKey: .freezeAddress)
-        try paramsContainer.encodeIfPresent(clawBackAddress, forKey: .clawBackAddress)
-        try paramsContainer.encodeIfPresent(fractionDecimals, forKey: .fractionDecimals)
-        try paramsContainer.encodeIfPresent(isVerified, forKey: .isVerified)
-        try paramsContainer.encodeIfPresent(isRemoved, forKey: .isRemoved)
-        try paramsContainer.encodeIfPresent(isRecentlyAdded, forKey: .isRecentlyAdded)
-        try paramsContainer.encodeIfPresent(isDeleted, forKey: .isDeleted)
+    init(_ apiModel: APIModel = APIModel()) {
+        self.id = apiModel.index
+        self.creator = apiModel.params.creator
+        self.total = apiModel.params.total
+        self.isDefaultFrozen = apiModel.params.defaultFrozen
+        self.unitName = apiModel.params.unitName
+        self.assetName = apiModel.params.name
+        self.url = apiModel.params.url
+        self.managerKey = apiModel.params.manager
+        self.reserveAddress = apiModel.params.reserve
+        self.freezeAddress = apiModel.params.freeze
+        self.clawBackAddress = apiModel.params.clawback
+        self.fractionDecimals = apiModel.params.decimals
+        self.isDeleted = apiModel.params.deleted
     }
     
     init(searchResult: AssetSearchResult) {
@@ -98,11 +85,9 @@ class AssetDetail: ResponseModel {
         self.assetName = searchResult.name
         self.unitName = searchResult.unitName
         self.isVerified = searchResult.isVerified
-        
         self.fractionDecimals = 0
         self.total = 0
         self.creator = ""
-        
         isDefaultFrozen = nil
         url = nil
         managerKey = nil
@@ -113,28 +98,44 @@ class AssetDetail: ResponseModel {
 }
 
 extension AssetDetail {
-    private enum CodingKeys: String, CodingKey {
-        case id = "index"
-        case params = "params"
+    struct APIModel: ALGAPIModel {
+        let index: Int64
+        let params: ParamsAPIModel
+
+        init() {
+            self.index = -1
+            self.params = ParamsAPIModel()
+        }
     }
-    
-    private enum ParamsCodingKeys: String, CodingKey {
-        case creator = "creator"
-        case total = "total"
-        case isDefaultFrozen = "default-frozen"
-        case unitName = "unit-name"
-        case assetName = "name"
-        case url = "url"
-        case managerKey = "manager"
-        case reserveAddress = "reserve"
-        case freezeAddress = "freeze"
-        case clawBackAddress = "clawback"
-        case id = "index"
-        case isRemoved = "isRemoved"
-        case isRecentlyAdded = "isRecentlyAdded"
-        case isVerified = "is_verified"
-        case fractionDecimals = "decimals"
-        case isDeleted = "deleted"
+
+    struct ParamsAPIModel: ALGAPIModel {
+        let creator: String
+        let total: UInt64
+        let defaultFrozen: Bool?
+        let unitName: String?
+        let name: String?
+        let url: String?
+        let manager: String?
+        let reserve: String?
+        let freeze: String?
+        let clawback: String?
+        let decimals: Int
+        let deleted: Bool?
+
+        init() {
+            self.creator = ""
+            self.total = 0
+            self.defaultFrozen = nil
+            self.unitName = nil
+            self.name = nil
+            self.url = nil
+            self.manager = nil
+            self.reserve = nil
+            self.freeze = nil
+            self.clawback = nil
+            self.decimals = 0
+            self.deleted = nil
+        }
     }
 }
 

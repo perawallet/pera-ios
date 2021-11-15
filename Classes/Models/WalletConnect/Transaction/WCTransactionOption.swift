@@ -15,9 +15,9 @@
 //
 //   WCTransactionOption.swift
 
-import MagpieCore
+import Foundation
 
-class WCTransactionOption: ResponseModel {
+final class WCTransactionOption: Codable {
     let message: String?
 }
 

@@ -15,13 +15,17 @@
 //
 //  Acount+Signature.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
 extension Account {
-    enum SignatureType: String, Model {
+    enum SignatureType: String, ALGAPIModel {
         case sig = "sig"
         case multiSig = "msig"
         case logicSig = "lsig"
+
+        init() { }
     }
 }
 

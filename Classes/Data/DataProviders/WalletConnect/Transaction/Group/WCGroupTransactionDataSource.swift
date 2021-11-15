@@ -16,6 +16,7 @@
 //   WCGroupTransactionDataSource.swift
 
 import UIKit
+import MacaroonUtils
 
 class WCGroupTransactionDataSource: NSObject {
 

@@ -15,10 +15,9 @@
 //
 //   WCTransaction.swift
 
-import MagpieCore
 import Foundation
 
-class WCTransaction: ResponseModel {
+final class WCTransaction: Codable {
     private(set) var unparsedTransactionDetail: Data? // Transaction that is not parsed for msgpack, needs to be used for signing
     var transactionDetail: WCTransactionDetail?
     let signers: [String]?

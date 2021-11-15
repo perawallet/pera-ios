@@ -18,6 +18,7 @@
 import UIKit
 import MagpieCore
 import MagpieHipo
+import MagpieExceptions
 
 final class NotificationFilterViewController: BaseViewController {
     private lazy var notificationFilterView = NotificationFilterView()

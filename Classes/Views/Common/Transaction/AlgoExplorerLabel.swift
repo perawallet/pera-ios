@@ -98,7 +98,7 @@ enum AlgoExplorerType {
     case algoexplorer
     case goalseeker
 
-    func transactionURL(with id: String, in network: AlgorandAPI.BaseNetwork) -> URL? {
+    func transactionURL(with id: String, in network: ALGAPI.Network) -> URL? {
         switch network {
         case .testnet:
             return testNetTransactionURL(with: id)

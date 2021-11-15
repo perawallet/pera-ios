@@ -15,17 +15,31 @@
 //
 //  AlgorandError.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class AlgorandError: ResponseModel & Encodable {
+final class AlgorandError: ALGResponseModel & Encodable {
+    var debugData: Data?
+
     let type: String
     let message: String?
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.type = apiModel.type
+        self.message = apiModel.fallbackMessage
+    }
 }
 
 extension AlgorandError {
-    enum CodingKeys: String, CodingKey {
-        case type = "type"
-        case message = "fallback_message"
+    struct APIModel: ALGAPIModel {
+        let type: String
+        let fallbackMessage: String?
+
+        init() {
+            self.type = ""
+            self.fallbackMessage = nil
+        }
     }
 }
 

@@ -15,16 +15,30 @@
 //
 //  Participation.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class Participation: ResponseModel {
+final class Participation: ALGResponseModel {
+    var debugData: Data?
+    
     var selectionParticipationKey: String?
     var voteParticipationKey: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case selectionParticipationKey = "selection-participation-key"
-        case voteParticipationKey = "vote-participation-key"
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.selectionParticipationKey = apiModel.selectionParticipationKey
+        self.voteParticipationKey = apiModel.voteParticipationKey
     }
 }
 
-extension Participation: Encodable { }
+extension Participation: Encodable {
+    struct APIModel: ALGAPIModel {
+        let selectionParticipationKey: String?
+        let voteParticipationKey: String?
+
+        init() {
+            self.selectionParticipationKey = nil
+            self.voteParticipationKey = nil
+        }
+    }
+}

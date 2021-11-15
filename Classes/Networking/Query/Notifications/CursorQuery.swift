@@ -20,8 +20,8 @@ import MagpieCore
 struct CursorQuery: ObjectQuery {
     let cursor: String?
     
-    var queryParams: [QueryParam] {
-        var params: [QueryParam] = []
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
         if let cursor = cursor {
             params.append(.init(.cursor, cursor))
         }

@@ -15,10 +15,18 @@
 //
 //  TransactionID.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class TransactionID: ResponseModel {
+final class TransactionID: ALGResponseModel {
+    var debugData: Data?
+
     let identifier: String
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.identifier = apiModel.txId
+    }
     
     init(identifier: String) {
         self.identifier = identifier
@@ -26,7 +34,11 @@ class TransactionID: ResponseModel {
 }
 
 extension TransactionID {
-    private enum CodingKeys: String, CodingKey {
-        case identifier = "txId"
+    struct APIModel: ALGAPIModel {
+        let txId: String
+
+        init() {
+            self.txId = "123"
+        }
     }
 }

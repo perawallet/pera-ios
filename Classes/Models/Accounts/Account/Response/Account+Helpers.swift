@@ -15,8 +15,10 @@
 //
 //  Account+Helpers.swift
 
-import MagpieCore
+import Foundation
 import UIKit
+import MagpieCore
+import MacaroonUtils
 
 extension Account {
     func mnemonics() -> [String] {

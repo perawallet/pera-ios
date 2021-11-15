@@ -15,15 +15,49 @@
 //
 //   AlgosUSDValue.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class AlgosUSDValue: Model {
+final class AlgosUSDValue: ALGResponseModel {
+    var debugData: Data?
+    
     let timestamp: Double?
     let open: Double?
     let low: Double?
     let high: Double?
     let close: Double?
     let volume: Double?
+
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.timestamp = apiModel.timestamp
+        self.open = apiModel.open
+        self.low = apiModel.low
+        self.high = apiModel.high
+        self.close = apiModel.close
+        self.volume = apiModel.volume
+    }
+}
+
+extension AlgosUSDValue {
+    struct APIModel: ALGAPIModel {
+        let timestamp: Double?
+        let open: Double?
+        let low: Double?
+        let high: Double?
+        let close: Double?
+        let volume: Double?
+
+        init() {
+            self.timestamp = nil
+            self.open = nil
+            self.low = nil
+            self.high = nil
+            self.close = nil
+            self.volume = nil
+        }
+    }
 }
 
 extension AlgosUSDValue {

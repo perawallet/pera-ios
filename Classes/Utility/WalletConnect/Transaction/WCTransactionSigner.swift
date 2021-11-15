@@ -24,14 +24,14 @@ class WCTransactionSigner {
 
     private lazy var ledgerTransactionOperation = LedgerTransactionOperation(api: api, bannerController: bannerController)
 
-    private let api: AlgorandAPI
+    private let api: ALGAPI
     private let bannerController: BannerController?
 
     private var account: Account?
     private var transaction: WCTransaction?
     private var transactionRequest: WalletConnectRequest?
 
-    init(api: AlgorandAPI, bannerController: BannerController?) {
+    init(api: ALGAPI, bannerController: BannerController?) {
         self.api = api
         self.bannerController = bannerController
     }
@@ -107,7 +107,7 @@ extension WCTransactionSigner: LedgerTransactionOperationDelegate {
 }
 
 extension WCTransactionSigner: TransactionSignerDelegate {
-    func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPError<TransactionError>) {
+    func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPTransactionError) {
         delegate?.wcTransactionSigner(self, didFailedWith: .api(error: error))
     }
 }
@@ -115,7 +115,7 @@ extension WCTransactionSigner: TransactionSignerDelegate {
 extension WCTransactionSigner {
     enum WCSignError: Error {
         case ledger(error: LedgerOperationError)
-        case api(error: HIPError<TransactionError>)
+        case api(error: HIPTransactionError)
     }
 }
 

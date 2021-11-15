@@ -15,34 +15,38 @@
 //
 //   AlgorandBlock.swift
 
+import Foundation
+import MacaroonUtils
 import MagpieCore
 
-class AlgorandBlock: ResponseModel {
+final class AlgorandBlock: ALGResponseModel {
+    var debugData: Data?
+
     let rewardsRate: UInt64
     let rewardsResidue: UInt64
 
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let rewardsContainer = try container.nestedContainer(keyedBy: RewardsCodingKeys.self, forKey: .block)
-        rewardsRate = try rewardsContainer.decode(UInt64.self, forKey: .rewardsRate)
-        rewardsResidue = try rewardsContainer.decode(UInt64.self, forKey: .rewardsResidue)
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        var rewardsContainer = container.nestedContainer(keyedBy: RewardsCodingKeys.self, forKey: .block)
-        try rewardsContainer.encode(rewardsRate, forKey: .rewardsRate)
-        try rewardsContainer.encode(rewardsResidue, forKey: .rewardsResidue)
+    init(_ apiModel: APIModel = APIModel()) {
+        self.rewardsRate = apiModel.block.rate
+        self.rewardsResidue = apiModel.block.frac
     }
 }
 
 extension AlgorandBlock {
-    private enum CodingKeys: String, CodingKey {
-        case block = "block"
+    struct APIModel: ALGAPIModel {
+        let block: RewardsAPIModel
+
+        init() {
+            self.block = RewardsAPIModel()
+        }
     }
 
-    private enum RewardsCodingKeys: String, CodingKey {
-        case rewardsRate = "rate"
-        case rewardsResidue = "frac"
+    struct RewardsAPIModel: ALGAPIModel {
+        let rate: UInt64
+        let frac: UInt64
+
+        init() {
+            self.rate = 0
+            self.frac = 0
+        }
     }
 }

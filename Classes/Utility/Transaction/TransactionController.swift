@@ -21,7 +21,7 @@ import UIKit
 class TransactionController {
     weak var delegate: TransactionControllerDelegate?
     
-    private var api: AlgorandAPI
+    private var api: ALGAPI
     private let bannerController: BannerController?
     private var params: TransactionParams?
     private var transactionDraft: TransactionSendDraft?
@@ -38,7 +38,7 @@ class TransactionController {
         return transactionDraft?.from.requiresLedgerConnection() ?? false
     }
     
-    init(api: AlgorandAPI, bannerController: BannerController?) {
+    init(api: ALGAPI, bannerController: BannerController?) {
         self.api = api
         self.bannerController = bannerController
     }
@@ -343,18 +343,18 @@ extension TransactionController {
 }
 
 extension TransactionController: TransactionDataBuilderDelegate {
-    func transactionDataBuilder(_ transactionDataBuilder: TransactionDataBuilder, didFailedComposing error: HIPError<TransactionError>) {
+    func transactionDataBuilder(_ transactionDataBuilder: TransactionDataBuilder, didFailedComposing error: HIPTransactionError) {
         handleTransactionComposingError(error)
     }
 
-    private func handleTransactionComposingError(_ error: HIPError<TransactionError>) {
+    private func handleTransactionComposingError(_ error: HIPTransactionError) {
         resetLedgerOperationIfNeeded()
         delegate?.transactionController(self, didFailedComposing: error)
     }
 }
 
 extension TransactionController: TransactionSignerDelegate {
-    func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPError<TransactionError>) {
+    func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPTransactionError) {
         handleTransactionComposingError(error)
     }
 }
@@ -396,7 +396,7 @@ extension TransactionController {
     }
 }
 
-enum TransactionError: Error {
+enum TransactionError: Error, Hashable {
     case minimumAmount(amount: UInt64)
     case invalidAddress(address: String)
     case sdkError(error: NSError?)

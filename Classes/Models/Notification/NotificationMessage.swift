@@ -15,40 +15,70 @@
 //
 //  Notification.swift
 
-import MagpieCore
 import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class NotificationMessage: ResponseModel {
+final class NotificationMessage: ALGResponseModel {
+    var debugData: Data?
+
     let id: Int
     let account: Int?
     let notificationType: NotificationType?
     let date: Date?
     let message: String?
     let detail: NotificationDetail?
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        id = try container.decode(Int.self, forKey: .id)
-        account = try container.decodeIfPresent(Int.self, forKey: .account)
-        notificationType = try container.decodeIfPresent(NotificationType.self, forKey: .notificationType)
-        if let stringDate = try container.decodeIfPresent(String.self, forKey: .date) {
-            date = stringDate.toDate()?.date
-        } else {
-            date = nil
-        }
-        message = try container.decodeIfPresent(String.self, forKey: .message)
-        detail = try container.decodeIfPresent(NotificationDetail.self, forKey: .detail)
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.id = apiModel.id
+        self.account = apiModel.account
+        self.notificationType = apiModel.type
+        self.date = apiModel.creationDatetime?.toDate()?.date
+        self.message = apiModel.message
+        self.detail = apiModel.metadata.unwrap(NotificationDetail.init)
     }
 }
 
 extension NotificationMessage {
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case account = "account"
-        case notificationType = "type"
-        case date = "creation_datetime"
-        case message = "message"
-        case detail = "metadata"
+    struct APIModel: ALGAPIModel {
+        let id: Int
+        let account: Int?
+        let type: NotificationType?
+        let creationDatetime: String?
+        let message: String?
+        let metadata: NotificationDetail.APIModel?
+
+        init() {
+            self.id = 0
+            self.account = nil
+            self.type = nil
+            self.creationDatetime = nil
+            self.message = nil
+            self.metadata = nil
+        }
+    }
+}
+
+final class NotificationMessageList: PaginatedList<NotificationMessage>, ALGResponseModel {
+    var debugData: Data?
+
+    convenience init(_ apiModel: APIModel = APIModel()){
+        self.init(pagination: apiModel, results: apiModel.results.unwrapMap(NotificationMessage.init))
+    }
+}
+
+extension NotificationMessageList {
+    struct APIModel: ALGAPIModel, PaginationComponents {
+        let count: Int?
+        let next: URL?
+        let previous: String?
+        let results: [NotificationMessage.APIModel]?
+
+        init() {
+            self.count = nil
+            self.next = nil
+            self.previous = nil
+            self.results = []
+        }
     }
 }

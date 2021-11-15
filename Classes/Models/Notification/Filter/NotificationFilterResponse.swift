@@ -15,14 +15,26 @@
 //
 //  NotificationFilterResponse.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class NotificationFilterResponse: ResponseModel {
+final class NotificationFilterResponse: ALGResponseModel {
+    var debugData: Data?
+
     let receivesNotification: Bool
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.receivesNotification = apiModel.receiveNotifications
+    }
 }
 
 extension NotificationFilterResponse {
-    enum CodingKeys: String, CodingKey {
-        case receivesNotification = "receive_notifications"
+    struct APIModel: ALGAPIModel {
+        let receiveNotifications: Bool
+
+        init() {
+            self.receiveNotifications = true
+        }
     }
 }

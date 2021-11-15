@@ -17,14 +17,14 @@
 
 import UIKit
 import MagpieCore
+import MagpieExceptions
 
 final class NotificationFilterDataSource: NSObject {
     weak var delegate: NotificationFilterDataSourceDelegate?
 
-    private let api: AlgorandAPI
     private var accounts = [Account]()
 
-    init(api: AlgorandAPI) {
+    init(api: ALGAPI) {
         self.api = api
         super.init()
         accounts = api.session.accounts
@@ -38,7 +38,7 @@ extension NotificationFilterDataSource {
         }
 
         let draft = NotificationFilterDraft(deviceId: deviceId, accountAddress: account.address, receivesNotifications: value)
-        api.updateNotificationFilter(with: draft) { response in
+        api.updateNotificationFilter(draft) { response in
             switch response {
             case let .success(result):
                 account.receivesNotification = result.receivesNotification

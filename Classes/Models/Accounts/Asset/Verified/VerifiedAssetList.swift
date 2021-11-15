@@ -15,11 +15,38 @@
 //
 //  VerifiedAssetList.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class VerifiedAssetList: ResponseModel {
+final class VerifiedAssetList: ALGResponseModel {
+    var debugData: Data?
+    
     let count: Int
     let next: String?
     let previous: String?
     let results: [VerifiedAsset]
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.count = apiModel.count
+        self.next = apiModel.next
+        self.previous = apiModel.previous
+        self.results = apiModel.results.unwrapMap(VerifiedAsset.init)
+    }
+}
+
+extension VerifiedAssetList {
+    struct APIModel: ALGAPIModel {
+        let count: Int
+        let next: String?
+        let previous: String?
+        let results: [VerifiedAsset.APIModel]?
+
+        init() {
+            self.count = 0
+            self.next = nil
+            self.previous = nil
+            self.results = []
+        }
+    }
 }

@@ -22,7 +22,7 @@ final class LedgerAccountSelectionDataSource: NSObject {
     
     private let accountsFetchGroup = DispatchGroup()
     
-    private let api: AlgorandAPI
+    private let api: ALGAPI
     private var accounts = [Account]()
 
     private let ledgerAccounts: [Account]
@@ -30,7 +30,7 @@ final class LedgerAccountSelectionDataSource: NSObject {
     
     private var rekeyedAccounts: [String: [Account]] = [:]
     
-    init(api: AlgorandAPI, accounts: [Account], isMultiSelect: Bool) {
+    init(api: ALGAPI, accounts: [Account], isMultiSelect: Bool) {
         self.api = api
         self.ledgerAccounts = accounts
         self.isMultiSelect = isMultiSelect
@@ -55,7 +55,7 @@ extension LedgerAccountSelectionDataSource {
     private func fetchRekeyedAccounts(of account: Account) {
         accountsFetchGroup.enter()
         
-        api.fetchRekeyedAccounts(of: account.address) { response in
+        api.fetchRekeyedAccounts(account.address) { response in
             switch response {
             case let .success(rekeyedAccountsResponse):
                 let rekeyedAccounts = rekeyedAccountsResponse.accounts.filter { $0.authAddress != $0.address }

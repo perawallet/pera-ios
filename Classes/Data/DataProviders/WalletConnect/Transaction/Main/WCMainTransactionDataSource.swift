@@ -223,7 +223,7 @@ extension WCMainTransactionDataSource {
         cell.bind(
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
-                account: session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender),
+                account: session?.accounts.first(of: \Account.address, equalsTo: transaction.transactionDetail?.sender),
                 assetDetail: assetDetail(from: transaction)
             )
         )

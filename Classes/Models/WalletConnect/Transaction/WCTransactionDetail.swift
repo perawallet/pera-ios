@@ -15,10 +15,9 @@
 //
 //   WCTransactionDetail.swift
 
-import MagpieCore
 import Foundation
 
-class WCTransactionDetail: ResponseModel {
+final class WCTransactionDetail: Codable {
     let fee: UInt64?
     let firstValidRound: UInt64?
     let lastValidRound: UInt64?
@@ -358,7 +357,7 @@ extension WCTransactionDetail: Equatable {
     }
 }
 
-class WCTransactionAppSchema: ResponseModel {
+class WCTransactionAppSchema: Codable {
     let numberOfBytes: Int?
     let numberofInts: Int?
 

@@ -24,8 +24,8 @@ struct TransactionsQuery: ObjectQuery {
     let next: String?
     let assetId: String?
     
-    var queryParams: [QueryParam] {
-        var params: [QueryParam] = []
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
         if let limit = limit {
             params.append(.init(.limit, limit))
         }

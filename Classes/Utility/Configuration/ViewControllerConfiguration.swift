@@ -18,14 +18,14 @@
 import Foundation
 
 final class ViewControllerConfiguration {
-    let api: AlgorandAPI?
+    let api: ALGAPI?
     var session: Session?
     let walletConnector: WalletConnector
     let loadingController: LoadingController?
     let bannerController: BannerController?
     
     init(
-        api: AlgorandAPI?,
+        api: ALGAPI?,
         session: Session?,
         walletConnector: WalletConnector,
         loadingControlller: LoadingController?,

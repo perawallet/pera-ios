@@ -17,36 +17,32 @@
 
 import MagpieCore
 
-extension AlgorandAPI {
+extension ALGAPI {
     @discardableResult
     func fetchAccount(
-        with draft: AccountFetchDraft,
-        includesClosedAccounts: Bool = false,
-        then handler: @escaping (Response.ModelResult<AccountResponse>) -> Void
+        _ draft: AccountFetchDraft,
+        onCompleted handler: @escaping (Response.ModelResult<AccountResponse>) -> Void
     ) -> EndpointOperatable {
         enableLogsInConsole()
         return EndpointBuilder(api: self)
-            .base(indexerBase)
-            .path("/v2/accounts/\(draft.publicKey)")
-            .query(AccountQuery(includesAll: includesClosedAccounts))
-            .headers(indexerAuthenticatedHeaders())
+            .base(.indexer)
+            .path(.accountDetail, args: draft.publicKey)
+            .method(.get)
             .completionHandler(handler)
-            .build()
-            .send()
+            .execute()
     }
-    
+
     @discardableResult
     func fetchRekeyedAccounts(
-        of account: String,
-        then handler: @escaping (Response.ModelResult<RekeyedAccountsResponse>) -> Void
+        _ account: String,
+        onCompleted handler: @escaping (Response.ModelResult<RekeyedAccountsResponse>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(indexerBase)
-            .path("/v2/accounts")
+            .base(.indexer)
+            .path(.accounts)
+            .method(.get)
             .query(RekeyedAccountQuery(authAddress: account))
-            .headers(indexerAuthenticatedHeaders())
             .completionHandler(handler)
-            .build()
-            .send()
+            .execute()
     }
 }

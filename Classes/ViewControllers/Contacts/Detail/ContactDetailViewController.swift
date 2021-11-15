@@ -108,7 +108,7 @@ extension ContactDetailViewController {
         
         loadingController?.startLoadingWithMessage("title-loading".localized)
         
-        api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { [weak self] response in
+        api?.fetchAccount(AccountFetchDraft(publicKey: address)) { [weak self] response in
             switch response {
             case let .success(accountWrapper):
                 accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
@@ -121,7 +121,7 @@ extension ContactDetailViewController {
                     if let assets = account.assets {
                         var failedAssetFetchCount = 0
                         for asset in assets {
-                            self?.api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
+                            self?.api?.getAssetDetails(AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
                                 switch assetResponse {
                                 case let .success(assetDetailResponse):
                                     let assetDetail = assetDetailResponse.assetDetail

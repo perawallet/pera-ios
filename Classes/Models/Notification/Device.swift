@@ -15,22 +15,42 @@
 //
 //  Device.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class Device: ResponseModel {
+final class Device: ALGResponseModel {
+    var debugData: Data?
+
     let id: String?
     let pushToken: String?
     let platform: String?
     let model: String?
     let locale: String?
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.id = apiModel.id
+        self.pushToken = apiModel.pushToken
+        self.platform = apiModel.platform
+        self.model = apiModel.model
+        self.locale = apiModel.locale
+    }
 }
 
 extension Device {
-    enum CodingKeys: String, CodingKey {
-        case id = "id"
-        case pushToken = "push_token"
-        case platform = "platform"
-        case model = "model"
-        case locale = "locale"
+    struct APIModel: ALGAPIModel {
+        let id: String?
+        let pushToken: String?
+        let platform: String?
+        let model: String?
+        let locale: String?
+
+        init() {
+            self.id = nil
+            self.pushToken = nil
+            self.platform = nil
+            self.model = nil
+            self.locale = nil
+        }
     }
 }

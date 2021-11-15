@@ -17,6 +17,7 @@
 
 import Foundation
 import MacaroonUIKit
+import MacaroonBottomSheet
 import UIKit
 
 final class BottomSheetTransition {

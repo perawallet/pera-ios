@@ -15,12 +15,15 @@
 //
 //  Transaction.swift
 
-import MagpieCore
 import Foundation
+import MagpieCore
+import MacaroonUtils
 
 protocol TransactionItem {}
 
-class Transaction: ResponseModel, TransactionItem {
+final class Transaction: ALGResponseModel, TransactionItem {
+    var debugData: Data?
+
     let closeRewards: UInt64?
     let closeAmount: UInt64?
     let confirmedRound: UInt64?
@@ -43,32 +46,76 @@ class Transaction: ResponseModel, TransactionItem {
     
     var status: Status?
     var contact: Contact?
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        closeRewards = try container.decodeIfPresent(UInt64.self, forKey: .closeRewards)
-        closeAmount = try container.decodeIfPresent(UInt64.self, forKey: .closeAmount)
-        confirmedRound = try container.decodeIfPresent(UInt64.self, forKey: .confirmedRound)
-        fee = try container.decodeIfPresent(UInt64.self, forKey: .fee)
-        firstRound = try container.decodeIfPresent(UInt64.self, forKey: .firstRound)
-        id = try container.decodeIfPresent(String.self, forKey: .id)
-        lastRound = try container.decodeIfPresent(UInt64.self, forKey: .lastRound)
-        note = try container.decodeIfPresent(Data.self, forKey: .note)
-        payment = try container.decodeIfPresent(Payment.self, forKey: .payment)
-        receiverRewards = try container.decodeIfPresent(UInt64.self, forKey: .receiverRewards)
-        sender = try container.decodeIfPresent(String.self, forKey: .sender)
-        senderRewards = try container.decodeIfPresent(UInt64.self, forKey: .senderRewards)
-        type = try container.decodeIfPresent(TransferType.self, forKey: .type)
-        createdAssetId = try container.decodeIfPresent(Int64.self, forKey: .createdAssetId)
-        assetFreeze = try container.decodeIfPresent(AssetFreezeTransaction.self, forKey: .assetFreeze)
-        assetConfig = try container.decodeIfPresent(AssetConfigTransaction.self, forKey: .assetConfig)
-        assetTransfer = try container.decodeIfPresent(AssetTransferTransaction.self, forKey: .assetTransfer)
-        transactionSignature = try container.decodeIfPresent(TransactionSignature.self, forKey: .transactionSignature)
-        
-        if let timestamp = try container.decodeIfPresent(Double.self, forKey: .date) {
-            date = Date(timeIntervalSince1970: timestamp)
-        } else {
-            date = nil
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.closeRewards = apiModel.closeRewards
+        self.closeAmount = apiModel.closeAmount
+        self.confirmedRound = apiModel.confirmedRound
+        self.fee = apiModel.fee
+        self.firstRound = apiModel.firstValid
+        self.id = apiModel.id
+        self.lastRound = apiModel.lastValid
+        self.note = apiModel.note
+        self.payment = apiModel.paymentTransaction.unwrap(Payment.init)
+        self.receiverRewards = apiModel.receiverRewards
+        self.sender = apiModel.sender
+        self.senderRewards = apiModel.senderRewards
+        self.type = apiModel.txType
+        self.createdAssetId = apiModel.createdAssetIndex
+        self.assetFreeze = apiModel.assetFreezeTransaction.unwrap(AssetFreezeTransaction.init)
+        self.assetConfig = apiModel.assetConfigTransaction.unwrap(AssetConfigTransaction.init)
+        self.assetTransfer = apiModel.assetTransferTransaction.unwrap(AssetTransferTransaction.init)
+
+        if let dateValue = apiModel.roundTime {
+            self.date = Date(timeIntervalSince1970: dateValue)
+        }
+
+        self.transactionSignature = apiModel.signature.unwrap(TransactionSignature.init)
+    }
+}
+
+extension Transaction {
+    struct APIModel: ALGAPIModel {
+        let closeRewards: UInt64?
+        let closeAmount: UInt64?
+        let confirmedRound: UInt64?
+        let fee: UInt64?
+        let firstValid: UInt64?
+        let id: String?
+        let lastValid: UInt64?
+        let note: Data?
+        let paymentTransaction: Payment.APIModel?
+        let receiverRewards: UInt64?
+        let sender: String?
+        let senderRewards: UInt64?
+        let txType: TransferType?
+        let createdAssetIndex: Int64?
+        let assetFreezeTransaction: AssetFreezeTransaction.APIModel?
+        let assetConfigTransaction: AssetConfigTransaction.APIModel?
+        let assetTransferTransaction: AssetTransferTransaction.APIModel?
+        let roundTime: Double?
+        let signature: TransactionSignature.APIModel?
+
+        init() {
+            closeRewards = nil
+            closeAmount = nil
+            confirmedRound = nil
+            fee = nil
+            firstValid = nil
+            id = nil
+            lastValid = nil
+            note = nil
+            paymentTransaction = nil
+            receiverRewards = nil
+            sender = nil
+            senderRewards = nil
+            txType = nil
+            createdAssetIndex = nil
+            assetFreezeTransaction = nil
+            assetConfigTransaction = nil
+            assetTransferTransaction = nil
+            roundTime = nil
+            signature = nil
         }
     }
 }
@@ -120,29 +167,12 @@ extension Transaction {
         
         return String(data: noteData, encoding: .utf8) ?? noteData.base64EncodedString()
     }
-}
 
-extension Transaction {
-    enum CodingKeys: String, CodingKey {
-        case closeRewards = "close-rewards"
-        case closeAmount = "closing-amount"
-        case confirmedRound = "confirmed-round"
-        case fee = "fee"
-        case firstRound = "first-valid"
-        case id = "id"
-        case lastRound = "last-valid"
-        case note = "note"
-        case payment = "payment-transaction"
-        case receiverRewards = "receiver-rewards"
-        case sender = "sender"
-        case senderRewards = "sender-rewards"
-        case type = "tx-type"
-        case createdAssetId = "created-asset-index"
-        case assetFreeze = "asset-freeze-transaction"
-        case assetConfig = "asset-config-transaction"
-        case assetTransfer = "asset-transfer-transaction"
-        case date = "round-time"
-        case transactionSignature = "signature"
+    func isAssetCreationTransaction(for account: String) -> Bool {
+        guard let assetTransfer = assetTransfer else {
+            return false
+        }
+        return assetTransfer.receiverAddress == account && assetTransfer.amount == 0
     }
 }
 
@@ -155,27 +185,20 @@ extension Transaction {
 }
 
 extension Transaction {
-    enum TransferType: String, Model {
+    enum TransferType: String, ALGAPIModel {
         case payment = "pay"
         case keyreg = "keyreg"
         case assetConfig = "acfg"
         case assetTransfer = "axfer"
         case assetFreeze = "afrz"
         case applicationCall = "appl"
+
+        init() { }
     }
 }
 
 extension Transaction {
     enum Constant {
         static let minimumFee: UInt64 = 1000
-    }
-}
-
-extension Transaction {
-    func isAssetCreationTransaction(for account: String) -> Bool {
-        guard let assetTransfer = assetTransfer else {
-            return false
-        }
-        return assetTransfer.receiverAddress == account && assetTransfer.amount == 0
     }
 }

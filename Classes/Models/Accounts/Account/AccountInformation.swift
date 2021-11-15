@@ -15,13 +15,13 @@
 //
 //  AccountInformation.swift
 
-import MagpieCore
+import Foundation
 import UIKit
 
 typealias PublicKey = String
 typealias RekeyDetail = [PublicKey: LedgerDetail]
 
-class AccountInformation: ResponseModel {
+final class AccountInformation: Codable {
     let address: String
     var name: String
     var type: AccountType = .standard
@@ -100,15 +100,13 @@ extension AccountInformation {
     }
 }
 
-extension AccountInformation: Encodable { }
-
 extension AccountInformation: Equatable {
     static func == (lhs: AccountInformation, rhs: AccountInformation) -> Bool {
         return lhs.address == rhs.address
     }
 }
 
-enum AccountType: String, Model {
+enum AccountType: String, Codable {
     case standard = "standard"
     case watch = "watch"
     case ledger = "ledger"
@@ -119,5 +117,3 @@ enum AccountType: String, Model {
         return img("\(rawValue)-\(accountImageType.rawValue)")
     }
 }
-
-extension AccountType: Encodable { }

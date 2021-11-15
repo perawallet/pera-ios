@@ -15,16 +15,30 @@
 //
 //  AccountResponse.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class AccountResponse: ResponseModel {
+final class AccountResponse: ALGResponseModel {
+    var debugData: Data?
+    
     let account: Account
     let currentRound: UInt64
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.account = apiModel.account.unwrap(Account.init)
+        self.currentRound = apiModel.currentRound
+    }
 }
 
 extension AccountResponse {
-    enum CodingKeys: String, CodingKey {
-        case account = "account"
-        case currentRound = "current-round"
+    struct APIModel: ALGAPIModel {
+        let account: Account.APIModel
+        let currentRound: UInt64
+
+        init() {
+            self.account = Account.APIModel()
+            self.currentRound = 1
+        }
     }
 }

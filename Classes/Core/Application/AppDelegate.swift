@@ -31,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    private lazy var api = AlgorandAPI(session: session, base: "")
+    private lazy var api = ALGAPI(session: session)
     private lazy var session = Session()
     private lazy var walletConnector = WalletConnector()
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window ?? UIWindow())

@@ -30,10 +30,10 @@ class PushNotificationController: NSObject {
         }
     }
     
-    private var api: AlgorandAPI
+    private var api: ALGAPI
     private let bannerController: BannerController?
     
-    init(api: AlgorandAPI, bannerController: BannerController?) {
+    init(api: ALGAPI, bannerController: BannerController?) {
         self.api = api
         self.bannerController = bannerController
     }
@@ -77,7 +77,7 @@ extension PushNotificationController {
     
     private func updateDevice(with id: String, for user: User, completion handler: BoolHandler? = nil) {
         let draft = DeviceUpdateDraft(id: id, pushToken: token, accounts: user.accounts.map(\.address))
-        api.updateDevice(with: draft) { response in
+        api.updateDevice(draft) { response in
             switch response {
             case let .success(device):
                 self.api.session.authenticatedUser?.setDeviceId(device.id)
@@ -95,7 +95,7 @@ extension PushNotificationController {
     
     private func registerDevice(for user: User, completion handler: BoolHandler? = nil) {
         let draft = DeviceRegistrationDraft(pushToken: token, accounts: user.accounts.map(\.address))
-        api.registerDevice(with: draft) { response in
+        api.registerDevice(draft) { response in
             switch response {
             case let .success(device):
                 self.api.session.authenticatedUser?.setDeviceId(device.id)
@@ -121,7 +121,7 @@ extension PushNotificationController {
         self.token = nil
         
         let draft = DeviceDeletionDraft(pushToken: token)
-        api.unregisterDevice(with: draft)
+        api.unregisterDevice(draft)
     }
 }
 

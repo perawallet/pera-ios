@@ -37,7 +37,7 @@ extension LedgerTransactionSigner {
 
         guard let transactionData = data,
               let privateData = privateData else {
-            delegate?.transactionSigner(self, didFailedSigning: .inapp(TransactionError.sdkError(error: transactionError)))
+            delegate?.transactionSigner(self, didFailedSigning: HIPTransactionError<TransactionError.sdkError(error: transactionError), DBP()>)
             return nil
         }
 

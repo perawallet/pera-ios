@@ -23,8 +23,8 @@ struct AssetSearchQuery: ObjectQuery {
     let paginator: Paginator = .cursor
     let cursor: String?
     
-    var queryParams: [QueryParam] {
-        var params: [QueryParam] = []
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
         params.append(.init(.paginator, paginator.rawValue))
 
         if let cursor = cursor {
@@ -56,8 +56,8 @@ extension AssetSearchQuery {
 struct TransactionSearchQuery: ObjectQuery {
     let id: String?
     
-    var queryParams: [QueryParam] {
-        var params: [QueryParam] = []
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
         if let id = id {
             params.append(.init(.transactionDetailId, id))
         }

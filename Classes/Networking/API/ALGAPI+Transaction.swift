@@ -19,11 +19,11 @@ import MagpieCore
 import SwiftDate
 import Foundation
 
-extension AlgorandAPI {
+extension ALGAPI {
     @discardableResult
     func fetchTransactions(
-        with draft: TransactionFetchDraft,
-        then handler: @escaping (Response.ModelResult<TransactionList>) -> Void
+        _ draft: TransactionFetchDraft,
+        onCompleted handler: @escaping (Response.ModelResult<TransactionList>) -> Void
     ) -> EndpointOperatable {
         var from: String?
         var to: String?
@@ -35,72 +35,65 @@ extension AlgorandAPI {
         }
         
         return EndpointBuilder(api: self)
-            .base(indexerBase)
-            .path("/v2/accounts/\(draft.account.address)/transactions")
-            .headers(indexerAuthenticatedHeaders())
+            .base(.indexer)
+            .path(.accountTransaction, args: draft.account.address)
+            .method(.get)
             .query(TransactionsQuery(limit: draft.limit, from: from, to: to, next: draft.nextToken, assetId: draft.assetId))
             .completionHandler(handler)
-            .build()
-            .send()
+            .execute()
     }
-    
+
     @discardableResult
     func sendTransaction(
-        with transactionData: Data,
-        then handler: @escaping (Response.ModelResult<TransactionID>) -> Void
+        _ transactionData: Data,
+        onCompleted handler: @escaping (Response.ModelResult<TransactionID>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(algodBase)
-            .path("/v2/transactions")
+            .base(.algod)
+            .path(.transactions)
             .method(.post)
-            .headers(algodBinaryAuthenticatedHeaders())
             .completionHandler(handler)
             .type(.upload(.data(transactionData)))
-            .build()
-            .send()
+            .execute()
     }
-    
+
     @discardableResult
     func getTransactionParams(
-        then handler: @escaping (Response.ModelResult<TransactionParams>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<TransactionParams>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(algodBase)
-            .path("/v2/transactions/params")
-            .headers(algodAuthenticatedHeaders())
+            .base(.algod)
+            .path(.transactionParams)
+            .method(.get)
             .completionHandler(handler)
-            .build()
-            .send()
+            .execute()
     }
-    
+
     @discardableResult
-    func trackTransaction(with draft: TransactionTrackDraft) -> EndpointOperatable {
+    func trackTransaction(_ draft: TransactionTrackDraft) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(mobileApiBase)
-            .path("/api/transactions/")
+            .base(.mobile)
+            .path(.trackTransactions)
             .method(.post)
-            .headers(mobileApiHeaders())
             .body(draft)
-            .build()
-            .send()
+            .execute()
     }
-    
+
     @discardableResult
     func fetchPendingTransactions(
-        for address: String,
-        then handler: @escaping (Response.ModelResult<PendingTransactionList>) -> Void
+        _ address: String,
+        onCompleted handler: @escaping (Response.ModelResult<PendingTransactionList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(algodBase)
-            .path("/v2/accounts/\(address)/transactions/pending")
-            .headers(algodAuthenticatedHeaders())
+            .base(.algod)
+            .path(.pendingAccountTransactions, args: address)
+            .method(.get)
             .completionHandler(handler)
-            .build()
-            .send()
+            .execute()
     }
 }
 
-extension AlgorandAPI {
+extension ALGAPI {
     private enum Formatter {
         static let date: DateFormatter = {
             let formatter = DateFormatter()

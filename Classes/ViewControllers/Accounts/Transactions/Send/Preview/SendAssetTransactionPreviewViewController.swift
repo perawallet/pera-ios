@@ -281,7 +281,7 @@ extension SendAssetTransactionPreviewViewController {
         }
         
         loadingController?.startLoadingWithMessage("title-loading".localized)
-        api?.fetchAccount(with: AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
+        api?.fetchAccount(AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
             switch fetchAccountResponse {
             case let .success(receiverAccountWrapper):
                 receiverAccountWrapper.account.assets = receiverAccountWrapper.account.nonDeletedAssets()
@@ -331,7 +331,7 @@ extension SendAssetTransactionPreviewViewController {
                 receiver: receiverAddress,
                 assetId: assetDetail.id
             )
-            api?.sendAssetSupportRequest(with: draft)
+            api?.sendAssetSupportRequest(draft)
         }
         
         self.open(

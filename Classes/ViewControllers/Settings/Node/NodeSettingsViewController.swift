@@ -25,7 +25,7 @@ class NodeSettingsViewController: BaseViewController {
     
     private var canTapBarButton = true
     
-    private lazy var lastActiveNetwork: AlgorandAPI.BaseNetwork = {
+    private lazy var lastActiveNetwork: ALGAPI.Network = {
         guard let api = api else {
             fatalError("API should be set.")
         }

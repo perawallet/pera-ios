@@ -22,8 +22,8 @@ struct NotificationFilterDraft: JSONObjectBody {
     let accountAddress: String
     let receivesNotifications: Bool
 
-    var bodyParams: [BodyParam] {
-        var params: [BodyParam] = []
+    var bodyParams: [APIBodyParam] {
+        var params: [APIBodyParam] = []
         params.append(.init(.receivesNotifications, receivesNotifications))
         return params
     }

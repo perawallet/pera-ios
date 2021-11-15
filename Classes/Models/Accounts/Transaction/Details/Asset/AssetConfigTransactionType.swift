@@ -15,14 +15,26 @@
 //
 //  AssetConfigTransaction.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class AssetConfigTransaction: ResponseModel {
+final class AssetConfigTransaction: ALGResponseModel {
+    var debugData: Data?
+    
     let id: Int64?
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.id = apiModel.assetId
+    }
 }
 
 extension AssetConfigTransaction {
-    private enum CodingKeys: String, CodingKey {
-        case id = "asset-id"
+    struct APIModel: ALGAPIModel {
+        let assetId: Int64?
+
+        init() {
+            self.assetId = nil
+        }
     }
 }

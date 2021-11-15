@@ -15,16 +15,30 @@
 //
 //  RoundDetail.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class RoundDetail: ResponseModel {
+final class RoundDetail: ALGResponseModel {
+    var debugData: Data?
+
     let lastRound: UInt64
     let nextVersionRound: UInt64
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.lastRound = apiModel.lastRound
+        self.nextVersionRound = apiModel.nextVersionRound
+    }
 }
 
 extension RoundDetail {
-    private enum CodingKeys: String, CodingKey {
-        case lastRound = "last-round"
-        case nextVersionRound = "next-version-round"
+    struct APIModel: ALGAPIModel {
+        let lastRound: UInt64
+        let nextVersionRound: UInt64
+
+        init() {
+            self.lastRound = 0
+            self.nextVersionRound = 1
+        }
     }
 }

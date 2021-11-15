@@ -17,6 +17,7 @@
 
 import UIKit
 import MagpieHipo
+import MacaroonUtils
 
 final class RekeyConfirmationViewController: BaseViewController {
     private lazy var rekeyConfirmationView = RekeyConfirmationView()
@@ -90,6 +91,12 @@ extension RekeyConfirmationViewController: RekeyConfirmationViewDelegate {
     }
 }
 
+class DBP: DebugPrintable {
+    var debugDescription: String {
+        return ""
+    }
+}
+
 extension RekeyConfirmationViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
         log(RekeyEvent())
@@ -97,7 +104,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
         openRekeyConfirmationAlert()
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
         switch error {
         case let .inapp(transactionError):
             displayTransactionError(from: transactionError)
@@ -109,7 +116,7 @@ extension RekeyConfirmationViewController: TransactionControllerDelegate {
         }
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError, >) {
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
         switch error {
         case let .network(apiError):
             bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)

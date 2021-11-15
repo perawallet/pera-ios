@@ -15,20 +15,62 @@
 //
 //  AssetQueryItem.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class AssetSearchResult: ResponseModel {
+final class AssetSearchResult: ALGResponseModel {
+    var debugData: Data?
+    
     let id: Int64
     let name: String?
     let unitName: String?
     let isVerified: Bool
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.id = apiModel.assetId
+        self.name = apiModel.name
+        self.unitName = apiModel.unitName
+        self.isVerified = apiModel.isVerified
+    }
 }
 
 extension AssetSearchResult {
-    enum CodingKeys: String, CodingKey {
-        case id = "asset_id"
-        case name = "name"
-        case unitName = "unit_name"
-        case isVerified = "is_verified"
+    struct APIModel: ALGAPIModel {
+        let assetId: Int64
+        let name: String?
+        let unitName: String?
+        let isVerified: Bool
+
+        init() {
+            self.assetId = 0
+            self.name = nil
+            self.unitName = nil
+            self.isVerified = false
+        }
+    }
+}
+
+final class AssetSearchResultList: PaginatedList<AssetSearchResult>, ALGResponseModel {
+    var debugData: Data?
+
+    convenience init(_ apiModel: APIModel = APIModel()){
+        self.init(pagination: apiModel, results: apiModel.results.unwrapMap(AssetSearchResult.init))
+    }
+}
+
+extension AssetSearchResultList {
+    struct APIModel: ALGAPIModel, PaginationComponents {
+        let count: Int?
+        let next: URL?
+        let previous: String?
+        let results: [AssetSearchResult.APIModel]?
+
+        init() {
+            self.count = nil
+            self.next = nil
+            self.previous = nil
+            self.results = []
+        }
     }
 }

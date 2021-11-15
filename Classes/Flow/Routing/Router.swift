@@ -261,10 +261,6 @@ class Router {
             )
         case .nodeSettings:
             viewController = NodeSettingsViewController(configuration: configuration)
-        case .addNode:
-            viewController = AddNodeViewController(mode: .new, configuration: configuration)
-        case let .editNode(node):
-            viewController = AddNodeViewController(mode: .edit(node: node), configuration: configuration)
         case let .transactionDetail(account, transaction, transactionType, assetDetail):
             viewController = TransactionDetailViewController(
                 account: account,

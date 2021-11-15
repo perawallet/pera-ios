@@ -21,7 +21,7 @@ import MagpieCore
 final class NotificationsDataSource: NSObject {
     weak var delegate: NotificationsDataSourceDelegate?
 
-    private let api: AlgorandAPI
+    private let api: ALGAPI
     private var notifications = [NotificationMessage]()
     private var viewModels = [NotificationsViewModel]()
     private var contacts = [Contact]()
@@ -34,7 +34,7 @@ final class NotificationsDataSource: NSObject {
         return paginationCursor != nil
     }
 
-    init(api: AlgorandAPI) {
+    init(api: ALGAPI) {
         self.api = api
         super.init()
         startObserving()
@@ -49,7 +49,7 @@ extension NotificationsDataSource {
         }
         
         let latesTimestamp = api.session.notificationLatestFetchTimestamp
-        lastRequest = api.getNotifications(for: deviceId, with: CursorQuery(cursor: paginationCursor)) { response in
+        lastRequest = api.getNotifications(deviceId, with: CursorQuery(cursor: paginationCursor)) { response in
             switch response {
             case let .success(notifications):
                 if refresh {

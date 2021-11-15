@@ -27,3 +27,39 @@ extension SwiftDate {
         )
     }
 }
+
+enum DateFormat {
+    case fullNumeric
+    case shortNumeric(separator: String = "/")
+    case dateAndTime
+    case time
+    case creditCardExpire
+}
+
+extension DateFormat {
+    var raw: String {
+        switch self {
+        case .fullNumeric: return "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+        case .shortNumeric(let separator): return "MM\(separator)dd\(separator)yyyy"
+        case .dateAndTime: return "dd/MM/yyyy, hh:mm:ss a"
+        case .time: return "h:mm a"
+        case .creditCardExpire: return "MM/yyyy"
+        }
+    }
+}
+
+extension Date {
+    func toFormat(_ format: DateFormat) -> String {
+        return toFormat(format.raw)
+    }
+
+    static func toFormatter(_ format: DateFormat) -> DateFormatter {
+        return Date().formatter(format: format.raw)
+    }
+}
+
+extension String {
+    func toDate(_ format: DateFormat) -> Date? {
+        return toDate(format.raw)?.date
+    }
+}

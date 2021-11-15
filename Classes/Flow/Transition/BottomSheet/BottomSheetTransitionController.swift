@@ -16,15 +16,14 @@
 //   BottomSheetTransitionController.swift
 
 import Foundation
-import MacaroonUIKit
+import MacaroonBottomSheet
 import UIKit
 
-final class BottomSheetTransitionController: MacaroonUIKit.BottomSheetTransitionController {
+final class BottomSheetTransitionController: MacaroonBottomSheet.BottomSheetTransitionController {
     init(presentingViewController: UIViewController, completion: @escaping () -> Void) {
         super.init(
             presentingViewController: presentingViewController,
-            presentationConfiguration:
-                BottomSheetPresentationConfiguration(),
+            presentationConfiguration: BottomSheetPresentationConfiguration(),
             completion: completion
         )
 

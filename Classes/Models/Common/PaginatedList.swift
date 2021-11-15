@@ -15,21 +15,21 @@
 //
 //  PaginatedList.swift
 
-import MagpieCore
 import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class PaginatedList<T: ResponseModel>: ResponseModel {
+class PaginatedList<Item> {
     let count: Int
     let next: URL?
     let previous: String?
-    let results: [T]
+    let results: [Item]
 
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        count = try container.decodeIfPresent(Int.self, forKey: .count) ?? 0
-        next = try container.decodeIfPresent(URL.self, forKey: .next)
-        previous = try container.decodeIfPresent(String.self, forKey: .previous)
-        results = try container.decode([T].self, forKey: .results)
+    init(pagination: PaginationComponents, results: [Item]) {
+        self.count = pagination.count ?? 0
+        self.next = pagination.next
+        self.previous = pagination.previous
+        self.results = results
     }
 }
 
@@ -44,11 +44,14 @@ extension PaginatedList {
     }
 }
 
-extension PaginatedList {
-    enum CodingKeys: String, CodingKey {
-        case count = "count"
-        case next = "next"
-        case previous = "previous"
-        case results = "results"
-    }
+struct Pagination: PaginationComponents {
+    var count: Int?
+    var next: URL?
+    var previous: String?
+}
+
+protocol PaginationComponents {
+    var count: Int? { get }
+    var next: URL? { get }
+    var previous: String? { get }
 }

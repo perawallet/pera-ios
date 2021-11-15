@@ -16,81 +16,73 @@
 //  API+Notification.swift
 
 import MagpieCore
+import MagpieExceptions
 
-extension AlgorandAPI {
+extension ALGAPI {
     @discardableResult
     func registerDevice(
-        with draft: DeviceRegistrationDraft,
-        then handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
+        _ draft: DeviceRegistrationDraft,
+        onCompleted handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(mobileApiBase)
-            .path("/api/devices/")
+            .base(.mobile)
+            .path(.devices)
             .method(.post)
-            .headers(mobileApiHeaders())
             .body(draft)
             .completionHandler(handler)
-            .build()
-            .send()
+            .execute()
     }
-    
+
     @discardableResult
     func updateDevice(
-        with draft: DeviceUpdateDraft,
-        then handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
+        _ draft: DeviceUpdateDraft,
+        onCompleted handler: @escaping (Response.Result<Device, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(mobileApiBase)
-            .path("/api/devices/\(draft.id)/")
+            .base(.mobile)
+            .path(.deviceDetail, args: draft.id)
             .method(.put)
-            .headers(mobileApiHeaders())
             .body(draft)
             .completionHandler(handler)
-            .build()
-            .send()
+            .execute()
     }
-    
+
     @discardableResult
-    func unregisterDevice(with draft: DeviceDeletionDraft) -> EndpointOperatable {
+    func unregisterDevice(_ draft: DeviceDeletionDraft) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(mobileApiBase)
-            .path("/api/devices/")
+            .base(.mobile)
+            .path(.devices)
             .method(.delete)
-            .headers(mobileApiHeaders())
             .body(draft)
-            .build()
-            .send()
+            .execute()
     }
-    
+
     @discardableResult
     func getNotifications(
-        for id: String,
+        _ id: String,
         with cursorQuery: CursorQuery,
-        then handler: @escaping (Response.ModelResult<PaginatedList<NotificationMessage>>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<NotificationMessageList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(mobileApiBase)
-            .path("/api/devices/\(id)/notifications/")
-            .headers(mobileApiHeaders())
+            .base(.mobile)
+            .path(.notifications, args: id)
+            .method(.get)
             .query(cursorQuery)
             .completionHandler(handler)
-            .build()
-            .send()
+            .execute()
     }
 
     @discardableResult
     func updateNotificationFilter(
-        with draft: NotificationFilterDraft,
-        then handler: @escaping (Response.Result<NotificationFilterResponse, HIPAPIError>) -> Void
+        _ draft: NotificationFilterDraft,
+        onCompleted handler: @escaping (Response.Result<NotificationFilterResponse, HIPAPIError>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(mobileApiBase)
-            .path("/api/devices/\(draft.deviceId)/accounts/\(draft.accountAddress)/")
-            .headers(mobileApiHeaders())
+            .base(.mobile)
+            .path(.deviceAccountUpdate, args: draft.deviceId, draft.accountAddress)
             .method(.patch)
             .body(draft)
             .completionHandler(handler)
-            .build()
-            .send()
+            .execute()
     }
 }

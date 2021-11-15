@@ -19,6 +19,9 @@ import BetterSegmentedControl
 import UIKit
 
 class SegmentItem: BetterSegmentedControlSegment {
+    
+    var intrinsicContentSize: CGSize?
+
     private let text: String
     private let image: UIImage?
     

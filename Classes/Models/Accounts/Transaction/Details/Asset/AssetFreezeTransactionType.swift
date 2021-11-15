@@ -15,18 +15,34 @@
 //
 //  AssetFreezeTransaction.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class AssetFreezeTransaction: ResponseModel {
+final class AssetFreezeTransaction: ALGResponseModel {
+    var debugData: Data?
+    
     let address: String?
     let isFreeze: Bool?
     let assetId: Int64?
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.address = apiModel.address
+        self.isFreeze = apiModel.newFreezeStatus
+        self.assetId = apiModel.assetId
+    }
 }
 
 extension AssetFreezeTransaction {
-    private enum CodingKeys: String, CodingKey {
-        case address = "address"
-        case isFreeze = "new-freeze-status"
-        case assetId = "asset-id"
+    struct APIModel: ALGAPIModel {
+        let address: String?
+        let newFreezeStatus: Bool?
+        let assetId: Int64?
+
+        init() {
+            self.address = nil
+            self.newFreezeStatus = nil
+            self.assetId = nil
+        }
     }
 }

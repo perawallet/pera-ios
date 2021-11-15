@@ -15,24 +15,46 @@
 //
 //  AssetTransferTransaction.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class AssetTransferTransaction: ResponseModel {
+final class AssetTransferTransaction: ALGResponseModel {
+    var debugData: Data?
+
     let amount: UInt64
     let closeAmount: UInt64?
     let closeToAddress: String?
     let assetId: Int64
     let receiverAddress: String?
     let senderAddress: String?
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.amount = apiModel.amount
+        self.closeAmount = apiModel.closeAmount
+        self.closeToAddress = apiModel.closeTo
+        self.assetId = apiModel.assetId
+        self.receiverAddress = apiModel.receiver
+        self.senderAddress = apiModel.sender
+    }
 }
 
 extension AssetTransferTransaction {
-    private enum CodingKeys: String, CodingKey {
-        case amount = "amount"
-        case closeAmount = "close-amount"
-        case closeToAddress = "close-to"
-        case assetId = "asset-id"
-        case receiverAddress = "receiver"
-        case senderAddress = "sender"
+    struct APIModel: ALGAPIModel {
+        let amount: UInt64
+        let closeAmount: UInt64?
+        let closeTo: String?
+        let assetId: Int64
+        let receiver: String?
+        let sender: String?
+
+        init() {
+            self.amount = 10
+            self.closeAmount = nil
+            self.closeTo = nil
+            self.assetId = 1
+            self.receiver = nil
+            self.sender = nil
+        }
     }
 }

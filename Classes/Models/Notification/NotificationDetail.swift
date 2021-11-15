@@ -15,44 +15,48 @@
 //
 //  NotificationDetail.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class NotificationDetail: ResponseModel {
+final class NotificationDetail: ALGResponseModel {
+    var debugData: Data?
+
     let senderAddress: String?
     let receiverAddress: String?
     private let amount: UInt64?
     private let amountStr: String?
     let asset: NotificationAsset?
     let notificationType: NotificationType?
-}
 
-extension NotificationDetail {
-    func getAmountValue() -> UInt64 {
-        if let amount = amount {
-            return amount
-        }
-
-        if let amountStr = amountStr,
-            let amount = UInt64(amountStr) {
-            return amount
-        }
-
-        return 0
+    init(_ apiModel: APIModel = APIModel()) {
+        self.senderAddress = apiModel.senderPublicKey
+        self.receiverAddress = apiModel.receiverPublicKey
+        self.amount = apiModel.amount
+        self.asset = apiModel.asset.unwrap(NotificationAsset.init)
+        self.notificationType = apiModel.notificationType
     }
 }
 
 extension NotificationDetail {
-    enum CodingKeys: String, CodingKey {
-        case senderAddress = "sender_public_key"
-        case receiverAddress = "receiver_public_key"
-        case amount = "amount"
-        case amountStr = "amount_str"
-        case asset = "asset"
-        case notificationType = "notification_type"
+    struct APIModel: ALGAPIModel {
+        let senderPublicKey: String?
+        let receiverPublicKey: String?
+        let amount: UInt64?
+        let asset: NotificationAsset.APIModel?
+        let notificationType: NotificationType?
+
+        init() {
+            self.senderPublicKey = nil
+            self.receiverPublicKey = nil
+            self.amount = 0
+            self.asset = nil
+            self.notificationType = nil
+        }
     }
 }
 
-enum NotificationType: String, Model {
+enum NotificationType: String, ALGAPIModel {
     case transactionSent = "transaction-sent"
     case transactionReceived = "transaction-received"
     case transactionFailed = "transaction-failed"
@@ -62,4 +66,6 @@ enum NotificationType: String, Model {
     case assetSupportRequest = "asset-support-request"
     case assetSupportSuccess = "asset-support-success"
     case broadcast = "broadcast"
+
+    init() { }
 }

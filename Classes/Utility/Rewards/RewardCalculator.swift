@@ -21,7 +21,7 @@ class RewardCalculator {
 
     weak var delegate: RewardCalculatorDelegate?
 
-    private let api: AlgorandAPI
+    private let api: ALGAPI
     private var account: Account
 
     private var totalSupply: UInt64?
@@ -32,7 +32,7 @@ class RewardCalculator {
 
     private let rewardsDispatchGroup = DispatchGroup()
 
-    init(api: AlgorandAPI, account: Account) {
+    init(api: ALGAPI, account: Account) {
         self.api = api
         self.account = account
 

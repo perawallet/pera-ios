@@ -15,18 +15,34 @@
 //
 //   AlgorandTotalSupply.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class AlgorandTotalSupply: ResponseModel {
+final class AlgorandTotalSupply: ALGResponseModel {
+    var debugData: Data?
+
     let currentRound: UInt64
     let onlineMoney: UInt64
     let totalMoney: UInt64
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.currentRound = apiModel.currentRound
+        self.onlineMoney = apiModel.onlineMoney
+        self.totalMoney = apiModel.totalMoney
+    }
 }
 
 extension AlgorandTotalSupply {
-    private enum CodingKeys: String, CodingKey {
-        case currentRound = "current_round"
-        case onlineMoney = "online-money"
-        case totalMoney = "total-money"
+    struct APIModel: ALGAPIModel {
+        let currentRound: UInt64
+        let onlineMoney: UInt64
+        let totalMoney: UInt64
+
+        init() {
+            self.currentRound = 0
+            self.onlineMoney = 0
+            self.totalMoney = 0
+        }
     }
 }

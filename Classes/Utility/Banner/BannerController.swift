@@ -16,10 +16,11 @@
 //   BannerController.swift
 
 import Foundation
+import MacaroonBanner
 import MacaroonUIKit
 import UIKit
 
-final class BannerController: MacaroonUIKit.BannerController {
+final class BannerController: MacaroonBanner.BannerController {
     init(window: UIWindow) {
         super.init(presentingView: window)
 

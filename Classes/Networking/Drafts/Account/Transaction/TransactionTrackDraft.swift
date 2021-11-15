@@ -20,8 +20,8 @@ import MagpieCore
 struct TransactionTrackDraft: JSONObjectBody {
     let transactionId: String
     
-    var bodyParams: [BodyParam] {
-        var params: [BodyParam] = []
+    var bodyParams: [APIBodyParam] {
+        var params: [APIBodyParam] = []
         params.append(.init(.transactionId, transactionId))
         return params
     }

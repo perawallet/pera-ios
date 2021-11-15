@@ -15,9 +15,13 @@
 //
 //  PendingTransactions.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class PendingTransaction: ResponseModel, TransactionItem {
+final class PendingTransaction: ALGResponseModel, TransactionItem {
+    var debugData: Data?
+
     let signature: String?
     private let algosAmount: UInt64?
     private let assetAmount: UInt64?
@@ -39,58 +43,56 @@ class PendingTransaction: ResponseModel, TransactionItem {
     }
     
     var contact: Contact?
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        signature = try container.decodeIfPresent(String.self, forKey: .signature)
-        let transactionContainer = try container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .transaction)
-        
-        algosAmount = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .algosAmount)
-        assetAmount = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .assetAmount)
-        fee = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .fee)
-        fv = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .fv)
-        gh = try transactionContainer.decodeIfPresent(String.self, forKey: .gh)
-        lv = try transactionContainer.decodeIfPresent(UInt64.self, forKey: .lv)
-        algosReceiver = try transactionContainer.decodeIfPresent(String.self, forKey: .algosReceiver)
-        assetReceiver = try transactionContainer.decodeIfPresent(String.self, forKey: .assetReceiver)
-        sender = try transactionContainer.decodeIfPresent(String.self, forKey: .sender)
-        type = try transactionContainer.decodeIfPresent(Transaction.TransferType.self, forKey: .type)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(signature, forKey: .signature)
-        
-        var transactionContainer = container.nestedContainer(keyedBy: TransactionCodingKeys.self, forKey: .transaction)
-        try transactionContainer.encodeIfPresent(algosAmount, forKey: .algosAmount)
-        try transactionContainer.encodeIfPresent(assetAmount, forKey: .assetAmount)
-        try transactionContainer.encodeIfPresent(fee, forKey: .fee)
-        try transactionContainer.encodeIfPresent(fv, forKey: .fv)
-        try transactionContainer.encodeIfPresent(gh, forKey: .gh)
-        try transactionContainer.encodeIfPresent(lv, forKey: .lv)
-        try transactionContainer.encodeIfPresent(algosReceiver, forKey: .algosReceiver)
-        try transactionContainer.encodeIfPresent(assetReceiver, forKey: .assetReceiver)
-        try transactionContainer.encodeIfPresent(sender, forKey: .sender)
-        try transactionContainer.encodeIfPresent(type, forKey: .type)
+
+    init(_ apiModel: APIModel = APIModel()) {
+        self.signature = apiModel.sig
+        self.algosAmount = apiModel.txn?.amt
+        self.assetAmount = apiModel.txn?.aamt
+        self.fee = apiModel.txn?.fee
+        self.fv = apiModel.txn?.fv
+        self.gh = apiModel.txn?.gh
+        self.lv = apiModel.txn?.lv
+        self.assetReceiver = apiModel.txn?.arcv
+        self.algosReceiver = apiModel.txn?.rcv
+        self.sender = apiModel.txn?.snd
+        self.type = apiModel.txn?.type
     }
 }
 
 extension PendingTransaction {
-    private enum CodingKeys: String, CodingKey {
-        case signature = "sig"
-        case transaction = "txn"
+    struct APIModel: ALGAPIModel {
+        let sig: String?
+        let txn: TransactionAPIModel?
+
+        init() {
+            self.sig = nil
+            self.txn = nil
+        }
     }
-    
-    private enum TransactionCodingKeys: String, CodingKey {
-        case assetAmount = "amt"
-        case algosAmount = "aamt"
-        case fee = "fee"
-        case fv = "fv"
-        case gh = "gh"
-        case lv = "lv"
-        case algosReceiver = "rcv"
-        case assetReceiver = "arcv"
-        case sender = "snd"
-        case type = "type"
+
+    struct TransactionAPIModel: ALGAPIModel {
+        let amt: UInt64?
+        let aamt: UInt64?
+        let fee: UInt64?
+        let fv: UInt64?
+        let gh: String?
+        let lv: UInt64?
+        let rcv: String?
+        let arcv: String?
+        let snd: String?
+        let type: Transaction.TransferType?
+
+        init() {
+            self.amt = nil
+            self.aamt = nil
+            self.fee = nil
+            self.fv = nil
+            self.gh = nil
+            self.lv = nil
+            self.rcv = nil
+            self.arcv = nil
+            self.snd = nil
+            self.type = nil
+        }
     }
 }

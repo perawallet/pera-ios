@@ -15,9 +15,13 @@
 //
 //  Account.swift
 
+import Foundation
 import MagpieCore
+import MacaroonUtils
 
-class Account: ResponseModel {
+final class Account: ALGResponseModel {
+    var debugData: Data?
+    
     let address: String
     var amount: UInt64
     var amountWithoutRewards: UInt64
@@ -46,38 +50,31 @@ class Account: ResponseModel {
     var ledgerDetail: LedgerDetail?
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        
-        address = try container.decode(String.self, forKey: .address) //
-        amount = try container.decode(UInt64.self, forKey: .amount) //
-        amountWithoutRewards = try container.decodeIfPresent(UInt64.self, forKey: .amountWithoutRewards) ?? 0 //
-        rewardsBase = try container.decodeIfPresent(UInt64.self, forKey: .rewardsBase) //
-        round = try container.decodeIfPresent(UInt64.self, forKey: .round) //
-        signatureType = try container.decodeIfPresent(SignatureType.self, forKey: .signatureType) //
-        status = try container.decode(AccountStatus.self, forKey: .status) //
-        rewards = try container.decodeIfPresent(UInt64.self, forKey: .rewards) //
-        pendingRewards = try container.decodeIfPresent(UInt64.self, forKey: .pendingRewards) ?? 0 //
-        participation = try container.decodeIfPresent(Participation.self, forKey: .participation) //
-        name = try container.decodeIfPresent(String.self, forKey: .name) //
-        createdAssets = try? container.decodeIfPresent([AssetDetail].self, forKey: .createdAssets) //
-        assets = try? container.decodeIfPresent([Asset].self, forKey: .assets) ?? nil //
-        assetDetails = try container.decodeIfPresent([AssetDetail].self, forKey: .assetDetails) ?? [] //
-        type = try container.decodeIfPresent(AccountType.self, forKey: .type) ?? .standard //
-        authAddress = try container.decodeIfPresent(String.self, forKey: .authAddress) //
-        ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail) //
-        receivesNotification = try container.decodeIfPresent(Bool.self, forKey: .receivesNotification) ?? true
-        rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail) //
-        createdRound = try container.decodeIfPresent(UInt64.self, forKey: .createdRound)
-        closedRound = try container.decodeIfPresent(UInt64.self, forKey: .closedRound)
-        isDeleted = try container.decodeIfPresent(Bool.self, forKey: .isDeleted)
-        appsLocalState = try container.decodeIfPresent([ApplicationLocalState].self, forKey: .appsLocalState)
-        appsTotalExtraPages = try container.decodeIfPresent(Int.self, forKey: .appsTotalExtraPages)
-        appsTotalSchema = try container.decodeIfPresent(ApplicationStateSchema.self, forKey: .appsTotalSchema)
-        createdApps = try container.decodeIfPresent([AlgorandApplication].self, forKey: .createdApps)
+
+    init(_ apiModel: APIModel = APIModel()) {
+        address = apiModel.address
+        amount = apiModel.amount
+        amountWithoutRewards = apiModel.amountWithoutPendingRewards
+        rewardsBase = apiModel.createdAtRound
+        round = apiModel.createdAtRound
+        signatureType = apiModel.sigType
+        status = apiModel.status
+        rewards = apiModel.createdAtRound
+        pendingRewards = apiModel.pendingRewards
+        participation = apiModel.participation.unwrap(Participation.init)
+        createdAssets = apiModel.createdAssets.unwrapMap(AssetDetail.init)
+        assets = apiModel.assets.unwrapMap(Asset.init)
+        authAddress = apiModel.authAddr
+        createdRound = apiModel.createdAtRound
+        closedRound = apiModel.closedAtRound
+        isDeleted = apiModel.deleted
+        appsLocalState = apiModel.appsLocalState.unwrapMap(ApplicationLocalState.init)
+        appsTotalExtraPages = apiModel.appsTotalExtraPages
+        appsTotalSchema = apiModel.appsTotalSchema.unwrap(ApplicationStateSchema.init)
+        createdApps = apiModel.createdApps.unwrapMap(AlgorandApplication.init)
+        receivesNotification = true
     }
-    
+
     init(
         address: String,
         type: AccountType,
@@ -113,41 +110,58 @@ class Account: ResponseModel {
 }
 
 extension Account {
-    enum CodingKeys: String, CodingKey {
-        case address = "address"
-        case amount = "amount"
-        case status = "status"
-        case rewards = "rewards"
-        case amountWithoutRewards = "amount-without-pending-rewards"
-        case pendingRewards = "pending-rewards"
-        case rewardsBase = "reward-base"
-        case name = "name"
-        case participation = "participation"
-        case createdAssets = "created-assets"
-        case assets = "assets"
-        case assetDetails = "assetDetails"
-        case type = "type"
-        case ledgerDetail = "ledgerDetail"
-        case signatureType = "sig-type"
-        case round = "round"
-        case authAddress = "auth-addr"
-        case receivesNotification = "receivesNotification"
-        case rekeyDetail = "rekeyDetail"
-        case createdRound = "created-at-round"
-        case closedRound = "closed-at-round"
-        case isDeleted = "deleted"
-        case appsLocalState = "apps-local-state"
-        case appsTotalExtraPages = "apps-total-extra-pages"
-        case appsTotalSchema = "apps-total-schema"
-        case createdApps = "created-apps"
+    struct APIModel: ALGAPIModel {
+        let address: String
+        let amount: UInt64
+        let status: AccountStatus
+        let rewards:  UInt64?
+        let amountWithoutPendingRewards: UInt64
+        let pendingRewards: UInt64
+        let rewardBase: UInt64?
+        let participation: Participation.APIModel?
+        let createdAssets: [AssetDetail.APIModel]?
+        let assets: [Asset.APIModel]?
+        let sigType: SignatureType?
+        let round: UInt64?
+        let authAddr: String?
+        let createdAtRound: UInt64?
+        let closedAtRound: UInt64?
+        let deleted: Bool?
+        let appsLocalState: [ApplicationLocalState.APIModel]?
+        let appsTotalExtraPages: Int?
+        let appsTotalSchema: ApplicationStateSchema.APIModel?
+        let createdApps: [AlgorandApplication.APIModel]?
+
+        init() {
+            self.address = ""
+            self.amount = 0
+            self.status = .offline
+            self.rewards = nil
+            self.amountWithoutPendingRewards = 0
+            self.pendingRewards = 0
+            self.rewardBase = nil
+            self.participation = nil
+            self.createdAssets = nil
+            self.assets = nil
+            self.sigType = nil
+            self.round = nil
+            self.authAddr = nil
+            self.createdAtRound = nil
+            self.closedAtRound = nil
+            self.deleted = nil
+            self.appsLocalState = nil
+            self.appsTotalExtraPages = nil
+            self.appsTotalSchema = nil
+            self.createdApps = nil
+        }
     }
 }
 
-extension Account: Encodable {
-    func encoded() -> Data? {
-        return try? JSONEncoder().encode(self)
-    }
-}
+//extension Account: Encodable {
+//    func encoded() -> Data? {
+//        return try? JSONEncoder().encode(self)
+//    }
+//}
 
 extension Account: Equatable {
     static func == (lhs: Account, rhs: Account) -> Bool {
