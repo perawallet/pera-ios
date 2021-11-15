@@ -18,12 +18,10 @@
 import UIKit
 import Magpie
 
-class NotificationFilterDataSource: NSObject {
-
+final class NotificationFilterDataSource: NSObject {
     weak var delegate: NotificationFilterDataSourceDelegate?
 
     private let api: AlgorandAPI
-
     private var accounts = [Account]()
 
     init(api: AlgorandAPI) {
@@ -79,49 +77,33 @@ extension NotificationFilterDataSource: UICollectionViewDataSource {
         if kind != UICollectionView.elementKindSectionHeader {
             fatalError("Unexpected element kind")
         }
-
         return dequeueHeaderView(in: collectionView, at: indexPath)
     }
 }
 
 extension NotificationFilterDataSource {
     private func dequeuePushNotificationCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> TitledToggleCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TitledToggleCell.reusableIdentifier,
-            for: indexPath
-        ) as? TitledToggleCell else {
-            fatalError("Unexpected cell type")
-        }
-
-        cell.bind(TitledToggleViewModel())
+        let cell: TitledToggleCell = collectionView.dequeueReusableCell(for: indexPath)
+        cell.customize(TitledToggleViewTheme())
+        cell.bindData(TitledToggleViewModel())
         cell.delegate = self
         return cell
     }
 
     private func dequeueAccountNotificationCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> AccountNameSwitchCell {
-        if let account = accounts[safe: indexPath.item],
-            let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: AccountNameSwitchCell.reusableIdentifier,
-                for: indexPath
-            ) as? AccountNameSwitchCell {
-
-            cell.bind(AccountNameSwitchViewModel(account: account, isLastIndex: isAtLastIndex(indexPath.item)))
+        if let account = accounts[safe: indexPath.item] {
+            let cell: AccountNameSwitchCell = collectionView.dequeueReusableCell(for: indexPath)
+            cell.customize(AccountNameSwitchViewTheme())
+            cell.bindData(AccountNameSwitchViewModel(account))
             cell.delegate = self
             return cell
         }
-
         fatalError("Unexpected cell type")
     }
 
-    private func dequeueHeaderView(in collectionView: UICollectionView, at indexPath: IndexPath) -> ToggleTitleHeaderView {
-        guard let headerView = collectionView.dequeueReusableSupplementaryView(
-            ofKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: ToggleTitleHeaderView.reusableIdentifier,
-            for: indexPath
-        ) as? ToggleTitleHeaderView else {
-            fatalError("Unexpected header type")
-        }
-
+    private func dequeueHeaderView(in collectionView: UICollectionView, at indexPath: IndexPath) -> ToggleTitleHeaderSupplementaryView {
+        let headerView: ToggleTitleHeaderSupplementaryView = collectionView.dequeueReusableSupplementaryView(of: .header, for: indexPath)
+        headerView.customize(ToggleTitleHeaderViewTheme())
         return headerView
     }
 }
@@ -137,10 +119,6 @@ extension NotificationFilterDataSource {
 
     func index(of account: Account) -> Int? {
         return accounts.firstIndex(of: account)
-    }
-
-    func isAtLastIndex(_ index: Int) -> Bool {
-        return index == accounts.count - 1
     }
 }
 

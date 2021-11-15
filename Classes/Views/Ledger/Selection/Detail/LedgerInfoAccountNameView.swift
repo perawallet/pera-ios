@@ -59,7 +59,7 @@ extension LedgerInfoAccountNameView {
 
 extension LedgerInfoAccountNameView {
     func bind(_ viewModel: AccountNameViewModel) {
-        accountNameView.bind(viewModel)
+        accountNameView.bindData(viewModel)
     }
 }
 

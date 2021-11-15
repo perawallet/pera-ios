@@ -13,27 +13,16 @@
 // limitations under the License.
 
 //
-//  AccountNameSwitchViewModel.swift
+//   AccountNameSwitchViewTheme.swift
 
 import Foundation
 import Macaroon
+import UIKit
 
-final class AccountNameSwitchViewModel: PairedViewModel {
-    private(set) var accountNameViewModel: AccountNameViewModel?
-    private(set) var isSelected = true
+struct AccountNameSwitchViewTheme: StyleSheet, LayoutSheet {
+    let horizontalPadding: LayoutMetric
 
-    init(_ model: Account) {
-        bindAccountNameViewModel(model)
-        bindIsSelected(model)
-    }
-}
-
-extension AccountNameSwitchViewModel {
-    private func bindAccountNameViewModel(_ account: Account) {
-        accountNameViewModel = AccountNameViewModel(account: account)
-    }
-
-    private func bindIsSelected(_ account: Account) {
-        isSelected = account.receivesNotification
+    init(_ family: LayoutFamily) {
+        self.horizontalPadding = 24
     }
 }

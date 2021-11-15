@@ -16,19 +16,39 @@
 //  Toggle.swift
 
 import UIKit
+import Macaroon
 
-class Toggle: UISwitch {
+final class Toggle: UISwitch {
+    private lazy var theme = Theme()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        tintColor = rgba(0.47, 0.47, 0.5, 0.16)
-        backgroundColor = rgba(0.47, 0.47, 0.5, 0.16)
-        layer.cornerRadius = 16
-        onTintColor = Colors.General.selected
+
+        customize(theme)
     }
     
     @available(*, unavailable)
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func customize(_ theme: Theme) {
+        layer.cornerRadius = theme.cornerRadius
+        backgroundColor = theme.backgroundColor.color
+        onTintColor = theme.onTintColor.color
+    }
+}
+
+extension Toggle {
+    struct Theme: LayoutSheet, StyleSheet {
+        let cornerRadius: LayoutMetric
+        let backgroundColor: Color
+        let onTintColor: Color
+
+        init(_ family: LayoutFamily) {
+            cornerRadius = 16
+            backgroundColor = AppColors.Shared.Layer.grayLighter
+            onTintColor = AppColors.Shared.Global.turquoise600
+        }
     }
 }

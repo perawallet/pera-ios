@@ -13,27 +13,26 @@
 // limitations under the License.
 
 //
-//  AccountNameSwitchViewModel.swift
+//   ToggleTitleHeaderViewTheme.swift
 
 import Foundation
 import Macaroon
+import UIKit
 
-final class AccountNameSwitchViewModel: PairedViewModel {
-    private(set) var accountNameViewModel: AccountNameViewModel?
-    private(set) var isSelected = true
+struct ToggleTitleHeaderViewTheme: StyleSheet, LayoutSheet {
+    let titleLabel: TextStyle
+    let horizontalPadding: LayoutMetric
+    let topPadding: LayoutMetric 
 
-    init(_ model: Account) {
-        bindAccountNameViewModel(model)
-        bindIsSelected(model)
-    }
-}
-
-extension AccountNameSwitchViewModel {
-    private func bindAccountNameViewModel(_ account: Account) {
-        accountNameViewModel = AccountNameViewModel(account: account)
-    }
-
-    private func bindIsSelected(_ account: Account) {
-        isSelected = account.receivesNotification
+    init(_ family: LayoutFamily) {
+        self.titleLabel = [
+            .textOverflow(.singleLineFitting),
+            .textAlignment(.left),
+            .textColor(AppColors.Components.Text.gray),
+            .font(Fonts.DMSans.regular.make(13)),
+            .content("notification-filter-show-for".localized)
+        ]
+        self.horizontalPadding = 24
+        self.topPadding = 36
     }
 }

@@ -17,8 +17,7 @@
 
 import UIKit
 
-class NotificationFilterListLayout: NSObject {
-
+final class NotificationFilterListLayout: NSObject {
     private let layout = Layout<LayoutConstants>()
 
     private weak var dataSource: NotificationFilterDataSource?
@@ -49,24 +48,11 @@ extension NotificationFilterListLayout: UICollectionViewDelegateFlowLayout {
 
         return layout.current.headerSize
     }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        insetForSectionAt section: Int
-    ) -> UIEdgeInsets {
-        if section == 0 {
-            return layout.current.sectionInset
-        }
-        
-        return .zero
-    }
 }
 
 extension NotificationFilterListLayout {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
-        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 60.0)
-        let sectionInset = UIEdgeInsets(top: 12.0, left: 0, bottom: 0, right: 0)
+        let cellSize = CGSize(width: UIScreen.main.bounds.width, height: 64)
+        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 64)
     }
 }

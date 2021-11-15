@@ -13,27 +13,12 @@
 // limitations under the License.
 
 //
-//  AccountNameSwitchViewModel.swift
+//  ToggleTitleHeaderSupplementaryView.swift
 
 import Foundation
-import Macaroon
 
-final class AccountNameSwitchViewModel: PairedViewModel {
-    private(set) var accountNameViewModel: AccountNameViewModel?
-    private(set) var isSelected = true
-
-    init(_ model: Account) {
-        bindAccountNameViewModel(model)
-        bindIsSelected(model)
-    }
-}
-
-extension AccountNameSwitchViewModel {
-    private func bindAccountNameViewModel(_ account: Account) {
-        accountNameViewModel = AccountNameViewModel(account: account)
-    }
-
-    private func bindIsSelected(_ account: Account) {
-        isSelected = account.receivesNotification
+final class ToggleTitleHeaderSupplementaryView: BaseSupplementaryView<ToggleTitleHeaderView> {
+    func customize(_ theme: ToggleTitleHeaderViewTheme) {
+        contextView.customize(theme)
     }
 }

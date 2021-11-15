@@ -17,8 +17,7 @@
 
 import UIKit
 
-class TitledToggleCell: BaseCollectionViewCell<TitledToggleView> {
-
+final class TitledToggleCell: BaseCollectionViewCell<TitledToggleView> {
     weak var delegate: TitledToggleCellDelegate?
 
     override func linkInteractors() {
@@ -28,8 +27,12 @@ class TitledToggleCell: BaseCollectionViewCell<TitledToggleView> {
 }
 
 extension TitledToggleCell {
-    func bind(_ viewModel: TitledToggleViewModel) {
-        contextView.bind(viewModel)
+    func bindData(_ viewModel: TitledToggleViewModel?) {
+        contextView.bindData(viewModel)
+    }
+
+    func customize(_ theme: TitledToggleViewTheme) {
+        contextView.customize(theme)
     }
 }
 

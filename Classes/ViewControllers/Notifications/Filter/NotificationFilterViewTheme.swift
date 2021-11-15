@@ -13,27 +13,21 @@
 // limitations under the License.
 
 //
-//  AccountNameSwitchViewModel.swift
+//   NotificationFilterViewTheme.swift
 
 import Foundation
 import Macaroon
+import UIKit
 
-final class AccountNameSwitchViewModel: PairedViewModel {
-    private(set) var accountNameViewModel: AccountNameViewModel?
-    private(set) var isSelected = true
+struct NotificationFilterViewTheme: StyleSheet, LayoutSheet {
+    let backgroundColor: Color
+    let cellSpacing: LayoutMetric
+    let contentInset: LayoutPaddings
 
-    init(_ model: Account) {
-        bindAccountNameViewModel(model)
-        bindIsSelected(model)
-    }
-}
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
 
-extension AccountNameSwitchViewModel {
-    private func bindAccountNameViewModel(_ account: Account) {
-        accountNameViewModel = AccountNameViewModel(account: account)
-    }
-
-    private func bindIsSelected(_ account: Account) {
-        isSelected = account.receivesNotification
+        self.cellSpacing = 0
+        self.contentInset = (20, 0, 0, 0)
     }
 }

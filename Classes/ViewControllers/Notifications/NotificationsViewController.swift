@@ -99,14 +99,7 @@ extension NotificationsViewController {
     }
 
     private func openNotificationFilters() {
-        open(
-            .notificationFilter(flow: .notifications),
-            by: .customPresent(
-                presentationStyle: .fullScreen,
-                transitionStyle: nil,
-                transitioningDelegate: nil
-            )
-        )
+        open(.notificationFilter(flow: .notifications), by: .present)
     }
 }
 
