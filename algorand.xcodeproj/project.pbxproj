@@ -2127,6 +2127,9 @@
 		2BCBAAA7273BF3C900B3A746 /* LedgerPairWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBAAA6273BF3C900B3A746 /* LedgerPairWarningView.swift */; };
 		2BCBAAA8273BF3C900B3A746 /* LedgerPairWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBAAA6273BF3C900B3A746 /* LedgerPairWarningView.swift */; };
 		2BCBAAA9273BF3CA00B3A746 /* LedgerPairWarningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBAAA6273BF3C900B3A746 /* LedgerPairWarningView.swift */; };
+		2BCBAAAC27426E9900B3A746 /* MismatchAccountErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBAAAB27426E9900B3A746 /* MismatchAccountErrorLog.swift */; };
+		2BCBAAAD27426E9900B3A746 /* MismatchAccountErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBAAAB27426E9900B3A746 /* MismatchAccountErrorLog.swift */; };
+		2BCBAAAE27426E9900B3A746 /* MismatchAccountErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBAAAB27426E9900B3A746 /* MismatchAccountErrorLog.swift */; };
 		2BCBBADE24A60A02002CD56F /* PinLimitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBBADD24A60A02002CD56F /* PinLimitStore.swift */; };
 		2BCBBADF24A60A02002CD56F /* PinLimitStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBBADD24A60A02002CD56F /* PinLimitStore.swift */; };
 		2BCBBAE224A66A89002CD56F /* TransactionFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCBBAE124A66A89002CD56F /* TransactionFilterViewController.swift */; };
@@ -3313,6 +3316,7 @@
 		2BC7E9DC24B74C4400FED513 /* TransactionFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFetchDraft.swift; sourceTree = "<group>"; };
 		2BCBAAA1273BF36400B3A746 /* LedgerPairWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerPairWarningViewController.swift; sourceTree = "<group>"; };
 		2BCBAAA6273BF3C900B3A746 /* LedgerPairWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerPairWarningView.swift; sourceTree = "<group>"; };
+		2BCBAAAB27426E9900B3A746 /* MismatchAccountErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MismatchAccountErrorLog.swift; sourceTree = "<group>"; };
 		2BCBBADD24A60A02002CD56F /* PinLimitStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinLimitStore.swift; sourceTree = "<group>"; };
 		2BCBBAE124A66A89002CD56F /* TransactionFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFilterViewController.swift; sourceTree = "<group>"; };
 		2BCBBAE524A66ACF002CD56F /* TransactionFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionFilterView.swift; sourceTree = "<group>"; };
@@ -4462,6 +4466,7 @@
 		2B32A2412552EF9B007CC3A6 /* Logs */ = {
 			isa = PBXGroup;
 			children = (
+				2BCBAAAA27426E8C00B3A746 /* Address */,
 				2BE4D09F25938D7D005F5764 /* Ledger */,
 			);
 			path = Logs;
@@ -8021,6 +8026,14 @@
 			path = Warning;
 			sourceTree = "<group>";
 		};
+		2BCBAAAA27426E8C00B3A746 /* Address */ = {
+			isa = PBXGroup;
+			children = (
+				2BCBAAAB27426E9900B3A746 /* MismatchAccountErrorLog.swift */,
+			);
+			path = Address;
+			sourceTree = "<group>";
+		};
 		2BCBBADC24A609EE002CD56F /* PinLimit */ = {
 			isa = PBXGroup;
 			children = (
@@ -10915,6 +10928,7 @@
 				17BD4EE12292F1260003E49A /* AccountNameSetupView.swift in Sources */,
 				2B7E3033267A514B00E89EE3 /* WCSingleTransactionView.swift in Sources */,
 				17BD4EE42292F1260003E49A /* ModalPresenter.swift in Sources */,
+				2BCBAAAE27426E9900B3A746 /* MismatchAccountErrorLog.swift in Sources */,
 				2B7E589325878BCE00731C97 /* LedgerAccountAssetCountViewModel.swift in Sources */,
 				2B44873B237AB67700C19FDE /* AssetListLayoutBuilder.swift in Sources */,
 				2B7E305B267A5DBF00E89EE3 /* WCAssetTransactionViewModel.swift in Sources */,
@@ -11724,6 +11738,7 @@
 				2B0F62E224EC129D00DA22A6 /* ContactInfoViewController.swift in Sources */,
 				2B7E3032267A514B00E89EE3 /* WCSingleTransactionView.swift in Sources */,
 				2B0F62E324EC129D00DA22A6 /* SendTransactionPreviewViewController+Keyboard.swift in Sources */,
+				2BCBAAAD27426E9900B3A746 /* MismatchAccountErrorLog.swift in Sources */,
 				2B7E589225878BCE00731C97 /* LedgerAccountAssetCountViewModel.swift in Sources */,
 				2B0F62E424EC129D00DA22A6 /* TransactionControllerDelegate.swift in Sources */,
 				2B7E305A267A5DBF00E89EE3 /* WCAssetTransactionViewModel.swift in Sources */,
@@ -12533,6 +12548,7 @@
 				2B3A95E6238FF99C00A3DF44 /* TransactionControllerDelegate.swift in Sources */,
 				2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */,
 				2B7E3031267A514B00E89EE3 /* WCSingleTransactionView.swift in Sources */,
+				2BCBAAAC27426E9900B3A746 /* MismatchAccountErrorLog.swift in Sources */,
 				2BF53157224A46A400A7455F /* ModalPresenter.swift in Sources */,
 				2B7E589125878BCE00731C97 /* LedgerAccountAssetCountViewModel.swift in Sources */,
 				2B44873A237AB67700C19FDE /* AssetListLayoutBuilder.swift in Sources */,

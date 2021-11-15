@@ -16,6 +16,7 @@
 //  AccountManager.swift
 
 import Foundation
+import UIKit
 
 class AccountManager {
     let api: AlgorandAPI
@@ -65,6 +66,11 @@ extension AccountManager {
             accountFetchOperation.onCompleted = { fetchedAccount, _ in
                 guard let fetchedAccount = fetchedAccount,
                       fetchedAccount.address == account.address else {
+                          if let fetchedAccountAddress = fetchedAccount?.address {
+                              UIApplication.shared.firebaseAnalytics?.record(
+                                MismatchAccountErrorLog(requestedAddress: account.address, receivedAddress: fetchedAccountAddress)
+                              )
+                          }
                           return
                       }
                 

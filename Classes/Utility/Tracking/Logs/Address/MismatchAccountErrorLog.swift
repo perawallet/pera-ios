@@ -13,23 +13,15 @@
 // limitations under the License.
 
 //
-//  AnalyticsLog.swift
+//   MismatchAccountErrorLog.swift
 
 import Foundation
 
-protocol AnalyticsLog {
-    var id: Int { get }
-    var name: AnalyticsLogName { get }
-    var params: AnalyticsParameters { get }
-}
+struct MismatchAccountErrorLog: AnalyticsLog {
+    var name: AnalyticsLogName = .mismatchAccountError
+    var params: AnalyticsParameters
 
-extension AnalyticsLog {
-    var id: Int {
-        return AnalyticsLogName.allCases.firstIndex(of: name) ?? -1
+    init(requestedAddress: String, receivedAddress: String) {
+        params = [.requestedAddress: requestedAddress, .receivedAddress: receivedAddress]
     }
-}
-
-enum AnalyticsLogName: String, CaseIterable {
-    case ledgerTransactionError = "LedgerTransactionError"
-    case mismatchAccountError = "MismatchAccount"
 }
