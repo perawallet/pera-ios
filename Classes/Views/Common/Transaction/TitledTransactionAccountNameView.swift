@@ -82,7 +82,7 @@ extension TitledTransactionAccountNameView {
         titleLabel.text = viewModel.title
         
         if let accountNameViewModel = viewModel.accountNameViewModel {
-            accountNameView.bind(accountNameViewModel)
+            accountNameView.bindData(accountNameViewModel)
         }
 
         separatorView.isHidden = viewModel.isSeparatorHidden

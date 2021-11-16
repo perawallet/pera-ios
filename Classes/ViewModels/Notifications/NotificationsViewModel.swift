@@ -18,9 +18,8 @@
 import UIKit
 import SwiftDate
 
-class NotificationsViewModel {
-    
-    private var notificationImage: UIImage?
+final class NotificationsViewModel {
+    private(set) var notificationImage: UIImage?
     private(set) var title: NSAttributedString?
     private(set) var time: String?
     private(set) var isRead: Bool = true
@@ -32,44 +31,46 @@ class NotificationsViewModel {
         contact: Contact? = nil,
         latestReadTimestamp: TimeInterval? = nil
     ) {
-        setImage(notification: notification, contact: contact)
-        setTitle(notification: notification, senderAccount: senderAccount, receiverAccount: receiverAccount, contact: contact)
-        setTime(notification: notification)
-        setIsRead(notification: notification, latestReadTimestamp: latestReadTimestamp)
+        bindImage(notification: notification, contact: contact)
+        bindTitle(notification: notification, senderAccount: senderAccount, receiverAccount: receiverAccount, contact: contact)
+        bindTime(notification: notification)
+        bindIsRead(notification: notification, latestReadTimestamp: latestReadTimestamp)
     }
-    
-    private func setImage(notification: NotificationMessage, contact: Contact?) {
+}
+
+extension NotificationsViewModel {
+    private func bindImage(notification: NotificationMessage, contact: Contact?) {
         if let contact = contact {
             if let imageData = contact.image,
                 let image = UIImage(data: imageData) {
-                let resizedImage = image.convert(to: CGSize(width: 36.0, height: 36.0))
+                let resizedImage = image.convert(to: CGSize(width: 40, height: 40))
                 notificationImage = resizedImage
             } else {
-                notificationImage = img("icon-user-placeholder-gray")
+                notificationImage = img("icon-user-placeholder")
             }
             return
         }
-        
+
         if notification.notificationType == .transactionFailed || notification.notificationType == .assetTransactionFailed {
             notificationImage = img("img-nc-failed")
         } else {
             notificationImage = img("img-nc-success")
         }
     }
-    
-    private func setTitle(notification: NotificationMessage, senderAccount: Account?, receiverAccount: Account?, contact: Contact?) {
+
+    private func bindTitle(notification: NotificationMessage, senderAccount: Account?, receiverAccount: Account?, contact: Contact?) {
         guard let notificationDetail = notification.detail,
             let notificationType = notification.notificationType else {
             title = NSAttributedString(string: notification.message ?? "")
             return
         }
-        
+
         let sender = getSenderInformationFromLocalValues(in: notificationDetail, account: senderAccount, contact: contact) ?? ""
         let receiver = getReceiverInformationFromLocalValues(in: notificationDetail, account: receiverAccount, contact: contact) ?? ""
         let assetDisplayName = getAssetDisplayName(from: notificationDetail) ?? ""
         let amount = getAmount(from: notificationDetail) ?? ""
         let assetWithAmount = "\(amount) \(assetDisplayName)"
-        
+
         switch notificationType {
         case .transactionSent,
             .assetTransactionSent:
@@ -93,20 +94,20 @@ class NotificationsViewModel {
             title = notification.message?.attributed()
         }
     }
-    
-    private func setTime(notification: NotificationMessage) {
+
+    private func bindTime(notification: NotificationMessage) {
         if let notificationDate = notification.date {
             time = (Date() - notificationDate).ago.toRelative(style: RelativeFormatter.defaultStyle(), locale: Locales.autoUpdating)
         }
     }
-    
-    private func setIsRead(notification: NotificationMessage, latestReadTimestamp: TimeInterval?) {
+
+    private func bindIsRead(notification: NotificationMessage, latestReadTimestamp: TimeInterval?) {
         guard let notificationLatestFetchTimestamp = latestReadTimestamp,
             let notificationDate = notification.date else {
             isRead = false
             return
         }
-        
+
         isRead = notificationDate.timeIntervalSince1970 < notificationLatestFetchTimestamp
     }
 }
@@ -182,14 +183,5 @@ extension NotificationsViewModel {
             attributedText.addAttributes([.font: UIFont.font(withWeight: .medium(size: 14.0))], range: parameterRange)
         }
         return attributedText
-    }
-}
-
-extension NotificationsViewModel {
-    func configure(_ cell: NotificationCell) {
-        cell.contextView.setNotificationImage(notificationImage)
-        cell.contextView.setAttributedTitle(title)
-        cell.contextView.setTime(time)
-        cell.contextView.setBadgeHidden(isRead)
     }
 }

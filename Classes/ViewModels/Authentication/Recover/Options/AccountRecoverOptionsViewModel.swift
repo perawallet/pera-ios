@@ -16,17 +16,20 @@
 //   AccountRecoverOptionsViewModel.swift
 
 import UIKit
+import Macaroon
 
-final class AccountRecoverOptionsViewModel {
+final class AccountRecoverOptionsViewModel: PairedViewModel {
     private(set) var image: UIImage?
     private(set) var title: String?
 
-    init(option: AccountRecoverOptionsViewController.Option) {
-        setImage(for: option)
-        setTitle(for: option)
+    init(_ model: AccountRecoverOptionsViewController.Option) {
+        bindImage(model)
+        bintTitle(model)
     }
+}
 
-    private func setImage(for option: AccountRecoverOptionsViewController.Option) {
+extension AccountRecoverOptionsViewModel {
+    private func bindImage(_ option: AccountRecoverOptionsViewController.Option) {
         switch option {
         case .paste:
             image = img("icon-paste")
@@ -37,7 +40,7 @@ final class AccountRecoverOptionsViewModel {
         }
     }
 
-    private func setTitle(for option: AccountRecoverOptionsViewController.Option) {
+    private func bintTitle(_ option: AccountRecoverOptionsViewController.Option) {
         switch option {
         case .paste:
             title = "title-paste-passphrase".localized

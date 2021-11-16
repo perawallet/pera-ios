@@ -13,10 +13,31 @@
 // limitations under the License.
 
 //
-//  ToggleTitleHeaderView.swift
+//  ToggleTitleView.swift
 
-import Foundation
+import UIKit
+import Macaroon
 
-class ToggleTitleHeaderView: BaseSupplementaryView<ToggleTitleView> {
-    
+final class ToggleTitleHeaderView: View {
+    private lazy var titleLabel = UILabel()
+
+    func customize(_ theme: ToggleTitleHeaderViewTheme) {
+        addTitleLabel(theme)
+    }
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) { }
+
+    func customizeAppearance(_ styleSheet: BaseStyle<ViewStyleAttribute>) {}
+}
+
+extension ToggleTitleHeaderView {
+    private func addTitleLabel(_ theme: ToggleTitleHeaderViewTheme) {
+        titleLabel.customizeAppearance(theme.titleLabel)
+        
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalToSuperview().inset(theme.topPadding)
+        }
+    }
 }

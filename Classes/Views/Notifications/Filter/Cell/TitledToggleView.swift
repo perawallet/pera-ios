@@ -16,36 +16,31 @@
 //  TitledToggleView.swift
 
 import UIKit
+import Macaroon
 
-class TitledToggleView: BaseView {
-
+final class TitledToggleView: View {
     weak var delegate: TitledToggleViewDelegate?
 
-    private let layout = Layout<LayoutConstants>()
-
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withTextColor(Colors.Text.primary)
-            .withLine(.single)
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withText("notification-filter-show-title".localized)
-    }()
-    
+    private lazy var titleLabel = UILabel()
     private lazy var toggleView = Toggle()
 
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setListeners()
     }
 
-    override func setListeners() {
+    func customize(_ theme: TitledToggleViewTheme) {
+        addToggleView(theme)
+        addTitleLabel(theme)
+    }
+
+    func setListeners() {
         toggleView.addTarget(self, action: #selector(notifyDelegateToToggleValueChanged), for: .touchUpInside)
     }
 
-    override func prepareLayout() {
-        setupToggleViewLayout()
-        setupTitleLabelLayout()
-    }
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
 }
 
 extension TitledToggleView {
@@ -56,36 +51,29 @@ extension TitledToggleView {
 }
 
 extension TitledToggleView {
-    private func setupToggleViewLayout() {
+    private func addToggleView(_ theme: TitledToggleViewTheme) {
         addSubview(toggleView)
-
-        toggleView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
+        toggleView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.centerY.equalToSuperview()
         }
     }
 
-    private func setupTitleLabelLayout() {
+    private func addTitleLabel(_ theme: TitledToggleViewTheme) {
+        titleLabel.customizeAppearance(theme.titleLabel)
+
         addSubview(titleLabel)
-
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
-            make.trailing.equalTo(toggleView.snp.leading).offset(-layout.current.horizontalInset)
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalPadding)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalTo(toggleView.snp.leading).inset(theme.horizontalPadding)
         }
     }
 }
 
-extension TitledToggleView {
-    func bind(_ viewModel: TitledToggleViewModel) {
-        titleLabel.text = viewModel.title
-        toggleView.setOn(viewModel.isSelected, animated: true)
-    }
-}
-
-extension TitledToggleView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
+extension TitledToggleView: ViewModelBindable {
+    func bindData(_ viewModel: TitledToggleViewModel?) {
+        toggleView.setOn(viewModel?.isSelected ?? true, animated: true)
     }
 }
 

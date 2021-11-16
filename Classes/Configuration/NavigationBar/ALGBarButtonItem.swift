@@ -115,6 +115,11 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+        case .filter:
+            if let icon = img("icon-transaction-filter") {
+                return ImageContent(normal: icon)
+            }
+            return nil
         }
     }
     
@@ -183,6 +188,8 @@ struct ALGBarButtonItem: BarButtonItem {
             )
         case .share:
             return .explicit(CGSize(width: 40, height: 40))
+        case .filter:
+            return .explicit(CGSize(width: 40, height: 40))
         }
     }
     
@@ -216,6 +223,7 @@ extension ALGBarButtonItem {
         case dontAskAgain
         case copy
         case share
+        case filter
     }
 }
 

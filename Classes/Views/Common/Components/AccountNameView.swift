@@ -16,50 +16,50 @@
 //  AccountNameView.swift
 
 import UIKit
+import Macaroon
 
-class AccountNameView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
+final class AccountNameView: View {
     private lazy var imageView = UIImageView()
-    
-    private lazy var nameLabel: UILabel = {
-        UILabel()
-            .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-    }()
-    
-    override func configureAppearance() {
-        backgroundColor = .clear
+    private lazy var nameLabel = UILabel()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(AccountNameViewTheme())
     }
-    
-    override func prepareLayout() {
-        setupImageViewLayout()
-        setupNameLabelLayout()
+
+    func customize(_ theme: AccountNameViewTheme) {
+        addImageView(theme)
+        addNameLabel(theme)
     }
+
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
 extension AccountNameView {
-    private func setupImageViewLayout() {
+    private func addImageView(_ theme: AccountNameViewTheme) {
         addSubview(imageView)
-        
-        imageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.size.equalTo(layout.current.imageSize)
-            make.top.bottom.equalToSuperview()
+        imageView.snp.makeConstraints {
+            $0.leading.bottom.top.equalToSuperview()
+            $0.fitToSize(theme.imageSize)
         }
     }
     
-    private func setupNameLabelLayout() {
+    private func addNameLabel(_ theme: AccountNameViewTheme) {
         addSubview(nameLabel)
-        
-        nameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(imageView.snp.trailing).offset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview()
+        nameLabel.snp.makeConstraints {
+            $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)
+            $0.centerY.trailing.equalToSuperview()
         }
+    }
+}
+
+extension AccountNameView: ViewModelBindable {
+    func bindData(_ viewModel: AccountNameViewModel?) {
+        imageView.image = viewModel?.image
+        nameLabel.text = viewModel?.name
     }
 }
 
@@ -70,17 +70,5 @@ extension AccountNameView {
     
     func setAccountName(_ name: String?) {
         nameLabel.text = name
-    }
-    
-    func bind(_ viewModel: AccountNameViewModel) {
-        imageView.image = viewModel.image
-        nameLabel.text = viewModel.name
-    }
-}
-
-extension AccountNameView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 12.0
-        let imageSize = CGSize(width: 24.0, height: 24.0)
     }
 }

@@ -16,10 +16,10 @@
 //  NotificationFilterListLayout.swift
 
 import UIKit
+import Macaroon
 
-class NotificationFilterListLayout: NSObject {
-
-    private let layout = Layout<LayoutConstants>()
+final class NotificationFilterListLayout: NSObject {
+    private let theme = Theme()
 
     private weak var dataSource: NotificationFilterDataSource?
 
@@ -35,7 +35,7 @@ extension NotificationFilterListLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return layout.current.cellSize
+        return CGSize(theme.cellSize)
     }
 
     func collectionView(
@@ -47,26 +47,18 @@ extension NotificationFilterListLayout: UICollectionViewDelegateFlowLayout {
             return .zero
         }
 
-        return layout.current.headerSize
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        insetForSectionAt section: Int
-    ) -> UIEdgeInsets {
-        if section == 0 {
-            return layout.current.sectionInset
-        }
-        
-        return .zero
+        return CGSize(theme.headerSize)
     }
 }
 
 extension NotificationFilterListLayout {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
-        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 60.0)
-        let sectionInset = UIEdgeInsets(top: 12.0, left: 0, bottom: 0, right: 0)
+    private struct Theme: LayoutSheet, StyleSheet {
+        let cellSize: LayoutSize
+        let headerSize: LayoutSize
+
+        init(_ family: LayoutFamily) {
+            cellSize = (UIScreen.main.bounds.width, 64)
+            headerSize = (UIScreen.main.bounds.width, 64)
+        }
     }
 }

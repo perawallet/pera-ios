@@ -54,6 +54,7 @@ final class BottomWarningViewController: BaseViewController {
 extension BottomWarningViewController: BottomWarningViewDelegate {
     func bottomWarningViewDidTapPrimaryActionButton(_ bottomWarningView: BottomWarningView) {
         viewConfigurator.primaryAction?()
+        dismissScreen()
     }
 
     func bottomWarningViewDidTapSecondaryActionButton(_ bottomWarningView: BottomWarningView) {

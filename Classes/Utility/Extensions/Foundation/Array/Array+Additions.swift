@@ -24,6 +24,10 @@ extension Array where Element: Comparable {
 }
 
 extension Array {
+    public var firstIndex: Index? {
+        return isEmpty ? nil : startIndex
+    }
+
     public func firstIndex<T: Equatable>(of other: Element?, equals keyPath: KeyPath<Element, T>) -> Index? {
         if let other = other {
             return firstIndex { $0[keyPath: keyPath] == other[keyPath: keyPath] }

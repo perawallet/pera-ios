@@ -16,24 +16,24 @@
 //  AccountNameSwitchViewModel.swift
 
 import Foundation
+import Macaroon
 
-class AccountNameSwitchViewModel {
+final class AccountNameSwitchViewModel: PairedViewModel {
+    private(set) var accountNameViewModel: AccountNameViewModel?
+    private(set) var isSelected = true
 
-    private(set) var accountNameViewModel: AccountNameViewModel
-    private(set) var isSelected: Bool = true
-    private(set) var isSeparatorHidden: Bool = false
+    init(_ model: Account) {
+        bindAccountNameViewModel(model)
+        bindIsSelected(model)
+    }
+}
 
-    init(account: Account, isLastIndex: Bool) {
+extension AccountNameSwitchViewModel {
+    private func bindAccountNameViewModel(_ account: Account) {
         accountNameViewModel = AccountNameViewModel(account: account)
-        setIsSelected(from: account)
-        setIsSeparatorHidden(isLastIndex: isLastIndex)
     }
 
-    private func setIsSelected(from account: Account) {
+    private func bindIsSelected(_ account: Account) {
         isSelected = account.receivesNotification
-    }
-
-    private func setIsSeparatorHidden(isLastIndex: Bool) {
-        isSeparatorHidden = isLastIndex
     }
 }

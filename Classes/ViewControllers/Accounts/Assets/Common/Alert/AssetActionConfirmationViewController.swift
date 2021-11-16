@@ -17,10 +17,10 @@
 
 import UIKit
 
-class AssetActionConfirmationViewController: BaseViewController {
-    
+final class AssetActionConfirmationViewController: BaseViewController {
     weak var delegate: AssetActionConfirmationViewControllerDelegate?
-    
+
+    private lazy var theme = Theme()
     private lazy var assetActionConfirmationView = AssetActionConfirmationView()
     
     private var assetAlertDraft: AssetAlertDraft
@@ -32,30 +32,28 @@ class AssetActionConfirmationViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchAssetDetailIfNeeded()
-    }
-    
-    override func configureAppearance() {
-        view.backgroundColor = Colors.Background.secondary
-        assetActionConfirmationView.bind(AssetActionConfirmationViewModel(draft: assetAlertDraft))
+        self.fetchAssetDetailIfNeeded()
     }
     
     override func setListeners() {
+        assetActionConfirmationView.setListeners()
         assetActionConfirmationView.delegate = self
+    }
+
+    override func configureAppearance() {
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     
     override func prepareLayout() {
-        setupAssetActionConfirmationViewLayout()
-    }
-}
-
-extension AssetActionConfirmationViewController {
-    private func setupAssetActionConfirmationViewLayout() {
+        assetActionConfirmationView.customize(theme.assetActionConfirmationViewTheme)
         view.addSubview(assetActionConfirmationView)
-        
-        assetActionConfirmationView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        assetActionConfirmationView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
+    }
+
+    override func bindData() {
+        assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(assetAlertDraft))
     }
 }
 
@@ -63,16 +61,16 @@ extension AssetActionConfirmationViewController {
     private func fetchAssetDetailIfNeeded() {
         if !assetAlertDraft.isValid() {
             if let assetDetail = session?.assetDetails[assetAlertDraft.assetIndex] {
-                self.handleAssetDetailSetup(with: assetDetail)
+                handleAssetDetailSetup(with: assetDetail)
             } else {
                 loadingController?.startLoadingWithMessage("title-loading".localized)
 
-                api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { response in
+                api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { [weak self] response in
                     switch response {
                     case let .success(assetResponse):
-                        self.handleAssetDetailSetup(with: assetResponse.assetDetail)
+                        self?.handleAssetDetailSetup(with: assetResponse.assetDetail)
                     case .failure:
-                        self.loadingController?.stopLoading()
+                        self?.loadingController?.stopLoading()
                     }
                 }
             }
@@ -84,14 +82,14 @@ extension AssetActionConfirmationViewController {
         var assetDetail = asset
         setVerifiedIfNeeded(&assetDetail)
         assetAlertDraft.assetDetail = assetDetail
-        assetActionConfirmationView.assetDisplayView.bind(AssetDisplayViewModel(assetDetail: assetDetail))
+        assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(assetAlertDraft))
     }
     
     private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail) {
-        if let verifiedAssets = self.session?.verifiedAssets,
-            verifiedAssets.contains(where: { verifiedAsset -> Bool in
-                verifiedAsset.id == self.assetAlertDraft.assetIndex
-            }) {
+        if let verifiedAssets = session?.verifiedAssets,
+           verifiedAssets.contains(where: { verifiedAsset in
+               verifiedAsset.id == self.assetAlertDraft.assetIndex
+           }) {
             assetDetail.isVerified = true
         }
     }
@@ -109,8 +107,9 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
         dismissScreen()
     }
 
-    func assetActionConfirmationViewDidPresentInfoBanner(_ assetActionConfirmationView: AssetActionConfirmationView, title: String) {
-        bannerController?.presentInfoBanner(title)
+    func assetActionConfirmationViewDidTapCopyIDButton(_ assetActionConfirmationView: AssetActionConfirmationView, assetID: String?) {
+        UIPasteboard.general.string = assetID
+        bannerController?.presentInfoBanner("asset-id-copied-title".localized)
     }
 }
 

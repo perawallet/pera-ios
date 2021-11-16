@@ -18,6 +18,15 @@
 import UIKit
 
 extension AccountsViewController: OptionsViewControllerDelegate {
+    func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
+        guard let account = selectedAccount else {
+            return
+        }
+
+        log(ReceiveCopyEvent(address: account.address))
+        UIPasteboard.general.string = account.address
+    }
+
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
         guard let account = selectedAccount else {
             return
@@ -38,14 +47,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             return
         }
         
-        let controller = open(
-            .removeAsset(account: account),
-            by: .customPresent(
-                presentationStyle: .fullScreen,
-                transitionStyle: nil,
-                transitioningDelegate: nil
-            )
-        ) as? AssetRemovalViewController
+        let controller = open(.removeAsset(account: account), by: .present) as? ManageAssetsViewController
         controller?.delegate = self
     }
     
@@ -96,9 +98,8 @@ extension AccountsViewController: OptionsViewControllerDelegate {
         guard let authAddress = selectedAccount?.authAddress else {
             return
         }
-        
         let draft = QRCreationDraft(address: authAddress, mode: .address)
-        open(.qrGenerator(title: "options-auth-account".localized, draft: draft), by: .present)
+        open(.qrGenerator(title: "options-auth-account".localized, draft: draft, isTrackable: true), by: .present)
     }
     
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
@@ -106,19 +107,18 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     }
     
     private func displayRemoveAccountAlert() {
-        let configurator = BottomInformationBundle(
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-trash-red".image,
             title: "options-remove-account".localized,
-            image: img("img-remove-account"),
-            explanation: "options-remove-alert-explanation".localized,
-            actionTitle: "options-remove-account".localized,
-            actionImage: img("bg-button-red"),
-            closeTitle: "title-keep".localized
-        ) {
-            self.removeAccount()
+            description: "options-remove-alert-explanation".localized,
+            primaryActionButtonTitle: "title-remove".localized,
+            secondaryActionButtonTitle: "title-keep".localized
+        ) { [weak self] in
+            self?.removeAccount()
         }
         
         open(
-            .bottomInformation(mode: .action, configurator: configurator),
+            .bottomWarning(configurator: configurator),
             by: .customPresent(
                 presentationStyle: .custom,
                 transitionStyle: nil,
@@ -157,9 +157,9 @@ extension AccountsViewController: ChoosePasswordViewControllerDelegate {
     }
 }
 
-extension AccountsViewController: AssetRemovalViewControllerDelegate {
-    func assetRemovalViewController(
-        _ assetRemovalViewController: AssetRemovalViewController,
+extension AccountsViewController: ManageAssetsViewControllerDelegate {
+    func manageAssetsViewController(
+        _ assetRemovalViewController: ManageAssetsViewController,
         didRemove assetDetail: AssetDetail,
         from account: Account
     ) {

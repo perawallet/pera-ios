@@ -18,28 +18,8 @@
 import UIKit
 import Magpie
 
-class NotificationFilterViewController: BaseViewController {
-
-    private lazy var accountsCollectionView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        flowLayout.minimumInteritemSpacing = 0.0
-
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
-        collectionView.showsVerticalScrollIndicator = true
-        collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = Colors.Background.primary
-        collectionView.contentInset = .zero
-        collectionView.register(AccountNameSwitchCell.self, forCellWithReuseIdentifier: AccountNameSwitchCell.reusableIdentifier)
-        collectionView.register(TitledToggleCell.self, forCellWithReuseIdentifier: TitledToggleCell.reusableIdentifier)
-        collectionView.register(
-            ToggleTitleHeaderView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: ToggleTitleHeaderView.reusableIdentifier
-        )
-        return collectionView
-    }()
+final class NotificationFilterViewController: BaseViewController {
+    private lazy var notificationFilterView = NotificationFilterView()
 
     private lazy var dataSource: NotificationFilterDataSource = {
         guard let api = api else {
@@ -58,12 +38,7 @@ class NotificationFilterViewController: BaseViewController {
     }
 
     override func configureNavigationBarAppearance() {
-        if flow != .notifications {
-            return
-        }
-
-        setLeftBarButtons()
-        setRightBarButtons()
+        addBarButtons()
     }
 
     override func configureAppearance() {
@@ -72,42 +47,32 @@ class NotificationFilterViewController: BaseViewController {
     }
 
     override func linkInteractors() {
-        accountsCollectionView.dataSource = dataSource
-        accountsCollectionView.delegate = listLayout
+        notificationFilterView.collectionView.dataSource = dataSource
+        notificationFilterView.collectionView.delegate = listLayout
         dataSource.delegate = self
     }
     
     override func prepareLayout() {
-        setupAccountsCollectionViewLayout()
+        view.addSubview(notificationFilterView)
+        notificationFilterView.snp.makeConstraints {
+            $0.top.safeEqualToTop(of: self)
+            $0.leading.trailing.bottom.equalToSuperview()
+        }
+
     }
 }
 
 extension NotificationFilterViewController {
-    private func setLeftBarButtons() {
+    private func addBarButtons() {
+        if flow != .notifications {
+            return
+        }
+
         let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
             self.closeScreen(by: .dismiss, animated: true)
         }
 
         leftBarButtonItems = [closeBarButtonItem]
-    }
-
-    private func setRightBarButtons() {
-        let doneBarButtonItem = ALGBarButtonItem(kind: .done) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        rightBarButtonItems = [doneBarButtonItem]
-    }
-}
-
-extension NotificationFilterViewController {
-    private func setupAccountsCollectionViewLayout() {
-        view.addSubview(accountsCollectionView)
-
-        accountsCollectionView.snp.makeConstraints { make in
-            make.top.safeEqualToTop(of: self)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
     }
 }
 
@@ -154,8 +119,8 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
 extension NotificationFilterViewController {
     private func presentNotificationAlert(isNotificationEnabled: Bool) {
         let alertMessage: String = isNotificationEnabled ?
-            "settings-notification-disabled-go-settings-text".localized :
-            "settings-notification-enabled-go-settings-text".localized
+        "settings-notification-disabled-go-settings-text".localized :
+        "settings-notification-enabled-go-settings-text".localized
 
         let alertController = UIAlertController(
             title: "settings-notification-go-settings-title".localized,
@@ -177,16 +142,16 @@ extension NotificationFilterViewController {
     }
 
     private func updatePushNotificationStatus() {
-        if let cell = self.accountsCollectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? TitledToggleCell {
-            cell.bind(TitledToggleViewModel())
+        if let cell = notificationFilterView.collectionView.cellForItem(at: IndexPath(item: 0, section: 0)) as? TitledToggleCell {
+            cell.bindData(TitledToggleViewModel())
         }
     }
 
     private func updateNotificationFilter(of cell: AccountNameSwitchCell, with value: Bool) {
-        guard let indexPath = accountsCollectionView.indexPath(for: cell),
+        guard let indexPath = notificationFilterView.collectionView.indexPath(for: cell),
               let account = dataSource.account(at: indexPath.item) else {
-            return
-        }
+                  return
+              }
 
         dataSource.updateNotificationFilter(for: account, to: value)
     }
@@ -203,11 +168,13 @@ extension NotificationFilterViewController {
 
     private func revertFilterSwitch(for account: Account) {
         guard let index = dataSource.index(of: account),
-              let cell = accountsCollectionView.cellForItem(at: IndexPath(item: index, section: 1)) as? AccountNameSwitchCell else {
-            return
-        }
-        
-        cell.bind(AccountNameSwitchViewModel(account: account, isLastIndex: dataSource.isAtLastIndex(index)))
+              let cell = notificationFilterView.collectionView.cellForItem(
+                at: IndexPath(item: index, section: 1)
+              ) as? AccountNameSwitchCell else {
+                  return
+              }
+
+        cell.bindData(AccountNameSwitchViewModel(account))
     }
 }
 

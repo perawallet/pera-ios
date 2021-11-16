@@ -18,21 +18,16 @@
 import Foundation
 import UserNotifications
 
-class TitledToggleViewModel {
-
-    private(set) var title: String?
+final class TitledToggleViewModel {
     private(set) var isSelected: Bool = true
 
     init() {
-        setTitle()
-        setIsSelected()
+        bindIsSelected()
     }
+}
 
-    private func setTitle() {
-        title = "notification-filter-show-title".localized
-    }
-
-    private func setIsSelected() {
+extension TitledToggleViewModel {
+    private func bindIsSelected() {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
                 self.isSelected = settings.authorizationStatus == .authorized

@@ -18,18 +18,20 @@
 import UIKit
 import AVFoundation
 
-class PassphraseDisplayViewController: BaseScrollViewController {
-
+final class PassphraseDisplayViewController: BaseScrollViewController {
     private lazy var bottomModalPresenter = CardModalPresenter(
         config: ModalConfiguration(
             animationMode: .normal(duration: 0.25),
             dismissMode: .backgroundTouch
         ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 338.0))
+        initialModalSize: .custom(CGSize(theme.modalSize))
     )
-    
-    var mnemonics: [String]? {
-        guard let session = self.session else {
+
+    private lazy var theme = Theme()
+    private lazy var passphraseDisplayView = PassphraseDisplayView()
+
+    private var mnemonics: [String]? {
+        guard let session = session else {
             return nil
         }
         let mnemonics = session.mnemonics(forAccount: address)
@@ -37,26 +39,24 @@ class PassphraseDisplayViewController: BaseScrollViewController {
     }
     
     private var address: String
-    
-    private lazy var passphraseDisplayView = PassphraseDisplayView()
-    
+
     init(address: String, configuration: ViewControllerConfiguration) {
         self.address = address
         super.init(configuration: configuration)
     }
     
     override func configureNavigationBarAppearance() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.closeScreen(by: .dismiss, animated: true)
-        }
-        
-        leftBarButtonItems = [closeBarButtonItem]
+        addBarButtons()
     }
-    
+
     override func configureAppearance() {
         super.configureAppearance()
-        view.backgroundColor = Colors.Background.secondary
-        title = "options-view-passphrase".localized
+        customizeBackground()
+        title = "options-passphrase".localized
+    }
+
+    private func customizeBackground() {
+        scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
     override func setListeners() {
@@ -77,12 +77,7 @@ class PassphraseDisplayViewController: BaseScrollViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
-        setupPassphraseViewLayout()
-    }
-}
-
-extension PassphraseDisplayViewController {
-    private func setupPassphraseViewLayout() {
+        passphraseDisplayView.customize(theme.passphraseDisplayViewTheme)
         contentView.addSubview(passphraseDisplayView)
         passphraseDisplayView.pinToSuperview()
     }
@@ -94,17 +89,20 @@ extension PassphraseDisplayViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: PassphraseBackUpCell.reusableIdentifier,
-            for: indexPath
-        ) as? PassphraseBackUpCell {
-            cell.customize(PassphraseBackUpOrderViewTheme())
-            let passphrase = Passphrase(index: indexPath.item, mnemonics: mnemonics)
-            cell.bindData(PassphraseBackUpOrderViewModel(passphrase))
-            return cell
+        let cell: PassphraseCell = collectionView.dequeueReusableCell(for: indexPath)
+        cell.customize(PassphraseCellViewTheme())
+        cell.bindData(PassphraseCellViewModel(Passphrase(index: indexPath.item, mnemonics: mnemonics)))
+        return cell
+    }
+}
+
+extension PassphraseDisplayViewController {
+    private func addBarButtons() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true)
         }
 
-        fatalError("Index path is out of bounds")
+        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 
@@ -114,7 +112,7 @@ extension PassphraseDisplayViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: collectionView.frame.width / 2.0, height: 22.0)
+        return CGSize(width: collectionView.frame.width / 2, height: theme.cellHeight)
     }
 }
 

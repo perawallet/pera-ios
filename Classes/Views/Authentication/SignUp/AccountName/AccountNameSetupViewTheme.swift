@@ -53,7 +53,7 @@ struct AccountNameSetupViewTheme: StyleSheet, LayoutSheet {
 
         self.textInputVerticalInset = 40
         self.buttonVerticalInset = 60
-        self.horizontalInset = 20
+        self.horizontalInset = 24
         self.bottomInset = 16
         self.topInset = 12
         self.containerTopInset = 32

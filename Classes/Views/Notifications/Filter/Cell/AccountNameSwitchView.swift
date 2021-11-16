@@ -16,32 +16,31 @@
 //  AccountNameSwitchView.swift
 
 import UIKit
+import Macaroon
 
-class AccountNameSwitchView: BaseView {
-
-    private let layout = Layout<LayoutConstants>()
-
+final class AccountNameSwitchView: View {
     weak var delegate: AccountNameSwitchViewDelegate?
 
     private lazy var accountNameView = AccountNameView()
-
     private lazy var toggleView = Toggle()
 
-    private lazy var separatorView = LineSeparatorView()
-
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setListeners()
     }
 
-    override func setListeners() {
-        toggleView.addTarget(self, action: #selector(notifyDelegateToToggleValueChanged), for: .touchUpInside)
+    func customize(_ theme: AccountNameSwitchViewTheme) {
+        addToggleView(theme)
+        addAccountNameView(theme)
     }
 
-    override func prepareLayout() {
-        setupToggleViewLayout()
-        setupAccountNameViewLayout()
-        setupSeparatorViewLayout()
-    }
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
+
+    func setListeners() {
+       toggleView.addTarget(self, action: #selector(notifyDelegateToToggleValueChanged), for: .touchUpInside)
+   }
 }
 
 extension AccountNameSwitchView {
@@ -52,47 +51,28 @@ extension AccountNameSwitchView {
 }
 
 extension AccountNameSwitchView {
-    private func setupToggleViewLayout() {
+    private func addToggleView(_ theme: AccountNameSwitchViewTheme) {
         addSubview(toggleView)
-
-        toggleView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
+        toggleView.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.centerY.equalToSuperview()
         }
     }
 
-    private func setupAccountNameViewLayout() {
+    private func addAccountNameView(_ theme: AccountNameSwitchViewTheme) {
         addSubview(accountNameView)
-
-        accountNameView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
-            make.trailing.equalTo(toggleView.snp.leading).offset(-layout.current.horizontalInset)
-        }
-    }
-
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-
-        separatorView.snp.makeConstraints { make in
-            make.leading.bottom.trailing.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
+        accountNameView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalPadding)
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalTo(toggleView.snp.leading).inset(theme.horizontalPadding)
         }
     }
 }
 
-extension AccountNameSwitchView {
-    func bind(_ viewModel: AccountNameSwitchViewModel) {
-        accountNameView.bind(viewModel.accountNameViewModel)
-        toggleView.setOn(viewModel.isSelected, animated: true)
-        separatorView.isHidden = viewModel.isSeparatorHidden
-    }
-}
-
-extension AccountNameSwitchView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let separatorHeight: CGFloat = 1.0
-        let horizontalInset: CGFloat = 20.0
+extension AccountNameSwitchView: ViewModelBindable {
+    func bindData(_ viewModel: AccountNameSwitchViewModel?) {
+        accountNameView.bindData(viewModel?.accountNameViewModel)
+        toggleView.setOn(viewModel?.isSelected ?? true, animated: true)
     }
 }
 

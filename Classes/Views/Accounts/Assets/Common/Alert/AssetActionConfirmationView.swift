@@ -16,64 +16,41 @@
 //  AssetActionConfirmationView.swift
 
 import UIKit
+import Macaroon
 
-class AssetActionConfirmationView: BaseView {
-    private let layout = Layout<LayoutConstants>()
-    
+final class AssetActionConfirmationView: View {
     weak var delegate: AssetActionConfirmationViewDelegate?
-    
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withLine(.single)
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(Colors.Text.primary)
-    }()
-    
-    private(set) lazy var assetDisplayView = AssetDisplayView()
-    
-    private lazy var detailLabel: UILabel = {
-        UILabel()
-            .withLine(.contained)
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-    }()
-    
-    private lazy var actionButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("bg-main-button"))
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTitleColor(Colors.ButtonText.primary)
-    }()
-    
-    private lazy var cancelButton: UIButton = {
-        UIButton(type: .custom)
-            .withTitle("title-cancel".localized)
-            .withBackgroundImage(img("bg-light-gray-button"))
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTitleColor(Colors.Text.primary)
-    }()
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+
+    private lazy var titleLabel = UILabel()
+    private lazy var assetCodeLabel = UILabel()
+    private lazy var assetNameLabel = UILabel()
+    private lazy var verifiedImage = UIImageView()
+    private lazy var assetIDLabel = UILabel()
+    private lazy var copyIDButton = Button()
+    private lazy var detailLabel = UILabel()
+    private lazy var actionButton = Button()
+    private lazy var cancelButton = Button()
+
+    func customize(_ theme: AssetActionConfirmationViewTheme) {
+        addTitleLabel(theme)
+        addAssetCodeLabel(theme)
+        addAssetNameLabel(theme)
+        addVerifiedImage(theme)
+        addAssetIDLabel(theme)
+        addCopyIDButton(theme)
+        addDetailLabel(theme)
+        addActionButton(theme)
+        addCancelButton(theme)
     }
     
-    override func setListeners() {
-        assetDisplayView.delegate = self
-        
+    func prepareLayout(_ layoutSheet: AssetActionConfirmationViewTheme) {}
+
+    func customizeAppearance(_ styleSheet: AssetActionConfirmationViewTheme) {}
+
+    func setListeners() {
+        copyIDButton.addTarget(self, action: #selector(notifyDelegateToCopyAssetId), for: .touchUpInside)
         actionButton.addTarget(self, action: #selector(notifyDelegateToHandleAction), for: .touchUpInside)
         cancelButton.addTarget(self, action: #selector(notifyDelegateToCancelScreen), for: .touchUpInside)
-    }
-    
-    override func prepareLayout() {
-        setupTitleLabelLayout()
-        setupAssetDisplayViewLayout()
-        setupDetailLabelLayout()
-        setupActionButtonLayout()
-        setupCancelButtonLayout()
     }
 }
 
@@ -87,88 +64,144 @@ extension AssetActionConfirmationView {
     private func notifyDelegateToCancelScreen() {
         delegate?.assetActionConfirmationViewDidTapCancelButton(self)
     }
+
+    @objc
+    private func notifyDelegateToCopyAssetId() {
+        delegate?.assetActionConfirmationViewDidTapCopyIDButton(self, assetID: assetIDLabel.text)
+    }
 }
 
 extension AssetActionConfirmationView {
-    private func setupTitleLabelLayout() {
+    private func addTitleLabel(_ theme: AssetActionConfirmationViewTheme) {
+        titleLabel.customizeAppearance(theme.titleLabel)
+
         addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.verticalInset)
+        titleLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().inset(theme.titleTopPadding)
         }
     }
 
-    private func setupAssetDisplayViewLayout() {
-        addSubview(assetDisplayView)
+    private func addAssetCodeLabel(_ theme: AssetActionConfirmationViewTheme) {
+        assetCodeLabel.customizeAppearance(theme.assetCodeLabel)
+
+        addSubview(assetCodeLabel)
+        assetCodeLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.assetCodeLabelTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+        }
+    }
+
+    private func addAssetNameLabel(_ theme: AssetActionConfirmationViewTheme) {
+        assetNameLabel.customizeAppearance(theme.assetNameLabel)
+
+        addSubview(assetNameLabel)
+        assetNameLabel.snp.makeConstraints {
+            $0.top.equalTo(assetCodeLabel.snp.bottom).offset(theme.assetNameLabelTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+        }
+        assetNameLabel.addSeparator(theme.topSeparator, padding: theme.topSeparatorPadding)
+    }
+
+    private func addVerifiedImage(_ theme: AssetActionConfirmationViewTheme) {
+        verifiedImage.customizeAppearance(theme.verifiedImage)
+
+        addSubview(verifiedImage)
+        verifiedImage.snp.makeConstraints {
+            $0.top.equalTo(assetNameLabel.snp.bottom).offset(theme.assetIDPaddings.top)
+            $0.leading.equalToSuperview().inset(theme.horizontalPadding)
+        }
+        verifiedImage.setContentCompressionResistancePriority(.required, for: .horizontal)
+    }
+
+    private func addAssetIDLabel(_ theme: AssetActionConfirmationViewTheme) {
+        assetIDLabel.customizeAppearance(theme.assetIDLabel)
+
+        addSubview(assetIDLabel)
+        assetIDLabel.snp.makeConstraints {
+            $0.leading.equalTo(verifiedImage.snp.trailing).offset(theme.assetIDPaddings.leading)
+            $0.leading.equalToSuperview().inset(theme.horizontalPadding).priority(.medium)
+            $0.top.equalTo(assetNameLabel.snp.bottom).offset(theme.assetIDPaddings.top)
+            $0.trailing.equalToSuperview().inset(theme.assetIDPaddings.trailing)
+        }
+    }
+
+    private func addCopyIDButton(_ theme: AssetActionConfirmationViewTheme) {
+        copyIDButton.customizeAppearance(theme.copyIDButton)
+        copyIDButton.draw(corner: theme.copyIDButtonCorner)
         
-        assetDisplayView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.displayViewTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.displayViewHorizontalInset)
+        addSubview(copyIDButton)
+        copyIDButton.snp.makeConstraints {
+            $0.fitToSize(theme.copyIDButtonSize)
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.centerY.equalTo(assetIDLabel.snp.centerY)
         }
     }
     
-    private func setupDetailLabelLayout() {
+    private func addDetailLabel(_ theme: AssetActionConfirmationViewTheme) {
+        detailLabel.customizeAppearance(theme.description)
+
         addSubview(detailLabel)
-        
-        detailLabel.snp.makeConstraints { make in
-            make.top.equalTo(assetDisplayView.snp.bottom).offset(layout.current.verticalInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        detailLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(assetIDLabel.snp.bottom).offset(theme.descriptionTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
+
+        detailLabel.addSeparator(theme.bottomSeparator, padding: theme.bottomSeparatorPadding)
     }
     
-    private func setupActionButtonLayout() {
+    private func addActionButton(_ theme: AssetActionConfirmationViewTheme) {
+        actionButton.customize(theme.mainButtonTheme)
+
         addSubview(actionButton)
-        
-        actionButton.snp.makeConstraints { make in
-            make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.displayViewTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        actionButton.fitToVerticalIntrinsicSize()
+        actionButton.snp.makeConstraints {
+            $0.top.greaterThanOrEqualTo(detailLabel.snp.bottom).offset(theme.verticalInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
 
-    private func setupCancelButtonLayout() {
+    private func addCancelButton(_ theme: AssetActionConfirmationViewTheme) {
+        cancelButton.customize(theme.secondaryButtonTheme)
+
         addSubview(cancelButton)
-        
-        cancelButton.snp.makeConstraints { make in
-            make.top.equalTo(actionButton.snp.bottom).offset(layout.current.buttonOffset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
+        cancelButton.fitToVerticalIntrinsicSize()
+        cancelButton.snp.makeConstraints {
+            $0.top.equalTo(actionButton.snp.bottom).offset(theme.buttonInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
         }
     }
 }
 
-extension AssetActionConfirmationView {
-    func bind(_ viewModel: AssetActionConfirmationViewModel) {
-        titleLabel.text = viewModel.title
-        assetDisplayView.assetIndexLabel.text = viewModel.id
-        detailLabel.attributedText = viewModel.detail
-        actionButton.setTitle(viewModel.actionTitle, for: .normal)
-        if let assetDisplayViewModel = viewModel.assetDisplayViewModel {
-            assetDisplayView.bind(assetDisplayViewModel)
-        }
-    }
-}
+extension AssetActionConfirmationView: ViewModelBindable {
+    func bindData(_ viewModel: AssetActionConfirmationViewModel?) {
+        titleLabel.text = viewModel?.title
+        assetIDLabel.text = viewModel?.id
+        detailLabel.attributedText = viewModel?.detail
+        actionButton.bindData(ButtonCommonViewModel(title: viewModel?.actionTitle))
+        cancelButton.bindData(ButtonCommonViewModel(title: viewModel?.cancelTitle))
 
-extension AssetActionConfirmationView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let verticalInset: CGFloat = 16.0
-        let displayViewHorizontalInset: CGFloat = 32.0
-        let displayViewTopInset: CGFloat = 28.0
-        let horizontalInset: CGFloat = 20.0
-        let buttonOffset: CGFloat = 12.0
-        let bottomInset: CGFloat = 30.0
+        if !(viewModel?.assetDisplayViewModel?.isVerified ?? false) {
+            verifiedImage.removeFromSuperview()
+        }
+
+        assetNameLabel.text = viewModel?.assetDisplayViewModel?.name
+        assetCodeLabel.text = viewModel?.assetDisplayViewModel?.code
+
+        if let codeFont = viewModel?.assetDisplayViewModel?.codeFont {
+            assetCodeLabel.font = codeFont
+        }
+
+        if let codeColor = viewModel?.assetDisplayViewModel?.codeColor {
+            assetCodeLabel.textColor = codeColor
+        }
     }
 }
 
 protocol AssetActionConfirmationViewDelegate: AnyObject {
     func assetActionConfirmationViewDidTapActionButton(_ assetActionConfirmationView: AssetActionConfirmationView)
     func assetActionConfirmationViewDidTapCancelButton(_ assetActionConfirmationView: AssetActionConfirmationView)
-    func assetActionConfirmationViewDidPresentInfoBanner(_ assetActionConfirmationView: AssetActionConfirmationView, title: String)
-}
-
-extension AssetActionConfirmationView: AssetDisplayViewDelegate {
-    func assetDisplayViewDidPresentInfoBanner(_ assetDisplayView: AssetDisplayView, title: String) {
-        delegate?.assetActionConfirmationViewDidPresentInfoBanner(self, title: title)
-    }
+    func assetActionConfirmationViewDidTapCopyIDButton(_ assetActionConfirmationView: AssetActionConfirmationView, assetID: String?)
 }

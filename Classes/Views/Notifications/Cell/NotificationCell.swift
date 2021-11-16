@@ -17,13 +17,17 @@
 
 import UIKit
 
-class NotificationCell: BaseCollectionViewCell<NotificationView> {
+final class NotificationCell: BaseCollectionViewCell<NotificationView> {
     override func prepareForReuse() {
         super.prepareForReuse()
         contextView.reset()
     }
     
-    static func calculatePreferredSize(_ viewModel: NotificationsViewModel?) -> CGSize {
-        return NotificationView.calculatePreferredSize(viewModel, with: Layout<NotificationView.LayoutConstants>()) 
+    func bindData(_ viewModel: NotificationsViewModel?) {
+        contextView.bindData(viewModel)
+    }
+    
+    static func calculatePreferredSize(_ viewModel: NotificationsViewModel?, with theme: NotificationViewTheme) -> CGSize {
+        return NotificationView.calculatePreferredSize(viewModel, with: theme)
     }
 }

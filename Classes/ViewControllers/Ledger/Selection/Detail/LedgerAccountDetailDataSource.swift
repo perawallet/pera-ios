@@ -107,7 +107,7 @@ extension LedgerAccountDetailDataSource {
 
     func cellForAsset(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: AssetPreviewCell = collectionView.dequeueReusableCell(for: indexPath)
-        cell.customize(AssetPreviewViewTheme())
+        cell.customize(AssetPreviewViewCommonTheme())
         cell.bindData(AssetPreviewViewModel(assetPreviews[indexPath.row]))
         return cell
     }

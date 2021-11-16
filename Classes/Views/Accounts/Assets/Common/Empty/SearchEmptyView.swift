@@ -33,7 +33,7 @@ class SearchEmptyView: BaseView {
         UILabel()
             .withLine(.contained)
             .withAlignment(.center)
-            .withFont(Fonts.DMSans.medium.make(15).font)
+            .withFont(Fonts.DMSans.regular.make(15).font)
             .withTextColor(AppColors.Components.Text.gray.color)
     }()
     

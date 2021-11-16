@@ -19,14 +19,16 @@ import UIKit
 import Macaroon
 
 final class OptionsContextView: View {
-    private(set) lazy var iconImageView = UIImageView()
-    private(set) lazy var optionLabel = UILabel()
+    private lazy var iconImageView = UIImageView()
+    private lazy var verticalStackView = UIStackView()
+    private lazy var optionTitleLabel = UILabel()
+    private lazy var optionSubtitleLabel = UILabel()
 
     func customize(_ theme: OptionsContextViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addIconImageView(theme)
-        addOptionLabel(theme)
+        addVerticalStackView(theme)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -42,28 +44,50 @@ extension OptionsContextView {
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
         }
     }
-    
-    private func addOptionLabel(_ theme: OptionsContextViewTheme) {
-        optionLabel.customizeAppearance(theme.label)
 
-        addSubview(optionLabel)
-        optionLabel.snp.makeConstraints {
+    private func addVerticalStackView(_ theme: OptionsContextViewTheme) {
+        verticalStackView.axis = .vertical
+        verticalStackView.spacing = theme.verticalStackViewSpacing
+
+        addSubview(verticalStackView)
+        verticalStackView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.labelLeftInset)
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
+
+        addOptionTitleLabel(theme)
+        addOptionSubtitleLabel(theme)
+    }
+
+    private func addOptionTitleLabel(_ theme: OptionsContextViewTheme) {
+        optionTitleLabel.customizeAppearance(theme.titleLabel)
+
+        verticalStackView.addArrangedSubview(optionTitleLabel)
+    }
+
+    private func addOptionSubtitleLabel(_ theme: OptionsContextViewTheme) {
+        optionSubtitleLabel.customizeAppearance(theme.subtitleLabel)
+
+        verticalStackView.addArrangedSubview(optionSubtitleLabel)
     }
 }
 
 extension OptionsContextView {
     func bind(_ viewModel: OptionsViewModel) {
         iconImageView.image = viewModel.image
-        optionLabel.text = viewModel.title
-        optionLabel.textColor = viewModel.titleColor
+        optionTitleLabel.text = viewModel.title
+        optionTitleLabel.textColor = viewModel.titleColor
+
+        if let subtitle = viewModel.subtitle {
+            optionSubtitleLabel.text = subtitle
+        } else {
+            optionSubtitleLabel.isHidden = true
+        }
     }
 
     func bind(_ viewModel: AccountRecoverOptionsViewModel) {
         iconImageView.image = viewModel.image
-        optionLabel.text = viewModel.title
+        optionTitleLabel.text = viewModel.title
     }
 }

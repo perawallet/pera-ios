@@ -52,7 +52,7 @@ class AccountsViewController: BaseViewController {
     
     private(set) lazy var passphraseModalPresenter: CardModalPresenter = {
         let screenHeight = UIScreen.main.bounds.height
-        let height = screenHeight <= 606.0 ? screenHeight - 20.0 : 606.0
+        let height = screenHeight <= 606.0 ? screenHeight - 20.0 : 598
         return CardModalPresenter(
             config: ModalConfiguration(
                 animationMode: .normal(duration: 0.25),
@@ -690,7 +690,7 @@ extension AccountsViewController: APIListener {
 extension AccountsViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
         let optionsModalHeight: CGFloat = 462.0
-        let removeAccountModalHeight: CGFloat = 402.0
+        let removeAccountModalHeight: CGFloat = 426
         let editAccountModalHeight: CGFloat = 158.0
         let passphraseModalHeight: CGFloat = 510.0
         let termsAndServiceHeight: CGFloat = 300

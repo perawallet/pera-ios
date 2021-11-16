@@ -46,7 +46,7 @@ extension RoundedAccountNameView {
 
 extension RoundedAccountNameView {
     func bind(_ viewModel: AccountNameViewModel) {
-        accountNameView.bind(viewModel)
+        accountNameView.bindData(viewModel)
     }
 }
 

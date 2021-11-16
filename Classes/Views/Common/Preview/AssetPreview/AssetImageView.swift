@@ -78,7 +78,7 @@ extension AssetImageView: ViewModelBindable {
             return
         }
 
-        if let assetName = viewModel?.assetShortName {
+        if let assetName = viewModel?.assetAbbreviationForImage {
             self.assetName = assetName
         }
     }

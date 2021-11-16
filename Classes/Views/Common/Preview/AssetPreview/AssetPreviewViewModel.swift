@@ -20,26 +20,29 @@ import Macaroon
 struct AssetPreviewModel {
     let image: UIImage?
     let secondaryImage: UIImage?
-    let assetName: String?
-    let assetValue: String?
-    let secondaryAssetValue: String?
+    let assetPrimaryTitle: String?
+    let assetSecondaryTitle: String?
+    let assetPrimaryValue: String?
+    let assetSecondaryValue: String?
 }
 
 final class AssetPreviewViewModel: PairedViewModel {
     var image: UIImage?
     var secondaryImage: UIImage?
-    var assetName: String?
-    var assetShortName: String?
-    var assetValue: String?
-    var secondaryAssetValue: String?
-
+    var assetPrimaryTitle: String?
+    var assetSecondaryTitle: String?
+    var assetPrimaryValue: String?
+    var assetSecondaryAssetValue: String?
+    var assetAbbreviationForImage: String?
+    
     init(_ model: AssetPreviewModel) {
         bindImage(model.image)
         bindSecondaryImage(model.secondaryImage)
-        bindAssetName(model.assetName)
-        bindAssetShortName(model.assetName)
-        bindAssetValue(model.assetValue)
-        bindSecondaryAssetValue(model.secondaryAssetValue)
+        bindAssetPrimaryTitle(model.assetPrimaryTitle)
+        bindAssetSecondaryTitle(model.assetSecondaryTitle)
+        bindAssetPrimaryValue(model.assetPrimaryValue)
+        bindAssetSecondaryValue(model.assetSecondaryValue)
+        bindAssetAbbreviationForImage(model.assetPrimaryTitle)
     }
 }
 
@@ -47,24 +50,28 @@ extension AssetPreviewViewModel {
     private func bindImage(_ image: UIImage?) {
         self.image = image
     }
-
+    
     private func bindSecondaryImage(_ image: UIImage?) {
         self.secondaryImage = image
     }
-
-    private func bindAssetName(_ name: String?) {
-        self.assetName = name ?? "title-unknown".localized
+    
+    private func bindAssetPrimaryTitle(_ title: String?) {
+        self.assetPrimaryTitle = title ?? "title-unknown".localized
+    }
+    
+    private func bindAssetSecondaryTitle(_ title: String?) {
+        self.assetSecondaryTitle = title
+    }
+    
+    private func bindAssetPrimaryValue(_ value: String?) {
+        self.assetPrimaryValue = value
+    }
+    
+    private func bindAssetSecondaryValue(_ value: String?) {
+        self.assetSecondaryAssetValue = value
     }
 
-    private func bindAssetShortName(_ name: String?) {
-        self.assetShortName = name?.components(separatedBy: .whitespacesAndDashes).map { $0.prefix(1) }.prefix(3).joined()
-    }
-
-    private func bindAssetValue(_ value: String?) {
-        self.assetValue = value
-    }
-
-    private func bindSecondaryAssetValue(_ value: String?) {
-        self.secondaryAssetValue = value
+    private func bindAssetAbbreviationForImage(_ title: String?) {
+        self.assetAbbreviationForImage = TextFormatter.assetShortName.format(title)
     }
 }

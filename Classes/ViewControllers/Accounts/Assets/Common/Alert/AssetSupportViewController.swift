@@ -81,7 +81,7 @@ extension AssetSupportViewController {
         var assetDetail = asset
         setVerifiedIfNeeded(&assetDetail)
         assetAlertDraft.assetDetail = assetDetail
-        assetSupportView.assetDisplayView.bind(AssetDisplayViewModel(assetDetail: assetDetail))
+        assetSupportView.assetDisplayView.bind(AssetDisplayViewModel(assetDetail))
     }
     
     private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail) {

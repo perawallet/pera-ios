@@ -36,6 +36,7 @@ final class AccountListView: View {
     private lazy var emptyStateView: SearchEmptyView = {
         let emptyStateView = SearchEmptyView()
         emptyStateView.setTitle("asset-not-found-title".localized)
+        emptyStateView.setDetail("asset-not-found-detail".localized)
         return emptyStateView
     }()
 

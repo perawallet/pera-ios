@@ -16,18 +16,18 @@
 //   AccountRecoverOptionsViewController+Theme.swift
 
 import Macaroon
+import UIKit
 
 extension AccountRecoverOptionsViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let optionsViewTheme: OptionsViewTheme
         let backgroundColor: Color
-
-        let cellHeight: LayoutMetric
+        let cellSize: LayoutSize
 
         init(_ family: LayoutFamily) {
             self.optionsViewTheme = OptionsViewTheme()
             self.backgroundColor = AppColors.Shared.System.background
-            self.cellHeight = 56
+            self.cellSize = (UIScreen.main.bounds.width, 60)
         }
     }
 }

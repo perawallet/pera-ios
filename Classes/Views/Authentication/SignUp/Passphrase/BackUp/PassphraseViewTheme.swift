@@ -20,53 +20,17 @@ import Macaroon
 import UIKit
 
 struct PassphraseViewTheme: StyleSheet, LayoutSheet {
-    let backgroundColor: Color
-    let title: TextStyle
-    let description: TextStyle
     let passphraseContainerView: ViewStyle
     let passphraseContainerCorner: Corner
-    
-    let mainButtonTheme: ButtonTheme
-
-    let titleHorizontalInset: LayoutMetric
-    let topInset: LayoutMetric
-    let containerTopInset: LayoutMetric
-    let collectionViewHeight: LayoutMetric
-    let verticalInset: LayoutMetric
-    let bottomInset: LayoutMetric
     let collectionViewHorizontalInset: LayoutMetric
-    let horizontalInset: LayoutMetric
+    let verticalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
-        self.title = [
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(32)),
-            .textAlignment(.left),
-            .textOverflow(.fitting),
-            .content("recover-passphrase-title".localized)
-        ]
-        self.description = [
-            .textColor(AppColors.Components.Text.gray),
-            .font(Fonts.DMSans.regular.make(15)),
-            .textAlignment(.left),
-            .textOverflow(.fitting),
-            .content("passphrase-bottom-title".localized)
-        ]
         self.passphraseContainerView = [
             .backgroundColor(AppColors.Shared.Layer.grayLightest)
         ]
         self.passphraseContainerCorner = Corner(radius: 12)
- 
-        self.mainButtonTheme = ButtonPrimaryTheme()
-
-        self.titleHorizontalInset = 24
-        self.topInset = 12
-        self.containerTopInset = 32
-        self.collectionViewHeight = 448
-        self.verticalInset = 20
-        self.bottomInset = 16
-        self.collectionViewHorizontalInset = 20 * horizontalScale
-        self.horizontalInset = 20
+        self.collectionViewHorizontalInset = 24 * horizontalScale
+        self.verticalInset = 24
     }
 }
