@@ -56,3 +56,4 @@ fastlane/test_output
 fastlane/.env
 fastlane/.env.*
 ./archieve
+.DS_Store
