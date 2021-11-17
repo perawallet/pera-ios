@@ -115,6 +115,6 @@ extension WCTransactionValidator {
 
 extension WCTransactionValidator {
     private var supportedTransactionCount: Int {
-        return 16
+        return 64
     }
 }

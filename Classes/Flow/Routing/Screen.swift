@@ -25,7 +25,7 @@ indirect enum Screen {
     case passphraseVerify
     case accountNameSetup
     case accountRecover(flow: AccountSetupFlow)
-    case qrScanner
+    case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case home(route: Screen?)
     case assetDetail(account: Account, assetDetail: AssetDetail?)
@@ -115,6 +115,7 @@ indirect enum Screen {
     case jsonDisplay(jsonData: Data, title: String)
     case tabBarModal
     case algoStatisticsDateSelection(option: AlgosUSDValueInterval)
+    case ledgerPairWarning
 }
 
 extension Screen {

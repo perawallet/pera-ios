@@ -323,7 +323,7 @@ extension AccountsViewController: AccountsDataSourceDelegate {
 
 extension AccountsViewController: AccountsViewDelegate {
     func accountsViewDidTapQRButton(_ accountsView: AccountsView) {
-        let qrScannerViewController = open(.qrScanner, by: .push) as? QRScannerViewController
+        let qrScannerViewController = open(.qrScanner(canReadWCSession: true), by: .push) as? QRScannerViewController
         qrScannerViewController?.delegate = self
     }
     

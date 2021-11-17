@@ -178,8 +178,7 @@ extension WCMainTransactionViewController {
 
         oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
         
-        let controller = open(.warningAlert(warningAlert: warningAlert), by: transitionStyle) as? WarningAlertViewController
-        controller?.delegate = self
+        open(.warningAlert(warningAlert: warningAlert), by: transitionStyle)
     }
 
     private func presentConfirmationAlert() {
@@ -428,12 +427,6 @@ extension WCMainTransactionViewController: WCMainTransactionDataSourceDelegate {
                 transitioningDelegate: dappMessageModalPresenter
             )
         )
-    }
-}
-
-extension WCMainTransactionViewController: WarningAlertViewControllerDelegate {
-    func warningAlertViewControllerDidTakeAction(_ warningAlertViewController: WarningAlertViewController) {
-        warningAlertViewController.dismissScreen()
     }
 }
 

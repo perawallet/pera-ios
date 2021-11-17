@@ -28,9 +28,19 @@ final class LedgerDeviceListViewController: BaseViewController {
         }
         return LedgerAccountFetchOperation(api: api, bannerController: bannerController)
     }()
-    
+
+    private lazy var initialPairingWarningModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 496.0))
+    )
+
     private let accountSetupFlow: AccountSetupFlow
     private var ledgerDevices = [CBPeripheral]()
+
+    private var selectedDevice: CBPeripheral?
 
     init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
         self.accountSetupFlow = accountSetupFlow
@@ -101,6 +111,49 @@ extension LedgerDeviceListViewController: UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         return CGSize(theme.cellSize)
+    }
+}
+
+extension LedgerDeviceListViewController: LedgerDeviceCellDelegate {
+    func ledgerDeviceCellDidTapConnectButton(_ ledgerDeviceCell: LedgerDeviceCell) {
+        guard let indexPath = ledgerDeviceListView.devicesCollectionView.indexPath(for: ledgerDeviceCell) else {
+            return
+        }
+        
+        selectedDevice = ledgerDevices[indexPath.item]
+
+        let oneTimeDisplayStorage = OneTimeDisplayStorage()
+        if oneTimeDisplayStorage.isDisplayedOnce(for: .ledgerPairingWarning) {
+            ledgerAccountFetchOperation.connectToDevice(ledgerDevices[indexPath.item])
+            selectedDevice = nil
+            return
+        }
+
+        oneTimeDisplayStorage.setDisplayedOnce(for: .ledgerPairingWarning)
+
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: initialPairingWarningModalPresenter
+        )
+
+        let controller = open(.ledgerPairWarning, by: transitionStyle) as? LedgerPairWarningViewController
+        controller?.delegate = self
+    }
+}
+
+extension LedgerDeviceListViewController: LedgerPairWarningViewControllerDelegate {
+    func ledgerPairWarningViewControllerDidTakeAction(_ ledgerPairWarningViewController: LedgerPairWarningViewController) {
+        if let ledgerDevice = selectedDevice {
+            ledgerAccountFetchOperation.connectToDevice(ledgerDevice)
+            selectedDevice = nil
+        }
+    }
+}
+
+extension LedgerDeviceListViewController: LedgerDeviceListViewDelegate {
+    func ledgerDeviceListViewDidTapTroubleshootButton(_ ledgerDeviceListView: LedgerDeviceListView) {
+        open(.ledgerTroubleshoot, by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil))
     }
 }
 

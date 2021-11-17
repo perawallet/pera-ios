@@ -111,6 +111,15 @@ extension ContactDetailViewController {
         api?.fetchAccount(AccountFetchDraft(publicKey: address)) { [weak self] response in
             switch response {
             case let .success(accountWrapper):
+                if !accountWrapper.account.isSameAccount(with: address) {
+                    SVProgressHUD.showSuccess(withStatus: "title-done".localized)
+                    SVProgressHUD.dismiss()
+                    UIApplication.shared.firebaseAnalytics?.record(
+                        MismatchAccountErrorLog(requestedAddress: address, receivedAddress: accountWrapper.account.address)
+                    )
+                    return
+                }
+
                 accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                 let account = accountWrapper.account
                 self?.contactAccount = account

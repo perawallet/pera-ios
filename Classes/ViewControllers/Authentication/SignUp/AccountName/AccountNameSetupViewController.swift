@@ -80,8 +80,11 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
 
 extension AccountNameSetupViewController {
     private func setupAccountName() {
+        accountNameSetupView.nextButton.isEnabled = false
+
         guard let tempPrivateKey = session?.privateData(for: "temp"),
             let address = session?.address(for: "temp") else {
+                accountNameSetupView.nextButton.isEnabled = true
                 return
         }
 

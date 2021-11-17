@@ -94,6 +94,15 @@ extension LedgerAccountFetchOperation {
         api.fetchAccount(AccountFetchDraft(publicKey: address)) { response in
             switch response {
             case .success(let accountWrapper):
+                if !accountWrapper.account.isSameAccount(with: address) {
+                    NotificationBanner.showError("title-error".localized, message: "ledger-account-fetct-error".localized)
+                    UIApplication.shared.firebaseAnalytics?.record(
+                        MismatchAccountErrorLog(requestedAddress: address, receivedAddress: accountWrapper.account.address)
+                    )
+                    self.returnAccounts()
+                    return
+                }
+
                 if accountWrapper.account.isCreated {
                     accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                     accountWrapper.account.ledgerDetail = self.composeLedgerDetail()
