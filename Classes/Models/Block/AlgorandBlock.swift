@@ -19,34 +19,46 @@ import Foundation
 import MacaroonUtils
 import MagpieCore
 
-final class AlgorandBlock: ALGResponseModel {
-    var debugData: Data?
-
+final class AlgorandBlock: ALGEntityModel {
     let rewardsRate: UInt64
     let rewardsResidue: UInt64
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.rewardsRate = apiModel.block.rate
-        self.rewardsResidue = apiModel.block.frac
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.rewardsRate = apiModel.block?.rate ?? 0
+        self.rewardsResidue = apiModel.block?.frac ?? 0
+    }
+
+    func encode() -> APIModel {
+        var rewards = APIModel.Rewards()
+        rewards.rate = rewardsRate
+        rewards.frac = rewardsResidue
+
+        var apiModel = APIModel()
+        apiModel.block = rewards
+        return apiModel
     }
 }
 
 extension AlgorandBlock {
     struct APIModel: ALGAPIModel {
-        let block: RewardsAPIModel
+        var block: Rewards?
 
         init() {
-            self.block = RewardsAPIModel()
+            self.block = nil
         }
     }
+}
 
-    struct RewardsAPIModel: ALGAPIModel {
-        let rate: UInt64
-        let frac: UInt64
+extension AlgorandBlock.APIModel {
+    struct Rewards: ALGAPIModel {
+        var rate: UInt64?
+        var frac: UInt64?
 
         init() {
-            self.rate = 0
-            self.frac = 0
+            self.rate = nil
+            self.frac = nil
         }
     }
 }

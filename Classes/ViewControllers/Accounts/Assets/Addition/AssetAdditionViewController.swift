@@ -174,7 +174,7 @@ extension AssetAdditionViewController {
                     self.assetResults = searchResults.results
                 }
 
-                self.nextCursor = searchResults.parsePaginationCursor()
+                self.nextCursor = searchResults.nextCursor
                 self.render(for: self.assetSearchFilter, with: self.assetResults)
             case .failure:
                 guard let self = self else {

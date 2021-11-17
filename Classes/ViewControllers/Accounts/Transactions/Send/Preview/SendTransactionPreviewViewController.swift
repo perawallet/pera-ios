@@ -411,7 +411,7 @@ extension SendTransactionPreviewViewController {
 }
 
 extension SendTransactionPreviewViewController: TransactionControllerDelegate {
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError, Error>) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
         loadingController?.stopLoading()
         switch error {
         case .network:

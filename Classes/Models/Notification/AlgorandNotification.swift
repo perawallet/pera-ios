@@ -19,19 +19,17 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class AlgorandNotification: ALGResponseModel {
-    var debugData: Data?
-
+final class AlgorandNotification: ALGAPIModel {
     let badge: Int?
     let alert: String?
     let details: NotificationDetail?
     let sound: String?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.badge = apiModel.badge
-        self.alert = apiModel.alert
-        self.details = apiModel.custom.unwrap(NotificationDetail.init)
-        self.sound = apiModel.sound
+    init() {
+        self.badge = nil
+        self.alert = nil
+        self.details = nil
+        self.sound = nil
     }
 }
 
@@ -62,17 +60,12 @@ extension AlgorandNotification {
 }
 
 extension AlgorandNotification {
-    struct APIModel: ALGAPIModel {
-        let badge: Int?
-        let alert: String?
-        let custom: NotificationDetail.APIModel?
-        let sound: String?
-
-        init() {
-            self.badge = nil
-            self.alert = nil
-            self.custom = nil
-            self.sound = nil
-        }
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case badge
+        case alert
+        case details = "custom"
+        case sound
     }
 }

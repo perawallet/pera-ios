@@ -22,24 +22,32 @@ import MagpieAlamofire
 import MagpieCore
 
 final class ALGAPI: API {
-    private lazy var apiInterceptor = ALGAPIInterceptor()
-
     let session: Session
 
+    var network: Network {
+        return _interceptor.network
+    }
     var isTestNet: Bool {
-        return apiInterceptor.isTestNet
+        return _interceptor.isTestNet
     }
 
+    /// <todo>
+    /// NOP!
+    private var _interceptor: ALGAPIInterceptor!
+
     init(session: Session, networkMonitor: NetworkMonitor? = nil) {
+        let anInterceptor = ALGAPIInterceptor()
+
         self.session = session
 
         super.init(
             base: Environment.current.serverApi,
             networking: AlamofireNetworking(),
-            interceptor: apiInterceptor,
+            interceptor: anInterceptor,
             networkMonitor: networkMonitor
         )
 
+        self._interceptor = ALGAPIInterceptor()
         self.ignoresResponseWhenEndpointsFailedFromUnauthorizedRequest = false
 
         debug {
@@ -50,7 +58,7 @@ final class ALGAPI: API {
 
 extension ALGAPI {
     func setupNetworkBase(_ network: ALGAPI.Network) {
-        base = apiInterceptor.setupNetworkBase(network)
+        base = _interceptor.setupNetworkBase(network)
     }
 }
 

@@ -19,29 +19,37 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class RekeyedAccountsResponse: ALGResponseModel {
-    var debugData: Data?
-
+final class RekeyedAccountsResponse: ALGEntityModel {
     let accounts: [Account]
     let currentRound: UInt64
     let nextToken: String?
 
-    init(_ apiModel: APIModel = APIModel()) {
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
         self.accounts = apiModel.accounts.unwrapMap(Account.init)
-        self.currentRound = apiModel.currentRound
+        self.currentRound = apiModel.currentRound ?? 12345
         self.nextToken = apiModel.nextToken
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.accounts = accounts.encode()
+        apiModel.currentRound = currentRound
+        apiModel.nextToken = nextToken
+        return apiModel
     }
 }
 
 extension RekeyedAccountsResponse {
     struct APIModel: ALGAPIModel {
-        let accounts: [Account.APIModel]?
-        let currentRound: UInt64
-        let nextToken: String?
+        var accounts: [Account.APIModel]?
+        var currentRound: UInt64?
+        var nextToken: String?
 
         init() {
             self.accounts = []
-            self.currentRound = 123456
+            self.currentRound = nil
             self.nextToken = nil
         }
     }

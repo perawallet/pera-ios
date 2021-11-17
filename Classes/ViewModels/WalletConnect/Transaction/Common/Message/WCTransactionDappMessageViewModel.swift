@@ -41,7 +41,7 @@ class WCTransactionDappMessageViewModel {
 
     private func setImage(from session: WCSession, and imageSize: CGSize) {
         let randomIndex = Int.random(in: 0..<placeholderImages.count)
-        let placeholderImage = placeholderImages[safe: randomIndex]
+        let placeholderImage = placeholderImages[randomIndex]
 
         image = PNGImageSource(
             url: session.peerMeta.icons.first,

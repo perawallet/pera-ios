@@ -41,7 +41,7 @@ class TransactionAPIConnector {
         api.sendTransaction(signedTransaction) { transactionIdResponse in
             switch transactionIdResponse {
             case let .success(transactionId):
-                self.api.trackTransaction(with: TransactionTrackDraft(transactionId: transactionId.identifier))
+                self.api.trackTransaction(TransactionTrackDraft(transactionId: transactionId.identifier))
                 completion(transactionId, nil)
             case let .failure(error, _):
                 completion(nil, error)

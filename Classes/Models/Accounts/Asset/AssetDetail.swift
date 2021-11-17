@@ -19,33 +19,38 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class AssetDetailResponse: ALGResponseModel {
-    var debugData: Data?
-    
+final class AssetDetailResponse: ALGEntityModel {
     let assetDetail: AssetDetail
     let currentRound: UInt64
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.assetDetail = apiModel.asset.unwrap(AssetDetail.init)
-        self.currentRound = apiModel.currentRound
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.assetDetail = apiModel.asset.unwrap(AssetDetail.init) ?? AssetDetail()
+        self.currentRound = apiModel.currentRound ?? 0
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.asset = assetDetail.encode()
+        apiModel.currentRound = currentRound
+        return apiModel
     }
 }
 
 extension AssetDetailResponse {
     struct APIModel: ALGAPIModel {
-        let asset: AssetDetail.APIModel
-        let currentRound: UInt64
+        var asset: AssetDetail.APIModel?
+        var currentRound: UInt64?
 
         init() {
-            self.asset = AssetDetail.APIModel()
-            self.currentRound = 0
+            self.asset = nil
+            self.currentRound = nil
         }
     }
 }
 
-final class AssetDetail: ALGResponseModel {
-    var debugData: Data?
-
+final class AssetDetail: ALGEntityModel {
     let id: Int64
     let creator: String
     let total: UInt64
@@ -64,20 +69,22 @@ final class AssetDetail: ALGResponseModel {
     var isRemoved: Bool = false
     var isRecentlyAdded: Bool = false
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.id = apiModel.index
-        self.creator = apiModel.params.creator
-        self.total = apiModel.params.total
-        self.isDefaultFrozen = apiModel.params.defaultFrozen
-        self.unitName = apiModel.params.unitName
-        self.assetName = apiModel.params.name
-        self.url = apiModel.params.url
-        self.managerKey = apiModel.params.manager
-        self.reserveAddress = apiModel.params.reserve
-        self.freezeAddress = apiModel.params.freeze
-        self.clawBackAddress = apiModel.params.clawback
-        self.fractionDecimals = apiModel.params.decimals
-        self.isDeleted = apiModel.params.deleted
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.id = apiModel.index ?? -1
+        self.creator = apiModel.params?.creator ?? ""
+        self.total = apiModel.params?.total ?? 0
+        self.isDefaultFrozen = apiModel.params?.defaultFrozen
+        self.unitName = apiModel.params?.unitName
+        self.assetName = apiModel.params?.name
+        self.url = apiModel.params?.url
+        self.managerKey = apiModel.params?.manager
+        self.reserveAddress = apiModel.params?.reserve
+        self.freezeAddress = apiModel.params?.freeze
+        self.clawBackAddress = apiModel.params?.clawback
+        self.fractionDecimals = apiModel.params?.decimals ?? 0
+        self.isDeleted = apiModel.params?.deleted
     }
     
     init(searchResult: AssetSearchResult) {
@@ -95,47 +102,26 @@ final class AssetDetail: ALGResponseModel {
         freezeAddress = nil
         clawBackAddress = nil
     }
-}
 
-extension AssetDetail {
-    struct APIModel: ALGAPIModel {
-        let index: Int64
-        let params: ParamsAPIModel
+    func encode() -> APIModel {
+        var params = APIModel.Params()
+        params.creator = creator
+        params.total = total
+        params.defaultFrozen = isDefaultFrozen
+        params.unitName = unitName
+        params.name = assetName
+        params.url = url
+        params.manager = managerKey
+        params.reserve = reserveAddress
+        params.freeze = freezeAddress
+        params.clawback = clawBackAddress
+        params.decimals = fractionDecimals
+        params.deleted = isDeleted
 
-        init() {
-            self.index = -1
-            self.params = ParamsAPIModel()
-        }
-    }
-
-    struct ParamsAPIModel: ALGAPIModel {
-        let creator: String
-        let total: UInt64
-        let defaultFrozen: Bool?
-        let unitName: String?
-        let name: String?
-        let url: String?
-        let manager: String?
-        let reserve: String?
-        let freeze: String?
-        let clawback: String?
-        let decimals: Int
-        let deleted: Bool?
-
-        init() {
-            self.creator = ""
-            self.total = 0
-            self.defaultFrozen = nil
-            self.unitName = nil
-            self.name = nil
-            self.url = nil
-            self.manager = nil
-            self.reserve = nil
-            self.freeze = nil
-            self.clawback = nil
-            self.decimals = 0
-            self.deleted = nil
-        }
+        var apiModel = APIModel()
+        apiModel.index = id
+        apiModel.params = params
+        return apiModel
     }
 }
 
@@ -188,9 +174,6 @@ extension AssetDetail {
     }
 }
 
-extension AssetDetail: Encodable {
-}
-
 extension AssetDetail: Comparable {
     static func == (lhs: AssetDetail, rhs: AssetDetail) -> Bool {
         let lhsId = lhs.id
@@ -221,5 +204,49 @@ extension AssetDetail: Comparable {
 extension AssetDetail: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id.hashValue)
+    }
+}
+
+extension AssetDetail {
+    struct APIModel: ALGAPIModel {
+        var index: Int64?
+        var params: Params?
+
+        init() {
+            self.index = nil
+            self.params = nil
+        }
+    }
+}
+
+extension AssetDetail.APIModel {
+    struct Params: ALGAPIModel {
+        var creator: String?
+        var total: UInt64?
+        var defaultFrozen: Bool?
+        var unitName: String?
+        var name: String?
+        var url: String?
+        var manager: String?
+        var reserve: String?
+        var freeze: String?
+        var clawback: String?
+        var decimals: Int?
+        var deleted: Bool?
+
+        init() {
+            self.creator = nil
+            self.total = nil
+            self.defaultFrozen = nil
+            self.unitName = nil
+            self.name = nil
+            self.url = nil
+            self.manager = nil
+            self.reserve = nil
+            self.freeze = nil
+            self.clawback = nil
+            self.decimals = nil
+            self.deleted = nil
+        }
     }
 }

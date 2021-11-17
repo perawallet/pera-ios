@@ -13,16 +13,17 @@
 // limitations under the License.
 
 //
-//   ALGResponseModel.swift
+//   ALGEntityModel.swift
 
 import Foundation
 import MagpieCore
 
-protocol ALGResponseModel: ResponseModel where APIModel: ALGAPIModel {}
+protocol ALGEntityModel: EntityModel where APIModel: ALGAPIModel {}
 
-extension Array: ALGResponseModel where Element: ALGResponseModel {
-    typealias APIModel = [Element.APIModel]
+/// <todo>
+/// Move the extension to `Magpie`
+extension Array where Element: EntityModel {
+    func encode() -> [Element.APIModel] {
+        return map { $0.encode() }
+    }
 }
-
-extension Array: ALGAPIModel where Element: ALGAPIModel {}
-

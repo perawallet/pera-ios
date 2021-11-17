@@ -19,32 +19,27 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class AlgorandError: ALGResponseModel & Encodable {
-    var debugData: Data?
-
-    let type: String
+final class AlgorandError: ALGAPIModel {
+    let type: String?
     let message: String?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.type = apiModel.type
-        self.message = apiModel.fallbackMessage
-    }
-}
-
-extension AlgorandError {
-    struct APIModel: ALGAPIModel {
-        let type: String
-        let fallbackMessage: String?
-
-        init() {
-            self.type = ""
-            self.fallbackMessage = nil
-        }
+    init() {
+        self.type = nil
+        self.message = nil
     }
 }
 
 extension AlgorandError {
     enum ErrorType: String {
         case deviceAlreadyExists = "DeviceAlreadyExistsException"
+    }
+}
+
+extension AlgorandError {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case type
+        case message = "fallbackMessage"
     }
 }

@@ -41,7 +41,7 @@ class WCSingleTransactionViewController: BaseScrollViewController {
 
     init(transaction: WCTransaction, transactionRequest: WalletConnectRequest, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
-        self.account = configuration.session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender)
+        self.account = configuration.session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender))
         self.transactionRequest = transactionRequest
         self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url))
         super.init(configuration: configuration)

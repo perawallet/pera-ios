@@ -396,10 +396,40 @@ extension TransactionController {
     }
 }
 
+/// <todo>
+/// NOP! This is an informative type, shouldn't have actual data without error detail.
 enum TransactionError: Error, Hashable {
     case minimumAmount(amount: UInt64)
     case invalidAddress(address: String)
     case sdkError(error: NSError?)
     case draft(draft: TransactionSendDraft?)
     case other
+}
+
+extension TransactionError {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        switch self {
+        case .minimumAmount: hasher.combine(0)
+        case .invalidAddress: hasher.combine(1)
+        case .sdkError: hasher.combine(2)
+        case .draft: hasher.combine(3)
+        case .other: hasher.combine(4)
+        }
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        switch (lhs, rhs) {
+        case (.minimumAmount, .minimumAmount): return true
+        case (.invalidAddress, .invalidAddress): return true
+        case (.sdkError, .sdkError): return true
+        case (.draft, .draft): return true
+        case (.other, .other): return true
+        default: return false
+        }
+    }
 }

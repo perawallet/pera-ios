@@ -19,38 +19,18 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class Device: ALGResponseModel {
-    var debugData: Data?
-
+final class Device: ALGAPIModel {
     let id: String?
     let pushToken: String?
     let platform: String?
     let model: String?
     let locale: String?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.id = apiModel.id
-        self.pushToken = apiModel.pushToken
-        self.platform = apiModel.platform
-        self.model = apiModel.model
-        self.locale = apiModel.locale
-    }
-}
-
-extension Device {
-    struct APIModel: ALGAPIModel {
-        let id: String?
-        let pushToken: String?
-        let platform: String?
-        let model: String?
-        let locale: String?
-
-        init() {
-            self.id = nil
-            self.pushToken = nil
-            self.platform = nil
-            self.model = nil
-            self.locale = nil
-        }
+    init() {
+        self.id = nil
+        self.pushToken = nil
+        self.platform = nil
+        self.model = nil
+        self.locale = nil
     }
 }

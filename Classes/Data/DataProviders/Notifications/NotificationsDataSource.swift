@@ -59,7 +59,7 @@ extension NotificationsDataSource {
                 }
                 
                 self.api.session.notificationLatestFetchTimestamp = Date().timeIntervalSince1970
-                self.paginationCursor = notifications.parsePaginationCursor()
+                self.paginationCursor = notifications.nextCursor
                 
                 if isPaginated {
                     self.notifications.append(contentsOf: notifications.results)

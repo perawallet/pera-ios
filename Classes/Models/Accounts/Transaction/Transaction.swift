@@ -21,9 +21,9 @@ import MacaroonUtils
 
 protocol TransactionItem {}
 
-final class Transaction: ALGResponseModel, TransactionItem {
-    var debugData: Data?
-
+final class Transaction:
+    ALGEntityModel,
+    TransactionItem {
     let closeRewards: UInt64?
     let closeAmount: UInt64?
     let confirmedRound: UInt64?
@@ -47,7 +47,9 @@ final class Transaction: ALGResponseModel, TransactionItem {
     var status: Status?
     var contact: Contact?
 
-    init(_ apiModel: APIModel = APIModel()) {
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
         self.closeRewards = apiModel.closeRewards
         self.closeAmount = apiModel.closeAmount
         self.confirmedRound = apiModel.confirmedRound
@@ -62,61 +64,34 @@ final class Transaction: ALGResponseModel, TransactionItem {
         self.senderRewards = apiModel.senderRewards
         self.type = apiModel.txType
         self.createdAssetId = apiModel.createdAssetIndex
-        self.assetFreeze = apiModel.assetFreezeTransaction.unwrap(AssetFreezeTransaction.init)
-        self.assetConfig = apiModel.assetConfigTransaction.unwrap(AssetConfigTransaction.init)
+        self.assetFreeze = apiModel.assetFreezeTransaction
+        self.assetConfig = apiModel.assetConfigTransaction
         self.assetTransfer = apiModel.assetTransferTransaction.unwrap(AssetTransferTransaction.init)
-
-        if let dateValue = apiModel.roundTime {
-            self.date = Date(timeIntervalSince1970: dateValue)
-        }
-
-        self.transactionSignature = apiModel.signature.unwrap(TransactionSignature.init)
+        self.date = apiModel.roundTime.unwrap { Date(timeIntervalSince1970: $0) }
+        self.transactionSignature = apiModel.signature
     }
-}
 
-extension Transaction {
-    struct APIModel: ALGAPIModel {
-        let closeRewards: UInt64?
-        let closeAmount: UInt64?
-        let confirmedRound: UInt64?
-        let fee: UInt64?
-        let firstValid: UInt64?
-        let id: String?
-        let lastValid: UInt64?
-        let note: Data?
-        let paymentTransaction: Payment.APIModel?
-        let receiverRewards: UInt64?
-        let sender: String?
-        let senderRewards: UInt64?
-        let txType: TransferType?
-        let createdAssetIndex: Int64?
-        let assetFreezeTransaction: AssetFreezeTransaction.APIModel?
-        let assetConfigTransaction: AssetConfigTransaction.APIModel?
-        let assetTransferTransaction: AssetTransferTransaction.APIModel?
-        let roundTime: Double?
-        let signature: TransactionSignature.APIModel?
-
-        init() {
-            closeRewards = nil
-            closeAmount = nil
-            confirmedRound = nil
-            fee = nil
-            firstValid = nil
-            id = nil
-            lastValid = nil
-            note = nil
-            paymentTransaction = nil
-            receiverRewards = nil
-            sender = nil
-            senderRewards = nil
-            txType = nil
-            createdAssetIndex = nil
-            assetFreezeTransaction = nil
-            assetConfigTransaction = nil
-            assetTransferTransaction = nil
-            roundTime = nil
-            signature = nil
-        }
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.closeRewards = closeRewards
+        apiModel.closeAmount = closeAmount
+        apiModel.fee = fee
+        apiModel.firstValid = firstRound
+        apiModel.id = id
+        apiModel.lastValid = lastRound
+        apiModel.note = note
+        apiModel.paymentTransaction = payment?.encode()
+        apiModel.receiverRewards = receiverRewards
+        apiModel.sender = sender
+        apiModel.senderRewards = senderRewards
+        apiModel.txType = type
+        apiModel.createdAssetIndex = createdAssetId
+        apiModel.assetFreezeTransaction = assetFreeze
+        apiModel.assetConfigTransaction = assetConfig
+        apiModel.assetTransferTransaction = assetTransfer?.encode()
+        apiModel.roundTime = date?.timeIntervalSince1970
+        apiModel.signature = transactionSignature
+        return apiModel
     }
 }
 
@@ -193,12 +168,60 @@ extension Transaction {
         case assetFreeze = "afrz"
         case applicationCall = "appl"
 
-        init() { }
+        init() {
+            self = .payment
+        }
     }
 }
 
 extension Transaction {
     enum Constant {
         static let minimumFee: UInt64 = 1000
+    }
+}
+
+extension Transaction {
+    struct APIModel: ALGAPIModel {
+        var closeRewards: UInt64?
+        var closeAmount: UInt64?
+        var confirmedRound: UInt64?
+        var fee: UInt64?
+        var firstValid: UInt64?
+        var id: String?
+        var lastValid: UInt64?
+        var note: Data?
+        var paymentTransaction: Payment.APIModel?
+        var receiverRewards: UInt64?
+        var sender: String?
+        var senderRewards: UInt64?
+        var txType: TransferType?
+        var createdAssetIndex: Int64?
+        var assetFreezeTransaction: AssetFreezeTransaction?
+        var assetConfigTransaction: AssetConfigTransaction?
+        var assetTransferTransaction: AssetTransferTransaction.APIModel?
+        var roundTime: Double?
+        var signature: TransactionSignature?
+
+        init() {
+            self.closeRewards = nil
+            self.closeAmount = nil
+            self.confirmedRound = nil
+            self.fee = nil
+            self.firstValid = nil
+            self.id = nil
+            self.lastValid = nil
+            self.note = nil
+            self.paymentTransaction = nil
+            self.receiverRewards = nil
+            self.sender = nil
+            self.senderRewards = nil
+            self.txType = nil
+            self.createdAssetIndex = nil
+            self.assetFreezeTransaction = nil
+            self.assetConfigTransaction = nil
+            self.assetTransferTransaction = nil
+            self.roundTime = nil
+            self.signature = nil
+        }
     }
 }

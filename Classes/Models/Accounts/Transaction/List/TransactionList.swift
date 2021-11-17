@@ -19,30 +19,38 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class TransactionList: ALGResponseModel {
-    var debugData: Data?
-
+final class TransactionList: ALGEntityModel {
     let currentRound: UInt64
     let nextToken: String?
     let transactions: [Transaction]
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.currentRound = apiModel.currentRound
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.currentRound = apiModel.currentRound ?? 0
         self.nextToken = apiModel.nextToken
         self.transactions = apiModel.transactions.unwrapMap(Transaction.init)
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.currentRound = currentRound
+        apiModel.nextToken = nextToken
+        apiModel.transactions = transactions.map { $0.encode() }
+        return apiModel
     }
 }
 
 extension TransactionList {
     struct APIModel: ALGAPIModel {
-        let currentRound: UInt64
-        let nextToken: String?
-        let transactions: [Transaction.APIModel]?
+        var currentRound: UInt64?
+        var nextToken: String?
+        var transactions: [Transaction.APIModel]?
 
         init() {
-            self.currentRound = 0
+            self.currentRound = nil
             self.nextToken = nil
-            self.transactions = []
+            self.transactions = nil
         }
     }
 }

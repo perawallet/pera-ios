@@ -19,23 +19,19 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class VerifiedAsset: ALGResponseModel {
-    var debugData: Data?
-    
+final class VerifiedAsset: ALGAPIModel {
     let id: Int64
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.id = apiModel.assetId
+    init() {
+        self.id = 0
     }
 }
 
 extension VerifiedAsset {
-    struct APIModel: ALGAPIModel {
-        let assetId: Int64
-
-        init() {
-            self.assetId = 0
-        }
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case id = "assetId"
     }
 }
 

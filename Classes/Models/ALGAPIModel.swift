@@ -16,10 +16,10 @@
 //   ALGAPIModel.swift
 
 import Foundation
-import MagpieCore
 import MacaroonUtils
+import MagpieCore
 
-protocol ALGAPIModel: JSONModel {
+protocol ALGAPIModel: APIModel {
     init()
 }
 

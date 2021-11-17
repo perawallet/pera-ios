@@ -25,7 +25,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<RoundDetail>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.algod)
+            .base(.algod(network))
             .path(.waitForBlock, args: "\(draft.round)")
             .method(.get)
             .completionHandler(handler)
@@ -35,7 +35,7 @@ extension ALGAPI {
     @discardableResult
     func getTotalSupply(onCompleted handler: @escaping (Response.ModelResult<AlgorandTotalSupply>) -> Void) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.algod)
+            .base(.algod(network))
             .path(.supply)
             .method(.get)
             .completionHandler(handler)
@@ -48,7 +48,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<AlgorandBlock>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.algod)
+            .base(.algod(network))
             .path(.blockDetail, args: blockNumber)
             .method(.get)
             .completionHandler(handler)
@@ -58,7 +58,7 @@ extension ALGAPI {
     @discardableResult
     func getStatus(onCompleted handler: @escaping (Response.ModelResult<RoundDetail>) -> Void) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.algod)
+            .base(.algod(network))
             .path(.status)
             .method(.get)
             .completionHandler(handler)

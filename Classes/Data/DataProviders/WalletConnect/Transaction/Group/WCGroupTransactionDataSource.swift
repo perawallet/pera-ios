@@ -161,7 +161,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
         cell.bind(
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
-                account: session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender),
+                account: session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender)),
                 assetDetail: assetDetail(from: transaction)
             )
         )

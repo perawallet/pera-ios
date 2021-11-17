@@ -20,13 +20,15 @@ import MagpieCore
 import MacaroonUtils
 
 extension Account {
-    enum SignatureType: String, ALGAPIModel {
-        case sig = "sig"
+    enum SignatureType:
+        String,
+        ALGAPIModel {
+        case sig
         case multiSig = "msig"
         case logicSig = "lsig"
 
-        init() { }
+        init() {
+            self = .sig
+        }
     }
 }
-
-extension Account.SignatureType: Encodable { }

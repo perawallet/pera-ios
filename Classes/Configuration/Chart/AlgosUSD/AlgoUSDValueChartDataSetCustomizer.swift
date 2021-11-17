@@ -54,7 +54,7 @@ struct AlgoUSDValueChartDataSetCustomizer: AlgorandLineChartDataSetCustomizable 
         return false
     }
 
-    func valueFormatter(from entries: [ChartDataEntry]) -> ValueFormatter? {
+    func valueFormatter(from entries: [ChartDataEntry]) -> ValueFormatter {
         let sortedEntries = entries.sorted(by: \.y)
         return AlgoUSDValueFormatter(values: sortedEntries)
     }

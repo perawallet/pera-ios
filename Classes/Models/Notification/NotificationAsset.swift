@@ -19,38 +19,30 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class NotificationAsset: ALGResponseModel {
-    var debugData: Data?
-
+final class NotificationAsset: ALGAPIModel {
     let id: Int64?
     let name: String?
     let code: String?
     let url: String?
     let fractionDecimals: Int?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.id = apiModel.assetId
-        self.name = apiModel.assetName
-        self.code = apiModel.unitName
-        self.url = apiModel.url
-        self.fractionDecimals = apiModel.fractionDecimals
+    init() {
+        self.id = nil
+        self.name = nil
+        self.code = nil
+        self.url = nil
+        self.fractionDecimals = nil
     }
 }
 
 extension NotificationAsset {
-    struct APIModel: ALGAPIModel {
-        let assetId: Int64?
-        let assetName: String?
-        let unitName: String?
-        let url: String?
-        let fractionDecimals: Int?
-
-        init() {
-            self.assetId = nil
-            self.assetName = nil
-            self.unitName = nil
-            self.url = nil
-            self.fractionDecimals = nil
-        }
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case id = "assetId"
+        case name = "assetName"
+        case code = "unitName"
+        case url
+        case fractionDecimals
     }
 }

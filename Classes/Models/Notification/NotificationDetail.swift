@@ -19,9 +19,7 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class NotificationDetail: ALGResponseModel {
-    var debugData: Data?
-
+final class NotificationDetail: ALGAPIModel {
     let senderAddress: String?
     let receiverAddress: String?
     private let amount: UInt64?
@@ -29,30 +27,24 @@ final class NotificationDetail: ALGResponseModel {
     let asset: NotificationAsset?
     let notificationType: NotificationType?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.senderAddress = apiModel.senderPublicKey
-        self.receiverAddress = apiModel.receiverPublicKey
-        self.amount = apiModel.amount
-        self.asset = apiModel.asset.unwrap(NotificationAsset.init)
-        self.notificationType = apiModel.notificationType
+    init() {
+        self.senderAddress = nil
+        self.receiverAddress = nil
+        self.amount = nil
+        self.asset = nil
+        self.notificationType = nil
     }
 }
 
 extension NotificationDetail {
-    struct APIModel: ALGAPIModel {
-        let senderPublicKey: String?
-        let receiverPublicKey: String?
-        let amount: UInt64?
-        let asset: NotificationAsset.APIModel?
-        let notificationType: NotificationType?
-
-        init() {
-            self.senderPublicKey = nil
-            self.receiverPublicKey = nil
-            self.amount = 0
-            self.asset = nil
-            self.notificationType = nil
-        }
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case senderAddress = "senderPublicKey"
+        case receiverAddress = "receiverPublicKey"
+        case amount
+        case asset
+        case notificationType
     }
 }
 
@@ -67,5 +59,7 @@ enum NotificationType: String, ALGAPIModel {
     case assetSupportSuccess = "asset-support-success"
     case broadcast = "broadcast"
 
-    init() { }
+    init() {
+        self = .transactionSent
+    }
 }

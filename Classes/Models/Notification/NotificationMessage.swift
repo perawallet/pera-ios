@@ -19,9 +19,7 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class NotificationMessage: ALGResponseModel {
-    var debugData: Data?
-
+final class NotificationMessage: ALGEntityModel {
     let id: Int
     let account: Int?
     let notificationType: NotificationType?
@@ -29,27 +27,42 @@ final class NotificationMessage: ALGResponseModel {
     let message: String?
     let detail: NotificationDetail?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.id = apiModel.id
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.id = apiModel.id ?? 0
         self.account = apiModel.account
         self.notificationType = apiModel.type
+        /// <todo>
+        /// Without format string ???
         self.date = apiModel.creationDatetime?.toDate()?.date
         self.message = apiModel.message
-        self.detail = apiModel.metadata.unwrap(NotificationDetail.init)
+        self.detail = apiModel.metadata
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.id = id
+        apiModel.account = account
+        apiModel.type = notificationType
+        apiModel.creationDatetime = date?.toString(.standard)
+        apiModel.message = message
+        apiModel.metadata = detail
+        return apiModel
     }
 }
 
 extension NotificationMessage {
     struct APIModel: ALGAPIModel {
-        let id: Int
-        let account: Int?
-        let type: NotificationType?
-        let creationDatetime: String?
-        let message: String?
-        let metadata: NotificationDetail.APIModel?
+        var id: Int?
+        var account: Int?
+        var type: NotificationType?
+        var creationDatetime: String?
+        var message: String?
+        var metadata: NotificationDetail?
 
         init() {
-            self.id = 0
+            self.id = nil
             self.account = nil
             self.type = nil
             self.creationDatetime = nil
@@ -59,20 +72,34 @@ extension NotificationMessage {
     }
 }
 
-final class NotificationMessageList: PaginatedList<NotificationMessage>, ALGResponseModel {
-    var debugData: Data?
+final class NotificationMessageList:
+    PaginatedList<NotificationMessage>,
+    ALGEntityModel {
+    convenience init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.init(
+            pagination: apiModel,
+            results: apiModel.results.unwrapMap(NotificationMessage.init)
+        )
+    }
 
-    convenience init(_ apiModel: APIModel = APIModel()){
-        self.init(pagination: apiModel, results: apiModel.results.unwrapMap(NotificationMessage.init))
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.count = count
+        apiModel.next = next
+        apiModel.previous = previous
+        apiModel.results = results.map { $0.encode() }
+        return apiModel
     }
 }
 
 extension NotificationMessageList {
     struct APIModel: ALGAPIModel, PaginationComponents {
-        let count: Int?
-        let next: URL?
-        let previous: String?
-        let results: [NotificationMessage.APIModel]?
+        var count: Int?
+        var next: URL?
+        var previous: String?
+        var results: [NotificationMessage.APIModel]?
 
         init() {
             self.count = nil

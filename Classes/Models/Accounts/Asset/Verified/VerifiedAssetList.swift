@@ -19,28 +19,36 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class VerifiedAssetList: ALGResponseModel {
-    var debugData: Data?
-    
-    let count: Int
-    let next: String?
-    let previous: String?
-    let results: [VerifiedAsset]
+final class VerifiedAssetList:
+    PaginatedList<VerifiedAsset>,
+    ALGEntityModel {
+    convenience init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.init(
+            pagination: apiModel,
+            results: apiModel.results.someArray
+        )
+    }
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.count = apiModel.count
-        self.next = apiModel.next
-        self.previous = apiModel.previous
-        self.results = apiModel.results.unwrapMap(VerifiedAsset.init)
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.count = count
+        apiModel.next = next
+        apiModel.previous = previous
+        apiModel.results = results
+        return apiModel
     }
 }
 
 extension VerifiedAssetList {
-    struct APIModel: ALGAPIModel {
-        let count: Int
-        let next: String?
-        let previous: String?
-        let results: [VerifiedAsset.APIModel]?
+    struct APIModel:
+        ALGAPIModel,
+        PaginationComponents {
+        var count: Int?
+        var next: URL?
+        var previous: String?
+        var results: [VerifiedAsset]?
 
         init() {
             self.count = 0

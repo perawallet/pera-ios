@@ -19,22 +19,29 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class AccountResponse: ALGResponseModel {
-    var debugData: Data?
-    
+final class AccountResponse: ALGEntityModel {
     let account: Account
     let currentRound: UInt64
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.account = apiModel.account.unwrap(Account.init)
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.account = Account(apiModel.account)
         self.currentRound = apiModel.currentRound
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.account = account.encode()
+        apiModel.currentRound = currentRound
+        return apiModel
     }
 }
 
 extension AccountResponse {
     struct APIModel: ALGAPIModel {
-        let account: Account.APIModel
-        let currentRound: UInt64
+        var account: Account.APIModel
+        var currentRound: UInt64
 
         init() {
             self.account = Account.APIModel()

@@ -19,25 +19,31 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class TransactionParams: ALGResponseModel {
-    var debugData: Data?
-
+final class TransactionParams: ALGEntityModel {
     let fee: UInt64
     let minFee: UInt64
     let lastRound: UInt64
     let genesisHashData: Data?
     let genesisId: String?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.fee = apiModel.fee
-        self.minFee = apiModel.minFee
-        self.lastRound = apiModel.lastRound
-        if let genesisHashBase64String = apiModel.genesisHash {
-            genesisHashData = Data(base64Encoded: genesisHashBase64String)
-        } else {
-            genesisHashData = nil
-        }
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.fee = apiModel.fee ?? 0
+        self.minFee = apiModel.minFee ?? 0
+        self.lastRound = apiModel.lastRound ?? 0
+        self.genesisHashData = apiModel.genesisHash.unwrap { Data(base64Encoded: $0) }
         self.genesisId = apiModel.genesisId
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.fee = fee
+        apiModel.minFee = minFee
+        apiModel.lastRound = lastRound
+        apiModel.genesisHash = genesisHashData?.base64EncodedString()
+        apiModel.genesisId = genesisId
+        return apiModel
     }
 }
 
@@ -52,16 +58,16 @@ extension TransactionParams {
 
 extension TransactionParams {
     struct APIModel: ALGAPIModel {
-        let lastRound: UInt64
-        let fee: UInt64
-        let minFee: UInt64
-        let genesisHash: String?
-        let genesisId: String?
+        var lastRound: UInt64?
+        var fee: UInt64?
+        var minFee: UInt64?
+        var genesisHash: String?
+        var genesisId: String?
 
         init() {
-            self.lastRound = 0
-            self.fee = 0
-            self.minFee = 0
+            self.lastRound = nil
+            self.fee = nil
+            self.minFee = nil
             self.genesisHash = nil
             self.genesisId = nil
         }

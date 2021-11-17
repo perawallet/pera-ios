@@ -19,26 +19,12 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class Participation: ALGResponseModel {
-    var debugData: Data?
-    
+final class Participation: ALGAPIModel {
     var selectionParticipationKey: String?
     var voteParticipationKey: String?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.selectionParticipationKey = apiModel.selectionParticipationKey
-        self.voteParticipationKey = apiModel.voteParticipationKey
-    }
-}
-
-extension Participation: Encodable {
-    struct APIModel: ALGAPIModel {
-        let selectionParticipationKey: String?
-        let voteParticipationKey: String?
-
-        init() {
-            self.selectionParticipationKey = nil
-            self.voteParticipationKey = nil
-        }
+    init() {
+        self.selectionParticipationKey = nil
+        self.voteParticipationKey = nil
     }
 }

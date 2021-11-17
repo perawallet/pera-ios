@@ -19,26 +19,21 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class ApplicationStateSchema: ALGResponseModel {
-    var debugData: Data?
-    
+final class ApplicationStateSchema: ALGAPIModel {
     let intValue: Int?
     let byteSliceCount: Int?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.intValue = apiModel.numUint
-        self.byteSliceCount = apiModel.numByteSlice
+    init() {
+        self.intValue = nil
+        self.byteSliceCount = nil
     }
 }
 
 extension ApplicationStateSchema {
-    struct APIModel: ALGAPIModel {
-        let numUint: Int?
-        let numByteSlice: Int?
-
-        init() {
-            self.numUint = nil
-            self.numByteSlice = nil
-        }
+    enum CodingKeys:
+        String,
+        CodingKey {
+        case intValue = "numUint"
+        case byteSliceCount = "numByteSlice"
     }
 }

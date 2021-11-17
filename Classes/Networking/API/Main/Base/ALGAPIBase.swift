@@ -100,7 +100,6 @@ fileprivate extension String {
 extension EndpointBuilder {
     @discardableResult
     func base(_ someBase: ALGAPIBase.Base) -> Self {
-        base(someBase.value)
-        return self
+        return base(someBase.value)
     }
 }

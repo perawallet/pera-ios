@@ -19,9 +19,7 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class Account: ALGResponseModel {
-    var debugData: Data?
-    
+final class Account: ALGEntityModel {
     let address: String
     var amount: UInt64
     var amountWithoutRewards: UInt64
@@ -51,27 +49,29 @@ final class Account: ALGResponseModel {
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
 
-    init(_ apiModel: APIModel = APIModel()) {
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
         address = apiModel.address
         amount = apiModel.amount
         amountWithoutRewards = apiModel.amountWithoutPendingRewards
-        rewardsBase = apiModel.createdAtRound
-        round = apiModel.createdAtRound
+        rewardsBase = apiModel.rewardBase
+        round = apiModel.round
         signatureType = apiModel.sigType
         status = apiModel.status
-        rewards = apiModel.createdAtRound
+        rewards = apiModel.rewards
         pendingRewards = apiModel.pendingRewards
-        participation = apiModel.participation.unwrap(Participation.init)
+        participation = apiModel.participation
         createdAssets = apiModel.createdAssets.unwrapMap(AssetDetail.init)
-        assets = apiModel.assets.unwrapMap(Asset.init)
+        assets = apiModel.assets
         authAddress = apiModel.authAddr
         createdRound = apiModel.createdAtRound
         closedRound = apiModel.closedAtRound
         isDeleted = apiModel.deleted
-        appsLocalState = apiModel.appsLocalState.unwrapMap(ApplicationLocalState.init)
+        appsLocalState = apiModel.appsLocalState
         appsTotalExtraPages = apiModel.appsTotalExtraPages
-        appsTotalSchema = apiModel.appsTotalSchema.unwrap(ApplicationStateSchema.init)
-        createdApps = apiModel.createdApps.unwrapMap(AlgorandApplication.init)
+        appsTotalSchema = apiModel.appsTotalSchema
+        createdApps = apiModel.createdApps
         receivesNotification = true
     }
 
@@ -107,30 +107,52 @@ final class Account: ALGResponseModel {
         self.receivesNotification = accountInformation.receivesNotification
         self.rekeyDetail = accountInformation.rekeyDetail
     }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.address = address
+        apiModel.amount = amount
+        apiModel.amountWithoutPendingRewards = amountWithoutRewards
+        apiModel.createdAtRound = rewardsBase
+        apiModel.sigType = signatureType
+        apiModel.status = status
+        apiModel.pendingRewards = pendingRewards
+        apiModel.participation = participation
+        apiModel.createdAssets = createdAssets?.encode()
+        apiModel.assets = assets
+        apiModel.authAddr = authAddress
+        apiModel.closedAtRound = closedRound
+        apiModel.deleted = isDeleted
+        apiModel.appsLocalState = appsLocalState
+        apiModel.appsTotalExtraPages = appsTotalExtraPages
+        apiModel.appsTotalSchema = appsTotalSchema
+        apiModel.createdApps = createdApps
+        return apiModel
+    }
 }
 
 extension Account {
     struct APIModel: ALGAPIModel {
-        let address: String
-        let amount: UInt64
-        let status: AccountStatus
-        let rewards:  UInt64?
-        let amountWithoutPendingRewards: UInt64
-        let pendingRewards: UInt64
-        let rewardBase: UInt64?
-        let participation: Participation.APIModel?
-        let createdAssets: [AssetDetail.APIModel]?
-        let assets: [Asset.APIModel]?
-        let sigType: SignatureType?
-        let round: UInt64?
-        let authAddr: String?
-        let createdAtRound: UInt64?
-        let closedAtRound: UInt64?
-        let deleted: Bool?
-        let appsLocalState: [ApplicationLocalState.APIModel]?
-        let appsTotalExtraPages: Int?
-        let appsTotalSchema: ApplicationStateSchema.APIModel?
-        let createdApps: [AlgorandApplication.APIModel]?
+        var address: String
+        var amount: UInt64
+        var status: AccountStatus
+        var rewards:  UInt64?
+        var amountWithoutPendingRewards: UInt64
+        var pendingRewards: UInt64
+        var rewardBase: UInt64?
+        var participation: Participation?
+        var createdAssets: [AssetDetail.APIModel]?
+        var assets: [Asset]?
+        var sigType: SignatureType?
+        var round: UInt64?
+        var authAddr: String?
+        var createdAtRound: UInt64?
+        var closedAtRound: UInt64?
+        var deleted: Bool?
+        var appsLocalState: [ApplicationLocalState]?
+        var appsTotalExtraPages: Int?
+        var appsTotalSchema: ApplicationStateSchema?
+        var createdApps: [AlgorandApplication]?
 
         init() {
             self.address = ""
@@ -156,12 +178,6 @@ extension Account {
         }
     }
 }
-
-//extension Account: Encodable {
-//    func encoded() -> Data? {
-//        return try? JSONEncoder().encode(self)
-//    }
-//}
 
 extension Account: Equatable {
     static func == (lhs: Account, rhs: Account) -> Bool {

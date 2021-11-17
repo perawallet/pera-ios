@@ -223,7 +223,7 @@ extension WCMainTransactionDataSource {
         cell.bind(
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
-                account: session?.accounts.first(of: \Account.address, equalsTo: transaction.transactionDetail?.sender),
+                account: session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender)),
                 assetDetail: assetDetail(from: transaction)
             )
         )
@@ -255,7 +255,7 @@ extension WCMainTransactionDataSource {
             fatalError("Unexpected element kind")
         }
 
-        if let session = walletConnector.allWalletConnectSessions.first(of: \.urlMeta.wcURL, equalsTo: transactionRequest.url) {
+        if let session = walletConnector.allWalletConnectSessions.first(matching: (\.urlMeta.wcURL, transactionRequest.url)) {
             headerView.bind(
                 WCMainTransactionHeaderViewModel(
                     session: session,

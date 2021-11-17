@@ -25,7 +25,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<AssetDetailResponse>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.indexer)
+            .base(.indexer(network))
             .path(.assetDetail, args: "\(draft.assetId)")
             .method(.get)
             .completionHandler(handler)

@@ -16,6 +16,7 @@
 //   WalletConnectSingleTransactionRequestPresentable.swift
 
 import Foundation
+import MacaroonUtils
 
 protocol WalletConnectSingleTransactionRequestPresentable: AnyObject {
     func presentSingleWCTransaction(_ transaction: WCTransaction, with request: WalletConnectRequest)
@@ -27,7 +28,7 @@ extension WalletConnectSingleTransactionRequestPresentable where Self: BaseViewC
             return
         }
 
-        let account = session?.accounts.first(of: \.address, equalsTo: transactionDetail.sender)
+        let account = session?.accounts.first(matching: (\.address, transactionDetail.sender))
         
         guard let transactionType = transactionDetail.transactionType(for: account) else {
             walletConnector.rejectTransactionRequest(request, with: .unsupported(.unknownTransaction))

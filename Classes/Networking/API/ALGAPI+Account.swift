@@ -25,7 +25,7 @@ extension ALGAPI {
     ) -> EndpointOperatable {
         enableLogsInConsole()
         return EndpointBuilder(api: self)
-            .base(.indexer)
+            .base(.indexer(network))
             .path(.accountDetail, args: draft.publicKey)
             .method(.get)
             .completionHandler(handler)
@@ -38,7 +38,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<RekeyedAccountsResponse>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.indexer)
+            .base(.indexer(network))
             .path(.accounts)
             .method(.get)
             .query(RekeyedAccountQuery(authAddress: account))

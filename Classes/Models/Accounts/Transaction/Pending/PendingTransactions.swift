@@ -19,9 +19,9 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class PendingTransaction: ALGResponseModel, TransactionItem {
-    var debugData: Data?
-
+final class PendingTransaction:
+    ALGEntityModel,
+    TransactionItem {
     let signature: String?
     private let algosAmount: UInt64?
     private let assetAmount: UInt64?
@@ -44,7 +44,9 @@ final class PendingTransaction: ALGResponseModel, TransactionItem {
     
     var contact: Contact?
 
-    init(_ apiModel: APIModel = APIModel()) {
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
         self.signature = apiModel.sig
         self.algosAmount = apiModel.txn?.amt
         self.assetAmount = apiModel.txn?.aamt
@@ -57,30 +59,51 @@ final class PendingTransaction: ALGResponseModel, TransactionItem {
         self.sender = apiModel.txn?.snd
         self.type = apiModel.txn?.type
     }
+
+    func encode() -> APIModel {
+        var transaction = APIModel.TransactionDetail()
+        transaction.amt = algosAmount
+        transaction.aamt = assetAmount
+        transaction.fee = fee
+        transaction.fv = fv
+        transaction.gh = gh
+        transaction.lv = lv
+        transaction.arcv = assetReceiver
+        transaction.rcv = algosReceiver
+        transaction.snd = sender
+        transaction.type = type
+
+        var apiModel = APIModel()
+        apiModel.sig = signature
+        apiModel.txn = transaction
+        return apiModel
+    }
 }
 
 extension PendingTransaction {
     struct APIModel: ALGAPIModel {
-        let sig: String?
-        let txn: TransactionAPIModel?
+        var sig: String?
+        var txn: TransactionDetail?
 
         init() {
             self.sig = nil
             self.txn = nil
         }
     }
+}
 
-    struct TransactionAPIModel: ALGAPIModel {
-        let amt: UInt64?
-        let aamt: UInt64?
-        let fee: UInt64?
-        let fv: UInt64?
-        let gh: String?
-        let lv: UInt64?
-        let rcv: String?
-        let arcv: String?
-        let snd: String?
-        let type: Transaction.TransferType?
+extension PendingTransaction.APIModel {
+    struct TransactionDetail: ALGAPIModel {
+        var amt: UInt64?
+        var aamt: UInt64?
+        var fee: UInt64?
+        var fv: UInt64?
+        var gh: String?
+        var lv: UInt64?
+        var rcv: String?
+        var arcv: String?
+        var snd: String?
+        var type: Transaction.TransferType?
 
         init() {
             self.amt = nil

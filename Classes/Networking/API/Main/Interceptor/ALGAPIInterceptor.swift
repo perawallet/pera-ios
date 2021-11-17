@@ -87,8 +87,13 @@ extension ALGAPIInterceptor {
 }
 
 extension ALGAPIInterceptor {
+    /// <todo>
+    /// NOP!
+    var network: ALGAPI.Network {
+        return apiBase.network
+    }
     var isTestNet: Bool {
-        return apiBase.network == .testnet
+        return network == .testnet
     }
 
     func setupNetworkBase(_ network: ALGAPI.Network) -> String {

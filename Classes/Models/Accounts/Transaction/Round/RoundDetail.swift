@@ -19,26 +19,33 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class RoundDetail: ALGResponseModel {
-    var debugData: Data?
-
+final class RoundDetail: ALGEntityModel {
     let lastRound: UInt64
     let nextVersionRound: UInt64
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.lastRound = apiModel.lastRound
-        self.nextVersionRound = apiModel.nextVersionRound
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.lastRound = apiModel.lastRound ?? 0
+        self.nextVersionRound = apiModel.nextVersionRound ?? 1
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.lastRound = lastRound
+        apiModel.nextVersionRound = nextVersionRound
+        return apiModel
     }
 }
 
 extension RoundDetail {
     struct APIModel: ALGAPIModel {
-        let lastRound: UInt64
-        let nextVersionRound: UInt64
+        var lastRound: UInt64?
+        var nextVersionRound: UInt64?
 
         init() {
-            self.lastRound = 0
-            self.nextVersionRound = 1
+            self.lastRound = nil
+            self.nextVersionRound = nil
         }
     }
 }

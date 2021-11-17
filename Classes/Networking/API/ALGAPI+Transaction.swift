@@ -35,7 +35,7 @@ extension ALGAPI {
         }
         
         return EndpointBuilder(api: self)
-            .base(.indexer)
+            .base(.indexer(network))
             .path(.accountTransaction, args: draft.account.address)
             .method(.get)
             .query(TransactionsQuery(limit: draft.limit, from: from, to: to, next: draft.nextToken, assetId: draft.assetId))
@@ -49,11 +49,11 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<TransactionID>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.algod)
+            .base(.algod(network))
             .path(.transactions)
             .method(.post)
-            .completionHandler(handler)
             .type(.upload(.data(transactionData)))
+            .completionHandler(handler)
             .execute()
     }
 
@@ -62,7 +62,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<TransactionParams>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.algod)
+            .base(.algod(network))
             .path(.transactionParams)
             .method(.get)
             .completionHandler(handler)
@@ -85,7 +85,7 @@ extension ALGAPI {
         onCompleted handler: @escaping (Response.ModelResult<PendingTransactionList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.algod)
+            .base(.algod(network))
             .path(.pendingAccountTransactions, args: address)
             .method(.get)
             .completionHandler(handler)

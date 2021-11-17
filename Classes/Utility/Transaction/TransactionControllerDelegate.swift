@@ -18,6 +18,8 @@
 import MagpieHipo
 import MagpieExceptions
 
+/// <todo>
+/// Why DBP???
 typealias HIPTransactionError = HIPError<TransactionError, DBP>
 
 protocol TransactionControllerDelegate: AnyObject {

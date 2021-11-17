@@ -19,35 +19,28 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class Payment: ALGResponseModel {
-    var debugData: Data?
-
+final class Payment: ALGEntityModel {
     let amount: UInt64
     let receiver: String
     let closeAmount: UInt64?
     let closeAddress: String?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.amount = apiModel.amount
-        self.receiver = apiModel.receiver
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.amount = apiModel.amount ?? 0
+        self.receiver = apiModel.receiver.someString
         self.closeAmount = apiModel.closeAmount
         self.closeAddress = apiModel.closeRemainderTo
     }
-}
 
-extension Payment {
-    struct APIModel: ALGAPIModel {
-        let amount: UInt64
-        let receiver: String
-        let closeAmount: UInt64?
-        let closeRemainderTo: String?
-
-        init() {
-            self.amount = 0
-            self.receiver = ""
-            self.closeAmount = nil
-            self.closeRemainderTo = nil
-        }
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.amount = amount
+        apiModel.receiver = receiver
+        apiModel.closeAmount = closeAmount
+        apiModel.closeRemainderTo = closeAddress
+        return apiModel
     }
 }
 
@@ -65,5 +58,21 @@ extension Payment {
         }
 
         return closeAmount
+    }
+}
+
+extension Payment {
+    struct APIModel: ALGAPIModel {
+        var amount: UInt64?
+        var receiver: String?
+        var closeAmount: UInt64?
+        var closeRemainderTo: String?
+
+        init() {
+            self.amount = nil
+            self.receiver = nil
+            self.closeAmount = nil
+            self.closeRemainderTo = nil
+        }
     }
 }

@@ -19,28 +19,36 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class Currency: ALGResponseModel {
-    var debugData: Data?
-
+final class Currency: ALGEntityModel {
     let id: String
     let name: String?
     let price: String?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.id = apiModel.currencyId
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.id = apiModel.currencyId ?? "USD"
         self.name = apiModel.name
         self.price = apiModel.exchangePrice
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.currencyId = id
+        apiModel.name = name
+        apiModel.exchangePrice = price
+        return apiModel
     }
 }
 
 extension Currency {
     struct APIModel: ALGAPIModel {
-        let currencyId: String
-        let name: String?
-        let exchangePrice: String?
+        var currencyId: String?
+        var name: String?
+        var exchangePrice: String?
 
         init() {
-            self.currencyId = "USD"
+            self.currencyId = nil
             self.name = nil
             self.exchangePrice = nil
         }

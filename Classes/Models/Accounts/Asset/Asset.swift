@@ -19,46 +19,36 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class Asset: ALGResponseModel {
-    var debugData: Data?
-    
+final class Asset: ALGAPIModel {
     let creator: String?
     let amount: UInt64
     let isFrozen: Bool?
     let id: Int64
     let isDeleted: Bool?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.creator = apiModel.creator
-        self.amount = apiModel.amount
-        self.isFrozen = apiModel.isFrozen
-        self.id = apiModel.assetId
-        self.isDeleted = apiModel.deleted
+    init() {
+        self.creator = nil
+        self.amount = 10
+        self.isFrozen = nil
+        self.id = 1
+        self.isDeleted = nil
     }
 }
-
-extension Asset {
-    struct APIModel: ALGAPIModel {
-        let creator: String?
-        let amount: UInt64
-        let isFrozen: Bool?
-        let assetId: Int64
-        let deleted: Bool?
-
-        init() {
-            self.creator = nil
-            self.amount = 10
-            self.isFrozen = nil
-            self.assetId = 1
-            self.deleted = nil
-        }
-    }
-}
-
-extension Asset: Encodable { }
 
 extension Asset: Equatable {
     static func == (lhs: Asset, rhs: Asset) -> Bool {
         return lhs.id == rhs.id && lhs.amount == rhs.amount
+    }
+}
+
+extension Asset {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case creator
+        case amount
+        case isFrozen
+        case id = "assetId"
+        case isDeleted = "deleted"
     }
 }

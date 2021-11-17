@@ -1768,9 +1768,9 @@
 		2B9A3E7726E7C7A200B050ED /* ALGAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A3E7626E7C7A200B050ED /* ALGAPIModel.swift */; };
 		2B9A3E7826E7C7A200B050ED /* ALGAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A3E7626E7C7A200B050ED /* ALGAPIModel.swift */; };
 		2B9A3E7926E7C7A200B050ED /* ALGAPIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A3E7626E7C7A200B050ED /* ALGAPIModel.swift */; };
-		2B9A3E7B26E7C7C500B050ED /* ALGResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A3E7A26E7C7C500B050ED /* ALGResponseModel.swift */; };
-		2B9A3E7C26E7C7C500B050ED /* ALGResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A3E7A26E7C7C500B050ED /* ALGResponseModel.swift */; };
-		2B9A3E7D26E7C7C500B050ED /* ALGResponseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A3E7A26E7C7C500B050ED /* ALGResponseModel.swift */; };
+		2B9A3E7B26E7C7C500B050ED /* ALGEntityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A3E7A26E7C7C500B050ED /* ALGEntityModel.swift */; };
+		2B9A3E7C26E7C7C500B050ED /* ALGEntityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A3E7A26E7C7C500B050ED /* ALGEntityModel.swift */; };
+		2B9A3E7D26E7C7C500B050ED /* ALGEntityModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9A3E7A26E7C7C500B050ED /* ALGEntityModel.swift */; };
 		2B9EEAC2264D337F007A112D /* AlgorandBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEAC1264D337F007A112D /* AlgorandBlock.swift */; };
 		2B9EEAC3264D337F007A112D /* AlgorandBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEAC1264D337F007A112D /* AlgorandBlock.swift */; };
 		2B9EEAC4264D337F007A112D /* AlgorandBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEAC1264D337F007A112D /* AlgorandBlock.swift */; };
@@ -3761,7 +3761,7 @@
 		2B9E2F4A26F0DDCD003D824A /* WCAssetConfigTransactionItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAssetConfigTransactionItemCell.swift; sourceTree = "<group>"; };
 		2B9E2F4F26F0F2A0003D824A /* WCAssetConfigTransactionItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAssetConfigTransactionItemViewModel.swift; sourceTree = "<group>"; };
 		2B9A3E7626E7C7A200B050ED /* ALGAPIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAPIModel.swift; sourceTree = "<group>"; };
-		2B9A3E7A26E7C7C500B050ED /* ALGResponseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGResponseModel.swift; sourceTree = "<group>"; };
+		2B9A3E7A26E7C7C500B050ED /* ALGEntityModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGEntityModel.swift; sourceTree = "<group>"; };
 		2B9EEAC1264D337F007A112D /* AlgorandBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandBlock.swift; sourceTree = "<group>"; };
 		2B9EEACD264D3393007A112D /* AlgorandTotalSupply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandTotalSupply.swift; sourceTree = "<group>"; };
 		2B9EEAD5264D33B1007A112D /* ALGAPI+Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Block.swift"; sourceTree = "<group>"; };
@@ -4468,7 +4468,7 @@
 			isa = PBXGroup;
 			children = (
 				2B9A3E7626E7C7A200B050ED /* ALGAPIModel.swift */,
-				2B9A3E7A26E7C7C500B050ED /* ALGResponseModel.swift */,
+				2B9A3E7A26E7C7C500B050ED /* ALGEntityModel.swift */,
 				2B4DF439236C787600FF9551 /* Accounts */,
 				2B4DF444236C7D5500FF9551 /* Application */,
 				2B9EEAC0264D3370007A112D /* Block */,
@@ -11992,7 +11992,7 @@
 				2B0F635324ED0CCF00DA22A6 /* RekeyedAccountsResponse.swift in Sources */,
 				2B5739FF26F3FD3C007E0252 /* WCAssetConfigAnotherAccountTransactionItemCell.swift in Sources */,
 				17BD4EB32292F1260003E49A /* UIFont+Additions.swift in Sources */,
-				2B9A3E7D26E7C7C500B050ED /* ALGResponseModel.swift in Sources */,
+				2B9A3E7D26E7C7C500B050ED /* ALGEntityModel.swift in Sources */,
 				2B32A2612552F031007CC3A6 /* LedgerTransactionErrorLog.swift in Sources */,
 				D4AEDD31271C6E1700AD2725 /* AlgoStatisticsFooterViewTheme.swift in Sources */,
 				17BD4EB42292F1260003E49A /* AccountListView.swift in Sources */,
@@ -12968,7 +12968,7 @@
 				2B0F629624EC129D00DA22A6 /* UIVIewController+Presentation.swift in Sources */,
 				2B5739FE26F3FD3C007E0252 /* WCAssetConfigAnotherAccountTransactionItemCell.swift in Sources */,
 				2B32A2602552F031007CC3A6 /* LedgerTransactionErrorLog.swift in Sources */,
-				2B9A3E7C26E7C7C500B050ED /* ALGResponseModel.swift in Sources */,
+				2B9A3E7C26E7C7C500B050ED /* ALGEntityModel.swift in Sources */,
 				2B0F629724EC129D00DA22A6 /* PendingAssetView.swift in Sources */,
 				2BF0FAD825387C6D00D704D5 /* AssetCardCell.swift in Sources */,
 				D4AEDD30271C6E1700AD2725 /* AlgoStatisticsFooterViewTheme.swift in Sources */,
@@ -13941,7 +13941,7 @@
 				2B7E305D267A5E0700E89EE3 /* WCAssetTransactionViewController.swift in Sources */,
 				2B5739FD26F3FD3C007E0252 /* WCAssetConfigAnotherAccountTransactionItemCell.swift in Sources */,
 				2B0F635224ED0CCF00DA22A6 /* RekeyedAccountsResponse.swift in Sources */,
-				2B9A3E7B26E7C7C500B050ED /* ALGResponseModel.swift in Sources */,
+				2B9A3E7B26E7C7C500B050ED /* ALGEntityModel.swift in Sources */,
 				2B7ABF77233388570050B64B /* PendingTransactionList.swift in Sources */,
 				D4AEDD2F271C6E1700AD2725 /* AlgoStatisticsFooterViewTheme.swift in Sources */,
 				2B32A25F2552F031007CC3A6 /* LedgerTransactionErrorLog.swift in Sources */,

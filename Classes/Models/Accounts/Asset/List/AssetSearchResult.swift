@@ -19,52 +19,79 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class AssetSearchResult: ALGResponseModel {
-    var debugData: Data?
-    
+final class AssetSearchResult: ALGEntityModel {
     let id: Int64
     let name: String?
     let unitName: String?
     let isVerified: Bool
 
-    init(_ apiModel: APIModel = APIModel()) {
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
         self.id = apiModel.assetId
         self.name = apiModel.name
         self.unitName = apiModel.unitName
-        self.isVerified = apiModel.isVerified
+        self.isVerified = apiModel.isVerified ?? false
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.assetId = id
+        apiModel.name = name
+        apiModel.unitName = unitName
+        apiModel.isVerified = isVerified
+        return apiModel
     }
 }
 
 extension AssetSearchResult {
     struct APIModel: ALGAPIModel {
-        let assetId: Int64
-        let name: String?
-        let unitName: String?
-        let isVerified: Bool
+        var assetId: Int64
+        var name: String?
+        var unitName: String?
+        var isVerified: Bool?
 
         init() {
             self.assetId = 0
             self.name = nil
             self.unitName = nil
-            self.isVerified = false
+            self.isVerified = nil
         }
     }
 }
 
-final class AssetSearchResultList: PaginatedList<AssetSearchResult>, ALGResponseModel {
-    var debugData: Data?
+/// <todo>
+/// Rethink the paginated list model. Should be more reusable.
+final class AssetSearchResultList:
+    PaginatedList<AssetSearchResult>,
+    ALGEntityModel {
+    convenience init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.init(
+            pagination: apiModel,
+            results: apiModel.results.unwrapMap(AssetSearchResult.init)
+        )
+    }
 
-    convenience init(_ apiModel: APIModel = APIModel()){
-        self.init(pagination: apiModel, results: apiModel.results.unwrapMap(AssetSearchResult.init))
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.count = count
+        apiModel.next = next
+        apiModel.previous = previous
+        apiModel.results = results.map { $0.encode() }
+        return apiModel
     }
 }
 
 extension AssetSearchResultList {
-    struct APIModel: ALGAPIModel, PaginationComponents {
-        let count: Int?
-        let next: URL?
-        let previous: String?
-        let results: [AssetSearchResult.APIModel]?
+    struct APIModel:
+        ALGAPIModel,
+        PaginationComponents {
+        var count: Int?
+        var next: URL?
+        var previous: String?
+        var results: [AssetSearchResult.APIModel]?
 
         init() {
             self.count = nil

@@ -20,27 +20,23 @@ import MagpieCore
 import MacaroonUtils
 
 class PaginatedList<Item> {
+    var nextCursor: String? {
+        return next?.queryParameters?[APIParamKey.cursor.rawValue]
+    }
+
     let count: Int
     let next: URL?
     let previous: String?
     let results: [Item]
 
-    init(pagination: PaginationComponents, results: [Item]) {
+    init(
+        pagination: PaginationComponents,
+        results: [Item]
+    ) {
         self.count = pagination.count ?? 0
         self.next = pagination.next
         self.previous = pagination.previous
         self.results = results
-    }
-}
-
-extension PaginatedList {
-    func parsePaginationCursor() -> String? {
-        guard let next = next,
-              let cursor = next.queryParameters?[RequestParameter.cursor.rawValue] else {
-            return nil
-        }
-
-        return cursor
     }
 }
 

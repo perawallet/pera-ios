@@ -25,6 +25,10 @@ final class User: Codable {
     init(accounts: [AccountInformation]) {
         self.accounts = accounts
     }
+
+    init(from decoder: Decoder) throws {
+
+    }
     
     func encoded() -> Data? {
         return try? JSONEncoder().encode(self)

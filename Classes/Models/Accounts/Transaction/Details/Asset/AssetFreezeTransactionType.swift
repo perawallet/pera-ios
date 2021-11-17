@@ -19,30 +19,24 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class AssetFreezeTransaction: ALGResponseModel {
-    var debugData: Data?
-    
+final class AssetFreezeTransaction: ALGAPIModel {
     let address: String?
     let isFreeze: Bool?
     let assetId: Int64?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.address = apiModel.address
-        self.isFreeze = apiModel.newFreezeStatus
-        self.assetId = apiModel.assetId
+    init() {
+        self.address = nil
+        self.isFreeze = nil
+        self.assetId = nil
     }
 }
 
 extension AssetFreezeTransaction {
-    struct APIModel: ALGAPIModel {
-        let address: String?
-        let newFreezeStatus: Bool?
-        let assetId: Int64?
-
-        init() {
-            self.address = nil
-            self.newFreezeStatus = nil
-            self.assetId = nil
-        }
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case address
+        case isFreeze = "newFreezeStatus"
+        case assetId
     }
 }

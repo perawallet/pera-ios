@@ -19,22 +19,18 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class TransactionSignature: ALGResponseModel {
-    var debugData: Data?
-
+final class TransactionSignature: ALGAPIModel {
     let signature: String?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.signature = apiModel.sig
+    init() {
+        self.signature = nil
     }
 }
 
 extension TransactionSignature {
-    struct APIModel: ALGAPIModel {
-        let sig: String?
-
-        init() {
-            self.sig = nil
-        }
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case signature = "sig"
     }
 }

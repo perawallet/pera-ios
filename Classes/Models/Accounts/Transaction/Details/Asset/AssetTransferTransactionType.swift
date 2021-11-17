@@ -19,9 +19,7 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class AssetTransferTransaction: ALGResponseModel {
-    var debugData: Data?
-
+final class AssetTransferTransaction: ALGEntityModel {
     let amount: UInt64
     let closeAmount: UInt64?
     let closeToAddress: String?
@@ -29,30 +27,43 @@ final class AssetTransferTransaction: ALGResponseModel {
     let receiverAddress: String?
     let senderAddress: String?
 
-    init(_ apiModel: APIModel = APIModel()) {
-        self.amount = apiModel.amount
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.amount = apiModel.amount ?? 10
         self.closeAmount = apiModel.closeAmount
         self.closeToAddress = apiModel.closeTo
-        self.assetId = apiModel.assetId
+        self.assetId = apiModel.assetId ?? 1
         self.receiverAddress = apiModel.receiver
         self.senderAddress = apiModel.sender
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.amount = amount
+        apiModel.closeAmount = closeAmount
+        apiModel.closeTo = closeToAddress
+        apiModel.assetId = assetId
+        apiModel.receiver = receiverAddress
+        apiModel.sender = senderAddress
+        return apiModel
     }
 }
 
 extension AssetTransferTransaction {
     struct APIModel: ALGAPIModel {
-        let amount: UInt64
-        let closeAmount: UInt64?
-        let closeTo: String?
-        let assetId: Int64
-        let receiver: String?
-        let sender: String?
+        var amount: UInt64?
+        var closeAmount: UInt64?
+        var closeTo: String?
+        var assetId: Int64?
+        var receiver: String?
+        var sender: String?
 
         init() {
-            self.amount = 10
+            self.amount = nil
             self.closeAmount = nil
             self.closeTo = nil
-            self.assetId = 1
+            self.assetId = nil
             self.receiver = nil
             self.sender = nil
         }
