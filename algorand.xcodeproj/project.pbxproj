@@ -2405,6 +2405,7 @@
 		2BF71912224ECFEC001E8420 /* ContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71911224ECFEC001E8420 /* ContactsView.swift */; };
 		2BF71916224ED0A6001E8420 /* AddContactViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71915224ED0A6001E8420 /* AddContactViewController.swift */; };
 		2BF71918224ED0C5001E8420 /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF71917224ED0C5001E8420 /* ContactDetailViewController.swift */; };
+		2BF727A82745627D00CCAC30 /* WCAssetConfigTransactionItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9E2F4F26F0F2A0003D824A /* WCAssetConfigTransactionItemViewModel.swift */; };
 		2BF811AC25E5B1AE00D6B406 /* TransactionTutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF811AB25E5B1AE00D6B406 /* TransactionTutorialViewController.swift */; };
 		2BF811AD25E5B1AE00D6B406 /* TransactionTutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF811AB25E5B1AE00D6B406 /* TransactionTutorialViewController.swift */; };
 		2BF811AE25E5B1AE00D6B406 /* TransactionTutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF811AB25E5B1AE00D6B406 /* TransactionTutorialViewController.swift */; };
@@ -13257,6 +13258,7 @@
 				2B3E39F4247837D700E8AEB7 /* TestNetTitleDisplayable.swift in Sources */,
 				2B4BDA0B238C9EDF00491149 /* AssetAlertDraft.swift in Sources */,
 				2B0322E2269F1DE900C9B2F5 /* WCMainTransactionLayout.swift in Sources */,
+				2BF727A82745627D00CCAC30 /* WCAssetConfigTransactionItemViewModel.swift in Sources */,
 				2B8954BA2243FCFA00D6D068 /* Snapkit+SafeArea.swift in Sources */,
 				D4BC640726DE3CD6000CFD28 /* ButtonCommonViewModel.swift in Sources */,
 				2BF0FADF25387C9600D704D5 /* AlgosCardViewModel.swift in Sources */,
