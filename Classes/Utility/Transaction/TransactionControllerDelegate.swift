@@ -15,13 +15,18 @@
 //
 //  TransactionControllerDelegate.swift
 
-import Magpie
+import MagpieHipo
+import MagpieExceptions
+
+/// <todo>
+/// Why DBP???
+typealias HIPTransactionError = HIPError<TransactionError, DBP>
 
 protocol TransactionControllerDelegate: AnyObject {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?)
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>)
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError)
     func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID)
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>)
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError)
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController)
 }
 
@@ -31,11 +36,11 @@ extension TransactionControllerDelegate where Self: BaseViewController {
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) { }
     
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) { }
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) { }
     
     func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID) { }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) { }
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) { }
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) { }
 }

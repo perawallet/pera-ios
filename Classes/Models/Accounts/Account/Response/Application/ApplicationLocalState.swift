@@ -15,9 +15,11 @@
 //
 //   ApplicationLocalState.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class ApplicationLocalState: Model {
+final class ApplicationLocalState: ALGAPIModel {
     var closedAtRound: UInt64?
     var isDeleted: Bool?
     var id: Int64?
@@ -26,11 +28,13 @@ class ApplicationLocalState: Model {
 }
 
 extension ApplicationLocalState {
-    enum CodingKeys: String, CodingKey {
-        case closedAtRound = "closed-out-at-round"
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case closedAtRound = "closedOutAtRound"
         case isDeleted = "deleted"
-        case id = "id"
-        case optedInAtRound = "opted-in-at-round"
-        case schema = "schema"
+        case id
+        case optedInAtRound
+        case schema
     }
 }

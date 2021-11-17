@@ -16,7 +16,8 @@
 //   EditContactViewModel.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 final class EditContactViewModel: PairedViewModel {
     private(set) var image: UIImage?

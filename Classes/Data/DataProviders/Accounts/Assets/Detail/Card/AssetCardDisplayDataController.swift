@@ -19,16 +19,16 @@ import Foundation
 
 class AssetCardDisplayDataController {
 
-    private let api: AlgorandAPI
+    private let api: ALGAPI
 
-    init(api: AlgorandAPI) {
+    init(api: ALGAPI) {
         self.api = api
     }
 }
 
 extension AssetCardDisplayDataController {
     func getCurrency(_ completion: @escaping (Currency?) -> Void) {
-        api.getCurrencyValue(for: api.session.preferredCurrency) { response in
+        api.getCurrencyValue(api.session.preferredCurrency) { response in
             switch response {
             case let .success(result):
                 completion(result)

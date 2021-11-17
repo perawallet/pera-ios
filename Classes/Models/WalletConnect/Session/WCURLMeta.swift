@@ -17,7 +17,7 @@
 
 import Foundation
 
-class WCURLMeta: Codable {
+final class WCURLMeta: Codable {
     let topic: String
     let version: String
     let bridge: URL

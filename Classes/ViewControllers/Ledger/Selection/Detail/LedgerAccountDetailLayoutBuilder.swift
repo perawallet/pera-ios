@@ -16,7 +16,8 @@
 //   LedgerAccountDetailLayoutBuilder.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 final class LedgerAccountDetailLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
     private let theme: LedgerAccountDetailViewController.Theme

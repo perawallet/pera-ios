@@ -16,7 +16,7 @@
 //  AccountListLayoutBuilder.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AccountListLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
     weak var delegate: AccountListLayoutBuilderDelegate?

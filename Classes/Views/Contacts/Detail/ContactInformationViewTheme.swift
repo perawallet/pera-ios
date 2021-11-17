@@ -15,7 +15,7 @@
 //
 //   ContactInformationViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct ContactInformationViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
@@ -55,7 +55,7 @@ struct ContactInformationViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main),
-            .content("Account Address".localized)
+            .text("Account Address".localized)
         ]
         self.accountAddressValueLabel = [
             .textOverflow(.fitting),

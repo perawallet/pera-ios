@@ -16,7 +16,7 @@
 //   LedgerAccountVerificationViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct LedgerAccountVerificationViewTheme: StyleSheet, LayoutSheet {
@@ -39,17 +39,17 @@ struct LedgerAccountVerificationViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(.fitting),
             .font(Fonts.DMSans.medium.make(19)),
             .textColor(AppColors.Components.Text.main),
-            .content("ledger-verify-header-title".localized)
+            .text("ledger-verify-header-title".localized)
         ]
         self.description = [
             .textAlignment(.center),
             .textOverflow(.fitting),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.gray),
-            .content("ledger-verify-header-subtitle".localized)
+            .text("ledger-verify-header-subtitle".localized)
         ]
         self.image = [
-            .content("icon-ledger"),
+            .image("icon-ledger"),
             .contentMode(.scaleAspectFit)
         ]
 

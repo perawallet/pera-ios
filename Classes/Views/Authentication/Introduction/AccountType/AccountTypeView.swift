@@ -16,7 +16,8 @@
 //  AccountTypeView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class AccountTypeView: Control {
     private lazy var theme = AccountTypeViewTheme()
@@ -56,6 +57,8 @@ extension AccountTypeView {
             $0.top.equalToSuperview().inset(theme.verticalInset)
             $0.trailing.equalToSuperview().inset(theme.titleTrailingInset)
         }
+
+        titleLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
 
     private func addDetailLabel(_ theme: AccountTypeViewTheme) {

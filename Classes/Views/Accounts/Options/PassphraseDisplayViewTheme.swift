@@ -15,7 +15,7 @@
 //
 //   PassphraseDisplayViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct PassphraseDisplayViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color

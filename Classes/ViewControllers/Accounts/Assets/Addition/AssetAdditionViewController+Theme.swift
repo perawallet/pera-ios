@@ -15,7 +15,8 @@
 //
 //   AssetAdditionViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 extension AssetAdditionViewController {
     struct Theme: LayoutSheet, StyleSheet {

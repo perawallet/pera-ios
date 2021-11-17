@@ -16,7 +16,7 @@
 //   AlgoStatisticsValueChangeView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AlgoStatisticsValueChangeView: View {
     private lazy var changeImageView = UIImageView()

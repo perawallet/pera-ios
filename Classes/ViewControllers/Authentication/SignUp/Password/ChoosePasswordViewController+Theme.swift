@@ -15,7 +15,8 @@
 //
 //   ChoosePasswordViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 extension ChoosePasswordViewController {
     struct Theme: LayoutSheet, StyleSheet {

@@ -15,7 +15,7 @@
 //
 //   AccountListViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct AccountListViewTheme: LayoutSheet, StyleSheet {
     let titleLabel: TextStyle

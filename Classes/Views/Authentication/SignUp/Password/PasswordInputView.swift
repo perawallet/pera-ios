@@ -16,7 +16,8 @@
 //  PasswordInputView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class PasswordInputView: View {
     private lazy var theme = PasswordInputViewTheme()

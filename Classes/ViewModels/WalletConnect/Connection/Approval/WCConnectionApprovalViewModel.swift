@@ -16,7 +16,8 @@
 //   WCConnectionApprovalViewModel.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import MacaroonURLImage
 
 class WCConnectionApprovalViewModel {
     private(set) var image: ImageSource?

@@ -16,7 +16,8 @@
 //  ToggleTitleView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 final class ToggleTitleHeaderView: View {
     private lazy var titleLabel = UILabel()
@@ -26,8 +27,6 @@ final class ToggleTitleHeaderView: View {
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) { }
-
-    func customizeAppearance(_ styleSheet: BaseStyle<ViewStyleAttribute>) {}
 }
 
 extension ToggleTitleHeaderView {

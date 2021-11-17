@@ -18,14 +18,14 @@
 import Foundation
 
 class AccountManager {
-    let api: AlgorandAPI
+    let api: ALGAPI
     var currentRound: UInt64?
     var params: TransactionParams?
     let queue: OperationQueue
 
     weak var delegate: AccountManagerDelegate?
     
-    init(api: AlgorandAPI) {
+    init(api: ALGAPI) {
         self.api = api
         self.queue = OperationQueue()
         self.queue.name = "AccountFetchOperation"
@@ -96,7 +96,7 @@ extension AccountManager {
     
     func waitForNextRoundAndFetchAccounts(round: UInt64?, completion: ((UInt64?) -> Void)?) {
         if let nextRound = round {
-            self.api.waitRound(with: WaitRoundDraft(round: nextRound)) { roundDetailResponse in
+            self.api.waitRound(WaitRoundDraft(round: nextRound)) { roundDetailResponse in
                 switch roundDetailResponse {
                 case let .success(result):
                     let round = result.lastRound
@@ -128,7 +128,7 @@ extension AccountManager {
                 return
             }
             
-            self.api.waitRound(with: WaitRoundDraft(round: round)) { roundDetailResponse in
+            self.api.waitRound(WaitRoundDraft(round: round)) { roundDetailResponse in
                 switch roundDetailResponse {
                 case let .success(result):
                     let round = result.lastRound

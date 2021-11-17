@@ -16,7 +16,7 @@
 //   AccountNameSetupViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct AccountNameSetupViewTheme: StyleSheet, LayoutSheet {
@@ -38,7 +38,7 @@ struct AccountNameSetupViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(.fitting),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
-            .content("account-details-title".localized)
+            .text("account-details-title".localized)
         ]
 
         self.description = [
@@ -46,7 +46,7 @@ struct AccountNameSetupViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(.fitting),
-            .content("account-name-setup-description".localized)
+            .text("account-name-setup-description".localized)
         ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()

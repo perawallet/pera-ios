@@ -16,7 +16,7 @@
 //   BannerViewModel.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 
 protocol BannerViewModel: ViewModel {
     var icon: Image? { get }
@@ -28,7 +28,7 @@ extension BannerViewModel {
     var icon: Image? {
         return nil
     }
-    
+
     var message: EditText? {
         return nil
     }

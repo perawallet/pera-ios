@@ -16,7 +16,7 @@
 //  AccountNameView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AccountNameView: View {
     private lazy var imageView = UIImageView()

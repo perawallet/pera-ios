@@ -15,8 +15,8 @@
 //
 //  PassphraseCellViewModel.swift
 
+import MacaroonUIKit
 import Foundation
-import Macaroon
 
 struct Passphrase {
     let index: Int

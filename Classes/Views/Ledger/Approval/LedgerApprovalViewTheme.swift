@@ -15,7 +15,7 @@
 //
 //   LedgerApprovalViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct LedgerApprovalViewTheme: StyleSheet, LayoutSheet {

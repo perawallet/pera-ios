@@ -15,13 +15,13 @@
 //
 //  DeviceDeletionDraft.swift
 
-import Magpie
+import MagpieCore
 
 struct DeviceDeletionDraft: JSONObjectBody {
     let pushToken: String
     
-    var bodyParams: [BodyParam] {
-        var params: [BodyParam] = []
+    var bodyParams: [APIBodyParam] {
+        var params: [APIBodyParam] = []
         params.append(.init(.pushToken, pushToken))
         return params
     }

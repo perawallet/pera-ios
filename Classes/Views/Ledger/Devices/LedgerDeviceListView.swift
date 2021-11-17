@@ -15,7 +15,8 @@
 //
 //  LedgerDeviceListView.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 final class LedgerDeviceListView: View {
     private lazy var theme = LedgerDeviceListViewTheme()

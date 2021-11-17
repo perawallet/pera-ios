@@ -16,7 +16,7 @@
 //  TutorialNumberView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class TutorialNumberView: View {
     private lazy var numberLabel = UILabel()

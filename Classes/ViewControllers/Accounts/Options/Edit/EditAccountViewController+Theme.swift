@@ -15,7 +15,7 @@
 //
 //   EditAccountViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 extension EditAccountViewController {
     struct Theme: LayoutSheet, StyleSheet {

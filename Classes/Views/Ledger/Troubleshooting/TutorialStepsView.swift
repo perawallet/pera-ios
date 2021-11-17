@@ -15,7 +15,8 @@
 //
 //   TutorialStepsView.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 final class TutorialStepsView: View {
     private lazy var verticalStackView = UIStackView()

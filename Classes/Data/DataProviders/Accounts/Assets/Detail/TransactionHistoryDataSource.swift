@@ -16,7 +16,7 @@
 //  AccountTransactionHistoryDataSource.swift
 
 import UIKit
-import Magpie
+import MagpieCore
 
 class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     
@@ -25,7 +25,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     private var assetDetail: AssetDetail?
     private var contacts = [Contact]()
     
-    private let api: AlgorandAPI?
+    private let api: ALGAPI?
 
     private var csvTransactions = [Transaction]()
 
@@ -40,7 +40,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     var openFilterOptionsHandler: ((TransactionHistoryDataSource) -> Void)?
     var shareHistoryHandler: ((TransactionHistoryDataSource) -> Void)?
     
-    init(api: AlgorandAPI?, account: Account, assetDetail: AssetDetail?) {
+    init(api: ALGAPI?, account: Account, assetDetail: AssetDetail?) {
         self.api = api
         self.account = account
         self.assetDetail = assetDetail
@@ -215,7 +215,7 @@ extension TransactionHistoryDataSource {
         }
         
         let draft = TransactionFetchDraft(account: account, dates: dates, nextToken: nextToken, assetId: assetId, limit: limit)
-        fetchRequest = api?.fetchTransactions(with: draft) { response in
+        fetchRequest = api?.fetchTransactions(draft) { response in
             switch response {
             case let .failure(apiError, _):
                 handler(nil, apiError)
@@ -291,7 +291,7 @@ extension TransactionHistoryDataSource {
 
 extension TransactionHistoryDataSource {
     func fetchPendingTransactions(for account: Account, then handler: @escaping ([TransactionItem]?, APIError?) -> Void) {
-        api?.fetchPendingTransactions(for: account.address) { response in
+        api?.fetchPendingTransactions(account.address) { response in
             switch response {
             case let .success(pendingTransactionList):
                 self.filter(pendingTransactionList.pendingTransactions)
@@ -417,7 +417,7 @@ extension TransactionHistoryDataSource {
 
         let draft = TransactionFetchDraft(account: account, dates: dates, nextToken: token, assetId: assetId, limit: nil)
 
-        api?.fetchTransactions(with: draft) { response in
+        api?.fetchTransactions(draft) { response in
             switch response {
             case let .failure(apiError, _):
                 handler(nil, apiError)

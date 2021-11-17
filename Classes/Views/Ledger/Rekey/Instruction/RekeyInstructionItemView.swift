@@ -16,7 +16,7 @@
 //  RekeyInstructionItemView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class RekeyInstructionItemView: View {
     private lazy var informationImageView = UIImageView()
@@ -34,8 +34,6 @@ final class RekeyInstructionItemView: View {
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
-
-    func customizeAppearance(_ styleSheet: BaseStyle<ViewStyleAttribute>) {}
 }
 
 extension RekeyInstructionItemView {

@@ -15,7 +15,7 @@
 //
 //   LedgerTutorialInstructionViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 
 final class LedgerTutorialInstructionViewModel: BindableViewModel {
     private(set) var title: String?

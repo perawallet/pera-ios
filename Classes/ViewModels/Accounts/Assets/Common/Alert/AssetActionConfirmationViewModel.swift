@@ -16,7 +16,7 @@
 //  AssetActionConfirmationViewModel.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AssetActionConfirmationViewModel: PairedViewModel {
     private(set) var title: String?

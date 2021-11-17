@@ -42,7 +42,7 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
     
     private var ledgerAccountIndex = 0
     
-    private let api: AlgorandAPI
+    private let api: ALGAPI
     private let bannerController: BannerController?
     
     private var account: Account?
@@ -53,7 +53,7 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
         bannerController: bannerController
     )
     
-    init(api: AlgorandAPI, bannerController: BannerController?) {
+    init(api: ALGAPI, bannerController: BannerController?) {
         self.api = api
         self.bannerController = bannerController
         bleConnectionManager.delegate = self

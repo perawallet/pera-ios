@@ -15,7 +15,7 @@
 //
 //   RekeyInstructionsViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct RekeyInstructionsViewTheme: StyleSheet, LayoutSheet {
@@ -38,7 +38,7 @@ struct RekeyInstructionsViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(32)),
             .textColor(AppColors.Components.Text.main),
-            .content("rekey-instruction-title".localized)
+            .text("rekey-instruction-title".localized)
         ]
         self.subtitle = [
             .textOverflow(.fitting),
@@ -51,7 +51,7 @@ struct RekeyInstructionsViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(19)),
             .textColor(AppColors.Components.Text.main),
-            .content("rekey-instruction-header".localized)
+            .text("rekey-instruction-header".localized)
         ]
         self.startButtonTheme = ButtonPrimaryTheme()
 

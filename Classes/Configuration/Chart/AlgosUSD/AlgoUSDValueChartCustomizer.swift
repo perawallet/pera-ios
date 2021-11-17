@@ -15,7 +15,9 @@
 //
 //   AlgoUSDValueChart.swift
 
+import Foundation
 import Charts
+import CoreGraphics
 
 struct AlgoUSDValueChartCustomizer: AlgorandChartViewCustomizable {
     

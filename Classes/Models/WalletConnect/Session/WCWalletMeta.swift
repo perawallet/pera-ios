@@ -17,7 +17,7 @@
 
 import Foundation
 
-class WCWalletMeta: Codable {
+final class WCWalletMeta: Codable {
     let accounts: [String]?
     let chainId: Int?
     let peerId: String?

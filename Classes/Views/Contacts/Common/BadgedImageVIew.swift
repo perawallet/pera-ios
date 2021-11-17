@@ -16,7 +16,7 @@
 //   BadgedImageVIew.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class BadgedImageView: Control {
     private(set) lazy var imageView = UIImageView()

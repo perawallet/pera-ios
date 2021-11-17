@@ -15,8 +15,8 @@
 //
 //   AddAccountViewTheme.swift
 
+import MacaroonUIKit
 import Foundation
-import Macaroon
 import UIKit
 
 struct AddAccountViewTheme: StyleSheet, LayoutSheet {
@@ -31,8 +31,8 @@ struct AddAccountViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
-            .textAlignment(.left),
-            .content("introduction-add-account-text".localized),
+            .textAlignment(.center),
+            .text("introduction-add-account-text".localized),
             .textOverflow(.fitting),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32))

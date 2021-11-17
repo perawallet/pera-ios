@@ -15,7 +15,7 @@
 //
 //   ButtonViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 
 protocol ButtonViewModel: ViewModel {
     var iconSet: ImageSet? { get }

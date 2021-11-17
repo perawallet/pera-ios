@@ -16,7 +16,7 @@
 //   PageBarStyleSheet.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 protocol PageBarStyleSheet: StyleSheet {

@@ -16,7 +16,7 @@
 //   PassphraseBackUpViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct PassphraseBackUpViewTheme: StyleSheet, LayoutSheet {
@@ -41,14 +41,14 @@ struct PassphraseBackUpViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
             .textOverflow(.fitting),
-            .content("recover-passphrase-title".localized)
+            .text("recover-passphrase-title".localized)
         ]
         self.description = [
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(.fitting),
-            .content("passphrase-bottom-title".localized)
+            .text("passphrase-bottom-title".localized)
         ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()

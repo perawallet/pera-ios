@@ -15,7 +15,7 @@
 //
 //  TransactionsQuery.swift
 
-import Magpie
+import MagpieCore
 
 struct TransactionsQuery: ObjectQuery {
     let limit: Int?
@@ -24,8 +24,8 @@ struct TransactionsQuery: ObjectQuery {
     let next: String?
     let assetId: String?
     
-    var queryParams: [QueryParam] {
-        var params: [QueryParam] = []
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
         if let limit = limit {
             params.append(.init(.limit, limit))
         }
@@ -51,8 +51,8 @@ struct TransactionsQuery: ObjectQuery {
 struct AccountQuery: ObjectQuery {
     let includesAll: Bool
 
-    var queryParams: [QueryParam] {
-        var params: [QueryParam] = []
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
 
         if includesAll {
             params.append(.init(.includesAll, includesAll))

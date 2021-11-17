@@ -15,7 +15,7 @@
 //
 //   AssetPreviewViewAdditionTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct AssetPreviewViewAdditionTheme: AssetPreviewViewTheme {
     let primaryAssetTitle: TextStyle

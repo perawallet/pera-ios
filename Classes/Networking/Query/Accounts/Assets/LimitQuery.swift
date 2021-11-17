@@ -15,13 +15,13 @@
 //
 //  VerifiedAssetQuery.swift
 
-import Magpie
+import MagpieCore
 
 struct LimitQuery: ObjectQuery {
     var limit = "all"
     
-    var queryParams: [QueryParam] {
-        var params: [QueryParam] = []
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
         params.append(.init(.limit, limit))
         return params
     }

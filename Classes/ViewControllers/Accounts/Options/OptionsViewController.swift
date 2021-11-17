@@ -16,7 +16,9 @@
 //  OptionsViewController.swift
 
 import UIKit
-import Magpie
+import MagpieCore
+import MagpieHipo
+import MagpieExceptions
 
 final class OptionsViewController: BaseViewController {
     weak var delegate: OptionsViewControllerDelegate?
@@ -142,7 +144,7 @@ extension OptionsViewController {
             receivesNotifications: !account.receivesNotification
         )
 
-        api?.updateNotificationFilter(with: draft) { response in
+        api?.updateNotificationFilter(draft) { response in
             switch response {
             case let .success(result):
                 self.updateNotificationFiltering(with: result)

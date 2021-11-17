@@ -15,7 +15,7 @@
 //
 //   TutorialStepsViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 extension TutorialStepsViewController {
     struct Theme: LayoutSheet, StyleSheet {

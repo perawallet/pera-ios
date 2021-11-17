@@ -15,14 +15,20 @@
 //
 //  IndexerError.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class IndexerError: Model {
-    let message: String
+final class IndexerError: ALGAPIModel {
+    let message: String?
+
+    init() {
+        self.message = nil
+    }
 }
 
 extension IndexerError {
     func containsAccount(_ address: String) -> Bool {
-        return message.contains(address)
+        return message?.contains(address) ?? false
     }
 }

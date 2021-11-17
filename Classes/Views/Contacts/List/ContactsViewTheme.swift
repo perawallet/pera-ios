@@ -16,7 +16,7 @@
 //   ContactsViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct ContactsViewTheme: StyleSheet, LayoutSheet {

@@ -15,6 +15,7 @@
 //
 //  NavigationBarConfigurable.swift
 
+import Foundation
 import UIKit
 
 protocol NavigationBarConfigurable: AnyObject {

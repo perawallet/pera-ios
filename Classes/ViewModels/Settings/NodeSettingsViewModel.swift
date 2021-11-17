@@ -22,7 +22,7 @@ class NodeSettingsViewModel {
     private(set) var backgroundImage: UIImage?
     private(set) var image: UIImage?
 
-    init(node: AlgorandNode, activeNetwork: AlgorandAPI.BaseNetwork) {
+    init(node: AlgorandNode, activeNetwork: ALGAPI.Network) {
         setNodeName(from: node)
         setBackgroundImage(from: node, activeNetwork: activeNetwork)
         setImage(from: node, activeNetwork: activeNetwork)
@@ -32,7 +32,7 @@ class NodeSettingsViewModel {
         nodeName = node.name
     }
 
-    private func setBackgroundImage(from node: AlgorandNode, activeNetwork: AlgorandAPI.BaseNetwork) {
+    private func setBackgroundImage(from node: AlgorandNode, activeNetwork: ALGAPI.Network) {
         if node.network == activeNetwork {
             backgroundImage = img("bg-settings-node-selected")
         } else {
@@ -40,7 +40,7 @@ class NodeSettingsViewModel {
         }
     }
 
-    private func setImage(from node: AlgorandNode, activeNetwork: AlgorandAPI.BaseNetwork) {
+    private func setImage(from node: AlgorandNode, activeNetwork: ALGAPI.Network) {
         if node.network == activeNetwork {
             image = img("settings-node-active")
         } else {

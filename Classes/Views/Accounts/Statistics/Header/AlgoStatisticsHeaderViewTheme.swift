@@ -16,7 +16,7 @@
 //   AlgoStatisticsHeaderViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct AlgoStatisticsHeaderViewTheme: StyleSheet, LayoutSheet {
@@ -42,7 +42,7 @@ struct AlgoStatisticsHeaderViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(.singleLineFitting)
         ]
         self.arrowDown = [
-            .content("icon-arrow-down-grey")
+            .image("icon-arrow-down-grey")
         ]
         self.valueChangeViewTheme = AlgoStatisticsValueChangeViewTheme()
 

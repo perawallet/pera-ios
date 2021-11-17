@@ -16,7 +16,7 @@
 //   LedgerAccountVerificationStatusView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class LedgerAccountVerificationStatusView: View {
     private lazy var indicatorView = ViewLoadingIndicator()

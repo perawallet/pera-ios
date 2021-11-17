@@ -16,7 +16,7 @@
 //   BannerViewInfoTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct BannerViewInfoTheme: BannerViewTheme {
@@ -26,7 +26,7 @@ struct BannerViewInfoTheme: BannerViewTheme {
     let iconSize: LayoutSize
     let title: TextStyle?
     let background: ViewStyle?
-    let backgroundShadow: Macaroon.Shadow?
+    let backgroundShadow: MacaroonUIKit.Shadow?
     let message: TextStyle?
     let icon: ImageStyle?
     let corner: Corner?
@@ -52,7 +52,7 @@ struct BannerViewInfoTheme: BannerViewTheme {
             self.backgroundShadow = nil
         } else {
             self.backgroundShadow =
-                Macaroon.Shadow(
+                MacaroonUIKit.Shadow(
                     color: rgba(0.0, 0.0, 0.0, 0.1),
                     opacity: 1.0,
                     offset: (0, 8),

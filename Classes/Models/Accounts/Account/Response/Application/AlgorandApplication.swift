@@ -15,20 +15,24 @@
 //
 //   AlgorandApplication.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class AlgorandApplication: Model {
+final class AlgorandApplication: ALGAPIModel {
     var createdAtRound: UInt64?
     var isDeleted: Bool?
     var id: Int64?
-    var deletedInAtRound: UInt64?
+    var deletedAtRound: UInt64?
 }
 
 extension AlgorandApplication {
-    enum CodingKeys: String, CodingKey {
-        case createdAtRound = "created-at-round"
+    enum CodingKeys:
+        String,
+        CodingKey {
+        case createdAtRound
         case isDeleted = "deleted"
-        case id = "id"
-        case deletedInAtRound = "deleted-at-round"
+        case id
+        case deletedAtRound
     }
 }

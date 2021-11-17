@@ -16,14 +16,14 @@
 //   LedgerAccountVerificationStatusViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct LedgerAccountVerificationStatusViewTheme: StyleSheet, LayoutSheet {
     let statusLabel: TextStyle
     let addressLabel: TextStyle
     let corner: Corner
-    let shadow: Macaroon.Shadow
+    let shadow: MacaroonUIKit.Shadow
     let indicator: ImageStyle
 
     let horizontalInset: LayoutMetric
@@ -45,15 +45,16 @@ struct LedgerAccountVerificationStatusViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main)
         ]
         self.corner = Corner(radius: 4)
-        self.shadow = Macaroon.Shadow(
+        self.shadow = MacaroonUIKit.Shadow(
             color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.08),
             opacity: 1,
             offset: (0, 2),
             radius: 4,
             fillColor: AppColors.Shared.System.background.color
         )
+
         self.indicator = [
-            .content("red-loading-indicator"),
+            .image("red-loading-indicator"),
             .contentMode(.scaleAspectFill)
         ]
 

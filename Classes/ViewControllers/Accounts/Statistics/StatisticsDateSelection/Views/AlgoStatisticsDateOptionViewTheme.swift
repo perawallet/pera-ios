@@ -15,7 +15,7 @@
 //
 //   AlgoStatisticsDateOptionViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct AlgoStatisticsDateOptionViewTheme: LayoutSheet, StyleSheet {
     let title: TextStyle
@@ -30,7 +30,7 @@ struct AlgoStatisticsDateOptionViewTheme: LayoutSheet, StyleSheet {
             .textColor(AppColors.Components.Text.main)
         ]
         self.selectedImage = [
-            .content("icon-circle-check")
+            .image("icon-circle-check")
         ]
 
         self.selectedImageSize = (40, 40)

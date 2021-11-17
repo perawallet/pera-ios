@@ -15,7 +15,9 @@
 //
 //  TransactionSigner.swift
 
-import Magpie
+import Foundation
+import UIKit
+import MagpieHipo
 
 class TransactionSigner: NSObject, TransactionSignable {
 
@@ -29,5 +31,5 @@ class TransactionSigner: NSObject, TransactionSignable {
 }
 
 protocol TransactionSignerDelegate: AnyObject {
-    func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPError<TransactionError>)
+    func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPTransactionError)
 }

@@ -15,7 +15,7 @@
 //
 //   WatchAccountAdditionViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 extension WatchAccountAdditionViewController {
     struct Theme: LayoutSheet, StyleSheet {

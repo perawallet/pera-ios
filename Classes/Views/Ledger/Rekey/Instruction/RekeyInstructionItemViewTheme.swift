@@ -15,7 +15,7 @@
 //
 //   RekeyInstructionItemViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct RekeyInstructionItemViewTheme: StyleSheet, LayoutSheet {
@@ -27,7 +27,7 @@ struct RekeyInstructionItemViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.image = [
-            .content("icon-rekey-info")
+            .image("icon-rekey-info")
         ]
         self.title = [
             .textOverflow(.fitting),

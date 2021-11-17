@@ -16,7 +16,7 @@
 //   TutorialNumberViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct TutorialNumberViewTheme: StyleSheet, LayoutSheet {

@@ -15,7 +15,7 @@
 //
 //   RekeyTransitionItemViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct RekeyTransitionItemViewTheme: StyleSheet, LayoutSheet {
@@ -35,7 +35,7 @@ struct RekeyTransitionItemViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.center),
             .textOverflow(.fitting),
-            .content("ledger-approval-title".localized)
+            .text("ledger-approval-title".localized)
         ]
         self.value = [
             .textColor(AppColors.Components.Text.main),

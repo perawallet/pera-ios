@@ -15,10 +15,16 @@
 //
 //  TransactionID.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class TransactionID: Model {
+final class TransactionID: ALGAPIModel {
     let identifier: String
+
+    init() {
+        self.identifier = "123"
+    }
     
     init(identifier: String) {
         self.identifier = identifier
@@ -26,7 +32,9 @@ class TransactionID: Model {
 }
 
 extension TransactionID {
-    private enum CodingKeys: String, CodingKey {
+    private enum CodingKeys:
+        String,
+        CodingKey {
         case identifier = "txId"
     }
 }

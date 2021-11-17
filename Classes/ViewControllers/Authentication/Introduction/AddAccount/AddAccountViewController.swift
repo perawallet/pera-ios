@@ -52,7 +52,7 @@ final class AddAccountViewController: BaseViewController {
     
     override func prepareLayout() {
         addAccountView.customize(theme.addAccountViewTheme)
-        
+
         prepareWholeScreenLayoutFor(addAccountView)
     }
 }

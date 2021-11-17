@@ -15,7 +15,8 @@
 //
 //   PassphraseDisplayViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 extension PassphraseDisplayViewController {
     struct Theme: LayoutSheet, StyleSheet {

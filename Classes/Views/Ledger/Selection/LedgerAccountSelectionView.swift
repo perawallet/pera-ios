@@ -15,7 +15,9 @@
 //
 //  LedgerAccountSelectionView.swift
 
-import Macaroon
+import Foundation
+import MacaroonUIKit
+import UIKit
 
 final class LedgerAccountSelectionView: View {
     weak var delegate: LedgerAccountSelectionViewDelegate?

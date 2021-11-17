@@ -33,7 +33,7 @@ extension AssetCachable where Self: BaseViewController {
         if let assetDetail = api.session.assetDetails[id] {
             completion(assetDetail)
         } else {
-            api.getAssetDetails(with: AssetFetchDraft(assetId: "\(id)")) { assetResponse in
+            api.getAssetDetails(AssetFetchDraft(assetId: "\(id)")) { assetResponse in
                 switch assetResponse {
                 case .success(let assetDetailResponse):
                     var assetDetail = assetDetailResponse.assetDetail

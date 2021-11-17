@@ -16,7 +16,7 @@
 //  AssetActionConfirmationView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AssetActionConfirmationView: View {
     weak var delegate: AssetActionConfirmationViewDelegate?

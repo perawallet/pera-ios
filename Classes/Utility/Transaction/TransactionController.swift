@@ -15,12 +15,13 @@
 //
 //  transactionController.swift
 
-import Magpie
+import MagpieHipo
+import UIKit
 
 class TransactionController {
     weak var delegate: TransactionControllerDelegate?
     
-    private var api: AlgorandAPI
+    private var api: ALGAPI
     private let bannerController: BannerController?
     private var params: TransactionParams?
     private var transactionDraft: TransactionSendDraft?
@@ -37,7 +38,7 @@ class TransactionController {
         return transactionDraft?.from.requiresLedgerConnection() ?? false
     }
     
-    init(api: AlgorandAPI, bannerController: BannerController?) {
+    init(api: ALGAPI, bannerController: BannerController?) {
         self.api = api
         self.bannerController = bannerController
     }
@@ -342,25 +343,25 @@ extension TransactionController {
 }
 
 extension TransactionController: TransactionDataBuilderDelegate {
-    func transactionDataBuilder(_ transactionDataBuilder: TransactionDataBuilder, didFailedComposing error: HIPError<TransactionError>) {
+    func transactionDataBuilder(_ transactionDataBuilder: TransactionDataBuilder, didFailedComposing error: HIPTransactionError) {
         handleTransactionComposingError(error)
     }
 
-    private func handleTransactionComposingError(_ error: HIPError<TransactionError>) {
+    private func handleTransactionComposingError(_ error: HIPTransactionError) {
         resetLedgerOperationIfNeeded()
         delegate?.transactionController(self, didFailedComposing: error)
     }
 }
 
 extension TransactionController: TransactionSignerDelegate {
-    func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPError<TransactionError>) {
+    func transactionSigner(_ transactionSigner: TransactionSigner, didFailedSigning error: HIPTransactionError) {
         handleTransactionComposingError(error)
     }
 }
 
 extension TransactionController: TransactionFeeCalculatorDelegate {
     func transactionFeeCalculator(_ transactionFeeCalculator: TransactionFeeCalculator, didFailedWith minimumAmount: UInt64) {
-        handleTransactionComposingError(.inapp(TransactionError.minimumAmount(amount: minimumAmount)))
+        handleTransactionComposingError( .inapp(TransactionError.minimumAmount(amount: minimumAmount)))
     }
 }
 
@@ -395,10 +396,40 @@ extension TransactionController {
     }
 }
 
-enum TransactionError: Error {
+/// <todo>
+/// NOP! This is an informative type, shouldn't have actual data without error detail.
+enum TransactionError: Error, Hashable {
     case minimumAmount(amount: UInt64)
     case invalidAddress(address: String)
     case sdkError(error: NSError?)
     case draft(draft: TransactionSendDraft?)
     case other
+}
+
+extension TransactionError {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        switch self {
+        case .minimumAmount: hasher.combine(0)
+        case .invalidAddress: hasher.combine(1)
+        case .sdkError: hasher.combine(2)
+        case .draft: hasher.combine(3)
+        case .other: hasher.combine(4)
+        }
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        switch (lhs, rhs) {
+        case (.minimumAmount, .minimumAmount): return true
+        case (.invalidAddress, .invalidAddress): return true
+        case (.sdkError, .sdkError): return true
+        case (.draft, .draft): return true
+        case (.other, .other): return true
+        default: return false
+        }
+    }
 }

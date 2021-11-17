@@ -16,7 +16,7 @@
 //   AccountNameViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct AccountNameViewTheme: StyleSheet, LayoutSheet {
@@ -30,7 +30,7 @@ struct AccountNameViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
-            .content("notification-filter-show-title".localized)
+            .text("notification-filter-show-title".localized)
         ]
         self.imageSize = (40, 40)
         self.horizontalPadding = 16

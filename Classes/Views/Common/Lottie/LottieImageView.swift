@@ -15,8 +15,9 @@
 //
 //  LottieImageView.swift
 
-import Macaroon
+import MacaroonUIKit
 import Lottie
+import UIKit
 
 final class LottieImageView: View {
     private lazy var animationView = AnimationView()

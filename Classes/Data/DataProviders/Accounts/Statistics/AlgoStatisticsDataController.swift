@@ -25,9 +25,9 @@ final class AlgoStatisticsDataController {
     private var values: [AlgosUSDValue] = []
     private var lastFiveMinutesValues: AlgosUSDValue?
 
-    private let api: AlgorandAPI?
+    private let api: ALGAPI?
 
-    init(api: AlgorandAPI?) {
+    init(api: ALGAPI?) {
         self.api = api
     }
 
@@ -48,7 +48,7 @@ final class AlgoStatisticsDataController {
     private func fetchData(for interval: AlgosUSDValueInterval) {
         chartDispatchGroup.enter()
 
-        api?.fetchAlgosUSDValue(with: AlgosUSDValueQuery(valueInterval: interval)) { [weak self] response in
+        api?.fetchAlgosUSDValue(AlgosUSDValueQuery(valueInterval: interval)) { [weak self] response in
             guard let self = self else {
                 return
             }
@@ -68,7 +68,7 @@ final class AlgoStatisticsDataController {
     private func fetchDataForLastFiveMinutes() {
         chartDispatchGroup.enter()
 
-        api?.fetchAlgosUSDValue(with: AlgosUSDValueQuery(valueInterval: .hourly)) { [weak self] response in
+        api?.fetchAlgosUSDValue(AlgosUSDValueQuery(valueInterval: .hourly)) { [weak self] response in
             guard let self = self else {
                 return
             }

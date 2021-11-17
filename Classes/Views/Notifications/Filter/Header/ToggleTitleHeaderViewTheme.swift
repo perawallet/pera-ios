@@ -16,7 +16,7 @@
 //   ToggleTitleHeaderViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct ToggleTitleHeaderViewTheme: StyleSheet, LayoutSheet {
@@ -30,7 +30,7 @@ struct ToggleTitleHeaderViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(13)),
-            .content("notification-filter-show-for".localized)
+            .text("notification-filter-show-for".localized)
         ]
         self.horizontalPadding = 24
         self.topPadding = 36

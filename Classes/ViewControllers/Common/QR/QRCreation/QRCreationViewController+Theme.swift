@@ -15,7 +15,7 @@
 //
 //   QRCreationViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 extension QRCreationViewController {
     struct Theme: LayoutSheet, StyleSheet {

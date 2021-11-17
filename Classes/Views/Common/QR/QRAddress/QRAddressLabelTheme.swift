@@ -16,7 +16,7 @@
 //   QRAddressLabelTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 
 struct QRAddressLabelTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color

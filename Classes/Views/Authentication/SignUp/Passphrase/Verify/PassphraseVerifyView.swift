@@ -16,7 +16,8 @@
 //  PassPhraseVerifyView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class PassphraseVerifyView: View {
     weak var delegate: PassphraseVerifyViewDelegate?

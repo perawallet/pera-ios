@@ -15,7 +15,7 @@
 //
 //   ButtonSecondaryTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct ButtonSecondaryTheme: ButtonTheme {
     var corner: Corner
@@ -44,7 +44,7 @@ struct ButtonSecondaryTheme: ButtonTheme {
         self.corner = Corner(radius: 4)
         self.icon = []
         self.indicator = [
-            .content(img("button-loading-indicator")),
+            .image("button-loading-indicator"),
             .contentMode(.scaleAspectFill)
         ]
         

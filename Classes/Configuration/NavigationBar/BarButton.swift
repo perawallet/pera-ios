@@ -15,6 +15,7 @@
 //
 //  BarButton.swift
 
+import Foundation
 import UIKit
 
 class BarButton: UIButton {

@@ -15,13 +15,13 @@
 //
 //  RekeyedAccountQuery.swift
 
-import Magpie
+import MagpieCore
 
 struct RekeyedAccountQuery: ObjectQuery {
     let authAddress: String
     
-    var queryParams: [QueryParam] {
-        var params: [QueryParam] = []
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
         params.append(.init(.authAddress, authAddress))
         return params
     }

@@ -15,7 +15,7 @@
 //
 //   ContactInformationView.swift
 
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 final class ContactInformationView: View {

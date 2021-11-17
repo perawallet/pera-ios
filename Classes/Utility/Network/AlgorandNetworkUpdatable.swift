@@ -21,7 +21,7 @@ protocol AlgorandNetworkUpdatable {
     var appConfiguration: AppConfiguration { get }
     func initializeNetwork()
     func setNetworkFromTarget()
-    func setNetwork(to network: AlgorandAPI.BaseNetwork)
+    func setNetwork(to network: ALGAPI.Network)
 }
 
 extension AlgorandNetworkUpdatable where Self: UIViewController {
@@ -45,8 +45,8 @@ extension AlgorandNetworkUpdatable where Self: UIViewController {
         }
     }
 
-    func setNetwork(to network: AlgorandAPI.BaseNetwork) {
+    func setNetwork(to network: ALGAPI.Network) {
         appConfiguration.api.cancelEndpoints()
-        appConfiguration.api.setupEnvironment(for: network)
+        appConfiguration.api.setupNetworkBase(network)
     }
 }

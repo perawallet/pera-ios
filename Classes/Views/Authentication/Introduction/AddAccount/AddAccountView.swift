@@ -16,7 +16,8 @@
 //  AddAccountView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class AddAccountView: View {
     weak var delegate: AddAccountViewDelegate?

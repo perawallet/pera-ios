@@ -16,9 +16,9 @@
 //   Button.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
-final class Button: Macaroon.Button {
+final class Button: MacaroonUIKit.Button {
     private var theme: ButtonTheme?
     private lazy var indicatorView = ViewLoadingIndicator()
 

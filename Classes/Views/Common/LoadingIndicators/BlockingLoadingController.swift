@@ -16,7 +16,7 @@
 //   BlockingLoadingController.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 protocol LoadingController {
@@ -26,7 +26,7 @@ protocol LoadingController {
     func stopLoadingAfter(seconds: Double, on queue: DispatchQueue, execute: @escaping () -> Void)
 }
 
-final class BlockingLoadingController: Macaroon.BlockingLoadingController, LoadingController {
+final class BlockingLoadingController: MacaroonUIKit.BlockingLoadingController, LoadingController {
     init(presentingView: UIView) {
         super.init(presentingView: presentingView)
 

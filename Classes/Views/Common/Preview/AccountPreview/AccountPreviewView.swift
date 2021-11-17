@@ -15,7 +15,8 @@
 //
 //   AccountPreviewView.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 final class AccountPreviewView: View {
     private lazy var imageView = UIImageView()

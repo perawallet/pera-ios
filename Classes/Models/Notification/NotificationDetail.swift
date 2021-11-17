@@ -15,44 +15,39 @@
 //
 //  NotificationDetail.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class NotificationDetail: Model {
+final class NotificationDetail: ALGAPIModel {
     let senderAddress: String?
     let receiverAddress: String?
-    private let amount: UInt64?
-    private let amountStr: String?
+    let amount: UInt64?
     let asset: NotificationAsset?
     let notificationType: NotificationType?
-}
 
-extension NotificationDetail {
-    func getAmountValue() -> UInt64 {
-        if let amount = amount {
-            return amount
-        }
-
-        if let amountStr = amountStr,
-            let amount = UInt64(amountStr) {
-            return amount
-        }
-
-        return 0
+    init() {
+        self.senderAddress = nil
+        self.receiverAddress = nil
+        self.amount = nil
+        self.asset = nil
+        self.notificationType = nil
     }
 }
 
 extension NotificationDetail {
-    enum CodingKeys: String, CodingKey {
-        case senderAddress = "sender_public_key"
-        case receiverAddress = "receiver_public_key"
-        case amount = "amount"
-        case amountStr = "amount_str"
-        case asset = "asset"
-        case notificationType = "notification_type"
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case senderAddress = "senderPublicKey"
+        case receiverAddress = "receiverPublicKey"
+        case amount
+        case asset
+        case notificationType
     }
 }
 
-enum NotificationType: String, Model {
+enum NotificationType: String, ALGAPIModel {
     case transactionSent = "transaction-sent"
     case transactionReceived = "transaction-received"
     case transactionFailed = "transaction-failed"
@@ -62,4 +57,8 @@ enum NotificationType: String, Model {
     case assetSupportRequest = "asset-support-request"
     case assetSupportSuccess = "asset-support-success"
     case broadcast = "broadcast"
+
+    init() {
+        self = .transactionSent
+    }
 }

@@ -15,7 +15,7 @@
 //
 //   AlgoStatisticsInfoViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct AlgoStatisticsInfoViewTheme: LayoutSheet, StyleSheet {
     let title: TextStyle

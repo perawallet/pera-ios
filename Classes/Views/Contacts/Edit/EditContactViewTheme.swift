@@ -16,7 +16,7 @@
 //   EditContactViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct EditContactViewTheme: StyleSheet, LayoutSheet {

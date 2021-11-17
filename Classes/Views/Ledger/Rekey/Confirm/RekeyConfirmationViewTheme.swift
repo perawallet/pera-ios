@@ -15,7 +15,7 @@
 //
 //   RekeyConfirmationViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct RekeyConfirmationViewTheme: StyleSheet, LayoutSheet {
@@ -41,11 +41,15 @@ struct RekeyConfirmationViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(32)),
             .textColor(AppColors.Components.Text.main),
-            .content("ledger-rekey-confirm-title".localized)
+            .text("ledger-rekey-confirm-title".localized)
         ]
-        self.infoImage = [
-            .content(img("icon-info-gray"))
-        ]
+        if let i = img("icon-info-gray") {
+            self.infoImage = [
+                .image(i)
+            ]
+        } else {
+            self.infoImage = []
+        }
         self.feeTitle = [
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(13)),

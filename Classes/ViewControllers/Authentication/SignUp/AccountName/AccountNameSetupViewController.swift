@@ -16,7 +16,7 @@
 //  AccountNameSettingViewController.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AccountNameSetupViewController: BaseScrollViewController {
     private lazy var accountNameSetupView = AccountNameSetupView()

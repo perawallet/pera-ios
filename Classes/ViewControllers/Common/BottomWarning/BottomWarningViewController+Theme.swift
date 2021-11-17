@@ -15,7 +15,7 @@
 //
 //   BottomWarningViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 extension BottomWarningViewController {
     struct Theme: LayoutSheet, StyleSheet {

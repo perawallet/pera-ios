@@ -15,30 +15,40 @@
 //
 //  Asset.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class Asset: Model {
+final class Asset: ALGAPIModel {
     let creator: String?
     let amount: UInt64
     let isFrozen: Bool?
     let id: Int64
     let isDeleted: Bool?
-}
 
-extension Asset {
-    enum CodingKeys: String, CodingKey {
-        case creator = "creator"
-        case amount = "amount"
-        case isFrozen = "is-frozen"
-        case id = "asset-id"
-        case isDeleted = "deleted"
+    init() {
+        self.creator = nil
+        self.amount = 10
+        self.isFrozen = nil
+        self.id = 1
+        self.isDeleted = nil
     }
 }
-
-extension Asset: Encodable { }
 
 extension Asset: Equatable {
     static func == (lhs: Asset, rhs: Asset) -> Bool {
         return lhs.id == rhs.id && lhs.amount == rhs.amount
+    }
+}
+
+extension Asset {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case creator
+        case amount
+        case isFrozen
+        case id = "assetId"
+        case isDeleted = "deleted"
     }
 }

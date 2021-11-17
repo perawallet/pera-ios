@@ -16,7 +16,7 @@
 //   LedgerDeviceCellViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
@@ -25,7 +25,7 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
     let ledgerImage: ImageStyle
     let arrowImage: ImageStyle
     let corner: Corner
-    let shadow: Macaroon.Shadow
+    let shadow: MacaroonUIKit.Shadow
 
     let horizontalInset: LayoutMetric
     let nameHorizontalOffset: LayoutMetric
@@ -41,13 +41,13 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main)
         ]
         self.arrowImage = [
-            .content("icon-arrow-gray-24")
+            .image("icon-arrow-gray-24")
         ]
         self.ledgerImage = [
-            .content("icon-pair-ledger-account")
+            .image("icon-pair-ledger-account")
         ]
         self.corner = Corner(radius: 4)
-        self.shadow = Macaroon.Shadow(
+        self.shadow = MacaroonUIKit.Shadow(
             color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.08),
             opacity: 1,
             offset: (0, 2),

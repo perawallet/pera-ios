@@ -16,7 +16,7 @@
 //   AlgoStatisticsValueChangeViewModel.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AlgoStatisticsValueChangeViewModel: PairedViewModel {
     private(set) var image: UIImage?

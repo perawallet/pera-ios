@@ -15,7 +15,7 @@
 //
 //   StatisticsDateSelectionViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct StatisticsDateSelectionViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color

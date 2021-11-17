@@ -16,7 +16,7 @@
 //   TabBarModalViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct TabBarModalViewTheme: StyleSheet, LayoutSheet {
@@ -39,7 +39,7 @@ struct TabBarModalViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(15)),
             .textAlignment(.center),
-            .content("title-send".localized)
+            .text("title-send".localized)
         ]
         self.receiveButton = [
             .icon("tabbar-icon-receive")
@@ -48,7 +48,7 @@ struct TabBarModalViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(15)),
             .textAlignment(.center),
-            .content("title-receive".localized)
+            .text("title-receive".localized)
         ]
         self.corner = Corner(radius: 16, mask: [.layerMinXMinYCorner, .layerMaxXMinYCorner])
 

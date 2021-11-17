@@ -17,7 +17,7 @@
 
 import Foundation
 
-class QRText: Codable {
+final class QRText: Codable {
     let mode: QRMode
     let version = "1.0"
     let address: String?

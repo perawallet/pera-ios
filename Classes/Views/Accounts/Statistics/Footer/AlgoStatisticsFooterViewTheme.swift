@@ -15,7 +15,7 @@
 //
 //   AlgoStatisticsFooterViewTheme.swift]
 
-import Macaroon
+import MacaroonUIKit
 
 struct AlgoStatisticsFooterViewTheme: LayoutSheet, StyleSheet {
     let title: TextStyle
@@ -24,7 +24,7 @@ struct AlgoStatisticsFooterViewTheme: LayoutSheet, StyleSheet {
 
     init(_ family: LayoutFamily) {
         self.title = [
-            .content("algo-statistics-title".localized),
+            .text("algo-statistics-title".localized),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main),
             .textOverflow(.singleLineFitting),

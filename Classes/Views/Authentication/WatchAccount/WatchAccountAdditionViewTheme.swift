@@ -16,7 +16,7 @@
 //   WatchAccountAdditionViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
@@ -47,7 +47,7 @@ struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(.fitting),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
-            .content("watch-account-create".localized)
+            .text("watch-account-create".localized)
         ]
 
         self.description = [
@@ -55,7 +55,7 @@ struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(.fitting),
-            .content("watch-account-explanation-title".localized)
+            .text("watch-account-explanation-title".localized)
         ]
         self.pasteButton = [
             .backgroundColor(AppColors.Shared.Global.gray800),

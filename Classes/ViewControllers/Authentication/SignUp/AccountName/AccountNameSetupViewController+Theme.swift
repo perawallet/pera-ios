@@ -15,7 +15,7 @@
 //
 //   AccountNameSetupViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 extension AccountNameSetupViewController {
     struct Theme: LayoutSheet, StyleSheet {

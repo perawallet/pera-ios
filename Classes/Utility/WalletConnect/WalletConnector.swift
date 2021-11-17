@@ -15,6 +15,8 @@
 //
 //   WalletConnector.swift
 
+import Foundation
+import UIKit
 import WalletConnectSwift
 
 class WalletConnector {
@@ -148,6 +150,11 @@ extension WalletConnector: WalletConnectBridgeDelegate {
             self.delegate?.walletConnector(self, didDisconnectFrom: wcSession)
         }
     }
+
+    func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didUpdate session: WalletConnectSession) {
+        let wcSession = session.toWCSession()
+        self.delegate?.walletConnector(self, didUpdate: wcSession)
+    }
 }
 
 extension WalletConnector {
@@ -167,6 +174,7 @@ protocol WalletConnectorDelegate: AnyObject {
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession)
     func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession)
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error)
+    func walletConnector(_ walletConnector: WalletConnector, didUpdate session: WCSession)
 }
 
 extension WalletConnectorDelegate {
@@ -188,6 +196,10 @@ extension WalletConnectorDelegate {
 
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
         
+    }
+
+    func walletConnector(_ walletConnector: WalletConnector, didUpdate session: WCSession) {
+
     }
 }
 

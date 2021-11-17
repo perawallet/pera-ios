@@ -16,7 +16,8 @@
 //  AssetAdditionViewController.swift
 
 import UIKit
-import Magpie
+import MagpieHipo
+import MagpieExceptions
 
 final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable {
     weak var delegate: AssetAdditionViewControllerDelegate?
@@ -160,7 +161,7 @@ extension AssetAdditionViewController: AssetListViewControllerDelegate {
 extension AssetAdditionViewController {
     private func fetchAssets(query: String?, isPaginated: Bool) {
         let searchDraft = AssetSearchQuery(status: assetSearchFilter, query: query, cursor: nextCursor)
-        api?.searchAssets(with: searchDraft) { [weak self] response in
+        api?.searchAssets(searchDraft) { [weak self] response in
             switch response {
             case let .success(searchResults):
                 guard let self = self else {
@@ -173,7 +174,7 @@ extension AssetAdditionViewController {
                     self.assetResults = searchResults.results
                 }
 
-                self.nextCursor = searchResults.parsePaginationCursor()
+                self.nextCursor = searchResults.nextCursor
                 self.render(for: self.assetSearchFilter, with: self.assetResults)
             case .failure:
                 guard let self = self else {
@@ -263,7 +264,7 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
 }
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
         loadingController?.stopLoading()
         
         switch error {
@@ -273,8 +274,8 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
             break
         }
     }
-    
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
+
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
         loadingController?.stopLoading()
         switch error {
         case let .network(apiError):
@@ -319,6 +320,14 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         default:
             break
         }
+    }
+}
+
+extension AssetAdditionViewController {
+    struct LayoutConstants: AdaptiveLayoutConstants {
+        let itemHeight: CGFloat = 52.0
+        let multiItemHeight: CGFloat = 72.0
+        let modalHeight: CGFloat = 510.0
     }
 }
 

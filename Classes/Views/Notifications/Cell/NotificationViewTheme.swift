@@ -16,7 +16,7 @@
 //   NotificationViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct NotificationViewTheme: StyleSheet, LayoutSheet {
@@ -40,7 +40,7 @@ struct NotificationViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.badgeImage = [
-            .content("img-nc-item-badge")
+            .image("img-nc-item-badge")
         ]
         self.titleLabel = [
             .textAlignment(.left),

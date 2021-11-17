@@ -16,7 +16,7 @@
 //   QRCreationViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct QRCreationViewTheme: StyleSheet, LayoutSheet {
@@ -43,7 +43,7 @@ struct QRCreationViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(UIColor.clear),
             .textColor(AppColors.Components.TextField.defaultBackground),
-            .content("qr-creation-copied".localized),
+            .text("qr-creation-copied".localized),
             .textAlignment(.center),
             .textOverflow(.fitting)
         ]

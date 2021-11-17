@@ -15,7 +15,7 @@
 //
 //   TabBarModalViewController.swift
 
-import Macaroon
+import MacaroonUIKit
 import UIKit
 import SnapKit
 

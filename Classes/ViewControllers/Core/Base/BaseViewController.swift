@@ -93,7 +93,6 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setPrimaryBackgroundColor()
         setNeedsNavigationBarAppearanceUpdate()
         linkInteractors()
         setListeners()
@@ -200,7 +199,7 @@ extension BaseViewController {
         return configuration.session
     }
     
-    var api: AlgorandAPI? {
+    var api: ALGAPI? {
         return configuration.api
     }
 

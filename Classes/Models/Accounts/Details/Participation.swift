@@ -15,16 +15,16 @@
 //
 //  Participation.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class Participation: Model {
+final class Participation: ALGAPIModel {
     var selectionParticipationKey: String?
     var voteParticipationKey: String?
-    
-    enum CodingKeys: String, CodingKey {
-        case selectionParticipationKey = "selection-participation-key"
-        case voteParticipationKey = "vote-participation-key"
+
+    init() {
+        self.selectionParticipationKey = nil
+        self.voteParticipationKey = nil
     }
 }
-
-extension Participation: Encodable { }

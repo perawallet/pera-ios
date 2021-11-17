@@ -15,20 +15,89 @@
 //
 //  AssetQueryItem.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class AssetSearchResult: Model {
+final class AssetSearchResult: ALGEntityModel {
     let id: Int64
     let name: String?
     let unitName: String?
     let isVerified: Bool
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.id = apiModel.assetId
+        self.name = apiModel.name
+        self.unitName = apiModel.unitName
+        self.isVerified = apiModel.isVerified ?? false
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.assetId = id
+        apiModel.name = name
+        apiModel.unitName = unitName
+        apiModel.isVerified = isVerified
+        return apiModel
+    }
 }
 
 extension AssetSearchResult {
-    enum CodingKeys: String, CodingKey {
-        case id = "asset_id"
-        case name = "name"
-        case unitName = "unit_name"
-        case isVerified = "is_verified"
+    struct APIModel: ALGAPIModel {
+        var assetId: Int64
+        var name: String?
+        var unitName: String?
+        var isVerified: Bool?
+
+        init() {
+            self.assetId = 0
+            self.name = nil
+            self.unitName = nil
+            self.isVerified = nil
+        }
+    }
+}
+
+/// <todo>
+/// Rethink the paginated list model. Should be more reusable.
+final class AssetSearchResultList:
+    PaginatedList<AssetSearchResult>,
+    ALGEntityModel {
+    convenience init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.init(
+            pagination: apiModel,
+            results: apiModel.results.unwrapMap(AssetSearchResult.init)
+        )
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.count = count
+        apiModel.next = next
+        apiModel.previous = previous
+        apiModel.results = results.map { $0.encode() }
+        return apiModel
+    }
+}
+
+extension AssetSearchResultList {
+    struct APIModel:
+        ALGAPIModel,
+        PaginationComponents {
+        var count: Int?
+        var next: URL?
+        var previous: String?
+        var results: [AssetSearchResult.APIModel]?
+
+        init() {
+            self.count = nil
+            self.next = nil
+            self.previous = nil
+            self.results = []
+        }
     }
 }

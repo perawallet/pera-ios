@@ -15,22 +15,34 @@
 //
 //  NotificationAsset.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class NotificationAsset: Model {
+final class NotificationAsset: ALGAPIModel {
     let id: Int64?
     let name: String?
     let code: String?
     let url: String?
     let fractionDecimals: Int?
+
+    init() {
+        self.id = nil
+        self.name = nil
+        self.code = nil
+        self.url = nil
+        self.fractionDecimals = nil
+    }
 }
 
 extension NotificationAsset {
-    enum CodingKeys: String, CodingKey {
-        case id = "asset_id"
-        case name = "asset_name"
-        case code = "unit_name"
-        case url = "url"
-        case fractionDecimals = "fraction_decimals"
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case id = "assetId"
+        case name = "assetName"
+        case code = "unitName"
+        case url
+        case fractionDecimals
     }
 }

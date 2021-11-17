@@ -16,7 +16,7 @@
 //   LedgerAccountVerificationView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class LedgerAccountVerificationView: View {
     private lazy var verticalStackView = UIStackView()

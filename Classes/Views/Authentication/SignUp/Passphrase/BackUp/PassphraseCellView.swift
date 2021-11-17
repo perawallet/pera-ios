@@ -16,7 +16,8 @@
 //  PassphraseCellView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class PassphraseCellView: View {
     private lazy var numberLabel = UILabel()

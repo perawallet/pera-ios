@@ -15,7 +15,7 @@
 //
 //   AccountListViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct AccountListViewModel {
     private(set) var title: String

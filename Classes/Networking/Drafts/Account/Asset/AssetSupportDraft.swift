@@ -15,15 +15,15 @@
 //
 //  AssetSupportDraft.swift
 
-import Magpie
+import MagpieCore
 
 struct AssetSupportDraft: JSONObjectBody {
     let sender: String
     let receiver: String
     let assetId: Int64
     
-    var bodyParams: [BodyParam] {
-        var params: [BodyParam] = []
+    var bodyParams: [APIBodyParam] {
+        var params: [APIBodyParam] = []
         params.append(.init(.sender, sender))
         params.append(.init(.receiver, receiver))
         params.append(.init(.asset, assetId))

@@ -16,10 +16,10 @@
 //   PageBarButton.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
-final class PageBarButton: Macaroon.Button {
+final class PageBarButton: MacaroonUIKit.Button {
     let barButtonItem: PageBarButtonItem
 
     init(barButtonItem: PageBarButtonItem) {

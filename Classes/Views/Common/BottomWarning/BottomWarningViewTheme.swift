@@ -16,7 +16,7 @@
 //   BottomWarningViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
@@ -41,13 +41,15 @@ struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(19)),
             .textAlignment(.center),
-            .textOverflow(.fitting)
+            .textOverflow(.fitting),
+            .text("screenshot-title".localized)
         ]
         self.description = [
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.center),
-            .textOverflow(.fitting)
+            .textOverflow(.fitting),
+            .text("screenshot-description".localized)
         ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()

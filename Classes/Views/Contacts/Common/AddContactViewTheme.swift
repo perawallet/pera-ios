@@ -16,7 +16,7 @@
 //   AddContactViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct AddContactViewTheme: StyleSheet, LayoutSheet {
@@ -34,7 +34,7 @@ struct AddContactViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.photoLabel = [
-            .content("contacts-add-photo".localized),
+            .text("contacts-add-photo".localized),
             .textAlignment(.center),
             .textOverflow(.singleLineFitting),
             .textColor(AppColors.Components.Text.main),

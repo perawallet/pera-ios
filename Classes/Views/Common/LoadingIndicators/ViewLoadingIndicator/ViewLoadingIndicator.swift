@@ -16,7 +16,7 @@
 //   ViewLoadingIndicator.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 final class ViewLoadingIndicator: LoadingIndicator {
@@ -35,7 +35,7 @@ final class ViewLoadingIndicator: LoadingIndicator {
 
     private let loadingAnimationKey = "viewLoadingIndicator.loadingAnimation"
 
-    init(indicator: UIImage) {
+    init(indicator: UIImage?) {
         self.indicatorView = UIImageView(image: indicator)
 
         super.init(frame: .zero)

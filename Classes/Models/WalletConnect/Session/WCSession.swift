@@ -17,7 +17,7 @@
 
 import Foundation
 
-class WCSession: Codable {
+final class WCSession: Codable {
     let urlMeta: WCURLMeta
     let peerMeta: WCPeerMeta
     let walletMeta: WCWalletMeta?

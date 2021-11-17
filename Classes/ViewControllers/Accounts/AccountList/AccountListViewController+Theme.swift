@@ -15,7 +15,8 @@
 //
 //   AccountListViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 extension AccountListViewController {
     struct Theme: LayoutSheet, StyleSheet {

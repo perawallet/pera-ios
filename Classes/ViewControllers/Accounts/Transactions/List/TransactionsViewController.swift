@@ -16,7 +16,7 @@
 //  TransactionsViewController.swift
 
 import UIKit
-import Magpie
+import MagpieCore
 
 class TransactionsViewController: BaseViewController {
     

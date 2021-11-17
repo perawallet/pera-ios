@@ -16,7 +16,7 @@
 //   FloatingTextInputFieldViewCommonTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
@@ -42,11 +42,11 @@ struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
             .font(Fonts.DMSans.regular.make(15, .body)),
             .textOverflow(.singleLineFitting),
             .textColor(AppColors.Components.Text.grayLighter),
-            .content(placeholder)
+            .text(placeholder)
         ]
         self.floatingPlaceholder = [
             .textColor(AppColors.Components.Text.grayLighter),
-            .content(
+            .text(
                 (floatingPlaceholder ?? placeholder).body(hasMultilines: false)
             )
         ]

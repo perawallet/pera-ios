@@ -15,7 +15,8 @@
 //
 //   WelcomeViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 extension WelcomeViewController {
     struct Theme: LayoutSheet, StyleSheet {

@@ -15,6 +15,7 @@
 //
 //  AppDelegate.swift
 
+import Foundation
 import UIKit
 import CoreData
 import Firebase
@@ -30,7 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    private lazy var api = AlgorandAPI(session: session, base: "")
+    private lazy var api = ALGAPI(session: session)
     private lazy var session = Session()
     private lazy var walletConnector = WalletConnector()
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window ?? UIWindow())
@@ -45,6 +46,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     )
 
     private lazy var pushNotificationController = PushNotificationController(api: api, bannerController: bannerController)
+
     private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
     
     private var rootViewController: RootViewController?

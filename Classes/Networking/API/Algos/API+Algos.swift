@@ -15,20 +15,20 @@
 //
 //   API+Algos.swift
 
-import Magpie
+import MagpieCore
 
-extension AlgorandAPI {
+extension ALGAPI {
     @discardableResult
     func fetchAlgosUSDValue(
-        with draft: AlgosUSDValueQuery,
-        then handler: @escaping (Response.ModelResult<AlgosValueResponse>) -> Void
+        _ draft: AlgosUSDValueQuery,
+        onCompleted handler: @escaping (Response.ModelResult<AlgosValueResponse>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(algoExplorerApiBase)
-            .path("/price/algo-usd/history")
+            .base(.algoExplorer)
+            .path(.algoUSDHistory)
+            .method(.get)
             .completionHandler(handler)
             .query(draft)
-            .build()
-            .send()
+            .execute()
     }
 }

@@ -16,7 +16,7 @@
 //   TutorialStepsViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct TutorialStepsViewTheme: StyleSheet, LayoutSheet {

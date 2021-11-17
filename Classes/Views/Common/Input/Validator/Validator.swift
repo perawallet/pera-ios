@@ -16,7 +16,7 @@
 //   Validator.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 
 protocol Validator {
     func validate(_ inputFieldView: FloatingTextInputFieldView) -> Validation

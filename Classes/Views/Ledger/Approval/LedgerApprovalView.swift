@@ -16,7 +16,7 @@
 //  LedgerApprovalView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class LedgerApprovalView: View {
     weak var delegate: LedgerApprovalViewDelegate?

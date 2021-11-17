@@ -15,7 +15,7 @@
 //
 //   ButtonTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 protocol ButtonTheme: LayoutSheet, StyleSheet {
     var label: TextStyle { get }

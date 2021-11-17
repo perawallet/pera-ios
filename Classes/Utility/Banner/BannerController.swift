@@ -16,9 +16,11 @@
 //   BannerController.swift
 
 import Foundation
-import Macaroon
+import MacaroonBanner
+import MacaroonUIKit
+import UIKit
 
-final class BannerController: Macaroon.BannerController {
+final class BannerController: MacaroonBanner.BannerController {
     init(window: UIWindow) {
         super.init(presentingView: window)
 
@@ -28,9 +30,9 @@ final class BannerController: Macaroon.BannerController {
         activate()
     }
 
-    func presentErrorBanner(title: String, message: String, icon: Image = img("icon-warning-circle")) {
+    func presentErrorBanner(title: String, message: String, icon: UIImage? = img("icon-warning-circle")) {
         let bannerView = makeErrorBanner()
-        let model = WarningAlert(title: title, image: icon.image, description: message)
+        let model = WarningAlert(title: title, image: icon, description: message)
         bannerView.bindData(BannerErrorViewModel(model))
 
         enqueue(bannerView)

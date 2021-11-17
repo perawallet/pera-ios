@@ -15,15 +15,15 @@
 //
 //  NotificationFilterDraft.swift
 
-import Magpie
+import MagpieCore
 
 struct NotificationFilterDraft: JSONObjectBody {
     let deviceId: String
     let accountAddress: String
     let receivesNotifications: Bool
 
-    var bodyParams: [BodyParam] {
-        var params: [BodyParam] = []
+    var bodyParams: [APIBodyParam] {
+        var params: [APIBodyParam] = []
         params.append(.init(.receivesNotifications, receivesNotifications))
         return params
     }

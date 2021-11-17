@@ -15,15 +15,26 @@
 //
 //   AlgosUSDValue.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class AlgosUSDValue: Model {
+final class AlgosUSDValue: ALGAPIModel {
     let timestamp: Double?
     let open: Double?
     let low: Double?
     let high: Double?
     let close: Double?
     let volume: Double?
+
+    init() {
+        self.timestamp = nil
+        self.open = nil
+        self.low = nil
+        self.high = nil
+        self.close = nil
+        self.volume = nil
+    }
 }
 
 extension AlgosUSDValue {

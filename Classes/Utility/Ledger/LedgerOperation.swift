@@ -113,7 +113,7 @@ extension LedgerOperation where Self: BLEConnectionManagerDelegate {
                 let errorSubtitle = state.errorDescription.subtitle else {
                     return
             }
-            
+
             (self.topMostController as? BaseViewController)?.bannerController?.presentErrorBanner(title: errorTitle, message: errorSubtitle)
             stopTimer()
             (self.topMostController as? BaseViewController)?.loadingController?.stopLoading()

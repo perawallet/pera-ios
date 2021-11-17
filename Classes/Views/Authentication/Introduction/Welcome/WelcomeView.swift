@@ -16,7 +16,8 @@
 //  WelcomeView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class WelcomeView: View {
     weak var delegate: WelcomeViewDelegate?

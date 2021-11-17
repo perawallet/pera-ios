@@ -15,7 +15,8 @@
 //
 //   AddContactViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 extension AddContactViewController {
     struct Theme: LayoutSheet, StyleSheet {

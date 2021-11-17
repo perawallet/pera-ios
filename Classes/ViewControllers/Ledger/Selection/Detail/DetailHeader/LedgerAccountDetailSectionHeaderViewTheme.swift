@@ -15,7 +15,7 @@
 //
 //   LedgerAccountDetailSectionHeaderViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct LedgerAccountDetailSectionHeaderViewTheme: LayoutSheet, StyleSheet {
     let title: TextStyle

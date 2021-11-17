@@ -1,0 +1,6 @@
+framework module Pods_algorand_prod {
+  umbrella header "Pods-algorand-prod-umbrella.h"
+
+  export *
+  module * { export * }
+}

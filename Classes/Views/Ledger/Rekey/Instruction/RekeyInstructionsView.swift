@@ -16,7 +16,7 @@
 //  RekeyInstructionsView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class RekeyInstructionsView: View {
     weak var delegate: RekeyInstructionsViewDelegate?

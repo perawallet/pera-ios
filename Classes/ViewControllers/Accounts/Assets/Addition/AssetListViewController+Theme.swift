@@ -15,7 +15,8 @@
 //
 //   AssetListViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 extension AssetListViewController {
     struct Theme: LayoutSheet, StyleSheet {

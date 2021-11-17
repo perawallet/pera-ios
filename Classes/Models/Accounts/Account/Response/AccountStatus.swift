@@ -15,12 +15,18 @@
 //
 //  AccountStatus.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-enum AccountStatus: String, Model {
+enum AccountStatus:
+    String,
+    ALGAPIModel {
     case offline = "Offline"
     case online = "Online"
     case notParticipating = "NotParticipating"
-}
 
-extension AccountStatus: Encodable { }
+    init() {
+        self = .offline
+    }
+}

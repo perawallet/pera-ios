@@ -16,7 +16,7 @@
 //   BannerErrorViewModel.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct BannerErrorViewModel: BannerViewModel, BindableViewModel {

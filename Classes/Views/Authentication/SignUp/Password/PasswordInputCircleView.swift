@@ -16,7 +16,8 @@
 //  PasswordInputCircle.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class PasswordInputCircleView: ImageView, ViewComposable {
     private lazy var theme = PasswordInputCircleViewTheme()

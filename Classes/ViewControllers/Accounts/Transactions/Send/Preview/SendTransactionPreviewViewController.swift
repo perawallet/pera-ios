@@ -17,7 +17,7 @@
 
 import UIKit
 import SnapKit
-import Magpie
+import MagpieHipo
 import Alamofire
 
 class SendTransactionPreviewViewController: BaseScrollViewController {
@@ -411,7 +411,7 @@ extension SendTransactionPreviewViewController {
 }
 
 extension SendTransactionPreviewViewController: TransactionControllerDelegate {
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
         loadingController?.stopLoading()
         switch error {
         case .network:

@@ -15,7 +15,7 @@
 //
 //  LedgerDeviceListViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 import CoreBluetooth
 
 final class LedgerDeviceListViewModel: PairedViewModel {

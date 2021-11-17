@@ -15,14 +15,32 @@
 //
 //  NotificationFilterResponse.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class NotificationFilterResponse: Model {
+final class NotificationFilterResponse: ALGEntityModel {
     let receivesNotification: Bool
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.receivesNotification = apiModel.receiveNotifications ?? true
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.receiveNotifications = receivesNotification
+        return apiModel
+    }
 }
 
 extension NotificationFilterResponse {
-    enum CodingKeys: String, CodingKey {
-        case receivesNotification = "receive_notifications"
+    struct APIModel: ALGAPIModel {
+        var receiveNotifications: Bool?
+
+        init() {
+            self.receiveNotifications = nil
+        }
     }
 }

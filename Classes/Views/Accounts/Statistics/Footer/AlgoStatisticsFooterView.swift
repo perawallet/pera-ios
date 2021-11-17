@@ -15,7 +15,7 @@
 //
 //   AlgoStatisticsFooterView.swift
 
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 final class AlgoStatisticsFooterView: View {

@@ -15,7 +15,7 @@
 //
 //   ContactDetailViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct ContactDetailViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
@@ -36,7 +36,7 @@ struct ContactDetailViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main),
-            .content("contacts-title-assets".localized)
+            .text("contacts-title-assets".localized)
         ]
         self.contactInformationViewTheme = ContactInformationViewTheme()
 

@@ -16,7 +16,7 @@
 //   LedgerDeviceListViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
@@ -43,19 +43,25 @@ struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(.fitting),
             .font(Fonts.DMSans.medium.make(19)),
             .textColor(AppColors.Components.Text.main),
-            .content("ledger-device-list-looking".localized)
+            .text("ledger-device-list-looking".localized)
         ]
         self.description = [
             .textAlignment(.center),
             .textOverflow(.fitting),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.gray),
-            .content("tutorial-description-ledger".localized)
+            .text("tutorial-description-ledger".localized)
         ]
-        self.indicator = [
-            .content(img("loading-indicator")),
-            .contentMode(.scaleAspectFill)
-        ]
+        if let i = img("loading-indicator") {
+            self.indicator = [
+                .image(i),
+                .contentMode(.scaleAspectFill)
+            ]
+        } else {
+            self.indicator = [
+                .contentMode(.scaleAspectFill)
+            ]
+        }
 
         self.lottie = UIApplication.shared.isDarkModeDisplay ? "dark-ledger" : "light-ledger" /// <note>:  Should be handled also on view.
 

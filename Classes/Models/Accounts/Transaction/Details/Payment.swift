@@ -15,35 +15,64 @@
 //
 //  Payment.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class Payment: Model {
+final class Payment: ALGEntityModel {
     let amount: UInt64
     let receiver: String
     let closeAmount: UInt64?
     let closeAddress: String?
-    
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.amount = apiModel.amount ?? 0
+        self.receiver = apiModel.receiver.someString
+        self.closeAmount = apiModel.closeAmount
+        self.closeAddress = apiModel.closeRemainderTo
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.amount = amount
+        apiModel.receiver = receiver
+        apiModel.closeAmount = closeAmount
+        apiModel.closeRemainderTo = closeAddress
+        return apiModel
+    }
+}
+
+extension Payment {
     func amountForTransaction(includesCloseAmount: Bool) -> UInt64 {
         if let closeAmount = closeAmount, closeAmount != 0, includesCloseAmount {
             return closeAmount + amount
         }
         return amount
     }
-    
+
     func closeAmountForTransaction() -> UInt64? {
         guard let closeAmount = closeAmount, closeAmount != 0 else {
             return nil
         }
-        
+
         return closeAmount
     }
 }
 
 extension Payment {
-    private enum CodingKeys: String, CodingKey {
-        case amount = "amount"
-        case receiver = "receiver"
-        case closeAmount = "close-amount"
-        case closeAddress = "close-remainder-to"
+    struct APIModel: ALGAPIModel {
+        var amount: UInt64?
+        var receiver: String?
+        var closeAmount: UInt64?
+        var closeRemainderTo: String?
+
+        init() {
+            self.amount = nil
+            self.receiver = nil
+            self.closeAmount = nil
+            self.closeRemainderTo = nil
+        }
     }
 }

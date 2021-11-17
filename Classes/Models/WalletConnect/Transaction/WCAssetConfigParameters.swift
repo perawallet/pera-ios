@@ -15,9 +15,10 @@
 //
 //   WCAssetConfigParameters.swift
 
-import Magpie
+import Foundation
+import MagpieCore
 
-final class WCAssetConfigParameters: Model {
+final class WCAssetConfigParameters: Codable {
     let totalSupply: UInt64?
     let decimal: Int?
     let isFrozen: Bool?

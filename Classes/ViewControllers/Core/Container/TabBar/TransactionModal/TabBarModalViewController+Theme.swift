@@ -15,7 +15,8 @@
 //
 //   TabBarModalViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 extension TabBarModalViewController {
     struct Theme: LayoutSheet, StyleSheet {

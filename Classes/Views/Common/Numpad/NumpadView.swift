@@ -16,7 +16,8 @@
 //  NumpadView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class NumpadView: View {
     weak var delegate: NumpadViewDelegate?
@@ -43,7 +44,7 @@ final class NumpadView: View {
 
     func customize(_ theme: NumpadViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        
+
         addFirstRowStackView(theme)
         addSecondRowStackView(theme)
         addThirdRowStackView(theme)

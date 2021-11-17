@@ -15,9 +15,9 @@
 //
 //   WCTransaction.swift
 
-import Magpie
+import Foundation
 
-class WCTransaction: Model {
+final class WCTransaction: Codable {
     private(set) var unparsedTransactionDetail: Data? // Transaction that is not parsed for msgpack, needs to be used for signing
     var transactionDetail: WCTransactionDetail?
     let signers: [String]?
@@ -30,7 +30,8 @@ class WCTransaction: Model {
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         signers = try container.decodeIfPresent([String].self, forKey: .signers)
-        multisigMetadata = try container.decodeIfPresent(WCMultisigMetadata.self, forKey: .multisigMetadata)
+        multisigMetadata = try
+            container.decodeIfPresent(WCMultisigMetadata.self, forKey: .multisigMetadata)
         message = try container.decodeIfPresent(String.self, forKey: .message)
         authAddress = try container.decodeIfPresent(String.self, forKey: .authAddress)
         if let transactionMsgpack = try container.decodeIfPresent(Data.self, forKey: .transaction) {

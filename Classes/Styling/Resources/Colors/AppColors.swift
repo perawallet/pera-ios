@@ -16,7 +16,7 @@
 //   AppColors.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 
 /// <note>  This naming is temporary to not coincide with current `Colors` file.
 enum AppColors {

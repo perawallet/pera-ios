@@ -15,9 +15,9 @@
 //
 //  LedgerDetail.swift
 
-import Magpie
+import Foundation
 
-class LedgerDetail: Model {
+final class LedgerDetail: Codable {
     let id: UUID?
     let name: String?
     var indexInLedger: Int?

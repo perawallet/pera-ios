@@ -15,22 +15,31 @@
 //
 //  AlgorandError.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class AlgorandError: Model & Encodable {
-    let type: String
+final class AlgorandError: ALGAPIModel {
+    let type: String?
     let message: String?
-}
 
-extension AlgorandError {
-    enum CodingKeys: String, CodingKey {
-        case type = "type"
-        case message = "fallback_message"
+    init() {
+        self.type = nil
+        self.message = nil
     }
 }
 
 extension AlgorandError {
     enum ErrorType: String {
         case deviceAlreadyExists = "DeviceAlreadyExistsException"
+    }
+}
+
+extension AlgorandError {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case type
+        case message = "fallbackMessage"
     }
 }

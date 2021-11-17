@@ -15,15 +15,19 @@
 //
 //  User.swift
 
-import Magpie
+import UIKit
 
-class User: Model {
+final class User: Codable {
     private(set) var accounts: [AccountInformation] = []
     private(set) var defaultNode: String?
     private(set) var deviceId: String?
     
     init(accounts: [AccountInformation]) {
         self.accounts = accounts
+    }
+
+    init(from decoder: Decoder) throws {
+
     }
     
     func encoded() -> Data? {
@@ -96,14 +100,14 @@ extension User {
         self.defaultNode = selectedNode.network.rawValue
     }
     
-    func preferredAlgorandNetwork() -> AlgorandAPI.BaseNetwork? {
+    func preferredAlgorandNetwork() -> ALGAPI.Network? {
         guard let defaultNode = defaultNode else {
             return nil
         }
         
-        if defaultNode == AlgorandAPI.BaseNetwork.mainnet.rawValue {
+        if defaultNode == ALGAPI.Network.mainnet.rawValue {
             return .mainnet
-        } else if defaultNode == AlgorandAPI.BaseNetwork.testnet.rawValue {
+        } else if defaultNode == ALGAPI.Network.testnet.rawValue {
             return .testnet
         } else {
             return nil
@@ -126,5 +130,3 @@ extension User {
         return accounts.first { $0.address == address }
     }
 }
-
-extension User: Encodable { }

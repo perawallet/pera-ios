@@ -36,10 +36,10 @@ final class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDe
 
     weak var delegate: LedgerAccountFetchOperationDelegate?
     
-    private let api: AlgorandAPI
+    private let api: ALGAPI
     private let bannerController: BannerController?
 
-    init(api: AlgorandAPI, bannerController: BannerController?) {
+    init(api: ALGAPI, bannerController: BannerController?) {
         self.api = api
         self.bannerController = bannerController
         self.bleConnectionManager.delegate = self
@@ -91,7 +91,7 @@ extension LedgerAccountFetchOperation {
 
 extension LedgerAccountFetchOperation {
     private func fetchAccount(_ address: String) {
-        api.fetchAccount(with: AccountFetchDraft(publicKey: address), includesClosedAccounts: true) { response in
+        api.fetchAccount(AccountFetchDraft(publicKey: address)) { response in
             switch response {
             case .success(let accountWrapper):
                 if accountWrapper.account.isCreated {

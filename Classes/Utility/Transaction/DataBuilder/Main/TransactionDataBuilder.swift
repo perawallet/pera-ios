@@ -15,7 +15,8 @@
 //
 //  TransactionDataBuilder.swift
 
-import Magpie
+import Foundation
+import MagpieHipo
 
 class TransactionDataBuilder: NSObject, TransactionDataBuildable {
 
@@ -48,5 +49,5 @@ extension TransactionDataBuilder {
 }
 
 protocol TransactionDataBuilderDelegate: AnyObject {
-    func transactionDataBuilder(_ transactionDataBuilder: TransactionDataBuilder, didFailedComposing error: HIPError<TransactionError>)
+    func transactionDataBuilder(_ transactionDataBuilder: TransactionDataBuilder, didFailedComposing error: HIPTransactionError)
 }

@@ -15,13 +15,13 @@
 //
 //   AlgosUSDValueQuery.swift
 
-import Magpie
+import MagpieCore
 
 struct AlgosUSDValueQuery: ObjectQuery {
     let valueInterval: AlgosUSDValueInterval
 
-    var queryParams: [QueryParam] {
-        var params: [QueryParam] = []
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
         let range = valueInterval.getIntervalRange()
         params.append(.init(.since, range.since))
         params.append(.init(.until, range.until))

@@ -16,6 +16,7 @@
 //  Session+Crypto.swift
 
 import Foundation
+import UIKit
 
 extension Session {
     func mnemonics(forAccount account: String) -> [String] {

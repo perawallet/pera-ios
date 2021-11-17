@@ -16,7 +16,7 @@
 //  PassPhraseMnemonicView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class PassphraseMnemonicView: View {
     var isSelected = false {

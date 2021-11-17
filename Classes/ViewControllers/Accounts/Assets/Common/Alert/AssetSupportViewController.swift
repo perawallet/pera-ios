@@ -64,7 +64,7 @@ extension AssetSupportViewController {
                 self.handleAssetDetailSetup(with: assetDetail)
             } else {
                 loadingController?.startLoadingWithMessage("title-loading".localized)
-                api?.getAssetDetails(with: AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { response in
+                api?.getAssetDetails(AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { response in
                     switch response {
                     case let .success(assetDetailResponse):
                         self.handleAssetDetailSetup(with: assetDetailResponse.assetDetail)

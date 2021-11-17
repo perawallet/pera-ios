@@ -16,12 +16,12 @@
 //   ScreenLoadingIndicatorTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct ScreenLoadingIndicatorTheme: StyleSheet, LayoutSheet {
     let contentEdgeInsets: LayoutPaddings
-    let background: Macaroon.Shadow
+    let background: MacaroonUIKit.Shadow
     let indicator: ImageStyle
     let title: TextStyle
     let titleTopMargin: LayoutMetric
@@ -29,7 +29,7 @@ struct ScreenLoadingIndicatorTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.contentEdgeInsets = (30, 40, 20, 40)
         self.background =
-            Macaroon.Shadow(
+            MacaroonUIKit.Shadow(
                 color: Colors.Background.primary,
                 opacity: 0.16,
                 offset: (0, 20),
@@ -39,7 +39,7 @@ struct ScreenLoadingIndicatorTheme: StyleSheet, LayoutSheet {
                 corners: .allCorners
             )
         self.indicator = [
-            .content(img("loading-indicator")),
+            .image("loading-indicator"),
             .contentMode(.scaleAspectFill)
         ]
         self.title = [

@@ -16,7 +16,7 @@
 //  SendTransactionViewController.swift
 
 import UIKit
-import Magpie
+import MagpieHipo
 
 protocol SendTransactionViewControllerDelegate: AnyObject {
     func sendTransactionViewController(_ viewController: SendTransactionViewController, didCompleteTransactionFor asset: Int64?)
@@ -101,7 +101,7 @@ extension SendTransactionViewController: TransactionControllerDelegate {
         self.navigationController?.setViewControllers(viewControllers, animated: false)
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
         loadingController?.stopLoading()
         switch error {
         case let .network(apiError):

@@ -16,7 +16,7 @@
 //  BottomWarningView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class BottomWarningView: View {
     weak var delegate: BottomWarningViewDelegate?

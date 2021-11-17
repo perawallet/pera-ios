@@ -16,7 +16,7 @@
 //  LedgerAccountDetailViewModel.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class LedgerAccountDetailViewModel: ViewModel {
     private(set) var account: Account

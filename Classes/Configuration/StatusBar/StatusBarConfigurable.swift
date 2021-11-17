@@ -15,6 +15,7 @@
 //
 //  StatusBarConfigurable.swift
 
+import Foundation
 import UIKit
 
 protocol StatusBarConfigurable: AnyObject {

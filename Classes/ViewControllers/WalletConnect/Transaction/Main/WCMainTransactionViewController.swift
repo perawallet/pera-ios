@@ -16,7 +16,8 @@
 //   WCMainTransactionViewController.swift
 
 import UIKit
-import Magpie
+import MagpieCore
+import MacaroonUtils
 
 class WCMainTransactionViewController: BaseViewController {
 
@@ -294,9 +295,7 @@ extension WCMainTransactionViewController: WCTransactionSignerDelegate {
     }
 
     private func continueSigningTransactions(after transaction: WCTransaction) {
-        if let index = transactions.firstIndex(of: transaction),
-           let nextTransaction = transactions.nextElement(afterElementAt: index) {
-
+        if let nextTransaction = transactions.element(after: transaction) {
             if let signerAccount = nextTransaction.signerAccount {
                 wcTransactionSigner.signTransaction(nextTransaction, with: transactionRequest, for: signerAccount)
             } else {
@@ -387,7 +386,7 @@ extension WCMainTransactionViewController: AssetCachable {
         for (index, transaction) in assetTransactions.enumerated() {
             guard let assetId = transaction.transactionDetail?.assetId else {
                 loadingController?.stopLoading()
-                 self.rejectTransactionRequest(with: .invalidInput(.asset))
+                self.rejectTransactionRequest(with: .invalidInput(.asset))
                 return
             }
 

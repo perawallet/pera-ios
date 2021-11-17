@@ -16,6 +16,7 @@
 //   WCGroupTransactionDataSource.swift
 
 import UIKit
+import MacaroonUtils
 
 class WCGroupTransactionDataSource: NSObject {
 
@@ -91,7 +92,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
         cell.bind(
             WCAssetConfigTransactionItemViewModel(
                 transaction: transaction,
-                account: session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender),
+                account: session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender)),
                 assetDetail: assetDetail(from: transaction)
             )
         )
@@ -114,7 +115,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
         cell.bind(
             WCAssetConfigTransactionItemViewModel(
                 transaction: transaction,
-                account: session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender),
+                account: session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender)),
                 assetDetail: assetDetail(from: transaction)
             )
         )
@@ -160,7 +161,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
         cell.bind(
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
-                account: session?.accounts.first(of: \.address, equalsTo: transaction.transactionDetail?.sender),
+                account: session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender)),
                 assetDetail: assetDetail(from: transaction)
             )
         )

@@ -16,7 +16,7 @@
 //  ManageAssetsViewController.swift
 
 import UIKit
-import Magpie
+import MagpieHipo
 
 final class ManageAssetsViewController: BaseViewController {
     weak var delegate: ManageAssetsViewControllerDelegate?
@@ -226,7 +226,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         dismissScreen()
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError>) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
         loadingController?.stopLoading()
         
         switch error {
@@ -261,7 +261,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         }
     }
     
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
         loadingController?.stopLoading()
         switch error {
         case let .network(apiError):

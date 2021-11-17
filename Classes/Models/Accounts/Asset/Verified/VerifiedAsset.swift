@@ -15,15 +15,23 @@
 //
 //  VerifiedAsset.swift
 
-import Magpie
+import Foundation
+import MagpieCore
+import MacaroonUtils
 
-class VerifiedAsset: Model {
+final class VerifiedAsset: ALGAPIModel {
     let id: Int64
+
+    init() {
+        self.id = 0
+    }
 }
 
 extension VerifiedAsset {
-    enum CodingKeys: String, CodingKey {
-        case id = "asset_id"
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case id = "assetId"
     }
 }
 

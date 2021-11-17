@@ -16,7 +16,7 @@
 //   AssetAdditionPageBarItems.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct VerifiedAssetsPageBarItem: PageBarItem {

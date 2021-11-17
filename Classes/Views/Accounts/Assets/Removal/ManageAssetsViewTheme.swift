@@ -16,7 +16,7 @@
 //   ManageAssetsViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
@@ -36,14 +36,14 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(32)),
             .textColor(AppColors.Components.Text.main),
-            .content("asset-remove-title".localized)
+            .text("asset-remove-title".localized)
         ]
         self.subtitle = [
             .textOverflow(.fitting),
             .textAlignment(.left),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.gray),
-            .content("asset-remove-subtitle".localized)
+            .text("asset-remove-subtitle".localized)
         ]
         self.collectionViewTopPadding = 40
         self.titleTopPadding = 2

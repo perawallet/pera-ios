@@ -16,7 +16,7 @@
 //  AddContactView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AddContactView: View {
     weak var delegate: AddContactViewDelegate?

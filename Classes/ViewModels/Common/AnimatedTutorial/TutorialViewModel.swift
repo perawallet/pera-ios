@@ -16,7 +16,8 @@
 //  TutorialViewModel.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
+import Foundation
 
 final class TutorialViewModel: PairedViewModel {
     private(set) var image: UIImage?
