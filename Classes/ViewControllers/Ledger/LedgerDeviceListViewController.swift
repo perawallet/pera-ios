@@ -100,26 +100,6 @@ extension LedgerDeviceListViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        ledgerAccountFetchOperation.connectToDevice(ledgerDevices[indexPath.item])
-    }
-}
-
-extension LedgerDeviceListViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return CGSize(theme.cellSize)
-    }
-}
-
-extension LedgerDeviceListViewController: LedgerDeviceCellDelegate {
-    func ledgerDeviceCellDidTapConnectButton(_ ledgerDeviceCell: LedgerDeviceCell) {
-        guard let indexPath = ledgerDeviceListView.devicesCollectionView.indexPath(for: ledgerDeviceCell) else {
-            return
-        }
-        
         selectedDevice = ledgerDevices[indexPath.item]
 
         let oneTimeDisplayStorage = OneTimeDisplayStorage()
@@ -139,6 +119,18 @@ extension LedgerDeviceListViewController: LedgerDeviceCellDelegate {
 
         let controller = open(.ledgerPairWarning, by: transitionStyle) as? LedgerPairWarningViewController
         controller?.delegate = self
+        
+        ledgerAccountFetchOperation.connectToDevice(ledgerDevices[indexPath.item])
+    }
+}
+
+extension LedgerDeviceListViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return CGSize(theme.cellSize)
     }
 }
 
@@ -148,12 +140,6 @@ extension LedgerDeviceListViewController: LedgerPairWarningViewControllerDelegat
             ledgerAccountFetchOperation.connectToDevice(ledgerDevice)
             selectedDevice = nil
         }
-    }
-}
-
-extension LedgerDeviceListViewController: LedgerDeviceListViewDelegate {
-    func ledgerDeviceListViewDidTapTroubleshootButton(_ ledgerDeviceListView: LedgerDeviceListView) {
-        open(.ledgerTroubleshoot, by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil))
     }
 }
 

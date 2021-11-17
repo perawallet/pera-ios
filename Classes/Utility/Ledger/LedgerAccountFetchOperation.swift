@@ -95,7 +95,11 @@ extension LedgerAccountFetchOperation {
             switch response {
             case .success(let accountWrapper):
                 if !accountWrapper.account.isSameAccount(with: address) {
-                    NotificationBanner.showError("title-error".localized, message: "ledger-account-fetct-error".localized)
+                    (self.topMostController as? BaseViewController)?.bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "ledger-account-fetct-error".localized
+                    )
+                    
                     UIApplication.shared.firebaseAnalytics?.record(
                         MismatchAccountErrorLog(requestedAddress: address, receivedAddress: accountWrapper.account.address)
                     )

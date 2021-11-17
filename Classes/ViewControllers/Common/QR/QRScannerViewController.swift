@@ -275,7 +275,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                     The scanned QR is not a valid Algorand public address. For other types of QR (such as WalletConnect transactions),
                     please use the scan QR button on the homepage.
                     """
-                    NotificationBanner.showError("title-error".localized, message: message)
+                    bannerController?.presentErrorBanner(title: "title-error".localized, message: message)
                     captureSession = nil
                     closeScreen(by: .pop)
                     return

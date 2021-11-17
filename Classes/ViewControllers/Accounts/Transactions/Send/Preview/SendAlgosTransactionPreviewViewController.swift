@@ -342,7 +342,7 @@ extension SendAlgosTransactionPreviewViewController {
                     }
                 case let .success(accountWrapper):
                     if !accountWrapper.account.isSameAccount(with: receiverAddress) {
-                        self.dismissProgressIfNeeded()
+                        self.loadingController?.stopLoading()
                         UIApplication.shared.firebaseAnalytics?.record(
                             MismatchAccountErrorLog(requestedAddress: receiverAddress, receivedAddress: accountWrapper.account.address)
                         )

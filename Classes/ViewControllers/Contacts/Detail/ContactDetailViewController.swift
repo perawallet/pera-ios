@@ -112,8 +112,7 @@ extension ContactDetailViewController {
             switch response {
             case let .success(accountWrapper):
                 if !accountWrapper.account.isSameAccount(with: address) {
-                    SVProgressHUD.showSuccess(withStatus: "title-done".localized)
-                    SVProgressHUD.dismiss()
+                    self?.loadingController?.stopLoading()
                     UIApplication.shared.firebaseAnalytics?.record(
                         MismatchAccountErrorLog(requestedAddress: address, receivedAddress: accountWrapper.account.address)
                     )

@@ -285,7 +285,7 @@ extension SendAssetTransactionPreviewViewController {
             switch fetchAccountResponse {
             case let .success(receiverAccountWrapper):
                 if !receiverAccountWrapper.account.isSameAccount(with: address) {
-                    self.dismissProgressIfNeeded()
+                    self.loadingController?.stopLoading()
                     UIApplication.shared.firebaseAnalytics?.record(
                         MismatchAccountErrorLog(requestedAddress: address, receivedAddress: receiverAccountWrapper.account.address)
                     )
