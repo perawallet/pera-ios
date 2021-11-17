@@ -15,7 +15,8 @@
 //
 //   LedgerDeviceListViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 extension LedgerDeviceListViewController {
     struct Theme: LayoutSheet, StyleSheet {

@@ -16,7 +16,7 @@
 //   AssetActionConfirmationViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
@@ -62,7 +62,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(.fitting)
         ]
         self.verifiedImage = [
-            .content("icon-verified-shield")
+            .image("icon-verified-shield")
         ]
         self.assetCodeLabel = [
             .textColor(AppColors.Components.Text.main),

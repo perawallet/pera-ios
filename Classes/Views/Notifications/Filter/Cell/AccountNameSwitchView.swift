@@ -16,7 +16,7 @@
 //  AccountNameSwitchView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AccountNameSwitchView: View {
     weak var delegate: AccountNameSwitchViewDelegate?

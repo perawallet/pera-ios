@@ -19,6 +19,7 @@ import UIKit
 import MacaroonUIKit
 
 final class Button: MacaroonUIKit.Button {
+    private var theme: ButtonTheme?
     private lazy var indicatorView = ViewLoadingIndicator()
 
     override var isEnabled: Bool {

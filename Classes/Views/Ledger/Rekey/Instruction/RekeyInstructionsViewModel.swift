@@ -15,7 +15,7 @@
 //
 //   RekeyInstructionsViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 
 final class RekeyInstructionsViewModel {
     private(set) var subtitle: String?

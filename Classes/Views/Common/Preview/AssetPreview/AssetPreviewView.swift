@@ -15,7 +15,8 @@
 //
 //   AssetPreviewView.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 final class AssetPreviewView: View {
     private lazy var imageView = AssetImageView()

@@ -16,7 +16,7 @@
 //   AlgoStatisticsView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AlgoStatisticsView: View {
     weak var delegate: AlgoStatisticsViewDelegate?

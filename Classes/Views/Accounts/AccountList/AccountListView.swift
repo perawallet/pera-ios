@@ -16,7 +16,7 @@
 //  AccountListView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AccountListView: View {
     private lazy var theme = AccountListViewTheme()

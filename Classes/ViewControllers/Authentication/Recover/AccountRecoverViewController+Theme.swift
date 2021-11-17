@@ -15,7 +15,8 @@
 //
 //   AccountRecoverViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 extension AccountRecoverViewController {
     struct Theme: LayoutSheet, StyleSheet {

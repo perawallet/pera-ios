@@ -15,7 +15,7 @@
 //
 //   LedgerAccountDetailSectionHeaderView.swift
 
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 final class LedgerAccountDetailSectionHeaderView: View {

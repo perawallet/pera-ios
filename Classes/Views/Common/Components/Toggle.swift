@@ -16,7 +16,7 @@
 //  Toggle.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class Toggle: UISwitch {
     private lazy var theme = Theme()

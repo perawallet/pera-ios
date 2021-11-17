@@ -144,7 +144,7 @@ extension ChoosePasswordViewController {
                 UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
             }
 
-            self.loadingController?.stopLoadingAfter(seconds: 1) {
+            self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
                 self.dismiss(animated: false) {
                     UIApplication.shared.rootViewController()?.setupTabBarController()
                 }

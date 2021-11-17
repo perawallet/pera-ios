@@ -16,7 +16,7 @@
 //  OptionsView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class OptionsView: View {
     private lazy var theme = OptionsViewTheme()

@@ -160,7 +160,7 @@ extension AssetAdditionViewController: AssetListViewControllerDelegate {
 
 extension AssetAdditionViewController {
     private func fetchAssets(query: String?, isPaginated: Bool) {
-        let searchDraft = AssetSearchQuery(status: assetSearchFilters, query: query, cursor: nextCursor)
+        let searchDraft = AssetSearchQuery(status: assetSearchFilter, query: query, cursor: nextCursor)
         api?.searchAssets(searchDraft) { [weak self] response in
             switch response {
             case let .success(searchResults):
@@ -264,7 +264,7 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
 }
 
 extension AssetAdditionViewController: TransactionControllerDelegate {
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPError<TransactionError, HIPAPIErrorDetail>) {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
         loadingController?.stopLoading()
         
         switch error {
@@ -275,7 +275,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         }
     }
 
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPError<TransactionError>) {
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
         loadingController?.stopLoading()
         switch error {
         case let .network(apiError):
@@ -320,31 +320,6 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         default:
             break
         }
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
-        loadingController?.stopLoading()
-        switch error {
-        case let .network(apiError):
-            bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
-        default:
-            bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
-        }
-    }
-    
-    func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
-        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
-            let assetSearchResult = assetResults.first(where: { item -> Bool in
-                guard let assetIndex = assetTransactionDraft.assetIndex else {
-                    return false
-                }
-                return item.id == assetIndex
-            }) else {
-                return
-        }
-        
-        delegate?.assetAdditionViewController(self, didAdd: assetSearchResult, to: account)
-        popScreen()
     }
 }
 

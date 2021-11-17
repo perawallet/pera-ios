@@ -16,7 +16,7 @@
 //   VerifiedAssetInformationViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct VerifiedAssetInformationViewTheme: StyleSheet, LayoutSheet {
@@ -35,7 +35,7 @@ struct VerifiedAssetInformationViewTheme: StyleSheet, LayoutSheet {
         
         self.title = [
             .textAlignment(.left),
-            .content("verified-asset-information-title".localized),
+            .text("verified-asset-information-title".localized),
             .textOverflow(.fitting),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(15))
@@ -67,11 +67,11 @@ struct VerifiedAssetInformationViewTheme: StyleSheet, LayoutSheet {
         
         self.information = [
             .textAlignment(.left),
-            .content(fullAttributedText),
+            .text(fullAttributedText),
             .textOverflow(.fitting)
         ]
         self.image = [
-            .content(img("icon-verified-shield"))
+            .image("icon-verified-shield")
         ]
         
         self.imageLeadingOffset = 12

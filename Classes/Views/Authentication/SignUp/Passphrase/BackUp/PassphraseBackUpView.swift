@@ -16,7 +16,7 @@
 //  PassPhraseBackUpView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class PassphraseBackUpView: View {
     weak var delegate: PassphraseBackUpViewDelegate?

@@ -16,7 +16,7 @@
 //   TabBarModalView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class TabBarModalView: View {
     private(set) lazy var sendButton = UIButton()

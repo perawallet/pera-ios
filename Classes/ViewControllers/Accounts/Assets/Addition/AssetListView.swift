@@ -16,7 +16,7 @@
 //   AssetListView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AssetListView: View {
     private lazy var theme = AssetListViewTheme()

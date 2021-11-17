@@ -15,7 +15,7 @@
 //
 //   AccountPreviewViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct AccountPreviewModel {

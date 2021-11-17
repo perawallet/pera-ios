@@ -15,7 +15,7 @@
 //
 //   LedgerAccountVerificationViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 extension LedgerAccountVerificationViewController {
     struct Theme: LayoutSheet, StyleSheet {

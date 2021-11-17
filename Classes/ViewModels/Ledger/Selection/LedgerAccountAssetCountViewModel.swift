@@ -15,7 +15,7 @@
 //
 //  LedgerAccountAssetCountViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 
 final class LedgerAccountAssetCountViewModel: PairedViewModel {
     private(set) var assetCount: String?

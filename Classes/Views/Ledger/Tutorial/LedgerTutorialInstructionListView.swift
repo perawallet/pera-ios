@@ -16,7 +16,7 @@
 //  LedgerTutorialInstructionListView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class LedgerTutorialInstructionListView: View {
     weak var delegate: LedgerTutorialViewDelegate?

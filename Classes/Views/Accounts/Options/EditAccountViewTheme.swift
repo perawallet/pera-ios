@@ -16,7 +16,7 @@
 //   EditAccountViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct EditAccountViewTheme: StyleSheet, LayoutSheet {

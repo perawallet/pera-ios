@@ -15,7 +15,7 @@
 //
 //   TutorialStepViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct Troubleshoot {
     let explanation: String

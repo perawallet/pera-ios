@@ -16,7 +16,7 @@
 //  AccountNameSwitchViewModel.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 
 final class AccountNameSwitchViewModel: PairedViewModel {
     private(set) var accountNameViewModel: AccountNameViewModel?

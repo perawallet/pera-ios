@@ -15,7 +15,7 @@
 //
 //   AccountRecoverOptionsViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 extension AccountRecoverOptionsViewController {

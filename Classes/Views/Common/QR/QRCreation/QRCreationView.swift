@@ -16,7 +16,7 @@
 //  QRCreationView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 class QRCreationView: View {
     weak var delegate: QRCreationViewDelegate?
@@ -121,7 +121,7 @@ extension QRCreationView {
         copyButton.customize(theme.copyButtonTheme)
         copyButton.bindData(ButtonCommonViewModel(
             title: "qr-creation-copy-address".localized,
-            iconSet: ImageSet(img("icon-qr-copy")))
+            iconSet: ImageSet("icon-qr-copy"))
         )
         copyButton.titleEdgeInsets = UIEdgeInsets(theme.buttonTitleInsets)
         
@@ -135,7 +135,7 @@ extension QRCreationView {
         shareButton.customize(theme.shareButtonTheme)
         shareButton.bindData(ButtonCommonViewModel(
             title: "title-share-qr".localized,
-            iconSet: ImageSet(img("icon-qr-share")))
+            iconSet: ImageSet("icon-qr-share"))
         )
         shareButton.titleEdgeInsets = UIEdgeInsets(theme.buttonTitleInsets)
         

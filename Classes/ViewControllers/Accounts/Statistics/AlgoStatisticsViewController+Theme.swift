@@ -15,7 +15,8 @@
 //
 //   AlgoStatisticsViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 extension AlgoStatisticsViewController {
     struct Theme: LayoutSheet, StyleSheet {

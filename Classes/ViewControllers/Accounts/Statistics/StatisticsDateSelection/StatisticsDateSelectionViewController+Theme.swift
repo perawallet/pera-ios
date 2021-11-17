@@ -15,7 +15,8 @@
 //
 //   AlgoStatisticsDateSelectionViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 extension AlgoStatisticsDateSelectionViewController {
     struct Theme: LayoutSheet, StyleSheet {

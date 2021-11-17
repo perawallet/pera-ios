@@ -16,7 +16,7 @@
 //  OptionsContextView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class OptionsContextView: View {
     private lazy var iconImageView = UIImageView()

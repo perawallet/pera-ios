@@ -51,9 +51,6 @@ struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(.fitting),
             .text("screenshot-description".localized)
         ]
-        self.image = [
-            .image("icon-info-red")
-        ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()
         self.secondaryButtonTheme = ButtonSecondaryTheme()

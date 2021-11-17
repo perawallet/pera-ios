@@ -15,7 +15,7 @@
 //
 //   LedgerApprovalViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 extension LedgerApprovalViewController {
     struct Theme: LayoutSheet, StyleSheet {

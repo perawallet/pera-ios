@@ -245,15 +245,6 @@
         }
       },
       {
-        "package": "swift-ast",
-        "repositoryURL": "https://github.com/yanagiba/swift-ast",
-        "state": {
-          "branch": null,
-          "revision": "c70bffd56c2957d9ce259364dfb58a5d06f40002",
-          "version": "0.3.5"
-        }
-      },
-      {
         "package": "swift-nio-zlib-support",
         "repositoryURL": "https://github.com/apple/swift-nio-zlib-support.git",
         "state": {
@@ -287,15 +278,6 @@
           "branch": null,
           "revision": "6190d0cefff3013e77ed567e6b074f324e5c5bf5",
           "version": "6.3.1"
-        }
-      },
-      {
-        "package": "swift-lint",
-        "repositoryURL": "http://github.com/swiftlint/swiftlint",
-        "state": {
-          "branch": null,
-          "revision": "10a454b80119bcf67c4e6108f77c031932a8c63e",
-          "version": "0.2.0"
         }
       },
       {

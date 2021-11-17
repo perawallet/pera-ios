@@ -15,7 +15,7 @@
 //
 //   LedgerTutorialInstructionListViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 extension LedgerTutorialInstructionListViewController {
     struct Theme: LayoutSheet, StyleSheet {

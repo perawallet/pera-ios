@@ -15,7 +15,8 @@
 //
 //   AlgoStatisticsDateSelectionView.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 final class AlgoStatisticsDateSelectionView: View {
     private lazy var theme = StatisticsDateSelectionViewTheme()

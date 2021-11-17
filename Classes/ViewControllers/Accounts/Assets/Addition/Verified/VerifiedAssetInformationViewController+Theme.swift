@@ -15,7 +15,7 @@
 //
 //   VerifiedAssetInformationViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 extension VerifiedAssetInformationViewController {
     struct Theme: LayoutSheet, StyleSheet {

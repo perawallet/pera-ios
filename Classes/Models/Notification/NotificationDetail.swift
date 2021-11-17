@@ -22,8 +22,7 @@ import MacaroonUtils
 final class NotificationDetail: ALGAPIModel {
     let senderAddress: String?
     let receiverAddress: String?
-    private let amount: UInt64?
-    private let amountStr: String?
+    let amount: UInt64?
     let asset: NotificationAsset?
     let notificationType: NotificationType?
 

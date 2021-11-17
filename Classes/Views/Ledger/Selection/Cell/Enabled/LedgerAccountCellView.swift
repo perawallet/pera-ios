@@ -15,7 +15,8 @@
 //
 //  LedgerAccountCellView.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 final class LedgerAccountCellView: View {
     weak var delegate: LedgerAccountViewDelegate?

@@ -16,7 +16,7 @@
 //   AlgoStatisticsDateSelectionViewController.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AlgoStatisticsDateSelectionViewController: BaseViewController {
     weak var delegate: AlgoStatisticsDateSelectionViewControllerDelegate?

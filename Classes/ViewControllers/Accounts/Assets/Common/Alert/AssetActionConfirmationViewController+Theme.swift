@@ -15,7 +15,7 @@
 //
 //   AssetActionConfirmationViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 extension AssetActionConfirmationViewController {
     struct Theme: LayoutSheet, StyleSheet {

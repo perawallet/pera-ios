@@ -16,7 +16,7 @@
 //   StatisticsFooterViewModel.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 
 final class AlgoStatisticsFooterViewModel {
     private(set) var last24hVolumeViewModel: AlgoStatisticsInfoViewModel?

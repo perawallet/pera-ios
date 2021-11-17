@@ -16,7 +16,7 @@
 //   LedgerAccountVerificationStatusViewModel.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class LedgerAccountVerificationStatusViewModel: ViewModel {
     private(set) var address: String?

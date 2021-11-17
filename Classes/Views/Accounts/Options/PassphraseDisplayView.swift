@@ -16,7 +16,7 @@
 //  PassphraseDisplayView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class PassphraseDisplayView: View {
     private lazy var passphraseView = PassphraseView()

@@ -15,7 +15,7 @@
 //
 //   LedgerAccountDetailSectionHeaderViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 
 final class LedgerAccountDetailSectionHeaderViewModel: ViewModel {
     private(set) var headerTitle: String?

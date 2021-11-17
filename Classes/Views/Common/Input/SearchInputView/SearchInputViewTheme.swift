@@ -16,7 +16,7 @@
 //   SearchInputViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct SearchInputViewTheme: LayoutSheet, StyleSheet {
@@ -40,14 +40,15 @@ struct SearchInputViewTheme: LayoutSheet, StyleSheet {
             .tintColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(13)),
             .textColor(AppColors.Components.Text.main),
-            .placeholder(placeholder, AppColors.Components.Text.gray),
+            .placeholder(placeholder),
+            .placeholderColor(AppColors.Components.Text.gray),
             .returnKeyType(.done)
         ]
         self.textInputBackground = [
             .backgroundColor(AppColors.Shared.Layer.grayLighter)
         ]
         self.textLeftInputAccessory = [
-            .content("icon-field-search")
+            .image("icon-field-search")
         ]
         self.textRightInputAccessory = [
             .icon("icon-field-close")

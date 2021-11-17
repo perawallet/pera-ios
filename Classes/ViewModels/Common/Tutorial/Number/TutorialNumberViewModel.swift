@@ -15,7 +15,7 @@
 //
 //   TutorialNumberViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 
 final class TutorialNumberViewModel: BindableViewModel {
     private(set) var number: String?

@@ -93,7 +93,6 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setNavigationBarPrimaryBackgroundColor()
         setNeedsNavigationBarAppearanceUpdate()
         linkInteractors()
         setListeners()

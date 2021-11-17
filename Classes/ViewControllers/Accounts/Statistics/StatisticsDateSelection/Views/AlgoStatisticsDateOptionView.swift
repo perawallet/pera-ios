@@ -16,7 +16,7 @@
 //   AlgoStatisticsDateOptionView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AlgoStatisticsDateOptionView: View {
     private lazy var titleLabel = UILabel()

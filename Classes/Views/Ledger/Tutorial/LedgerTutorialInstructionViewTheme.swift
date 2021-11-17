@@ -16,7 +16,7 @@
 //   LedgerTutorialInstructionViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct LedgerTutorialInstructionViewTheme: StyleSheet, LayoutSheet {
@@ -38,7 +38,7 @@ struct LedgerTutorialInstructionViewTheme: StyleSheet, LayoutSheet {
             .textColor(Colors.Text.primary)
         ]
         self.arrowImage = [
-            .content("icon-arrow-gray-24")
+            .image("icon-arrow-gray-24")
         ]
 
         self.horizontalInset = 24

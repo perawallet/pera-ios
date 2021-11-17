@@ -16,7 +16,7 @@
 //  WatchAccountAdditionView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class WatchAccountAdditionView: View {
     weak var delegate: WatchAccountAdditionViewDelegate?

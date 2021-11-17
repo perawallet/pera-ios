@@ -15,7 +15,8 @@
 //
 //   AssetImageView.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 final class AssetImageView: View {
     private lazy var theme = AssetImageViewTheme()

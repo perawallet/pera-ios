@@ -16,7 +16,7 @@
 //   RekeyTransitionItemView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class RekeyTransitionItemView: View {
     weak var delegate: RekeyConfirmationViewDelegate?

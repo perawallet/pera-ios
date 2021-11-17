@@ -24,6 +24,8 @@ final class NotificationFilterDataSource: NSObject {
 
     private var accounts = [Account]()
 
+    private let api: ALGAPI
+
     init(api: ALGAPI) {
         self.api = api
         super.init()

@@ -16,7 +16,7 @@
 //   FloatingTextInputFieldView.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import SnapKit
 import UIKit
 

@@ -16,7 +16,7 @@
 //  LedgerTutorialInstructionView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class LedgerTutorialInstructionView: View {
     private lazy var titleLabel = UILabel()

@@ -15,7 +15,7 @@
 //
 //   LedgerApprovalViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 
 final class LedgerApprovalViewModel {
     private(set) var title: String?

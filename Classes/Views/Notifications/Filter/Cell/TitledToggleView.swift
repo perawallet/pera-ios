@@ -16,7 +16,7 @@
 //  TitledToggleView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class TitledToggleView: View {
     weak var delegate: TitledToggleViewDelegate?

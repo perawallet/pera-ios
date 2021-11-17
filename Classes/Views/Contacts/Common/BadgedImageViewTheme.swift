@@ -16,7 +16,7 @@
 //   BadgedImageViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct BadgedImageViewTheme: StyleSheet, LayoutSheet {

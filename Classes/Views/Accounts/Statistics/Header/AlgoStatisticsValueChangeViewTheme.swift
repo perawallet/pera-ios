@@ -16,7 +16,7 @@
 //   AlgoStatisticsValueChangeViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct AlgoStatisticsValueChangeViewTheme: StyleSheet, LayoutSheet {

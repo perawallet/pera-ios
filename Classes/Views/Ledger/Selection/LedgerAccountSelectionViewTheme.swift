@@ -15,7 +15,7 @@
 //
 //   LedgerAccountSelectionViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct LedgerAccountSelectionViewTheme: StyleSheet, LayoutSheet {
@@ -42,17 +42,17 @@ struct LedgerAccountSelectionViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(.fitting),
             .font(Fonts.DMSans.medium.make(19)),
             .textColor(AppColors.Components.Text.main),
-            .content("ledger-device-list-looking".localized)
+            .text("ledger-device-list-looking".localized)
         ]
         self.description = [
             .textAlignment(.center),
             .textOverflow(.fitting),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.gray),
-            .content("tutorial-description-ledger".localized)
+            .text("tutorial-description-ledger".localized)
         ]
         self.image = [
-            .content("icon-wallet"),
+            .image("icon-wallet"),
             .contentMode(.scaleAspectFit)
         ]
         self.verifyButtonTheme = ButtonPrimaryTheme()

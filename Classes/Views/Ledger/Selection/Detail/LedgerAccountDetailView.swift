@@ -16,7 +16,7 @@
 //  LedgerAccountDetailView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class LedgerAccountDetailView: View {
     private lazy var theme = LedgerAccountDetailViewTheme()

@@ -15,7 +15,7 @@
 //
 //   AssetListViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 struct AssetListViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color

@@ -16,7 +16,7 @@
 //  NotificationView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class NotificationView: View {
     private lazy var theme = NotificationViewTheme()

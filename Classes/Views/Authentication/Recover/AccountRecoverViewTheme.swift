@@ -16,7 +16,7 @@
 //   AccountRecoverViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct AccountRecoverViewTheme: StyleSheet, LayoutSheet {
@@ -34,7 +34,7 @@ struct AccountRecoverViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(.fitting),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
-            .content("recover-from-seed-title".localized)
+            .text("recover-from-seed-title".localized)
         ]
 
         self.horizontalStackViewTopInset = 48

@@ -16,7 +16,7 @@
 
 import UIKit
 import SwiftDate
-import Macaroon
+import MacaroonUIKit
 
 final class AlgoStatisticsHeaderViewModel: ViewModel {
     private(set) var amount: String?

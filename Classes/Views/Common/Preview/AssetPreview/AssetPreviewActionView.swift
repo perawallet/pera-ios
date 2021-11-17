@@ -15,7 +15,8 @@
 //
 //   AssetPreviewActionView.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 final class AssetPreviewActionView: View {
     weak var delegate: AssetPreviewActionViewDelegate?

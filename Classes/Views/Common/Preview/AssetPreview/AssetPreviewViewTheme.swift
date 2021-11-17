@@ -15,7 +15,7 @@
 //
 //   AssetPreviewViewTheme.swift
 
-import Macaroon
+import MacaroonUIKit
 
 protocol AssetPreviewViewTheme: StyleSheet, LayoutSheet {
     var primaryAssetTitle: TextStyle { get }

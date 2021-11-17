@@ -16,7 +16,7 @@
 //   FormInputFieldAssistiveView.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 final class FormInputFieldAssistiveView: View {

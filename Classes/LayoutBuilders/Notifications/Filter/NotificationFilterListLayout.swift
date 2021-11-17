@@ -16,7 +16,7 @@
 //  NotificationFilterListLayout.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class NotificationFilterListLayout: NSObject {
     private let theme = Theme()

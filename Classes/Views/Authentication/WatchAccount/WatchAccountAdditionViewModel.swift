@@ -15,7 +15,7 @@
 //
 //   WatchAccountAdditionViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 
 final class WatchAccountAdditionViewModel: PairedViewModel {
     private(set) var copiedString: String?

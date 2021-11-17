@@ -16,7 +16,7 @@
 //   PrimaryPageBarButtonItem.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct PrimaryPageBarButtonItem: PageBarButtonItem {

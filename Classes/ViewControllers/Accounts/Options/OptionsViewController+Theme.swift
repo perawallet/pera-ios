@@ -15,7 +15,8 @@
 //
 //   OptionsViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 extension OptionsViewController {
     struct Theme: LayoutSheet, StyleSheet {

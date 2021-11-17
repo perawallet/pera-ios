@@ -65,7 +65,7 @@ extension AssetActionConfirmationViewController {
             } else {
                 loadingController?.startLoadingWithMessage("title-loading".localized)
 
-                api?.getAssetDetails(AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { response in
+                api?.getAssetDetails(AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { [weak self] response in
                     switch response {
                     case let .success(assetResponse):
                         self?.handleAssetDetailSetup(with: assetResponse.assetDetail)

@@ -16,7 +16,7 @@
 //  NotificationsView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class NotificationsView: View {
     weak var delegate: NotificationsViewDelegate?

@@ -16,7 +16,8 @@
 //   AssetListViewLayoutBuilder.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 final class AssetListViewLayoutBuilder: NSObject, UICollectionViewDelegateFlowLayout {
     weak var delegate: AssetListViewLayoutBuilderDelegate?

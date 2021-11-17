@@ -16,7 +16,7 @@
 //   RecoverInputView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class RecoverInputView: View {
     override var intrinsicContentSize: CGSize {

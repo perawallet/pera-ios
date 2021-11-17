@@ -55,18 +55,6 @@ extension PassphraseView {
     }
 
     private func addPassphraseCollectionView(_ theme: PassphraseViewTheme) {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .horizontal
-        flowLayout.minimumLineSpacing = 0
-        flowLayout.minimumInteritemSpacing = 8
-
-        passphraseCollectionView.collectionViewLayout = flowLayout
-        passphraseCollectionView.isScrollEnabled = false
-        passphraseCollectionView.showsVerticalScrollIndicator = false
-        passphraseCollectionView.showsHorizontalScrollIndicator = false
-        passphraseCollectionView.backgroundColor = .clear
-        passphraseCollectionView.register(PassphraseBackUpCell.self, forCellWithReuseIdentifier: PassphraseBackUpCell.reusableIdentifier)
-
         passphraseContainerView.addSubview(passphraseCollectionView)
 
         passphraseCollectionView.snp.makeConstraints {

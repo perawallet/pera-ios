@@ -16,7 +16,7 @@
 //   ContactContextViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct ContactContextViewTheme: StyleSheet, LayoutSheet {
@@ -34,7 +34,7 @@ struct ContactContextViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.userImage = [
-            .content("icon-user-placeholder"),
+            .image("icon-user-placeholder"),
             .contentMode(.center)
         ]
         self.nameLabel = [

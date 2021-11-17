@@ -17,6 +17,7 @@
 
 import MacaroonUIKit
 import Foundation
+import UIKit
 
 extension PassphraseBackUpViewController {
     struct Theme: LayoutSheet, StyleSheet {

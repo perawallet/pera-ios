@@ -16,7 +16,7 @@
 //  AccountRecoverView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AccountRecoverView: View {
     weak var delegate: AccountRecoverViewDelegate?

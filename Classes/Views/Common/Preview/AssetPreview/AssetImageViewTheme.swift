@@ -16,7 +16,7 @@
 //   AssetImageViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct AssetImageViewTheme: StyleSheet, LayoutSheet {

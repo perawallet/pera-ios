@@ -16,7 +16,7 @@
 //  ManageAssetsView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class ManageAssetsView: View {
     private lazy var theme = ManageAssetsViewTheme()

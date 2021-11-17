@@ -16,7 +16,7 @@
 //  AssetDisplayViewModel.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AssetDisplayViewModel: PairedViewModel {
     private(set) var isVerified: Bool = false

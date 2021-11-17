@@ -16,7 +16,7 @@
 //   StatisticsInfoViewModel.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 
 final class AlgoStatisticsInfoViewModel {
     private(set) var title: String?

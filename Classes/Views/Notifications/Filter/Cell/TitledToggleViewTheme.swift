@@ -16,7 +16,7 @@
 //   TitledToggleViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct TitledToggleViewTheme: StyleSheet, LayoutSheet {
@@ -29,7 +29,7 @@ struct TitledToggleViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
-            .content("notification-filter-show-title".localized)
+            .text("notification-filter-show-title".localized)
         ]
         self.horizontalPadding = 24
     }

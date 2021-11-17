@@ -64,7 +64,9 @@ extension AddAccountView {
 }
 
 extension AddAccountView {
-    private func setupTitleLabelLayout() {
+    private func addTitleLabel(_ theme: AddAccountViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalInset)

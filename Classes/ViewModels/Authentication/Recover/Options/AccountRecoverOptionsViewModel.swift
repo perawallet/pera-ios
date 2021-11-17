@@ -16,7 +16,7 @@
 //   AccountRecoverOptionsViewModel.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class AccountRecoverOptionsViewModel: PairedViewModel {
     private(set) var image: UIImage?

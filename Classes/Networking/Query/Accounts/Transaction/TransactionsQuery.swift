@@ -51,8 +51,8 @@ struct TransactionsQuery: ObjectQuery {
 struct AccountQuery: ObjectQuery {
     let includesAll: Bool
 
-    var queryParams: [QueryParam] {
-        var params: [QueryParam] = []
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
 
         if includesAll {
             params.append(.init(.includesAll, includesAll))

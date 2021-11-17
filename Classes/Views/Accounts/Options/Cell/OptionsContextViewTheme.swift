@@ -16,7 +16,7 @@
 //   OptionsContextViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct OptionsContextViewTheme: StyleSheet, LayoutSheet {

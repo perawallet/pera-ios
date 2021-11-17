@@ -15,7 +15,8 @@
 //
 //   ManageAssetsViewController+Theme.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 extension ManageAssetsViewController {
     struct Theme: LayoutSheet, StyleSheet {

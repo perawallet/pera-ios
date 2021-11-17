@@ -16,7 +16,7 @@
 //   RecoverInputViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 struct RecoverInputViewTheme: StyleSheet, LayoutSheet {
@@ -38,7 +38,7 @@ struct RecoverInputViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(.fitting),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
-            .content("account-details-title".localized)
+            .text("account-details-title".localized)
         ]
         self.number = [
             .textColor(AppColors.Components.Text.gray),

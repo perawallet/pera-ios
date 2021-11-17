@@ -16,7 +16,7 @@
 //  VerifiedAssetInformationView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 class VerifiedAssetInformationView: View {
     weak var delegate: VerifiedAssetInformationViewDelegate?

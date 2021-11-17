@@ -16,7 +16,7 @@
 //   PageBarLayoutSheet.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 protocol PageBarLayoutSheet: LayoutSheet {

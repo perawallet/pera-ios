@@ -74,16 +74,6 @@ extension AccountTypeView {
 
         detailLabel.setContentCompressionResistancePriority(.required, for: .vertical)
     }
-
-    private func addImageView(_ theme: AccountTypeViewTheme) {
-        addSubview(imageView)
-
-        imageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(theme.horizontalInset)
-            $0.fitToSize(theme.iconSize)
-            $0.centerY.equalToSuperview()
-        }
-    }
 }
 
 extension AccountTypeView: ViewModelBindable {

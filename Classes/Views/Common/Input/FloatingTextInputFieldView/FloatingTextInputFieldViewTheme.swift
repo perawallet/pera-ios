@@ -16,7 +16,7 @@
 //   FloatingTextInputFieldViewTheme.swift
 
 import Foundation
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 protocol FloatingTextInputFieldViewTheme: StyleSheet, LayoutSheet {

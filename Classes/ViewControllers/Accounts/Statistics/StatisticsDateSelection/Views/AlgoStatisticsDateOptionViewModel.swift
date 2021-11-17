@@ -15,7 +15,7 @@
 //
 //   AlgoStatisticsDateOptionViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 
 final class AlgoStatisticsDateOptionViewModel {
     private(set) var title: String?

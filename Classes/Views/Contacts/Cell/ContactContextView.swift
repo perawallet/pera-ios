@@ -16,7 +16,7 @@
 //  ContactContextView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class ContactContextView: View {
     weak var delegate: ContactContextViewDelegate?
@@ -40,8 +40,6 @@ final class ContactContextView: View {
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
-
-    func customizeAppearance(_ styleSheet: BaseStyle<ViewStyleAttribute>) {}
 
     func setListeners() {
         qrDisplayButton.addTarget(self, action: #selector(notifyDelegateToQRDisplayButtonTapped), for: .touchUpInside)

@@ -15,7 +15,8 @@
 //
 //  LedgerDeviceView.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 final class LedgerDeviceCellView: View {
     private lazy var ledgerImageView = UIImageView()

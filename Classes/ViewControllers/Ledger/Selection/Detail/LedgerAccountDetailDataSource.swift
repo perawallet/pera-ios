@@ -15,18 +15,18 @@
 //
 //   LedgerAccountDetailDataSource.swift
 
-import Macaroon
+import MacaroonUIKit
 import UIKit
 
 final class LedgerAccountDetailDataSource: NSObject {
-    private let api: AlgorandAPI
+    private let api: ALGAPI
     private let loadingController: LoadingController?
     private let account: Account
     private let rekeyedAccounts: [Account]
 
     private var assetPreviews: [AssetPreviewModel] = []
 
-    init(api: AlgorandAPI, loadingController: LoadingController?, account: Account, rekeyedAccounts: [Account]) {
+    init(api: ALGAPI, loadingController: LoadingController?, account: Account, rekeyedAccounts: [Account]) {
         self.api = api
         self.loadingController = loadingController
         self.account = account
@@ -154,7 +154,7 @@ extension LedgerAccountDetailDataSource {
                 let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset))
                 assetPreviews.append(assetPreviewModel)
             } else {
-                api.getAssetDetails(with: AssetFetchDraft(assetId: "\(asset.id)")) { [weak self] assetResponse in
+                api.getAssetDetails(AssetFetchDraft(assetId: "\(asset.id)")) { [weak self] assetResponse in
                     switch assetResponse {
                     case .success(let assetDetailResponse):
                         self?.composeAssetDetail(assetDetailResponse.assetDetail, of: account, with: asset)

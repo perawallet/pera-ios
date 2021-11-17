@@ -15,7 +15,7 @@
 //
 //   LedgerAccountSelectionViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
 
 final class LedgerAccountSelectionViewModel: ViewModel {
     private(set) var detail: String?

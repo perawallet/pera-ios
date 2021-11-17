@@ -15,7 +15,8 @@
 //
 //   AssetPreviewViewModel.swift
 
-import Macaroon
+import MacaroonUIKit
+import UIKit
 
 struct AssetPreviewModel {
     let image: UIImage?

@@ -16,7 +16,7 @@
 //  EditAccountView.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class EditAccountView: View {
     weak var delegate: EditAccountViewDelegate?

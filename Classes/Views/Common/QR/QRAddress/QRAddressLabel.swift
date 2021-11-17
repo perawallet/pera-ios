@@ -16,7 +16,7 @@
 //   QRAddressLabel.swift
 
 import UIKit
-import Macaroon
+import MacaroonUIKit
 
 final class QRAddressLabel: View {
     private lazy var titleLabel = UILabel()
