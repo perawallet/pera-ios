@@ -1,6 +1,0 @@
-framework module Magpie {
-  umbrella header "Magpie-umbrella.h"
-
-  export *
-  module * { export * }
-}
