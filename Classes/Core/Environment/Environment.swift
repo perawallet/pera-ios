@@ -51,13 +51,13 @@ class Environment {
     
     lazy var testNetAlgodHost = "node-testnet.aws.algodev.network"
     lazy var testNetIndexerHost = "indexer-testnet.aws.algodev.network"
-    lazy var testNetAlgodApi = "\(schema)://\(testNetAlgodHost)"
-    lazy var testNetIndexerApi = "\(schema)://\(testNetIndexerHost)"
+    lazy var testNetAlgodApi = "\(schema)://\(testNetAlgodHost)/v2"
+    lazy var testNetIndexerApi = "\(schema)://\(testNetIndexerHost)/v2"
     
     lazy var mainNetAlgodHost = "node-mainnet.aws.algodev.network"
     lazy var mainNetIndexerHost = "indexer-mainnet.aws.algodev.network"
-    lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)"
-    lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)"
+    lazy var mainNetAlgodApi = "\(schema)://\(mainNetAlgodHost)/v2"
+    lazy var mainNetIndexerApi = "\(schema)://\(mainNetIndexerHost)/v2"
     
     lazy var serverHost: String = {
         switch target {
