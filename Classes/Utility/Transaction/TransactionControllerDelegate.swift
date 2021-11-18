@@ -17,10 +17,10 @@
 
 import MagpieHipo
 import MagpieExceptions
+import MacaroonUtils
 
-/// <todo>
-/// Why DBP???
-typealias HIPTransactionError = HIPError<TransactionError, DBP>
+/// <todo> PrintableError
+typealias HIPTransactionError = HIPError<TransactionError, PrintableErrorDetail>
 
 protocol TransactionControllerDelegate: AnyObject {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?)
@@ -43,4 +43,10 @@ extension TransactionControllerDelegate where Self: BaseViewController {
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) { }
     
     func transactionControllerDidFailToSignWithLedger(_ transactionController: TransactionController) { }
+}
+
+class PrintableErrorDetail: DebugPrintable {
+    var debugDescription: String {
+        return ""
+    }
 }

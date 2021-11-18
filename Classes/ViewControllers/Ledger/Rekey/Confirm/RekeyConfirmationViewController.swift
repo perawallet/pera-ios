@@ -91,12 +91,6 @@ extension RekeyConfirmationViewController: RekeyConfirmationViewDelegate {
     }
 }
 
-class DBP: DebugPrintable {
-    var debugDescription: String {
-        return ""
-    }
-}
-
 extension RekeyConfirmationViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
         log(RekeyEvent())
