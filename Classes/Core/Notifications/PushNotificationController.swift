@@ -156,11 +156,11 @@ extension PushNotificationController {
         then handler: EmptyHandler? = nil
     ) {
         guard let receiverAddress = notificationDetail.receiverAddress,
-            let senderAddress = notificationDetail.senderAddress,
-            let amount = notificationDetail.amount else {
+            let senderAddress = notificationDetail.senderAddress else {
                 return
         }
 
+        let amount = notificationDetail.getAmountValue()
         let isAssetTransaction = notificationDetail.asset != nil
         
         let receiverName = api.session.authenticatedUser?.account(address: receiverAddress)?.name ?? receiverAddress
@@ -229,11 +229,11 @@ extension PushNotificationController {
     
     private func displayReceivedNotification(with notificationDetail: NotificationDetail, then handler: EmptyHandler? = nil) {
         guard let receiverAddress = notificationDetail.receiverAddress,
-            let senderAddress = notificationDetail.senderAddress,
-            let amount = notificationDetail.amount else {
+            let senderAddress = notificationDetail.senderAddress else {
                 return
         }
 
+        let amount = notificationDetail.getAmountValue()
         let isAssetTransaction = notificationDetail.asset != nil
         
         let senderName = api.session.authenticatedUser?.account(address: senderAddress)?.name ?? senderAddress

@@ -80,15 +80,11 @@ class Environment {
     lazy var mobileApi: String = {
         switch target {
         case .staging:
-            return "https://staging.\(mobileHost)"
+            return "https://staging.\(mobileHost)/api/"
         case .prod:
-            return "https://\(mobileHost)"
+            return "https://\(mobileHost)/api/"
         }
     }()
-    
-    lazy var testNetMobileApi = "https://staging.\(mobileHost)"
-    
-    lazy var mainNetMobileApi = "https://\(mobileHost)"
 
     lazy var algoExplorerApi = "https://\(algoExplorerApiHost)"
     

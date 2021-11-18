@@ -47,8 +47,8 @@ extension Asset {
         CodingKey {
         case creator
         case amount
-        case isFrozen
-        case id = "assetId"
+        case isFrozen = "is-frozen"
+        case id = "asset-id"
         case isDeleted = "deleted"
     }
 }

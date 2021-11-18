@@ -30,9 +30,9 @@ extension AlgorandApplication {
     enum CodingKeys:
         String,
         CodingKey {
-        case createdAtRound
+        case createdAtRound = "created-at-round"
         case isDeleted = "deleted"
         case id
-        case deletedAtRound
+        case deletedAtRound = "deleted-at-round"
     }
 }

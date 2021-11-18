@@ -223,5 +223,27 @@ extension Transaction {
             self.roundTime = nil
             self.signature = nil
         }
+
+        private enum CodingKeys: String, CodingKey {
+            case closeRewards = "close-rewards"
+            case closeAmount = "closing-amount"
+            case confirmedRound = "confirmed-round"
+            case fee
+            case firstValid = "first-valid"
+            case id
+            case lastValid = "last-valid"
+            case note
+            case paymentTransaction = "payment-transaction"
+            case receiverRewards = "receiver-rewards"
+            case sender
+            case senderRewards = "sender-rewards"
+            case txType = "tx-type"
+            case createdAssetIndex = "created-asset-index"
+            case assetFreezeTransaction = "asset-freeze-transaction"
+            case assetConfigTransaction = "asset-config-transaction"
+            case assetTransferTransaction = "asset-transfer-transaction"
+            case roundTime = "round-time"
+            case signature
+        }
     }
 }

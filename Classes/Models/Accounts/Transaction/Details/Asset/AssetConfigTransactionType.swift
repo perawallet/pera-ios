@@ -31,6 +31,6 @@ extension AssetConfigTransaction {
     private enum CodingKeys:
         String,
         CodingKey {
-        case id = "assetId"
+        case id = "asset-id"
     }
 }

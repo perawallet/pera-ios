@@ -47,5 +47,10 @@ extension AccountResponse {
             self.account = Account.APIModel()
             self.currentRound = 1
         }
+
+        private enum CodingKeys: String, CodingKey {
+            case account
+            case currentRound = "current-round"
+        }
     }
 }

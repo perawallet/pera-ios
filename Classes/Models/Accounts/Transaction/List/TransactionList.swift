@@ -52,5 +52,11 @@ extension TransactionList {
             self.nextToken = nil
             self.transactions = nil
         }
+
+        private enum CodingKeys: String, CodingKey {
+            case currentRound = "current-round"
+            case nextToken = "next-token"
+            case transactions
+        }
     }
 }

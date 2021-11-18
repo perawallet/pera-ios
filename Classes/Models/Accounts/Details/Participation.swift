@@ -28,3 +28,10 @@ final class Participation: ALGAPIModel {
         self.voteParticipationKey = nil
     }
 }
+
+extension Participation {
+    enum CodingKeys: String, CodingKey {
+        case selectionParticipationKey = "selection-participation-key"
+        case voteParticipationKey = "vote-participation-key"
+    }
+}

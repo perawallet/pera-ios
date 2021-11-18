@@ -71,5 +71,13 @@ extension TransactionParams {
             self.genesisHash = nil
             self.genesisId = nil
         }
+
+        private enum CodingKeys: String, CodingKey {
+            case lastRound = "last-round"
+            case fee = "fee"
+            case minFee = "min-fee"
+            case genesisHash = "genesis-hash"
+            case genesisId = "genesis-id"
+        }
     }
 }

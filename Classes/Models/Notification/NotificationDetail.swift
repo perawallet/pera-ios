@@ -22,7 +22,8 @@ import MacaroonUtils
 final class NotificationDetail: ALGAPIModel {
     let senderAddress: String?
     let receiverAddress: String?
-    let amount: UInt64?
+    private let amount: UInt64?
+    private let amountStr: String?
     let asset: NotificationAsset?
     let notificationType: NotificationType?
 
@@ -30,8 +31,24 @@ final class NotificationDetail: ALGAPIModel {
         self.senderAddress = nil
         self.receiverAddress = nil
         self.amount = nil
+        self.amountStr = nil
         self.asset = nil
         self.notificationType = nil
+    }
+}
+
+extension NotificationDetail {
+    func getAmountValue() -> UInt64 {
+        if let amount = amount {
+            return amount
+        }
+
+        if let amountStr = amountStr,
+            let amount = UInt64(amountStr) {
+            return amount
+        }
+
+        return 0
     }
 }
 
@@ -39,9 +56,10 @@ extension NotificationDetail {
     private enum CodingKeys:
         String,
         CodingKey {
-        case senderAddress = "senderPublicKey"
-        case receiverAddress = "receiverPublicKey"
+        case senderAddress = "sender_public_key"
+        case receiverAddress = "receiver_public_key"
         case amount
+        case amountStr = "amount_str"
         case asset
         case notificationType
     }

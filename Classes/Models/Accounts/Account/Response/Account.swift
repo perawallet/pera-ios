@@ -176,6 +176,29 @@ extension Account {
             self.appsTotalSchema = nil
             self.createdApps = nil
         }
+
+        private enum CodingKeys: String, CodingKey {
+            case address
+            case amount
+            case status
+            case rewards
+            case amountWithoutPendingRewards = "amount-without-pending-rewards"
+            case pendingRewards = "pending-rewards"
+            case rewardBase = "reward-base"
+            case participation
+            case createdAssets = "created-assets"
+            case assets
+            case sigType = "sig-type"
+            case round
+            case authAddr = "auth-addr"
+            case createdAtRound = "created-at-round"
+            case closedAtRound = "closed-at-round"
+            case deleted
+            case appsLocalState = "apps-local-state"
+            case appsTotalExtraPages = "apps-total-extra-pages"
+            case appsTotalSchema = "apps-total-schema"
+            case createdApps = "created-apps"
+        }
     }
 }
 

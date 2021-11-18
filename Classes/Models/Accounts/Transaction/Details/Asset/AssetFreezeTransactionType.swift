@@ -36,7 +36,7 @@ extension AssetFreezeTransaction {
         String,
         CodingKey {
         case address
-        case isFreeze = "newFreezeStatus"
-        case assetId
+        case isFreeze = "new-freeze-status"
+        case assetId = "asset-id"
     }
 }

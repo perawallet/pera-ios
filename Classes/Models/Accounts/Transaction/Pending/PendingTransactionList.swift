@@ -47,5 +47,10 @@ extension PendingTransactionList {
             self.topTransactions = []
             self.totalTransactions = nil
         }
+
+        private enum CodingKeys: String, CodingKey {
+            case topTransactions = "top-transactions"
+            case totalTransactions = "total-transactions"
+        }
     }
 }

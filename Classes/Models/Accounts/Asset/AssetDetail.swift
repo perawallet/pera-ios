@@ -48,6 +48,11 @@ extension AssetDetailResponse {
             self.currentRound = nil
         }
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case asset
+        case currentRound = "current-round"
+    }
 }
 
 final class AssetDetail: ALGEntityModel {
@@ -248,5 +253,20 @@ extension AssetDetail.APIModel {
             self.decimals = nil
             self.deleted = nil
         }
+    }
+
+    private enum ParamsCodingKeys: String, CodingKey {
+        case creator
+        case total
+        case defaultFrozen = "default-frozen"
+        case unitName = "unit-name"
+        case name
+        case url
+        case manager
+        case reserve
+        case freeze
+        case clawback
+        case decimals
+        case deleted
     }
 }

@@ -40,6 +40,6 @@ extension AlgorandError {
         String,
         CodingKey {
         case type
-        case message = "fallbackMessage"
+        case message = "fallback_message"
     }
 }

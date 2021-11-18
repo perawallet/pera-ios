@@ -67,5 +67,14 @@ extension AssetTransferTransaction {
             self.receiver = nil
             self.sender = nil
         }
+
+        private enum CodingKeys: String, CodingKey {
+            case amount
+            case closeAmount = "close-amount"
+            case closeTo = "close-to"
+            case assetId = "asset-id"
+            case receiver
+            case sender
+        }
     }
 }

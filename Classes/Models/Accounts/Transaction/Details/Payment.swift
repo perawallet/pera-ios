@@ -75,4 +75,11 @@ extension Payment {
             self.closeRemainderTo = nil
         }
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case amount = "amount"
+        case receiver = "receiver"
+        case closeAmount = "close-amount"
+        case closeRemainderTo = "close-remainder-to"
+    }
 }

@@ -53,4 +53,10 @@ extension RekeyedAccountsResponse {
             self.nextToken = nil
         }
     }
+
+    private enum CodingKeys: String, CodingKey {
+        case accounts
+        case currentRound = "current-round"
+        case nextToken = "next-token"
+    }
 }

@@ -39,9 +39,9 @@ extension NotificationAsset {
     private enum CodingKeys:
         String,
         CodingKey {
-        case id = "assetId"
-        case name = "assetName"
-        case code = "unitName"
+        case id = "asset_id"
+        case name = "asset_name"
+        case code = "unit_name"
         case url
         case fractionDecimals
     }

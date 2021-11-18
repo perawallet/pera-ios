@@ -33,7 +33,7 @@ extension ApplicationStateSchema {
     enum CodingKeys:
         String,
         CodingKey {
-        case intValue = "numUint"
-        case byteSliceCount = "numByteSlice"
+        case intValue = "num-uint"
+        case byteSliceCount = "num-byte-slice"
     }
 }

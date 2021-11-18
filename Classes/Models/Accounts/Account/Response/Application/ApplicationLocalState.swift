@@ -31,10 +31,10 @@ extension ApplicationLocalState {
     private enum CodingKeys:
         String,
         CodingKey {
-        case closedAtRound = "closedOutAtRound"
+        case closedAtRound = "closed-out-at-round"
         case isDeleted = "deleted"
         case id
-        case optedInAtRound
+        case optedInAtRound = "opted-in-at-round"
         case schema
     }
 }
