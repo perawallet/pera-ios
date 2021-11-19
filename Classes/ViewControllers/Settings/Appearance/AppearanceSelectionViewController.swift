@@ -60,10 +60,10 @@ extension AppearanceSelectionViewController: UICollectionViewDataSource {
                 withReuseIdentifier: SingleSelectionCell.reusableIdentifier,
                 for: indexPath
             ) as? SingleSelectionCell {
-            
-            let isSelected = session?.userInterfaceStyle == appearance
-            cell.contextView.bind(SingleSelectionViewModel(title: appearance.representation(), isSelected: isSelected))
-            return cell
+                let isSelected = session?.userInterfaceStyle == appearance
+                cell.customize(SingleSelectionViewTheme())
+                cell.bindData(SingleSelectionViewModel(title: appearance.representation(), isSelected: isSelected))
+                return cell
         }
     
         fatalError("Index path is out of bounds")
@@ -85,7 +85,7 @@ extension AppearanceSelectionViewController: UICollectionViewDelegateFlowLayout 
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 72.0)
+        return CGSize(width: UIScreen.main.bounds.width, height: 64.0)
     }
 }
 

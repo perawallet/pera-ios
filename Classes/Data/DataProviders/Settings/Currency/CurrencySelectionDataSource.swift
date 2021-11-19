@@ -61,7 +61,8 @@ extension CurrencySelectionDataSource: UICollectionViewDataSource {
                 for: indexPath
             ) as? SingleSelectionCell {
                 let isSelected = api.session.preferredCurrency == currency.id
-                cell.contextView.bind(SingleSelectionViewModel(title: currency.name, isSelected: isSelected))
+                cell.customize(SingleSelectionViewTheme())
+                cell.bindData(SingleSelectionViewModel(title: currency.name, isSelected: isSelected))
                 return cell
         }
     

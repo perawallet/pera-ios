@@ -100,7 +100,7 @@ extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 60.0)
+        return CGSize(width: UIScreen.main.bounds.width, height: 64.0)
     }
 }
 

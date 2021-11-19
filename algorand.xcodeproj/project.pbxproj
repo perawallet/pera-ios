@@ -25,6 +25,9 @@
 		048B3C1E27229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */; };
 		048B3C1F27229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */; };
 		048B3C2027229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */; };
+		049391E82747AC3400BB70A1 /* SingleSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049391E72747AC3400BB70A1 /* SingleSelectionViewTheme.swift */; };
+		049391E92747AC3400BB70A1 /* SingleSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049391E72747AC3400BB70A1 /* SingleSelectionViewTheme.swift */; };
+		049391EA2747AC3400BB70A1 /* SingleSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049391E72747AC3400BB70A1 /* SingleSelectionViewTheme.swift */; };
 		170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */; };
 		170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFB224CC70A00520EA5 /* QRText.swift */; };
 		170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFD224CCBF300520EA5 /* QRView.swift */; };
@@ -3231,6 +3234,7 @@
 		048B3C1527228BC8003A5F5A /* QRAddressLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAddressLabel.swift; sourceTree = "<group>"; };
 		048B3C1927228CE5003A5F5A /* QRAddressLabelTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAddressLabelTheme.swift; sourceTree = "<group>"; };
 		048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QRCreationViewController+Theme.swift"; sourceTree = "<group>"; };
+		049391E72747AC3400BB70A1 /* SingleSelectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectionViewTheme.swift; sourceTree = "<group>"; };
 		170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationViewController.swift; sourceTree = "<group>"; };
 		170AFAFB224CC70A00520EA5 /* QRText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRText.swift; sourceTree = "<group>"; };
 		170AFAFD224CCBF300520EA5 /* QRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRView.swift; sourceTree = "<group>"; };
@@ -4432,6 +4436,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		049391E62747AC1800BB70A1 /* SingleSelection */ = {
+			isa = PBXGroup;
+			children = (
+				049391EB2747CC7500BB70A1 /* Cell */,
+				049391EC2747CC8A00BB70A1 /* List */,
+			);
+			path = SingleSelection;
+			sourceTree = "<group>";
+		};
+		049391EB2747CC7500BB70A1 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				2BDD43E02513A87800C6D3B5 /* SingleSelectionCell.swift */,
+				2BDD43D92513A86900C6D3B5 /* SingleSelectionView.swift */,
+				049391E72747AC3400BB70A1 /* SingleSelectionViewTheme.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		049391EC2747CC8A00BB70A1 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2BDD43D22513A84200C6D3B5 /* SingleSelectionListView.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
 		04A6FB372733653000922EC7 /* QRCreation */ = {
 			isa = PBXGroup;
 			children = (
@@ -8752,9 +8783,7 @@
 		2BDD43CF2513A81F00C6D3B5 /* Selection */ = {
 			isa = PBXGroup;
 			children = (
-				2BDD43D22513A84200C6D3B5 /* SingleSelectionListView.swift */,
-				2BDD43D92513A86900C6D3B5 /* SingleSelectionView.swift */,
-				2BDD43E02513A87800C6D3B5 /* SingleSelectionCell.swift */,
+				049391E62747AC1800BB70A1 /* SingleSelection */,
 			);
 			path = Selection;
 			sourceTree = "<group>";
@@ -12309,6 +12338,7 @@
 				2B3E228126C0843500ED0AAF /* WCAppCallTransactionItemViewModel.swift in Sources */,
 				2B0322DB269F1BB600C9B2F5 /* WCMainTransactionViewController.swift in Sources */,
 				D44EF48F271ADB6A00AF0D5C /* AlgoStatisticsViewTheme.swift in Sources */,
+				049391EA2747AC3400BB70A1 /* SingleSelectionViewTheme.swift in Sources */,
 				046E823C271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift in Sources */,
 				2BF90F7625FC0BC70033F348 /* AccountRecoverDataController.swift in Sources */,
 				2BB350C625892BD900A03BAC /* WrappedStackView.swift in Sources */,
@@ -13156,6 +13186,7 @@
 				2B7E585E25866DA400731C97 /* LedgerAccountCell.swift in Sources */,
 				D479D0FD26D4FB1F00110E04 /* BannerViewModel.swift in Sources */,
 				2B83502326AC23540014F9CD /* WCSingleTransactionViewModel.swift in Sources */,
+				049391E92747AC3400BB70A1 /* SingleSelectionViewTheme.swift in Sources */,
 				2B0F629224EC129D00DA22A6 /* TransactionDetailViewModel.swift in Sources */,
 				2B9E2F5126F0F2A0003D824A /* WCAssetConfigTransactionItemViewModel.swift in Sources */,
 				2BD6AB7926EA3702001C4257 /* ALGAPIInterceptor.swift in Sources */,
@@ -14314,6 +14345,7 @@
 				2B0F5EFA24DD509D00DA22A6 /* RekeyConfirmationViewModel.swift in Sources */,
 				2BECB4DD25A12C3A0081870A /* NotificationFilterListLayout.swift in Sources */,
 				2B0F635624ED0CFC00DA22A6 /* RekeyedAccountQuery.swift in Sources */,
+				049391E82747AC3400BB70A1 /* SingleSelectionViewTheme.swift in Sources */,
 				2BD5A6BA26334BB80048FA5E /* AlgosUSDValueInterval.swift in Sources */,
 				2B3A95E6238FF99C00A3DF44 /* TransactionControllerDelegate.swift in Sources */,
 				2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */,

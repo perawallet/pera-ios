@@ -17,10 +17,12 @@
 
 import UIKit
 
-class SingleSelectionCell: BaseCollectionViewCell<SingleSelectionView> {
+final class SingleSelectionCell: BaseCollectionViewCell<SingleSelectionView> {
+    func customize(_ theme: SingleSelectionViewTheme) {
+        contextView.customize(theme)
+    }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contextView.clear()
+    func bindData(_ viewModel: SingleSelectionViewModel) {
+        contextView.bind(viewModel)
     }
 }
