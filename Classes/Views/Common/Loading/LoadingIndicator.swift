@@ -30,7 +30,7 @@ class LoadingIndicator: BaseView {
     
     private(set) lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
-        indicator.style = .gray
+        indicator.style = .medium
         indicator.hidesWhenStopped = true
         indicator.isHidden = true
         return indicator

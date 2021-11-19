@@ -28,7 +28,11 @@ extension UIApplication {
     }
     
     var isPortrait: Bool {
-        switch statusBarOrientation {
+        guard let orientation = windows.first?.windowScene?.interfaceOrientation else {
+            return true
+        }
+
+        switch orientation {
         case .portrait,
              .portraitUpsideDown:
             return true
@@ -38,7 +42,11 @@ extension UIApplication {
     }
     
     var isLandscape: Bool {
-        switch statusBarOrientation {
+        guard let orientation = windows.first?.windowScene?.interfaceOrientation else {
+            return false
+        }
+
+        switch orientation {
         case .landscapeLeft,
              .landscapeRight:
             return true
@@ -83,11 +91,11 @@ extension UIApplication {
     }
     
     func rootViewController() -> RootViewController? {
-        return keyWindow?.rootViewController as? RootViewController
+        return windows.last?.rootViewController as? RootViewController
     }
     
     var safeAreaBottom: CGFloat {
-        guard let window = UIApplication.shared.keyWindow else {
+        guard let window = UIApplication.shared.windows.last else {
             return 0.0
         }
         
@@ -95,7 +103,7 @@ extension UIApplication {
     }
     
     var safeAreaTop: CGFloat {
-        guard let window = UIApplication.shared.keyWindow else {
+        guard let window = UIApplication.shared.windows.last else {
             return 0.0
         }
         

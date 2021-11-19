@@ -68,8 +68,7 @@ extension AlgoExplorerLabel {
     private func showMenuController() {
         if let superView = superview {
             let menuController = UIMenuController.shared
-            menuController.setTargetRect(frame, in: superView)
-            menuController.setMenuVisible(true, animated: true)
+            menuController.showMenu(from: superView, rect: frame)
             becomeFirstResponder()
         }
     }

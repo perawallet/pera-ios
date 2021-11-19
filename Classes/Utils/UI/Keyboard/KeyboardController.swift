@@ -139,7 +139,7 @@ extension KeyboardController {
         
         dataSource.scrollView.contentInset = contentInset
         
-        var scrollIndicatorInsets = dataSource.scrollView.scrollIndicatorInsets
+        var scrollIndicatorInsets = dataSource.scrollView.verticalScrollIndicatorInsets
         scrollIndicatorInsets.bottom = bottomInset
         
         dataSource.scrollView.scrollIndicatorInsets = scrollIndicatorInsets
@@ -155,7 +155,7 @@ extension KeyboardController {
         
         dataSource.scrollView.contentInset = contentInset
         
-        var scrollIndicatorInsets = dataSource.scrollView.scrollIndicatorInsets
+        var scrollIndicatorInsets = dataSource.scrollView.verticalScrollIndicatorInsets
         scrollIndicatorInsets.bottom = dataSource.bottomInsetWhenKeyboardDismissed(for: self)
         
         dataSource.scrollView.scrollIndicatorInsets = scrollIndicatorInsets
