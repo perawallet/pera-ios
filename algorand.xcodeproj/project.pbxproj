@@ -2467,7 +2467,7 @@
 		95C4C16F242CE01B005A57BB /* CBManagerState+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C4C16D242CE01B005A57BB /* CBManagerState+Error.swift */; };
 		95E3152F243234A4008D79D4 /* bluetooth_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 95E3152E243234A3008D79D4 /* bluetooth_animation.json */; };
 		95E31530243234A4008D79D4 /* bluetooth_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 95E3152E243234A3008D79D4 /* bluetooth_animation.json */; };
-		97F637CB9A81E02C6567D1FE /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
+		97F637CB9A81E02C6567D1FE /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		CB3AEBD32743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB3AEBD22743A6F500F85246 /* AlgoSDK.xcframework */; };
 		CB3AEBD42743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB3AEBD22743A6F500F85246 /* AlgoSDK.xcframework */; };
 		CB3AEBD52743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB3AEBD22743A6F500F85246 /* AlgoSDK.xcframework */; };
@@ -2564,9 +2564,9 @@
 		D400856D271D5188007C0C97 /* AlgoStatisticsDateSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400856C271D5188007C0C97 /* AlgoStatisticsDateSelectionView.swift */; };
 		D400856E271D5188007C0C97 /* AlgoStatisticsDateSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400856C271D5188007C0C97 /* AlgoStatisticsDateSelectionView.swift */; };
 		D400856F271D5188007C0C97 /* AlgoStatisticsDateSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D400856C271D5188007C0C97 /* AlgoStatisticsDateSelectionView.swift */; };
-		D4008571271D6003007C0C97 /* StatisticsDateSelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4008570271D6003007C0C97 /* StatisticsDateSelectionViewController+Theme.swift */; };
-		D4008572271D6003007C0C97 /* StatisticsDateSelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4008570271D6003007C0C97 /* StatisticsDateSelectionViewController+Theme.swift */; };
-		D4008573271D6003007C0C97 /* StatisticsDateSelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4008570271D6003007C0C97 /* StatisticsDateSelectionViewController+Theme.swift */; };
+		D4008571271D6003007C0C97 /* AlgoStatisticsDateSelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4008570271D6003007C0C97 /* AlgoStatisticsDateSelectionViewController+Theme.swift */; };
+		D4008572271D6003007C0C97 /* AlgoStatisticsDateSelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4008570271D6003007C0C97 /* AlgoStatisticsDateSelectionViewController+Theme.swift */; };
+		D4008573271D6003007C0C97 /* AlgoStatisticsDateSelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4008570271D6003007C0C97 /* AlgoStatisticsDateSelectionViewController+Theme.swift */; };
 		D4008575271D707F007C0C97 /* AlgoStatisticsDateOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4008574271D707F007C0C97 /* AlgoStatisticsDateOptionCell.swift */; };
 		D4008576271D707F007C0C97 /* AlgoStatisticsDateOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4008574271D707F007C0C97 /* AlgoStatisticsDateOptionCell.swift */; };
 		D4008577271D707F007C0C97 /* AlgoStatisticsDateOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4008574271D707F007C0C97 /* AlgoStatisticsDateOptionCell.swift */; };
@@ -4105,7 +4105,7 @@
 		D4006DDE2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LedgerAccountDetailViewController+Theme.swift"; sourceTree = "<group>"; };
 		D4008568271D4E4E007C0C97 /* AlgoStatisticsDateSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoStatisticsDateSelectionViewController.swift; sourceTree = "<group>"; };
 		D400856C271D5188007C0C97 /* AlgoStatisticsDateSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoStatisticsDateSelectionView.swift; sourceTree = "<group>"; };
-		D4008570271D6003007C0C97 /* StatisticsDateSelectionViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StatisticsDateSelectionViewController+Theme.swift"; sourceTree = "<group>"; };
+		D4008570271D6003007C0C97 /* AlgoStatisticsDateSelectionViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlgoStatisticsDateSelectionViewController+Theme.swift"; sourceTree = "<group>"; };
 		D4008574271D707F007C0C97 /* AlgoStatisticsDateOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoStatisticsDateOptionCell.swift; sourceTree = "<group>"; };
 		D4008578271D70A7007C0C97 /* AlgoStatisticsDateOptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoStatisticsDateOptionView.swift; sourceTree = "<group>"; };
 		D400857C271D7C0D007C0C97 /* AlgoStatisticsDateOptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoStatisticsDateOptionViewModel.swift; sourceTree = "<group>"; };
@@ -4368,7 +4368,7 @@
 				CBAD47132745434A00C91946 /* MagpieExceptions in Frameworks */,
 				CBAD47202745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
 				CBAD47172745434A00C91946 /* Lottie in Frameworks */,
-				97F637CB9A81E02C6567D1FE /* BuildFile in Frameworks */,
+				97F637CB9A81E02C6567D1FE /* (null) in Frameworks */,
 				CBAD471F2745434A00C91946 /* MacaroonBanner in Frameworks */,
 				CBAD47292745434A00C91946 /* MacaroonVendors in Frameworks */,
 				CB3AEBD42743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */,
@@ -4510,15 +4510,6 @@
 			path = Libraries;
 			sourceTree = "<group>";
 		};
-		1761B3C9224A39C500C6BA47 /* Passphrase */ = {
-			isa = PBXGroup;
-			children = (
-				2B9EF2CF25D3D17A004BCCC4 /* Verify */,
-				2B65602425CE1DDD0028FE12 /* PassphraseCellViewModel.swift */,
-			);
-			path = Passphrase;
-			sourceTree = "<group>";
-		};
 		17AA1B0222660E43000B0BB0 /* Formatter */ = {
 			isa = PBXGroup;
 			children = (
@@ -4530,6 +4521,7 @@
 		17B7D8A42240D79200A6FF9E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				2B59F1372254BABF005203DD /* algorand.xcdatamodeld */,
 				2B9A3E7626E7C7A200B050ED /* ALGAPIModel.swift */,
 				2B9A3E7A26E7C7C500B050ED /* ALGEntityModel.swift */,
 				2B4DF439236C787600FF9551 /* Accounts */,
@@ -4574,23 +4566,6 @@
 				17AA1B0922662BD1000B0BB0 /* Decimal+Additions.swift */,
 			);
 			path = Numbers;
-			sourceTree = "<group>";
-		};
-		17F9E9202257894B004CDF24 /* Operations */ = {
-			isa = PBXGroup;
-			children = (
-				2B4DF42B236C771300FF9551 /* Account */,
-				17F9E9212257895A004CDF24 /* AsyncOperation.swift */,
-			);
-			path = Operations;
-			sourceTree = "<group>";
-		};
-		17F9E925225796CF004CDF24 /* Managers */ = {
-			isa = PBXGroup;
-			children = (
-				17F9E926225796DA004CDF24 /* AccountManager.swift */,
-			);
-			path = Managers;
 			sourceTree = "<group>";
 		};
 		18138462269F231900AEEC2F /* WarningAlert */ = {
@@ -4638,16 +4613,8 @@
 		2B01FE5726147FC8006C3C56 /* Options */ = {
 			isa = PBXGroup;
 			children = (
-				2B01FE5826147FD7006C3C56 /* AccountRecoverOptionsViewController.swift */,
-				D411B36C26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift */,
-			);
-			path = Options;
-			sourceTree = "<group>";
-		};
-		2B01FE6426148477006C3C56 /* Options */ = {
-			isa = PBXGroup;
-			children = (
-				2B01FE6526148482006C3C56 /* AccountRecoverOptionsViewModel.swift */,
+				2BF728172747247B00CCAC30 /* Screens */,
+				2BF728242747263D00CCAC30 /* ViewModels */,
 			);
 			path = Options;
 			sourceTree = "<group>";
@@ -4667,20 +4634,12 @@
 			path = WalletConnect;
 			sourceTree = "<group>";
 		};
-		2B0322D6269F1B8200C9B2F5 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				2B0322EA269F3DD100C9B2F5 /* Header */,
-				2B68A23226A6A0F70076BD82 /* Item */,
-				2B0322DC269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
 		2B0322D7269F1B9A00C9B2F5 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				2B0322D8269F1BB600C9B2F5 /* WCMainTransactionViewController.swift */,
+				2BF727ED27471A9100CCAC30 /* Screens */,
+				2BF7280127471BD100CCAC30 /* ViewModels */,
+				2BF7280027471BCD00CCAC30 /* Views */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -4707,16 +4666,6 @@
 				2BD36E2626846F5600C57728 /* WCMainTransactionHeaderViewModel.swift */,
 			);
 			path = Header;
-			sourceTree = "<group>";
-		};
-		2B0322EF269F3E3900C9B2F5 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				2B0322F0269F3E4200C9B2F5 /* Header */,
-				2B68A22926A5D8B40076BD82 /* Item */,
-				2B68A23726A6D96E0076BD82 /* WCMainTransactionView.swift */,
-			);
-			path = Main;
 			sourceTree = "<group>";
 		};
 		2B0322F0269F3E4200C9B2F5 /* Header */ = {
@@ -5005,42 +4954,6 @@
 			path = Rekey;
 			sourceTree = "<group>";
 		};
-		2B0F7DFC25D6DBC900B16B85 /* Welcome */ = {
-			isa = PBXGroup;
-			children = (
-				2B0F7DFE25D6DBE800B16B85 /* WelcomeView.swift */,
-				D44EB6AE26DF73FF0008E234 /* WelcomeViewTheme.swift */,
-			);
-			path = Welcome;
-			sourceTree = "<group>";
-		};
-		2B0F7DFD25D6DBD200B16B85 /* AddAccount */ = {
-			isa = PBXGroup;
-			children = (
-				2B5BE09E251938E100324BEE /* AddAccountView.swift */,
-				D430A40026DF9F8200F34804 /* AddAccountViewTheme.swift */,
-			);
-			path = AddAccount;
-			sourceTree = "<group>";
-		};
-		2B0F7E1225D6E36F00B16B85 /* Welcome */ = {
-			isa = PBXGroup;
-			children = (
-				2B0F7E1C25D6E3C100B16B85 /* WelcomeViewController.swift */,
-				D46C648426E614C500FBAC6D /* WelcomeViewController+Theme.swift */,
-			);
-			path = Welcome;
-			sourceTree = "<group>";
-		};
-		2B0F7E1325D6E37500B16B85 /* AddAccount */ = {
-			isa = PBXGroup;
-			children = (
-				2B5BE05E25190A0500324BEE /* AddAccountViewController.swift */,
-				D46C648826E6151800FBAC6D /* AddAccountViewController+Theme.swift */,
-			);
-			path = AddAccount;
-			sourceTree = "<group>";
-		};
 		2B101AEE2701273B004D2E47 /* Governance */ = {
 			isa = PBXGroup;
 			children = (
@@ -5310,34 +5223,6 @@
 				2B343CDE259D151E001EA8C8 /* LedgerAccountDetailViewDataSource.swift */,
 			);
 			path = Detail;
-			sourceTree = "<group>";
-		};
-		2B343CEE259D1739001EA8C8 /* Filter */ = {
-			isa = PBXGroup;
-			children = (
-				2B343CEF259D174A001EA8C8 /* AccountNameSwitchViewModel.swift */,
-				2BECB4CB25A0F8DB0081870A /* TitledToggleViewModel.swift */,
-			);
-			path = Filter;
-			sourceTree = "<group>";
-		};
-		2B343CF9259D175B001EA8C8 /* Filter */ = {
-			isa = PBXGroup;
-			children = (
-				2BECB4A425A0F04E0081870A /* Cell */,
-				2BECB4A325A0F0490081870A /* Header */,
-			);
-			path = Filter;
-			sourceTree = "<group>";
-		};
-		2B343D09259D17A9001EA8C8 /* Filter */ = {
-			isa = PBXGroup;
-			children = (
-				2B343D0A259D17B0001EA8C8 /* NotificationFilterViewController.swift */,
-				D48D11EA274297BA000061CE /* NotificationFilterView.swift */,
-				D48D11EE2742984E000061CE /* NotificationFilterViewTheme.swift */,
-			);
-			path = Filter;
 			sourceTree = "<group>";
 		};
 		2B344B14268A0F6600DA7B25 /* Transaction */ = {
@@ -5846,7 +5731,8 @@
 				2BF811CD25E5B53400D6B406 /* TransactionTutorial */,
 				2B59F15D22552845005203DD /* DBStorable.swift */,
 			);
-			path = Storable;
+			name = Storable;
+			path = ../Data/Storable;
 			sourceTree = "<group>";
 		};
 		2B4DF409236C5F4F00FF9551 /* Routing */ = {
@@ -5865,41 +5751,6 @@
 				2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */,
 			);
 			path = DeepLink;
-			sourceTree = "<group>";
-		};
-		2B4DF40B236C686D00FF9551 /* List */ = {
-			isa = PBXGroup;
-			children = (
-				2BF71911224ECFEC001E8420 /* ContactsView.swift */,
-				D49D31E22725A9BD00AADE9A /* ContactsViewTheme.swift */,
-				2B8E7C92246AD8B800CC5A58 /* ContactsEmptyView.swift */,
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		2B4DF40C236C687300FF9551 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				2BB6EE53239339C600CF7874 /* Cell */,
-				2BF7190D224ECF4A001E8420 /* ContactDetailView.swift */,
-				D4C45BEE2726B59D00F4AE31 /* ContactDetailViewTheme.swift */,
-				2BF7190F224ECFAF001E8420 /* UserInformationView.swift */,
-				D4C45BF22726C54800F4AE31 /* ContactInformationView.swift */,
-				D4C45BF62726C60500F4AE31 /* ContactInformationViewTheme.swift */,
-				D4C45BFA2726E2A600F4AE31 /* ContactInformationViewModel.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
-		2B4DF40D236C688300FF9551 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				2BF7190B224ECF30001E8420 /* AddContactView.swift */,
-				D4822734272BF37F004CB9BF /* AddContactViewTheme.swift */,
-				D4822738272BFC3F004CB9BF /* BadgedImageVIew.swift */,
-				D482273C272C0DA8004CB9BF /* BadgedImageViewTheme.swift */,
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 		2B4DF412236C6A5800FF9551 /* Node */ = {
@@ -6011,33 +5862,6 @@
 			path = Node;
 			sourceTree = "<group>";
 		};
-		2B4DF425236C766200FF9551 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				2BF71917224ED0C5001E8420 /* ContactDetailViewController.swift */,
-				D446A744272AB3310081D60B /* ContactDetailViewController+Theme.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
-		2B4DF426236C766700FF9551 /* List */ = {
-			isa = PBXGroup;
-			children = (
-				2BF5317D224AA8B700A7455F /* ContactsViewController.swift */,
-				2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */,
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		2B4DF427236C767500FF9551 /* Add */ = {
-			isa = PBXGroup;
-			children = (
-				2BF71915224ED0A6001E8420 /* AddContactViewController.swift */,
-				D4822740272C5591004CB9BF /* AddContactViewController+Theme.swift */,
-			);
-			path = Add;
-			sourceTree = "<group>";
-		};
 		2B4DF428236C76A500FF9551 /* Storable */ = {
 			isa = PBXGroup;
 			children = (
@@ -6053,14 +5877,6 @@
 				1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */,
 			);
 			path = Session;
-			sourceTree = "<group>";
-		};
-		2B4DF42B236C771300FF9551 /* Account */ = {
-			isa = PBXGroup;
-			children = (
-				17F9E923225789E7004CDF24 /* AccountFetchOperation.swift */,
-			);
-			path = Account;
 			sourceTree = "<group>";
 		};
 		2B4DF42C236C772300FF9551 /* Account */ = {
@@ -6279,25 +6095,6 @@
 			path = Ledger;
 			sourceTree = "<group>";
 		};
-		2B4EEEBC24BDFFE700059A16 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				2B4EEEBD24BDFFF700059A16 /* NotificationView.swift */,
-				D48D11CE27425368000061CE /* NotificationViewTheme.swift */,
-				2B4EEEC024BE001D00059A16 /* NotificationCell.swift */,
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
-		2B4EEEC324BE006A00059A16 /* Notifications */ = {
-			isa = PBXGroup;
-			children = (
-				2B343CEE259D1739001EA8C8 /* Filter */,
-				2B4EEEC424BE008500059A16 /* NotificationsViewModel.swift */,
-			);
-			path = Notifications;
-			sourceTree = "<group>";
-		};
 		2B4EEECA24C105D300059A16 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -6481,50 +6278,6 @@
 			path = Container;
 			sourceTree = "<group>";
 		};
-		2B5BE0422518E4AD00324BEE /* WatchAccount */ = {
-			isa = PBXGroup;
-			children = (
-				2B5BE03B2518E4A900324BEE /* WatchAccountAdditionView.swift */,
-				D4BF4A1B26F49E36009B53D8 /* WatchAccountAdditionViewModel.swift */,
-				D4241FE426E7D69B0064CDD0 /* WatchAccountAdditionViewTheme.swift */,
-			);
-			path = WatchAccount;
-			sourceTree = "<group>";
-		};
-		2B5BE0572518E4F500324BEE /* WatchAccount */ = {
-			isa = PBXGroup;
-			children = (
-				2B5BE0502518E4F200324BEE /* WatchAccountAdditionViewController.swift */,
-				D45E191226E91ECD00A32744 /* WatchAccountAdditionViewController+Theme.swift */,
-			);
-			path = WatchAccount;
-			sourceTree = "<group>";
-		};
-		2B5BE06525190B7200324BEE /* AccountType */ = {
-			isa = PBXGroup;
-			children = (
-				2B5BE06625190B7D00324BEE /* AccountTypeView.swift */,
-				D44EB6B226DF7A390008E234 /* AccountTypeViewTheme.swift */,
-			);
-			path = AccountType;
-			sourceTree = "<group>";
-		};
-		2B5BE06D2519355000324BEE /* Introduction */ = {
-			isa = PBXGroup;
-			children = (
-				2B5BE06E2519355700324BEE /* AccountType */,
-			);
-			path = Introduction;
-			sourceTree = "<group>";
-		};
-		2B5BE06E2519355700324BEE /* AccountType */ = {
-			isa = PBXGroup;
-			children = (
-				2B5BE06F2519356000324BEE /* AccountTypeViewModel.swift */,
-			);
-			path = AccountType;
-			sourceTree = "<group>";
-		};
 		2B5BE14C251B731300324BEE /* Currency */ = {
 			isa = PBXGroup;
 			children = (
@@ -6632,7 +6385,6 @@
 			isa = PBXGroup;
 			children = (
 				2B656E9D224BCB010064A49B /* AccountList */,
-				2BA17300264B17DF00A613C4 /* Statistics */,
 				2B44873123799D8000C19FDE /* Assets */,
 				2B432A4D237C4F4A009191BF /* List */,
 				2B5DA9CF224CCC6F00EE41B4 /* Options */,
@@ -6699,14 +6451,6 @@
 				2B65B1FD225268DA001DB5BE /* UIImage+Size.swift */,
 			);
 			path = Image;
-			sourceTree = "<group>";
-		};
-		2B65B1FF22527B89001DB5BE /* Contacts */ = {
-			isa = PBXGroup;
-			children = (
-				2B82B1CB2253DE2500A8909F /* ContactsViewModel.swift */,
-			);
-			path = Contacts;
 			sourceTree = "<group>";
 		};
 		2B6607E1241134F8002AC00F /* Approval */ = {
@@ -6806,7 +6550,9 @@
 		2B77470B25FFDB430083EFFA /* Suggestion */ = {
 			isa = PBXGroup;
 			children = (
-				2B77470C25FFDB640083EFFA /* InputSuggestionViewController.swift */,
+				2BF728162747247100CCAC30 /* Screens */,
+				2BF728262747265000CCAC30 /* ViewModels */,
+				2BF72833274728CA00CCAC30 /* Views */,
 			);
 			path = Suggestion;
 			sourceTree = "<group>";
@@ -6832,23 +6578,6 @@
 			children = (
 				2B77472725FFE88C0083EFFA /* InputSuggestionDataSource.swift */,
 				2B7747A626026F9B0083EFFA /* InputSuggestionsDataController.swift */,
-			);
-			path = Suggestion;
-			sourceTree = "<group>";
-		};
-		2B77473325FFE9220083EFFA /* Suggestion */ = {
-			isa = PBXGroup;
-			children = (
-				2B77473425FFE92E0083EFFA /* InputSuggestionView.swift */,
-				2B77474025FFE94F0083EFFA /* InputSuggestionCell.swift */,
-			);
-			path = Suggestion;
-			sourceTree = "<group>";
-		};
-		2B77474825FFE9750083EFFA /* Suggestion */ = {
-			isa = PBXGroup;
-			children = (
-				2B77474925FFE97E0083EFFA /* InputSuggestionViewModel.swift */,
 			);
 			path = Suggestion;
 			sourceTree = "<group>";
@@ -6894,99 +6623,12 @@
 			path = Empty;
 			sourceTree = "<group>";
 		};
-		2B7E3019267A462600E89EE3 /* Transaction */ = {
-			isa = PBXGroup;
-			children = (
-				2B7E3030267A514B00E89EE3 /* WCSingleTransactionView.swift */,
-				2BD36DC0267CCBB400C57728 /* Algos */,
-				2BD36DFA2681DB4100C57728 /* AppCall */,
-				2BD36DBF267CCB9400C57728 /* Asset */,
-				2BD36DC1267CCBC100C57728 /* AssetAddition */,
-				2B9E2F3B26F0D2B0003D824A /* AssetConfig */,
-				2B7E303C267A519F00E89EE3 /* Common */,
-				2B7E301C267A463800E89EE3 /* Group */,
-				2B0322EF269F3E3900C9B2F5 /* Main */,
-			);
-			path = Transaction;
-			sourceTree = "<group>";
-		};
-		2B7E301C267A463800E89EE3 /* Group */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36E1C2684660100C57728 /* Header */,
-				2B7E303D267A51E200E89EE3 /* Item */,
-				2B7E3038267A518800E89EE3 /* WCGroupTransactionView.swift */,
-			);
-			path = Group;
-			sourceTree = "<group>";
-		};
-		2B7E301E267A493300E89EE3 /* Transaction */ = {
-			isa = PBXGroup;
-			children = (
-				2B7E3022267A496800E89EE3 /* Algos */,
-				2BD36E032681DBAD00C57728 /* AppCall */,
-				2B7E3021267A496400E89EE3 /* Asset */,
-				2B7E3020267A495B00E89EE3 /* AssetAddition */,
-				2B9E2F4026F0D328003D824A /* AssetConfig */,
-				2B7E3053267A5D8500E89EE3 /* Common */,
-				2B7E301F267A494E00E89EE3 /* Group */,
-				2B0322D6269F1B8200C9B2F5 /* Main */,
-			);
-			path = Transaction;
-			sourceTree = "<group>";
-		};
-		2B7E301F267A494E00E89EE3 /* Group */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36E2526846F4A00C57728 /* Header */,
-				2B7E304A267A5D4C00E89EE3 /* Item */,
-			);
-			path = Group;
-			sourceTree = "<group>";
-		};
-		2B7E3020267A495B00E89EE3 /* AssetAddition */ = {
-			isa = PBXGroup;
-			children = (
-				2B7E3064267A5E4400E89EE3 /* WCAssetAdditionTransactionViewModel.swift */,
-			);
-			path = AssetAddition;
-			sourceTree = "<group>";
-		};
-		2B7E3021267A496400E89EE3 /* Asset */ = {
-			isa = PBXGroup;
-			children = (
-				2B7E3058267A5DBF00E89EE3 /* WCAssetTransactionViewModel.swift */,
-			);
-			path = Asset;
-			sourceTree = "<group>";
-		};
-		2B7E3022267A496800E89EE3 /* Algos */ = {
-			isa = PBXGroup;
-			children = (
-				2B7E302C267A4A2400E89EE3 /* WCAlgosTransactionViewModel.swift */,
-			);
-			path = Algos;
-			sourceTree = "<group>";
-		};
-		2B7E3023267A497800E89EE3 /* Transaction */ = {
-			isa = PBXGroup;
-			children = (
-				2B7E3024267A498000E89EE3 /* Algos */,
-				2BD36E082681DBD900C57728 /* AppCall */,
-				2B7E3027267A499100E89EE3 /* Asset */,
-				2B7E3026267A498B00E89EE3 /* AssetAddition */,
-				2B9E2F3626F0D27A003D824A /* AssetConfig */,
-				2B7E307C267B64F800E89EE3 /* Common */,
-				2B7E3025267A498500E89EE3 /* Group */,
-				2B0322D7269F1B9A00C9B2F5 /* Main */,
-			);
-			path = Transaction;
-			sourceTree = "<group>";
-		};
 		2B7E3024267A498000E89EE3 /* Algos */ = {
 			isa = PBXGroup;
 			children = (
-				2B7E3028267A49F900E89EE3 /* WCAlgosTransactionViewController.swift */,
+				2BF727E627471A3800CCAC30 /* Screens */,
+				2BF727F227471B3500CCAC30 /* ViewModels */,
+				2BF727F327471B3C00CCAC30 /* Views */,
 			);
 			path = Algos;
 			sourceTree = "<group>";
@@ -6994,7 +6636,9 @@
 		2B7E3025267A498500E89EE3 /* Group */ = {
 			isa = PBXGroup;
 			children = (
-				2B7E3054267A5D9D00E89EE3 /* WCGroupTransactionViewController.swift */,
+				2BF727EC27471A8B00CCAC30 /* Screens */,
+				2BF727FF27471BC300CCAC30 /* ViewModels */,
+				2BF727FE27471BBF00CCAC30 /* Views */,
 			);
 			path = Group;
 			sourceTree = "<group>";
@@ -7002,7 +6646,9 @@
 		2B7E3026267A498B00E89EE3 /* AssetAddition */ = {
 			isa = PBXGroup;
 			children = (
-				2B7E3060267A5E2500E89EE3 /* WCAssetAdditionTransactionViewController.swift */,
+				2BF727E927471A4D00CCAC30 /* Screens */,
+				2BF727F827471B6000CCAC30 /* ViewModels */,
+				2BF727F927471B6600CCAC30 /* Views */,
 			);
 			path = AssetAddition;
 			sourceTree = "<group>";
@@ -7010,19 +6656,11 @@
 		2B7E3027267A499100E89EE3 /* Asset */ = {
 			isa = PBXGroup;
 			children = (
-				2B7E305C267A5E0700E89EE3 /* WCAssetTransactionViewController.swift */,
+				2BF727E827471A4700CCAC30 /* Screens */,
+				2BF727F627471B4B00CCAC30 /* ViewModels */,
+				2BF727F727471B5200CCAC30 /* Views */,
 			);
 			path = Asset;
-			sourceTree = "<group>";
-		};
-		2B7E303C267A519F00E89EE3 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36DC6267D15A000C57728 /* Detail */,
-				2BD36DC2267D129E00C57728 /* Message */,
-				2BD36DC3267D12A500C57728 /* Warning */,
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 		2B7E303D267A51E200E89EE3 /* Item */ = {
@@ -7046,23 +6684,12 @@
 			path = Item;
 			sourceTree = "<group>";
 		};
-		2B7E3053267A5D8500E89EE3 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36DCB267E0D6000C57728 /* Detail */,
-				2B83502026AC23450014F9CD /* Header */,
-				2BD36DC4267D12B600C57728 /* Message */,
-				2BD36DC5267D12BB00C57728 /* Warning */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
 		2B7E307C267B64F800E89EE3 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				2B288AD22691126A00BC6FB6 /* Detail */,
-				2B7E307D267B651A00E89EE3 /* WCTransactionFullDappDetailViewController.swift */,
-				2B7E3081267BC0A100E89EE3 /* WCSingleTransactionViewController.swift */,
+				2BF727EB27471A5A00CCAC30 /* Screens */,
+				2BF727FD27471BBA00CCAC30 /* ViewModels */,
+				2BF727FC27471BB500CCAC30 /* Views */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -7074,17 +6701,6 @@
 				2B7E5815257E56DB00731C97 /* Int16+Byte.swift */,
 			);
 			path = Btye;
-			sourceTree = "<group>";
-		};
-		2B82B1C62253A4DA00A8909F /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				2B82B1C72253A4F000A8909F /* ContactCell.swift */,
-				2B82B1C92253A50100A8909F /* ContactContextView.swift */,
-				D49D31DA2725742500AADE9A /* ContactContextViewTheme.swift */,
-				2BDE31E22279A319002E8235 /* ContactSelectionCell.swift */,
-			);
-			path = Cell;
 			sourceTree = "<group>";
 		};
 		2B83502026AC23450014F9CD /* Header */ = {
@@ -7131,20 +6747,11 @@
 			path = QR;
 			sourceTree = "<group>";
 		};
-		2B8954A02242E77E00D6D068 /* AccountName */ = {
-			isa = PBXGroup;
-			children = (
-				2B8954A42242E7D800D6D068 /* AccountNameSetupView.swift */,
-				D4241FDC26E7999C0064CDD0 /* AccountNameSetupViewTheme.swift */,
-			);
-			path = AccountName;
-			sourceTree = "<group>";
-		};
 		2B8954A32242E7BE00D6D068 /* AccountName */ = {
 			isa = PBXGroup;
 			children = (
-				2B8954A12242E79C00D6D068 /* AccountNameSetupViewController.swift */,
-				D45E191626E91FA500A32744 /* AccountNameSetupViewController+Theme.swift */,
+				2BF728112747234700CCAC30 /* Screens */,
+				2BF7282D2747279F00CCAC30 /* Views */,
 			);
 			path = AccountName;
 			sourceTree = "<group>";
@@ -7191,22 +6798,6 @@
 			path = BottomInformation;
 			sourceTree = "<group>";
 		};
-		2B8954BC2243FEE200D6D068 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				2BF34CC1223A95A50052CAD3 /* ALGAPI.swift */,
-				2BD5A69E26332C300048FA5E /* Algos */,
-				2BD6AB6B26EA33E8001C4257 /* Main */,
-				17B7D8A72240DFFC00A6FF9E /* ALGAPI+Account.swift */,
-				173DA1E82255F7B500378A82 /* ALGAPI+Transaction.swift */,
-				2BBA1988231FEB080080A6F6 /* ALGAPI+Notification.swift */,
-				2B4BD9FC238AD7F400491149 /* ALGAPI+Assets.swift */,
-				2B5BE145251B72AB00324BEE /* ALGAPI+Currency.swift */,
-				2B9EEAD5264D33B1007A112D /* ALGAPI+Block.swift */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
 		2B8954BD2243FF0100D6D068 /* Keys */ = {
 			isa = PBXGroup;
 			children = (
@@ -7236,28 +6827,6 @@
 				2B8954C7224420B400D6D068 /* InputViewDelegate.swift */,
 			);
 			path = Input;
-			sourceTree = "<group>";
-		};
-		2B8954C922442E2B00D6D068 /* Recover */ = {
-			isa = PBXGroup;
-			children = (
-				2BF90F3725FA39A70033F348 /* Input */,
-				2B77473325FFE9220083EFFA /* Suggestion */,
-				2B8954CA224430DC00D6D068 /* AccountRecoverView.swift */,
-				D46AC87426E8DEB8008CDE68 /* AccountRecoverViewTheme.swift */,
-			);
-			path = Recover;
-			sourceTree = "<group>";
-		};
-		2B8954CC2244321E00D6D068 /* Recover */ = {
-			isa = PBXGroup;
-			children = (
-				2B01FE5726147FC8006C3C56 /* Options */,
-				2B77470B25FFDB430083EFFA /* Suggestion */,
-				2B8954CD2244323700D6D068 /* AccountRecoverViewController.swift */,
-				D46AC87C26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift */,
-			);
-			path = Recover;
 			sourceTree = "<group>";
 		};
 		2B8AD0482244F81500939ECE /* Colors */ = {
@@ -7299,16 +6868,23 @@
 		2B8BE4D022391C38005D8565 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				2BF34CB0223A77410052CAD3 /* Configuration */,
-				2B8BE4E922392674005D8565 /* Core */,
-				2BD73A0322412AA100B66EEF /* Data */,
-				2BF34C962239AA8C0052CAD3 /* Flow */,
-				2BD73A0722412AF200B66EEF /* LayoutBuilders */,
-				17F9E925225796CF004CDF24 /* Managers */,
+				2BF727D32747177700CCAC30 /* Accounts */,
+				2BF7280327471E5200CCAC30 /* API */,
+				2BF7280427471E8F00CCAC30 /* Application */,
+				2BF727D8274717BF00CCAC30 /* Authentication */,
+				2BF727B62747140B00CCAC30 /* Contacts */,
+				2BF727D72747179A00CCAC30 /* Ledger */,
 				17B7D8A42240D79200A6FF9E /* Models */,
-				2BF34CC0223A95900052CAD3 /* Networking */,
+				2BF727B72747144E00CCAC30 /* Notifications */,
+				2B4DF409236C5F4F00FF9551 /* Routing */,
+				2BF727DD2747181600CCAC30 /* Shared */,
+				2BF727D42747178400CCAC30 /* Statistics */,
 				2B8BE4FB2239392C005D8565 /* Styling */,
-				2B8BE4F5223936FD005D8565 /* Utility */,
+				2BF727D52747178D00CCAC30 /* Transactions */,
+				2BF7280227471E4700CCAC30 /* Utils */,
+				2BF727D62747179300CCAC30 /* WalletConnect */,
+				2BD73A0322412AA100B66EEF /* Data */,
+				2BD73A0722412AF200B66EEF /* LayoutBuilders */,
 				2B8BE4E822392657005D8565 /* ViewControllers */,
 				2BD73A0E22412B5900B66EEF /* ViewModels */,
 				2B8BE4F0223935A3005D8565 /* Views */,
@@ -7363,34 +6939,12 @@
 			isa = PBXGroup;
 			children = (
 				2BF53177224AA86500A7455F /* Accounts */,
-				2BD739C7223F978300B66EEF /* Authentication */,
 				2B8954A922438FA400D6D068 /* Common */,
-				2BF53179224AA87300A7455F /* Contacts */,
 				2B8BE4EB22393547005D8565 /* Core */,
 				2B567155240074F60037FCFA /* Ledger */,
-				2BE9370A245CAC0B00322C1E /* Notifications */,
 				2BF5317A224AA88600A7455F /* Settings */,
-				2BA4B3CA267388670041586B /* WalletConnect */,
 			);
 			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		2B8BE4E922392674005D8565 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				2B8BE4EA22392678005D8565 /* Application */,
-				17B7D8AC2240F23D00A6FF9E /* Environment */,
-				2B4DF407236C5EEB00FF9551 /* Notifications */,
-			);
-			path = Core;
-			sourceTree = "<group>";
-		};
-		2B8BE4EA22392678005D8565 /* Application */ = {
-			isa = PBXGroup;
-			children = (
-				2B8BE4D122391C38005D8565 /* AppDelegate.swift */,
-			);
-			path = Application;
 			sourceTree = "<group>";
 		};
 		2B8BE4EB22393547005D8565 /* Core */ = {
@@ -7416,15 +6970,11 @@
 			isa = PBXGroup;
 			children = (
 				2B656E94224BB9D60064A49B /* Accounts */,
-				2BD739CD223F97DF00B66EEF /* Authentication */,
 				2BD739E2223F9FDD00B66EEF /* Common */,
-				2BF7190A224ECF12001E8420 /* Contacts */,
 				2B8BE4F1223935C6005D8565 /* Core */,
 				2B56715924007B210037FCFA /* Ledger */,
-				2BE9370E245CAC2E00322C1E /* Notifications */,
 				2B79A14223167BCE00766021 /* Rewards */,
 				17100B2A225CEC2900D13548 /* Settings */,
-				2BA4B3CC267388830041586B /* WalletConnect */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -7450,33 +7000,6 @@
 				9511C296242E2B3C003211ED /* BaseControl.swift */,
 			);
 			path = Base;
-			sourceTree = "<group>";
-		};
-		2B8BE4F5223936FD005D8565 /* Utility */ = {
-			isa = PBXGroup;
-			children = (
-				D4DDF3B027395C9C00BC8F42 /* Formatter */,
-				2BE4D0F82594D328005F5764 /* AppStoreReview */,
-				2B288ACD268F157500BC6FB6 /* Assets */,
-				2B0F5F3724E5684E00DA22A6 /* Banner */,
-				2B62B03B240813A5002DF2A0 /* BLE */,
-				2B9F064024B60EAA006880F0 /* CSVExport */,
-				2BF34C9E2239ACC60052CAD3 /* Configuration */,
-				2B8BE4F62239370F005D8565 /* Extensions */,
-				2BC45DEC2252538D000CDCE2 /* ImagePicker */,
-				2BB37B142405D1B000F58662 /* Ledger */,
-				2B6687132248DF57009F21E7 /* LocalAuthentication */,
-				2B95413225AC96070098805B /* Network */,
-				2BF53172224A93E800A7455F /* Operations */,
-				2B9EEADD264E7513007A112D /* Rewards */,
-				2B3A95E4238FF98800A3DF44 /* Transaction */,
-				2B3E39F2247837BF00E8AEB7 /* TestNet */,
-				2BA4998F24B5E43C00452650 /* Tracking */,
-				1746715B225B6BE600B78641 /* TypeAliases */,
-				2BF34CA32239AD4A0052CAD3 /* UI */,
-				2B02A2EA266CE065002DD8AB /* WalletConnect */,
-			);
-			path = Utility;
 			sourceTree = "<group>";
 		};
 		2B8BE4F62239370F005D8565 /* Extensions */ = {
@@ -7952,29 +7475,9 @@
 		2B9E2F3626F0D27A003D824A /* AssetConfig */ = {
 			isa = PBXGroup;
 			children = (
-				2B9E2F3726F0D291003D824A /* WCAssetCreationTransactionViewController.swift */,
-				2B5739E026F3F26B007E0252 /* WCAssetReconfigurationTransactionViewController.swift */,
-				2B5739E426F3F293007E0252 /* WCAssetDeletionTransactionViewController.swift */,
-			);
-			path = AssetConfig;
-			sourceTree = "<group>";
-		};
-		2B9E2F3B26F0D2B0003D824A /* AssetConfig */ = {
-			isa = PBXGroup;
-			children = (
-				2B9E2F3C26F0D2C8003D824A /* WCAssetCreationTransactionView.swift */,
-				2B5739F026F3F73F007E0252 /* WCAssetDeletionTransactionView.swift */,
-				2B5739F426F3F752007E0252 /* WCAssetReconfigurationTransactionView.swift */,
-			);
-			path = AssetConfig;
-			sourceTree = "<group>";
-		};
-		2B9E2F4026F0D328003D824A /* AssetConfig */ = {
-			isa = PBXGroup;
-			children = (
-				2B9E2F4126F0D332003D824A /* WCAssetCreationTransactionViewModel.swift */,
-				2B5739E826F3F6AC007E0252 /* WCAssetDeletionTransactionItemViewModel.swift */,
-				2B5739EC26F3F701007E0252 /* WCAssetReconfigurationTransactionViewModel.swift */,
+				2BF727EA27471A5300CCAC30 /* Screens */,
+				2BF727FB27471B9300CCAC30 /* ViewModels */,
+				2BF727FA27471B8F00CCAC30 /* Views */,
 			);
 			path = AssetConfig;
 			sourceTree = "<group>";
@@ -8147,16 +7650,6 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
-		2BA172A626495B7B00A613C4 /* Statistics */ = {
-			isa = PBXGroup;
-			children = (
-				2BA172A726495B9400A613C4 /* AlgoStatisticsViewController.swift */,
-				D400858A271D9B19007C0C97 /* AlgoStatisticsViewController+Theme.swift */,
-				D4008588271D8C09007C0C97 /* StatisticsDateSelection */,
-			);
-			path = Statistics;
-			sourceTree = "<group>";
-		};
 		2BA172B326495C0900A613C4 /* Statistics */ = {
 			isa = PBXGroup;
 			children = (
@@ -8164,16 +7657,6 @@
 				D44EF48C271ADB6900AF0D5C /* AlgoStatisticsViewTheme.swift */,
 				D4AEDD29271C6DF300AD2725 /* Footer */,
 				2BA17302264B180300A613C4 /* Header */,
-			);
-			path = Statistics;
-			sourceTree = "<group>";
-		};
-		2BA17300264B17DF00A613C4 /* Statistics */ = {
-			isa = PBXGroup;
-			children = (
-				2BA17311264B188400A613C4 /* Chart */,
-				2BA17312264B188900A613C4 /* Header */,
-				2BA17305264B185900A613C4 /* AlgoStatisticsViewModel.swift */,
 			);
 			path = Statistics;
 			sourceTree = "<group>";
@@ -8252,86 +7735,6 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		2BA4B3CA267388670041586B /* WalletConnect */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B3CF2673EFC50041586B /* Connection */,
-				2B7E3023267A497800E89EE3 /* Transaction */,
-			);
-			path = WalletConnect;
-			sourceTree = "<group>";
-		};
-		2BA4B3CB267388720041586B /* WalletConnect */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B3CE2673EFC00041586B /* Connection */,
-				2B7E301E267A493300E89EE3 /* Transaction */,
-			);
-			path = WalletConnect;
-			sourceTree = "<group>";
-		};
-		2BA4B3CC267388830041586B /* WalletConnect */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B3CD2673EFAC0041586B /* Connection */,
-				2B7E3019267A462600E89EE3 /* Transaction */,
-			);
-			path = WalletConnect;
-			sourceTree = "<group>";
-		};
-		2BA4B3CD2673EFAC0041586B /* Connection */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B3D92673F0C50041586B /* Approval */,
-				2BA4B3E9267819310041586B /* Sessions */,
-			);
-			path = Connection;
-			sourceTree = "<group>";
-		};
-		2BA4B3CE2673EFC00041586B /* Connection */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B3DA2673F0CA0041586B /* Approval */,
-				2BA4B3EE267819690041586B /* Sessions */,
-			);
-			path = Connection;
-			sourceTree = "<group>";
-		};
-		2BA4B3CF2673EFC50041586B /* Connection */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B3D82673F0BE0041586B /* Approval */,
-				2BA4B3FC267819E70041586B /* Sessions */,
-			);
-			path = Connection;
-			sourceTree = "<group>";
-		};
-		2BA4B3D82673F0BE0041586B /* Approval */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B3D02673F09A0041586B /* WCConnectionApprovalViewController.swift */,
-			);
-			path = Approval;
-			sourceTree = "<group>";
-		};
-		2BA4B3D92673F0C50041586B /* Approval */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B3E02673F6B20041586B /* Account */,
-				2BA4B3D42673F0B20041586B /* WCConnectionApprovalView.swift */,
-			);
-			path = Approval;
-			sourceTree = "<group>";
-		};
-		2BA4B3DA2673F0CA0041586B /* Approval */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B3DF2673F6A50041586B /* Account */,
-				2BA4B3DB2673F0E60041586B /* WCConnectionApprovalViewModel.swift */,
-			);
-			path = Approval;
-			sourceTree = "<group>";
-		};
 		2BA4B3DF2673F6A50041586B /* Account */ = {
 			isa = PBXGroup;
 			children = (
@@ -8348,39 +7751,13 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
-		2BA4B3E9267819310041586B /* Sessions */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B3F7267819A00041586B /* Cell */,
-				2B7E3014267A252700E89EE3 /* Empty */,
-				2BA4B3EA267819530041586B /* WCSessionListView.swift */,
-			);
-			path = Sessions;
-			sourceTree = "<group>";
-		};
-		2BA4B3EE267819690041586B /* Sessions */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B3EF267819840041586B /* WCSessionItemViewModel.swift */,
-			);
-			path = Sessions;
-			sourceTree = "<group>";
-		};
-		2BA4B3F7267819A00041586B /* Cell */ = {
+		2BA4B3F7267819A00041586B /* Item */ = {
 			isa = PBXGroup;
 			children = (
 				2BA4B3F32678199C0041586B /* WCSessionItemView.swift */,
 				2BA4B3F8267819B20041586B /* WCSessionItemCell.swift */,
 			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
-		2BA4B3FC267819E70041586B /* Sessions */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B3FD267819F50041586B /* WCSessionListViewController.swift */,
-			);
-			path = Sessions;
+			path = Item;
 			sourceTree = "<group>";
 		};
 		2BA4B4012678A9020041586B /* WalletConnect */ = {
@@ -8669,14 +8046,6 @@
 			path = Array;
 			sourceTree = "<group>";
 		};
-		2BB6EE53239339C600CF7874 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				2BB6EE57239339E400CF7874 /* AssetPreviewActionCell.swift */,
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
 		2BB93BA725BEE65E001F1D6C /* DataBuilder */ = {
 			isa = PBXGroup;
 			children = (
@@ -8954,30 +8323,6 @@
 			path = Filter;
 			sourceTree = "<group>";
 		};
-		2BD36DBF267CCB9400C57728 /* Asset */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36DBB267CCB8700C57728 /* WCAssetTransactionView.swift */,
-			);
-			path = Asset;
-			sourceTree = "<group>";
-		};
-		2BD36DC0267CCBB400C57728 /* Algos */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36DAF267CCB4D00C57728 /* WCAlgosTransactionView.swift */,
-			);
-			path = Algos;
-			sourceTree = "<group>";
-		};
-		2BD36DC1267CCBC100C57728 /* AssetAddition */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36DB7267CCB7100C57728 /* WCAssetAdditionTransactionView.swift */,
-			);
-			path = AssetAddition;
-			sourceTree = "<group>";
-		};
 		2BD36DC2267D129E00C57728 /* Message */ = {
 			isa = PBXGroup;
 			children = (
@@ -9051,26 +8396,12 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		2BD36DFA2681DB4100C57728 /* AppCall */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36DFB2681DB5B00C57728 /* WCAppCallTransactionView.swift */,
-			);
-			path = AppCall;
-			sourceTree = "<group>";
-		};
-		2BD36E032681DBAD00C57728 /* AppCall */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36E042681DBC400C57728 /* WCAppCallTransactionViewModel.swift */,
-			);
-			path = AppCall;
-			sourceTree = "<group>";
-		};
 		2BD36E082681DBD900C57728 /* AppCall */ = {
 			isa = PBXGroup;
 			children = (
-				2BD36E092681DBE800C57728 /* WCAppCallTransactionViewController.swift */,
+				2BF727E727471A4100CCAC30 /* Screens */,
+				2BF727F427471B4100CCAC30 /* ViewModels */,
+				2BF727F527471B4700CCAC30 /* Views */,
 			);
 			path = AppCall;
 			sourceTree = "<group>";
@@ -9211,18 +8542,11 @@
 			path = Card;
 			sourceTree = "<group>";
 		};
-		2BD6A06424A50D2800D2D28D /* PinLimit */ = {
-			isa = PBXGroup;
-			children = (
-				2BD6A06524A50D3E00D2D28D /* PinLimitView.swift */,
-			);
-			path = PinLimit;
-			sourceTree = "<group>";
-		};
 		2BD6A06824A50D5B00D2D28D /* PinLimit */ = {
 			isa = PBXGroup;
 			children = (
-				2BD6A06924A50D6A00D2D28D /* PinLimitViewController.swift */,
+				2BF72810274722F800CCAC30 /* Screens */,
+				2BF7282C2747274000CCAC30 /* Views */,
 			);
 			path = PinLimit;
 			sourceTree = "<group>";
@@ -9254,50 +8578,6 @@
 			path = Interceptor;
 			sourceTree = "<group>";
 		};
-		2BD739C7223F978300B66EEF /* Authentication */ = {
-			isa = PBXGroup;
-			children = (
-				2BD739C8223F979D00B66EEF /* Introduction */,
-				2BD6A06824A50D5B00D2D28D /* PinLimit */,
-				2B8954CC2244321E00D6D068 /* Recover */,
-				2BD739E6223FA08E00B66EEF /* SignUp */,
-				2B5BE0572518E4F500324BEE /* WatchAccount */,
-			);
-			path = Authentication;
-			sourceTree = "<group>";
-		};
-		2BD739C8223F979D00B66EEF /* Introduction */ = {
-			isa = PBXGroup;
-			children = (
-				2B0F7E1325D6E37500B16B85 /* AddAccount */,
-				2B0F7E1225D6E36F00B16B85 /* Welcome */,
-				CBAD47442745510900C91946 /* AccountFlow.swift */,
-			);
-			path = Introduction;
-			sourceTree = "<group>";
-		};
-		2BD739CD223F97DF00B66EEF /* Authentication */ = {
-			isa = PBXGroup;
-			children = (
-				2BD739CE223F97E600B66EEF /* Introduction */,
-				2BD6A06424A50D2800D2D28D /* PinLimit */,
-				2B8954C922442E2B00D6D068 /* Recover */,
-				2BD739DA223F9E2800B66EEF /* SignUp */,
-				2B5BE0422518E4AD00324BEE /* WatchAccount */,
-			);
-			path = Authentication;
-			sourceTree = "<group>";
-		};
-		2BD739CE223F97E600B66EEF /* Introduction */ = {
-			isa = PBXGroup;
-			children = (
-				2B5BE06525190B7200324BEE /* AccountType */,
-				2B0F7DFD25D6DBD200B16B85 /* AddAccount */,
-				2B0F7DFC25D6DBC900B16B85 /* Welcome */,
-			);
-			path = Introduction;
-			sourceTree = "<group>";
-		};
 		2BD739D3223F983B00B66EEF /* Style */ = {
 			isa = PBXGroup;
 			children = (
@@ -9323,32 +8603,10 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		2BD739DA223F9E2800B66EEF /* SignUp */ = {
-			isa = PBXGroup;
-			children = (
-				2B8954A02242E77E00D6D068 /* AccountName */,
-				2BD73A1A2241633900B66EEF /* Passphrase */,
-				2BD739DB223F9E8900B66EEF /* Password */,
-			);
-			path = SignUp;
-			sourceTree = "<group>";
-		};
-		2BD739DB223F9E8900B66EEF /* Password */ = {
-			isa = PBXGroup;
-			children = (
-				2BD739DC223F9E9F00B66EEF /* ChoosePasswordView.swift */,
-				D473CA5326E20C5100558598 /* ChoosePasswordViewTheme.swift */,
-				2BD739F92240527B00B66EEF /* PasswordInputView.swift */,
-				D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */,
-				2BD739FB2241052500B66EEF /* PasswordInputCircleView.swift */,
-				D46C647C26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift */,
-			);
-			path = Password;
-			sourceTree = "<group>";
-		};
 		2BD739E2223F9FDD00B66EEF /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				2BB6EE57239339E400CF7874 /* AssetPreviewActionCell.swift */,
 				D411B37126EA1031004FF980 /* Preview */,
 				2B9EF2F625D5760A004BCCC4 /* Tutorial */,
 				2BD063EB25CEC8DA008BD15E /* BottomWarning */,
@@ -9387,25 +8645,6 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		2BD739E6223FA08E00B66EEF /* SignUp */ = {
-			isa = PBXGroup;
-			children = (
-				2B8954A32242E7BE00D6D068 /* AccountName */,
-				2BD73A1D2241637B00B66EEF /* Passphrase */,
-				2BD739E8223FA09F00B66EEF /* Password */,
-			);
-			path = SignUp;
-			sourceTree = "<group>";
-		};
-		2BD739E8223FA09F00B66EEF /* Password */ = {
-			isa = PBXGroup;
-			children = (
-				2BD739E9223FA0BD00B66EEF /* ChoosePasswordViewController.swift */,
-				D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */,
-			);
-			path = Password;
-			sourceTree = "<group>";
-		};
 		2BD739ED223FDE7200B66EEF /* Factory */ = {
 			isa = PBXGroup;
 			children = (
@@ -9430,8 +8669,6 @@
 			isa = PBXGroup;
 			children = (
 				2BD73A0422412AA400B66EEF /* DataProviders */,
-				2B4DF408236C5F1900FF9551 /* Storable */,
-				2B59F1372254BABF005203DD /* algorand.xcdatamodeld */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -9465,13 +8702,9 @@
 			isa = PBXGroup;
 			children = (
 				2B656E9C224BCAF60064A49B /* Accounts */,
-				2BD73A152241322D00B66EEF /* Authentication */,
 				2BD73A0F22412B6600B66EEF /* Common */,
-				2B65B1FF22527B89001DB5BE /* Contacts */,
 				2BB64BD6240275CD00519981 /* Ledger */,
-				2B4EEEC324BE006A00059A16 /* Notifications */,
 				171111AC225DDA5600DAF55C /* Settings */,
-				2BA4B3CB267388720041586B /* WalletConnect */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -9490,49 +8723,12 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		2BD73A152241322D00B66EEF /* Authentication */ = {
-			isa = PBXGroup;
-			children = (
-				2B5BE06D2519355000324BEE /* Introduction */,
-				2BF90F1D25FA39380033F348 /* Recover */,
-				2BD73A162241323400B66EEF /* SignUp */,
-			);
-			path = Authentication;
-			sourceTree = "<group>";
-		};
-		2BD73A162241323400B66EEF /* SignUp */ = {
-			isa = PBXGroup;
-			children = (
-				1761B3C9224A39C500C6BA47 /* Passphrase */,
-				2BD73A172241323800B66EEF /* Password */,
-			);
-			path = SignUp;
-			sourceTree = "<group>";
-		};
-		2BD73A172241323800B66EEF /* Password */ = {
-			isa = PBXGroup;
-			children = (
-				2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */,
-			);
-			path = Password;
-			sourceTree = "<group>";
-		};
-		2BD73A1A2241633900B66EEF /* Passphrase */ = {
-			isa = PBXGroup;
-			children = (
-				2B9EF2E425D3E267004BCCC4 /* BackUp */,
-				2B9EF2BA25D3D132004BCCC4 /* Verify */,
-			);
-			path = Passphrase;
-			sourceTree = "<group>";
-		};
 		2BD73A1D2241637B00B66EEF /* Passphrase */ = {
 			isa = PBXGroup;
 			children = (
-				2B79A13C23147A4900766021 /* PassphraseBackUpViewController.swift */,
-				D40C294C26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift */,
-				17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */,
-				D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */,
+				2BF728122747235900CCAC30 /* Screens */,
+				2BF72828274726B200CCAC30 /* ViewModels */,
+				2BF728312747282700CCAC30 /* Views */,
 			);
 			path = Passphrase;
 			sourceTree = "<group>";
@@ -9750,26 +8946,6 @@
 			path = Shadow;
 			sourceTree = "<group>";
 		};
-		2BE9370A245CAC0B00322C1E /* Notifications */ = {
-			isa = PBXGroup;
-			children = (
-				2B343D09259D17A9001EA8C8 /* Filter */,
-				2BE9370B245CAC2900322C1E /* NotificationsViewController.swift */,
-			);
-			path = Notifications;
-			sourceTree = "<group>";
-		};
-		2BE9370E245CAC2E00322C1E /* Notifications */ = {
-			isa = PBXGroup;
-			children = (
-				2B343CF9259D175B001EA8C8 /* Filter */,
-				2B4EEEBC24BDFFE700059A16 /* Cell */,
-				2B4EEEB924BDFFD500059A16 /* NotificationsView.swift */,
-				D48D11D2274279D2000061CE /* NotificationsViewTheme.swift */,
-			);
-			path = Notifications;
-			sourceTree = "<group>";
-		};
 		2BE937182461D13400322C1E /* Empty */ = {
 			isa = PBXGroup;
 			children = (
@@ -9833,29 +9009,6 @@
 				2BE937372464AF7B00322C1E /* ContactDisplayView.swift */,
 			);
 			path = Contact;
-			sourceTree = "<group>";
-		};
-		2BECB4A325A0F0490081870A /* Header */ = {
-			isa = PBXGroup;
-			children = (
-				2BECB4A525A0F0930081870A /* ToggleTitleHeaderSupplementaryView.swift */,
-				2BECB4AC25A0F09C0081870A /* ToggleTitleHeaderView.swift */,
-				D48D11E627429150000061CE /* ToggleTitleHeaderViewTheme.swift */,
-			);
-			path = Header;
-			sourceTree = "<group>";
-		};
-		2BECB4A425A0F04E0081870A /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-				2B343CFB259D176D001EA8C8 /* AccountNameSwitchView.swift */,
-				D48D11DA27428D31000061CE /* AccountNameSwitchViewTheme.swift */,
-				2B343D02259D178C001EA8C8 /* AccountNameSwitchCell.swift */,
-				2BECB48925A0C64B0081870A /* TitledToggleView.swift */,
-				D48D11D62742878A000061CE /* TitledToggleViewTheme.swift */,
-				2BECB49025A0C6570081870A /* TitledToggleCell.swift */,
-			);
-			path = Cell;
 			sourceTree = "<group>";
 		};
 		2BECB4BD25A0F2A60081870A /* NotificationFilter */ = {
@@ -9972,15 +9125,6 @@
 			path = Card;
 			sourceTree = "<group>";
 		};
-		2BF34C962239AA8C0052CAD3 /* Flow */ = {
-			isa = PBXGroup;
-			children = (
-				2B4DF409236C5F4F00FF9551 /* Routing */,
-				2BF5314F224A45DC00A7455F /* Transition */,
-			);
-			path = Flow;
-			sourceTree = "<group>";
-		};
 		2BF34C972239AAC10052CAD3 /* Flow */ = {
 			isa = PBXGroup;
 			children = (
@@ -10018,21 +9162,6 @@
 			path = Keyboard;
 			sourceTree = "<group>";
 		};
-		2BF34CB0223A77410052CAD3 /* Configuration */ = {
-			isa = PBXGroup;
-			children = (
-				2B5715B52634F1F0002C876D /* Chart */,
-				2B8954C6224420A500D6D068 /* Input */,
-				2B66870C2248DB6A009F21E7 /* NavigationBar */,
-				2B4DF406236C5E7F00FF9551 /* Reusable */,
-				2B4DF429236C76CD00FF9551 /* Session */,
-				2B4DF405236C5E7500FF9551 /* StatusBar */,
-				2B4DF428236C76A500FF9551 /* Storable */,
-				2B3E3A12247C055800E8AEB7 /* TabBar */,
-			);
-			path = Configuration;
-			sourceTree = "<group>";
-		};
 		2BF34CB5223A87920052CAD3 /* External */ = {
 			isa = PBXGroup;
 			children = (
@@ -10061,18 +9190,6 @@
 				2BF34CBE223A8E740052CAD3 /* NavigationController.swift */,
 			);
 			path = Container;
-			sourceTree = "<group>";
-		};
-		2BF34CC0223A95900052CAD3 /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-				2B8954BC2243FEE200D6D068 /* API */,
-				17B7D8A92240E18800A6FF9E /* Drafts */,
-				17F9E9202257894B004CDF24 /* Operations */,
-				2BC1826523D8829D00888476 /* SDK */,
-				2B982336231EC1B2009560CD /* Query */,
-			);
-			path = Networking;
 			sourceTree = "<group>";
 		};
 		2BF34CC3223A995C0052CAD3 /* Text */ = {
@@ -10216,6 +9333,7 @@
 		2BF53172224A93E800A7455F /* Operations */ = {
 			isa = PBXGroup;
 			children = (
+				17F9E9212257895A004CDF24 /* AsyncOperation.swift */,
 				2BF53173224A940E00A7455F /* PollingOperation.swift */,
 				2B95415125AD04690098805B /* Once.swift */,
 			);
@@ -10226,7 +9344,6 @@
 			isa = PBXGroup;
 			children = (
 				2B656E8E224BAF0B0064A49B /* AccountList */,
-				2BA172A626495B7B00A613C4 /* Statistics */,
 				2B4486F4237958AD00C19FDE /* Assets */,
 				2B44872E2379685300C19FDE /* List */,
 				2B656E91224BAF230064A49B /* Options */,
@@ -10234,17 +9351,6 @@
 				2B56F7D2225B3B0500E58737 /* Transactions */,
 			);
 			path = Accounts;
-			sourceTree = "<group>";
-		};
-		2BF53179224AA87300A7455F /* Contacts */ = {
-			isa = PBXGroup;
-			children = (
-				D4822744272C572A004CB9BF /* Edit */,
-				2B4DF427236C767500FF9551 /* Add */,
-				2B4DF425236C766200FF9551 /* Detail */,
-				2B4DF426236C766700FF9551 /* List */,
-			);
-			path = Contacts;
 			sourceTree = "<group>";
 		};
 		2BF5317A224AA88600A7455F /* Settings */ = {
@@ -10259,24 +9365,1180 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
-		2BF7190A224ECF12001E8420 /* Contacts */ = {
-			isa = PBXGroup;
-			children = (
-				D482274D272C5C7C004CB9BF /* Edit */,
-				2B82B1C62253A4DA00A8909F /* Cell */,
-				2B4DF40D236C688300FF9551 /* Common */,
-				2B4DF40C236C687300FF9551 /* Detail */,
-				2B4DF40B236C686D00FF9551 /* List */,
-			);
-			path = Contacts;
-			sourceTree = "<group>";
-		};
 		2BF727B127459BAA00CCAC30 /* Warning */ = {
 			isa = PBXGroup;
 			children = (
 				2BF727B227459BBA00CCAC30 /* LedgerPairWarningViewController.swift */,
 			);
 			path = Warning;
+			sourceTree = "<group>";
+		};
+		2BF727B62747140B00CCAC30 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727CF2747171900CCAC30 /* Add */,
+				2BF727C5274716BD00CCAC30 /* Detail */,
+				2BF727C4274716B800CCAC30 /* Edit */,
+				2BF727C3274716B100CCAC30 /* List */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		2BF727B72747144E00CCAC30 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727B9274714C900CCAC30 /* Filter */,
+				2BF727B8274714C400CCAC30 /* List */,
+			);
+			path = Notifications;
+			sourceTree = "<group>";
+		};
+		2BF727B8274714C400CCAC30 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727BF2747159000CCAC30 /* Screens */,
+				2BF727BE2747158800CCAC30 /* Views */,
+				2BF727BD2747157F00CCAC30 /* ViewModels */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2BF727B9274714C900CCAC30 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727BA2747151E00CCAC30 /* Screens */,
+				2BF727BC2747153300CCAC30 /* Views */,
+				2BF727BB2747152E00CCAC30 /* ViewModels */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
+		2BF727BA2747151E00CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B343D0A259D17B0001EA8C8 /* NotificationFilterViewController.swift */,
+				D48D11EE2742984E000061CE /* NotificationFilterViewTheme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727BB2747152E00CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B343CEF259D174A001EA8C8 /* AccountNameSwitchViewModel.swift */,
+				2BECB4CB25A0F8DB0081870A /* TitledToggleViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727BC2747153300CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727C22747165B00CCAC30 /* Header */,
+				2BF727C12747162900CCAC30 /* Item */,
+				D48D11EA274297BA000061CE /* NotificationFilterView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727BD2747157F00CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B4EEEC424BE008500059A16 /* NotificationsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727BE2747158800CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727C0274715A400CCAC30 /* Item */,
+				2B4EEEB924BDFFD500059A16 /* NotificationsView.swift */,
+				D48D11D2274279D2000061CE /* NotificationsViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727BF2747159000CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BE9370B245CAC2900322C1E /* NotificationsViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727C0274715A400CCAC30 /* Item */ = {
+			isa = PBXGroup;
+			children = (
+				2B4EEEBD24BDFFF700059A16 /* NotificationView.swift */,
+				D48D11CE27425368000061CE /* NotificationViewTheme.swift */,
+				2B4EEEC024BE001D00059A16 /* NotificationCell.swift */,
+			);
+			path = Item;
+			sourceTree = "<group>";
+		};
+		2BF727C12747162900CCAC30 /* Item */ = {
+			isa = PBXGroup;
+			children = (
+				D48D11DA27428D31000061CE /* AccountNameSwitchViewTheme.swift */,
+				2B343D02259D178C001EA8C8 /* AccountNameSwitchCell.swift */,
+				2B343CFB259D176D001EA8C8 /* AccountNameSwitchView.swift */,
+				D48D11D62742878A000061CE /* TitledToggleViewTheme.swift */,
+				2BECB49025A0C6570081870A /* TitledToggleCell.swift */,
+				2BECB48925A0C64B0081870A /* TitledToggleView.swift */,
+			);
+			path = Item;
+			sourceTree = "<group>";
+		};
+		2BF727C22747165B00CCAC30 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				2BECB4A525A0F0930081870A /* ToggleTitleHeaderSupplementaryView.swift */,
+				2BECB4AC25A0F09C0081870A /* ToggleTitleHeaderView.swift */,
+				D48D11E627429150000061CE /* ToggleTitleHeaderViewTheme.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		2BF727C3274716B100CCAC30 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727CE2747170400CCAC30 /* Screens */,
+				2BF727CD274716FF00CCAC30 /* Views */,
+				2BF727CC274716F900CCAC30 /* ViewModels */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2BF727C4274716B800CCAC30 /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727CB274716F400CCAC30 /* Screens */,
+				2BF727CA274716EF00CCAC30 /* Views */,
+				2BF727C9274716E900CCAC30 /* ViewModels */,
+			);
+			path = Edit;
+			sourceTree = "<group>";
+		};
+		2BF727C5274716BD00CCAC30 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727C8274716D900CCAC30 /* Screens */,
+				2BF727C7274716D400CCAC30 /* Views */,
+				2BF727C6274716CD00CCAC30 /* ViewModels */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		2BF727C6274716CD00CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D4C45BFA2726E2A600F4AE31 /* ContactInformationViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727C7274716D400CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7190D224ECF4A001E8420 /* ContactDetailView.swift */,
+				D4C45BEE2726B59D00F4AE31 /* ContactDetailViewTheme.swift */,
+				D4C45BF22726C54800F4AE31 /* ContactInformationView.swift */,
+				D4C45BF62726C60500F4AE31 /* ContactInformationViewTheme.swift */,
+				2BF7190F224ECFAF001E8420 /* UserInformationView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727C8274716D900CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BF71917224ED0C5001E8420 /* ContactDetailViewController.swift */,
+				D446A744272AB3310081D60B /* ContactDetailViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727C9274716E900CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D4312D6A27351CDA00ABDA1E /* EditContactViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727CA274716EF00CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D482274E272C5C86004CB9BF /* EditContactView.swift */,
+				D4822752272C67D4004CB9BF /* EditContactViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727CB274716F400CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				D4822745272C5735004CB9BF /* EditContactViewController.swift */,
+				D4822749272C57D9004CB9BF /* EditContactViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727CC274716F900CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B82B1CB2253DE2500A8909F /* ContactsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727CD274716FF00CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727DE2747194500CCAC30 /* Item */,
+				2BF71911224ECFEC001E8420 /* ContactsView.swift */,
+				D49D31E22725A9BD00AADE9A /* ContactsViewTheme.swift */,
+				2B8E7C92246AD8B800CC5A58 /* ContactsEmptyView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727CE2747170400CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BF5317D224AA8B700A7455F /* ContactsViewController.swift */,
+				2BDE31E022799FF0002E8235 /* ContactSelectionViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727CF2747171900CCAC30 /* Add */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727D02747172000CCAC30 /* Screens */,
+				2BF727D22747173000CCAC30 /* Views */,
+				2BF727D12747172A00CCAC30 /* ViewModels */,
+			);
+			path = Add;
+			sourceTree = "<group>";
+		};
+		2BF727D02747172000CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BF71915224ED0A6001E8420 /* AddContactViewController.swift */,
+				D4822740272C5591004CB9BF /* AddContactViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727D12747172A00CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727D22747173000CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7190B224ECF30001E8420 /* AddContactView.swift */,
+				D4822734272BF37F004CB9BF /* AddContactViewTheme.swift */,
+				D4822738272BFC3F004CB9BF /* BadgedImageVIew.swift */,
+				D482273C272C0DA8004CB9BF /* BadgedImageViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727D32747177700CCAC30 /* Accounts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Accounts;
+			sourceTree = "<group>";
+		};
+		2BF727D42747178400CCAC30 /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+				2BF72818274724BA00CCAC30 /* List */,
+				2BF72819274724BF00CCAC30 /* Selection */,
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
+		2BF727D52747178D00CCAC30 /* Transactions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Transactions;
+			sourceTree = "<group>";
+		};
+		2BF727D62747179300CCAC30 /* WalletConnect */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727DF2747199100CCAC30 /* Connection */,
+				2BF727E02747199800CCAC30 /* Transaction */,
+			);
+			path = WalletConnect;
+			sourceTree = "<group>";
+		};
+		2BF727D72747179A00CCAC30 /* Ledger */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Ledger;
+			sourceTree = "<group>";
+		};
+		2BF727D8274717BF00CCAC30 /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727DC2747180200CCAC30 /* Common */,
+				2BF727DA274717DD00CCAC30 /* Create */,
+				2BF7280B2747228E00CCAC30 /* Introduction */,
+				2BF727DB274717EE00CCAC30 /* Recover */,
+				2BF727D9274717CD00CCAC30 /* WatchAccount */,
+			);
+			path = Authentication;
+			sourceTree = "<group>";
+		};
+		2BF727D9274717CD00CCAC30 /* WatchAccount */ = {
+			isa = PBXGroup;
+			children = (
+				2BF728092747222A00CCAC30 /* Screens */,
+				2BF728082747222500CCAC30 /* ViewModels */,
+				2BF728072747221E00CCAC30 /* Views */,
+			);
+			path = WatchAccount;
+			sourceTree = "<group>";
+		};
+		2BF727DA274717DD00CCAC30 /* Create */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A1D2241637B00B66EEF /* Passphrase */,
+			);
+			path = Create;
+			sourceTree = "<group>";
+		};
+		2BF727DB274717EE00CCAC30 /* Recover */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7280A2747224100CCAC30 /* List */,
+				2B01FE5726147FC8006C3C56 /* Options */,
+				2B77470B25FFDB430083EFFA /* Suggestion */,
+			);
+			path = Recover;
+			sourceTree = "<group>";
+		};
+		2BF727DC2747180200CCAC30 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2BF72821274725F300CCAC30 /* AccountType */,
+				2B8954A32242E7BE00D6D068 /* AccountName */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2BF727DD2747181600CCAC30 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				2BF728132747237700CCAC30 /* PinCode */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		2BF727DE2747194500CCAC30 /* Item */ = {
+			isa = PBXGroup;
+			children = (
+				2B82B1C72253A4F000A8909F /* ContactCell.swift */,
+				2B82B1C92253A50100A8909F /* ContactContextView.swift */,
+				D49D31DA2725742500AADE9A /* ContactContextViewTheme.swift */,
+				2BDE31E22279A319002E8235 /* ContactSelectionCell.swift */,
+			);
+			path = Item;
+			sourceTree = "<group>";
+		};
+		2BF727DF2747199100CCAC30 /* Connection */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727E1274719AC00CCAC30 /* Approval */,
+				2BF727E2274719B200CCAC30 /* Sessions */,
+			);
+			path = Connection;
+			sourceTree = "<group>";
+		};
+		2BF727E02747199800CCAC30 /* Transaction */ = {
+			isa = PBXGroup;
+			children = (
+				2B7E3024267A498000E89EE3 /* Algos */,
+				2BD36E082681DBD900C57728 /* AppCall */,
+				2B7E3027267A499100E89EE3 /* Asset */,
+				2B7E3026267A498B00E89EE3 /* AssetAddition */,
+				2B9E2F3626F0D27A003D824A /* AssetConfig */,
+				2B7E307C267B64F800E89EE3 /* Common */,
+				2B7E3025267A498500E89EE3 /* Group */,
+				2B0322D7269F1B9A00C9B2F5 /* Main */,
+			);
+			path = Transaction;
+			sourceTree = "<group>";
+		};
+		2BF727E1274719AC00CCAC30 /* Approval */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727E327471A0700CCAC30 /* Screens */,
+				2BF727EF27471AE400CCAC30 /* ViewModels */,
+				2BF727F127471B2000CCAC30 /* Views */,
+			);
+			path = Approval;
+			sourceTree = "<group>";
+		};
+		2BF727E2274719B200CCAC30 /* Sessions */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727E527471A1700CCAC30 /* Screens */,
+				2BF727EE27471ADE00CCAC30 /* ViewModels */,
+				2BF727F027471B1600CCAC30 /* Views */,
+			);
+			path = Sessions;
+			sourceTree = "<group>";
+		};
+		2BF727E327471A0700CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BA4B3D02673F09A0041586B /* WCConnectionApprovalViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727E527471A1700CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BA4B3FD267819F50041586B /* WCSessionListViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727E627471A3800CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B7E3028267A49F900E89EE3 /* WCAlgosTransactionViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727E727471A4100CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36E092681DBE800C57728 /* WCAppCallTransactionViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727E827471A4700CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B7E305C267A5E0700E89EE3 /* WCAssetTransactionViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727E927471A4D00CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B7E3060267A5E2500E89EE3 /* WCAssetAdditionTransactionViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727EA27471A5300CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B9E2F3726F0D291003D824A /* WCAssetCreationTransactionViewController.swift */,
+				2B5739E026F3F26B007E0252 /* WCAssetReconfigurationTransactionViewController.swift */,
+				2B5739E426F3F293007E0252 /* WCAssetDeletionTransactionViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727EB27471A5A00CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B288AD22691126A00BC6FB6 /* Detail */,
+				2B7E307D267B651A00E89EE3 /* WCTransactionFullDappDetailViewController.swift */,
+				2B7E3081267BC0A100E89EE3 /* WCSingleTransactionViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727EC27471A8B00CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B7E3054267A5D9D00E89EE3 /* WCGroupTransactionViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727ED27471A9100CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B0322D8269F1BB600C9B2F5 /* WCMainTransactionViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF727EE27471ADE00CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BA4B3EF267819840041586B /* WCSessionItemViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727EF27471AE400CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BA4B3DF2673F6A50041586B /* Account */,
+				2BA4B3DB2673F0E60041586B /* WCConnectionApprovalViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727F027471B1600CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B7E3014267A252700E89EE3 /* Empty */,
+				2BA4B3F7267819A00041586B /* Item */,
+				2BA4B3EA267819530041586B /* WCSessionListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727F127471B2000CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BA4B3E02673F6B20041586B /* Account */,
+				2BA4B3D42673F0B20041586B /* WCConnectionApprovalView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727F227471B3500CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B7E302C267A4A2400E89EE3 /* WCAlgosTransactionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727F327471B3C00CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36DAF267CCB4D00C57728 /* WCAlgosTransactionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727F427471B4100CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36E042681DBC400C57728 /* WCAppCallTransactionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727F527471B4700CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36DFB2681DB5B00C57728 /* WCAppCallTransactionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727F627471B4B00CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B7E3058267A5DBF00E89EE3 /* WCAssetTransactionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727F727471B5200CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36DBB267CCB8700C57728 /* WCAssetTransactionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727F827471B6000CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B7E3064267A5E4400E89EE3 /* WCAssetAdditionTransactionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727F927471B6600CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36DB7267CCB7100C57728 /* WCAssetAdditionTransactionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727FA27471B8F00CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B9E2F3C26F0D2C8003D824A /* WCAssetCreationTransactionView.swift */,
+				2B5739F026F3F73F007E0252 /* WCAssetDeletionTransactionView.swift */,
+				2B5739F426F3F752007E0252 /* WCAssetReconfigurationTransactionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727FB27471B9300CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B9E2F4126F0D332003D824A /* WCAssetCreationTransactionViewModel.swift */,
+				2B5739E826F3F6AC007E0252 /* WCAssetDeletionTransactionItemViewModel.swift */,
+				2B5739EC26F3F701007E0252 /* WCAssetReconfigurationTransactionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727FC27471BB500CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36DC6267D15A000C57728 /* Detail */,
+				2BD36DC2267D129E00C57728 /* Message */,
+				2BD36DC3267D12A500C57728 /* Warning */,
+				2B7E3030267A514B00E89EE3 /* WCSingleTransactionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727FD27471BBA00CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36DCB267E0D6000C57728 /* Detail */,
+				2B83502026AC23450014F9CD /* Header */,
+				2BD36DC4267D12B600C57728 /* Message */,
+				2BD36DC5267D12BB00C57728 /* Warning */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF727FE27471BBF00CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36E1C2684660100C57728 /* Header */,
+				2B7E303D267A51E200E89EE3 /* Item */,
+				2B7E3038267A518800E89EE3 /* WCGroupTransactionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF727FF27471BC300CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36E2526846F4A00C57728 /* Header */,
+				2B7E304A267A5D4C00E89EE3 /* Item */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF7280027471BCD00CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B0322F0269F3E4200C9B2F5 /* Header */,
+				2B68A22926A5D8B40076BD82 /* Item */,
+				2B68A23726A6D96E0076BD82 /* WCMainTransactionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF7280127471BD100CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B0322EA269F3DD100C9B2F5 /* Header */,
+				2B68A23226A6A0F70076BD82 /* Item */,
+				2B0322DC269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF7280227471E4700CCAC30 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				2B4DF408236C5F1900FF9551 /* Storable */,
+				2BF5314F224A45DC00A7455F /* Transition */,
+				2B5715B52634F1F0002C876D /* Chart */,
+				2B8954C6224420A500D6D068 /* Input */,
+				2B66870C2248DB6A009F21E7 /* NavigationBar */,
+				2B4DF406236C5E7F00FF9551 /* Reusable */,
+				2B4DF429236C76CD00FF9551 /* Session */,
+				2B4DF405236C5E7500FF9551 /* StatusBar */,
+				2B4DF428236C76A500FF9551 /* Storable */,
+				2B3E3A12247C055800E8AEB7 /* TabBar */,
+				17F9E923225789E7004CDF24 /* AccountFetchOperation.swift */,
+				17F9E926225796DA004CDF24 /* AccountManager.swift */,
+				2BE4D0F82594D328005F5764 /* AppStoreReview */,
+				2B288ACD268F157500BC6FB6 /* Assets */,
+				2B0F5F3724E5684E00DA22A6 /* Banner */,
+				2B62B03B240813A5002DF2A0 /* BLE */,
+				2B9F064024B60EAA006880F0 /* CSVExport */,
+				2BF34C9E2239ACC60052CAD3 /* Configuration */,
+				2B8BE4F62239370F005D8565 /* Extensions */,
+				D4DDF3B027395C9C00BC8F42 /* Formatter */,
+				2BC45DEC2252538D000CDCE2 /* ImagePicker */,
+				2BB37B142405D1B000F58662 /* Ledger */,
+				2B6687132248DF57009F21E7 /* LocalAuthentication */,
+				2B95413225AC96070098805B /* Network */,
+				2B4DF407236C5EEB00FF9551 /* Notifications */,
+				2BF53172224A93E800A7455F /* Operations */,
+				2B9EEADD264E7513007A112D /* Rewards */,
+				2BC1826523D8829D00888476 /* SDK */,
+				2B3A95E4238FF98800A3DF44 /* Transaction */,
+				2B3E39F2247837BF00E8AEB7 /* TestNet */,
+				2BA4998F24B5E43C00452650 /* Tracking */,
+				1746715B225B6BE600B78641 /* TypeAliases */,
+				2BF34CA32239AD4A0052CAD3 /* UI */,
+				2B02A2EA266CE065002DD8AB /* WalletConnect */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		2BF7280327471E5200CCAC30 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7280527471F2000CCAC30 /* ALGAPI */,
+				17B7D8A92240E18800A6FF9E /* Drafts */,
+				2B982336231EC1B2009560CD /* Query */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		2BF7280427471E8F00CCAC30 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				17B7D8AC2240F23D00A6FF9E /* Environment */,
+				2B8BE4D122391C38005D8565 /* AppDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		2BF7280527471F2000CCAC30 /* ALGAPI */ = {
+			isa = PBXGroup;
+			children = (
+				2BF34CC1223A95A50052CAD3 /* ALGAPI.swift */,
+				2BD5A69E26332C300048FA5E /* Algos */,
+				2BD6AB6B26EA33E8001C4257 /* Main */,
+				17B7D8A72240DFFC00A6FF9E /* ALGAPI+Account.swift */,
+				173DA1E82255F7B500378A82 /* ALGAPI+Transaction.swift */,
+				2BBA1988231FEB080080A6F6 /* ALGAPI+Notification.swift */,
+				2B4BD9FC238AD7F400491149 /* ALGAPI+Assets.swift */,
+				2B5BE145251B72AB00324BEE /* ALGAPI+Currency.swift */,
+				2B9EEAD5264D33B1007A112D /* ALGAPI+Block.swift */,
+			);
+			path = ALGAPI;
+			sourceTree = "<group>";
+		};
+		2BF728072747221E00CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B5BE03B2518E4A900324BEE /* WatchAccountAdditionView.swift */,
+				D4241FE426E7D69B0064CDD0 /* WatchAccountAdditionViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF728082747222500CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D4BF4A1B26F49E36009B53D8 /* WatchAccountAdditionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF728092747222A00CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B5BE0502518E4F200324BEE /* WatchAccountAdditionViewController.swift */,
+				D45E191226E91ECD00A32744 /* WatchAccountAdditionViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF7280A2747224100CCAC30 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2BF728152747244A00CCAC30 /* Screens */,
+				2BF728252747264800CCAC30 /* ViewModels */,
+				2BF72832274728A500CCAC30 /* Views */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2BF7280B2747228E00CCAC30 /* Introduction */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7280E274722D900CCAC30 /* Add */,
+				2BD6A06824A50D5B00D2D28D /* PinLimit */,
+				2BF7280D274722BB00CCAC30 /* Welcome */,
+				CBAD47442745510900C91946 /* AccountFlow.swift */,
+			);
+			path = Introduction;
+			sourceTree = "<group>";
+		};
+		2BF7280C2747229E00CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B0F7E1C25D6E3C100B16B85 /* WelcomeViewController.swift */,
+				D46C648426E614C500FBAC6D /* WelcomeViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF7280D274722BB00CCAC30 /* Welcome */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7280C2747229E00CCAC30 /* Screens */,
+				2BF7282B2747272D00CCAC30 /* Views */,
+			);
+			path = Welcome;
+			sourceTree = "<group>";
+		};
+		2BF7280E274722D900CCAC30 /* Add */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7280F274722E000CCAC30 /* Screens */,
+				2BF7282A2747271A00CCAC30 /* Views */,
+			);
+			path = Add;
+			sourceTree = "<group>";
+		};
+		2BF7280F274722E000CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B5BE05E25190A0500324BEE /* AddAccountViewController.swift */,
+				D46C648826E6151800FBAC6D /* AddAccountViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF72810274722F800CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BD6A06924A50D6A00D2D28D /* PinLimitViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF728112747234700CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B8954A12242E79C00D6D068 /* AccountNameSetupViewController.swift */,
+				D45E191626E91FA500A32744 /* AccountNameSetupViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF728122747235900CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7282F2747280600CCAC30 /* BackUp */,
+				2BF72829274726C600CCAC30 /* Verify */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF728132747237700CCAC30 /* PinCode */ = {
+			isa = PBXGroup;
+			children = (
+				2BF728142747237E00CCAC30 /* Screens */,
+				2BF72827274726A100CCAC30 /* ViewModels */,
+				2BF7282E274727C400CCAC30 /* Views */,
+			);
+			path = PinCode;
+			sourceTree = "<group>";
+		};
+		2BF728142747237E00CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739E9223FA0BD00B66EEF /* ChoosePasswordViewController.swift */,
+				D46C647026E5FEC700FBAC6D /* ChoosePasswordViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF728152747244A00CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B8954CD2244323700D6D068 /* AccountRecoverViewController.swift */,
+				D46AC87C26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF728162747247100CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B77470C25FFDB640083EFFA /* InputSuggestionViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF728172747247B00CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B01FE5826147FD7006C3C56 /* AccountRecoverOptionsViewController.swift */,
+				D411B36C26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF72818274724BA00CCAC30 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7281A274724CA00CCAC30 /* Screens */,
+				2BF7281C274724D400CCAC30 /* ViewModels */,
+				2BF7281B274724CE00CCAC30 /* Views */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2BF72819274724BF00CCAC30 /* Selection */ = {
+			isa = PBXGroup;
+			children = (
+				2BF7281D274724EB00CCAC30 /* Screen */,
+				2BF7281F274724F500CCAC30 /* ViewModels */,
+				2BF7281E274724F000CCAC30 /* Views */,
+			);
+			path = Selection;
+			sourceTree = "<group>";
+		};
+		2BF7281A274724CA00CCAC30 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BA172A726495B9400A613C4 /* AlgoStatisticsViewController.swift */,
+				D400858A271D9B19007C0C97 /* AlgoStatisticsViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BF7281B274724CE00CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF7281C274724D400CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BA17311264B188400A613C4 /* Chart */,
+				2BA17312264B188900A613C4 /* Header */,
+				2BA17305264B185900A613C4 /* AlgoStatisticsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF7281D274724EB00CCAC30 /* Screen */ = {
+			isa = PBXGroup;
+			children = (
+				D4008568271D4E4E007C0C97 /* AlgoStatisticsDateSelectionViewController.swift */,
+				D4008570271D6003007C0C97 /* AlgoStatisticsDateSelectionViewController+Theme.swift */,
+			);
+			path = Screen;
+			sourceTree = "<group>";
+		};
+		2BF7281E274724F000CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D400856C271D5188007C0C97 /* AlgoStatisticsDateSelectionView.swift */,
+				D4008580271D8365007C0C97 /* StatisticsDateSelectionViewTheme.swift */,
+				D4008574271D707F007C0C97 /* AlgoStatisticsDateOptionCell.swift */,
+				D4008578271D70A7007C0C97 /* AlgoStatisticsDateOptionView.swift */,
+				D4008584271D869A007C0C97 /* AlgoStatisticsDateOptionViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF7281F274724F500CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D400857C271D7C0D007C0C97 /* AlgoStatisticsDateOptionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF72821274725F300CCAC30 /* AccountType */ = {
+			isa = PBXGroup;
+			children = (
+				2BF72823274725FD00CCAC30 /* ViewModels */,
+				2BF72822274725F900CCAC30 /* Views */,
+			);
+			path = AccountType;
+			sourceTree = "<group>";
+		};
+		2BF72822274725F900CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B5BE06625190B7D00324BEE /* AccountTypeView.swift */,
+				D44EB6B226DF7A390008E234 /* AccountTypeViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF72823274725FD00CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B5BE06F2519356000324BEE /* AccountTypeViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF728242747263D00CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B01FE6526148482006C3C56 /* AccountRecoverOptionsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF728252747264800CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BF90F1F25FA39510033F348 /* RecoverInputViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF728262747265000CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B77474925FFE97E0083EFFA /* InputSuggestionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF72827274726A100CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BD73A182241324700B66EEF /* ChoosePasswordViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF72828274726B200CCAC30 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BF728302747281400CCAC30 /* BackUp */,
+				2B9EF2CF25D3D17A004BCCC4 /* Verify */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BF72829274726C600CCAC30 /* Verify */ = {
+			isa = PBXGroup;
+			children = (
+				17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */,
+				D46C647826E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift */,
+			);
+			path = Verify;
+			sourceTree = "<group>";
+		};
+		2BF7282A2747271A00CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B5BE09E251938E100324BEE /* AddAccountView.swift */,
+				D430A40026DF9F8200F34804 /* AddAccountViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF7282B2747272D00CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B0F7DFE25D6DBE800B16B85 /* WelcomeView.swift */,
+				D44EB6AE26DF73FF0008E234 /* WelcomeViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF7282C2747274000CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BD6A06524A50D3E00D2D28D /* PinLimitView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF7282D2747279F00CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B8954A42242E7D800D6D068 /* AccountNameSetupView.swift */,
+				D4241FDC26E7999C0064CDD0 /* AccountNameSetupViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF7282E274727C400CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739DC223F9E9F00B66EEF /* ChoosePasswordView.swift */,
+				D473CA5326E20C5100558598 /* ChoosePasswordViewTheme.swift */,
+				2BD739F92240527B00B66EEF /* PasswordInputView.swift */,
+				D46C647426E6005000FBAC6D /* PasswordInputViewTheme.swift */,
+				2BD739FB2241052500B66EEF /* PasswordInputCircleView.swift */,
+				D46C647C26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF7282F2747280600CCAC30 /* BackUp */ = {
+			isa = PBXGroup;
+			children = (
+				2B79A13C23147A4900766021 /* PassphraseBackUpViewController.swift */,
+				D40C294C26E29AFA0037A0F4 /* PassphraseBackUpViewController+Theme.swift */,
+			);
+			path = BackUp;
+			sourceTree = "<group>";
+		};
+		2BF728302747281400CCAC30 /* BackUp */ = {
+			isa = PBXGroup;
+			children = (
+				2B65602425CE1DDD0028FE12 /* PassphraseCellViewModel.swift */,
+			);
+			path = BackUp;
+			sourceTree = "<group>";
+		};
+		2BF728312747282700CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B9EF2E425D3E267004BCCC4 /* BackUp */,
+				2B9EF2BA25D3D132004BCCC4 /* Verify */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF72832274728A500CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BF90F3C25FA3B100033F348 /* RecoverInputView.swift */,
+				D46AC87826E8E416008CDE68 /* RecoverInputViewTheme.swift */,
+				2B8954CA224430DC00D6D068 /* AccountRecoverView.swift */,
+				D46AC87426E8DEB8008CDE68 /* AccountRecoverViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BF72833274728CA00CCAC30 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B77473425FFE92E0083EFFA /* InputSuggestionView.swift */,
+				2B77474025FFE94F0083EFFA /* InputSuggestionCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		2BF811AA25E5B19900D6B406 /* Tutorial */ = {
@@ -10342,33 +10604,6 @@
 				2BF8120325E7F73100D6B406 /* TransactionTutorialViewModel.swift */,
 			);
 			path = Tutorial;
-			sourceTree = "<group>";
-		};
-		2BF90F1D25FA39380033F348 /* Recover */ = {
-			isa = PBXGroup;
-			children = (
-				2BF90F1E25FA39450033F348 /* Input */,
-				2B01FE6426148477006C3C56 /* Options */,
-				2B77474825FFE9750083EFFA /* Suggestion */,
-			);
-			path = Recover;
-			sourceTree = "<group>";
-		};
-		2BF90F1E25FA39450033F348 /* Input */ = {
-			isa = PBXGroup;
-			children = (
-				2BF90F1F25FA39510033F348 /* RecoverInputViewModel.swift */,
-			);
-			path = Input;
-			sourceTree = "<group>";
-		};
-		2BF90F3725FA39A70033F348 /* Input */ = {
-			isa = PBXGroup;
-			children = (
-				2BF90F3C25FA3B100033F348 /* RecoverInputView.swift */,
-				D46AC87826E8E416008CDE68 /* RecoverInputViewTheme.swift */,
-			);
-			path = Input;
 			sourceTree = "<group>";
 		};
 		2BF90F5D25FBAADB0033F348 /* StackView */ = {
@@ -10490,29 +10725,6 @@
 				2B0F5F5A24EAECB700DA22A6 /* Crypto.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		D4008588271D8C09007C0C97 /* StatisticsDateSelection */ = {
-			isa = PBXGroup;
-			children = (
-				D4008589271D8C1E007C0C97 /* Views */,
-				D4008568271D4E4E007C0C97 /* AlgoStatisticsDateSelectionViewController.swift */,
-				D4008570271D6003007C0C97 /* StatisticsDateSelectionViewController+Theme.swift */,
-			);
-			path = StatisticsDateSelection;
-			sourceTree = "<group>";
-		};
-		D4008589271D8C1E007C0C97 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				D400856C271D5188007C0C97 /* AlgoStatisticsDateSelectionView.swift */,
-				D4008580271D8365007C0C97 /* StatisticsDateSelectionViewTheme.swift */,
-				D4008574271D707F007C0C97 /* AlgoStatisticsDateOptionCell.swift */,
-				D4008578271D70A7007C0C97 /* AlgoStatisticsDateOptionView.swift */,
-				D4008584271D869A007C0C97 /* AlgoStatisticsDateOptionViewTheme.swift */,
-				D400857C271D7C0D007C0C97 /* AlgoStatisticsDateOptionViewModel.swift */,
-			);
-			path = Views;
 			sourceTree = "<group>";
 		};
 		D405058A26F0EE68001D0D11 /* Lottie */ = {
@@ -10685,25 +10897,6 @@
 				D446A749272ABEF50081D60B /* light-rekey.json */,
 			);
 			path = Rekey;
-			sourceTree = "<group>";
-		};
-		D4822744272C572A004CB9BF /* Edit */ = {
-			isa = PBXGroup;
-			children = (
-				D4822745272C5735004CB9BF /* EditContactViewController.swift */,
-				D4822749272C57D9004CB9BF /* EditContactViewController+Theme.swift */,
-			);
-			path = Edit;
-			sourceTree = "<group>";
-		};
-		D482274D272C5C7C004CB9BF /* Edit */ = {
-			isa = PBXGroup;
-			children = (
-				D482274E272C5C86004CB9BF /* EditContactView.swift */,
-				D4312D6A27351CDA00ABDA1E /* EditContactViewModel.swift */,
-				D4822752272C67D4004CB9BF /* EditContactViewTheme.swift */,
-			);
-			path = Edit;
 			sourceTree = "<group>";
 		};
 		D4AEDD29271C6DF300AD2725 /* Footer */ = {
@@ -12205,7 +12398,7 @@
 				17BD4EE92292F1260003E49A /* BaseView.swift in Sources */,
 				2B9EF31025D5767B004BCCC4 /* TutorialViewModel.swift in Sources */,
 				2B44C383247419CB0074D57D /* TransactionListView.swift in Sources */,
-				D4008573271D6003007C0C97 /* StatisticsDateSelectionViewController+Theme.swift in Sources */,
+				D4008573271D6003007C0C97 /* AlgoStatisticsDateSelectionViewController+Theme.swift in Sources */,
 				17BD4EEB2292F1260003E49A /* QRText.swift in Sources */,
 				D46C648726E614C500FBAC6D /* WelcomeViewController+Theme.swift in Sources */,
 				2B7ABF75233386B60050B64B /* LoadingSpinnerView.swift in Sources */,
@@ -13179,7 +13372,7 @@
 				2B0F62EF24EC129D00DA22A6 /* ChoosePasswordView.swift in Sources */,
 				2B9EF30F25D5767B004BCCC4 /* TutorialViewModel.swift in Sources */,
 				2B0F62F124EC129D00DA22A6 /* AccountsDataSource.swift in Sources */,
-				D4008572271D6003007C0C97 /* StatisticsDateSelectionViewController+Theme.swift in Sources */,
+				D4008572271D6003007C0C97 /* AlgoStatisticsDateSelectionViewController+Theme.swift in Sources */,
 				2B0F62F224EC129D00DA22A6 /* BaseView.swift in Sources */,
 				D46C648626E614C500FBAC6D /* WelcomeViewController+Theme.swift in Sources */,
 				2B0F62F424EC129D00DA22A6 /* TransactionListView.swift in Sources */,
@@ -14150,7 +14343,7 @@
 				2BE4D06625938448005F5764 /* AnalyticsTracker.swift in Sources */,
 				2B8BE4F4223935DA005D8565 /* BaseView.swift in Sources */,
 				2B9EF30E25D5767B004BCCC4 /* TutorialViewModel.swift in Sources */,
-				D4008571271D6003007C0C97 /* StatisticsDateSelectionViewController+Theme.swift in Sources */,
+				D4008571271D6003007C0C97 /* AlgoStatisticsDateSelectionViewController+Theme.swift in Sources */,
 				2B44C382247419CB0074D57D /* TransactionListView.swift in Sources */,
 				D46C648526E614C500FBAC6D /* WelcomeViewController+Theme.swift in Sources */,
 				170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */,
