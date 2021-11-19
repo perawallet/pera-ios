@@ -105,7 +105,8 @@ extension EditContactView {
     private func addQrButton(_ theme: EditContactViewTheme) {
         qrButton.customizeAppearance(theme.qrButton)
 
-        #warning("This should be in the text input's right accessory")
+        /// <todo>
+        /// This should be in the text input's right accessory
         addressInputView.addSubview(qrButton)
         qrButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
@@ -132,7 +133,8 @@ extension EditContactView {
         placeholder: String,
         floatingPlaceholder: String?
     ) -> FloatingTextInputFieldView {
-        #warning("Multi line is not supported.")
+        /// <todo>
+        /// Multi line is not supported.
         let view = FloatingTextInputFieldView()
         let textInputBaseStyle: TextInputStyle = [
             .font(Fonts.DMSans.regular.make(15, .body)),

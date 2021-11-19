@@ -51,7 +51,7 @@ class QRScannerViewController: BaseViewController {
     
     private(set) lazy var overlayView = QRScannerOverlayView()
 
-    private lazy var cancelButton = LoadingButton(.none, loadingIndicator: UIActivityIndicatorView(style: .white))
+    private lazy var cancelButton = LoadingButton(.none, loadingIndicator: UIActivityIndicatorView(style: .medium))
     
     private var captureSession: AVCaptureSession?
     private let captureSessionQueue = DispatchQueue(label: AVCaptureSession.self.description(), attributes: [], target: nil)

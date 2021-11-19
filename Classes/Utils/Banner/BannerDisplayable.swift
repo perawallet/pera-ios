@@ -26,7 +26,7 @@ protocol BannerDisplayable {
 
 extension BannerDisplayable where Self: UIViewController {
     func addBanner() {
-        guard let window = UIApplication.shared.keyWindow else {
+        guard let window = UIApplication.shared.windows.last else {
             return
         }
 
@@ -39,7 +39,7 @@ extension BannerDisplayable where Self: UIViewController {
             return
         }
 
-        let statusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.size.height
+        let statusBarHeight: CGFloat = UIApplication.shared.windows.first?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
         window.addSubview(statusBarView)
 
         statusBarView.snp.makeConstraints { make in
