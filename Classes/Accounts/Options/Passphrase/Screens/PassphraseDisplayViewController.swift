@@ -89,7 +89,7 @@ extension PassphraseDisplayViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: PassphraseCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(PassphraseCell.self, at: indexPath)
         cell.customize(PassphraseCellViewTheme())
         cell.bindData(PassphraseCellViewModel(Passphrase(index: indexPath.item, mnemonics: mnemonics)))
         return cell

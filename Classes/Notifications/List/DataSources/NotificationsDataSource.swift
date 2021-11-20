@@ -123,7 +123,7 @@ extension NotificationsDataSource: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.item < notifications.count {
-            let cell: NotificationCell = collectionView.dequeueReusableCell(for: indexPath)
+            let cell = collectionView.dequeue(NotificationCell.self, at: indexPath)
             cell.bindData(viewModel(at: indexPath.item))
             return cell
         }

@@ -83,7 +83,7 @@ extension OptionsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: OptionsCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(OptionsCell.self, at: indexPath)
         cell.customize(OptionsContextViewTheme())
         cell.bind(OptionsViewModel(option: options[indexPath.item], account: account))
         return cell

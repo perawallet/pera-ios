@@ -30,7 +30,7 @@ final class ManageAssetsView: View {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.color
-        collectionView.registerCell(AssetPreviewActionCell.self)
+        collectionView.register(AssetPreviewActionCell.self)
         return collectionView
     }()
 

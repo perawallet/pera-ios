@@ -2693,9 +2693,9 @@
 		D419433D273570630055EC70 /* AssetListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D419433C273570630055EC70 /* AssetListViewDataSource.swift */; };
 		D419433E273570630055EC70 /* AssetListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D419433C273570630055EC70 /* AssetListViewDataSource.swift */; };
 		D419433F273570630055EC70 /* AssetListViewDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D419433C273570630055EC70 /* AssetListViewDataSource.swift */; };
-		D41F933A2722B45000E9F2E7 /* UICollectionView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93392722B45000E9F2E7 /* UICollectionView+Layout.swift */; };
-		D41F933B2722B45000E9F2E7 /* UICollectionView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93392722B45000E9F2E7 /* UICollectionView+Layout.swift */; };
-		D41F933C2722B45000E9F2E7 /* UICollectionView+Layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93392722B45000E9F2E7 /* UICollectionView+Layout.swift */; };
+		D41F933A2722B45000E9F2E7 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93392722B45000E9F2E7 /* UICollectionView+Extensions.swift */; };
+		D41F933B2722B45000E9F2E7 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93392722B45000E9F2E7 /* UICollectionView+Extensions.swift */; };
+		D41F933C2722B45000E9F2E7 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93392722B45000E9F2E7 /* UICollectionView+Extensions.swift */; };
 		D41F93412722C02600E9F2E7 /* CharacterSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93402722C02600E9F2E7 /* CharacterSet+Extension.swift */; };
 		D41F93422722C02600E9F2E7 /* CharacterSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93402722C02600E9F2E7 /* CharacterSet+Extension.swift */; };
 		D41F93432722C02600E9F2E7 /* CharacterSet+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D41F93402722C02600E9F2E7 /* CharacterSet+Extension.swift */; };
@@ -4140,7 +4140,7 @@
 		D419433427356EA10055EC70 /* AssetListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListView.swift; sourceTree = "<group>"; };
 		D419433827356FEB0055EC70 /* AssetListViewLayoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListViewLayoutBuilder.swift; sourceTree = "<group>"; };
 		D419433C273570630055EC70 /* AssetListViewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetListViewDataSource.swift; sourceTree = "<group>"; };
-		D41F93392722B45000E9F2E7 /* UICollectionView+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Layout.swift"; sourceTree = "<group>"; };
+		D41F93392722B45000E9F2E7 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
 		D41F93402722C02600E9F2E7 /* CharacterSet+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CharacterSet+Extension.swift"; sourceTree = "<group>"; };
 		D41F93442722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsViewTheme.swift; sourceTree = "<group>"; };
 		D41F93482723038F00E9F2E7 /* RekeyInstructionsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyInstructionsViewModel.swift; sourceTree = "<group>"; };
@@ -8571,7 +8571,6 @@
 			isa = PBXGroup;
 			children = (
 				2BB021E8224E828E0039D78A /* UICollectionView+Additions.swift */,
-				D41F93392722B45000E9F2E7 /* UICollectionView+Layout.swift */,
 				2B3E3A0B247BFD6E00E8AEB7 /* UIStackView+Additions.swift */,
 			);
 			path = List;
@@ -11085,6 +11084,7 @@
 			children = (
 				D4BC641326DE4BAA000CFD28 /* ColorSet+Additions.swift */,
 				D4BC641726DE4BBD000CFD28 /* ImageSet+Additions.swift */,
+				D41F93392722B45000E9F2E7 /* UICollectionView+Extensions.swift */,
 			);
 			path = Macaroon;
 			sourceTree = "<group>";
@@ -11713,7 +11713,7 @@
 				2B8D383426B6EC2700E7351D /* ApplicationLocalState.swift in Sources */,
 				2B0D84FB2395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift in Sources */,
 				2B0322F8269F426E00C9B2F5 /* WCGroupTransactionSupplementaryHeaderView.swift in Sources */,
-				D41F933C2722B45000E9F2E7 /* UICollectionView+Layout.swift in Sources */,
+				D41F933C2722B45000E9F2E7 /* UICollectionView+Extensions.swift in Sources */,
 				046E8240271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */,
 				17BD4DF82292F1260003E49A /* ContactsViewController.swift in Sources */,
 				2BD36E342686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,
@@ -12681,7 +12681,7 @@
 				2B8D383326B6EC2700E7351D /* ApplicationLocalState.swift in Sources */,
 				2B56B8342505013600AC7B8D /* LedgerAccountSelectionViewController.swift in Sources */,
 				2B0322F7269F426E00C9B2F5 /* WCGroupTransactionSupplementaryHeaderView.swift in Sources */,
-				D41F933B2722B45000E9F2E7 /* UICollectionView+Layout.swift in Sources */,
+				D41F933B2722B45000E9F2E7 /* UICollectionView+Extensions.swift in Sources */,
 				046E823F271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */,
 				2B56B8352505013600AC7B8D /* RekeyConfirmationViewModel.swift in Sources */,
 				2BD36E332686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,
@@ -13654,7 +13654,7 @@
 				2BA172992649583F00A613C4 /* AlgoUSDValueChartDataSetCustomizer.swift in Sources */,
 				2B8D383226B6EC2700E7351D /* ApplicationLocalState.swift in Sources */,
 				2B0322F6269F426E00C9B2F5 /* WCGroupTransactionSupplementaryHeaderView.swift in Sources */,
-				D41F933A2722B45000E9F2E7 /* UICollectionView+Layout.swift in Sources */,
+				D41F933A2722B45000E9F2E7 /* UICollectionView+Extensions.swift in Sources */,
 				046E823E271E9B0100311D0B /* VerifiedAssetInformationViewController+Theme.swift in Sources */,
 				2BE9372524630AC800322C1E /* SelectAssetHeaderView.swift in Sources */,
 				2BD36E322686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,

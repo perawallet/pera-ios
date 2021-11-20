@@ -55,7 +55,7 @@ extension AccountRecoverOptionsViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: OptionsCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(OptionsCell.self, at: indexPath)
         if let option = options[safe: indexPath.item] {
             cell.customize(OptionsContextViewTheme())
             cell.bind(AccountRecoverOptionsViewModel(option))

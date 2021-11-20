@@ -192,7 +192,7 @@ extension ContactDetailViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: AssetPreviewActionCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(AssetPreviewActionCell.self, at: indexPath)
         cell.customize(theme.assetPreviewActionViewTheme)
         cell.bindData(AssetPreviewViewModel(assetPreviews[indexPath.row]))
         cell.delegate = self

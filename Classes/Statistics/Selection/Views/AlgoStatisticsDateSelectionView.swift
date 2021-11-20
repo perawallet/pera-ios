@@ -29,7 +29,7 @@ final class AlgoStatisticsDateSelectionView: View {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.color
         collectionView.contentInset = UIEdgeInsets(theme.contentInset)
-        collectionView.registerCell(AlgoStatisticsDateOptionCell.self)
+        collectionView.register(AlgoStatisticsDateOptionCell.self)
         return collectionView
     }()
 

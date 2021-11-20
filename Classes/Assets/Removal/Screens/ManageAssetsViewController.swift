@@ -90,7 +90,7 @@ extension ManageAssetsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: AssetPreviewActionCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(AssetPreviewActionCell.self, at: indexPath)
         cell.customize(theme.assetPreviewActionViewTheme)
         cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(account.assetDetails[indexPath.item])))
         cell.delegate = self
