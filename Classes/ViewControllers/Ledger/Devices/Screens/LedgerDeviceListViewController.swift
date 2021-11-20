@@ -46,6 +46,10 @@ final class LedgerDeviceListViewController: BaseViewController {
         self.accountSetupFlow = accountSetupFlow
         super.init(configuration: configuration)
     }
+
+    override func configureNavigationBarAppearance() {
+        addBarButtons()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -78,6 +82,20 @@ final class LedgerDeviceListViewController: BaseViewController {
         ledgerDeviceListView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+}
+
+extension LedgerDeviceListViewController {
+    private func addBarButtons() {
+        addTroubleshootBarButton()
+    }
+
+    private func addTroubleshootBarButton() {
+        let troubleshootBarButtonItem = ALGBarButtonItem(kind: .troubleshoot) { [weak self] in
+            self?.open(.ledgerTutorial(flow: .addNewAccount(mode: .add(type: .pair))), by: .present)
+        }
+
+        rightBarButtonItems = [troubleshootBarButtonItem]
     }
 }
 

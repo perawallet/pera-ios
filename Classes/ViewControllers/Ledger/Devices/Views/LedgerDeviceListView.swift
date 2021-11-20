@@ -29,7 +29,7 @@ final class LedgerDeviceListView: View {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.color
         collectionView.contentInset = UIEdgeInsets(theme.listContentInset)
-        collectionView.register(LedgerDeviceCell.self, forCellWithReuseIdentifier: LedgerDeviceCell.reusableIdentifier)
+        collectionView.register(LedgerDeviceCell.self)
         return collectionView
     }()
     private lazy var verticalStackView = UIStackView()

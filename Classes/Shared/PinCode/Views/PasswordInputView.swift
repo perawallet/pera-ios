@@ -29,7 +29,13 @@ final class PasswordInputView: View {
     private(set) var passwordInputCircleViews: [PasswordInputCircleView] = []
     private lazy var stackView = UIStackView()
 
-    func customize() {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(theme)
+    }
+
+    func customize(_ theme: PasswordInputViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addStackView()

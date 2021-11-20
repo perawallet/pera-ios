@@ -31,6 +31,10 @@ final class WatchAccountAdditionViewModel: PairedViewModel {
 
 extension WatchAccountAdditionViewModel {
     func bindCopiedString(_ string: String?) {
-        self.copiedString = string
+        guard let address = string,
+              address.isValidatedAddress() else {
+                  return
+              }
+        self.copiedString = address
     }
 }

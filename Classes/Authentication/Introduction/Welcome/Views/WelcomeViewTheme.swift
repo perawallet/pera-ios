@@ -40,7 +40,7 @@ struct WelcomeViewTheme: StyleSheet, LayoutSheet {
         self.accountTypeViewTheme = AccountTypeViewTheme()
         
         self.horizontalInset = 24
-        self.topInset = 12
-        self.verticalInset = 20
+        self.topInset = 2
+        self.verticalInset = 16
     }
 }

@@ -62,16 +62,16 @@ final class LedgerTutorialInstructionListViewController: BaseScrollViewControlle
 }
 
 extension LedgerTutorialInstructionListViewController {
-    func addBarButtons() {
-        addInfoBarButton()
+    private func addBarButtons() {
+        addCloseBarButton()
     }
 
-    func addInfoBarButton() {
-        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
-            self?.openWalletSupport()
+    private func addCloseBarButton() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.dismissScreen()
         }
 
-        rightBarButtonItems = [infoBarButtonItem]
+        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 
@@ -79,19 +79,13 @@ extension LedgerTutorialInstructionListViewController: LedgerTutorialViewDelegat
     func ledgerTutorialInstructionListView(_ ledgerTutorialView: LedgerTutorialInstructionListView, didTap section: LedgerTutorialSection) {
         switch section {
         case .ledgerBluetoothConnection:
-            open(.tutorialSteps(step: .bluetoothConnection), by: .present)
+            open(.tutorialSteps(step: .bluetoothConnection), by: .push)
         case .installApp:
-            open(.tutorialSteps(step: .installApp), by: .present)
+            open(.tutorialSteps(step: .installApp), by: .push)
         case .openApp:
-            open(.tutorialSteps(step: .openApp), by: .present)
+            open(.tutorialSteps(step: .openApp), by: .push)
         case .bluetoothConnection:
-            open(.tutorialSteps(step: .bluetoothConnection), by: .present)
+            open(.tutorialSteps(step: .bluetoothConnection), by: .push)
         }
-    }
-}
-
-extension LedgerTutorialInstructionListViewController {
-    private func openWalletSupport() {
-        open(AlgorandWeb.ledgerSupport.link)
     }
 }

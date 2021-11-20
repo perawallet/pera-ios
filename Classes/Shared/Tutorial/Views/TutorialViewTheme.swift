@@ -63,10 +63,10 @@ struct TutorialViewTheme: StyleSheet, LayoutSheet {
         self.mainButtonTheme = ButtonPrimaryTheme()
         self.actionButtonTheme = ButtonSecondaryTheme()
 
-        self.titleTopInset = 24
+        self.titleTopInset = 40
         self.buttonInset = 16
         self.descriptionHorizontalInset = 24
-        self.descriptionTopInset = 16
+        self.descriptionTopInset = 24
         self.horizontalInset = 24
         self.warningTitlePaddings = (0, 56, 32, 0)
         self.bottomInset = 16

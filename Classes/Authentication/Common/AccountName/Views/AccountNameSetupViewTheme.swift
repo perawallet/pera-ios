@@ -26,11 +26,9 @@ struct AccountNameSetupViewTheme: StyleSheet, LayoutSheet {
     let mainButtonTheme: ButtonTheme
 
     let textInputVerticalInset: LayoutMetric
-    let buttonVerticalInset: LayoutMetric
     let horizontalInset: LayoutMetric
     let bottomInset: LayoutMetric
     let topInset: LayoutMetric
-    let containerTopInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.title = [
@@ -52,10 +50,8 @@ struct AccountNameSetupViewTheme: StyleSheet, LayoutSheet {
         self.mainButtonTheme = ButtonPrimaryTheme()
 
         self.textInputVerticalInset = 40
-        self.buttonVerticalInset = 60
         self.horizontalInset = 24
         self.bottomInset = 16
-        self.topInset = 12
-        self.containerTopInset = 32
+        self.topInset = 2
     }
 }

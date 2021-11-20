@@ -25,7 +25,6 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
     let detail: TextStyle
 
     let iconSize: LayoutSize
-    let titleTrailingInset: LayoutMetric
     let horizontalInset: LayoutMetric
     let verticalInset: LayoutMetric
     let minimumInset: LayoutMetric
@@ -46,9 +45,8 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
         ]
 
         self.iconSize = (40, 40)
-        self.titleTrailingInset = 60
         self.horizontalInset = 24
         self.verticalInset = 24
-        self.minimumInset = 4
+        self.minimumInset = 2
     }
 }

@@ -56,8 +56,6 @@ extension ChoosePasswordView {
     }
     
     private func addPasswordView(_ theme: ChoosePasswordViewTheme) {
-        passwordInputView.customize()
-
         addSubview(passwordInputView)
         passwordInputView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.inputViewTopInset)
@@ -66,7 +64,7 @@ extension ChoosePasswordView {
     }
     
     private func addNumpadView(_ theme: ChoosePasswordViewTheme) {
-        numpadView.customize(NumpadViewTheme())
+        numpadView.customize(theme.numpadViewTheme)
 
         addSubview(numpadView)
         numpadView.snp.makeConstraints {

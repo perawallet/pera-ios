@@ -57,7 +57,7 @@ extension PassphraseBackUpView {
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(theme.titleHorizontalInset)
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalToSuperview().inset(theme.topInset)
         }
     }
@@ -73,7 +73,7 @@ extension PassphraseBackUpView {
     }
 
     private func addPassphraseView(_ theme: PassphraseBackUpViewTheme) {
-        passphraseView.customize(PassphraseViewTheme())
+        passphraseView.customize(theme.passphraseViewTheme)
 
         addSubview(passphraseView)
         passphraseView.snp.makeConstraints {

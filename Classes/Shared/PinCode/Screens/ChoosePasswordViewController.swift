@@ -72,7 +72,6 @@ final class ChoosePasswordViewController: BaseViewController {
         super.configureAppearance()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         setTitle()
-        viewModel.configure(choosePasswordView)
     }
     
     override func prepareLayout() {
@@ -84,6 +83,11 @@ final class ChoosePasswordViewController: BaseViewController {
         super.linkInteractors()
         choosePasswordView.linkInteractors()
         choosePasswordView.delegate = self
+    }
+
+    override func bindData() {
+        super.bindData()
+        viewModel.configure(choosePasswordView)
     }
 }
 

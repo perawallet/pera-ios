@@ -83,7 +83,8 @@ extension TutorialViewController {
         switch tutorial {
         case .recover,
              .backUp,
-             .watchAccount:
+             .watchAccount,
+             .ledger:
             addInfoBarButton()
         case .passcode:
             addDontAskAgainBarButton()
@@ -120,6 +121,8 @@ extension TutorialViewController {
             open(AlgorandWeb.recoverSupport.link)
         case .watchAccount:
             open(AlgorandWeb.watchAccountSupport.link)
+        case .ledger:
+            open(AlgorandWeb.ledgerSupport.link)
         default:
             break
         }
@@ -163,7 +166,7 @@ extension TutorialViewController: TutorialViewDelegate {
         case .localAuthentication:
             dismissScreen()
         case .ledger:
-            open(.ledgerTutorial(flow: .addNewAccount(mode: .add(type: .pair))), by: .push)
+            open(.ledgerTutorial(flow: .addNewAccount(mode: .add(type: .pair))), by: .present)
         default:
             break
         }

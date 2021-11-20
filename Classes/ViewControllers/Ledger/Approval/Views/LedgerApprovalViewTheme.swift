@@ -48,12 +48,12 @@ struct LedgerApprovalViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.center),
             .textOverflow(.fitting)
         ]
-        self.lottie = UIApplication.shared.isDarkModeDisplay ? "dark-ledger" : "light-ledger" /// <note>:  Should be handled also on view.
+        self.lottie = UIApplication.shared.isDarkModeDisplay ? "dark-ledger" : "light-ledger" /// <todo>:  Should be handled also on view.
 
         self.cancelButtonTheme = ButtonSecondaryTheme()
 
         self.verticalInset = 32
-        self.horizontalInset = 20
+        self.horizontalInset = 24
         self.topInset = 42
         self.titleTopInset = 28
         self.descriptionTopInset = 12

@@ -74,6 +74,7 @@ extension WelcomeView {
     }
 
     private func addTermsAndConditionsTextView(_ theme: WelcomeViewTheme) {
+        // <todo>: Macaroon
         addSubview(termsAndConditionsTextView)
 
         termsAndConditionsTextView.isEditable = false
@@ -108,17 +109,13 @@ extension WelcomeView {
     }
 
     private func addStackView(_ theme: WelcomeViewTheme) {
-        addSubview(stackView)
-
-        stackView.distribution = .fillProportionally
-        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         stackView.axis = .vertical
 
+        addSubview(stackView)
         stackView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.centerY.equalToSuperview()
             $0.top.greaterThanOrEqualTo(titleLabel.snp.bottom).offset(theme.verticalInset)
             $0.bottom.lessThanOrEqualTo(termsAndConditionsTextView.snp.top).offset(-theme.verticalInset)
-            $0.centerY.equalToSuperview()
         }
 
         addAccountView.customize(theme.accountTypeViewTheme)

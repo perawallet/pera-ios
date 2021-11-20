@@ -121,6 +121,11 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+        case .troubleshoot:
+            if let icon = img("icon-troubleshoot") {
+                return ImageContent(normal: icon)
+            }
+            return nil
         }
     }
     
@@ -191,6 +196,8 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .filter:
             return .explicit(CGSize(width: 40, height: 40))
+        case .troubleshoot:
+            return .explicit(CGSize(width: 40, height: 40))
         }
     }
     
@@ -225,6 +232,7 @@ extension ALGBarButtonItem {
         case copy
         case share
         case filter
+        case troubleshoot
     }
 }
 

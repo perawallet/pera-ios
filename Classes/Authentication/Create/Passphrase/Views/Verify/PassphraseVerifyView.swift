@@ -21,10 +21,32 @@ import Foundation
 
 final class PassphraseVerifyView: View {
     weak var delegate: PassphraseVerifyViewDelegate?
-    
+
+    private lazy var theme = PassphraseVerifyViewTheme()
     private lazy var titleLabel = UILabel()
-    private lazy var passphraseCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+
+    private lazy var passphraseCollectionView: UICollectionView = {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 0
+        flowLayout.minimumInteritemSpacing = theme.cellSpacing
+        let passphraseCollectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        passphraseCollectionView.showsVerticalScrollIndicator = false
+        passphraseCollectionView.showsHorizontalScrollIndicator = false
+        passphraseCollectionView.backgroundColor = .clear
+        passphraseCollectionView.allowsMultipleSelection = true
+        passphraseCollectionView.isScrollEnabled = false
+        passphraseCollectionView.register(PassphraseMnemonicCell.self)
+        passphraseCollectionView.register(header: PasshraseMnemonicNumberHeaderSupplementaryView.self)
+        return passphraseCollectionView
+    }()
+
     private lazy var nextButton = Button()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        customize(theme)
+        setListeners()
+    }
 
     func customize(_ theme: PassphraseVerifyViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -55,23 +77,6 @@ extension PassphraseVerifyView {
     }
     
     private func addCollectionView(_ theme: PassphraseVerifyViewTheme) {
-        let collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.minimumLineSpacing = 0
-        collectionViewLayout.minimumInteritemSpacing = theme.cellSpacing
-        passphraseCollectionView.collectionViewLayout = collectionViewLayout
-        passphraseCollectionView.register(
-            PassphraseMnemonicCell.self,
-            forCellWithReuseIdentifier: PassphraseMnemonicCell.reusableIdentifier
-        )
-        passphraseCollectionView.register(
-            PasshraseMnemonicNumberHeaderSupplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: PasshraseMnemonicNumberHeaderSupplementaryView.reusableIdentifier
-        )
-        passphraseCollectionView.backgroundColor = .clear
-        passphraseCollectionView.allowsMultipleSelection = true
-        passphraseCollectionView.isScrollEnabled = false
-
         addSubview(passphraseCollectionView)
         passphraseCollectionView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.listTopOffset)

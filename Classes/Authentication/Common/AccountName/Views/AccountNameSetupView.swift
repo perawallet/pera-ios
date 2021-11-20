@@ -93,7 +93,7 @@ extension AccountNameSetupView {
         addSubview(nextButton)
         nextButton.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.greaterThanOrEqualTo(accountNameInputView.snp.bottom).offset(theme.containerTopInset)
+            $0.top.greaterThanOrEqualTo(accountNameInputView.snp.bottom).offset(theme.bottomInset)
             $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }

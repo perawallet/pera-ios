@@ -28,7 +28,6 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
     let shadow: MacaroonUIKit.Shadow
 
     let horizontalInset: LayoutMetric
-    let nameHorizontalOffset: LayoutMetric
     let ledgerIconSize: LayoutSize
     let arrowIconSize: LayoutSize
 
@@ -55,8 +54,7 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
             fillColor: AppColors.Shared.System.background.color
         )
 
-        self.horizontalInset = 20
-        self.nameHorizontalOffset = 16
+        self.horizontalInset = 16
         self.arrowIconSize = (24, 24)
         self.ledgerIconSize = (40, 40)
     }
