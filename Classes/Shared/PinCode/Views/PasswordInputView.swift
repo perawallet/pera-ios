@@ -60,7 +60,7 @@ extension PasswordInputView {
     
     private func addCircleViews() {
         for _ in 1...6 {
-            let circleView = PasswordInputCircleView()
+            let circleView = PasswordInputCircleView(frame: .zero)
             passwordInputCircleViews.append(circleView)
             stackView.addArrangedSubview(circleView)
         }
