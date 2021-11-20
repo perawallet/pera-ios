@@ -2476,7 +2476,6 @@
 		CBAD46FE2745434A00C91946 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DA626E5486E005BEDFD /* FirebaseCrashlytics */; };
 		CBAD46FF2745434A00C91946 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DA926E548C2005BEDFD /* SwiftDate */; };
 		CBAD47002745434A00C91946 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DAC26E54AFA005BEDFD /* Lottie */; };
-		CBAD47012745434A00C91946 /* BetterSegmentedControl in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DAF26E54B18005BEDFD /* BetterSegmentedControl */; };
 		CBAD47022745434A00C91946 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DB226E54B39005BEDFD /* Charts */; };
 		CBAD47032745434A00C91946 /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DB526E54B6F005BEDFD /* WalletConnectSwift */; };
 		CBAD47042745434A00C91946 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DB826E54B9C005BEDFD /* KeychainAccess */; };
@@ -2498,7 +2497,6 @@
 		CBAD47142745434A00C91946 /* MagpieHipo in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DC126E54C4F005BEDFD /* MagpieHipo */; };
 		CBAD47162745434A00C91946 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DC526E54C4F005BEDFD /* SwiftDate */; };
 		CBAD47172745434A00C91946 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DC726E54C4F005BEDFD /* Lottie */; };
-		CBAD47182745434A00C91946 /* BetterSegmentedControl in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DC926E54C4F005BEDFD /* BetterSegmentedControl */; };
 		CBAD47192745434A00C91946 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DCB26E54C4F005BEDFD /* Charts */; };
 		CBAD471A2745434A00C91946 /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DCD26E54C4F005BEDFD /* WalletConnectSwift */; };
 		CBAD471B2745434A00C91946 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DCF26E54C4F005BEDFD /* KeychainAccess */; };
@@ -2522,7 +2520,6 @@
 		CBAD472D2745434A00C91946 /* MagpieHipo in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DD726E54C6D005BEDFD /* MagpieHipo */; };
 		CBAD472F2745434A00C91946 /* SwiftDate in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DDB26E54C6D005BEDFD /* SwiftDate */; };
 		CBAD47302745434A00C91946 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DDD26E54C6D005BEDFD /* Lottie */; };
-		CBAD47312745434A00C91946 /* BetterSegmentedControl in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DDF26E54C6D005BEDFD /* BetterSegmentedControl */; };
 		CBAD47322745434A00C91946 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DE126E54C6D005BEDFD /* Charts */; };
 		CBAD47332745434A00C91946 /* WalletConnectSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DE326E54C6D005BEDFD /* WalletConnectSwift */; };
 		CBAD47342745434A00C91946 /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = 2B187DE526E54C6D005BEDFD /* KeychainAccess */; };
@@ -4345,7 +4342,6 @@
 				CBAD473B2745434A00C91946 /* MacaroonForm in Frameworks */,
 				CBAD47362745434A00C91946 /* FirebaseCrashlytics in Frameworks */,
 				CBAD472D2745434A00C91946 /* MagpieHipo in Frameworks */,
-				CBAD47312745434A00C91946 /* BetterSegmentedControl in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4378,7 +4374,6 @@
 				CBAD47222745434A00C91946 /* MacaroonForm in Frameworks */,
 				CBAD471D2745434A00C91946 /* FirebaseCrashlytics in Frameworks */,
 				CBAD47142745434A00C91946 /* MagpieHipo in Frameworks */,
-				CBAD47182745434A00C91946 /* BetterSegmentedControl in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4400,7 +4395,6 @@
 				CBAD470C2745434A00C91946 /* MacaroonSwiftUI in Frameworks */,
 				CBAD46F82745434A00C91946 /* MagpieAlamofire in Frameworks */,
 				CBAD47002745434A00C91946 /* Lottie in Frameworks */,
-				CBAD47012745434A00C91946 /* BetterSegmentedControl in Frameworks */,
 				CBAD47022745434A00C91946 /* Charts in Frameworks */,
 				CBAD47032745434A00C91946 /* WalletConnectSwift in Frameworks */,
 				CBAD470F2745434A00C91946 /* MacaroonURLImage in Frameworks */,
@@ -11181,7 +11175,6 @@
 				2B187DD726E54C6D005BEDFD /* MagpieHipo */,
 				2B187DDB26E54C6D005BEDFD /* SwiftDate */,
 				2B187DDD26E54C6D005BEDFD /* Lottie */,
-				2B187DDF26E54C6D005BEDFD /* BetterSegmentedControl */,
 				2B187DE126E54C6D005BEDFD /* Charts */,
 				2B187DE326E54C6D005BEDFD /* WalletConnectSwift */,
 				2B187DE526E54C6D005BEDFD /* KeychainAccess */,
@@ -11225,7 +11218,6 @@
 				2B187DC126E54C4F005BEDFD /* MagpieHipo */,
 				2B187DC526E54C4F005BEDFD /* SwiftDate */,
 				2B187DC726E54C4F005BEDFD /* Lottie */,
-				2B187DC926E54C4F005BEDFD /* BetterSegmentedControl */,
 				2B187DCB26E54C4F005BEDFD /* Charts */,
 				2B187DCD26E54C4F005BEDFD /* WalletConnectSwift */,
 				2B187DCF26E54C4F005BEDFD /* KeychainAccess */,
@@ -11271,7 +11263,6 @@
 				2B187DA626E5486E005BEDFD /* FirebaseCrashlytics */,
 				2B187DA926E548C2005BEDFD /* SwiftDate */,
 				2B187DAC26E54AFA005BEDFD /* Lottie */,
-				2B187DAF26E54B18005BEDFD /* BetterSegmentedControl */,
 				2B187DB226E54B39005BEDFD /* Charts */,
 				2B187DB526E54B6F005BEDFD /* WalletConnectSwift */,
 				2B187DB826E54B9C005BEDFD /* KeychainAccess */,
@@ -11365,7 +11356,6 @@
 				2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				2B187DA826E548C1005BEDFD /* XCRemoteSwiftPackageReference "SwiftDate" */,
 				2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */,
-				2B187DAE26E54B18005BEDFD /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */,
 				2B187DB126E54B39005BEDFD /* XCRemoteSwiftPackageReference "Charts" */,
 				2B187DB426E54B6F005BEDFD /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
 				2B187DB726E54B9C005BEDFD /* XCRemoteSwiftPackageReference "KeychainAccess" */,
@@ -15290,14 +15280,6 @@
 				minimumVersion = 3.0.0;
 			};
 		};
-		2B187DAE26E54B18005BEDFD /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/gmarm/BetterSegmentedControl";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
-			};
-		};
 		2B187DB126E54B39005BEDFD /* XCRemoteSwiftPackageReference "Charts" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/danielgindi/Charts";
@@ -15373,11 +15355,6 @@
 			package = 2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
-		2B187DAF26E54B18005BEDFD /* BetterSegmentedControl */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187DAE26E54B18005BEDFD /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */;
-			productName = BetterSegmentedControl;
-		};
 		2B187DB226E54B39005BEDFD /* Charts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187DB126E54B39005BEDFD /* XCRemoteSwiftPackageReference "Charts" */;
@@ -15423,11 +15400,6 @@
 			package = 2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
-		2B187DC926E54C4F005BEDFD /* BetterSegmentedControl */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187DAE26E54B18005BEDFD /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */;
-			productName = BetterSegmentedControl;
-		};
 		2B187DCB26E54C4F005BEDFD /* Charts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187DB126E54B39005BEDFD /* XCRemoteSwiftPackageReference "Charts" */;
@@ -15472,11 +15444,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187DAB26E54AFA005BEDFD /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
-		};
-		2B187DDF26E54C6D005BEDFD /* BetterSegmentedControl */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B187DAE26E54B18005BEDFD /* XCRemoteSwiftPackageReference "BetterSegmentedControl" */;
-			productName = BetterSegmentedControl;
 		};
 		2B187DE126E54C6D005BEDFD /* Charts */ = {
 			isa = XCSwiftPackageProductDependency;
