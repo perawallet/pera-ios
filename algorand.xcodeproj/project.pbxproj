@@ -4459,33 +4459,6 @@
 			path = CoreImage;
 			sourceTree = "<group>";
 		};
-		17100B2A225CEC2900D13548 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				2BDD43CD2513A80F00C6D3B5 /* Common */,
-				2B4DF416236C6A8900FF9551 /* Detail */,
-				2B2AACAC250A7E4900B8C5C5 /* Developer */,
-				2B4DF413236C6A6400FF9551 /* Footer */,
-				2B4DF417236C6A8E00FF9551 /* Info */,
-				2B4DF412236C6A5800FF9551 /* Node */,
-				2B4DF415236C6A8500FF9551 /* Toggle */,
-				17100B2B225CEC3600D13548 /* SettingsView.swift */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		171111AC225DDA5600DAF55C /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				2BDD43D02513A82500C6D3B5 /* Common */,
-				17D04F52226107D70051BC43 /* NodeSettingsViewModel.swift */,
-				2B2AACCF250B6BC900B8C5C5 /* SettingsToggleViewModel.swift */,
-				2B2AACD3250B6BF500B8C5C5 /* SettingsInfoViewModel.swift */,
-				2B2AACD7250B6C6E00B8C5C5 /* SettingsDetailViewModel.swift */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
 		1746715B225B6BE600B78641 /* TypeAliases */ = {
 			isa = PBXGroup;
 			children = (
@@ -4560,20 +4533,12 @@
 			path = Numbers;
 			sourceTree = "<group>";
 		};
-		18138462269F231900AEEC2F /* WarningAlert */ = {
-			isa = PBXGroup;
-			children = (
-				18138463269F234E00AEEC2F /* WarningAlertView.swift */,
-				2B3E227026BC317600ED0AAF /* ActionableWarningAlertView.swift */,
-			);
-			path = WarningAlert;
-			sourceTree = "<group>";
-		};
 		18138465269F2E1000AEEC2F /* WarningAlert */ = {
 			isa = PBXGroup;
 			children = (
-				18138466269F2E2500AEEC2F /* WarningAlertViewController.swift */,
-				2B3E226C26BC310500ED0AAF /* ActionableWarningAlertViewController.swift */,
+				2BA713622748630300B8A907 /* Screens */,
+				2BA71361274862FE00B8A907 /* ViewModels */,
+				2BA71360274862F400B8A907 /* Views */,
 			);
 			path = WarningAlert;
 			sourceTree = "<group>";
@@ -4590,14 +4555,6 @@
 			isa = PBXGroup;
 			children = (
 				18E9EF0326B4114200F2192F /* WarningAlert.swift */,
-			);
-			path = WarningAlert;
-			sourceTree = "<group>";
-		};
-		18F34B2E26B149AA007488DF /* WarningAlert */ = {
-			isa = PBXGroup;
-			children = (
-				18F34B2F26B149C3007488DF /* WarningAlertViewModel.swift */,
 			);
 			path = WarningAlert;
 			sourceTree = "<group>";
@@ -4629,25 +4586,11 @@
 		2B0322D7269F1B9A00C9B2F5 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				2BA7139E27486DC500B8A907 /* DataSource */,
+				2BA713722748656A00B8A907 /* Layout */,
 				2BF727ED27471A9100CCAC30 /* Screens */,
 				2BF7280127471BD100CCAC30 /* ViewModels */,
 				2BF7280027471BCD00CCAC30 /* Views */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
-		2B0322E0269F1DD900C9B2F5 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				2B0322E1269F1DE900C9B2F5 /* WCMainTransactionLayout.swift */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
-		2B0322E5269F1DFB00C9B2F5 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				2B0322E6269F1E0B00C9B2F5 /* WCMainTransactionDataSource.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -4672,23 +4615,9 @@
 		2B03D69725C23BF50079A973 /* Max */ = {
 			isa = PBXGroup;
 			children = (
-				2B03D69825C23BFD0079A973 /* MaximumBalanceWarningViewController.swift */,
-			);
-			path = Max;
-			sourceTree = "<group>";
-		};
-		2B03D6A425C23C170079A973 /* Max */ = {
-			isa = PBXGroup;
-			children = (
-				2B03D6A525C23C270079A973 /* MaximumBalanceWarningView.swift */,
-			);
-			path = Max;
-			sourceTree = "<group>";
-		};
-		2B03D6AD25C2D3EA0079A973 /* Max */ = {
-			isa = PBXGroup;
-			children = (
-				2B03D6AE25C2D3F40079A973 /* MaximumBalanceWarningViewModel.swift */,
+				2BA7134627485BA000B8A907 /* Screens */,
+				2BA7134527485B9B00B8A907 /* ViewModels */,
+				2BA7134427485B9400B8A907 /* Views */,
 			);
 			path = Max;
 			sourceTree = "<group>";
@@ -4746,12 +4675,9 @@
 		2B0D84FC2395D6EB00F0EAA7 /* Preview */ = {
 			isa = PBXGroup;
 			children = (
+				2BA7134727485BB800B8A907 /* Main */,
 				2B03D69725C23BF50079A973 /* Max */,
 				2BF811AA25E5B19900D6B406 /* Tutorial */,
-				2B56F7D5225B3C1D00E58737 /* SendTransactionPreviewViewController.swift */,
-				2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */,
-				2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */,
-				2B0D84F62395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift */,
 			);
 			path = Preview;
 			sourceTree = "<group>";
@@ -4767,34 +4693,11 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		2B0F5EE324DD4D3000DA22A6 /* Instruction */ = {
-			isa = PBXGroup;
-			children = (
-				2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */,
-				D41F93482723038F00E9F2E7 /* RekeyInstructionsViewModel.swift */,
-				D41F93442722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift */,
-				2B38C92F24D436F20059AB02 /* RekeyInstructionItemView.swift */,
-				D41F934C272309F000E9F2E7 /* RekeyInstructionItemViewTheme.swift */,
-			);
-			path = Instruction;
-			sourceTree = "<group>";
-		};
-		2B0F5EE424DD4D3F00DA22A6 /* Confirm */ = {
-			isa = PBXGroup;
-			children = (
-				2B0F5EEF24DD4F8E00DA22A6 /* Footer */,
-				2B0F5EEC24DD4F7100DA22A6 /* RekeyConfirmationView.swift */,
-				D4CCA1D427241DA400DF1B76 /* RekeyConfirmationViewTheme.swift */,
-				D4CCA1D827242B3B00DF1B76 /* RekeyTransitionItemView.swift */,
-				D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */,
-			);
-			path = Confirm;
-			sourceTree = "<group>";
-		};
 		2B0F5EE824DD4D9000DA22A6 /* Instruction */ = {
 			isa = PBXGroup;
 			children = (
-				2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */,
+				2BA7137A2748668000B8A907 /* Screens */,
+				2BA713852748683100B8A907 /* Views */,
 			);
 			path = Instruction;
 			sourceTree = "<group>";
@@ -4802,23 +4705,9 @@
 		2B0F5EE924DD4D9B00DA22A6 /* Confirm */ = {
 			isa = PBXGroup;
 			children = (
-				2B0F5EF624DD507000DA22A6 /* RekeyConfirmationViewController.swift */,
-			);
-			path = Confirm;
-			sourceTree = "<group>";
-		};
-		2B0F5EEA24DD4DA400DA22A6 /* Rekey */ = {
-			isa = PBXGroup;
-			children = (
-				2B0F5EEB24DD4DA900DA22A6 /* Confirm */,
-			);
-			path = Rekey;
-			sourceTree = "<group>";
-		};
-		2B0F5EEB24DD4DA900DA22A6 /* Confirm */ = {
-			isa = PBXGroup;
-			children = (
-				2B0F5EF924DD509D00DA22A6 /* RekeyConfirmationViewModel.swift */,
+				2BA713792748667A00B8A907 /* Screens */,
+				2BA7139A27486CEB00B8A907 /* ViewModels */,
+				2BA713842748681E00B8A907 /* Views */,
 			);
 			path = Confirm;
 			sourceTree = "<group>";
@@ -4832,58 +4721,14 @@
 			path = Footer;
 			sourceTree = "<group>";
 		};
-		2B0F5F0124DD50DB00DA22A6 /* Ledger */ = {
-			isa = PBXGroup;
-			children = (
-				2B343CDD259D150E001EA8C8 /* Detail */,
-				2B0F5F1724E2A7DC00DA22A6 /* Selection */,
-			);
-			path = Ledger;
-			sourceTree = "<group>";
-		};
 		2B0F5F0624E19A5900DA22A6 /* Selection */ = {
 			isa = PBXGroup;
 			children = (
-				2BB350BB2588E0CE00A03BAC /* Detail */,
-				2BA0156C2636B809009EC914 /* Verification */,
-				2B0F5F0724E19A8700DA22A6 /* LedgerAccountSelectionViewController.swift */,
-				D4B1524526F387C9001A81C0 /* LedgerAccountSelectionViewController+Theme.swift */,
-			);
-			path = Selection;
-			sourceTree = "<group>";
-		};
-		2B0F5F0A24E19AAA00DA22A6 /* Selection */ = {
-			isa = PBXGroup;
-			children = (
-				2B0F5F1E24E2B6FE00DA22A6 /* Cell */,
-				2BB350B32588E0A400A03BAC /* Detail */,
-				2B0F5F0B24E19ABA00DA22A6 /* LedgerAccountSelectionView.swift */,
-				D4DF3F6E26F2214D006625E6 /* LedgerAccountSelectionViewTheme.swift */,
-			);
-			path = Selection;
-			sourceTree = "<group>";
-		};
-		2B0F5F1524E2A71E00DA22A6 /* Ledger */ = {
-			isa = PBXGroup;
-			children = (
-				2B0F5F1624E2A72C00DA22A6 /* Selection */,
-			);
-			path = Ledger;
-			sourceTree = "<group>";
-		};
-		2B0F5F1624E2A72C00DA22A6 /* Selection */ = {
-			isa = PBXGroup;
-			children = (
-				2B01E2C424EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift */,
-			);
-			path = Selection;
-			sourceTree = "<group>";
-		};
-		2B0F5F1724E2A7DC00DA22A6 /* Selection */ = {
-			isa = PBXGroup;
-			children = (
-				2B27038F263A0F27006BAF75 /* Verification */,
-				2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */,
+				2BA71373274865E500B8A907 /* DataSource */,
+				2BA7136F274864EE00B8A907 /* Layout */,
+				2BA7136E274864E800B8A907 /* Screens */,
+				2BA7136D274864E400B8A907 /* ViewModels */,
+				2BA7136C274864DE00B8A907 /* Views */,
 			);
 			path = Selection;
 			sourceTree = "<group>";
@@ -5062,30 +4907,11 @@
 			path = Action;
 			sourceTree = "<group>";
 		};
-		2B298D0F24F4371F0047408A /* Selection */ = {
-			isa = PBXGroup;
-			children = (
-				2BB350D82589891200A03BAC /* Detail */,
-				2BA0158E2636BE84009EC914 /* Verification */,
-				2B7E58822586702500731C97 /* LedgerAccountViewModel.swift */,
-				2B7E589025878BCE00731C97 /* LedgerAccountAssetCountViewModel.swift */,
-				2B12633325F254450043CC03 /* LedgerAccountSelectionViewModel.swift */,
-			);
-			path = Selection;
-			sourceTree = "<group>";
-		};
-		2B2AACAC250A7E4900B8C5C5 /* Developer */ = {
-			isa = PBXGroup;
-			children = (
-				2B2AACAD250A7E5F00B8C5C5 /* DeveloperSettingsView.swift */,
-			);
-			path = Developer;
-			sourceTree = "<group>";
-		};
 		2B2AACB1250A7E8000B8C5C5 /* Developer */ = {
 			isa = PBXGroup;
 			children = (
-				2B2AACB2250A7E8C00B8C5C5 /* DeveloperSettingsViewController.swift */,
+				2BA71393274869DF00B8A907 /* Screens */,
+				2BA71392274869D600B8A907 /* Views */,
 			);
 			path = Developer;
 			sourceTree = "<group>";
@@ -5209,14 +5035,6 @@
 			path = Logs;
 			sourceTree = "<group>";
 		};
-		2B343CDD259D150E001EA8C8 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				2B343CDE259D151E001EA8C8 /* LedgerAccountDetailViewDataSource.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
 		2B344B14268A0F6600DA7B25 /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
@@ -5243,15 +5061,6 @@
 			path = Session;
 			sourceTree = "<group>";
 		};
-		2B38C92A24D435E80059AB02 /* Rekey */ = {
-			isa = PBXGroup;
-			children = (
-				2B0F5EE424DD4D3F00DA22A6 /* Confirm */,
-				2B0F5EE324DD4D3000DA22A6 /* Instruction */,
-			);
-			path = Rekey;
-			sourceTree = "<group>";
-		};
 		2B38C92E24D436130059AB02 /* Rekey */ = {
 			isa = PBXGroup;
 			children = (
@@ -5259,15 +5068,6 @@
 				2B0F5EE824DD4D9000DA22A6 /* Instruction */,
 			);
 			path = Rekey;
-			sourceTree = "<group>";
-		};
-		2B3A34EE246F727D001C8F22 /* Receiver */ = {
-			isa = PBXGroup;
-			children = (
-				2B3A34EF246F7289001C8F22 /* TransactionReceiverButton.swift */,
-				2BBB2E4A2471F30000EFB238 /* TransactionReceiverSelectionView.swift */,
-			);
-			path = Receiver;
 			sourceTree = "<group>";
 		};
 		2B3A95E4238FF98800A3DF44 /* Transaction */ = {
@@ -5352,17 +5152,6 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
-		2B432A4D237C4F4A009191BF /* List */ = {
-			isa = PBXGroup;
-			children = (
-				2BB68F502612611D0070FFE9 /* Empty */,
-				2B432A4E237C4F5D009191BF /* AssetViewModel.swift */,
-				2BAD929225B5D0DD00DE56D5 /* PendingAssetViewModel.swift */,
-				2BAD929A25B5D0F000DE56D5 /* AlgoAssetViewModel.swift */,
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
 		2B43B83A22A8394000CEA8F3 /* Date */ = {
 			isa = PBXGroup;
 			children = (
@@ -5379,18 +5168,6 @@
 				2B56F7D1225B3AFB00E58737 /* Detail */,
 				2B44871D2379647D00C19FDE /* Removal */,
 				2BE9371C246308B000322C1E /* Select */,
-			);
-			path = Assets;
-			sourceTree = "<group>";
-		};
-		2B4486F8237958E900C19FDE /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				2B44870D237959E800C19FDE /* Addition */,
-				2B448714237961D400C19FDE /* Common */,
-				2B44873023797C6F00C19FDE /* Detail */,
-				2B44872A2379663200C19FDE /* Removal */,
-				2BE6DC6324A0C6340028A79F /* AssetsCollectionView.swift */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -5426,39 +5203,12 @@
 			path = Footer;
 			sourceTree = "<group>";
 		};
-		2B44870D237959E800C19FDE /* Addition */ = {
-			isa = PBXGroup;
-			children = (
-				2B56714D23FFFA200037FCFA /* Verified */,
-			);
-			path = Addition;
-			sourceTree = "<group>";
-		};
-		2B448714237961D400C19FDE /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				2B4BD9EB2389CBB000491149 /* AssetName */,
-				2B4487152379634800C19FDE /* Alert */,
-				2BE937182461D13400322C1E /* Empty */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		2B4487152379634800C19FDE /* Alert */ = {
-			isa = PBXGroup;
-			children = (
-				2B4487162379635900C19FDE /* AssetActionConfirmationView.swift */,
-				D4B91DA22736BF21009D3963 /* AssetActionConfirmationViewTheme.swift */,
-				2B4BD9EF2389F13F00491149 /* AssetSupportView.swift */,
-			);
-			path = Alert;
-			sourceTree = "<group>";
-		};
 		2B44871D2379647D00C19FDE /* Removal */ = {
 			isa = PBXGroup;
 			children = (
-				2B448722237964D700C19FDE /* ManageAssetsViewController.swift */,
-				D419005E273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift */,
+				2BA713392748573A00B8A907 /* Screens */,
+				2BA713382748573500B8A907 /* ViewModels */,
+				2BA713372748573100B8A907 /* Views */,
 			);
 			path = Removal;
 			sourceTree = "<group>";
@@ -5466,16 +5216,8 @@
 		2B44871E2379648200C19FDE /* Addition */ = {
 			isa = PBXGroup;
 			children = (
+				2BA713242748548200B8A907 /* List */,
 				2B567151240019C20037FCFA /* Verified */,
-				2B44871F2379649700C19FDE /* AssetAdditionViewController.swift */,
-				D4DDF3AC27394EFF00BC8F42 /* AssetAdditionPageBarItems.swift */,
-				D419433027356E440055EC70 /* AssetListViewController.swift */,
-				D4DDF3B5273960FF00BC8F42 /* AssetListViewController+Theme.swift */,
-				D419433827356FEB0055EC70 /* AssetListViewLayoutBuilder.swift */,
-				D419433C273570630055EC70 /* AssetListViewDataSource.swift */,
-				D419433427356EA10055EC70 /* AssetListView.swift */,
-				D4B91D9E27369240009D3963 /* AssetListViewTheme.swift */,
-				D419432C273554550055EC70 /* AssetAdditionViewController+Theme.swift */,
 			);
 			path = Addition;
 			sourceTree = "<group>";
@@ -5484,6 +5226,8 @@
 			isa = PBXGroup;
 			children = (
 				2B4487262379652900C19FDE /* Alert */,
+				2BA7136B274864B700B8A907 /* Layout */,
+				2BA713552748620600B8A907 /* Views */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -5491,101 +5235,32 @@
 		2B4487262379652900C19FDE /* Alert */ = {
 			isa = PBXGroup;
 			children = (
-				2B4487272379653700C19FDE /* AssetActionConfirmationViewController.swift */,
-				D4DDF3B927396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift */,
-				2B4BD9F22389F17400491149 /* AssetSupportViewController.swift */,
+				2BA7132F2748550F00B8A907 /* Screens */,
+				2BA7132E2748550A00B8A907 /* ViewModels */,
+				2BA7132D2748550500B8A907 /* Views */,
 			);
 			path = Alert;
-			sourceTree = "<group>";
-		};
-		2B44872A2379663200C19FDE /* Removal */ = {
-			isa = PBXGroup;
-			children = (
-				2B44872B2379663C00C19FDE /* ManageAssetsView.swift */,
-				D419005A273FBA0E00F7829D /* ManageAssetsViewTheme.swift */,
-			);
-			path = Removal;
 			sourceTree = "<group>";
 		};
 		2B44872E2379685300C19FDE /* List */ = {
 			isa = PBXGroup;
 			children = (
-				2B4486F5237958C400C19FDE /* AccountsViewController.swift */,
-				2B448740237B0AFB00C19FDE /* AccountsViewController+Options.swift */,
+				2BA713A227486E5E00B8A907 /* Data */,
+				2BA7136A274864A100B8A907 /* Layout */,
+				2BA71313274853AA00B8A907 /* Screens */,
+				2BA71312274853A500B8A907 /* ViewModels */,
+				2BA713112748539E00B8A907 /* Views */,
 			);
 			path = List;
-			sourceTree = "<group>";
-		};
-		2B44872F237968AB00C19FDE /* List */ = {
-			isa = PBXGroup;
-			children = (
-				2B4487022379595100C19FDE /* Cell */,
-				2BB68F43261260C90070FFE9 /* Empty */,
-				2B44870A2379597D00C19FDE /* Footer */,
-				2B4487092379597800C19FDE /* Header */,
-				2B4486FC2379591A00C19FDE /* AccountsView.swift */,
-				2BE9371224602F3500322C1E /* MainHeaderView.swift */,
-				2BE9371524602F9400322C1E /* TestNetTitleView.swift */,
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		2B44873023797C6F00C19FDE /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				2BF0FAAF25387C2600D704D5 /* Card */,
-				2BDE9CD8224E2300007EFF30 /* Cell */,
-				2BCF7273251CB14600D8827D /* TransactionActionsView.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
-		2B44873123799D8000C19FDE /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				2B4BD9FF238AE65F00491149 /* Addition */,
-				2B4BDA0D238CA19700491149 /* Common */,
-				2B44873223799D8600C19FDE /* Detail */,
-				2B4BD9F82389F5EE00491149 /* Removal */,
-				2BE9372B2463271600322C1E /* Select */,
-			);
-			path = Assets;
-			sourceTree = "<group>";
-		};
-		2B44873223799D8600C19FDE /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				2BF0FADD25387C8E00D704D5 /* Card */,
-				2BB021DF224E5FD20039D78A /* TransactionHistoryViewModel.swift */,
-				2BF0FB2F253D154C00D704D5 /* RewardViewModel.swift */,
-				2BF0FB36253D156300D704D5 /* AssetDetailTitleViewModel.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
-		2B44873C237AB69900C19FDE /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				2BD5A6C5263354330048FA5E /* Card */,
-				2BB021E2224E7AD20039D78A /* TransactionHistoryDataSource.swift */,
-			);
-			path = Detail;
 			sourceTree = "<group>";
 		};
 		2B44C37C247419770074D57D /* List */ = {
 			isa = PBXGroup;
 			children = (
-				2BCBBAE024A66A7B002CD56F /* Filter */,
-				2B44C37D247419910074D57D /* TransactionsViewController.swift */,
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		2B44C380247419B80074D57D /* List */ = {
-			isa = PBXGroup;
-			children = (
-				2BCBBAE424A66AC3002CD56F /* Filter */,
-				2B44C381247419CB0074D57D /* TransactionListView.swift */,
+				2BA713A327486E7D00B8A907 /* Data */,
+				2BA7133C274858FB00B8A907 /* Screens */,
+				2BA7133B274858F700B8A907 /* ViewModels */,
+				2BA7133A274858E900B8A907 /* Views */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -5605,9 +5280,8 @@
 		2B4A9C3E250782AB00D58B6B /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
-				2B4A9C432507831700D58B6B /* AlgoExplorerLabel.swift */,
-				2BD36DE0267E649A00C57728 /* TitledTransactionAccountNameView.swift */,
-				2BD36DE9267E6D2200C57728 /* TitledTransactionAmountInformationView.swift */,
+				2BA713A82748717300B8A907 /* ViewModels */,
+				2BA713A72748715E00B8A907 /* Views */,
 			);
 			path = Transaction;
 			sourceTree = "<group>";
@@ -5621,47 +5295,12 @@
 			path = AssetName;
 			sourceTree = "<group>";
 		};
-		2B4BD9F82389F5EE00491149 /* Removal */ = {
-			isa = PBXGroup;
-			children = (
-				2B4BD9F92389F5F900491149 /* AssetRemovalViewModel.swift */,
-			);
-			path = Removal;
-			sourceTree = "<group>";
-		};
-		2B4BD9FF238AE65F00491149 /* Addition */ = {
-			isa = PBXGroup;
-			children = (
-				2B4BDA00238AE66E00491149 /* AssetAdditionViewModel.swift */,
-			);
-			path = Addition;
-			sourceTree = "<group>";
-		};
 		2B4BDA09238C9EB600491149 /* Draft */ = {
 			isa = PBXGroup;
 			children = (
 				2B4BDA0A238C9EDF00491149 /* AssetAlertDraft.swift */,
 			);
 			path = Draft;
-			sourceTree = "<group>";
-		};
-		2B4BDA0D238CA19700491149 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				2B4BDA0E238CA1A300491149 /* Alert */,
-				2BAD924C25B5AAE300DE56D5 /* Header */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		2B4BDA0E238CA1A300491149 /* Alert */ = {
-			isa = PBXGroup;
-			children = (
-				2B4BDA0F238CA1BD00491149 /* AssetSupportViewModel.swift */,
-				2B4BDA12238CA1E500491149 /* AssetActionConfirmationViewModel.swift */,
-				2BAD92A225B5F4A500DE56D5 /* AssetDisplayViewModel.swift */,
-			);
-			path = Alert;
 			sourceTree = "<group>";
 		};
 		2B4BDA18238D359000491149 /* List */ = {
@@ -5745,17 +5384,6 @@
 			path = DeepLink;
 			sourceTree = "<group>";
 		};
-		2B4DF412236C6A5800FF9551 /* Node */ = {
-			isa = PBXGroup;
-			children = (
-				179B93D7225E454100DD03E9 /* NodeSettingsView.swift */,
-				179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */,
-				2B3A34D9246D7998001C8F22 /* NodeSelectionView.swift */,
-				2B3A34DC246D79A3001C8F22 /* NodeSelectionCell.swift */,
-			);
-			path = Node;
-			sourceTree = "<group>";
-		};
 		2B4DF413236C6A6400FF9551 /* Footer */ = {
 			isa = PBXGroup;
 			children = (
@@ -5819,20 +5447,12 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		2B4DF41D236C6B5800FF9551 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				2B79A14623167BFC00766021 /* RewardDetailView.swift */,
-				2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
 		2B4DF421236C756F00FF9551 /* Edit */ = {
 			isa = PBXGroup;
 			children = (
-				2B5DA9D4224CE19700EE41B4 /* EditAccountViewController.swift */,
-				D4D6E9F2273E793500DAF1EC /* EditAccountViewController+Theme.swift */,
+				2BA713202748541A00B8A907 /* Screens */,
+				2BA7131F2748541500B8A907 /* ViewModels */,
+				2BA7131E2748541000B8A907 /* Views */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -5840,8 +5460,9 @@
 		2B4DF422236C757300FF9551 /* Passphrase */ = {
 			isa = PBXGroup;
 			children = (
-				2B5DA9D9224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift */,
-				D4F8F289273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift */,
+				2BA71317274853D500B8A907 /* Screens */,
+				2BA71319274853DE00B8A907 /* ViewModels */,
+				2BA71318274853DA00B8A907 /* Views */,
 			);
 			path = Passphrase;
 			sourceTree = "<group>";
@@ -5849,7 +5470,9 @@
 		2B4DF423236C75F800FF9551 /* Node */ = {
 			isa = PBXGroup;
 			children = (
-				171111B9225E34E400DAF55C /* NodeSettingsViewController.swift */,
+				2BA7138F2748694E00B8A907 /* Screens */,
+				2BA7139527486A2900B8A907 /* ViewModels */,
+				2BA7138E2748694900B8A907 /* Views */,
 			);
 			path = Node;
 			sourceTree = "<group>";
@@ -6087,29 +5710,12 @@
 			path = Ledger;
 			sourceTree = "<group>";
 		};
-		2B4EEECA24C105D300059A16 /* Notifications */ = {
-			isa = PBXGroup;
-			children = (
-				2BECB4D225A1018D0081870A /* Filter */,
-				2B4EEECB24C105E100059A16 /* NotificationsDataSource.swift */,
-			);
-			path = Notifications;
-			sourceTree = "<group>";
-		};
-		2B56714D23FFFA200037FCFA /* Verified */ = {
-			isa = PBXGroup;
-			children = (
-				2B56714E23FFFA3A0037FCFA /* VerifiedAssetInformationView.swift */,
-				046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */,
-			);
-			path = Verified;
-			sourceTree = "<group>";
-		};
 		2B567151240019C20037FCFA /* Verified */ = {
 			isa = PBXGroup;
 			children = (
-				2B567152240019D30037FCFA /* VerifiedAssetInformationViewController.swift */,
-				046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */,
+				2BA7132A274854A400B8A907 /* Screens */,
+				2BA713292748549F00B8A907 /* ViewModels */,
+				2BA713282748549900B8A907 /* Views */,
 			);
 			path = Verified;
 			sourceTree = "<group>";
@@ -6117,87 +5723,23 @@
 		2B567155240074F60037FCFA /* Ledger */ = {
 			isa = PBXGroup;
 			children = (
+				2BA7137B2748669F00B8A907 /* Approval */,
+				2BA7137F274866CE00B8A907 /* Devices */,
 				2B38C92E24D436130059AB02 /* Rekey */,
 				2B0F5F0624E19A5900DA22A6 /* Selection */,
 				95FEED2E242A0843000E42EB /* Troubleshoot */,
+				2BA7137D274866B400B8A907 /* Tutorial */,
 				2BF727B127459BAA00CCAC30 /* Warning */,
-				2B5671562400751C0037FCFA /* LedgerTutorialInstructionListViewController.swift */,
-				D4F068B826EF524B00C26F43 /* LedgerTutorialInstructionListViewController+Theme.swift */,
-				2BB64BE22402AC8400519981 /* LedgerDeviceListViewController.swift */,
-				D405058226F0A110001D0D11 /* LedgerDeviceListViewController+Theme.swift */,
-				2B6607E5241147BE002AC00F /* LedgerApprovalViewController.swift */,
-				D4DF3F6626F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift */,
 			);
-			path = Ledger;
-			sourceTree = "<group>";
-		};
-		2B56715924007B210037FCFA /* Ledger */ = {
-			isa = PBXGroup;
-			children = (
-				2B6607E1241134F8002AC00F /* Approval */,
-				2BB64BDE2402ABC700519981 /* Devices */,
-				2B38C92A24D435E80059AB02 /* Rekey */,
-				2B0F5F0A24E19AAA00DA22A6 /* Selection */,
-				2B5671712402008E0037FCFA /* Troubleshooting */,
-				2B56715D24008B360037FCFA /* Tutorial */,
-				2BA0157D2636B877009EC914 /* Verification */,
-				2BCBAAA5273BF3BA00B3A746 /* Warning */,
-			);
-			path = Ledger;
-			sourceTree = "<group>";
-		};
-		2B56715D24008B360037FCFA /* Tutorial */ = {
-			isa = PBXGroup;
-			children = (
-				2B56715E24008B440037FCFA /* LedgerTutorialInstructionListView.swift */,
-				D46E5E1A26EA904B00EFEF66 /* LedgerTutorialInstructionListViewTheme.swift */,
-				2B56716124008B590037FCFA /* LedgerTutorialInstructionView.swift */,
-				D46E5E1E26EA930600EFEF66 /* LedgerTutorialInstructionViewTheme.swift */,
-			);
-			path = Tutorial;
-			sourceTree = "<group>";
-		};
-		2B5671712402008E0037FCFA /* Troubleshooting */ = {
-			isa = PBXGroup;
-			children = (
-				D46E5E2726EA973000EFEF66 /* TutorialNumberView.swift */,
-				D4F068B426EF46D700C26F43 /* TutorialNumberViewTheme.swift */,
-				D4F068A026EF1F8500C26F43 /* TutorialStepsView.swift */,
-				D4F068A826EF2D1C00C26F43 /* TutorialStepsViewTheme.swift */,
-				D4F068A426EF212B00C26F43 /* TutorialStepViewModel.swift */,
-			);
-			path = Troubleshooting;
-			sourceTree = "<group>";
-		};
-		2B56F7CE225B3AD700E58737 /* Transactions */ = {
-			isa = PBXGroup;
-			children = (
-				2B71EBC1246C990B002ACB63 /* Common */,
-				2BF3D833226F0F9A00716C09 /* Detail */,
-				2B44C380247419B80074D57D /* List */,
-				2B56F7CF225B3ADF00E58737 /* Send */,
-			);
-			path = Transactions;
-			sourceTree = "<group>";
-		};
-		2B56F7CF225B3ADF00E58737 /* Send */ = {
-			isa = PBXGroup;
-			children = (
-				2B03D6A425C23C170079A973 /* Max */,
-				2B3A34EE246F727D001C8F22 /* Receiver */,
-				2BF811C425E5B22000D6B406 /* Tutorial */,
-				2B56F7D9225B45B300E58737 /* SendTransactionPreviewView.swift */,
-				2B7572A5225CA1E3009E0253 /* SendTransactionView.swift */,
-				2B7572AD225CCB62009E0253 /* TransactionReceiverView.swift */,
-			);
-			path = Send;
+			name = Ledger;
+			path = ViewControllers/Ledger;
 			sourceTree = "<group>";
 		};
 		2B56F7D1225B3AFB00E58737 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
 				2BF0FAF325387D2600D704D5 /* Card */,
-				2BF53181224AA8E000A7455F /* AssetDetailViewController.swift */,
+				2BA71330274856EA00B8A907 /* List */,
 			);
 			path = Detail;
 			sourceTree = "<group>";
@@ -6224,17 +5766,8 @@
 		2B571586263479A8002C876D /* Chart */ = {
 			isa = PBXGroup;
 			children = (
-				2B571587263479BE002C876D /* AlgorandChartView.swift */,
-				2B571593263479DC002C876D /* AlgorandLineChartView.swift */,
-				2BA172F82649F6A300A613C4 /* ChartCircleMarker.swift */,
-			);
-			path = Chart;
-			sourceTree = "<group>";
-		};
-		2B57159B2634CA2F002C876D /* Chart */ = {
-			isa = PBXGroup;
-			children = (
-				2B5715BE2635EB6B002C876D /* AlgorandChartViewModelConvertible.swift */,
+				2BA713A6274870ED00B8A907 /* ViewModels */,
+				2BA713A5274870E700B8A907 /* Views */,
 			);
 			path = Chart;
 			sourceTree = "<group>";
@@ -6286,28 +5819,6 @@
 			path = URL;
 			sourceTree = "<group>";
 		};
-		2B5DA9CA224CB47A00EE41B4 /* Options */ = {
-			isa = PBXGroup;
-			children = (
-				2B5DA9D6224CE1AA00EE41B4 /* Cell */,
-				2B5DA9D7224CE1BC00EE41B4 /* EditAccountView.swift */,
-				D45DFBC4273E6B2F0088306B /* EditAccountViewTheme.swift */,
-				2B4BDA15238D1BD500491149 /* OptionsView.swift */,
-				D411B36426E9F9BC004FF980 /* OptionsViewTheme.swift */,
-				2B3E39EF2478372E00E8AEB7 /* PassphraseDisplayView.swift */,
-				D4F8F291273EA8C3003DCE1D /* PassphraseDisplayViewTheme.swift */,
-			);
-			path = Options;
-			sourceTree = "<group>";
-		};
-		2B5DA9CF224CCC6F00EE41B4 /* Options */ = {
-			isa = PBXGroup;
-			children = (
-				2B5DA9D0224CCC8400EE41B4 /* OptionsViewModel.swift */,
-			);
-			path = Options;
-			sourceTree = "<group>";
-		};
 		2B5DA9D6224CE1AA00EE41B4 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -6331,8 +5842,10 @@
 		2B656E8E224BAF0B0064A49B /* AccountList */ = {
 			isa = PBXGroup;
 			children = (
-				2B656E8F224BAF200064A49B /* AccountListViewController.swift */,
-				D4AC1FBD272D56760027353F /* AccountListViewController+Theme.swift */,
+				2BA713A127486E5A00B8A907 /* Data */,
+				2BA71316274853C000B8A907 /* Screens */,
+				2BA71315274853BB00B8A907 /* ViewModels */,
+				2BA71314274853B200B8A907 /* Views */,
 			);
 			path = AccountList;
 			sourceTree = "<group>";
@@ -6341,100 +5854,10 @@
 			isa = PBXGroup;
 			children = (
 				2B4DF421236C756F00FF9551 /* Edit */,
+				2BA7131A274853F100B8A907 /* List */,
 				2B4DF422236C757300FF9551 /* Passphrase */,
-				2B656E92224BAF2E0064A49B /* OptionsViewController.swift */,
-				D45DFBC0273E4CB50088306B /* OptionsViewController+Theme.swift */,
 			);
 			path = Options;
-			sourceTree = "<group>";
-		};
-		2B656E94224BB9D60064A49B /* Accounts */ = {
-			isa = PBXGroup;
-			children = (
-				2B656E95224BB9E40064A49B /* AccountList */,
-				2BA172B326495C0900A613C4 /* Statistics */,
-				2B4486F8237958E900C19FDE /* Assets */,
-				2B44872F237968AB00C19FDE /* List */,
-				2B5DA9CA224CB47A00EE41B4 /* Options */,
-				2BE9372024630A6700322C1E /* Select */,
-				2B56F7CE225B3AD700E58737 /* Transactions */,
-			);
-			path = Accounts;
-			sourceTree = "<group>";
-		};
-		2B656E95224BB9E40064A49B /* AccountList */ = {
-			isa = PBXGroup;
-			children = (
-				2B656EA0224BCBFE0064A49B /* Cell */,
-				2B656E96224BB9F80064A49B /* AccountListView.swift */,
-				D4AC1FB9272D406C0027353F /* AccountListViewModel.swift */,
-				D4AC1FB5272D3AB10027353F /* AccountListViewTheme.swift */,
-			);
-			path = AccountList;
-			sourceTree = "<group>";
-		};
-		2B656E9C224BCAF60064A49B /* Accounts */ = {
-			isa = PBXGroup;
-			children = (
-				2B656E9D224BCB010064A49B /* AccountList */,
-				2B44873123799D8000C19FDE /* Assets */,
-				2B432A4D237C4F4A009191BF /* List */,
-				2B5DA9CF224CCC6F00EE41B4 /* Options */,
-				2BD547682318261F007179FE /* Rewards */,
-				2BF3D836226F43AC00716C09 /* Transaction */,
-			);
-			path = Accounts;
-			sourceTree = "<group>";
-		};
-		2B656E9D224BCB010064A49B /* AccountList */ = {
-			isa = PBXGroup;
-			children = (
-				2B656E9E224BCB130064A49B /* AccountCellViewModel.swift */,
-			);
-			path = AccountList;
-			sourceTree = "<group>";
-		};
-		2B656EA0224BCBFE0064A49B /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Cell;
-			sourceTree = "<group>";
-		};
-		2B656EA3224BDC700064A49B /* Accounts */ = {
-			isa = PBXGroup;
-			children = (
-				2B656EA4224BDC740064A49B /* List */,
-				2B448739237AB67700C19FDE /* AssetListLayoutBuilder.swift */,
-			);
-			path = Accounts;
-			sourceTree = "<group>";
-		};
-		2B656EA4224BDC740064A49B /* List */ = {
-			isa = PBXGroup;
-			children = (
-				2B656EA5224BDC830064A49B /* AccountListLayoutBuilder.swift */,
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
-		2B656EA7224BDCA40064A49B /* Accounts */ = {
-			isa = PBXGroup;
-			children = (
-				2BA1733D264B211700A613C4 /* Statistics */,
-				2BB021E1224E7AB20039D78A /* Assets */,
-				2B656EA8224BDCA80064A49B /* List */,
-				2B44873D237AB7A900C19FDE /* AccountsDataSource.swift */,
-			);
-			path = Accounts;
-			sourceTree = "<group>";
-		};
-		2B656EA8224BDCA80064A49B /* List */ = {
-			isa = PBXGroup;
-			children = (
-				2B656EA9224BDCB80064A49B /* AccountListDataSource.swift */,
-			);
-			path = List;
 			sourceTree = "<group>";
 		};
 		2B65B1FC225268CC001DB5BE /* Image */ = {
@@ -6443,16 +5866,6 @@
 				2B65B1FD225268DA001DB5BE /* UIImage+Size.swift */,
 			);
 			path = Image;
-			sourceTree = "<group>";
-		};
-		2B6607E1241134F8002AC00F /* Approval */ = {
-			isa = PBXGroup;
-			children = (
-				2B6607E224113507002AC00F /* LedgerApprovalView.swift */,
-				D49B45732724A449005158B1 /* LedgerApprovalViewModel.swift */,
-				D4DF3F6A26F1EED4006625E6 /* LedgerApprovalViewTheme.swift */,
-			);
-			path = Approval;
 			sourceTree = "<group>";
 		};
 		2B66870C2248DB6A009F21E7 /* NavigationBar */ = {
@@ -6477,8 +5890,9 @@
 		2B66871822491A46009F21E7 /* QR */ = {
 			isa = PBXGroup;
 			children = (
-				04A6FB39273365A200922EC7 /* QRCreation */,
-				2B66871922491A5E009F21E7 /* QRScannerViewController.swift */,
+				2BA7135F274862C900B8A907 /* Screens */,
+				2BA7135E274862C400B8A907 /* ViewModels */,
+				2BA7135D274862BD00B8A907 /* Views */,
 			);
 			path = QR;
 			sourceTree = "<group>";
@@ -6529,47 +5943,14 @@
 			path = Transaction;
 			sourceTree = "<group>";
 		};
-		2B71EBC1246C990B002ACB63 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				2B3A34E2246EDA50001C8F22 /* TransactionAccountNameView.swift */,
-				2B3A34E5246EDA6C001C8F22 /* TransactionAccountInformationView.swift */,
-				2B3A34E8246EDA83001C8F22 /* TransactionAssetView.swift */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
 		2B77470B25FFDB430083EFFA /* Suggestion */ = {
 			isa = PBXGroup;
 			children = (
+				2BA713B02748727800B8A907 /* DataSource */,
+				2BA713AF2748727100B8A907 /* Layout */,
 				2BF728162747247100CCAC30 /* Screens */,
 				2BF728262747265000CCAC30 /* ViewModels */,
 				2BF72833274728CA00CCAC30 /* Views */,
-			);
-			path = Suggestion;
-			sourceTree = "<group>";
-		};
-		2B77471825FFE8320083EFFA /* Recover */ = {
-			isa = PBXGroup;
-			children = (
-				2B77471925FFE8430083EFFA /* Suggestion */,
-			);
-			path = Recover;
-			sourceTree = "<group>";
-		};
-		2B77471925FFE8430083EFFA /* Suggestion */ = {
-			isa = PBXGroup;
-			children = (
-				2B77471A25FFE84F0083EFFA /* InputSuggestionLayoutBuilder.swift */,
-			);
-			path = Suggestion;
-			sourceTree = "<group>";
-		};
-		2B77472625FFE87D0083EFFA /* Suggestion */ = {
-			isa = PBXGroup;
-			children = (
-				2B77472725FFE88C0083EFFA /* InputSuggestionDataSource.swift */,
-				2B7747A626026F9B0083EFFA /* InputSuggestionsDataController.swift */,
 			);
 			path = Suggestion;
 			sourceTree = "<group>";
@@ -6598,15 +5979,6 @@
 			path = Mnemonics;
 			sourceTree = "<group>";
 		};
-		2B79A14223167BCE00766021 /* Rewards */ = {
-			isa = PBXGroup;
-			children = (
-				2B4DF41C236C6B2B00FF9551 /* Cell */,
-				2B4DF41D236C6B5800FF9551 /* Detail */,
-			);
-			path = Rewards;
-			sourceTree = "<group>";
-		};
 		2B7E3014267A252700E89EE3 /* Empty */ = {
 			isa = PBXGroup;
 			children = (
@@ -6628,6 +6000,8 @@
 		2B7E3025267A498500E89EE3 /* Group */ = {
 			isa = PBXGroup;
 			children = (
+				2BA7139F27486DCB00B8A907 /* DataSource */,
+				2BA713712748656000B8A907 /* Layout */,
 				2BF727EC27471A8B00CCAC30 /* Screens */,
 				2BF727FF27471BC300CCAC30 /* ViewModels */,
 				2BF727FE27471BBF00CCAC30 /* Views */,
@@ -6748,44 +6122,12 @@
 			path = AccountName;
 			sourceTree = "<group>";
 		};
-		2B8954A62243853700D6D068 /* BottomInformation */ = {
-			isa = PBXGroup;
-			children = (
-				2B8954A72243854400D6D068 /* BottomInformationView.swift */,
-				2B8954AD2243D55200D6D068 /* ConfirmationBottomInformationView.swift */,
-				2B8954AF2243D5DA00D6D068 /* ActionBottomInformationView.swift */,
-				2B02536D23C6101A003D5FDD /* QRBottomInformationView.swift */,
-			);
-			path = BottomInformation;
-			sourceTree = "<group>";
-		};
-		2B8954A922438FA400D6D068 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				D41942FE27353FD80055EC70 /* PageContainer */,
-				2B9EF31925D57698004BCCC4 /* Tutorial */,
-				2BD063E225CEC89C008BD15E /* BottomWarning */,
-				2B8954AA22438FA900D6D068 /* BottomInformation */,
-				2B18BAF1247DB28300BFDBC6 /* Tooltip */,
-				2B66871822491A46009F21E7 /* QR */,
-				18138465269F2E1000AEEC2F /* WarningAlert */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
 		2B8954AA22438FA900D6D068 /* BottomInformation */ = {
 			isa = PBXGroup;
 			children = (
-				2B8954AB22438FBC00D6D068 /* BottomInformationViewController.swift */,
-			);
-			path = BottomInformation;
-			sourceTree = "<group>";
-		};
-		2B8954B12243D79E00D6D068 /* BottomInformation */ = {
-			isa = PBXGroup;
-			children = (
-				2B8954B22243D7AD00D6D068 /* BottomInformationViewModel.swift */,
-				2B8954B42243D7C400D6D068 /* BottomInformationBundle.swift */,
+				2BA713652748636100B8A907 /* Screens */,
+				2BA713642748635D00B8A907 /* ViewModels */,
+				2BA713632748635100B8A907 /* Views */,
 			);
 			path = BottomInformation;
 			sourceTree = "<group>";
@@ -6860,23 +6202,23 @@
 		2B8BE4D022391C38005D8565 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				2BF53177224AA86500A7455F /* Accounts */,
 				2BF7280327471E5200CCAC30 /* API */,
 				2BF7280427471E8F00CCAC30 /* Application */,
+				2B4486F4237958AD00C19FDE /* Assets */,
 				2BF727D8274717BF00CCAC30 /* Authentication */,
 				2BF727B62747140B00CCAC30 /* Contacts */,
+				2B567155240074F60037FCFA /* Ledger */,
 				17B7D8A42240D79200A6FF9E /* Models */,
 				2BF727B72747144E00CCAC30 /* Notifications */,
 				2B4DF409236C5F4F00FF9551 /* Routing */,
+				2BF5317A224AA88600A7455F /* Settings */,
 				2BF727DD2747181600CCAC30 /* Shared */,
 				2BF727D42747178400CCAC30 /* Statistics */,
 				2B8BE4FB2239392C005D8565 /* Styling */,
+				2B56F7D2225B3B0500E58737 /* Transactions */,
 				2BF7280227471E4700CCAC30 /* Utils */,
 				2BF727D62747179300CCAC30 /* WalletConnect */,
-				2BD73A0322412AA100B66EEF /* Data */,
-				2BD73A0722412AF200B66EEF /* LayoutBuilders */,
-				2B8BE4E822392657005D8565 /* ViewControllers */,
-				2BD73A0E22412B5900B66EEF /* ViewModels */,
-				2B8BE4F0223935A3005D8565 /* Views */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -6924,18 +6266,6 @@
 			path = LaunchScreen;
 			sourceTree = "<group>";
 		};
-		2B8BE4E822392657005D8565 /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				2BF53177224AA86500A7455F /* Accounts */,
-				2B8954A922438FA400D6D068 /* Common */,
-				2B8BE4EB22393547005D8565 /* Core */,
-				2B567155240074F60037FCFA /* Ledger */,
-				2BF5317A224AA88600A7455F /* Settings */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
 		2B8BE4EB22393547005D8565 /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -6955,25 +6285,12 @@
 			path = Base;
 			sourceTree = "<group>";
 		};
-		2B8BE4F0223935A3005D8565 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				2B656E94224BB9D60064A49B /* Accounts */,
-				2BD739E2223F9FDD00B66EEF /* Common */,
-				2B8BE4F1223935C6005D8565 /* Core */,
-				2B56715924007B210037FCFA /* Ledger */,
-				2B79A14223167BCE00766021 /* Rewards */,
-				17100B2A225CEC2900D13548 /* Settings */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		2B8BE4F1223935C6005D8565 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				1828816326CA85EB000C4D3D /* CustomVisualEffectView */,
 				2B8BE4F2223935CA005D8565 /* Base */,
 				2B59F15F22563F78005203DD /* Container */,
+				1828816326CA85EB000C4D3D /* CustomVisualEffectView */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -7543,28 +6860,12 @@
 			path = BackUp;
 			sourceTree = "<group>";
 		};
-		2B9EF2F625D5760A004BCCC4 /* Tutorial */ = {
-			isa = PBXGroup;
-			children = (
-				2B9EF2F725D5761E004BCCC4 /* TutorialView.swift */,
-				D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */,
-			);
-			path = Tutorial;
-			sourceTree = "<group>";
-		};
-		2B9EF30C25D5766E004BCCC4 /* AnimatedTutorial */ = {
-			isa = PBXGroup;
-			children = (
-				2B9EF30D25D5767B004BCCC4 /* TutorialViewModel.swift */,
-			);
-			path = AnimatedTutorial;
-			sourceTree = "<group>";
-		};
 		2B9EF31925D57698004BCCC4 /* Tutorial */ = {
 			isa = PBXGroup;
 			children = (
-				2B9EF31A25D576A1004BCCC4 /* TutorialViewController.swift */,
-				D46C648026E613FB00FBAC6D /* TutorialViewController+Theme.swift */,
+				2BA7135C2748629700B8A907 /* Screens */,
+				2BA7135B2748629000B8A907 /* ViewModels */,
+				2BA7135A2748628900B8A907 /* Views */,
 			);
 			path = Tutorial;
 			sourceTree = "<group>";
@@ -7602,17 +6903,6 @@
 			path = Verification;
 			sourceTree = "<group>";
 		};
-		2BA0157D2636B877009EC914 /* Verification */ = {
-			isa = PBXGroup;
-			children = (
-				2BA0157E2636B8A7009EC914 /* LedgerAccountVerificationView.swift */,
-				D450DE662701C131008CC094 /* LedgerAccountVerificationViewTheme.swift */,
-				2BA015862636BB2D009EC914 /* LedgerAccountVerificationStatusView.swift */,
-				D4D9EDD62701EE0900C2C1CE /* LedgerAccountVerificationStatusViewTheme.swift */,
-			);
-			path = Verification;
-			sourceTree = "<group>";
-		};
 		2BA0158E2636BE84009EC914 /* Verification */ = {
 			isa = PBXGroup;
 			children = (
@@ -7637,17 +6927,6 @@
 				2BA1728F2649580000A613C4 /* AlgorandLineChartDataComposer.swift */,
 			);
 			path = Data;
-			sourceTree = "<group>";
-		};
-		2BA172B326495C0900A613C4 /* Statistics */ = {
-			isa = PBXGroup;
-			children = (
-				2BA172B426495C1800A613C4 /* AlgoStatisticsView.swift */,
-				D44EF48C271ADB6900AF0D5C /* AlgoStatisticsViewTheme.swift */,
-				D4AEDD29271C6DF300AD2725 /* Footer */,
-				2BA17302264B180300A613C4 /* Header */,
-			);
-			path = Statistics;
 			sourceTree = "<group>";
 		};
 		2BA17302264B180300A613C4 /* Header */ = {
@@ -7685,14 +6964,6 @@
 				2BA17331264B195500A613C4 /* AlgoUSDPriceChange.swift */,
 			);
 			path = PriceChange;
-			sourceTree = "<group>";
-		};
-		2BA1733D264B211700A613C4 /* Statistics */ = {
-			isa = PBXGroup;
-			children = (
-				2BA1733F264B212600A613C4 /* AlgoStatisticsDataController.swift */,
-			);
-			path = Statistics;
 			sourceTree = "<group>";
 		};
 		2BA1734B264B26E800A613C4 /* Customization */ = {
@@ -7749,56 +7020,6 @@
 			path = Item;
 			sourceTree = "<group>";
 		};
-		2BA4B4012678A9020041586B /* WalletConnect */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B4022678A9080041586B /* Connection */,
-				2BD36E2F2686A47200C57728 /* Transaction */,
-			);
-			path = WalletConnect;
-			sourceTree = "<group>";
-		};
-		2BA4B4022678A9080041586B /* Connection */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B4032678A9160041586B /* Sessions */,
-			);
-			path = Connection;
-			sourceTree = "<group>";
-		};
-		2BA4B4032678A9160041586B /* Sessions */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B4042678A9400041586B /* WCSessionListDataSource.swift */,
-			);
-			path = Sessions;
-			sourceTree = "<group>";
-		};
-		2BA4B4082678A9950041586B /* WalletConnect */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B4092678A99C0041586B /* Connection */,
-				2BD36E2E2686A45900C57728 /* Transaction */,
-			);
-			path = WalletConnect;
-			sourceTree = "<group>";
-		};
-		2BA4B4092678A99C0041586B /* Connection */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B40A2678A9A00041586B /* Sessions */,
-			);
-			path = Connection;
-			sourceTree = "<group>";
-		};
-		2BA4B40A2678A9A00041586B /* Sessions */ = {
-			isa = PBXGroup;
-			children = (
-				2BA4B40B2678A9C70041586B /* WCSessionListLayout.swift */,
-			);
-			path = Sessions;
-			sourceTree = "<group>";
-		};
 		2BA4B40F2678D8CE0041586B /* WalletConnect */ = {
 			isa = PBXGroup;
 			children = (
@@ -7812,6 +7033,1467 @@
 			isa = PBXGroup;
 			children = (
 				2BA4B41D26793A2D0041586B /* WalletConnectSessionSource.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2BA713112748539E00B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B4487022379595100C19FDE /* Cell */,
+				2BB68F43261260C90070FFE9 /* Empty */,
+				2B44870A2379597D00C19FDE /* Footer */,
+				2B4487092379597800C19FDE /* Header */,
+				2B4486FC2379591A00C19FDE /* AccountsView.swift */,
+				2BE9371224602F3500322C1E /* MainHeaderView.swift */,
+				2BE9371524602F9400322C1E /* TestNetTitleView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA71312274853A500B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BAD924D25B5AAF600DE56D5 /* AccountHeaderSupplementaryViewModel.swift */,
+				2BB68F502612611D0070FFE9 /* Empty */,
+				2B432A4E237C4F5D009191BF /* AssetViewModel.swift */,
+				2BAD929225B5D0DD00DE56D5 /* PendingAssetViewModel.swift */,
+				2BAD929A25B5D0F000DE56D5 /* AlgoAssetViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA71313274853AA00B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B4486F5237958C400C19FDE /* AccountsViewController.swift */,
+				2B448740237B0AFB00C19FDE /* AccountsViewController+Options.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA71314274853B200B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B656E96224BB9F80064A49B /* AccountListView.swift */,
+				D4AC1FB5272D3AB10027353F /* AccountListViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA71315274853BB00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B656E9E224BCB130064A49B /* AccountCellViewModel.swift */,
+				D4AC1FB9272D406C0027353F /* AccountListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA71316274853C000B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B656E8F224BAF200064A49B /* AccountListViewController.swift */,
+				D4AC1FBD272D56760027353F /* AccountListViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA71317274853D500B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B5DA9D9224D2F5C00EE41B4 /* PassphraseDisplayViewController.swift */,
+				D4F8F289273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA71318274853DA00B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B3E39EF2478372E00E8AEB7 /* PassphraseDisplayView.swift */,
+				D4F8F291273EA8C3003DCE1D /* PassphraseDisplayViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA71319274853DE00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7131A274853F100B8A907 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2BA7131D2748540100B8A907 /* Screens */,
+				2BA7131C274853FB00B8A907 /* ViewModels */,
+				2BA7131B274853F600B8A907 /* Views */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2BA7131B274853F600B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B5DA9D6224CE1AA00EE41B4 /* Cell */,
+				2B4BDA15238D1BD500491149 /* OptionsView.swift */,
+				D411B36426E9F9BC004FF980 /* OptionsViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7131C274853FB00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B5DA9D0224CCC8400EE41B4 /* OptionsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7131D2748540100B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B656E92224BAF2E0064A49B /* OptionsViewController.swift */,
+				D45DFBC0273E4CB50088306B /* OptionsViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7131E2748541000B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B5DA9D7224CE1BC00EE41B4 /* EditAccountView.swift */,
+				D45DFBC4273E6B2F0088306B /* EditAccountViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7131F2748541500B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA713202748541A00B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B5DA9D4224CE19700EE41B4 /* EditAccountViewController.swift */,
+				D4D6E9F2273E793500DAF1EC /* EditAccountViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA713212748544300B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B79A14623167BFC00766021 /* RewardDetailView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713222748544B00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BD5476923182636007179FE /* RewardDetailViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA713232748545100B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BD54765231714A9007179FE /* RewardDetailViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA713242748548200B8A907 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2BA7132B274854B100B8A907 /* DataSources */,
+				2BA713272748549200B8A907 /* Screens */,
+				2BA7132C274854B900B8A907 /* Layout */,
+				2BA713262748548D00B8A907 /* ViewModels */,
+				2BA713252748548700B8A907 /* Views */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2BA713252748548700B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D419433427356EA10055EC70 /* AssetListView.swift */,
+				D4B91D9E27369240009D3963 /* AssetListViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713262748548D00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B4BDA00238AE66E00491149 /* AssetAdditionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA713272748549200B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B44871F2379649700C19FDE /* AssetAdditionViewController.swift */,
+				D419433027356E440055EC70 /* AssetListViewController.swift */,
+				D4DDF3AC27394EFF00BC8F42 /* AssetAdditionPageBarItems.swift */,
+				D4DDF3B5273960FF00BC8F42 /* AssetListViewController+Theme.swift */,
+				D419432C273554550055EC70 /* AssetAdditionViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA713282748549900B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B56714E23FFFA3A0037FCFA /* VerifiedAssetInformationView.swift */,
+				046E8239271E8AF900311D0B /* VerifiedAssetInformationViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713292748549F00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7132A274854A400B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B567152240019D30037FCFA /* VerifiedAssetInformationViewController.swift */,
+				046E823D271E9B0000311D0B /* VerifiedAssetInformationViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7132B274854B100B8A907 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				D419433C273570630055EC70 /* AssetListViewDataSource.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		2BA7132C274854B900B8A907 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				D419433827356FEB0055EC70 /* AssetListViewLayoutBuilder.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2BA7132D2748550500B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B4487162379635900C19FDE /* AssetActionConfirmationView.swift */,
+				D4B91DA22736BF21009D3963 /* AssetActionConfirmationViewTheme.swift */,
+				2B4BD9EF2389F13F00491149 /* AssetSupportView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7132E2748550A00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B4BDA0F238CA1BD00491149 /* AssetSupportViewModel.swift */,
+				2B4BDA12238CA1E500491149 /* AssetActionConfirmationViewModel.swift */,
+				2BAD92A225B5F4A500DE56D5 /* AssetDisplayViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7132F2748550F00B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B4487272379653700C19FDE /* AssetActionConfirmationViewController.swift */,
+				D4DDF3B927396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift */,
+				2B4BD9F22389F17400491149 /* AssetSupportViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA71330274856EA00B8A907 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2BA71333274856FB00B8A907 /* Screens */,
+				2BA71332274856F700B8A907 /* ViewModels */,
+				2BA71331274856F300B8A907 /* Views */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2BA71331274856F300B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */,
+				2BE6DC6324A0C6340028A79F /* AssetsCollectionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA71332274856F700B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA71333274856FB00B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BF53181224AA8E000A7455F /* AssetDetailViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA713342748571D00B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BF0FAEC25387CBF00D704D5 /* AssetCardDisplayView.swift */,
+				2BF0FAC525387C4F00D704D5 /* Algos */,
+				2BF0FAC125387C4A00D704D5 /* Asset */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713352748572300B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BF0FB36253D156300D704D5 /* AssetDetailTitleViewModel.swift */,
+				2BD5A4A626306BE50048FA5E /* Algos */,
+				2BD5A4A726306BED0048FA5E /* Asset */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA713362748572800B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BF0FAF425387D2D00D704D5 /* AssetCardDisplayViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA713372748573100B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B44872B2379663C00C19FDE /* ManageAssetsView.swift */,
+				D419005A273FBA0E00F7829D /* ManageAssetsViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713382748573500B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B4BD9F92389F5F900491149 /* AssetRemovalViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA713392748573A00B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B448722237964D700C19FDE /* ManageAssetsViewController.swift */,
+				D419005E273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7133A274858E900B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BDE9CD8224E2300007EFF30 /* Cell */,
+				2BCBBAE424A66AC3002CD56F /* Filter */,
+				2BA7133D2748593100B8A907 /* Rewards */,
+				2B44C381247419CB0074D57D /* TransactionListView.swift */,
+				2BCF7273251CB14600D8827D /* TransactionActionsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7133B274858F700B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BB021DF224E5FD20039D78A /* TransactionHistoryViewModel.swift */,
+				2BF0FB2F253D154C00D704D5 /* RewardViewModel.swift */,
+				2BCBBAED24A66B19002CD56F /* Filter */,
+				2BCBBAF724AA31D3002CD56F /* TransactionHistoryHeaderViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7133C274858FB00B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BCBBAE024A66A7B002CD56F /* Filter */,
+				2B44C37D247419910074D57D /* TransactionsViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7133D2748593100B8A907 /* Rewards */ = {
+			isa = PBXGroup;
+			children = (
+				2B4DF41C236C6B2B00FF9551 /* Cell */,
+			);
+			path = Rewards;
+			sourceTree = "<group>";
+		};
+		2BA7133E27485B1300B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BA7134127485B3800B8A907 /* Common */,
+				2BE937322464AED200322C1E /* Components */,
+				2BF3D834226F0FAA00716C09 /* TransactionDetailView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7133F27485B1900B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BF3D837226F43C000716C09 /* TransactionDetailViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7134027485B2000B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BF3D831226F0F9100716C09 /* TransactionDetailViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7134127485B3800B8A907 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2B3A34E2246EDA50001C8F22 /* TransactionAccountNameView.swift */,
+				2B3A34E5246EDA6C001C8F22 /* TransactionAccountInformationView.swift */,
+				2B3A34E8246EDA83001C8F22 /* TransactionAssetView.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2BA7134427485B9400B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B03D6A525C23C270079A973 /* MaximumBalanceWarningView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7134527485B9B00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B03D6AE25C2D3F40079A973 /* MaximumBalanceWarningViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7134627485BA000B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B03D69825C23BFD0079A973 /* MaximumBalanceWarningViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7134727485BB800B8A907 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				2BA7134A27485BCB00B8A907 /* Screens */,
+				2BA7134927485BC500B8A907 /* ViewModels */,
+				2BA7134827485BC000B8A907 /* Views */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		2BA7134827485BC000B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BA7134E27485C1800B8A907 /* Receiver */,
+				2B56F7D9225B45B300E58737 /* SendTransactionPreviewView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7134927485BC500B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36DF6268142E900C57728 /* TransactionAssetViewModel.swift */,
+				2B25700223F1D8620005CBA2 /* SendAlgosTransactionPreviewViewModel.swift */,
+				2B25700323F1D8620005CBA2 /* SendAssetTransactionPreviewViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7134A27485BCB00B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B56F7D5225B3C1D00E58737 /* SendTransactionPreviewViewController.swift */,
+				2BEE061523E03760004EBD6F /* SendTransactionPreviewViewController+Keyboard.swift */,
+				2B0D84F92395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift */,
+				2B0D84F62395D4F500F0EAA7 /* SendAssetTransactionPreviewViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7134B27485BEC00B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BF811C525E5B23400D6B406 /* TransactionTutorialView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7134C27485BF000B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BF8120325E7F73100D6B406 /* TransactionTutorialViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7134D27485BF600B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BF811AB25E5B1AE00D6B406 /* TransactionTutorialViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7134E27485C1800B8A907 /* Receiver */ = {
+			isa = PBXGroup;
+			children = (
+				2B7572AD225CCB62009E0253 /* TransactionReceiverView.swift */,
+				2B3A34EF246F7289001C8F22 /* TransactionReceiverButton.swift */,
+				2BBB2E4A2471F30000EFB238 /* TransactionReceiverSelectionView.swift */,
+			);
+			path = Receiver;
+			sourceTree = "<group>";
+		};
+		2BA7134F27485C5600B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B7572A5225CA1E3009E0253 /* SendTransactionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7135027485C5A00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B256FFC23F1BFFE0005CBA2 /* SendTransactionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7135127485C6000B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B256FF323F1BF700005CBA2 /* SendAlgosTransactionViewController.swift */,
+				2B256FF423F1BF700005CBA2 /* SendAssetTransactionViewController.swift */,
+				2B256FF523F1BF700005CBA2 /* SendTransactionViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA713522748614700B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BE9372A24630B4700322C1E /* Header */,
+				2BE9372124630A7D00322C1E /* SelectAssetView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713532748614D00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BE9372C2463272500322C1E /* SelectAssetViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA713542748615400B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BE9371D246308D500322C1E /* SelectAssetViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA713552748620600B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B4BD9EB2389CBB000491149 /* AssetName */,
+				2BE937182461D13400322C1E /* Empty */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713562748624A00B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BD739E2223F9FDD00B66EEF /* Common */,
+				2B8BE4F1223935C6005D8565 /* Core */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713572748626700B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BD063EC25CEC8E5008BD15E /* BottomWarningView.swift */,
+				D4AC1FC1272D74A50027353F /* BottomWarningViewConfigurator.swift */,
+				D473CA4F26E1733700558598 /* BottomWarningViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713582748626C00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA713592748627300B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BD063E325CEC8B6008BD15E /* BottomWarningViewController.swift */,
+				D40C295026E2A25C0037A0F4 /* BottomWarningViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7135A2748628900B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B9EF2F725D5761E004BCCC4 /* TutorialView.swift */,
+				D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7135B2748629000B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B9EF30D25D5767B004BCCC4 /* TutorialViewModel.swift */,
+				2BF811E525E6447D00D6B406 /* TutorialNumberViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7135C2748629700B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B9EF31A25D576A1004BCCC4 /* TutorialViewController.swift */,
+				D46C648026E613FB00FBAC6D /* TutorialViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7135D274862BD00B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				04A6FB382733654900922EC7 /* QRAddress */,
+				04A6FB372733653000922EC7 /* QRCreation */,
+				2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */,
+				170AFAFD224CCBF300520EA5 /* QRView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7135E274862C400B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7135F274862C900B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				04A6FB39273365A200922EC7 /* QRCreation */,
+				2B66871922491A5E009F21E7 /* QRScannerViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA71360274862F400B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				18138463269F234E00AEEC2F /* WarningAlertView.swift */,
+				2B3E227026BC317600ED0AAF /* ActionableWarningAlertView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA71361274862FE00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				18F34B2F26B149C3007488DF /* WarningAlertViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA713622748630300B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				18138466269F2E2500AEEC2F /* WarningAlertViewController.swift */,
+				2B3E226C26BC310500ED0AAF /* ActionableWarningAlertViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA713632748635100B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B8954A72243854400D6D068 /* BottomInformationView.swift */,
+				2B8954AD2243D55200D6D068 /* ConfirmationBottomInformationView.swift */,
+				2B8954AF2243D5DA00D6D068 /* ActionBottomInformationView.swift */,
+				2B02536D23C6101A003D5FDD /* QRBottomInformationView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713642748635D00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B8954B22243D7AD00D6D068 /* BottomInformationViewModel.swift */,
+				2B8954B42243D7C400D6D068 /* BottomInformationBundle.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA713652748636100B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B8954AB22438FBC00D6D068 /* BottomInformationViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA71366274863AC00B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D411B38026EA22F2004FF980 /* AssetPreviewView.swift */,
+				D442AA0B27397381009E60D4 /* AssetPreviewViewTheme.swift */,
+				2BB6EE57239339E400CF7874 /* AssetPreviewActionCell.swift */,
+				D411B38426EA232F004FF980 /* AssetPreviewViewCommonTheme.swift */,
+				D442AA0727397331009E60D4 /* AssetPreviewViewAdditionTheme.swift */,
+				D4BF4A2326F4F6C5009B53D8 /* AssetImageView.swift */,
+				D4BF4A2726F4FC0D009B53D8 /* AssetImageViewTheme.swift */,
+				D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */,
+				D446A740272A8BFA0081D60B /* AssetPreviewActionViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA71367274863C100B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D411B38826EA2341004FF980 /* AssetPreviewViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA71368274863D700B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D411B37326EA1043004FF980 /* AccountPreviewView.swift */,
+				D411B37B26EA126D004FF980 /* AccountPreviewViewTheme.swift */,
+				D4BF4A1F26F4B944009B53D8 /* AccountImageType.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA71369274863DC00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D411B37726EA1070004FF980 /* AccountPreviewViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7136A274864A100B8A907 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				2B656EA5224BDC830064A49B /* AccountListLayoutBuilder.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2BA7136B274864B700B8A907 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				2B448739237AB67700C19FDE /* AssetListLayoutBuilder.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2BA7136C274864DE00B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B0F5F1E24E2B6FE00DA22A6 /* Cell */,
+				2BA71374274865FE00B8A907 /* Detail */,
+				2BA7138A274868DE00B8A907 /* Verification */,
+				2B0F5F0B24E19ABA00DA22A6 /* LedgerAccountSelectionView.swift */,
+				D4DF3F6E26F2214D006625E6 /* LedgerAccountSelectionViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7136D274864E400B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B7E58822586702500731C97 /* LedgerAccountViewModel.swift */,
+				2B7E589025878BCE00731C97 /* LedgerAccountAssetCountViewModel.swift */,
+				2B12633325F254450043CC03 /* LedgerAccountSelectionViewModel.swift */,
+				2BA713762748661000B8A907 /* Detail */,
+				2BA0158E2636BE84009EC914 /* Verification */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7136E274864E800B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BB350BB2588E0CE00A03BAC /* Detail */,
+				2BA0156C2636B809009EC914 /* Verification */,
+				2B0F5F0724E19A8700DA22A6 /* LedgerAccountSelectionViewController.swift */,
+				D4B1524526F387C9001A81C0 /* LedgerAccountSelectionViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7136F274864EE00B8A907 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				D4FC47522714909A00FC5E3B /* LedgerAccountDetailLayoutBuilder.swift */,
+				2B01E2C424EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2BA713702748654B00B8A907 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				2BA4B40B2678A9C70041586B /* WCSessionListLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2BA713712748656000B8A907 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36E362686A4B700C57728 /* WCGroupTransactionLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2BA713722748656A00B8A907 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				2B0322E1269F1DE900C9B2F5 /* WCMainTransactionLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2BA71373274865E500B8A907 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				2B27038F263A0F27006BAF75 /* Verification */,
+				2B01E2C724EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift */,
+				2B343CDE259D151E001EA8C8 /* LedgerAccountDetailViewDataSource.swift */,
+				D4FC47562714940600FC5E3B /* LedgerAccountDetailDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		2BA71374274865FE00B8A907 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				D4FC474E27146E1100FC5E3B /* LedgerAccountDetailView.swift */,
+				D4F22125270350DA00F70498 /* LedgerAccountDetailViewTheme.swift */,
+				D49F47C8270DAB84007C77CD /* LedgerInfoAccountNameView.swift */,
+				2BB350CA2589747D00A03BAC /* RoundedAccountNameView.swift */,
+				2BA713752748660300B8A907 /* Header */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		2BA713752748660300B8A907 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				D43B23E727180B2F00444F35 /* LedgerAccountDetailSectionHeaderViewTheme.swift */,
+				D472B322271728D600E0D793 /* LedgerAccountDetailSectionHeaderView.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		2BA713762748661000B8A907 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				2BB350D92589892300A03BAC /* LedgerAccountDetailViewModel.swift */,
+				2BA713772748661400B8A907 /* Header */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		2BA713772748661400B8A907 /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				D43B23E327180AF600444F35 /* LedgerAccountDetailSectionHeaderViewModel.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		2BA713782748666700B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				D4F068B026EF461100C26F43 /* TutorialStepsViewController+Theme.swift */,
+				D4F068AC26EF3B9700C26F43 /* TutorialStepsViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA713792748667A00B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B0F5EF624DD507000DA22A6 /* RekeyConfirmationViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7137A2748668000B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B38C92724D435C70059AB02 /* RekeyInstructionsViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7137B2748669F00B8A907 /* Approval */ = {
+			isa = PBXGroup;
+			children = (
+				2BA7137C274866A800B8A907 /* Screens */,
+				2BA71389274868A800B8A907 /* ViewModels */,
+				2BA713882748688900B8A907 /* Views */,
+			);
+			path = Approval;
+			sourceTree = "<group>";
+		};
+		2BA7137C274866A800B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B6607E5241147BE002AC00F /* LedgerApprovalViewController.swift */,
+				D4DF3F6626F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7137D274866B400B8A907 /* Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				2BA7137E274866BC00B8A907 /* Screens */,
+				2BA7139C27486D2200B8A907 /* ViewModels */,
+				2BA713862748685400B8A907 /* Views */,
+			);
+			path = Tutorial;
+			sourceTree = "<group>";
+		};
+		2BA7137E274866BC00B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B5671562400751C0037FCFA /* LedgerTutorialInstructionListViewController.swift */,
+				D4F068B826EF524B00C26F43 /* LedgerTutorialInstructionListViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7137F274866CE00B8A907 /* Devices */ = {
+			isa = PBXGroup;
+			children = (
+				2BA71380274866D500B8A907 /* Screens */,
+				2BA7139B27486D0700B8A907 /* ViewModels */,
+				2BA71383274867B000B8A907 /* Views */,
+			);
+			path = Devices;
+			sourceTree = "<group>";
+		};
+		2BA71380274866D500B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BB64BE22402AC8400519981 /* LedgerDeviceListViewController.swift */,
+				D405058226F0A110001D0D11 /* LedgerDeviceListViewController+Theme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA713812748670800B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BCBAAA6273BF3C900B3A746 /* LedgerPairWarningView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713822748670E00B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BF727B227459BBA00CCAC30 /* LedgerPairWarningViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA71383274867B000B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BB64BDF2402ABDD00519981 /* LedgerDeviceListView.swift */,
+				D4F068BC26EF7FA600C26F43 /* LedgerDeviceListViewTheme.swift */,
+				2BB64BE52402B47200519981 /* LedgerDeviceCellView.swift */,
+				D405058626F0D18F001D0D11 /* LedgerDeviceCellViewTheme.swift */,
+				2BB64BE82402B47B00519981 /* LedgerDeviceCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713842748681E00B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B0F5EEF24DD4F8E00DA22A6 /* Footer */,
+				2B0F5EEC24DD4F7100DA22A6 /* RekeyConfirmationView.swift */,
+				D4CCA1D427241DA400DF1B76 /* RekeyConfirmationViewTheme.swift */,
+				D4CCA1D827242B3B00DF1B76 /* RekeyTransitionItemView.swift */,
+				D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713852748683100B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B38C92B24D435FB0059AB02 /* RekeyInstructionsView.swift */,
+				D41F93482723038F00E9F2E7 /* RekeyInstructionsViewModel.swift */,
+				D41F93442722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift */,
+				2B38C92F24D436F20059AB02 /* RekeyInstructionItemView.swift */,
+				D41F934C272309F000E9F2E7 /* RekeyInstructionItemViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713862748685400B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B56715E24008B440037FCFA /* LedgerTutorialInstructionListView.swift */,
+				D46E5E1A26EA904B00EFEF66 /* LedgerTutorialInstructionListViewTheme.swift */,
+				2B56716124008B590037FCFA /* LedgerTutorialInstructionView.swift */,
+				D46E5E1E26EA930600EFEF66 /* LedgerTutorialInstructionViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713872748686B00B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D46E5E2726EA973000EFEF66 /* TutorialNumberView.swift */,
+				D4F068B426EF46D700C26F43 /* TutorialNumberViewTheme.swift */,
+				D4F068A026EF1F8500C26F43 /* TutorialStepsView.swift */,
+				D4F068A826EF2D1C00C26F43 /* TutorialStepsViewTheme.swift */,
+				D4F068A426EF212B00C26F43 /* TutorialStepViewModel.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713882748688900B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B6607E224113507002AC00F /* LedgerApprovalView.swift */,
+				D4DF3F6A26F1EED4006625E6 /* LedgerApprovalViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA71389274868A800B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D49B45732724A449005158B1 /* LedgerApprovalViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7138A274868DE00B8A907 /* Verification */ = {
+			isa = PBXGroup;
+			children = (
+				2BA0157E2636B8A7009EC914 /* LedgerAccountVerificationView.swift */,
+				D450DE662701C131008CC094 /* LedgerAccountVerificationViewTheme.swift */,
+				2BA015862636BB2D009EC914 /* LedgerAccountVerificationStatusView.swift */,
+				D4D9EDD62701EE0900C2C1CE /* LedgerAccountVerificationStatusViewTheme.swift */,
+			);
+			path = Verification;
+			sourceTree = "<group>";
+		};
+		2BA7138B2748691B00B8A907 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2BA7138C2748691F00B8A907 /* Screens */,
+				2BA7139427486A1400B8A907 /* ViewModels */,
+				2BA7138D2748693200B8A907 /* Views */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2BA7138C2748691F00B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BF5317B224AA89B00A7455F /* SettingsViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7138D2748693200B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B4DF416236C6A8900FF9551 /* Detail */,
+				2B4DF413236C6A6400FF9551 /* Footer */,
+				2B4DF417236C6A8E00FF9551 /* Info */,
+				2B4DF415236C6A8500FF9551 /* Toggle */,
+				17100B2B225CEC3600D13548 /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7138E2748694900B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				179B93D7225E454100DD03E9 /* NodeSettingsView.swift */,
+				179B93D9225E460500DD03E9 /* NodeSettingsHeaderView.swift */,
+				2B3A34D9246D7998001C8F22 /* NodeSelectionView.swift */,
+				2B3A34DC246D79A3001C8F22 /* NodeSelectionCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7138F2748694E00B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				171111B9225E34E400DAF55C /* NodeSettingsViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA713902748699C00B8A907 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2BA71391274869AD00B8A907 /* Selection */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2BA71391274869AD00B8A907 /* Selection */ = {
+			isa = PBXGroup;
+			children = (
+				2BA7139727486A4C00B8A907 /* ViewModels */,
+				2BA7139627486A4000B8A907 /* Views */,
+			);
+			path = Selection;
+			sourceTree = "<group>";
+		};
+		2BA71392274869D600B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B2AACAD250A7E5F00B8C5C5 /* DeveloperSettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA71393274869DF00B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B2AACB2250A7E8C00B8C5C5 /* DeveloperSettingsViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7139427486A1400B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B2AACCF250B6BC900B8C5C5 /* SettingsToggleViewModel.swift */,
+				2B2AACD3250B6BF500B8C5C5 /* SettingsInfoViewModel.swift */,
+				2B2AACD7250B6C6E00B8C5C5 /* SettingsDetailViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7139527486A2900B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				17D04F52226107D70051BC43 /* NodeSettingsViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7139627486A4000B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BDD43D22513A84200C6D3B5 /* SingleSelectionListView.swift */,
+				2BDD43D92513A86900C6D3B5 /* SingleSelectionView.swift */,
+				2BDD43E02513A87800C6D3B5 /* SingleSelectionCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA7139727486A4C00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BDD43C62513A7F600C6D3B5 /* SingleSelectionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7139827486A6A00B8A907 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				2BDD43E92513CB5C00C6D3B5 /* CurrencySelectionDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		2BA7139927486A7300B8A907 /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2BDD43BB2513A7C600C6D3B5 /* CurrencySelectionViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2BA7139A27486CEB00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B0F5EF924DD509D00DA22A6 /* RekeyConfirmationViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7139B27486D0700B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BB64BEB2402BBF600519981 /* LedgerDeviceListViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7139C27486D2200B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BF811D725E6443600D6B406 /* LedgerTutorialInstructionViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA7139D27486DB800B8A907 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				2BA4B4042678A9400041586B /* WCSessionListDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		2BA7139E27486DC500B8A907 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				2B0322E6269F1E0B00C9B2F5 /* WCMainTransactionDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		2BA7139F27486DCB00B8A907 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36E312686A49100C57728 /* WCGroupTransactionDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		2BA713A027486E3C00B8A907 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2BA1733F264B212600A613C4 /* AlgoStatisticsDataController.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2BA713A127486E5A00B8A907 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2B656EA9224BDCB80064A49B /* AccountListDataSource.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2BA713A227486E5E00B8A907 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2B44873D237AB7A900C19FDE /* AccountsDataSource.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2BA713A327486E7D00B8A907 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2BB021E2224E7AD20039D78A /* TransactionHistoryDataSource.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2BA713A427486E9400B8A907 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2BD5A6C62633543E0048FA5E /* AssetCardDisplayDataController.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2BA713A5274870E700B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B571587263479BE002C876D /* AlgorandChartView.swift */,
+				2B571593263479DC002C876D /* AlgorandLineChartView.swift */,
+				2BA172F82649F6A300A613C4 /* ChartCircleMarker.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713A6274870ED00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B5715BE2635EB6B002C876D /* AlgorandChartViewModelConvertible.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA713A72748715E00B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B4A9C432507831700D58B6B /* AlgoExplorerLabel.swift */,
+				2BD36DE0267E649A00C57728 /* TitledTransactionAccountNameView.swift */,
+				2BD36DE9267E6D2200C57728 /* TitledTransactionAmountInformationView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713A82748717300B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BD36DE5267E668E00C57728 /* TitledTransactionAccountNameViewModel.swift */,
+				2BD36DED267E6E0E00C57728 /* TitledTransactionAmountInformationViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA713A92748719F00B8A907 /* AccountName */ = {
+			isa = PBXGroup;
+			children = (
+				2BA713AB274871AC00B8A907 /* ViewModels */,
+				2BA713AA274871A600B8A907 /* Views */,
+			);
+			path = AccountName;
+			sourceTree = "<group>";
+		};
+		2BA713AA274871A600B8A907 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B3A34EB246EDA9C001C8F22 /* AccountNameView.swift */,
+				D48D11DE27428EA3000061CE /* AccountNameViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BA713AB274871AC00B8A907 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BB350E4258A233800A03BAC /* AccountNameViewModel.swift */,
+				2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2BA713AC274871F000B8A907 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				2BECB4DC25A12C3A0081870A /* NotificationFilterListLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2BA713AD274871F700B8A907 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				2BECB4D325A1019F0081870A /* NotificationFilterDataSource.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		2BA713AE2748723500B8A907 /* DataSources */ = {
+			isa = PBXGroup;
+			children = (
+				2B4EEECB24C105E100059A16 /* NotificationsDataSource.swift */,
+			);
+			path = DataSources;
+			sourceTree = "<group>";
+		};
+		2BA713AF2748727100B8A907 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				2B77471A25FFE84F0083EFFA /* InputSuggestionLayoutBuilder.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2BA713B02748727800B8A907 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				2B77472725FFE88C0083EFFA /* InputSuggestionDataSource.swift */,
+				2B7747A626026F9B0083EFFA /* InputSuggestionsDataController.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		2BA713B1274872A700B8A907 /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		2BA713B2274872B700B8A907 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				2BFFE9ED25DD33A70009F30C /* PassphraseVerifyLayoutBuilder.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2BA713B3274872D800B8A907 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2BF90F7325FC0BC70033F348 /* AccountRecoverDataController.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -7891,22 +8573,6 @@
 			path = Optional;
 			sourceTree = "<group>";
 		};
-		2BAD924C25B5AAE300DE56D5 /* Header */ = {
-			isa = PBXGroup;
-			children = (
-				2BAD924D25B5AAF600DE56D5 /* AccountHeaderSupplementaryViewModel.swift */,
-			);
-			path = Header;
-			sourceTree = "<group>";
-		};
-		2BB021E1224E7AB20039D78A /* Assets */ = {
-			isa = PBXGroup;
-			children = (
-				2B44873C237AB69900C19FDE /* Detail */,
-			);
-			path = Assets;
-			sourceTree = "<group>";
-		};
 		2BB021E7224E827B0039D78A /* List */ = {
 			isa = PBXGroup;
 			children = (
@@ -7917,45 +8583,13 @@
 			path = List;
 			sourceTree = "<group>";
 		};
-		2BB350B32588E0A400A03BAC /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				D4FC474E27146E1100FC5E3B /* LedgerAccountDetailView.swift */,
-				D4F22125270350DA00F70498 /* LedgerAccountDetailViewTheme.swift */,
-				D49F47C8270DAB84007C77CD /* LedgerInfoAccountNameView.swift */,
-				2BB350CA2589747D00A03BAC /* RoundedAccountNameView.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
 		2BB350BB2588E0CE00A03BAC /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				D43B23E227180ADC00444F35 /* DetailHeader */,
 				2BB350BC2588E0D900A03BAC /* LedgerAccountDetailViewController.swift */,
-				D4FC47522714909A00FC5E3B /* LedgerAccountDetailLayoutBuilder.swift */,
-				D4FC47562714940600FC5E3B /* LedgerAccountDetailDataSource.swift */,
-				D48933BB27183394009EE9AB /* AssetPreviewModelAdapter.swift */,
 				D4006DDE2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift */,
 			);
 			path = Detail;
-			sourceTree = "<group>";
-		};
-		2BB350D82589891200A03BAC /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				2BB350D92589892300A03BAC /* LedgerAccountDetailViewModel.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
-		2BB350E3258A232D00A03BAC /* AccountName */ = {
-			isa = PBXGroup;
-			children = (
-				2BB350E4258A233800A03BAC /* AccountNameViewModel.swift */,
-				2BE4D04825913771005F5764 /* AuthAccountNameViewModel.swift */,
-			);
-			path = AccountName;
 			sourceTree = "<group>";
 		};
 		2BB37B142405D1B000F58662 /* Ledger */ = {
@@ -7969,17 +8603,6 @@
 			path = Ledger;
 			sourceTree = "<group>";
 		};
-		2BB64BD6240275CD00519981 /* Ledger */ = {
-			isa = PBXGroup;
-			children = (
-				2B0F5EEA24DD4DA400DA22A6 /* Rekey */,
-				2B298D0F24F4371F0047408A /* Selection */,
-				2BF811D625E6442A00D6B406 /* Tutorial */,
-				2BB64BEB2402BBF600519981 /* LedgerDeviceListViewModel.swift */,
-			);
-			path = Ledger;
-			sourceTree = "<group>";
-		};
 		2BB64BDA2402779C00519981 /* Ledger */ = {
 			isa = PBXGroup;
 			children = (
@@ -7987,18 +8610,6 @@
 				2B0F5F3C24E5F28700DA22A6 /* Troubleshoot */,
 			);
 			path = Ledger;
-			sourceTree = "<group>";
-		};
-		2BB64BDE2402ABC700519981 /* Devices */ = {
-			isa = PBXGroup;
-			children = (
-				2BB64BDF2402ABDD00519981 /* LedgerDeviceListView.swift */,
-				D4F068BC26EF7FA600C26F43 /* LedgerDeviceListViewTheme.swift */,
-				2BB64BE52402B47200519981 /* LedgerDeviceCellView.swift */,
-				D405058626F0D18F001D0D11 /* LedgerDeviceCellViewTheme.swift */,
-				2BB64BE82402B47B00519981 /* LedgerDeviceCell.swift */,
-			);
-			path = Devices;
 			sourceTree = "<group>";
 		};
 		2BB64BEE240488E200519981 /* Gesture */ = {
@@ -8134,48 +8745,12 @@
 			path = SDK;
 			sourceTree = "<group>";
 		};
-		2BC1827A23DEEB8500888476 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				2BF3D837226F43C000716C09 /* TransactionDetailViewModel.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
-		2BC1827B23DEEB9000888476 /* Send */ = {
-			isa = PBXGroup;
-			children = (
-				2BC1829923DEEDED00888476 /* Approve */,
-				2BC1829823DEEDE400888476 /* Preview */,
-			);
-			path = Send;
-			sourceTree = "<group>";
-		};
 		2BC1828E23DEED1F00888476 /* Approve */ = {
 			isa = PBXGroup;
 			children = (
-				2B256FF323F1BF700005CBA2 /* SendAlgosTransactionViewController.swift */,
-				2B256FF423F1BF700005CBA2 /* SendAssetTransactionViewController.swift */,
-				2B256FF523F1BF700005CBA2 /* SendTransactionViewController.swift */,
-			);
-			path = Approve;
-			sourceTree = "<group>";
-		};
-		2BC1829823DEEDE400888476 /* Preview */ = {
-			isa = PBXGroup;
-			children = (
-				2B03D6AD25C2D3EA0079A973 /* Max */,
-				2BF8120225E7F72200D6B406 /* Tutorial */,
-				2B25700223F1D8620005CBA2 /* SendAlgosTransactionPreviewViewModel.swift */,
-				2B25700323F1D8620005CBA2 /* SendAssetTransactionPreviewViewModel.swift */,
-			);
-			path = Preview;
-			sourceTree = "<group>";
-		};
-		2BC1829923DEEDED00888476 /* Approve */ = {
-			isa = PBXGroup;
-			children = (
-				2B256FFC23F1BFFE0005CBA2 /* SendTransactionViewModel.swift */,
+				2BA7135127485C6000B8A907 /* Screens */,
+				2BA7135027485C5A00B8A907 /* ViewModels */,
+				2BA7134F27485C5600B8A907 /* Views */,
 			);
 			path = Approve;
 			sourceTree = "<group>";
@@ -8196,14 +8771,6 @@
 				2BC45DED225253A1000CDCE2 /* ImagePicker.swift */,
 			);
 			path = ImagePicker;
-			sourceTree = "<group>";
-		};
-		2BCBAAA5273BF3BA00B3A746 /* Warning */ = {
-			isa = PBXGroup;
-			children = (
-				2BCBAAA6273BF3C900B3A746 /* LedgerPairWarningView.swift */,
-			);
-			path = Warning;
 			sourceTree = "<group>";
 		};
 		2BCBAAAA27426E8C00B3A746 /* Address */ = {
@@ -8251,15 +8818,6 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		2BCBBAEC24A66B15002CD56F /* List */ = {
-			isa = PBXGroup;
-			children = (
-				2BCBBAED24A66B19002CD56F /* Filter */,
-				2BCBBAF724AA31D3002CD56F /* TransactionHistoryHeaderViewModel.swift */,
-			);
-			path = List;
-			sourceTree = "<group>";
-		};
 		2BCBBAED24A66B19002CD56F /* Filter */ = {
 			isa = PBXGroup;
 			children = (
@@ -8280,18 +8838,9 @@
 		2BD063E225CEC89C008BD15E /* BottomWarning */ = {
 			isa = PBXGroup;
 			children = (
-				2BD063E325CEC8B6008BD15E /* BottomWarningViewController.swift */,
-				D40C295026E2A25C0037A0F4 /* BottomWarningViewController+Theme.swift */,
-			);
-			path = BottomWarning;
-			sourceTree = "<group>";
-		};
-		2BD063EB25CEC8DA008BD15E /* BottomWarning */ = {
-			isa = PBXGroup;
-			children = (
-				2BD063EC25CEC8E5008BD15E /* BottomWarningView.swift */,
-				D4AC1FC1272D74A50027353F /* BottomWarningViewConfigurator.swift */,
-				D473CA4F26E1733700558598 /* BottomWarningViewTheme.swift */,
+				2BA713592748627300B8A907 /* Screens */,
+				2BA713582748626C00B8A907 /* ViewModels */,
+				2BA713572748626700B8A907 /* Views */,
 			);
 			path = BottomWarning;
 			sourceTree = "<group>";
@@ -8368,23 +8917,6 @@
 			path = Detail;
 			sourceTree = "<group>";
 		};
-		2BD36DE4267E667F00C57728 /* Transaction */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36DE5267E668E00C57728 /* TitledTransactionAccountNameViewModel.swift */,
-				2BD36DED267E6E0E00C57728 /* TitledTransactionAmountInformationViewModel.swift */,
-			);
-			path = Transaction;
-			sourceTree = "<group>";
-		};
-		2BD36DF5268142E000C57728 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36DF6268142E900C57728 /* TransactionAssetViewModel.swift */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
 		2BD36E082681DBD900C57728 /* AppCall */ = {
 			isa = PBXGroup;
 			children = (
@@ -8420,52 +8952,12 @@
 			path = Header;
 			sourceTree = "<group>";
 		};
-		2BD36E2E2686A45900C57728 /* Transaction */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36E352686A4AA00C57728 /* Group */,
-				2B0322E0269F1DD900C9B2F5 /* Main */,
-			);
-			path = Transaction;
-			sourceTree = "<group>";
-		};
-		2BD36E2F2686A47200C57728 /* Transaction */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36E302686A47B00C57728 /* Group */,
-				2B0322E5269F1DFB00C9B2F5 /* Main */,
-			);
-			path = Transaction;
-			sourceTree = "<group>";
-		};
-		2BD36E302686A47B00C57728 /* Group */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36E312686A49100C57728 /* WCGroupTransactionDataSource.swift */,
-			);
-			path = Group;
-			sourceTree = "<group>";
-		};
-		2BD36E352686A4AA00C57728 /* Group */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36E362686A4B700C57728 /* WCGroupTransactionLayout.swift */,
-			);
-			path = Group;
-			sourceTree = "<group>";
-		};
 		2BD5476423171491007179FE /* Rewards */ = {
 			isa = PBXGroup;
 			children = (
-				2BD54765231714A9007179FE /* RewardDetailViewController.swift */,
-			);
-			path = Rewards;
-			sourceTree = "<group>";
-		};
-		2BD547682318261F007179FE /* Rewards */ = {
-			isa = PBXGroup;
-			children = (
-				2BD5476923182636007179FE /* RewardDetailViewModel.swift */,
+				2BA713232748545100B8A907 /* Screens */,
+				2BA713222748544B00B8A907 /* ViewModels */,
+				2BA713212748544300B8A907 /* Views */,
 			);
 			path = Rewards;
 			sourceTree = "<group>";
@@ -8523,14 +9015,6 @@
 			path = Interval;
 			sourceTree = "<group>";
 		};
-		2BD5A6C5263354330048FA5E /* Card */ = {
-			isa = PBXGroup;
-			children = (
-				2BD5A6C62633543E0048FA5E /* AssetCardDisplayDataController.swift */,
-			);
-			path = Card;
-			sourceTree = "<group>";
-		};
 		2BD6A06824A50D5B00D2D28D /* PinLimit */ = {
 			isa = PBXGroup;
 			children = (
@@ -8586,26 +9070,16 @@
 		2BD739E2223F9FDD00B66EEF /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				2BB6EE57239339E400CF7874 /* AssetPreviewActionCell.swift */,
-				D411B37126EA1031004FF980 /* Preview */,
-				2B9EF2F625D5760A004BCCC4 /* Tutorial */,
-				2BD063EB25CEC8DA008BD15E /* BottomWarning */,
-				2B8954A62243853700D6D068 /* BottomInformation */,
 				2BA873682248212F00511C7C /* Button */,
-				D405058A26F0EE68001D0D11 /* Lottie */,
-				2B571586263479A8002C876D /* Chart */,
 				9511C299242E2B64003211ED /* Checkbox */,
 				2BE937362464AF6000322C1E /* Contact */,
 				2BD739E3223F9FF500B66EEF /* Components */,
 				2B8954BE2244044200D6D068 /* Input */,
 				2BDE9CD5224E2077007EFF30 /* List */,
 				2BDE9CD2224E1E81007EFF30 /* Loading */,
-				D421179526D9018900C032B2 /* LoadingIndicators */,
+				D405058A26F0EE68001D0D11 /* Lottie */,
 				2BD739F2223FF05C00B66EEF /* Numpad */,
 				2BF90F5D25FBAADB0033F348 /* StackView */,
-				2BF5314C22491E6A00A7455F /* QR */,
-				2B4A9C3E250782AB00D58B6B /* Transaction */,
-				18138462269F231900AEEC2F /* WarningAlert */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -8618,8 +9092,6 @@
 				171111B7225E0C8400DAF55C /* Toggle.swift */,
 				2B0C2F6722809FDD009206D7 /* SelectionView.swift */,
 				2BE9372F2464AEB600322C1E /* LineSeparatorView.swift */,
-				2B3A34EB246EDA9C001C8F22 /* AccountNameView.swift */,
-				D48D11DE27428EA3000061CE /* AccountNameViewTheme.swift */,
 				2BB350C325892BD900A03BAC /* WrappedStackView.swift */,
 			);
 			path = Components;
@@ -8645,67 +9117,11 @@
 			path = Numpad;
 			sourceTree = "<group>";
 		};
-		2BD73A0322412AA100B66EEF /* Data */ = {
-			isa = PBXGroup;
-			children = (
-				2BD73A0422412AA400B66EEF /* DataProviders */,
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
-		2BD73A0422412AA400B66EEF /* DataProviders */ = {
-			isa = PBXGroup;
-			children = (
-				2B656EA7224BDCA40064A49B /* Accounts */,
-				2BFFEA0125DD33CF0009F30C /* Authentication */,
-				2B0F5F0124DD50DB00DA22A6 /* Ledger */,
-				2B4EEECA24C105D300059A16 /* Notifications */,
-				2BDD43E72513CB3E00C6D3B5 /* Settings */,
-				2BA4B4012678A9020041586B /* WalletConnect */,
-			);
-			path = DataProviders;
-			sourceTree = "<group>";
-		};
-		2BD73A0722412AF200B66EEF /* LayoutBuilders */ = {
-			isa = PBXGroup;
-			children = (
-				2B656EA3224BDC700064A49B /* Accounts */,
-				2BFFE9EB25DD33900009F30C /* Authentication */,
-				2B0F5F1524E2A71E00DA22A6 /* Ledger */,
-				2BECB4DA25A12C0C0081870A /* Notifications */,
-				2BA4B4082678A9950041586B /* WalletConnect */,
-			);
-			path = LayoutBuilders;
-			sourceTree = "<group>";
-		};
-		2BD73A0E22412B5900B66EEF /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				2B656E9C224BCAF60064A49B /* Accounts */,
-				2BD73A0F22412B6600B66EEF /* Common */,
-				2BB64BD6240275CD00519981 /* Ledger */,
-				171111AC225DDA5600DAF55C /* Settings */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		2BD73A0F22412B6600B66EEF /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				2BB350E3258A232D00A03BAC /* AccountName */,
-				2B9EF30C25D5766E004BCCC4 /* AnimatedTutorial */,
-				2B8954B12243D79E00D6D068 /* BottomInformation */,
-				2B57159B2634CA2F002C876D /* Chart */,
-				2BD36DE4267E667F00C57728 /* Transaction */,
-				2BF811E325E6447200D6B406 /* Tutorial */,
-				18F34B2E26B149AA007488DF /* WarningAlert */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
 		2BD73A1D2241637B00B66EEF /* Passphrase */ = {
 			isa = PBXGroup;
 			children = (
+				2BA713B1274872A700B8A907 /* DataSource */,
+				2BA713B2274872B700B8A907 /* Layout */,
 				2BF728122747235900CCAC30 /* Screens */,
 				2BF72828274726B200CCAC30 /* ViewModels */,
 				2BF728312747282700CCAC30 /* Views */,
@@ -8716,57 +9132,8 @@
 		2BDD43BA2513A7B500C6D3B5 /* Currency */ = {
 			isa = PBXGroup;
 			children = (
-				2BDD43BB2513A7C600C6D3B5 /* CurrencySelectionViewController.swift */,
-			);
-			path = Currency;
-			sourceTree = "<group>";
-		};
-		2BDD43CD2513A80F00C6D3B5 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				2BDD43CF2513A81F00C6D3B5 /* Selection */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		2BDD43CF2513A81F00C6D3B5 /* Selection */ = {
-			isa = PBXGroup;
-			children = (
-				2BDD43D22513A84200C6D3B5 /* SingleSelectionListView.swift */,
-				2BDD43D92513A86900C6D3B5 /* SingleSelectionView.swift */,
-				2BDD43E02513A87800C6D3B5 /* SingleSelectionCell.swift */,
-			);
-			path = Selection;
-			sourceTree = "<group>";
-		};
-		2BDD43D02513A82500C6D3B5 /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				2BDD43D12513A82900C6D3B5 /* Selection */,
-			);
-			path = Common;
-			sourceTree = "<group>";
-		};
-		2BDD43D12513A82900C6D3B5 /* Selection */ = {
-			isa = PBXGroup;
-			children = (
-				2BDD43C62513A7F600C6D3B5 /* SingleSelectionViewModel.swift */,
-			);
-			path = Selection;
-			sourceTree = "<group>";
-		};
-		2BDD43E72513CB3E00C6D3B5 /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				2BDD43E82513CB5400C6D3B5 /* Currency */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		2BDD43E82513CB5400C6D3B5 /* Currency */ = {
-			isa = PBXGroup;
-			children = (
-				2BDD43E92513CB5C00C6D3B5 /* CurrencySelectionDataSource.swift */,
+				2BA7139827486A6A00B8A907 /* DataSource */,
+				2BA7139927486A7300B8A907 /* Screens */,
 			);
 			path = Currency;
 			sourceTree = "<group>";
@@ -8936,16 +9303,9 @@
 		2BE9371C246308B000322C1E /* Select */ = {
 			isa = PBXGroup;
 			children = (
-				2BE9371D246308D500322C1E /* SelectAssetViewController.swift */,
-			);
-			path = Select;
-			sourceTree = "<group>";
-		};
-		2BE9372024630A6700322C1E /* Select */ = {
-			isa = PBXGroup;
-			children = (
-				2BE9372A24630B4700322C1E /* Header */,
-				2BE9372124630A7D00322C1E /* SelectAssetView.swift */,
+				2BA713542748615400B8A907 /* Screens */,
+				2BA713532748614D00B8A907 /* ViewModels */,
+				2BA713522748614700B8A907 /* Views */,
 			);
 			path = Select;
 			sourceTree = "<group>";
@@ -8957,14 +9317,6 @@
 				2BE9372724630B4400322C1E /* SelectAssetHeaderSupplementaryView.swift */,
 			);
 			path = Header;
-			sourceTree = "<group>";
-		};
-		2BE9372B2463271600322C1E /* Select */ = {
-			isa = PBXGroup;
-			children = (
-				2BE9372C2463272500322C1E /* SelectAssetViewModel.swift */,
-			);
-			path = Select;
 			sourceTree = "<group>";
 		};
 		2BE937322464AED200322C1E /* Components */ = {
@@ -8996,30 +9348,6 @@
 				2BECB4B325A0F2210081870A /* NotificationFilterDraft.swift */,
 			);
 			path = NotificationFilter;
-			sourceTree = "<group>";
-		};
-		2BECB4D225A1018D0081870A /* Filter */ = {
-			isa = PBXGroup;
-			children = (
-				2BECB4D325A1019F0081870A /* NotificationFilterDataSource.swift */,
-			);
-			path = Filter;
-			sourceTree = "<group>";
-		};
-		2BECB4DA25A12C0C0081870A /* Notifications */ = {
-			isa = PBXGroup;
-			children = (
-				2BECB4DB25A12C150081870A /* Filter */,
-			);
-			path = Notifications;
-			sourceTree = "<group>";
-		};
-		2BECB4DB25A12C150081870A /* Filter */ = {
-			isa = PBXGroup;
-			children = (
-				2BECB4DC25A12C3A0081870A /* NotificationFilterListLayout.swift */,
-			);
-			path = Filter;
 			sourceTree = "<group>";
 		};
 		2BECB4EF25A309F60081870A /* Filter */ = {
@@ -9058,16 +9386,6 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
-		2BF0FAAF25387C2600D704D5 /* Card */ = {
-			isa = PBXGroup;
-			children = (
-				2BF0FAC525387C4F00D704D5 /* Algos */,
-				2BF0FAC125387C4A00D704D5 /* Asset */,
-				2BF0FAEC25387CBF00D704D5 /* AssetCardDisplayView.swift */,
-			);
-			path = Card;
-			sourceTree = "<group>";
-		};
 		2BF0FAC125387C4A00D704D5 /* Asset */ = {
 			isa = PBXGroup;
 			children = (
@@ -9087,19 +9405,13 @@
 			path = Algos;
 			sourceTree = "<group>";
 		};
-		2BF0FADD25387C8E00D704D5 /* Card */ = {
-			isa = PBXGroup;
-			children = (
-				2BD5A4A626306BE50048FA5E /* Algos */,
-				2BD5A4A726306BED0048FA5E /* Asset */,
-			);
-			path = Card;
-			sourceTree = "<group>";
-		};
 		2BF0FAF325387D2600D704D5 /* Card */ = {
 			isa = PBXGroup;
 			children = (
-				2BF0FAF425387D2D00D704D5 /* AssetCardDisplayViewController.swift */,
+				2BA713A427486E9400B8A907 /* Data */,
+				2BA713362748572800B8A907 /* Screens */,
+				2BA713352748572300B8A907 /* ViewModels */,
+				2BA713342748571D00B8A907 /* Views */,
 			);
 			path = Card;
 			sourceTree = "<group>";
@@ -9223,29 +9535,11 @@
 		2BF3D830226F0F7900716C09 /* Detail */ = {
 			isa = PBXGroup;
 			children = (
-				2BF3D831226F0F9100716C09 /* TransactionDetailViewController.swift */,
+				2BA7134027485B2000B8A907 /* Screens */,
+				2BA7133F27485B1900B8A907 /* ViewModels */,
+				2BA7133E27485B1300B8A907 /* Views */,
 			);
 			path = Detail;
-			sourceTree = "<group>";
-		};
-		2BF3D833226F0F9A00716C09 /* Detail */ = {
-			isa = PBXGroup;
-			children = (
-				2BE937322464AED200322C1E /* Components */,
-				2BF3D834226F0FAA00716C09 /* TransactionDetailView.swift */,
-			);
-			path = Detail;
-			sourceTree = "<group>";
-		};
-		2BF3D836226F43AC00716C09 /* Transaction */ = {
-			isa = PBXGroup;
-			children = (
-				2BD36DF5268142E000C57728 /* Common */,
-				2BC1827A23DEEB8500888476 /* Detail */,
-				2BCBBAEC24A66B15002CD56F /* List */,
-				2BC1827B23DEEB9000888476 /* Send */,
-			);
-			path = Transaction;
 			sourceTree = "<group>";
 		};
 		2BF41C9426EBF80700300A2A /* Base */ = {
@@ -9254,17 +9548,6 @@
 				2BF41C9526EBF81100300A2A /* ALGAPIBase.swift */,
 			);
 			path = Base;
-			sourceTree = "<group>";
-		};
-		2BF5314C22491E6A00A7455F /* QR */ = {
-			isa = PBXGroup;
-			children = (
-				04A6FB382733654900922EC7 /* QRAddress */,
-				04A6FB372733653000922EC7 /* QRCreation */,
-				2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */,
-				170AFAFD224CCBF300520EA5 /* QRView.swift */,
-			);
-			path = QR;
 			sourceTree = "<group>";
 		};
 		2BF5314F224A45DC00A7455F /* Transition */ = {
@@ -9323,11 +9606,9 @@
 			isa = PBXGroup;
 			children = (
 				2B656E8E224BAF0B0064A49B /* AccountList */,
-				2B4486F4237958AD00C19FDE /* Assets */,
 				2B44872E2379685300C19FDE /* List */,
 				2B656E91224BAF230064A49B /* Options */,
 				2BD5476423171491007179FE /* Rewards */,
-				2B56F7D2225B3B0500E58737 /* Transactions */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -9336,10 +9617,11 @@
 			isa = PBXGroup;
 			children = (
 				2B1336D72576986900371CFB /* Appearance */,
+				2BA713902748699C00B8A907 /* Common */,
 				2BDD43BA2513A7B500C6D3B5 /* Currency */,
 				2B2AACB1250A7E8000B8C5C5 /* Developer */,
+				2BA7138B2748691B00B8A907 /* List */,
 				2B4DF423236C75F800FF9551 /* Node */,
-				2BF5317B224AA89B00A7455F /* SettingsViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -9347,7 +9629,8 @@
 		2BF727B127459BAA00CCAC30 /* Warning */ = {
 			isa = PBXGroup;
 			children = (
-				2BF727B227459BBA00CCAC30 /* LedgerPairWarningViewController.swift */,
+				2BA713822748670E00B8A907 /* Screens */,
+				2BA713812748670800B8A907 /* Views */,
 			);
 			path = Warning;
 			sourceTree = "<group>";
@@ -9375,6 +9658,7 @@
 		2BF727B8274714C400CCAC30 /* List */ = {
 			isa = PBXGroup;
 			children = (
+				2BA713AE2748723500B8A907 /* DataSources */,
 				2BF727BF2747159000CCAC30 /* Screens */,
 				2BF727BE2747158800CCAC30 /* Views */,
 				2BF727BD2747157F00CCAC30 /* ViewModels */,
@@ -9385,6 +9669,8 @@
 		2BF727B9274714C900CCAC30 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
+				2BA713AD274871F700B8A907 /* DataSources */,
+				2BA713AC274871F000B8A907 /* Layout */,
 				2BF727BA2747151E00CCAC30 /* Screens */,
 				2BF727BC2747153300CCAC30 /* Views */,
 				2BF727BB2747152E00CCAC30 /* ViewModels */,
@@ -9699,7 +9985,20 @@
 		2BF727DD2747181600CCAC30 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				2BA713A92748719F00B8A907 /* AccountName */,
+				2B8954AA22438FA900D6D068 /* BottomInformation */,
+				2BD063E225CEC89C008BD15E /* BottomWarning */,
+				2B571586263479A8002C876D /* Chart */,
+				D421179526D9018900C032B2 /* LoadingIndicators */,
+				D41942FE27353FD80055EC70 /* PageContainer */,
 				2BF728132747237700CCAC30 /* PinCode */,
+				D411B37126EA1031004FF980 /* Preview */,
+				2B18BAF1247DB28300BFDBC6 /* Tooltip */,
+				2B4A9C3E250782AB00D58B6B /* Transaction */,
+				2B9EF31925D57698004BCCC4 /* Tutorial */,
+				2B66871822491A46009F21E7 /* QR */,
+				2BA713562748624A00B8A907 /* Views */,
+				18138465269F2E1000AEEC2F /* WarningAlert */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -9752,6 +10051,8 @@
 		2BF727E2274719B200CCAC30 /* Sessions */ = {
 			isa = PBXGroup;
 			children = (
+				2BA7139D27486DB800B8A907 /* DataSource */,
+				2BA713702748654B00B8A907 /* Layout */,
 				2BF727E527471A1700CCAC30 /* Screens */,
 				2BF727EE27471ADE00CCAC30 /* ViewModels */,
 				2BF727F027471B1600CCAC30 /* Views */,
@@ -10078,6 +10379,7 @@
 		2BF7280427471E8F00CCAC30 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				2B8BE4EB22393547005D8565 /* Core */,
 				17B7D8AC2240F23D00A6FF9E /* Environment */,
 				2B8BE4D122391C38005D8565 /* AppDelegate.swift */,
 			);
@@ -10129,6 +10431,7 @@
 		2BF7280A2747224100CCAC30 /* List */ = {
 			isa = PBXGroup;
 			children = (
+				2BA713B3274872D800B8A907 /* Data */,
 				2BF728152747244A00CCAC30 /* Screens */,
 				2BF728252747264800CCAC30 /* ViewModels */,
 				2BF72832274728A500CCAC30 /* Views */,
@@ -10257,6 +10560,7 @@
 		2BF72818274724BA00CCAC30 /* List */ = {
 			isa = PBXGroup;
 			children = (
+				2BA713A027486E3C00B8A907 /* Data */,
 				2BF7281A274724CA00CCAC30 /* Screens */,
 				2BF7281C274724D400CCAC30 /* ViewModels */,
 				2BF7281B274724CE00CCAC30 /* Views */,
@@ -10286,6 +10590,10 @@
 		2BF7281B274724CE00CCAC30 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				D4AEDD29271C6DF300AD2725 /* Footer */,
+				2BA17302264B180300A613C4 /* Header */,
+				2BA172B426495C1800A613C4 /* AlgoStatisticsView.swift */,
+				D44EF48C271ADB6900AF0D5C /* AlgoStatisticsViewTheme.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -10502,15 +10810,9 @@
 		2BF811AA25E5B19900D6B406 /* Tutorial */ = {
 			isa = PBXGroup;
 			children = (
-				2BF811AB25E5B1AE00D6B406 /* TransactionTutorialViewController.swift */,
-			);
-			path = Tutorial;
-			sourceTree = "<group>";
-		};
-		2BF811C425E5B22000D6B406 /* Tutorial */ = {
-			isa = PBXGroup;
-			children = (
-				2BF811C525E5B23400D6B406 /* TransactionTutorialView.swift */,
+				2BA7134D27485BF600B8A907 /* Screens */,
+				2BA7134C27485BF000B8A907 /* ViewModels */,
+				2BA7134B27485BEC00B8A907 /* Views */,
 			);
 			path = Tutorial;
 			sourceTree = "<group>";
@@ -10523,30 +10825,6 @@
 			path = TransactionTutorial;
 			sourceTree = "<group>";
 		};
-		2BF811D625E6442A00D6B406 /* Tutorial */ = {
-			isa = PBXGroup;
-			children = (
-				2BF811D725E6443600D6B406 /* LedgerTutorialInstructionViewModel.swift */,
-			);
-			path = Tutorial;
-			sourceTree = "<group>";
-		};
-		2BF811E325E6447200D6B406 /* Tutorial */ = {
-			isa = PBXGroup;
-			children = (
-				2BF811E425E6447600D6B406 /* Number */,
-			);
-			path = Tutorial;
-			sourceTree = "<group>";
-		};
-		2BF811E425E6447600D6B406 /* Number */ = {
-			isa = PBXGroup;
-			children = (
-				2BF811E525E6447D00D6B406 /* TutorialNumberViewModel.swift */,
-			);
-			path = Number;
-			sourceTree = "<group>";
-		};
 		2BF811F525E7AD0400D6B406 /* Account */ = {
 			isa = PBXGroup;
 			children = (
@@ -10556,14 +10834,6 @@
 			path = Account;
 			sourceTree = "<group>";
 		};
-		2BF8120225E7F72200D6B406 /* Tutorial */ = {
-			isa = PBXGroup;
-			children = (
-				2BF8120325E7F73100D6B406 /* TransactionTutorialViewModel.swift */,
-			);
-			path = Tutorial;
-			sourceTree = "<group>";
-		};
 		2BF90F5D25FBAADB0033F348 /* StackView */ = {
 			isa = PBXGroup;
 			children = (
@@ -10571,15 +10841,6 @@
 				2BF90F6A25FBAAEE0033F348 /* VStackView.swift */,
 			);
 			path = StackView;
-			sourceTree = "<group>";
-		};
-		2BF90F7225FC0BBC0033F348 /* Recover */ = {
-			isa = PBXGroup;
-			children = (
-				2B77472625FFE87D0083EFFA /* Suggestion */,
-				2BF90F7325FC0BC70033F348 /* AccountRecoverDataController.swift */,
-			);
-			path = Recover;
 			sourceTree = "<group>";
 		};
 		2BFBAB73227B35A6008BBB31 /* Animations */ = {
@@ -10610,40 +10871,6 @@
 			path = Loading;
 			sourceTree = "<group>";
 		};
-		2BFFE9EB25DD33900009F30C /* Authentication */ = {
-			isa = PBXGroup;
-			children = (
-				2BFFE9EC25DD33970009F30C /* Passphrase */,
-				2B77471825FFE8320083EFFA /* Recover */,
-			);
-			path = Authentication;
-			sourceTree = "<group>";
-		};
-		2BFFE9EC25DD33970009F30C /* Passphrase */ = {
-			isa = PBXGroup;
-			children = (
-				2BFFE9ED25DD33A70009F30C /* PassphraseVerifyLayoutBuilder.swift */,
-			);
-			path = Passphrase;
-			sourceTree = "<group>";
-		};
-		2BFFEA0125DD33CF0009F30C /* Authentication */ = {
-			isa = PBXGroup;
-			children = (
-				2BFFEA0225DD33D70009F30C /* Passphrase */,
-				2BF90F7225FC0BBC0033F348 /* Recover */,
-			);
-			path = Authentication;
-			sourceTree = "<group>";
-		};
-		2BFFEA0225DD33D70009F30C /* Passphrase */ = {
-			isa = PBXGroup;
-			children = (
-				2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */,
-			);
-			path = Passphrase;
-			sourceTree = "<group>";
-		};
 		9511C299242E2B64003211ED /* Checkbox */ = {
 			isa = PBXGroup;
 			children = (
@@ -10671,8 +10898,8 @@
 		95FEED2E242A0843000E42EB /* Troubleshoot */ = {
 			isa = PBXGroup;
 			children = (
-				D4F068AC26EF3B9700C26F43 /* TutorialStepsViewController.swift */,
-				D4F068B026EF461100C26F43 /* TutorialStepsViewController+Theme.swift */,
+				2BA713782748666700B8A907 /* Screens */,
+				2BA713872748686B00B8A907 /* Views */,
 			);
 			path = Troubleshoot;
 			sourceTree = "<group>";
@@ -10705,10 +10932,8 @@
 		D411B37226EA1036004FF980 /* AccountPreview */ = {
 			isa = PBXGroup;
 			children = (
-				D411B37326EA1043004FF980 /* AccountPreviewView.swift */,
-				D411B37B26EA126D004FF980 /* AccountPreviewViewTheme.swift */,
-				D411B37726EA1070004FF980 /* AccountPreviewViewModel.swift */,
-				D4BF4A1F26F4B944009B53D8 /* AccountImageType.swift */,
+				2BA71369274863DC00B8A907 /* ViewModels */,
+				2BA71368274863D700B8A907 /* Views */,
 			);
 			path = AccountPreview;
 			sourceTree = "<group>";
@@ -10716,15 +10941,9 @@
 		D411B37F26EA22E7004FF980 /* AssetPreview */ = {
 			isa = PBXGroup;
 			children = (
-				D411B38026EA22F2004FF980 /* AssetPreviewView.swift */,
-				D442AA0B27397381009E60D4 /* AssetPreviewViewTheme.swift */,
-				D411B38426EA232F004FF980 /* AssetPreviewViewCommonTheme.swift */,
-				D442AA0727397331009E60D4 /* AssetPreviewViewAdditionTheme.swift */,
-				D411B38826EA2341004FF980 /* AssetPreviewViewModel.swift */,
-				D4BF4A2326F4F6C5009B53D8 /* AssetImageView.swift */,
-				D4BF4A2726F4FC0D009B53D8 /* AssetImageViewTheme.swift */,
-				D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */,
-				D446A740272A8BFA0081D60B /* AssetPreviewActionViewTheme.swift */,
+				D48933BB27183394009EE9AB /* AssetPreviewModelAdapter.swift */,
+				2BA71367274863C100B8A907 /* ViewModels */,
+				2BA71366274863AC00B8A907 /* Views */,
 			);
 			path = AssetPreview;
 			sourceTree = "<group>";
@@ -10836,16 +11055,6 @@
 				D430711527197D9B00E38073 /* TabBarModalViewTheme.swift */,
 			);
 			path = TransactionModal;
-			sourceTree = "<group>";
-		};
-		D43B23E227180ADC00444F35 /* DetailHeader */ = {
-			isa = PBXGroup;
-			children = (
-				D472B322271728D600E0D793 /* LedgerAccountDetailSectionHeaderView.swift */,
-				D43B23E327180AF600444F35 /* LedgerAccountDetailSectionHeaderViewModel.swift */,
-				D43B23E727180B2F00444F35 /* LedgerAccountDetailSectionHeaderViewTheme.swift */,
-			);
-			path = DetailHeader;
 			sourceTree = "<group>";
 		};
 		D446A748272ABEC90081D60B /* Rekey */ = {
