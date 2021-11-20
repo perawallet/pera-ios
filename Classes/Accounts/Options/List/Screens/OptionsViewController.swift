@@ -104,6 +104,9 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
         let selectedOption = options[indexPath.item]
         
         switch selectedOption {
+        case .copyAddress:
+            dismissScreen()
+            delegate?.optionsViewControllerDidCopyAddress(self)
         case .rekey:
             dismissScreen()
             delegate?.optionsViewControllerDidOpenRekeying(self)
@@ -123,9 +126,6 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
         case .removeAccount:
             dismissScreen()
             delegate?.optionsViewControllerDidRemoveAccount(self)
-        case .copyAddress:
-            dismissScreen()
-            delegate?.optionsViewControllerDidCopyAddress(self)
         }
     }
 }

@@ -34,6 +34,8 @@ final class OptionsViewModel {
 extension OptionsViewModel {
     private func bindImage(for option: OptionsViewController.Options, with account: Account) {
         switch option {
+        case .copyAddress:
+            image = img("icon-copy")
         case .rekey:
             image = img("icon-options-rekey")
         case .rekeyInformation:
@@ -48,13 +50,13 @@ extension OptionsViewModel {
             image = img("icon-edit-account")
         case .removeAccount:
             image = img("icon-remove-account")
-        case .copyAddress:
-            image = img("icon-copy")
         }
     }
 
     private func bindTitle(for option: OptionsViewController.Options, with account: Account) {
         switch option {
+        case .copyAddress:
+            title = "options-copy-address".localized
         case .rekey:
             title = "options-rekey".localized
         case .rekeyInformation:
@@ -69,8 +71,6 @@ extension OptionsViewModel {
             title = "options-edit-account-name".localized
         case .removeAccount:
             title = "options-remove-account".localized
-        case .copyAddress:
-            title = "options-copy-address".localized
         }
     }
 

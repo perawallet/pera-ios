@@ -22,15 +22,17 @@ final class AssetViewModel {
     private(set) var amount: String?
 
     init(assetDetail: AssetDetail?, asset: Asset?) {
-        setAssetDetail(from: assetDetail)
-        setAmount(from: assetDetail, with: asset)
+        bindAssetDetail(assetDetail)
+        bindAmount(from: assetDetail, with: asset)
     }
+}
 
-    private func setAssetDetail(from assetDetail: AssetDetail?) {
+extension AssetViewModel {
+    private func bindAssetDetail(_ assetDetail: AssetDetail?) {
         self.assetDetail = assetDetail
     }
 
-    private func setAmount(from assetDetail: AssetDetail?, with asset: Asset?) {
+    private func bindAmount(from assetDetail: AssetDetail?, with asset: Asset?) {
         guard let assetDetail = assetDetail else {
             return
         }
