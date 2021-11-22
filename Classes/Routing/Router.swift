@@ -283,12 +283,6 @@ class Router {
             viewController = AssetActionConfirmationViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
         case let .assetSupport(assetAlertDraft):
             viewController = AssetSupportViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
-        case let .bottomInformation(mode, configurator):
-            viewController = BottomInformationViewController(
-                mode: mode,
-                bottomInformationBundle: configurator,
-                configuration: configuration
-            )
         case let .rewardDetail(account):
             viewController = RewardDetailViewController(account: account, configuration: configuration)
         case .verifiedAssetInformation:

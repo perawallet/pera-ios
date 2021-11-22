@@ -63,7 +63,6 @@ indirect enum Screen {
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
     case assetSupport(assetAlertDraft: AssetAlertDraft)
-    case bottomInformation(mode: BottomInformationViewController.Mode, configurator: BottomInformationBundle)
     case rewardDetail(account: Account)
     case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)
