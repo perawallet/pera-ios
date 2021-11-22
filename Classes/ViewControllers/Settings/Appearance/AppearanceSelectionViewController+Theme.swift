@@ -13,26 +13,23 @@
 // limitations under the License.
 
 //
-//   SingleSelectionViewTheme.swift
+//   AppearanceSelectionViewController+Theme.swift
 
-import Foundation
+import UIKit
 import MacaroonUIKit
 
-struct SingleSelectionViewTheme: StyleSheet, LayoutSheet {
-    let backgroundColor: Color
-    let title: TextStyle
-    
-    let imageSize: LayoutSize
-    
-    init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
-        self.title = [
-            .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main),
-            .textAlignment(.left),
-            .textOverflow(.singleLineFitting)
-        ]
+extension AppearanceSelectionViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: Color
         
-        self.imageSize = (24, 24)
+        let cellWidth: LayoutMetric
+        let cellHeight: LayoutMetric
+        
+        init(_ family: LayoutFamily) {
+            backgroundColor = AppColors.Shared.System.background
+            
+            cellWidth = UIScreen.main.bounds.width - 48
+            cellHeight = 64
+        }
     }
 }

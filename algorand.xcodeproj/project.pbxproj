@@ -31,6 +31,12 @@
 		049391EE2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049391ED2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift */; };
 		049391EF2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049391ED2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift */; };
 		049391F02747CF8500BB70A1 /* SingleSelectionListViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049391ED2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift */; };
+		04B8E1B0274BEAB000E78A86 /* AppearanceSelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B8E1AF274BEAAF00E78A86 /* AppearanceSelectionViewController+Theme.swift */; };
+		04B8E1B1274BEAB000E78A86 /* AppearanceSelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B8E1AF274BEAAF00E78A86 /* AppearanceSelectionViewController+Theme.swift */; };
+		04B8E1B2274BEAB000E78A86 /* AppearanceSelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B8E1AF274BEAAF00E78A86 /* AppearanceSelectionViewController+Theme.swift */; };
+		04B8E1B4274BF35800E78A86 /* CurrencySelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B8E1B3274BF35800E78A86 /* CurrencySelectionViewController+Theme.swift */; };
+		04B8E1B5274BF35800E78A86 /* CurrencySelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B8E1B3274BF35800E78A86 /* CurrencySelectionViewController+Theme.swift */; };
+		04B8E1B6274BF35800E78A86 /* CurrencySelectionViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04B8E1B3274BF35800E78A86 /* CurrencySelectionViewController+Theme.swift */; };
 		170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */; };
 		170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFB224CC70A00520EA5 /* QRText.swift */; };
 		170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFD224CCBF300520EA5 /* QRView.swift */; };
@@ -3239,6 +3245,8 @@
 		048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QRCreationViewController+Theme.swift"; sourceTree = "<group>"; };
 		049391E72747AC3400BB70A1 /* SingleSelectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectionViewTheme.swift; sourceTree = "<group>"; };
 		049391ED2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectionListViewTheme.swift; sourceTree = "<group>"; };
+		04B8E1AF274BEAAF00E78A86 /* AppearanceSelectionViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppearanceSelectionViewController+Theme.swift"; sourceTree = "<group>"; };
+		04B8E1B3274BF35800E78A86 /* CurrencySelectionViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CurrencySelectionViewController+Theme.swift"; sourceTree = "<group>"; };
 		170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationViewController.swift; sourceTree = "<group>"; };
 		170AFAFB224CC70A00520EA5 /* QRText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRText.swift; sourceTree = "<group>"; };
 		170AFAFD224CCBF300520EA5 /* QRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRView.swift; sourceTree = "<group>"; };
@@ -5003,6 +5011,7 @@
 			isa = PBXGroup;
 			children = (
 				2B1336D82576987D00371CFB /* AppearanceSelectionViewController.swift */,
+				04B8E1AF274BEAAF00E78A86 /* AppearanceSelectionViewController+Theme.swift */,
 			);
 			path = Appearance;
 			sourceTree = "<group>";
@@ -8773,6 +8782,7 @@
 			isa = PBXGroup;
 			children = (
 				2BDD43BB2513A7C600C6D3B5 /* CurrencySelectionViewController.swift */,
+				04B8E1B3274BF35800E78A86 /* CurrencySelectionViewController+Theme.swift */,
 			);
 			path = Currency;
 			sourceTree = "<group>";
@@ -11960,6 +11970,7 @@
 				2B44872D2379663C00C19FDE /* ManageAssetsView.swift in Sources */,
 				17BD4E692292F1260003E49A /* CardModalPresentationController.swift in Sources */,
 				D4CCA1DF27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift in Sources */,
+				04B8E1B6274BF35800E78A86 /* CurrencySelectionViewController+Theme.swift in Sources */,
 				2BCF7276251CB14600D8827D /* TransactionActionsView.swift in Sources */,
 				2BA172AA26495B9400A613C4 /* AlgoStatisticsViewController.swift in Sources */,
 				2B448738237AAD1E00C19FDE /* AlgoAssetCell.swift in Sources */,
@@ -11974,6 +11985,7 @@
 				2B1B536923279CD500D54029 /* AlgorandNotification.swift in Sources */,
 				2B1B536C2328029F00D54029 /* NotificationDetail.swift in Sources */,
 				2B6607E7241147BE002AC00F /* LedgerApprovalViewController.swift in Sources */,
+				04B8E1B2274BEAB000E78A86 /* AppearanceSelectionViewController+Theme.swift in Sources */,
 				17BD4E6C2292F1260003E49A /* SettingsInfoContextView.swift in Sources */,
 				D442AA0A27397331009E60D4 /* AssetPreviewViewAdditionTheme.swift in Sources */,
 				2BF90F6125FBAAE70033F348 /* HStackView.swift in Sources */,
@@ -12676,6 +12688,7 @@
 				186C6F6726A025EE00E28AE1 /* WarningAlertView.swift in Sources */,
 				2B9EEAE0264E7527007A112D /* RewardCalculator.swift in Sources */,
 				2B57D8F725587FBB006E6FCE /* SendAssetDetailEvent.swift in Sources */,
+				04B8E1B1274BEAB000E78A86 /* AppearanceSelectionViewController+Theme.swift in Sources */,
 				D4B1524726F387C9001A81C0 /* LedgerAccountSelectionViewController+Theme.swift in Sources */,
 				D4C45BF82726C60500F4AE31 /* ContactInformationViewTheme.swift in Sources */,
 				2B0F619424EC129D00DA22A6 /* SendTransactionPreviewViewController.swift in Sources */,
@@ -12861,6 +12874,7 @@
 				2BD36DF326810E0600C57728 /* TitledInformation.swift in Sources */,
 				2B0F61F124EC129D00DA22A6 /* AlgorandSDK.swift in Sources */,
 				2B57D8F025587F4F006E6FCE /* ReceiveAssetDetailEvent.swift in Sources */,
+				04B8E1B5274BF35800E78A86 /* CurrencySelectionViewController+Theme.swift in Sources */,
 				2B0F61F224EC129D00DA22A6 /* SendTransactionPreviewView.swift in Sources */,
 				2BE4D15A25967F3E005F5764 /* Account+Helpers.swift in Sources */,
 				2B0F61F624EC129D00DA22A6 /* ALGBarButtonItem.swift in Sources */,
@@ -14324,6 +14338,7 @@
 				2B5739ED26F3F701007E0252 /* WCAssetReconfigurationTransactionViewModel.swift in Sources */,
 				2B95414225ACDA0D0098805B /* DeepLinkRouter.swift in Sources */,
 				2B5BE146251B72AB00324BEE /* ALGAPI+Currency.swift in Sources */,
+				04B8E1B0274BEAB000E78A86 /* AppearanceSelectionViewController+Theme.swift in Sources */,
 				2BF34CBF223A8E740052CAD3 /* NavigationController.swift in Sources */,
 				2B288AEB2693A5D600BC6FB6 /* WCSingleTransactionViewControllerActionable.swift in Sources */,
 				2BECB49125A0C6570081870A /* TitledToggleCell.swift in Sources */,
@@ -14388,6 +14403,7 @@
 				D46C648526E614C500FBAC6D /* WelcomeViewController+Theme.swift in Sources */,
 				170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */,
 				D4241FDD26E7999C0064CDD0 /* AccountNameSetupViewTheme.swift in Sources */,
+				04B8E1B4274BF35800E78A86 /* CurrencySelectionViewController+Theme.swift in Sources */,
 				D4BC640F26DE4844000CFD28 /* ButtonSecondaryTheme.swift in Sources */,
 				D45DFBC1273E4CB50088306B /* OptionsViewController+Theme.swift in Sources */,
 				2B7ABF74233386B60050B64B /* LoadingSpinnerView.swift in Sources */,

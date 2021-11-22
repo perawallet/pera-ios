@@ -17,35 +17,30 @@
 
 import UIKit
 
-class AppearanceSelectionViewController: BaseViewController {
-
+final class AppearanceSelectionViewController: BaseViewController {
     weak var delegate: AppearanceSelectionViewControllerDelegate?
     
+    private lazy var theme = Theme()
     private lazy var appearanceSelectionView = SingleSelectionListView()
     
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.tertiary
+        super.configureAppearance()
+        
         title = "settings-theme-set".localized
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     
     override func linkInteractors() {
+        super.linkInteractors()
+        
+        appearanceSelectionView.linkInteractors()
         appearanceSelectionView.setDataSource(self)
         appearanceSelectionView.setListDelegate(self)
     }
     
     override func prepareLayout() {
-        setupAppearanceSelectionViewLayout()
-    }
-}
-
-extension AppearanceSelectionViewController {
-    private func setupAppearanceSelectionViewLayout() {
-        view.addSubview(appearanceSelectionView)
-        
-        appearanceSelectionView.snp.makeConstraints { make in
-            make.top.safeEqualToTop(of: self)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
+        super.prepareLayout()
+        prepareWholeScreenLayoutFor(appearanceSelectionView)
     }
 }
 
@@ -85,7 +80,7 @@ extension AppearanceSelectionViewController: UICollectionViewDelegateFlowLayout 
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 64.0)
+        return CGSize(width: theme.cellWidth, height: theme.cellHeight)
     }
 }
 

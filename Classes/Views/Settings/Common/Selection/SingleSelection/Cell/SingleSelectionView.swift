@@ -42,8 +42,7 @@ extension SingleSelectionView {
         
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().inset(theme.horizontalSpacing)
+            $0.centerY.leading.equalToSuperview()
         }
     }
     
@@ -51,8 +50,7 @@ extension SingleSelectionView {
         addSubview(selectionImageView)
         selectionImageView.snp.makeConstraints {
             $0.fitToSize(theme.imageSize)
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(theme.horizontalSpacing)
+            $0.centerY.trailing.equalToSuperview()
         }
     }
 }
