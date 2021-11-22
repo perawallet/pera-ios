@@ -56,7 +56,6 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         addPassphraseView()
-        displayScreenshotWarning()
     }
 
     override func setListeners() {
