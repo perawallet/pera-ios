@@ -28,6 +28,9 @@
 		049391E82747AC3400BB70A1 /* SingleSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049391E72747AC3400BB70A1 /* SingleSelectionViewTheme.swift */; };
 		049391E92747AC3400BB70A1 /* SingleSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049391E72747AC3400BB70A1 /* SingleSelectionViewTheme.swift */; };
 		049391EA2747AC3400BB70A1 /* SingleSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049391E72747AC3400BB70A1 /* SingleSelectionViewTheme.swift */; };
+		049391EE2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049391ED2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift */; };
+		049391EF2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049391ED2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift */; };
+		049391F02747CF8500BB70A1 /* SingleSelectionListViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 049391ED2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift */; };
 		170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */; };
 		170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFB224CC70A00520EA5 /* QRText.swift */; };
 		170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFD224CCBF300520EA5 /* QRView.swift */; };
@@ -3235,6 +3238,7 @@
 		048B3C1927228CE5003A5F5A /* QRAddressLabelTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAddressLabelTheme.swift; sourceTree = "<group>"; };
 		048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QRCreationViewController+Theme.swift"; sourceTree = "<group>"; };
 		049391E72747AC3400BB70A1 /* SingleSelectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectionViewTheme.swift; sourceTree = "<group>"; };
+		049391ED2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleSelectionListViewTheme.swift; sourceTree = "<group>"; };
 		170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationViewController.swift; sourceTree = "<group>"; };
 		170AFAFB224CC70A00520EA5 /* QRText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRText.swift; sourceTree = "<group>"; };
 		170AFAFD224CCBF300520EA5 /* QRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRView.swift; sourceTree = "<group>"; };
@@ -4459,6 +4463,7 @@
 			isa = PBXGroup;
 			children = (
 				2BDD43D22513A84200C6D3B5 /* SingleSelectionListView.swift */,
+				049391ED2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -12466,6 +12471,7 @@
 				D4BC640D26DE3D2C000CFD28 /* ButtonPrimaryTheme.swift in Sources */,
 				17BD4EF72292F1260003E49A /* CGFloat+Additions.swift in Sources */,
 				17BD4EF82292F1260003E49A /* SettingsView.swift in Sources */,
+				049391F02747CF8500BB70A1 /* SingleSelectionListViewTheme.swift in Sources */,
 				2B9EEAD0264D3393007A112D /* AlgorandTotalSupply.swift in Sources */,
 				2B1A1D6224B3526700CB4E78 /* TooltipPresenter.swift in Sources */,
 				17BD4EF92292F1260003E49A /* EmptyStateView.swift in Sources */,
@@ -13060,6 +13066,7 @@
 				2BD063FA25CED2E3008BD15E /* UIViewController+Layout.swift in Sources */,
 				2BD5A68C2632FA850048FA5E /* AlgosValueResponse.swift in Sources */,
 				D400856E271D5188007C0C97 /* AlgoStatisticsDateSelectionView.swift in Sources */,
+				049391EF2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift in Sources */,
 				D41F93462722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift in Sources */,
 				2B0F625824EC129D00DA22A6 /* AssetView.swift in Sources */,
 				D4AC1FC3272D74A50027353F /* BottomWarningViewConfigurator.swift in Sources */,
@@ -13977,6 +13984,7 @@
 				170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */,
 				2BB64BE92402B47B00519981 /* LedgerDeviceCell.swift in Sources */,
 				2B3D73B923C3621F00597D32 /* VerifiedAsset.swift in Sources */,
+				049391EE2747CF8500BB70A1 /* SingleSelectionListViewTheme.swift in Sources */,
 				D421178C26D8EDBA00C032B2 /* ScreenLoadingIndicatorTheme.swift in Sources */,
 				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
 				D46AC87D26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift in Sources */,
