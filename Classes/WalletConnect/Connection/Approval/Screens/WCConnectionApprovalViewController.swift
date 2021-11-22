@@ -16,8 +16,10 @@
 //   WCConnectionApprovalViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
-class WCConnectionApprovalViewController: BaseViewController {
+class WCConnectionApprovalViewController: BaseViewController, BottomSheetPresentable {
 
     override var shouldShowNavigationBar: Bool {
         return false
@@ -26,6 +28,10 @@ class WCConnectionApprovalViewController: BaseViewController {
     weak var delegate: WCConnectionApprovalViewControllerDelegate?
 
     private lazy var connectionApprovalView = WCConnectionApprovalView()
+
+    var modalHeight: ModalHeight {
+        return .preferred(454)
+    }
 
     private let walletConnectSession: WalletConnectSession
     private let walletConnectSessionConnectionCompletionHandler: WalletConnectSessionConnectionCompletionHandler
@@ -103,8 +109,7 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
     }
 
     func wcConnectionApprovalViewDidSelectAccountSelection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
-        let accountListViewController = open(.accountList(mode: .walletConnect), by: .push) as? AccountListViewController
-        accountListViewController?.delegate = self
+        open(.accountList(mode: .walletConnect, delegate: self), by: .push)
     }
 
     func wcConnectionApprovalViewDidOpenURL(_ wcConnectionApprovalView: WCConnectionApprovalView) {

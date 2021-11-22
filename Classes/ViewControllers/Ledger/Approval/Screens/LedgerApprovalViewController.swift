@@ -16,14 +16,20 @@
 //  LedgerApprovalViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
-final class LedgerApprovalViewController: BaseViewController {
+final class LedgerApprovalViewController: BaseViewController, BottomSheetPresentable {
     override var shouldShowNavigationBar: Bool {
         return false
     }
     
     private lazy var ledgerApprovalView = LedgerApprovalView()
     private lazy var theme = Theme()
+
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
+    }
 
     private let mode: Mode
     private let deviceName: String

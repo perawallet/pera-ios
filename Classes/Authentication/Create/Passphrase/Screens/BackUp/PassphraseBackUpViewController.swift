@@ -26,13 +26,7 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     private lazy var passphraseBackUpView = PassphraseBackUpView()
     private lazy var theme = Theme()
 
-    private lazy var bottomModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .backgroundTouch
-        ),
-        initialModalSize: .custom(CGSize(theme.modalSize))
-    )
+    private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
     
     init(address: String, configuration: ViewControllerConfiguration) {
         self.address = address
@@ -62,6 +56,7 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     override func prepareLayout() {
         super.prepareLayout()
         addPassphraseView()
+        displayScreenshotWarning()
     }
 
     override func setListeners() {
@@ -152,19 +147,15 @@ extension PassphraseBackUpViewController {
         /// <note> Display screenshot detection warning if the user takes a screenshot of passphrase
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
         
-        open(
-            .bottomWarning(configurator:
-                            BottomWarningViewConfigurator(
-                                image: "icon-info-red".image,
-                                title: "screenshot-title".localized,
-                                description: "screenshot-description".localized,
-                                secondaryActionButtonTitle: "title-close".localized
-                            )
-                          ),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: bottomModalPresenter
+        bottomModalTransition.perform(
+            .bottomWarning(
+                configurator:
+                    BottomWarningViewConfigurator(
+                        image: "icon-info-red".image,
+                        title: "screenshot-title".localized,
+                        description: "screenshot-description".localized,
+                        secondaryActionButtonTitle: "title-close".localized
+                    )
             )
         )
     }

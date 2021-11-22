@@ -41,13 +41,7 @@ class TransactionsViewController: BaseViewController {
     private let transactionsTooltipStorage = TransactionsTooltipStorage()
     private var filterOption = TransactionFilterViewController.FilterOption.allTime
     
-    private lazy var filterOptionsPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.filterOptionsModalHeight))
-    )
+    private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
     
     private var transactionHistoryDataSource: TransactionHistoryDataSource
     
@@ -109,23 +103,15 @@ class TransactionsViewController: BaseViewController {
             object: nil
         )
         
-        transactionHistoryDataSource.openFilterOptionsHandler = { [weak self] _ -> Void in
-            guard let filterOption = self?.filterOption else {
+        transactionHistoryDataSource.openFilterOptionsHandler = { [weak self] _ in
+            guard let self = self else {
                 return
             }
-            let controller = self?.open(
-                .transactionFilter(filterOption: filterOption),
-                by: .customPresent(
-                    presentationStyle: .custom,
-                    transitionStyle: nil,
-                    transitioningDelegate: self?.filterOptionsPresenter
-                )
-            ) as? TransactionFilterViewController
-            
-            controller?.delegate = self
+
+            self.filterOptionsTransition.perform(.transactionFilter(filterOption: self.filterOption, delegate: self))
         }
         
-        transactionHistoryDataSource.shareHistoryHandler = { [weak self] _ -> Void in
+        transactionHistoryDataSource.shareHistoryHandler = { [weak self] _ in
             self?.fetchAllTransactionsForCSV()
         }
     }
@@ -531,9 +517,7 @@ extension TransactionsViewController: APIListener {
 extension TransactionsViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
         let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
-        let editAccountModalHeight: CGFloat = 158.0
         let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 68.0)
-        let filterOptionsModalHeight: CGFloat = 506.0
     }
 }
 

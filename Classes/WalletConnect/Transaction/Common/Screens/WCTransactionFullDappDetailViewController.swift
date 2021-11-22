@@ -16,14 +16,19 @@
 //   WCTransactionFullDappDetailViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
-class WCTransactionFullDappDetailViewController: BaseViewController {
-
+class WCTransactionFullDappDetailViewController: BaseViewController, BottomSheetPresentable {
     override var shouldShowNavigationBar: Bool {
         return false
     }
 
     private lazy var fullDappDetailView = WCTransactionFullDappDetailView()
+
+    var modalHeight: ModalHeight {
+        return .preferred(350)
+    }
 
     private let wcSession: WCSession
     private let message: String

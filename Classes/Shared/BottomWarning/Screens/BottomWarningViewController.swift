@@ -16,10 +16,16 @@
 //  BottomWarningViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
-final class BottomWarningViewController: BaseViewController {
+final class BottomWarningViewController: BaseViewController, BottomSheetPresentable {
     override var shouldShowNavigationBar: Bool {
         return false
+    }
+
+    var modalHeight: ModalHeight {
+        return .compressed
     }
 
     private let viewConfigurator: BottomWarningViewConfigurator

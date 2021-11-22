@@ -23,11 +23,13 @@ extension AccountRecoverOptionsViewController {
         let optionsViewTheme: OptionsViewTheme
         let backgroundColor: Color
         let cellSize: LayoutSize
+        let modalHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
             self.optionsViewTheme = OptionsViewTheme()
             self.backgroundColor = AppColors.Shared.System.background
             self.cellSize = (UIScreen.main.bounds.width, 60)
+            self.modalHeight = 254
         }
     }
 }

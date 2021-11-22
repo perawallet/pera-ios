@@ -39,13 +39,7 @@ class QRScannerViewController: BaseViewController {
         return true
     }
 
-    private lazy var wcConnectionModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 454.0))
-    )
+    private lazy var wcConnectionModalTransition = BottomSheetTransition(presentingViewController: self)
     
     weak var delegate: QRScannerViewControllerDelegate?
     
@@ -326,15 +320,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
             return
         }
 
-        let controller = open(
-            .wcConnectionApproval(walletConnectSession: session, completion: completion),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: wcConnectionModalPresenter
-            )
-        ) as? WCConnectionApprovalViewController
-        controller?.delegate = self
+        wcConnectionModalTransition.perform(.wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion))
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {

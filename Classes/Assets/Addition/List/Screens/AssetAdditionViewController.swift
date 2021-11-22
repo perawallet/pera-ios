@@ -24,14 +24,7 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
 
     private lazy var theme = Theme()
 
-    private lazy var assetActionConfirmationPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(theme.assetActionConfirmationModalSize))
-    )
-    
+    private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
     private var account: Account
     
     private var assetResults = [AssetSearchResult]()
@@ -250,15 +243,7 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
             cancelTitle: "title-cancel".localized
         )
 
-        let controller = open(
-            .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: assetActionConfirmationPresenter
-            )
-        ) as? AssetActionConfirmationViewController
-
+        let controller = assetActionConfirmationTransition.perform(.assetActionConfirmation(assetAlertDraft: assetAlertDraft)) as? AssetActionConfirmationViewController
         controller?.delegate = self
     }
 }

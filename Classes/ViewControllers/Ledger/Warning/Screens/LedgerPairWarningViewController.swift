@@ -16,16 +16,21 @@
 //   LedgerPairWarningViewController.swift
 
 import Foundation
+import MacaroonUIKit
+import MacaroonBottomSheet
 
-class LedgerPairWarningViewController: BaseViewController {
+class LedgerPairWarningViewController: BaseViewController, BottomSheetPresentable {
+    weak var delegate: LedgerPairWarningViewControllerDelegate?
 
     override var shouldShowNavigationBar: Bool {
         return false
     }
 
-    weak var delegate: LedgerPairWarningViewControllerDelegate?
-
     private lazy var ledgerPairWarningView = LedgerPairWarningView()
+
+    var modalHeight: ModalHeight {
+        return .preferred(496)
+    }
 
     override func configureAppearance() {
         super.configureAppearance()

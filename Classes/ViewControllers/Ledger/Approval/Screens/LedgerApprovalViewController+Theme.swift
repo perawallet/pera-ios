@@ -21,10 +21,12 @@ extension LedgerApprovalViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let ledgerApprovalViewTheme: LedgerApprovalViewTheme
         let backgroundColor: Color
+        let modalHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
             ledgerApprovalViewTheme = LedgerApprovalViewTheme()
             backgroundColor = AppColors.Shared.System.background
+            modalHeight = 362
         }
     }
 }

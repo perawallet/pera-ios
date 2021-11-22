@@ -22,13 +22,11 @@ extension ContactDetailViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
         let cellSize: LayoutSize
-        let modalSize: LayoutSize
         let assetPreviewActionViewTheme: AssetPreviewActionViewTheme
 
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
             cellSize = (UIScreen.main.bounds.width - 48, 72)
-            modalSize = (UIScreen.main.bounds.width, 294)
             let actionButtonStyle: ButtonStyle = [
                 .icon("icon-circle-arrow-up")
             ]

@@ -211,10 +211,14 @@ class Router {
             viewController = qrCreationController
         case .home:
             viewController = TabBarController(configuration: configuration)
-        case let .accountList(mode):
-            viewController = AccountListViewController(mode: mode, configuration: configuration)
-        case let .options(account):
-            viewController = OptionsViewController(account: account, configuration: configuration)
+        case let .accountList(mode, delegate):
+            let accountListViewController = AccountListViewController(mode: mode, configuration: configuration)
+            accountListViewController.delegate = delegate
+            viewController = accountListViewController
+        case let .options(account, delegate):
+            let optionsViewController = OptionsViewController(account: account, configuration: configuration)
+            optionsViewController.delegate = delegate
+            viewController = optionsViewController
         case let .editAccount(account):
             viewController = EditAccountViewController(account: account, configuration: configuration)
         case .contactSelection:
@@ -315,8 +319,10 @@ class Router {
         case .assetActionConfirmationNotification,
              .assetDetailNotification:
             return nil
-        case let .transactionFilter(filterOption):
-            viewController = TransactionFilterViewController(filterOption: filterOption, configuration: configuration)
+        case let .transactionFilter(filterOption, delegate):
+            let transactionFilterViewController = TransactionFilterViewController(filterOption: filterOption, configuration: configuration)
+            transactionFilterViewController.delegate = delegate
+            viewController = transactionFilterViewController
         case let .transactionFilterCustomRange(fromDate, toDate):
             viewController = TransactionCustomRangeSelectionViewController(fromDate: fromDate, toDate: toDate, configuration: configuration)
         case let .rekeyInstruction(account):
@@ -351,24 +357,32 @@ class Router {
             )
         case let .notificationFilter(flow):
             viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
-        case let .maximumBalanceWarning(account):
-            viewController = MaximumBalanceWarningViewController(account: account, configuration: configuration)
+        case let .maximumBalanceWarning(account, delegate):
+            let maximumBalanceWarningViewController = MaximumBalanceWarningViewController(account: account, configuration: configuration)
+            maximumBalanceWarningViewController.delegate = delegate
+            viewController = maximumBalanceWarningViewController
         case let .bottomWarning(viewModel):
             viewController = BottomWarningViewController(viewModel, configuration: configuration)
         case let .warningAlert(warningAlert):
             viewController = WarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
-        case let .actionableWarningAlert(warningAlert):
-            viewController = ActionableWarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
+        case let .actionableWarningAlert(warningAlert, delegate):
+            let actionableWarningAlertViewController = ActionableWarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
+            actionableWarningAlertViewController.delegate = delegate
+            viewController = actionableWarningAlertViewController
         case let .tutorial(flow, tutorial):
             viewController = TutorialViewController(
                 flow: flow,
                 tutorial: tutorial,
                 configuration: configuration
             )
-        case let .transactionTutorial(isInitialDisplay):
-            viewController = TransactionTutorialViewController(isInitialDisplay: isInitialDisplay, configuration: configuration)
-        case .recoverOptions:
-            viewController = AccountRecoverOptionsViewController(configuration: configuration)
+        case let .transactionTutorial(isInitialDisplay, delegate):
+            let transactionTutorialViewController = TransactionTutorialViewController(isInitialDisplay: isInitialDisplay, configuration: configuration)
+            transactionTutorialViewController.delegate = delegate
+            viewController = transactionTutorialViewController
+        case let .recoverOptions(delegate):
+            let accountRecoverOptionsViewController = AccountRecoverOptionsViewController(configuration: configuration)
+            accountRecoverOptionsViewController.delegate = delegate
+            viewController = accountRecoverOptionsViewController
         case .algoStatistics:
             viewController = AlgoStatisticsViewController(configuration: configuration)
         case let .ledgerAccountVerification(flow, selectedAccounts):
@@ -377,12 +391,14 @@ class Router {
                 selectedAccounts: selectedAccounts,
                 configuration: configuration
             )
-        case let .wcConnectionApproval(walletConnectSession, completion):
-            viewController = WCConnectionApprovalViewController(
+        case let .wcConnectionApproval(walletConnectSession, delegate, completion):
+            let wcConnectionApprovalViewController = WCConnectionApprovalViewController(
                 walletConnectSession: walletConnectSession,
                 walletConnectSessionConnectionCompletionHandler: completion,
                 configuration: configuration
             )
+            wcConnectionApprovalViewController.delegate = delegate
+            viewController = wcConnectionApprovalViewController
         case .walletConnectSessions:
             viewController = WCSessionListViewController(configuration: configuration)
         case let .wcTransactionFullDappDetail(wcSession, message):
@@ -451,10 +467,14 @@ class Router {
 
         case .tabBarModal:
             viewController = TabBarModalViewController(configuration: configuration)
-        case let .algoStatisticsDateSelection(option):
-            viewController = AlgoStatisticsDateSelectionViewController(selectedOption: option, configuration: configuration)
-        case .ledgerPairWarning:
-            viewController = LedgerPairWarningViewController(configuration: configuration)
+        case let .algoStatisticsDateSelection(option, delegate):
+            let algoStatisticsDateSelectionViewController = AlgoStatisticsDateSelectionViewController(selectedOption: option, configuration: configuration)
+            algoStatisticsDateSelectionViewController.delegate = delegate
+            viewController = algoStatisticsDateSelectionViewController
+        case let .ledgerPairWarning(delegate):
+            let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
+            ledgerPairWarningViewController.delegate = delegate
+            viewController = ledgerPairWarningViewController
         }
         
         return viewController as? T

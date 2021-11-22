@@ -16,8 +16,10 @@
 //  AccountListViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
-final class AccountListViewController: BaseViewController {
+final class AccountListViewController: BaseViewController, BottomSheetPresentable {
     weak var delegate: AccountListViewControllerDelegate?
 
     override var shouldShowNavigationBar: Bool {
@@ -26,6 +28,10 @@ final class AccountListViewController: BaseViewController {
 
     private lazy var theme = Theme()
     private lazy var accountListView = AccountListView()
+
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
+    }
     
     private lazy var accountListLayoutBuilder = AccountListLayoutBuilder(theme: theme)
     private lazy var accountListDataSource = AccountListDataSource(mode: mode)

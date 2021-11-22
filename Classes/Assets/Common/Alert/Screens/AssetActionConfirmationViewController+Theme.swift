@@ -21,10 +21,12 @@ extension AssetActionConfirmationViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
         let assetActionConfirmationViewTheme: AssetActionConfirmationViewTheme
+        let modalHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
             assetActionConfirmationViewTheme = AssetActionConfirmationViewTheme()
+            modalHeight = 562
         }
     }
 }

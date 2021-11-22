@@ -17,18 +17,14 @@
 
 import UIKit
 import AVFoundation
+import MacaroonBottomSheet
+import MacaroonUIKit
 
-final class PassphraseDisplayViewController: BaseScrollViewController {
-    private lazy var bottomModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .backgroundTouch
-        ),
-        initialModalSize: .custom(CGSize(theme.modalSize))
-    )
-
+final class PassphraseDisplayViewController: BaseScrollViewController, BottomSheetPresentable {
     private lazy var theme = Theme()
     private lazy var passphraseDisplayView = PassphraseDisplayView()
+
+    private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
 
     private var mnemonics: [String]? {
         guard let session = session else {
@@ -36,6 +32,10 @@ final class PassphraseDisplayViewController: BaseScrollViewController {
         }
         let mnemonics = session.mnemonics(forAccount: address)
         return mnemonics
+    }
+
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
     }
     
     private var address: String
@@ -122,17 +122,14 @@ extension PassphraseDisplayViewController {
         /// <note> Display screenshot detection warning if the user takes a screenshot of passphrase
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
 
-        open(
-            .bottomWarning(configurator: BottomWarningViewConfigurator(
-                image: "icon-info-red".image,
-                title: "screenshot-title".localized,
-                description: "screenshot-description".localized,
-                secondaryActionButtonTitle: "title-close".localized
-            )),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: bottomModalPresenter
+        bottomModalTransition.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-red".image,
+                    title: "screenshot-title".localized,
+                    description: "screenshot-description".localized,
+                    secondaryActionButtonTitle: "title-close".localized
+                )
             )
         )
     }

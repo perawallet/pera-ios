@@ -61,15 +61,7 @@ final class TabBarController: UIViewController {
     }
     
     private var selectedContent: UIViewController?
-    
-    private lazy var modalScreenPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 490.0))
-    )
-    
+
     private(set) lazy var tabBar = TabBar()
 
     private lazy var accountsViewController = AccountsViewController(configuration: configuration)
@@ -156,29 +148,18 @@ extension TabBarController {
                 topMostController?.open(route, by: .push)
             case .assetSupport:
                 selectedItem = items[0]
-                open(
-                    route,
-                    by: .customPresentWithoutNavigationController(
-                        presentationStyle: .custom,
-                        transitionStyle: nil,
-                        transitioningDelegate: modalScreenPresenter
-                    )
-                )
+                let bottomSheetTransition = BottomSheetTransition(presentingViewController: self)
+                bottomSheetTransition.perform(route)
             case .assetDetail:
                 topMostController?.open(route, by: .push)
             case let .assetActionConfirmation(draft):
-                let controller = topMostController?.open(
-                    route,
-                    by: .customPresentWithoutNavigationController(
-                        presentationStyle: .custom,
-                        transitionStyle: nil,
-                        transitioningDelegate: modalScreenPresenter
-                    )
-                ) as? AssetActionConfirmationViewController
-                
+                if let presentingViewController = topMostController {
+                    let bottomSheetTransition = BottomSheetTransition(presentingViewController: presentingViewController)
+                    let controller = bottomSheetTransition.perform(route) as? AssetActionConfirmationViewController
+                    controller?.delegate = self
+                }
+
                 assetAlertDraft = draft
-                
-                controller?.delegate = self
             default:
                 break
             }

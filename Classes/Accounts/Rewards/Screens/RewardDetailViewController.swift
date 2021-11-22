@@ -17,8 +17,10 @@
 
 import UIKit
 import SafariServices
+import MacaroonBottomSheet
+import MacaroonUIKit
 
-class RewardDetailViewController: BaseViewController {
+class RewardDetailViewController: BaseViewController, BottomSheetPresentable {
     
     override var shouldShowNavigationBar: Bool {
         return false
@@ -27,6 +29,10 @@ class RewardDetailViewController: BaseViewController {
     private let account: Account
     
     private lazy var rewardDetailView = RewardDetailView()
+
+    var modalHeight: ModalHeight {
+        return .preferred(472)
+    }
     
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account

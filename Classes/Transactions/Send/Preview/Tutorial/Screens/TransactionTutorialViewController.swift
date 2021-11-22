@@ -16,8 +16,10 @@
 //   TransactionTutorialViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
-class TransactionTutorialViewController: BaseScrollViewController {
+class TransactionTutorialViewController: BaseScrollViewController, BottomSheetPresentable {
 
     override var shouldShowNavigationBar: Bool {
         return false
@@ -26,6 +28,12 @@ class TransactionTutorialViewController: BaseScrollViewController {
     weak var delegate: TransactionTutorialViewControllerDelegate?
 
     private lazy var transactionTutorialView = TransactionTutorialView()
+
+    var modalHeight: ModalHeight {
+        let screenHeight = UIScreen.main.bounds.height
+        let height = screenHeight <= 605 ? screenHeight - 20 : 605
+        return .preferred(height)
+    }
 
     private let isInitialDisplay: Bool
 

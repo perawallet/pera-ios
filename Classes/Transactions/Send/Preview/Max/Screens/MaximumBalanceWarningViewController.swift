@@ -16,8 +16,10 @@
 //  MaximumBalanceWarningViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
-class MaximumBalanceWarningViewController: BaseScrollViewController {
+class MaximumBalanceWarningViewController: BaseScrollViewController, BottomSheetPresentable {
 
     override var shouldShowNavigationBar: Bool {
         return false
@@ -26,6 +28,12 @@ class MaximumBalanceWarningViewController: BaseScrollViewController {
     weak var delegate: MaximumBalanceWarningViewControllerDelegate?
 
     private lazy var maximumBalanceWarningView = MaximumBalanceWarningView()
+
+    var modalHeight: ModalHeight {
+        let screenHeight = UIScreen.main.bounds.height
+        let height = screenHeight <= 522 ? screenHeight - 20 : 522
+        return .preferred(height)
+    }
 
     private let account: Account
 

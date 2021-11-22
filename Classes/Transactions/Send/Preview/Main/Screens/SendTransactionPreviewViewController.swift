@@ -21,33 +21,8 @@ import MagpieHipo
 import Alamofire
 
 class SendTransactionPreviewViewController: BaseScrollViewController {
-    
-    private(set) lazy var accountListModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        )
-    )
-    
-    private lazy var ledgerApprovalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 354.0))
-    )
-
-    private lazy var transactionTutorialPresenter: CardModalPresenter = {
-        let screenHeight = UIScreen.main.bounds.height
-        let height = screenHeight <= 605.0 ? screenHeight - 20.0 : 605.0
-        return CardModalPresenter(
-            config: ModalConfiguration(
-                animationMode: .normal(duration: 0.25),
-                dismissMode: .none
-            ),
-            initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
-        )
-    }()
+    private(set) lazy var accountListModalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var transactionTutorialTransition = BottomSheetTransition(presentingViewController: self)
 
     private(set) lazy var transactionController: TransactionController = {
         guard let api = api else {
@@ -378,16 +353,8 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
 
 extension SendTransactionPreviewViewController {
     private func displayTransactionTutorial(isInitialDisplay: Bool) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + (isInitialDisplay ? 0.1 : 0.0)) {
-            let controller = self.open(
-                .transactionTutorial(isInitialDisplay: isInitialDisplay),
-                by: .customPresentWithoutNavigationController(
-                    presentationStyle: .custom,
-                    transitionStyle: nil,
-                    transitioningDelegate: self.transactionTutorialPresenter
-                )
-            ) as? TransactionTutorialViewController
-            controller?.delegate = self
+        DispatchQueue.main.asyncAfter(deadline: .now() + (isInitialDisplay ? 0.1 : 0)) {
+            self.transactionTutorialTransition.perform(.transactionTutorial(isInitialDisplay: isInitialDisplay, delegate: self))
         }
     }
 }

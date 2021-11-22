@@ -19,25 +19,7 @@ import UIKit
 
 class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewController, TestNetTitleDisplayable {
     
-    private lazy var bottomModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
-    )
-
-    private lazy var maxTransactionWarningPresenter: CardModalPresenter = {
-        let screenHeight = UIScreen.main.bounds.height
-        let height = screenHeight <= 522.0 ? screenHeight - 20.0 : 522.0
-        return CardModalPresenter(
-            config: ModalConfiguration(
-                animationMode: .normal(duration: 0.25),
-                dismissMode: .scroll
-            ),
-            initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
-        )
-    }()
+    private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
     
     private let viewModel: SendAlgosTransactionPreviewViewModel
     
@@ -70,18 +52,12 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
     }
     
     override func presentAccountList(accountSelectionState: AccountSelectionState) {
-        let accountListViewController = open(
+        accountListModalTransition.perform(
             .accountList(
-                mode: accountSelectionState == .sender ? .transactionSender(assetDetail: nil) : .transactionReceiver(assetDetail: nil)
-            ),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: accountListModalPresenter
+                mode: accountSelectionState == .sender ? .transactionSender(assetDetail: nil) : .transactionReceiver(assetDetail: nil),
+                delegate: self
             )
-        ) as? AccountListViewController
-    
-        accountListViewController?.delegate = self
+        )
     }
     
     override func configure(forSelected account: Account, with assetDetail: AssetDetail?) {
@@ -195,28 +171,28 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
     }
     
     private func displayQRAlert(for amountFromQR: UInt64, with asset: Int64?) {
-        let configurator = BottomInformationBundle(
+        let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
+            image: "icon-qr-alert".image,
             title: "send-qr-scan-alert-title".localized,
-            image: img("icon-qr-alert"),
-            explanation: "send-qr-scan-alert-message".localized,
-            actionTitle: "title-approve".localized) {
-                if asset != nil {
-                    self.displaySimpleAlertWith(title: "", message: "send-qr-different-asset-alert".localized)
-                    return
-                }
-                let receivedAmount = amountFromQR.toAlgos
-                self.amount = receivedAmount
-                self.sendTransactionPreviewView.amountInputView.inputTextField.text = receivedAmount.toDecimalStringForAlgosInput
+            description: "send-qr-scan-alert-message".localized,
+            primaryActionButtonTitle: "title-approve".localized,
+            secondaryActionButtonTitle: "title-cancel".localized
+        ) { [weak self] in
+            guard let self = self else {
                 return
+            }
+            if asset != nil {
+                self.displaySimpleAlertWith(title: "", message: "send-qr-different-asset-alert".localized)
+                return
+            }
+            let receivedAmount = amountFromQR.toAlgos
+            self.amount = receivedAmount
+            self.sendTransactionPreviewView.amountInputView.inputTextField.text = receivedAmount.toDecimalStringForAlgosInput
+            return
         }
-        
-        open(
-            .bottomInformation(mode: .qr, configurator: configurator),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: bottomModalPresenter
-            )
+
+        bottomModalTransition.perform(
+            .bottomWarning(configurator: bottomWarningViewConfigurator)
         )
     }
 
@@ -225,15 +201,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
 
-        let controller = open(
-            .maximumBalanceWarning(account: account),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: maxTransactionWarningPresenter
-            )
-        ) as? MaximumBalanceWarningViewController
-        controller?.delegate = self
+        bottomModalTransition.perform(.maximumBalanceWarning(account: account, delegate: self))
     }
 }
 

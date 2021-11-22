@@ -16,16 +16,22 @@
 //   AccountRecoverOptionsViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
-final class AccountRecoverOptionsViewController: BaseViewController {
+final class AccountRecoverOptionsViewController: BaseViewController, BottomSheetPresentable {
+    weak var delegate: AccountRecoverOptionsViewControllerDelegate?
+
     override var shouldShowNavigationBar: Bool {
         return false
     }
 
-    weak var delegate: AccountRecoverOptionsViewControllerDelegate?
-
     private lazy var optionsView = OptionsView()
     private lazy var theme = Theme()
+
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
+    }
 
     private let options: [Option] = [.paste, .scanQR, .info]
 

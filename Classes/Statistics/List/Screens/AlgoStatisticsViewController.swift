@@ -16,22 +16,22 @@
 //   AlgoStatisticsViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
-final class AlgoStatisticsViewController: BaseScrollViewController {
+final class AlgoStatisticsViewController: BaseScrollViewController, BottomSheetPresentable {
     override var shouldShowNavigationBar: Bool {
         return false
     }
 
-    private lazy var filterOptionsPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(theme.dateSelectionModalHeight))
-    )
+    private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var theme = Theme()
     private lazy var algoStatisticsView = AlgoStatisticsView()
+
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
+    }
 
     private lazy var algoStatisticsDataController = AlgoStatisticsDataController(api: api)
     private lazy var assetCardDisplayDataController: AssetCardDisplayDataController = {
@@ -101,16 +101,7 @@ extension AlgoStatisticsViewController {
 
 extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
     func algoStatisticsViewDidTapDate(_ view: AlgoStatisticsView) {
-        let controller = open(
-            .algoStatisticsDateSelection(option: selectedTimeInterval),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: filterOptionsPresenter
-            )
-        ) as? AlgoStatisticsDateSelectionViewController
-
-        controller?.delegate = self
+        filterOptionsTransition.perform(.algoStatisticsDateSelection(option: selectedTimeInterval, delegate: self))
     }
 
     func algoStatisticsView(_ view: AlgoStatisticsView, didSelectItemAt index: Int) {

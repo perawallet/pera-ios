@@ -26,49 +26,7 @@ class AccountsViewController: BaseViewController {
     
     let layout = Layout<LayoutConstants>()
     
-    private lazy var optionsModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.optionsModalHeight))
-    )
-    
-    private(set) lazy var removeAccountModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.removeAccountModalHeight))
-    )
-    
-    private(set) lazy var termsServiceModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: layout.current.termsAndServiceHeight))
-    )
-    
-    private(set) lazy var passphraseModalPresenter: CardModalPresenter = {
-        let screenHeight = UIScreen.main.bounds.height
-        let height = screenHeight <= 606.0 ? screenHeight - 20.0 : 598
-        return CardModalPresenter(
-            config: ModalConfiguration(
-                animationMode: .normal(duration: 0.25),
-                dismissMode: .scroll
-            ),
-            initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
-        )
-    }()
-
-    private lazy var wcConnectionModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 454.0))
-    )
+    private(set) lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     
     private lazy var pushNotificationController: PushNotificationController = {
         guard let api = api else {
@@ -453,15 +411,7 @@ extension AccountsViewController: WalletConnectorDelegate {
             return
         }
 
-        let controller = open(
-            .wcConnectionApproval(walletConnectSession: session, completion: completion),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: wcConnectionModalPresenter
-            )
-        ) as? WCConnectionApprovalViewController
-        controller?.delegate = self
+        modalTransition.perform(.wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion))
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
@@ -481,15 +431,7 @@ extension AccountsViewController: WCConnectionApprovalViewControllerDelegate {
 
 extension AccountsViewController {
     private func presentOptions(for account: Account) {
-        let transitionStyle = Screen.Transition.Open.customPresent(
-            presentationStyle: .custom,
-            transitionStyle: nil,
-            transitioningDelegate: optionsModalPresenter
-        )
-        
-        let optionsViewController = open(.options(account: account), by: transitionStyle) as? OptionsViewController
-        
-        optionsViewController?.delegate = self
+        modalTransition.perform(.options(account: account, delegate: self))
     }
     
     private func setAccountsCollectionViewContentState(isInitialEmptyStateIncluded: Bool = false) {
@@ -586,15 +528,8 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     detail: "asset-support-your-add-message".localized,
                     actionTitle: "title-ok".localized
                 )
-                
-                open(
-                    .assetSupport(assetAlertDraft: assetAlertDraft),
-                    by: .customPresentWithoutNavigationController(
-                        presentationStyle: .custom,
-                        transitionStyle: nil,
-                        transitioningDelegate: optionsModalPresenter
-                    )
-                )
+
+                modalTransition.perform(.assetSupport(assetAlertDraft: assetAlertDraft))
                 return
             }
             
@@ -689,7 +624,6 @@ extension AccountsViewController: APIListener {
 
 extension AccountsViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
-        let optionsModalHeight: CGFloat = 462.0
         let removeAccountModalHeight: CGFloat = 426
         let editAccountModalHeight: CGFloat = 158.0
         let passphraseModalHeight: CGFloat = 510.0

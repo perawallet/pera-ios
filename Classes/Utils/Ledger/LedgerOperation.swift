@@ -168,49 +168,34 @@ extension LedgerOperation {
         if !shouldDisplayLedgerApprovalModal {
             return
         }
-
-        let ledgerApprovalPresenter = CardModalPresenter(
-            config: ModalConfiguration(
-                animationMode: .normal(duration: 0.25),
-                dismissMode: .backgroundTouch
-            ),
-            initialModalSize: .custom(CGSize(width: UIScreen.main.bounds.width, height: 362))
-        )
-        ledgerApprovalViewController = topMostController?.open(
-            .ledgerApproval(mode: .approve, deviceName: (connectedDevice?.name).emptyIfNil),
-            by: .customPresent(presentationStyle: .custom, transitionStyle: nil, transitioningDelegate: ledgerApprovalPresenter)
-        ) as? LedgerApprovalViewController
+        
+        if let presentingViewController = topMostController {
+            let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: presentingViewController)
+            ledgerApprovalViewController = ledgerApprovalTransition.perform(
+                .ledgerApproval(mode: .approve, deviceName: (connectedDevice?.name).emptyIfNil)
+            )
+        }
     }
 
     private func presentConnectionSupportWarningAlert() {
-        let warningModalPresenter = CardModalPresenter(
-            config: ModalConfiguration(
-                animationMode: .normal(duration: 0.25),
-                dismissMode: .backgroundTouch
-            ),
-            initialModalSize: .custom(CGSize(width: UIScreen.main.bounds.width, height: 380.0))
-        )
+        if let presentingViewController = topMostController {
+           let warningModalTransition = BottomSheetTransition(presentingViewController: presentingViewController)
 
-        let transitionStyle = Screen.Transition.Open.customPresent(
-            presentationStyle: .custom,
-            transitionStyle: nil,
-            transitioningDelegate: warningModalPresenter
-        )
+            // These texts won't be localized for now
+            let message = """
+            Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s
+            bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.
+            """
 
-        // These texts won't be localized for now
-        let message = """
-        Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s
-        bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.
-        """
+            let warningAlert = WarningAlert(
+                title: "Having Ledger Nano X connection issues?",
+                image: img("img-warning-circle"),
+                description: message,
+                actionTitle: "title-ok".localized
+            )
 
-        let warningAlert = WarningAlert(
-            title: "Having Ledger Nano X connection issues?",
-            image: img("img-warning-circle"),
-            description: message,
-            actionTitle: "title-ok".localized
-        )
-
-        topMostController?.open(.warningAlert(warningAlert: warningAlert), by: transitionStyle)
+            warningModalTransition.perform(.warningAlert(warningAlert: warningAlert))
+        }
     }
 }
 

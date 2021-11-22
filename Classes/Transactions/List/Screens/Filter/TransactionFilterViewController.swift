@@ -16,14 +16,20 @@
 //  TransactionFilterViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
-class TransactionFilterViewController: BaseViewController {
+class TransactionFilterViewController: BaseViewController, BottomSheetPresentable {
     
     weak var delegate: TransactionFilterViewControllerDelegate?
     
     private let layout = Layout<LayoutConstants>()
     
     private lazy var transactionFilterView = TransactionFilterView()
+
+    var modalHeight: ModalHeight {
+        return .preferred(506)
+    }
     
     private let viewModel = TransactionFilterViewModel()
     private var selectedOption: FilterOption

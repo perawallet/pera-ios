@@ -20,34 +20,8 @@ import SnapKit
 
 class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewController, TestNetTitleDisplayable {
     
-    private lazy var assetSupportPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
-    )
+    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
-    private lazy var maxTransactionWarningPresenter: CardModalPresenter = {
-        let screenHeight = UIScreen.main.bounds.height
-        let height = screenHeight <= 522.0 ? screenHeight - 20.0 : 522.0
-        return CardModalPresenter(
-            config: ModalConfiguration(
-                animationMode: .normal(duration: 0.25),
-                dismissMode: .scroll
-            ),
-            initialModalSize: .custom(CGSize(width: view.frame.width, height: height))
-        )
-    }()
-    
-    private lazy var bottomInformationPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 422.0))
-    )
-    
     weak var delegate: SendAssetTransactionPreviewViewControllerDelegate?
     
     private let assetDetail: AssetDetail
@@ -98,20 +72,12 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     }
     
     override func presentAccountList(accountSelectionState: AccountSelectionState) {
-        let accountListViewController = open(
+        accountListModalTransition.perform(
             .accountList(
-                mode: accountSelectionState == .sender ?
-                    .transactionSender(assetDetail: assetDetail) :
-                    .transactionReceiver(assetDetail: assetDetail)
-            ),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: accountListModalPresenter
+                mode: accountSelectionState == .sender ? .transactionSender(assetDetail: assetDetail) : .transactionReceiver(assetDetail: assetDetail),
+                delegate: self
             )
-        ) as? AccountListViewController
-    
-        accountListViewController?.delegate = self
+        )
     }
     
     override func transactionController(
@@ -232,37 +198,35 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     }
     
     private func displayQRAlert(for qrAmount: UInt64, to qrAddress: String, with assetId: Int64?) {
-        let configurator = BottomInformationBundle(
+        let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
+            image: "icon-qr-alert".image,
             title: "send-qr-scan-alert-title".localized,
-            image: img("icon-qr-alert"),
-            explanation: "send-qr-scan-alert-message".localized,
-            actionTitle: "title-approve".localized) {
-                if self.assetDetail.id == assetId {
-                    let amountValue = qrAmount.assetAmount(fromFraction: self.assetDetail.fractionDecimals)
-                    let amountText = amountValue.toFractionStringForLabel(fraction: self.assetDetail.fractionDecimals)
-                    
-                    self.sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: amountText)
-                    self.assetReceiverState = .address(address: qrAddress, amount: amountText)
-                    
-                    self.amount = amountValue
-                    self.sendTransactionPreviewView.amountInputView.inputTextField.text = amountText
-                    return
-                }
-                
-                self.displaySimpleAlertWith(title: "", message: "send-qr-different-asset-alert".localized)
-                self.sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
-                self.assetReceiverState = .address(address: qrAddress, amount: nil)
+            description: "send-qr-scan-alert-message".localized,
+            primaryActionButtonTitle: "title-approve".localized,
+            secondaryActionButtonTitle: "title-cancel".localized
+        ) { [weak self] in
+            guard let self = self else {
                 return
+            }
+            if self.assetDetail.id == assetId {
+                let amountValue = qrAmount.assetAmount(fromFraction: self.assetDetail.fractionDecimals)
+                let amountText = amountValue.toFractionStringForLabel(fraction: self.assetDetail.fractionDecimals)
+
+                self.sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: amountText)
+                self.assetReceiverState = .address(address: qrAddress, amount: amountText)
+
+                self.amount = amountValue
+                self.sendTransactionPreviewView.amountInputView.inputTextField.text = amountText
+                return
+            }
+
+            self.displaySimpleAlertWith(title: "", message: "send-qr-different-asset-alert".localized)
+            self.sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
+            self.assetReceiverState = .address(address: qrAddress, amount: nil)
+            return
         }
-        
-        open(
-            .bottomInformation(mode: .qr, configurator: configurator),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: bottomInformationPresenter
-            )
-        )
+
+        modalTransition.perform(.bottomWarning(configurator: bottomWarningViewConfigurator))
     }
 }
 
@@ -341,15 +305,8 @@ extension SendAssetTransactionPreviewViewController {
             )
             api?.sendAssetSupportRequest(draft)
         }
-        
-        self.open(
-            .assetSupport(assetAlertDraft: assetAlertDraft),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: assetSupportPresenter
-            )
-        )
+
+        modalTransition.perform(.assetSupport(assetAlertDraft: assetAlertDraft))
     }
     
     private func validateTransaction() {

@@ -21,21 +21,7 @@ class AssetCardDisplayViewController: BaseViewController {
     
     weak var delegate: AssetCardDisplayViewControllerDelegate?
     
-    private lazy var rewardsModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 472.0))
-    )
-
-    private lazy var analyticsModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: UIScreen.main.bounds.height * 0.8))
-    )
+    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var assetCardDisplayDataController: AssetCardDisplayDataController = {
         guard let api = api else {
@@ -189,25 +175,11 @@ extension AssetCardDisplayViewController: UICollectionViewDelegateFlowLayout {
 
 extension AssetCardDisplayViewController: AlgosCardCellDelegate {
     func algosCardCellDidOpenRewardDetails(_ algosCardCell: AlgosCardCell) {
-        open(
-            .rewardDetail(account: account),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: rewardsModalPresenter
-            )
-        )
+        modalTransition.perform(.rewardDetail(account: account))
     }
 
     func algosCardCellDidOpenAnalytics(_ algosCardCell: AlgosCardCell) {
-        open(
-            .algoStatistics,
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: analyticsModalPresenter
-            )
-        )
+        modalTransition.perform(.algoStatistics)
     }
 }
 

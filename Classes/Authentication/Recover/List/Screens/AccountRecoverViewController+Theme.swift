@@ -27,7 +27,6 @@ extension AccountRecoverViewController {
         let inputSuggestionsFrame: CGRect
         let keyboardInset: LayoutMetric
         let inputViewHeight: LayoutMetric
-        let optionsModalHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
             self.accountRecoverViewTheme = AccountRecoverViewTheme()
@@ -37,7 +36,6 @@ extension AccountRecoverViewController {
             self.inputSuggestionsFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44)
             self.keyboardInset = 92
             self.inputViewHeight = 732
-            self.optionsModalHeight = 254
         }
     }
 }

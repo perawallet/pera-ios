@@ -29,13 +29,7 @@ final class LedgerDeviceListViewController: BaseViewController {
         return LedgerAccountFetchOperation(api: api, bannerController: bannerController)
     }()
 
-    private lazy var initialPairingWarningModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 496.0))
-    )
+    private lazy var initialPairingWarningTransition = BottomSheetTransition(presentingViewController: self)
 
     private let accountSetupFlow: AccountSetupFlow
     private var ledgerDevices = [CBPeripheral]()
@@ -129,14 +123,7 @@ extension LedgerDeviceListViewController: UICollectionViewDataSource {
 
         oneTimeDisplayStorage.setDisplayedOnce(for: .ledgerPairingWarning)
 
-        let transitionStyle = Screen.Transition.Open.customPresent(
-            presentationStyle: .custom,
-            transitionStyle: nil,
-            transitioningDelegate: initialPairingWarningModalPresenter
-        )
-
-        let controller = open(.ledgerPairWarning, by: transitionStyle) as? LedgerPairWarningViewController
-        controller?.delegate = self
+        initialPairingWarningTransition.perform(.ledgerPairWarning(delegate: self))
         
         ledgerAccountFetchOperation.connectToDevice(ledgerDevices[indexPath.item])
     }
