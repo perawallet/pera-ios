@@ -18,10 +18,16 @@
 import Foundation
 
 final class QRAddressLabelViewModel {
+    private(set) var name: String?
     private(set) var address: String?
     
-    init(_ address: String) {
+    init(name: String, address: String) {
+        setName(name)
         setAddress(address)
+    }
+    
+    private func setName(_ name: String) {
+        self.name = name
     }
     
     private func setAddress(_ address: String) {

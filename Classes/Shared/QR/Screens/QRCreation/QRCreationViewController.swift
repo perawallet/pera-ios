@@ -68,7 +68,7 @@ final class QRCreationViewController: BaseScrollViewController {
         super.bindData()
         
         if draft.isSelectable {
-            qrCreationView.bindData(QRAddressLabelViewModel(draft.address))
+            qrCreationView.bindData(QRAddressLabelViewModel(name: draft.accountName ?? draft.address.shortAddressDisplay(), address: draft.address))
         }
     }
 }
