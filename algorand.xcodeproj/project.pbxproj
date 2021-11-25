@@ -25,6 +25,12 @@
 		048B3C1E27229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */; };
 		048B3C1F27229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */; };
 		048B3C2027229AAC003A5F5A /* QRCreationViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */; };
+		04F153AF274F7F2500AD2732 /* QRViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F153AE274F7F2500AD2732 /* QRViewTheme.swift */; };
+		04F153B0274F7F2500AD2732 /* QRViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F153AE274F7F2500AD2732 /* QRViewTheme.swift */; };
+		04F153B1274F7F2500AD2732 /* QRViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F153AE274F7F2500AD2732 /* QRViewTheme.swift */; };
+		04F153B4274F874900AD2732 /* QRAddressLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F153B3274F874900AD2732 /* QRAddressLabelViewModel.swift */; };
+		04F153B5274F874900AD2732 /* QRAddressLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F153B3274F874900AD2732 /* QRAddressLabelViewModel.swift */; };
+		04F153B6274F874900AD2732 /* QRAddressLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F153B3274F874900AD2732 /* QRAddressLabelViewModel.swift */; };
 		170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */; };
 		170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFB224CC70A00520EA5 /* QRText.swift */; };
 		170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFD224CCBF300520EA5 /* QRView.swift */; };
@@ -3222,6 +3228,8 @@
 		048B3C1527228BC8003A5F5A /* QRAddressLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAddressLabel.swift; sourceTree = "<group>"; };
 		048B3C1927228CE5003A5F5A /* QRAddressLabelTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAddressLabelTheme.swift; sourceTree = "<group>"; };
 		048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QRCreationViewController+Theme.swift"; sourceTree = "<group>"; };
+		04F153AE274F7F2500AD2732 /* QRViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewTheme.swift; sourceTree = "<group>"; };
+		04F153B3274F874900AD2732 /* QRAddressLabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAddressLabelViewModel.swift; sourceTree = "<group>"; };
 		170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationViewController.swift; sourceTree = "<group>"; };
 		170AFAFB224CC70A00520EA5 /* QRText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRText.swift; sourceTree = "<group>"; };
 		170AFAFD224CCBF300520EA5 /* QRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRView.swift; sourceTree = "<group>"; };
@@ -4443,6 +4451,23 @@
 				048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */,
 			);
 			path = QRCreation;
+			sourceTree = "<group>";
+		};
+		04F153AD274F7A2300AD2732 /* QRView */ = {
+			isa = PBXGroup;
+			children = (
+				170AFAFD224CCBF300520EA5 /* QRView.swift */,
+				04F153AE274F7F2500AD2732 /* QRViewTheme.swift */,
+			);
+			path = QRView;
+			sourceTree = "<group>";
+		};
+		04F153B2274F872800AD2732 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				04F153B3274F874900AD2732 /* QRAddressLabelViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		170AFB00224D1CD100520EA5 /* CoreImage */ = {
@@ -5885,7 +5910,7 @@
 			isa = PBXGroup;
 			children = (
 				2BA7135F274862C900B8A907 /* Screens */,
-				2BA7135E274862C400B8A907 /* ViewModels */,
+				04F153B2274F872800AD2732 /* ViewModels */,
 				2BA7135D274862BD00B8A907 /* Views */,
 			);
 			path = QR;
@@ -7703,19 +7728,12 @@
 		2BA7135D274862BD00B8A907 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				04F153AD274F7A2300AD2732 /* QRView */,
 				04A6FB382733654900922EC7 /* QRAddress */,
 				04A6FB372733653000922EC7 /* QRCreation */,
 				2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */,
-				170AFAFD224CCBF300520EA5 /* QRView.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		2BA7135E274862C400B8A907 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		2BA7135F274862C900B8A907 /* Screens */ = {
@@ -11772,6 +11790,7 @@
 				17BD4E082292F1260003E49A /* EditAccountViewController.swift in Sources */,
 				2B3E227C26C0838F00ED0AAF /* WCAppCallTransactionItemCell.swift in Sources */,
 				2BCBBAF924AA31D3002CD56F /* TransactionHistoryHeaderViewModel.swift in Sources */,
+				04F153B6274F874900AD2732 /* QRAddressLabelViewModel.swift in Sources */,
 				2BA172FB2649F6A300A613C4 /* ChartCircleMarker.swift in Sources */,
 				2B344B1D268A223000DA7B25 /* WCTransaction.swift in Sources */,
 				17BD4E092292F1260003E49A /* Notification+Keyboard.swift in Sources */,
@@ -11876,6 +11895,7 @@
 				17BD4E262292F1260003E49A /* UIImage+Size.swift in Sources */,
 				17BD4E272292F1260003E49A /* DBStorable.swift in Sources */,
 				2BED6575266FA23800EC089B /* WalletConnectRequestHandler.swift in Sources */,
+				04F153B1274F7F2500AD2732 /* QRViewTheme.swift in Sources */,
 				2B4BDA11238CA1BD00491149 /* AssetSupportViewModel.swift in Sources */,
 				D4CC46F226DD17DD00AA1BFE /* Fonts.swift in Sources */,
 				2B7E580E257E56BE00731C97 /* Int+Byte.swift in Sources */,
@@ -13320,6 +13340,7 @@
 				2B7E305E267A5E0700E89EE3 /* WCAssetTransactionViewController.swift in Sources */,
 				2B0F629624EC129D00DA22A6 /* UIVIewController+Presentation.swift in Sources */,
 				2B5739FE26F3FD3C007E0252 /* WCAssetConfigAnotherAccountTransactionItemCell.swift in Sources */,
+				04F153B5274F874900AD2732 /* QRAddressLabelViewModel.swift in Sources */,
 				2B32A2602552F031007CC3A6 /* LedgerTransactionErrorLog.swift in Sources */,
 				2B9A3E7C26E7C7C500B050ED /* ALGEntityModel.swift in Sources */,
 				2B0F629724EC129D00DA22A6 /* PendingAssetView.swift in Sources */,
@@ -13571,6 +13592,7 @@
 				2B0F630B24EC129D00DA22A6 /* TooltipPresenter.swift in Sources */,
 				2B0F630D24EC129D00DA22A6 /* EmptyStateView.swift in Sources */,
 				2B0F630E24EC129D00DA22A6 /* SelectAssetViewController.swift in Sources */,
+				04F153B0274F7F2500AD2732 /* QRViewTheme.swift in Sources */,
 				D419433227356E440055EC70 /* AssetListViewController.swift in Sources */,
 				2B2AACB4250A7E8C00B8C5C5 /* DeveloperSettingsViewController.swift in Sources */,
 				2B0F630F24EC129D00DA22A6 /* BarButtonItem.swift in Sources */,
@@ -13621,6 +13643,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B5BE14E251B732800324BEE /* Currency.swift in Sources */,
+				04F153AF274F7F2500AD2732 /* QRViewTheme.swift in Sources */,
 				2B288ADC269112EB00BC6FB6 /* JSONDisplayViewModel.swift in Sources */,
 				2B8954B92243FCFA00D6D068 /* AdaptiveLayout.swift in Sources */,
 				2B3E226D26BC310500ED0AAF /* ActionableWarningAlertViewController.swift in Sources */,
@@ -14219,6 +14242,7 @@
 				D430A40126DF9F8200F34804 /* AddAccountViewTheme.swift in Sources */,
 				2B448741237B0AFB00C19FDE /* AccountsViewController+Options.swift in Sources */,
 				2BB68F52261261250070FFE9 /* EmptyStateViewModel.swift in Sources */,
+				04F153B4274F874900AD2732 /* QRAddressLabelViewModel.swift in Sources */,
 				048B3C1627228BC8003A5F5A /* QRAddressLabel.swift in Sources */,
 				2BF71916224ED0A6001E8420 /* AddContactViewController.swift in Sources */,
 				2BD739EA223FA0BD00B66EEF /* ChoosePasswordViewController.swift in Sources */,

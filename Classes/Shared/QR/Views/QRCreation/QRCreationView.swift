@@ -18,7 +18,7 @@
 import UIKit
 import MacaroonUIKit
 
-class QRCreationView: View {
+final class QRCreationView: View {
     weak var delegate: QRCreationViewDelegate?
     
     private lazy var labelTapGestureRecognizer = UITapGestureRecognizer(
@@ -26,8 +26,7 @@ class QRCreationView: View {
         action: #selector(notifyToCopyText(_:))
     )
         
-    private lazy var qrView =
-        QRView(qrText: QRText(mode: draft.mode, address: draft.address, mnemonic: draft.mnemonic))
+    private lazy var qrView = QRView(qrText: QRText(mode: draft.mode, address: draft.address, mnemonic: draft.mnemonic))
     private lazy var addressView = QRAddressLabel()
     private lazy var copyButton = Button()
     private lazy var shareButton = Button()
@@ -39,12 +38,6 @@ class QRCreationView: View {
     init(draft: QRCreationDraft) {
         self.draft = draft
         super.init(frame: .zero)
-    }
-
-    func setListeners() {
-        shareButton.addTarget(self, action: #selector(notifyDelegateToShareQR), for: .touchUpInside)
-        copyButton.addTarget(self, action: #selector(notifyToCopyText), for: .touchUpInside)
-        addressView.addGestureRecognizer(labelTapGestureRecognizer)
     }
     
     func customize(_ theme: QRCreationViewTheme) {
@@ -60,6 +53,12 @@ class QRCreationView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    
+    func setListeners() {
+        shareButton.addTarget(self, action: #selector(notifyDelegateToShareQR), for: .touchUpInside)
+        copyButton.addTarget(self, action: #selector(notifyToCopyText), for: .touchUpInside)
+        addressView.addGestureRecognizer(labelTapGestureRecognizer)
+    }
 }
 
 extension QRCreationView {
@@ -149,10 +148,12 @@ extension QRCreationView {
 }
 
 extension QRCreationView {
-    func setAddress(_ address: String) {
-        addressView.setAddress(address)
+    func bindData(_ viewModel: QRAddressLabelViewModel) {
+        addressView.bindData(viewModel)
     }
-    
+}
+
+extension QRCreationView {
     func getQRImage() -> UIImage? {
         return qrView.imageView.image
     }

@@ -46,10 +46,6 @@ final class QRCreationViewController: BaseScrollViewController {
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        
-        if draft.isSelectable {
-            qrCreationView.setAddress(draft.address)
-        }
     }
     
     override func setListeners() {
@@ -66,6 +62,14 @@ final class QRCreationViewController: BaseScrollViewController {
         super.prepareLayout()
         qrCreationView.customize(theme.qrCreationViewTheme)
         prepareWholeScreenLayoutFor(qrCreationView)
+    }
+    
+    override func bindData() {
+        super.bindData()
+        
+        if draft.isSelectable {
+            qrCreationView.bindData(QRAddressLabelViewModel(draft.address))
+        }
     }
 }
 
@@ -87,8 +91,7 @@ extension QRCreationViewController: QRCreationViewDelegate {
         }
         
         let sharedItem = [qrImage]
-        let activityViewController =
-        UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
+        let activityViewController = UIActivityViewController(activityItems: sharedItem, applicationActivities: nil)
         activityViewController.excludedActivityTypes = [UIActivity.ActivityType.addToReadingList]
         
         activityViewController.completionWithItemsHandler = { [weak self] _, success, _, _ in
