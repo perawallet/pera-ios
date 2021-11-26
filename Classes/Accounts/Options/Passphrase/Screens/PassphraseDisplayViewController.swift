@@ -20,7 +20,7 @@ import AVFoundation
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-final class PassphraseDisplayViewController: BaseScrollViewController, BottomSheetPresentable {
+final class PassphraseDisplayViewController: BaseScrollViewController {
     private lazy var theme = Theme()
     private lazy var passphraseDisplayView = PassphraseDisplayView()
 
@@ -34,10 +34,6 @@ final class PassphraseDisplayViewController: BaseScrollViewController, BottomShe
         return mnemonics
     }
 
-    var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight)
-    }
-    
     private var address: String
 
     init(address: String, configuration: ViewControllerConfiguration) {
@@ -80,6 +76,12 @@ final class PassphraseDisplayViewController: BaseScrollViewController, BottomShe
         passphraseDisplayView.customize(theme.passphraseDisplayViewTheme)
         contentView.addSubview(passphraseDisplayView)
         passphraseDisplayView.pinToSuperview()
+    }
+}
+
+extension PassphraseDisplayViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
     }
 }
 

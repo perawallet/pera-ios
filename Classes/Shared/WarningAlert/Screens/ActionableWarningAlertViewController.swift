@@ -19,7 +19,7 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-class ActionableWarningAlertViewController: BaseViewController, BottomSheetPresentable {
+class ActionableWarningAlertViewController: BaseViewController {
 
     override var shouldShowNavigationBar: Bool {
         return false
@@ -28,10 +28,6 @@ class ActionableWarningAlertViewController: BaseViewController, BottomSheetPrese
     weak var delegate: ActionableWarningAlertViewControllerDelegate?
 
     private lazy var actionableWarningAlertView = ActionableWarningAlertView()
-
-    var modalHeight: ModalHeight {
-        return .preferred(442)
-    }
 
     private let warningAlert: WarningAlert
 
@@ -53,6 +49,13 @@ class ActionableWarningAlertViewController: BaseViewController, BottomSheetPrese
 
     override func prepareLayout() {
         prepareWholeScreenLayoutFor(actionableWarningAlertView)
+    }
+}
+
+
+extension ActionableWarningAlertViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(442)
     }
 }
 

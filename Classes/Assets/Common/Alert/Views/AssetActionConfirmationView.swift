@@ -189,14 +189,6 @@ extension AssetActionConfirmationView: ViewModelBindable {
 
         assetNameLabel.text = viewModel?.assetDisplayViewModel?.name
         assetCodeLabel.text = viewModel?.assetDisplayViewModel?.code
-
-        if let codeFont = viewModel?.assetDisplayViewModel?.codeFont {
-            assetCodeLabel.font = codeFont
-        }
-
-        if let codeColor = viewModel?.assetDisplayViewModel?.codeColor {
-            assetCodeLabel.textColor = codeColor
-        }
     }
 }
 

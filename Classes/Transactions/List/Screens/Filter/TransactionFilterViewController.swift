@@ -19,17 +19,13 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-class TransactionFilterViewController: BaseViewController, BottomSheetPresentable {
+class TransactionFilterViewController: BaseViewController {
     
     weak var delegate: TransactionFilterViewControllerDelegate?
     
     private let layout = Layout<LayoutConstants>()
     
     private lazy var transactionFilterView = TransactionFilterView()
-
-    var modalHeight: ModalHeight {
-        return .preferred(506)
-    }
     
     private let viewModel = TransactionFilterViewModel()
     private var selectedOption: FilterOption
@@ -63,6 +59,12 @@ extension TransactionFilterViewController {
         transactionFilterView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+extension TransactionFilterViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(506)
     }
 }
 

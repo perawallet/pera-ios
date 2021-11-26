@@ -19,7 +19,7 @@ import UIKit
 import MacaroonUIKit
 import MacaroonBottomSheet
 
-final class AlgoStatisticsDateSelectionViewController: BaseViewController, BottomSheetPresentable {
+final class AlgoStatisticsDateSelectionViewController: BaseViewController {
     weak var delegate: AlgoStatisticsDateSelectionViewControllerDelegate?
 
     override var shouldShowNavigationBar: Bool {
@@ -30,10 +30,6 @@ final class AlgoStatisticsDateSelectionViewController: BaseViewController, Botto
     private lazy var algoStatisticsDateSelectionView = AlgoStatisticsDateSelectionView()
 
     private var selectedOption: AlgosUSDValueInterval
-
-    var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight)
-    }
 
     init(selectedOption: AlgosUSDValueInterval, configuration: ViewControllerConfiguration) {
         self.selectedOption = selectedOption
@@ -60,6 +56,12 @@ extension AlgoStatisticsDateSelectionViewController {
         algoStatisticsDateSelectionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+}
+
+extension AlgoStatisticsDateSelectionViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
     }
 }
 

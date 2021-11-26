@@ -19,7 +19,7 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-final class AccountRecoverOptionsViewController: BaseViewController, BottomSheetPresentable {
+final class AccountRecoverOptionsViewController: BaseViewController {
     weak var delegate: AccountRecoverOptionsViewControllerDelegate?
 
     override var shouldShowNavigationBar: Bool {
@@ -28,10 +28,6 @@ final class AccountRecoverOptionsViewController: BaseViewController, BottomSheet
 
     private lazy var optionsView = OptionsView()
     private lazy var theme = Theme()
-
-    var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight)
-    }
 
     private let options: [Option] = [.paste, .scanQR, .info]
 
@@ -52,6 +48,12 @@ final class AccountRecoverOptionsViewController: BaseViewController, BottomSheet
             $0.leading.trailing.top.equalToSuperview()
             $0.bottom.safeEqualToBottom(of: self)
         }
+    }
+}
+
+extension AccountRecoverOptionsViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
     }
 }
 

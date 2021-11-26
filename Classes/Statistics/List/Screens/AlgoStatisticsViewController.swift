@@ -19,7 +19,7 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-final class AlgoStatisticsViewController: BaseScrollViewController, BottomSheetPresentable {
+final class AlgoStatisticsViewController: BaseScrollViewController {
     override var shouldShowNavigationBar: Bool {
         return false
     }
@@ -28,10 +28,6 @@ final class AlgoStatisticsViewController: BaseScrollViewController, BottomSheetP
 
     private lazy var theme = Theme()
     private lazy var algoStatisticsView = AlgoStatisticsView()
-
-    var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight)
-    }
 
     private lazy var algoStatisticsDataController = AlgoStatisticsDataController(api: api)
     private lazy var assetCardDisplayDataController: AssetCardDisplayDataController = {
@@ -81,6 +77,12 @@ extension AlgoStatisticsViewController {
             $0.leading.trailing.bottom.equalToSuperview()
             $0.top.safeEqualToTop(of: self)
         }
+    }
+}
+
+extension AlgoStatisticsViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        .preferred(theme.modalHeight)
     }
 }
 

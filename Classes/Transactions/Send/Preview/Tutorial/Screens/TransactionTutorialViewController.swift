@@ -19,7 +19,7 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-class TransactionTutorialViewController: BaseScrollViewController, BottomSheetPresentable {
+class TransactionTutorialViewController: BaseScrollViewController {
 
     override var shouldShowNavigationBar: Bool {
         return false
@@ -28,12 +28,6 @@ class TransactionTutorialViewController: BaseScrollViewController, BottomSheetPr
     weak var delegate: TransactionTutorialViewControllerDelegate?
 
     private lazy var transactionTutorialView = TransactionTutorialView()
-
-    var modalHeight: ModalHeight {
-        let screenHeight = UIScreen.main.bounds.height
-        let height = screenHeight <= 605 ? screenHeight - 20 : 605
-        return .preferred(height)
-    }
 
     private let isInitialDisplay: Bool
 
@@ -76,6 +70,14 @@ extension TransactionTutorialViewController {
         transactionTutorialView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+extension TransactionTutorialViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        let screenHeight = UIScreen.main.bounds.height
+        let height = screenHeight <= 605 ? screenHeight - 20 : 605
+        return .preferred(height)
     }
 }
 

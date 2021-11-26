@@ -22,7 +22,7 @@ import MagpieExceptions
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-final class OptionsViewController: BaseViewController, BottomSheetPresentable {
+final class OptionsViewController: BaseViewController {
     weak var delegate: OptionsViewControllerDelegate?
 
     override var shouldShowNavigationBar: Bool {
@@ -31,10 +31,6 @@ final class OptionsViewController: BaseViewController, BottomSheetPresentable {
     
     private lazy var theme = Theme()
     private lazy var optionsView = OptionsView()
-
-    var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight)
-    }
 
     private let account: Account
     private var options: [Options]
@@ -80,6 +76,12 @@ final class OptionsViewController: BaseViewController, BottomSheetPresentable {
             $0.leading.trailing.top.equalToSuperview()
             $0.bottom.safeEqualToBottom(of: self)
         }
+    }
+}
+
+extension OptionsViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
     }
 }
 

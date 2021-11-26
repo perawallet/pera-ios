@@ -19,17 +19,13 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-final class LedgerApprovalViewController: BaseViewController, BottomSheetPresentable {
+final class LedgerApprovalViewController: BaseViewController {
     override var shouldShowNavigationBar: Bool {
         return false
     }
     
     private lazy var ledgerApprovalView = LedgerApprovalView()
     private lazy var theme = Theme()
-
-    var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight)
-    }
 
     private let mode: Mode
     private let deviceName: String
@@ -74,6 +70,12 @@ final class LedgerApprovalViewController: BaseViewController, BottomSheetPresent
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         ledgerApprovalView.stopConnectionAnimation()
+    }
+}
+
+extension LedgerApprovalViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
     }
 }
 

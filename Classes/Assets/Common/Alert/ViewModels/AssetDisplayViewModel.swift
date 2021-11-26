@@ -22,8 +22,6 @@ final class AssetDisplayViewModel: PairedViewModel {
     private(set) var isVerified: Bool = false
     private(set) var name: String?
     private(set) var code: String?
-    private(set) var codeColor: UIColor?
-    private(set) var codeFont: UIFont?
 
     init(_ model: AssetDetail?) {
         if let assetDetail = model {
@@ -32,8 +30,6 @@ final class AssetDisplayViewModel: PairedViewModel {
             let displayNames = assetDetail.getDisplayNames()
             bindName(displayNames)
             bindCode(displayNames)
-            bindCodeFont(displayNames)
-            bindCodeColor(displayNames)
         }
     }
 }
@@ -54,18 +50,6 @@ extension AssetDisplayViewModel {
             code = displayNames.0
         } else {
             code = displayNames.1
-        }
-    }
-
-    private func bindCodeFont(_ displayNames: (String, String?)) {
-        if displayNames.0.isUnknown() {
-            codeFont = UIFont.font(withWeight: .semiBoldItalic(size: 40.0))
-        }
-    }
-
-    private func bindCodeColor(_ displayNames: (String, String?)) {
-        if displayNames.0.isUnknown() {
-            codeColor = Colors.General.unknown
         }
     }
 }

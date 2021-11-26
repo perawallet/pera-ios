@@ -177,14 +177,6 @@ extension AssetDisplayView {
         verifiedImageView.isHidden = !viewModel.isVerified
         assetNameLabel.text = viewModel.name
         assetCodeLabel.text = viewModel.code
-
-        if let codeFont = viewModel.codeFont {
-            assetCodeLabel.font = codeFont
-        }
-
-        if let codeColor = viewModel.codeColor {
-            assetCodeLabel.textColor = codeColor
-        }
     }
 }
 
