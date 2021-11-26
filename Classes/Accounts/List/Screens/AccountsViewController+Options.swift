@@ -25,6 +25,8 @@ extension AccountsViewController: OptionsViewControllerDelegate {
 
         log(ReceiveCopyEvent(address: account.address))
         UIPasteboard.general.string = account.address
+
+        bannerController?.presentInfoBanner("qr-creation-copied".localized)
     }
 
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
