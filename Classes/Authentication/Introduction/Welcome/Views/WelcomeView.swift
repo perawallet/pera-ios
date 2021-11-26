@@ -74,33 +74,17 @@ extension WelcomeView {
     }
 
     private func addTermsAndConditionsTextView(_ theme: WelcomeViewTheme) {
-        // <todo>: Macaroon
-        addSubview(termsAndConditionsTextView)
-
         termsAndConditionsTextView.isEditable = false
-        termsAndConditionsTextView.backgroundColor = .clear
         termsAndConditionsTextView.isScrollEnabled = false
         termsAndConditionsTextView.dataDetectorTypes = .link
         termsAndConditionsTextView.textContainerInset = .zero
-        termsAndConditionsTextView.textAlignment = .center
-        termsAndConditionsTextView.linkTextAttributes = [
-            .foregroundColor: AppColors.Components.Link.primary.color,
-            .underlineColor: UIColor.clear,
-            .font: Fonts.DMSans.medium.make(13).font
-        ]
-
-        let centerParagraphStyle = NSMutableParagraphStyle()
-        centerParagraphStyle.alignment = .center
-
-        termsAndConditionsTextView.bindHtml(
+        termsAndConditionsTextView.linkTextAttributes = theme.termsOfConditionsLinkAttributes.asSystemAttributes()
+        termsAndConditionsTextView.bindHTML(
             "introduction-title-terms-and-services".localized,
-            with: [
-                .font: Fonts.DMSans.regular.make(13).font,
-                .foregroundColor: AppColors.Components.Text.gray.color,
-                .paragraphStyle: centerParagraphStyle
-            ]
+            attributes: theme.termsOfConditionsAttributes.asSystemAttributes()
         )
 
+        addSubview(termsAndConditionsTextView)
         termsAndConditionsTextView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.verticalInset)
