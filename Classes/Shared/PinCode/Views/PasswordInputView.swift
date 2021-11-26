@@ -21,10 +21,6 @@ import Foundation
 
 final class PasswordInputView: View {
     private lazy var theme = PasswordInputViewTheme()
-
-    override var intrinsicContentSize: CGSize {
-        return CGSize(theme.size)
-    }
     
     private(set) var passwordInputCircleViews: [PasswordInputCircleView] = []
     private lazy var stackView = UIStackView()
@@ -38,7 +34,7 @@ final class PasswordInputView: View {
     func customize(_ theme: PasswordInputViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-        addStackView()
+        addStackView(theme)
         addCircleViews()
     }
 
@@ -48,9 +44,10 @@ final class PasswordInputView: View {
 }
 
 extension PasswordInputView {
-    private func addStackView() {
+    private func addStackView(_ theme: PasswordInputViewTheme) {
         stackView.distribution = .fillEqually
         stackView.alignment = .center
+        stackView.spacing = theme.stackViewSpacing
 
         addSubview(stackView)
         stackView.snp.makeConstraints {

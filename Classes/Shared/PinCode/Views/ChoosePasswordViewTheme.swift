@@ -25,7 +25,6 @@ struct ChoosePasswordViewTheme: StyleSheet, LayoutSheet {
     let numpadViewTheme: NumpadViewTheme
 
     let inputViewTopInset: LayoutMetric
-    let passwordInputViewInset: LayoutMetric
     let numpadBottomInset: LayoutMetric
     let horizontalInset: LayoutMetric
     let topInset: LayoutMetric
@@ -42,8 +41,7 @@ struct ChoosePasswordViewTheme: StyleSheet, LayoutSheet {
 
         self.horizontalInset = 24
         self.topInset = 2
-        self.passwordInputViewInset = -10
         self.inputViewTopInset = 128 * verticalScale
-        self.numpadBottomInset = 32 * verticalScale
+        self.numpadBottomInset = 62 * verticalScale
     }
 }

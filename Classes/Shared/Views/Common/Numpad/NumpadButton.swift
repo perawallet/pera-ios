@@ -21,7 +21,7 @@ import Foundation
 
 final class NumpadButton: UIButton, ViewComposable {
     override var intrinsicContentSize: CGSize {
-        return theme.size
+        return CGSize(theme.size)
     }
 
     private lazy var theme = NumpadButtonViewTheme()
@@ -43,9 +43,7 @@ final class NumpadButton: UIButton, ViewComposable {
     func customize(_ theme: NumpadButtonViewTheme) {
         switch numpadKey {
         case .number(let value):
-            customizeBaseAppearance(title: value)
             setBackgroundImage(theme.buttonBackgroundHighlightedImage.image?.image, for: .highlighted)
-            titleLabel?.textAlignment = .center
             customizeAppearance(theme.button)
             customizeBaseAppearance(title: value)
         case .delete:

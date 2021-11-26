@@ -46,7 +46,7 @@ final class ChoosePasswordViewController: BaseViewController {
         self.mode = mode
         self.accountSetupFlow = accountSetupFlow
         self.route = route
-        self.viewModel = ChoosePasswordViewModel(mode: mode)
+        self.viewModel = ChoosePasswordViewModel(mode)
         super.init(configuration: configuration)
     }
     
