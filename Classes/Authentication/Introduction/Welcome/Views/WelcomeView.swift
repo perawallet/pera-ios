@@ -78,6 +78,7 @@ extension WelcomeView {
         termsAndConditionsTextView.isScrollEnabled = false
         termsAndConditionsTextView.dataDetectorTypes = .link
         termsAndConditionsTextView.textContainerInset = .zero
+        termsAndConditionsTextView.backgroundColor = .clear
         termsAndConditionsTextView.linkTextAttributes = theme.termsOfConditionsLinkAttributes.asSystemAttributes()
         termsAndConditionsTextView.bindHTML(
             "introduction-title-terms-and-services".localized,
