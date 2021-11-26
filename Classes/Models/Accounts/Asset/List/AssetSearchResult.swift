@@ -57,6 +57,13 @@ extension AssetSearchResult {
             self.unitName = nil
             self.isVerified = nil
         }
+
+        private enum CodingKeys: String, CodingKey {
+            case assetId = "asset_id"
+            case name
+            case unitName = "unit_name"
+            case isVerified = "is_verified"
+        }
     }
 }
 
