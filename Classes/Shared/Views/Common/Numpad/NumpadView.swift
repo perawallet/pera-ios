@@ -95,7 +95,7 @@ extension NumpadView {
 
         addSubview(secondRowStackView)
         secondRowStackView.snp.makeConstraints {
-            $0.top.equalTo(firstRowStackView.snp.bottom).offset(theme.stackViewSpacing)
+            $0.top.equalTo(firstRowStackView.snp.bottom).offset(theme.stackViewTopPadding)
             $0.height.equalTo(theme.stackViewHeight)
             $0.centerX.equalToSuperview()
         }
@@ -110,7 +110,7 @@ extension NumpadView {
 
         addSubview(thirdRowStackView)
         thirdRowStackView.snp.makeConstraints {
-            $0.top.equalTo(secondRowStackView.snp.bottom).offset(theme.stackViewSpacing)
+            $0.top.equalTo(secondRowStackView.snp.bottom).offset(theme.stackViewTopPadding)
             $0.height.equalTo(theme.stackViewHeight)
             $0.centerX.equalToSuperview()
         }
@@ -125,7 +125,7 @@ extension NumpadView {
 
         addSubview(fourthRowStackView)
         fourthRowStackView.snp.makeConstraints {
-            $0.top.equalTo(thirdRowStackView.snp.bottom).offset(theme.stackViewSpacing)
+            $0.top.equalTo(thirdRowStackView.snp.bottom).offset(theme.stackViewTopPadding)
             $0.bottom.equalToSuperview()
             $0.height.equalTo(theme.stackViewHeight)
             $0.centerX.equalToSuperview()
@@ -140,7 +140,7 @@ extension NumpadView {
 extension NumpadView {
     private func configureStackView(_ stackView: UIStackView, with theme: NumpadViewTheme) {
         stackView.distribution = .fillEqually
-        stackView.alignment = .center
+        stackView.alignment = .fill
         stackView.spacing = theme.stackViewSpacing
     }
 }

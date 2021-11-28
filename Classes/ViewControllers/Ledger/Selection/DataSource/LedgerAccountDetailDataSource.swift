@@ -76,9 +76,9 @@ extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        let headerView: LedgerAccountDetailSectionHeaderReusableView = collectionView.dequeueReusableSupplementaryView(
-            of: .header,
-            for: indexPath
+        let headerView = collectionView.dequeueHeader(
+            LedgerAccountDetailSectionHeaderReusableView.self,
+            at: indexPath
         )
         headerView.bindData(LedgerAccountDetailSectionHeaderViewModel(section: sections[indexPath.section], account: account))
         return headerView
@@ -87,7 +87,7 @@ extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
 
 extension LedgerAccountDetailDataSource {
     func cellForLedgerAccount(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: AccountPreviewCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
         cell.customize(AccountPreviewViewTheme())
 
         let accountNameViewModel = AccountNameViewModel(account: account)
@@ -106,14 +106,14 @@ extension LedgerAccountDetailDataSource {
     }
 
     func cellForAsset(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: AssetPreviewCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
         cell.customize(AssetPreviewViewCommonTheme())
         cell.bindData(AssetPreviewViewModel(assetPreviews[indexPath.row]))
         return cell
     }
 
     func cellForRekeyedAccount(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: AccountPreviewCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
         cell.customize(AccountPreviewViewTheme())
 
         if account.isRekeyed() {

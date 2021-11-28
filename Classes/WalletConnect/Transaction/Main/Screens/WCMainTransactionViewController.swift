@@ -23,29 +23,7 @@ class WCMainTransactionViewController: BaseViewController {
 
     private lazy var mainTransactionView = WCMainTransactionView()
 
-    private lazy var dappMessageModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 330.0))
-    )
-
-    private lazy var initialWarningModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 380.0))
-    )
-
-    private lazy var confirmationModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .backgroundTouch
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 442.0))
-    )
+    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
     weak var delegate: WCMainTransactionViewControllerDelegate?
 
@@ -163,12 +141,6 @@ extension WCMainTransactionViewController {
             return
         }
 
-        let transitionStyle = Screen.Transition.Open.customPresent(
-            presentationStyle: .custom,
-            transitionStyle: nil,
-            transitioningDelegate: initialWarningModalPresenter
-        )
-
         let warningAlert = WarningAlert(
             title: "node-settings-warning-title".localized,
             image: img("img-warning-circle"),
@@ -177,20 +149,14 @@ extension WCMainTransactionViewController {
         )
 
         oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
-        
-        open(.warningAlert(warningAlert: warningAlert), by: transitionStyle)
+
+        modalTransition.perform(.warningAlert(warningAlert: warningAlert))
     }
 
     private func presentConfirmationAlert() {
         guard let params = transactionParams ?? UIApplication.shared.accountManager?.params else {
             return
         }
-
-        let transitionStyle = Screen.Transition.Open.customPresent(
-            presentationStyle: .custom,
-            transitionStyle: nil,
-            transitioningDelegate: confirmationModalPresenter
-        )
 
         let containsFutureTransaction = transactions.contains { $0.isFutureTransaction(with: params) }
         let description = containsFutureTransaction ?
@@ -204,11 +170,7 @@ extension WCMainTransactionViewController {
             actionTitle: "title-accept".localized
         )
 
-        let controller = open(
-            .actionableWarningAlert(warningAlert: warningAlert),
-            by: transitionStyle
-        ) as? ActionableWarningAlertViewController
-        controller?.delegate = self
+        modalTransition.perform(.actionableWarningAlert(warningAlert: warningAlert, delegate: self))
     }
 
     private func cacheAllAssetsInTheTransactions() {
@@ -413,18 +375,13 @@ extension WCMainTransactionViewController: WCMainTransactionDataSourceDelegate {
     func wcMainTransactionDataSourceDidOpenLongDappMessageView(_ wcMainTransactionDataSource: WCMainTransactionDataSource) {
         guard let wcSession = wcSession,
               let message = transactionOption?.message else {
-            return
-        }
-
-        open(
+                  return
+              }
+        
+        modalTransition.perform(
             .wcTransactionFullDappDetail(
                 wcSession: wcSession,
                 message: message
-            ),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: dappMessageModalPresenter
             )
         )
     }

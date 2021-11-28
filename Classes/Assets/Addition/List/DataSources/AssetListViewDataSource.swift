@@ -28,7 +28,7 @@ extension AssetListViewDataSource: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: AssetPreviewCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
         cell.customize(AssetPreviewViewAdditionTheme())
         let assetResult = assetResults[indexPath.item]
         let assetDetail = AssetDetail(searchResult: assetResult)

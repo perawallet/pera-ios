@@ -18,6 +18,7 @@
 import UIKit
 import SwiftDate
 
+// <todo>: Handle initial & old modal sizes
 class TransactionCustomRangeSelectionViewController: BaseViewController {
     
     weak var delegate: TransactionCustomRangeSelectionViewControllerDelegate?
@@ -83,12 +84,12 @@ class TransactionCustomRangeSelectionViewController: BaseViewController {
 
 extension TransactionCustomRangeSelectionViewController {
     private func setIntiailModalSize() {
-        modalPresenter?.changeModalSize(to: .custom(layout.current.modalSize), animated: false)
+        // <todo>: Handle initial modal size
         view.layoutIfNeeded()
     }
     
     private func updateToOldModalSize() {
-        modalPresenter?.changeModalSize(to: .custom(layout.current.oldModalSize), animated: false)
+        // <todo>: Handle old modal size
         view.layoutIfNeeded()
     }
     

@@ -16,13 +16,15 @@
 //   AccountRecoverOptionsViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
 final class AccountRecoverOptionsViewController: BaseViewController {
+    weak var delegate: AccountRecoverOptionsViewControllerDelegate?
+
     override var shouldShowNavigationBar: Bool {
         return false
     }
-
-    weak var delegate: AccountRecoverOptionsViewControllerDelegate?
 
     private lazy var optionsView = OptionsView()
     private lazy var theme = Theme()
@@ -49,13 +51,19 @@ final class AccountRecoverOptionsViewController: BaseViewController {
     }
 }
 
+extension AccountRecoverOptionsViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
+    }
+}
+
 extension AccountRecoverOptionsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return options.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: OptionsCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(OptionsCell.self, at: indexPath)
         if let option = options[safe: indexPath.item] {
             cell.customize(OptionsContextViewTheme())
             cell.bind(AccountRecoverOptionsViewModel(option))

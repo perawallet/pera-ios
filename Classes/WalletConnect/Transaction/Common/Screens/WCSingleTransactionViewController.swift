@@ -26,13 +26,7 @@ class WCSingleTransactionViewController: BaseScrollViewController {
         return nil
     }
 
-    private lazy var dappMessageModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 350.0))
-    )
+    private lazy var dappMessageModalTransition = BottomSheetTransition(presentingViewController: self)
 
     private(set) var transaction: WCTransaction
     private(set) var account: Account?
@@ -92,16 +86,10 @@ extension WCSingleTransactionViewController: WCSingleTransactionViewDelegate {
               let message = transaction.message else {
             return
         }
-
-        open(
+        dappMessageModalTransition.perform(
             .wcTransactionFullDappDetail(
                 wcSession: wcSession,
                 message: message
-            ),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: dappMessageModalPresenter
             )
         )
     }

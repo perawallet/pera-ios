@@ -28,13 +28,13 @@ struct AssetPreviewModel {
 }
 
 final class AssetPreviewViewModel: PairedViewModel {
-    var image: UIImage?
-    var secondaryImage: UIImage?
-    var assetPrimaryTitle: String?
-    var assetSecondaryTitle: String?
-    var assetPrimaryValue: String?
-    var assetSecondaryAssetValue: String?
-    var assetAbbreviationForImage: String?
+    private(set) var image: UIImage?
+    private(set) var secondaryImage: UIImage?
+    private(set) var assetPrimaryTitle: String?
+    private(set) var assetSecondaryTitle: String?
+    private(set) var assetPrimaryValue: String?
+    private(set) var assetSecondaryAssetValue: String?
+    private(set) var assetAbbreviationForImage: String?
     
     init(_ model: AssetPreviewModel) {
         bindImage(model.image)
@@ -43,7 +43,7 @@ final class AssetPreviewViewModel: PairedViewModel {
         bindAssetSecondaryTitle(model.assetSecondaryTitle)
         bindAssetPrimaryValue(model.assetPrimaryValue)
         bindAssetSecondaryValue(model.assetSecondaryValue)
-        bindAssetAbbreviationForImage(model.assetPrimaryTitle)
+        bindAssetAbbreviationForImage()
     }
 }
 
@@ -57,7 +57,7 @@ extension AssetPreviewViewModel {
     }
     
     private func bindAssetPrimaryTitle(_ title: String?) {
-        self.assetPrimaryTitle = title ?? "title-unknown".localized
+        self.assetPrimaryTitle = title.isNilOrEmpty ? "title-unknown".localized : title
     }
     
     private func bindAssetSecondaryTitle(_ title: String?) {
@@ -72,7 +72,7 @@ extension AssetPreviewViewModel {
         self.assetSecondaryAssetValue = value
     }
 
-    private func bindAssetAbbreviationForImage(_ title: String?) {
-        self.assetAbbreviationForImage = TextFormatter.assetShortName.format(title)
+    private func bindAssetAbbreviationForImage() {
+        self.assetAbbreviationForImage = TextFormatter.assetShortName.format(assetPrimaryTitle)
     }
 }

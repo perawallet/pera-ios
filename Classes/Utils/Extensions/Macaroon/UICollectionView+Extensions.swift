@@ -13,14 +13,21 @@
 // limitations under the License.
 
 //
-//  ModalAnimator.swift
+//   UICollectionView+Layout.swift
 
 import UIKit
+import MacaroonUtils
 
-protocol ModalAnimator: UIViewControllerAnimatedTransitioning {
-    typealias Configuration = ModalConfiguration
-    
-    var config: Configuration { get }
-    
-    init(config: Configuration)
+// <todo>: Remove after migrating to Macaroon's List structure.
+extension UICollectionView {
+    public func dequeueHeader<T: UICollectionReusableView>(_ someClass: T.Type, at indexPath: IndexPath) -> T {
+        guard let header = dequeueReusableSupplementaryView(
+            ofKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: someClass.reuseIdentifier, for: indexPath
+        ) as? T else {
+            crash("Header not supported of \(type(of: T.self))")
+        }
+
+        return header
+    }
 }

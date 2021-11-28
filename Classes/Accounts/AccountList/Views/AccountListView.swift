@@ -29,7 +29,7 @@ final class AccountListView: View {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.color
-        collectionView.registerCells(AccountPreviewCell.self)
+        collectionView.register(AccountPreviewCell.self)
         return collectionView
     }()
 

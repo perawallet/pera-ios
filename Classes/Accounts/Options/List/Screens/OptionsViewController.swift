@@ -19,6 +19,8 @@ import UIKit
 import MagpieCore
 import MagpieHipo
 import MagpieExceptions
+import MacaroonBottomSheet
+import MacaroonUIKit
 
 final class OptionsViewController: BaseViewController {
     weak var delegate: OptionsViewControllerDelegate?
@@ -77,13 +79,19 @@ final class OptionsViewController: BaseViewController {
     }
 }
 
+extension OptionsViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
+    }
+}
+
 extension OptionsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return options.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: OptionsCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(OptionsCell.self, at: indexPath)
         cell.customize(OptionsContextViewTheme())
         cell.bind(OptionsViewModel(option: options[indexPath.item], account: account))
         return cell
@@ -104,6 +112,9 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
         let selectedOption = options[indexPath.item]
         
         switch selectedOption {
+        case .copyAddress:
+            dismissScreen()
+            delegate?.optionsViewControllerDidCopyAddress(self)
         case .rekey:
             dismissScreen()
             delegate?.optionsViewControllerDidOpenRekeying(self)
@@ -123,9 +134,6 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
         case .removeAccount:
             dismissScreen()
             delegate?.optionsViewControllerDidRemoveAccount(self)
-        case .copyAddress:
-            dismissScreen()
-            delegate?.optionsViewControllerDidCopyAddress(self)
         }
     }
 }

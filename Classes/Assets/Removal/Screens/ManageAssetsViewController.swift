@@ -23,13 +23,7 @@ final class ManageAssetsViewController: BaseViewController {
 
     private lazy var theme = Theme()
 
-    private lazy var assetActionConfirmationPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(theme.assetActionConfirmationModalSize))
-    )
+    private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
     
     private lazy var manageAssetsView = ManageAssetsView()
     
@@ -90,7 +84,7 @@ extension ManageAssetsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: AssetPreviewActionCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(AssetPreviewActionCell.self, at: indexPath)
         cell.customize(theme.assetPreviewActionViewTheme)
         cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(account.assetDetails[indexPath.item])))
         cell.delegate = self
@@ -152,15 +146,7 @@ extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
             )
         }
 
-        let controller = open(
-            .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: assetActionConfirmationPresenter
-            )
-        ) as? AssetActionConfirmationViewController
-
+        let controller = assetActionConfirmationTransition.perform(.assetActionConfirmation(assetAlertDraft: assetAlertDraft)) as? AssetActionConfirmationViewController
         controller?.delegate = self
     }
 }

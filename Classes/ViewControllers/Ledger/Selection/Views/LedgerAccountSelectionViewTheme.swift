@@ -64,6 +64,6 @@ struct LedgerAccountSelectionViewTheme: StyleSheet, LayoutSheet {
         self.titleLabelTopPadding = 30
         self.devicesListTopPadding = 50
         self.bottomInset = 16
-        self.horizontalInset = 20
+        self.horizontalInset = 24
     }
 }

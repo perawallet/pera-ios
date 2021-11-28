@@ -17,18 +17,14 @@
 
 import UIKit
 import AVFoundation
+import MacaroonBottomSheet
+import MacaroonUIKit
 
 final class PassphraseDisplayViewController: BaseScrollViewController {
-    private lazy var bottomModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .backgroundTouch
-        ),
-        initialModalSize: .custom(CGSize(theme.modalSize))
-    )
-
     private lazy var theme = Theme()
     private lazy var passphraseDisplayView = PassphraseDisplayView()
+
+    private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
 
     private var mnemonics: [String]? {
         guard let session = session else {
@@ -37,7 +33,7 @@ final class PassphraseDisplayViewController: BaseScrollViewController {
         let mnemonics = session.mnemonics(forAccount: address)
         return mnemonics
     }
-    
+
     private var address: String
 
     init(address: String, configuration: ViewControllerConfiguration) {
@@ -83,13 +79,19 @@ final class PassphraseDisplayViewController: BaseScrollViewController {
     }
 }
 
+extension PassphraseDisplayViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
+    }
+}
+
 extension PassphraseDisplayViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return mnemonics?.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: PassphraseCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(PassphraseCell.self, at: indexPath)
         cell.customize(PassphraseCellViewTheme())
         cell.bindData(PassphraseCellViewModel(Passphrase(index: indexPath.item, mnemonics: mnemonics)))
         return cell
@@ -122,17 +124,14 @@ extension PassphraseDisplayViewController {
         /// <note> Display screenshot detection warning if the user takes a screenshot of passphrase
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
 
-        open(
-            .bottomWarning(configurator: BottomWarningViewConfigurator(
-                image: "icon-info-red".image,
-                title: "screenshot-title".localized,
-                description: "screenshot-description".localized,
-                secondaryActionButtonTitle: "title-close".localized
-            )),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: bottomModalPresenter
+        bottomModalTransition.perform(
+            .bottomWarning(
+                configurator: BottomWarningViewConfigurator(
+                    image: "icon-info-red".image,
+                    title: "screenshot-title".localized,
+                    description: "screenshot-description".localized,
+                    secondaryActionButtonTitle: "title-close".localized
+                )
             )
         )
     }

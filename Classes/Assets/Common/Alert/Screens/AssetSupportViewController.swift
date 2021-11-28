@@ -16,11 +16,13 @@
 //  AssetSupportViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
 final class AssetSupportViewController: BaseViewController {
     
     private lazy var assetSupportView = AssetSupportView()
-    
+
     private var assetAlertDraft: AssetAlertDraft
     
     init(assetAlertDraft: AssetAlertDraft, configuration: ViewControllerConfiguration) {
@@ -44,6 +46,12 @@ final class AssetSupportViewController: BaseViewController {
     
     override func prepareLayout() {
         setupAssetSupportViewLayout()
+    }
+}
+
+extension AssetSupportViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(422)
     }
 }
 

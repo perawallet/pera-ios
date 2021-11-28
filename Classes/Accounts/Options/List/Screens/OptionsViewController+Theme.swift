@@ -23,11 +23,13 @@ extension OptionsViewController {
         let backgroundColor: Color
         let copyAddressCellSize: LayoutSize
         let defaultCellSize: LayoutSize
+        let modalHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
             defaultCellSize = (UIScreen.main.bounds.width, 60)
             copyAddressCellSize = (UIScreen.main.bounds.width, 68)
+            modalHeight = 462
         }
     }
 }

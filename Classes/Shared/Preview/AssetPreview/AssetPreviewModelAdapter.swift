@@ -24,7 +24,7 @@ enum AssetPreviewModelAdapter {
             image: nil,
             secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
             assetPrimaryTitle: assetViewModel.assetDetail?.assetName,
-            assetSecondaryTitle: TextFormatter.assetShortName.format(assetViewModel.assetDetail?.assetName),
+            assetSecondaryTitle: assetViewModel.assetDetail?.unitName,
             assetPrimaryValue: assetViewModel.amount,
             assetSecondaryValue: nil
         )

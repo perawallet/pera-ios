@@ -63,13 +63,13 @@ struct LedgerDeviceListViewTheme: StyleSheet, LayoutSheet {
             ]
         }
 
-        self.lottie = UIApplication.shared.isDarkModeDisplay ? "dark-ledger" : "light-ledger" /// <note>:  Should be handled also on view.
+        self.lottie = UIApplication.shared.isDarkModeDisplay ? "dark-ledger" : "light-ledger" /// <todo>:  Should be handled also on view.
 
         self.collectionViewMinimumLineSpacing = 20
-        self.verticalStackViewTopPadding = 66
+        self.verticalStackViewTopPadding = 56
         self.verticalStackViewSpacing = 12
         self.listContentInset = (10, 0, 0, 0)
-        self.titleLabelTopPadding = 30
+        self.titleLabelTopPadding = 24
         self.devicesListTopPadding = 50
         self.indicatorViewTopPadding = 60
         self.horizontalInset = 24

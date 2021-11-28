@@ -16,6 +16,8 @@
 //  AssetActionConfirmationViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
 final class AssetActionConfirmationViewController: BaseViewController {
     weak var delegate: AssetActionConfirmationViewControllerDelegate?
@@ -54,6 +56,12 @@ final class AssetActionConfirmationViewController: BaseViewController {
 
     override func bindData() {
         assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(assetAlertDraft))
+    }
+}
+
+extension AssetActionConfirmationViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
     }
 }
 

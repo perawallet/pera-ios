@@ -16,6 +16,8 @@
 //  LedgerApprovalViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
 final class LedgerApprovalViewController: BaseViewController {
     override var shouldShowNavigationBar: Bool {
@@ -68,6 +70,12 @@ final class LedgerApprovalViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         ledgerApprovalView.stopConnectionAnimation()
+    }
+}
+
+extension LedgerApprovalViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
     }
 }
 

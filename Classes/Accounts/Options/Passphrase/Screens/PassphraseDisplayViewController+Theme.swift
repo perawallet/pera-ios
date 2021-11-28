@@ -22,14 +22,15 @@ extension PassphraseDisplayViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let passphraseDisplayViewTheme: PassphraseDisplayViewTheme
         let backgroundColor: Color
-        let modalSize: LayoutSize
         let cellHeight: LayoutMetric
+        let modalHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
             passphraseDisplayViewTheme = PassphraseDisplayViewTheme()
             backgroundColor = AppColors.Shared.System.background
-            modalSize = (UIScreen.main.bounds.width, 598)
             cellHeight = 24
+            let screenHeight = UIScreen.main.bounds.height
+            modalHeight = screenHeight <= 606 ? screenHeight - 20 : 598
         }
     }
 }

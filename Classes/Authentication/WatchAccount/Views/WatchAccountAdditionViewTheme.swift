@@ -79,9 +79,9 @@ struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
 
         self.textInputVerticalInset = 40
         self.buttonVerticalInset = 60
-        self.horizontalInset = 20
+        self.horizontalInset = 24
         self.bottomInset = 16
-        self.topInset = 12
+        self.topInset = 2
         self.containerTopInset = 32
         self.pasteButtonTopInset = 20
         self.pasteButtonSize = (175, 40)

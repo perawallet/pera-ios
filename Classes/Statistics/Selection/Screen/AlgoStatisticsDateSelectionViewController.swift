@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonBottomSheet
 
 final class AlgoStatisticsDateSelectionViewController: BaseViewController {
     weak var delegate: AlgoStatisticsDateSelectionViewControllerDelegate?
@@ -58,13 +59,19 @@ extension AlgoStatisticsDateSelectionViewController {
     }
 }
 
+extension AlgoStatisticsDateSelectionViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
+    }
+}
+
 extension AlgoStatisticsDateSelectionViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return AlgosUSDValueInterval.allCases.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: AlgoStatisticsDateOptionCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(AlgoStatisticsDateOptionCell.self, at: indexPath)
         let selectedOption = AlgosUSDValueInterval.allCases[indexPath.item]
         cell.bindData(
             AlgoStatisticsDateOptionViewModel(

@@ -17,6 +17,8 @@
 
 import UIKit
 import SafariServices
+import MacaroonBottomSheet
+import MacaroonUIKit
 
 class RewardDetailViewController: BaseViewController {
     
@@ -44,6 +46,12 @@ class RewardDetailViewController: BaseViewController {
     
     override func prepareLayout() {
         setupRewardDetailViewLayout()
+    }
+}
+
+extension RewardDetailViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(472)
     }
 }
 

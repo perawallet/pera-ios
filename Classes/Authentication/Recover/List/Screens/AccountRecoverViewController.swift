@@ -18,13 +18,7 @@
 import UIKit
 
 final class AccountRecoverViewController: BaseScrollViewController {
-    private lazy var optionsModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: theme.optionsModalHeight))
-    )
+    private lazy var optionsModalTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var inputSuggestionsViewController: InputSuggestionViewController = {
         let inputSuggestionViewController = InputSuggestionViewController(configuration: configuration)
@@ -182,14 +176,7 @@ extension AccountRecoverViewController {
     }
 
     private func openRecoverOptions() {
-        let transitionStyle = Screen.Transition.Open.customPresent(
-            presentationStyle: .custom,
-            transitionStyle: nil,
-            transitioningDelegate: optionsModalPresenter
-        )
-
-        let optionsViewController = open(.recoverOptions, by: transitionStyle) as? AccountRecoverOptionsViewController
-        optionsViewController?.delegate = self
+        optionsModalTransition.perform(.recoverOptions(delegate: self))
     }
 }
 

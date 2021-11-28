@@ -20,23 +20,18 @@ import MacaroonUIKit
 import UIKit
 
 struct NumpadButtonViewTheme: StyleSheet, LayoutSheet {
-    let backgroundColor: Color
     let deleteImage: ImageStyle
     let button: ButtonStyle
     let buttonBackgroundHighlightedImage: ImageStyle
 
-    let stackViewSpacing: LayoutMetric
-    let stackViewHeight: LayoutMetric
-
-    let size = CGSize(width: 72.0 * verticalScale, height: 72.0 * verticalScale)
+    let size: LayoutSize
 
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
         self.deleteImage = [
             .image("icon-delete-number")
         ]
-
         self.button = [
+            .backgroundColor(AppColors.Shared.System.background),
             .font(Fonts.DMMono.regular.make(24).font),
             .titleColor(AppColors.Components.Button.Ghost.text.color)
         ]
@@ -44,7 +39,6 @@ struct NumpadButtonViewTheme: StyleSheet, LayoutSheet {
             .image("bg-passcode-number-selected")
         ]
 
-        self.stackViewSpacing = 24 * verticalScale
-        self.stackViewHeight = 72 * verticalScale
+        self.size = (72 * verticalScale, 72 * verticalScale)
     }
 }

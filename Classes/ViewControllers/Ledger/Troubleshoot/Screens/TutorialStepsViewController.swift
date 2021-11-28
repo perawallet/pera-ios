@@ -28,11 +28,6 @@ final class TutorialStepsViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
 
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-        addBarButtons()
-    }
-
     override func configureAppearance() {
         super.configureAppearance()
         title = "tutorial-action-title-ledger".localized
@@ -58,20 +53,6 @@ final class TutorialStepsViewController: BaseScrollViewController {
         tutorialStepsView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-    }
-}
-
-extension TutorialStepsViewController {
-    func addBarButtons() {
-        addCloseBarButton()
-    }
-
-    func addCloseBarButton() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 

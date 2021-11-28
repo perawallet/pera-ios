@@ -22,6 +22,8 @@ import UIKit
 struct WelcomeViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
+    let termsOfConditionsAttributes: [AttributedTextBuilder.Attribute]
+    let termsOfConditionsLinkAttributes: [AttributedTextBuilder.Attribute]
     let accountTypeViewTheme: AccountTypeViewTheme
 
     let horizontalInset: LayoutMetric
@@ -37,10 +39,23 @@ struct WelcomeViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32))
         ]
+
+        self.termsOfConditionsLinkAttributes = [
+            .textColor(AppColors.Components.Link.primary.color),
+            .underline(UIColor.clear),
+            .font(Fonts.DMSans.medium.make(13).font),
+        ]
+        self.termsOfConditionsAttributes = [
+            .textColor(AppColors.Components.Text.gray.color),
+            .font(Fonts.DMSans.medium.make(13).font),
+            .paragraph([
+                .alignment(.center)
+            ])
+        ]
         self.accountTypeViewTheme = AccountTypeViewTheme()
         
         self.horizontalInset = 24
-        self.topInset = 12
-        self.verticalInset = 20
+        self.topInset = 2
+        self.verticalInset = 16
     }
 }

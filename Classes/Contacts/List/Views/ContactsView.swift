@@ -35,7 +35,8 @@ final class ContactsView: View {
         collectionView.backgroundColor = theme.backgroundColor.color
         collectionView.contentInset = UIEdgeInsets(theme.contentInset) 
         collectionView.keyboardDismissMode = .onDrag
-        collectionView.registerCells(ContactCell.self, ContactSelectionCell.self)
+        collectionView.register(ContactCell.self)
+        collectionView.register(ContactSelectionCell.self)
         return collectionView
     }()
     

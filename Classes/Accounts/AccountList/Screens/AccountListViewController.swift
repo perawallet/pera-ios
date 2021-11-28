@@ -16,6 +16,8 @@
 //  AccountListViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
 final class AccountListViewController: BaseViewController {
     weak var delegate: AccountListViewControllerDelegate?
@@ -58,6 +60,12 @@ final class AccountListViewController: BaseViewController {
         accountListView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+}
+
+extension AccountListViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
     }
 }
 

@@ -70,7 +70,7 @@ struct LedgerAccountCellViewTheme: StyleSheet, LayoutSheet {
             .image("icon-checkbox-unselected")
         ]
 
-        self.horizontalInset = 20
+        self.horizontalInset = 24
         self.nameHorizontalOffset = 20
         self.infoIconSize = (24, 24)
         self.checkboxIconSize = (20, 20)

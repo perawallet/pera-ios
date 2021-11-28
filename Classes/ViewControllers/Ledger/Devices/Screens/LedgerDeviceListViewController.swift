@@ -29,13 +29,7 @@ final class LedgerDeviceListViewController: BaseViewController {
         return LedgerAccountFetchOperation(api: api, bannerController: bannerController)
     }()
 
-    private lazy var initialPairingWarningModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 496.0))
-    )
+    private lazy var initialPairingWarningTransition = BottomSheetTransition(presentingViewController: self)
 
     private let accountSetupFlow: AccountSetupFlow
     private var ledgerDevices = [CBPeripheral]()
@@ -45,6 +39,10 @@ final class LedgerDeviceListViewController: BaseViewController {
     init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
         self.accountSetupFlow = accountSetupFlow
         super.init(configuration: configuration)
+    }
+
+    override func configureNavigationBarAppearance() {
+        addBarButtons()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,6 +79,20 @@ final class LedgerDeviceListViewController: BaseViewController {
     }
 }
 
+extension LedgerDeviceListViewController {
+    private func addBarButtons() {
+        addTroubleshootBarButton()
+    }
+
+    private func addTroubleshootBarButton() {
+        let troubleshootBarButtonItem = ALGBarButtonItem(kind: .troubleshoot) { [weak self] in
+            self?.open(.ledgerTutorial(flow: .addNewAccount(mode: .add(type: .pair))), by: .present)
+        }
+
+        rightBarButtonItems = [troubleshootBarButtonItem]
+    }
+}
+
 extension LedgerDeviceListViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return ledgerDevices.count
@@ -111,14 +123,7 @@ extension LedgerDeviceListViewController: UICollectionViewDataSource {
 
         oneTimeDisplayStorage.setDisplayedOnce(for: .ledgerPairingWarning)
 
-        let transitionStyle = Screen.Transition.Open.customPresent(
-            presentationStyle: .custom,
-            transitionStyle: nil,
-            transitioningDelegate: initialPairingWarningModalPresenter
-        )
-
-        let controller = open(.ledgerPairWarning, by: transitionStyle) as? LedgerPairWarningViewController
-        controller?.delegate = self
+        initialPairingWarningTransition.perform(.ledgerPairWarning(delegate: self))
         
         ledgerAccountFetchOperation.connectToDevice(ledgerDevices[indexPath.item])
     }

@@ -16,6 +16,8 @@
 //   ActionableWarningAlertViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
 class ActionableWarningAlertViewController: BaseViewController {
 
@@ -47,6 +49,13 @@ class ActionableWarningAlertViewController: BaseViewController {
 
     override func prepareLayout() {
         prepareWholeScreenLayoutFor(actionableWarningAlertView)
+    }
+}
+
+
+extension ActionableWarningAlertViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(442)
     }
 }
 

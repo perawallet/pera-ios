@@ -39,7 +39,7 @@ struct PasswordInputCircleViewTheme: StyleSheet, LayoutSheet {
         self.negativeTintColor = AppColors.Shared.Helpers.negative
         self.contentMode = .center
 
-        self.size = (20, 20)
-        self.corner = Corner(radius: 10)
+        self.size = (16, 16)
+        self.corner = Corner(radius: size.h / 2)
     }
 }

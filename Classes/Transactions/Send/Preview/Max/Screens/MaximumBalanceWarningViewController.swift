@@ -16,6 +16,8 @@
 //  MaximumBalanceWarningViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
 class MaximumBalanceWarningViewController: BaseScrollViewController {
 
@@ -58,6 +60,14 @@ extension MaximumBalanceWarningViewController {
         maximumBalanceWarningView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+extension MaximumBalanceWarningViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        let screenHeight = UIScreen.main.bounds.height
+        let height = screenHeight <= 522 ? screenHeight - 20 : 522
+        return .preferred(height)
     }
 }
 

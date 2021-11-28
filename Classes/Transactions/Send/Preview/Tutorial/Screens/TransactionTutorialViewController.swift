@@ -16,6 +16,8 @@
 //   TransactionTutorialViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
 class TransactionTutorialViewController: BaseScrollViewController {
 
@@ -68,6 +70,14 @@ extension TransactionTutorialViewController {
         transactionTutorialView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+}
+
+extension TransactionTutorialViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        let screenHeight = UIScreen.main.bounds.height
+        let height = screenHeight <= 605 ? screenHeight - 20 : 605
+        return .preferred(height)
     }
 }
 

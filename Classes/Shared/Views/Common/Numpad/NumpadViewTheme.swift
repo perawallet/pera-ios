@@ -24,11 +24,13 @@ struct NumpadViewTheme: StyleSheet, LayoutSheet {
 
     let stackViewSpacing: LayoutMetric
     let stackViewHeight: LayoutMetric
+    let stackViewTopPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-        
-        self.stackViewSpacing = 24 * verticalScale
+
+        self.stackViewTopPadding = 20 * verticalScale
+        self.stackViewSpacing = 40 * verticalScale
         self.stackViewHeight = 72 * verticalScale
     }
 }

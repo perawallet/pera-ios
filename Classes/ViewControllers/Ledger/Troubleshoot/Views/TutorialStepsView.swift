@@ -19,9 +19,9 @@ import MacaroonUIKit
 import UIKit
 
 final class TutorialStepsView: View {
-    private lazy var verticalStackView = UIStackView()
-
     weak var delegate: TutorialStepsViewDelegate?
+
+    private lazy var verticalStackView = UIStackView()
 
     var troubleshoots: [Troubleshoot] = [] {
         didSet {

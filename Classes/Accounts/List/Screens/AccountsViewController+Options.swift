@@ -25,6 +25,8 @@ extension AccountsViewController: OptionsViewControllerDelegate {
 
         log(ReceiveCopyEvent(address: account.address))
         UIPasteboard.general.string = account.address
+
+        bannerController?.presentInfoBanner("qr-creation-copied".localized)
     }
 
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
@@ -84,14 +86,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             return
         }
         
-        open(
-            .passphraseDisplay(address: account.address),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: passphraseModalPresenter
-            )
-        )
+        modalTransition.perform(.passphraseDisplay(address: account.address))
     }
     
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
@@ -116,15 +111,8 @@ extension AccountsViewController: OptionsViewControllerDelegate {
         ) { [weak self] in
             self?.removeAccount()
         }
-        
-        open(
-            .bottomWarning(configurator: configurator),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: removeAccountModalPresenter
-            )
-        )
+
+        modalTransition.perform(.bottomWarning(configurator: configurator))
     }
 
     private func removeAccount() {

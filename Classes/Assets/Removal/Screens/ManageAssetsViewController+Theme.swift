@@ -21,13 +21,11 @@ import UIKit
 extension ManageAssetsViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
-        let assetActionConfirmationModalSize: LayoutSize
         let cellSize: LayoutSize
         let assetPreviewActionViewTheme: AssetPreviewActionViewTheme
 
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
-            assetActionConfirmationModalSize = (UIScreen.main.bounds.width, 562)
             cellSize = (UIScreen.main.bounds.width - 48, 72)
             let actionButtonStyle: ButtonStyle = [
                 .titleColor(AppColors.Shared.Helpers.negative),

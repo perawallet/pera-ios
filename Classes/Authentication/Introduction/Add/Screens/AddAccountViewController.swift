@@ -60,21 +60,11 @@ final class AddAccountViewController: BaseViewController {
 extension AddAccountViewController {
     private func addBarButtons() {
         switch flow {
-        case .addNewAccount:
-            addCloseBarButtonItem()
         case .initializeAccount:
             addSkipBarButtonItem()
-        case .none:
+        default:
             break
         }
-    }
-
-    private func addCloseBarButtonItem() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
     }
 
     private func addSkipBarButtonItem() {

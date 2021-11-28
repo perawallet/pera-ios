@@ -65,8 +65,8 @@ extension LedgerDeviceCellView {
 
         addSubview(deviceNameLabel)
         deviceNameLabel.snp.makeConstraints {
-            $0.leading.equalTo(ledgerImageView.snp.trailing).offset(theme.nameHorizontalOffset)
-            $0.trailing.lessThanOrEqualTo(arrowImageView.snp.leading).offset(-theme.nameHorizontalOffset)
+            $0.leading.equalTo(ledgerImageView.snp.trailing).offset(theme.horizontalInset)
+            $0.trailing.lessThanOrEqualTo(arrowImageView.snp.leading).offset(-theme.horizontalInset)
             $0.centerY.equalTo(ledgerImageView)
         }
     }

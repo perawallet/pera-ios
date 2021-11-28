@@ -20,11 +20,9 @@ import Foundation
 
 extension PassphraseVerifyViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let passphraseVerifyViewTheme: PassphraseVerifyViewTheme
         let backgroundColor: Color
 
         init(_ family: LayoutFamily) {
-            passphraseVerifyViewTheme = PassphraseVerifyViewTheme()
             backgroundColor = AppColors.Shared.System.background
         }
     }
