@@ -38,7 +38,7 @@ struct PassphraseVerifyViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .text("passphrase-verify-title".localized)
         ]
         self.nextButtonTheme = ButtonPrimaryTheme()

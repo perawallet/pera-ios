@@ -26,10 +26,10 @@ struct AssetImageViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.nameText = [
             .textAlignment(.center),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(13))
         ]
-        self.border = Border(color: AppColors.Shared.Layer.grayLighter.color, width: 1)
+        self.border = Border(color: AppColors.Shared.Layer.grayLighter.uiColor, width: 1)
     }
 }

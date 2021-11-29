@@ -29,7 +29,7 @@ final class ManageAssetsView: View {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = theme.backgroundColor.color
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.register(AssetPreviewActionCell.self)
         return collectionView
     }()

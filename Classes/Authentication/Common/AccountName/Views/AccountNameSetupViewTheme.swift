@@ -33,7 +33,7 @@ struct AccountNameSetupViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.title = [
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .text("account-details-title".localized)
@@ -43,7 +43,7 @@ struct AccountNameSetupViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .text("account-name-setup-description".localized)
         ]
 

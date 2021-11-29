@@ -103,7 +103,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
     
     private func displayRemoveAccountAlert() {
         let configurator = BottomWarningViewConfigurator(
-            image: "icon-trash-red".image,
+            image: "icon-trash-red".uiImage,
             title: "options-remove-account".localized,
             description: "options-remove-alert-explanation".localized,
             primaryActionButtonTitle: "title-remove".localized,

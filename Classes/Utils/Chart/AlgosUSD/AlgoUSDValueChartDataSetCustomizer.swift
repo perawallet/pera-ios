@@ -75,11 +75,11 @@ struct AlgoUSDValueChartDataSetCustomizer: AlgorandLineChartDataSetCustomizable 
     }
 
     var valueColor: UIColor {
-        return AppColors.Components.Text.gray.color
+        return AppColors.Components.Text.gray.uiColor
     }
 
     var font: UIFont {
-        return Fonts.DMMono.medium.make(13).font
+        return Fonts.DMMono.medium.make(13).uiFont
     }
 
     var fillAlpha: CGFloat? {

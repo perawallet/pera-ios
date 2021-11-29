@@ -77,9 +77,9 @@ extension OptionsViewModel {
     private func bindTitleColor(for option: OptionsViewController.Options) {
         switch option {
         case .removeAccount:
-            titleColor = AppColors.Shared.Helpers.negative.color
+            titleColor = AppColors.Shared.Helpers.negative.uiColor
         default:
-            titleColor = AppColors.Components.Text.main.color
+            titleColor = AppColors.Components.Text.main.uiColor
         }
     }
 

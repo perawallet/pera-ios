@@ -41,9 +41,9 @@ final class RekeyConfirmationViewModel {
 extension RekeyConfirmationViewModel {
     private func bindOldImage(_ account: Account) {
         if account.requiresLedgerConnection() {
-            oldImage = "ledger-gray".image
+            oldImage = "ledger-gray".uiImage
         } else {
-            oldImage = "standard-gray".image
+            oldImage = "standard-gray".uiImage
         }
     }
 

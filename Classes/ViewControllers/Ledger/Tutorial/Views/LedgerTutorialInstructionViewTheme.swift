@@ -32,7 +32,7 @@ struct LedgerTutorialInstructionViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = UIColor.clear
         self.title = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textColor(Colors.Text.primary)

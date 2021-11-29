@@ -32,14 +32,14 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(32)),
             .textColor(AppColors.Components.Text.main),
             .text("asset-remove-title".localized)
         ]
         self.subtitle = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.gray),

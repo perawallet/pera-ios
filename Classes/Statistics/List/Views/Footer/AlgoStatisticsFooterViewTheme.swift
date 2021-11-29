@@ -27,7 +27,7 @@ struct AlgoStatisticsFooterViewTheme: LayoutSheet, StyleSheet {
             .text("algo-statistics-title".localized),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textAlignment(.left)
         ]
 

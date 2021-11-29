@@ -20,8 +20,8 @@ import MacaroonUIKit
 protocol ButtonTheme: LayoutSheet, StyleSheet {
     var label: TextStyle { get }
     var icon: ImageStyle { get }
-    var titleColorSet: ColorSet { get }
-    var backgroundColorSet: ColorSet { get }
+    var titleColorSet: StateColorGroup { get }
+    var backgroundColorSet: StateColorGroup { get }
     var corner: Corner { get }
     var indicator: ImageStyle { get }
 

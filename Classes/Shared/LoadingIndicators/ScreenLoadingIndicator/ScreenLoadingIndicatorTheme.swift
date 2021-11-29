@@ -44,7 +44,7 @@ struct ScreenLoadingIndicatorTheme: StyleSheet, LayoutSheet {
         ]
         self.title = [
             .textAlignment(.center),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(UIFont.font(withWeight: .regular(size: 14)))
         ]

@@ -27,7 +27,7 @@ struct AccountListViewTheme: LayoutSheet, StyleSheet {
     init(_ family: LayoutFamily) {
         self.titleLabel = [
             .textAlignment(.center),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(15))
         ]

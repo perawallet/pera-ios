@@ -31,7 +31,7 @@ struct AccountRecoverViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.title = [
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .text("recover-from-seed-title".localized)

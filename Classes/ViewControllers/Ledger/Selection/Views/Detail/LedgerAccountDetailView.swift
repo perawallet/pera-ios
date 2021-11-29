@@ -27,7 +27,7 @@ final class LedgerAccountDetailView: View {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = theme.backgroundColor.color
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.contentInset)
         collectionView.register(AccountPreviewCell.self)
         collectionView.register(AssetPreviewCell.self)

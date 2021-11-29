@@ -45,10 +45,10 @@ struct QRCreationViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.TextField.defaultBackground),
             .text("qr-creation-copied".localized),
             .textAlignment(.center),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.copyFeedbackView = [
-            .backgroundColor(AppColors.Components.Text.main.color.withAlphaComponent(0.9))
+            .backgroundColor(AppColors.Components.Text.main.uiColor.withAlphaComponent(0.9))
         ]
         self.copyButtonTheme = ButtonPrimaryTheme()
         self.shareButtonTheme = ButtonSecondaryTheme()

@@ -121,7 +121,7 @@ extension QRCreationView {
         copyButton.customize(theme.copyButtonTheme)
         copyButton.bindData(ButtonCommonViewModel(
             title: "qr-creation-copy-address".localized,
-            iconSet: ImageSet("icon-qr-copy"))
+            iconSet: [.normal("icon-qr-copy")])
         )
         copyButton.titleEdgeInsets = UIEdgeInsets(theme.buttonTitleInsets)
         
@@ -135,7 +135,7 @@ extension QRCreationView {
         shareButton.customize(theme.shareButtonTheme)
         shareButton.bindData(ButtonCommonViewModel(
             title: "title-share-qr".localized,
-            iconSet: ImageSet("icon-qr-share"))
+            iconSet: [.normal("icon-qr-share")])
         )
         shareButton.titleEdgeInsets = UIEdgeInsets(theme.buttonTitleInsets)
         

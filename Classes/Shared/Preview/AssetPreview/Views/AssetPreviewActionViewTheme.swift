@@ -34,19 +34,19 @@ struct AssetPreviewActionViewTheme: StyleSheet, LayoutSheet {
     init(actionButtonStyle: ButtonStyle, _ family: LayoutFamily = LayoutFamily.current) {
         self.accountName = [
             .textAlignment(.left),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.assetAndNFTs = [
             .textAlignment(.left),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]
         self.secondaryAssetValue = [
             .textAlignment(.right),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.grayLighter),
             .font(Fonts.DMMono.regular.make(13))
         ]

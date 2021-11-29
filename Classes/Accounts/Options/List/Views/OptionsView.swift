@@ -28,7 +28,7 @@ final class OptionsView: View {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
-        collectionView.backgroundColor = theme.backgroundColor.color
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.register(OptionsCell.self)
         return collectionView
     }()

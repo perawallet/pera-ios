@@ -35,19 +35,19 @@ struct WelcomeViewTheme: StyleSheet, LayoutSheet {
         self.title = [
             .textAlignment(.center),
             .text("account-welcome-wallet-title".localized),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32))
         ]
 
         self.termsOfConditionsLinkAttributes = [
-            .textColor(AppColors.Components.Link.primary.color),
+            .textColor(AppColors.Components.Link.primary.uiColor),
             .underline(UIColor.clear),
-            .font(Fonts.DMSans.medium.make(13).font),
+            .font(Fonts.DMSans.medium.make(13).uiFont),
         ]
         self.termsOfConditionsAttributes = [
-            .textColor(AppColors.Components.Text.gray.color),
-            .font(Fonts.DMSans.medium.make(13).font),
+            .textColor(AppColors.Components.Text.gray.uiColor),
+            .font(Fonts.DMSans.medium.make(13).uiFont),
             .paragraph([
                 .alignment(.center)
             ])

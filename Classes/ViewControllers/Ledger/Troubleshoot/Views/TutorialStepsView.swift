@@ -49,9 +49,9 @@ final class TutorialStepsView: View {
             textView.dataDetectorTypes = .link
             textView.textContainerInset = .zero
             textView.linkTextAttributes = [
-                .foregroundColor: AppColors.Components.Link.primary.color,
+                .foregroundColor: AppColors.Components.Link.primary.uiColor,
                 .underlineColor: UIColor.clear,
-                .font: Fonts.DMSans.medium.make(15).font
+                .font: Fonts.DMSans.medium.make(15).uiFont
             ]
             textView.delegate = self
             textView.attributedText = bindHTML(step.explanation)
@@ -105,8 +105,8 @@ extension TutorialStepsView {
 
         attributedString.addAttributes(
             [
-                NSAttributedString.Key.font: Fonts.DMSans.regular.make(15).font,
-                NSAttributedString.Key.foregroundColor: AppColors.Components.Text.main.color
+                NSAttributedString.Key.font: Fonts.DMSans.regular.make(15).uiFont,
+                NSAttributedString.Key.foregroundColor: AppColors.Components.Text.main.uiColor
             ],
             range: NSRange(location: 0, length: attributedString.string.count)
         )

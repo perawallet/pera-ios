@@ -102,8 +102,8 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
         bindData()
 
         navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: Fonts.DMSans.regular.make(15).font,
-            NSAttributedString.Key.foregroundColor: AppColors.Components.Text.main.color
+            NSAttributedString.Key.font: Fonts.DMSans.regular.make(15).uiFont,
+            NSAttributedString.Key.foregroundColor: AppColors.Components.Text.main.uiColor
         ]
     }
 
@@ -182,13 +182,13 @@ extension BaseViewController {
         if #available(iOS 13.0, *) {
             let appearance = UINavigationBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = AppColors.Shared.System.background.color
+            appearance.backgroundColor = AppColors.Shared.System.background.uiColor
             appearance.shadowColor = .clear
             navigationController?.navigationBar.standardAppearance = appearance
             navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
         } else {
-            navigationController?.navigationBar.barTintColor = AppColors.Shared.System.background.color
-            navigationController?.navigationBar.tintColor = AppColors.Shared.System.background.color
+            navigationController?.navigationBar.barTintColor = AppColors.Shared.System.background.uiColor
+            navigationController?.navigationBar.tintColor = AppColors.Shared.System.background.uiColor
         }
     }
 }

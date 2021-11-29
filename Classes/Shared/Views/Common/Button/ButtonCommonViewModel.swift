@@ -18,10 +18,10 @@
 import MacaroonUIKit
 
 struct ButtonCommonViewModel: ButtonViewModel {
-    private(set) var iconSet: ImageSet?
+    private(set) var iconSet: StateImageGroup?
     private(set) var title: EditText?
 
-    init(title: String?, iconSet: ImageSet? = nil) {
+    init(title: String?, iconSet: StateImageGroup? = nil) {
         bindIconSet(iconSet)
         bindTitle(title)
     }
@@ -32,7 +32,7 @@ extension ButtonCommonViewModel {
         title = someTitle?.text
     }
 
-    private  mutating func bindIconSet(_ someIconSet: ImageSet?) {
+    private  mutating func bindIconSet(_ someIconSet: StateImageGroup?) {
         iconSet = someIconSet
     }
 }

@@ -95,7 +95,7 @@ extension LedgerAccountVerificationStatusView: ViewModelBindable {
         }
 
         addressLabel.text = viewModel.address
-        draw(border: Border(color: viewModel.borderColor.color, width: 2))
+        draw(border: Border(color: viewModel.borderColor.uiColor, width: 2))
         indicatorView.isHidden = !viewModel.isWaitingForVerification
 
         if viewModel.isWaitingForVerification {
@@ -105,8 +105,8 @@ extension LedgerAccountVerificationStatusView: ViewModelBindable {
         }
 
         imageView.isHidden = viewModel.isStatusImageHidden
-        imageView.image = viewModel.statusImage?.image
+        imageView.image = viewModel.statusImage?.uiImage
         statusLabel.text = viewModel.statusText
-        statusLabel.textColor = viewModel.statusColor.color
+        statusLabel.textColor = viewModel.statusColor.uiColor
     }
 }

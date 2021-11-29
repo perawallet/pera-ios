@@ -32,8 +32,8 @@ struct NumpadButtonViewTheme: StyleSheet, LayoutSheet {
         ]
         self.button = [
             .backgroundColor(AppColors.Shared.System.background),
-            .font(Fonts.DMMono.regular.make(24).font),
-            .titleColor(AppColors.Components.Button.Ghost.text.color)
+            .font(Fonts.DMMono.regular.make(24).uiFont),
+            .titleColor([.normal(AppColors.Components.Button.Ghost.text.uiColor)])
         ]
         self.buttonBackgroundHighlightedImage = [
             .image("bg-passcode-number-selected")

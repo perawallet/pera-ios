@@ -30,7 +30,7 @@ struct RekeyInstructionItemViewTheme: StyleSheet, LayoutSheet {
             .image("icon-rekey-info")
         ]
         self.title = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.main)

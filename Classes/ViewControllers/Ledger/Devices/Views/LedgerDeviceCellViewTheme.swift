@@ -35,7 +35,7 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = UIColor.clear
         self.title = [
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.main)
         ]
@@ -51,7 +51,7 @@ struct LedgerDeviceCellViewTheme: StyleSheet, LayoutSheet {
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.color
+            fillColor: AppColors.Shared.System.background.uiColor
         )
 
         self.horizontalInset = 16

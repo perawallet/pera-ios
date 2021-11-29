@@ -25,16 +25,16 @@ class SearchEmptyView: BaseView {
         UILabel()
             .withLine(.single)
             .withAlignment(.center)
-            .withFont(Fonts.DMSans.medium.make(19).font)
-            .withTextColor(AppColors.Components.Text.main.color)
+            .withFont(Fonts.DMSans.medium.make(19).uiFont)
+            .withTextColor(AppColors.Components.Text.main.uiColor)
     }()
     
     private lazy var detailLabel: UILabel = {
         UILabel()
             .withLine(.contained)
             .withAlignment(.center)
-            .withFont(Fonts.DMSans.regular.make(15).font)
-            .withTextColor(AppColors.Components.Text.gray.color)
+            .withFont(Fonts.DMSans.regular.make(15).uiFont)
+            .withTextColor(AppColors.Components.Text.gray.uiColor)
     }()
     
     override func configureAppearance() {

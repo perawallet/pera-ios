@@ -136,6 +136,6 @@ extension BannerView {
     }
 
     private func bindIcon(_ viewModel: BannerViewModel?) {
-        iconView.image = viewModel?.icon?.image
+        iconView.image = viewModel?.icon?.uiImage
     }
 }

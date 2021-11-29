@@ -57,8 +57,8 @@ extension Button {
 
     private func customizeLabel(_ theme: ButtonTheme) {
         titleLabel?.customizeAppearance(theme.label)
-        setTitleColor(theme.titleColorSet.color, for: .normal)
-        setTitleColor(theme.titleColorSet.disabled, for: .disabled)
+        setTitleColor(theme.titleColorSet[.normal], for: .normal)
+        setTitleColor(theme.titleColorSet[.disabled], for: .disabled)
         imageView?.customizeAppearance(theme.icon)
     }
 
@@ -84,8 +84,8 @@ extension Button {
             return
         }
 
-        setImage(viewModel?.iconSet?.image, for: .normal)
-        setImage(viewModel?.iconSet?.disabled, for: .disabled)
+        setImage(viewModel?.iconSet?[.normal], for: .normal)
+        setImage(viewModel?.iconSet?[.disabled], for: .disabled)
     }
 }
 
@@ -117,7 +117,7 @@ extension Button {
 
 extension Button {
     private func customizeBackgroundColor(_ theme: ButtonTheme, isEnabled: Bool) {
-        let backgroundColor = isEnabled ? theme.backgroundColorSet.color : theme.backgroundColorSet.disabled
+        let backgroundColor = isEnabled ? theme.backgroundColorSet[.normal] : theme.backgroundColorSet[.disabled]
         customizeBaseAppearance(backgroundColor: backgroundColor)
     }
 }

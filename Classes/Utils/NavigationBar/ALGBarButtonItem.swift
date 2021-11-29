@@ -33,20 +33,20 @@ struct ALGBarButtonItem: BarButtonItem {
         case .done:
             return BarButtonItemTitleContent(
                 text: "title-done".localized,
-                textColor: AppColors.Components.Text.main.color,
-                font: Fonts.DMSans.medium.make(15).font
+                textColor: AppColors.Components.Text.main.uiColor,
+                font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .skip:
             return BarButtonItemTitleContent(
                 text: "title-skip".localized,
-                textColor: AppColors.Components.Text.main.color,
-                font: Fonts.DMSans.medium.make(15).font
+                textColor: AppColors.Components.Text.main.uiColor,
+                font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .dontAskAgain:
             return BarButtonItemTitleContent(
                 text: "title-dont-ask".localized,
-                textColor: AppColors.Components.Text.main.color,
-                font: Fonts.DMSans.medium.make(15).font
+                textColor: AppColors.Components.Text.main.uiColor,
+                font: Fonts.DMSans.medium.make(15).uiFont
             )
         case .copy:
             return BarButtonItemTitleContent(

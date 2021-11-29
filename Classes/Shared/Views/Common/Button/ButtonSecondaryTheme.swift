@@ -21,8 +21,8 @@ struct ButtonSecondaryTheme: ButtonTheme {
     var corner: Corner
     let label: TextStyle
     let icon: ImageStyle
-    let titleColorSet: ColorSet
-    let backgroundColorSet: ColorSet
+    let titleColorSet: StateColorGroup
+    let backgroundColorSet: StateColorGroup
     let indicator: ImageStyle
 
     let contentEdgeInsets: LayoutPaddings
@@ -31,16 +31,16 @@ struct ButtonSecondaryTheme: ButtonTheme {
         self.label = [
             .font(Fonts.DMSans.medium.make(15)),
             .textAlignment(.center),
-            .textOverflow(.singleLineFitting)
+            .textOverflow(SingleLineFittingText())
         ]
-        self.titleColorSet = ColorSet(
-            normal: AppColors.Components.Button.Secondary.text,
-            disabled: AppColors.Components.Button.Secondary.disabledText
-        )
-        self.backgroundColorSet = ColorSet(
-            normal: AppColors.Components.Button.Secondary.background,
-            disabled: AppColors.Components.Button.Secondary.disabledBackground
-        )
+        self.titleColorSet = [
+            .normal(AppColors.Components.Button.Secondary.text),
+            .disabled(AppColors.Components.Button.Secondary.disabledText)
+        ]
+        self.backgroundColorSet = [
+            .normal(AppColors.Components.Button.Secondary.background),
+            .disabled(AppColors.Components.Button.Secondary.disabledBackground)
+        ]
         self.corner = Corner(radius: 4)
         self.icon = []
         self.indicator = [

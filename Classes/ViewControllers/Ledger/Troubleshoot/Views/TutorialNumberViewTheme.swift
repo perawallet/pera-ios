@@ -26,9 +26,9 @@ struct TutorialNumberViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = UIColor.clear
         self.label = [
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main.color)
+            .textColor(AppColors.Components.Text.main.uiColor)
         ]
     }
 }

@@ -36,12 +36,12 @@ struct AddContactViewTheme: StyleSheet, LayoutSheet {
         self.photoLabel = [
             .text("contacts-add-photo".localized),
             .textAlignment(.center),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(18))
         ]
         self.qrButton = [
-            .icon("icon-qr-scan")
+            .icon([.normal("icon-qr-scan")])
         ]
         self.addContactButtonViewTheme = ButtonPrimaryTheme()
 

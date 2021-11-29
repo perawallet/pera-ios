@@ -34,14 +34,14 @@ struct RekeyTransitionItemViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.center),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .text("ledger-approval-title".localized)
         ]
         self.value = [
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(19)),
             .textAlignment(.center),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.titleLabelTopPadding = 16
         self.valueLabelTopPadding = 4

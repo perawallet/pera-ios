@@ -190,7 +190,7 @@ extension EditContactViewController: EditContactViewDelegate {
 
     private func displayDeleteAlert(for contact: Contact) {
         let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
-            image: "icon-trash-red".image,
+            image: "icon-trash-red".uiImage,
             title: "contacts-delete-contact".localized,
             description: "contacts-delete-contact-alert-explanation".localized,
             primaryActionButtonTitle: "contacts-approve-delete-contact".localized,

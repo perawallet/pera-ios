@@ -40,7 +40,7 @@ struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
         self.textInputMask = []
         self.placeholder = [
             .font(Fonts.DMSans.regular.make(15, .body)),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.grayLighter),
             .text(placeholder)
         ]
@@ -78,7 +78,7 @@ extension String {
     ) -> NSAttributedString {
         return attributed(
             [
-                .font(Fonts.DMSans.regular.make(13, .body).font),
+                .font(Fonts.DMSans.regular.make(13, .body).uiFont),
                 .letterSpacing(0.4),
                 .paragraph(
                     [

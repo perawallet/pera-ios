@@ -51,7 +51,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = AppColors.Shared.System.background
         self.titleLabel = [
             .textAlignment(.center),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(15))
         ]
@@ -59,7 +59,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.verifiedImage = [
             .image("icon-verified-shield")
@@ -68,25 +68,25 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.assetNameLabel = [
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.assetIDLabel = [
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.copyIDButton = [
             .backgroundColor(AppColors.Shared.Layer.grayLighter),
             .title("asset-copy-id".localized),
             .font(Fonts.DMSans.medium.make(13)),
-            .titleColor(AppColors.Components.Text.main)
+            .titleColor([.normal(AppColors.Components.Text.main)])
         ]
         let separatorColor = AppColors.Shared.Layer.grayLighter
         let separatorHeight: LayoutMetric = 1

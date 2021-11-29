@@ -31,7 +31,7 @@ struct AlgoStatisticsValueChangeViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMMono.medium.make(13)),
             .textAlignment(.left),
-            .textOverflow(.singleLineFitting)
+            .textOverflow(SingleLineFittingText())
         ]
         self.imageSize = (16, 16)
         self.horizontalInset = 4

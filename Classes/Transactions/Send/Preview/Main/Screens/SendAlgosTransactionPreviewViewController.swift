@@ -172,7 +172,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
     
     private func displayQRAlert(for amountFromQR: UInt64, with asset: Int64?) {
         let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
-            image: "icon-qr-alert".image,
+            image: "icon-qr-alert".uiImage,
             title: "send-qr-scan-alert-title".localized,
             description: "send-qr-scan-alert-message".localized,
             primaryActionButtonTitle: "title-approve".localized,
