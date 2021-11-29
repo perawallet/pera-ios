@@ -18,6 +18,11 @@
 import UIKit
 
 final class SingleSelectionCell: BaseCollectionViewCell<SingleSelectionView> {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        customize(SingleSelectionViewTheme())
+    }
+    
     func customize(_ theme: SingleSelectionViewTheme) {
         contextView.customize(theme)
     }

@@ -50,15 +50,11 @@ extension AppearanceSelectionViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let appearance = UserInterfaceStyle.allCases[safe: indexPath.item],
-           let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SingleSelectionCell.reusableIdentifier,
-                for: indexPath
-            ) as? SingleSelectionCell {
-                let isSelected = session?.userInterfaceStyle == appearance
-                cell.customize(SingleSelectionViewTheme())
-                cell.bindData(SingleSelectionViewModel(title: appearance.representation(), isSelected: isSelected))
-                return cell
+        if let appearance = UserInterfaceStyle.allCases[safe: indexPath.item] {
+            let cell: SingleSelectionCell = collectionView.dequeueReusableCell(for: indexPath)
+            let isSelected = session?.userInterfaceStyle == appearance
+            cell.bindData(SingleSelectionViewModel(title: appearance.representation(), isSelected: isSelected))
+            return cell
         }
     
         fatalError("Index path is out of bounds")

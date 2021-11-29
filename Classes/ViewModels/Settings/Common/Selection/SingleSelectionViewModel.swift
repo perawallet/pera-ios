@@ -39,9 +39,9 @@ final class SingleSelectionViewModel {
     private func setSelectionImage() {
         if isSelected {
             selectionImage = img("icon-checkbox-single-selected")
+            return
         }
-        else {
-            selectionImage = img("icon-checkbox-single-unselected")
-        }
+        
+        selectionImage = img("icon-checkbox-single-unselected")
     }
 }
