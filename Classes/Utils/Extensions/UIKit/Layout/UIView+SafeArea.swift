@@ -30,7 +30,7 @@ extension UIView {
         if let window = window {
             return window.safeAreaInsets
         }
-        return UIApplication.shared.windows.last?.safeAreaInsets ?? .zero
+        return UIApplication.shared.window?.safeAreaInsets ?? .zero
     }
 }
 

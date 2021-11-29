@@ -35,13 +35,15 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main),
-            .textAlignment(.left)
+            .textAlignment(.left),
+            .isInteractable(false)
         ]
         self.detail = [
             .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(13)),
             .textColor(AppColors.Components.Text.gray),
-            .textAlignment(.left)
+            .textAlignment(.left),
+            .isInteractable(false)
         ]
 
         self.iconSize = (40, 40)
