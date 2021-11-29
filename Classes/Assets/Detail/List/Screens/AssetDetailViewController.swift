@@ -289,7 +289,7 @@ extension AssetDetailViewController: TransactionActionsViewDelegate {
     
     func transactionActionsViewDidRequestTransaction(_ transactionActionsView: TransactionActionsView) {
         log(ReceiveAssetDetailEvent(address: account.address))
-        let draft = QRCreationDraft(address: account.address, mode: .address, accountName: account.name)
+        let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
         open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
     }
 }

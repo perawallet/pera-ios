@@ -20,15 +20,15 @@ import Foundation
 struct QRCreationDraft {
     let address: String
     let mnemonic: String?
-    let accountName: String?
+    let title: String?
     let mode: QRMode
     let isSelectable: Bool
     
-    init(address: String, mode: QRMode, mnemonic: String? = nil, accountName: String?) {
+    init(address: String, mode: QRMode, mnemonic: String? = nil, title: String?) {
         self.address = address
         self.mode = mode
         self.mnemonic = mnemonic
         self.isSelectable = mode == .address
-        self.accountName = accountName
+        self.title = title
     }
 }

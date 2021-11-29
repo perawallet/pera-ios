@@ -254,7 +254,7 @@ extension ContactDetailViewController: ContactDetailViewDelegate {
             return
         }
 
-        let draft = QRCreationDraft(address: address, mode: .address, accountName: contact.name)
+        let draft = QRCreationDraft(address: address, mode: .address, title: contact.name)
         open(.qrGenerator(title: contact.name, draft: draft, isTrackable: true), by: .present)
     }
 }

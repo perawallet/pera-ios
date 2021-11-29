@@ -155,7 +155,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
         
         switch opponentType {
         case let .contact(address):
-            let draft = QRCreationDraft(address: address, mode: .address, accountName: account.name)
+            let draft = QRCreationDraft(address: address, mode: .address, title: account.name)
             open(
                 .qrGenerator(
                     title: transaction.contact?.name ?? "qr-creation-sharing-title".localized,
@@ -165,7 +165,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
                 by: .present
             )
         case let .localAccount(address):
-            let draft = QRCreationDraft(address: address, mode: .address, accountName: account.name)
+            let draft = QRCreationDraft(address: address, mode: .address, title: account.name)
             open(
                 .qrGenerator(
                     title: "qr-creation-sharing-title".localized,
