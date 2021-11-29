@@ -34,8 +34,8 @@ final class Toggle: UISwitch {
 
     private func customize(_ theme: Theme) {
         layer.cornerRadius = theme.cornerRadius
-        backgroundColor = theme.backgroundColor.color
-        onTintColor = theme.onTintColor.color
+        backgroundColor = theme.backgroundColor.uiColor
+        onTintColor = theme.onTintColor.uiColor
     }
 }
 

@@ -36,7 +36,7 @@ struct VerifiedAssetInformationViewTheme: StyleSheet, LayoutSheet {
         self.title = [
             .textAlignment(.left),
             .text("verified-asset-information-title".localized),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(15))
         ]
@@ -49,26 +49,26 @@ struct VerifiedAssetInformationViewTheme: StyleSheet, LayoutSheet {
         
         let fullTextRange = (fullText as NSString).range(of: fullText)
         fullAttributedText.addAttributes(
-            [.foregroundColor: AppColors.Components.Text.main.color,
-             .font: Fonts.DMSans.regular.make(15).font],
+            [.foregroundColor: AppColors.Components.Text.main.uiColor,
+             .font: Fonts.DMSans.regular.make(15).uiFont],
             range: fullTextRange)
         
         let doubleCheckTextRange = (fullText as NSString).range(of: doubleCheckText)
         fullAttributedText.addAttributes(
-            [.foregroundColor: AppColors.Shared.Helpers.negative.color,
-             .font: Fonts.DMSans.medium.make(15).font],
+            [.foregroundColor: AppColors.Shared.Helpers.negative.uiColor,
+             .font: Fonts.DMSans.medium.make(15).uiFont],
             range: doubleCheckTextRange)
         
         let contactTextRange = (fullText as NSString).range(of: contactText)
         fullAttributedText.addAttributes(
-            [.foregroundColor: AppColors.Components.Link.primary.color,
-             .font: Fonts.DMSans.medium.make(15).font],
+            [.foregroundColor: AppColors.Components.Link.primary.uiColor,
+             .font: Fonts.DMSans.medium.make(15).uiFont],
             range: contactTextRange)
         
         self.information = [
             .textAlignment(.left),
             .text(fullAttributedText),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.image = [
             .image("icon-verified-shield")

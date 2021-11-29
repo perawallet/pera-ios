@@ -41,7 +41,7 @@ struct BannerViewErrorTheme: BannerViewTheme {
         self.title = [
             .font(UIFont.font(withWeight: .semiBold(size: 16.0))),
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(textColor)
         ]
 
@@ -69,7 +69,7 @@ struct BannerViewErrorTheme: BannerViewTheme {
         self.message = [
             .font(UIFont.font(withWeight: .regular(size: 14.0))),
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(textColor)
         ]
         self.icon = [

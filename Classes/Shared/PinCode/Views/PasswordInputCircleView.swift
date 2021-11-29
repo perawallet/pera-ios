@@ -43,7 +43,7 @@ final class PasswordInputCircleView: ImageView, ViewComposable {
     }
 
     func customize(_ theme: PasswordInputCircleViewTheme) {
-        image = theme.imageSet.image
+        image = theme.imageSet[.normal]
         layer.draw(corner: theme.corner)
         customizeBaseAppearance(contentMode: theme.contentMode)
     }
@@ -57,12 +57,12 @@ extension PasswordInputCircleView {
     private func render(_ state: State) {
         switch state {
         case .empty:
-            image = theme.imageSet.image
+            image = theme.imageSet[.normal]
         case .error:
-            image = theme.imageSet.selected?.withRenderingMode(.alwaysTemplate)
-            tintColor = theme.negativeTintColor.color
+            image = theme.imageSet[.selected]?.withRenderingMode(.alwaysTemplate)
+            tintColor = theme.negativeTintColor.uiColor
         case .filled:
-            image = theme.imageSet.selected
+            image = theme.imageSet[.selected]
         }
     }
 }

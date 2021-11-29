@@ -28,7 +28,7 @@ struct FormInputFieldAssistiveViewCommonTheme: FormInputFieldAssistiveViewTheme 
         _ family: LayoutFamily
     ) {
         self.error = [
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Shared.Helpers.negative)
         ]
         self.errorContentEdgeInsets = (8, 0, 8, 0)

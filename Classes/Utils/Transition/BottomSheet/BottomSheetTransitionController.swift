@@ -37,7 +37,7 @@ final class BottomSheetTransitionController: MacaroonBottomSheet.BottomSheetTran
             opacity: 0,
             offset: (0, 0),
             radius: 0,
-            fillColor: AppColors.Shared.System.background.color,
+            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (16, 16),
             corners: .allCorners
         )

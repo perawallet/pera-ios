@@ -32,7 +32,7 @@ final class ContactsView: View {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = theme.backgroundColor.color
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.contentInset) 
         collectionView.keyboardDismissMode = .onDrag
         collectionView.register(ContactCell.self)
@@ -68,7 +68,7 @@ final class ContactsView: View {
 
 extension ContactsView {
     private func addContactsHeaderView() {
-        contactsHeaderView.backgroundColor = AppColors.Shared.System.background.color
+        contactsHeaderView.backgroundColor = AppColors.Shared.System.background.uiColor
         contactsHeaderView.setTitle("contacts-title".localized)
         contactsHeaderView.setQRButtonHidden(true)
         contactsHeaderView.setTestNetLabelHidden(true)

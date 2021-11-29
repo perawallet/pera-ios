@@ -32,13 +32,13 @@ struct PassphraseCellViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMMono.regular.make(13)),
             .textAlignment(.left),
-            .textOverflow(.singleLineFitting)
+            .textOverflow(SingleLineFittingText())
         ]
         self.phraseLabel = [
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.leadingInset = 16.0 * horizontalScale
     }

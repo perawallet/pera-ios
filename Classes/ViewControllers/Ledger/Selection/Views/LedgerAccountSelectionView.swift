@@ -31,7 +31,7 @@ final class LedgerAccountSelectionView: View {
         collectionView.allowsMultipleSelection = isMultiSelect
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = theme.backgroundColor.color
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.listContentInset)
         collectionView.register(LedgerAccountCell.self, forCellWithReuseIdentifier: LedgerAccountCell.reusableIdentifier)
         return collectionView

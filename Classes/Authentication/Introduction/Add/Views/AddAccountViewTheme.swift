@@ -33,7 +33,7 @@ struct AddAccountViewTheme: StyleSheet, LayoutSheet {
         self.title = [
             .textAlignment(.left),
             .text("introduction-add-account-text".localized),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32))
         ]

@@ -51,7 +51,7 @@ struct SearchInputViewTheme: LayoutSheet, StyleSheet {
             .image("icon-field-search")
         ]
         self.textRightInputAccessory = [
-            .icon("icon-field-close")
+            .icon([.normal("icon-field-close")])
         ]
 
         self.intrinsicHeight = 40

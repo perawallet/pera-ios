@@ -49,15 +49,15 @@ extension AccountCellViewModel {
 
                 let amountText = "\(assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "")".attributed(
                     [
-                        .textColor(AppColors.Components.Text.main.color),
-                        .font(Fonts.DMMono.regular.make(15).font)
+                        .textColor(AppColors.Components.Text.main.uiColor),
+                        .font(Fonts.DMMono.regular.make(15).uiFont)
                     ]
                 )
 
                 let codeText = " (\(assetDetail.getAssetCode()))".attributed(
                     [
-                        .textColor(AppColors.Components.Text.grayLighter.color),
-                        .font(Fonts.DMSans.regular.make(13).font)
+                        .textColor(AppColors.Components.Text.grayLighter.uiColor),
+                        .font(Fonts.DMSans.regular.make(13).uiFont)
                     ]
                 )
                 attributedDetail = amountText + codeText

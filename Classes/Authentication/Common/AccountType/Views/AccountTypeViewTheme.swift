@@ -32,13 +32,13 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main),
             .textAlignment(.left)
         ]
         self.detail = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(13)),
             .textColor(AppColors.Components.Text.gray),
             .textAlignment(.left)

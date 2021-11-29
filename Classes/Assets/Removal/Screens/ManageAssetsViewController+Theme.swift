@@ -28,7 +28,7 @@ extension ManageAssetsViewController {
             backgroundColor = AppColors.Shared.System.background
             cellSize = (UIScreen.main.bounds.width - 48, 72)
             let actionButtonStyle: ButtonStyle = [
-                .titleColor(AppColors.Shared.Helpers.negative),
+                .titleColor([.normal(AppColors.Shared.Helpers.negative)]),
                 .title("title-remove".localized),
                 .font(Fonts.DMSans.medium.make(15))
             ]

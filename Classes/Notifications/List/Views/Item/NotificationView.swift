@@ -132,7 +132,7 @@ extension NotificationView {
                 theme.titleLabelLeadingPadding +
                 theme.horizontalPadding
             ),
-            font: Fonts.DMSans.regular.make(15).font
+            font: Fonts.DMSans.regular.make(15).uiFont
         ) ?? 40
         let timeLabelHeight: CGFloat = 17
         let height: CGFloat = constantHeight + titleLabelHeight + timeLabelHeight

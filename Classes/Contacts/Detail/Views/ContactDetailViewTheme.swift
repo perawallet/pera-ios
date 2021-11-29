@@ -32,7 +32,7 @@ struct ContactDetailViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.assetsTitle = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main),

@@ -18,12 +18,12 @@
 import MacaroonUIKit
 
 protocol ButtonViewModel: ViewModel {
-    var iconSet: ImageSet? { get }
+    var iconSet: StateImageGroup? { get }
     var title: EditText? { get }
 }
 
 extension ButtonViewModel {
-    var iconSet: ImageSet? {
+    var iconSet: StateImageGroup? {
         return nil
     }
 

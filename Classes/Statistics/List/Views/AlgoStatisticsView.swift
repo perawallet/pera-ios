@@ -59,7 +59,7 @@ extension AlgoStatisticsView {
         titleView.setQRButtonHidden(true)
         titleView.setAddButtonHidden(true)
         titleView.setTestNetLabelHidden(true)
-        titleView.backgroundColor = AppColors.Shared.System.background.color
+        titleView.backgroundColor = AppColors.Shared.System.background.uiColor
 
         addSubview(titleView)
         titleView.snp.makeConstraints {

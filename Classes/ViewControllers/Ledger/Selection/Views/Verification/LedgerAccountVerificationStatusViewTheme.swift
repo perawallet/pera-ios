@@ -34,13 +34,13 @@ struct LedgerAccountVerificationStatusViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.statusLabel = [
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Shared.Helpers.negative)
         ]
         self.addressLabel = [
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMMono.regular.make(13)),
             .textColor(AppColors.Components.Text.main)
         ]
@@ -50,7 +50,7 @@ struct LedgerAccountVerificationStatusViewTheme: StyleSheet, LayoutSheet {
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.color
+            fillColor: AppColors.Shared.System.background.uiColor
         )
 
         self.indicator = [

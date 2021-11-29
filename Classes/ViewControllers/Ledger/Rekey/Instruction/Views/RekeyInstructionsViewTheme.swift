@@ -34,20 +34,20 @@ struct RekeyInstructionsViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.title = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(32)),
             .textColor(AppColors.Components.Text.main),
             .text("rekey-instruction-title".localized)
         ]
         self.subtitle = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.gray)
         ]
         self.headerTitle = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(19)),
             .textColor(AppColors.Components.Text.main),

@@ -127,7 +127,7 @@ extension PassphraseDisplayViewController {
         bottomModalTransition.perform(
             .bottomWarning(
                 configurator: BottomWarningViewConfigurator(
-                    image: "icon-info-red".image,
+                    image: "icon-info-red".uiImage,
                     title: "screenshot-title".localized,
                     description: "screenshot-description".localized,
                     secondaryActionButtonTitle: "title-close".localized

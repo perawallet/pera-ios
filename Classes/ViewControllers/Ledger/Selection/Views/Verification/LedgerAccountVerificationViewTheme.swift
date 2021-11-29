@@ -36,14 +36,14 @@ struct LedgerAccountVerificationViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
             .textAlignment(.center),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMSans.medium.make(19)),
             .textColor(AppColors.Components.Text.main),
             .text("ledger-verify-header-title".localized)
         ]
         self.description = [
             .textAlignment(.center),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.gray),
             .text("ledger-verify-header-subtitle".localized)

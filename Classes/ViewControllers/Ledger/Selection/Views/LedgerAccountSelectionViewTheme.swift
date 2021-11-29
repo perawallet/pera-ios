@@ -39,14 +39,14 @@ struct LedgerAccountSelectionViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
             .textAlignment(.center),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMSans.medium.make(19)),
             .textColor(AppColors.Components.Text.main),
             .text("ledger-device-list-looking".localized)
         ]
         self.description = [
             .textAlignment(.center),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.gray),
             .text("tutorial-description-ledger".localized)

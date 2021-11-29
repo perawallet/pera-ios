@@ -37,7 +37,7 @@ struct RekeyConfirmationViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(32)),
             .textColor(AppColors.Components.Text.main),
@@ -54,7 +54,7 @@ struct RekeyConfirmationViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(13)),
             .textAlignment(.left),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.lottie = UIApplication.shared.isDarkModeDisplay ? "dark-rekey" : "light-rekey" /// <todo>:  Should be handled also on view.
         self.finalizeButtonTheme = ButtonPrimaryTheme()

@@ -31,13 +31,13 @@ struct QRAddressLabelTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
             .textAlignment(.center),
-            .textOverflow(.singleLine(.byTruncatingMiddle)),
+            .textOverflow(SingleLineFittingText(lineBreakMode: .byTruncatingMiddle)),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(19))
         ]
         self.address = [
             .textAlignment(.center),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]

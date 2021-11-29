@@ -33,7 +33,7 @@ struct TabBarModalViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.sendButton = [
-            .icon("tabbar-icon-send")
+            .icon([.normal("tabbar-icon-send")])
         ]
         self.sendLabel = [
             .textColor(AppColors.Components.Text.main),
@@ -42,7 +42,7 @@ struct TabBarModalViewTheme: StyleSheet, LayoutSheet {
             .text("title-send".localized)
         ]
         self.receiveButton = [
-            .icon("tabbar-icon-receive")
+            .icon([.normal("tabbar-icon-receive")])
         ]
         self.receiveLabel = [
             .textColor(AppColors.Components.Text.main),

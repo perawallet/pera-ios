@@ -31,25 +31,25 @@ struct AssetPreviewViewCommonTheme: AssetPreviewViewTheme {
     init(_ family: LayoutFamily) {
         self.primaryAssetTitle = [
             .textAlignment(.left),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.secondaryAssetTitle = [
             .textAlignment(.left),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]
         self.primaryAssetValue = [
             .textAlignment(.right),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMMono.regular.make(15))
         ]
         self.secondaryAssetValue = [
             .textAlignment(.right),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.grayLighter),
             .font(Fonts.DMMono.regular.make(13))
         ]

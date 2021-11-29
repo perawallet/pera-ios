@@ -28,7 +28,7 @@ extension ContactDetailViewController {
             backgroundColor = AppColors.Shared.System.background
             cellSize = (UIScreen.main.bounds.width - 48, 72)
             let actionButtonStyle: ButtonStyle = [
-                .icon("icon-circle-arrow-up")
+                .icon([.normal("icon-circle-arrow-up")])
             ]
             assetPreviewActionViewTheme = AssetPreviewActionViewTheme(actionButtonStyle: actionButtonStyle, family)
         }

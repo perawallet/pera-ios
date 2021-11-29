@@ -43,13 +43,13 @@ struct TutorialViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.description = [
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.warningImage = [
             .image("icon-red-warning")
@@ -58,7 +58,7 @@ struct TutorialViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Shared.Helpers.negative),
             .font(Fonts.DMSans.medium.make(13)),
             .textAlignment(.left),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.mainButtonTheme = ButtonPrimaryTheme()
         self.actionButtonTheme = ButtonSecondaryTheme()

@@ -31,13 +31,13 @@ struct OptionsContextViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.titleLabel = [
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main)
         ]
         self.subtitleLabel = [
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),
             .font(Fonts.DMMono.regular.make(11)),
             .textColor(AppColors.Components.Text.gray)

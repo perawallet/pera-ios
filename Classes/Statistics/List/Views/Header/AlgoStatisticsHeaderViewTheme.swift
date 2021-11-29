@@ -33,13 +33,13 @@ struct AlgoStatisticsHeaderViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMMono.regular.make(36)),
             .textAlignment(.left),
-            .textOverflow(.singleLineFitting)
+            .textOverflow(SingleLineFittingText())
         ]
         self.dateLabel = [
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
-            .textOverflow(.singleLineFitting)
+            .textOverflow(SingleLineFittingText())
         ]
         self.arrowDown = [
             .image("icon-arrow-down-grey")

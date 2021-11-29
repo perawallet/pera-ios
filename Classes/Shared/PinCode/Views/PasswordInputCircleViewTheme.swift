@@ -21,7 +21,7 @@ import UIKit
 
 struct PasswordInputCircleViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
-    let imageSet: ImageSet
+    let imageSet: StateImageGroup
     let negativeTintColor: Color
     let contentMode: UIView.ContentMode
 
@@ -31,11 +31,11 @@ struct PasswordInputCircleViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         let filledButtonImage: Image = "black-button-filled"
-        self.imageSet = ImageSet("gray-button-border",
-            highlighted: filledButtonImage,
-            selected: filledButtonImage,
-            disabled: filledButtonImage
-        )
+        self.imageSet = [
+            .highlighted(filledButtonImage),
+            .selected(filledButtonImage),
+            .disabled(filledButtonImage)
+        ]
         self.negativeTintColor = AppColors.Shared.Helpers.negative
         self.contentMode = .center
 

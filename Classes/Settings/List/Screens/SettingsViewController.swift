@@ -377,7 +377,7 @@ extension SettingsViewController: SettingsToggleCellDelegate {
     
     private func presentLogoutAlert() {
         let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
-            image: "icon-settings-logout".image,
+            image: "icon-settings-logout".uiImage,
             title: "settings-logout-title".localized,
             description: "settings-logout-detail".localized,
             primaryActionButtonTitle: "node-settings-action-delete-title".localized,

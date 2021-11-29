@@ -26,13 +26,13 @@ struct AlgoStatisticsInfoViewTheme: LayoutSheet, StyleSheet {
         self.title = [
             .font(Fonts.DMSans.regular.make(13)),
             .textColor(AppColors.Components.Text.gray),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textAlignment(.left)
         ]
         self.value = [
             .font(Fonts.DMMono.regular.make(19)),
             .textColor(AppColors.Components.Text.main),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textAlignment(.left)
         ]
         self.verticalPadding = 12

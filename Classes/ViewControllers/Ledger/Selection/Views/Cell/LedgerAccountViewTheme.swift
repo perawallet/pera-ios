@@ -41,13 +41,13 @@ struct LedgerAccountCellViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = UIColor.clear
         self.nameLabel = [
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMMono.regular.make(15)),
             .textColor(AppColors.Components.Text.main)
         ]
         self.assetInfoLabel = [
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(13)),
             .textColor(AppColors.Components.Text.grayLighter)
         ]
@@ -57,12 +57,12 @@ struct LedgerAccountCellViewTheme: StyleSheet, LayoutSheet {
             opacity: 1,
             offset: (0, 2),
             radius: 4,
-            fillColor: AppColors.Shared.System.background.color
+            fillColor: AppColors.Shared.System.background.uiColor
         )
         self.infoButtonStyle = [
-            .backgroundImage("icon-info-gray")
+            .backgroundImage([.normal("icon-info-gray")])
         ]
-        self.selectedStateBorder = Border(color: AppColors.Shared.Global.turquoise600.color, width: 2)
+        self.selectedStateBorder = Border(color: AppColors.Shared.Global.turquoise600.uiColor, width: 2)
         self.selectedStateCheckbox = [
             .image("icon-checkbox-selected")
         ]

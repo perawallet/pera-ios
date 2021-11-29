@@ -53,13 +53,13 @@ protocol FontMaker {
 
 extension FontMaker {
     func make(
-        _ size: CustomFont.Size,
-        _ textStyle: UIFont.TextStyle? = nil
+        _ size: FontSize,
+        _ style: CustomFont.Style? = nil
     ) -> CustomFont {
         return CustomFont(
             name: name,
             size: size,
-            textStyle: textStyle
+            style: style
         )
     }
 }

@@ -41,7 +41,7 @@ class TestNetTitleView: BaseView {
     }()
     
     override func prepareLayout() {
-        backgroundColor = AppColors.Shared.System.background.color
+        backgroundColor = AppColors.Shared.System.background.uiColor
         setupTestNetLabelLayout()
         setupTitleLabelLayout()
     }

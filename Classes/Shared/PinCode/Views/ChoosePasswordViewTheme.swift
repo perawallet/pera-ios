@@ -35,7 +35,7 @@ struct ChoosePasswordViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.numpadViewTheme = NumpadViewTheme()
 

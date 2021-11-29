@@ -26,7 +26,7 @@ struct AccountNameViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.titleLabel = [
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15)),

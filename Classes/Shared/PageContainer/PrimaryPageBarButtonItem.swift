@@ -24,13 +24,13 @@ struct PrimaryPageBarButtonItem: PageBarButtonItem {
 
     init(title: String) {
         let normalAttributes: [AttributedTextBuilder.Attribute] = [
-            .font(Fonts.DMSans.regular.make(15).font),
-            .textColor(AppColors.Components.Text.main.color)
+            .font(Fonts.DMSans.regular.make(15).uiFont),
+            .textColor(AppColors.Components.Text.main.uiColor)
         ]
         let selectedAttributes: [AttributedTextBuilder.Attribute] = [
-            .font(Fonts.DMSans.regular.make(15).font),
+            .font(Fonts.DMSans.regular.make(15).uiFont),
             .letterSpacing(-0.1),
-            .textColor(AppColors.Components.Text.main.color)
+            .textColor(AppColors.Components.Text.main.uiColor)
         ]
 
         self.style = [

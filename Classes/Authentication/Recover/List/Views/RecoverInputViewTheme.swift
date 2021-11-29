@@ -35,7 +35,7 @@ struct RecoverInputViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = UIColor.clear
         self.title = [
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .text("account-details-title".localized)

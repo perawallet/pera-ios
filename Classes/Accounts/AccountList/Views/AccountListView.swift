@@ -28,7 +28,7 @@ final class AccountListView: View {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = theme.backgroundColor.color
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.register(AccountPreviewCell.self)
         return collectionView
     }()
