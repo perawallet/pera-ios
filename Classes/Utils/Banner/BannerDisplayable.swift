@@ -26,7 +26,7 @@ protocol BannerDisplayable {
 
 extension BannerDisplayable where Self: UIViewController {
     func addBanner() {
-        guard let window = UIApplication.shared.windows.last else {
+        guard let window = UIApplication.shared.window else {
             return
         }
 
