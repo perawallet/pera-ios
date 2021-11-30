@@ -13,14 +13,23 @@
 // limitations under the License.
 
 //
-//  SingleSelectionCell.swift
+//   CurrencySelectionViewController+Theme.swift
 
 import UIKit
+import MacaroonUIKit
 
-class SingleSelectionCell: BaseCollectionViewCell<SingleSelectionView> {
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contextView.clear()
+extension CurrencySelectionViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: Color
+        
+        let cellWidth: LayoutMetric
+        let cellHeight: LayoutMetric
+        
+        init(_ family: LayoutFamily) {
+            backgroundColor = AppColors.Shared.System.background
+            
+            cellWidth = UIScreen.main.bounds.width - 48
+            cellHeight = 64
+        }
     }
 }

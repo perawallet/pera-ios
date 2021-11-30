@@ -16,63 +16,63 @@
 //  SingleSelectionListView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class SingleSelectionListView: BaseView {
-    
+final class SingleSelectionListView: View {
     weak var delegate: SingleSelectionListViewDelegate?
     
-    private(set) lazy var collectionView: UICollectionView = {
+    private lazy var theme = SingleSelectionListViewTheme()
+    private lazy var errorView = ListErrorView()
+    private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        flowLayout.minimumInteritemSpacing = 0.0
+        flowLayout.minimumLineSpacing = theme.collectionViewMinimumLineSpacing
+        flowLayout.minimumInteritemSpacing = theme.collectionViewMinimumInteritemSpacing
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = Colors.Background.tertiary
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = .zero
         collectionView.keyboardDismissMode = .onDrag
         collectionView.register(SingleSelectionCell.self, forCellWithReuseIdentifier: SingleSelectionCell.reusableIdentifier)
         return collectionView
     }()
     
-    private lazy var errorView = ListErrorView()
+    private lazy var refreshControl = UIRefreshControl()
     
-    private lazy var contentStateView = ContentStateView()
-    
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
-        return refreshControl
-    }()
-    
-    override func configureAppearance() {
-        super.configureAppearance()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        customize(theme)
+        linkInteractors()
+    }
+
+    func customize(_ theme: SingleSelectionListViewTheme) {
         errorView.setImage(img("icon-warning-error"))
         errorView.setTitle("transaction-filter-error-title".localized)
         errorView.setSubtitle("transaction-filter-error-subtitle".localized)
+        
+        addCollectionView(theme)
     }
     
-    override func linkInteractors() {
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    
+    func linkInteractors() {
+        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
         errorView.delegate = self
-    }
-
-    override func prepareLayout() {
-        setupCollectionViewLayout()
     }
 }
 
 extension SingleSelectionListView {
-    private func setupCollectionViewLayout() {
+    private func addCollectionView(_ theme: SingleSelectionListViewTheme) {
         addSubview(collectionView)
-        
-        collectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        collectionView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.topInset)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
-        
-        collectionView.backgroundView = contentStateView
-        collectionView.refreshControl = refreshControl
     }
 }
 
@@ -96,10 +96,6 @@ extension SingleSelectionListView {
         collectionView.dataSource = dataSource
     }
     
-    var isListRefreshing: Bool {
-        return refreshControl.isRefreshing
-    }
-    
     func endRefreshing() {
         if refreshControl.isRefreshing {
             refreshControl.endRefreshing()
@@ -118,6 +114,10 @@ extension SingleSelectionListView {
         if !refreshControl.isRefreshing {
             collectionView.contentState = .loading
         }
+    }
+    
+    func setRefreshControl() {
+        collectionView.refreshControl = refreshControl
     }
 }
 
