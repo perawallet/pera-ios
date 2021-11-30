@@ -36,12 +36,13 @@ UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
-        cell.customize(AssetPreviewViewAdditionTheme())
+        let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
+        cell.customize(AccountPreviewViewTheme())
         if indexPath.item < accounts.count {
             let account = accounts[indexPath.item]
+
             cell.bindData(
-                AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAccountSelection(account))
+                AccountPreviewViewModel(from: account)
             )
         }
         return cell

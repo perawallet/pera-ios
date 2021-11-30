@@ -20,49 +20,39 @@ import Foundation
 import UIKit
 
 final class SelectAccountViewController: BaseViewController {
-    private let layout = Layout<LayoutConstants>()
+    private let theme = Theme()
     private lazy var accountListDataSource = SelectAccountViewControllerDataSource(
         session: UIApplication.shared.appConfiguration?.session
     )
     private lazy var listView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 0
+        flowLayout.minimumLineSpacing = theme.listMinimumLineSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = AppColors.Shared.System.background.uiColor
-        collectionView.register(AssetPreviewCell.self)
-        collectionView.contentInset.top = 28
+        collectionView.backgroundColor = theme.listBackgroundColor
+        collectionView.register(AccountPreviewCell.self)
+        collectionView.contentInset.top = theme.listContentInsetTop
         return collectionView
     }()
 
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
-
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
+        addBarButtons()
     }
 
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.tertiary
+        view.backgroundColor = AppColors.Shared.System.background.uiColor
         navigationItem.title = "send-algos-select".localized
     }
 
     override func setListeners() {
         listView.delegate = self
         listView.dataSource = accountListDataSource
-        listView.register(
-            AssetPreviewCell.self,
-            forCellWithReuseIdentifier: AssetPreviewCell.reusableIdentifier
-        )
-
     }
 
     override func prepareLayout() {
-        setupSelectAccountViewLayout()
+        addListView()
     }
 
     override func viewDidLoad() {
@@ -70,21 +60,24 @@ final class SelectAccountViewController: BaseViewController {
 
         listView.reloadData()
     }
+    
 }
 
 extension SelectAccountViewController {
-    private func setupSelectAccountViewLayout() {
+    private func addBarButtons() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true)
+        }
+
+        leftBarButtonItems = [closeBarButtonItem]
+    }
+
+    private func addListView() {
         view.addSubview(listView)
         listView.snp.makeConstraints {
             $0.trailing.leading.equalToSuperview().inset(24)
             $0.top.bottom.equalToSuperview()
         }
-    }
-}
-
-extension SelectAccountViewController {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let itemHeight: CGFloat = 72.0
     }
 }
 
@@ -94,6 +87,6 @@ extension SelectAccountViewController: UICollectionViewDelegate, UICollectionVie
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: layout.current.itemHeight)
+        return CGSize(width: collectionView.frame.width, height: theme.listItemHeight)
     }
 }
