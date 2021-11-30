@@ -16,11 +16,10 @@
 //  QRView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class QRView: BaseView {
-    
-    private let outputWidth: CGFloat = 240.0
-    
+final class QRView: View {
+    private lazy var theme = QRViewTheme()
     private(set) lazy var imageView = UIImageView()
 
     let qrText: QRText
@@ -29,28 +28,32 @@ class QRView: BaseView {
         self.qrText = qrText
         super.init(frame: .zero)
         
+        customize(theme)
+        
         if qrText.mode == .mnemonic {
             generateMnemonicsQR()
         } else {
             generateLinkQR()
         }
     }
-    
-    override func configureAppearance() {
-        backgroundColor = .clear
+
+    func customize(_ theme: QRViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        
+        addImageView(theme)
     }
     
-    override func prepareLayout() {
-        setupImageViewLayout()
-    }
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
 
 extension QRView {
-    private func setupImageViewLayout() {
+    private func addImageView(_ theme: QRViewTheme) {
         addSubview(imageView)
         
-        imageView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        imageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
@@ -86,7 +89,7 @@ extension QRView {
         }
         
         let ciImageSize = ciImage.extent.size
-        let ratio = outputWidth / ciImageSize.width
+        let ratio = theme.outputWidth / ciImageSize.width
         
         guard let outputImage = ciImage.nonInterpolatedImage(withScale: Scale(dx: ratio, dy: ratio)) else {
             return

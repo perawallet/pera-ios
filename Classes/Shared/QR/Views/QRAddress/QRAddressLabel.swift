@@ -40,8 +40,7 @@ extension QRAddressLabel {
         addSubview(titleLabel)
         
         titleLabel.snp.makeConstraints {
-            $0.width.equalTo(theme.titleWidth)
-            $0.top.equalToSuperview()
+            $0.top.leading.trailing.equalToSuperview()
             $0.centerX.equalToSuperview()
         }
     }
@@ -58,12 +57,14 @@ extension QRAddressLabel {
 }
 
 extension QRAddressLabel {
-    func setAddress(_ address: String) {
-        titleLabel.text = address
-        addressLabel.text = address
-    }
-    
     func getAddress() -> String {
         return addressLabel.text.someString
+    }
+}
+
+extension QRAddressLabel: ViewModelBindable {
+    func bindData(_ viewModel: QRAddressLabelViewModel?) {
+        titleLabel.text = viewModel?.title
+        addressLabel.text = viewModel?.address
     }
 }

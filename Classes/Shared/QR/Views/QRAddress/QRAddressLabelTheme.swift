@@ -23,8 +23,6 @@ struct QRAddressLabelTheme: StyleSheet, LayoutSheet {
     let title: TextStyle
     let address: TextStyle
     
-    let titleWidth: LayoutMetric
-    let titleHeight: LayoutMetric
     let spacing: LayoutMetric
     
     init(_ family: LayoutFamily) {
@@ -41,9 +39,7 @@ struct QRAddressLabelTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
-        
-        self.titleWidth = 145
-        self.titleHeight = 28
+
         self.spacing = 12
     }
 }

@@ -13,22 +13,24 @@
 // limitations under the License.
 
 //
-//  QRCreationDraft.swift
+//   QRAddressLabelViewModel.swift
 
 import Foundation
 
-struct QRCreationDraft {
-    let address: String
-    let mnemonic: String?
-    let title: String?
-    let mode: QRMode
-    let isSelectable: Bool
+final class QRAddressLabelViewModel {
+    private(set) var title: String?
+    private(set) var address: String?
     
-    init(address: String, mode: QRMode, mnemonic: String? = nil, title: String?) {
-        self.address = address
-        self.mode = mode
-        self.mnemonic = mnemonic
-        self.isSelectable = mode == .address
+    init(title: String, address: String) {
+        setTitle(title)
+        setAddress(address)
+    }
+    
+    private func setTitle(_ title: String) {
         self.title = title
+    }
+    
+    private func setAddress(_ address: String) {
+        self.address = address
     }
 }

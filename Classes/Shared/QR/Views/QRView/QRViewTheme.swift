@@ -13,22 +13,19 @@
 // limitations under the License.
 
 //
-//  QRCreationDraft.swift
+//   QRViewTheme.swift
+
 
 import Foundation
+import MacaroonUIKit
+import UIKit
 
-struct QRCreationDraft {
-    let address: String
-    let mnemonic: String?
-    let title: String?
-    let mode: QRMode
-    let isSelectable: Bool
+struct QRViewTheme: LayoutSheet, StyleSheet {
+    let backgroundColor: Color
+    let outputWidth: LayoutMetric
     
-    init(address: String, mode: QRMode, mnemonic: String? = nil, title: String?) {
-        self.address = address
-        self.mode = mode
-        self.mnemonic = mnemonic
-        self.isSelectable = mode == .address
-        self.title = title
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
+        self.outputWidth = 240.0
     }
 }

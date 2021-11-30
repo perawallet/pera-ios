@@ -93,7 +93,7 @@ extension AccountsViewController: OptionsViewControllerDelegate {
         guard let authAddress = selectedAccount?.authAddress else {
             return
         }
-        let draft = QRCreationDraft(address: authAddress, mode: .address)
+        let draft = QRCreationDraft(address: authAddress, mode: .address, title: selectedAccount?.name)
         open(.qrGenerator(title: "options-auth-account".localized, draft: draft, isTrackable: true), by: .present)
     }
     

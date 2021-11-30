@@ -228,7 +228,7 @@ extension TabBarController: SelectAssetViewControllerDelegate {
             )
         } else {
             log(ReceiveTabEvent())
-            let draft = QRCreationDraft(address: account.address, mode: .address)
+            let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
             open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
         }
     }
@@ -261,7 +261,7 @@ extension TabBarController: SelectAssetViewControllerDelegate {
             )
         } else {
             log(ReceiveTabEvent())
-            let draft = QRCreationDraft(address: account.address, mode: .address)
+            let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
             open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
         }
     }
