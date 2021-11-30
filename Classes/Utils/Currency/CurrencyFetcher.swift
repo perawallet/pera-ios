@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//   CurrencyController.swift
+//   CurrencyFetcher.swift
 
 import Foundation
 import MagpieCore
