@@ -26,7 +26,7 @@ final class AssetInformation: ALGEntityModel {
     let decimals: Int64
     let usdValue: String?
     let isVerified: Bool
-    let creator: String?
+    let creator: AssetCreator?
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -37,7 +37,7 @@ final class AssetInformation: ALGEntityModel {
         self.decimals = apiModel.fractionDecimals ?? 0
         self.usdValue = apiModel.usdValue
         self.isVerified = apiModel.isVerified ?? false
-        self.creator = apiModel.creator
+        self.creator = apiModel.creator.unwrap(AssetCreator.init)
     }
 
     func encode() -> APIModel {
@@ -48,7 +48,7 @@ final class AssetInformation: ALGEntityModel {
         apiModel.fractionDecimals = decimals
         apiModel.usdValue = usdValue
         apiModel.isVerified = isVerified
-        apiModel.creator = creator
+        apiModel.creator = creator?.encode()
         return apiModel
     }
 }
@@ -61,7 +61,7 @@ extension AssetInformation {
         var fractionDecimals: Int64?
         var usdValue: String?
         var isVerified: Bool?
-        var creator: String?
+        var creator: AssetCreator.APIModel?
 
         init() {
             self.assetId = 0
@@ -71,6 +71,16 @@ extension AssetInformation {
             self.usdValue = nil
             self.isVerified = nil
             self.creator = nil
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case assetId = "asset_id"
+            case name
+            case unitName = "unit_name"
+            case fractionDecimals = "fraction_decimals"
+            case usdValue = "usd_value"
+            case isVerified = "is_verified"
+            case creator
         }
     }
 }
