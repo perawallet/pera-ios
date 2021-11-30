@@ -142,6 +142,8 @@ class Session: Storable {
             save(newValue, for: currencyPreferenceKey, to: .defaults)
         }
     }
+
+    var preferredCurrencyDetails: Currency?
     
     var notificationLatestFetchTimestamp: TimeInterval? {
         get {
