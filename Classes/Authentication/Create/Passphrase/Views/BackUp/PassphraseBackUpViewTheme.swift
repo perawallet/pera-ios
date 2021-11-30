@@ -25,12 +25,11 @@ struct PassphraseBackUpViewTheme: StyleSheet, LayoutSheet {
     let description: TextStyle
 
     let mainButtonTheme: ButtonTheme
+    let passphraseViewTheme: PassphraseViewTheme
 
-    let titleHorizontalInset: LayoutMetric
     let topInset: LayoutMetric
     let containerTopInset: LayoutMetric
     let collectionViewHeight: LayoutMetric
-    let verticalInset: LayoutMetric
     let bottomInset: LayoutMetric
     let horizontalInset: LayoutMetric
 
@@ -40,24 +39,23 @@ struct PassphraseBackUpViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .text("recover-passphrase-title".localized)
         ]
         self.description = [
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .text("passphrase-bottom-title".localized)
         ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()
+        self.passphraseViewTheme = PassphraseViewTheme()
 
-        self.titleHorizontalInset = 24
-        self.topInset = 12
+        self.topInset = 2
         self.containerTopInset = 33
         self.collectionViewHeight = 456
-        self.verticalInset = 24
         self.bottomInset = 16
         self.horizontalInset = 24
     }

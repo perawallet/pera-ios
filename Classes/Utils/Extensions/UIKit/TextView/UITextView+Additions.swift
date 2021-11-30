@@ -18,7 +18,7 @@
 import UIKit
 
 extension UITextView {
-    func bindHtml(_ html: String?, with attributes: [NSAttributedString.Key: Any] ) {
+    func bindHTML(_ html: String?, attributes: [NSAttributedString.Key: Any]) {
         guard let data = html?.data(using: .unicode),
             let attributedString = try? NSMutableAttributedString(
             data: data,

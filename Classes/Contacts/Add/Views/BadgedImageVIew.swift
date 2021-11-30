@@ -56,7 +56,7 @@ extension BadgedImageView {
 
 extension BadgedImageView {
     func bindData(image: UIImage?, badgeImage: UIImage?) {
-        imageView.image = image ?? "icon-user-placeholder".image
+        imageView.image = image ?? "icon-user-placeholder".uiImage
         badgeImageView.image = badgeImage
     }
 
@@ -65,6 +65,6 @@ extension BadgedImageView {
     }
 
     func bindData(image: UIImage?) {
-        imageView.image = image ?? "icon-user-placeholder".image
+        imageView.image = image ?? "icon-user-placeholder".uiImage
     }
 }

@@ -20,13 +20,7 @@ import UIKit
 final class EditContactViewController: BaseScrollViewController {
     weak var delegate: EditContactViewControllerDelegate?
 
-    private lazy var removeContactModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(theme.modalSize))
-    )
+    private lazy var removeContactModalTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var theme = Theme()
     private lazy var editContactView = EditContactView()
@@ -196,7 +190,7 @@ extension EditContactViewController: EditContactViewDelegate {
 
     private func displayDeleteAlert(for contact: Contact) {
         let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
-            image: "icon-trash-red".image,
+            image: "icon-trash-red".uiImage,
             title: "contacts-delete-contact".localized,
             description: "contacts-delete-contact-alert-explanation".localized,
             primaryActionButtonTitle: "contacts-approve-delete-contact".localized,
@@ -210,13 +204,8 @@ extension EditContactViewController: EditContactViewDelegate {
             self.dismissScreen()
         }
 
-        open(
-            .bottomWarning(configurator: bottomWarningViewConfigurator),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: removeContactModalPresenter
-            )
+        removeContactModalTransition.perform(
+            .bottomWarning(configurator: bottomWarningViewConfigurator)
         )
      }
 

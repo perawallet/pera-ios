@@ -29,13 +29,7 @@ class PinLimitViewController: BaseViewController {
     
     weak var delegate: PinLimitViewControllerDelegate?
     
-    private lazy var bottomModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 402.0))
-    )
+    private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
     
     private lazy var pinLimitView = PinLimitView()
     
@@ -145,24 +139,22 @@ extension PinLimitViewController: PinLimitViewDelegate {
     }
     
     private func presentLogoutAlert() {
-        let configurator = BottomInformationBundle(
+        let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
+            image: "icon-settings-logout".uiImage,
             title: "settings-logout-title".localized,
-            image: img("icon-settings-logout"),
-            explanation: "settings-logout-detail".localized,
-            actionTitle: "node-settings-action-delete-title".localized,
-            actionImage: img("bg-button-red")
-        ) {
+            description: "settings-logout-detail".localized,
+            primaryActionButtonTitle: "node-settings-action-delete-title".localized,
+            secondaryActionButtonTitle: "title-cancel".localized
+        ) { [weak self] in
+            guard let self = self else {
+                return
+            }
             self.delegate?.pinLimitViewControllerDidResetAllData(self)
             self.dismissScreen()
         }
-        
-        open(
-            .bottomInformation(mode: .action, configurator: configurator),
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: bottomModalPresenter
-            )
+
+        bottomModalTransition.perform(
+            .bottomWarning(configurator: bottomWarningViewConfigurator)
         )
     }
 }

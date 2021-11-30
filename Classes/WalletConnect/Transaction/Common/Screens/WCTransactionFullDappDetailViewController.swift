@@ -16,9 +16,10 @@
 //   WCTransactionFullDappDetailViewController.swift
 
 import UIKit
+import MacaroonBottomSheet
+import MacaroonUIKit
 
 class WCTransactionFullDappDetailViewController: BaseViewController {
-
     override var shouldShowNavigationBar: Bool {
         return false
     }
@@ -52,6 +53,12 @@ class WCTransactionFullDappDetailViewController: BaseViewController {
 
     override func prepareLayout() {
         prepareWholeScreenLayoutFor(fullDappDetailView)
+    }
+}
+
+extension WCTransactionFullDappDetailViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(350)
     }
 }
 

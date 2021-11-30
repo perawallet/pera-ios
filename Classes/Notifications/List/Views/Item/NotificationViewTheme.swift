@@ -49,7 +49,7 @@ struct NotificationViewTheme: StyleSheet, LayoutSheet {
         ]
         self.timeLabel = [
             .textAlignment(.left),
-            .textOverflow(.singleLineFitting),
+            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]

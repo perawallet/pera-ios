@@ -27,9 +27,9 @@ final class AlgoStatisticsDateSelectionView: View {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = theme.backgroundColor.color
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.contentInset)
-        collectionView.registerCell(AlgoStatisticsDateOptionCell.self)
+        collectionView.register(AlgoStatisticsDateOptionCell.self)
         return collectionView
     }()
 

@@ -31,9 +31,9 @@ struct AddAccountViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
-            .textAlignment(.center),
+            .textAlignment(.left),
             .text("introduction-add-account-text".localized),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32))
         ]
@@ -41,6 +41,6 @@ struct AddAccountViewTheme: StyleSheet, LayoutSheet {
         
         self.horizontalInset = 24
         self.verticalInset = 20
-        self.topInset = 12
+        self.topInset = 2
     }
 }

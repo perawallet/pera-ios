@@ -44,7 +44,7 @@ struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.title = [
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .text("watch-account-create".localized)
@@ -54,7 +54,7 @@ struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .text("watch-account-explanation-title".localized)
         ]
         self.pasteButton = [
@@ -63,25 +63,25 @@ struct WatchAccountAdditionViewTheme: StyleSheet, LayoutSheet {
         ]
         self.pasteButtonCorner = Corner(radius: 20)
         self.qr = [
-            .icon("icon-qr-scan")
+            .icon([.normal("icon-qr-scan")])
         ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()
         self.pasteTextAttributes = [
-            .font(Fonts.DMSans.regular.make(15).font),
-            .textColor(AppColors.Shared.Global.white.color)
+            .font(Fonts.DMSans.regular.make(15).uiFont),
+            .textColor(AppColors.Shared.Global.white.uiColor)
         ]
 
         self.copiedTextAttributes = [
-            .font(Fonts.DMMono.regular.make(11).font),
-            .textColor(AppColors.Components.Text.gray.color)
+            .font(Fonts.DMMono.regular.make(11).uiFont),
+            .textColor(AppColors.Components.Text.gray.uiColor)
         ]
 
         self.textInputVerticalInset = 40
         self.buttonVerticalInset = 60
-        self.horizontalInset = 20
+        self.horizontalInset = 24
         self.bottomInset = 16
-        self.topInset = 12
+        self.topInset = 2
         self.containerTopInset = 32
         self.pasteButtonTopInset = 20
         self.pasteButtonSize = (175, 40)

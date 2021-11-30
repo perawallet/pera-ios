@@ -52,14 +52,8 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
         dataSource.delegate = self
     }
 
-    override func setListeners() {
-        passphraseVerifyView.setListeners()
-    }
-    
     override func prepareLayout() {
-        super.prepareLayout()
-        passphraseVerifyView.customize(theme.passphraseVerifyViewTheme)
-        
+        super.prepareLayout()        
         contentView.addSubview(passphraseVerifyView)
         passphraseVerifyView.pinToSuperview()
     }

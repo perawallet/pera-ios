@@ -30,7 +30,7 @@ final class ContactInformationViewModel {
             let resizedImage = image.convert(to: CGSize(width: 80, height: 80))
             self.image = resizedImage
         } else {
-            self.image = "icon-user-placeholder".image
+            self.image = "icon-user-placeholder".uiImage
         }
 
         name = contact.name

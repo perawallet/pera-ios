@@ -21,12 +21,10 @@ import UIKit
 
 struct PasswordInputViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
-
-    let size: LayoutSize
+    let stackViewSpacing: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-
-        self.size = (220, 20)
+        self.stackViewSpacing = 24
     }
 }

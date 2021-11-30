@@ -39,32 +39,32 @@ struct ContactInformationViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.nameLabel = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textAlignment(.center),
             .font(Fonts.DMSans.medium.make(19)),
             .textColor(AppColors.Components.Text.main)
         ]
         self.accountShortAddressLabel = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textAlignment(.center),
             .font(Fonts.DMMono.regular.make(13)),
             .textColor(AppColors.Components.Text.grayLighter)
         ]
         self.accountAddressTitleLabel = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main),
             .text("Account Address".localized)
         ]
         self.accountAddressValueLabel = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMMono.regular.make(15)),
             .textColor(AppColors.Components.Text.main)
         ]
         self.qrCode = [
-            .icon("icon-qr")
+            .icon([.normal("icon-qr")])
         ]
         self.divider = [
             .backgroundColor(AppColors.Shared.Layer.grayLighter)

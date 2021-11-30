@@ -42,7 +42,7 @@ extension EditContactViewModel {
     }
 
     private func bindImage() {
-        badgeImage = "icon-circle-edit".image
+        badgeImage = "icon-circle-edit".uiImage
     }
 
     private func bindName(_ contact: Contact) {

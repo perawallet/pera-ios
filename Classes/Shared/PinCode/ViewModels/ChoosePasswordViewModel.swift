@@ -16,21 +16,23 @@
 //  ChoosePasswordViewModel.swift
 
 import UIKit
+import MacaroonUIKit
 
-class ChoosePasswordViewModel {
-    
-    private let mode: ChoosePasswordViewController.Mode
-    
-    private var password = ""
+final class ChoosePasswordViewModel: PairedViewModel {
+    private var password: String = .empty
     
     private var isPasswordValid: Bool {
         return password.count == 6
     }
+
+    private let mode: ChoosePasswordViewController.Mode
     
-    init(mode: ChoosePasswordViewController.Mode) {
-        self.mode = mode
+    init(_ model: ChoosePasswordViewController.Mode) {
+        self.mode = model
     }
-    
+}
+
+extension ChoosePasswordViewModel {
     func configure(_ choosePasswordView: ChoosePasswordView) {
         switch mode {
         case .setup:
@@ -47,7 +49,7 @@ class ChoosePasswordViewModel {
             choosePasswordView.titleLabel.text = "login-subtitle".localized
         }
     }
-    
+
     func configureSelection(in choosePasswordView: ChoosePasswordView, for value: NumpadKey, then handler: (String) -> Void) {
         switch value {
         case let .number(number):
@@ -55,7 +57,7 @@ class ChoosePasswordViewModel {
                 handler(password)
                 return
             }
-            
+
             password.append(number)
         case .delete:
             if !password.isEmpty {
@@ -64,27 +66,27 @@ class ChoosePasswordViewModel {
         case .spacing:
             break
         }
-        
+
         if isPasswordValid {
             update(in: choosePasswordView, for: value)
             handler(password)
             return
         }
-        
+
         update(in: choosePasswordView, for: value)
     }
-    
-    func update(in choosePasswordView: ChoosePasswordView, for value: NumpadKey) {
+
+    private func update(in choosePasswordView: ChoosePasswordView, for value: NumpadKey) {
         switch value {
         case .number:
             let passwordInputCircleView = choosePasswordView.passwordInputView.passwordInputCircleViews[password.count - 1]
-            
+
             if passwordInputCircleView.state == .error {
                 for view in choosePasswordView.passwordInputView.passwordInputCircleViews {
                     view.state = .empty
                 }
             }
-            
+
             passwordInputCircleView.state = .filled
         case .delete:
             if isPasswordValid {
@@ -92,33 +94,37 @@ class ChoosePasswordViewModel {
                 passwordInputCircleView.state = .empty
                 return
             }
-            
+
             let passwordInputCircleView = choosePasswordView.passwordInputView.passwordInputCircleViews[password.count]
-            
+
             if passwordInputCircleView.state == .error {
                 return
             }
-            
+
             passwordInputCircleView.state = .empty
             return
         case .spacing:
             break
         }
     }
-    
+
     func reset(_ choosePasswordView: ChoosePasswordView) {
-        password = ""
-        
+        resetPassword()
+
         for view in choosePasswordView.passwordInputView.passwordInputCircleViews {
             view.state = .empty
         }
     }
-    
+
     func displayWrongPasswordState(_ choosePasswordView: ChoosePasswordView) {
-        password = ""
-        
+        resetPassword()
+
         for view in choosePasswordView.passwordInputView.passwordInputCircleViews {
             view.state = .error
         }
+    }
+
+    private func resetPassword() {
+        password = .empty
     }
 }

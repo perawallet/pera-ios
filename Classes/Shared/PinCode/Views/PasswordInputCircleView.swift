@@ -28,20 +28,22 @@ final class PasswordInputCircleView: ImageView, ViewComposable {
     
     var state: State = .empty {
         didSet {
-            switch state {
-            case .empty:
-                image = theme.imageSet.image
-            case .error:
-                image = theme.imageSet.image.withRenderingMode(.alwaysTemplate)
-                customizeBaseAppearance(tintColor: theme.negativeTintColor)
-            case .filled:
-                image = theme.imageSet.selected
-            }
+            render(state)
         }
     }
 
-    func customize() {
-        image = theme.imageSet.image
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(theme)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func customize(_ theme: PasswordInputCircleViewTheme) {
+        image = theme.imageSet[.normal]
         layer.draw(corner: theme.corner)
         customizeBaseAppearance(contentMode: theme.contentMode)
     }
@@ -49,6 +51,20 @@ final class PasswordInputCircleView: ImageView, ViewComposable {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+}
+
+extension PasswordInputCircleView {
+    private func render(_ state: State) {
+        switch state {
+        case .empty:
+            image = theme.imageSet[.normal]
+        case .error:
+            image = theme.imageSet[.selected]?.withRenderingMode(.alwaysTemplate)
+            tintColor = theme.negativeTintColor.uiColor
+        case .filled:
+            image = theme.imageSet[.selected]
+        }
+    }
 }
 
 extension PasswordInputCircleView {

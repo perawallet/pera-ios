@@ -41,7 +41,7 @@ struct BannerViewInfoTheme: BannerViewTheme {
         self.title = [
             .font(UIFont.font(withWeight: .semiBold(size: 16.0))),
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(textColor)
         ]
         if UIApplication.shared.isDarkModeDisplay {

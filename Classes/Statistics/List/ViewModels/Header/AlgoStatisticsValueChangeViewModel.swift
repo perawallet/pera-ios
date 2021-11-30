@@ -45,9 +45,9 @@ extension AlgoStatisticsValueChangeViewModel {
     private func bindValueColor(_ priceChange: AlgoUSDPriceChange) {
         switch priceChange.getValueChangeStatus() {
         case .increased:
-            valueColor = AppColors.Shared.Helpers.positive.color
+            valueColor = AppColors.Shared.Helpers.positive.uiColor
         case .decreased:
-            valueColor = AppColors.Shared.Helpers.negative.color
+            valueColor = AppColors.Shared.Helpers.negative.uiColor
         case .stable:
             valueColor = nil
         }

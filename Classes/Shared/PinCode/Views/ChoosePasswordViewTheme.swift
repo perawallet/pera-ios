@@ -22,9 +22,9 @@ import UIKit
 struct ChoosePasswordViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
+    let numpadViewTheme: NumpadViewTheme
 
     let inputViewTopInset: LayoutMetric
-    let passwordInputViewInset: LayoutMetric
     let numpadBottomInset: LayoutMetric
     let horizontalInset: LayoutMetric
     let topInset: LayoutMetric
@@ -35,13 +35,13 @@ struct ChoosePasswordViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
+        self.numpadViewTheme = NumpadViewTheme()
 
         self.horizontalInset = 24
-        self.topInset = 12
-        self.passwordInputViewInset = -10
+        self.topInset = 2
         self.inputViewTopInset = 128 * verticalScale
-        self.numpadBottomInset = 32 * verticalScale
+        self.numpadBottomInset = 62 * verticalScale
     }
 }

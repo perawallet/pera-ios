@@ -17,11 +17,6 @@
 
 import UIKit
 
-typealias ModalPresentableViewController = ModalPresentable & UIViewController
-
-typealias AnimatorObjectType = ModalAnimator & NSObject
-typealias ModalPresenterObjectType = ModalPresenter & NSObject
-
 func img(_ named: String) -> UIImage? {
     return img(named, isTemplate: false)
 }
@@ -43,7 +38,7 @@ func img(_ named: String, isTemplate: Bool) -> UIImage? {
 }
 
 func rgb(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat) -> UIColor {
-    return UIColor(red: red, green: green, blue: blue)
+    return UIColor(red: red, green: green, blue: blue, alpha: 1)
 }
 
 func rgba(_ red: CGFloat, _ green: CGFloat, _ blue: CGFloat, _ alpha: CGFloat) -> UIColor {

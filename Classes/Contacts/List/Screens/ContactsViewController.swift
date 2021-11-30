@@ -278,7 +278,7 @@ extension ContactsViewController: ContactCellDelegate {
             let contact = searchResults[indexPath.item]
             
             if let address = contact.address {
-                let draft = QRCreationDraft(address: address, mode: .address)
+                let draft = QRCreationDraft(address: address, mode: .address, title: contact.name)
                 open(.qrGenerator(title: contact.name, draft: draft, isTrackable: true), by: .present)
             }
         }

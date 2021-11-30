@@ -26,16 +26,14 @@ struct AccountNameSetupViewTheme: StyleSheet, LayoutSheet {
     let mainButtonTheme: ButtonTheme
 
     let textInputVerticalInset: LayoutMetric
-    let buttonVerticalInset: LayoutMetric
     let horizontalInset: LayoutMetric
     let bottomInset: LayoutMetric
     let topInset: LayoutMetric
-    let containerTopInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.title = [
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .text("account-details-title".localized)
@@ -45,17 +43,15 @@ struct AccountNameSetupViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .text("account-name-setup-description".localized)
         ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()
 
         self.textInputVerticalInset = 40
-        self.buttonVerticalInset = 60
         self.horizontalInset = 24
         self.bottomInset = 16
-        self.topInset = 12
-        self.containerTopInset = 32
+        self.topInset = 2
     }
 }

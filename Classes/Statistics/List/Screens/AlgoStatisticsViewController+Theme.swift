@@ -22,10 +22,12 @@ extension AlgoStatisticsViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
         let dateSelectionModalHeight: LayoutSize
+        let modalHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
             self.backgroundColor = AppColors.Shared.System.background
             self.dateSelectionModalHeight = (UIScreen.main.bounds.width, 434)
+            self.modalHeight = UIScreen.main.bounds.height * 0.8
         }
     }
 }

@@ -38,15 +38,15 @@ struct PassphraseVerifyViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .text("passphrase-verify-title".localized)
         ]
         self.nextButtonTheme = ButtonPrimaryTheme()
 
-        self.titleTopInset = 12
-        self.horizontalInset = 20
+        self.titleTopInset = 2
+        self.horizontalInset = 24
         self.buttonVerticalInset = 16
-        self.listTopOffset = 60
+        self.listTopOffset = 40
         self.listHeight = 440
         self.cellSpacing = 18
     }

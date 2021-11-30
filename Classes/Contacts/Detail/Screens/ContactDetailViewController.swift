@@ -24,14 +24,7 @@ final class ContactDetailViewController: BaseScrollViewController {
         return .contactDetail
     }
 
-    private lazy var accountListModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .scroll
-        ),
-        initialModalSize: .custom(CGSize(theme.modalSize))
-    )
-
+    private lazy var accountListModalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var theme = Theme()
     private lazy var contactDetailView = ContactDetailView()
     
@@ -192,7 +185,7 @@ extension ContactDetailViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: AssetPreviewActionCell = collectionView.dequeueReusableCell(for: indexPath)
+        let cell = collectionView.dequeue(AssetPreviewActionCell.self, at: indexPath)
         cell.customize(theme.assetPreviewActionViewTheme)
         cell.bindData(AssetPreviewViewModel(assetPreviews[indexPath.row]))
         cell.delegate = self
@@ -216,21 +209,17 @@ extension ContactDetailViewController: AssetPreviewActionCellDelegate {
             let contactAccount = contactAccount else {
             return
         }
-        
-        let accountListViewController = open(
-            .accountList(mode: .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.assetDetails[itemIndex.item - 1])),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: accountListModalPresenter
+
+        accountListModalTransition.perform(
+            .accountList(
+                mode: .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.assetDetails[itemIndex.item - 1]),
+                delegate: self
             )
-        ) as? AccountListViewController
-        
+        )
+
         if itemIndex.item != 0 {
             selectedAsset = contactAccount.assetDetails[itemIndex.item - 1]
         }
-        
-        accountListViewController?.delegate = self
     }
 }
 
@@ -254,7 +243,7 @@ extension ContactDetailViewController: ContactDetailViewDelegate {
             return
         }
 
-        let draft = QRCreationDraft(address: address, mode: .address)
+        let draft = QRCreationDraft(address: address, mode: .address, title: contact.name)
         open(.qrGenerator(title: contact.name, draft: draft, isTrackable: true), by: .present)
     }
 }

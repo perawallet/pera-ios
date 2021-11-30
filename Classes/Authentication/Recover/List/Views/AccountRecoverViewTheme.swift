@@ -31,15 +31,15 @@ struct AccountRecoverViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.title = [
             .textAlignment(.left),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32)),
             .text("recover-from-seed-title".localized)
         ]
 
-        self.horizontalStackViewTopInset = 48
-        self.horizontalInset = 20
-        self.topInset = 12
+        self.horizontalStackViewTopInset = 37
+        self.horizontalInset = 24
+        self.topInset = 2
         self.horizontalStackViewSpacing = 8
         self.verticalStackViewSpacing = 12
     }

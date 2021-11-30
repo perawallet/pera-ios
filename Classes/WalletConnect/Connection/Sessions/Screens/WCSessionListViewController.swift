@@ -18,15 +18,6 @@
 import UIKit
 
 class WCSessionListViewController: BaseViewController {
-
-    private lazy var wcConnectionModalPresenter = CardModalPresenter(
-        config: ModalConfiguration(
-            animationMode: .normal(duration: 0.25),
-            dismissMode: .none
-        ),
-        initialModalSize: .custom(CGSize(width: view.frame.width, height: 454.0))
-    )
-
     private lazy var sessionListView = WCSessionListView()
 
     private lazy var emptyStateView = WCSessionListEmptyView()

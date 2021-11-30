@@ -28,7 +28,11 @@ extension UIApplication {
     }
     
     var isPortrait: Bool {
-        switch statusBarOrientation {
+        guard let orientation = windows.first?.windowScene?.interfaceOrientation else {
+            return true
+        }
+
+        switch orientation {
         case .portrait,
              .portraitUpsideDown:
             return true
@@ -38,7 +42,11 @@ extension UIApplication {
     }
     
     var isLandscape: Bool {
-        switch statusBarOrientation {
+        guard let orientation = windows.first?.windowScene?.interfaceOrientation else {
+            return false
+        }
+
+        switch orientation {
         case .landscapeLeft,
              .landscapeRight:
             return true
@@ -62,6 +70,11 @@ extension UIApplication {
         return appDelegate
     }
     
+    var window: UIWindow? {
+        let windowScene = connectedScenes.first as? UIWindowScene
+        return windowScene?.windows.first(where: \.isKeyWindow)
+    }
+    
     var firebaseAnalytics: FirebaseAnalytics? {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return nil
@@ -83,23 +96,15 @@ extension UIApplication {
     }
     
     func rootViewController() -> RootViewController? {
-        return keyWindow?.rootViewController as? RootViewController
+        return window?.rootViewController as? RootViewController
     }
     
     var safeAreaBottom: CGFloat {
-        guard let window = UIApplication.shared.keyWindow else {
-            return 0.0
-        }
-        
-        return window.safeAreaInsets.bottom
+        return window?.safeAreaInsets.bottom ?? 0
     }
     
     var safeAreaTop: CGFloat {
-        guard let window = UIApplication.shared.keyWindow else {
-            return 0.0
-        }
-        
-        return window.safeAreaInsets.top
+        return window?.safeAreaInsets.top ?? 0
     }
     
     @discardableResult

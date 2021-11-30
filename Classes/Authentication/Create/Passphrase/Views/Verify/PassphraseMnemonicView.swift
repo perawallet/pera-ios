@@ -54,7 +54,7 @@ extension PassphraseMnemonicView {
 
 extension PassphraseMnemonicView {
     private func recustomizeAppearanceWhenSelectedStateDidChange() {
-        phraseLabel.backgroundColor = isSelected ? AppColors.Shared.Layer.grayLighter.color : .clear
+        phraseLabel.backgroundColor = isSelected ? AppColors.Shared.Layer.grayLighter.uiColor : .clear
     }
 }
 

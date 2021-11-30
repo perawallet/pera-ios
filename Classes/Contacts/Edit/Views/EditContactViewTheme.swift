@@ -37,11 +37,11 @@ struct EditContactViewTheme: StyleSheet, LayoutSheet {
         self.deleteButton = [
             .title("contacts-delete-contact-button".localized),
             .backgroundColor(AppColors.Shared.Helpers.negative),
-            .titleColor(AppColors.Shared.System.background),
+            .titleColor([.normal(AppColors.Shared.System.background)]),
             .font(Fonts.DMSans.medium.make(15))
         ]
         self.qrButton = [
-            .icon("icon-qr-scan")
+            .icon([.normal("icon-qr-scan")])
         ]
         self.deleteButtonSize = (168, 40)
         self.deleteButtonCorner = Corner(radius: deleteButtonSize.h / 2)

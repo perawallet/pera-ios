@@ -16,6 +16,7 @@
 //   BottomSheetTransitionController.swift
 
 import Foundation
+import MacaroonUIKit
 import MacaroonBottomSheet
 import UIKit
 
@@ -28,15 +29,17 @@ final class BottomSheetTransitionController: MacaroonBottomSheet.BottomSheetTran
         )
 
         presentationConfiguration.chromeStyle = [
-            .backgroundColor(Colors.CardModal.background)
+            .backgroundColor("bottomOverlayBackground")
         ]
 
-        presentationConfiguration.overlayOffset = 0
-    }
-}
-
-extension Colors {
-    fileprivate enum CardModal {
-        static let background = color("bottomOverlayBackground")
+        presentationConfiguration.overlayStyleSheet.backgroundShadow = MacaroonUIKit.Shadow(
+            color: UIColor.red,
+            opacity: 0,
+            offset: (0, 0),
+            radius: 0,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (16, 16),
+            corners: .allCorners
+        )
     }
 }

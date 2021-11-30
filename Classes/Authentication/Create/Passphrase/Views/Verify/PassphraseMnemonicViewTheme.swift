@@ -31,7 +31,7 @@ struct PassphraseMnemonicViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(15)),
             .textAlignment(.center),
-            .textOverflow(.fitting)
+            .textOverflow(FittingText())
         ]
         self.nextButtonTheme = ButtonPrimaryTheme()
     }

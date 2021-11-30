@@ -29,8 +29,8 @@ indirect enum Screen {
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case home(route: Screen?)
     case assetDetail(account: Account, assetDetail: AssetDetail?)
-    case options(account: Account)
-    case accountList(mode: AccountListViewController.Mode)
+    case options(account: Account, delegate: OptionsViewControllerDelegate)
+    case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
     case editAccount(account: Account)
     case contactSelection
     case addContact(address: String? = nil, name: String? = nil)
@@ -63,7 +63,6 @@ indirect enum Screen {
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
     case assetSupport(assetAlertDraft: AssetAlertDraft)
-    case bottomInformation(mode: BottomInformationViewController.Mode, configurator: BottomInformationBundle)
     case rewardDetail(account: Account)
     case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)
@@ -74,7 +73,7 @@ indirect enum Screen {
     case tooltip(title: String)
     case assetDetailNotification(address: String, assetId: Int64?)
     case assetActionConfirmationNotification(address: String, assetId: Int64?)
-    case transactionFilter(filterOption: TransactionFilterViewController.FilterOption = .allTime)
+    case transactionFilter(filterOption: TransactionFilterViewController.FilterOption = .allTime, delegate: TransactionFilterViewControllerDelegate)
     case transactionFilterCustomRange(fromDate: Date?, toDate: Date?)
     case pinLimit
     case rekeyInstruction(account: Account)
@@ -86,17 +85,17 @@ indirect enum Screen {
     case watchAccountAddition(flow: AccountSetupFlow)
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
     case notificationFilter(flow: NotificationFilterViewController.Flow)
-    case maximumBalanceWarning(account: Account)
+    case maximumBalanceWarning(account: Account, delegate: MaximumBalanceWarningViewControllerDelegate)
     case bottomWarning(configurator: BottomWarningViewConfigurator)
     case warningAlert(warningAlert: WarningAlert)
-    case actionableWarningAlert(warningAlert: WarningAlert)
+    case actionableWarningAlert(warningAlert: WarningAlert, delegate: ActionableWarningAlertViewControllerDelegate)
     case tutorial(flow: AccountSetupFlow, tutorial: Tutorial)
     case tutorialSteps(step: Troubleshoot.Step)
-    case transactionTutorial(isInitialDisplay: Bool)
-    case recoverOptions
+    case transactionTutorial(isInitialDisplay: Bool, delegate: TransactionTutorialViewControllerDelegate)
+    case recoverOptions(delegate: AccountRecoverOptionsViewControllerDelegate)
     case algoStatistics
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
-    case wcConnectionApproval(walletConnectSession: WalletConnectSession, completion: WalletConnectSessionConnectionCompletionHandler)
+    case wcConnectionApproval(walletConnectSession: WalletConnectSession, delegate: WCConnectionApprovalViewControllerDelegate, completion: WalletConnectSessionConnectionCompletionHandler)
     case walletConnectSessions
     case wcTransactionFullDappDetail(wcSession: WCSession, message: String)
     case wcMainTransaction(
@@ -114,8 +113,8 @@ indirect enum Screen {
     case wcAssetDeletionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case jsonDisplay(jsonData: Data, title: String)
     case tabBarModal
-    case algoStatisticsDateSelection(option: AlgosUSDValueInterval)
-    case ledgerPairWarning
+    case algoStatisticsDateSelection(option: AlgosUSDValueInterval, delegate: AlgoStatisticsDateSelectionViewControllerDelegate)
+    case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
 }
 
 extension Screen {

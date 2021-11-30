@@ -22,6 +22,8 @@ import UIKit
 struct WelcomeViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
+    let termsOfConditionsAttributes: [AttributedTextBuilder.Attribute]
+    let termsOfConditionsLinkAttributes: [AttributedTextBuilder.Attribute]
     let accountTypeViewTheme: AccountTypeViewTheme
 
     let horizontalInset: LayoutMetric
@@ -33,14 +35,27 @@ struct WelcomeViewTheme: StyleSheet, LayoutSheet {
         self.title = [
             .textAlignment(.center),
             .text("account-welcome-wallet-title".localized),
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32))
+        ]
+
+        self.termsOfConditionsLinkAttributes = [
+            .textColor(AppColors.Components.Link.primary.uiColor),
+            .underline(UIColor.clear),
+            .font(Fonts.DMSans.medium.make(13).uiFont),
+        ]
+        self.termsOfConditionsAttributes = [
+            .textColor(AppColors.Components.Text.gray.uiColor),
+            .font(Fonts.DMSans.medium.make(13).uiFont),
+            .paragraph([
+                .alignment(.center)
+            ])
         ]
         self.accountTypeViewTheme = AccountTypeViewTheme()
         
         self.horizontalInset = 24
-        self.topInset = 12
-        self.verticalInset = 20
+        self.topInset = 2
+        self.verticalInset = 16
     }
 }

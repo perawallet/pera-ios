@@ -31,8 +31,8 @@ final class ContactDetailView: View {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = theme.backgroundColor.color
-        collectionView.registerCell(AssetPreviewActionCell.self)
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
+        collectionView.register(AssetPreviewActionCell.self)
         return collectionView
     }()
 

@@ -28,7 +28,7 @@ final class NotificationFilterView: View {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.contentInset = UIEdgeInsets(theme.contentInset)
-        collectionView.backgroundColor = theme.backgroundColor.color
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.register(AccountNameSwitchCell.self)
         collectionView.register(TitledToggleCell.self)
         collectionView.register(header: ToggleTitleHeaderSupplementaryView.self)

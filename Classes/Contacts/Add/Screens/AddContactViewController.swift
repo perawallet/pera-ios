@@ -61,7 +61,7 @@ final class AddContactViewController: BaseScrollViewController {
 
     override func bindData() {
         super.bindData()
-        addContactView.badgedImageView.bindData(image: nil, badgeImage: "icon-circle-add".image)
+        addContactView.badgedImageView.bindData(image: nil, badgeImage: "icon-circle-add".uiImage)
         addContactView.nameInputView.text = contactName
         addContactView.addressInputView.text = address
     }
@@ -145,7 +145,7 @@ extension AddContactViewController: AddContactViewDelegate {
 extension AddContactViewController: ImagePickerDelegate {
     func imagePicker(didPick image: UIImage, withInfo info: [String: Any]) {
         let resizedImage = image.convert(to: CGSize(width: 80, height: 80))
-        addContactView.badgedImageView.bindData(image: resizedImage, badgeImage: "icon-circle-edit".image)
+        addContactView.badgedImageView.bindData(image: resizedImage, badgeImage: "icon-circle-edit".uiImage)
     }
 }
 

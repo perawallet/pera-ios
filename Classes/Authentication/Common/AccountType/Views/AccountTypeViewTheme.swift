@@ -25,7 +25,6 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
     let detail: TextStyle
 
     let iconSize: LayoutSize
-    let titleTrailingInset: LayoutMetric
     let horizontalInset: LayoutMetric
     let verticalInset: LayoutMetric
     let minimumInset: LayoutMetric
@@ -33,22 +32,23 @@ struct AccountTypeViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main),
-            .textAlignment(.left)
+            .textAlignment(.left),
+            .isInteractable(false)
         ]
         self.detail = [
-            .textOverflow(.fitting),
+            .textOverflow(FittingText()),
             .font(Fonts.DMSans.regular.make(13)),
             .textColor(AppColors.Components.Text.gray),
-            .textAlignment(.left)
+            .textAlignment(.left),
+            .isInteractable(false)
         ]
 
         self.iconSize = (40, 40)
-        self.titleTrailingInset = 60
         self.horizontalInset = 24
         self.verticalInset = 24
-        self.minimumInset = 4
+        self.minimumInset = 2
     }
 }
