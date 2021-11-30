@@ -43,6 +43,10 @@ final class Account: ALGEntityModel {
     var createdApps: [AlgorandApplication]?
     
     var assetDetails: [AssetDetail] = []
+    /// <todo>
+    /// Will be changed with assetDetails after the transition to the new api is completed.
+    var assetInformations: [AssetInformation] = []
+    
     var name: String?
     var type: AccountType = .standard
     var ledgerDetail: LedgerDetail?
