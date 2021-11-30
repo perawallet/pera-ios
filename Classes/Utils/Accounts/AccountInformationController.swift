@@ -112,6 +112,11 @@ extension AccountInformationController {
     private func hasDifferentAssetInformations(
         from sessionAccounts: [Account]
     ) -> Bool {
+        /// Assets should be fetched initially if there're no accounts initially
+        if sessionAccounts.isEmpty {
+            return true
+        }
+
         for account in accounts {
             if let accountFromSession = sessionAccounts.first(matching: (\.address, account.address)),
                account.containsDifferentAssets(than: accountFromSession) {
@@ -152,9 +157,7 @@ extension AccountInformationController {
                 }
 
                 self.updateAccountInformations(with: assetInformations)
-
                 self.handlers.didFetchAssets?(assetInformations)
-                self.handlers.didFetchAccountInformations?(self.accounts, assetInformations)
             }
         }
 
@@ -197,7 +200,6 @@ extension AccountInformationController {
 
 extension AccountInformationController {
     struct Handlers {
-        var didFetchAccountInformations: (([Account], [AssetInformation]) -> Void)?
         var didFetchAccounts: (([Account]) -> Void)?
         var didFetchAssets: (([AssetInformation]) -> Void)?
         var hasChangesOnAccounts: ((Bool) -> Void)?

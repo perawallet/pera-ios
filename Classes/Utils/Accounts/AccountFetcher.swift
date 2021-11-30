@@ -52,7 +52,7 @@ final class AccountFetcher: AccountFetching {
                     account.update(from: localAccount) /// Update local fields of an account
                     fetchedAccounts.append(account)
 
-                    if localAccounts.isLastElement(localAccount) {
+                    if localAccounts.count == fetchedAccounts.count {
                         self.returnAllFetchedAccounts(fetchedAccounts)
                     }
                 case let .failure(error, _):
@@ -62,7 +62,7 @@ final class AccountFetcher: AccountFetching {
                         account.update(from: localAccount)
                         fetchedAccounts.append(account)
 
-                        if localAccounts.isLastElement(localAccount) {
+                        if localAccounts.count == fetchedAccounts.count {
                             self.returnAllFetchedAccounts(fetchedAccounts)
                         }
                     } else {

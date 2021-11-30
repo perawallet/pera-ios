@@ -60,13 +60,3 @@ extension Array {
         return nil
     }
 }
-
-extension Array where Element: Equatable {
-    func isLastElement(_ element: Element) -> Bool {
-        guard let lastElement = last else {
-            return false
-        }
-
-        return lastElement == element
-    }
-}

@@ -21,7 +21,7 @@ import MacaroonUtils
 
 final class ALGBlockManager: ALGBlockManaging {
     private let api: ALGAPI
-    private var waiForRoundRequest: EndpointOperatable?
+    private var waitForNextRoundRequest: EndpointOperatable?
     private var transactionParamsRequest: EndpointOperatable?
 
     private(set) var currentRound: UInt64?
@@ -39,7 +39,7 @@ final class ALGBlockManager: ALGBlockManaging {
         _ round: BlockRound?
     ) {
         if let nextRound = round {
-            waiForRoundRequest = api.waitRound(WaitRoundDraft(round: nextRound)) { [weak self] roundDetailResponse in
+            waitForNextRoundRequest = api.waitRound(WaitRoundDraft(round: nextRound)) { [weak self] roundDetailResponse in
                 guard let self = self else {
                     return
                 }
@@ -49,16 +49,29 @@ final class ALGBlockManager: ALGBlockManaging {
                     self.currentRound = result.lastRound
                     self.handlers.didReceiveNextRound?(result.lastRound)
                 case .failure:
-                    self.getTransactionParamsAndWaitForTheNextRoundOnBlock()
+                    /// Needs to get the transaction params for the latest round and try again
+                    asyncBackground(qos: .userInitiated) { [weak self] in
+                        guard let self = self else {
+                            return
+                        }
+
+                        self.getTransactionParamsAndWaitForTheNextRoundOnBlock()
+                    }
                 }
             }
         } else {
-            getTransactionParamsAndWaitForTheNextRoundOnBlock()
+            asyncBackground(qos: .userInitiated) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.getTransactionParamsAndWaitForTheNextRoundOnBlock()
+            }
         }
     }
 
     func cancelAllRequest() {
-        waiForRoundRequest?.cancel()
+        waitForNextRoundRequest?.cancel()
         transactionParamsRequest?.cancel()
     }
 }
@@ -75,15 +88,27 @@ extension ALGBlockManager {
                 self.params = params
                 self.currentRound = params.lastRound
             case .failure:
-                /// Needs to get the last round from round 0 and try again
-                self.waitForNextRoundOnBlock(0)
+                /// Needs to get the last round from round 0 and try again,
+                asyncBackground(qos: .userInitiated) { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.waitForNextRoundOnBlock(0)
+                }
             }
 
             guard let round = self.currentRound else {
                 return
             }
 
-            self.waitForNextRoundOnBlock(round)
+            asyncBackground(qos: .userInitiated) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.waitForNextRoundOnBlock(round)
+            }
         }
     }
 }

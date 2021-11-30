@@ -17,6 +17,7 @@
 
 import Foundation
 import MagpieCore
+import MacaroonUtils
 
 final class ALGBlockDataController: ALGBlockDataControlling {
     private let api: ALGAPI
@@ -49,23 +50,22 @@ extension ALGBlockDataController {
                 return
             }
 
+            self.fetchAccountInformations()
+
             self.handlers.didReceiveNextRound?(round)
-            self.fetchAccountInformations(in: round)
+            self.startWaitingNextRoundOnBlock(after: round)
         }
 
-        blockManager.waitForNextRoundOnBlock(latestRound)
-    }
-
-    private func fetchAccountInformations(in round: BlockRound) {
-        accountInformationController.handlers.didFetchAccountInformations = { [weak self] accounts, assetInformations in
+        asyncBackground(qos: .userInitiated) { [weak self] in
             guard let self = self else {
                 return
             }
 
-            self.handlers.didFetchAccountInformations?(accounts, assetInformations)
-            self.startWaitingNextRoundOnBlock(after: round)
+            self.blockManager.waitForNextRoundOnBlock(latestRound)
         }
+    }
 
+    private func fetchAccountInformations() {
         accountInformationController.handlers.didFetchAccounts = { [weak self] accounts in
             guard let self = self else {
                 return
@@ -105,7 +105,6 @@ extension ALGBlockDataController {
 extension ALGBlockDataController {
     struct Handlers {
         var didReceiveNextRound: ((BlockRound) -> Void)?
-        var didFetchAccountInformations: (([Account], [AssetInformation]) -> Void)?
         var didFetchAccounts: (([Account]) -> Void)?
         var didFetchAssets: (([AssetInformation]) -> Void)?
         var didFailFetchingAccounts: ((APIError) -> Void)?
