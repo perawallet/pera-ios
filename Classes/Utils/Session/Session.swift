@@ -160,6 +160,10 @@ class Session: Storable {
     var verifiedAssets: [VerifiedAsset]?
     
     var assetDetails: [Int64: AssetDetail] = [:]
+
+    /// <todo>
+    /// Will be changed with assetDetails after the transition to the new api is completed.
+    var assetInformations: [AssetID: AssetInformation] = [:]
     
     var accounts = [Account]()
     

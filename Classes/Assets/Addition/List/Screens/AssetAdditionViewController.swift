@@ -27,7 +27,7 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
     private var account: Account
     
-    private var assetResults = [AssetSearchResult]()
+    private var assetResults = [AssetInformation]()
     private var nextCursor: String?
     private var hasNext: Bool {
         return nextCursor != nil
@@ -180,7 +180,7 @@ extension AssetAdditionViewController {
 }
 
 extension AssetAdditionViewController {
-    func render(for filter: AssetSearchFilter, with assets: [AssetSearchResult]) {
+    func render(for filter: AssetSearchFilter, with assets: [AssetInformation]) {
         switch filter {
         case .all:
             allAssetsScreen.assetResults = assets
@@ -236,7 +236,7 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         let assetAlertDraft = AssetAlertDraft(
             account: account,
             assetIndex: assetResult.id,
-            assetDetail: AssetDetail(searchResult: assetResult),
+            assetDetail: AssetDetail(assetInformation: assetResult),
             title: "asset-add-confirmation-title".localized,
             detail: "asset-add-warning".localized,
             actionTitle: "title-approve".localized,
@@ -319,7 +319,7 @@ extension AssetAdditionViewController {
 protocol AssetAdditionViewControllerDelegate: AnyObject {
     func assetAdditionViewController(
         _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd assetSearchResult: AssetSearchResult,
+        didAdd assetSearchResult: AssetInformation,
         to account: Account
     )
 }

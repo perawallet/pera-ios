@@ -19,11 +19,14 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class AssetSearchResult: ALGEntityModel {
+final class AssetInformation: ALGEntityModel {
     let id: Int64
     let name: String?
     let unitName: String?
+    let decimals: Int64
+    let usdValue: String?
     let isVerified: Bool
+    let creator: String?
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -31,7 +34,10 @@ final class AssetSearchResult: ALGEntityModel {
         self.id = apiModel.assetId
         self.name = apiModel.name
         self.unitName = apiModel.unitName
+        self.decimals = apiModel.fractionDecimals ?? 0
+        self.usdValue = apiModel.usdValue
         self.isVerified = apiModel.isVerified ?? false
+        self.creator = apiModel.creator
     }
 
     func encode() -> APIModel {
@@ -39,45 +45,47 @@ final class AssetSearchResult: ALGEntityModel {
         apiModel.assetId = id
         apiModel.name = name
         apiModel.unitName = unitName
+        apiModel.fractionDecimals = decimals
+        apiModel.usdValue = usdValue
         apiModel.isVerified = isVerified
+        apiModel.creator = creator
         return apiModel
     }
 }
 
-extension AssetSearchResult {
+extension AssetInformation {
     struct APIModel: ALGAPIModel {
         var assetId: Int64
         var name: String?
         var unitName: String?
+        var fractionDecimals: Int64?
+        var usdValue: String?
         var isVerified: Bool?
+        var creator: String?
 
         init() {
             self.assetId = 0
             self.name = nil
             self.unitName = nil
+            self.fractionDecimals = nil
+            self.usdValue = nil
             self.isVerified = nil
-        }
-
-        private enum CodingKeys: String, CodingKey {
-            case assetId = "asset_id"
-            case name
-            case unitName = "unit_name"
-            case isVerified = "is_verified"
+            self.creator = nil
         }
     }
 }
 
 /// <todo>
 /// Rethink the paginated list model. Should be more reusable.
-final class AssetSearchResultList:
-    PaginatedList<AssetSearchResult>,
+final class AssetInformationList:
+    PaginatedList<AssetInformation>,
     ALGEntityModel {
     convenience init(
         _ apiModel: APIModel = APIModel()
     ) {
         self.init(
             pagination: apiModel,
-            results: apiModel.results.unwrapMap(AssetSearchResult.init)
+            results: apiModel.results.unwrapMap(AssetInformation.init)
         )
     }
 
@@ -91,14 +99,14 @@ final class AssetSearchResultList:
     }
 }
 
-extension AssetSearchResultList {
+extension AssetInformationList {
     struct APIModel:
         ALGAPIModel,
         PaginationComponents {
         var count: Int?
         var next: URL?
         var previous: String?
-        var results: [AssetSearchResult.APIModel]?
+        var results: [AssetInformation.APIModel]?
 
         init() {
             self.count = nil
@@ -108,3 +116,5 @@ extension AssetSearchResultList {
         }
     }
 }
+
+typealias AssetID = Int64
