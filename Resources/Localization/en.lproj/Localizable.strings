@@ -563,6 +563,8 @@ on your Ledger device (%d)";
 "notification-filter-show-for" = "Show notification for";
 
 "title-plus-asset-count" = "%@ Assets";
+"title-plus-asset-singular-count" = "%@ Asset";
+
 "ledger-account-detail-name" = "Ledger #%@";
 "ledger-account-detail-title" = "Ledger Account";
 "ledger-account-detail-assets" = "Assets";

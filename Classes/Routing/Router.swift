@@ -469,6 +469,8 @@ class Router {
             let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
             ledgerPairWarningViewController.delegate = delegate
             viewController = ledgerPairWarningViewController
+        case .accountSelection:
+            viewController = SelectAccountViewController(configuration: configuration)
         }
         
         return viewController as? T

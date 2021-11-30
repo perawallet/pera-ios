@@ -191,8 +191,7 @@ extension TabBarController: AssetActionConfirmationViewControllerDelegate {
 extension TabBarController {
     @objc
     private func notifyDelegateToOpenAssetSelectionForSendFlow() {
-        let controller = open(.selectAsset(transactionAction: .send), by: .present) as? SelectAssetViewController
-        controller?.delegate = self
+        open(.accountSelection, by: .present)
     }
     
     @objc
@@ -372,8 +371,7 @@ extension TabBarController {
 
 extension TabBarController: TabBarModalViewControllerDelegate {
     func tabBarModalViewControllerDidSend(_ tabBarModalViewController: TabBarModalViewController) {
-        let controller = open(.selectAsset(transactionAction: .send), by: .present) as? SelectAssetViewController
-        controller?.delegate = self
+        open(.accountSelection, by: .present)
     }
 
     func tabBarModalViewControllerDidReceive(_ tabBarModalViewController: TabBarModalViewController) {

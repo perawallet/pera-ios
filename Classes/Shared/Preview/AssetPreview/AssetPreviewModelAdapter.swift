@@ -16,6 +16,7 @@
 //   AssetPreviewModelAdapter.swift
 
 import Foundation
+import UIKit
 
 enum AssetPreviewModelAdapter {
     static func adapt(_ adaptee: (assetDetail: AssetDetail, asset: Asset)) -> AssetPreviewModel {
@@ -49,6 +50,36 @@ enum AssetPreviewModelAdapter {
             assetPrimaryTitle: adaptee.assetName,
             assetSecondaryTitle: adaptee.unitName,
             assetPrimaryValue: String(adaptee.id),
+            assetSecondaryValue: nil
+        )
+    }
+
+    static func adaptAccountSelection(_ adaptee: Account) -> AssetPreviewModel {
+        let algoAssetViewModel = AlgoAssetViewModel(account: adaptee)
+        let leftImage: UIImage?
+        let secondaryTitle: String
+
+        switch adaptee.type {
+        case .standard:
+            leftImage = img("standard-orange")
+        case .ledger:
+            leftImage = img("ledger-purple")
+        default:
+            leftImage = img("standard-orange")
+        }
+
+        if let count = adaptee.assets?.count, count > 1 {
+            secondaryTitle = "title-plus-asset-count".localized(params: "\(count.advanced(by: 1))")
+        } else {
+            secondaryTitle = "title-plus-asset-singular-count".localized(params: "1")
+        }
+
+        return AssetPreviewModel(
+            image: leftImage,
+            secondaryImage: nil,
+            assetPrimaryTitle: adaptee.name,
+            assetSecondaryTitle: secondaryTitle,
+            assetPrimaryValue: algoAssetViewModel.amount,
             assetSecondaryValue: nil
         )
     }

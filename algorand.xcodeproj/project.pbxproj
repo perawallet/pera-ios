@@ -2406,6 +2406,12 @@
 		9511C298242E2B3C003211ED /* BaseControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C296242E2B3C003211ED /* BaseControl.swift */; };
 		9511C29B242E2B6C003211ED /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C29A242E2B6C003211ED /* Checkbox.swift */; };
 		9511C29C242E2B6C003211ED /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C29A242E2B6C003211ED /* Checkbox.swift */; };
+		951E88352754FE2600FFEB69 /* SelectAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951E88342754FE2600FFEB69 /* SelectAccountViewController.swift */; };
+		951E88362754FE2600FFEB69 /* SelectAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951E88342754FE2600FFEB69 /* SelectAccountViewController.swift */; };
+		951E88372754FE2600FFEB69 /* SelectAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951E88342754FE2600FFEB69 /* SelectAccountViewController.swift */; };
+		951E88392754FF3F00FFEB69 /* SelectAccountViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951E88382754FF3F00FFEB69 /* SelectAccountViewControllerDataSource.swift */; };
+		951E883A2754FF3F00FFEB69 /* SelectAccountViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951E88382754FF3F00FFEB69 /* SelectAccountViewControllerDataSource.swift */; };
+		951E883B2754FF3F00FFEB69 /* SelectAccountViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951E88382754FF3F00FFEB69 /* SelectAccountViewControllerDataSource.swift */; };
 		95C4C16E242CE01B005A57BB /* CBManagerState+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C4C16D242CE01B005A57BB /* CBManagerState+Error.swift */; };
 		95C4C16F242CE01B005A57BB /* CBManagerState+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C4C16D242CE01B005A57BB /* CBManagerState+Error.swift */; };
 		95E3152F243234A4008D79D4 /* bluetooth_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 95E3152E243234A3008D79D4 /* bluetooth_animation.json */; };
@@ -4011,6 +4017,8 @@
 		2BFFEA0325DD33E00009F30C /* PassphraseVerifyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyDataSource.swift; sourceTree = "<group>"; };
 		9511C296242E2B3C003211ED /* BaseControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseControl.swift; sourceTree = "<group>"; };
 		9511C29A242E2B6C003211ED /* Checkbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checkbox.swift; sourceTree = "<group>"; };
+		951E88342754FE2600FFEB69 /* SelectAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAccountViewController.swift; sourceTree = "<group>"; };
+		951E88382754FF3F00FFEB69 /* SelectAccountViewControllerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAccountViewControllerDataSource.swift; sourceTree = "<group>"; };
 		95C4C16D242CE01B005A57BB /* CBManagerState+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CBManagerState+Error.swift"; sourceTree = "<group>"; };
 		95E3152E243234A3008D79D4 /* bluetooth_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = bluetooth_animation.json; sourceTree = "<group>"; };
 		CB3AEBD22743A6F500F85246 /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
@@ -9460,6 +9468,7 @@
 		2BF53177224AA86500A7455F /* Accounts */ = {
 			isa = PBXGroup;
 			children = (
+				951E88332754FD6F00FFEB69 /* Select */,
 				2B656E8E224BAF0B0064A49B /* AccountList */,
 				2B44872E2379685300C19FDE /* List */,
 				2B656E91224BAF230064A49B /* Options */,
@@ -10731,6 +10740,15 @@
 				9511C29A242E2B6C003211ED /* Checkbox.swift */,
 			);
 			path = Checkbox;
+			sourceTree = "<group>";
+		};
+		951E88332754FD6F00FFEB69 /* Select */ = {
+			isa = PBXGroup;
+			children = (
+				951E88342754FE2600FFEB69 /* SelectAccountViewController.swift */,
+				951E88382754FF3F00FFEB69 /* SelectAccountViewControllerDataSource.swift */,
+			);
+			path = Select;
 			sourceTree = "<group>";
 		};
 		95C4C16C242CDFFC005A57BB /* CoreBluetooth */ = {
@@ -12031,6 +12049,7 @@
 				D4194319273541570055EC70 /* PageBarCommonLayoutSheet.swift in Sources */,
 				D4FC47592714940600FC5E3B /* LedgerAccountDetailDataSource.swift in Sources */,
 				D482273B272BFC3F004CB9BF /* BadgedImageVIew.swift in Sources */,
+				951E883B2754FF3F00FFEB69 /* SelectAccountViewControllerDataSource.swift in Sources */,
 				D421179226D8EDF400C032B2 /* ViewLoadingIndicator.swift in Sources */,
 				2BA17308264B185900A613C4 /* AlgoStatisticsViewModel.swift in Sources */,
 				2BE4D04B25913771005F5764 /* AuthAccountNameViewModel.swift in Sources */,
@@ -12386,6 +12405,7 @@
 				2B44873B237AB67700C19FDE /* AssetListLayoutBuilder.swift in Sources */,
 				2B7E305B267A5DBF00E89EE3 /* WCAssetTransactionViewModel.swift in Sources */,
 				2BE9372324630A7D00322C1E /* SelectAssetView.swift in Sources */,
+				951E88372754FE2600FFEB69 /* SelectAccountViewController.swift in Sources */,
 				17BD4EE52292F1260003E49A /* SelectionView.swift in Sources */,
 				2B288AC8268E375D00BC6FB6 /* WCPeerMeta.swift in Sources */,
 				D446A747272AB3310081D60B /* ContactDetailViewController+Theme.swift in Sources */,
@@ -12813,6 +12833,7 @@
 				2BB93C2425BF2461001F1D6C /* SDKTransactionSigner.swift in Sources */,
 				2B0F61ED24EC129D00DA22A6 /* ChoosePasswordViewModel.swift in Sources */,
 				1828816626CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
+				951E883A2754FF3F00FFEB69 /* SelectAccountViewControllerDataSource.swift in Sources */,
 				2B1CFA0C2554113300D60B73 /* Dictionary+ErrorLogParamKeys.swift in Sources */,
 				2B0F61EE24EC129D00DA22A6 /* BaseInputView.swift in Sources */,
 				2B0F61EF24EC129D00DA22A6 /* AssetInputView.swift in Sources */,
@@ -13149,6 +13170,7 @@
 				2B83502326AC23540014F9CD /* WCSingleTransactionViewModel.swift in Sources */,
 				2B0F629224EC129D00DA22A6 /* TransactionDetailViewModel.swift in Sources */,
 				2B9E2F5126F0F2A0003D824A /* WCAssetConfigTransactionItemViewModel.swift in Sources */,
+				951E88362754FE2600FFEB69 /* SelectAccountViewController.swift in Sources */,
 				2BD6AB7926EA3702001C4257 /* ALGAPIInterceptor.swift in Sources */,
 				2B0F629324EC129D00DA22A6 /* TransactionHistoryDataSource.swift in Sources */,
 				2B0F629424EC129D00DA22A6 /* LedgerDeviceCellView.swift in Sources */,
@@ -13628,6 +13650,7 @@
 				2B7E3029267A49F900E89EE3 /* WCAlgosTransactionViewController.swift in Sources */,
 				2B857632247E988E002F9DA8 /* QRCreationDraft.swift in Sources */,
 				2B7E303F267A51ED00E89EE3 /* WCGroupTransactionItemView.swift in Sources */,
+				951E88392754FF3F00FFEB69 /* SelectAccountViewControllerDataSource.swift in Sources */,
 				D4AC1FB6272D3AB10027353F /* AccountListViewTheme.swift in Sources */,
 				2B77472825FFE88C0083EFFA /* InputSuggestionDataSource.swift in Sources */,
 				2B5DA9CE224CB4B400EE41B4 /* OptionsCell.swift in Sources */,
@@ -13794,6 +13817,7 @@
 				2B2A9F44232AE20A00450DB0 /* RewardView.swift in Sources */,
 				D46E5E1F26EA930600EFEF66 /* LedgerTutorialInstructionViewTheme.swift in Sources */,
 				170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */,
+				951E88352754FE2600FFEB69 /* SelectAccountViewController.swift in Sources */,
 				D4241FCC26E764880064CDD0 /* FormInputFieldAssistiveViewCommonTheme.swift in Sources */,
 				2BF34CB4223A87440052CAD3 /* BaseScrollViewController.swift in Sources */,
 				2B4487002379592300C19FDE /* AssetCell.swift in Sources */,
