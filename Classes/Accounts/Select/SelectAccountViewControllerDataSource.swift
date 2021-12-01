@@ -38,13 +38,13 @@ UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
         cell.customize(AccountPreviewViewTheme())
-        if indexPath.item < accounts.count {
-            let account = accounts[indexPath.item]
 
+        if let account = accounts[safe: indexPath.item] {
             cell.bindData(
                 AccountPreviewViewModel(from: account)
             )
         }
+
         return cell
     }
 

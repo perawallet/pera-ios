@@ -54,12 +54,6 @@ final class SelectAccountViewController: BaseViewController {
     override func prepareLayout() {
         addListView()
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        listView.reloadData()
-    }
     
 }
 
