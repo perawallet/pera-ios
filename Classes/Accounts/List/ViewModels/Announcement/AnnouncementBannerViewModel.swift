@@ -13,15 +13,10 @@
 // limitations under the License.
 
 //
-//   AnnouncmentBannerViewTheme.swift
+//   AnnouncementBannerViewModel.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct AnnouncmentBannerViewTheme: StyleSheet, LayoutSheet {
+final class AnnouncementBannerViewModel: ViewModel {
 
-    init(_ family: LayoutFamily) {
-
-    }
 }

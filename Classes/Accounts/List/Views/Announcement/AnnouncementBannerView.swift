@@ -13,18 +13,18 @@
 // limitations under the License.
 
 //
-//   AnnouncmentBannerView.swift
+//   AnnouncementBannerView.swift
 
 import MacaroonUIKit
 
-final class AnnouncmentBannerView: View {
+final class AnnouncementBannerView: View {
     private lazy var titleLabel = Label()
     private lazy var detailLabel = Label()
     private lazy var dismissButton = Button()
     private lazy var outerImageView = ImageView()
     private lazy var innerImageView = ImageView()
 
-    func customize(_ theme: AnnouncmentBannerViewTheme) {
+    func customize(_ theme: AnnouncementBannerViewTheme) {
         addOuterImageView(theme)
         addInnerImageView(theme)
         addDismissButton(theme)
@@ -36,38 +36,38 @@ final class AnnouncmentBannerView: View {
     func prepareLayout(_ layoutSheet: LayoutSheet) { }
 }
 
-extension AnnouncmentBannerView {
-    private func addOuterImageView(_ theme: AnnouncmentBannerViewTheme) {
+extension AnnouncementBannerView {
+    private func addOuterImageView(_ theme: AnnouncementBannerViewTheme) {
 
     }
 
-    private func addInnerImageView(_ theme: AnnouncmentBannerViewTheme) {
+    private func addInnerImageView(_ theme: AnnouncementBannerViewTheme) {
 
     }
 
-    private func addDismissButton(_ theme: AnnouncmentBannerViewTheme) {
+    private func addDismissButton(_ theme: AnnouncementBannerViewTheme) {
 
     }
 
-    private func addTitleLabel(_ theme: AnnouncmentBannerViewTheme) {
+    private func addTitleLabel(_ theme: AnnouncementBannerViewTheme) {
 
     }
 
-    private func addDetailLabel(_ theme: AnnouncmentBannerViewTheme) {
-
-    }
-}
-
-extension AnnouncmentBannerView: ViewModelBindable {
-    func bindData(_ viewModel: AnnouncmentBannerViewModel?) {
+    private func addDetailLabel(_ theme: AnnouncementBannerViewTheme) {
 
     }
 }
 
-final class AnnouncmentBannerCell: BaseCollectionViewCell<AnnouncmentBannerView> {
+extension AnnouncementBannerView: ViewModelBindable {
+    func bindData(_ viewModel: AnnouncementBannerViewModel?) {
+
+    }
+}
+
+final class AnnouncementBannerCell: BaseCollectionViewCell<AnnouncementBannerView> {
 
     override func configureAppearance() {
         super.configureAppearance()
-        contextView.customize(AnnouncmentBannerViewTheme())
+        contextView.customize(AnnouncementBannerViewTheme())
     }
 }
