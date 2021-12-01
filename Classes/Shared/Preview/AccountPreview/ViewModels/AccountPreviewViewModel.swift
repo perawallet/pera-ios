@@ -41,6 +41,27 @@ final class AccountPreviewViewModel: PairedViewModel {
         bindAssetValue(model.assetValue)
         bindSecondaryAssetValue(model.secondaryAssetValue)
     }
+
+    convenience init(from account: Account) {
+        let assetsAndNFTs: String
+
+        if let count = account.assets?.count, count > 1 {
+            assetsAndNFTs = "title-plus-asset-count".localized(params: "\(count.advanced(by: 1))")
+        } else {
+            assetsAndNFTs = "title-plus-asset-singular-count".localized(params: "1")
+        }
+
+        self.init(
+            AccountPreviewModel(
+                accountType: account.type,
+                accountImageType: .orange,
+                accountName: account.name,
+                assetsAndNFTs: assetsAndNFTs,
+                assetValue: account.amount.toAlgos.toAlgosStringForLabel,
+                secondaryAssetValue: nil /// TODO: Dollar value should be added
+            )
+        )
+    }
 }
 
 extension AccountPreviewViewModel {

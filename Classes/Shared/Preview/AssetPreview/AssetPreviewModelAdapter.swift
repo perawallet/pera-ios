@@ -16,6 +16,7 @@
 //   AssetPreviewModelAdapter.swift
 
 import Foundation
+import UIKit
 
 enum AssetPreviewModelAdapter {
     static func adapt(_ adaptee: (assetDetail: AssetDetail, asset: Asset)) -> AssetPreviewModel {
