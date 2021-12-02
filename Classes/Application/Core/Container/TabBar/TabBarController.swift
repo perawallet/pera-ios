@@ -196,14 +196,14 @@ extension TabBarController {
     
     @objc
     private func notifyDelegateToOpenAssetSelectionForRequestFlow() {
-        let controller = open(.selectAsset(transactionAction: .request), by: .present) as? SelectAssetViewController
+        let controller = open(.selectAsset(transactionAction: .request), by: .present) as? OldSelectAssetViewController
         controller?.delegate = self
     }
 }
 
-extension TabBarController: SelectAssetViewControllerDelegate {
-    func selectAssetViewController(
-        _ selectAssetViewController: SelectAssetViewController,
+extension TabBarController: OldSelectAssetViewControllerDelegate {
+    func oldSelectAssetViewController(
+        _ oldSelectAssetViewController: OldSelectAssetViewController,
         didSelectAlgosIn account: Account,
         forAction transactionAction: TransactionAction
     ) {
@@ -232,8 +232,8 @@ extension TabBarController: SelectAssetViewControllerDelegate {
         }
     }
     
-    func selectAssetViewController(
-        _ selectAssetViewController: SelectAssetViewController,
+    func oldSelectAssetViewController(
+        _ oldSelectAssetViewController: OldSelectAssetViewController,
         didSelect assetDetail: AssetDetail,
         in account: Account,
         forAction transactionAction: TransactionAction
@@ -375,7 +375,7 @@ extension TabBarController: TabBarModalViewControllerDelegate {
     }
 
     func tabBarModalViewControllerDidReceive(_ tabBarModalViewController: TabBarModalViewController) {
-        let controller = open(.selectAsset(transactionAction: .request), by: .present) as? SelectAssetViewController
+        let controller = open(.selectAsset(transactionAction: .request), by: .present) as? OldSelectAssetViewController
         controller?.delegate = self
     }
 }

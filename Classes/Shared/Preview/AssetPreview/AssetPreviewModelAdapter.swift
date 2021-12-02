@@ -53,4 +53,17 @@ enum AssetPreviewModelAdapter {
             assetSecondaryValue: nil
         )
     }
+
+    static func adaptAssetSelection(_ adaptee: (assetDetail: AssetDetail, asset: Asset)) -> AssetPreviewModel {
+        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset)
+        let assetId = assetViewModel.assetDetail?.id ?? 0
+        return AssetPreviewModel(
+            image: nil,
+            secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
+            assetPrimaryTitle: assetViewModel.assetDetail?.assetName,
+            assetSecondaryTitle: "ID \(assetId)",
+            assetPrimaryValue: assetViewModel.amount,
+            assetSecondaryValue: nil
+        )
+    }
 }

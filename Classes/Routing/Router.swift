@@ -299,7 +299,7 @@ class Router {
                 configuration: configuration
             )
         case let .selectAsset(transactionAction, filterOption):
-            viewController = SelectAssetViewController(
+            viewController = OldSelectAssetViewController(
                 transactionAction: transactionAction,
                 filterOption: filterOption,
                 configuration: configuration
@@ -471,6 +471,8 @@ class Router {
             viewController = ledgerPairWarningViewController
         case .accountSelection:
             viewController = SelectAccountViewController(configuration: configuration)
+        case .assetSelection(let account):
+            viewController = SelectAssetViewController(account: account, configuration: configuration)
         }
         
         return viewController as? T

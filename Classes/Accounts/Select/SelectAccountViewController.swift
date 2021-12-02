@@ -83,4 +83,12 @@ extension SelectAccountViewController: UICollectionViewDelegate, UICollectionVie
     ) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: theme.listItemHeight)
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let account = accountListDataSource.accounts[safe: indexPath.item] else {
+            return
+        }
+
+        open(.assetSelection(account: account), by: .push)
+    }
 }

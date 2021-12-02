@@ -23,7 +23,7 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
     
     private let viewModel: SendAlgosTransactionPreviewViewModel
     
-    override var filterOption: SelectAssetViewController.FilterOption {
+    override var filterOption: OldSelectAssetViewController.FilterOption {
         return .algos
     }
     

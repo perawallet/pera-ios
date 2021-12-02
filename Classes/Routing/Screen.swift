@@ -68,7 +68,7 @@ indirect enum Screen {
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)
     case ledgerApproval(mode: LedgerApprovalViewController.Mode, deviceName: String)
-    case selectAsset(transactionAction: TransactionAction, filterOption: SelectAssetViewController.FilterOption = .none)
+    case selectAsset(transactionAction: TransactionAction, filterOption: OldSelectAssetViewController.FilterOption = .none)
     case passphraseDisplay(address: String)
     case tooltip(title: String)
     case assetDetailNotification(address: String, assetId: Int64?)
@@ -116,6 +116,7 @@ indirect enum Screen {
     case algoStatisticsDateSelection(option: AlgosUSDValueInterval, delegate: AlgoStatisticsDateSelectionViewControllerDelegate)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case accountSelection
+    case assetSelection(account: Account)
 }
 
 extension Screen {
