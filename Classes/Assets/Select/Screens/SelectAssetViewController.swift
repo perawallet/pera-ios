@@ -17,7 +17,7 @@
 
 import UIKit
 
-class SelectAssetViewController: BaseViewController {
+final class SelectAssetViewController: BaseViewController {
     private let theme = Theme()
     private lazy var accountListDataSource = SelectAssetViewControllerDataSource(
         account: account
@@ -45,7 +45,7 @@ class SelectAssetViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.tertiary
+        view.backgroundColor = theme.listBackgroundColor
         navigationItem.title = "send-select-asset".localized
     }
     
@@ -63,7 +63,7 @@ extension SelectAssetViewController {
     private func addListView() {
         view.addSubview(listView)
         listView.snp.makeConstraints {
-            $0.trailing.leading.equalToSuperview().inset(24)
+            $0.trailing.leading.equalToSuperview().inset(theme.listLeadingInset)
             $0.top.bottom.equalToSuperview()
         }
     }

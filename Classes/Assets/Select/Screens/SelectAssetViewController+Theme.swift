@@ -26,12 +26,14 @@ extension SelectAssetViewController {
         let listMinimumLineSpacing: LayoutMetric
         let listItemHeight: LayoutMetric
         let listContentInsetTop: LayoutMetric
+        let listLeadingInset: LayoutMetric
 
         init(_ family: LayoutFamily) {
             listBackgroundColor = AppColors.Shared.System.background.uiColor
             listMinimumLineSpacing = 0
             listItemHeight = 72
             listContentInsetTop = 28
+            listLeadingInset = 24
         }
     }
 }
