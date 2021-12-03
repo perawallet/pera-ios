@@ -28,7 +28,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     private var isForcedMaxTransaction = false
     private let viewModel: SendAssetTransactionPreviewViewModel
     
-    override var filterOption: SelectAssetViewController.FilterOption {
+    override var filterOption: OldSelectAssetViewController.FilterOption {
         return .asset(assetDetail: assetDetail)
     }
     
