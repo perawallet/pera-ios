@@ -774,3 +774,6 @@ on your Ledger device (%d)";
 "portfolio-title" = "Portfolio Value";
 "portfolio-algo-holdings-title" = "Algo Holdings";
 "portfolio-asset-holdings-title" = "Asset Holdings";
+
+"account-options-add-account-title" = "Add Account";
+"account-options-arrange-list-title" = "Arrange List";
