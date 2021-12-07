@@ -19,8 +19,8 @@ import UIKit
 import MacaroonUIKit
 
 final class SingleLineTitleActionView: View {
-    private lazy var titleLabel = Label()
-    private lazy var actionButton = Button()
+    private lazy var titleLabel = UILabel()
+    private lazy var actionButton = UIButton()
 
     func customize(_ theme: SingleLineTitleActionViewTheme) {
         addActionButton(theme)
@@ -33,11 +33,25 @@ final class SingleLineTitleActionView: View {
 
 extension SingleLineTitleActionView {
     private func addActionButton(_ theme: SingleLineTitleActionViewTheme) {
+        actionButton.customizeAppearance(theme.action)
 
+        addSubview(actionButton)
+        actionButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(theme.actionTrailingPadding)
+            $0.size.equalTo(CGSize(theme.actionSize))
+        }
     }
     
     private func addTitleLabel(_ theme: SingleLineTitleActionViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
 
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().inset(theme.titleLeadingPadding)
+            $0.trailing.equalTo(actionButton.snp.leading).offset(-theme.titleTrailingPadding)
+        }
     }
 }
 

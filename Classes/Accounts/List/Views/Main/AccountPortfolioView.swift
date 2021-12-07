@@ -19,20 +19,20 @@ import MacaroonUIKit
 import UIKit
 
 final class AccountPortfolioView: View {
-    private lazy var titleLabel = Label()
-    private lazy var portfolioValueLabel = Label()
-    private lazy var algoHoldingsTitleLabel = Label()
+    private lazy var titleLabel = Button()
+    private lazy var portfolioValueLabel = UILabel()
+    private lazy var algoHoldingsTitleLabel = UILabel()
     private lazy var algoHoldingsValueButton = Button()
-    private lazy var assetHoldingsTitleLabel = Label()
-    private lazy var assetHoldingsValueLabel = Label()
+    private lazy var assetHoldingsTitleLabel = UILabel()
+    private lazy var assetHoldingsValueLabel = UILabel()
 
     func customize(_ theme: AccountPortfolioViewTheme) {
         addTitleLabel(theme)
         addPortfolioValueLabel(theme)
-        addAlgoHoldingsTitleLabel(theme)
-        addAlgoHoldingsValueButton(theme)
         addAssetHoldingsTitleLabel(theme)
         addAssetHoldingsValueLabel(theme)
+        addAlgoHoldingsTitleLabel(theme)
+        addAlgoHoldingsValueButton(theme)
     }
 
     func customizeAppearance(_ styleSheet: StyleSheet) { }
@@ -41,27 +41,65 @@ final class AccountPortfolioView: View {
 
 extension AccountPortfolioView {
     private func addTitleLabel(_ theme: AccountPortfolioViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
 
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.titleTopPadding)
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+        }
     }
 
     private func addPortfolioValueLabel(_ theme: AccountPortfolioViewTheme) {
+        portfolioValueLabel.customizeAppearance(theme.portfolioValue)
 
-    }
-
-    private func addAlgoHoldingsTitleLabel(_ theme: AccountPortfolioViewTheme) {
-
-    }
-
-    private func addAlgoHoldingsValueButton(_ theme: AccountPortfolioViewTheme) {
-
+        addSubview(portfolioValueLabel)
+        portfolioValueLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.portfolioTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+        }
     }
 
     private func addAssetHoldingsTitleLabel(_ theme: AccountPortfolioViewTheme) {
+        assetHoldingsTitleLabel.customizeAppearance(theme.assetHoldingsTitle)
 
+        addSubview(assetHoldingsTitleLabel)
+        assetHoldingsTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(portfolioValueLabel.snp.bottom).offset(theme.holdingsTopPadding)
+            $0.trailing.equalToSuperview().inset(theme.valueTrailingInset)
+        }
     }
 
     private func addAssetHoldingsValueLabel(_ theme: AccountPortfolioViewTheme) {
+        assetHoldingsValueLabel.customizeAppearance(theme.assetHoldingsValue)
 
+        addSubview(assetHoldingsValueLabel)
+        assetHoldingsValueLabel.snp.makeConstraints {
+            $0.top.equalTo(assetHoldingsTitleLabel.snp.bottom).offset(theme.valuesTopPadding)
+            $0.leading.equalTo(assetHoldingsTitleLabel)
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
+        }
+    }
+
+    private func addAlgoHoldingsTitleLabel(_ theme: AccountPortfolioViewTheme) {
+        algoHoldingsTitleLabel.customizeAppearance(theme.algoHoldingsTitle)
+
+        addSubview(algoHoldingsTitleLabel)
+        algoHoldingsTitleLabel.snp.makeConstraints {
+            $0.top.equalTo(portfolioValueLabel.snp.bottom).offset(theme.holdingsTopPadding)
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+        }
+    }
+
+    private func addAlgoHoldingsValueButton(_ theme: AccountPortfolioViewTheme) {
+        algoHoldingsValueButton.customizeAppearance(theme.algoHoldingsValue)
+
+        addSubview(algoHoldingsValueButton)
+        algoHoldingsValueButton.snp.makeConstraints {
+            $0.top.equalTo(algoHoldingsTitleLabel.snp.bottom).offset(theme.valuesTopPadding)
+            $0.leading.equalTo(algoHoldingsTitleLabel)
+            $0.trailing.greaterThanOrEqualTo(assetHoldingsValueLabel.snp.leading).offset(theme.horizontalInset)
+        }
     }
 }
 

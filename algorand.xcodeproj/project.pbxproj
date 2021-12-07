@@ -1879,6 +1879,15 @@
 		2BA9F02C268DCDC7003BDDA8 /* WCMultisigMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9F02B268DCDC7003BDDA8 /* WCMultisigMetadata.swift */; };
 		2BA9F02D268DCDC7003BDDA8 /* WCMultisigMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9F02B268DCDC7003BDDA8 /* WCMultisigMetadata.swift */; };
 		2BA9F02E268DCDC7003BDDA8 /* WCMultisigMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BA9F02B268DCDC7003BDDA8 /* WCMultisigMetadata.swift */; };
+		2BAB8A99275E3DEE006CBB15 /* ListBannerErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAB8A98275E3DEE006CBB15 /* ListBannerErrorViewModel.swift */; };
+		2BAB8A9A275E3DF3006CBB15 /* ListBannerErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAB8A98275E3DEE006CBB15 /* ListBannerErrorViewModel.swift */; };
+		2BAB8A9B275E3DF3006CBB15 /* ListBannerErrorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAB8A98275E3DEE006CBB15 /* ListBannerErrorViewModel.swift */; };
+		2BAB8A9D275E3DFF006CBB15 /* ListBannerErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAB8A9C275E3DFF006CBB15 /* ListBannerErrorView.swift */; };
+		2BAB8A9E275E3DFF006CBB15 /* ListBannerErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAB8A9C275E3DFF006CBB15 /* ListBannerErrorView.swift */; };
+		2BAB8A9F275E3DFF006CBB15 /* ListBannerErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAB8A9C275E3DFF006CBB15 /* ListBannerErrorView.swift */; };
+		2BAB8AA1275E3F3C006CBB15 /* ListBannerErrorViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAB8AA0275E3F3C006CBB15 /* ListBannerErrorViewTheme.swift */; };
+		2BAB8AA2275E3F3C006CBB15 /* ListBannerErrorViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAB8AA0275E3F3C006CBB15 /* ListBannerErrorViewTheme.swift */; };
+		2BAB8AA3275E3F3C006CBB15 /* ListBannerErrorViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAB8AA0275E3F3C006CBB15 /* ListBannerErrorViewTheme.swift */; };
 		2BAD558D239FB1A60037079F /* PendingAssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD558C239FB1A60037079F /* PendingAssetView.swift */; };
 		2BAD558E239FB1A60037079F /* PendingAssetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD558C239FB1A60037079F /* PendingAssetView.swift */; };
 		2BAD5590239FB1B10037079F /* PendingAssetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BAD558F239FB1B10037079F /* PendingAssetCell.swift */; };
@@ -3828,6 +3837,9 @@
 		2BA8736D2248240A00511C7C /* UIEdgeInsets+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Additions.swift"; sourceTree = "<group>"; };
 		2BA9F011268C8DEF003BDDA8 /* WCTransactionErrorResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionErrorResponse.swift; sourceTree = "<group>"; };
 		2BA9F02B268DCDC7003BDDA8 /* WCMultisigMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMultisigMetadata.swift; sourceTree = "<group>"; };
+		2BAB8A98275E3DEE006CBB15 /* ListBannerErrorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListBannerErrorViewModel.swift; sourceTree = "<group>"; };
+		2BAB8A9C275E3DFF006CBB15 /* ListBannerErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListBannerErrorView.swift; sourceTree = "<group>"; };
+		2BAB8AA0275E3F3C006CBB15 /* ListBannerErrorViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListBannerErrorViewTheme.swift; sourceTree = "<group>"; };
 		2BAD558C239FB1A60037079F /* PendingAssetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingAssetView.swift; sourceTree = "<group>"; };
 		2BAD558F239FB1B10037079F /* PendingAssetCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingAssetCell.swift; sourceTree = "<group>"; };
 		2BAD559323A29C830037079F /* Optional+Nil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Optional+Nil.swift"; sourceTree = "<group>"; };
@@ -8607,6 +8619,40 @@
 			path = Error;
 			sourceTree = "<group>";
 		};
+		2BAB8A94275E3DCE006CBB15 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				2BAB8A95275E3DD2006CBB15 /* Error */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		2BAB8A95275E3DD2006CBB15 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				2BAB8A97275E3DE2006CBB15 /* ViewModels */,
+				2BAB8A96275E3DDE006CBB15 /* Views */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		2BAB8A96275E3DDE006CBB15 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2BAB8A9C275E3DFF006CBB15 /* ListBannerErrorView.swift */,
+				2BAB8AA0275E3F3C006CBB15 /* ListBannerErrorViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2BAB8A97275E3DE2006CBB15 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BAB8A98275E3DEE006CBB15 /* ListBannerErrorViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 		2BAD558B239FB18D0037079F /* Pending */ = {
 			isa = PBXGroup;
 			children = (
@@ -10009,6 +10055,7 @@
 		2BF727DD2747181600CCAC30 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				2BAB8A94275E3DCE006CBB15 /* List */,
 				2BA713A92748719F00B8A907 /* AccountName */,
 				2BD063E225CEC89C008BD15E /* BottomWarning */,
 				2B571586263479A8002C876D /* Chart */,
@@ -11745,6 +11792,7 @@
 				2B101AF627012762004D2E47 /* GovernanceComingSoonCell.swift in Sources */,
 				2B95412225AC95B30098805B /* BannerDisplayable.swift in Sources */,
 				2B79A14823167BFC00766021 /* RewardDetailView.swift in Sources */,
+				2BAB8A9A275E3DF3006CBB15 /* ListBannerErrorViewModel.swift in Sources */,
 				D482273F272C0DA8004CB9BF /* BadgedImageViewTheme.swift in Sources */,
 				2B7E3084267BC0A100E89EE3 /* WCSingleTransactionViewController.swift in Sources */,
 				2BE4D10E2594E82C005F5764 /* AppStoreReviewer.swift in Sources */,
@@ -12291,6 +12339,7 @@
 				17BD4E942292F1260003E49A /* TransactionReceiverView.swift in Sources */,
 				2B03D6B125C2D3F40079A973 /* MaximumBalanceWarningViewModel.swift in Sources */,
 				2B02A2EE266CE07E002DD8AB /* WalletConnector.swift in Sources */,
+				2BAB8AA3275E3F3C006CBB15 /* ListBannerErrorViewTheme.swift in Sources */,
 				2BCBAAA9273BF3CA00B3A746 /* LedgerPairWarningView.swift in Sources */,
 				2B2AACD6250B6BF500B8C5C5 /* SettingsInfoViewModel.swift in Sources */,
 				17BD4E962292F1260003E49A /* PasswordInputView.swift in Sources */,
@@ -12549,6 +12598,7 @@
 				2B288ACC268E377300BC6FB6 /* WCWalletMeta.swift in Sources */,
 				2BA015D42637154C009EC914 /* LedgerAccountVerifyOperation.swift in Sources */,
 				2BB350CD2589747D00A03BAC /* RoundedAccountNameView.swift in Sources */,
+				2BAB8A9F275E3DFF006CBB15 /* ListBannerErrorView.swift in Sources */,
 				2B7E3049267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */,
 				2B0AD8302757DA3500F83660 /* AnnouncementBannerView.swift in Sources */,
 				2B8FC7022670CF7F008D9845 /* WalletConnectBridge.swift in Sources */,
@@ -12997,6 +13047,7 @@
 				2B0AD83C2757E17400F83660 /* AnnouncementBannerViewTheme.swift in Sources */,
 				D4822742272C5591004CB9BF /* AddContactViewController+Theme.swift in Sources */,
 				2B0F61E724EC129D00DA22A6 /* TransactionParams.swift in Sources */,
+				2BAB8A9B275E3DF3006CBB15 /* ListBannerErrorViewModel.swift in Sources */,
 				D45DFBC6273E6B300088306B /* EditAccountViewTheme.swift in Sources */,
 				D4C75BD8272E9125002BAA66 /* SearchInputViewTheme.swift in Sources */,
 				2B1336DA2576987D00371CFB /* AppearanceSelectionViewController.swift in Sources */,
@@ -13447,6 +13498,7 @@
 				D421177F26D8D3D000C032B2 /* BottomSheetTransition.swift in Sources */,
 				2BB93C0F25BF2421001F1D6C /* TransactionSignable.swift in Sources */,
 				D405058826F0D190001D0D11 /* LedgerDeviceCellViewTheme.swift in Sources */,
+				2BAB8AA2275E3F3C006CBB15 /* ListBannerErrorViewTheme.swift in Sources */,
 				2B5BE0A0251938E100324BEE /* AddAccountView.swift in Sources */,
 				2B0F62C524EC129D00DA22A6 /* Bool+Additions.swift in Sources */,
 				2B0F62C624EC129D00DA22A6 /* PassphraseMnemonicCell.swift in Sources */,
@@ -13489,6 +13541,7 @@
 				2B0F62D124EC129D00DA22A6 /* NotificationsDataSource.swift in Sources */,
 				2B0F62D224EC129D00DA22A6 /* NodeSelectionCell.swift in Sources */,
 				D4CCA1DA27242B3B00DF1B76 /* RekeyTransitionItemView.swift in Sources */,
+				2BAB8A9E275E3DFF006CBB15 /* ListBannerErrorView.swift in Sources */,
 				2B03D69A25C23BFD0079A973 /* MaximumBalanceWarningViewController.swift in Sources */,
 				2B0F62D324EC129D00DA22A6 /* TransactionTrackDraft.swift in Sources */,
 				2B0F62D424EC129D00DA22A6 /* NumpadView.swift in Sources */,
@@ -13728,6 +13781,7 @@
 				D411B36926E9FD7A004FF980 /* OptionsContextViewTheme.swift in Sources */,
 				2B0D84FA2395D63100F0EAA7 /* SendAlgosTransactionPreviewViewController.swift in Sources */,
 				D411B37426EA1043004FF980 /* AccountPreviewView.swift in Sources */,
+				2BAB8AA1275E3F3C006CBB15 /* ListBannerErrorViewTheme.swift in Sources */,
 				2B7E3043267A524D00E89EE3 /* WCTransactionDappMessageView.swift in Sources */,
 				2BA172F12649F66A00A613C4 /* UIPanGestureRecognizer+Additions.swift in Sources */,
 				2B59F15C22550778005203DD /* Codable+CoreData.swift in Sources */,
@@ -13986,6 +14040,7 @@
 				2BB93C2325BF2461001F1D6C /* SDKTransactionSigner.swift in Sources */,
 				2B82B1C522535F4300A8909F /* Contact.swift in Sources */,
 				2BDE31E32279A319002E8235 /* ContactSelectionCell.swift in Sources */,
+				2BAB8A99275E3DEE006CBB15 /* ListBannerErrorViewModel.swift in Sources */,
 				1828816526CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
 				D48D11D3274279D2000061CE /* NotificationsViewTheme.swift in Sources */,
 				D442AA0C27397381009E60D4 /* AssetPreviewViewTheme.swift in Sources */,
@@ -14504,6 +14559,7 @@
 				D46C647926E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */,
 				2BA4B3DC2673F0E60041586B /* WCConnectionApprovalViewModel.swift in Sources */,
 				D4822746272C5735004CB9BF /* EditContactViewController.swift in Sources */,
+				2BAB8A9D275E3DFF006CBB15 /* ListBannerErrorView.swift in Sources */,
 				2B288AD8269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */,
 				2B0F5EFA24DD509D00DA22A6 /* RekeyConfirmationViewModel.swift in Sources */,
 				2BECB4DD25A12C3A0081870A /* NotificationFilterListLayout.swift in Sources */,

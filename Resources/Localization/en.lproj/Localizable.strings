@@ -44,6 +44,7 @@
 "title-got-it" = "Got it!";
 "title-off" = "Off";
 "title-on" = "On";
+"title-retry" = "Retry";
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";
@@ -769,3 +770,7 @@ on your Ledger device (%d)";
 "governance-banner-title" = "Algorand Governance Program is starting!";
 "governance-banner-detail" = "Become a governor. Vote on Algorand’s future. Earn rewards.";
 "governance-banner-action" = "Get Started";
+
+"portfolio-title" = "Portfolio Value";
+"portfolio-algo-holdings-title" = "Algo Holdings";
+"portfolio-asset-holdings-title" = "Asset Holdings";

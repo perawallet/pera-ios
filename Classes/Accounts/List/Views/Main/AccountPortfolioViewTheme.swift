@@ -19,9 +19,66 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AccountPortfolioViewTheme: StyleSheet, LayoutSheet {
-    
-    init(_ family: LayoutFamily) {
+struct AccountPortfolioViewTheme: StyleSheet, LayoutSheet {
+    let title: ButtonStyle
+    let portfolioValue: TextStyle
+    let algoHoldingsTitle: TextStyle
+    let algoHoldingsValue: ButtonStyle
+    let assetHoldingsTitle: TextStyle
+    let assetHoldingsValue: TextStyle
 
+    let horizontalInset: LayoutMetric
+    let titleTopPadding: LayoutMetric
+    let portfolioTopPadding: LayoutMetric
+    let holdingsTopPadding: LayoutMetric
+    let valuesTopPadding: LayoutMetric
+    let valueTrailingInset: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        self.title = [
+            .font(Fonts.DMSans.regular.make(15)),
+            .icon([.normal("icon-info-20")]),
+            .title("portfolio-title".localized),
+            .titleColor([.normal(AppColors.Components.Text.gray.uiColor)]),
+            .tintColor(AppColors.Components.Text.gray.uiColor),
+        ]
+        self.portfolioValue = [
+            .textOverflow(SingleLineFittingText()),
+            .textAlignment(.left),
+            .font(Fonts.DMSans.regular.make(36)),
+            .textColor(AppColors.Components.Text.main.uiColor)
+        ]
+        self.algoHoldingsTitle = [
+            .textOverflow(SingleLineFittingText()),
+            .textAlignment(.left),
+            .text("portfolio-algo-holdings-title".localized),
+            .font(Fonts.DMSans.regular.make(15)),
+            .textColor(AppColors.Components.Text.gray.uiColor)
+        ]
+        self.algoHoldingsValue = [
+            .font(Fonts.DMSans.regular.make(15)),
+            .titleColor([.normal(AppColors.Components.Text.main.uiColor)]),
+            .icon([.normal("icon-algo-circle-green")])
+        ]
+        self.assetHoldingsTitle = [
+            .textOverflow(SingleLineFittingText()),
+            .textAlignment(.left),
+            .text("portfolio-sset-holdings-title".localized),
+            .font(Fonts.DMSans.regular.make(15)),
+            .textColor(AppColors.Components.Text.gray.uiColor)
+        ]
+        self.assetHoldingsValue = [
+            .textOverflow(SingleLineFittingText()),
+            .textAlignment(.left),
+            .font(Fonts.DMSans.regular.make(15)),
+            .textColor(AppColors.Components.Text.main.uiColor)
+        ]
+
+        self.horizontalInset = 24
+        self.titleTopPadding = 24
+        self.portfolioTopPadding = 32
+        self.holdingsTopPadding = 24
+        self.valuesTopPadding = 12
+        self.valueTrailingInset = 40
     }
 }
