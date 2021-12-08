@@ -22,11 +22,11 @@ import MagpieCore
 import MagpieHipo
 
 final class AssetsFetchOperation: MacaroonUtils.AsyncOperation {
-    typealias CompletionHandler = (Result<[AssetInformation], HIPNetworkError<NoJSONModel>>) -> Void
+    typealias CompletionHandler = (Result<[AssetInformation], HIPNetworkError<NoAPIModel>>) -> Void
     
     var completionHandler: CompletionHandler?
     
-    private var endpoint: EndpointOperatable?
+    private var ongoingEndpoint: EndpointOperatable?
     
     private let ids: [AssetID]
     private let api: ALGAPI
@@ -42,34 +42,36 @@ final class AssetsFetchOperation: MacaroonUtils.AsyncOperation {
     override func main() {
         let draft = AssetFetchQuery(ids: ids)
         
-        endpoint = api.fetchAssetDetails(draft) { [weak self] result in
-            guard let self = self else { return }
-            
-            if self.finishIfCancelled() {
-                return
-            }
-            
-            self.endpoint = nil
-            
-            switch result {
-            case .success(let assetList):
-                let assets = assetList.results
+        ongoingEndpoint =
+            api.fetchAssetDetails(draft) { [weak self] result in
+                guard let self = self else { return }
                 
-                /// <todo>
-                /// ???
-                assets.forEach { self.api.session.assetInformations[$0.id] = $0 }
+                if self.finishIfCancelled() {
+                    return
+                }
                 
-                self.completionHandler?(.success(assets))
-            case .failure(let apiError, _):
-                self.completionHandler?(.failure(.init(apiError: apiError, apiErrorDetail: nil)))
+                self.ongoingEndpoint = nil
+                
+                switch result {
+                case .success(let assetList):
+                    let assets = assetList.results
+                    
+                    /// <todo>
+                    /// ???
+                    assets.forEach { self.api.session.assetInformations[$0.id] = $0 }
+                    
+                    self.completionHandler?(.success(assets))
+                case .failure(let apiError, let apiErrorDetail):
+                    let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+                    self.completionHandler?(.failure(error))
+                }
             }
-        }
     }
     
     override func cancel() {
         super.cancel()
         
-        endpoint?.cancel()
-        endpoint = nil
+        ongoingEndpoint?.cancel()
+        ongoingEndpoint = nil
     }
 }

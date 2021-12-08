@@ -22,11 +22,11 @@ import MagpieCore
 import MagpieHipo
 
 final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
-    typealias CompletionHandler = (Result<Account, HIPNetworkError<NoJSONModel>>) -> Void
+    typealias CompletionHandler = (Result<Account, HIPNetworkError<NoAPIModel>>) -> Void
     
     var completionHandler: CompletionHandler?
     
-    private var endpoint: EndpointOperatable?
+    private var ongoingEndpoint: EndpointOperatable?
     
     private let account: AccountInformation
     private let api: ALGAPI
@@ -48,38 +48,40 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
 
         /// <todo>
         /// Thread???
-        endpoint = api.fetchAccount(draft) { [weak self] result in
-            guard let self = self else { return }
+        ongoingEndpoint =
+            api.fetchAccount(draft) { [weak self] result in
+                guard let self = self else { return }
 
-            if self.finishIfCancelled() {
-                return
-            }
-            
-            self.endpoint = nil
-            
-            switch result {
-            case .success(let response):
-                let accountDetail = response.account
-                /// <todo>
-                /// ???
-                accountDetail.assets = accountDetail.nonDeletedAssets()
-                accountDetail.update(from: self.account)
-                self.completionHandler?(.success(accountDetail))
-            case .failure(let apiError, _):
-                if apiError.isHttpNotFound {
-                    let accountDetail = Account(accountInformation: self.account)
-                    self.completionHandler?(.success(accountDetail))
-                } else {
-                    self.completionHandler?(.failure(.init(apiError: apiError, apiErrorDetail: nil)))
+                if self.finishIfCancelled() {
+                    return
                 }
-            }
+            
+                self.ongoingEndpoint = nil
+                
+                switch result {
+                case .success(let response):
+                    let accountDetail = response.account
+                    /// <todo>
+                    /// ???
+                    accountDetail.assets = accountDetail.nonDeletedAssets()
+                    accountDetail.update(from: self.account)
+                    self.completionHandler?(.success(accountDetail))
+                case .failure(let apiError, let apiErrorDetail):
+                    if apiError.isHttpNotFound {
+                        let accountDetail = Account(accountInformation: self.account)
+                        self.completionHandler?(.success(accountDetail))
+                    } else {
+                        let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+                        self.completionHandler?(.failure(error))
+                    }
+                }
         }
     }
     
     override func cancel() {
         super.cancel()
         
-        endpoint?.cancel()
-        endpoint = nil
+        ongoingEndpoint?.cancel()
+        ongoingEndpoint = nil
     }
 }
