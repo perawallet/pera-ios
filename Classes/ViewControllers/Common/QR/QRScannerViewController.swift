@@ -271,11 +271,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
 
             if qrString.isWalletConnectConnection {
                 if !canReadWCSession {
-                    let message = """
-                    The scanned QR is not a valid Algorand public address. For other types of QR (such as WalletConnect transactions),
-                    please use the scan QR button on the homepage.
-                    """
-                    NotificationBanner.showError("title-error".localized, message: message)
+                    NotificationBanner.showError("title-error".localized, message: "qr-scan-invalid-wc-screen-error".localized)
                     captureSession = nil
                     closeScreen(by: .pop)
                     return
