@@ -16,6 +16,7 @@
 //   WalletConnector.swift
 
 import WalletConnectSwift
+import Macaroon
 
 class WalletConnector {
 
@@ -38,18 +39,14 @@ extension WalletConnector {
 
     func connect(to session: String) {
         guard let url = WalletConnectURL(session) else {
-            DispatchQueue.main.async {
-                self.delegate?.walletConnector(self, didFailWith: .failedToCreateSession(qr: session))
-            }
+            delegate?.walletConnector(self, didFailWith: .failedToCreateSession(qr: session))
             return
         }
 
         do {
             try walletConnectBridge.connect(to: url)
         } catch {
-            DispatchQueue.main.async {
-                self.delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
-            }
+            delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
         }
     }
 
@@ -57,9 +54,7 @@ extension WalletConnector {
         do {
             try walletConnectBridge.disconnect(from: session.sessionBridgeValue)
         } catch {
-            DispatchQueue.main.async {
-                self.delegate?.walletConnector(self, didFailWith: .failedToDisconnect(session: session))
-            }
+            delegate?.walletConnector(self, didFailWith: .failedToDisconnect(session: session))
         }
     }
 
@@ -108,8 +103,27 @@ extension WalletConnector {
             WCSessionHistory.create(
                 entity: WCSessionHistory.entityName,
                 with: [WCSessionHistory.DBKeys.sessionHistory.rawValue: sessionData]
-            )
+            ) { result in
+                switch result {
+                case .error:
+                    asyncMain { [weak self] in
+                        guard let self = self else {
+                            return
+                        }
+
+                        self.logWCSessionSavingError(session)
+                    }
+                default:
+                    break
+                }
+            }
         }
+    }
+
+    private func logWCSessionSavingError(_ session: WCSession) {
+        UIApplication.shared.firebaseAnalytics?.record(
+            WCSessionSaveErrorLog(dappURL: session.urlMeta.wcURL.absoluteString)
+        )
     }
 }
 
@@ -120,33 +134,23 @@ extension WalletConnector: WalletConnectBridgeDelegate {
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         // Get user approval or rejection for the session
-        DispatchQueue.main.async {
-            self.delegate?.walletConnector(self, shouldStart: session, then: completion)
-        }
+        delegate?.walletConnector(self, shouldStart: session, then: completion)
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didFailToConnect url: WalletConnectURL) {
-        DispatchQueue.main.async {
-            self.delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
-        }
+        delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didConnectTo session: WalletConnectSession) {
         let wcSession = session.toWCSession()
-
-        DispatchQueue.main.async {
-            self.addToSavedSessions(wcSession)
-            self.delegate?.walletConnector(self, didConnectTo: wcSession)
-        }
+        addToSavedSessions(wcSession)
+        delegate?.walletConnector(self, didConnectTo: wcSession)
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didDisconnectFrom session: WalletConnectSession) {
         let wcSession = session.toWCSession()
-
-        DispatchQueue.main.async {
-            self.removeFromSessions(wcSession)
-            self.delegate?.walletConnector(self, didDisconnectFrom: wcSession)
-        }
+        removeFromSessions(wcSession)
+        delegate?.walletConnector(self, didDisconnectFrom: wcSession)
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didUpdate session: WalletConnectSession) {

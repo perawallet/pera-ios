@@ -315,40 +315,65 @@ extension QRScannerViewController: WalletConnectorDelegate {
     ) {
         guard let accounts = self.session?.accounts,
               accounts.contains(where: { $0.type != .watch }) else {
-            NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-error-no-account".localized)
+                  asyncMain { [weak self] in
+                      guard self != nil else {
+                          return
+                      }
+
+                      NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-error-no-account".localized)
+                  }
             return
         }
 
-        let controller = open(
-            .wcConnectionApproval(walletConnectSession: session, completion: completion),
-            by: .customPresent(
-                presentationStyle: .custom,
-                transitionStyle: nil,
-                transitioningDelegate: wcConnectionModalPresenter
-            )
-        ) as? WCConnectionApprovalViewController
-        controller?.delegate = self
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            let controller = self.open(
+                .wcConnectionApproval(walletConnectSession: session, completion: completion),
+                by: .customPresent(
+                    presentationStyle: .custom,
+                    transitionStyle: nil,
+                    transitioningDelegate: self.wcConnectionModalPresenter
+                )
+            ) as? WCConnectionApprovalViewController
+            controller?.delegate = self
+        }
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
         delegate?.qrScannerViewControllerDidApproveWCConnection(self)
         walletConnector.saveConnectedWCSession(session)
-        cancelButton.stopLoading()
-        captureSession = nil
-        closeScreen(by: .pop)
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.captureSession = nil
+            self.cancelButton.stopLoading()
+            self.closeScreen(by: .pop)
+        }
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
         switch error {
         case .failedToConnect,
              .failedToCreateSession:
-            cancelButton.stopLoading()
-            captureSessionQueue.async {
-                self.captureSession?.startRunning()
+            asyncMain { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.cancelButton.stopLoading()
+                self.captureSessionQueue.async {
+                    self.captureSession?.startRunning()
+                }
+                NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-invalid-qr-message".localized)
+                self.captureSession = nil
+                self.closeScreen(by: .pop)
             }
-            NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-invalid-qr-message".localized)
-            captureSession = nil
-            closeScreen(by: .pop)
+
         default:
             break
         }

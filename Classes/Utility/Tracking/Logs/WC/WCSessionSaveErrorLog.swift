@@ -13,24 +13,17 @@
 // limitations under the License.
 
 //
-//  AnalyticsLog.swift
+//   WCSessionSaveErrorLog.swift
 
 import Foundation
 
-protocol AnalyticsLog {
-    var id: Int { get }
-    var name: AnalyticsLogName { get }
-    var params: AnalyticsParameters { get }
-}
-
-extension AnalyticsLog {
-    var id: Int {
-        return AnalyticsLogName.allCases.firstIndex(of: name) ?? -1
+struct WCSessionSaveErrorLog: AnalyticsLog {
+    let dappURL: String
+    
+    var name: AnalyticsLogName = .wcSessionSaveError
+    var params: AnalyticsParameters {
+        return [
+            .dappURL: dappURL
+        ]
     }
-}
-
-enum AnalyticsLogName: String, CaseIterable {
-    case ledgerTransactionError = "LedgerTransactionError"
-    case mismatchAccountError = "MismatchAccount"
-    case wcSessionSaveError = "WCSessionNotSaved"
 }
