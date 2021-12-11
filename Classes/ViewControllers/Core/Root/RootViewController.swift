@@ -187,24 +187,59 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
 
         currentWCTransactionRequest = request
 
-        wcMainTransactionViewController = open(
-            .wcMainTransaction(
-                transactions: transactions,
-                transactionRequest: request,
-                transactionOption: transactionOption
-            ),
-            by: fullScreenPresentation,
-            animated: animated
-        ) as? WCMainTransactionViewController
+        /// If there's already a modal presented screen, open the request on top of that screen.
+        if let controller = topMostController,
+           controller.isModal {
+            wcMainTransactionViewController = controller.open(
+                .wcMainTransaction(
+                    transactions: transactions,
+                    transactionRequest: request,
+                    transactionOption: transactionOption
+                ),
+                by: fullScreenPresentation,
+                animated: animated
+            ) as? WCMainTransactionViewController
 
-        wcMainTransactionViewController?.delegate = self
+            wcMainTransactionViewController?.delegate = self
+        } else {
+            wcMainTransactionViewController = open(
+                .wcMainTransaction(
+                    transactions: transactions,
+                    transactionRequest: request,
+                    transactionOption: transactionOption
+                ),
+                by: fullScreenPresentation,
+                animated: animated
+            ) as? WCMainTransactionViewController
+
+            wcMainTransactionViewController?.delegate = self
+        }
     }
 }
 
 extension RootViewController: WCMainTransactionViewControllerDelegate {
     func wcMainTransactionViewController(
         _ wcMainTransactionViewController: WCMainTransactionViewController,
-        didCompleted request: WalletConnectRequest
+        didSigned request: WalletConnectRequest,
+        in session: WCSession?
+    ) {
+        resetCurrentWCTransaction()
+
+        guard let dappName = session?.peerMeta.name else {
+            return
+        }
+
+        /// <todo>
+        /// These texts will be localized later.
+        NotificationBanner.showInformation(
+            "Your transaction is being processed!",
+            detail: "The transaction has been signed and sent to \(dappName). Please visit \(dappName) for the remaining process."
+        )
+    }
+
+    func wcMainTransactionViewController(
+        _ wcMainTransactionViewController: WCMainTransactionViewController,
+        didRejected request: WalletConnectRequest
     ) {
         resetCurrentWCTransaction()
     }
