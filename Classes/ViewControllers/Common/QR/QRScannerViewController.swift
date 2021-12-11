@@ -46,6 +46,14 @@ class QRScannerViewController: BaseViewController {
         ),
         initialModalSize: .custom(CGSize(width: view.frame.width, height: 454.0))
     )
+
+    private lazy var wcConnectionErrorModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .none
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 360.0))
+    )
     
     weak var delegate: QRScannerViewControllerDelegate?
     
@@ -64,6 +72,8 @@ class QRScannerViewController: BaseViewController {
             }
         }
     }
+
+    private var wcConnectionTimer: Timer?
 
     private let canReadWCSession: Bool
 
@@ -281,6 +291,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 cancelButton.startLoading()
                 cancelButton.setBackgroundImage(img("button-bg-scan-qr"), for: .normal)
                 walletConnector.connect(to: qrString)
+                startWCConnectionTimer()
             } else if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
                 captureSession = nil
                 closeScreen(by: .pop)
@@ -313,6 +324,8 @@ extension QRScannerViewController: WalletConnectorDelegate {
         shouldStart session: WalletConnectSession,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
+        stopWCConnectionTimer()
+
         guard let accounts = self.session?.accounts,
               accounts.contains(where: { $0.type != .watch }) else {
                   asyncMain { [weak self] in
@@ -365,10 +378,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
                     return
                 }
 
-                self.cancelButton.stopLoading()
-                self.captureSessionQueue.async {
-                    self.captureSession?.startRunning()
-                }
+                self.resetUIForScanning()
                 NotificationBanner.showError("title-error".localized, message: "wallet-connect-session-invalid-qr-message".localized)
                 self.captureSession = nil
                 self.closeScreen(by: .pop)
@@ -377,6 +387,67 @@ extension QRScannerViewController: WalletConnectorDelegate {
         default:
             break
         }
+    }
+
+    private func startWCConnectionTimer() {
+        /// We need to warn the user after 10 seconds if there's no resposne from the dApp.
+        wcConnectionTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+
+            asyncMain { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                if self.captureSession?.isRunning == true {
+                    self.captureSessionQueue.async {
+                        self.captureSession?.stopRunning()
+                    }
+                }
+
+                self.openWCConnectionError()
+            }
+
+            self.stopWCConnectionTimer()
+        }
+    }
+
+    private func stopWCConnectionTimer() {
+        wcConnectionTimer?.invalidate()
+        wcConnectionTimer = nil
+    }
+
+    private func openWCConnectionError() {
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: wcConnectionErrorModalPresenter
+        )
+
+        /// <todo>
+        /// These texts will be localized later.
+        let message = """
+            We are sorry, but the dApp is not responding. Please refresh the page and try scanning a new QR Code. If the error persists,
+            please contact the dApp.
+        """
+        let warningAlert = WarningAlert(
+            title: "Connection Failed",
+            image: img("img-error-circle"),
+            description: message,
+            actionTitle: "title-close".localized
+        )
+
+        let controller = open(.warningAlert(warningAlert: warningAlert), by: transitionStyle) as? WarningAlertViewController
+        controller?.delegate = self
+    }
+}
+
+extension QRScannerViewController: WarningAlertViewControllerDelegate {
+    func warningAlertViewControllerDidTakeAction(_ warningAlertViewController: WarningAlertViewController) {
+        resetUIForScanning()
     }
 }
 
@@ -387,6 +458,10 @@ extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
 
     func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
         wcConnectionApprovalViewController.dismissScreen()
+        resetUIForScanning()
+    }
+
+    private func resetUIForScanning() {
         cancelButton.stopLoading()
         captureSessionQueue.async {
             self.captureSession?.startRunning()
