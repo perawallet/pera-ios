@@ -2768,6 +2768,9 @@
 		D442AA0C27397381009E60D4 /* AssetPreviewViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D442AA0B27397381009E60D4 /* AssetPreviewViewTheme.swift */; };
 		D442AA0D27397381009E60D4 /* AssetPreviewViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D442AA0B27397381009E60D4 /* AssetPreviewViewTheme.swift */; };
 		D442AA0E27397381009E60D4 /* AssetPreviewViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D442AA0B27397381009E60D4 /* AssetPreviewViewTheme.swift */; };
+		D442E1BD27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D442E1BC27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift */; };
+		D442E1BE27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D442E1BC27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift */; };
+		D442E1BF27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D442E1BC27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift */; };
 		D446A73D272A8BDD0081D60B /* AssetPreviewActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */; };
 		D446A73E272A8BDD0081D60B /* AssetPreviewActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */; };
 		D446A73F272A8BDD0081D60B /* AssetPreviewActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */; };
@@ -4144,6 +4147,7 @@
 		D43B23E727180B2F00444F35 /* LedgerAccountDetailSectionHeaderViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailSectionHeaderViewTheme.swift; sourceTree = "<group>"; };
 		D442AA0727397331009E60D4 /* AssetPreviewViewAdditionTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewViewAdditionTheme.swift; sourceTree = "<group>"; };
 		D442AA0B27397381009E60D4 /* AssetPreviewViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewViewTheme.swift; sourceTree = "<group>"; };
+		D442E1BC27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerOverlayViewTheme.swift; sourceTree = "<group>"; };
 		D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewActionView.swift; sourceTree = "<group>"; };
 		D446A740272A8BFA0081D60B /* AssetPreviewActionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewActionViewTheme.swift; sourceTree = "<group>"; };
 		D446A744272AB3310081D60B /* ContactDetailViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactDetailViewController+Theme.swift"; sourceTree = "<group>"; };
@@ -7734,7 +7738,7 @@
 				04F153AD274F7A2300AD2732 /* QRView */,
 				04A6FB382733654900922EC7 /* QRAddress */,
 				04A6FB372733653000922EC7 /* QRCreation */,
-				2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */,
+				D442E1C027673D82007A9D2D /* QRScanner */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -11009,6 +11013,15 @@
 			path = TransactionModal;
 			sourceTree = "<group>";
 		};
+		D442E1C027673D82007A9D2D /* QRScanner */ = {
+			isa = PBXGroup;
+			children = (
+				2BF5314D22491E7F00A7455F /* QRScannerOverlayView.swift */,
+				D442E1BC27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift */,
+			);
+			path = QRScanner;
+			sourceTree = "<group>";
+		};
 		D446A748272ABEC90081D60B /* Rekey */ = {
 			isa = PBXGroup;
 			children = (
@@ -11655,6 +11668,7 @@
 				D411B37E26EA126D004FF980 /* AccountPreviewViewTheme.swift in Sources */,
 				2B95415425AD04690098805B /* Once.swift in Sources */,
 				2B288AE92693A5B700BC6FB6 /* WCSingleTransactionViewControllerAssetActionable.swift in Sources */,
+				D442E1BF27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift in Sources */,
 				D4BC640126DE22A3000CFD28 /* ButtonViewModel.swift in Sources */,
 				2B79A13E23147A4900766021 /* PassphraseBackUpViewController.swift in Sources */,
 				2B0322E4269F1DE900C9B2F5 /* WCMainTransactionLayout.swift in Sources */,
@@ -13106,6 +13120,7 @@
 				D41F934A2723038F00E9F2E7 /* RekeyInstructionsViewModel.swift in Sources */,
 				2B7E3056267A5D9D00E89EE3 /* WCGroupTransactionViewController.swift in Sources */,
 				2B9E2F4C26F0DDCD003D824A /* WCAssetConfigTransactionItemCell.swift in Sources */,
+				D442E1BE27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift in Sources */,
 				2B5739E226F3F26B007E0252 /* WCAssetReconfigurationTransactionViewController.swift in Sources */,
 				2B0F624D24EC129D00DA22A6 /* AccountNameView.swift in Sources */,
 				2B0F624E24EC129D00DA22A6 /* LimitQuery.swift in Sources */,
@@ -13563,6 +13578,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D442E1BD27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift in Sources */,
 				2B5BE14E251B732800324BEE /* Currency.swift in Sources */,
 				04F153AF274F7F2500AD2732 /* QRViewTheme.swift in Sources */,
 				2B288ADC269112EB00BC6FB6 /* JSONDisplayViewModel.swift in Sources */,

@@ -133,6 +133,7 @@
 "recover-copy-error" = "The last copied text is not valid passphrase with 25 words. Please copy valid passphrase and try again.";
 
 // MARK: QR Scanning
+"qr-scan-overlay-title" = "Find a code to scan";
 "qr-scan-title" = "Scan QR Code";
 "qr-scan-error-title" = "Camera is not available";
 "qr-scan-error-message" = "Your device does not support scanning a qr code.";

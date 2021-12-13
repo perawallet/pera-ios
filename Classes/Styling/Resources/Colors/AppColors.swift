@@ -145,3 +145,9 @@ extension AppColors.Components {
         case errorBackground = "Components/TextField/errorBackground"
     }
 }
+
+extension AppColors.Components {
+    enum QR: String, Color {
+        case background = "Components/QR/background"
+    }
+}
