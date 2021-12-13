@@ -54,7 +54,13 @@ extension LedgerAccountDetailView {
 // MARK: - AccountPreviewCell
 
 final class AccountPreviewCell: BaseCollectionViewCell<AccountPreviewView> {
-    func customize(_ theme: AccountPreviewViewTheme) {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(AccountPreviewViewTheme())
+    }
+
+    private func customize(_ theme: AccountPreviewViewTheme) {
         contextView.customize(theme)
     }
 

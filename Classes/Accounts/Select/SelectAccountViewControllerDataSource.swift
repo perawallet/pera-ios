@@ -37,7 +37,6 @@ UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
-        cell.customize(AccountPreviewViewTheme())
 
         if let account = accounts[safe: indexPath.item] {
             cell.bindData(

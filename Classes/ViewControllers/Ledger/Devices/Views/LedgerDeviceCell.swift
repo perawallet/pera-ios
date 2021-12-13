@@ -15,10 +15,16 @@
 //
 //  LedgerDeviceCell.swift
 
-import Foundation
+import UIKit
 
 final class LedgerDeviceCell: BaseCollectionViewCell<LedgerDeviceCellView> {
-    func customize(_ theme: LedgerDeviceCellViewTheme) {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(LedgerDeviceCellViewTheme())
+    }
+
+    private func customize(_ theme: LedgerDeviceCellViewTheme) {
         contextView.customize(theme)
     }
 

@@ -84,15 +84,13 @@ extension LedgerAccountSelectionDataSource: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let account = accounts[safe: indexPath.item],
-            let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: LedgerAccountCell.reusableIdentifier,
-                for: indexPath
-            ) as? LedgerAccountCell {
+        if let account = accounts[safe: indexPath.item] {
+            let cell = collectionView.dequeue(LedgerAccountCell.self, at: indexPath)
             cell.delegate = self
             cell.bind(LedgerAccountViewModel(account))
             return cell
         }
+
         fatalError("Index path is out of bounds")
     }
 }

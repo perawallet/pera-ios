@@ -57,7 +57,7 @@ extension AccountListDataSource: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
-        cell.customize(AccountPreviewViewTheme())
+
         if indexPath.item < accounts.count {
             let account = accounts[indexPath.item]
             cell.bindData(AccountCellViewModel(account: account, mode: mode))
