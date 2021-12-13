@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//   AssetsFetchOperation.swift
+//   AssetDetailGroupFetchOperation.swift
 
 
 import Foundation
@@ -21,7 +21,7 @@ import MacaroonUtils
 import MagpieCore
 import MagpieHipo
 
-final class AssetsFetchOperation: MacaroonUtils.AsyncOperation {
+final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
     typealias CompletionHandler = (Result<[AssetInformation], HIPNetworkError<NoAPIModel>>) -> Void
     
     var completionHandler: CompletionHandler?

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//   BlockListener.swift
+//   BlockWatcher.swift
 
 
 import Foundation
@@ -21,7 +21,7 @@ import MacaroonUtils
 import MagpieCore
 import MagpieHipo
 
-final class BlockListener {
+final class BlockWatcher {
     typealias Handler = () -> Void
     
     private var lastRound: BlockRound?
@@ -39,7 +39,7 @@ final class BlockListener {
     }
 }
 
-extension BlockListener {
+extension BlockWatcher {
     func start(
         onReceive handler: @escaping Handler
     ) {
@@ -63,7 +63,7 @@ extension BlockListener {
     }
 }
 
-extension BlockListener {
+extension BlockWatcher {
     private func watchNextBlock() {
         self.fetchTransactionParams { [weak self] result in
             guard let self = self else { return }
@@ -72,6 +72,8 @@ extension BlockListener {
             case .success(let round):
                 self.watchNextBlock(after: round)
             case .failure:
+                /// <todo>
+                /// How to handle network/server errors?
                 self.watchNextBlock(after: 0)
             }
         }
@@ -92,13 +94,15 @@ extension BlockListener {
                 
                 self.watchNextBlock(after: lastRound)
             case .failure:
+                /// <todo>
+                /// How to handle network/server errors?
                 self.watchNextBlock()
             }
         }
     }
 }
 
-extension BlockListener {
+extension BlockWatcher {
     private typealias FetchTransactionParamsCompletionHandler = (Result<BlockRound, HIPNetworkError<NoAPIModel>>) -> Void
     
     private func fetchTransactionParams(
@@ -121,7 +125,7 @@ extension BlockListener {
     }
 }
 
-extension BlockListener {
+extension BlockWatcher {
     private typealias WaitForNextBlockCompletionHandler = (Result<RoundDetail, HIPNetworkError<NoAPIModel>>) -> Void
     
     private func waitForNextBlock(
