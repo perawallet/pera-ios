@@ -16,6 +16,7 @@
 //  RootViewController.swift
 
 import UIKit
+import Macaroon
 
 class RootViewController: UIViewController {
     
@@ -44,6 +45,14 @@ class RootViewController: UIViewController {
     private let onceWhenViewDidAppear = Once()
 
     private(set) var isDisplayingGovernanceBanner = true
+
+    private lazy var wcTransactionSuccessModalPresenter = CardModalPresenter(
+        config: ModalConfiguration(
+            animationMode: .normal(duration: 0.25),
+            dismissMode: .backgroundTouch
+        ),
+        initialModalSize: .custom(CGSize(width: view.frame.width, height: 350.0))
+    )
 
     private lazy var deepLinkRouter = DeepLinkRouter(rootViewController: self, appConfiguration: appConfiguration)
     
@@ -225,16 +234,38 @@ extension RootViewController: WCMainTransactionViewControllerDelegate {
     ) {
         resetCurrentWCTransaction()
 
-        guard let dappName = session?.peerMeta.name else {
+        guard let wcSession = session else {
             return
         }
 
+        presentWCTransactionSuccessMessage(for: wcSession)
+    }
+
+    private func presentWCTransactionSuccessMessage(for session: WCSession) {
+        let transitionStyle = Screen.Transition.Open.customPresent(
+            presentationStyle: .custom,
+            transitionStyle: nil,
+            transitioningDelegate: wcTransactionSuccessModalPresenter
+        )
+
+        let dappName = session.peerMeta.name
+
         /// <todo>
         /// These texts will be localized later.
-        NotificationBanner.showInformation(
-            "Your transaction is being processed!",
-            detail: "The transaction has been signed and sent to \(dappName). Please visit \(dappName) for the remaining process."
+        let warningAlert = WarningAlert(
+            title: "Your transaction is being processed!",
+            image: img("img-green-checkmark"),
+            description: "The transaction has been signed and sent to \(dappName). Please visit \(dappName) for the remaining process.",
+            actionTitle: "title-close".localized
         )
+
+        asyncMainAfter(duration: 0.3) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.open(.warningAlert(warningAlert: warningAlert), by: transitionStyle)
+        }
     }
 
     func wcMainTransactionViewController(
