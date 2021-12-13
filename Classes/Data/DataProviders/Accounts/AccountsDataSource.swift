@@ -42,8 +42,8 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
     }
 
     private var isCurrentGovernanceStakingDate: Bool {
-        let governanceStartDate = TimeInterval(1640995200)
-        let governanceEndDate = TimeInterval(1642291199)
+        let governanceStartDate = TimeInterval(1640361600)
+        let governanceEndDate = TimeInterval(1641484800)
         let currentDate = Date().timeIntervalSince1970
         return currentDate >= governanceStartDate && currentDate <= governanceEndDate
     }
@@ -426,7 +426,7 @@ extension AccountsDataSource {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultSectionInsets = UIEdgeInsets(top: 0.0, left: 20.0, bottom: 0.0, right: 20.0)
         let itemHeight: CGFloat = 52.0
-        let bannerHeight: CGFloat = 170.0
+        let bannerHeight: CGFloat = 190.0
         let emptyFooterHeight: CGFloat = 44.0
         let multiItemHeight: CGFloat = 72.0
     }

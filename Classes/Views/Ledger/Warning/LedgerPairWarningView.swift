@@ -29,17 +29,17 @@ class LedgerPairWarningView: BaseView {
             .withTextColor(Colors.Text.primary)
             .withLine(.contained)
             .withAlignment(.center)
-            .withText("Pairing Ledger with Your Device")
+            .withText("ledger-pairing-first-warning-title".localized)
     }()
 
     private lazy var imageView = UIImageView(image: img("img-warning-circle"))
 
     private lazy var subtitleLabel: UILabel = {
-        let firstText = "Is your Ledger paired with this device?\n".attributed([
+        let firstText = "\("ledger-pairing-first-warning-message-first".localized)\n".attributed([
             .font(UIFont.font(withWeight: .regular(size: 14.0))),
             .textColor(Colors.Text.primary)
         ])
-        let secondText = "If not, please follow these steps:".attributed([
+        let secondText = "ledger-pairing-first-warning-message-second".attributed([
             .font(UIFont.font(withWeight: .semiBold(size: 14.0))),
             .textColor(Colors.Text.primary)
         ])
@@ -52,18 +52,12 @@ class LedgerPairWarningView: BaseView {
     }()
 
     private lazy var descriptionLabel: UILabel = {
-        let description = """
-        · Open your Ledger device.\n
-        · Close the Algorand app on the Ledger device.\n
-        · On the Ledger homescreen, confirm pairing.\n
-        · Once pairing is confirmed, open the Algorand Ledger app.
-        """
-        return UILabel()
+        UILabel()
             .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
             .withTextColor(Colors.Text.primary)
             .withLine(.contained)
             .withAlignment(.left)
-            .withText(description)
+            .withText("ledger-pairing-first-warning-message-description".localized)
     }()
 
     private lazy var actionButton = MainButton(title: "title-continue".localized)
