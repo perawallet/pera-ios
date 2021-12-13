@@ -411,26 +411,18 @@ extension AccountsViewController {
     }
 
     private func configureWalletConnectIfNeeded() {
-        if allAccountsFetched {
-            onceWhenViewDidAppear.execute { [weak self] in
-                guard let self = self else {
-                    return
-                }
+        guard let session = session,
+              session.hasAllAccounts else {
+            return
+        }
 
-                self.completeWalletConnectConfiguration()
+        onceWhenViewDidAppear.execute { [weak self] in
+            guard let self = self else {
+                return
             }
-        }
-    }
 
-    private var allAccountsFetched: Bool {
-        if let localAccounts = session?.authenticatedUser?.accounts,
-           let accounts = session?.accounts,
-           !localAccounts.isEmpty,
-           accounts.count == localAccounts.count {
-            return true
+            self.completeWalletConnectConfiguration()
         }
-
-        return false
     }
 
     private func completeWalletConnectConfiguration() {

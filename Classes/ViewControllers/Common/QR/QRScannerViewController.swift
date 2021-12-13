@@ -73,13 +73,17 @@ class QRScannerViewController: BaseViewController {
         }
     }
 
-    private var wcConnectionTimer: Timer?
+    private var wcConnectionRepeater: Repeater?
 
     private let canReadWCSession: Bool
 
     init(canReadWCSession: Bool, configuration: ViewControllerConfiguration) {
         self.canReadWCSession = canReadWCSession
         super.init(configuration: configuration)
+    }
+
+    deinit {
+        wcConnectionRepeater?.invalidate()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -391,9 +395,8 @@ extension QRScannerViewController: WalletConnectorDelegate {
 
     private func startWCConnectionTimer() {
         /// We need to warn the user after 10 seconds if there's no resposne from the dApp.
-        wcConnectionTimer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: false) { [weak self] timer in
+        wcConnectionRepeater = Repeater(intervalInSeconds: 10.0) { [weak self] in
             guard let self = self else {
-                timer.invalidate()
                 return
             }
 
@@ -413,11 +416,13 @@ extension QRScannerViewController: WalletConnectorDelegate {
 
             self.stopWCConnectionTimer()
         }
+
+        wcConnectionRepeater?.resume(immediately: false)
     }
 
     private func stopWCConnectionTimer() {
-        wcConnectionTimer?.invalidate()
-        wcConnectionTimer = nil
+        wcConnectionRepeater?.invalidate()
+        wcConnectionRepeater = nil
     }
 
     private func openWCConnectionError() {
@@ -463,6 +468,7 @@ extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
 
     private func resetUIForScanning() {
         cancelButton.stopLoading()
+        customizeButtonAppearance()
         captureSessionQueue.async {
             self.captureSession?.startRunning()
         }

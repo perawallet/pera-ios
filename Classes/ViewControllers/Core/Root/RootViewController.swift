@@ -197,32 +197,25 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         currentWCTransactionRequest = request
 
         /// If there's already a modal presented screen, open the request on top of that screen.
+        let presentingController: UIViewController?
         if let controller = topMostController,
            controller.isModal {
-            wcMainTransactionViewController = controller.open(
-                .wcMainTransaction(
-                    transactions: transactions,
-                    transactionRequest: request,
-                    transactionOption: transactionOption
-                ),
-                by: fullScreenPresentation,
-                animated: animated
-            ) as? WCMainTransactionViewController
-
-            wcMainTransactionViewController?.delegate = self
+            presentingController = controller
         } else {
-            wcMainTransactionViewController = open(
-                .wcMainTransaction(
-                    transactions: transactions,
-                    transactionRequest: request,
-                    transactionOption: transactionOption
-                ),
-                by: fullScreenPresentation,
-                animated: animated
-            ) as? WCMainTransactionViewController
-
-            wcMainTransactionViewController?.delegate = self
+            presentingController = self
         }
+
+        wcMainTransactionViewController = presentingController?.open(
+            .wcMainTransaction(
+                transactions: transactions,
+                transactionRequest: request,
+                transactionOption: transactionOption
+            ),
+            by: fullScreenPresentation,
+            animated: animated
+        ) as? WCMainTransactionViewController
+
+        wcMainTransactionViewController?.delegate = self
     }
 }
 
