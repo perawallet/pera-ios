@@ -16,67 +16,39 @@
 //  SettingsFooterView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class SettingsFooterView: BaseView {
+final class SettingsFooterView: View {
+    private lazy var theme = SettingsFooterViewTheme()
     
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: SettingsFooterViewDelegate?
     
-    private lazy var logoutButton: UIButton = {
-        let button = UIButton(type: .custom)
-            .withTitle("settings-logout-title".localized)
-            .withAlignment(.center)
-            .withTitleColor(Colors.Text.primary)
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withBackgroundColor(Colors.Background.secondary)
-        button.layer.cornerRadius = 22.0
-        return button
-    }()
+    private lazy var logoutButton = UIButton()
     
-    private lazy var versionLabel: UILabel = {
-        let label = UILabel()
-            .withAlignment(.center)
-            .withLine(.single)
-            .withTextColor(Colors.Text.secondary)
-            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            label.text = "settings-app-version".localized(params: version)
-        }
-        return label
-    }()
+    private lazy var versionLabel = UILabel()
     
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
-        if !isDarkModeDisplay {
-            logoutButton.applySmallShadow()
-        }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(theme)
     }
     
-    override func setListeners() {
+    func setListeners() {
         logoutButton.addTarget(self, action: #selector(notifyDelegateToLogout), for: .touchUpInside)
     }
     
-    override func prepareLayout() {
-        setupLogoutButtonLayout()
-        setupVersionLabelLayout()
+    func customize(_ theme: SettingsFooterViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        
+        addLogoutButton()
+        addVersionLabel()
     }
     
-    @available(iOS 12.0, *)
-    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
-        if userInterfaceStyle == .dark {
-            logoutButton.removeShadows()
-        } else {
-            logoutButton.applySmallShadow()
-        }
-    }
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if !isDarkModeDisplay {
-            logoutButton.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 22.0)
-        }
-    }
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
 extension SettingsFooterView {
@@ -87,22 +59,29 @@ extension SettingsFooterView {
 }
 
 extension SettingsFooterView {
-    private func setupLogoutButtonLayout() {
+    private func addLogoutButton() {
+        logoutButton.customizeAppearance(theme.button)
+        logoutButton.layer.cornerRadius = theme.buttonCornerRadius
         addSubview(logoutButton)
         
-        logoutButton.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.buttonTopInset)
-            make.size.equalTo(layout.current.buttonSize)
-            make.centerX.equalToSuperview()
+        logoutButton.snp.makeConstraints {
+            $0.fitToHeight(theme.buttonHeight)
+            $0.top.equalToSuperview().inset(theme.buttonTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
     
-    private func setupVersionLabelLayout() {
+    private func addVersionLabel() {
+        versionLabel.customizeAppearance(theme.subTitle)
         addSubview(versionLabel)
         
-        versionLabel.snp.makeConstraints { make in
-            make.top.equalTo(logoutButton.snp.bottom).offset(layout.current.labelTopInset)
-            make.centerX.equalToSuperview()
+        versionLabel.snp.makeConstraints {
+            $0.top.equalTo(logoutButton.snp.bottom).offset(theme.subTitleTopInset)
+            $0.centerX.equalToSuperview()
+        }
+        
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            versionLabel.text = "settings-app-version".localized(params: version)
         }
     }
 }

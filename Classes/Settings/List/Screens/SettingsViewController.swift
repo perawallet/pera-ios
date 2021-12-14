@@ -116,21 +116,11 @@ extension SettingsViewController: UICollectionViewDataSource {
                 let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
                 return setSettingsToggleCell(from: setting, isOn: rewardDisplayPreference, in: collectionView, at: indexPath)
             case .language:
-                let defaultLanguageText = "settings-language-english".localized
-                guard let preferredLocalization = Bundle.main.preferredLocalizations.first,
-                      let displayName = NSLocale(localeIdentifier: preferredLocalization).displayName(
-                        forKey: .identifier,
-                        value: preferredLocalization
-                      ) else {
-                    return setSettingsInfoCell(from: setting, info: defaultLanguageText, in: collectionView, at: indexPath)
-                }
-                return setSettingsInfoCell(from: setting, info: displayName, in: collectionView, at: indexPath)
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .currency:
-                let preferredCurrency = api?.session.preferredCurrency ?? "settings-currency-usd".localized
-                return setSettingsInfoCell(from: setting, info: preferredCurrency, in: collectionView, at: indexPath)
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .appearance:
-                let preferredAppearance = api?.session.userInterfaceStyle ?? .system
-                return setSettingsInfoCell(from: setting, info: preferredAppearance.representation(), in: collectionView, at: indexPath)
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .support:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .appReview:
@@ -156,30 +146,7 @@ extension SettingsViewController: UICollectionViewDataSource {
             withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
             for: indexPath
         ) as? SettingsDetailCell {
-            if shouldHideSeparator(at: indexPath, in: collectionView) {
-                cell.contextView.setSeparatorHidden(true)
-            }
-            SettingsDetailViewModel(setting: setting).configure(cell)
-            return cell
-        }
-        
-        fatalError("Index path is out of bounds")
-    }
-    
-    private func setSettingsInfoCell(
-        from setting: Settings,
-        info: String?,
-        in collectionView: UICollectionView,
-        at indexPath: IndexPath
-    ) -> SettingsInfoCell {
-        if let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SettingsInfoCell.reusableIdentifier,
-            for: indexPath
-        ) as? SettingsInfoCell {
-            if shouldHideSeparator(at: indexPath, in: collectionView) {
-                cell.contextView.setSeparatorHidden(true)
-            }
-            SettingsInfoViewModel(setting: setting, info: info).configure(cell)
+            cell.bindData(SettingsDetailViewModel(setting: setting))
             return cell
         }
         
@@ -196,11 +163,8 @@ extension SettingsViewController: UICollectionViewDataSource {
             withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
             for: indexPath
         ) as? SettingsToggleCell {
-            if shouldHideSeparator(at: indexPath, in: collectionView) {
-                cell.contextView.setSeparatorHidden(true)
-            }
             cell.delegate = self
-            SettingsToggleViewModel(setting: setting, isOn: isOn).configure(cell)
+            cell.bindData(SettingsToggleViewModel(setting: setting, isOn: isOn))
             return cell
         }
         
@@ -239,7 +203,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 72.0)
+        return CGSize(width: UIScreen.main.bounds.width, height: 64.0)
     }
     
     func collectionView(
@@ -248,7 +212,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
         if section == settings.count - 1 {
-            return CGSize(width: UIScreen.main.bounds.width, height: 128.0)
+            return CGSize(width: UIScreen.main.bounds.width, height: 180.0)
         }
         return .zero
     }

@@ -74,7 +74,7 @@ extension DeveloperSettingsViewController: UICollectionViewDataSource {
                 fatalError("Index path is out of bounds")
         }
         
-        SettingsDetailViewModel(setting: setting).configure(cell)
+        cell.bindData(SettingsDetailViewModel(setting: setting))
         return cell
     }
 }
