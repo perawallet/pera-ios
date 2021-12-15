@@ -75,7 +75,7 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
                         self.completionHandler?(.failure(error))
                     }
                 }
-        }
+            }
     }
     
     override func cancel() {

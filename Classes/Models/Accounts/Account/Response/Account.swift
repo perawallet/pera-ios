@@ -19,7 +19,9 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class Account: ALGEntityModel {
+final class Account:
+    ALGEntityModel,
+    AccountIdentity {
     let address: String
     var amount: UInt64
     var amountWithoutRewards: UInt64

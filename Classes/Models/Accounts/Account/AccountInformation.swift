@@ -21,7 +21,9 @@ import UIKit
 typealias PublicKey = String
 typealias RekeyDetail = [PublicKey: LedgerDetail]
 
-final class AccountInformation: Codable {
+final class AccountInformation:
+    AccountIdentity,
+    Codable {
     let address: String
     var name: String
     var type: AccountType = .standard
