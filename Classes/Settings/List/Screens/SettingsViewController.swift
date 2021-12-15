@@ -381,13 +381,14 @@ extension SettingsViewController: SettingsToggleCellDelegate {
             title: "settings-logout-title".localized,
             description: "settings-logout-detail".localized,
             primaryActionButtonTitle: "node-settings-action-delete-title".localized,
-            secondaryActionButtonTitle: "title-cancel".localized
-        ) { [weak self] in
-            guard let self = self else {
-                return
+            secondaryActionButtonTitle: "title-cancel".localized,
+            primaryAction: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.logout()
             }
-            self.logout()
-        }
+        )
 
         bottomModalTransition.perform(
             .bottomWarning(configurator: bottomWarningViewConfigurator)

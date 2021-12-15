@@ -43,6 +43,7 @@ final class QRScannerViewController: BaseViewController {
     }
 
     private let canReadWCSession: Bool
+    private var dAppName: String? = nil
 
     init(canReadWCSession: Bool, configuration: ViewControllerConfiguration) {
         self.canReadWCSession = canReadWCSession
@@ -270,7 +271,7 @@ extension QRScannerViewController: WalletConnectorDelegate {
             )
             return
         }
-
+        dAppName = session.dAppInfo.peerMeta.name
         wcConnectionModalTransition.perform(.wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion))
     }
 
@@ -303,13 +304,30 @@ extension QRScannerViewController: WalletConnectorDelegate {
 extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
     func wcConnectionApprovalViewControllerDidApproveConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
         wcConnectionApprovalViewController.dismissScreen()
+        presentWCSessionsApprovedModal()
     }
 
     func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
         wcConnectionApprovalViewController.dismissScreen()
-        captureSessionQueue.async {
-            self.captureSession?.startRunning()
-        }
+    }
+
+    private func presentWCSessionsApprovedModal() {
+        guard let dAppName = dAppName else { return }
+
+        wcConnectionModalTransition.perform(
+            .bottomWarning(
+                configurator:
+                    BottomWarningViewConfigurator(
+                        image: "icon-approval-check".uiImage,
+                        title: "wallet-connect-session-connection-approved-title".localized(dAppName),
+                        description: "wallet-connect-session-connection-approved-description".localized(dAppName),
+                        secondaryActionButtonTitle: "title-close".localized,
+                        secondaryAction: { [weak self] in
+                            self?.popScreen()
+                        }
+                    )
+            )
+        )
     }
 }
 
