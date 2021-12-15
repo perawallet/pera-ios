@@ -44,7 +44,7 @@ struct WCConnectionApprovalViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.regular.make(19))
         ]
         self.URLButton = [
-            .font(Fonts.DMSans.regular.make(15)),
+            .font(Fonts.DMSans.bold.make(15)),
             .titleColor([.normal(AppColors.Shared.Helpers.positive)])
         ]
         self.cancelButton = ButtonStyles.secondaryButton(title: "title-cancel".localized).create()

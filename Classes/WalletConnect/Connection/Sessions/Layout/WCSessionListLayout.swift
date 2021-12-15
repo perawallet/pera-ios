@@ -16,10 +16,10 @@
 //   WCSessionListLayout.swift
 
 import UIKit
+import MacaroonUIKit
 
-class WCSessionListLayout: NSObject {
-
-    private let layout = Layout<LayoutConstants>()
+final class WCSessionListLayout: NSObject {
+    private lazy var theme = Theme()
 
     private weak var dataSource: WCSessionListDataSource?
 
@@ -39,22 +39,21 @@ extension WCSessionListLayout: UICollectionViewDelegateFlowLayout {
             return .zero
         }
 
-        var descriptionHeight: CGFloat = 0.0
+        var descriptionHeight: CGFloat = 0
 
         if let description = session.peerMeta.description {
             descriptionHeight = description.height(
-                withConstrained: UIScreen.main.bounds.width - layout.current.horizontalInset,
-                font: UIFont.font(withWeight: .regular(size: 14.0))
+                withConstrained: UIScreen.main.bounds.width - theme.horizontalInset,
+                font: Fonts.DMSans.regular.make(13).uiFont
             )
         }
-
-        return CGSize(width: UIScreen.main.bounds.width, height: descriptionHeight + layout.current.constantHeight)
+        return CGSize(width: UIScreen.main.bounds.width, height: descriptionHeight + theme.constantHeight)
     }
 }
 
 extension WCSessionListLayout {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let constantHeight: CGFloat = 128.0
-        let horizontalInset: CGFloat = 100.0
+    private struct Theme  {
+        let constantHeight: LayoutMetric = 93
+        let horizontalInset: LayoutMetric = 104
     }
 }

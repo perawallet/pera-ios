@@ -20,51 +20,50 @@ import MacaroonUIKit
 import SwiftDate
 import MacaroonURLImage
 
-class WCSessionItemViewModel {
+final class WCSessionItemViewModel: PairedViewModel {
     private(set) var image: ImageSource?
     private(set) var name: String?
     private(set) var description: String?
     private(set) var status: String?
     private(set) var date: String?
 
-    private let placeholderImages = [
-        img("icon-session-placeholder-1"),
-        img("icon-session-placeholder-2"),
-        img("icon-session-placeholder-3"),
-        img("icon-session-placeholder-4")
-    ]
-
-    init(session: WCSession) {
-        setImage(from: session)
-        setName(from: session)
-        setDescription(from: session)
-        setStatus(from: session)
-        setDate(from: session)
+    init(_ session: WCSession) {
+        bindImage(session)
+        bindName(session)
+        bindDescription(session)
+        bindStatus(session)
+        bindDate(session)
     }
+}
 
-    private func setImage(from session: WCSession) {
-        let randomIndex = Int.random(in: 0..<placeholderImages.count)
-        let placeholderImage = placeholderImages[randomIndex]
+extension WCSessionItemViewModel {
+    private func bindImage(_ session: WCSession) {
+        let placeholderImages: [Image] = [
+            "icon-session-placeholder-1",
+            "icon-session-placeholder-2",
+            "icon-session-placeholder-3",
+            "icon-session-placeholder-4"
+        ]
 
         image = PNGImageSource(
             url: session.peerMeta.icons.first,
             color: nil,
-            size: .resize(CGSize(width: 40.0, height: 40.0), .aspectFit),
+            size: .resize(CGSize(width: 40, height: 40), .aspectFit),
             shape: .circle,
-            placeholder: ImagePlaceholder(image: AssetImageSource(asset: placeholderImage), text: nil),
+            placeholder: ImagePlaceholder(image: AssetImageSource(asset:  placeholderImages.randomElement()?.uiImage), text: nil),
             forceRefresh: false
         )
     }
 
-    private func setName(from session: WCSession) {
+    private func bindName(_ session: WCSession) {
         name = session.peerMeta.name
     }
 
-    private func setDescription(from session: WCSession) {
+    private func bindDescription(_ session: WCSession) {
         description = session.peerMeta.description
     }
 
-    private func setStatus(from session: WCSession) {
+    private func bindStatus(_ session: WCSession) {
         if let connectedAccount = session.walletMeta?.accounts?.first {
             status = "wallet-connect-session-connected-with-account".localized(params: connectedAccount.shortAddressDisplay())
             return
@@ -73,7 +72,7 @@ class WCSessionItemViewModel {
         status = "wallet-connect-session-connected".localized
     }
 
-    private func setDate(from session: WCSession) {
+    private func bindDate(_ session: WCSession) {
         date = session.date.toFormat("MMMM dd, yyyy - HH:mm")
     }
 }

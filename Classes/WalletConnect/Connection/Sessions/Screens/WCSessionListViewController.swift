@@ -17,26 +17,12 @@
 
 import UIKit
 
-class WCSessionListViewController: BaseViewController {
+final class WCSessionListViewController: BaseViewController {
     private lazy var sessionListView = WCSessionListView()
-
     private lazy var emptyStateView = WCSessionListEmptyView()
 
     private lazy var dataSource = WCSessionListDataSource(walletConnector: walletConnector)
-
     private lazy var layoutBuilder = WCSessionListLayout(dataSource: dataSource)
-
-    override func configureNavigationBarAppearance() {
-        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.openQRScanner()
-        }
-
-        rightBarButtonItems = [qrBarButtonItem]
-    }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -44,7 +30,6 @@ class WCSessionListViewController: BaseViewController {
     }
 
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.tertiary
         title = "settings-wallet-connect-title".localized
         setListContentState()
     }
@@ -60,7 +45,30 @@ class WCSessionListViewController: BaseViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
-        prepareWholeScreenLayoutFor(sessionListView)
+        addSessionListView()
+    }
+}
+
+extension WCSessionListViewController {
+    private func addSessionListView() {
+        view.addSubview(sessionListView)
+        sessionListView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+}
+
+extension WCSessionListViewController {
+    private func addBarButtons() {
+        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.openQRScanner()
+        }
+
+        rightBarButtonItems = [qrBarButtonItem]
     }
 }
 
@@ -112,9 +120,7 @@ extension WCSessionListViewController: QRScannerViewControllerDelegate {
 
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
         displaySimpleAlertWith(title: "title-error".localized, message: "qr-scan-should-scan-valid-qr".localized) { _ in
-            if let handler = completionHandler {
-                handler()
-            }
+            completionHandler?()
         }
     }
 }
@@ -132,15 +138,15 @@ extension WCSessionListViewController {
             preferredStyle: .actionSheet
         )
 
-        let disconnectAction = UIAlertAction(title: "title-disconnect".localized, style: .destructive) { _ in
-            self.log(
+        let disconnectAction = UIAlertAction(title: "title-disconnect".localized, style: .destructive) { [weak self] _ in
+            self?.log(
                 WCSessionDisconnectedEvent(
                     dappName: session.peerMeta.name,
                     dappURL: session.peerMeta.url.absoluteString,
                     address: session.walletMeta?.accounts?.first
                 )
             )
-            self.dataSource.disconnectFromSession(session)
+            self?.dataSource.disconnectFromSession(session)
         }
 
         let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel)

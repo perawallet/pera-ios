@@ -13,23 +13,18 @@
 // limitations under the License.
 
 //
-//   LedgerAccountDetailViewController+Theme.swift
+//   WCSessionListViewTheme.swift
 
 import MacaroonUIKit
-import UIKit
 
-extension LedgerAccountDetailViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        let sectionInset: LayoutPaddings
-        let headerSize: LayoutSize
-        let cellSize: LayoutSize
+struct WCSessionListViewTheme: LayoutSheet, StyleSheet {
+    let backgroundColor: Color
+    let cellSpacing: LayoutMetric
+    let contentInset: LayoutPaddings
 
-        init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
-            sectionInset = (0, 24, 32, 24)
-            headerSize = (UIScreen.main.bounds.width, 24)
-            cellSize = (UIScreen.main.bounds.width - 48, 72)
-        }
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
+        self.cellSpacing = 32
+        self.contentInset = (32, 0, 0, 0)
     }
 }

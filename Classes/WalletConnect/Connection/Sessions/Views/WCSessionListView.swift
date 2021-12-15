@@ -16,32 +16,44 @@
 //   WCSessionListView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class WCSessionListView: BaseView {
+final class WCSessionListView: View {
+    private lazy var theme = WCSessionListViewTheme()
 
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 8.0
-        flowLayout.minimumInteritemSpacing = 0.0
+        flowLayout.minimumLineSpacing = theme.cellSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.contentInset = .zero
-        collectionView.backgroundColor = Colors.Background.tertiary
-        collectionView.register(WCSessionItemCell.self, forCellWithReuseIdentifier: WCSessionItemCell.reusableIdentifier)
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
+        collectionView.contentInset = UIEdgeInsets(theme.contentInset)
+        collectionView.register(WCSessionItemCell.self)
         return collectionView
     }()
 
-    private lazy var contentStateView = ContentStateView()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
+        customize()
     }
 
-    override func prepareLayout() {
-        prepareWholeScreenLayoutFor(collectionView)
-        collectionView.backgroundView = contentStateView
+    private func customize() {
+        addCollectionView()
+    }
+
+    func customizeAppearance(_ styleSheet: StyleSheet) { }
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) { }
+}
+
+extension WCSessionListView {
+    private func addCollectionView() {
+        addSubview(collectionView)
+        collectionView.pinToSuperview()
+
+        collectionView.backgroundView = ContentStateView()
     }
 }
 

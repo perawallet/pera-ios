@@ -17,12 +17,18 @@
 
 import UIKit
 
-class WCSessionItemCell: BaseCollectionViewCell<WCSessionItemView> {
-
+final class WCSessionItemCell: BaseCollectionViewCell<WCSessionItemView> {
     weak var delegate: WCSessionItemCellDelegate?
+
+    override func configureAppearance() {
+        super.configureAppearance()
+
+        contextView.customize(WCSessionItemViewTheme())
+    }
 
     override func linkInteractors() {
         super.linkInteractors()
+        contextView.setListeners()
         contextView.delegate = self
     }
 
@@ -33,8 +39,8 @@ class WCSessionItemCell: BaseCollectionViewCell<WCSessionItemView> {
 }
 
 extension WCSessionItemCell {
-    func bind(_ viewModel: WCSessionItemViewModel) {
-        contextView.bind(viewModel)
+    func bindData(_ viewModel: WCSessionItemViewModel) {
+        contextView.bindData(viewModel)
     }
 }
 

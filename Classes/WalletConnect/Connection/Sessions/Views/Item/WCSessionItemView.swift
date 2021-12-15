@@ -19,154 +19,102 @@ import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 
-class WCSessionItemView: BaseView {
-
-    private let layout = Layout<LayoutConstants>()
-
+final class WCSessionItemView: View {
     weak var delegate: WCSessionItemViewDelegate?
 
-    private lazy var dappImageView: URLImageView = {
-        let imageView = URLImageView()
-        imageView.layer.cornerRadius = 20.0
-        imageView.layer.borderWidth = 1.0
-        imageView.layer.borderColor = Colors.Component.dappImageBorderColor.cgColor
-        return imageView
-    }()
+    private lazy var dappImageView = URLImageView()
+    private lazy var nameLabel = UILabel()
+    private lazy var disconnectOptionsButton = UIButton()
+    private lazy var descriptionLabel = UILabel()
+    private lazy var statusLabel = UILabel()
+    private lazy var dateLabel = UILabel()
 
-    private lazy var nameLabel: UILabel = {
-        UILabel()
-            .withAlignment(.left)
-            .withLine(.single)
-            .withTextColor(Colors.Text.primary)
-            .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-    }()
-
-    private lazy var disconnectOptionsButton: UIButton = {
-        let button = UIButton(type: .custom).withImage(img("icon-options", isTemplate: true))
-        button.tintColor = Colors.ButtonText.secondary
-        return button
-    }()
-
-    private lazy var descriptionLabel: UILabel = {
-        UILabel()
-            .withAlignment(.left)
-            .withLine(.contained)
-            .withTextColor(Colors.Text.secondary)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-    }()
-
-    private lazy var statusBackgroundView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.Main.primary600.withAlphaComponent(0.1)
-        view.layer.cornerRadius = 12.0
-        return view
-    }()
-
-    private lazy var statusLabel: UILabel = {
-        UILabel()
-            .withAlignment(.center)
-            .withLine(.single)
-            .withTextColor(Colors.General.success)
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withText("wallet-connect-session-connected".localized)
-    }()
-
-    private lazy var dateLabel: UILabel = {
-        UILabel()
-            .withAlignment(.left)
-            .withLine(.single)
-            .withTextColor(Colors.Text.secondary)
-            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-    }()
-
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
-    }
-
-    override func setListeners() {
-        super.setListeners()
+     func setListeners() {
         disconnectOptionsButton.addTarget(self, action: #selector(notifyDelegateToOpenDisconnectionMenu), for: .touchUpInside)
     }
 
-    override func prepareLayout() {
-        super.prepareLayout()
-        setupDappImageViewLayout()
-        setupDisconnectOptionsButtonLayout()
-        setupNameLabelLayout()
-        setupDescriptionLabelLayout()
-        setupStatusBackgroundViewLayout()
-        setupStatusLabelLayout()
-        setupDateLabelLayout()
+    func customize(_ theme: WCSessionItemViewTheme) {
+        addDappImageView(theme)
+        addDisconnectOptionsButton(theme)
+        addNameLabel(theme)
+        addDescriptionLabel(theme)
+        addDateLabel(theme)
+        addStatusLabel(theme)
     }
+
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
 extension WCSessionItemView {
-    private func setupDappImageViewLayout() {
+    private func addDappImageView(_ theme: WCSessionItemViewTheme) {
+        dappImageView.draw(border: theme.imageBorder)
+        dappImageView.draw(corner: theme.imageCorner)
+
         addSubview(dappImageView)
-
-        dappImageView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.leadingInset)
-            make.size.equalTo(layout.current.imageSize)
-            make.top.equalToSuperview().inset(layout.current.topInset)
+        dappImageView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.fitToSize(theme.imageSize)
+            $0.top.equalToSuperview().inset(theme.imageTopInset)
         }
     }
 
-    private func setupDisconnectOptionsButtonLayout() {
+    private func addDisconnectOptionsButton(_ theme: WCSessionItemViewTheme) {
+        disconnectOptionsButton.customizeAppearance(theme.disconnectOptionsButton)
+
         addSubview(disconnectOptionsButton)
-
-        disconnectOptionsButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.trailingInset)
-            make.size.equalTo(layout.current.buttonSize)
-            make.top.equalToSuperview().inset(layout.current.buttonTopInset)
+        disconnectOptionsButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.fitToSize(theme.disconnectOptionsButtonSize)
+            $0.top.equalToSuperview()
         }
     }
 
-    private func setupNameLabelLayout() {
+    private func addNameLabel(_ theme: WCSessionItemViewTheme) {
+        nameLabel.customizeAppearance(theme.nameLabel)
+
         addSubview(nameLabel)
-
-        nameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(dappImageView.snp.trailing).offset(layout.current.nameLabelHorizontalInset)
-            make.trailing.equalTo(disconnectOptionsButton.snp.leading).offset(-layout.current.nameLabelHorizontalInset)
-            make.top.equalToSuperview().inset(layout.current.topInset)
+        nameLabel.snp.makeConstraints {
+            $0.leading.equalTo(dappImageView.snp.trailing).offset(theme.nameLabelHorizontalInset)
+            $0.trailing.equalTo(disconnectOptionsButton.snp.leading).offset(-theme.nameLabelHorizontalInset)
+            $0.top.equalTo(dappImageView.snp.top)
         }
     }
 
-    private func setupDescriptionLabelLayout() {
+    private func addDescriptionLabel(_ theme: WCSessionItemViewTheme) {
+        descriptionLabel.customizeAppearance(theme.descriptionLabel)
+
         addSubview(descriptionLabel)
-
-        descriptionLabel.snp.makeConstraints { make in
-            make.leading.equalTo(nameLabel)
-            make.top.equalTo(nameLabel.snp.bottom).offset(layout.current.descriptionTopInset)
-            make.trailing.equalToSuperview().inset(layout.current.trailingInset)
+        descriptionLabel.snp.makeConstraints {
+            $0.leading.equalTo(nameLabel)
+            $0.top.equalTo(nameLabel.snp.bottom).offset(theme.descriptionTopInset)
+            $0.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalInset)
         }
     }
 
-    private func setupStatusBackgroundViewLayout() {
-        addSubview(statusBackgroundView)
+    private func addDateLabel(_ theme: WCSessionItemViewTheme) {
+        dateLabel.customizeAppearance(theme.dateLabel)
 
-        statusBackgroundView.snp.makeConstraints { make in
-            make.leading.equalTo(nameLabel)
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(layout.current.statusViewTopInset)
-            make.height.equalTo(layout.current.statusLabelHeight)
-        }
-    }
-
-    private func setupStatusLabelLayout() {
-        statusBackgroundView.addSubview(statusLabel)
-
-        statusLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.statusLabelHorizontalInset)
-            make.top.bottom.equalToSuperview().inset(layout.current.statusLabelVerticalInset)
-        }
-    }
-
-    private func setupDateLabelLayout() {
         addSubview(dateLabel)
+        dateLabel.snp.makeConstraints {
+            $0.leading.equalTo(nameLabel)
+            $0.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.dateLabelTopInset)
+        }
+    }
 
-        dateLabel.snp.makeConstraints { make in
-            make.leading.equalTo(statusBackgroundView)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.trailingInset)
-            make.top.equalTo(statusBackgroundView.snp.bottom).offset(layout.current.dateLabelTopInset)
+    private func addStatusLabel(_ theme: WCSessionItemViewTheme) {
+        statusLabel.customizeAppearance(theme.statusLabel)
+        statusLabel.layer.cornerRadius = theme.statusLabelCorner.radius
+        statusLabel.layer.masksToBounds = true
+
+        addSubview(statusLabel)
+        statusLabel.snp.makeConstraints {
+            $0.leading.equalTo(dateLabel)
+            $0.top.equalTo(dateLabel.snp.bottom).offset(theme.statusLabelTopInset)
+            $0.fitToSize(theme.statusLabelSize)
+            $0.bottom.lessThanOrEqualToSuperview()
         }
     }
 }
@@ -178,13 +126,13 @@ extension WCSessionItemView {
     }
 }
 
-extension WCSessionItemView {
-    func bind(_ viewModel: WCSessionItemViewModel) {
-        dappImageView.load(from: viewModel.image)
-        nameLabel.text = viewModel.name
-        descriptionLabel.text = viewModel.description
-        statusLabel.text = viewModel.status
-        dateLabel.text = viewModel.date
+extension WCSessionItemView: ViewModelBindable {
+    func bindData(_ viewModel: WCSessionItemViewModel?) {
+        dappImageView.load(from: viewModel?.image)
+        nameLabel.text = viewModel?.name
+        descriptionLabel.text = viewModel?.description
+        statusLabel.text = viewModel?.status
+        dateLabel.text = viewModel?.date
     }
 
     func prepareForReuse() {
@@ -193,25 +141,6 @@ extension WCSessionItemView {
         descriptionLabel.text = nil
         statusLabel.text = nil
         dateLabel.text = nil
-    }
-}
-
-extension WCSessionItemView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 40.0
-        let buttonTopInset: CGFloat = 32.0
-        let leadingInset: CGFloat = 24.0
-        let trailingInset: CGFloat = 20.0
-        let nameLabelHorizontalInset: CGFloat = 16.0
-        let imageSize = CGSize(width: 40.0, height: 40.0)
-        let buttonSize = CGSize(width: 40.0, height: 40.0)
-        let descriptionTopInset: CGFloat = 8.0
-        let statusLabelHeight: CGFloat = 24.0
-        let statusViewTopInset: CGFloat = 16.0
-        let statusLabelVerticalInset: CGFloat = 4.0
-        let statusLabelHorizontalInset: CGFloat = 8.0
-        let dateLabelHorizontalInset: CGFloat = 12.0
-        let dateLabelTopInset: CGFloat = 8.0
     }
 }
 

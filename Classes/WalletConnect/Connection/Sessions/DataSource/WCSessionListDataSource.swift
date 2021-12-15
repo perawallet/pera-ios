@@ -17,8 +17,7 @@
 
 import UIKit
 
-class WCSessionListDataSource: NSObject {
-
+final class WCSessionListDataSource: NSObject {
     weak var delegate: WCSessionListDataSourceDelegate?
 
     private let walletConnector: WalletConnector
@@ -38,15 +37,10 @@ extension WCSessionListDataSource: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: WCSessionItemCell.reusableIdentifier,
-            for: indexPath
-        ) as? WCSessionItemCell else {
-            fatalError("Unexpected cell type")
-        }
+        let cell = collectionView.dequeue(WCSessionItemCell.self, at: indexPath)
 
         if let session = sessions[safe: indexPath.item] {
-            cell.bind(WCSessionItemViewModel(session: session))
+            cell.bindData(WCSessionItemViewModel(session))
         }
 
         cell.delegate = self

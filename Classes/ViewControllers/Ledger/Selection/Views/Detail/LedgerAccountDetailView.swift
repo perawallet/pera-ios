@@ -35,8 +35,14 @@ final class LedgerAccountDetailView: View {
         return collectionView
     }()
 
-    func customize(_ theme: LedgerAccountDetailViewTheme) {
-        addCollectionView(theme)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize()
+    }
+
+    private func customize() {
+        addCollectionView()
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -45,7 +51,7 @@ final class LedgerAccountDetailView: View {
 }
 
 extension LedgerAccountDetailView {
-    private func addCollectionView(_ theme: LedgerAccountDetailViewTheme) {
+    private func addCollectionView() {
         addSubview(collectionView)
         collectionView.pinToSuperview()
     }
