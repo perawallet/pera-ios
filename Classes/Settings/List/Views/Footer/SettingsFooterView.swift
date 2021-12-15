@@ -19,14 +19,10 @@ import UIKit
 import MacaroonUIKit
 
 final class SettingsFooterView: View {
-    private lazy var theme = SettingsFooterViewTheme()
-    
-    private let layout = Layout<LayoutConstants>()
-    
     weak var delegate: SettingsFooterViewDelegate?
     
+    private lazy var theme = SettingsFooterViewTheme()
     private lazy var logoutButton = UIButton()
-    
     private lazy var versionLabel = UILabel()
     
     override init(frame: CGRect) {
@@ -66,7 +62,7 @@ extension SettingsFooterView {
         
         logoutButton.snp.makeConstraints {
             $0.fitToHeight(theme.buttonHeight)
-            $0.top.equalToSuperview().inset(theme.buttonTopInset)
+            $0.top.equalToSuperview()
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
@@ -83,14 +79,6 @@ extension SettingsFooterView {
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             versionLabel.text = "settings-app-version".localized(params: version)
         }
-    }
-}
-
-extension SettingsFooterView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let buttonTopInset: CGFloat = 28.0
-        let buttonSize = CGSize(width: 146.0, height: 44.0)
-        let labelTopInset: CGFloat = 12.0
     }
 }
 

@@ -27,7 +27,7 @@ final class SettingsView: View {
         flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = 0.0
         flowLayout.minimumInteritemSpacing = 0.0
-        flowLayout.sectionInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
+        flowLayout.sectionInset = UIEdgeInsets(theme.sectionInset)
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
@@ -43,6 +43,11 @@ final class SettingsView: View {
             SettingsFooterSupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
             withReuseIdentifier: SettingsFooterSupplementaryView.reusableIdentifier
+        )
+        collectionView.register(
+            SettingsHeaderSuplementaryView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: SettingsHeaderSuplementaryView.reusableIdentifier
         )
         return collectionView
     }()

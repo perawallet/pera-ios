@@ -35,7 +35,7 @@ struct SettingsDetailViewTheme: LayoutSheet, StyleSheet {
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.detail = [
-            .image("icon-arrow")
+            .image("icon-list-arrow")
         ]
         
         self.imageSize = (24, 24)

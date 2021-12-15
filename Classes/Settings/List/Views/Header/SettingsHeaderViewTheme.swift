@@ -13,39 +13,29 @@
 // limitations under the License.
 
 //
-//   SettingsFooterViewTheme.swift
+//   SettingsHeaderViewTheme.swift
+
 
 import Foundation
 import MacaroonUIKit
 
-struct SettingsFooterViewTheme: LayoutSheet, StyleSheet {
+struct SettingsHeaderViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color
-    let button: ButtonStyle
-    let subTitle: TextStyle
+    let title: TextStyle
     
-    let buttonHeight: LayoutMetric
-    let buttonCornerRadius: LayoutMetric
-    let subTitleTopInset: LayoutMetric
+    let bottomInset: LayoutMetric
     let horizontalInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-        self.button = [
-            .title("settings-logout-title".localized),
-            .titleColor([.normal(AppColors.Components.Text.main)]),
-            .backgroundColor(AppColors.Components.Button.Primary.disabledBackground),
-            .font(Fonts.DMSans.medium.make(15))
-        ]
-        self.subTitle = [
-            .textAlignment(.center),
+        self.title = [
+            .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(13))
         ]
         
-        self.buttonHeight = 52
-        self.buttonCornerRadius = 4
-        self.subTitleTopInset = 20
+        self.bottomInset = 8
         self.horizontalInset = 24
     }
 }

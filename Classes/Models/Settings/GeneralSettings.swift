@@ -17,80 +17,88 @@
 
 import UIKit
 
-enum GeneralSettings: Settings {
-    case developer
-    case password
-    case localAuthentication
-    case walletConnect
-    case notifications
-    case rewards
-    case language
-    case currency
-    case support
-    case appReview
-    case termsAndServices
-    case privacyPolicy
-    case appearance
-    
-    var image: UIImage? {
-        switch self {
-        case .developer:
-            return img("icon-settings-developer")
-        case .password:
-            return img("icon-settings-password")
-        case .localAuthentication:
-            return img("icon-settings-faceid")
-        case .walletConnect:
-            return img("icon-settings-wallet-connect")
-        case .notifications:
-            return img("icon-settings-notification")
-        case .rewards:
-            return img("icon-settings-reward")
-        case .language:
-            return img("icon-settings-language")
-        case .currency:
-            return img("icon-settings-currency")
-        case .appearance:
-            return img("icon-settings-theme")
-        case .support:
-            return img("icon-feedback")
-        case .appReview:
-            return img("icon-settings-rate")
-        case .termsAndServices:
-            return img("icon-terms-and-services")
-        case .privacyPolicy:
-            return img("icon-terms-and-services")
-        }
+enum GeneralSettings {
+    enum Sections {
+        case account
+        case appPreferences
+        case support
     }
     
-    var name: String {
-        switch self {
-        case .developer:
-            return "settings-developer".localized
-        case .password:
-            return "settings-change-password".localized
-        case .localAuthentication:
-            return "settings-local-authentication".localized
-        case .walletConnect:
-            return "settings-wallet-connect-title".localized
-        case .notifications:
-            return "notifications-title".localized
-        case .rewards:
-            return "rewards-show-title".localized
-        case .language:
-            return "settings-language".localized
-        case .currency:
-            return "settings-currency".localized
-        case .appearance:
-            return "settings-theme-set".localized
-        case .support:
-            return "settings-support-title".localized
-        case .appReview:
-            return "settings-rate-title".localized
-        case .termsAndServices:
-            return "terms-and-services-title".localized
-        case .privacyPolicy:
-            return "privacy-policy-title".localized
+    enum Items: Settings {
+        case backup
+        case security
+        case notifications
+        case walletConnect
+        case rewards
+        case language
+        case currency
+        case appearance
+        case feedback
+        case appReview
+        case termsAndServices
+        case privacyPolicy
+        case developer
+        
+        var image: UIImage? {
+            switch self {
+            case .backup:
+                return img("icon-settings-backup")
+            case .security:
+                return img("icon-settings-security")
+            case .notifications:
+                return img("icon-settings-notification")
+            case .walletConnect:
+                return img("icon-settings-wallet-connect")
+            case .rewards:
+                return img("icon-settings-reward")
+            case .language:
+                return img("icon-settings-language")
+            case .currency:
+                return img("icon-settings-currency")
+            case .appearance:
+                return img("icon-settings-theme")
+            case .feedback:
+                return img("icon-feedback")
+            case .appReview:
+                return img("icon-settings-rate")
+            case .termsAndServices:
+                return img("icon-terms-and-services")
+            case .privacyPolicy:
+                return img("icon-terms-and-services")
+            case .developer:
+                return img("icon-settings-developer")
+            }
+        }
+        
+        var name: String {
+            switch self {
+            case .backup:
+                return "settings-backup-title".localized
+            case .security:
+                return "settings-security-title".localized
+            case .notifications:
+                return "notifications-title".localized
+            case .walletConnect:
+                return "settings-wallet-connect-title".localized
+            case .rewards:
+                return "rewards-show-title".localized
+            case .language:
+                return "settings-language".localized
+            case .currency:
+                return "settings-currency".localized
+            case .appearance:
+                return "settings-theme-set".localized
+            case .feedback:
+                return "settings-support-title".localized
+            case .appReview:
+                return "settings-rate-title".localized
+            case .termsAndServices:
+                return "terms-and-services-title".localized
+            case .privacyPolicy:
+                return "privacy-policy-title".localized
+            case .developer:
+                return "settings-developer".localized
+            }
         }
     }
 }

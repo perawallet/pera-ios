@@ -17,8 +17,7 @@
 
 import UIKit
 
-class SettingsViewController: BaseViewController {
-    
+final class SettingsViewController: BaseViewController {
     override var shouldShowNavigationBar: Bool {
         return false
     }
@@ -32,22 +31,22 @@ class SettingsViewController: BaseViewController {
         return PushNotificationController(api: api, bannerController: bannerController)
     }()
     
-    private lazy var settings: [[GeneralSettings]] = [securitySettings, preferenceSettings, appSettings, developerSettings]
-    private lazy var securitySettings: [GeneralSettings] = [.password, .localAuthentication]
-    private lazy var preferenceSettings: [GeneralSettings] = {
-        var settings: [GeneralSettings] = [.walletConnect, .notifications, .rewards, .language, .currency]
+    private lazy var theme = Theme()
+    
+    private lazy var sections: [GeneralSettings.Sections] = [.account, .appPreferences, .support]
+    private lazy var settings: [[GeneralSettings.Items]] = [accountSettings, appSettings, supportSettings]
+    private lazy var accountSettings: [GeneralSettings.Items] = [.backup, .security, .notifications, .walletConnect]
+    private lazy var appSettings: [GeneralSettings.Items] = {
+        var settings: [GeneralSettings.Items] = [.rewards, .language, .currency]
         if #available(iOS 13.0, *) {
             settings.append(.appearance)
         }
         return settings
     }()
-    private lazy var appSettings: [GeneralSettings] = [.support, .appReview, .termsAndServices, .privacyPolicy]
-    private lazy var developerSettings: [GeneralSettings] = [.developer]
+    private lazy var supportSettings: [GeneralSettings.Items] = [.feedback, .appReview, .termsAndServices, .privacyPolicy, .developer]
     
     private lazy var settingsView = SettingsView()
-    
-    private let localAuthenticator = LocalAuthenticator()
-    
+        
     override func customizeTabBarAppearence() {
         isTabBarHidden = false
     }
@@ -82,17 +81,17 @@ extension SettingsViewController {
     private func setupSettingsViewLayout() {
         view.addSubview(settingsView)
         
-        settingsView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.safeEqualToTop(of: self)
-            make.bottom.safeEqualToBottom(of: self)
+        settingsView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.safeEqualToTop(of: self)
+            $0.bottom.safeEqualToBottom(of: self)
         }
     }
 }
 
 extension SettingsViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return settings.count
+        return sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -101,27 +100,22 @@ extension SettingsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let settings = settings[safe: indexPath.section],
-            let setting = settings[safe: indexPath.item] {
+           let setting = settings[safe: indexPath.item] {
             switch setting {
-            case .password:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .localAuthentication:
-                let localAuthenticationStatus = localAuthenticator.localAuthenticationStatus == .allowed
-                return setSettingsToggleCell(from: setting, isOn: localAuthenticationStatus, in: collectionView, at: indexPath)
+            case .rewards:
+                let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
+                return setSettingsToggleCell(from: setting, isOn: rewardDisplayPreference, in: collectionView, at: indexPath)
             case .walletConnect:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .notifications:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .rewards:
-                let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
-                return setSettingsToggleCell(from: setting, isOn: rewardDisplayPreference, in: collectionView, at: indexPath)
             case .language:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .currency:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .appearance:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .support:
+            case .feedback:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .appReview:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
@@ -130,6 +124,10 @@ extension SettingsViewController: UICollectionViewDataSource {
             case .privacyPolicy:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             case .developer:
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+            case .backup:
+                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+            case .security:
                 return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
             }
         }
@@ -171,29 +169,37 @@ extension SettingsViewController: UICollectionViewDataSource {
         fatalError("Index path is out of bounds")
     }
     
-    private func shouldHideSeparator(at indexPath: IndexPath, in collectionView: UICollectionView) -> Bool {
-        return isDarkModeDisplay && collectionView.numberOfItems(inSection: indexPath.section) == indexPath.item + 1
-    }
-    
     func collectionView(
         _ collectionView: UICollectionView,
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        if kind != UICollectionView.elementKindSectionFooter {
+        switch kind {
+        case UICollectionView.elementKindSectionFooter:
+            guard let footerView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: SettingsFooterSupplementaryView.reusableIdentifier,
+                for: indexPath
+            ) as? SettingsFooterSupplementaryView else {
+                fatalError("Unexpected element kind")
+            }
+            
+            footerView.delegate = self
+            return footerView
+        case UICollectionView.elementKindSectionHeader:
+            guard let headerView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: SettingsHeaderSuplementaryView.reusableIdentifier,
+                for: indexPath
+            ) as? SettingsHeaderSuplementaryView else {
+                fatalError("Unexpected element kind")
+            }
+            
+            headerView.bindData(SettingsHeaderViewModel(name: sections[indexPath.section]))
+            return headerView
+        default:
             fatalError("Unexpected element kind")
         }
-        
-        guard let footerView = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: SettingsFooterSupplementaryView.reusableIdentifier,
-            for: indexPath
-        ) as? SettingsFooterSupplementaryView else {
-            fatalError("Unexpected element kind")
-        }
-        
-        footerView.delegate = self
-        return footerView
     }
 }
 
@@ -203,7 +209,15 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 64.0)
+        return CGSize(width: UIScreen.main.bounds.width, height: theme.cellHeight)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: theme.headerHeight)
     }
     
     func collectionView(
@@ -212,7 +226,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
         if section == settings.count - 1 {
-            return CGSize(width: UIScreen.main.bounds.width, height: 180.0)
+            return CGSize(width: UIScreen.main.bounds.width, height: theme.footerHeight)
         }
         return .zero
     }
@@ -222,13 +236,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
             let setting = settings[safe: indexPath.item] {
         
             switch setting {
-            case .password:
-                open(
-                    .choosePassword(
-                        mode: .resetPassword, flow: nil, route: nil),
-                        by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-                )
-            case .support:
+            case .feedback:
                 if let url = AlgorandWeb.support.link {
                     open(url)
                 }
@@ -246,11 +254,9 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                     UIApplication.shared.openAppSettings()
                 }
             case .currency:
-                let controller = open(.currencySelection, by: .push) as? CurrencySelectionViewController
-                controller?.delegate = self
+                open(.currencySelection, by: .push)
             case .appearance:
-                let appearanceSelectionViewController = open(.appearanceSelection, by: .push) as? AppearanceSelectionViewController
-                appearanceSelectionViewController?.delegate = self
+                open(.appearanceSelection, by: .push)
             case .termsAndServices:
                 guard let url = AlgorandWeb.termsAndServices.link else {
                     return
@@ -287,56 +293,11 @@ extension SettingsViewController: SettingsToggleCellDelegate {
         }
         
         switch setting {
-        case .localAuthentication:
-            if !value {
-                localAuthenticator.localAuthenticationStatus = .notAllowed
-                return
-            }
-            
-            if localAuthenticator.isLocalAuthenticationAvailable {
-                localAuthenticator.authenticate { error in
-                    guard error == nil else {
-                        settingsToggleCell.contextView.setToggleOn(false, animated: true)
-                        return
-                    }
-                    
-                    self.localAuthenticator.localAuthenticationStatus = .allowed
-                }
-                return
-            }
-            
-            presentDisabledLocalAuthenticationAlert()
         case .rewards:
             session?.rewardDisplayPreference = value ? .allowed : .disabled
         default:
             return
         }
-    }
-    
-    private func presentDisabledLocalAuthenticationAlert() {
-        let alertController = UIAlertController(
-            title: "local-authentication-go-settings-title".localized,
-            message: "local-authentication-go-settings-text".localized,
-            preferredStyle: .alert
-        )
-        
-        let settingsAction = UIAlertAction(title: "title-go-to-settings".localized, style: .default) { _ in
-            UIApplication.shared.openAppSettings()
-        }
-        
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel) { _ in
-            let indexPath = IndexPath(item: 1, section: 0)
-            guard let cell = self.settingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
-                return
-            }
-            
-            cell.contextView.setToggleOn(!cell.contextView.isToggleOn, animated: true)
-        }
-        
-        alertController.addAction(settingsAction)
-        alertController.addAction(cancelAction)
-        
-        present(alertController, animated: true, completion: nil)
     }
     
     private func presentLogoutAlert() {
@@ -365,22 +326,4 @@ extension SettingsViewController: SettingsToggleCellDelegate {
         pushNotificationController.revokeDevice()
         open(.welcome(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
      }
-}
-
-extension SettingsViewController: CurrencySelectionViewControllerDelegate {
-    func currencySelectionViewControllerDidSelectCurrency(_ currencySelectionViewController: CurrencySelectionViewController) {
-        settingsView.collectionView.reloadItems(at: [IndexPath(item: 4, section: 1)])
-    }
-}
-
-extension SettingsViewController: AppearanceSelectionViewControllerDelegate {
-    func appearanceSelectionViewControllerDidUpdateUserInterfaceStyle(
-        _ appearanceSelectionViewController: AppearanceSelectionViewController
-    ) {
-        guard #available(iOS 13.0, *) else {
-            return
-        }
-
-        settingsView.collectionView.reloadItems(at: [IndexPath(item: 5, section: 1)])
-    }
 }

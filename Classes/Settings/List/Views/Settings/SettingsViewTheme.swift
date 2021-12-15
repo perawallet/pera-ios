@@ -25,6 +25,7 @@ struct SettingsViewTheme: LayoutSheet, StyleSheet {
     let titleTopInset: LayoutMetric
     let collectionTopInset: LayoutMetric
     let horizontalInset: LayoutMetric
+    let sectionInset: LayoutPaddings
     
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -36,5 +37,6 @@ struct SettingsViewTheme: LayoutSheet, StyleSheet {
         self.titleTopInset = 46
         self.collectionTopInset = 46
         self.horizontalInset = 24
+        self.sectionInset = (8, 0, 36, 0)
     }
 }
