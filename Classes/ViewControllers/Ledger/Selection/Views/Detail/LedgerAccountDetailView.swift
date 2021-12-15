@@ -67,18 +67,6 @@ final class AccountPreviewCell: BaseCollectionViewCell<AccountPreviewView> {
     func bindData(_ viewModel: AccountPreviewViewModel) {
         contextView.bindData(viewModel)
     }
-
-    func bindData(_ viewModel: AccountNameViewModel) {
-        contextView.bindData(viewModel)
-    }
-
-    func bindData(_ viewModel: AuthAccountNameViewModel) {
-        contextView.bindData(viewModel)
-    }
-
-    func bindData(_ viewModel: AccountCellViewModel) {
-        contextView.bindData(viewModel)
-    }
 }
 
 // MARK: - AssetPreviewCell

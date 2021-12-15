@@ -19,48 +19,47 @@ import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 
-class WCConnectionApprovalViewModel {
+final class WCConnectionApprovalViewModel: PairedViewModel {
     private(set) var image: ImageSource?
     private(set) var description: NSAttributedString?
     private(set) var urlString: String?
-    private(set) var connectionAccountSelectionViewModel: WCConnectionAccountSelectionViewModel?
 
-    init(session: WalletConnectSession, account: Account) {
-        setImage(from: session)
-        setDescription(from: session)
-        setUrlString(from: session)
-        setConnectionAccountSelectionViewModel(from: account)
+    init(_ session: WalletConnectSession) {
+        bindImage(session)
+        bindDescription(session)
+        bindUrlString(session)
     }
+}
 
-    private func setImage(from session: WalletConnectSession) {
+extension WCConnectionApprovalViewModel {
+    private func bindImage(_ session: WalletConnectSession) {
         image = PNGImageSource(
             url: session.dAppInfo.peerMeta.icons.first,
             color: nil,
-            size: .resize(CGSize(width: 72.0, height: 72.0), .aspectFit),
+            size: .resize(CGSize(width: 72, height: 72), .aspectFit),
             shape: .circle,
             placeholder: nil,
             forceRefresh: false
         )
     }
 
-    private func setDescription(from session: WalletConnectSession) {
+    private func bindDescription(_ session: WalletConnectSession) {
         let dappName = session.dAppInfo.peerMeta.name
         let fullText = "wallet-connect-session-connection-description".localized(dappName)
         let attributedText = NSMutableAttributedString(
             string: fullText,
-            attributes: [.font: UIFont.font(withWeight: .regular(size: 18.0)), .foregroundColor: Colors.Text.primary]
+            attributes: [
+                .font: UIFont.font(withWeight: .regular(size: 18)),
+                .foregroundColor: Colors.Text.primary
+            ]
         )
 
         let range = (fullText as NSString).range(of: dappName)
-        attributedText.addAttribute(NSAttributedString.Key.font, value: UIFont.font(withWeight: .semiBold(size: 18.0)), range: range)
+        attributedText.addAttribute(NSAttributedString.Key.font, value: UIFont.font(withWeight: .semiBold(size: 18)), range: range)
         description = attributedText
     }
 
-    private func setUrlString(from session: WalletConnectSession) {
+    private func bindUrlString(_ session: WalletConnectSession) {
         urlString = session.dAppInfo.peerMeta.url.absoluteString
-    }
-
-    private func setConnectionAccountSelectionViewModel(from account: Account) {
-        connectionAccountSelectionViewModel = WCConnectionAccountSelectionViewModel(account: account)
     }
 }

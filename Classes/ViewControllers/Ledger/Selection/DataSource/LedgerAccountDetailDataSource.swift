@@ -116,11 +116,11 @@ extension LedgerAccountDetailDataSource {
 
         if account.isRekeyed() {
             let accountNameViewModel = AuthAccountNameViewModel(account)
-            cell.bindData(accountNameViewModel)
+            cell.bindData(AccountPreviewViewModel(viewModel: accountNameViewModel))
         } else {
             let rekeyedAccount = rekeyedAccounts[indexPath.row]
             let accountNameViewModel = AccountNameViewModel(account: rekeyedAccount)
-            cell.bindData(accountNameViewModel)
+            cell.bindData(AccountPreviewViewModel(viewModel: accountNameViewModel))
         }
         return cell
     }

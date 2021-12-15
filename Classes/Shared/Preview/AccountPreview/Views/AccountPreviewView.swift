@@ -102,49 +102,12 @@ extension AccountPreviewView {
     }
 }
 
-extension AccountPreviewView {
+extension AccountPreviewView: ViewModelBindable {
     func bindData(_ viewModel: AccountPreviewViewModel?) {
         imageView.image = viewModel?.accountImageTypeImage
         accountNameLabel.text = viewModel?.accountName
         assetsAndNFTsLabel.text = viewModel?.assetsAndNFTs
         assetValueLabel.text = viewModel?.assetValue
         secondaryAssetValueLabel.text = viewModel?.secondaryAssetValue
-    }
-
-    func bindData(_ viewModel: AuthAccountNameViewModel) {
-        bindData(
-            AccountPreviewViewModel(
-                AccountPreviewModel(
-                    accountType: viewModel.accountType,
-                    accountImageType: .orange,
-                    accountName: viewModel.address
-                )
-            )
-        )
-    }
-
-    func bindData(_ viewModel: AccountNameViewModel) {
-        bindData(
-            AccountPreviewViewModel(
-                AccountPreviewModel(
-                    accountType: viewModel.accountType,
-                    accountImageType: .orange,
-                    accountName: viewModel .name
-                )
-            )
-        )
-    }
-
-    func bindData(_ viewModel: AccountCellViewModel) {
-        bindData(
-            AccountPreviewViewModel(
-                AccountPreviewModel(
-                    accountType: viewModel.accountType,
-                    accountImageType: .orange,
-                    accountName: viewModel.name,
-                    assetsAndNFTs: viewModel.detail ?? viewModel.attributedDetail?.string
-                )
-            )
-        )
     }
 }

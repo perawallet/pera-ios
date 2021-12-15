@@ -60,7 +60,8 @@ extension AccountListDataSource: UICollectionViewDataSource {
 
         if indexPath.item < accounts.count {
             let account = accounts[indexPath.item]
-            cell.bindData(AccountCellViewModel(account: account, mode: mode))
+            let accountCellViewModel = AccountCellViewModel(account: account, mode: mode)
+            cell.bindData(AccountPreviewViewModel(viewModel: accountCellViewModel))
         }
         return cell
     }

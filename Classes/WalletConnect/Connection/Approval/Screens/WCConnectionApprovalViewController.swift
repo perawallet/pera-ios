@@ -19,15 +19,18 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-class WCConnectionApprovalViewController: BaseViewController {
+final class WCConnectionApprovalViewController: BaseViewController {
+    weak var delegate: WCConnectionApprovalViewControllerDelegate?
 
     override var shouldShowNavigationBar: Bool {
         return false
     }
 
-    weak var delegate: WCConnectionApprovalViewControllerDelegate?
+    private var hasMultipleAccounts: Bool {
+        return (session?.accounts.count).unwrap(or: 0) > 1
+    }
 
-    private lazy var connectionApprovalView = WCConnectionApprovalView()
+    private lazy var connectionApprovalView = WCConnectionApprovalView(hasMultipleAccounts)
 
     private let walletConnectSession: WalletConnectSession
     private let walletConnectSessionConnectionCompletionHandler: WalletConnectSessionConnectionCompletionHandler
@@ -42,20 +45,23 @@ class WCConnectionApprovalViewController: BaseViewController {
         self.walletConnectSession = walletConnectSession
         self.walletConnectSessionConnectionCompletionHandler = walletConnectSessionConnectionCompletionHandler
         super.init(configuration: configuration)
-        selectedAccount = session?.accounts.first
+
+        if !hasMultipleAccounts {
+            selectedAccount = session?.accounts.first
+        }
     }
 
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.secondary
+        connectionApprovalView.bindData(WCConnectionApprovalViewModel(walletConnectSession))
 
         if let account = selectedAccount {
-            connectionApprovalView.bind(WCConnectionApprovalViewModel(session: walletConnectSession, account: account))
+            connectionApprovalView.bindData(AccountPreviewViewModel(from: account))
         }
     }
 
     override func prepareLayout() {
         super.prepareLayout()
-        prepareWholeScreenLayoutFor(connectionApprovalView)
+        addConnectionApprovalView()
     }
 
     override func linkInteractors() {
@@ -64,9 +70,18 @@ class WCConnectionApprovalViewController: BaseViewController {
     }
 }
 
+extension WCConnectionApprovalViewController {
+    private func addConnectionApprovalView() {
+        view.addSubview(connectionApprovalView)
+        connectionApprovalView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+}
+
 extension WCConnectionApprovalViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
-        .preferred(454)
+        .compressed
     }
 }
 
@@ -124,7 +139,7 @@ extension WCConnectionApprovalViewController: AccountListViewControllerDelegate 
         viewController.popScreen()
 
         selectedAccount = account
-        connectionApprovalView.bind(WCConnectionAccountSelectionViewModel(account: account))
+        connectionApprovalView.bindData(AccountPreviewViewModel(from: account))
     }
 
     func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {
