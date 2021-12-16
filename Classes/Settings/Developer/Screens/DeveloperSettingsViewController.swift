@@ -17,11 +17,11 @@
 
 import UIKit
 
-class DeveloperSettingsViewController: BaseViewController {
+final class DeveloperSettingsViewController: BaseViewController {
+    private lazy var theme = Theme()
+    private lazy var developerSettingsView = DeveloperSettingsView()
     
     private var settings: [DeveloperSettings] = [.nodeSettings]
-    
-    private lazy var developerSettingsView = DeveloperSettingsView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,8 +34,8 @@ class DeveloperSettingsViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        super.configureAppearance()
-        title = "settings-developer".localized
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        navigationItem.title = "settings-developer".localized
     }
     
     override func linkInteractors() {
@@ -44,18 +44,18 @@ class DeveloperSettingsViewController: BaseViewController {
     }
     
     override func prepareLayout() {
-        setupDeveloperSettingsViewLayout()
+        addDeveloperSettingsView()
     }
 }
 
 extension DeveloperSettingsViewController {
-    private func setupDeveloperSettingsViewLayout() {
+    private func addDeveloperSettingsView() {
         view.addSubview(developerSettingsView)
         
-        developerSettingsView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.safeEqualToTop(of: self)
-            make.bottom.safeEqualToBottom(of: self)
+        developerSettingsView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview()
+            $0.top.safeEqualToTop(of: self)
+            $0.bottom.safeEqualToBottom(of: self)
         }
     }
 }
@@ -69,13 +69,16 @@ extension DeveloperSettingsViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
             for: indexPath
-        ) as? SettingsDetailCell,
-            let setting = settings[safe: indexPath.item] else {
-                fatalError("Index path is out of bounds")
+        ) as? SettingsDetailCell else {
+            fatalError("Index path is out of bounds")
         }
         
-        cell.bindData(SettingsDetailViewModel(setting: setting))
-        return cell
+        if let setting = settings[safe: indexPath.item] {
+            cell.bindData(SettingsDetailViewModel(setting: setting))
+            return cell
+        }
+        
+        fatalError("Index path is out of bounds")
     }
 }
 
@@ -85,7 +88,7 @@ extension DeveloperSettingsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 72.0)
+        return CGSize(theme.cellSize)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
