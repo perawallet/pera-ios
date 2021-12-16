@@ -24,10 +24,19 @@ final class QRScannerOverlayView: View {
     private lazy var titleLabel = UILabel()
     private lazy var overlayView = UIView()
     private lazy var overlayImageView = UIImageView()
+    private lazy var connectedAppsButton = MacaroonUIKit.Button(.imageAtRight(spacing: 8))
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    struct Configuration {
+        var showsConnectedAppsButton = false
+    }
 
+    private let configuration: Configuration
+
+    init(configurationHandler:  (inout Configuration) -> Void = { _ in }) {
+        var configuration = Configuration()
+        configurationHandler(&configuration)
+        self.configuration = configuration
+        super.init(frame: .zero)
         customize(theme)
     }
 
@@ -35,6 +44,7 @@ final class QRScannerOverlayView: View {
         addOverlayView(theme)
         addOverlayImageView(theme)
         addTitleLabel(theme)
+        if configuration.showsConnectedAppsButton { addConnectedAppsButton(theme) }
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
@@ -80,6 +90,33 @@ extension QRScannerOverlayView {
         titleLabel.snp.makeConstraints {
             $0.trailing.leading.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalToSuperview().offset(theme.titleLabelTopInset)
+        }
+    }
+
+    private func addConnectedAppsButton(_ theme: QRScannerOverlayViewTheme) {
+        connectedAppsButton.customizeAppearance(theme.connectedAppsButton)
+        connectedAppsButton.contentEdgeInsets = UIEdgeInsets(theme.connectedAppsButtonContentEdgeInsets)
+
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
+
+        addSubview(blurView)
+        blurView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalToSuperview().inset(safeAreaBottom + 28)
+        }
+        blurView.isUserInteractionEnabled = false
+        blurView.layer.cornerRadius = 4
+        blurView.layer.masksToBounds = true
+        blurView.contentView.addSubview(connectedAppsButton)
+        connectedAppsButton.pinToSuperview()
+    }
+}
+
+extension QRScannerOverlayView: ViewModelBindable {
+    func bindData(_ viewModel: QRScannerOverlayViewModel?) {
+        if configuration.showsConnectedAppsButton,
+           let title = viewModel?.connectedAppsButtonTitle {
+            connectedAppsButton.setTitle(title, for: .normal)
         }
     }
 }

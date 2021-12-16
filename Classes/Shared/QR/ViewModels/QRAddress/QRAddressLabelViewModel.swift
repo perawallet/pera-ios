@@ -22,15 +22,17 @@ final class QRAddressLabelViewModel {
     private(set) var address: String?
     
     init(title: String, address: String) {
-        setTitle(title)
-        setAddress(address)
+        bindTitle(title)
+        bindAddress(address)
     }
-    
-    private func setTitle(_ title: String) {
+}
+
+extension QRAddressLabelViewModel {
+    private func bindTitle(_ title: String) {
         self.title = title
     }
-    
-    private func setAddress(_ address: String) {
+
+    private func bindAddress(_ address: String) {
         self.address = address
     }
 }

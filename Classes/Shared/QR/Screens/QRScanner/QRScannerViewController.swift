@@ -28,7 +28,9 @@ final class QRScannerViewController: BaseViewController {
 
     private lazy var wcConnectionModalTransition = BottomSheetTransition(presentingViewController: self)
 
-    private(set) lazy var overlayView = QRScannerOverlayView()
+    private lazy var overlayView = QRScannerOverlayView {
+        $0.showsConnectedAppsButton = canReadWCSession
+    }
 
     private var captureSession: AVCaptureSession?
     private let captureSessionQueue = DispatchQueue(label: AVCaptureSession.self.description(), attributes: [], target: nil)
@@ -61,7 +63,9 @@ final class QRScannerViewController: BaseViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        walletConnector.delegate = self
+        if canReadWCSession {
+            walletConnector.delegate = self
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -77,6 +81,14 @@ final class QRScannerViewController: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
         configureScannerView()
+    }
+
+    override func bindData() {
+        super.bindData()
+
+        if canReadWCSession {
+            overlayView.bindData(QRScannerOverlayViewModel(UInt(walletConnector.allWalletConnectSessions.count)))
+        }
     }
 }
 
@@ -303,12 +315,15 @@ extension QRScannerViewController: WalletConnectorDelegate {
 
 extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
     func wcConnectionApprovalViewControllerDidApproveConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
-        wcConnectionApprovalViewController.dismissScreen()
-        presentWCSessionsApprovedModal()
+        wcConnectionApprovalViewController.dismiss(animated: true) { [weak self] in
+            self?.presentWCSessionsApprovedModal()
+        }
     }
 
     func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
-        wcConnectionApprovalViewController.dismissScreen()
+        wcConnectionApprovalViewController.dismiss(animated: true) { [weak self] in
+            self?.popScreen()
+        }
     }
 
     private func presentWCSessionsApprovedModal() {

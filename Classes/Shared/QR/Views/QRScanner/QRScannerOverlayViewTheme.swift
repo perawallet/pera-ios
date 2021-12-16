@@ -22,12 +22,14 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
     let overlayImage: ImageStyle
+    let connectedAppsButton: ButtonStyle
 
     let horizontalInset: LayoutMetric
     let titleLabelTopInset: LayoutMetric
     let overlayViewSize: LayoutMetric
     let overlayCornerRadius: LayoutMetric
     let overlayImageViewSize: LayoutMetric
+    let connectedAppsButtonContentEdgeInsets: LayoutPaddings
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Components.QR.background
@@ -41,10 +43,16 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
         self.overlayImage = [
             .image("img-qr-overlay-center")
         ]
+        self.connectedAppsButton = [
+            .icon([.normal("icon-white-disclosure")]),
+            .titleColor([.normal(AppColors.Shared.Global.white)]),
+            .font(Fonts.DMSans.medium.make(16))
+        ]
         self.horizontalInset = 24
         self.titleLabelTopInset = 28
         self.overlayViewSize = 260
         self.overlayCornerRadius = 12
         self.overlayImageViewSize = 264
+        self.connectedAppsButtonContentEdgeInsets = (12, 20, 12, 16)
     }
 }
