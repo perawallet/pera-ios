@@ -92,13 +92,11 @@ extension TabBarModalViewController {
     }
 
     private func updateChromeViewVisibility(to alpha: CGFloat, completion: (() -> Void)? = nil) {
-        // swiftlint:disable multiline_arguments
         UIView.animate(withDuration: 0.2) {
             self.chromeView.alpha = alpha
         } completion: { _ in
            completion?()
         }
-        // swiftlint:enable multiline_arguments
     }
 
     private func updateContainerViewBottomConstraint(to value: LayoutMetric) {

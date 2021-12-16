@@ -363,7 +363,8 @@ extension TabBarController {
                 presentationStyle: .overCurrentContext,
                 transitionStyle: nil,
                 transitioningDelegate: nil
-            )
+            ),
+            animated: false
         ) as? TabBarModalViewController
         tabBarModalViewController?.delegate = self
     }
