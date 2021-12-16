@@ -432,12 +432,11 @@ extension QRScannerViewController: WalletConnectorDelegate {
             transitioningDelegate: wcConnectionErrorModalPresenter
         )
 
+        // swiftlint:disable line_length
         /// <todo>
         /// These texts will be localized later.
-        let message = """
-            We are sorry, but the dApp is not responding. Please refresh the page and try scanning a new QR Code. If the error persists,
-            please contact the dApp.
-        """
+        let message = "We are sorry, but the dApp is not responding. Please refresh the page and try scanning a new QR Code. If the error persists, please contact the dApp."
+        // swiftlint:enable line_length
         let warningAlert = WarningAlert(
             title: "Connection Failed",
             image: img("img-error-circle"),

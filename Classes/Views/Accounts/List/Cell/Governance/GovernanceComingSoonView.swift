@@ -37,7 +37,7 @@ class GovernanceComingSoonView: BaseView {
             .withTextColor(Colors.Text.primary)
             .withLine(.contained)
             .withAlignment(.left)
-            .withText("The registration window for Governance Period #2 is Dec. 25 to Jan. 7")
+            .withText("Become a governor. Vote on Algorand’s future. Earn rewards.")
     }()
 
     private lazy var detailLabel: UILabel = {
@@ -46,7 +46,7 @@ class GovernanceComingSoonView: BaseView {
             .withTextColor(Colors.Text.secondary)
             .withLine(.contained)
             .withAlignment(.left)
-            .withText("Become a governor. Vote on Algorand’s future. Earn rewards.")
+            .withText("The registration window for Governance Period #2 is Dec. 24 to Jan. 6, 16:00 UTC")
     }()
 
     private lazy var getStartedButton: AlignedButton = {
