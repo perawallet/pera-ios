@@ -17,14 +17,12 @@
 
 import UIKit
 
-class NodeSettingsViewController: BaseViewController {
-    
-    private lazy var nodeSettingsView = NodeSettingsView()
+final class NodeSettingsViewController: BaseViewController {
+    private lazy var theme = Theme()
+    private lazy var nodeSettingsView = SingleSelectionListView()
     
     private let nodes = [mainNetNode, testNetNode]
-    
-    private var canTapBarButton = true
-    
+        
     private lazy var lastActiveNetwork: ALGAPI.Network = {
         guard let api = api else {
             fatalError("API should be set.")
@@ -40,53 +38,50 @@ class NodeSettingsViewController: BaseViewController {
     }()
     
     override func linkInteractors() {
-        nodeSettingsView.collectionView.delegate = self
-        nodeSettingsView.collectionView.dataSource = self
+        nodeSettingsView.linkInteractors()
+        nodeSettingsView.setDataSource(self)
+        nodeSettingsView.setListDelegate(self)
     }
     
     override func configureAppearance() {
-        super.configureAppearance()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         title = "node-settings-title".localized
     }
     
     override func prepareLayout() {
-        setupNodeSettingsViewLayout()
-    }
-    
-    override func didTapBackBarButton() -> Bool {
-        return canTapBarButton
-    }
-    
-    override func didTapDismissBarButton() -> Bool {
-        return canTapBarButton
+        addNodeSettingsView()
     }
 }
 
 extension NodeSettingsViewController {
-    private func setupNodeSettingsViewLayout() {
+    private func addNodeSettingsView() {
         view.addSubview(nodeSettingsView)
         
-        nodeSettingsView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        nodeSettingsView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
 
 extension NodeSettingsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
+        return nodes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: NodeSelectionCell.reusableIdentifier,
-            for: indexPath) as? NodeSelectionCell else {
+            withReuseIdentifier: SingleSelectionCell.reusableIdentifier,
+            for: indexPath) as? SingleSelectionCell else {
                 fatalError("Index path is out of bounds")
         }
         
-        let algorandNode = nodes[indexPath.item]
-        cell.bind(NodeSettingsViewModel(node: algorandNode, activeNetwork: lastActiveNetwork))
-        return cell
+        if let algorandNode = nodes[safe: indexPath.item] {
+            let isActiveNetwork = algorandNode.network == lastActiveNetwork
+            cell.bindData(SingleSelectionViewModel(title: algorandNode.name, isSelected: isActiveNetwork))
+            return cell
+        }
+        
+        fatalError("Index path is out of bounds")
     }
 }
 
@@ -96,7 +91,7 @@ extension NodeSettingsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width - 32.0, height: 64.0)
+        return CGSize(theme.cellSize)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -107,70 +102,37 @@ extension NodeSettingsViewController: UICollectionViewDelegateFlowLayout {
 extension NodeSettingsViewController {
     private func changeNode(at indexPath: IndexPath) {
         loadingController?.startLoadingWithMessage("title-loading".localized)
-        setActionsEnabled(false)
         
         let selectedNode = nodes[indexPath.item]
         
         if pushNotificationController.token == nil {
-            switchNetwork(for: selectedNode, at: indexPath)
+            switchNetwork(for: selectedNode)
         } else {
             pushNotificationController.sendDeviceDetails { isCompleted in
                 if isCompleted {
-                    self.switchNetwork(for: selectedNode, at: indexPath)
+                    self.switchNetwork(for: selectedNode)
                 } else {
                     self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
-                        self.setActionsEnabled(true)
+                        self.nodeSettingsView.reloadData()
                     }
                 }
             }
         }
     }
     
-    private func switchNetwork(for selectedNode: AlgorandNode, at indexPath: IndexPath) {
+    private func switchNetwork(for selectedNode: AlgorandNode) {
         session?.authenticatedUser?.setDefaultNode(selectedNode)
         lastActiveNetwork = selectedNode.network
+        
         DispatchQueue.main.async {
             UIApplication.shared.rootViewController()?.setNetwork(to: selectedNode.network)
             UIApplication.shared.rootViewController()?.addBanner()
         }
         
-        UIApplication.shared.accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
-                self.setActionsEnabled(true)
-                self.setSelected(at: indexPath, in: self.nodeSettingsView.collectionView)
-            }
+        self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
+            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+            self.nodeSettingsView.reloadData()
         }
-    }
-
-    private func setSelected(at indexPath: IndexPath, in collectionView: UICollectionView) {
-        guard let cell = collectionView.cellForItem(at: indexPath) as? NodeSelectionCell else {
-            return
-        }
-        setActive(cell)
-
-        let otherCellIndex = indexPath.item == 0 ? 1 : 0
-
-        guard let otherCell = collectionView.cellForItem(at: IndexPath(item: otherCellIndex, section: 0)) as? NodeSelectionCell else {
-            return
-        }
-
-        setInactive(otherCell)
-    }
-
-    private func setActive(_ cell: NodeSelectionCell) {
-        cell.contextView.setBackgroundImage(img("bg-settings-node-selected"))
-        cell.contextView.setImage(img("settings-node-active"))
-    }
-
-    private func setInactive(_ cell: NodeSelectionCell) {
-        cell.contextView.setBackgroundImage(img("bg-settings-node-unselected"))
-        cell.contextView.setImage(img("settings-node-inactive"))
-    }
-    
-    private func setActionsEnabled(_ isEnabled: Bool) {
-        canTapBarButton = isEnabled
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
-        view.isUserInteractionEnabled = isEnabled
     }
 }
 

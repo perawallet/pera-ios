@@ -13,12 +13,20 @@
 // limitations under the License.
 
 //
-//  NodeSelectionCell.swift
+//   NodeSettingsViewController+Theme.swift
 
+import Foundation
+import MacaroonUIKit
 import UIKit
 
-class NodeSelectionCell: BaseCollectionViewCell<NodeSelectionView> {
-    func bind(_ viewModel: NodeSettingsViewModel) {
-        contextView.bind(viewModel)
+extension NodeSettingsViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: Color
+        let cellSize: LayoutSize
+        
+        init(_ family: LayoutFamily) {
+            self.backgroundColor = AppColors.Shared.System.background
+            self.cellSize = (UIScreen.main.bounds.width - 48, 64)
+        }
     }
 }
