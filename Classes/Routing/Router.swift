@@ -281,8 +281,6 @@ class Router {
             viewController = ManageAssetsViewController(account: account, configuration: configuration)
         case let .assetActionConfirmation(assetAlertDraft):
             viewController = AssetActionConfirmationViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
-        case let .assetSupport(assetAlertDraft):
-            viewController = AssetSupportViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
         case let .rewardDetail(account):
             viewController = RewardDetailViewController(account: account, configuration: configuration)
         case .verifiedAssetInformation:

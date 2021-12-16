@@ -62,7 +62,6 @@ indirect enum Screen {
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
-    case assetSupport(assetAlertDraft: AssetAlertDraft)
     case rewardDetail(account: Account)
     case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)

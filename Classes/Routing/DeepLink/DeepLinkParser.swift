@@ -86,10 +86,11 @@ struct DeepLinkParser {
                     assetDetail: nil,
                     title: "asset-support-title".localized,
                     detail: "asset-support-error".localized,
-                    actionTitle: "title-ok".localized
+                    actionTitle: "title-approve".localized,
+                    cancelTitle: "title-cancel".localized
                 )
                 
-                return .assetSupport(assetAlertDraft: assetAlertDraft)
+                return .assetActionConfirmation(assetAlertDraft: assetAlertDraft)
             }
                 
             if let amount = qrText.amount {

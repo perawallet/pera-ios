@@ -146,13 +146,10 @@ extension TabBarController {
                  .sendAssetTransactionPreview:
                 selectedItem = items[0]
                 topMostController?.open(route, by: .push)
-            case .assetSupport:
-                selectedItem = items[0]
-                let bottomSheetTransition = BottomSheetTransition(presentingViewController: self)
-                bottomSheetTransition.perform(route)
             case .assetDetail:
                 topMostController?.open(route, by: .push)
             case let .assetActionConfirmation(draft):
+                selectedItem = items[0]
                 if let presentingViewController = topMostController {
                     let bottomSheetTransition = BottomSheetTransition(presentingViewController: presentingViewController)
                     let controller = bottomSheetTransition.perform(route) as? AssetActionConfirmationViewController
