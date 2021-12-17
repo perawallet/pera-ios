@@ -13,35 +13,21 @@
 // limitations under the License.
 
 //
-//   ChoosePasswordViewTheme.swift
+//   EditNoteViewTheme.swift
+
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct ChoosePasswordViewTheme: StyleSheet, LayoutSheet {
+struct EditNoteViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
-    let title: TextStyle
-    let numpadViewTheme: NumpadViewTheme
+    let verticalPadding: LayoutMetric
+    let horizontalPadding: LayoutMetric
 
-    let inputViewTopInset: LayoutMetric
-    let numpadBottomInset: LayoutMetric
-    let horizontalInset: LayoutMetric
-    let topInset: LayoutMetric
-    
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-        self.title = [
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(32)),
-            .textAlignment(.left),
-            .textOverflow(FittingText())
-        ]
-        self.numpadViewTheme = NumpadViewCommonTheme()
-
-        self.horizontalInset = 24
-        self.topInset = 2
-        self.inputViewTopInset = 128 * verticalScale
-        self.numpadBottomInset = 62 * verticalScale
+        self.verticalPadding = 16
+        self.horizontalPadding = 24
     }
 }

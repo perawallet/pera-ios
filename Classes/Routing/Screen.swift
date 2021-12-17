@@ -117,6 +117,8 @@ indirect enum Screen {
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case accountSelection
     case assetSelection(account: Account)
+    case sendTransaction(draft: SendTransactionDraft)
+    case editNote(note: String?, delegate: EditNoteScreenDelegate?)
 }
 
 extension Screen {

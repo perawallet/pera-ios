@@ -771,3 +771,15 @@ on your Ledger device (%d)";
 "governance-banner-title" = "Algorand Governance Program is starting!";
 "governance-banner-detail" = "Become a governor. Vote on Algorand’s future. Earn rewards.";
 "governance-banner-action" = "Get Started";
+
+// MARK: SendTransaction
+
+"send-transaction-title" = "Send %@";
+"send-transaction-add-note-title" = "+ Add Note";
+"send-transaction-edit-note-title" = "Edit Note";
+"send-transaction-max-button-title" = "MAX";
+
+// MARK: EditNote
+
+"edit-note-title" = "Add Note";
+"edit-note-note-explanation" = "Enter your note";

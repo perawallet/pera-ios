@@ -27,6 +27,11 @@ extension String {
         return Decimal(string: without(locale.groupingSeparator ?? ","), locale: locale)
     }
 
+    var decimalAmountWithSeparator: Decimal? {
+        let locale = Locale.preferred()
+        return Decimal(string: self, locale: locale)
+    }
+
     func decimalForSendSeparator(with fraction: Int) -> Decimal? {
         return Formatter.separatorWith(fraction: fraction).number(from: self)?.decimalValue
     }
@@ -38,5 +43,26 @@ extension String {
 
     func without<T: StringProtocol>(_ string: T) -> String {
         return replacingOccurrences(of: string, with: "")
-      }
+    }
+
+    func decimalStrings() -> String? {
+        let separator = Locale.preferred().decimalSeparator?.first ?? "."
+        let separated = self.split(separator: separator)
+
+        if separated.count > 1 {
+            return "\(separator)\(String(separated[1]))"
+        } else if self.contains(separator) {
+            return "\(separator)"
+        }
+
+        return nil
+    }
+
+    func fractionCount() -> Int {
+        guard let decimalString = self.decimalStrings() else {
+            return 0
+        }
+
+        return decimalString.count - 1
+    }
 }

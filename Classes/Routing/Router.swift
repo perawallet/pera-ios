@@ -473,6 +473,12 @@ class Router {
             viewController = SelectAccountViewController(configuration: configuration)
         case .assetSelection(let account):
             viewController = SelectAssetViewController(account: account, configuration: configuration)
+        case .sendTransaction(let draft):
+            viewController = SendTransactionScreen(draft: draft, configuration: configuration)
+        case .editNote(let note, let delegate):
+            let editNoteScreen = EditNoteScreen(note: note, configuration: configuration)
+            editNoteScreen.delegate = delegate
+            viewController = editNoteScreen
         }
         
         return viewController as? T
