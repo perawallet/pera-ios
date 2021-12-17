@@ -56,12 +56,27 @@ extension AccountListDataSource: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
+        if case .walletConnect = mode {
+            return cellForAccountCheckmarkSelection(collectionView, cellForItemAt: indexPath)
+        } else {
+            return cellForAccountSelection(collectionView, cellForItemAt: indexPath)
+        }
+    }
 
+    func cellForAccountCheckmarkSelection(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeue(AccountCheckmarkSelectionViewCell.self, at: indexPath)
         if indexPath.item < accounts.count {
             let account = accounts[indexPath.item]
-            let accountCellViewModel = AccountCellViewModel(account: account, mode: mode)
-            cell.bindData(AccountPreviewViewModel(viewModel: accountCellViewModel))
+            cell.bindData(AccountCellViewModel(account: account, mode: mode))
+        }
+        return cell
+    }
+
+    func cellForAccountSelection(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeue(AccountSelectionViewCell.self, at: indexPath)
+        if indexPath.item < accounts.count {
+            let account = accounts[indexPath.item]
+            cell.bindData(AccountCellViewModel(account: account, mode: mode))
         }
         return cell
     }

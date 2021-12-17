@@ -63,17 +63,6 @@ final class AccountPreviewViewModel: PairedViewModel {
         )
     }
 
-    convenience init(viewModel: AccountCellViewModel) {
-        self.init(
-            AccountPreviewModel(
-                accountType: viewModel.accountType,
-                accountImageType: .orange,
-                accountName: viewModel.name,
-                assetsAndNFTs: viewModel.detail ?? viewModel.attributedDetail?.string
-            )
-        )
-    }
-
     convenience init(viewModel: AccountNameViewModel) {
         self.init(
             AccountPreviewModel(

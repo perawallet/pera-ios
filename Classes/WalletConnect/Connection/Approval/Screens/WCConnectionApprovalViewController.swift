@@ -126,7 +126,7 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
     }
 
     func wcConnectionApprovalViewDidSelectAccountSelection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
-        open(.accountList(mode: .walletConnect, delegate: self), by: .push)
+        open(.accountList(mode: .walletConnect(account: selectedAccount), delegate: self), by: .push)
     }
 
     func wcConnectionApprovalViewDidOpenURL(_ wcConnectionApprovalView: WCConnectionApprovalView) {

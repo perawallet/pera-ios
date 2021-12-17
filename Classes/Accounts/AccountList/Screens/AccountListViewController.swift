@@ -22,10 +22,6 @@ import MacaroonUIKit
 final class AccountListViewController: BaseViewController {
     weak var delegate: AccountListViewControllerDelegate?
 
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-
     private lazy var theme = Theme()
     private lazy var accountListView = AccountListView()
     
@@ -51,10 +47,16 @@ final class AccountListViewController: BaseViewController {
 
     override func bindData() {
         super.bindData()
-        accountListView.bindData(AccountListViewModel(mode))
+        title = AccountListViewModel(mode).title
     }
     
     override func prepareLayout() {
+        if case .walletConnect = mode {
+            accountListView.accountsCollectionView.register(AccountCheckmarkSelectionViewCell.self)
+        } else {
+            accountListView.accountsCollectionView.register(AccountSelectionViewCell.self)
+        }
+
         accountListView.customize(theme.accountListViewTheme)
         view.addSubview(accountListView)
         accountListView.snp.makeConstraints {
@@ -89,8 +91,8 @@ extension AccountListViewController: AccountListLayoutBuilderDelegate {
 }
 
 extension AccountListViewController {
-    enum Mode {
-        case walletConnect
+    enum Mode: Equatable {
+        case walletConnect(account: Account?)
         case contact(assetDetail: AssetDetail?)
         case transactionReceiver(assetDetail: AssetDetail?)
         case transactionSender(assetDetail: AssetDetail?)
