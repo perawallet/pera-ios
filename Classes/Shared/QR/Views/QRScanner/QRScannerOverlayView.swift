@@ -23,13 +23,18 @@ final class QRScannerOverlayView: View {
 
     private lazy var theme = QRScannerOverlayViewTheme()
 
+    private lazy var backButton = UIButton()
     private lazy var titleLabel = UILabel()
     private lazy var overlayView = UIView()
     private lazy var overlayImageView = UIImageView()
     private lazy var connectedAppsButtonContainerVisualEffectView = UIVisualEffectView(
         effect: UIBlurEffect(style: .systemUltraThinMaterialDark)
     )
-    private lazy var connectedAppsButton = MacaroonUIKit.Button(.imageAtRight(spacing: 8))
+    private lazy var connectedAppsButton = MacaroonUIKit.Button(
+        .imageAtRight(
+            spacing: theme.connectedAppsButtonTitleImageSpacing
+        )
+    )
 
     struct Configuration {
         var showsConnectedAppsButton = false
@@ -50,10 +55,12 @@ final class QRScannerOverlayView: View {
         addOverlayView(theme)
         addOverlayImageView(theme)
         addTitleLabel(theme)
+        addBackBarButton(theme)
         if configuration.showsConnectedAppsButton { addConnectedAppsButton(theme) }
     }
 
     func setListeners() {
+        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
         if configuration.showsConnectedAppsButton {
             connectedAppsButton.addTarget(self, action: #selector(didTapConnectedAppsButton), for: .touchUpInside)
         }
@@ -69,9 +76,25 @@ extension QRScannerOverlayView {
     private func didTapConnectedAppsButton() {
         delegate?.qrScannerOverlayViewDidTapConnectedAppsButton(self)
     }
+
+    @objc
+    private func didTapBackButton() {
+        delegate?.qrScannerOverlayViewDidTapBackButton(self)
+    }
 }
 
 extension QRScannerOverlayView {
+    private func addBackBarButton(_ theme: QRScannerOverlayViewTheme) {
+        backButton.customizeAppearance(theme.backButton)
+
+        addSubview(backButton)
+        backButton.snp.makeConstraints {
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top)
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.fitToSize(theme.backButtonSize)
+        }
+    }
+
     private func addOverlayView(_ theme: QRScannerOverlayViewTheme) {
         overlayView.frame =  UIScreen.main.bounds
         overlayView.backgroundColor = theme.backgroundColor.uiColor
@@ -108,7 +131,7 @@ extension QRScannerOverlayView {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.trailing.leading.equalToSuperview().inset(theme.horizontalInset)
-            $0.top.equalToSuperview().offset(theme.titleLabelTopInset)
+            $0.top.equalTo(safeAreaLayoutGuide.snp.top).offset(theme.titleLabelTopInset)
         }
     }
 
@@ -141,6 +164,7 @@ extension QRScannerOverlayView: ViewModelBindable {
 
 protocol QRScannerOverlayViewDelegate: AnyObject {
     func qrScannerOverlayViewDidTapConnectedAppsButton(_ qrScannerOverlayView: QRScannerOverlayView)
+    func qrScannerOverlayViewDidTapBackButton(_ qrScannerOverlayView: QRScannerOverlayView)
 }
 
 extension UIVisualEffectView: CornerDrawable {}

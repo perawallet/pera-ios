@@ -26,6 +26,10 @@ final class QRScannerViewController: BaseViewController {
         return .portrait
     }
 
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+
     private lazy var wcConnectionModalTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var overlayView = QRScannerOverlayView {
@@ -357,6 +361,10 @@ extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
 }
 
 extension QRScannerViewController: QRScannerOverlayViewDelegate {
+    func qrScannerOverlayViewDidTapBackButton(_ qrScannerOverlayView: QRScannerOverlayView) {
+        popScreen()
+    }
+
     func qrScannerOverlayViewDidTapConnectedAppsButton(_ qrScannerOverlayView: QRScannerOverlayView) {
         let walletConnectSessionsModalList: WCSessionListModalViewController? = wcConnectionModalTransition.perform(.walletConnectSessionsModalList)
         walletConnectSessionsModalList?.delegate = self

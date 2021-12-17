@@ -21,6 +21,7 @@ import MacaroonUIKit
 struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
+    let backButton: ButtonStyle
     let overlayImage: ImageStyle
     let connectedAppsButton: ButtonStyle
     let connectedAppsButtonCorner: Corner
@@ -32,9 +33,16 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
     let overlayImageViewSize: LayoutMetric
     let connectedAppsButtonContentEdgeInsets: LayoutPaddings
     let connectedAppsButtonBottomInset: LayoutMetric
+    let backButtonSize: LayoutSize
+    let connectedAppsButtonTitleImageSpacing: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Components.QR.background
+        let backButtonIcon = "icon-back".uiImage.withRenderingMode(.alwaysTemplate)
+        self.backButton = [
+            .icon([.normal(backButtonIcon)]),
+            .tintColor(AppColors.Shared.Global.white)
+        ]
         self.title = [
             .text("qr-scan-overlay-title".localized),
             .textAlignment(.center),
@@ -51,12 +59,14 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(16))
         ]
         self.horizontalInset = 24
-        self.titleLabelTopInset = 28
         self.overlayViewSize = 260
         self.overlayCornerRadius = 12
         self.overlayImageViewSize = 264
         self.connectedAppsButtonContentEdgeInsets = (12, 20, 12, 16)
+        self.connectedAppsButtonTitleImageSpacing = 8
         self.connectedAppsButtonCorner = Corner(radius: 4)
         self.connectedAppsButtonBottomInset = 34
+        self.backButtonSize = (44, 44)
+        self.titleLabelTopInset = 30 + backButtonSize.h
     }
 }
