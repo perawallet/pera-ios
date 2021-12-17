@@ -13,31 +13,25 @@
 // limitations under the License.
 
 //
-//   WCSessionItemViewTheme.swift
+//   WCSessionsListModalItemViewTheme.swift
 
 import MacaroonUIKit
 import UIKit
 
-struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
+struct WCSessionsListModalItemViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color
     let nameLabel: TextStyle
     let disconnectOptionsButton: ButtonStyle
     let descriptionLabel: TextStyle
-    let statusLabel: TextStyle
-    let dateLabel: TextStyle
 
     let imageBorder: Border
     let imageCorner: Corner
-    let dateLabelTopInset: LayoutMetric
     let descriptionTopInset: LayoutMetric
     let nameLabelHorizontalInset: LayoutMetric
-    let imageTopInset: LayoutMetric
+    let imageVerticalInset: LayoutMetric
     let imageSize: LayoutSize
     let disconnectOptionsButtonSize: LayoutSize
     let horizontalInset: LayoutMetric
-    let statusLabelSize: LayoutSize
-    let statusLabelCorner: Corner
-    let statusLabelTopInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -59,35 +53,14 @@ struct WCSessionItemViewTheme: LayoutSheet, StyleSheet {
         self.disconnectOptionsButton = [
             .icon([.normal("icon-options")])
         ]
-        self.statusLabel = [
-            .isInteractable(false),
-            .text("wallet-connect-session-select-account".localized),
-            .textAlignment(.center),
-            .textOverflow(SingleLineFittingText()),
-            .font(Fonts.DMSans.regular.make(13)),
-            .textColor(AppColors.Shared.Helpers.positive),
-            .backgroundColor(AppColors.Shared.Global.turquoise600.uiColor.withAlphaComponent(0.1))
-        ]
-        self.dateLabel = [
-            .isInteractable(false),
-            .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
-            .font(Fonts.DMSans.regular.make(13)),
-            .textColor(AppColors.Components.Text.grayLighter)
-        ]
         self.imageBorder = Border(color: AppColors.Shared.Layer.grayLighter.uiColor, width: 1)
 
-
         self.horizontalInset = 24
-        self.statusLabelSize = (226, 24)
-        self.statusLabelCorner = Corner(radius: statusLabelSize.h / 2)
         self.imageSize = (40, 40)
         self.imageCorner = Corner(radius: imageSize.h / 2)
-        self.imageTopInset = 4
+        self.imageVerticalInset = 2
         self.disconnectOptionsButtonSize = (32, 32)
         self.nameLabelHorizontalInset = 16
-        self.descriptionTopInset = 8
-        self.dateLabelTopInset = 12
-        self.statusLabelTopInset = 8
+        self.descriptionTopInset = 7
     }
 }

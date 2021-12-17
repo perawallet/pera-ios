@@ -19,11 +19,16 @@ import UIKit
 import MacaroonUIKit
 
 final class QRScannerOverlayView: View {
+    weak var delegate: QRScannerOverlayViewDelegate?
+
     private lazy var theme = QRScannerOverlayViewTheme()
 
     private lazy var titleLabel = UILabel()
     private lazy var overlayView = UIView()
     private lazy var overlayImageView = UIImageView()
+    private lazy var connectedAppsButtonContainerVisualEffectView = UIVisualEffectView(
+        effect: UIBlurEffect(style: .systemUltraThinMaterialDark)
+    )
     private lazy var connectedAppsButton = MacaroonUIKit.Button(.imageAtRight(spacing: 8))
 
     struct Configuration {
@@ -38,6 +43,7 @@ final class QRScannerOverlayView: View {
         self.configuration = configuration
         super.init(frame: .zero)
         customize(theme)
+        setListeners()
     }
 
     private func customize(_ theme: QRScannerOverlayViewTheme) {
@@ -47,9 +53,22 @@ final class QRScannerOverlayView: View {
         if configuration.showsConnectedAppsButton { addConnectedAppsButton(theme) }
     }
 
+    func setListeners() {
+        if configuration.showsConnectedAppsButton {
+            connectedAppsButton.addTarget(self, action: #selector(didTapConnectedAppsButton), for: .touchUpInside)
+        }
+    }
+
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}
+}
+
+extension QRScannerOverlayView {
+    @objc
+    private func didTapConnectedAppsButton() {
+        delegate?.qrScannerOverlayViewDidTapConnectedAppsButton(self)
+    }
 }
 
 extension QRScannerOverlayView {
@@ -97,17 +116,14 @@ extension QRScannerOverlayView {
         connectedAppsButton.customizeAppearance(theme.connectedAppsButton)
         connectedAppsButton.contentEdgeInsets = UIEdgeInsets(theme.connectedAppsButtonContentEdgeInsets)
 
-        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
-
-        addSubview(blurView)
-        blurView.snp.makeConstraints {
+        addSubview(connectedAppsButtonContainerVisualEffectView)
+        connectedAppsButtonContainerVisualEffectView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(safeAreaBottom + 28)
+            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.connectedAppsButtonBottomInset)
         }
-        blurView.isUserInteractionEnabled = false
-        blurView.layer.cornerRadius = 4
-        blurView.layer.masksToBounds = true
-        blurView.contentView.addSubview(connectedAppsButton)
+
+        connectedAppsButtonContainerVisualEffectView.draw(corner: theme.connectedAppsButtonCorner)
+        connectedAppsButtonContainerVisualEffectView.contentView.addSubview(connectedAppsButton)
         connectedAppsButton.pinToSuperview()
     }
 }
@@ -117,6 +133,14 @@ extension QRScannerOverlayView: ViewModelBindable {
         if configuration.showsConnectedAppsButton,
            let title = viewModel?.connectedAppsButtonTitle {
             connectedAppsButton.setTitle(title, for: .normal)
+        } else {
+            connectedAppsButtonContainerVisualEffectView.isHidden = true
         }
     }
 }
+
+protocol QRScannerOverlayViewDelegate: AnyObject {
+    func qrScannerOverlayViewDidTapConnectedAppsButton(_ qrScannerOverlayView: QRScannerOverlayView)
+}
+
+extension UIVisualEffectView: CornerDrawable {}

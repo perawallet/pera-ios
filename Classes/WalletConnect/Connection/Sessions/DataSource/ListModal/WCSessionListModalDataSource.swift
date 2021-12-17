@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   WCSessionListDataSource.swift
+//   WCSessionListModalDataSource.swift
 
 import UIKit
 
-final class WCSessionListDataSource: NSObject {
-    weak var delegate: WCSessionListDataSourceDelegate?
+final class WCSessionListModalDataSource: NSObject {
+    weak var delegate: WCSessionListModalDataSourceDelegate?
 
     private let walletConnector: WalletConnector
 
@@ -31,16 +31,16 @@ final class WCSessionListDataSource: NSObject {
     }
 }
 
-extension WCSessionListDataSource: UICollectionViewDataSource {
+extension WCSessionListModalDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return sessions.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(WCSessionItemCell.self, at: indexPath)
+        let cell = collectionView.dequeue(WCSessionListModalItemCell.self, at: indexPath)
 
         if let session = sessions[safe: indexPath.item] {
-            cell.bindData(WCSessionItemViewModel(session))
+            cell.bindData(WCSessionsListModalItemViewModel(session))
         }
 
         cell.delegate = self
@@ -48,21 +48,13 @@ extension WCSessionListDataSource: UICollectionViewDataSource {
     }
 }
 
-extension WCSessionListDataSource {
+extension WCSessionListModalDataSource {
     func session(at index: Int) -> WCSession? {
         return sessions[safe: index]
     }
 
-    func index(of wcSession: WCSession) -> Int? {
-        return sessions.firstIndex { $0.urlMeta.topic == wcSession.urlMeta.topic }
-    }
-
     func disconnectFromSession(_ session: WCSession) {
         walletConnector.disconnectFromSession(session)
-    }
-
-    var isEmpty: Bool {
-        return sessions.isEmpty
     }
 
     func updateSessions(_ updatedSessions: [WCSession]) {
@@ -70,12 +62,12 @@ extension WCSessionListDataSource {
     }
 }
 
-extension WCSessionListDataSource: WCSessionItemCellDelegate {
-    func wcSessionItemCellDidOpenDisconnectionMenu(_ wcSessionItemCell: WCSessionItemCell) {
-        delegate?.wSessionListDataSource(self, didOpenDisconnectMenuFrom: wcSessionItemCell)
+extension WCSessionListModalDataSource: WCSessionListModalItemCellDelegate {
+    func wcSessionListModalItemCellDidOpenDisconnectionMenu(_ wcSessionListModalItemCell: WCSessionListModalItemCell) {
+        delegate?.wcSessionListModalDataSource(self, didOpenDisconnectMenuFrom: wcSessionListModalItemCell)
     }
 }
 
-protocol WCSessionListDataSourceDelegate: AnyObject {
-    func wSessionListDataSource(_ wSessionListDataSource: WCSessionListDataSource, didOpenDisconnectMenuFrom cell: WCSessionItemCell)
+protocol WCSessionListModalDataSourceDelegate: AnyObject {
+    func wcSessionListModalDataSource(_ wcSessionListModalDataSource: WCSessionListModalDataSource, didOpenDisconnectMenuFrom cell: WCSessionListModalItemCell)
 }

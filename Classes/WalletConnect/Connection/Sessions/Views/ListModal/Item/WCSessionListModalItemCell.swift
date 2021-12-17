@@ -13,17 +13,16 @@
 // limitations under the License.
 
 //
-//   WCSessionItemCell.swift
+//   WCSessionListModalItemCell.swift
 
 import UIKit
 
-final class WCSessionItemCell: BaseCollectionViewCell<WCSessionItemView> {
-    weak var delegate: WCSessionItemCellDelegate?
+final class WCSessionListModalItemCell: BaseCollectionViewCell<WCSessionListModalItemView> {
+    weak var delegate: WCSessionListModalItemCellDelegate?
 
-    override func configureAppearance() {
-        super.configureAppearance()
-
-        contextView.customize(WCSessionItemViewTheme())
+    override func prepareLayout() {
+        super.prepareLayout()
+        contextView.customize(WCSessionsListModalItemViewTheme())
     }
 
     override func linkInteractors() {
@@ -38,18 +37,18 @@ final class WCSessionItemCell: BaseCollectionViewCell<WCSessionItemView> {
     }
 }
 
-extension WCSessionItemCell {
-    func bindData(_ viewModel: WCSessionItemViewModel) {
+extension WCSessionListModalItemCell {
+    func bindData(_ viewModel: WCSessionsListModalItemViewModel) {
         contextView.bindData(viewModel)
     }
 }
 
-extension WCSessionItemCell: WCSessionItemViewDelegate {
-    func wcSessionItemViewDidOpenDisconnectionMenu(_ wcSessionItemView: WCSessionItemView) {
-        delegate?.wcSessionItemCellDidOpenDisconnectionMenu(self)
+extension WCSessionListModalItemCell: WCSessionListModalItemViewDelegate {
+    func wcSessionListModalItemViewDidOpenDisconnectionMenu(_ wcSessionListModalView: WCSessionListModalItemView) {
+        delegate?.wcSessionListModalItemCellDidOpenDisconnectionMenu(self)
     }
 }
 
-protocol WCSessionItemCellDelegate: AnyObject {
-    func wcSessionItemCellDidOpenDisconnectionMenu(_ wcSessionItemCell: WCSessionItemCell)
+protocol WCSessionListModalItemCellDelegate: AnyObject {
+    func wcSessionListModalItemCellDidOpenDisconnectionMenu(_ wcSessionItemCell: WCSessionListModalItemCell)
 }

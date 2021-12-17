@@ -269,7 +269,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
                     open(url)
                 }
             case .walletConnect:
-                open(.walletConnectSessions, by: .push)
+                open(.walletConnectSessionsList, by: .push)
             case .notifications:
                 open(.notificationFilter(flow: .settings), by: .push)
             case .appReview:

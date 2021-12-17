@@ -29,7 +29,7 @@ final class QRScannerViewController: BaseViewController {
     private lazy var wcConnectionModalTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var overlayView = QRScannerOverlayView {
-        $0.showsConnectedAppsButton = canReadWCSession
+        $0.showsConnectedAppsButton = isShowingConnectedAppsButton
     }
 
     private var captureSession: AVCaptureSession?
@@ -46,6 +46,10 @@ final class QRScannerViewController: BaseViewController {
 
     private let canReadWCSession: Bool
     private var dAppName: String? = nil
+
+    private lazy var isShowingConnectedAppsButton: Bool = {
+        canReadWCSession && !walletConnector.allWalletConnectSessions.isEmpty
+    }()
 
     init(canReadWCSession: Bool, configuration: ViewControllerConfiguration) {
         self.canReadWCSession = canReadWCSession
@@ -86,8 +90,14 @@ final class QRScannerViewController: BaseViewController {
     override func bindData() {
         super.bindData()
 
-        if canReadWCSession {
+        if isShowingConnectedAppsButton {
             overlayView.bindData(QRScannerOverlayViewModel(UInt(walletConnector.allWalletConnectSessions.count)))
+        }
+    }
+
+    override func setListeners() {
+        if isShowingConnectedAppsButton {
+            overlayView.delegate = self
         }
     }
 }
@@ -346,6 +356,19 @@ extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
     }
 }
 
+extension QRScannerViewController: QRScannerOverlayViewDelegate {
+    func qrScannerOverlayViewDidTapConnectedAppsButton(_ qrScannerOverlayView: QRScannerOverlayView) {
+        let walletConnectSessionsModalList: WCSessionListModalViewController? = wcConnectionModalTransition.perform(.walletConnectSessionsModalList)
+        walletConnectSessionsModalList?.delegate = self
+    }
+}
+
+extension QRScannerViewController: WCSessionListModalViewControllerDelegate {
+    func wcSessionListModalViewControllerDidClose(_ controller: WCSessionListModalViewController) {
+        overlayView.bindData(QRScannerOverlayViewModel(UInt(walletConnector.allWalletConnectSessions.count)))
+    }
+}
+
 protocol QRScannerViewControllerDelegate: AnyObject {
     func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController)
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?)
@@ -354,9 +377,7 @@ protocol QRScannerViewControllerDelegate: AnyObject {
 
 extension QRScannerViewControllerDelegate {
     func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController) {}
-
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {}
-
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {}
 }
 

@@ -47,7 +47,7 @@ extension AlgoStatisticsDateOptionView {
         titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(theme.horizontalPadding)
-            $0.centerY.bottom.equalToSuperview()
+            $0.centerY.equalToSuperview()
         }
     }
 
@@ -69,10 +69,6 @@ extension AlgoStatisticsDateOptionView {
     func bindData(_ viewModel: AlgoStatisticsDateOptionViewModel) {
         titleLabel.text = viewModel.title
         selectedIconImageView.isHidden = !(viewModel.isSelected.falseIfNil)
-    }
-
-    func select() {
-        selectedIconImageView.isHidden = false
     }
 
     func deselect() {

@@ -28,6 +28,10 @@ final class BottomSheetTransitionController: MacaroonBottomSheet.BottomSheetTran
             completion: completion
         )
 
+        presentationConfiguration.overlayStyleSheet.handle = [
+            .image("icon-bottom-sheet-handle")
+        ]
+
         presentationConfiguration.chromeStyle = [
             .backgroundColor("bottomOverlayBackground")
         ]
