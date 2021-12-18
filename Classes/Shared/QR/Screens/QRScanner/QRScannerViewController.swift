@@ -100,9 +100,7 @@ final class QRScannerViewController: BaseViewController {
     }
 
     override func setListeners() {
-        if isShowingConnectedAppsButton {
-            overlayView.delegate = self
-        }
+        overlayView.delegate = self
     }
 }
 
