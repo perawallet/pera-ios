@@ -45,8 +45,6 @@ final class AccountSelectionView: View {
 
 extension AccountSelectionView {
     private func addTypeImageView(_ theme: AccountSelectionViewTheme) {
-        typeImageView.customizeAppearance(theme.iconImage)
-
         addSubview(typeImageView)
         typeImageView.snp.makeConstraints {
             $0.leading.equalToSuperview()

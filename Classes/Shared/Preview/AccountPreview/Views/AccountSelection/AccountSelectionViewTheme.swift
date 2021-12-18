@@ -22,8 +22,6 @@ import UIKit
 struct AccountSelectionViewTheme: StyleSheet, LayoutSheet {
     let title: TextStyle
     let secondaryTitle: TextStyle
-    let backgroundColor: Color
-    let iconImage: ImageStyle
     let checkmarkImage: ImageStyle
 
     let horizontalInset: LayoutMetric
@@ -32,28 +30,19 @@ struct AccountSelectionViewTheme: StyleSheet, LayoutSheet {
     let checkmarkImageSize: LayoutSize
     
     init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
         self.title = [
-            .isInteractable(false),
-            .text("wallet-connect-session-select-account".localized),
             .textAlignment(.left),
-            .textOverflow(FittingText()),
+            .textOverflow(SingleLineFittingText()),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.main)
         ]
         self.secondaryTitle = [
-            .isInteractable(false),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.grayLighter),
             .font(Fonts.DMSans.regular.make(13))
         ]
-        self.iconImage = [
-            .isInteractable(false),
-            .image("standard-gray")
-        ]
         self.checkmarkImage = [
-           .isInteractable(false),
            .image("icon-circle-check")
        ]
         self.verticalInset = 16
