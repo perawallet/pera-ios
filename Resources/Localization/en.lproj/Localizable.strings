@@ -783,3 +783,9 @@ on your Ledger device (%d)";
 
 "edit-note-title" = "Add Note";
 "edit-note-note-explanation" = "Enter your note";
+
+// MARK: TransactionResult
+"transaction-result-started-title" = "Order Placed";
+"transaction-result-started-subtitle" = "Your order was successfully received";
+"transaction-result-completed-title" = "Order Received";
+"transaction-result-completed-subtitle" = "Your order was successfully received";

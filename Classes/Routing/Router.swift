@@ -479,6 +479,8 @@ class Router {
             let editNoteScreen = EditNoteScreen(note: note, configuration: configuration)
             editNoteScreen.delegate = delegate
             viewController = editNoteScreen
+        case .transactionResult:
+            viewController = TransactionResultScreen(configuration: configuration)
         }
         
         return viewController as? T
