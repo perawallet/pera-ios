@@ -31,6 +31,7 @@ struct ContactContextViewTheme: StyleSheet, LayoutSheet {
     let imageSize: LayoutSize
     let buttonSize: LayoutSize
     let labelHorizontalPaddings: LayoutHorizontalPaddings
+    let addressLabelTopPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.userImage = [
@@ -58,5 +59,6 @@ struct ContactContextViewTheme: StyleSheet, LayoutSheet {
         self.verticalPadding = 12
         self.labelHorizontalPaddings = (15, 54)
         self.buttonSize = (24, 24)
+        self.addressLabelTopPadding = 7
     }
 }
