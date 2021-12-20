@@ -361,6 +361,10 @@
 "transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
 "transaction-id-open-goalseeker" = "Open in GoalSeeker";
 "transaction-detail-balance" = "Account Balance";
+"transaction-detail-add" = "Add";
+"transaction-detail-completed" = "Completed";
+"transaction-detail-pending" = "Pending";
+"transaction-detail-failed" = "Failed";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";

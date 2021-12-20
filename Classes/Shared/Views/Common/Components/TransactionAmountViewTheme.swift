@@ -13,19 +13,11 @@
 // limitations under the License.
 
 //
-//  TransactionHistoryCell.swift
+//   TransactionAmountViewTheme.swift
 
-import UIKit
+import MacaroonUIKit
 
-class TransactionHistoryCell: BaseCollectionViewCell<TransactionHistoryContextView> {
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        contextView.reset()
-        contextView.subtitleLabel.text = nil
-        contextView.subtitleLabel.isHidden = false
-        contextView.dateLabel.text = nil
-        contextView.transactionAmountView.amountLabel.text = nil
-    }
+protocol TransactionAmountViewTheme: LayoutSheet, StyleSheet {
+    var signLabel: TextStyle { get }
+    var amountLabel: TextStyle { get }
 }

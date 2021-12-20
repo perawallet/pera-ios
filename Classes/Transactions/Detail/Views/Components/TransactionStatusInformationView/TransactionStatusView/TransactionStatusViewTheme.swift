@@ -13,19 +13,23 @@
 // limitations under the License.
 
 //
-//  TransactionHistoryCell.swift
+//   TransactionStatusViewTheme.swift
 
+import MacaroonUIKit
 import UIKit
 
-class TransactionHistoryCell: BaseCollectionViewCell<TransactionHistoryContextView> {
+struct TransactionStatusViewTheme: LayoutSheet, StyleSheet {
+    let statusLabel: TextStyle
+    let corner: Corner
+    let statusLabelEdgeInsets: LayoutPaddings
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        contextView.reset()
-        contextView.subtitleLabel.text = nil
-        contextView.subtitleLabel.isHidden = false
-        contextView.dateLabel.text = nil
-        contextView.transactionAmountView.amountLabel.text = nil
+    init(_ family: LayoutFamily) {
+        self.statusLabel = [
+            .textAlignment(.center),
+            .textOverflow(SingleLineText()),
+            .font(Fonts.DMSans.medium.make(13))
+        ]
+        self.corner = Corner(radius: 14)
+        self.statusLabelEdgeInsets = (4, 12, 4, 12)
     }
 }
