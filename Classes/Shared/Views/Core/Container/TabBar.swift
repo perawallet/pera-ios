@@ -141,8 +141,6 @@ extension TabBar {
 }
 
 extension TabBar {
-    /// Disables tab bar items other than given `index`.
-    /// Default value of `index` is 2.
     func toggleTabBarItems(otherThanIndex index: Int = 2, to isEnabled: Bool) {
         guard let tabBarItemAtIndex = barButtons[safe: index] else {
             return
