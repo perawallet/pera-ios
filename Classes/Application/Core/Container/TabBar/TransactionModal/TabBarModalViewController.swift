@@ -31,7 +31,6 @@ final class TabBarModalViewController: BaseViewController {
     override func setListeners() {
         containerView.sendButton.addTarget(self, action: #selector(notifyDelegateToSend), for: .touchUpInside)
         containerView.receiveButton.addTarget(self, action: #selector(notifyDelegateToReceive), for: .touchUpInside)
-        chromeView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapChromeView)))
     }
 
     override func prepareLayout() {
@@ -84,9 +83,9 @@ extension TabBarModalViewController {
         updateContainerViewBottomConstraint(to: .zero)
     }
 
-    func dismissWithAnimation() {
+    func dismissWithAnimation(completion: @escaping () -> Void) {
         updateChromeViewVisibility(to: .zero) {
-            self.dismiss(animated: false)
+            self.dismiss(animated: false, completion: completion)
         }
         updateContainerViewBottomConstraint(to: theme.modalHeight)
     }
@@ -104,11 +103,6 @@ extension TabBarModalViewController {
             self.containerViewBottomConstraint?.update(offset: value)
             self.view.layoutIfNeeded()
         }
-    }
-
-    @objc
-    private func didTapChromeView() {
-        dismissWithAnimation()
     }
 }
 
