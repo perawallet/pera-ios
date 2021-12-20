@@ -87,7 +87,7 @@ extension EditNoteView {
             )
         view.customize(theme)
         view.snp.makeConstraints {
-            $0.greaterThanHeight(48)
+            $0.greaterThanHeight(theme.textInputMinHeight)
         }
         return view
     }

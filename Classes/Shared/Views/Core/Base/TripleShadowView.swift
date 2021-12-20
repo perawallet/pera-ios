@@ -13,14 +13,14 @@
 // limitations under the License.
 
 //
-//   TripleShadowableView.swift
+//   TripleShadowView.swift
 
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-class TripleShadowableView: View, TripleShadowDrawable {
+class TripleShadowView: View, TripleShadowDrawable {
     var thirdShadow: MacaroonUIKit.Shadow?
     var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
 

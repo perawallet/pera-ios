@@ -44,7 +44,7 @@ final class NumpadView: View {
 
     private let mode: Mode
 
-    init(mode: Mode = .default) {
+    init(mode: Mode = .passcode) {
         self.mode = mode
         super.init(frame: .zero)
         customizeButtonsForMode()
@@ -83,10 +83,10 @@ final class NumpadView: View {
 
     private func customizeButtonsForMode() {
         switch mode {
-        case .default:
-            self.leftButton = NumpadButton(numpadKey: .spacing)
         case .decimal:
             self.leftButton = NumpadButton(numpadKey: .decimalSeparator)
+        case .passcode:
+            self.leftButton = NumpadButton(numpadKey: .spacing)
         }
     }
 }
@@ -198,7 +198,7 @@ enum NumpadKey: Equatable {
 
 extension NumpadView {
     enum Mode {
-        case `default`
         case decimal
+        case passcode
     }
 }

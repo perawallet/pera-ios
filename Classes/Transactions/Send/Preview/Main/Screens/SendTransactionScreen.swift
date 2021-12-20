@@ -28,7 +28,7 @@ final class SendTransactionScreen: BaseViewController {
     private(set) lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var nextButton = Button()
-    private lazy var accountContainerView = TripleShadowableView()
+    private lazy var accountContainerView = TripleShadowView()
     private lazy var accountView = AssetPreviewView()
     private lazy var numpadView = NumpadView(mode: .decimal)
     private lazy var noteButton = Button()
@@ -293,7 +293,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
     func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey) {
         var newValue = self.amount
 
-        if newValue.fractionCount() >= draft.fractionCount && value != .delete {
+        if newValue.fractionCount >= draft.fractionCount && value != .delete {
             return
         }
 

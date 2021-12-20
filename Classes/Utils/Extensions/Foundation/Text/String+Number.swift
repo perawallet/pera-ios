@@ -32,6 +32,14 @@ extension String {
         return Decimal(string: self, locale: locale)
     }
 
+    var fractionCount: Int {
+        guard let decimalString = self.decimalStrings() else {
+            return 0
+        }
+
+        return decimalString.count - 1
+    }
+
     func decimalForSendSeparator(with fraction: Int) -> Decimal? {
         return Formatter.separatorWith(fraction: fraction).number(from: self)?.decimalValue
     }
@@ -56,13 +64,5 @@ extension String {
         }
 
         return nil
-    }
-
-    func fractionCount() -> Int {
-        guard let decimalString = self.decimalStrings() else {
-            return 0
-        }
-
-        return decimalString.count - 1
     }
 }
