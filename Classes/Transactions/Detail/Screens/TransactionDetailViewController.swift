@@ -173,7 +173,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
 
     func transactionDetailViewDidCopyTransactionID(_ transactionDetailView: TransactionDetailView) {
         UIPasteboard.general.string = transaction.id
-        displaySimpleAlertWith(title: "qr-creation-copied".localized) // <todo>: Change text
+        displaySimpleAlertWith(title: "transaction-detail-id-copied-title".localized)
     }
 }
 

@@ -365,6 +365,7 @@
 "transaction-detail-completed" = "Completed";
 "transaction-detail-pending" = "Pending";
 "transaction-detail-failed" = "Failed";
+"transaction-detail-id-copied-title" = "ID copied to clipboard";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
