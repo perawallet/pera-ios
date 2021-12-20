@@ -21,12 +21,11 @@ import UIKit
 import MacaroonUIKit
 
 final class TransactionResultScreen: BaseViewController {
-
     private lazy var theme = Theme()
     private lazy var titleLabel = UILabel()
     private lazy var subtitleLabel = UILabel()
 
-    var status: TransactionResultScreen.Status = .started
+    private var status: TransactionResultScreen.Status = .started
 
     override var shouldShowNavigationBar: Bool {
         return false
@@ -39,38 +38,48 @@ final class TransactionResultScreen: BaseViewController {
     }
 
     override func prepareLayout() {
+        super.prepareLayout()
 
-        view.addSubview(titleLabel)
-        titleLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.centerY.equalToSuperview()
-        }
-
-        view.addSubview(subtitleLabel)
-        subtitleLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalTo(titleLabel.snp.bottom).offset(12)
-        }
+        addTitleLabel()
+        addSubtitleLabel()
     }
 
     override func bindData() {
         super.bindData()
 
-        titleLabel.text = status.title()
-        subtitleLabel.text = status.subtitle()
+        titleLabel.text = status.title
+        subtitleLabel.text = status.subtitle
+    }
+}
+
+extension TransactionResultScreen {
+    private func addTitleLabel() {
+        view.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.titleLeadingInset)
+            $0.centerY.equalToSuperview()
+        }
+    }
+
+    private func addSubtitleLabel() {
+        view.addSubview(subtitleLabel)
+        subtitleLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.subtitleLeadingInset)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.subtitleTopOffset)
+        }
     }
 }
 
 extension TransactionResultScreen {
     enum Status {
         case started
-        case inProgress(progress: CGFloat)
+        case inProgress
         case completed
     }
 }
 
 extension TransactionResultScreen.Status {
-    func title() -> String {
+    var title: String {
         switch self {
         case .started, .inProgress:
             return "transaction-result-started-title".localized
@@ -79,7 +88,7 @@ extension TransactionResultScreen.Status {
         }
     }
 
-    func subtitle() -> String {
+    var subtitle: String {
         switch self {
         case .started, .inProgress:
             return "transaction-result-started-subtitle".localized

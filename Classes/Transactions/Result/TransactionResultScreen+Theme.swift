@@ -24,6 +24,9 @@ extension TransactionResultScreen {
         let backgroundColor: Color
         let titleLabel: TextStyle
         let subtitleLabel: TextStyle
+        let subtitleTopOffset: LayoutMetric
+        let titleLeadingInset: LayoutMetric
+        let subtitleLeadingInset: LayoutMetric
 
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
@@ -39,6 +42,9 @@ extension TransactionResultScreen {
                 .textAlignment(.center),
                 .textOverflow(SingleLineFittingText())
             ]
+            subtitleTopOffset = 12
+            titleLeadingInset = 24
+            subtitleLeadingInset = 24
         }
     }
 }
