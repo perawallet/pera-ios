@@ -33,17 +33,17 @@ final class SettingsViewController: BaseViewController {
     
     private lazy var theme = Theme()
     
-    private lazy var sections: [GeneralSettings.Sections] = [.account, .appPreferences, .support]
-    private lazy var settings: [[GeneralSettings.Items]] = [accountSettings, appSettings, supportSettings]
-    private lazy var accountSettings: [GeneralSettings.Items] = [.backup, .security, .notifications, .walletConnect]
-    private lazy var appSettings: [GeneralSettings.Items] = {
-        var settings: [GeneralSettings.Items] = [.rewards, .language, .currency]
+    private lazy var sections: [GeneralSettings] = [.account, .appPreferences, .support]
+    private lazy var settings: [[Settings]] = [accountSettings, appPreferenceSettings, supportSettings]
+    private lazy var accountSettings: [AccountSettings] = [.backup, .security, .notifications, .walletConnect]
+    private lazy var appPreferenceSettings: [AppPreferenceSettings] = {
+        var settings: [AppPreferenceSettings] = [.rewards, .language, .currency]
         if #available(iOS 13.0, *) {
             settings.append(.appearance)
         }
         return settings
     }()
-    private lazy var supportSettings: [GeneralSettings.Items] = [.feedback, .appReview, .termsAndServices, .privacyPolicy, .developer]
+    private lazy var supportSettings: [SupportSettings] = [.feedback, .appReview, .termsAndServices, .privacyPolicy, .developer]
     
     private lazy var settingsView = SettingsView()
         
@@ -99,42 +99,38 @@ extension SettingsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let settings = settings[safe: indexPath.section],
-           let setting = settings[safe: indexPath.item] {
-            switch setting {
-            case .rewards:
-                let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
-                return setSettingsToggleCell(from: setting, isOn: rewardDisplayPreference, in: collectionView, at: indexPath)
-            case .walletConnect:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .notifications:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .language:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .currency:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .appearance:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .feedback:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .appReview:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .termsAndServices:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .privacyPolicy:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .developer:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .backup:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-            case .security:
-                return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+        if let section = sections[safe: indexPath.section] {
+            switch section {
+            case .account:
+                if let setting = accountSettings[safe: indexPath.item] {
+                    switch setting {
+                    case .backup, .security, .notifications, .walletConnect:
+                        return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+                    }
+                }
+            case .appPreferences:
+                if let setting = appPreferenceSettings[safe: indexPath.item] {
+                    switch setting {
+                    case .rewards:
+                        let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
+                        return setSettingsToggleCell(from: setting, isOn: rewardDisplayPreference, in: collectionView, at: indexPath)
+                    case .language, .currency, .appearance:
+                        return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+                    }
+                }
+            case .support:
+                if let setting = supportSettings[safe: indexPath.item] {
+                    switch setting {
+                    case .feedback, .appReview, .termsAndServices, .privacyPolicy, .developer:
+                        return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
+                    }
+                }
             }
         }
         
         fatalError("Index path is out of bounds")
     }
-    
+
     private func setSettingsDetailCell(
         from setting: Settings,
         in collectionView: UICollectionView,
@@ -225,54 +221,69 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
-        if section == settings.count - 1 {
+        if section == sections.count - 1 {
             return CGSize(width: UIScreen.main.bounds.width, height: theme.footerHeight)
         }
         return .zero
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let settings = settings[safe: indexPath.section],
-            let setting = settings[safe: indexPath.item] {
-        
-            switch setting {
-            case .feedback:
-                if let url = AlgorandWeb.support.link {
-                    open(url)
+        if let section = sections[safe: indexPath.section] {
+            switch section {
+            case .account:
+                if let setting = accountSettings[safe: indexPath.item] {
+                    switch setting {
+                    case .notifications:
+                        open(.notificationFilter(flow: .settings), by: .push)
+                    case .walletConnect:
+                        open(.walletConnectSessions, by: .push)
+                    default:
+                        break
+                    }
                 }
-            case .walletConnect:
-                open(.walletConnectSessions, by: .push)
-            case .notifications:
-                open(.notificationFilter(flow: .settings), by: .push)
-            case .appReview:
-                AlgorandAppStoreReviewer().requestManualReview(forAppWith: Environment.current.appID)
-            case .language:
-                displayProceedAlertWith(
-                    title: "settings-language-change-title".localized,
-                    message: "settings-language-change-detail".localized
-                ) { _ in
-                    UIApplication.shared.openAppSettings()
+            case .appPreferences:
+                if let setting = appPreferenceSettings[safe: indexPath.item] {
+                    switch setting {
+                    case .language:
+                        displayProceedAlertWith(
+                            title: "settings-language-change-title".localized,
+                            message: "settings-language-change-detail".localized
+                        ) { _ in
+                            UIApplication.shared.openAppSettings()
+                        }
+                    case .currency:
+                        open(.currencySelection, by: .push)
+                    case .appearance:
+                        open(.appearanceSelection, by: .push)
+                    default:
+                        break
+                    }
                 }
-            case .currency:
-                open(.currencySelection, by: .push)
-            case .appearance:
-                open(.appearanceSelection, by: .push)
-            case .termsAndServices:
-                guard let url = AlgorandWeb.termsAndServices.link else {
-                    return
+            case .support:
+                if let setting = supportSettings[safe: indexPath.item] {
+                    switch setting {
+                    case .feedback:
+                        if let url = AlgorandWeb.support.link {
+                            open(url)
+                        }
+                    case .appReview:
+                        AlgorandAppStoreReviewer().requestManualReview(forAppWith: Environment.current.appID)
+                    case .termsAndServices:
+                        guard let url = AlgorandWeb.termsAndServices.link else {
+                            return
+                        }
+                        
+                        open(url)
+                    case .privacyPolicy:
+                        guard let url = AlgorandWeb.privacyPolicy.link else {
+                            return
+                        }
+                        
+                        open(url)
+                    case .developer:
+                        open(.developerSettings, by: .push)
+                    }
                 }
-                
-                open(url)
-            case .privacyPolicy:
-                guard let url = AlgorandWeb.privacyPolicy.link else {
-                    return
-                }
-                
-                open(url)
-            case .developer:
-                open(.developerSettings, by: .push)
-            default:
-                break
             }
         }
     }
@@ -287,16 +298,18 @@ extension SettingsViewController: SettingsFooterSupplementaryViewDelegate {
 extension SettingsViewController: SettingsToggleCellDelegate {
     func settingsToggleCell(_ settingsToggleCell: SettingsToggleCell, didChangeValue value: Bool) {
         guard let indexPath = settingsView.collectionView.indexPath(for: settingsToggleCell),
-            let settings = settings[safe: indexPath.section],
-            let setting = settings[safe: indexPath.item] else {
+            let section = sections[safe: indexPath.section] else {
             return
         }
         
-        switch setting {
-        case .rewards:
-            session?.rewardDisplayPreference = value ? .allowed : .disabled
-        default:
-            return
+        if section == .appPreferences,
+           let setting = appPreferenceSettings[safe: indexPath.item] {
+            switch setting {
+            case .rewards:
+                session?.rewardDisplayPreference = value ? .allowed : .disabled
+            default:
+                return
+            }
         }
     }
     

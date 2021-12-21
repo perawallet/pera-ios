@@ -21,11 +21,11 @@ import Foundation
 final class SettingsHeaderViewModel {
     private(set) var title: String?
     
-    init(name: GeneralSettings.Sections) {
+    init(name: GeneralSettings) {
         setTitle(name)
     }
     
-    private func setTitle(_ name: GeneralSettings.Sections) {
+    private func setTitle(_ name: GeneralSettings) {
         switch name {
         case .account:
             self.title = "settings-sections-account".localized
