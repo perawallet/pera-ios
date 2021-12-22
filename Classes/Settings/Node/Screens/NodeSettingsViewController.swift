@@ -69,11 +69,7 @@ extension NodeSettingsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SingleSelectionCell.reusableIdentifier,
-            for: indexPath) as? SingleSelectionCell else {
-                fatalError("Index path is out of bounds")
-        }
+        let cell = collectionView.dequeue(SingleSelectionCell.self, at: indexPath)
         
         if let algorandNode = nodes[safe: indexPath.item] {
             let isActiveNetwork = algorandNode.network == lastActiveNetwork

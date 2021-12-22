@@ -66,12 +66,7 @@ extension DeveloperSettingsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
-            for: indexPath
-        ) as? SettingsDetailCell else {
-            fatalError("Index path is out of bounds")
-        }
+        let cell = collectionView.dequeue(SettingsDetailCell.self, at: indexPath)
         
         if let setting = settings[safe: indexPath.item] {
             cell.bindData(SettingsDetailViewModel(setting: setting))
