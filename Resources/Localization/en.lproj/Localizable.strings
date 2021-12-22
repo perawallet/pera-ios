@@ -780,5 +780,8 @@ on your Ledger device (%d)";
 "account-options-add-account-title" = "Add Account";
 "account-options-arrange-list-title" = "Arrange List";
 
+"account-detail-portfolio-title" = "Account Value";
+"account-detail-assets-search" = "Search my assets";
+
 "nft-list-empty-title" = "NFTs Coming Soon";
 "nft-list-empty-detail" ="Discover, Collect extraordinary NFTs on the Algorand World's";
