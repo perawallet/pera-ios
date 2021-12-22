@@ -98,7 +98,7 @@ extension ListStateView: ViewModelBindable {
         detailLabel.editText = viewModel?.detail
         actionButton.setEditTitle(viewModel?.actionTitle, for: .normal)
 
-        if viewModel?.actionTitle.isNilOrEmpty {
+        if viewModel?.actionTitle == nil {
             actionButton.isHidden = true
         }
     }
