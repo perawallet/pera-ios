@@ -1338,6 +1338,9 @@
 		2B6687122248DC7D009F21E7 /* BarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6687112248DC7D009F21E7 /* BarButton.swift */; };
 		2B6687152248DF83009F21E7 /* LocalAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6687142248DF83009F21E7 /* LocalAuthenticator.swift */; };
 		2B66871A22491A5E009F21E7 /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B66871922491A5E009F21E7 /* QRScannerViewController.swift */; };
+		2B67554E27720D570090E170 /* SettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B67554D27720D570090E170 /* SettingsDataSource.swift */; };
+		2B67554F27720D570090E170 /* SettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B67554D27720D570090E170 /* SettingsDataSource.swift */; };
+		2B67555027720D570090E170 /* SettingsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B67554D27720D570090E170 /* SettingsDataSource.swift */; };
 		2B6811DF25345B5700D4437F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B6811E325345B5700D4437F /* InfoPlist.strings */; };
 		2B6811E025345B5700D4437F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B6811E325345B5700D4437F /* InfoPlist.strings */; };
 		2B6811E125345B5700D4437F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2B6811E325345B5700D4437F /* InfoPlist.strings */; };
@@ -3578,6 +3581,7 @@
 		2B6687112248DC7D009F21E7 /* BarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarButton.swift; sourceTree = "<group>"; };
 		2B6687142248DF83009F21E7 /* LocalAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticator.swift; sourceTree = "<group>"; };
 		2B66871922491A5E009F21E7 /* QRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
+		2B67554D27720D570090E170 /* SettingsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataSource.swift; sourceTree = "<group>"; };
 		2B681159252F59A000D4437F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		2B68115D252F59B600D4437F /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		2B68115E252F59BE00D4437F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -5963,6 +5967,14 @@
 			path = QR;
 			sourceTree = "<group>";
 		};
+		2B67554C27720CEB0090E170 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2B67554D27720D570090E170 /* SettingsDataSource.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		2B6811ED2534613A00D4437F /* Locale */ = {
 			isa = PBXGroup;
 			children = (
@@ -8174,6 +8186,7 @@
 		2BA7138B2748691B00B8A907 /* List */ = {
 			isa = PBXGroup;
 			children = (
+				2B67554C27720CEB0090E170 /* Data */,
 				2BA7138C2748691F00B8A907 /* Screens */,
 				2BA7139427486A1400B8A907 /* ViewModels */,
 				2BA7138D2748693200B8A907 /* Views */,
@@ -11741,6 +11754,7 @@
 				046767952756A6E000C88F21 /* CurrencySelectionViewController.swift in Sources */,
 				D411B36B26E9FD7A004FF980 /* OptionsContextViewTheme.swift in Sources */,
 				D411B37626EA1043004FF980 /* AccountPreviewView.swift in Sources */,
+				2B67555027720D570090E170 /* SettingsDataSource.swift in Sources */,
 				2B7E3045267A524D00E89EE3 /* WCTransactionDappMessageView.swift in Sources */,
 				2BA172F32649F66A00A613C4 /* UIPanGestureRecognizer+Additions.swift in Sources */,
 				17BD4DFE2292F1260003E49A /* OptionsViewModel.swift in Sources */,
@@ -13531,6 +13545,7 @@
 				D4DF3F7026F2214D006625E6 /* LedgerAccountSelectionViewTheme.swift in Sources */,
 				2B5BE0712519356000324BEE /* AccountTypeViewModel.swift in Sources */,
 				2B0F62F924EC129D00DA22A6 /* NodeSettingsView.swift in Sources */,
+				2B67554F27720D570090E170 /* SettingsDataSource.swift in Sources */,
 				2B288AC3268E374700BC6FB6 /* WCURLMeta.swift in Sources */,
 				2B0F62FA24EC129D00DA22A6 /* NodeTestDraft.swift in Sources */,
 				2BA4B3FA267819B20041586B /* WCSessionItemCell.swift in Sources */,
@@ -13710,6 +13725,7 @@
 				2B4BD9FD238AD7F400491149 /* ALGAPI+Assets.swift in Sources */,
 				2B8954B62243FBD600D6D068 /* NotificationCenter+Additions.swift in Sources */,
 				2B3E227A26C0838F00ED0AAF /* WCAppCallTransactionItemCell.swift in Sources */,
+				2B67554E27720D570090E170 /* SettingsDataSource.swift in Sources */,
 				2BCBBAF824AA31D3002CD56F /* TransactionHistoryHeaderViewModel.swift in Sources */,
 				2BA172F92649F6A300A613C4 /* ChartCircleMarker.swift in Sources */,
 				2B344B1B268A223000DA7B25 /* WCTransaction.swift in Sources */,

@@ -15,20 +15,19 @@
 //
 //   SettingsViewController+Theme.swift
 
-
-import Foundation
 import MacaroonUIKit
+import UIKit
 
 extension SettingsViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let cellHeight: LayoutMetric
-        let footerHeight: LayoutMetric
-        let headerHeight: LayoutMetric
+        let cellSize: LayoutSize
+        let footerSize: LayoutSize
+        let headerSize: LayoutSize
         
         init(_ family: LayoutFamily) {
-            self.cellHeight = 64.0
-            self.footerHeight = 144.0
-            self.headerHeight = 28.0
+            self.cellSize = (UIScreen.main.bounds.width, 64.0)
+            self.footerSize = (UIScreen.main.bounds.width, 144.0)
+            self.headerSize = (UIScreen.main.bounds.width, 28.0)
         }
     }
 }

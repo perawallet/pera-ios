@@ -32,28 +32,18 @@ final class SettingsViewController: BaseViewController {
     }()
     
     private lazy var theme = Theme()
-    
-    private lazy var sections: [GeneralSettings] = [.account, .appPreferences, .support]
-    private lazy var settings: [[Settings]] = [accountSettings, appPreferenceSettings, supportSettings]
-    private lazy var accountSettings: [AccountSettings] = [.backup, .security, .notifications, .walletConnect]
-    private lazy var appPreferenceSettings: [AppPreferenceSettings] = {
-        var settings: [AppPreferenceSettings] = [.rewards, .language, .currency]
-        if #available(iOS 13.0, *) {
-            settings.append(.appearance)
-        }
-        return settings
-    }()
-    private lazy var supportSettings: [SupportSettings] = [.feedback, .appReview, .termsAndServices, .privacyPolicy, .developer]
-    
     private lazy var settingsView = SettingsView()
+    
+    private lazy var dataSource = SettingsDataSource(session: session)
         
     override func customizeTabBarAppearence() {
         isTabBarHidden = false
     }
     
     override func linkInteractors() {
+        dataSource.delegate = self
         settingsView.collectionView.delegate = self
-        settingsView.collectionView.dataSource = self
+        settingsView.collectionView.dataSource = dataSource
     }
     
     override func setListeners() {
@@ -66,7 +56,7 @@ final class SettingsViewController: BaseViewController {
     }
     
     override func prepareLayout() {
-        setupSettingsViewLayout()
+        addSettingsView()
     }
 }
 
@@ -78,7 +68,7 @@ extension SettingsViewController {
 }
 
 extension SettingsViewController {
-    private func setupSettingsViewLayout() {
+    private func addSettingsView() {
         view.addSubview(settingsView)
         
         settingsView.snp.makeConstraints {
@@ -89,123 +79,13 @@ extension SettingsViewController {
     }
 }
 
-extension SettingsViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return sections.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return settings[section].count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let section = sections[safe: indexPath.section] {
-            switch section {
-            case .account:
-                if let setting = accountSettings[safe: indexPath.item] {
-                    switch setting {
-                    case .backup, .security, .notifications, .walletConnect:
-                        return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-                    }
-                }
-            case .appPreferences:
-                if let setting = appPreferenceSettings[safe: indexPath.item] {
-                    switch setting {
-                    case .rewards:
-                        let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
-                        return setSettingsToggleCell(from: setting, isOn: rewardDisplayPreference, in: collectionView, at: indexPath)
-                    case .language, .currency, .appearance:
-                        return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-                    }
-                }
-            case .support:
-                if let setting = supportSettings[safe: indexPath.item] {
-                    switch setting {
-                    case .feedback, .appReview, .termsAndServices, .privacyPolicy, .developer:
-                        return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-                    }
-                }
-            }
-        }
-        
-        fatalError("Index path is out of bounds")
-    }
-
-    private func setSettingsDetailCell(
-        from setting: Settings,
-        in collectionView: UICollectionView,
-        at indexPath: IndexPath
-    ) -> SettingsDetailCell {
-        if let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
-            for: indexPath
-        ) as? SettingsDetailCell {
-            cell.bindData(SettingsDetailViewModel(setting: setting))
-            return cell
-        }
-        
-        fatalError("Index path is out of bounds")
-    }
-    
-    private func setSettingsToggleCell(
-        from setting: Settings,
-        isOn: Bool,
-        in collectionView: UICollectionView,
-        at indexPath: IndexPath
-    ) -> SettingsToggleCell {
-        if let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-            for: indexPath
-        ) as? SettingsToggleCell {
-            cell.delegate = self
-            cell.bindData(SettingsToggleViewModel(setting: setting, isOn: isOn))
-            return cell
-        }
-        
-        fatalError("Index path is out of bounds")
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        viewForSupplementaryElementOfKind kind: String,
-        at indexPath: IndexPath
-    ) -> UICollectionReusableView {
-        switch kind {
-        case UICollectionView.elementKindSectionFooter:
-            guard let footerView = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: SettingsFooterSupplementaryView.reusableIdentifier,
-                for: indexPath
-            ) as? SettingsFooterSupplementaryView else {
-                fatalError("Unexpected element kind")
-            }
-            
-            footerView.delegate = self
-            return footerView
-        case UICollectionView.elementKindSectionHeader:
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: SettingsHeaderSuplementaryView.reusableIdentifier,
-                for: indexPath
-            ) as? SettingsHeaderSuplementaryView else {
-                fatalError("Unexpected element kind")
-            }
-            
-            headerView.bindData(SettingsHeaderViewModel(name: sections[indexPath.section]))
-            return headerView
-        default:
-            fatalError("Unexpected element kind")
-        }
-    }
-}
-
 extension SettingsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: theme.cellHeight)
+        return CGSize(theme.cellSize)
     }
     
     func collectionView(
@@ -213,7 +93,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: theme.headerHeight)
+        return CGSize(theme.headerSize)
     }
     
     func collectionView(
@@ -221,89 +101,101 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
-        if section == sections.count - 1 {
-            return CGSize(width: UIScreen.main.bounds.width, height: theme.footerHeight)
+        if section == dataSource.sections.count - 1 {
+            return CGSize(theme.footerSize)
         }
         return .zero
     }
-    
+}
+
+extension SettingsViewController {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let section = sections[safe: indexPath.section] {
+        if let section = dataSource.sections[safe: indexPath.section] {
             switch section {
             case .account:
-                if let setting = accountSettings[safe: indexPath.item] {
-                    switch setting {
-                    case .notifications:
-                        open(.notificationFilter(flow: .settings), by: .push)
-                    case .walletConnect:
-                        open(.walletConnectSessions, by: .push)
-                    default:
-                        break
-                    }
+                if let setting = dataSource.accountSettings[safe: indexPath.item] {
+                    didSelectItemFromAccountSettings(setting)
                 }
             case .appPreferences:
-                if let setting = appPreferenceSettings[safe: indexPath.item] {
-                    switch setting {
-                    case .language:
-                        displayProceedAlertWith(
-                            title: "settings-language-change-title".localized,
-                            message: "settings-language-change-detail".localized
-                        ) { _ in
-                            UIApplication.shared.openAppSettings()
-                        }
-                    case .currency:
-                        open(.currencySelection, by: .push)
-                    case .appearance:
-                        open(.appearanceSelection, by: .push)
-                    default:
-                        break
-                    }
+                if let setting = dataSource.appPreferenceSettings[safe: indexPath.item] {
+                    didSelectItemFromAppPreferenceSettings(setting)
                 }
             case .support:
-                if let setting = supportSettings[safe: indexPath.item] {
-                    switch setting {
-                    case .feedback:
-                        if let url = AlgorandWeb.support.link {
-                            open(url)
-                        }
-                    case .appReview:
-                        AlgorandAppStoreReviewer().requestManualReview(forAppWith: Environment.current.appID)
-                    case .termsAndServices:
-                        guard let url = AlgorandWeb.termsAndServices.link else {
-                            return
-                        }
-                        
-                        open(url)
-                    case .privacyPolicy:
-                        guard let url = AlgorandWeb.privacyPolicy.link else {
-                            return
-                        }
-                        
-                        open(url)
-                    case .developer:
-                        open(.developerSettings, by: .push)
-                    }
+                if let setting = dataSource.supportSettings[safe: indexPath.item] {
+                    didSelectItemFromSupportSettings(setting)
                 }
             }
         }
     }
-}
-
-extension SettingsViewController: SettingsFooterSupplementaryViewDelegate {
-    func settingsFooterSupplementaryViewDidTapLogoutButton(_ settingsFooterSupplementaryView: SettingsFooterSupplementaryView) {
-        presentLogoutAlert()
+    
+    func didSelectItemFromAccountSettings(_ setting: AccountSettings) {
+        switch setting {
+        case .notifications:
+            open(.notificationFilter(flow: .settings), by: .push)
+        case .walletConnect:
+            open(.walletConnectSessions, by: .push)
+        default:
+            break
+        }
+    }
+    
+    func didSelectItemFromAppPreferenceSettings(_ setting: AppPreferenceSettings) {
+        switch setting {
+        case .language:
+            displayProceedAlertWith(
+                title: "settings-language-change-title".localized,
+                message: "settings-language-change-detail".localized
+            ) { _ in
+                UIApplication.shared.openAppSettings()
+            }
+        case .currency:
+            open(.currencySelection, by: .push)
+        case .appearance:
+            open(.appearanceSelection, by: .push)
+        default:
+            break
+        }
+    }
+    
+    func didSelectItemFromSupportSettings(_ setting: SupportSettings) {
+        switch setting {
+        case .feedback:
+            if let url = AlgorandWeb.support.link {
+                open(url)
+            }
+        case .appReview:
+            AlgorandAppStoreReviewer().requestManualReview(forAppWith: Environment.current.appID)
+        case .termsAndServices:
+            guard let url = AlgorandWeb.termsAndServices.link else {
+                return
+            }
+            
+            open(url)
+        case .privacyPolicy:
+            guard let url = AlgorandWeb.privacyPolicy.link else {
+                return
+            }
+            
+            open(url)
+        case .developer:
+            open(.developerSettings, by: .push)
+        }
     }
 }
 
-extension SettingsViewController: SettingsToggleCellDelegate {
-    func settingsToggleCell(_ settingsToggleCell: SettingsToggleCell, didChangeValue value: Bool) {
+extension SettingsViewController: SettingsDataSourceDelegate {
+    func settingsDataSource(
+        _ settingsDataSource: SettingsDataSource,
+        _ settingsToggleCell: SettingsToggleCell,
+        didchangeValue value: Bool
+    ) {
         guard let indexPath = settingsView.collectionView.indexPath(for: settingsToggleCell),
-            let section = sections[safe: indexPath.section] else {
+              let section = dataSource.sections[safe: indexPath.section] else {
             return
         }
         
         if section == .appPreferences,
-           let setting = appPreferenceSettings[safe: indexPath.item] {
+           let setting = dataSource.appPreferenceSettings[safe: indexPath.item] {
             switch setting {
             case .rewards:
                 session?.rewardDisplayPreference = value ? .allowed : .disabled
@@ -311,6 +203,13 @@ extension SettingsViewController: SettingsToggleCellDelegate {
                 return
             }
         }
+    }
+    
+    func settingsDataSourceDidTapLogout(
+        _ settingsDataSource: SettingsDataSource,
+        _ settingsFooterSupplementaryView: SettingsFooterSupplementaryView
+    ) {
+        presentLogoutAlert()
     }
     
     private func presentLogoutAlert() {
