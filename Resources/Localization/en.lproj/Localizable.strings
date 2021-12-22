@@ -283,6 +283,8 @@
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
 "accounts-title-assets" = "Assets";
+"accounts-title-nfts" = "NFTs";
+"accounts-title-history" = "History";
 "contacts-title-assets" = "Assets";
 "title-select-asset" = "Select Asset";
 "contact-search-empty-title" = "No contact found";
@@ -777,3 +779,6 @@ on your Ledger device (%d)";
 
 "account-options-add-account-title" = "Add Account";
 "account-options-arrange-list-title" = "Arrange List";
+
+"nft-list-empty-title" = "NFTs Coming Soon";
+"nft-list-empty-detail" ="Discover, Collect extraordinary NFTs on the Algorand World's";

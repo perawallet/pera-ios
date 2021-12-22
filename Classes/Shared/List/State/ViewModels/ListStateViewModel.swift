@@ -15,6 +15,7 @@
 //
 //   ListStateViewModel.swift
 
+import UIKit
 import MacaroonUIKit
 
 final class ListStateViewModel: ViewModel {
@@ -23,28 +24,43 @@ final class ListStateViewModel: ViewModel {
     private(set) var detail: EditText?
     private(set) var actionTitle: EditText?
 
-    init() {
-        bindIcon()
-        bindTitle()
-        bindDetail()
-        bindActionTitle()
+    init(_ model: ListStateDraft) {
+        bindIcon(model)
+        bindTitle(model)
+        bindDetail(model)
+        bindActionTitle(model)
     }
 }
 
 extension ListStateViewModel {
-    private func bindIcon() {
-
+    private func bindIcon(
+        _ model: ListStateDraft
+    ) {
+        icon = model.icon
     }
 
-    private func bindTitle() {
-
+    private func bindTitle(
+        _ model: ListStateDraft
+    ) {
+        title = .string(model.title)
     }
 
-    private func bindDetail() {
-
+    private func bindDetail(
+        _ model: ListStateDraft
+    ) {
+        detail = .string(model.detail)
     }
 
-    private func bindActionTitle() {
-
+    private func bindActionTitle(
+        _ model: ListStateDraft
+    ) {
+        actionTitle = .string(model.actionTitle)
     }
+}
+
+struct ListStateDraft {
+    let icon: UIImage?
+    let title: String
+    let detail: String
+    let actionTitle: String?
 }
