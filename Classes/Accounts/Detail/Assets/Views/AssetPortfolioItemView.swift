@@ -42,14 +42,13 @@ extension AssetPortfolioItemView {
 }
 
 extension AssetPortfolioItemView {
-    func bind(_ viewModel: PortfolioValueViewModel?) {
-        portfolioView.bind(viewModel)
+    func bindData(_ viewModel: PortfolioValueViewModel?) {
+        portfolioView.bindData(viewModel)
     }
 }
 
 final class AssetPortfolioItemCell: BaseCollectionViewCell<AssetPortfolioItemView> {
-
-    func bind(_ viewModel: PortfolioValueViewModel?) {
-        contextView.bind(viewModel)
+    func bindData(_ viewModel: PortfolioValueViewModel?) {
+        contextView.bindData(viewModel)
     }
 }

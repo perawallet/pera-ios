@@ -68,7 +68,7 @@ extension PortfolioValueView {
 }
 
 extension PortfolioValueView: ViewModelBindable {
-    func bind(_ viewModel: PortfolioValueViewModel?) {
+    func bindData(_ viewModel: PortfolioValueViewModel?) {
         titleButton.editTitle = viewModel?.title
         titleButton.mc_setImage(viewModel?.icon, for: .normal)
         portfolioValueLabel.editText = viewModel?.value
