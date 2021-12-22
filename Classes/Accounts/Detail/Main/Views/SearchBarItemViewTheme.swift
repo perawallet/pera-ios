@@ -13,32 +13,26 @@
 // limitations under the License.
 
 //
-//   SingleLineTitleActionViewModel.swift
+//   SearchBarItemViewTheme.swift
 
+import Foundation
 import MacaroonUIKit
+import UIKit
 
-final class SingleLineTitleActionViewModel: ViewModel {
-    private(set) var title: EditText?
-    private(set) var actionImage: Image?
+struct SearchBarItemViewTheme: StyleSheet, LayoutSheet {
+    let searchInput: SearchInputViewTheme
 
-    init(
-        item: SingleLineIconTitleItem
-    ) {
-        bindIcon(item)
-        bindTitle(item)
-    }
-}
+    let horizontalInset: LayoutMetric
+    let verticalInset: LayoutMetric
 
-extension SingleLineTitleActionViewModel {
-    private func bindTitle(
-        _ item: SingleLineIconTitleItem
-    ) {
-        title = item.title
+    init(placeholder: String, family: LayoutFamily) {
+        self.searchInput = SearchInputViewTheme(placeholder: placeholder, family: family)
+
+        self.horizontalInset = 24
+        self.verticalInset = 16
     }
 
-    private func bindIcon(
-        _ item: SingleLineIconTitleItem
-    ) {
-        actionImage = item.icon
+    init(_ family: LayoutFamily) {
+        self.init(placeholder: .empty, family: family)
     }
 }

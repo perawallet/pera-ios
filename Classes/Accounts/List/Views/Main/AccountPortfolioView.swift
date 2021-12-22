@@ -19,20 +19,30 @@ import MacaroonUIKit
 import UIKit
 
 final class AccountPortfolioView: View {
-    private lazy var titleLabel = Button()
-    private lazy var portfolioValueLabel = UILabel()
+    lazy var handlers = Handlers()
+
+    private lazy var portfolioValueView = PortfolioValueView()
     private lazy var algoHoldingsTitleLabel = UILabel()
     private lazy var algoHoldingsValueButton = Button()
     private lazy var assetHoldingsTitleLabel = UILabel()
     private lazy var assetHoldingsValueLabel = UILabel()
 
     func customize(_ theme: AccountPortfolioViewTheme) {
-        addTitleLabel(theme)
-        addPortfolioValueLabel(theme)
+        addPortfolioValueView(theme)
         addAssetHoldingsTitleLabel(theme)
         addAssetHoldingsValueLabel(theme)
         addAlgoHoldingsTitleLabel(theme)
         addAlgoHoldingsValueButton(theme)
+    }
+
+    func setListeners() {
+        portfolioValueView.handlers.didTapTitle = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.handlers.didTapPortfolioTitle?()
+        }
     }
 
     func customizeAppearance(_ styleSheet: StyleSheet) { }
@@ -40,22 +50,10 @@ final class AccountPortfolioView: View {
 }
 
 extension AccountPortfolioView {
-    private func addTitleLabel(_ theme: AccountPortfolioViewTheme) {
-        titleLabel.customizeAppearance(theme.title)
-
-        addSubview(titleLabel)
-        titleLabel.snp.makeConstraints {
+    private func addPortfolioValueView(_ theme: AccountPortfolioViewTheme) {
+        addSubview(portfolioValueView)
+        portfolioValueView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.titleTopPadding)
-            $0.leading.equalToSuperview().inset(theme.horizontalInset)
-        }
-    }
-
-    private func addPortfolioValueLabel(_ theme: AccountPortfolioViewTheme) {
-        portfolioValueLabel.customizeAppearance(theme.portfolioValue)
-
-        addSubview(portfolioValueLabel)
-        portfolioValueLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.portfolioTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
@@ -65,7 +63,7 @@ extension AccountPortfolioView {
 
         addSubview(assetHoldingsTitleLabel)
         assetHoldingsTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(portfolioValueLabel.snp.bottom).offset(theme.holdingsTopPadding)
+            $0.top.equalTo(portfolioValueView.snp.bottom).offset(theme.holdingsTopPadding)
             $0.trailing.equalToSuperview().inset(theme.valueTrailingInset)
         }
     }
@@ -86,7 +84,7 @@ extension AccountPortfolioView {
 
         addSubview(algoHoldingsTitleLabel)
         algoHoldingsTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(portfolioValueLabel.snp.bottom).offset(theme.holdingsTopPadding)
+            $0.top.equalTo(portfolioValueView.snp.bottom).offset(theme.holdingsTopPadding)
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
         }
     }
@@ -106,6 +104,12 @@ extension AccountPortfolioView {
 extension AccountPortfolioView: ViewModelBindable {
     func bindData(_ viewModel: AccountPortfolioViewModel?) {
 
+    }
+}
+
+extension AccountPortfolioView {
+    struct Handlers {
+        var didTapPortfolioTitle: EmptyHandler?
     }
 }
 

@@ -20,8 +20,6 @@ import MacaroonUIKit
 import UIKit
 
 struct AccountPortfolioViewTheme: StyleSheet, LayoutSheet {
-    let title: ButtonStyle
-    let portfolioValue: TextStyle
     let algoHoldingsTitle: TextStyle
     let algoHoldingsValue: ButtonStyle
     let assetHoldingsTitle: TextStyle
@@ -35,19 +33,6 @@ struct AccountPortfolioViewTheme: StyleSheet, LayoutSheet {
     let valueTrailingInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.title = [
-            .font(Fonts.DMSans.regular.make(15)),
-            .icon([.normal("icon-info-20")]),
-            .title("portfolio-title".localized),
-            .titleColor([.normal(AppColors.Components.Text.gray.uiColor)]),
-            .tintColor(AppColors.Components.Text.gray.uiColor),
-        ]
-        self.portfolioValue = [
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.left),
-            .font(Fonts.DMSans.regular.make(36)),
-            .textColor(AppColors.Components.Text.main.uiColor)
-        ]
         self.algoHoldingsTitle = [
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),

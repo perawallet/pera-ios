@@ -13,32 +13,18 @@
 // limitations under the License.
 
 //
-//   SingleLineTitleActionViewModel.swift
+//   AssetPortfolioItemViewTheme.swift
 
+import Foundation
 import MacaroonUIKit
+import UIKit
 
-final class SingleLineTitleActionViewModel: ViewModel {
-    private(set) var title: EditText?
-    private(set) var actionImage: Image?
+struct AssetPortfolioItemViewTheme: StyleSheet, LayoutSheet {
+    let verticalInset: LayoutMetric
+    let horizontalInset: LayoutMetric
 
-    init(
-        item: SingleLineIconTitleItem
-    ) {
-        bindIcon(item)
-        bindTitle(item)
-    }
-}
-
-extension SingleLineTitleActionViewModel {
-    private func bindTitle(
-        _ item: SingleLineIconTitleItem
-    ) {
-        title = item.title
-    }
-
-    private func bindIcon(
-        _ item: SingleLineIconTitleItem
-    ) {
-        actionImage = item.icon
+    init(_ family: LayoutFamily) {
+        self.verticalInset = 60
+        self.horizontalInset = 24
     }
 }
