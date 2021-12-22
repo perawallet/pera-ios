@@ -30,7 +30,7 @@ final class WCConnectionApprovalViewController: BaseViewController {
         return (session?.accounts.count).unwrap(or: 0) > 1
     }
 
-    private lazy var connectionApprovalView = WCConnectionApprovalView(hasMultipleAccounts)
+    private lazy var connectionApprovalView = WCConnectionApprovalView(hasMultipleAccounts: hasMultipleAccounts)
 
     private let walletConnectSession: WalletConnectSession
     private let walletConnectSessionConnectionCompletionHandler: WalletConnectSessionConnectionCompletionHandler

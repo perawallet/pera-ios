@@ -35,6 +35,6 @@ final class AccountCheckmarkSelectionViewCell: BaseCollectionViewCell<AccountSel
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        contextView.uncheck()
+        contextView.unselect()
     }
 }

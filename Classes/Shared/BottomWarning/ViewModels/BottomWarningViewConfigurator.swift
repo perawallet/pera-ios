@@ -23,6 +23,6 @@ struct BottomWarningViewConfigurator {
     private(set) var description: String
     private(set) var primaryActionButtonTitle: String?
     private(set) var secondaryActionButtonTitle: String
-    private(set) var secondaryAction: (() -> Void)?
     private(set) var primaryAction: (() -> Void)?
+    private(set) var secondaryAction: (() -> Void)?
 }

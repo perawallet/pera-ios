@@ -35,7 +35,7 @@ final class WCConnectionApprovalView: View {
 
     private let hasMultipleAccounts: Bool
 
-    init(_ hasMultipleAccounts: Bool) {
+    init(hasMultipleAccounts: Bool) {
         self.hasMultipleAccounts = hasMultipleAccounts
         super.init(frame: .zero)
 

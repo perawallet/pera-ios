@@ -110,7 +110,7 @@ extension AccountSelectionView: ViewModelBindable {
         }
     }
 
-    func uncheck() {
+    func unselect() {
         checkmarkImageView.isHidden = true
     }
 }
