@@ -136,13 +136,13 @@ extension SettingsDataSource: UICollectionViewDataSource {
         case UICollectionView.elementKindSectionHeader:
             guard let headerView = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
-                withReuseIdentifier: SettingsHeaderSuplementaryView.reusableIdentifier,
+                withReuseIdentifier: SingleTitleHeaderSuplementaryView.reusableIdentifier,
                 for: indexPath
-            ) as? SettingsHeaderSuplementaryView else {
+            ) as? SingleTitleHeaderSuplementaryView else {
                 fatalError("Unexpected element kind")
             }
             
-            headerView.bindData(SettingsHeaderViewModel(name: sections[indexPath.section]))
+            headerView.bindData(SingleTitleHeaderViewModel(name: sections[indexPath.section]))
             return headerView
         default:
             fatalError("Unexpected element kind")

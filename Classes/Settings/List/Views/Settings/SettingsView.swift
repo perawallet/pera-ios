@@ -45,9 +45,9 @@ final class SettingsView: View {
             withReuseIdentifier: SettingsFooterSupplementaryView.reusableIdentifier
         )
         collectionView.register(
-            SettingsHeaderSuplementaryView.self,
+            SingleTitleHeaderSuplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: SettingsHeaderSuplementaryView.reusableIdentifier
+            withReuseIdentifier: SingleTitleHeaderSuplementaryView.reusableIdentifier
         )
         return collectionView
     }()

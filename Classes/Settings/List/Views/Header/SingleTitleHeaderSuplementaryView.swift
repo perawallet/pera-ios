@@ -13,26 +13,13 @@
 // limitations under the License.
 
 //
-//   SettingsHeaderViewModel.swift
+//   SettingsHeaderSuplementaryView.swift
 
 
 import Foundation
 
-final class SettingsHeaderViewModel {
-    private(set) var title: String?
-    
-    init(name: GeneralSettings) {
-        setTitle(name)
-    }
-    
-    private func setTitle(_ name: GeneralSettings) {
-        switch name {
-        case .account:
-            self.title = "settings-sections-account".localized
-        case .appPreferences:
-            self.title = "settings-sections-appPreferences".localized
-        case .support:
-            self.title = "settings-sections-support".localized
-        }
+final class SingleTitleHeaderSuplementaryView: BaseSupplementaryView<SingleTitleHeaderView> {
+    func bindData(_ viewModel: SingleTitleHeaderViewModel) {
+        contextView.bindData(viewModel)
     }
 }

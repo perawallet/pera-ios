@@ -18,8 +18,8 @@
 import UIKit
 import MacaroonUIKit
 
-final class SettingsHeaderView: View {
-    private lazy var theme = SettingsHeaderViewTheme()
+final class SingleTitleHeaderView: View {
+    private lazy var theme = SingleTitleHeaderViewTheme()
     private lazy var titleLabel = UILabel()
     
     override init(frame: CGRect) {
@@ -28,7 +28,7 @@ final class SettingsHeaderView: View {
         customize(theme)
     }
     
-    func customize(_ theme: SettingsHeaderViewTheme) {
+    func customize(_ theme: SingleTitleHeaderViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
         addTitle()
@@ -39,7 +39,7 @@ final class SettingsHeaderView: View {
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
-extension SettingsHeaderView {
+extension SingleTitleHeaderView {
     private func addTitle() {
         titleLabel.customizeAppearance(theme.title)
         addSubview(titleLabel)
@@ -51,8 +51,8 @@ extension SettingsHeaderView {
     }
 }
 
-extension SettingsHeaderView {
-    func bindData(_ viewModel: SettingsHeaderViewModel) {
+extension SingleTitleHeaderView {
+    func bindData(_ viewModel: SingleTitleHeaderViewModel) {
         titleLabel.text = viewModel.title
     }
 }
