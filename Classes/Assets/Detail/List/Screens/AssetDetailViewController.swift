@@ -27,7 +27,7 @@ class AssetDetailViewController: BaseViewController {
     private var assetDetail: AssetDetail?
     var route: Screen?
 
-    private lazy var transactionActionsView = TransactionActionsView()
+//    private lazy var transactionActionsView = TransactionActionsView() <todo>: This will be floating action button
     
     private lazy var assetDetailTitleView = AssetDetailTitleView(title: account.name)
     
@@ -69,7 +69,7 @@ class AssetDetailViewController: BaseViewController {
     }
     
     override func linkInteractors() {
-        transactionActionsView.delegate = self
+//        transactionActionsView.delegate = self
         assetCardDisplayViewController.delegate = self
     }
     
@@ -93,9 +93,6 @@ class AssetDetailViewController: BaseViewController {
     
     override func prepareLayout() {
         setupAssetCardDisplayViewController()
-        if !account.isWatchAccount() {
-            setupTransactionActionsViewLayout()
-        }
         setupTransactionsViewController()
     }
 }
@@ -113,27 +110,12 @@ extension AssetDetailViewController {
         assetCardDisplayViewController.didMove(toParent: self)
     }
     
-    private func setupTransactionActionsViewLayout() {
-        view.addSubview(transactionActionsView)
-        
-        transactionActionsView.snp.makeConstraints { make in
-            make.bottom.leading.trailing.equalToSuperview()
-            make.height.equalTo(view.safeAreaBottom + 92.0)
-        }
-    }
-    
     private func setupTransactionsViewController() {
         addChild(transactionsViewController)
         view.addSubview(transactionsViewController.view)
 
-        transactionsViewController.view.snp.makeConstraints { make in make.top.equalTo(assetCardDisplayViewController.view.snp.bottom).offset(0.0)
-            make.leading.trailing.equalToSuperview()
-            
-            if account.isWatchAccount() {
-                make.bottom.equalToSuperview()
-            } else {
-                make.bottom.equalTo(transactionActionsView.snp.top)
-            }
+        transactionsViewController.view.snp.makeConstraints { $0.top.equalTo(assetCardDisplayViewController.view.snp.bottom).offset(0.0)
+            $0.leading.bottom.trailing.equalToSuperview()
         }
 
         transactionsViewController.didMove(toParent: self)
@@ -179,31 +161,31 @@ extension AssetDetailViewController {
     }
 }
 
-extension AssetDetailViewController: TransactionActionsViewDelegate {
-    func transactionActionsViewDidSendTransaction(_ transactionActionsView: TransactionActionsView) {
-        log(SendAssetDetailEvent(address: account.address))
-        if let assetDetail = assetDetail {
-            open(
-                .sendAssetTransactionPreview(
-                    account: account,
-                    receiver: .initial,
-                    assetDetail: assetDetail,
-                    isSenderEditable: false,
-                    isMaxTransaction: false
-                ),
-                by: .push
-            )
-        } else {
-            open(.sendAlgosTransactionPreview(account: account, receiver: .initial, isSenderEditable: false), by: .push)
-        }
-    }
-    
-    func transactionActionsViewDidRequestTransaction(_ transactionActionsView: TransactionActionsView) {
-        log(ReceiveAssetDetailEvent(address: account.address))
-        let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
-        open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
-    }
-}
+//extension AssetDetailViewController: TransactionActionsViewDelegate { <todo>: This will be floating action button's delegate
+//    func transactionActionsViewDidSendTransaction(_ transactionActionsView: TransactionActionsView) {
+//        log(SendAssetDetailEvent(address: account.address))
+//        if let assetDetail = assetDetail {
+//            open(
+//                .sendAssetTransactionPreview(
+//                    account: account,
+//                    receiver: .initial,
+//                    assetDetail: assetDetail,
+//                    isSenderEditable: false,
+//                    isMaxTransaction: false
+//                ),
+//                by: .push
+//            )
+//        } else {
+//            open(.sendAlgosTransactionPreview(account: account, receiver: .initial, isSenderEditable: false), by: .push)
+//        }
+//    }
+//
+//    func transactionActionsViewDidRequestTransaction(_ transactionActionsView: TransactionActionsView) {
+//        log(ReceiveAssetDetailEvent(address: account.address))
+//        let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
+//        open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
+//    }
+//}
 
 extension AssetDetailViewController: AssetCardDisplayViewControllerDelegate {
     func assetCardDisplayViewController(_ assetCardDisplayViewController: AssetCardDisplayViewController, didSelect index: Int) {
