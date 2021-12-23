@@ -1350,6 +1350,12 @@
 		2B6B3EF62774C58D006379F4 /* WalletRatingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EF52774C58D006379F4 /* WalletRatingViewTheme.swift */; };
 		2B6B3EF72774C58D006379F4 /* WalletRatingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EF52774C58D006379F4 /* WalletRatingViewTheme.swift */; };
 		2B6B3EF82774C58D006379F4 /* WalletRatingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EF52774C58D006379F4 /* WalletRatingViewTheme.swift */; };
+		2B6B3EFA2774E235006379F4 /* WalletRatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EF92774E235006379F4 /* WalletRatingViewController.swift */; };
+		2B6B3EFB2774E235006379F4 /* WalletRatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EF92774E235006379F4 /* WalletRatingViewController.swift */; };
+		2B6B3EFC2774E235006379F4 /* WalletRatingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EF92774E235006379F4 /* WalletRatingViewController.swift */; };
+		2B6B3EFE2774E29B006379F4 /* WalletRatingViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EFD2774E29B006379F4 /* WalletRatingViewController+Theme.swift */; };
+		2B6B3EFF2774E29B006379F4 /* WalletRatingViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EFD2774E29B006379F4 /* WalletRatingViewController+Theme.swift */; };
+		2B6B3F002774E29B006379F4 /* WalletRatingViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EFD2774E29B006379F4 /* WalletRatingViewController+Theme.swift */; };
 		2B6ED962226105CD00787984 /* AlgosTransactionSendDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED961226105CD00787984 /* AlgosTransactionSendDraft.swift */; };
 		2B6ED964226105E100787984 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED963226105E100787984 /* Payment.swift */; };
 		2B6ED9662261063700787984 /* TransactionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED9652261063700787984 /* TransactionList.swift */; };
@@ -3582,6 +3588,8 @@
 		2B68A24126A872540076BD82 /* WCTransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionSigner.swift; sourceTree = "<group>"; };
 		2B6B3EF12774C003006379F4 /* WalletRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRatingView.swift; sourceTree = "<group>"; };
 		2B6B3EF52774C58D006379F4 /* WalletRatingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRatingViewTheme.swift; sourceTree = "<group>"; };
+		2B6B3EF92774E235006379F4 /* WalletRatingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRatingViewController.swift; sourceTree = "<group>"; };
+		2B6B3EFD2774E29B006379F4 /* WalletRatingViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WalletRatingViewController+Theme.swift"; sourceTree = "<group>"; };
 		2B6ED961226105CD00787984 /* AlgosTransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgosTransactionSendDraft.swift; sourceTree = "<group>"; };
 		2B6ED963226105E100787984 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		2B6ED9652261063700787984 /* TransactionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionList.swift; sourceTree = "<group>"; };
@@ -5989,6 +5997,23 @@
 			path = WalletRating;
 			sourceTree = "<group>";
 		};
+		2B6B3F012774F0E1006379F4 /* WalletRating */ = {
+			isa = PBXGroup;
+			children = (
+				2B6B3EF92774E235006379F4 /* WalletRatingViewController.swift */,
+				2B6B3EFD2774E29B006379F4 /* WalletRatingViewController+Theme.swift */,
+			);
+			path = WalletRating;
+			sourceTree = "<group>";
+		};
+		2B6B3F022774F0F6006379F4 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				2BF5317B224AA89B00A7455F /* SettingsViewController.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		2B77470B25FFDB430083EFFA /* Suggestion */ = {
 			isa = PBXGroup;
 			children = (
@@ -8164,7 +8189,8 @@
 		2BA7138C2748691F00B8A907 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				2BF5317B224AA89B00A7455F /* SettingsViewController.swift */,
+				2B6B3F022774F0F6006379F4 /* Settings */,
+				2B6B3F012774F0E1006379F4 /* WalletRating */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -11716,6 +11742,7 @@
 				2BECB4AF25A0F09C0081870A /* ToggleTitleHeaderView.swift in Sources */,
 				2BD36DE8267E668E00C57728 /* TitledTransactionAccountNameViewModel.swift in Sources */,
 				D479D10226D4FB6400110E04 /* BannerViewTheme.swift in Sources */,
+				2B6B3EFC2774E235006379F4 /* WalletRatingViewController.swift in Sources */,
 				17BD4DFD2292F1260003E49A /* UIApplication+Additions.swift in Sources */,
 				2BE4D05D259371D8005F5764 /* ChangeAssetDetailEvent.swift in Sources */,
 				046767952756A6E000C88F21 /* CurrencySelectionViewController.swift in Sources */,
@@ -11883,6 +11910,7 @@
 				2B567154240019D30037FCFA /* VerifiedAssetInformationViewController.swift in Sources */,
 				D411B37A26EA1070004FF980 /* AccountPreviewViewModel.swift in Sources */,
 				D419433F273570630055EC70 /* AssetListViewDataSource.swift in Sources */,
+				2B6B3F002774E29B006379F4 /* WalletRatingViewController+Theme.swift in Sources */,
 				17BD4E312292F1260003E49A /* SettingsInfoCell.swift in Sources */,
 				2BC1827523D8DF1100888476 /* AssetAdditionDraft.swift in Sources */,
 				2BECB4CE25A0F8DB0081870A /* TitledToggleViewModel.swift in Sources */,
@@ -12982,6 +13010,7 @@
 				D473CA5D26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */,
 				D430711727197D9B00E38073 /* TabBarModalViewTheme.swift in Sources */,
 				2B0F620724EC129D00DA22A6 /* RewardView.swift in Sources */,
+				2B6B3EFF2774E29B006379F4 /* WalletRatingViewController+Theme.swift in Sources */,
 				D446A742272A8BFA0081D60B /* AssetPreviewActionViewTheme.swift in Sources */,
 				2BECB4A725A0F0930081870A /* ToggleTitleHeaderSupplementaryView.swift in Sources */,
 				2B344B18268A0F8200DA7B25 /* WCTransactionDetail.swift in Sources */,
@@ -13250,6 +13279,7 @@
 				2B0F628824EC129D00DA22A6 /* CursorlessTextField.swift in Sources */,
 				2B5BE06025190A0500324BEE /* AddAccountViewController.swift in Sources */,
 				2BD5A4A026305F530048FA5E /* AlgosCardAnalyticsContainerView.swift in Sources */,
+				2B6B3EFB2774E235006379F4 /* WalletRatingViewController.swift in Sources */,
 				D4B91DA027369240009D3963 /* AssetListViewTheme.swift in Sources */,
 				D48D11E027428EA4000061CE /* AccountNameViewTheme.swift in Sources */,
 				2B0F628A24EC129D00DA22A6 /* Node.swift in Sources */,
@@ -13629,6 +13659,7 @@
 				2B0F5F0C24E19ABA00DA22A6 /* LedgerAccountSelectionView.swift in Sources */,
 				2B2AACD8250B6C6E00B8C5C5 /* SettingsDetailViewModel.swift in Sources */,
 				2B8954C4224404C900D6D068 /* MultiLineInputField.swift in Sources */,
+				2B6B3EFE2774E29B006379F4 /* WalletRatingViewController+Theme.swift in Sources */,
 				2BA172C92649651700A613C4 /* AlgoStatisticsHeaderView.swift in Sources */,
 				2BAD929B25B5D0F000DE56D5 /* AlgoAssetViewModel.swift in Sources */,
 				2BB93BDD25BEF38C001F1D6C /* SendAssetTransactionDataBuilder.swift in Sources */,
@@ -13815,6 +13846,7 @@
 				D411B37826EA1070004FF980 /* AccountPreviewViewModel.swift in Sources */,
 				D419433D273570630055EC70 /* AssetListViewDataSource.swift in Sources */,
 				2B3D73B623C3621500597D32 /* VerifiedAssetList.swift in Sources */,
+				2B6B3EFA2774E235006379F4 /* WalletRatingViewController.swift in Sources */,
 				2BC1827423D8DF1100888476 /* AssetAdditionDraft.swift in Sources */,
 				2BECB4CC25A0F8DB0081870A /* TitledToggleViewModel.swift in Sources */,
 				2BD739FE22411A0100B66EEF /* Reusable.swift in Sources */,

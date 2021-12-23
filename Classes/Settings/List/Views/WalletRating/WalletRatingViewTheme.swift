@@ -53,8 +53,8 @@ struct WalletRatingViewTheme: StyleSheet, LayoutSheet {
             .text("settings-rate-modal-description".localized)
         ]
         
-        self.topInset = 68
-        self.horizontalInset = 60
+        self.topInset = 60
+        self.horizontalInset = 24
         self.titleTopInset = 36
         self.descriptionTopInset = 12
         self.bottomInset = 52

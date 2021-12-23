@@ -273,7 +273,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
             case .notifications:
                 open(.notificationFilter(flow: .settings), by: .push)
             case .appReview:
-                AlgorandAppStoreReviewer().requestManualReview(forAppWith: Environment.current.appID)
+                bottomModalTransition.perform(.walletRating)
             case .language:
                 displayProceedAlertWith(
                     title: "settings-language-change-title".localized,

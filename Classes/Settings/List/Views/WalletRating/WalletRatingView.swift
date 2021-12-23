@@ -50,7 +50,7 @@ extension WalletRatingView {
         
         addSubview(likeButton)
         likeButton.snp.makeConstraints {
-            $0.centerX.equalToSuperview().offset(theme.horizontalInset)
+            $0.trailing == snp.centerX - theme.horizontalInset
             $0.top.equalToSuperview().inset(theme.topInset)
         }
     }
@@ -60,7 +60,7 @@ extension WalletRatingView {
         
         addSubview(dislikeButton)
         dislikeButton.snp.makeConstraints {
-            $0.centerX.equalToSuperview().inset(theme.horizontalInset)
+            $0.leading == snp.centerX + theme.horizontalInset
             $0.top.equalToSuperview().inset(theme.topInset)
         }
     }
@@ -82,7 +82,6 @@ extension WalletRatingView {
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.descriptionTopInset)
             $0.centerX.equalToSuperview()
-            $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
         }
     }
 }
