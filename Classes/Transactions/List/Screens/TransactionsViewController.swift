@@ -353,7 +353,7 @@ extension TransactionsViewController: TransactionFilterViewControllerDelegate {
         
         self.filterOption = filterOption
         if let headerView = transactionListView.headerView() {
-            headerView.bind(TransactionHistoryHeaderViewModel(filterOption: filterOption))
+            headerView.bindData(TransactionHistoryHeaderViewModel(filterOption))
         }
         updateList()
     }

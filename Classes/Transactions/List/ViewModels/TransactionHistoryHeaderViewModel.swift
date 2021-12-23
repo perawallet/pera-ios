@@ -16,17 +16,20 @@
 //  TransactionHistoryHeaderViewModel.swift
 
 import UIKit
+import MacaroonUIKit
 
-class TransactionHistoryHeaderViewModel {
+final class TransactionHistoryHeaderViewModel: PairedViewModel {
     private(set) var image: UIImage?
     private(set) var title: String?
 
-    init(filterOption: TransactionFilterViewController.FilterOption) {
-        setImage(from: filterOption)
-        setTitle(from: filterOption)
+    init(_ filterOption: TransactionFilterViewController.FilterOption) {
+        bindImage(from: filterOption)
+        bindTitle(from: filterOption)
     }
+}
 
-    private func setImage(from filterOption: TransactionFilterViewController.FilterOption) {
+extension TransactionHistoryHeaderViewModel {
+    private func bindImage(from filterOption: TransactionFilterViewController.FilterOption) { // <todo> Ask
         switch filterOption {
         case .allTime:
             image = img("icon-transaction-filter")
@@ -43,7 +46,7 @@ class TransactionHistoryHeaderViewModel {
         }
     }
 
-    private func setTitle(from filterOption: TransactionFilterViewController.FilterOption) {
+    private func bindTitle(from filterOption: TransactionFilterViewController.FilterOption) {
         switch filterOption {
         case .allTime:
             title = "contacts-transactions-title".localized

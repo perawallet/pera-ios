@@ -273,7 +273,7 @@
 "contacts-input-name-placeholder" = "Contact name";
 "contacts-input-address-explanation" = "Address";
 "contacts-input-address-placeholder" = "Paste # or Scan QR";
-"contacts-transactions-title" = "Transactions";
+"contacts-transactions-title" = "Transaction History";
 "contacts-empty-text" = "You haven't added any contacts yet";
 "contacts-empty-detail-text" = "You can make the process of sending assets faster by adding new contacts.";
 "contacts-name-validation-error" = "Name is empty.";
