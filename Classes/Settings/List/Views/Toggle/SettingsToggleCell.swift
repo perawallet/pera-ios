@@ -20,8 +20,8 @@ import UIKit
 final class SettingsToggleCell: BaseCollectionViewCell<SettingsToggleView> {
     weak var delegate: SettingsToggleCellDelegate?
     
-    override func linkInteractors() {
-        super.linkInteractors()
+    override func setListeners() {
+        contextView.setListeners()
         contextView.delegate = self
     }
     

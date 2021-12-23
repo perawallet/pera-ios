@@ -19,7 +19,7 @@
 import Foundation
 import MacaroonUIKit
 
-struct SingleTitleHeaderViewTheme: LayoutSheet, StyleSheet {
+struct SingleGrayTitleHeaderViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color
     let title: TextStyle
     

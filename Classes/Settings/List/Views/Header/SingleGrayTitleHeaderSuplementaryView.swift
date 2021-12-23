@@ -18,8 +18,8 @@
 
 import Foundation
 
-final class SingleTitleHeaderSuplementaryView: BaseSupplementaryView<SingleTitleHeaderView> {
-    func bindData(_ viewModel: SingleTitleHeaderViewModel) {
+final class SingleGrayTitleHeaderSuplementaryView: BaseSupplementaryView<SingleGrayTitleHeaderView> {
+    func bindData(_ viewModel: SingleGrayTitleHeaderViewModel) {
         contextView.bindData(viewModel)
     }
 }

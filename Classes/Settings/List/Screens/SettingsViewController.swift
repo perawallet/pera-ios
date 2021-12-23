@@ -187,7 +187,7 @@ extension SettingsViewController: SettingsDataSourceDelegate {
     func settingsDataSource(
         _ settingsDataSource: SettingsDataSource,
         _ settingsToggleCell: SettingsToggleCell,
-        didchangeValue value: Bool
+        didChangeValue value: Bool
     ) {
         guard let indexPath = settingsView.collectionView.indexPath(for: settingsToggleCell),
               let section = dataSource.sections[safe: indexPath.section] else {

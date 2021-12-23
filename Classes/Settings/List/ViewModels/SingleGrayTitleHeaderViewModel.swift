@@ -18,7 +18,7 @@
 
 import Foundation
 
-final class SingleTitleHeaderViewModel {
+final class SingleGrayTitleHeaderViewModel {
     private(set) var title: String?
     
     init(name: GeneralSettings) {

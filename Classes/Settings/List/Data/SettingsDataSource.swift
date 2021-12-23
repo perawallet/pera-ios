@@ -136,13 +136,13 @@ extension SettingsDataSource: UICollectionViewDataSource {
         case UICollectionView.elementKindSectionHeader:
             guard let headerView = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
-                withReuseIdentifier: SingleTitleHeaderSuplementaryView.reusableIdentifier,
+                withReuseIdentifier: SingleGrayTitleHeaderSuplementaryView.reusableIdentifier,
                 for: indexPath
-            ) as? SingleTitleHeaderSuplementaryView else {
+            ) as? SingleGrayTitleHeaderSuplementaryView else {
                 fatalError("Unexpected element kind")
             }
             
-            headerView.bindData(SingleTitleHeaderViewModel(name: sections[indexPath.section]))
+            headerView.bindData(SingleGrayTitleHeaderViewModel(name: sections[indexPath.section]))
             return headerView
         default:
             fatalError("Unexpected element kind")
@@ -158,7 +158,7 @@ extension SettingsDataSource: SettingsFooterSupplementaryViewDelegate {
 
 extension SettingsDataSource: SettingsToggleCellDelegate {
     func settingsToggleCell(_ settingsToggleCell: SettingsToggleCell, didChangeValue value: Bool) {
-        delegate?.settingsDataSource(self, settingsToggleCell, didchangeValue: value)
+        delegate?.settingsDataSource(self, settingsToggleCell, didChangeValue: value)
     }
 }
 
@@ -166,7 +166,7 @@ protocol SettingsDataSourceDelegate: AnyObject {
     func settingsDataSource(
         _ settingsDataSource: SettingsDataSource,
         _ settingsToggleCell: SettingsToggleCell,
-        didchangeValue value: Bool
+        didChangeValue value: Bool
     )
     func settingsDataSourceDidTapLogout(
         _ settingsDataSource: SettingsDataSource,
