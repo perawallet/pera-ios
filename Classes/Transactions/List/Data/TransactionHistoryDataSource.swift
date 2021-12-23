@@ -19,7 +19,6 @@ import UIKit
 import MagpieCore
 
 class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
-    
     private var transactions = [TransactionItem]()
     private var account: Account
     private var assetDetail: AssetDetail?
@@ -58,13 +57,7 @@ class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.item < transactions.count {
             if let reward = transactions[indexPath.item] as? Reward {
-                if let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: RewardCell.reusableIdentifier,
-                    for: indexPath
-                ) as? RewardCell {
-                    cell.contextView.bind(RewardViewModel(reward: reward))
-                    return cell
-                }
+                return dequeueHistoryCell(in: collectionView, with: reward, at: indexPath)
             } else if let transaction = transactions[indexPath.item] as? Transaction {
                 return dequeueHistoryCell(in: collectionView, with: transaction, at: indexPath)
             } else if let transaction = transactions[indexPath.item] as? PendingTransaction {
@@ -104,11 +97,7 @@ extension TransactionHistoryDataSource {
         with transaction: Transaction,
         at indexPath: IndexPath
     ) -> TransactionHistoryCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TransactionHistoryCell.reusableIdentifier,
-            for: indexPath) as? TransactionHistoryCell else {
-                fatalError("Index path is out of bounds")
-        }
+        let cell = collectionView.dequeue(TransactionHistoryCell.self, at: indexPath)
         
         if let assetTransaction = transaction.assetTransfer {
             if assetTransaction.receiverAddress == account.address {
@@ -124,6 +113,16 @@ extension TransactionHistoryDataSource {
             }
         }
         
+        return cell
+    }
+
+    private func dequeueHistoryCell(
+        in collectionView: UICollectionView,
+        with reward: Reward,
+        at indexPath: IndexPath
+    ) -> TransactionHistoryCell {
+        let cell = collectionView.dequeue(TransactionHistoryCell.self, at: indexPath)
+        TransactionHistoryViewModel().configure(cell.contextView, with: reward)
         return cell
     }
     
@@ -158,6 +157,7 @@ extension TransactionHistoryDataSource {
         
         let address = transaction.receiver == account.address ? transaction.sender : transaction.receiver
         configure(cell, with: transaction, for: address)
+        cell.startAnimatingIndicator()
         return cell
     }
     

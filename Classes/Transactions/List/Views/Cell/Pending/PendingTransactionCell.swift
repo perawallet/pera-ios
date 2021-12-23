@@ -17,6 +17,25 @@
 
 import UIKit
 
-class PendingTransactionCell: BaseCollectionViewCell<PendingTransactionView> {
-    
+final class PendingTransactionCell: BaseCollectionViewCell<PendingTransactionView> {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contextView.customize(PendingTransactionViewTheme())
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        contextView.prepareForReuse()
+        stopAnimatingIndicator()
+    }
+}
+
+extension PendingTransactionCell {
+    func startAnimatingIndicator() {
+        contextView.startAnimatingIndicator()
+    }
+
+    func stopAnimatingIndicator() {
+        contextView.stopAnimatingIndicator()
+    }
 }

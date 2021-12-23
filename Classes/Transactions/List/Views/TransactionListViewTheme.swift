@@ -13,10 +13,16 @@
 // limitations under the License.
 
 //
-//  RewardCell.swift
+//   TransactionListViewTheme.swift
 
-import UIKit
+import MacaroonUIKit
 
-class RewardCell: BaseCollectionViewCell<RewardView> {
-    
+struct TransactionListViewTheme: LayoutSheet, StyleSheet {
+    let backgroundColor: Color
+    let cellSpacing: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
+        self.cellSpacing = 0
+    }
 }

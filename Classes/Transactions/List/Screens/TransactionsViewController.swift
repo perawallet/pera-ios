@@ -502,7 +502,7 @@ extension TransactionsViewController: APIListener {
 
 extension TransactionsViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
-        let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
+        let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72)
         let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 68.0)
     }
 }
