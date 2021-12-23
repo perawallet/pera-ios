@@ -19,6 +19,8 @@ import MacaroonUIKit
 import UIKit
 
 final class WalletRatingView: View {
+    weak var delegate: WalletRatingViewDelegate?
+    
     private lazy var theme = WalletRatingViewTheme()
     private lazy var likeButton = UIButton()
     private lazy var dislikeButton = UIButton()
@@ -42,6 +44,18 @@ final class WalletRatingView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
     
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    
+    func setListeners() {
+        likeButton.addTarget(self, action: #selector(notifyDelegateToRateWallet), for: .touchUpInside)
+        dislikeButton.addTarget(self, action: #selector(notifyDelegateToRateWallet), for: .touchUpInside)
+    }
+}
+
+extension WalletRatingView {
+    @objc
+    private func notifyDelegateToRateWallet() {
+        delegate?.walletRatingViewDidTapButton(self)
+    }
 }
 
 extension WalletRatingView {
@@ -84,4 +98,8 @@ extension WalletRatingView {
             $0.centerX.equalToSuperview()
         }
     }
+}
+
+protocol WalletRatingViewDelegate: AnyObject {
+    func walletRatingViewDidTapButton(_ walletRatingView: WalletRatingView)
 }

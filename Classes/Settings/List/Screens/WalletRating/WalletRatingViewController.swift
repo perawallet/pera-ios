@@ -37,10 +37,21 @@ final class WalletRatingViewController: BaseViewController {
             $0.edges.equalToSuperview()
         }
     }
+    
+    override func setListeners() {
+        walletRatingView.setListeners()
+        walletRatingView.delegate = self
+    }
 }
 
 extension WalletRatingViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
         return .preferred(theme.modalHeight)
+    }
+}
+
+extension WalletRatingViewController: WalletRatingViewDelegate {
+    func walletRatingViewDidTapButton(_ walletRatingView: WalletRatingView) {
+        AlgorandAppStoreReviewer().requestManualReview(forAppWith: Environment.current.appID)
     }
 }
