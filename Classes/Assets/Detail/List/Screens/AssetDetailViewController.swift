@@ -16,7 +16,6 @@
 //  AccountDetailViewController.swift
 
 import UIKit
-import SnapKit
 
 class AssetDetailViewController: BaseViewController {
     
@@ -27,9 +26,7 @@ class AssetDetailViewController: BaseViewController {
     private var account: Account
     private var assetDetail: AssetDetail?
     var route: Screen?
-    
-    var transactionsTopConstraint: Constraint?
-    
+
     private lazy var transactionActionsView = TransactionActionsView()
     
     private lazy var assetDetailTitleView = AssetDetailTitleView(title: account.name)
@@ -129,8 +126,7 @@ extension AssetDetailViewController {
         addChild(transactionsViewController)
         view.addSubview(transactionsViewController.view)
 
-        transactionsViewController.view.snp.makeConstraints { make in
-            transactionsTopConstraint = make.top.equalTo(assetCardDisplayViewController.view.snp.bottom).offset(0.0).constraint
+        transactionsViewController.view.snp.makeConstraints { make in make.top.equalTo(assetCardDisplayViewController.view.snp.bottom).offset(0.0)
             make.leading.trailing.equalToSuperview()
             
             if account.isWatchAccount() {
@@ -140,7 +136,6 @@ extension AssetDetailViewController {
             }
         }
 
-        transactionsViewController.delegate = self
         transactionsViewController.didMove(toParent: self)
     }
 }
@@ -180,90 +175,6 @@ extension AssetDetailViewController {
         if account == updatedAccount {
             account = updatedAccount
             updateLayout()
-        }
-    }
-}
-
-extension AssetDetailViewController: TransactionsViewControllerDelegate {
-    func transactionsViewController(_ transactionsViewController: TransactionsViewController, didScroll scrollView: UIScrollView) {
-        if transactionsViewController.isTransactionListEmpty {
-            return
-        }
-        
-        let headerHeight = AssetCardDisplayView.CardViewConstants.height
-        
-        let scrollOffset = scrollView.panGestureRecognizer.translation(in: view).y
-        let isScrollDirectionUp = scrollOffset < 0
-        
-        var offset: CGFloat = 0.0
-        
-        if isScrollDirectionUp {
-            offset = -scrollOffset > headerHeight ? headerHeight : scrollOffset
-            if offset == headerHeight || transactionsViewController.view.frame.minY <= 5.0 {
-                assetDetailTitleView.animateUp(with: 1.0)
-                transactionsTopConstraint?.update(offset: -headerHeight)
-                return
-            } else {
-                assetDetailTitleView.animateUp(with: -scrollOffset / headerHeight)
-                scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
-            }
-        } else {
-            if scrollView.contentOffset.y > 0.0 {
-                return
-            }
-            
-            offset = scrollOffset > headerHeight ? 0.0 : scrollOffset - headerHeight
-            if offset == 0.0 || transactionsViewController.view.frame.minY >= headerHeight {
-                assetDetailTitleView.animateDown(with: 1.0)
-                transactionsTopConstraint?.update(offset: 0.0)
-                return
-            } else {
-                assetDetailTitleView.animateDown(with: scrollOffset / headerHeight)
-                scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
-            }
-        }
-        
-        transactionsTopConstraint?.update(offset: offset)
-        view.layoutIfNeeded()
-    }
-    
-    func transactionsViewController(_ transactionsViewController: TransactionsViewController, didStopScrolling scrollView: UIScrollView) {
-        if transactionsViewController.isTransactionListEmpty {
-            return
-        }
-        
-        let headerHeight = AssetCardDisplayView.CardViewConstants.height
-        
-        let isScrollDirectionUp = scrollView.panGestureRecognizer.translation(in: view).y < 0
-        
-        if isScrollDirectionUp {
-            if transactionsViewController.view.frame.minY <= 5.0 {
-                return
-            }
-            
-            assetDetailTitleView.animateUp(with: 1.0)
-            updateScrollOffset(-headerHeight)
-            
-            if transactionsViewController.view.frame.minY <= 5.0 {
-                return
-            }
-            
-            view.layoutIfNeeded()
-            scrollView.setContentOffset(CGPoint(x: 0.0, y: 0.0), animated: false)
-        } else {
-            if transactionsViewController.view.frame.minY >= headerHeight {
-                return
-            }
-            
-            assetDetailTitleView.animateDown(with: 1.0)
-            updateScrollOffset(0.0)
-        }
-    }
-    
-    private func updateScrollOffset(_ offset: CGFloat) {
-        UIView.animate(withDuration: 0.33) {
-            self.transactionsTopConstraint?.update(offset: offset)
-            self.view.layoutIfNeeded()
         }
     }
 }
