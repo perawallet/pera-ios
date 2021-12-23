@@ -1344,6 +1344,12 @@
 		2B68A24226A872540076BD82 /* WCTransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B68A24126A872540076BD82 /* WCTransactionSigner.swift */; };
 		2B68A24326A872540076BD82 /* WCTransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B68A24126A872540076BD82 /* WCTransactionSigner.swift */; };
 		2B68A24426A872540076BD82 /* WCTransactionSigner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B68A24126A872540076BD82 /* WCTransactionSigner.swift */; };
+		2B6B3EF22774C003006379F4 /* WalletRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EF12774C003006379F4 /* WalletRatingView.swift */; };
+		2B6B3EF32774C003006379F4 /* WalletRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EF12774C003006379F4 /* WalletRatingView.swift */; };
+		2B6B3EF42774C003006379F4 /* WalletRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EF12774C003006379F4 /* WalletRatingView.swift */; };
+		2B6B3EF62774C58D006379F4 /* WalletRatingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EF52774C58D006379F4 /* WalletRatingViewTheme.swift */; };
+		2B6B3EF72774C58D006379F4 /* WalletRatingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EF52774C58D006379F4 /* WalletRatingViewTheme.swift */; };
+		2B6B3EF82774C58D006379F4 /* WalletRatingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B3EF52774C58D006379F4 /* WalletRatingViewTheme.swift */; };
 		2B6ED962226105CD00787984 /* AlgosTransactionSendDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED961226105CD00787984 /* AlgosTransactionSendDraft.swift */; };
 		2B6ED964226105E100787984 /* Payment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED963226105E100787984 /* Payment.swift */; };
 		2B6ED9662261063700787984 /* TransactionList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6ED9652261063700787984 /* TransactionList.swift */; };
@@ -3574,6 +3580,8 @@
 		2B68A23726A6D96E0076BD82 /* WCMainTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCMainTransactionView.swift; sourceTree = "<group>"; };
 		2B68A23C26A82F660076BD82 /* WalletConnectSingleTransactionRequestPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectSingleTransactionRequestPresentable.swift; sourceTree = "<group>"; };
 		2B68A24126A872540076BD82 /* WCTransactionSigner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCTransactionSigner.swift; sourceTree = "<group>"; };
+		2B6B3EF12774C003006379F4 /* WalletRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRatingView.swift; sourceTree = "<group>"; };
+		2B6B3EF52774C58D006379F4 /* WalletRatingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRatingViewTheme.swift; sourceTree = "<group>"; };
 		2B6ED961226105CD00787984 /* AlgosTransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgosTransactionSendDraft.swift; sourceTree = "<group>"; };
 		2B6ED963226105E100787984 /* Payment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Payment.swift; sourceTree = "<group>"; };
 		2B6ED9652261063700787984 /* TransactionList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionList.swift; sourceTree = "<group>"; };
@@ -5972,6 +5980,15 @@
 			path = Transaction;
 			sourceTree = "<group>";
 		};
+		2B6B3EF02774BFE4006379F4 /* WalletRating */ = {
+			isa = PBXGroup;
+			children = (
+				2B6B3EF12774C003006379F4 /* WalletRatingView.swift */,
+				2B6B3EF52774C58D006379F4 /* WalletRatingViewTheme.swift */,
+			);
+			path = WalletRating;
+			sourceTree = "<group>";
+		};
 		2B77470B25FFDB430083EFFA /* Suggestion */ = {
 			isa = PBXGroup;
 			children = (
@@ -8155,6 +8172,7 @@
 		2BA7138D2748693200B8A907 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2B6B3EF02774BFE4006379F4 /* WalletRating */,
 				2B4DF416236C6A8900FF9551 /* Detail */,
 				2B4DF413236C6A6400FF9551 /* Footer */,
 				2B4DF417236C6A8E00FF9551 /* Info */,
@@ -12279,6 +12297,7 @@
 				17BD4EAE2292F1260003E49A /* TransactionHistoryDataSource.swift in Sources */,
 				2BE937312464AEB600322C1E /* LineSeparatorView.swift in Sources */,
 				D4C45BF12726B59D00F4AE31 /* ContactDetailViewTheme.swift in Sources */,
+				2B6B3EF82774C58D006379F4 /* WalletRatingViewTheme.swift in Sources */,
 				17BD4EB12292F1260003E49A /* String+Address.swift in Sources */,
 				2BF811D125E5B55100D6B406 /* TransactionTutorialStorage.swift in Sources */,
 				2B7ABF78233388570050B64B /* PendingTransactionList.swift in Sources */,
@@ -12504,6 +12523,7 @@
 				2B44873F237AB7A900C19FDE /* AccountsDataSource.swift in Sources */,
 				2BE4D06825938448005F5764 /* AnalyticsTracker.swift in Sources */,
 				17BD4EE92292F1260003E49A /* BaseView.swift in Sources */,
+				2B6B3EF42774C003006379F4 /* WalletRatingView.swift in Sources */,
 				2B9EF31025D5767B004BCCC4 /* TutorialViewModel.swift in Sources */,
 				2B44C383247419CB0074D57D /* TransactionListView.swift in Sources */,
 				D4008573271D6003007C0C97 /* AlgoStatisticsDateSelectionViewController+Theme.swift in Sources */,
@@ -12996,6 +13016,7 @@
 				2BB93BB225BEE6A5001F1D6C /* TransactionDataBuildable.swift in Sources */,
 				2B0F621324EC129D00DA22A6 /* AssetActionConfirmationView.swift in Sources */,
 				2B0F621424EC129D00DA22A6 /* TooltipViewController.swift in Sources */,
+				2B6B3EF32774C003006379F4 /* WalletRatingView.swift in Sources */,
 				2BCF7275251CB14600D8827D /* TransactionActionsView.swift in Sources */,
 				D4F22127270350DA00F70498 /* LedgerAccountDetailViewTheme.swift in Sources */,
 				2B0F621624EC129D00DA22A6 /* Utils.swift in Sources */,
@@ -13063,6 +13084,7 @@
 				D4BF4A2926F4FC0D009B53D8 /* AssetImageViewTheme.swift in Sources */,
 				2BF8120525E7F73100D6B406 /* TransactionTutorialViewModel.swift in Sources */,
 				2B0F623524EC129D00DA22A6 /* TransactionCustomRangeSelectionViewController.swift in Sources */,
+				2B6B3EF72774C58D006379F4 /* WalletRatingViewTheme.swift in Sources */,
 				2B0F623624EC129D00DA22A6 /* NotificationDetail.swift in Sources */,
 				D4822736272BF37F004CB9BF /* AddContactViewTheme.swift in Sources */,
 				2B0F623724EC129D00DA22A6 /* EditAccountView.swift in Sources */,
@@ -14019,6 +14041,7 @@
 				2BD36E052681DBC400C57728 /* WCAppCallTransactionViewModel.swift in Sources */,
 				2B8E5F952548318C001D8E30 /* AnalyticsScreen.swift in Sources */,
 				046767812756A65F00C88F21 /* SingleSelectionView.swift in Sources */,
+				2B6B3EF62774C58D006379F4 /* WalletRatingViewTheme.swift in Sources */,
 				17BEC4602248C81E00AAF370 /* PassphraseVerifyView.swift in Sources */,
 				2B5BE03C2518E4A900324BEE /* WatchAccountAdditionView.swift in Sources */,
 				2B0823DB23B6677A00D52BCF /* AssetSupportDraft.swift in Sources */,
@@ -14274,6 +14297,7 @@
 				2BD36DFC2681DB5B00C57728 /* WCAppCallTransactionView.swift in Sources */,
 				2B3E3A0924796FCC00E8AEB7 /* TabBarItems.swift in Sources */,
 				2B38C92C24D435FB0059AB02 /* RekeyInstructionsView.swift in Sources */,
+				2B6B3EF22774C003006379F4 /* WalletRatingView.swift in Sources */,
 				173DA2102256643A00378A82 /* TransactionID.swift in Sources */,
 				2BA4B419267911010041586B /* WCSessionList.swift in Sources */,
 				2BA4B4052678A9400041586B /* WCSessionListDataSource.swift in Sources */,
