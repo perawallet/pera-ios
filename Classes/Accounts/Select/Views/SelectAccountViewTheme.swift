@@ -13,29 +13,40 @@
 // limitations under the License.
 
 //
-//   ContactsViewTheme.swift
+//   SelectAccountViewTheme.swift
+
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct ContactsViewTheme: StyleSheet, LayoutSheet {
+struct SelectAccountViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let searchInputViewTheme: SearchInputViewTheme
+    let clipboardTheme: AccountClipboardViewTheme
+    let nextButtonStyle: ButtonPrimaryTheme
     let topInset: LayoutMetric
     let horizontalPadding: LayoutMetric
     let cellSpacing: LayoutMetric
     let contentInset: LayoutPaddings
+    let clipboardHeight: LayoutMetric
+    let clipboardTopInset: LayoutMetric
+    let nextButtonHeight: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-        self.searchInputViewTheme = SearchInputViewCommonTheme(
-            placeholder: "contacts-search".localized,
+        self.searchInputViewTheme = QRSearchInputViewTheme(
+            placeholder: "account-select-header-search-title".localized,
             family: family
         )
+        self.clipboardTheme = AccountClipboardViewTheme(family)
+        self.nextButtonStyle = ButtonPrimaryTheme(family)
         self.topInset = 22
         self.horizontalPadding = 24
         self.cellSpacing = 0
         self.contentInset = (28, 0, 0, 0)
+        self.clipboardHeight = 96
+        self.clipboardTopInset = 24
+        self.nextButtonHeight = 50
     }
 }

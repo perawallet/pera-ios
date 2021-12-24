@@ -789,3 +789,11 @@ on your Ledger device (%d)";
 "transaction-result-started-subtitle" = "Your order was successfully received";
 "transaction-result-completed-title" = "Order Received";
 "transaction-result-completed-subtitle" = "Your order was successfully received";
+
+// MARK: AccountSelect
+"account-select-header-accounts-title" = "My Accounts";
+"account-select-header-contacts-title" = "Contacts";
+"account-select-header-search-title" = "Search or enter address";
+"account-select-search-empty-title" = "No account found";
+"account-select-search-empty-detail" = "Try different account name";
+"account-select-clipboard-title" = "Paste From Clipboard";

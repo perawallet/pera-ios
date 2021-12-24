@@ -13,28 +13,17 @@
 // limitations under the License.
 
 //
-//   SendTransactionDraft.swift
+//   AccountClipboardViewModel.swift
 
 
 import Foundation
+import UIKit
+import MacaroonUIKit
 
-struct SendTransactionDraft {
-    var account: Account
-    var transactionMode: TransactionMode
+final class AccountClipboardViewModel: PairedViewModel {
+    private(set) var title: String
 
-    var fractionCount: Int {
-        switch transactionMode {
-        case .algo:
-            return algosFraction
-        case .assetDetail(let assetDetail):
-            return assetDetail.fractionDecimals
-        }
+    init(_ model: String) {
+        self.title = model
     }
-    var toContact: Contact?
-    var toAddress: String?
-}
-
-enum TransactionMode {
-    case algo
-    case assetDetail(AssetDetail)
 }

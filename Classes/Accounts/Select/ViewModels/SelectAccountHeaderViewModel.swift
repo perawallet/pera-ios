@@ -13,28 +13,33 @@
 // limitations under the License.
 
 //
-//   SendTransactionDraft.swift
+//   SelectAccountHeaderViewModel.swift
 
 
 import Foundation
+import UIKit
+import MacaroonUIKit
 
-struct SendTransactionDraft {
-    var account: Account
-    var transactionMode: TransactionMode
+final class SelectAccountHeaderViewModel: PairedViewModel {
+    private let mode: SelectAccountHeaderMode
 
-    var fractionCount: Int {
-        switch transactionMode {
-        case .algo:
-            return algosFraction
-        case .assetDetail(let assetDetail):
-            return assetDetail.fractionDecimals
+    var title: String {
+        get {
+            switch self.mode {
+            case .accounts:
+                return "account-select-header-accounts-title".localized
+            case .contacts:
+                return "account-select-header-contacts-title".localized
+            }
         }
     }
-    var toContact: Contact?
-    var toAddress: String?
+
+    init(_ model: SelectAccountHeaderMode) {
+        self.mode = model
+    }
 }
 
-enum TransactionMode {
-    case algo
-    case assetDetail(AssetDetail)
+enum SelectAccountHeaderMode {
+    case accounts
+    case contacts
 }

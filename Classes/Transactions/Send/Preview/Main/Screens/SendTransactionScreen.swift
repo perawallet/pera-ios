@@ -263,6 +263,7 @@ extension SendTransactionScreen {
         case .otherAsset:
             self.displaySimpleAlertWith(title: "title-error".localized, message: "send-asset-amount-error".localized)
         case .valid:
+            open(.transactionAccountSelect(draft: self.draft), by: .push)
             return
         case .algoParticipationKeyWarning:
             self.presentParticipationKeyWarningForMaxTransaction()

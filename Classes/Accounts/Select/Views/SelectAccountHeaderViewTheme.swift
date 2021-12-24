@@ -13,28 +13,23 @@
 // limitations under the License.
 
 //
-//   SendTransactionDraft.swift
+//   SelectAccountHeaderViewTheme.swift
 
 
 import Foundation
+import MacaroonUIKit
+import UIKit
 
-struct SendTransactionDraft {
-    var account: Account
-    var transactionMode: TransactionMode
+struct SelectAccountHeaderViewTheme: StyleSheet, LayoutSheet {
+    let titleLabel: TextStyle
+    let titleLeadingInset: LayoutMetric
 
-    var fractionCount: Int {
-        switch transactionMode {
-        case .algo:
-            return algosFraction
-        case .assetDetail(let assetDetail):
-            return assetDetail.fractionDecimals
-        }
+    init(_ family: LayoutFamily) {
+        self.titleLabel = [
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.medium.make(15)),
+            .textOverflow(SingleLineFittingText())
+        ]
+        self.titleLeadingInset = 24
     }
-    var toContact: Contact?
-    var toAddress: String?
-}
-
-enum TransactionMode {
-    case algo
-    case assetDetail(AssetDetail)
 }

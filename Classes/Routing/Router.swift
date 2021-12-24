@@ -481,8 +481,10 @@ class Router {
             viewController = editNoteScreen
         case .transactionResult:
             viewController = TransactionResultScreen(configuration: configuration)
+        case .transactionAccountSelect(let draft):
+            viewController = AccountSelectScreen(draft: draft, configuration: configuration)
         }
-        
+
         return viewController as? T
     }
     // swiftlint:enable function_body_length

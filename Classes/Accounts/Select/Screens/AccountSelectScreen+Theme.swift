@@ -13,28 +13,21 @@
 // limitations under the License.
 
 //
-//   SendTransactionDraft.swift
+//   AccountSelectScreen+Theme.swift
 
 
 import Foundation
+import MacaroonUIKit
 
-struct SendTransactionDraft {
-    var account: Account
-    var transactionMode: TransactionMode
+extension AccountSelectScreen {
+    struct Theme: LayoutSheet, StyleSheet {
+        let cellHeight: LayoutMetric
+        let headerHeight: LayoutMetric
 
-    var fractionCount: Int {
-        switch transactionMode {
-        case .algo:
-            return algosFraction
-        case .assetDetail(let assetDetail):
-            return assetDetail.fractionDecimals
+        init(_ family: LayoutFamily) {
+            cellHeight = 72
+            headerHeight = 30
         }
-    }
-    var toContact: Contact?
-    var toAddress: String?
-}
 
-enum TransactionMode {
-    case algo
-    case assetDetail(AssetDetail)
+    }
 }

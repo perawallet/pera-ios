@@ -120,6 +120,7 @@ indirect enum Screen {
     case sendTransaction(draft: SendTransactionDraft)
     case editNote(note: String?, delegate: EditNoteScreenDelegate?)
     case transactionResult
+    case transactionAccountSelect(draft: SendTransactionDraft)
 }
 
 extension Screen {
