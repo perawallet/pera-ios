@@ -139,7 +139,7 @@ extension UIViewController {
         }
         
         let safariViewController = SFSafariViewController(url: url)
-        present(safariViewController, animated: true, completion: nil)
+        present(safariViewController, animated: true)
     }
 }
 

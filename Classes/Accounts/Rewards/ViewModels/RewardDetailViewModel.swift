@@ -16,15 +16,24 @@
 //  RewardDetailViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-class RewardDetailViewModel {
+final class RewardDetailViewModel: PairedViewModel {
+    private(set) var rate: String?
     private(set) var amount: String?
 
-    init(account: Account) {
-        setAmount(from: account)
+    init(_ account: Account) {
+        bindRate(from: account)
+        bindAmount(from: account)
+    }
+}
+
+extension RewardDetailViewModel {
+    private func bindRate(from account: Account) {
+        rate = "5%" // <todo>: Calculate rate
     }
 
-    private func setAmount(from account: Account) {
-        amount = account.pendingRewards.toAlgos.toAlgosStringForLabel
+    private func bindAmount(from account: Account) {
+        amount = account.pendingRewards.toAlgos.toExactFractionLabel(fraction: 6)
     }
 }
