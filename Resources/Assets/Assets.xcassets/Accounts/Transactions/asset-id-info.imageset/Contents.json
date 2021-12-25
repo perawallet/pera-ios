@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-share-gray.pdf",
+      "filename" : "asset-id-info.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon-share-gray-1.pdf",
+      "filename" : "asset-id-info-1.pdf",
       "idiom" : "universal"
     }
   ],

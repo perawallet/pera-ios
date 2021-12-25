@@ -169,6 +169,7 @@
 "accounts-title" = "Accounts";
 "accounts-add-new" = "Add new asset";
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
+"accounts-transaction-your-balance" = "Your balance";
 
 // MARK: Asset
 "asset-title" = "Asset";

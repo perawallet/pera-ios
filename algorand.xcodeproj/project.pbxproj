@@ -2930,6 +2930,12 @@
 		D473CA6426E278A900558598 /* PassphraseMnemonicViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */; };
 		D473CA6526E278A900558598 /* PassphraseMnemonicViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */; };
 		D473CA6626E278A900558598 /* PassphraseMnemonicViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */; };
+		D4789FD92775CBB8001395BA /* AssetDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4789FD82775CBB8001395BA /* AssetDetailInfoView.swift */; };
+		D4789FDA2775CBB8001395BA /* AssetDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4789FD82775CBB8001395BA /* AssetDetailInfoView.swift */; };
+		D4789FDB2775CBB8001395BA /* AssetDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4789FD82775CBB8001395BA /* AssetDetailInfoView.swift */; };
+		D4789FDD2775CD3F001395BA /* AssetDetailInfoViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4789FDC2775CD3F001395BA /* AssetDetailInfoViewTheme.swift */; };
+		D4789FDE2775CD3F001395BA /* AssetDetailInfoViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4789FDC2775CD3F001395BA /* AssetDetailInfoViewTheme.swift */; };
+		D4789FDF2775CD3F001395BA /* AssetDetailInfoViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4789FDC2775CD3F001395BA /* AssetDetailInfoViewTheme.swift */; };
 		D47956852769D16F003766D2 /* WCSessionListViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47956842769D16F003766D2 /* WCSessionListViewTheme.swift */; };
 		D47956862769D16F003766D2 /* WCSessionListViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47956842769D16F003766D2 /* WCSessionListViewTheme.swift */; };
 		D47956872769D16F003766D2 /* WCSessionListViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47956842769D16F003766D2 /* WCSessionListViewTheme.swift */; };
@@ -4297,6 +4303,8 @@
 		D473CA5B26E24A3400558598 /* NumpadButtonViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadButtonViewTheme.swift; sourceTree = "<group>"; };
 		D473CA5F26E2668F00558598 /* PassphraseVerifyViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyViewTheme.swift; sourceTree = "<group>"; };
 		D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseMnemonicViewTheme.swift; sourceTree = "<group>"; };
+		D4789FD82775CBB8001395BA /* AssetDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailInfoView.swift; sourceTree = "<group>"; };
+		D4789FDC2775CD3F001395BA /* AssetDetailInfoViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailInfoViewTheme.swift; sourceTree = "<group>"; };
 		D47956842769D16F003766D2 /* WCSessionListViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionListViewTheme.swift; sourceTree = "<group>"; };
 		D47956882769D536003766D2 /* WCSessionItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionItemViewTheme.swift; sourceTree = "<group>"; };
 		D479B21C276C7A55006402B6 /* WCSessionsListModalItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionsListModalItemViewModel.swift; sourceTree = "<group>"; };
@@ -7466,7 +7474,6 @@
 			isa = PBXGroup;
 			children = (
 				2BA71333274856FB00B8A907 /* Screens */,
-				2BA71332274856F700B8A907 /* ViewModels */,
 				2BA71331274856F300B8A907 /* Views */,
 			);
 			path = List;
@@ -7477,15 +7484,9 @@
 			children = (
 				2B79A14C23167CA300766021 /* RewardAmountContainerView.swift */,
 				2BE6DC6324A0C6340028A79F /* AssetsCollectionView.swift */,
+				D4789FD72775CB90001395BA /* AssetDetailInfo */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		2BA71332274856F700B8A907 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		2BA71333274856FB00B8A907 /* Screens */ = {
@@ -11269,6 +11270,15 @@
 			path = QRScanner;
 			sourceTree = "<group>";
 		};
+		D4789FD72775CB90001395BA /* AssetDetailInfo */ = {
+			isa = PBXGroup;
+			children = (
+				D4789FD82775CBB8001395BA /* AssetDetailInfoView.swift */,
+				D4789FDC2775CD3F001395BA /* AssetDetailInfoViewTheme.swift */,
+			);
+			path = AssetDetailInfo;
+			sourceTree = "<group>";
+		};
 		D4AEDD29271C6DF300AD2725 /* Footer */ = {
 			isa = PBXGroup;
 			children = (
@@ -12084,6 +12094,7 @@
 				2B9EF2CA25D3D15F004BCCC4 /* PasshraseMnemonicNumberHeaderSupplementaryView.swift in Sources */,
 				17BD4E112292F1260003E49A /* Formatter+Additions.swift in Sources */,
 				D4592905276B933700862B21 /* WCSessionListModalDataSource.swift in Sources */,
+				D4789FDB2775CBB8001395BA /* AssetDetailInfoView.swift in Sources */,
 				2B2AACBA250AA5DE00B8C5C5 /* Settings.swift in Sources */,
 				2BE937482464B04900322C1E /* TransactionAmountInformationView.swift in Sources */,
 				17BD4E122292F1260003E49A /* DeepLinkParser.swift in Sources */,
@@ -12132,6 +12143,7 @@
 				2BF727B527459BBA00CCAC30 /* LedgerPairWarningViewController.swift in Sources */,
 				17BD4E1C2292F1260003E49A /* StatusBarConfigurable.swift in Sources */,
 				D4976FB1270EFE1C007F3A7D /* AlgoAssetView.swift in Sources */,
+				D4789FDF2775CD3F001395BA /* AssetDetailInfoViewTheme.swift in Sources */,
 				2B5BE0532518E4F200324BEE /* WatchAccountAdditionViewController.swift in Sources */,
 				D48D11E927429150000061CE /* ToggleTitleHeaderViewTheme.swift in Sources */,
 				2BCBBAF624AA2D2C002CD56F /* DateWithTextImageView.swift in Sources */,
@@ -13276,6 +13288,7 @@
 				2B0F61EA24EC129D00DA22A6 /* ContactSelectionViewController.swift in Sources */,
 				2B01FE6726148482006C3C56 /* AccountRecoverOptionsViewModel.swift in Sources */,
 				2BB93C3025BF2475001F1D6C /* LedgerTransactionSigner.swift in Sources */,
+				D4789FDA2775CBB8001395BA /* AssetDetailInfoView.swift in Sources */,
 				2B0F61EC24EC129D00DA22A6 /* AssetSearchResult.swift in Sources */,
 				2BB93C2425BF2461001F1D6C /* SDKTransactionSigner.swift in Sources */,
 				2B0F61ED24EC129D00DA22A6 /* ChoosePasswordViewModel.swift in Sources */,
@@ -13442,6 +13455,7 @@
 				2B0F623D24EC129D00DA22A6 /* TransactionReceiverButton.swift in Sources */,
 				2B0F623E24EC129D00DA22A6 /* NotificationAsset.swift in Sources */,
 				D46AC87E26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift in Sources */,
+				D4789FDE2775CD3F001395BA /* AssetDetailInfoViewTheme.swift in Sources */,
 				2BD36E232684675200C57728 /* WCMainTransactionHeaderView.swift in Sources */,
 				2B0F623F24EC129D00DA22A6 /* UICollectionView+Additions.swift in Sources */,
 				2B95413525AC96100098805B /* AlgorandNetworkUpdatable.swift in Sources */,
@@ -14160,6 +14174,7 @@
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2B7E580C257E56BE00731C97 /* Int+Byte.swift in Sources */,
 				2BB64BE02402ABDD00519981 /* LedgerDeviceListView.swift in Sources */,
+				D4789FDD2775CD3F001395BA /* AssetDetailInfoViewTheme.swift in Sources */,
 				2BE93700245A2EE700322C1E /* Shadow.swift in Sources */,
 				2B57D8FD25587FDF006E6FCE /* SendTabEvent.swift in Sources */,
 				2B44C37E247419910074D57D /* TransactionsViewController.swift in Sources */,
@@ -14709,6 +14724,7 @@
 				2BAD92A325B5F4A500DE56D5 /* AssetDisplayViewModel.swift in Sources */,
 				2BA015872636BB2D009EC914 /* LedgerAccountVerificationStatusView.swift in Sources */,
 				D450DE672701C131008CC094 /* LedgerAccountVerificationViewTheme.swift in Sources */,
+				D4789FD92775CBB8001395BA /* AssetDetailInfoView.swift in Sources */,
 				2B9EF2BC25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift in Sources */,
 				17F9E924225789E7004CDF24 /* AccountFetchOperation.swift in Sources */,
 				2B3E3A10247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */,
