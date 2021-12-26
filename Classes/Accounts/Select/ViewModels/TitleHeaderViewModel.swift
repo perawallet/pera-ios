@@ -20,22 +20,27 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class SelectAccountHeaderViewModel: PairedViewModel {
+protocol TitleHeaderViewModel: PairedViewModel {
+    var title: String? { get }
+}
+
+final class SelectAccountHeaderViewModel: TitleHeaderViewModel {
     private let mode: SelectAccountHeaderMode
 
-    var title: String {
-        get {
-            switch self.mode {
-            case .accounts:
-                return "account-select-header-accounts-title".localized
-            case .contacts:
-                return "account-select-header-contacts-title".localized
-            }
-        }
-    }
+    private(set) var title: String?
 
     init(_ model: SelectAccountHeaderMode) {
         self.mode = model
+        bindTitle(model)
+    }
+
+    private func bindTitle(_ mode: SelectAccountHeaderMode) {
+        switch mode {
+        case .accounts:
+            self.title = "account-select-header-accounts-title".localized
+        case .contacts:
+            self.title = "account-select-header-contacts-title".localized
+        }
     }
 }
 

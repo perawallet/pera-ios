@@ -37,7 +37,7 @@ final class SelectAccountView: View {
         collectionView.keyboardDismissMode = .onDrag
         collectionView.register(SelectContactCell.self)
         collectionView.register(AccountPreviewCell.self)
-        collectionView.register(header: SelectAccountHeaderSupplementaryView.self)
+        collectionView.register(header: TitleHeaderSupplementaryView.self)
         return collectionView
     }()
 

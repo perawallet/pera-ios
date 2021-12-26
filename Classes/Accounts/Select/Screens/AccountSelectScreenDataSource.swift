@@ -152,7 +152,7 @@ UICollectionViewDataSource {
     ) -> UICollectionReusableView {
 
         let headerView = collectionView.dequeueHeader(
-            SelectAccountHeaderSupplementaryView.self,
+            TitleHeaderSupplementaryView.self,
             at: indexPath
         )
 

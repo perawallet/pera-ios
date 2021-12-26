@@ -29,6 +29,8 @@ class AccountSelectScreen: BaseViewController {
 
     private var draft: SendTransactionDraft
 
+    private let algorandSDK = AlgorandSDK()
+
     override func customizeTabBarAppearence() {
         isTabBarHidden = false
     }
@@ -68,12 +70,10 @@ class AccountSelectScreen: BaseViewController {
     override func bindData() {
         super.bindData()
 
-        guard let algorandSDK = session?.algorandSDK,
-              let address = UIPasteboard.general.string,
-              algorandSDK.isValidAddress(address) else {
-                  accountView.displayClipboard(isVisible: false)
-                  return
-              }
+        guard let address = UIPasteboard.general.validAddress else {
+            accountView.displayClipboard(isVisible: false)
+            return
+        }
 
         accountView.displayClipboard(isVisible: true)
         accountView.clipboardView.bindData(AccountClipboardViewModel(address))
@@ -99,7 +99,7 @@ extension AccountSelectScreen {
 extension AccountSelectScreen {
     @objc
     private func didTapCopy() {
-        if let address = UIPasteboard.general.string, let algorandSDK = session?.algorandSDK, algorandSDK.isValidAddress(address)  {
+        if let address = UIPasteboard.general.validAddress {
             accountView.searchInputView.setText(address)
         }
     }
@@ -107,7 +107,6 @@ extension AccountSelectScreen {
     @objc
     private func didTapNext() {
         guard let address = accountView.searchInputView.text,
-              let algorandSDK = session?.algorandSDK,
               algorandSDK.isValidAddress(address) else {
                   return
         }
@@ -182,7 +181,7 @@ extension AccountSelectScreen: SearchInputViewDelegate {
             accountView.listView.contentState = .none
         }
 
-        if let algorandSDK = session?.algorandSDK, algorandSDK.isValidAddress(query) {
+        if algorandSDK.isValidAddress(query) {
             accountView.listView.contentState = .none
             accountView.nextButton.isHidden = false
         }
@@ -210,7 +209,7 @@ extension AccountSelectScreen: QRScannerViewControllerDelegate {
             completionHandler?()
         }
 
-        guard let algorandSDK = session?.algorandSDK, let qrAddress = qrText.address else {
+        guard let qrAddress = qrText.address else {
             return
         }
 

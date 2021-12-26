@@ -13,23 +13,24 @@
 // limitations under the License.
 
 //
-//   SelectAccountHeaderViewTheme.swift
+//   UIPasteboard+Address.swift
 
 
 import Foundation
-import MacaroonUIKit
 import UIKit
 
-struct SelectAccountHeaderViewTheme: StyleSheet, LayoutSheet {
-    let titleLabel: TextStyle
-    let titleLeadingInset: LayoutMetric
+extension UIPasteboard {
+    var validAddress: String? {
+        guard let address = UIPasteboard.general.string else {
+            return nil
+        }
 
-    init(_ family: LayoutFamily) {
-        self.titleLabel = [
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(15)),
-            .textOverflow(SingleLineFittingText())
-        ]
-        self.titleLeadingInset = 24
+        let algorandSDK = AlgorandSDK()
+
+        if algorandSDK.isValidAddress(address) {
+            return address
+        }
+
+        return nil
     }
 }

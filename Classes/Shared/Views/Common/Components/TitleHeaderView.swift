@@ -13,17 +13,17 @@
 // limitations under the License.
 
 //
-//   SelectAccountHeaderView.swift
+//   TitleHeaderView.swift
 
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class SelectAccountHeaderView: View {
+final class TitleHeaderView: View {
     private lazy var titleLabel = UILabel()
 
-    func customize(_ theme: SelectAccountHeaderViewTheme) {
+    func customize(_ theme: TitleHeaderViewTheme) {
         addTitleLabel(theme)
     }
 
@@ -34,8 +34,8 @@ final class SelectAccountHeaderView: View {
     }
 }
 
-extension SelectAccountHeaderView {
-    private func addTitleLabel(_ theme: SelectAccountHeaderViewTheme) {
+extension TitleHeaderView {
+    private func addTitleLabel(_ theme: TitleHeaderViewTheme) {
         titleLabel.customizeAppearance(theme.titleLabel)
 
         addSubview(titleLabel)
@@ -46,9 +46,9 @@ extension SelectAccountHeaderView {
     }
 }
 
-class SelectAccountHeaderSupplementaryView: BaseSupplementaryView<SelectAccountHeaderView> {
+class TitleHeaderSupplementaryView: BaseSupplementaryView<TitleHeaderView> {
     override func configureAppearance() {
-        contextView.customize(SelectAccountHeaderViewTheme())
+        contextView.customize(TitleHeaderViewTheme())
     }
 
     func bind(_ viewModel: SelectAccountHeaderViewModel) {
