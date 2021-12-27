@@ -8132,7 +8132,7 @@
 			isa = PBXGroup;
 			children = (
 				D4155E82276C909600BCBFA4 /* List */,
-				D4155E83276C909D00BCBFA4 /* ListModal */,
+				D4155E83276C909D00BCBFA4 /* ShortList */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -8531,7 +8531,7 @@
 			isa = PBXGroup;
 			children = (
 				D4155E80276C907F00BCBFA4 /* List */,
-				D4155E81276C908A00BCBFA4 /* ListModal */,
+				D4155E81276C908A00BCBFA4 /* ShortList */,
 			);
 			path = DataSource;
 			sourceTree = "<group>";
@@ -10273,7 +10273,7 @@
 			isa = PBXGroup;
 			children = (
 				D4155E84276C90A900BCBFA4 /* List */,
-				D4155E85276C90B000BCBFA4 /* ListModal */,
+				D4155E85276C90B000BCBFA4 /* ShortList */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -10350,7 +10350,7 @@
 			isa = PBXGroup;
 			children = (
 				D4155E86276C90C100BCBFA4 /* List */,
-				D4155E87276C90D000BCBFA4 /* ListModal */,
+				D4155E87276C90D000BCBFA4 /* ShortList */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -10367,7 +10367,7 @@
 			isa = PBXGroup;
 			children = (
 				D4092B9D276B489A0009722D /* List */,
-				D4092BA2276B4A5D0009722D /* ListModal */,
+				D4092BA2276B4A5D0009722D /* ShortList */,
 				2B7E3014267A252700E89EE3 /* Empty */,
 			);
 			path = Views;
@@ -11194,14 +11194,14 @@
 			path = List;
 			sourceTree = "<group>";
 		};
-		D4092BA2276B4A5D0009722D /* ListModal */ = {
+		D4092BA2276B4A5D0009722D /* ShortList */ = {
 			isa = PBXGroup;
 			children = (
 				D4092BAF276B55170009722D /* Item */,
 				D4092B9E276B495D0009722D /* WCSessionShortListView.swift */,
 				D4092BAB276B522B0009722D /* WCSessionShortListViewTheme.swift */,
 			);
-			path = ListModal;
+			path = ShortList;
 			sourceTree = "<group>";
 		};
 		D4092BAF276B55170009722D /* Item */ = {
@@ -11250,12 +11250,12 @@
 			path = List;
 			sourceTree = "<group>";
 		};
-		D4155E81276C908A00BCBFA4 /* ListModal */ = {
+		D4155E81276C908A00BCBFA4 /* ShortList */ = {
 			isa = PBXGroup;
 			children = (
 				D4592902276B933700862B21 /* WCSessionShortListDataSource.swift */,
 			);
-			path = ListModal;
+			path = ShortList;
 			sourceTree = "<group>";
 		};
 		D4155E82276C909600BCBFA4 /* List */ = {
@@ -11266,12 +11266,12 @@
 			path = List;
 			sourceTree = "<group>";
 		};
-		D4155E83276C909D00BCBFA4 /* ListModal */ = {
+		D4155E83276C909D00BCBFA4 /* ShortList */ = {
 			isa = PBXGroup;
 			children = (
 				D4092BBC276B5E690009722D /* WCSessionShortListLayout.swift */,
 			);
-			path = ListModal;
+			path = ShortList;
 			sourceTree = "<group>";
 		};
 		D4155E84276C90A900BCBFA4 /* List */ = {
@@ -11282,13 +11282,13 @@
 			path = List;
 			sourceTree = "<group>";
 		};
-		D4155E85276C90B000BCBFA4 /* ListModal */ = {
+		D4155E85276C90B000BCBFA4 /* ShortList */ = {
 			isa = PBXGroup;
 			children = (
 				D4092B99276B48360009722D /* WCSessionShortListViewController.swift */,
 				D4592906276BACAD00862B21 /* WCSessionShortListViewController+Theme.swift */,
 			);
-			path = ListModal;
+			path = ShortList;
 			sourceTree = "<group>";
 		};
 		D4155E86276C90C100BCBFA4 /* List */ = {
@@ -11299,12 +11299,12 @@
 			path = List;
 			sourceTree = "<group>";
 		};
-		D4155E87276C90D000BCBFA4 /* ListModal */ = {
+		D4155E87276C90D000BCBFA4 /* ShortList */ = {
 			isa = PBXGroup;
 			children = (
 				D479B21C276C7A55006402B6 /* WCSessionsShortListItemViewModel.swift */,
 			);
-			path = ListModal;
+			path = ShortList;
 			sourceTree = "<group>";
 		};
 		D4155E98276CDC5D00BCBFA4 /* AccountSelection */ = {
