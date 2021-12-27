@@ -95,7 +95,9 @@ final class QRScannerViewController: BaseViewController {
         super.bindData()
 
         if isShowingConnectedAppsButton {
-            overlayView.bindData(QRScannerOverlayViewModel(UInt(walletConnector.allWalletConnectSessions.count)))
+            overlayView.bindData(
+                QRScannerOverlayViewModel(dAppCount: UInt(walletConnector.allWalletConnectSessions.count))
+            )
         }
     }
 
@@ -371,7 +373,9 @@ extension QRScannerViewController: QRScannerOverlayViewDelegate {
 
 extension QRScannerViewController: WCSessionListModalViewControllerDelegate {
     func wcSessionListModalViewControllerDidClose(_ controller: WCSessionListModalViewController) {
-        overlayView.bindData(QRScannerOverlayViewModel(UInt(walletConnector.allWalletConnectSessions.count)))
+        overlayView.bindData(
+            QRScannerOverlayViewModel(dAppCount: UInt(walletConnector.allWalletConnectSessions.count))
+        )
     }
 }
 
