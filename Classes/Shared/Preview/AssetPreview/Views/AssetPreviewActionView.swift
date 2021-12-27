@@ -125,6 +125,13 @@ extension AssetPreviewActionView: ViewModelBindable {
         secondaryImageView.image = viewModel?.secondaryImage
         assetShortNameLabel.text = viewModel?.assetSecondaryTitle
     }
+
+    func prepareForReuse() {
+        imageView.prepareForReuse()
+        assetNameLabel.text = nil
+        secondaryImageView.image = nil
+        assetShortNameLabel.text = nil
+    }
 }
 
 protocol AssetPreviewActionViewDelegate: AnyObject {

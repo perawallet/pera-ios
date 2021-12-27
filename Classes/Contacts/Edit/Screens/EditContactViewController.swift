@@ -194,15 +194,16 @@ extension EditContactViewController: EditContactViewDelegate {
             title: "contacts-delete-contact".localized,
             description: "contacts-delete-contact-alert-explanation".localized,
             primaryActionButtonTitle: "contacts-approve-delete-contact".localized,
-            secondaryActionButtonTitle: "title-keep".localized
-        ) { [weak self] in
-            guard let self = self else {
-                return
+            secondaryActionButtonTitle: "title-keep".localized,
+            primaryAction: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                contact.remove(entity: Contact.entityName)
+                NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: ["contact": contact])
+                self.dismissScreen()
             }
-            contact.remove(entity: Contact.entityName)
-            NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: ["contact": contact])
-            self.dismissScreen()
-        }
+        )
 
         removeContactModalTransition.perform(
             .bottomWarning(configurator: bottomWarningViewConfigurator)

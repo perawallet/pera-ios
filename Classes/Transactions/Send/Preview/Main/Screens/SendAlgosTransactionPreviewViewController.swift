@@ -176,20 +176,21 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             title: "send-qr-scan-alert-title".localized,
             description: "send-qr-scan-alert-message".localized,
             primaryActionButtonTitle: "title-approve".localized,
-            secondaryActionButtonTitle: "title-cancel".localized
-        ) { [weak self] in
-            guard let self = self else {
+            secondaryActionButtonTitle: "title-cancel".localized,
+            primaryAction: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                if asset != nil {
+                    self.displaySimpleAlertWith(title: "", message: "send-qr-different-asset-alert".localized)
+                    return
+                }
+                let receivedAmount = amountFromQR.toAlgos
+                self.amount = receivedAmount
+                self.sendTransactionPreviewView.amountInputView.inputTextField.text = receivedAmount.toDecimalStringForAlgosInput
                 return
             }
-            if asset != nil {
-                self.displaySimpleAlertWith(title: "", message: "send-qr-different-asset-alert".localized)
-                return
-            }
-            let receivedAmount = amountFromQR.toAlgos
-            self.amount = receivedAmount
-            self.sendTransactionPreviewView.amountInputView.inputTextField.text = receivedAmount.toDecimalStringForAlgosInput
-            return
-        }
+        )
 
         bottomModalTransition.perform(
             .bottomWarning(configurator: bottomWarningViewConfigurator)

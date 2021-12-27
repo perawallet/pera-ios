@@ -152,6 +152,12 @@ extension AppColors.Components {
     }
 }
 
+extension AppColors.Components {
+    enum QR: String, Color {
+        case background = "Components/QR/background"
+    }
+}
+
 extension AppColors.SendTransaction {
     enum Shadow: String, Color {
         case first = "SendTransaction/Shadow/account-first"

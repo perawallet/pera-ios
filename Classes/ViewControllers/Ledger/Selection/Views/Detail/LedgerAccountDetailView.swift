@@ -35,8 +35,14 @@ final class LedgerAccountDetailView: View {
         return collectionView
     }()
 
-    func customize(_ theme: LedgerAccountDetailViewTheme) {
-        addCollectionView(theme)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize()
+    }
+
+    private func customize() {
+        addCollectionView()
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -45,7 +51,7 @@ final class LedgerAccountDetailView: View {
 }
 
 extension LedgerAccountDetailView {
-    private func addCollectionView(_ theme: LedgerAccountDetailViewTheme) {
+    private func addCollectionView() {
         addSubview(collectionView)
         collectionView.pinToSuperview()
     }
@@ -54,23 +60,17 @@ extension LedgerAccountDetailView {
 // MARK: - AccountPreviewCell
 
 final class AccountPreviewCell: BaseCollectionViewCell<AccountPreviewView> {
-    func customize(_ theme: AccountPreviewViewTheme) {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(AccountPreviewViewTheme())
+    }
+
+    private func customize(_ theme: AccountPreviewViewTheme) {
         contextView.customize(theme)
     }
 
     func bindData(_ viewModel: AccountPreviewViewModel) {
-        contextView.bindData(viewModel)
-    }
-
-    func bindData(_ viewModel: AccountNameViewModel) {
-        contextView.bindData(viewModel)
-    }
-
-    func bindData(_ viewModel: AuthAccountNameViewModel) {
-        contextView.bindData(viewModel)
-    }
-
-    func bindData(_ viewModel: AccountCellViewModel) {
         contextView.bindData(viewModel)
     }
 }

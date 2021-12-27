@@ -139,3 +139,17 @@ extension TabBar {
         selectedBarButton?.isSelected = true
     }
 }
+
+extension TabBar {
+    func toggleTabBarItems(otherThanIndex index: Int = 2, to isEnabled: Bool) {
+        guard let tabBarItemAtIndex = barButtons[safe: index] else {
+            return
+        }
+
+        barButtons
+            .filter { $0 != tabBarItemAtIndex }
+            .forEach {
+                $0.isEnabled = isEnabled
+            }
+    }
+}

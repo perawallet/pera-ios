@@ -24,7 +24,13 @@ final class PassphraseMnemonicCell: BaseCollectionViewCell<PassphraseMnemonicVie
         }
     }
 
-    func customize(_ theme: PassphraseMnemonicViewTheme) {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(PassphraseMnemonicViewTheme())
+    }
+
+    private func customize(_ theme: PassphraseMnemonicViewTheme) {
         contextView.customize(theme)
     }
 

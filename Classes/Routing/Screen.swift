@@ -96,7 +96,8 @@ indirect enum Screen {
     case algoStatistics
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
     case wcConnectionApproval(walletConnectSession: WalletConnectSession, delegate: WCConnectionApprovalViewControllerDelegate, completion: WalletConnectSessionConnectionCompletionHandler)
-    case walletConnectSessions
+    case walletConnectSessionsList
+    case walletConnectSessionsModalList
     case wcTransactionFullDappDetail(wcSession: WCSession, message: String)
     case wcMainTransaction(
             transactions: [WCTransaction],

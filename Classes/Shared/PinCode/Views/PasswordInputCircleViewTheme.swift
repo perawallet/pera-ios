@@ -32,6 +32,7 @@ struct PasswordInputCircleViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = AppColors.Shared.System.background
         let filledButtonImage: Image = "black-button-filled"
         self.imageSet = [
+            .normal("gray-button-border"),
             .highlighted(filledButtonImage),
             .selected(filledButtonImage),
             .disabled(filledButtonImage)

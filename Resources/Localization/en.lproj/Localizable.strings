@@ -133,6 +133,7 @@
 "recover-copy-error" = "The last copied text is not valid passphrase with 25 words. Please copy valid passphrase and try again.";
 
 // MARK: QR Scanning
+"qr-scan-overlay-title" = "Find a code to scan";
 "qr-scan-title" = "Scan QR Code";
 "qr-scan-error-title" = "Camera is not available";
 "qr-scan-error-message" = "Your device does not support scanning a qr code.";
@@ -143,6 +144,8 @@
 "qr-scan-message-text" = "You can only scan your QR from this page, To view your QR please select the icon on your account";
 "qr-scan-should-scan-valid-qr" = "QR is not valid.";
 "qr-scan-invalid-wc-screen-error" = "The scanned QR is not a valid Algorand public address. For other types of QR (such as WalletConnect transactions), please use the scan QR button on the homepage.";
+"qr-scan-connected-app-count" = "%@ apps connected";
+"qr-scan-connected-app-singular-count" = "%@ app connected";
 
 // MARK: QR Creation
 "qr-creation-title" = "Passphrase QR";
@@ -358,6 +361,11 @@
 "transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
 "transaction-id-open-goalseeker" = "Open in GoalSeeker";
 "transaction-detail-balance" = "Account Balance";
+"transaction-detail-add" = "Add";
+"transaction-detail-completed" = "Completed";
+"transaction-detail-pending" = "Pending";
+"transaction-detail-failed" = "Failed";
+"transaction-detail-id-copied-title" = "ID copied to clipboard";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
@@ -667,7 +675,8 @@ on your Ledger device (%d)";
 "ledger-verify-header-subtitle" = "The following account addresses will display on your Ledger device. Please carefully compare and verify each address in order to finalize device pairing.";
 
 // MARK: Wallet Connect Session
-"wallet-connect-session-connection-description" = "%@ wants to connect to your account";
+"wallet-connect-session-connection-description" = "%@ wants to\nconnect to your account";
+"wallet-connect-session-select-account"= "Select Account";
 "wallet-connect-session-error-no-account" = "You don't have any account that WalletConnect can connect.";
 "wallet-connect-session-list-empty" = "You haven't connected any apps yet.";
 "wallet-connect-session-disconnect-message" = "Would you like to disconnect from %@?";
@@ -676,6 +685,8 @@ on your Ledger device (%d)";
 "wallet-connect-session-disconnect-fail-message" = "Failed to disconnect from Session %@.";
 "wallet-connect-session-invalid-qr-message" = "Couldn't create a session on WalletConnect. Please try with a valid QR.";
 "wallet-connect-session-error-not-reachable" = "WalletConnect is not reachable at the moment. Please try again later.";
+"wallet-connect-session-connection-approved-title" = "WalletConnect Session with\n%@ is approved";
+"wallet-connect-session-connection-approved-description" = "Head back to %@ to finalize the connection and to initiate transactions!";
 
 // MARK: Wallet Connect Transaction Warning
 "wallet-connect-transaction-warning-rekey" = "This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.";

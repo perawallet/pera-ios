@@ -88,7 +88,6 @@ extension LedgerAccountDetailDataSource: UICollectionViewDataSource {
 extension LedgerAccountDetailDataSource {
     func cellForLedgerAccount(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
-        cell.customize(AccountPreviewViewTheme())
 
         let accountNameViewModel = AccountNameViewModel(account: account)
         cell.bindData(
@@ -114,15 +113,14 @@ extension LedgerAccountDetailDataSource {
 
     func cellForRekeyedAccount(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
-        cell.customize(AccountPreviewViewTheme())
 
         if account.isRekeyed() {
             let accountNameViewModel = AuthAccountNameViewModel(account)
-            cell.bindData(accountNameViewModel)
+            cell.bindData(AccountPreviewViewModel(viewModel: accountNameViewModel))
         } else {
             let rekeyedAccount = rekeyedAccounts[indexPath.row]
             let accountNameViewModel = AccountNameViewModel(account: rekeyedAccount)
-            cell.bindData(accountNameViewModel)
+            cell.bindData(AccountPreviewViewModel(viewModel: accountNameViewModel))
         }
         return cell
     }
