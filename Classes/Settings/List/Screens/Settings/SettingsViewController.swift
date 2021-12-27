@@ -164,7 +164,7 @@ extension SettingsViewController {
                 open(url)
             }
         case .appReview:
-            AlgorandAppStoreReviewer().requestManualReview(forAppWith: Environment.current.appID)
+            bottomModalTransition.perform(.walletRating)
         case .termsAndServices:
             guard let url = AlgorandWeb.termsAndServices.link else {
                 return

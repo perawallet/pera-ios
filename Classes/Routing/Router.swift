@@ -334,6 +334,8 @@ class Router {
                 accounts: accounts,
                 configuration: configuration
             )
+        case .walletRating:
+            viewController = WalletRatingViewController(configuration: configuration)
         case .developerSettings:
             viewController = DeveloperSettingsViewController(configuration: configuration)
         case .currencySelection:
