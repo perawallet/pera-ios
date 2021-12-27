@@ -18,5 +18,27 @@
 import MacaroonUIKit
 
 final class SingleLineTitleActionViewModel: ViewModel {
-    
+    private(set) var title: EditText?
+    private(set) var actionImage: Image?
+
+    init(
+        item: SingleLineIconTitleItem
+    ) {
+        bindIcon(item)
+        bindTitle(item)
+    }
+}
+
+extension SingleLineTitleActionViewModel {
+    private func bindTitle(
+        _ item: SingleLineIconTitleItem
+    ) {
+        title = item.title
+    }
+
+    private func bindIcon(
+        _ item: SingleLineIconTitleItem
+    ) {
+        actionImage = item.icon
+    }
 }

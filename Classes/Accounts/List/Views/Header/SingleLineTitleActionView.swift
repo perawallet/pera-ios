@@ -19,8 +19,15 @@ import UIKit
 import MacaroonUIKit
 
 final class SingleLineTitleActionView: View {
-    private lazy var titleLabel = Label()
-    private lazy var actionButton = Button()
+    lazy var handlers = Handlers()
+
+    private lazy var titleLabel = UILabel()
+    private lazy var actionButton = UIButton()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        customize(SingleLineTitleActionViewTheme())
+    }
 
     func customize(_ theme: SingleLineTitleActionViewTheme) {
         addActionButton(theme)
@@ -33,26 +40,49 @@ final class SingleLineTitleActionView: View {
 
 extension SingleLineTitleActionView {
     private func addActionButton(_ theme: SingleLineTitleActionViewTheme) {
+        actionButton.customizeAppearance(theme.action)
 
+        addSubview(actionButton)
+        actionButton.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(theme.actionTrailingPadding)
+            $0.size.equalTo(CGSize(theme.actionSize))
+        }
     }
     
     private func addTitleLabel(_ theme: SingleLineTitleActionViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
 
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.equalToSuperview().inset(theme.titleLeadingPadding)
+            $0.trailing.equalTo(actionButton.snp.leading).offset(-theme.titleTrailingPadding)
+        }
+    }
+}
+
+extension SingleLineTitleActionView {
+    @objc
+    private func didHandleAction() {
+        handlers.didHandleAction?()
     }
 }
 
 extension SingleLineTitleActionView: ViewModelBindable {
     func bindData(_ viewModel: SingleLineTitleActionViewModel?) {
+        titleLabel.editText = viewModel?.title
+        actionButton.setImage(viewModel?.actionImage?.uiImage, for: .normal)
+    }
+}
 
+extension SingleLineTitleActionView {
+    struct Handlers {
+        var didHandleAction: EmptyHandler?
     }
 }
 
 class SingleLineTitleActionHeaderView: BaseSupplementaryView<SingleLineTitleActionView> {
-
-    override func configureAppearance() {
-        super.configureAppearance()
-        contextView.customize(SingleLineTitleActionViewTheme())
-    }
 
     func bind(_ viewModel: SingleLineTitleActionViewModel) {
         contextView.bindData(viewModel)

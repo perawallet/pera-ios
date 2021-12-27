@@ -44,6 +44,9 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
     }()
 
     private lazy var assetSearchInput = SearchInputView()
+    
+    private lazy var verifiedAssetsScreen = AssetListViewController(configuration: configuration)
+    private lazy var allAssetsScreen = AssetListViewController(configuration: configuration)
 
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
@@ -89,9 +92,6 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
         let query = assetSearchInput.text
         fetchAssets(query: query, isPaginated: false)
     }
-
-    private lazy var verifiedAssetsScreen = AssetListViewController(configuration: configuration)
-    private lazy var allAssetsScreen = AssetListViewController(configuration: configuration)
 
     override func linkInteractors() {
         super.linkInteractors()

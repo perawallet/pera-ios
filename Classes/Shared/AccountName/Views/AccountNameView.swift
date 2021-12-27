@@ -22,12 +22,6 @@ final class AccountNameView: View {
     private lazy var imageView = UIImageView()
     private lazy var nameLabel = UILabel()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        customize(AccountNameViewTheme())
-    }
-
     func customize(_ theme: AccountNameViewTheme) {
         addImageView(theme)
         addNameLabel(theme)

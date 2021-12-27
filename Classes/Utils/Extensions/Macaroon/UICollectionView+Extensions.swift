@@ -23,7 +23,8 @@ extension UICollectionView {
     public func dequeueHeader<T: UICollectionReusableView>(_ someClass: T.Type, at indexPath: IndexPath) -> T {
         guard let header = dequeueReusableSupplementaryView(
             ofKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: someClass.reuseIdentifier, for: indexPath
+            withReuseIdentifier: someClass.reuseIdentifier,
+            for: indexPath
         ) as? T else {
             crash("Header not supported of \(type(of: T.self))")
         }
