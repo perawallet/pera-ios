@@ -18,7 +18,13 @@
 import UIKit
 import MacaroonUIKit
 
-final class Button: MacaroonUIKit.Button {
+final class Button: MacaroonUIKit.Button, TripleShadowDrawable {
+    var secondShadow: MacaroonUIKit.Shadow?
+    var secondShadowLayer: CAShapeLayer = CAShapeLayer()
+
+    var thirdShadow: MacaroonUIKit.Shadow?
+    var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
+
     private var theme: ButtonTheme?
     private lazy var indicatorView = ViewLoadingIndicator()
 
@@ -34,6 +40,7 @@ final class Button: MacaroonUIKit.Button {
         customizeView(theme)
         customizeLabel(theme)
         customizeBackgroundColor(theme, isEnabled: isEnabled)
+        customizeShadow(theme)
 
         addIndicator(theme)
     }
@@ -71,6 +78,20 @@ extension Button {
         }
 
         indicatorView.isHidden = true
+    }
+
+    private func customizeShadow(_ theme: ButtonTheme) {
+        if let firstShadow = theme.firstShadow {
+            drawAppearance(shadow: firstShadow)
+        }
+
+        if let secondShadow = theme.secondShadow {
+            drawAppearance(secondShadow: secondShadow)
+        }
+
+        if let thirdShadow = theme.thirdShadow {
+            drawAppearance(thirdShadow: thirdShadow)
+        }
     }
 }
 

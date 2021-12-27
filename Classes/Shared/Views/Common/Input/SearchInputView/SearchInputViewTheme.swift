@@ -19,19 +19,86 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct SearchInputViewTheme: LayoutSheet, StyleSheet {
+protocol SearchInputViewTheme: LayoutSheet, StyleSheet {
+    var textInput: TextInputStyle { get }
+    var textInputBackground: ViewStyle { get }
+    var textLeftInputAccessory: ImageStyle { get }
+    var textRightInputAccessory: ButtonStyle? { get }
+    var textClearInputAccessory: ButtonStyle { get }
+
+    var intrinsicHeight: LayoutMetric { get }
+    var textInputContentEdgeInsets: LayoutPaddings { get }
+    var textInputPaddings: LayoutPaddings { get }
+    var textInputAccessorySize: LayoutSize { get }
+    var textRightInputAccessoryViewPaddings: LayoutPaddings { get }
+    var textRightInputAccessoryViewMode: UITextField.ViewMode { get }
+    var placeholder: String { get }
+}
+
+struct SearchInputViewCommonTheme: SearchInputViewTheme {
     let textInput: TextInputStyle
     let textInputBackground: ViewStyle
     let textLeftInputAccessory: ImageStyle
-    let textRightInputAccessory: ButtonStyle
+    let textRightInputAccessory: ButtonStyle?
+    let textClearInputAccessory: ButtonStyle
 
     let intrinsicHeight: LayoutMetric
     let textInputContentEdgeInsets: LayoutPaddings
     let textInputPaddings: LayoutPaddings
     let textInputAccessorySize: LayoutSize
     let textRightInputAccessoryViewPaddings: LayoutPaddings
-    
-    private let placeholder: String
+    let textRightInputAccessoryViewMode: UITextField.ViewMode
+    let placeholder: String
+
+    init(placeholder: String, family: LayoutFamily) {
+        self.placeholder = placeholder
+
+        self.textInput = [
+            .tintColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.regular.make(13)),
+            .textColor(AppColors.Components.Text.main),
+            .placeholder(placeholder),
+            .placeholderColor(AppColors.Components.Text.gray),
+            .returnKeyType(.done)
+        ]
+        self.textInputBackground = [
+            .backgroundColor(AppColors.Shared.Layer.grayLighter)
+        ]
+        self.textLeftInputAccessory = [
+            .image("icon-field-search")
+        ]
+        self.textRightInputAccessory = nil
+
+        self.intrinsicHeight = 40
+        self.textInputContentEdgeInsets = (0, 12, 0, 12)
+        self.textInputPaddings = (0, 0, 0, 0)
+        self.textInputAccessorySize = (24, 24)
+        self.textRightInputAccessoryViewPaddings = (0, .noMetric, 0, 12)
+        self.textRightInputAccessoryViewMode = .whileEditing
+        self.textClearInputAccessory = [
+            .icon([.normal("icon-field-close")])
+        ]
+    }
+
+    init(_ family: LayoutFamily) {
+        self.init(placeholder: .empty, family: family)
+    }
+}
+
+struct QRSearchInputViewTheme: SearchInputViewTheme {
+    let textInput: TextInputStyle
+    let textInputBackground: ViewStyle
+    let textLeftInputAccessory: ImageStyle
+    let textRightInputAccessory: ButtonStyle?
+    let textClearInputAccessory: ButtonStyle
+
+    let intrinsicHeight: LayoutMetric
+    let textInputContentEdgeInsets: LayoutPaddings
+    let textInputPaddings: LayoutPaddings
+    let textInputAccessorySize: LayoutSize
+    let textRightInputAccessoryViewPaddings: LayoutPaddings
+    let textRightInputAccessoryViewMode: UITextField.ViewMode
+    let placeholder: String
 
     init(placeholder: String, family: LayoutFamily) {
         self.placeholder = placeholder
@@ -51,14 +118,18 @@ struct SearchInputViewTheme: LayoutSheet, StyleSheet {
             .image("icon-field-search")
         ]
         self.textRightInputAccessory = [
-            .icon([.normal("icon-field-close")])
+            .icon([.normal("icon-qr-scan")])
         ]
 
         self.intrinsicHeight = 40
-        self.textInputContentEdgeInsets = (0, 12, 0, 36)
+        self.textInputContentEdgeInsets = (0, 12, 0, 12)
         self.textInputPaddings = (0, 0, 0, 0)
         self.textInputAccessorySize = (24, 24)
         self.textRightInputAccessoryViewPaddings = (0, .noMetric, 0, 12)
+        self.textRightInputAccessoryViewMode = .whileEditing
+        self.textClearInputAccessory = [
+            .icon([.normal("icon-field-close")])
+        ]
     }
 
     init(_ family: LayoutFamily) {

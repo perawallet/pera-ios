@@ -38,9 +38,17 @@ final class NumpadView: View {
     private lazy var numberNineButton = NumpadButton(numpadKey: .number("9"))
     
     private lazy var fourthRowStackView = UIStackView()
-    private lazy var spacingButton = NumpadButton(numpadKey: .spacing)
+    private lazy var leftButton = NumpadButton(numpadKey: .spacing)
     private lazy var zeroButton = NumpadButton(numpadKey: .number("0"))
     private lazy var deleteButton = NumpadButton(numpadKey: .delete)
+
+    private let mode: Mode
+
+    init(mode: Mode = .passcode) {
+        self.mode = mode
+        super.init(frame: .zero)
+        customizeButtonsForMode()
+    }
 
     func customize(_ theme: NumpadViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -63,6 +71,22 @@ final class NumpadView: View {
             zeroButton, deleteButton
         ].forEach {
             $0.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
+        }
+
+        switch mode {
+        case .decimal:
+            leftButton.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
+        default:
+            return
+        }
+    }
+
+    private func customizeButtonsForMode() {
+        switch mode {
+        case .decimal:
+            self.leftButton = NumpadButton(numpadKey: .decimalSeparator)
+        case .passcode:
+            self.leftButton = NumpadButton(numpadKey: .spacing)
         }
     }
 }
@@ -131,7 +155,7 @@ extension NumpadView {
             $0.centerX.equalToSuperview()
         }
         
-        fourthRowStackView.addArrangedSubview(spacingButton)
+        fourthRowStackView.addArrangedSubview(leftButton)
         fourthRowStackView.addArrangedSubview(zeroButton)
         fourthRowStackView.addArrangedSubview(deleteButton)
     }
@@ -149,8 +173,32 @@ protocol NumpadViewDelegate: AnyObject {
     func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey)
 }
 
-enum NumpadKey {
+enum NumpadKey: Equatable {
     case spacing
     case number(String)
     case delete
+    case decimalSeparator
+
+    static func == (lhs: NumpadKey, rhs: NumpadKey) -> Bool {
+        switch (lhs, rhs) {
+        case (.spacing, .spacing):
+            return true
+        case (.delete, .delete):
+            return true
+        case (.decimalSeparator, .decimalSeparator):
+            return true
+        case (.number(let lNumber), .number(let rNumber)):
+            return lNumber == rNumber
+        default:
+            return false
+        }
+
+    }
+}
+
+extension NumpadView {
+    enum Mode {
+        case decimal
+        case passcode
+    }
 }

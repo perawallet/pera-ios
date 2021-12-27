@@ -20,7 +20,7 @@ import Foundation
 import UIKit
 
 final class SelectAssetViewControllerDataSource: NSObject {
-    private var assetDetails: [AssetDetail] = []
+    private(set) var assetDetails: [AssetDetail] = []
     private let account: Account
 
     init(account: Account) {

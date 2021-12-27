@@ -42,6 +42,14 @@ extension Decimal {
         return Formatter.separatorForAlgosLabel.string(from: NSDecimalNumber(decimal: self))
     }
 
+    var toNumberStringWithSeparatorForLabel: String? {
+        return Formatter.numberWithAutoSeparator.string(from: NSDecimalNumber(decimal: self))
+    }
+
+    func toNumberStringWithSeparatorForLabel(fraction: Int) -> String? {
+        return Formatter.numberWithAutoSeparator(fraction: fraction).string(from: NSDecimalNumber(decimal: self))
+    }
+
     var toRewardsStringForLabel: String? {
         return Formatter.separatorForRewardsLabel.string(from: NSDecimalNumber(decimal: self))
     }
