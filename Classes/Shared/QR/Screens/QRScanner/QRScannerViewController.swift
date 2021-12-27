@@ -366,13 +366,13 @@ extension QRScannerViewController: QRScannerOverlayViewDelegate {
     }
 
     func qrScannerOverlayViewDidTapConnectedAppsButton(_ qrScannerOverlayView: QRScannerOverlayView) {
-        let walletConnectSessionsModalList: WCSessionListModalViewController? = wcConnectionModalTransition.perform(.walletConnectSessionsModalList)
-        walletConnectSessionsModalList?.delegate = self
+        let walletConnectSessionsShortList: WCSessionShortListViewController? = wcConnectionModalTransition.perform(.walletConnectSessionsShortList)
+        walletConnectSessionsShortList?.delegate = self
     }
 }
 
-extension QRScannerViewController: WCSessionListModalViewControllerDelegate {
-    func wcSessionListModalViewControllerDidClose(_ controller: WCSessionListModalViewController) {
+extension QRScannerViewController: WCSessionShortListViewControllerDelegate {
+    func wcSessionShortListViewControllerDidClose(_ controller: WCSessionShortListViewController) {
         overlayView.bindData(
             QRScannerOverlayViewModel(dAppCount: UInt(walletConnector.allWalletConnectSessions.count))
         )

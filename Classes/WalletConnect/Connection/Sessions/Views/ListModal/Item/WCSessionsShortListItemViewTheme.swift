@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   WCSessionsListModalItemViewTheme.swift
+//   WCSessionsShortListItemViewTheme.swift
 
 import MacaroonUIKit
 import UIKit
 
-struct WCSessionsListModalItemViewTheme: LayoutSheet, StyleSheet {
+struct WCSessionsShortListItemViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color
     let nameLabel: TextStyle
     let disconnectOptionsButton: ButtonStyle

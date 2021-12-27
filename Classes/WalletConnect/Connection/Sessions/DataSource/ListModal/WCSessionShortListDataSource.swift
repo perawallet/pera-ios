@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   WCSessionListModalDataSource.swift
+//   WCSessionShortListDataSource.swift
 
 import UIKit
 
-final class WCSessionListModalDataSource: NSObject {
-    weak var delegate: WCSessionListModalDataSourceDelegate?
+final class WCSessionShortListDataSource: NSObject {
+    weak var delegate: WCSessionShortListDataSourceDelegate?
 
     private let walletConnector: WalletConnector
 
@@ -31,16 +31,16 @@ final class WCSessionListModalDataSource: NSObject {
     }
 }
 
-extension WCSessionListModalDataSource: UICollectionViewDataSource {
+extension WCSessionShortListDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return sessions.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(WCSessionListModalItemCell.self, at: indexPath)
+        let cell = collectionView.dequeue(WCSessionShortListItemCell.self, at: indexPath)
 
         if let session = sessions[safe: indexPath.item] {
-            cell.bindData(WCSessionsListModalItemViewModel(session))
+            cell.bindData(WCSessionsShortListItemViewModel(session))
         }
 
         cell.delegate = self
@@ -48,7 +48,7 @@ extension WCSessionListModalDataSource: UICollectionViewDataSource {
     }
 }
 
-extension WCSessionListModalDataSource {
+extension WCSessionShortListDataSource {
     func session(at index: Int) -> WCSession? {
         return sessions[safe: index]
     }
@@ -62,12 +62,12 @@ extension WCSessionListModalDataSource {
     }
 }
 
-extension WCSessionListModalDataSource: WCSessionListModalItemCellDelegate {
-    func wcSessionListModalItemCellDidOpenDisconnectionMenu(_ wcSessionListModalItemCell: WCSessionListModalItemCell) {
-        delegate?.wcSessionListModalDataSource(self, didOpenDisconnectMenuFrom: wcSessionListModalItemCell)
+extension WCSessionShortListDataSource: WCSessionShortListItemCellDelegate {
+    func wcSessionShortListItemCellDidOpenDisconnectionMenu(_ wcSessionShortListItemCell: WCSessionShortListItemCell) {
+        delegate?.wcSessionShortListDataSource(self, didOpenDisconnectMenuFrom: wcSessionShortListItemCell)
     }
 }
 
-protocol WCSessionListModalDataSourceDelegate: AnyObject {
-    func wcSessionListModalDataSource(_ wcSessionListModalDataSource: WCSessionListModalDataSource, didOpenDisconnectMenuFrom cell: WCSessionListModalItemCell)
+protocol WCSessionShortListDataSourceDelegate: AnyObject {
+    func wcSessionShortListDataSource(_ wcSessionShortListDataSource: WCSessionShortListDataSource, didOpenDisconnectMenuFrom cell: WCSessionShortListItemCell)
 }

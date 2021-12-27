@@ -13,16 +13,16 @@
 // limitations under the License.
 
 //
-//   WCSessionListModalItemCell.swift
+//   WCSessionShortListItemCell.swift
 
 import UIKit
 
-final class WCSessionListModalItemCell: BaseCollectionViewCell<WCSessionListModalItemView> {
-    weak var delegate: WCSessionListModalItemCellDelegate?
+final class WCSessionShortListItemCell: BaseCollectionViewCell<WCSessionShortListItemView> {
+    weak var delegate: WCSessionShortListItemCellDelegate?
 
     override func prepareLayout() {
         super.prepareLayout()
-        contextView.customize(WCSessionsListModalItemViewTheme())
+        contextView.customize(WCSessionsShortListItemViewTheme())
     }
 
     override func linkInteractors() {
@@ -37,18 +37,18 @@ final class WCSessionListModalItemCell: BaseCollectionViewCell<WCSessionListModa
     }
 }
 
-extension WCSessionListModalItemCell {
-    func bindData(_ viewModel: WCSessionsListModalItemViewModel) {
+extension WCSessionShortListItemCell {
+    func bindData(_ viewModel: WCSessionsShortListItemViewModel) {
         contextView.bindData(viewModel)
     }
 }
 
-extension WCSessionListModalItemCell: WCSessionListModalItemViewDelegate {
-    func wcSessionListModalItemViewDidOpenDisconnectionMenu(_ wcSessionListModalView: WCSessionListModalItemView) {
-        delegate?.wcSessionListModalItemCellDidOpenDisconnectionMenu(self)
+extension WCSessionShortListItemCell: WCSessionShortListItemViewDelegate {
+    func wcSessionShortListItemViewDidOpenDisconnectionMenu(_ wcSessionShortListView: WCSessionShortListItemView) {
+        delegate?.wcSessionShortListItemCellDidOpenDisconnectionMenu(self)
     }
 }
 
-protocol WCSessionListModalItemCellDelegate: AnyObject {
-    func wcSessionListModalItemCellDidOpenDisconnectionMenu(_ wcSessionItemCell: WCSessionListModalItemCell)
+protocol WCSessionShortListItemCellDelegate: AnyObject {
+    func wcSessionShortListItemCellDidOpenDisconnectionMenu(_ wcSessionItemCell: WCSessionShortListItemCell)
 }
