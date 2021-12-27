@@ -127,12 +127,12 @@ extension WCSessionListViewController {
 
 extension WCSessionListViewController: QRScannerViewControllerDelegate {
     func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController) {
-        dataSource.updateSessions(walletConnector.allWalletConnectSessions)
         asyncMain { [weak self] in
             guard let self = self else {
                 return
             }
 
+            self.dataSource.updateSessions(self.walletConnector.allWalletConnectSessions)
             self.setListContentState()
             self.sessionListView.collectionView.reloadData()
         }

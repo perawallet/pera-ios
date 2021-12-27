@@ -143,13 +143,29 @@ extension WalletConnector: WalletConnectBridgeDelegate {
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didConnectTo session: WalletConnectSession) {
         let wcSession = session.toWCSession()
-        addToSavedSessions(wcSession)
+        
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.addToSavedSessions(wcSession)
+        }
+
         delegate?.walletConnector(self, didConnectTo: wcSession)
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didDisconnectFrom session: WalletConnectSession) {
         let wcSession = session.toWCSession()
-        removeFromSessions(wcSession)
+
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.removeFromSessions(wcSession)
+        }
+
         delegate?.walletConnector(self, didDisconnectFrom: wcSession)
     }
 
