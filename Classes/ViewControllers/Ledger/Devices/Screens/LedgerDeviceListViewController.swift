@@ -99,14 +99,8 @@ extension LedgerDeviceListViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: LedgerDeviceCell.reusableIdentifier,
-            for: indexPath) as? LedgerDeviceCell else {
-                fatalError("Index path is out of bounds")
-        }
-        
+        let cell = collectionView.dequeue(LedgerDeviceCell.self, at: indexPath)
         let device = ledgerDevices[indexPath.item]
-        cell.customize(LedgerDeviceCellViewTheme())
         cell.bindData(LedgerDeviceListViewModel(device))
         return cell
     }

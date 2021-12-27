@@ -126,15 +126,10 @@ extension PassphraseVerifyDataSource: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let mnemonics = shownMnemonics[indexPath.section],
-              let mnemonic = mnemonics[safe: indexPath.item],
-              let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: PassphraseMnemonicCell.reusableIdentifier,
-                for: indexPath
-            ) as? PassphraseMnemonicCell else {
-            fatalError("Index path is out of bounds")
-        }
-
-        cell.customize(PassphraseMnemonicViewTheme())
+              let mnemonic = mnemonics[safe: indexPath.item] else {
+                  fatalError("Index path is out of bounds")
+              }
+        let cell = collectionView.dequeue(PassphraseMnemonicCell.self, at: indexPath)
         cell.bindData(PassphraseMnemonicViewModel(mnemonic: mnemonic))
         return cell
     }

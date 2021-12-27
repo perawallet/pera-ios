@@ -16,279 +16,233 @@
 //  TransactionDetailView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class TransactionDetailView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
+final class TransactionDetailView: View {    
     weak var delegate: TransactionDetailViewDelegate?
-    
-    private let transactionType: TransactionType
-    
-    private lazy var closeToCopyValueGestureRecognizer = UILongPressGestureRecognizer(
-        target: self,
-        action: #selector(notifyDelegateToCopyCloseToView)
-    )
-    
-    private lazy var opponentCopyValueGestureRecognizer = UILongPressGestureRecognizer(
-        target: self,
-        action: #selector(notifyDelegateToCopyOpponentView)
-    )
-    
-    private lazy var noteCopyValueGestureRecognizer = UILongPressGestureRecognizer(
-        target: self,
-        action: #selector(notifyDelegateToCopyNoteView)
-    )
-    
-    private(set) lazy var statusView: TransactionStatusInformationView = {
-        let statusView = TransactionStatusInformationView()
-        statusView.setTitle("transaction-detail-status".localized)
-        return statusView
-    }()
-    
-    private(set) lazy var amountView: TransactionAmountInformationView = {
-        let amountView = TransactionAmountInformationView()
-        amountView.setTitle("transaction-detail-amount".localized)
-        return amountView
-    }()
-    
-    private(set) lazy var closeAmountView: TransactionAmountInformationView = {
-        let rewardView = TransactionAmountInformationView()
-        rewardView.setTitle("transaction-detail-close-amount".localized)
-        return rewardView
-    }()
-    
-    private(set) lazy var rewardView: TransactionAmountInformationView = {
-        let rewardView = TransactionAmountInformationView()
-        rewardView.setTitle("transaction-detail-reward".localized)
-        return rewardView
-    }()
-    
+
+    private lazy var verticalStackView = UIStackView()
+    private(set) lazy var statusView = TransactionStatusInformationView()
+    private(set) lazy var amountView = TransactionAmountInformationView()
+    private(set) lazy var closeAmountView = TransactionAmountInformationView()
+    private(set) lazy var rewardView = TransactionAmountInformationView()
     private(set) lazy var userView = TransactionTextInformationView()
-    
     private(set) lazy var opponentView = TransactionContactInformationView()
-    
-    private(set) lazy var closeToView: TransactionTextInformationView = {
-        let closeToView = TransactionTextInformationView()
-        closeToView.setTitle("transaction-detail-close-to".localized)
-        closeToView.isUserInteractionEnabled = true
-        return closeToView
-    }()
-    
-    private(set) lazy var feeView: TransactionAmountInformationView = {
-        let feeView = TransactionAmountInformationView()
-        feeView.setTitle("transaction-detail-fee".localized)
-        return feeView
-    }()
-    
-    private lazy var dateView: TransactionTextInformationView = {
-        let dateView = TransactionTextInformationView()
-        dateView.setTitle("transaction-detail-date".localized)
-        return dateView
-    }()
-    
-    private(set) lazy var roundView: TransactionTextInformationView = {
-        let roundView = TransactionTextInformationView()
-        roundView.setTitle("transaction-detail-round".localized)
-        return roundView
-    }()
-    
-    private(set) lazy var idView = TransactionIDLabel()
-    
-    private(set) lazy var noteView: TransactionTitleInformationView = {
-        let noteView = TransactionTitleInformationView()
-        noteView.setTitle("transaction-detail-note".localized)
-        noteView.isUserInteractionEnabled = true
-        return noteView
-    }()
+    private(set) lazy var closeToView = TransactionTextInformationView()
+    private(set) lazy var feeView = TransactionAmountInformationView()
+    private lazy var dateView = TransactionTextInformationView()
+    private(set) lazy var roundView = TransactionTextInformationView()
+    private(set) lazy var idView = TransactionTextInformationView()
+    private(set) lazy var noteView = TransactionTextInformationView()
+    private lazy var openInAlgoExplorerButton = UIButton()
+    private lazy var openInGoalSeekerButton = UIButton()
+
+    private let transactionType: TransactionType
     
     init(transactionType: TransactionType) {
         self.transactionType = transactionType
         super.init(frame: .zero)
+
+        customize(TransactionDetailViewTheme())
+        linkInteractors()
     }
     
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
-        opponentView.isUserInteractionEnabled = true
-        closeToView.copyImageView.isHidden = false
-        opponentView.copyImageView.isHidden = false
-        noteView.copyImageView.isHidden = false
-    }
-    
-    override func linkInteractors() {
-        super.linkInteractors()
+    func linkInteractors() {
         opponentView.delegate = self
-        closeToView.addGestureRecognizer(closeToCopyValueGestureRecognizer)
-        idView.delegate = self
-        opponentView.addGestureRecognizer(opponentCopyValueGestureRecognizer)
-        noteView.addGestureRecognizer(noteCopyValueGestureRecognizer)
+        opponentView.linkInteractors()
+
+        closeToView.addGestureRecognizer(
+            UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(notifyDelegateToCopyCloseToView)
+            )
+        )
+        opponentView.addGestureRecognizer(
+            UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(notifyDelegateToCopyOpponentView)
+            )
+        )
+        noteView.addGestureRecognizer(
+            UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(notifyDelegateToCopyNoteView)
+            )
+        )
+        idView.addGestureRecognizer(
+            UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(notifyDelegateToCopyTransactionID)
+            )
+        )
+        openInAlgoExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
+        openInGoalSeekerButton.addTarget(self, action: #selector(notifyDelegateToOpenGoalSeaker), for: .touchUpInside)
     }
     
-    override func prepareLayout() {
-        setupStatusViewLayout()
-        setupAmountViewLayout()
-        setupCloseAmountViewLayout()
-        setupRewardViewLayout()
-        
+    func customize(_ theme: TransactionDetailViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        addVerticalStackView(theme)
+        addAmountView(theme)
+        addCloseAmountView(theme)
+        addRewardView(theme)
+        addStatusView(theme)
+
         if transactionType == .received {
-            setupOpponentViewLayout()
-            setupUserViewLayout()
-            setupCloseToViewLayout()
+            addOpponentView(theme)
+            addUserView(theme)
         } else {
-            setupUserViewLayout()
-            setupOpponentViewLayout()
-            setupCloseToViewLayout()
+            addUserView(theme)
+            addOpponentView(theme)
         }
 
-        setupFeeViewLayout()
-        setupDateViewLayout()
-        setupRoundViewLayout()
-        setupIdViewLayout()
-        setupNoteViewLayout()
+        addCloseToView(theme)
+        addFeeView(theme)
+        addDateView(theme)
+        addRoundView(theme)
+        addIdView(theme)
+        addNoteView(theme)
+        addOpenInAlgoExplorerButton(theme)
+        addOpenInGoalSeekerButton(theme)
     }
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: ViewStyle) {}
 }
 
 extension TransactionDetailView {
-    private func setupStatusViewLayout() {
-        addSubview(statusView)
-        
-        statusView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.statusViewTopInset)
+    private func addVerticalStackView(_ theme: TransactionDetailViewTheme) {
+        verticalStackView.axis = .vertical
+        verticalStackView.spacing = theme.verticalStackViewSpacing
+        addSubview(verticalStackView)
+
+        verticalStackView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.verticalStackViewTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.bottom.lessThanOrEqualToSuperview()
         }
     }
     
-    private func setupAmountViewLayout() {
-        addSubview(amountView)
-        
-        amountView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(statusView.snp.bottom)
-        }
+    private func addAmountView(_ theme: TransactionDetailViewTheme) {
+        amountView.customize(TransactionAmountInformationViewTheme(transactionAmountViewTheme: TransactionAmountViewBiggerTheme()))
+        amountView.setTitle("transaction-detail-amount".localized)
+
+        verticalStackView.addArrangedSubview(amountView)
     }
     
-    private func setupCloseAmountViewLayout() {
-        addSubview(closeAmountView)
-        
-        closeAmountView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(amountView.snp.bottom)
-        }
+    private func addCloseAmountView(_ theme: TransactionDetailViewTheme) {
+        closeAmountView.customize(theme.commonTransactionAmountInformationViewTheme)
+        closeAmountView.setTitle("transaction-detail-close-amount".localized)
+
+        verticalStackView.addArrangedSubview(closeAmountView)
+    }
+
+    private func addStatusView(_ theme: TransactionDetailViewTheme) {
+        statusView.customize(theme.transactionStatusInformationViewTheme)
+        statusView.setTitle("transaction-detail-status".localized)
+
+        verticalStackView.addArrangedSubview(statusView)
+        verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: statusView)
+        statusView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
+    }
+
+    private func addRewardView(_ theme: TransactionDetailViewTheme) {
+        rewardView.customize(theme.commonTransactionAmountInformationViewTheme)
+        rewardView.setTitle("transaction-detail-reward".localized)
+
+        verticalStackView.addArrangedSubview(rewardView)
     }
     
-    private func setupRewardViewLayout() {
-        addSubview(rewardView)
-        
-        rewardView.snp.makeConstraints { make in
-            make.top.equalTo(closeAmountView.snp.bottom)
-            make.top.equalTo(amountView.snp.bottom).priority(.low)
-            make.leading.trailing.equalToSuperview()
-        }
+    private func addUserView(_ theme: TransactionDetailViewTheme) {
+        userView.customize(theme.transactionTextInformationViewCommonTheme)
+
+        verticalStackView.addArrangedSubview(userView)
     }
     
-    private func setupUserViewLayout() {
-        addSubview(userView)
-        
-        userView.snp.makeConstraints { make in
-            if transactionType == .received {
-                make.top.equalTo(opponentView.snp.bottom)
-            } else {
-                make.top.equalTo(rewardView.snp.bottom)
-                make.top.equalTo(closeAmountView.snp.bottom).priority(.medium)
-                make.top.equalTo(amountView.snp.bottom).priority(.low)
-            }
-            
-            make.leading.trailing.equalToSuperview()
-        }
+    private func addOpponentView(_ theme: TransactionDetailViewTheme) {
+        opponentView.customize(theme.transactionContactInformationViewTheme)
+        opponentView.isUserInteractionEnabled = true
+
+        verticalStackView.addArrangedSubview(opponentView)
     }
     
-    private func setupOpponentViewLayout() {
-        addSubview(opponentView)
-        
-        opponentView.snp.makeConstraints { make in
-            if transactionType == .received {
-                make.top.equalTo(amountView.snp.bottom).priority(.low)
-                make.top.equalTo(closeAmountView.snp.bottom).priority(.medium)
-                make.top.equalTo(rewardView.snp.bottom)
-            } else {
-                make.top.equalTo(userView.snp.bottom)
-            }
-            
-            make.leading.trailing.equalToSuperview()
-        }
+    private func addCloseToView(_ theme: TransactionDetailViewTheme) {
+        closeToView.customize(theme.transactionTextInformationViewCommonTheme)
+        closeToView.setTitle("transaction-detail-close-to".localized)
+        closeToView.isUserInteractionEnabled = true
+
+        verticalStackView.addArrangedSubview(closeToView)
     }
     
-    private func setupCloseToViewLayout() {
-        addSubview(closeToView)
-        
-        closeToView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            if transactionType == .received {
-                make.top.equalTo(userView.snp.bottom)
-            } else {
-                make.top.equalTo(opponentView.snp.bottom)
-            }
-        }
+    private func addFeeView(_ theme: TransactionDetailViewTheme) {
+        feeView.customize(theme.commonTransactionAmountInformationViewTheme)
+        feeView.setTitle("transaction-detail-fee".localized)
+
+        verticalStackView.addArrangedSubview(feeView)
     }
     
-    private func setupFeeViewLayout() {
-        addSubview(feeView)
-        
-        feeView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            if transactionType == .received {
-                make.top.equalTo(closeToView.snp.bottom)
-                make.top.equalTo(userView.snp.bottom).priority(.low)
-            } else {
-                make.top.equalTo(closeToView.snp.bottom)
-                make.top.equalTo(opponentView.snp.bottom).priority(.low)
-            }
-        }
+    private func addDateView(_ theme: TransactionDetailViewTheme) {
+        dateView.customize(theme.transactionTextInformationViewCommonTheme)
+        dateView.setTitle("transaction-detail-date".localized)
+
+        verticalStackView.addArrangedSubview(dateView)
     }
     
-    private func setupDateViewLayout() {
-        addSubview(dateView)
-        
-        dateView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(feeView.snp.bottom)
-        }
+    private func addRoundView(_ theme: TransactionDetailViewTheme) {
+        roundView.customize(theme.transactionTextInformationViewCommonTheme)
+        roundView.setTitle("transaction-detail-round".localized)
+
+        verticalStackView.addArrangedSubview(roundView)
     }
     
-    private func setupRoundViewLayout() {
-        addSubview(roundView)
-        
-        roundView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(dateView.snp.bottom)
-        }
+    private func addIdView(_ theme: TransactionDetailViewTheme) {
+        idView.customize(theme.transactionTextInformationViewTransactionIDTheme)
+        idView.setTitle("transaction-detail-id".localized)
+
+        verticalStackView.addArrangedSubview(idView)
+        verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: idView)
+        idView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
     }
     
-    private func setupIdViewLayout() {
-        addSubview(idView)
-        
-        idView.snp.makeConstraints { make in
-            make.top.equalTo(roundView.snp.bottom)
-            make.top.equalTo(feeView.snp.bottom).priority(.low)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset).priority(.low)
+    private func addNoteView(_ theme: TransactionDetailViewTheme) {
+        noteView.setTitle("transaction-detail-note".localized)
+        noteView.isUserInteractionEnabled = true
+
+        verticalStackView.addArrangedSubview(noteView)
+        verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: noteView)
+        noteView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
+    }
+
+    private func addOpenInAlgoExplorerButton(_ theme: TransactionDetailViewTheme) {
+        openInAlgoExplorerButton.customizeAppearance(theme.openInAlgoExplorerButton)
+        openInAlgoExplorerButton.layer.draw(corner: theme.buttonsCorner)
+
+        addSubview(openInAlgoExplorerButton)
+        openInAlgoExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+
+        openInAlgoExplorerButton.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalTo(verticalStackView.snp.bottom).offset(theme.bottomPaddingForSeparator)
         }
     }
-    
-    private func setupNoteViewLayout() {
-        addSubview(noteView)
-        
-        noteView.snp.makeConstraints { make in
-            make.top.equalTo(idView.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset)
+
+    private func addOpenInGoalSeekerButton(_ theme: TransactionDetailViewTheme) {
+        openInGoalSeekerButton.customizeAppearance(theme.openInGoalSeekerButton)
+        openInGoalSeekerButton.layer.draw(corner: theme.buttonsCorner)
+
+        addSubview(openInGoalSeekerButton)
+        openInGoalSeekerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+
+        openInGoalSeekerButton.snp.makeConstraints {
+            $0.leading.equalTo(openInAlgoExplorerButton.snp.trailing).offset(theme.openInGoalSeekerButtonLeadingPadding)
+            $0.centerY.equalTo(openInAlgoExplorerButton)
         }
     }
 }
 
 extension TransactionDetailView: TransactionContactInformationViewDelegate {
-    func transactionContactInformationViewDidTapActionButton(_ transactionContactInformationView: TransactionContactInformationView) {
-        delegate?.transactionDetailViewDidTapOpponentActionButton(self)
+    func transactionContactInformationViewDidTapAddContactButton(_ transactionContactInformationView: TransactionContactInformationView) {
+        delegate?.transactionDetailViewDidTapAddContactButton(self)
     }
 }
 
@@ -307,6 +261,21 @@ extension TransactionDetailView {
     private func notifyDelegateToCopyNoteView() {
         delegate?.transactionDetailViewDidCopyTransactionNote(self)
     }
+
+    @objc
+    private func notifyDelegateToCopyTransactionID() {
+        delegate?.transactionDetailViewDidCopyTransactionID(self)
+    }
+
+    @objc
+    func notifyDelegateToOpenAlgoExplorer() {
+        delegate?.transactionDetailView(self, didOpen: .algoexplorer)
+    }
+
+    @objc
+    func notifyDelegateToOpenGoalSeaker() {
+        delegate?.transactionDetailView(self, didOpen: .goalseeker)
+    }
 }
 
 extension TransactionDetailView {
@@ -319,21 +288,9 @@ extension TransactionDetailView {
     }
 }
 
-extension TransactionDetailView: TransactionIDLabelDelegate {
-    func transactionIDLabel(_ transactionIDLabel: TransactionIDLabel, didOpen explorer: AlgoExplorerType) {
-        delegate?.transactionDetailView(self, didOpen: explorer)
-    }
-}
-
-extension TransactionDetailView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let statusViewTopInset: CGFloat = 12.0
-        let bottomInset: CGFloat = 20.0
-    }
-}
-
 protocol TransactionDetailViewDelegate: AnyObject {
-    func transactionDetailViewDidTapOpponentActionButton(_ transactionDetailView: TransactionDetailView)
+    func transactionDetailViewDidTapAddContactButton(_ transactionDetailView: TransactionDetailView)
+    func transactionDetailViewDidCopyTransactionID(_ transactionDetailView: TransactionDetailView)
     func transactionDetailViewDidCopyOpponentAddress(_ transactionDetailView: TransactionDetailView)
     func transactionDetailViewDidCopyCloseToAddress(_ transactionDetailView: TransactionDetailView)
     func transactionDetailView(_ transactionDetailView: TransactionDetailView, didOpen explorer: AlgoExplorerType)

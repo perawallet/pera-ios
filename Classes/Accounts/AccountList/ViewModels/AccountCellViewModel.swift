@@ -18,13 +18,26 @@
 import UIKit
 
 final class AccountCellViewModel {
-    private(set) var accountType: AccountType
+    private(set) var accountImageTypeImage: UIImage?
     private(set) var name: String?
     private(set) var detail: String?
     private(set) var attributedDetail: NSAttributedString?
 
+    /// Shows checkmark image if `isSelected` is `true` in `AccountCheckmarkSelectionViewCell`
+    private(set) lazy var isSelected: Bool = {
+        if case let .walletConnect(selectedAccount) = mode {
+           return selectedAccount == account
+        }
+        return false
+    }()
+
+    private let mode: AccountListViewController.Mode
+    private let account: Account
+
     init(account: Account, mode: AccountListViewController.Mode) {
-        self.accountType = account.type
+        self.mode = mode
+        self.account = account
+        bindAccountImageTypeImage(accountImageType: .orange, accountType: account.type)
         bindName(account)
         bindDetail(account, for: mode)
     }
@@ -32,7 +45,7 @@ final class AccountCellViewModel {
 
 extension AccountCellViewModel {
     private func bindName(_ account: Account) {
-        name = account.name
+        name = account.name ?? "title-unknown".localized
     }
 
     private func bindDetail(_ account: Account, for mode: AccountListViewController.Mode) {
@@ -65,5 +78,9 @@ extension AccountCellViewModel {
                 detail = account.amount.toAlgos.toAlgosStringForLabel
             }
         }
+    }
+
+    private func bindAccountImageTypeImage(accountImageType: AccountImageType, accountType: AccountType) {
+        accountImageTypeImage = accountType.image(for: accountImageType)
     }
 }

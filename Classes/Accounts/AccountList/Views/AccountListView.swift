@@ -29,7 +29,6 @@ final class AccountListView: View {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
-        collectionView.register(AccountPreviewCell.self)
         return collectionView
     }()
 
@@ -41,7 +40,6 @@ final class AccountListView: View {
     }()
 
     func customize(_ theme: AccountListViewTheme) {
-        addTitleLabel(theme)
         addAccountCollectionView(theme)
     }
 
@@ -51,21 +49,10 @@ final class AccountListView: View {
 }
 
 extension AccountListView {
-    private func addTitleLabel(_ theme: AccountListViewTheme) {
-        titleLabel.customizeAppearance(theme.titleLabel)
-
-        addSubview(titleLabel)
-        titleLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview().inset(theme.verticalPadding)
-        }
-    }
-    
     private func addAccountCollectionView(_ theme: AccountListViewTheme) {
         addSubview(accountsCollectionView)
         accountsCollectionView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.verticalPadding)
+            $0.leading.trailing.top.equalToSuperview()
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(theme.accountListBottomInset)
         }
 

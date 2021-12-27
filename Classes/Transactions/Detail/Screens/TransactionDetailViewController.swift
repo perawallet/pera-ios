@@ -17,8 +17,7 @@
 
 import UIKit
 
-class TransactionDetailViewController: BaseScrollViewController {
-    
+final class TransactionDetailViewController: BaseScrollViewController {
     override var name: AnalyticsScreenName? {
         return .transactionDetail
     }
@@ -29,9 +28,7 @@ class TransactionDetailViewController: BaseScrollViewController {
     private let account: Account
     private var assetDetail: AssetDetail?
     private let transactionType: TransactionType
-    
-    private let transactionDetailTooltipStorage = TransactionDetailTooltipStorage()
-    
+
     private let viewModel = TransactionDetailViewModel()
     
     init(
@@ -50,20 +47,7 @@ class TransactionDetailViewController: BaseScrollViewController {
     
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
-        
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-        
-        leftBarButtonItems = [closeBarButtonItem]
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.presentInformationCopyTooltipIfNeeded()
-        }
+        addBarButtons()
     }
     
     override func linkInteractors() {
@@ -83,14 +67,33 @@ class TransactionDetailViewController: BaseScrollViewController {
     
     override func configureAppearance() {
         super.configureAppearance()
+        scrollView.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
         title = "transaction-detail-title".localized
-        contentView.backgroundColor = Colors.Background.tertiary
         configureTransactionDetail()
     }
     
     override func prepareLayout() {
         super.prepareLayout()
-        setupTransactionDetailViewLayout()
+        addTransactionDetailView()
+    }
+}
+
+extension TransactionDetailViewController {
+    private func addBarButtons() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
+            self.closeScreen(by: .dismiss, animated: true)
+        }
+
+        leftBarButtonItems = [closeBarButtonItem]
+    }
+}
+
+extension TransactionDetailViewController {
+    private func addTransactionDetailView() {
+        contentView.addSubview(transactionDetailView)
+        transactionDetailView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 }
 
@@ -116,19 +119,6 @@ extension TransactionDetailViewController: TooltipPresenter {
         }
     }
     
-    private func presentInformationCopyTooltipIfNeeded() {
-        if transactionDetailTooltipStorage.isInformationCopyTooltipDisplayed() || !isViewAppeared {
-            return
-        }
-        
-        presentTooltip(
-            with: "transaction-detail-copy-tooltip".localized,
-            using: configuration,
-            at: transactionDetailView.opponentView.copyImageView
-        )
-        transactionDetailTooltipStorage.setInformationCopyTooltipDisplayed()
-    }
-    
     func adaptivePresentationStyle(
         for controller: UIPresentationController,
         traitCollection: UITraitCollection
@@ -137,44 +127,13 @@ extension TransactionDetailViewController: TooltipPresenter {
     }
 }
 
-extension TransactionDetailViewController {
-    private func setupTransactionDetailViewLayout() {
-        contentView.addSubview(transactionDetailView)
-        
-        transactionDetailView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-    }
-}
-
 extension TransactionDetailViewController: TransactionDetailViewDelegate {
-    func transactionDetailViewDidTapOpponentActionButton(_ transactionDetailView: TransactionDetailView) {
+    func transactionDetailViewDidTapAddContactButton(_ transactionDetailView: TransactionDetailView) {
         guard let opponentType = viewModel.opponentType else {
             return
         }
-        
-        switch opponentType {
-        case let .contact(address):
-            let draft = QRCreationDraft(address: address, mode: .address, title: account.name)
-            open(
-                .qrGenerator(
-                    title: transaction.contact?.name ?? "qr-creation-sharing-title".localized,
-                    draft: draft,
-                    isTrackable: true
-                ),
-                by: .present
-            )
-        case let .localAccount(address):
-            let draft = QRCreationDraft(address: address, mode: .address, title: account.name)
-            open(
-                .qrGenerator(
-                    title: "qr-creation-sharing-title".localized,
-                    draft: draft,
-                    isTrackable: true
-                ),
-                by: .present
-            )
-        case let .address(address):
+
+        if case let .address(address) = opponentType {
             open(.addContact(address: address), by: .push)
         }
     }
@@ -211,6 +170,11 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
         UIPasteboard.general.string = transaction.noteRepresentation()
         displaySimpleAlertWith(title: "transaction-detail-note-copied".localized)
     }
+
+    func transactionDetailViewDidCopyTransactionID(_ transactionDetailView: TransactionDetailView) {
+        UIPasteboard.general.string = transaction.id
+        displaySimpleAlertWith(title: "transaction-detail-id-copied-title".localized)
+    }
 }
 
 enum TransactionType {
@@ -218,16 +182,34 @@ enum TransactionType {
     case received
 }
 
-private struct TransactionDetailTooltipStorage: Storable {
-    typealias Object = Any
-    
-    private let informationCopyTooltipKey = "com.algorand.algorand.transaction.detail.information.copy.tooltip"
-    
-    func setInformationCopyTooltipDisplayed() {
-        save(true, for: informationCopyTooltipKey, to: .defaults)
+enum AlgoExplorerType {
+    case algoexplorer
+    case goalseeker
+
+    func transactionURL(with id: String, in network: ALGAPI.Network) -> URL? {
+        switch network {
+        case .testnet:
+            return testNetTransactionURL(with: id)
+        case .mainnet:
+            return mainNetTransactionURL(with: id)
+        }
     }
-    
-    func isInformationCopyTooltipDisplayed() -> Bool {
-        return bool(with: informationCopyTooltipKey, to: .defaults)
+
+    private func testNetTransactionURL(with id: String) -> URL? {
+        switch self {
+        case .algoexplorer:
+            return URL(string: "https://testnet.algoexplorer.io/tx/\(id)")
+        case .goalseeker:
+            return URL(string: "https://goalseeker.purestake.io/algorand/testnet/transaction/\(id)")
+        }
+    }
+
+    private func mainNetTransactionURL(with id: String) -> URL? {
+        switch self {
+        case .algoexplorer:
+            return URL(string: "https://algoexplorer.io/tx/\(id)")
+        case .goalseeker:
+            return URL(string: "https://goalseeker.purestake.io/algorand/mainnet/transaction/\(id)")
+        }
     }
 }

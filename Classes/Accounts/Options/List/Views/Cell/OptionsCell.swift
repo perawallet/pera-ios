@@ -18,7 +18,13 @@
 import UIKit
 
 final class OptionsCell: BaseCollectionViewCell<OptionsContextView> {
-    func customize(_ theme: OptionsContextViewTheme) {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(OptionsContextViewTheme())
+    }
+
+    private func customize(_ theme: OptionsContextViewTheme) {
         contextView.customize(theme)
     }
 

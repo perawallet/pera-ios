@@ -44,7 +44,7 @@ class MainHeaderView: BaseView {
     }()
     
     private lazy var qrButton: UIButton = {
-        let button = UIButton(type: .custom).withImage(img("img-accounts-scan-qr"))
+        let button = UIButton(type: .custom).withImage(img("icon-qr-scan"))
         button.contentMode = .scaleToFill
         return button
     }()

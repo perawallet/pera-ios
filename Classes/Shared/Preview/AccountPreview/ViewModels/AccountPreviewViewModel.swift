@@ -62,6 +62,26 @@ final class AccountPreviewViewModel: PairedViewModel {
             )
         )
     }
+
+    convenience init(viewModel: AccountNameViewModel) {
+        self.init(
+            AccountPreviewModel(
+                accountType: viewModel.accountType,
+                accountImageType: .orange,
+                accountName: viewModel .name
+            )
+        )
+    }
+
+    convenience init(viewModel: AuthAccountNameViewModel) {
+        self.init(
+            AccountPreviewModel(
+                accountType: viewModel.accountType,
+                accountImageType: .orange,
+                accountName: viewModel.address
+            )
+        )
+    }
 }
 
 extension AccountPreviewViewModel {

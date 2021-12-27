@@ -54,6 +54,10 @@ final class NumpadButton: UIButton, ViewComposable {
             }
         case .spacing:
             break
+        case .decimalSeparator:
+            setBackgroundImage(theme.buttonBackgroundHighlightedImage.image?.uiImage, for: .highlighted)
+            customizeAppearance(theme.button)
+            customizeBaseAppearance(title: Locale.preferred().decimalSeparator ?? ".")
         }
     }
 

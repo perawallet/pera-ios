@@ -20,62 +20,81 @@ import SafariServices
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-class RewardDetailViewController: BaseViewController {
-    
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-    
-    private let account: Account
-    
+final class RewardDetailViewController: BaseViewController {
     private lazy var rewardDetailView = RewardDetailView()
+    
+    private lazy var rewardCalculator: RewardCalculator = {
+        guard let api = api else {
+            fatalError("Api must be set before accessing reward calculator.")
+        }
+
+        return RewardCalculator(api: api, account: account)
+    }()
+
+    private let account: Account
     
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
         super.init(configuration: configuration)
     }
+
+    override func configureNavigationBarAppearance() {
+        addBarButtons()
+    }
     
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.secondary
-        rewardDetailView.bind(RewardDetailViewModel(account: account))
+        title = "rewards-title".localized
+    }
+
+    override func bindData() {
+        rewardDetailView.bindData(RewardDetailViewModel(account))
     }
     
     override func linkInteractors() {
+        rewardDetailView.setListeners()
         rewardDetailView.delegate = self
+        rewardCalculator.delegate = self
     }
     
     override func prepareLayout() {
-        setupRewardDetailViewLayout()
+        addRewardDetailView()
+    }
+}
+
+extension RewardDetailViewController {
+    private func addBarButtons() {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true)
+        }
+
+        leftBarButtonItems = [closeBarButtonItem]
     }
 }
 
 extension RewardDetailViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
-        return .preferred(472)
+        return .compressed
     }
 }
 
 extension RewardDetailViewController {
-    private func setupRewardDetailViewLayout() {
+    private func addRewardDetailView() {
+        rewardDetailView.customize(RewardDetailViewTheme())
         view.addSubview(rewardDetailView)
-        
-        rewardDetailView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        rewardDetailView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
+    }
+}
+
+extension RewardDetailViewController: RewardCalculatorDelegate {
+    func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Decimal) {
+        rewardDetailView.bindData(RewardCalculationViewModel(account: account, calculatedRewards: rewards))
     }
 }
 
 extension RewardDetailViewController: RewardDetailViewDelegate {
     func rewardDetailViewDidTapFAQLabel(_ rewardDetailView: RewardDetailView) {
-        guard let algorandRewardsWebsite = AlgorandWeb.rewardsFAQ.link else {
-            return
-        }
-        
-        let safariViewController = SFSafariViewController(url: algorandRewardsWebsite)
-        self.present(safariViewController, animated: true, completion: nil)
-    }
-    
-    func rewardDetailViewDidTapOKButton(_ rewardDetailView: RewardDetailView) {
-        dismissScreen()
+        open(AlgorandWeb.rewardsFAQ.link)
     }
 }

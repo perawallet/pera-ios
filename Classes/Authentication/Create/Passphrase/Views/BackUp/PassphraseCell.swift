@@ -18,7 +18,13 @@
 import UIKit
 
 final class PassphraseCell: BaseCollectionViewCell<PassphraseCellView> {
-    func customize(_ theme: PassphraseCellViewTheme) {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(PassphraseCellViewTheme())
+    }
+
+    private func customize(_ theme: PassphraseCellViewTheme) {
         contextView.customize(theme)
     }
     

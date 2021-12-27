@@ -86,7 +86,6 @@ extension NotificationFilterDataSource: UICollectionViewDataSource {
 extension NotificationFilterDataSource {
     private func dequeuePushNotificationCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> TitledToggleCell {
         let cell = collectionView.dequeue(TitledToggleCell.self, at: indexPath)
-        cell.customize(TitledToggleViewTheme())
         cell.bindData(TitledToggleViewModel())
         cell.delegate = self
         return cell
@@ -95,7 +94,6 @@ extension NotificationFilterDataSource {
     private func dequeueAccountNotificationCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> AccountNameSwitchCell {
         if let account = accounts[safe: indexPath.item] {
             let cell = collectionView.dequeue(AccountNameSwitchCell.self, at: indexPath)
-            cell.customize(AccountNameSwitchViewTheme())
             cell.bindData(AccountNameSwitchViewModel(account))
             cell.delegate = self
             return cell

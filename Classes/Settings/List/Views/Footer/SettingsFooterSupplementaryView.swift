@@ -22,6 +22,7 @@ class SettingsFooterSupplementaryView: BaseSupplementaryView<SettingsFooterView>
     weak var delegate: SettingsFooterSupplementaryViewDelegate?
     
     override func setListeners() {
+        contextView.setListeners()
         contextView.delegate = self
     }
 }

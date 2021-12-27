@@ -22,6 +22,7 @@ import MacaroonUIKit
 enum AppColors {
     enum Shared {}
     enum Components {}
+    enum SendTransaction {}
 }
 
 extension AppColors.Shared {
@@ -90,6 +91,11 @@ extension AppColors.Components {
             case text = "Components/Button/Ghost/text"
             case disabledText = "Components/Button/Ghost/disabledText"
         }
+
+        enum TransactionShadow: String, Color {
+            case background = "Components/Button/Shadow/background"
+            case text = "Components/Button/Shadow/text"
+        }
     }
 }
 
@@ -143,5 +149,19 @@ extension AppColors.Components {
         case defaultBackground = "Components/TextField/defaultBackground"
         case typingBackground = "Components/TextField/typingBackground"
         case errorBackground = "Components/TextField/errorBackground"
+    }
+}
+
+extension AppColors.Components {
+    enum QR: String, Color {
+        case background = "Components/QR/background"
+    }
+}
+
+extension AppColors.SendTransaction {
+    enum Shadow: String, Color {
+        case first = "SendTransaction/Shadow/account-first"
+        case second = "SendTransaction/Shadow/account-second"
+        case third = "SendTransaction/Shadow/account-third"
     }
 }

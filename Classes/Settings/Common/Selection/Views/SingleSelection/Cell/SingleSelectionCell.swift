@@ -23,7 +23,7 @@ final class SingleSelectionCell: BaseCollectionViewCell<SingleSelectionView> {
         customize(SingleSelectionViewTheme())
     }
     
-    func customize(_ theme: SingleSelectionViewTheme) {
+    private func customize(_ theme: SingleSelectionViewTheme) {
         contextView.customize(theme)
     }
     

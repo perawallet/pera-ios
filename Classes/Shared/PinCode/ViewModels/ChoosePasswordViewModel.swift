@@ -63,7 +63,7 @@ extension ChoosePasswordViewModel {
             if !password.isEmpty {
                 password.removeLast()
             }
-        case .spacing:
+        case .spacing, .decimalSeparator:
             break
         }
 
@@ -103,7 +103,7 @@ extension ChoosePasswordViewModel {
 
             passwordInputCircleView.state = .empty
             return
-        case .spacing:
+        case .spacing, .decimalSeparator:
             break
         }
     }

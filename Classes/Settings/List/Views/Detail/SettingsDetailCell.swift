@@ -17,5 +17,8 @@
 
 import UIKit
 
-class SettingsDetailCell: BaseCollectionViewCell<SettingsDetailContextView> {
+final class SettingsDetailCell: BaseCollectionViewCell<SettingsDetailView> {
+    func bindData(_ viewModel: SettingsDetailViewModel) {
+        contextView.bindData(viewModel)
+    }
 }

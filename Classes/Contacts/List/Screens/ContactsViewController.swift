@@ -174,11 +174,7 @@ extension ContactsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ContactCell.reusableIdentifier,
-            for: indexPath) as? ContactCell else {
-                fatalError("Index path is out of bounds")
-        }
+        let cell = collectionView.dequeue(ContactCell.self, at: indexPath)
         
         configure(cell, at: indexPath)
         
@@ -186,7 +182,6 @@ extension ContactsViewController: UICollectionViewDataSource {
     }
     
     func configure(_ cell: ContactCell, at indexPath: IndexPath) {
-        cell.customize(ContactContextViewTheme())
         cell.delegate = self
         
         if indexPath.item < searchResults.count {

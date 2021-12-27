@@ -27,9 +27,7 @@ final class CurrencySelectionViewController: BaseViewController {
         }
         return CurrencySelectionDataSource(api: api)
     }()
-    
-    weak var delegate: CurrencySelectionViewControllerDelegate?
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         getCurrencies()
@@ -87,7 +85,6 @@ extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
         
         api?.session.preferredCurrency = selectedCurrency.id
         currencySelectionView.reloadData()
-        delegate?.currencySelectionViewControllerDidSelectCurrency(self)
     }
     
     func collectionView(
@@ -107,8 +104,4 @@ extension CurrencySelectionViewController: SingleSelectionListViewDelegate {
     func singleSelectionListViewDidTryAgain(_ singleSelectionListView: SingleSelectionListView) {
         getCurrencies()
     }
-}
-
-protocol CurrencySelectionViewControllerDelegate: AnyObject {
-    func currencySelectionViewControllerDidSelectCurrency(_ currencySelectionViewController: CurrencySelectionViewController)
 }
