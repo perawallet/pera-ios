@@ -35,9 +35,7 @@ class TransactionsViewController: BaseViewController {
             transactionListView.reloadData()
         }
     }
-    
-    weak var delegate: TransactionsViewControllerDelegate?
-    
+        
     private let transactionsTooltipStorage = TransactionsTooltipStorage()
     private var filterOption = TransactionFilterViewController.FilterOption.allTime
     
@@ -232,18 +230,6 @@ extension TransactionsViewController {
 }
 
 extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        delegate?.transactionsViewController(self, didScroll: scrollView)
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        delegate?.transactionsViewController(self, didStopScrolling: scrollView)
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        delegate?.transactionsViewController(self, didStopScrolling: scrollView)
-    }
-    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if transactionHistoryDataSource.shouldSendPaginatedRequest(at: indexPath.item) {
             fetchTransactions(witRefresh: false, isPaginated: true)
@@ -367,7 +353,7 @@ extension TransactionsViewController: TransactionFilterViewControllerDelegate {
         
         self.filterOption = filterOption
         if let headerView = transactionListView.headerView() {
-            headerView.bind(TransactionHistoryHeaderViewModel(filterOption: filterOption))
+            headerView.bindData(TransactionHistoryHeaderViewModel(filterOption))
         }
         updateList()
     }
@@ -516,14 +502,9 @@ extension TransactionsViewController: APIListener {
 
 extension TransactionsViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
-        let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72.0)
+        let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72)
         let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 68.0)
     }
-}
-
-protocol TransactionsViewControllerDelegate: AnyObject {
-    func transactionsViewController(_ transactionsViewController: TransactionsViewController, didScroll scrollView: UIScrollView)
-    func transactionsViewController(_ transactionsViewController: TransactionsViewController, didStopScrolling scrollView: UIScrollView)
 }
 
 private struct TransactionsTooltipStorage: Storable {

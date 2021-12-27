@@ -1,0 +1,80 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//
+//   AlgosDetailInfoViewTheme.swift
+
+import Foundation
+import MacaroonUIKit
+import UIKit
+
+struct AlgosDetailInfoViewTheme: StyleSheet, LayoutSheet {
+    let backgroundColor: Color
+    let yourBalanceTitleLabel: TextStyle
+    let valueTitleLabel: TextStyle
+    let algoImageView: ImageStyle
+    let algosValueLabel: TextStyle
+    let secondaryValueLabel: TextStyle
+    let separator: Separator
+    let rewardsInfoViewTheme: RewardsInfoViewTheme
+
+    let horizontalPadding: LayoutMetric
+    let algoImageViewSize: LayoutSize
+    let algoImageViewTopPadding: LayoutMetric
+    let algosValueLabelLeadingPadding: LayoutMetric
+    let minimumHorizontalInset: LayoutMetric
+    let rewardsInfoViewTopPadding: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
+        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.yourBalanceTitleLabel = [
+            .text("accounts-transaction-your-balance".localized),
+            .textAlignment(.left),
+            .textOverflow(SingleLineFittingText()),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.medium.make(15)),
+        ]
+        self.valueTitleLabel = [
+            .text("accounts-transaction-value".localized),
+            .textAlignment(.right),
+            .textOverflow(SingleLineFittingText()),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.medium.make(15)),
+        ]
+        self.algoImageView = [
+            .image("icon-algo-circle-green"),
+            .contentMode(.scaleAspectFit)
+        ]
+        self.algosValueLabel = [
+            .textAlignment(.left),
+            .textOverflow(SingleLineFittingText()),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMMono.regular.make(19)),
+        ]
+        self.secondaryValueLabel = [
+            .textAlignment(.right),
+            .textOverflow(SingleLineFittingText()),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMMono.regular.make(19)),
+        ]
+        self.rewardsInfoViewTheme = RewardsInfoViewTheme()
+        self.horizontalPadding = 24
+        self.algoImageViewSize = (24, 24)
+        self.minimumHorizontalInset = 4
+        self.algoImageViewTopPadding = 14
+        self.algosValueLabelLeadingPadding = 12
+        self.rewardsInfoViewTopPadding = 32
+    }
+}

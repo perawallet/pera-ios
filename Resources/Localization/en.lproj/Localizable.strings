@@ -169,6 +169,8 @@
 "accounts-title" = "Accounts";
 "accounts-add-new" = "Add new asset";
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
+"accounts-transaction-your-balance" = "Your balance";
+"accounts-transaction-value" = "Value";
 
 // MARK: Asset
 "asset-title" = "Asset";
@@ -273,7 +275,7 @@
 "contacts-input-name-placeholder" = "Contact name";
 "contacts-input-address-explanation" = "Address";
 "contacts-input-address-placeholder" = "Paste # or Scan QR";
-"contacts-transactions-title" = "Transactions";
+"contacts-transactions-title" = "Transaction History";
 "contacts-empty-text" = "You haven't added any contacts yet";
 "contacts-empty-detail-text" = "You can make the process of sending assets faster by adding new contacts.";
 "contacts-name-validation-error" = "Name is empty.";
@@ -387,9 +389,10 @@
 // MARK: Rewards
 "rewards-title" = "Rewards";
 "rewards-show-title" = "Show Rewards";
+"rewards-rate" = "Rewards Rate";
 "rewards-detail-subtitle" = "You earn rewards just by owning Algos! Here's a summary of your rewards activity since your last transaction. These rewards are always included in your balance.";
-"total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ.";
-"total-rewards-faq" = "FAQ.";
+"total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ";
+"total-rewards-faq" = "FAQ";
 "reward-list-title" = "Reward";
 "total-rewards-title" = "%@ Rewards";
 "rewards-since-last-text" = "Since Last Transaction";
