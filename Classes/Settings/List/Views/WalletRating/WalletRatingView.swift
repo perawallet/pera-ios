@@ -96,6 +96,7 @@ extension WalletRatingView {
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.descriptionTopInset)
             $0.centerX.equalToSuperview()
+            $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.bottomInset)
         }
     }
 }

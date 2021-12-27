@@ -21,11 +21,9 @@ import MacaroonUIKit
 extension WalletRatingViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
-        let modalHeight: LayoutMetric
         
         init(_ family: LayoutFamily) {
             self.backgroundColor = AppColors.Shared.System.background
-            self.modalHeight = 284
         }
     }
 }

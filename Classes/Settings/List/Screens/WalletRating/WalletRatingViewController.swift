@@ -46,7 +46,7 @@ final class WalletRatingViewController: BaseViewController {
 
 extension WalletRatingViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight)
+        return .compressed
     }
 }
 

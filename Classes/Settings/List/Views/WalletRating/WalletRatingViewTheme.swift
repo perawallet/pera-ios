@@ -57,6 +57,6 @@ struct WalletRatingViewTheme: StyleSheet, LayoutSheet {
         self.horizontalInset = 24
         self.titleTopInset = 36
         self.descriptionTopInset = 12
-        self.bottomInset = 52
+        self.bottomInset = 16
     }
 }

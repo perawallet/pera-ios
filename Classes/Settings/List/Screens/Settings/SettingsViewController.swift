@@ -116,19 +116,6 @@ extension SettingsViewController {
                 if let setting = dataSource.accountSettings[safe: indexPath.item] {
                     didSelectItemFromAccountSettings(setting)
                 }
-            case .walletConnect:
-                open(.walletConnectSessions, by: .push)
-            case .notifications:
-                open(.notificationFilter(flow: .settings), by: .push)
-            case .appReview:
-                bottomModalTransition.perform(.walletRating)
-            case .language:
-                displayProceedAlertWith(
-                    title: "settings-language-change-title".localized,
-                    message: "settings-language-change-detail".localized
-                ) { _ in
-                    UIApplication.shared.openAppSettings()
-                }
             case .appPreferences:
                 if let setting = dataSource.appPreferenceSettings[safe: indexPath.item] {
                     didSelectItemFromAppPreferenceSettings(setting)
@@ -177,7 +164,7 @@ extension SettingsViewController {
                 open(url)
             }
         case .appReview:
-            AlgorandAppStoreReviewer().requestManualReview(forAppWith: Environment.current.appID)
+            bottomModalTransition.perform(.walletRating)
         case .termsAndServices:
             guard let url = AlgorandWeb.termsAndServices.link else {
                 return
