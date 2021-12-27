@@ -17,28 +17,20 @@
 
 import UIKit
 
-class SettingsDetailViewModel {
-    
-    private var image: UIImage?
-    private var title: String?
+final class SettingsDetailViewModel {
+    private(set) var image: UIImage?
+    private(set) var title: String?
     
     init(setting: Settings) {
-        setImage(from: setting)
-        setTitle(from: setting)
+        setImage(setting)
+        setTitle(setting)
     }
     
-    private func setImage(from settings: Settings) {
-        image = settings.image
+    private func setImage(_ settings: Settings) {
+        self.image = settings.image
     }
     
-    private func setTitle(from settings: Settings) {
-        title = settings.name
-    }
-}
-
-extension SettingsDetailViewModel {
-    func configure(_ cell: SettingsDetailCell) {
-        cell.contextView.setImage(image)
-        cell.contextView.setName(title)
+    private func setTitle(_ settings: Settings) {
+        self.title = settings.name
     }
 }

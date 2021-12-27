@@ -17,18 +17,21 @@
 
 import UIKit
 
-class SettingsToggleCell: BaseCollectionViewCell<SettingsToggleContextView> {
-    
+final class SettingsToggleCell: BaseCollectionViewCell<SettingsToggleView> {
     weak var delegate: SettingsToggleCellDelegate?
     
     override func linkInteractors() {
         super.linkInteractors()
         contextView.delegate = self
     }
+    
+    func bindData(_ viewModel: SettingsToggleViewModel) {
+        contextView.bindData(viewModel)
+    }
 }
 
 extension SettingsToggleCell: SettingsToggleContextViewDelegate {
-    func settingsToggleContextView(_ settingsToggleContextView: SettingsToggleContextView, didChangeValue value: Bool) {
+    func settingsToggleView(_ settingsToggleContextView: SettingsToggleView, didChangeValue value: Bool) {
         delegate?.settingsToggleCell(self, didChangeValue: value)
     }
 }

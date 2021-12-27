@@ -293,12 +293,13 @@
 "contact-search-empty-detail" = "Try different contact name";
 
 // MARK: Settings
+"settings-sections-account" = "Account";
+"settings-sections-appPreferences" = "App Preferences";
+"settings-sections-support" = "Support";
 "settings-title" = "Settings";
 "settings-server-node-settings" = "Node Settings";
-"settings-change-password" = "Set/Change Password";
-"settings-local-authentication" = "Enable FaceID/Touch ID";
+"settings-backup-title" = "Backup";
 "settings-language" = "Language";
-"settings-language-english" = "English";
 "settings-notification-go-settings-title" = "Notifications";
 "settings-notification-disabled-go-settings-text" = "You have disabled notifications. Please go to Settings and enable this option.";
 "settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
@@ -307,12 +308,12 @@
 "settings-developer" = "Developer Settings";
 "settings-currency" = "Currency";
 "settings-developer-dispenser" = "Algorand Dispenser";
-"settings-currency-usd" = "USD";
 "settings-rate-title" = "Rate Algorand Wallet";
-"settings-app-version" = "Version %@";
+"settings-app-version" = "Algorand Wallet Version %@";
 "settings-language-change-title" = "Set App Language";
 "settings-language-change-detail" = "Due to updates to your phone, there are different steps to change your language.\n\n1. Proceed to the next screen.\n2. Tap Language to select the language you want.\n\nIf no language setting is available, go to your general iPhone language settings to first set a preferred language.";
-"settings-support-title" = "Support Center";
+"settings-support-title" = "Send Feedback";
+"settings-security-title" = "Security";
 "settings-wallet-connect-title" = "WalletConnect Sessions";
 
 // MARK: Node Settings
@@ -565,7 +566,7 @@ on your Ledger device (%d)";
 "watch-account-input-placeholder" = "Paste Address or Scan QR";
 "watch-account-error-address" = "Please enter a valid address.";
 
-"settings-theme-set" = "Set Theme";
+"settings-theme-set" = "Theme";
 "settings-theme-dark" = "Dark";
 "settings-theme-light" = "Light";
 "settings-theme-system" = "System Default";
