@@ -118,7 +118,9 @@ UICollectionViewDataSource {
 
             if let account = accounts[safe: indexPath.item] {
                 cell.bindData(
-                    AccountNameViewModel(account: account, hasImage: true)
+                    AccountPreviewViewModel(
+                        viewModel: AccountNameViewModel(account: account, hasImage: true)
+                    )
                 )
             }
 

@@ -66,7 +66,7 @@ final class AccountPreviewCell: BaseCollectionViewCell<AccountPreviewView> {
         customize(AccountPreviewViewTheme())
     }
 
-    private func customize(_ theme: AccountPreviewViewTheme) {
+    func customize(_ theme: AccountPreviewViewTheme) {
         contextView.customize(theme)
     }
 
