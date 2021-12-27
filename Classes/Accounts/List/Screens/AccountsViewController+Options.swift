@@ -107,10 +107,11 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             title: "options-remove-account".localized,
             description: "options-remove-alert-explanation".localized,
             primaryActionButtonTitle: "title-remove".localized,
-            secondaryActionButtonTitle: "title-keep".localized
-        ) { [weak self] in
-            self?.removeAccount()
-        }
+            secondaryActionButtonTitle: "title-keep".localized,
+            primaryAction: { [weak self] in
+                self?.removeAccount()
+            }
+        )
 
         modalTransition.perform(.bottomWarning(configurator: configurator))
     }

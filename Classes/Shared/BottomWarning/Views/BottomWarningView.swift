@@ -59,7 +59,6 @@ extension BottomWarningView {
         imageView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().inset(theme.topInset)
-            $0.fitToSize(theme.imageSize)
         }
     }
 
@@ -92,8 +91,8 @@ extension BottomWarningView {
 
         verticalStackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
-            $0.top.greaterThanOrEqualTo(descriptionLabel.snp.bottom).offset(theme.verticalInset)
-            $0.bottom.equalToSuperview().inset(theme.bottomInset + safeAreaBottom)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.verticalInset)
+            $0.bottom.lessThanOrEqualToSuperview()
         }
 
         addPrimaryActionButton(theme)

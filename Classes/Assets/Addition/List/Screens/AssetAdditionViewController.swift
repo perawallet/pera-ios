@@ -64,7 +64,6 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        setPrimaryBackgroundColor()
         displayTestNetTitleView(with: "title-add-asset".localized)
     }
 

@@ -72,6 +72,12 @@ extension AssetImageView {
     }
 }
 
+extension AssetImageView {
+    func prepareForReuse() {
+        image = nil
+    }
+}
+
 extension AssetImageView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
         if let image = viewModel?.image {

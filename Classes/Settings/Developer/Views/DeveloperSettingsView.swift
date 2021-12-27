@@ -16,36 +16,49 @@
 //  DeveloperSettingsView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class DeveloperSettingsView: BaseView {
+final class DeveloperSettingsView: View {
+    private lazy var theme = DeveloperSettingsViewTheme()
     
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        flowLayout.minimumInteritemSpacing = 0.0
+        flowLayout.minimumLineSpacing = theme.cellSpacing
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = Colors.Background.tertiary
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = .zero
         collectionView.keyboardDismissMode = .onDrag
         collectionView.register(SettingsDetailCell.self, forCellWithReuseIdentifier: SettingsDetailCell.reusableIdentifier)
         return collectionView
     }()
-
-    override func prepareLayout() {
-        setupCollectionViewLayout()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        customize(theme)
     }
+    
+    func customize(_ theme: DeveloperSettingsViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        addCollectionView()
+    }
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
 
 extension DeveloperSettingsView {
-    private func setupCollectionViewLayout() {
+    private func addCollectionView() {
         addSubview(collectionView)
         
-        collectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        collectionView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.topInset)
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }

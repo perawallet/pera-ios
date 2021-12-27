@@ -352,7 +352,9 @@ extension TabBarController {
     private func dismissTabBarModal() {
         animateCenterButtonAsSelected(false)
         let tabBarModalViewController = selectedContent?.presentedViewController as? TabBarModalViewController
-        tabBarModalViewController?.dismissWithAnimation()
+        tabBarModalViewController?.dismissWithAnimation {
+            self.tabBar.toggleTabBarItems(to: true)
+        }
     }
 
     private func presentTabBarModal() {
@@ -363,9 +365,12 @@ extension TabBarController {
                 presentationStyle: .overCurrentContext,
                 transitionStyle: nil,
                 transitioningDelegate: nil
-            )
+            ),
+            animated: false
         ) as? TabBarModalViewController
         tabBarModalViewController?.delegate = self
+
+        tabBar.toggleTabBarItems(to: false)
     }
 }
 

@@ -22,7 +22,6 @@ class VerifiedAssetInformationViewController: BaseViewController {
     private lazy var theme = Theme()
     
     override func configureAppearance() {
-        setPrimaryBackgroundColor()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         title = "verified-assets-title".localized
     }

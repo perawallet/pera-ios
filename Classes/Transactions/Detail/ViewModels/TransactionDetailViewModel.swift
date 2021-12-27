@@ -17,7 +17,7 @@
 
 import UIKit
 
-class TransactionDetailViewModel {
+final class TransactionDetailViewModel {
     private(set) var opponentType: Opponent?
     
     func configureReceivedTransaction(
@@ -47,8 +47,8 @@ class TransactionDetailViewModel {
         
         if let assetTransaction = transaction.assetTransfer,
             let assetDetail = assetDetail {
-            view.closeAmountView.removeFromSuperview()
-            view.closeToView.removeFromSuperview()
+            view.closeAmountView.isHidden = true
+            view.closeToView.isHidden = true
             let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
 
             let value: TransactionAmountView.Mode = transaction.isSelfTransaction()
@@ -56,7 +56,7 @@ class TransactionDetailViewModel {
                 : .positive(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
             view.amountView.setAmountViewMode(value)
             
-            view.rewardView.removeFromSuperview()
+            view.rewardView.isHidden = true
         } else if let payment = transaction.payment {
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
 
@@ -100,8 +100,8 @@ class TransactionDetailViewModel {
         view.opponentView.setTitle("transaction-detail-to".localized)
         
         if let assetTransaction = transaction.assetTransfer {
-            view.closeAmountView.removeFromSuperview()
-            view.closeToView.removeFromSuperview()
+            view.closeAmountView.isHidden = true
+            view.closeToView.isHidden = true
             setOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "", in: view)
 
             if let assetDetail = assetDetail {
@@ -137,7 +137,7 @@ class TransactionDetailViewModel {
         if let closeAmount = transaction.payment?.closeAmountForTransaction()?.toAlgos {
             view.closeAmountView.setAmountViewMode(.normal(amount: closeAmount))
         } else {
-            view.closeAmountView.removeFromSuperview()
+            view.closeAmountView.isHidden = true
         }
     }
     
@@ -145,7 +145,7 @@ class TransactionDetailViewModel {
         if let closeAddress = transaction.payment?.closeAddress {
             view.closeToView.setDetail(closeAddress)
         } else {
-            view.closeToView.removeFromSuperview()
+            view.closeToView.isHidden = true
         }
     }
     
@@ -153,17 +153,14 @@ class TransactionDetailViewModel {
         if let contact = transaction.contact {
             opponentType = .contact(address: address)
             view.opponentView.setContact(contact)
-            view.opponentView.setContactButtonImage(img("icon-qr"))
         } else if let localAccount = UIApplication.shared.appConfiguration?.session.accountInformation(from: address) {
             opponentType = .localAccount(address: address)
             view.opponentView.setName(localAccount.name)
-            view.opponentView.setContactImage(hidden: true)
-            view.opponentView.setContactButtonImage(img("icon-qr"))
+            view.opponentView.removeContactImage()
         } else {
             opponentType = .address(address: address)
-            view.opponentView.setContactButtonImage(img("icon-user-add"))
             view.opponentView.setName(address)
-            view.opponentView.setContactImage(hidden: true)
+            view.opponentView.removeContactImage()
         }
     }
     
@@ -179,7 +176,7 @@ class TransactionDetailViewModel {
     
     private func setRound(for transaction: Transaction, in view: TransactionDetailView) {
         if transaction.isPending() {
-            view.roundView.removeFromSuperview()
+            view.roundView.isHidden = true
         } else {
             if let round = transaction.confirmedRound {
                 view.roundView.setDetail("\(round)")
@@ -191,17 +188,15 @@ class TransactionDetailViewModel {
         if let rewards = transaction.senderRewards, rewards > 0 {
             view.rewardView.setAmountViewMode(.normal(amount: rewards.toAlgos))
         } else {
-            view.rewardView.removeFromSuperview()
+            view.rewardView.isHidden = true
         }
     }
     
     private func setNote(for transaction: Transaction, in view: TransactionDetailView) {
         if let note = transaction.noteRepresentation() {
             view.noteView.setDetail(note)
-            view.noteView.setSeparatorView(hidden: true)
         } else {
-            view.idView.setSeparatorView(hidden: true)
-            view.noteView.removeFromSuperview()
+            view.noteView.isHidden = true
         }
     }
 }

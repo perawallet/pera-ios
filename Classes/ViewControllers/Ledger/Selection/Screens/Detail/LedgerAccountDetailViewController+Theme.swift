@@ -20,14 +20,12 @@ import UIKit
 
 extension LedgerAccountDetailViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let ledgerAccountDetailViewTheme: LedgerAccountDetailViewTheme
         let backgroundColor: Color
         let sectionInset: LayoutPaddings
         let headerSize: LayoutSize
         let cellSize: LayoutSize
 
         init(_ family: LayoutFamily) {
-            ledgerAccountDetailViewTheme = LedgerAccountDetailViewTheme()
             backgroundColor = AppColors.Shared.System.background
             sectionInset = (0, 24, 32, 24)
             headerSize = (UIScreen.main.bounds.width, 24)

@@ -41,6 +41,10 @@ final class SearchInputView: View, UITextFieldDelegate {
     private lazy var textInputView = TextField()
     private lazy var textLeftInputAccessoryView = UIImageView()
     private lazy var textRightInputAccessoryView = UIButton()
+    private lazy var textClearInputAccessoryView = UIButton()
+
+    private var rightAccessoryView: TextFieldAccessory?
+    private var clearAccessoryView: TextFieldAccessory?
 
     private var intrinsicHeight: LayoutMetric?
     private var textInputBackgroundHeightConstraint: Constraint?
@@ -80,7 +84,8 @@ final class SearchInputView: View, UITextFieldDelegate {
 
     func linkInteractors() {
         textInputView.addTarget(self, action: #selector(notifyDelegateForEditing), for: .editingChanged)
-        textRightInputAccessoryView.addTarget(self, action: #selector(clearText), for: .touchUpInside)
+        textRightInputAccessoryView.addTarget(self, action: #selector(didTapRightAccessory), for: .touchUpInside)
+        textClearInputAccessoryView.addTarget(self, action: #selector(clearText), for: .touchUpInside)
     }
 
     override func layoutSubviews() {
@@ -90,6 +95,11 @@ final class SearchInputView: View, UITextFieldDelegate {
             return
         }
         recustomizeAppearanceWhenViewDidLayoutSubviews()
+    }
+
+    func setText(_ text: String?) {
+        textInputView.text = text
+        notifyDelegateForEditing()
     }
 }
 
@@ -108,6 +118,15 @@ extension SearchInputView {
     private func clearText() {
         textInputView.text = nil
         notifyDelegateForEditing()
+    }
+
+    @objc
+    private func didTapRightAccessory() {
+        guard rightAccessoryView != nil else {
+            return
+        }
+
+        delegate?.searchInputViewDidTapRightAccessory(self)
     }
 }
 
@@ -135,7 +154,10 @@ extension SearchInputView {
     }
 
     private func customizeTextInputRightAccessoryAppearance(_ theme: SearchInputViewTheme) {
-        textRightInputAccessoryView.customizeAppearance(theme.textRightInputAccessory)
+        if let textRightInputAccessory = theme.textRightInputAccessory {
+            textRightInputAccessoryView.customizeAppearance(textRightInputAccessory)
+        }
+        textClearInputAccessoryView.customizeAppearance(theme.textClearInputAccessory)
     }
 }
 
@@ -176,19 +198,37 @@ extension SearchInputView {
     }
 
     private func addRightInputAccessory(_ theme: SearchInputViewTheme) {
-        textRightInputAccessoryView.isHidden = true
-        textInputBackgroundView.addSubview(textRightInputAccessoryView)
-        textRightInputAccessoryView.snp.makeConstraints {
-            $0.fitToSize(theme.textInputAccessorySize)
-            $0.setPaddings(theme.textRightInputAccessoryViewPaddings)
+        if theme.textRightInputAccessory != nil {
+            rightAccessoryView = TextFieldAccessory(
+                content: textRightInputAccessoryView,
+                mode: .always,
+                size: CGSize(width: theme.textInputAccessorySize.w,
+                             height: theme.textInputAccessorySize.h),
+                ignoresContentEdgeInsets: true
+            )
         }
+
+        clearAccessoryView = TextFieldAccessory(
+            content: textClearInputAccessoryView,
+            mode: .always,
+            size: CGSize(width: theme.textInputAccessorySize.w,
+                         height: theme.textInputAccessorySize.h),
+            ignoresContentEdgeInsets: true
+        )
+
+        textInputView.rightAccessory = rightAccessoryView
     }
 }
 
 extension SearchInputView {
     @objc
     private func notifyDelegateForEditing() {
-        textRightInputAccessoryView.isHidden = textInputView.text?.isEmpty ?? true
+        let isTextInputEmpty = textInputView.text?.isEmpty ?? true
+        if isTextInputEmpty {
+            textInputView.rightAccessory = rightAccessoryView
+        } else {
+            textInputView.rightAccessory = clearAccessoryView
+        }
         delegate?.searchInputViewDidEdit(self)
     }
 }
@@ -212,4 +252,10 @@ extension SearchInputView {
 protocol SearchInputViewDelegate: AnyObject {
     func searchInputViewDidEdit(_ view: SearchInputView)
     func searchInputViewDidReturn(_ view: SearchInputView)
+    func searchInputViewDidTapRightAccessory(_ view: SearchInputView)
+}
+
+extension SearchInputViewDelegate {
+    func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
+    }
 }

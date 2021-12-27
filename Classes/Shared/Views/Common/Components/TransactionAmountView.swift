@@ -16,67 +16,42 @@
 //  TransactionAmountView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class TransactionAmountView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
+final class TransactionAmountView: View {
     var mode: Mode = .normal(amount: 0.00) {
         didSet {
             updateAmountView()
         }
     }
     
-    private lazy var amountStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .equalSpacing
-        stackView.alignment = .center
-        stackView.axis = .horizontal
-        stackView.spacing = 0.0
-        return stackView
-    }()
-    
-    private(set) lazy var signLabel: UILabel = {
-        UILabel()
-            .withAlignment(.left)
-            .withLine(.single)
-            .withTextColor(Colors.TransactionAmount.normal)
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-    }()
-    
-    private(set) lazy var algoIconImageView = UIImageView(image: img("icon-algo-gray", isTemplate: true))
-    
-    private(set) lazy var amountLabel: UILabel = {
-        UILabel()
-            .withAlignment(.right)
-            .withLine(.single)
-            .withTextColor(Colors.TransactionAmount.normal)
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-    }()
-    
-    override func configureAppearance() {
-        backgroundColor = .clear
+    private lazy var amountStackView = UIStackView()
+    private(set) lazy var signLabel = UILabel()
+    private(set) lazy var amountLabel = UILabel()
+
+    func customize(_ theme: TransactionAmountViewTheme) {
+        addAmountStackView(theme)
     }
-    
-    override func prepareLayout() {
-        setupAmountStackViewLayout()
-    }
+
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
 extension TransactionAmountView {
-    private func setupAmountStackViewLayout() {
+    private func addAmountStackView(_ theme: TransactionAmountViewTheme) {
         addSubview(amountStackView)
-        
+        amountStackView.distribution = .equalSpacing
+        amountStackView.alignment = .center
+
         amountLabel.setContentHuggingPriority(.required, for: .horizontal)
         amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         
-        amountStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
+        amountStackView.pinToSuperview()
+
+        signLabel.customizeAppearance(theme.signLabel)
         amountStackView.addArrangedSubview(signLabel)
-        amountStackView.addArrangedSubview(algoIconImageView)
+        amountLabel.customizeAppearance(theme.amountLabel)
         amountStackView.addArrangedSubview(amountLabel)
     }
 }
@@ -87,41 +62,35 @@ extension TransactionAmountView {
         case let .normal(amount, isAlgos, assetFraction):
             signLabel.isHidden = true
             
-            setAmount(amount, with: assetFraction)
-            amountLabel.textColor = Colors.TransactionAmount.normal
-            algoIconImageView.tintColor = Colors.TransactionAmount.normal
-            setAlgoIconHidden(!isAlgos)
+            setAmount(amount, with: assetFraction, isAlgos: isAlgos)
+            amountLabel.textColor = AppColors.Components.Text.main.uiColor
         case let .positive(amount, isAlgos, assetFraction):
             signLabel.isHidden = false
             signLabel.text = "+"
-            signLabel.textColor = Colors.TransactionAmount.positive
+            signLabel.textColor = AppColors.Shared.Helpers.positive.uiColor
             
-            setAmount(amount, with: assetFraction)
-            amountLabel.textColor = Colors.TransactionAmount.positive
-            algoIconImageView.tintColor = Colors.TransactionAmount.positive
-            setAlgoIconHidden(!isAlgos)
+            setAmount(amount, with: assetFraction, isAlgos: isAlgos)
+            amountLabel.textColor = AppColors.Shared.Helpers.positive.uiColor
         case let .negative(amount, isAlgos, assetFraction):
             signLabel.isHidden = false
             signLabel.text = "-"
-            signLabel.textColor = Colors.TransactionAmount.negative
+            signLabel.textColor = AppColors.Shared.Helpers.negative.uiColor
             
-            setAmount(amount, with: assetFraction)
-            amountLabel.textColor = Colors.TransactionAmount.negative
-            algoIconImageView.tintColor = Colors.TransactionAmount.negative
-            setAlgoIconHidden(!isAlgos)
+            setAmount(amount, with: assetFraction, isAlgos: isAlgos)
+            amountLabel.textColor = AppColors.Shared.Helpers.negative.uiColor
         }
     }
     
-    private func setAmount(_ amount: Decimal, with assetFraction: Int?) {
+    private func setAmount(_ amount: Decimal, with assetFraction: Int?, isAlgos: Bool) {
         if let fraction = assetFraction {
             amountLabel.text = amount.toFractionStringForLabel(fraction: fraction)
         } else {
             amountLabel.text = amount.toAlgosStringForLabel
         }
-    }
-    
-    private func setAlgoIconHidden(_ isHidden: Bool) {
-        algoIconImageView.isHidden = isHidden
+
+        if isAlgos {
+            amountLabel.text?.append(" ALGO")
+        }
     }
 }
 
@@ -130,19 +99,5 @@ extension TransactionAmountView {
         case normal(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil)
         case positive(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil)
         case negative(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil)
-    }
-}
-
-extension Colors {
-    fileprivate enum TransactionAmount {
-        static let positive = Colors.Main.primary600
-        static let negative = Colors.Main.red600
-        static let normal = Colors.Text.primary
-    }
-}
-
-extension TransactionAmountView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let labelInset: CGFloat = 4.0
     }
 }

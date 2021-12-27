@@ -37,7 +37,7 @@ struct ChoosePasswordViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
-        self.numpadViewTheme = NumpadViewTheme()
+        self.numpadViewTheme = NumpadViewCommonTheme()
 
         self.horizontalInset = 24
         self.topInset = 2

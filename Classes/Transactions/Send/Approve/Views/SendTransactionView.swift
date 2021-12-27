@@ -35,7 +35,7 @@ class SendTransactionView: BaseView {
     
     private lazy var feeInformationView = TransactionAmountInformationView()
     
-    private lazy var noteInformationView = TransactionTitleInformationView()
+    private lazy var noteInformationView = TransactionTextInformationView()
     
     private lazy var sendButton = MainButton(title: "title-send".localized)
     
@@ -52,7 +52,7 @@ class SendTransactionView: BaseView {
         noteInformationView.backgroundColor = Colors.Background.secondary
         amountInformationView.setTitle("transaction-detail-amount".localized)
         receiverInformationView.setTitle("transaction-detail-to".localized)
-        receiverInformationView.removeContactAction()
+        receiverInformationView.removeAddContactButton()
         feeInformationView.setTitle("transaction-detail-fee".localized)
         noteInformationView.setTitle("transaction-detail-note".localized)
     }
@@ -118,6 +118,7 @@ extension SendTransactionView {
     }
     
     private func setupAmountInformationViewLayout() {
+        amountInformationView.customize(TransactionAmountInformationViewTheme())
         containerView.addSubview(amountInformationView)
         
         amountInformationView.snp.makeConstraints { make in
@@ -127,6 +128,7 @@ extension SendTransactionView {
     }
     
     private func setupReceiverInformationViewLayout() {
+        receiverInformationView.customize(TransactionContactInformationViewTheme())
         containerView.addSubview(receiverInformationView)
         
         receiverInformationView.snp.makeConstraints { make in
@@ -136,6 +138,7 @@ extension SendTransactionView {
     }
     
     private func setupFeeInformationViewLayout() {
+        feeInformationView.customize(TransactionAmountInformationViewTheme())
         containerView.addSubview(feeInformationView)
         
         feeInformationView.snp.makeConstraints { make in
@@ -146,6 +149,7 @@ extension SendTransactionView {
     }
     
     private func setupNoteInformationViewLayout() {
+        noteInformationView.customize(TransactionTextInformationViewCommonTheme())
         containerView.addSubview(noteInformationView)
         
         noteInformationView.snp.makeConstraints { make in
@@ -189,10 +193,8 @@ extension SendTransactionView {
 
         if let note = viewModel.note {
             noteInformationView.setDetail(note)
-            noteInformationView.setSeparatorView(hidden: true)
         } else {
             noteInformationView.removeFromSuperview()
-            feeInformationView.setSeparatorHidden(true)
         }
 
         assetInformationView.setAssetName(viewModel.assetName)

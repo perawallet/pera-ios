@@ -26,4 +26,20 @@ protocol ButtonTheme: LayoutSheet, StyleSheet {
     var indicator: ImageStyle { get }
 
     var contentEdgeInsets: LayoutPaddings { get }
+
+    var firstShadow: MacaroonUIKit.Shadow? { get }
+    var secondShadow: MacaroonUIKit.Shadow? { get }
+    var thirdShadow: MacaroonUIKit.Shadow? { get }
+}
+
+extension ButtonTheme {
+    var firstShadow: MacaroonUIKit.Shadow? {
+        return nil
+    }
+    var secondShadow: MacaroonUIKit.Shadow? {
+        return nil
+    }
+    var thirdShadow: MacaroonUIKit.Shadow? {
+        return nil
+    }
 }

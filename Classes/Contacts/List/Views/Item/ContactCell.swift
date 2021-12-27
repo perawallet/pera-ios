@@ -19,6 +19,12 @@ import UIKit
 
 class ContactCell: BaseCollectionViewCell<ContactContextView> {
     weak var delegate: ContactCellDelegate?
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(ContactContextViewTheme())
+    }
     
     override func linkInteractors() {
         contextView.delegate = self
@@ -28,12 +34,14 @@ class ContactCell: BaseCollectionViewCell<ContactContextView> {
         super.prepareForReuse()
         contextView.userImageView.image = img("icon-user-placeholder")
     }
+}
 
+extension ContactCell {
     func bindData(_ viewModel: ContactsViewModel) {
         contextView.bindData(viewModel)
     }
 
-    func customize(_ theme: ContactContextViewTheme) {
+    private func customize(_ theme: ContactContextViewTheme) {
         contextView.customize(theme)
     }
 }

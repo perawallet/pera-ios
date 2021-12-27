@@ -29,7 +29,10 @@ struct ContactsViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-        self.searchInputViewTheme = SearchInputViewTheme(placeholder: "contacts-search".localized, family: family)
+        self.searchInputViewTheme = SearchInputViewCommonTheme(
+            placeholder: "contacts-search".localized,
+            family: family
+        )
         self.topInset = 22
         self.horizontalPadding = 24
         self.cellSpacing = 0

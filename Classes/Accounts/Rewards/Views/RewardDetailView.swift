@@ -16,81 +16,43 @@
 //  RewardDetailView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class RewardDetailView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-
+final class RewardDetailView: View {
     weak var delegate: RewardDetailViewDelegate?
-    
-    private lazy var faqLabelTapGestureRecognizer = UITapGestureRecognizer(
-        target: self,
-        action: #selector(didTriggerFAQLabel)
-    )
-    
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.single)
-            .withAlignment(.center)
-            .withText("rewards-title".localized)
-    }()
-    
-    private lazy var detailLabel: UILabel = {
-        UILabel()
-            .withAttributedText("rewards-detail-subtitle".localized.attributed([.lineSpacing(1.2)]))
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
-            .withAlignment(.center)
-    }()
-    
-    private lazy var totalRewardAmountContainerView = RewardAmountContainerView()
-    
-    private lazy var faqLabel: UILabel = {
-        let label = UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
-            .withAlignment(.center)
-        
-        var totalString = "total-rewards-faq-title".localized
-        let faqString = "total-rewards-faq".localized
-        let range = (totalString as NSString).range(of: faqString)
-        let attributedText = NSMutableAttributedString(string: totalString)
-        attributedText.addAttribute(NSAttributedString.Key.foregroundColor, value: Colors.ButtonText.actionButton, range: range)
-        label.attributedText = attributedText
-        label.isUserInteractionEnabled = true
-        return label
-    }()
-    
-    private lazy var okButton = MainButton(title: "title-ok".localized)
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+
+    private lazy var rewardsRateTitleLabel = UILabel()
+    private lazy var rewardsRateValueLabel = UILabel()
+    private lazy var rewardsLabel = UILabel()
+    private lazy var algoImageView = UIImageView()
+    private lazy var rewardsValueLabel = UILabel()
+    private lazy var descriptionLabel = UILabel()
+    private lazy var FAQLabel = UILabel()
+
+    func setListeners() {
+        FAQLabel.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(didTriggerFAQLabel))
+        )
     }
     
-    override func setListeners() {
-        faqLabel.addGestureRecognizer(faqLabelTapGestureRecognizer)
-        okButton.addTarget(self, action: #selector(notifyDelegateToOKButtonTapped), for: .touchUpInside)
+    func customize(_ theme: RewardDetailViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addRewardsRateTitleLabel(theme)
+        addRewardsRateValueLabel(theme)
+        addRewardsLabel(theme)
+        addAlgoImageView(theme)
+        addAssetIDInfoButton(theme)
+        addDescriptionLabel(theme)
+        addFAQLabel(theme)
     }
-    
-    override func prepareLayout() {
-        setupTitleLabelLayout()
-        setupDetailLabelLayout()
-        setupTotalRewardAmountContainerViewLayout()
-        setupFAQLabelLayout()
-        setupOKButtonLayout()
-    }
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
 }
 
 extension RewardDetailView {
-    @objc
-    private func notifyDelegateToOKButtonTapped() {
-        delegate?.rewardDetailViewDidTapOKButton(self)
-    }
-    
     @objc
     private func didTriggerFAQLabel() {
         delegate?.rewardDetailViewDidTapFAQLabel(self)
@@ -98,71 +60,103 @@ extension RewardDetailView {
 }
 
 extension RewardDetailView {
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.labelTopInset)
-            make.centerX.equalToSuperview()
+    private func addRewardsRateTitleLabel(_ theme: RewardDetailViewTheme) {
+        rewardsRateTitleLabel.customizeAppearance(theme.rewardsRateTitleLabel)
+
+        addSubview(rewardsRateTitleLabel)
+        rewardsRateTitleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.rewardsRateTitleLabelTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
-    
-    private func setupDetailLabelLayout() {
-        addSubview(detailLabel)
-        
-        detailLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
+
+    private func addRewardsRateValueLabel(_ theme: RewardDetailViewTheme) {
+        rewardsRateValueLabel.customizeAppearance(theme.rewardsValueLabel)
+
+        addSubview(rewardsRateValueLabel)
+        rewardsRateValueLabel.snp.makeConstraints {
+            $0.top.equalTo(rewardsRateTitleLabel.snp.bottom).offset(theme.rewardsRateValueLabelTopPadding)
+            $0.leading.equalTo(rewardsRateTitleLabel)
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
-    
-    private func setupTotalRewardAmountContainerViewLayout() {
-        addSubview(totalRewardAmountContainerView)
-        
-        totalRewardAmountContainerView.snp.makeConstraints { make in
-            make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.verticalInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.containerHorizontalInset)
+
+    private func addRewardsLabel(_ theme: RewardDetailViewTheme) {
+        rewardsLabel.customizeAppearance(theme.rewardsLabel)
+
+        addSubview(rewardsLabel)
+        rewardsLabel.snp.makeConstraints {
+            $0.top.equalTo(rewardsRateValueLabel.snp.bottom).offset(theme.rewardsRateTitleLabelTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
-    
-    private func setupFAQLabelLayout() {
-        addSubview(faqLabel)
-        
-        faqLabel.snp.makeConstraints { make in
-            make.top.equalTo(totalRewardAmountContainerView.snp.bottom).offset(layout.current.verticalInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+
+    private func addAlgoImageView(_ theme: RewardDetailViewTheme) {
+        algoImageView.customizeAppearance(theme.algoImageView)
+
+        addSubview(algoImageView)
+        algoImageView.snp.makeConstraints {
+            $0.top.equalTo(rewardsLabel.snp.bottom).offset(theme.algoImageViewTopPadding)
+            $0.leading.equalTo(rewardsLabel)
+            $0.fitToSize(theme.algoImageViewSize)
+        }
+
+        rewardsLabel.addSeparator(theme.separator, padding: theme.separatorTopPadding)
+    }
+
+    private func addAssetIDInfoButton(_ theme: RewardDetailViewTheme) {
+        rewardsValueLabel.customizeAppearance(theme.rewardsValueLabel)
+        addSubview(rewardsValueLabel)
+        rewardsValueLabel.snp.makeConstraints {
+            $0.leading.equalTo(algoImageView.snp.trailing).offset(theme.rewardsLabelLeadingPadding)
+            $0.centerY.equalTo(algoImageView)
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
-    
-    private func setupOKButtonLayout() {
-        addSubview(okButton)
-        
-        okButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(faqLabel.snp.bottom).offset(layout.current.verticalInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
+
+    private func addDescriptionLabel(_ theme: RewardDetailViewTheme) {
+        descriptionLabel.customizeAppearance(theme.descriptionLabel)
+
+        addSubview(descriptionLabel)
+        descriptionLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalTo(rewardsValueLabel.snp.bottom).offset(theme.descriptionLabelTopPadding)
+        }
+    }
+
+    private func addFAQLabel(_ theme: RewardDetailViewTheme) {
+        FAQLabel.customizeAppearance(theme.FAQLabel)
+
+        let totalString = "total-rewards-faq-title".localized
+        let FAQString = "total-rewards-faq".localized
+        let attributedText = NSMutableAttributedString(string: totalString)
+        attributedText.addAttribute(
+            NSAttributedString.Key.foregroundColor,
+            value: theme.FAQLabelLinkTextColor.uiColor,
+            range: (totalString as NSString).range(of: FAQString)
+        )
+        FAQLabel.attributedText = attributedText
+
+        addSubview(FAQLabel)
+        FAQLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.FAQLabelTopPadding)
+            $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.bottomInset)
         }
     }
 }
 
 extension RewardDetailView {
-    func bind(_ viewModel: RewardDetailViewModel) {
-        totalRewardAmountContainerView.bind(viewModel)
+    func bindData(_ viewModel: RewardDetailViewModel?) {
+        rewardsRateValueLabel.text = viewModel?.rate
+        rewardsValueLabel.text = viewModel?.amount
     }
-}
 
-extension RewardDetailView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let labelTopInset: CGFloat = 16.0
-        let horizontalInset: CGFloat = 20.0
-        let verticalInset: CGFloat = 28.0
-        let containerHorizontalInset: CGFloat = 32.0
-        let bottomInset: CGFloat = 16.0
+    func bindData(_ viewModel: RewardCalculationViewModel?) {
+        rewardsValueLabel.text = viewModel?.rewardAmount?.appending(" ALGO")
     }
 }
 
 protocol RewardDetailViewDelegate: AnyObject {
     func rewardDetailViewDidTapFAQLabel(_ rewardDetailView: RewardDetailView)
-    func rewardDetailViewDidTapOKButton(_ rewardDetailView: RewardDetailView)
 }

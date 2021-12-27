@@ -17,16 +17,24 @@
 
 import UIKit
 
-class TransactionHistoryHeaderSupplementaryView: BaseSupplementaryView<TransactionHistoryHeaderView> {
-    
+final class TransactionHistoryHeaderSupplementaryView: BaseSupplementaryView<TransactionHistoryHeaderView> {
     weak var delegate: TransactionHistoryHeaderSupplementaryViewDelegate?
+
+    override func prepareLayout() {
+        super.prepareLayout()
+        contextView.customize(TransactionHistoryHeaderViewTheme())
+    }
     
     override func linkInteractors() {
         contextView.delegate = self
     }
 
-    func bind(_ viewModel: TransactionHistoryHeaderViewModel) {
-        contextView.bind(viewModel)
+    override func setListeners() {
+        contextView.setListeners()
+    }
+
+    func bindData(_ viewModel: TransactionHistoryHeaderViewModel) {
+        contextView.bindData(viewModel)
     }
 }
 
