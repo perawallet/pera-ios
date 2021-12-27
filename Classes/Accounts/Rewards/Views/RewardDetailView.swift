@@ -146,10 +146,14 @@ extension RewardDetailView {
     }
 }
 
-extension RewardDetailView: ViewModelBindable {
+extension RewardDetailView {
     func bindData(_ viewModel: RewardDetailViewModel?) {
         rewardsRateValueLabel.text = viewModel?.rate
         rewardsValueLabel.text = viewModel?.amount
+    }
+
+    func bindData(_ viewModel: RewardCalculationViewModel?) {
+        rewardsValueLabel.text = viewModel?.rewardAmount?.appending(" ALGO")
     }
 }
 

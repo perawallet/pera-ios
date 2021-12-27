@@ -22,6 +22,14 @@ import MacaroonUIKit
 
 final class RewardDetailViewController: BaseViewController {
     private lazy var rewardDetailView = RewardDetailView()
+    
+    private lazy var rewardCalculator: RewardCalculator = {
+        guard let api = api else {
+            fatalError("Api must be set before accessing reward calculator.")
+        }
+
+        return RewardCalculator(api: api, account: account)
+    }()
 
     private let account: Account
     
@@ -45,6 +53,7 @@ final class RewardDetailViewController: BaseViewController {
     override func linkInteractors() {
         rewardDetailView.setListeners()
         rewardDetailView.delegate = self
+        rewardCalculator.delegate = self
     }
     
     override func prepareLayout() {
@@ -75,6 +84,12 @@ extension RewardDetailViewController {
         rewardDetailView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+}
+
+extension RewardDetailViewController: RewardCalculatorDelegate {
+    func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Decimal) {
+        rewardDetailView.bindData(RewardCalculationViewModel(account: account, calculatedRewards: rewards))
     }
 }
 
