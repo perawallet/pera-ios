@@ -30,10 +30,10 @@ final class RewardDetailViewModel: PairedViewModel {
 
 extension RewardDetailViewModel {
     private func bindRate(from account: Account) {
-        rate = "5%" // <todo>: Calculate rate
+        rate = "17.52%"
     }
 
     private func bindAmount(from account: Account) {
-        amount = account.pendingRewards.toAlgos.toExactFractionLabel(fraction: 6)
+        amount = account.pendingRewards.toAlgos.toExactFractionLabel(fraction: 6)?.appending(" ALGO")
     }
 }

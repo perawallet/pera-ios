@@ -21,9 +21,10 @@ import UIKit
 final class AssetDetailInfoView: View {
     private lazy var yourBalanceTitleLabel = UILabel()
     private lazy var balanceLabel = UILabel()
+    private lazy var horizontalStackView = UIStackView()
     private lazy var assetNameLabel = UILabel()
     private lazy var assetIDLabel = UILabel()
-    private lazy var assetIDInfoButton = UIButton()
+    private lazy var verifiedImage = UIImageView()
 
     func customize(_ theme: AssetDetailInfoViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -32,7 +33,6 @@ final class AssetDetailInfoView: View {
         addBalanceLabel(theme)
         addAssetNameLabel(theme)
         addAssetIDLabel(theme)
-        addAssetIDInfoButton(theme)
     }
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}
@@ -56,25 +56,28 @@ extension AssetDetailInfoView {
 
         addSubview(balanceLabel)
         balanceLabel.snp.makeConstraints {
-            $0.top.equalTo(yourBalanceTitleLabel.snp.bottom).offset(theme.yourBalanceTitleLabelTopPadding)
+            $0.top.equalTo(yourBalanceTitleLabel.snp.bottom).offset(theme.balanceLabelTopPadding)
             $0.leading.equalTo(yourBalanceTitleLabel)
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
 
-        balanceLabel.addSeparator(theme.separator, padding: theme.separatorTopPadding)
+        balanceLabel.addSeparator(theme.separator, padding: theme.topSeparatorTopPadding)
     }
 
     private func addAssetNameLabel(_ theme: AssetDetailInfoViewTheme) {
-        assetNameLabel.customizeAppearance(theme.assetNameLabel)
-
-        addSubview(assetNameLabel)
-        assetNameLabel.snp.makeConstraints {
-            $0.top.equalTo(balanceLabel.snp.bottom).offset(65)
+        addSubview(horizontalStackView)
+        horizontalStackView.snp.makeConstraints {
+            $0.top.equalTo(balanceLabel.snp.bottom).offset(theme.assetNameLabelTopPadding)
             $0.leading.equalTo(yourBalanceTitleLabel)
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
 
-        assetNameLabel.addSeparator(theme.separator, padding: -63)
+        assetNameLabel.customizeAppearance(theme.assetNameLabel)
+        horizontalStackView.addArrangedSubview(assetNameLabel)
+        verifiedImage.customizeAppearance(theme.verifiedImage)
+        horizontalStackView.addArrangedSubview(verifiedImage)
+        
+        horizontalStackView.addSeparator(theme.separator, padding: theme.bottomSeparatorTopPadding)
     }
 
     private func addAssetIDLabel(_ theme: AssetDetailInfoViewTheme) {
@@ -85,26 +88,16 @@ extension AssetDetailInfoView {
             $0.top.equalTo(assetNameLabel.snp.bottom).offset(theme.assetIDLabelTopPadding)
             $0.leading.equalTo(yourBalanceTitleLabel)
             $0.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalPadding)
-            $0.bottom.lessThanOrEqualToSuperview().inset(35)
-        }
-    }
-
-    private func addAssetIDInfoButton(_ theme: AssetDetailInfoViewTheme) {
-        assetIDInfoButton.customizeAppearance(theme.assetIDInfoButton)
-
-        addSubview(assetIDInfoButton)
-        assetIDInfoButton.snp.makeConstraints {
-            $0.leading.equalTo(assetIDLabel.snp.trailing).offset(theme.assetIDInfoButtonLeadingPadding)
-            $0.centerY.equalTo(assetIDLabel)
+            $0.bottom.equalToSuperview().inset(theme.bottomPadding)
         }
     }
 }
 
-extension AssetDetailInfoView {
-    func bindData() {
-        preconditionFailure("Not implemented yet.")
-        balanceLabel.text = "200.01"
-        assetNameLabel.text = "Micro-Netflix 1/10,000 Share"
-        assetIDLabel.text = "1239123"
+extension AssetDetailInfoView: ViewModelBindable {
+    func bindData(_ viewModel: AssetDetailInfoViewModel?) {
+        verifiedImage.isHidden = !(viewModel?.isVerified ?? false)
+        balanceLabel.text = viewModel?.amount
+        assetNameLabel.text = viewModel?.name
+        assetIDLabel.text = viewModel?.ID
     }
 }

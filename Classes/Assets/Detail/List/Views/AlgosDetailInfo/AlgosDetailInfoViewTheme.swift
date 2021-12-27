@@ -13,29 +13,28 @@
 // limitations under the License.
 
 //
-//   AssetDetailInfoViewTheme.swift
+//   AlgosDetailInfoViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
+struct AlgosDetailInfoViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let yourBalanceTitleLabel: TextStyle
-    let balanceLabel: TextStyle
-    let assetNameLabel: TextStyle
-    let assetIDLabel: TextStyle
-    let verifiedImage: ImageStyle
+    let valueTitleLabel: TextStyle
+    let algoImageView: ImageStyle
+    let algosValueLabel: TextStyle
+    let secondaryValueLabel: TextStyle
     let separator: Separator
+    let rewardsInfoViewTheme: RewardsInfoViewTheme
 
-    let topSeparatorTopPadding: LayoutMetric
-    let bottomSeparatorTopPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
-    let balanceLabelTopPadding: LayoutMetric
-    let assetIDLabelTopPadding: LayoutMetric
-    let assetIDInfoButtonLeadingPadding: LayoutMetric
-    let assetNameLabelTopPadding: LayoutMetric
-    let bottomPadding: LayoutMetric
+    let algoImageViewSize: LayoutSize
+    let algoImageViewTopPadding: LayoutMetric
+    let algosValueLabelLeadingPadding: LayoutMetric
+    let minimumHorizontalInset: LayoutMetric
+    let rewardsInfoViewTopPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -44,37 +43,38 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
             .text("accounts-transaction-your-balance".localized),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.gray),
-            .font(Fonts.DMSans.regular.make(15)),
-        ]
-        self.balanceLabel = [
-            .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMMono.regular.make(36)),
+            .font(Fonts.DMSans.medium.make(15)),
         ]
-        self.assetNameLabel = [
-            .textAlignment(.left),
+        self.valueTitleLabel = [
+            .text("accounts-transaction-value".localized),
+            .textAlignment(.right),
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(15)),
         ]
-        self.assetIDLabel = [
+        self.algoImageView = [
+            .image("icon-algo-circle-green"),
+            .contentMode(.scaleAspectFit)
+        ]
+        self.algosValueLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.gray),
-            .font(Fonts.DMSans.regular.make(15)),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMMono.regular.make(19)),
         ]
-        self.verifiedImage = [
-            .image("icon-verified-shield")
+        self.secondaryValueLabel = [
+            .textAlignment(.right),
+            .textOverflow(SingleLineFittingText()),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMMono.regular.make(19)),
         ]
-        self.topSeparatorTopPadding = -32
+        self.rewardsInfoViewTheme = RewardsInfoViewTheme()
         self.horizontalPadding = 24
-        self.balanceLabelTopPadding = 8
-        self.assetIDLabelTopPadding = 11
-        self.assetIDInfoButtonLeadingPadding = 5
-        self.assetNameLabelTopPadding = 65
-        self.bottomSeparatorTopPadding = -67
-        self.bottomPadding = 33
+        self.algoImageViewSize = (24, 24)
+        self.minimumHorizontalInset = 4
+        self.algoImageViewTopPadding = 14
+        self.algosValueLabelLeadingPadding = 12
+        self.rewardsInfoViewTopPadding = 32
     }
 }

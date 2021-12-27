@@ -170,6 +170,7 @@
 "accounts-add-new" = "Add new asset";
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
 "accounts-transaction-your-balance" = "Your balance";
+"accounts-transaction-value" = "Value";
 
 // MARK: Asset
 "asset-title" = "Asset";
