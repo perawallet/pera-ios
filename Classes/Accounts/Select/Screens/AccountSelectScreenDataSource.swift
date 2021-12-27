@@ -114,12 +114,11 @@ UICollectionViewDataSource {
         // First section shows Accounts
         if indexPath.section == 0 {
             let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
-            cell.customize(AccountPreviewViewTheme())
 
             if let account = accounts[safe: indexPath.item] {
                 cell.bindData(
                     AccountPreviewViewModel(
-                        viewModel: AccountNameViewModel(account: account, hasImage: true)
+                        viewModel: AccountNameViewModel(account: account)
                     )
                 )
             }
