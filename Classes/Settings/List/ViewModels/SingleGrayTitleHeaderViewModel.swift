@@ -15,13 +15,13 @@
 //
 //   SettingsHeaderViewModel.swift
 
-
 import Foundation
+import MacaroonUIKit
 
-final class SingleGrayTitleHeaderViewModel {
+final class SingleGrayTitleHeaderViewModel: ViewModel {
     private(set) var title: String?
     
-    init(name: GeneralSettings) {
+    init(_ name: GeneralSettings) {
         setTitle(name)
     }
     

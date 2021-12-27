@@ -23,13 +23,7 @@ final class SettingsDataSource: NSObject {
     private(set) lazy var sections: [GeneralSettings] = [.account, .appPreferences, .support]
     private(set) lazy var settings: [[Settings]] = [accountSettings, appPreferenceSettings, supportSettings]
     private(set) lazy var accountSettings: [AccountSettings] = [.backup, .security, .notifications, .walletConnect]
-    private(set) lazy var appPreferenceSettings: [AppPreferenceSettings] = {
-        var settings: [AppPreferenceSettings] = [.rewards, .language, .currency]
-        if #available(iOS 13.0, *) {
-            settings.append(.appearance)
-        }
-        return settings
-    }()
+    private(set) lazy var appPreferenceSettings: [AppPreferenceSettings] = [.rewards, .language, .currency, .appearance]
     private(set) lazy var supportSettings: [SupportSettings] = [.feedback, .appReview, .termsAndServices, .privacyPolicy, .developer]
     
     private var session: Session?
@@ -87,15 +81,9 @@ extension SettingsDataSource: UICollectionViewDataSource {
         in collectionView: UICollectionView,
         at indexPath: IndexPath
     ) -> SettingsDetailCell {
-        if let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SettingsDetailCell.reusableIdentifier,
-            for: indexPath
-        ) as? SettingsDetailCell {
-            cell.bindData(SettingsDetailViewModel(setting: setting))
-            return cell
-        }
-        
-        fatalError("Index path is out of bounds")
+        let cell = collectionView.dequeue(SettingsDetailCell.self, at: indexPath)
+        cell.bindData(SettingsDetailViewModel(setting: setting))
+        return cell
     }
     
     private func setSettingsToggleCell(
@@ -104,16 +92,10 @@ extension SettingsDataSource: UICollectionViewDataSource {
         in collectionView: UICollectionView,
         at indexPath: IndexPath
     ) -> SettingsToggleCell {
-        if let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: SettingsToggleCell.reusableIdentifier,
-            for: indexPath
-        ) as? SettingsToggleCell {
-            cell.delegate = self
-            cell.bindData(SettingsToggleViewModel(setting: setting, isOn: isOn))
-            return cell
-        }
-        
-        fatalError("Index path is out of bounds")
+        let cell = collectionView.dequeue(SettingsToggleCell.self, at: indexPath)
+        cell.delegate = self
+        cell.bindData(SettingsToggleViewModel(setting: setting, isOn: isOn))
+        return cell
     }
     
     func collectionView(
@@ -142,7 +124,7 @@ extension SettingsDataSource: UICollectionViewDataSource {
                 fatalError("Unexpected element kind")
             }
             
-            headerView.bindData(SingleGrayTitleHeaderViewModel(name: sections[indexPath.section]))
+            headerView.bindData(SingleGrayTitleHeaderViewModel(sections[indexPath.section]))
             return headerView
         default:
             fatalError("Unexpected element kind")
