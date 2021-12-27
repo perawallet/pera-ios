@@ -95,4 +95,24 @@ extension Formatter {
         formatter.maximumFractionDigits = 2
         return formatter
     }
+
+    static let numberWithAutoSeparator: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.preferred()
+        formatter.currencySymbol = ""
+        formatter.numberStyle = .currencyAccounting
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 6
+        return formatter
+    }()
+
+    static func numberWithAutoSeparator(fraction value: Int) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.preferred()
+        formatter.currencySymbol = ""
+        formatter.numberStyle = .currencyAccounting
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = value
+        return formatter
+    }
 }

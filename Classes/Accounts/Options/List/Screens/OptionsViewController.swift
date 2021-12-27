@@ -92,7 +92,6 @@ extension OptionsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(OptionsCell.self, at: indexPath)
-        cell.customize(OptionsContextViewTheme())
         cell.bind(OptionsViewModel(option: options[indexPath.item], account: account))
         return cell
     }
@@ -182,7 +181,6 @@ extension OptionsViewController {
     private func updateNotificationFilterCell() {
         if let index = options.firstIndex(of: .muteNotifications),
            let cell = optionsView.optionsCollectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? OptionsCell {
-            cell.customize(OptionsContextViewTheme())
             cell.bind(OptionsViewModel(option: .muteNotifications, account: self.account))
         }
     }

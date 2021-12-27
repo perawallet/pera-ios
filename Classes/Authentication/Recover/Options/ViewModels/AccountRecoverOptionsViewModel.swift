@@ -24,7 +24,7 @@ final class AccountRecoverOptionsViewModel: PairedViewModel {
 
     init(_ model: AccountRecoverOptionsViewController.Option) {
         bindImage(model)
-        bintTitle(model)
+        bindTitle(model)
     }
 }
 
@@ -40,7 +40,7 @@ extension AccountRecoverOptionsViewModel {
         }
     }
 
-    private func bintTitle(_ option: AccountRecoverOptionsViewController.Option) {
+    private func bindTitle(_ option: AccountRecoverOptionsViewController.Option) {
         switch option {
         case .paste:
             title = "title-paste-passphrase".localized

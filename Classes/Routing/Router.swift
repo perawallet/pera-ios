@@ -393,8 +393,10 @@ class Router {
             )
             wcConnectionApprovalViewController.delegate = delegate
             viewController = wcConnectionApprovalViewController
-        case .walletConnectSessions:
+        case .walletConnectSessionsList:
             viewController = WCSessionListViewController(configuration: configuration)
+        case .walletConnectSessionsModalList:
+            viewController = WCSessionListModalViewController(configuration: configuration)
         case let .wcTransactionFullDappDetail(wcSession, message):
             viewController = WCTransactionFullDappDetailViewController(
                 wcSession: wcSession,
@@ -473,8 +475,18 @@ class Router {
             viewController = SelectAccountViewController(configuration: configuration)
         case .assetSelection(let account):
             viewController = SelectAssetViewController(account: account, configuration: configuration)
+        case .sendTransaction(let draft):
+            viewController = SendTransactionScreen(draft: draft, configuration: configuration)
+        case .editNote(let note, let delegate):
+            let editNoteScreen = EditNoteScreen(note: note, configuration: configuration)
+            editNoteScreen.delegate = delegate
+            viewController = editNoteScreen
+        case .transactionResult:
+            viewController = TransactionResultScreen(configuration: configuration)
+        case .transactionAccountSelect(let draft):
+            viewController = AccountSelectScreen(draft: draft, configuration: configuration)
         }
-        
+
         return viewController as? T
     }
     // swiftlint:enable function_body_length

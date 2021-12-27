@@ -37,7 +37,7 @@ final class QRView: View {
         }
     }
 
-    func customize(_ theme: QRViewTheme) {
+    private func customize(_ theme: QRViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
         addImageView(theme)

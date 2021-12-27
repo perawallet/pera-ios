@@ -133,6 +133,7 @@
 "recover-copy-error" = "The last copied text is not valid passphrase with 25 words. Please copy valid passphrase and try again.";
 
 // MARK: QR Scanning
+"qr-scan-overlay-title" = "Find a code to scan";
 "qr-scan-title" = "Scan QR Code";
 "qr-scan-error-title" = "Camera is not available";
 "qr-scan-error-message" = "Your device does not support scanning a qr code.";
@@ -143,6 +144,8 @@
 "qr-scan-message-text" = "You can only scan your QR from this page, To view your QR please select the icon on your account";
 "qr-scan-should-scan-valid-qr" = "QR is not valid.";
 "qr-scan-invalid-wc-screen-error" = "The scanned QR is not a valid Algorand public address. For other types of QR (such as WalletConnect transactions), please use the scan QR button on the homepage.";
+"qr-scan-connected-app-count" = "%@ apps connected";
+"qr-scan-connected-app-singular-count" = "%@ app connected";
 
 // MARK: QR Creation
 "qr-creation-title" = "Passphrase QR";
@@ -166,6 +169,8 @@
 "accounts-title" = "Accounts";
 "accounts-add-new" = "Add new asset";
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
+"accounts-transaction-your-balance" = "Your balance";
+"accounts-transaction-value" = "Value";
 
 // MARK: Asset
 "asset-title" = "Asset";
@@ -270,7 +275,7 @@
 "contacts-input-name-placeholder" = "Contact name";
 "contacts-input-address-explanation" = "Address";
 "contacts-input-address-placeholder" = "Paste # or Scan QR";
-"contacts-transactions-title" = "Transactions";
+"contacts-transactions-title" = "Transaction History";
 "contacts-empty-text" = "You haven't added any contacts yet";
 "contacts-empty-detail-text" = "You can make the process of sending assets faster by adding new contacts.";
 "contacts-name-validation-error" = "Name is empty.";
@@ -359,6 +364,11 @@
 "transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
 "transaction-id-open-goalseeker" = "Open in GoalSeeker";
 "transaction-detail-balance" = "Account Balance";
+"transaction-detail-add" = "Add";
+"transaction-detail-completed" = "Completed";
+"transaction-detail-pending" = "Pending";
+"transaction-detail-failed" = "Failed";
+"transaction-detail-id-copied-title" = "ID copied to clipboard";
 
 // MARK: Feedback
 "feedback-title" = "Send Feedback";
@@ -380,9 +390,10 @@
 // MARK: Rewards
 "rewards-title" = "Rewards";
 "rewards-show-title" = "Show Rewards";
+"rewards-rate" = "Rewards Rate";
 "rewards-detail-subtitle" = "You earn rewards just by owning Algos! Here's a summary of your rewards activity since your last transaction. These rewards are always included in your balance.";
-"total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ.";
-"total-rewards-faq" = "FAQ.";
+"total-rewards-faq-title" = "For more information on Algorand Rewards, visit our FAQ";
+"total-rewards-faq" = "FAQ";
 "reward-list-title" = "Reward";
 "total-rewards-title" = "%@ Rewards";
 "rewards-since-last-text" = "Since Last Transaction";
@@ -668,7 +679,8 @@ on your Ledger device (%d)";
 "ledger-verify-header-subtitle" = "The following account addresses will display on your Ledger device. Please carefully compare and verify each address in order to finalize device pairing.";
 
 // MARK: Wallet Connect Session
-"wallet-connect-session-connection-description" = "%@ wants to connect to your account";
+"wallet-connect-session-connection-description" = "%@ wants to\nconnect to your account";
+"wallet-connect-session-select-account"= "Select Account";
 "wallet-connect-session-error-no-account" = "You don't have any account that WalletConnect can connect.";
 "wallet-connect-session-list-empty" = "You haven't connected any apps yet.";
 "wallet-connect-session-disconnect-message" = "Would you like to disconnect from %@?";
@@ -677,6 +689,8 @@ on your Ledger device (%d)";
 "wallet-connect-session-disconnect-fail-message" = "Failed to disconnect from Session %@.";
 "wallet-connect-session-invalid-qr-message" = "Couldn't create a session on WalletConnect. Please try with a valid QR.";
 "wallet-connect-session-error-not-reachable" = "WalletConnect is not reachable at the moment. Please try again later.";
+"wallet-connect-session-connection-approved-title" = "WalletConnect Session with\n%@ is approved";
+"wallet-connect-session-connection-approved-description" = "Head back to %@ to finalize the connection and to initiate transactions!";
 
 // MARK: Wallet Connect Transaction Warning
 "wallet-connect-transaction-warning-rekey" = "This transaction will transfer ownership of this account. Your current recovery passphrase will no longer grant access to these assets.";
@@ -772,3 +786,29 @@ on your Ledger device (%d)";
 "governance-banner-title" = "Algorand Governance Program is starting!";
 "governance-banner-detail" = "Become a governor. Vote on Algorand’s future. Earn rewards.";
 "governance-banner-action" = "Get Started";
+
+// MARK: SendTransaction
+
+"send-transaction-title" = "Send %@";
+"send-transaction-add-note-title" = "+ Add Note";
+"send-transaction-edit-note-title" = "Edit Note";
+"send-transaction-max-button-title" = "MAX";
+
+// MARK: EditNote
+
+"edit-note-title" = "Add Note";
+"edit-note-note-explanation" = "Enter your note";
+
+// MARK: TransactionResult
+"transaction-result-started-title" = "Order Placed";
+"transaction-result-started-subtitle" = "Your order was successfully received";
+"transaction-result-completed-title" = "Order Received";
+"transaction-result-completed-subtitle" = "Your order was successfully received";
+
+// MARK: AccountSelect
+"account-select-header-accounts-title" = "My Accounts";
+"account-select-header-contacts-title" = "Contacts";
+"account-select-header-search-title" = "Search or enter address";
+"account-select-search-empty-title" = "No account found";
+"account-select-search-empty-detail" = "Try different account name";
+"account-select-clipboard-title" = "Paste From Clipboard";

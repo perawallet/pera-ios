@@ -83,7 +83,7 @@ extension ContactContextView {
 
         addSubview(addressLabel)
         addressLabel.snp.makeConstraints {
-            $0.top.equalTo(nameLabel.snp.bottom)
+            $0.top.equalTo(nameLabel.snp.bottom).offset(theme.addressLabelTopPadding)
             $0.bottom.equalToSuperview().inset(theme.verticalPadding)
             $0.leading.equalTo(nameLabel)
             $0.trailing.equalToSuperview().offset(theme.labelHorizontalPaddings.trailing)

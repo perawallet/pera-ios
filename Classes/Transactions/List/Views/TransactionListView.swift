@@ -16,16 +16,14 @@
 //  TransactionListView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class TransactionListView: BaseView {
-    
+final class TransactionListView: View {
     weak var delegate: TransactionListViewDelegate?
+
+    private lazy var theme = TransactionListViewTheme()
     
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
-        return refreshControl
-    }()
+    private lazy var refreshControl = UIRefreshControl()
     
     private lazy var emptyStateView = EmptyStateView(
         image: img("icon-transactions-empty"),
@@ -37,67 +35,57 @@ class TransactionListView: BaseView {
     
     private lazy var transactionsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        flowLayout.minimumInteritemSpacing = 0.0
+        flowLayout.minimumLineSpacing = theme.cellSpacing
         flowLayout.sectionHeadersPinToVisibleBounds = true
-        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .clear
-        
-        collectionView.register(TransactionHistoryCell.self, forCellWithReuseIdentifier: TransactionHistoryCell.reusableIdentifier)
-        collectionView.register(PendingTransactionCell.self, forCellWithReuseIdentifier: PendingTransactionCell.reusableIdentifier)
-        collectionView.register(RewardCell.self, forCellWithReuseIdentifier: RewardCell.reusableIdentifier)
-        collectionView.register(
-            TransactionHistoryHeaderSupplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: TransactionHistoryHeaderSupplementaryView.reusableIdentifier
-        )
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
+        collectionView.register(TransactionHistoryCell.self)
+        collectionView.register(PendingTransactionCell.self)
+        collectionView.register(header: TransactionHistoryHeaderSupplementaryView.self)
         return collectionView
     }()
-    
-    private lazy var contentStateView = ContentStateView()
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(TransactionListViewTheme())
+        linkInteractors()
+    }
+
+    func linkInteractors() {
+        otherErrorView.delegate = self
+        internetConnectionErrorView.delegate = self
+        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
+    }
+
+    func customize(_ theme: TransactionListViewTheme) {
         internetConnectionErrorView.setImage(img("icon-no-internet-connection"))
         internetConnectionErrorView.setTitle("internet-connection-error-title".localized)
         internetConnectionErrorView.setSubtitle("internet-connection-error-detail".localized)
-        internetConnectionErrorView.layer.cornerRadius = 20.0
-        internetConnectionErrorView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         otherErrorView.setImage(img("icon-warning-error"))
         otherErrorView.setTitle("transaction-filter-error-title".localized)
         otherErrorView.setSubtitle("transaction-filter-error-subtitle".localized)
-        otherErrorView.layer.cornerRadius = 20.0
-        otherErrorView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         emptyStateView.titleLabel.textColor = Colors.Text.tertiary
-        emptyStateView.titleLabel.font = UIFont.font(withWeight: .medium(size: 16.0))
-        emptyStateView.layer.cornerRadius = 20.0
-        emptyStateView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        emptyStateView.titleLabel.font = UIFont.font(withWeight: .medium(size: 16))
+
+        addTransactionHistoryCollectionView()
     }
-    
-    override func linkInteractors() {
-        otherErrorView.delegate = self
-        internetConnectionErrorView.delegate = self
-    }
-    
-    override func prepareLayout() {
-        setupTransactionHistoryCollectionViewLayout()
-    }
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: ViewStyle) { }
 }
 
 extension TransactionListView {
-    private func setupTransactionHistoryCollectionViewLayout() {
+    private func addTransactionHistoryCollectionView() {
         addSubview(transactionsCollectionView)
-        
-        transactionsCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalToSuperview()
+        transactionsCollectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
         
-        transactionsCollectionView.backgroundView = contentStateView
+        transactionsCollectionView.backgroundView = ContentStateView()
         transactionsCollectionView.refreshControl = refreshControl
     }
 }

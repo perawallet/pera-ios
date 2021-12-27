@@ -32,6 +32,11 @@ final class AssetPreviewActionCell: BaseCollectionViewCell<AssetPreviewActionVie
     func bindData(_ viewModel: AssetPreviewViewModel) {
         contextView.bindData(viewModel)
     }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        contextView.prepareForReuse()
+    }
 }
 
 extension AssetPreviewActionCell: AssetPreviewActionViewDelegate {

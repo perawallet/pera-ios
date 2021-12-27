@@ -57,7 +57,6 @@ final class LedgerAccountDetailViewController: BaseScrollViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        ledgerAccountDetailView.customize(theme.ledgerAccountDetailViewTheme)
         contentView.addSubview(ledgerAccountDetailView)
         ledgerAccountDetailView.snp.makeConstraints {
             $0.edges.equalToSuperview()
