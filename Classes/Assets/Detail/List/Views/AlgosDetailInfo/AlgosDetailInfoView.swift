@@ -121,14 +121,14 @@ extension AlgosDetailInfoView: RewardsInfoViewDelegate {
     }
 }
 
-protocol AlgosDetailInfoViewDelegate: AnyObject {
-    func algosDetailInfoViewDidTapInfoButton(_ algosDetailInfoView: AlgosDetailInfoView)
-}
-
 extension AlgosDetailInfoView: ViewModelBindable {
     func bindData(_ viewModel: AlgosDetailInfoViewModel?) {
         algosValueLabel.text = viewModel?.totalAmount
         secondaryValueLabel.text = viewModel?.secondaryValue
         rewardsInfoView.bindData(viewModel?.rewardsInfoViewModel)
     }
+}
+
+protocol AlgosDetailInfoViewDelegate: AnyObject {
+    func algosDetailInfoViewDidTapInfoButton(_ algosDetailInfoView: AlgosDetailInfoView)
 }
