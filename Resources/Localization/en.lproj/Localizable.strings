@@ -782,3 +782,29 @@ on your Ledger device (%d)";
 "governance-banner-title" = "Algorand Governance Program is starting!";
 "governance-banner-detail" = "Become a governor. Vote on Algorand’s future. Earn rewards.";
 "governance-banner-action" = "Get Started";
+
+// MARK: SendTransaction
+
+"send-transaction-title" = "Send %@";
+"send-transaction-add-note-title" = "+ Add Note";
+"send-transaction-edit-note-title" = "Edit Note";
+"send-transaction-max-button-title" = "MAX";
+
+// MARK: EditNote
+
+"edit-note-title" = "Add Note";
+"edit-note-note-explanation" = "Enter your note";
+
+// MARK: TransactionResult
+"transaction-result-started-title" = "Order Placed";
+"transaction-result-started-subtitle" = "Your order was successfully received";
+"transaction-result-completed-title" = "Order Received";
+"transaction-result-completed-subtitle" = "Your order was successfully received";
+
+// MARK: AccountSelect
+"account-select-header-accounts-title" = "My Accounts";
+"account-select-header-contacts-title" = "Contacts";
+"account-select-header-search-title" = "Search or enter address";
+"account-select-search-empty-title" = "No account found";
+"account-select-search-empty-detail" = "Try different account name";
+"account-select-clipboard-title" = "Paste From Clipboard";
