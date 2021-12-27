@@ -120,19 +120,6 @@ extension SettingsViewController {
                 if let setting = dataSource.appPreferenceSettings[safe: indexPath.item] {
                     didSelectItemFromAppPreferenceSettings(setting)
                 }
-            case .walletConnect:
-                open(.walletConnectSessionsList, by: .push)
-            case .notifications:
-                open(.notificationFilter(flow: .settings), by: .push)
-            case .appReview:
-                AlgorandAppStoreReviewer().requestManualReview(forAppWith: Environment.current.appID)
-            case .language:
-                displayProceedAlertWith(
-                    title: "settings-language-change-title".localized,
-                    message: "settings-language-change-detail".localized
-                ) { _ in
-                    UIApplication.shared.openAppSettings()
-                }
             case .support:
                 if let setting = dataSource.supportSettings[safe: indexPath.item] {
                     didSelectItemFromSupportSettings(setting)
@@ -146,7 +133,7 @@ extension SettingsViewController {
         case .notifications:
             open(.notificationFilter(flow: .settings), by: .push)
         case .walletConnect:
-            open(.walletConnectSessions, by: .push)
+            open(.walletConnectSessionsList, by: .push)
         default:
             break
         }
