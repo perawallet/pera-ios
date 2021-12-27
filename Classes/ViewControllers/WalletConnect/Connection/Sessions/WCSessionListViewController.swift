@@ -82,13 +82,7 @@ extension WCSessionListViewController: WCSessionListDataSourceDelegate {
 
 extension WCSessionListViewController: WalletConnectorDelegate {
     func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession) {
-        asyncMain { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.updateScreenAfterDisconnecting(from: session)
-        }
+        updateScreenAfterDisconnecting(from: session)
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {

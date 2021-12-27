@@ -361,16 +361,10 @@ extension QRScannerViewController: WalletConnectorDelegate {
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
         delegate?.qrScannerViewControllerDidApproveWCConnection(self)
-        asyncMain { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            walletConnector.saveConnectedWCSession(session)
-            self.captureSession = nil
-            self.cancelButton.stopLoading()
-            self.closeScreen(by: .pop)
-        }
+        walletConnector.saveConnectedWCSession(session)
+        captureSession = nil
+        cancelButton.stopLoading()
+        closeScreen(by: .pop)
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {

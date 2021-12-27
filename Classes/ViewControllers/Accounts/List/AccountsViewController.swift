@@ -493,13 +493,7 @@ extension AccountsViewController: WalletConnectorDelegate {
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
-        asyncMain { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.walletConnector.saveConnectedWCSession(session)
-        }
+        walletConnector.saveConnectedWCSession(session)
     }
 }
 
