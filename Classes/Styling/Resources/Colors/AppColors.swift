@@ -22,7 +22,7 @@ import MacaroonUIKit
 enum AppColors {
     enum Shared {}
     enum Components {}
-    enum SendTransaction {}
+    enum SendTransaction {}
 }
 
 extension AppColors.Shared {

@@ -76,7 +76,7 @@ class TransactionHistoryViewModel {
                     }
                 }
                 let formattedDate = transaction.date?.toFormat("MMMM dd, yyyy")
-                view.dateLabel.text = formattedDate
+                view.subtitleLabel.text = formattedDate
                 return
             }
             
@@ -93,7 +93,7 @@ class TransactionHistoryViewModel {
         }
         
         let formattedDate = transaction.date?.toFormat("MMMM dd, yyyy")
-        view.dateLabel.text = formattedDate
+        view.subtitleLabel.text = formattedDate
     }
     
     private func configure(_ view: TransactionHistoryContextView, with contact: Contact?, and address: String?) {
@@ -161,6 +161,15 @@ class TransactionHistoryViewModel {
         }
         
         let formattedDate = Date().toFormat("MMMM dd, yyyy")
-        view.dateLabel.text = formattedDate
+        view.subtitleLabel.text = formattedDate
+    }
+
+    func configure(_ view: TransactionHistoryContextView, with reward: Reward) {
+        let viewModel = RewardViewModel(reward)
+        view.titleLabel.text = "reward-list-title".localized
+        view.subtitleLabel.text = viewModel.date
+        if let mode = viewModel.amountMode {
+            view.transactionAmountView.mode = mode
+        }
     }
 }
