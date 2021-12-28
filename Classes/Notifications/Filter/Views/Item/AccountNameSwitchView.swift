@@ -60,6 +60,8 @@ extension AccountNameSwitchView {
     }
 
     private func addAccountNameView(_ theme: AccountNameSwitchViewTheme) {
+        accountNameView.customize(AccountNameViewLargeTheme())
+        
         addSubview(accountNameView)
         accountNameView.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalPadding)

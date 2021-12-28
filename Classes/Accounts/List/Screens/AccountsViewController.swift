@@ -526,10 +526,11 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     assetDetail: nil,
                     title: "asset-support-your-add-title".localized,
                     detail: "asset-support-your-add-message".localized,
-                    actionTitle: "title-ok".localized
+                    actionTitle: "title-approve".localized,
+                    cancelTitle: "title-cancel".localized
                 )
 
-                modalTransition.perform(.assetSupport(assetAlertDraft: assetAlertDraft))
+                modalTransition.perform(.assetActionConfirmation(assetAlertDraft: assetAlertDraft))
                 return
             }
             

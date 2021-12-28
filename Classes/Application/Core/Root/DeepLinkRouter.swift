@@ -90,7 +90,7 @@ extension DeepLinkRouter {
         switch screen {
         case .addContact,
              .sendAlgosTransactionPreview,
-             .assetSupport,
+             .assetActionConfirmation,
              .sendAssetTransactionPreview:
             rootViewController?.tabBarViewController.route = screen
             rootViewController?.tabBarViewController.routeForDeeplink()
@@ -156,7 +156,8 @@ extension DeepLinkRouter {
             assetDetail: nil,
             title: "asset-support-add-title".localized,
             detail: String(format: "asset-support-add-message".localized, "\(account.name ?? "")"),
-            actionTitle: "title-ok".localized
+            actionTitle: "title-approve".localized,
+            cancelTitle: "title-cancel".localized
         )
 
         rootViewController?.tabBarViewController.route = .assetActionConfirmation(assetAlertDraft: draft)

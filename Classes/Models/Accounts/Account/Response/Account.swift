@@ -54,6 +54,7 @@ final class Account:
     var ledgerDetail: LedgerDetail?
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
+    var preferredOrder: Int
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -79,6 +80,7 @@ final class Account:
         appsTotalSchema = apiModel.appsTotalSchema
         createdApps = apiModel.createdApps
         receivesNotification = true
+        preferredOrder = 0
     }
 
     init(
@@ -87,18 +89,20 @@ final class Account:
         ledgerDetail: LedgerDetail? = nil,
         name: String? = nil,
         rekeyDetail: RekeyDetail? = nil,
-        receivesNotification: Bool = true
+        receivesNotification: Bool = true,
+        preferredOrder: Int = 0
     ) {
         self.address = address
-        amount = 0
-        amountWithoutRewards = 0
-        pendingRewards = 0
-        status = .offline
+        self.amount = 0
+        self.amountWithoutRewards = 0
+        self.pendingRewards = 0
+        self.status = .offline
         self.name = name
         self.type = type
         self.ledgerDetail = ledgerDetail
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
+        self.preferredOrder = preferredOrder
     }
     
     init(accountInformation: AccountInformation) {
@@ -112,6 +116,7 @@ final class Account:
         self.ledgerDetail = accountInformation.ledgerDetail
         self.receivesNotification = accountInformation.receivesNotification
         self.rekeyDetail = accountInformation.rekeyDetail
+        self.preferredOrder = accountInformation.preferredOrder
     }
 
     func encode() -> APIModel {

@@ -124,6 +124,7 @@ extension Account {
         ledgerDetail = localAccount.ledgerDetail
         receivesNotification = localAccount.receivesNotification
         rekeyDetail = localAccount.rekeyDetail
+        preferredOrder = localAccount.preferredOrder
     }
 }
 
@@ -214,6 +215,7 @@ extension Account {
         appsTotalExtraPages = account.appsTotalExtraPages
         appsTotalSchema = account.appsTotalSchema
         createdApps = account.createdApps
+        preferredOrder = account.preferredOrder
 
         if let updatedName = account.name {
             name = updatedName

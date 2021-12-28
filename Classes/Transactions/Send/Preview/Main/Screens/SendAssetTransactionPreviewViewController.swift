@@ -306,7 +306,7 @@ extension SendAssetTransactionPreviewViewController {
             api?.sendAssetSupportRequest(draft)
         }
 
-        modalTransition.perform(.assetSupport(assetAlertDraft: assetAlertDraft))
+        modalTransition.perform(.assetActionConfirmation(assetAlertDraft: assetAlertDraft))
     }
     
     private func validateTransaction() {
