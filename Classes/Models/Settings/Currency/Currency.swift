@@ -22,21 +22,30 @@ import MacaroonUtils
 final class Currency: ALGEntityModel {
     let id: String
     let name: String?
+    let symbol: String?
+    let usdValue: Decimal?
     let price: String?
+    let lastUpdateDate: Date?
 
     init(
         _ apiModel: APIModel = APIModel()
     ) {
         self.id = apiModel.currencyId ?? "USD"
         self.name = apiModel.name
+        self.symbol = apiModel.symbol
+        self.usdValue = apiModel.usdValue
         self.price = apiModel.exchangePrice
+        self.lastUpdateDate = apiModel.lastUpdatedAt
     }
 
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.currencyId = id
         apiModel.name = name
+        apiModel.symbol = symbol
+        apiModel.usdValue = usdValue
         apiModel.exchangePrice = price
+        apiModel.lastUpdatedAt = lastUpdateDate
         return apiModel
     }
 }
@@ -45,12 +54,18 @@ extension Currency {
     struct APIModel: ALGAPIModel {
         var currencyId: String?
         var name: String?
+        var symbol: String?
+        var usdValue: Decimal?
         var exchangePrice: String?
+        var lastUpdatedAt: Date?
 
         init() {
             self.currencyId = nil
             self.name = nil
+            self.symbol = nil
+            self.usdValue = nil
             self.exchangePrice = nil
+            self.lastUpdatedAt = nil
         }
     }
 }

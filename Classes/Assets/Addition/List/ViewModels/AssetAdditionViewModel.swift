@@ -23,26 +23,26 @@ class AssetAdditionViewModel {
     private(set) var actionColor: UIColor?
     private(set) var id: String?
 
-    init(assetSearchResult: AssetSearchResult) {
+    init(assetInformation: AssetInformation) {
         setBackgroundColor()
-        setAssetDetail(from: assetSearchResult)
+        setAssetDetail(from: assetInformation)
         setActionColor()
-        setId(from: assetSearchResult)
+        setId(from: assetInformation)
     }
 
     private func setBackgroundColor() {
         backgroundColor = Colors.Background.secondary
     }
 
-    private func setAssetDetail(from assetSearchResult: AssetSearchResult) {
-        assetDetail = AssetDetail(searchResult: assetSearchResult)
+    private func setAssetDetail(from assetInformation: AssetInformation) {
+        assetDetail = AssetDetail(assetInformation: assetInformation)
     }
 
     private func setActionColor() {
         actionColor = Colors.Text.tertiary
     }
 
-    private func setId(from assetSearchResult: AssetSearchResult) {
-        id = "\(assetSearchResult.id)"
+    private func setId(from assetInformation: AssetInformation) {
+        id = "\(assetInformation.id)"
     }
 }

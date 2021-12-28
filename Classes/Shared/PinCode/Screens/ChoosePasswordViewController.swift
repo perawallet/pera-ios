@@ -189,7 +189,8 @@ extension ChoosePasswordViewController {
                     format: "asset-support-add-message".localized,
                     "\(account.name ?? "")"
                 ),
-                actionTitle: "title-ok".localized
+                actionTitle: "title-approve".localized,
+                cancelTitle: "title-cancel".localized
             )
             
             route = .assetActionConfirmation(assetAlertDraft: draft)

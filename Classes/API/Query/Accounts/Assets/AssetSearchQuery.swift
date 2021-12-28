@@ -64,3 +64,13 @@ struct TransactionSearchQuery: ObjectQuery {
         return params
     }
 }
+
+struct AssetFetchQuery: ObjectQuery {
+    let ids: [AssetID]
+
+    var queryParams: [APIQueryParam] {
+        var params: [APIQueryParam] = []
+        params.append(.init(.assetIDs, ids))
+        return params
+    }
+}
