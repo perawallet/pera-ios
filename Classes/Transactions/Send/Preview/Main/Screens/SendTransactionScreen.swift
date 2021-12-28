@@ -56,7 +56,7 @@ final class SendTransactionScreen: BaseViewController {
         guard let decimalAmount = amount.decimalAmountWithSeparator else {
             return false
         }
-        return draft.account.amount == decimalAmount.toMicroAlgos
+        return draft.from.amount == decimalAmount.toMicroAlgos
     }
 
     init(draft: SendTransactionDraft, configuration: ViewControllerConfiguration) {
@@ -111,10 +111,10 @@ extension SendTransactionScreen {
         switch draft.transactionMode {
         case .algo:
             accountView.bindData(
-                AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(draft.account))
+                AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(draft.from))
             )
         case .assetDetail(let assetDetail):
-            if let asset = draft.account.assets?.first(matching: (\.id, assetDetail.id)) {
+            if let asset = draft.from.assets?.first(matching: (\.id, assetDetail.id)) {
                 accountView.bindData(
                     AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, asset)))
                 )
@@ -263,6 +263,7 @@ extension SendTransactionScreen {
         case .otherAsset:
             self.displaySimpleAlertWith(title: "title-error".localized, message: "send-asset-amount-error".localized)
         case .valid:
+            draft.amount = amount.decimalAmount
             open(.transactionAccountSelect(draft: self.draft), by: .push)
             return
         case .algoParticipationKeyWarning:
@@ -276,9 +277,9 @@ extension SendTransactionScreen {
     private func didTapMax() {
         switch draft.transactionMode {
         case .algo:
-            self.amount = draft.account.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
+            self.amount = draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
         case .assetDetail(let assetDetail):
-            self.amount = draft.account.amountNumberWithAutoFraction(for: assetDetail) ?? "0"
+            self.amount = draft.from.amountNumberWithAutoFraction(for: assetDetail) ?? "0"
         }
 
         bindAmount()
@@ -345,18 +346,18 @@ extension SendTransactionScreen: NumpadViewDelegate {
             return .otherAlgo
         }
 
-        if draft.account.amount < UInt64(decimalAmount.toMicroAlgos) {
+        if draft.from.amount < UInt64(decimalAmount.toMicroAlgos) {
             return .maximumAmountAlgoError
         }
 
-        if Int(draft.account.amount) - Int(decimalAmount.toMicroAlgos) - Int(minimumFee) < minimumTransactionMicroAlgosLimit && !isMaxTransaction {
+        if Int(draft.from.amount) - Int(decimalAmount.toMicroAlgos) - Int(minimumFee) < minimumTransactionMicroAlgosLimit && !isMaxTransaction {
             return .minimumAmountAlgoError
         }
 
         if isMaxTransaction {
-            if draft.account.doesAccountHasParticipationKey() {
+            if draft.from.doesAccountHasParticipationKey() {
                 return .algoParticipationKeyWarning
-            } else if draft.account.hasMinAmountFields || draft.account.isRekeyed() {
+            } else if draft.from.hasMinAmountFields || draft.from.isRekeyed() {
                 displayMaxTransactionWarning()
                 return .maxAlgo
             }
@@ -366,7 +367,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
     }
 
     private func validateAsset(for value: String, on assetDetail: AssetDetail) -> TransactionValidation {
-        guard let assetAmount = draft.account.amount(for: assetDetail),
+        guard let assetAmount = draft.from.amount(for: assetDetail),
               let decimalAmount = value.decimalAmountWithSeparator else {
                   return .otherAsset
         }
@@ -398,7 +399,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
     }
 
     private func displayMaxTransactionWarning() {
-        modalTransition.perform(.maximumBalanceWarning(account: draft.account, delegate: self))
+        modalTransition.perform(.maximumBalanceWarning(account: draft.from, delegate: self))
     }
 }
 

@@ -84,6 +84,10 @@ class AccountSelectScreen: BaseViewController {
 
         dataSource.loadData()
     }
+
+    private func routePreviewScreen() {
+        open(.sendTransactionPreview(draft: draft), by: .push)
+    }
 }
 
 extension AccountSelectScreen {
@@ -111,8 +115,9 @@ extension AccountSelectScreen {
                   return
         }
 
-        draft.toAddress = address
-        // next screen
+        draft.toAccount = address
+
+        routePreviewScreen()
     }
 }
 
@@ -131,12 +136,12 @@ extension AccountSelectScreen: UICollectionViewDelegateFlowLayout {
         if let contact = dataSource.item(at: indexPath) as? Contact {
             draft.toContact = contact
         } else if let account = dataSource.item(at: indexPath) as? Account {
-            draft.toAddress = account.address
+            draft.toAccount = account.address
         } else {
             return
         }
 
-        // next screen
+        routePreviewScreen()
     }
 
     func collectionView(

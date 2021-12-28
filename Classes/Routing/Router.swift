@@ -485,6 +485,8 @@ class Router {
             viewController = TransactionResultScreen(configuration: configuration)
         case .transactionAccountSelect(let draft):
             viewController = AccountSelectScreen(draft: draft, configuration: configuration)
+        case .sendTransactionPreview(let draft):
+            viewController = SendTransactionPreviewScreen(draft: draft, configuration: configuration)
         }
 
         return viewController as? T

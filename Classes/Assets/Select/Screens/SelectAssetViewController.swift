@@ -81,13 +81,13 @@ extension SelectAssetViewController: UICollectionViewDelegate, UICollectionViewD
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let draft: SendTransactionDraft
         if indexPath.item == .zero {
-            draft = SendTransactionDraft(account: account, transactionMode: .algo)
+            draft = SendTransactionDraft(from: account, transactionMode: .algo)
         } else {
             guard let asset = accountListDataSource.assetDetails[safe: indexPath.item.advanced(by: -1)] else {
                 return
             }
 
-            draft = SendTransactionDraft(account: account, transactionMode: .assetDetail(asset))
+            draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(asset))
         }
 
         open(.sendTransaction(draft: draft), by: .push)
