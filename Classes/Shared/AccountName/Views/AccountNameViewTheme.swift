@@ -19,20 +19,39 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AccountNameViewTheme: StyleSheet, LayoutSheet {
-    let titleLabel: TextStyle
+protocol AccountNameViewTheme: StyleSheet, LayoutSheet {
+    var titleLabel: TextStyle { get }
+    var horizontalPadding: LayoutMetric { get }
+    var imageSize: LayoutSize { get }
+}
+
+extension AccountNameViewTheme {
+    var titleLabel: TextStyle {
+        return [
+            .textOverflow(SingleLineFittingText()),
+            .textAlignment(.left),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.regular.make(15))
+        ]
+    }
+}
+
+struct AccountNameViewLargeTheme: AccountNameViewTheme {
     let horizontalPadding: LayoutMetric
     let imageSize: LayoutSize
 
     init(_ family: LayoutFamily) {
-        self.titleLabel = [
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.regular.make(15)),
-            .text("notification-filter-show-title".localized)
-        ]
         self.imageSize = (40, 40)
         self.horizontalPadding = 16
+    }
+}
+
+struct AccountNameViewSmallTheme: AccountNameViewTheme {
+    let horizontalPadding: LayoutMetric
+    let imageSize: LayoutSize
+
+    init(_ family: LayoutFamily) {
+        self.imageSize = (24, 24)
+        self.horizontalPadding = 12
     }
 }

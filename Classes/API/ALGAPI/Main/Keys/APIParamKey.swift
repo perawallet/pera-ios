@@ -51,6 +51,7 @@ enum APIParamKey: String, CodingKey {
     case sender = "sender_address"
     case receiver = "receiver_address"
     case asset = "asset_id"
+    case assetIDs = "asset_ids"
     case limit = "limit"
     case query = "q"
     case offset = "offset"

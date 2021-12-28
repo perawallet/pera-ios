@@ -293,14 +293,14 @@ extension AccountsViewController: AccountsViewDelegate {
 extension AccountsViewController: AssetAdditionViewControllerDelegate {
     func assetAdditionViewController(
         _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd assetSearchResult: AssetSearchResult,
+        didAdd assetSearchResult: AssetInformation,
         to account: Account
     ) {
         guard let section = accountsDataSource.section(for: account) else {
             return
         }
 
-        let assetDetail = AssetDetail(searchResult: assetSearchResult)
+        let assetDetail = AssetDetail(assetInformation: assetSearchResult)
         assetDetail.isRecentlyAdded = true
 
         let index = accountsView.accountsCollectionView.numberOfItems(inSection: section)
@@ -526,10 +526,11 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     assetDetail: nil,
                     title: "asset-support-your-add-title".localized,
                     detail: "asset-support-your-add-message".localized,
-                    actionTitle: "title-ok".localized
+                    actionTitle: "title-approve".localized,
+                    cancelTitle: "title-cancel".localized
                 )
 
-                modalTransition.perform(.assetSupport(assetAlertDraft: assetAlertDraft))
+                modalTransition.perform(.assetActionConfirmation(assetAlertDraft: assetAlertDraft))
                 return
             }
             
