@@ -61,7 +61,7 @@ final class AssetActionConfirmationViewController: BaseViewController {
 
 extension AssetActionConfirmationViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight)
+        return .compressed
     }
 }
 

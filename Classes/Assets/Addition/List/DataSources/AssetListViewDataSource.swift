@@ -19,7 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 final class AssetListViewDataSource: NSObject {
-    var assetResults: [AssetSearchResult] = []
+    var assetResults: [AssetInformation] = []
 }
 
 extension AssetListViewDataSource: UICollectionViewDataSource {
@@ -31,7 +31,7 @@ extension AssetListViewDataSource: UICollectionViewDataSource {
         let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
         cell.customize(AssetPreviewViewAdditionTheme())
         let assetResult = assetResults[indexPath.item]
-        let assetDetail = AssetDetail(searchResult: assetResult)
+        let assetDetail = AssetDetail(assetInformation: assetResult)
         cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(assetDetail)))
         return cell
     }

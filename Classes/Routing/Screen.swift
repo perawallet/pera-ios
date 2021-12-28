@@ -62,7 +62,6 @@ indirect enum Screen {
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
-    case assetSupport(assetAlertDraft: AssetAlertDraft)
     case rewardDetail(account: Account)
     case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)
@@ -79,6 +78,7 @@ indirect enum Screen {
     case rekeyInstruction(account: Account)
     case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, ledgerAddress: String)
     case ledgerAccountSelection(flow: AccountSetupFlow, accounts: [Account])
+    case walletRating
     case developerSettings
     case currencySelection
     case appearanceSelection
@@ -116,6 +116,8 @@ indirect enum Screen {
     case tabBarModal
     case algoStatisticsDateSelection(option: AlgosUSDValueInterval, delegate: AlgoStatisticsDateSelectionViewControllerDelegate)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
+    case accountListOptions
+    case orderAccountList
     case accountSelection
     case assetSelection(account: Account)
     case sendTransaction(draft: SendTransactionDraft)

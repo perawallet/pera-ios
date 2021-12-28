@@ -92,11 +92,11 @@ final class AssetDetail: ALGEntityModel {
         self.isDeleted = apiModel.params?.deleted
     }
     
-    init(searchResult: AssetSearchResult) {
-        self.id = searchResult.id
-        self.assetName = searchResult.name
-        self.unitName = searchResult.unitName
-        self.isVerified = searchResult.isVerified
+    init(assetInformation: AssetInformation) {
+        self.id = assetInformation.id
+        self.assetName = assetInformation.name
+        self.unitName = assetInformation.unitName
+        self.isVerified = assetInformation.isVerified
         self.fractionDecimals = 0
         self.total = 0
         self.creator = ""

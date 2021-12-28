@@ -16,9 +16,11 @@
 //  Session.swift
 
 import Foundation
-import UIKit
-import MagpieCore
 import KeychainAccess
+import MacaroonUtils
+import MagpieCore
+import UIKit
+import SwiftDate
 
 class Session: Storable {
     typealias Object = Any
@@ -142,6 +144,8 @@ class Session: Storable {
             save(newValue, for: currencyPreferenceKey, to: .defaults)
         }
     }
+
+    var preferredCurrencyDetails: Currency?
     
     var notificationLatestFetchTimestamp: TimeInterval? {
         get {
@@ -160,11 +164,23 @@ class Session: Storable {
     var verifiedAssets: [VerifiedAsset]?
     
     var assetDetails: [Int64: AssetDetail] = [:]
+
+    /// <todo>
+    /// Will be changed with assetDetails after the transition to the new api is completed.
+    var assetInformations: [AssetID: AssetInformation] = [:]
     
     var accounts = [Account]()
     
+    @Atomic(identifier: "accountResults")
+    private var accountResults: [String: AccountResult] = [:]
+    
     init() {
         removeOldTermsAndServicesKeysFromDefaults()
+    }
+    
+    subscript (_ id: AccountIdentity) -> AccountResult? {
+        get { accountResults[id.address] }
+        set { $accountResults.modify { $0[id.address] = newValue } }
     }
 }
 

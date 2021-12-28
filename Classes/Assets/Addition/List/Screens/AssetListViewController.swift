@@ -26,7 +26,7 @@ final class AssetListViewController: BaseViewController {
     private lazy var assetListViewLayoutBuilder = AssetListViewLayoutBuilder(theme: theme)
     private lazy var assetListViewDataSource = AssetListViewDataSource()
 
-    var assetResults = [AssetSearchResult]() {
+    var assetResults = [AssetInformation]() {
         didSet {
             assetListViewDataSource.assetResults = assetResults
             assetListView.updateContentStateView(assetResults.isEmpty)

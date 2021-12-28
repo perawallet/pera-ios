@@ -17,35 +17,26 @@
 
 import UIKit
 
-class SettingsToggleViewModel {
-    
-    private var image: UIImage?
-    private var title: String?
-    private var isOn: Bool = false
+final class SettingsToggleViewModel {
+    private(set) var image: UIImage?
+    private(set) var title: String?
+    private(set) var isOn: Bool = false
     
     init(setting: Settings, isOn: Bool) {
-        setImage(from: setting)
-        setTitle(from: setting)
-        setIsOn(from: isOn)
+        setImage(setting)
+        setTitle(setting)
+        setIsOn(isOn)
     }
     
-    private func setImage(from settings: Settings) {
-        image = settings.image
+    private func setImage(_ settings: Settings) {
+        self.image = settings.image
     }
     
-    private func setTitle(from settings: Settings) {
-        title = settings.name
+    private func setTitle(_ settings: Settings) {
+        self.title = settings.name
     }
     
-    private func setIsOn(from isOn: Bool) {
+    private func setIsOn(_ isOn: Bool) {
         self.isOn = isOn
-    }
-}
-
-extension SettingsToggleViewModel {
-    func configure(_ cell: SettingsToggleCell) {
-        cell.contextView.setImage(image)
-        cell.contextView.setName(title)
-        cell.contextView.setToggleOn(isOn, animated: false)
     }
 }

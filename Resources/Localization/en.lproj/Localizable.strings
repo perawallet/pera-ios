@@ -44,6 +44,7 @@
 "title-got-it" = "Got it!";
 "title-off" = "Off";
 "title-on" = "On";
+"title-retry" = "Retry";
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";
@@ -287,18 +288,21 @@
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
 "accounts-title-assets" = "Assets";
+"accounts-title-nfts" = "NFTs";
+"accounts-title-history" = "History";
 "contacts-title-assets" = "Assets";
 "title-select-asset" = "Select Asset";
 "contact-search-empty-title" = "No contact found";
 "contact-search-empty-detail" = "Try different contact name";
 
 // MARK: Settings
+"settings-sections-account" = "Account";
+"settings-sections-appPreferences" = "App Preferences";
+"settings-sections-support" = "Support";
 "settings-title" = "Settings";
 "settings-server-node-settings" = "Node Settings";
-"settings-change-password" = "Set/Change Password";
-"settings-local-authentication" = "Enable FaceID/Touch ID";
+"settings-backup-title" = "Backup";
 "settings-language" = "Language";
-"settings-language-english" = "English";
 "settings-notification-go-settings-title" = "Notifications";
 "settings-notification-disabled-go-settings-text" = "You have disabled notifications. Please go to Settings and enable this option.";
 "settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
@@ -307,12 +311,14 @@
 "settings-developer" = "Developer Settings";
 "settings-currency" = "Currency";
 "settings-developer-dispenser" = "Algorand Dispenser";
-"settings-currency-usd" = "USD";
 "settings-rate-title" = "Rate Algorand Wallet";
-"settings-app-version" = "Version %@";
+"settings-rate-modal-title" = "Rate your experience";
+"settings-rate-modal-description" = "Tell us how was your experience?";
+"settings-app-version" = "Algorand Wallet Version %@";
 "settings-language-change-title" = "Set App Language";
 "settings-language-change-detail" = "Due to updates to your phone, there are different steps to change your language.\n\n1. Proceed to the next screen.\n2. Tap Language to select the language you want.\n\nIf no language setting is available, go to your general iPhone language settings to first set a preferred language.";
-"settings-support-title" = "Support Center";
+"settings-support-title" = "Send Feedback";
+"settings-security-title" = "Security";
 "settings-wallet-connect-title" = "WalletConnect Sessions";
 
 // MARK: Node Settings
@@ -565,7 +571,7 @@ on your Ledger device (%d)";
 "watch-account-input-placeholder" = "Paste Address or Scan QR";
 "watch-account-error-address" = "Please enter a valid address.";
 
-"settings-theme-set" = "Set Theme";
+"settings-theme-set" = "Theme";
 "settings-theme-dark" = "Dark";
 "settings-theme-light" = "Light";
 "settings-theme-system" = "System Default";
@@ -785,6 +791,19 @@ on your Ledger device (%d)";
 "governance-banner-title" = "Algorand Governance Program is starting!";
 "governance-banner-detail" = "Become a governor. Vote on Algorand’s future. Earn rewards.";
 "governance-banner-action" = "Get Started";
+
+"portfolio-title" = "Portfolio Value";
+"portfolio-algo-holdings-title" = "Algo Holdings";
+"portfolio-asset-holdings-title" = "Asset Holdings";
+
+"account-options-add-account-title" = "Add Account";
+"account-options-arrange-list-title" = "Arrange List";
+
+"account-detail-portfolio-title" = "Account Value";
+"account-detail-assets-search" = "Search my assets";
+
+"nft-list-empty-title" = "NFTs Coming Soon";
+"nft-list-empty-detail" ="Discover, Collect extraordinary NFTs on the Algorand World's";
 
 // MARK: SendTransaction
 
