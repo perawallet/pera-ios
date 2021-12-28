@@ -25,7 +25,7 @@ protocol TransactionTextInformationViewTheme: LayoutSheet, StyleSheet {
 
 extension TransactionTextInformationViewTheme {
     var title: TextStyle {
-        [
+        return [
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.gray),
@@ -34,6 +34,6 @@ extension TransactionTextInformationViewTheme {
     }
 
     var detailLabelLeadingPadding: LayoutMetric {
-        137
+        return 137
     }
 }
