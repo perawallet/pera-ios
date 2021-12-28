@@ -297,7 +297,7 @@ class Router {
                 configuration: configuration
             )
         case let .selectAsset(transactionAction, filterOption):
-            viewController = SelectAssetViewController(
+            viewController = OldSelectAssetViewController(
                 transactionAction: transactionAction,
                 filterOption: filterOption,
                 configuration: configuration
@@ -332,6 +332,8 @@ class Router {
                 accounts: accounts,
                 configuration: configuration
             )
+        case .walletRating:
+            viewController = WalletRatingViewController(configuration: configuration)
         case .developerSettings:
             viewController = DeveloperSettingsViewController(configuration: configuration)
         case .currencySelection:
@@ -391,8 +393,10 @@ class Router {
             )
             wcConnectionApprovalViewController.delegate = delegate
             viewController = wcConnectionApprovalViewController
-        case .walletConnectSessions:
+        case .walletConnectSessionsList:
             viewController = WCSessionListViewController(configuration: configuration)
+        case .walletConnectSessionsModalList:
+            viewController = WCSessionListModalViewController(configuration: configuration)
         case let .wcTransactionFullDappDetail(wcSession, message):
             viewController = WCTransactionFullDappDetailViewController(
                 wcSession: wcSession,
@@ -471,8 +475,22 @@ class Router {
             viewController = AccountListOptionsViewController(configuration: configuration)
         case .orderAccountList:
             viewController = OrderAccountListViewController(configuration: configuration)
+        case .accountSelection:
+            viewController = SelectAccountViewController(configuration: configuration)
+        case .assetSelection(let account):
+            viewController = SelectAssetViewController(account: account, configuration: configuration)
+        case .sendTransaction(let draft):
+            viewController = SendTransactionScreen(draft: draft, configuration: configuration)
+        case .editNote(let note, let delegate):
+            let editNoteScreen = EditNoteScreen(note: note, configuration: configuration)
+            editNoteScreen.delegate = delegate
+            viewController = editNoteScreen
+        case .transactionResult:
+            viewController = TransactionResultScreen(configuration: configuration)
+        case .transactionAccountSelect(let draft):
+            viewController = AccountSelectScreen(draft: draft, configuration: configuration)
         }
-        
+
         return viewController as? T
     }
     // swiftlint:enable function_body_length

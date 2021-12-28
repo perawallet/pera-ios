@@ -188,20 +188,19 @@ extension TabBarController: AssetActionConfirmationViewControllerDelegate {
 extension TabBarController {
     @objc
     private func notifyDelegateToOpenAssetSelectionForSendFlow() {
-        let controller = open(.selectAsset(transactionAction: .send), by: .present) as? SelectAssetViewController
-        controller?.delegate = self
+        open(.accountSelection, by: .present)
     }
     
     @objc
     private func notifyDelegateToOpenAssetSelectionForRequestFlow() {
-        let controller = open(.selectAsset(transactionAction: .request), by: .present) as? SelectAssetViewController
+        let controller = open(.selectAsset(transactionAction: .request), by: .present) as? OldSelectAssetViewController
         controller?.delegate = self
     }
 }
 
-extension TabBarController: SelectAssetViewControllerDelegate {
-    func selectAssetViewController(
-        _ selectAssetViewController: SelectAssetViewController,
+extension TabBarController: OldSelectAssetViewControllerDelegate {
+    func oldSelectAssetViewController(
+        _ oldSelectAssetViewController: OldSelectAssetViewController,
         didSelectAlgosIn account: Account,
         forAction transactionAction: TransactionAction
     ) {
@@ -230,8 +229,8 @@ extension TabBarController: SelectAssetViewControllerDelegate {
         }
     }
     
-    func selectAssetViewController(
-        _ selectAssetViewController: SelectAssetViewController,
+    func oldSelectAssetViewController(
+        _ oldSelectAssetViewController: OldSelectAssetViewController,
         didSelect assetDetail: AssetDetail,
         in account: Account,
         forAction transactionAction: TransactionAction
@@ -350,7 +349,9 @@ extension TabBarController {
     private func dismissTabBarModal() {
         animateCenterButtonAsSelected(false)
         let tabBarModalViewController = selectedContent?.presentedViewController as? TabBarModalViewController
-        tabBarModalViewController?.dismissWithAnimation()
+        tabBarModalViewController?.dismissWithAnimation {
+            self.tabBar.toggleTabBarItems(to: true)
+        }
     }
 
     private func presentTabBarModal() {
@@ -361,20 +362,22 @@ extension TabBarController {
                 presentationStyle: .overCurrentContext,
                 transitionStyle: nil,
                 transitioningDelegate: nil
-            )
+            ),
+            animated: false
         ) as? TabBarModalViewController
         tabBarModalViewController?.delegate = self
+
+        tabBar.toggleTabBarItems(to: false)
     }
 }
 
 extension TabBarController: TabBarModalViewControllerDelegate {
     func tabBarModalViewControllerDidSend(_ tabBarModalViewController: TabBarModalViewController) {
-        let controller = open(.selectAsset(transactionAction: .send), by: .present) as? SelectAssetViewController
-        controller?.delegate = self
+        open(.accountSelection, by: .present)
     }
 
     func tabBarModalViewControllerDidReceive(_ tabBarModalViewController: TabBarModalViewController) {
-        let controller = open(.selectAsset(transactionAction: .request), by: .present) as? SelectAssetViewController
+        let controller = open(.selectAsset(transactionAction: .request), by: .present) as? OldSelectAssetViewController
         controller?.delegate = self
     }
 }

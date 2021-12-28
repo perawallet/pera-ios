@@ -144,14 +144,15 @@ extension PinLimitViewController: PinLimitViewDelegate {
             title: "settings-logout-title".localized,
             description: "settings-logout-detail".localized,
             primaryActionButtonTitle: "node-settings-action-delete-title".localized,
-            secondaryActionButtonTitle: "title-cancel".localized
-        ) { [weak self] in
-            guard let self = self else {
-                return
+            secondaryActionButtonTitle: "title-cancel".localized,
+            primaryAction: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.delegate?.pinLimitViewControllerDidResetAllData(self)
+                self.dismissScreen()
             }
-            self.delegate?.pinLimitViewControllerDidResetAllData(self)
-            self.dismissScreen()
-        }
+        )
 
         bottomModalTransition.perform(
             .bottomWarning(configurator: bottomWarningViewConfigurator)

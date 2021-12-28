@@ -26,7 +26,7 @@ struct SearchBarItemViewTheme: StyleSheet, LayoutSheet {
     let verticalInset: LayoutMetric
 
     init(placeholder: String, family: LayoutFamily) {
-        self.searchInput = SearchInputViewTheme(placeholder: placeholder, family: family)
+        self.searchInput = SearchInputViewCommonTheme(placeholder: placeholder, family: family)
 
         self.horizontalInset = 24
         self.verticalInset = 16

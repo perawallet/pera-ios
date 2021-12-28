@@ -17,8 +17,8 @@
 
 import UIKit
 
-class CurrencySelectionViewController: BaseViewController {
-    
+final class CurrencySelectionViewController: BaseViewController {
+    private lazy var theme = Theme()
     private lazy var currencySelectionView = SingleSelectionListView()
     
     private lazy var dataSource: CurrencySelectionDataSource = {
@@ -27,39 +27,32 @@ class CurrencySelectionViewController: BaseViewController {
         }
         return CurrencySelectionDataSource(api: api)
     }()
-    
-    weak var delegate: CurrencySelectionViewControllerDelegate?
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         getCurrencies()
     }
     
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.tertiary
+        super.configureAppearance()
+        
         title = "settings-currency".localized
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     
     override func linkInteractors() {
+        super.linkInteractors()
+        
         currencySelectionView.delegate = self
         currencySelectionView.setDataSource(dataSource)
         currencySelectionView.setListDelegate(self)
+        currencySelectionView.setRefreshControl()
         dataSource.delegate = self
     }
     
     override func prepareLayout() {
-        setupCurrencySelectionViewLayout()
-    }
-}
-
-extension CurrencySelectionViewController {
-    private func setupCurrencySelectionViewLayout() {
-        view.addSubview(currencySelectionView)
-        
-        currencySelectionView.snp.makeConstraints { make in
-            make.top.safeEqualToTop(of: self)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
+        super.prepareLayout()
+        prepareWholeScreenLayoutFor(currencySelectionView)
     }
 }
 
@@ -92,7 +85,6 @@ extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
         
         api?.session.preferredCurrency = selectedCurrency.id
         currencySelectionView.reloadData()
-        delegate?.currencySelectionViewControllerDidSelectCurrency(self)
     }
     
     func collectionView(
@@ -100,7 +92,7 @@ extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 60.0)
+        return CGSize(width: theme.cellWidth, height: theme.cellHeight)
     }
 }
 
@@ -112,8 +104,4 @@ extension CurrencySelectionViewController: SingleSelectionListViewDelegate {
     func singleSelectionListViewDidTryAgain(_ singleSelectionListView: SingleSelectionListView) {
         getCurrencies()
     }
-}
-
-protocol CurrencySelectionViewControllerDelegate: AnyObject {
-    func currencySelectionViewControllerDidSelectCurrency(_ currencySelectionViewController: CurrencySelectionViewController)
 }

@@ -20,6 +20,12 @@ import UIKit
 final class AccountNameSwitchCell: BaseCollectionViewCell<AccountNameSwitchView> {
     weak var delegate: AccountNameSwitchCellDelegate?
 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(AccountNameSwitchViewTheme())
+    }
+
     override func linkInteractors() {
         super.linkInteractors()
         contextView.delegate = self
@@ -31,7 +37,7 @@ extension AccountNameSwitchCell {
         contextView.bindData(viewModel)
     }
 
-    func customize(_ theme: AccountNameSwitchViewTheme) {
+    private func customize(_ theme: AccountNameSwitchViewTheme) {
         contextView.customize(theme)
     }
 }

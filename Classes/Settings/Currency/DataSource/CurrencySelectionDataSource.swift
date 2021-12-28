@@ -55,14 +55,16 @@ extension CurrencySelectionDataSource: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let currency = currencies[safe: indexPath.item],
-           let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SingleSelectionCell.reusableIdentifier,
-                for: indexPath
-            ) as? SingleSelectionCell {
-                let isSelected = api.session.preferredCurrency == currency.id
-                cell.contextView.bind(SingleSelectionViewModel(title: currency.name, isSelected: isSelected))
-                return cell
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: SingleSelectionCell.reusableIdentifier,
+            for: indexPath) as? SingleSelectionCell else {
+                fatalError("Index path is out of bounds")
+            }
+        
+        if let currency = currencies[safe: indexPath.item] {
+            let isSelected = api.session.preferredCurrency == currency.id
+            cell.bindData(SingleSelectionViewModel(title: currency.name, isSelected: isSelected))
+            return cell
         }
     
         fatalError("Index path is out of bounds")

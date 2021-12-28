@@ -36,7 +36,7 @@ class SendTransactionPreviewViewController: BaseScrollViewController {
     var keyboard = Keyboard()
     private(set) var contentViewBottomConstraint: Constraint?
     
-    var filterOption: SelectAssetViewController.FilterOption {
+    var filterOption: OldSelectAssetViewController.FilterOption {
         return .none
     }
     
@@ -284,7 +284,7 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
                 filterOption: filterOption
             ),
             by: .present
-        ) as? SelectAssetViewController
+        ) as? OldSelectAssetViewController
         controller?.delegate = self
     }
 }
@@ -326,9 +326,9 @@ extension SendTransactionPreviewViewController: QRScannerViewControllerDelegate 
     }
 }
 
-extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegate {
-    func selectAssetViewController(
-        _ selectAssetViewController: SelectAssetViewController,
+extension SendTransactionPreviewViewController: OldSelectAssetViewControllerDelegate {
+    func oldSelectAssetViewController(
+        _ oldSelectAssetViewController: OldSelectAssetViewController,
         didSelectAlgosIn account: Account,
         forAction transactionAction: TransactionAction
     ) {
@@ -338,8 +338,8 @@ extension SendTransactionPreviewViewController: SelectAssetViewControllerDelegat
         configure(forSelected: account, with: nil)
     }
     
-    func selectAssetViewController(
-        _ selectAssetViewController: SelectAssetViewController,
+    func oldSelectAssetViewController(
+        _ oldSelectAssetViewController: OldSelectAssetViewController,
         didSelect assetDetail: AssetDetail,
         in account: Account,
         forAction transactionAction: TransactionAction
@@ -431,4 +431,18 @@ extension SendTransactionPreviewViewController {
         case sender
         case receiver
     }
+}
+
+protocol SelectAssetViewControllerDelegate: AnyObject {
+    func selectAssetViewController(
+        _ selectAssetViewController: SelectAssetViewController,
+        didSelectAlgosIn account: Account,
+        forAction transactionAction: TransactionAction
+    )
+    func selectAssetViewController(
+        _ selectAssetViewController: SelectAssetViewController,
+        didSelect assetDetail: AssetDetail,
+        in account: Account,
+        forAction transactionAction: TransactionAction
+    )
 }

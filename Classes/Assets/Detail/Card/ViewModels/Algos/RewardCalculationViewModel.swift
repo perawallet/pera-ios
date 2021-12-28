@@ -58,3 +58,9 @@ class RewardCalculationViewModel {
         return account.pendingRewards.toAlgos + calculatedRewards
     }
 }
+
+extension RewardCalculationViewModel {
+    convenience init(account: Account, calculatedRewards: Decimal) {
+        self.init(account: account, calculatedRewards: calculatedRewards, currency: nil)
+    }
+}

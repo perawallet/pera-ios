@@ -17,8 +17,7 @@
 
 import UIKit
 
-class SingleSelectionViewModel {
-    
+final class SingleSelectionViewModel {
     private(set) var title: String?
     private(set) var isSelected = false
     private(set) var selectionImage: UIImage?
@@ -38,6 +37,11 @@ class SingleSelectionViewModel {
     }
     
     private func setSelectionImage() {
-        selectionImage = img("icon-check")
+        if isSelected {
+            selectionImage = img("icon-checkbox-single-selected")
+            return
+        }
+        
+        selectionImage = img("icon-checkbox-single-unselected")
     }
 }

@@ -19,9 +19,15 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct NumpadViewTheme: StyleSheet, LayoutSheet {
-    let backgroundColor: Color
+protocol NumpadViewTheme: StyleSheet, LayoutSheet {
+    var backgroundColor: Color { get }
+    var stackViewSpacing: LayoutMetric { get }
+    var stackViewHeight: LayoutMetric { get }
+    var stackViewTopPadding: LayoutMetric { get }
+}
 
+struct NumpadViewCommonTheme: NumpadViewTheme {
+    let backgroundColor: Color
     let stackViewSpacing: LayoutMetric
     let stackViewHeight: LayoutMetric
     let stackViewTopPadding: LayoutMetric
@@ -30,6 +36,21 @@ struct NumpadViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = AppColors.Shared.System.background
 
         self.stackViewTopPadding = 20 * verticalScale
+        self.stackViewSpacing = 40 * verticalScale
+        self.stackViewHeight = 72 * verticalScale
+    }
+}
+
+struct TransactionNumpadViewTheme: NumpadViewTheme {
+    let backgroundColor: Color
+    let stackViewSpacing: LayoutMetric
+    let stackViewHeight: LayoutMetric
+    let stackViewTopPadding: LayoutMetric
+
+    init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
+
+        self.stackViewTopPadding = 0
         self.stackViewSpacing = 40 * verticalScale
         self.stackViewHeight = 72 * verticalScale
     }

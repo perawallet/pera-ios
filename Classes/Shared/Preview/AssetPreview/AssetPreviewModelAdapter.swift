@@ -16,6 +16,7 @@
 //   AssetPreviewModelAdapter.swift
 
 import Foundation
+import UIKit
 
 enum AssetPreviewModelAdapter {
     static func adapt(_ adaptee: (assetDetail: AssetDetail, asset: Asset)) -> AssetPreviewModel {
@@ -49,6 +50,19 @@ enum AssetPreviewModelAdapter {
             assetPrimaryTitle: adaptee.assetName,
             assetSecondaryTitle: adaptee.unitName,
             assetPrimaryValue: String(adaptee.id),
+            assetSecondaryValue: nil
+        )
+    }
+
+    static func adaptAssetSelection(_ adaptee: (assetDetail: AssetDetail, asset: Asset)) -> AssetPreviewModel {
+        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset)
+        let assetId = assetViewModel.assetDetail?.id ?? 0
+        return AssetPreviewModel(
+            image: nil,
+            secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
+            assetPrimaryTitle: assetViewModel.assetDetail?.assetName,
+            assetSecondaryTitle: "ID \(assetId)",
+            assetPrimaryValue: assetViewModel.amount,
             assetSecondaryValue: nil
         )
     }

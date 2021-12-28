@@ -28,7 +28,7 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
     private var isForcedMaxTransaction = false
     private let viewModel: SendAssetTransactionPreviewViewModel
     
-    override var filterOption: SelectAssetViewController.FilterOption {
+    override var filterOption: OldSelectAssetViewController.FilterOption {
         return .asset(assetDetail: assetDetail)
     }
     
@@ -203,28 +203,29 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             title: "send-qr-scan-alert-title".localized,
             description: "send-qr-scan-alert-message".localized,
             primaryActionButtonTitle: "title-approve".localized,
-            secondaryActionButtonTitle: "title-cancel".localized
-        ) { [weak self] in
-            guard let self = self else {
+            secondaryActionButtonTitle: "title-cancel".localized,
+            primaryAction: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                if self.assetDetail.id == assetId {
+                    let amountValue = qrAmount.assetAmount(fromFraction: self.assetDetail.fractionDecimals)
+                    let amountText = amountValue.toFractionStringForLabel(fraction: self.assetDetail.fractionDecimals)
+
+                    self.sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: amountText)
+                    self.assetReceiverState = .address(address: qrAddress, amount: amountText)
+
+                    self.amount = amountValue
+                    self.sendTransactionPreviewView.amountInputView.inputTextField.text = amountText
+                    return
+                }
+
+                self.displaySimpleAlertWith(title: "", message: "send-qr-different-asset-alert".localized)
+                self.sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
+                self.assetReceiverState = .address(address: qrAddress, amount: nil)
                 return
             }
-            if self.assetDetail.id == assetId {
-                let amountValue = qrAmount.assetAmount(fromFraction: self.assetDetail.fractionDecimals)
-                let amountText = amountValue.toFractionStringForLabel(fraction: self.assetDetail.fractionDecimals)
-
-                self.sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: amountText)
-                self.assetReceiverState = .address(address: qrAddress, amount: amountText)
-
-                self.amount = amountValue
-                self.sendTransactionPreviewView.amountInputView.inputTextField.text = amountText
-                return
-            }
-
-            self.displaySimpleAlertWith(title: "", message: "send-qr-different-asset-alert".localized)
-            self.sendTransactionPreviewView.transactionReceiverView.state = .address(address: qrAddress, amount: nil)
-            self.assetReceiverState = .address(address: qrAddress, amount: nil)
-            return
-        }
+        )
 
         modalTransition.perform(.bottomWarning(configurator: bottomWarningViewConfigurator))
     }

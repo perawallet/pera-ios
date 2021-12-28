@@ -17,35 +17,28 @@
 
 import UIKit
 
-class AppearanceSelectionViewController: BaseViewController {
-
-    weak var delegate: AppearanceSelectionViewControllerDelegate?
-    
+final class AppearanceSelectionViewController: BaseViewController {
+    private lazy var theme = Theme()
     private lazy var appearanceSelectionView = SingleSelectionListView()
     
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.tertiary
+        super.configureAppearance()
+        
         title = "settings-theme-set".localized
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     
     override func linkInteractors() {
+        super.linkInteractors()
+        
+        appearanceSelectionView.linkInteractors()
         appearanceSelectionView.setDataSource(self)
         appearanceSelectionView.setListDelegate(self)
     }
     
     override func prepareLayout() {
-        setupAppearanceSelectionViewLayout()
-    }
-}
-
-extension AppearanceSelectionViewController {
-    private func setupAppearanceSelectionViewLayout() {
-        view.addSubview(appearanceSelectionView)
-        
-        appearanceSelectionView.snp.makeConstraints { make in
-            make.top.safeEqualToTop(of: self)
-            make.leading.trailing.bottom.equalToSuperview()
-        }
+        super.prepareLayout()
+        prepareWholeScreenLayoutFor(appearanceSelectionView)
     }
 }
 
@@ -55,14 +48,15 @@ extension AppearanceSelectionViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let appearance = UserInterfaceStyle.allCases[safe: indexPath.item],
-           let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: SingleSelectionCell.reusableIdentifier,
-                for: indexPath
-            ) as? SingleSelectionCell {
-            
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: SingleSelectionCell.reusableIdentifier,
+            for: indexPath) as? SingleSelectionCell else {
+                fatalError("Index path is out of bounds")
+            }
+        
+        if let appearance = UserInterfaceStyle.allCases[safe: indexPath.item] {
             let isSelected = session?.userInterfaceStyle == appearance
-            cell.contextView.bind(SingleSelectionViewModel(title: appearance.representation(), isSelected: isSelected))
+            cell.bindData(SingleSelectionViewModel(title: appearance.representation(), isSelected: isSelected))
             return cell
         }
     
@@ -76,7 +70,6 @@ extension AppearanceSelectionViewController: UICollectionViewDelegateFlowLayout 
             api?.session.userInterfaceStyle = appearance
             UIApplication.shared.rootViewController()?.changeUserInterfaceStyle(to: appearance)
             appearanceSelectionView.reloadData()
-            delegate?.appearanceSelectionViewControllerDidUpdateUserInterfaceStyle(self)
         }
     }
     
@@ -85,7 +78,7 @@ extension AppearanceSelectionViewController: UICollectionViewDelegateFlowLayout 
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: 72.0)
+        return CGSize(width: theme.cellWidth, height: theme.cellHeight)
     }
 }
 
@@ -104,10 +97,4 @@ enum UserInterfaceStyle: String, CaseIterable {
             return "settings-theme-dark".localized
         }
     }
-}
-
-protocol AppearanceSelectionViewControllerDelegate: AnyObject {
-    func appearanceSelectionViewControllerDidUpdateUserInterfaceStyle(
-        _ appearanceSelectionViewController: AppearanceSelectionViewController
-    )
 }

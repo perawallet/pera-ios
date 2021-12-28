@@ -16,22 +16,24 @@
 //  RewardViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-class RewardViewModel {
-    
+final class RewardViewModel: PairedViewModel {
     private(set) var amountMode: TransactionAmountView.Mode?
     private(set) var date: String?
     
-    init(reward: Reward) {
-        setAmountMode(from: reward)
-        setDate(from: reward)
+    init(_ reward: Reward) {
+        bindAmountMode(from: reward)
+        bindDate(from: reward)
     }
-    
-    private func setAmountMode(from reward: Reward) {
+}
+
+extension RewardViewModel {
+    private func bindAmountMode(from reward: Reward) {
         amountMode = .positive(amount: reward.amount.toAlgos)
     }
-    
-    private func setDate(from reward: Reward) {
+
+    private func bindDate(from reward: Reward) {
         date = reward.date?.toFormat("MMMM dd, yyyy")
     }
 }

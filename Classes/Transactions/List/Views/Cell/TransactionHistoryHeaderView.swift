@@ -16,53 +16,31 @@
 //  TransactionHistoryHeaderView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class TransactionHistoryHeaderView: BaseView {
-
-    private let layout = Layout<LayoutConstants>()
-    
+final class TransactionHistoryHeaderView: View {
     weak var delegate: TransactionHistoryHeaderViewDelegate?
-    
-    private lazy var topImageView = UIImageView(image: img("modal-top-icon"))
-    
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-            .withTextColor(Colors.Text.primary)
-            .withText("contacts-transactions-title".localized)
-    }()
-    
-    private lazy var shareButton: UIButton = {
-        let button = UIButton(type: .custom).withImage(img("icon-share", isTemplate: true))
-        button.tintColor = Colors.TransactionHistoryHeader.filterShare
-        return button
-    }()
-    
-    private(set) lazy var filterButton: UIButton = {
-        UIButton(type: .custom).withImage(img("icon-transaction-filter"))
-    }()
-    
-    private lazy var separatorView = LineSeparatorView()
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
-        layer.cornerRadius = 20.0
-        layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-    }
-    
-    override func setListeners() {
+
+    private lazy var titleLabel = UILabel()
+    private lazy var shareButton = UIButton()
+    private(set) lazy var filterButton = UIButton()
+
+    func setListeners() {
         filterButton.addTarget(self, action: #selector(notifyDelegateToOpenFilterOptions), for: .touchUpInside)
         shareButton.addTarget(self, action: #selector(notifyDelegateToShareHistory), for: .touchUpInside)
     }
-    
-    override func prepareLayout() {
-        setupTopImageViewLayout()
-        setupShareButtonLayout()
-        setupFilterButtonLayout()
-        setupTitleLabelLayout()
-        setupSeparatorViewLayout()
+
+    func customize(_ theme: TransactionHistoryHeaderViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addShareButton(theme)
+        addFilterButton(theme)
+        addTitleLabel(theme)
     }
+
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
 extension TransactionHistoryHeaderView {
@@ -78,76 +56,44 @@ extension TransactionHistoryHeaderView {
 }
 
 extension TransactionHistoryHeaderView {
-    private func setupTopImageViewLayout() {
-        addSubview(topImageView)
-        
-        topImageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.topInset)
-        }
-    }
-    
-    private func setupShareButtonLayout() {
+    private func addShareButton(_ theme: TransactionHistoryHeaderViewTheme) {
+        shareButton.customizeAppearance(theme.shareButton)
+
         addSubview(shareButton)
-        
-        shareButton.snp.makeConstraints { make in
-            make.size.equalTo(layout.current.buttonSize)
-            make.trailing.equalToSuperview().inset(layout.current.trailingInset)
-            make.centerY.equalToSuperview()
+        shareButton.snp.makeConstraints {
+            $0.fitToSize(theme.buttonSize)
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.centerY.equalToSuperview()
         }
     }
     
-    private func setupFilterButtonLayout() {
+    private func addFilterButton(_ theme: TransactionHistoryHeaderViewTheme) {
+        filterButton.customizeAppearance(theme.filterButton)
+
         addSubview(filterButton)
-        
-        filterButton.snp.makeConstraints { make in
-            make.size.equalTo(layout.current.buttonSize)
-            make.trailing.equalTo(shareButton.snp.leading)
-            make.centerY.equalToSuperview()
+        filterButton.snp.makeConstraints {
+            $0.fitToSize(theme.buttonSize)
+            $0.trailing.equalTo(shareButton.snp.leading).offset(-theme.buttonInset)
+            $0.centerY.equalToSuperview()
         }
     }
     
-    private func setupTitleLabelLayout() {
+    private func addTitleLabel(_ theme: TransactionHistoryHeaderViewTheme) {
+        titleLabel.customizeAppearance(theme.titleLabel)
+
         addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.trailing.equalTo(filterButton.snp.leading)
-            make.centerY.equalToSuperview()
-        }
-    }
-    
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-        
-        separatorView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.trailing.equalTo(filterButton.snp.leading).offset(-theme.horizontalInset)
+            $0.centerY.equalToSuperview()
         }
     }
 }
 
-extension TransactionHistoryHeaderView {
-    func bind(_ viewModel: TransactionHistoryHeaderViewModel) {
-        titleLabel.text = viewModel.title
-        filterButton.setImage(viewModel.image, for: .normal)
-    }
-}
-
-extension Colors {
-    fileprivate enum TransactionHistoryHeader {
-        static let filterShare = color("filterShareColor")
-    }
-}
-
-extension TransactionHistoryHeaderView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 8.0
-        let horizontalInset: CGFloat = 20.0
-        let buttonSize = CGSize(width: 40.0, height: 40.0)
-        let trailingInset: CGFloat = 16.0
-        let separatorHeight: CGFloat = 1.0
+extension TransactionHistoryHeaderView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionHistoryHeaderViewModel?) {
+        titleLabel.text = viewModel?.title
+        filterButton.setImage(viewModel?.image, for: .normal)
     }
 }
 
