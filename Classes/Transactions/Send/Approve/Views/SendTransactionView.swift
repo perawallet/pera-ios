@@ -184,11 +184,11 @@ extension SendTransactionView {
         accountInformationView.bind(viewModel.accountNameViewModel)
 
         if let amount = viewModel.amount {
-            amountInformationView.setAmountViewMode(amount)
+            amountInformationView.bindAmountViewMode(amount)
         }
 
         if let fee = viewModel.fee {
-            feeInformationView.setAmountViewMode(fee)
+            feeInformationView.bindAmountViewMode(fee)
         }
 
         if let note = viewModel.note {

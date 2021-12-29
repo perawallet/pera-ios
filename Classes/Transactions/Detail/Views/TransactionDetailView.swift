@@ -283,11 +283,11 @@ extension TransactionDetailView: ViewModelBindable {
         closeToView.setDetail(viewModel?.closeToViewDetail)
         closeToView.isHidden = (viewModel?.closeToViewIsHidden).falseIfNil
         if let rewardViewMode = viewModel?.rewardViewMode {
-            rewardView.setAmountViewMode(rewardViewMode)
+            rewardView.bindAmountViewMode(rewardViewMode)
         }
         rewardView.isHidden = (viewModel?.rewardViewIsHidden).falseIfNil
         if let closeAmountViewMode = viewModel?.closeAmountViewMode {
-            closeAmountView.setAmountViewMode(closeAmountViewMode)
+            closeAmountView.bindAmountViewMode(closeAmountViewMode)
         }
         closeAmountView.isHidden = (viewModel?.closeAmountViewIsHidden).falseIfNil
         noteView.setDetail(viewModel?.noteViewDetail)
@@ -302,11 +302,11 @@ extension TransactionDetailView: ViewModelBindable {
         userView.setTitle(viewModel?.userViewTitle)
         userView.setDetail(viewModel?.userViewDetail)
         if let feeViewMode = viewModel?.feeViewMode {
-            feeView.setAmountViewMode(feeViewMode)
+            feeView.bindAmountViewMode(feeViewMode)
         }
         opponentView.setTitle(viewModel?.opponentViewTitle)
         if let transactionAmountViewMode = viewModel?.transactionAmountViewMode {
-            amountView.setAmountViewMode(transactionAmountViewMode)
+            amountView.bindAmountViewMode(transactionAmountViewMode)
         }
 
         bindOpponentViewDetail(viewModel)
