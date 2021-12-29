@@ -48,15 +48,15 @@ final class TransactionDetailViewModel: ViewModel {
         assetDetail: AssetDetail?
     ) {
         if transactionType == .received {
-            configureReceivedTransaction(with: transaction, and: assetDetail, for: account)
+            bindReceivedTransaction(with: transaction, and: assetDetail, for: account)
         } else if transactionType == .sent {
-            configureSentTransaction(with: transaction, and: assetDetail, for: account)
+            bindSentTransaction(with: transaction, and: assetDetail, for: account)
         }
     }
 }
 
 extension TransactionDetailViewModel {
-    func configureReceivedTransaction(
+    private func bindReceivedTransaction(
         with transaction: Transaction,
         and assetDetail: AssetDetail?,
         for account: Account
@@ -69,11 +69,11 @@ extension TransactionDetailViewModel {
             feeViewMode = .normal(amount: fee.toAlgos)
         }
 
-        setDate(for: transaction)
-        setRound(for: transaction)
+        bindDate(for: transaction)
+        bindRound(for: transaction)
         opponentViewTitle = "transaction-detail-from".localized
         if let sender = transaction.sender {
-            setOpponent(for: transaction, with: sender)
+            bindOpponent(for: transaction, with: sender)
         }
 
         if let assetTransaction = transaction.assetTransfer,
@@ -95,25 +95,25 @@ extension TransactionDetailViewModel {
             let value: TransactionAmountView.Mode = transaction.isSelfTransaction() ? .normal(amount: amount) : .positive(amount: amount)
             transactionAmountViewMode = value
 
-            setCloseAmount(for: transaction)
-            setCloseTo(for: transaction)
-            setReward(for: transaction)
+            bindCloseAmount(for: transaction)
+            bindCloseTo(for: transaction)
+            bindReward(for: transaction)
         }
 
         transactionID = transaction.id
-        setNote(for: transaction)
+        bindNote(for: transaction)
     }
 }
 
 extension TransactionDetailViewModel {
-    func configureSentTransaction(
+    private func bindSentTransaction(
         with transaction: Transaction,
         and assetDetail: AssetDetail?,
         for account: Account
     ) {
         transactionStatus = transaction.status
 
-        setReward(for: transaction)
+        bindReward(for: transaction)
 
         userViewTitle = "transaction-detail-from".localized
         userViewDetail = account.name
@@ -122,14 +122,14 @@ extension TransactionDetailViewModel {
             feeViewMode = .normal(amount: fee.toAlgos)
         }
 
-        setDate(for: transaction)
-        setRound(for: transaction)
+        bindDate(for: transaction)
+        bindRound(for: transaction)
         opponentViewTitle = "transaction-detail-to".localized
 
         if let assetTransaction = transaction.assetTransfer {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
-            setOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "")
+            bindOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "")
 
             if let assetDetail = assetDetail {
                 let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
@@ -143,7 +143,7 @@ extension TransactionDetailViewModel {
                 transactionAmountViewMode = .normal(amount: 0.0)
             }
         } else if let payment = transaction.payment {
-            setOpponent(for: transaction, with: payment.receiver)
+            bindOpponent(for: transaction, with: payment.receiver)
 
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
 
@@ -153,17 +153,17 @@ extension TransactionDetailViewModel {
                 transactionAmountViewMode = .negative(amount: amount)
             }
 
-            setCloseAmount(for: transaction)
-            setCloseTo(for: transaction)
+            bindCloseAmount(for: transaction)
+            bindCloseTo(for: transaction)
         }
 
         transactionID = transaction.id
-        setNote(for: transaction)
+        bindNote(for: transaction)
     }
 }
 
 extension TransactionDetailViewModel {
-    func setOpponent(for transaction: Transaction, with address: String) {
+    func bindOpponent(for transaction: Transaction, with address: String) {
         if let contact = transaction.contact {
             opponentType = .contact(address: address)
             opponentViewContact = contact
@@ -176,7 +176,7 @@ extension TransactionDetailViewModel {
         }
     }
 
-    private func setDate(for transaction: Transaction) {
+    private func bindDate(for transaction: Transaction) {
         if transaction.isPending() {
             date = Date().toFormat("MMMM dd, yyyy - HH:mm")
         } else {
@@ -184,7 +184,7 @@ extension TransactionDetailViewModel {
         }
     }
 
-    private func setRound(for transaction: Transaction) {
+    private func bindRound(for transaction: Transaction) {
         if transaction.isPending() {
             roundViewIsHidden = true
         } else {
@@ -194,7 +194,7 @@ extension TransactionDetailViewModel {
         }
     }
 
-    private func setNote(for transaction: Transaction) {
+    private func bindNote(for transaction: Transaction) {
         if let note = transaction.noteRepresentation() {
             noteViewDetail = note
         } else {
@@ -202,7 +202,7 @@ extension TransactionDetailViewModel {
         }
     }
 
-    private func setCloseAmount(for transaction: Transaction) {
+    private func bindCloseAmount(for transaction: Transaction) {
         if let closeAmount = transaction.payment?.closeAmountForTransaction()?.toAlgos {
             closeAmountViewMode = .normal(amount: closeAmount)
         } else {
@@ -210,7 +210,7 @@ extension TransactionDetailViewModel {
         }
     }
 
-    private func setCloseTo(for transaction: Transaction) {
+    private func bindCloseTo(for transaction: Transaction) {
         if let closeAddress = transaction.payment?.closeAddress {
             closeToViewDetail = closeAddress
         } else {
@@ -218,7 +218,7 @@ extension TransactionDetailViewModel {
         }
     }
 
-    private func setReward(for transaction: Transaction) {
+    private func bindReward(for transaction: Transaction) {
         if let rewards = transaction.senderRewards,
            rewards > 0 {
             rewardViewMode = .normal(amount: rewards.toAlgos)

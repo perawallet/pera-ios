@@ -111,7 +111,7 @@ extension TransactionDetailViewController {
         }
         
         transaction.contact = contact
-        transactionDetailViewModel.setOpponent(for: transaction, with: contact.address ?? "")
+        transactionDetailViewModel.bindOpponent(for: transaction, with: contact.address ?? "")
         transactionDetailView.bindOpponentViewDetail(transactionDetailViewModel)
     }
 }
