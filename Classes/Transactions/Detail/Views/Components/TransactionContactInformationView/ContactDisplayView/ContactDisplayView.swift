@@ -88,31 +88,32 @@ extension ContactDisplayView {
     }
 }
 
-extension ContactDisplayView {
-    func setContact(_ contact: Contact) {
-        removeAddContactButton()
-
-        if let imageData = contact.image,
-            let image = UIImage(data: imageData) {
-            let resizedImage = image.convert(to: CGSize(width: 24, height: 24))
-            imageView.image = resizedImage
-        } else {
+extension ContactDisplayView: ViewModelBindable {
+    func bindData(_ viewModel: ContactDisplayViewModel?) {
+        if let name = viewModel?.name {
+            nameLabel.text = name
             removeContactImage()
         }
-        
-        nameLabel.text = contact.name
+
+        if let contact = viewModel?.contact {
+            removeAddContactButton()
+
+            if let contactImage = viewModel?.contactImage {
+                imageView.image = contactImage
+            } else {
+                removeContactImage()
+            }
+
+            nameLabel.text = contact.name
+        }
     }
     
-    func removeAddContactButton() {
+    private func removeAddContactButton() {
         nameLabel.font = Fonts.DMSans.regular.make(15).uiFont
         addContactButton.removeFromSuperview()
     }
-    
-    func setName(_ name: String) {
-        nameLabel.text = name
-    }
-    
-    func removeContactImage() {
+
+    private func removeContactImage() {
         imageView.removeFromSuperview()
     }
 }

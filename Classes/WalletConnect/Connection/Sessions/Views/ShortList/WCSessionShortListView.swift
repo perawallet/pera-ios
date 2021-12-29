@@ -13,15 +13,15 @@
 // limitations under the License.
 
 //
-//   WCSessionListModalView.swift
+//   WCSessionShortListView.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class WCSessionListModalView: View {
-    weak var delegate: WCSessionListModalViewDelegate?
+final class WCSessionShortListView: View {
+    weak var delegate: WCSessionShortListViewDelegate?
 
-    private lazy var theme = WCSessionListModalViewTheme()
+    private lazy var theme = WCSessionShortListViewTheme()
 
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -31,7 +31,7 @@ final class WCSessionListModalView: View {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.contentInset)
-        collectionView.register(WCSessionListModalItemCell.self)
+        collectionView.register(WCSessionShortListItemCell.self)
         return collectionView
     }()
 
@@ -44,7 +44,7 @@ final class WCSessionListModalView: View {
         setListeners()
     }
 
-    private func customize(_ theme: WCSessionListModalViewTheme) {
+    private func customize(_ theme: WCSessionShortListViewTheme) {
         addCollectionView()
         addCloseButton(theme)
     }
@@ -58,14 +58,14 @@ final class WCSessionListModalView: View {
     func prepareLayout(_ layoutSheet: LayoutSheet) { }
 }
 
-extension WCSessionListModalView {
+extension WCSessionShortListView {
     @objc
     private func notifyDelegateToCloseModal() {
-        delegate?.wcSessionListModalViewDidTapCloseButton(self)
+        delegate?.wcSessionShortListViewDidTapCloseButton(self)
     }
 }
 
-extension WCSessionListModalView {
+extension WCSessionShortListView {
     private func addCollectionView() {
         addSubview(collectionView)
         collectionView.snp.makeConstraints {
@@ -73,7 +73,7 @@ extension WCSessionListModalView {
         }
     }
 
-    private func addCloseButton(_ theme: WCSessionListModalViewTheme) {
+    private func addCloseButton(_ theme: WCSessionShortListViewTheme) {
         addSubview(closeButton)
         closeButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
@@ -82,7 +82,7 @@ extension WCSessionListModalView {
     }
 }
 
-extension WCSessionListModalView {
+extension WCSessionShortListView {
     func setCollectionViewDelegate(_ delegate: UICollectionViewDelegate?) {
         collectionView.delegate = delegate
     }
@@ -92,6 +92,6 @@ extension WCSessionListModalView {
     }
 }
 
-protocol WCSessionListModalViewDelegate: AnyObject {
-    func wcSessionListModalViewDidTapCloseButton(_ wcSessionListModalView: WCSessionListModalView)
+protocol WCSessionShortListViewDelegate: AnyObject {
+    func wcSessionShortListViewDidTapCloseButton(_ wcSessionShortListView: WCSessionShortListView)
 }

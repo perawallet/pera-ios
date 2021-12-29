@@ -19,15 +19,9 @@ import UIKit
 import MacaroonUIKit
 
 final class TransactionAmountView: View {
-    var mode: Mode = .normal(amount: 0.00) {
-        didSet {
-            updateAmountView()
-        }
-    }
-    
     private lazy var amountStackView = UIStackView()
-    private(set) lazy var signLabel = UILabel()
-    private(set) lazy var amountLabel = UILabel()
+    private lazy var signLabel = UILabel()
+    private lazy var amountLabel = UILabel()
 
     func customize(_ theme: TransactionAmountViewTheme) {
         addAmountStackView(theme)
@@ -56,41 +50,17 @@ extension TransactionAmountView {
     }
 }
 
-extension TransactionAmountView {
-    private func updateAmountView() {
-        switch mode {
-        case let .normal(amount, isAlgos, assetFraction):
-            signLabel.isHidden = true
-            
-            setAmount(amount, with: assetFraction, isAlgos: isAlgos)
-            amountLabel.textColor = AppColors.Components.Text.main.uiColor
-        case let .positive(amount, isAlgos, assetFraction):
-            signLabel.isHidden = false
-            signLabel.text = "+"
-            signLabel.textColor = AppColors.Shared.Helpers.positive.uiColor
-            
-            setAmount(amount, with: assetFraction, isAlgos: isAlgos)
-            amountLabel.textColor = AppColors.Shared.Helpers.positive.uiColor
-        case let .negative(amount, isAlgos, assetFraction):
-            signLabel.isHidden = false
-            signLabel.text = "-"
-            signLabel.textColor = AppColors.Shared.Helpers.negative.uiColor
-            
-            setAmount(amount, with: assetFraction, isAlgos: isAlgos)
-            amountLabel.textColor = AppColors.Shared.Helpers.negative.uiColor
-        }
+extension TransactionAmountView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionAmountViewModel?) {
+        signLabel.isHidden = (viewModel?.signLabelIsHidden).falseIfNil
+        signLabel.text = viewModel?.signLabelText
+        signLabel.textColor = viewModel?.signLabelColor?.uiColor
+        amountLabel.text = viewModel?.amountLabelText
+        amountLabel.textColor = viewModel?.amountLabelColor?.uiColor
     }
-    
-    private func setAmount(_ amount: Decimal, with assetFraction: Int?, isAlgos: Bool) {
-        if let fraction = assetFraction {
-            amountLabel.text = amount.toFractionStringForLabel(fraction: fraction)
-        } else {
-            amountLabel.text = amount.toAlgosStringForLabel
-        }
 
-        if isAlgos {
-            amountLabel.text?.append(" ALGO")
-        }
+    func prepareForReuse() {
+        amountLabel.text = nil
     }
 }
 

@@ -18,6 +18,6 @@
 import Foundation
 
 struct TitledInformation {
-    let title: String
-    let detail: String
+    let title: String?
+    let detail: String?
 }

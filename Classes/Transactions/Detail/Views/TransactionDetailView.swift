@@ -22,18 +22,18 @@ final class TransactionDetailView: View {
     weak var delegate: TransactionDetailViewDelegate?
 
     private lazy var verticalStackView = UIStackView()
-    private(set) lazy var statusView = TransactionStatusInformationView()
-    private(set) lazy var amountView = TransactionAmountInformationView()
-    private(set) lazy var closeAmountView = TransactionAmountInformationView()
-    private(set) lazy var rewardView = TransactionAmountInformationView()
-    private(set) lazy var userView = TransactionTextInformationView()
-    private(set) lazy var opponentView = TransactionContactInformationView()
-    private(set) lazy var closeToView = TransactionTextInformationView()
-    private(set) lazy var feeView = TransactionAmountInformationView()
+    private lazy var statusView = TransactionStatusInformationView()
+    private lazy var amountView = TransactionAmountInformationView()
+    private lazy var closeAmountView = TransactionAmountInformationView()
+    private lazy var rewardView = TransactionAmountInformationView()
+    private lazy var userView = TransactionTextInformationView()
+    private lazy var opponentView = TransactionContactInformationView()
+    private lazy var closeToView = TransactionTextInformationView()
+    private lazy var feeView = TransactionAmountInformationView()
     private lazy var dateView = TransactionTextInformationView()
-    private(set) lazy var roundView = TransactionTextInformationView()
-    private(set) lazy var idView = TransactionTextInformationView()
-    private(set) lazy var noteView = TransactionTextInformationView()
+    private lazy var roundView = TransactionTextInformationView()
+    private lazy var idView = TransactionTextInformationView()
+    private lazy var noteView = TransactionTextInformationView()
     private lazy var openInAlgoExplorerButton = UIButton()
     private lazy var openInGoalSeekerButton = UIButton()
 
@@ -125,21 +125,21 @@ extension TransactionDetailView {
     
     private func addAmountView(_ theme: TransactionDetailViewTheme) {
         amountView.customize(TransactionAmountInformationViewTheme(transactionAmountViewTheme: TransactionAmountViewBiggerTheme()))
-        amountView.setTitle("transaction-detail-amount".localized)
+        amountView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-amount".localized))
 
         verticalStackView.addArrangedSubview(amountView)
     }
     
     private func addCloseAmountView(_ theme: TransactionDetailViewTheme) {
         closeAmountView.customize(theme.commonTransactionAmountInformationViewTheme)
-        closeAmountView.setTitle("transaction-detail-close-amount".localized)
+        closeAmountView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-close-amount".localized))
 
         verticalStackView.addArrangedSubview(closeAmountView)
     }
 
     private func addStatusView(_ theme: TransactionDetailViewTheme) {
         statusView.customize(theme.transactionStatusInformationViewTheme)
-        statusView.setTitle("transaction-detail-status".localized)
+        statusView.bindData(TransactionStatusInformationViewModel(title: "transaction-detail-status".localized))
 
         verticalStackView.addArrangedSubview(statusView)
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: statusView)
@@ -148,7 +148,7 @@ extension TransactionDetailView {
 
     private func addRewardView(_ theme: TransactionDetailViewTheme) {
         rewardView.customize(theme.commonTransactionAmountInformationViewTheme)
-        rewardView.setTitle("transaction-detail-reward".localized)
+        rewardView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-reward".localized))
 
         verticalStackView.addArrangedSubview(rewardView)
     }
@@ -168,7 +168,7 @@ extension TransactionDetailView {
     
     private func addCloseToView(_ theme: TransactionDetailViewTheme) {
         closeToView.customize(theme.transactionTextInformationViewCommonTheme)
-        closeToView.setTitle("transaction-detail-close-to".localized)
+        closeToView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-close-to".localized))
         closeToView.isUserInteractionEnabled = true
 
         verticalStackView.addArrangedSubview(closeToView)
@@ -176,28 +176,28 @@ extension TransactionDetailView {
     
     private func addFeeView(_ theme: TransactionDetailViewTheme) {
         feeView.customize(theme.commonTransactionAmountInformationViewTheme)
-        feeView.setTitle("transaction-detail-fee".localized)
+        feeView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-fee".localized))
 
         verticalStackView.addArrangedSubview(feeView)
     }
     
     private func addDateView(_ theme: TransactionDetailViewTheme) {
         dateView.customize(theme.transactionTextInformationViewCommonTheme)
-        dateView.setTitle("transaction-detail-date".localized)
+        dateView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-date".localized))
 
         verticalStackView.addArrangedSubview(dateView)
     }
     
     private func addRoundView(_ theme: TransactionDetailViewTheme) {
         roundView.customize(theme.transactionTextInformationViewCommonTheme)
-        roundView.setTitle("transaction-detail-round".localized)
+        roundView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-round".localized))
 
         verticalStackView.addArrangedSubview(roundView)
     }
     
     private func addIdView(_ theme: TransactionDetailViewTheme) {
         idView.customize(theme.transactionTextInformationViewTransactionIDTheme)
-        idView.setTitle("transaction-detail-id".localized)
+        idView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-id".localized))
 
         verticalStackView.addArrangedSubview(idView)
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: idView)
@@ -205,7 +205,7 @@ extension TransactionDetailView {
     }
     
     private func addNoteView(_ theme: TransactionDetailViewTheme) {
-        noteView.setTitle("transaction-detail-note".localized)
+        noteView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-note".localized))
         noteView.isUserInteractionEnabled = true
 
         verticalStackView.addArrangedSubview(noteView)
@@ -278,13 +278,86 @@ extension TransactionDetailView {
     }
 }
 
-extension TransactionDetailView {
-    func setTransactionID(_ id: String) {
-        idView.setDetail(id)
+extension TransactionDetailView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionDetailViewModel?) {
+        closeToView.bindData(TransactionTextInformationViewModel(detail: viewModel?.closeToViewDetail))
+        closeToView.isHidden = (viewModel?.closeToViewIsHidden).falseIfNil
+
+        if let rewardViewMode = viewModel?.rewardViewMode {
+            rewardView.bindData(
+                TransactionAmountInformationViewModel(
+                    transactionViewModel: TransactionAmountViewModel(rewardViewMode)
+                )
+            )
+        }
+
+        rewardView.isHidden = (viewModel?.rewardViewIsHidden).falseIfNil
+
+        if let closeAmountViewMode = viewModel?.closeAmountViewMode {
+            closeAmountView.bindData(
+                TransactionAmountInformationViewModel(
+                    transactionViewModel: TransactionAmountViewModel(closeAmountViewMode)
+                )
+            )
+        }
+
+        closeAmountView.isHidden = (viewModel?.closeAmountViewIsHidden).falseIfNil
+        noteView.bindData(TransactionTextInformationViewModel(detail: viewModel?.noteViewDetail))
+        noteView.isHidden = (viewModel?.noteViewIsHidden).falseIfNil
+        roundView.bindData(TransactionTextInformationViewModel(detail: viewModel?.roundViewDetail))
+        roundView.isHidden = (viewModel?.roundViewIsHidden).falseIfNil
+        dateView.bindData(TransactionTextInformationViewModel(detail: viewModel?.date))
+        idView.bindData(TransactionTextInformationViewModel(detail: viewModel?.transactionID))
+
+        if let status = viewModel?.transactionStatus {
+            statusView.bindData(
+                TransactionStatusInformationViewModel(
+                    transactionStatusViewModel: TransactionStatusViewModel(status)
+                )
+            )
+        }
+
+        userView.bindData(
+            TransactionTextInformationViewModel(
+                TitledInformation(title: viewModel?.userViewTitle, detail: viewModel?.userViewDetail)
+            )
+        )
+
+        if let feeViewMode = viewModel?.feeViewMode {
+            feeView.bindData(
+                TransactionAmountInformationViewModel(
+                    transactionViewModel: TransactionAmountViewModel(feeViewMode)
+                )
+            )
+        }
+
+        opponentView.bindData(TransactionContactInformationViewModel(title: viewModel?.opponentViewTitle))
+
+        if let transactionAmountViewMode = viewModel?.transactionAmountViewMode {
+            amountView.bindData(
+                TransactionAmountInformationViewModel(
+                    transactionViewModel: TransactionAmountViewModel(transactionAmountViewMode)
+                )
+            )
+        }
+
+        bindOpponentViewDetail(viewModel)
     }
-    
-    func setDate(_ date: String) {
-        dateView.setDetail(date)
+
+    func bindOpponentViewDetail(_ viewModel: TransactionDetailViewModel?) {
+        if let contact = viewModel?.opponentViewContact {
+            opponentView.bindData(
+                TransactionContactInformationViewModel(
+                    contactDisplayViewModel: ContactDisplayViewModel(contact: contact)
+                )
+            )
+        } else if let opponentViewAddress = viewModel?.opponentViewAddress {
+            opponentView.bindData(
+                TransactionContactInformationViewModel(
+                    contactDisplayViewModel: ContactDisplayViewModel(name: opponentViewAddress)
+                )
+            )
+        }
     }
 }
 

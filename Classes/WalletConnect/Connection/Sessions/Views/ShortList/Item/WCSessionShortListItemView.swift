@@ -13,14 +13,14 @@
 // limitations under the License.
 
 //
-//   WCSessionListModalItemView.swift
+//   WCSessionShortListItemView.swift
 
 import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 
-final class WCSessionListModalItemView: View {
-    weak var delegate: WCSessionListModalItemViewDelegate?
+final class WCSessionShortListItemView: View {
+    weak var delegate: WCSessionShortListItemViewDelegate?
 
     private lazy var dappImageView = URLImageView()
     private lazy var nameLabel = UILabel()
@@ -31,7 +31,7 @@ final class WCSessionListModalItemView: View {
         disconnectOptionsButton.addTarget(self, action: #selector(notifyDelegateToOpenDisconnectionMenu), for: .touchUpInside)
     }
 
-    func customize(_ theme: WCSessionsListModalItemViewTheme) {
+    func customize(_ theme: WCSessionShortListItemViewTheme) {
         addDappImageView(theme)
         addDisconnectOptionsButton(theme)
         addNameLabel(theme)
@@ -43,8 +43,8 @@ final class WCSessionListModalItemView: View {
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
-extension WCSessionListModalItemView {
-    private func addDappImageView(_ theme: WCSessionsListModalItemViewTheme) {
+extension WCSessionShortListItemView {
+    private func addDappImageView(_ theme: WCSessionShortListItemViewTheme) {
         dappImageView.draw(border: theme.imageBorder)
         dappImageView.draw(corner: theme.imageCorner)
 
@@ -57,7 +57,7 @@ extension WCSessionListModalItemView {
         }
     }
 
-    private func addDisconnectOptionsButton(_ theme: WCSessionsListModalItemViewTheme) {
+    private func addDisconnectOptionsButton(_ theme: WCSessionShortListItemViewTheme) {
         disconnectOptionsButton.customizeAppearance(theme.disconnectOptionsButton)
 
         addSubview(disconnectOptionsButton)
@@ -68,7 +68,7 @@ extension WCSessionListModalItemView {
         }
     }
 
-    private func addNameLabel(_ theme: WCSessionsListModalItemViewTheme) {
+    private func addNameLabel(_ theme: WCSessionShortListItemViewTheme) {
         nameLabel.customizeAppearance(theme.nameLabel)
 
         addSubview(nameLabel)
@@ -79,7 +79,7 @@ extension WCSessionListModalItemView {
         }
     }
 
-    private func addDescriptionLabel(_ theme: WCSessionsListModalItemViewTheme) {
+    private func addDescriptionLabel(_ theme: WCSessionShortListItemViewTheme) {
         descriptionLabel.customizeAppearance(theme.descriptionLabel)
 
         addSubview(descriptionLabel)
@@ -92,15 +92,15 @@ extension WCSessionListModalItemView {
     }
 }
 
-extension WCSessionListModalItemView {
+extension WCSessionShortListItemView {
     @objc
     private func notifyDelegateToOpenDisconnectionMenu() {
-        delegate?.wcSessionListModalItemViewDidOpenDisconnectionMenu(self)
+        delegate?.wcSessionShortListItemViewDidOpenDisconnectionMenu(self)
     }
 }
 
-extension WCSessionListModalItemView: ViewModelBindable {
-    func bindData(_ viewModel: WCSessionsListModalItemViewModel?) {
+extension WCSessionShortListItemView: ViewModelBindable {
+    func bindData(_ viewModel: WCSessionShortListItemViewModel?) {
         dappImageView.load(from: viewModel?.image)
         nameLabel.text = viewModel?.name
         descriptionLabel.text = viewModel?.description
@@ -113,6 +113,6 @@ extension WCSessionListModalItemView: ViewModelBindable {
     }
 }
 
-protocol WCSessionListModalItemViewDelegate: AnyObject {
-    func wcSessionListModalItemViewDidOpenDisconnectionMenu(_ wcSessionListModalView: WCSessionListModalItemView)
+protocol WCSessionShortListItemViewDelegate: AnyObject {
+    func wcSessionShortListItemViewDidOpenDisconnectionMenu(_ wcSessionShortListItemView: WCSessionShortListItemView)
 }

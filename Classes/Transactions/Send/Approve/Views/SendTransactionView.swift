@@ -50,11 +50,11 @@ class SendTransactionView: BaseView {
         receiverInformationView.backgroundColor = Colors.Background.secondary
         feeInformationView.backgroundColor = Colors.Background.secondary
         noteInformationView.backgroundColor = Colors.Background.secondary
-        amountInformationView.setTitle("transaction-detail-amount".localized)
-        receiverInformationView.setTitle("transaction-detail-to".localized)
-        receiverInformationView.removeAddContactButton()
-        feeInformationView.setTitle("transaction-detail-fee".localized)
-        noteInformationView.setTitle("transaction-detail-note".localized)
+        amountInformationView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-amount".localized))
+        receiverInformationView.bindData(TransactionContactInformationViewModel(title: "transaction-detail-to".localized))
+//        receiverInformationView.removeAddContactButton() // <todo>: Implement this if needed for this view.
+        feeInformationView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-fee".localized))
+        noteInformationView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-note".localized))
     }
     
     override func setListeners() {
@@ -184,15 +184,23 @@ extension SendTransactionView {
         accountInformationView.bind(viewModel.accountNameViewModel)
 
         if let amount = viewModel.amount {
-            amountInformationView.setAmountViewMode(amount)
+            amountInformationView.bindData(
+                TransactionAmountInformationViewModel(
+                    transactionViewModel: TransactionAmountViewModel(amount)
+                )
+            )
         }
 
         if let fee = viewModel.fee {
-            feeInformationView.setAmountViewMode(fee)
+            feeInformationView.bindData(
+                TransactionAmountInformationViewModel(
+                    transactionViewModel: TransactionAmountViewModel(fee)
+                )
+            )
         }
 
         if let note = viewModel.note {
-            noteInformationView.setDetail(note)
+            noteInformationView.bindData(TransactionTextInformationViewModel(detail: note))
         } else {
             noteInformationView.removeFromSuperview()
         }
@@ -215,10 +223,17 @@ extension SendTransactionView {
         }
 
         if let contact = viewModel.receiverContact {
-            receiverInformationView.setContact(contact)
+            receiverInformationView.bindData(
+                TransactionContactInformationViewModel(
+                    contactDisplayViewModel: ContactDisplayViewModel(contact: contact)
+                )
+            )
         } else if let receiver = viewModel.receiverName {
-            receiverInformationView.setName(receiver)
-            receiverInformationView.removeContactImage()
+            receiverInformationView.bindData(
+                TransactionContactInformationViewModel(
+                    contactDisplayViewModel: ContactDisplayViewModel(name: receiver)
+                )
+            )
         }
     }
 }

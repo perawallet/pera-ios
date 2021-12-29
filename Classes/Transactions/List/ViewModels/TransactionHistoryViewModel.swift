@@ -35,33 +35,33 @@ class TransactionHistoryViewModel {
             
             if assetTransaction.receiverAddress == assetTransaction.senderAddress {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
-                view.transactionAmountView.mode = .normal(
+                view.transactionAmountView.bindData(TransactionAmountViewModel(.normal(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                     isAlgos: false,
                     fraction: assetDetail.fractionDecimals
-                )
+                )))
             } else if assetTransaction.receiverAddress == account.address &&
                 assetTransaction.amount == 0 &&
                 transaction.type == .assetTransfer {
                 view.setContact("asset-creation-fee-title".localized)
                 view.subtitleLabel.isHidden = true
                 if let fee = transaction.fee {
-                    view.transactionAmountView.mode = .negative(amount: fee.toAlgos)
+                    view.transactionAmountView.bindData(TransactionAmountViewModel(.negative(amount: fee.toAlgos)))
                 }
             } else if assetTransaction.receiverAddress == account.address {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
-                view.transactionAmountView.mode = .positive(
+                view.transactionAmountView.bindData(TransactionAmountViewModel(.positive(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                     isAlgos: false,
                     fraction: assetDetail.fractionDecimals
-                )
+                )))
             } else {
                 configure(view, with: contact, and: assetTransaction.receiverAddress)
-                view.transactionAmountView.mode = .negative(
+                view.transactionAmountView.bindData(TransactionAmountViewModel(.negative(
                     amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                     isAlgos: false,
                     fraction: assetDetail.fractionDecimals
-                )
+                )))
             }
         } else {
             guard let payment = transaction.payment else {
@@ -72,7 +72,7 @@ class TransactionHistoryViewModel {
                     view.setContact("asset-creation-fee-title".localized)
                     view.subtitleLabel.isHidden = true
                     if let fee = transaction.fee {
-                        view.transactionAmountView.mode = .negative(amount: fee.toAlgos)
+                        view.transactionAmountView.bindData(TransactionAmountViewModel(.negative(amount: fee.toAlgos)))
                     }
                 }
                 let formattedDate = transaction.date?.toFormat("MMMM dd, yyyy")
@@ -82,13 +82,13 @@ class TransactionHistoryViewModel {
             
             if payment.receiver == transaction.sender {
                 configure(view, with: contact, and: transaction.sender)
-                view.transactionAmountView.mode = .normal(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
+                view.transactionAmountView.bindData(TransactionAmountViewModel(.normal(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)))
             } else if payment.receiver == account.address {
                 configure(view, with: contact, and: transaction.sender)
-                view.transactionAmountView.mode = .positive(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
+                view.transactionAmountView.bindData(TransactionAmountViewModel(.positive(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)))
             } else {
                 configure(view, with: contact, and: payment.receiver)
-                view.transactionAmountView.mode = .negative(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
+                view.transactionAmountView.bindData(TransactionAmountViewModel(.negative(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)))
             }
         }
         
@@ -121,42 +121,42 @@ class TransactionHistoryViewModel {
         if let assetDetail = dependencies.assetDetail {
             if transaction.receiver == transaction.sender {
                 configure(view, with: contact, and: transaction.receiver)
-                view.transactionAmountView.mode = .normal(
+                view.transactionAmountView.bindData(TransactionAmountViewModel(.normal(
                     amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                     isAlgos: false,
                     fraction: assetDetail.fractionDecimals
-                )
+                )))
             } else if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
                 view.setContact("asset-creation-fee-title".localized)
                 view.subtitleLabel.isHidden = true
                 if let fee = transaction.fee {
-                    view.transactionAmountView.mode = .negative(amount: fee.toAlgos)
+                    view.transactionAmountView.bindData(TransactionAmountViewModel(.negative(amount: fee.toAlgos)))
                 }
             } else if transaction.receiver == account.address {
                 configure(view, with: contact, and: transaction.receiver)
-                view.transactionAmountView.mode = .positive(
+                view.transactionAmountView.bindData(TransactionAmountViewModel(.positive(
                     amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                     isAlgos: false,
                     fraction: assetDetail.fractionDecimals
-                )
+                )))
             } else {
                 configure(view, with: contact, and: transaction.receiver)
-                view.transactionAmountView.mode = .negative(
+                view.transactionAmountView.bindData(TransactionAmountViewModel(.negative(
                     amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                     isAlgos: false,
                     fraction: assetDetail.fractionDecimals
-                )
+                )))
             }
         } else {
             if transaction.receiver == transaction.sender {
                 configure(view, with: contact, and: transaction.receiver)
-                view.transactionAmountView.mode = .normal(amount: transaction.amount.toAlgos)
+                view.transactionAmountView.bindData(TransactionAmountViewModel(.normal(amount: transaction.amount.toAlgos)))
             } else if transaction.receiver == account.address {
                 configure(view, with: contact, and: transaction.sender)
-                view.transactionAmountView.mode = .positive(amount: transaction.amount.toAlgos)
+                view.transactionAmountView.bindData(TransactionAmountViewModel(.positive(amount: transaction.amount.toAlgos)))
             } else {
                 configure(view, with: contact, and: transaction.receiver)
-                view.transactionAmountView.mode = .negative(amount: transaction.amount.toAlgos)
+                view.transactionAmountView.bindData(TransactionAmountViewModel(.negative(amount: transaction.amount.toAlgos)))
             }
         }
         
@@ -169,7 +169,7 @@ class TransactionHistoryViewModel {
         view.titleLabel.text = "reward-list-title".localized
         view.subtitleLabel.text = viewModel.date
         if let mode = viewModel.amountMode {
-            view.transactionAmountView.mode = mode
+            view.transactionAmountView.bindData(TransactionAmountViewModel(mode))
         }
     }
 }

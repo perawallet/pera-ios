@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   WCSessionListModalViewTheme.swift
+//   WCSessionShortListViewTheme.swift
 
 import MacaroonUIKit
 import UIKit
 
-struct WCSessionListModalViewTheme: LayoutSheet, StyleSheet {
+struct WCSessionShortListViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color
     let cellSpacing: LayoutMetric
     let contentInset: LayoutPaddings

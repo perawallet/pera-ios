@@ -54,12 +54,14 @@ extension TransactionTextInformationView {
     }
 }
 
-extension TransactionTextInformationView {
-    func setTitle(_ title: String) {
-        titleLabel.text = title
-    }
-    
-    func setDetail(_ detail: String?) {
-        detailLabel.text = detail
+extension TransactionTextInformationView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionTextInformationViewModel?) {
+        if let title = viewModel?.title {
+            titleLabel.text = title
+        }
+
+        if let detail = viewModel?.detail {
+            detailLabel.text = detail
+        }
     }
 }

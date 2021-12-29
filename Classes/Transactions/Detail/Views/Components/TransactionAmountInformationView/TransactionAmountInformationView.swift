@@ -54,12 +54,14 @@ extension TransactionAmountInformationView {
     }
 }
 
-extension TransactionAmountInformationView {
-    func setTitle(_ title: String) {
-        titleLabel.text = title
-    }
-    
-    func setAmountViewMode(_ mode: TransactionAmountView.Mode) {
-        transactionAmountView.mode = mode
+extension TransactionAmountInformationView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionAmountInformationViewModel?) {
+        if let title = viewModel?.title {
+            titleLabel.text = title
+        }
+
+        if let transactionViewModel = viewModel?.transactionViewModel {
+            transactionAmountView.bindData(transactionViewModel)
+        }
     }
 }
