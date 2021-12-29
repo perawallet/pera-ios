@@ -218,7 +218,6 @@ extension SendTransactionView {
             receiverInformationView.setContact(contact)
         } else if let receiver = viewModel.receiverName {
             receiverInformationView.setName(receiver)
-            receiverInformationView.removeContactImage()
         }
     }
 }

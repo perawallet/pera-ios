@@ -16,187 +16,214 @@
 //  TransactionDetailViewModel.swift
 
 import UIKit
+import MacaroonUIKit
 
-final class TransactionDetailViewModel {
+final class TransactionDetailViewModel: ViewModel {
+    private(set) var transactionStatus: Transaction.Status?
+    private(set) var userViewTitle: String?
+    private(set) var userViewDetail: String?
+    private(set) var feeViewMode: TransactionAmountView.Mode?
+    private(set) var date: String?
+    private(set) var roundViewIsHidden: Bool = false
+    private(set) var roundViewDetail: String?
+    private(set) var opponentViewTitle: String?
+    private(set) var noteViewDetail: String?
+    private(set) var noteViewIsHidden: Bool = false
     private(set) var opponentType: Opponent?
-    
+    private(set) var opponentViewContact: Contact?
+    private(set) var opponentViewAddress: String?
+    private(set) var closeAmountViewMode: TransactionAmountView.Mode?
+    private(set) var closeAmountViewIsHidden: Bool = false
+    private(set) var closeToViewDetail: String?
+    private(set) var closeToViewIsHidden: Bool = false
+    private(set) var transactionAmountViewMode: TransactionAmountView.Mode?
+    private(set) var rewardViewIsHidden: Bool = false
+    private(set) var transactionID: String?
+    private(set) var rewardViewMode: TransactionAmountView.Mode?
+
+    init(
+        transactionType: TransactionType,
+        transaction: Transaction,
+        account: Account,
+        assetDetail: AssetDetail?
+    ) {
+        if transactionType == .received {
+            configureReceivedTransaction(with: transaction, and: assetDetail, for: account)
+        } else if transactionType == .sent {
+            configureSentTransaction(with: transaction, and: assetDetail, for: account)
+        }
+    }
+}
+
+extension TransactionDetailViewModel {
     func configureReceivedTransaction(
-        _ view: TransactionDetailView,
         with transaction: Transaction,
         and assetDetail: AssetDetail?,
         for account: Account
     ) {
-        if let status = transaction.status {
-             view.statusView.setTransactionStatus(status)
-        }
+        transactionStatus = transaction.status
+        userViewTitle = "transaction-detail-to".localized
+        userViewDetail = account.name
         
-        view.userView.setTitle("transaction-detail-to".localized)
-        view.userView.setDetail(account.name)
-
         if let fee = transaction.fee {
-            view.feeView.setAmountViewMode(.normal(amount: fee.toAlgos))
+            feeViewMode = .normal(amount: fee.toAlgos)
         }
 
-        setDate(for: transaction, in: view)
-        setRound(for: transaction, in: view)
-        
-        view.opponentView.setTitle("transaction-detail-from".localized)
+        setDate(for: transaction)
+        setRound(for: transaction)
+        opponentViewTitle = "transaction-detail-from".localized
         if let sender = transaction.sender {
-            setOpponent(for: transaction, with: sender, in: view)
+            setOpponent(for: transaction, with: sender)
         }
-        
+
         if let assetTransaction = transaction.assetTransfer,
-            let assetDetail = assetDetail {
-            view.closeAmountView.isHidden = true
-            view.closeToView.isHidden = true
+           let assetDetail = assetDetail {
+            closeAmountViewIsHidden = true
+            closeToViewIsHidden = true
+
             let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
 
-            let value: TransactionAmountView.Mode = transaction.isSelfTransaction()
-                ? .normal(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
-                : .positive(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
-            view.amountView.setAmountViewMode(value)
-            
-            view.rewardView.isHidden = true
+            if transaction.isSelfTransaction() {
+                transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+            } else {
+                transactionAmountViewMode = .positive(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+            }
+            rewardViewIsHidden = true
         } else if let payment = transaction.payment {
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
 
             let value: TransactionAmountView.Mode = transaction.isSelfTransaction() ? .normal(amount: amount) : .positive(amount: amount)
-            view.amountView.setAmountViewMode(value)
-            
-            setCloseAmount(for: transaction, in: view)
-            setCloseTo(for: transaction, in: view)
-            setReward(for: transaction, in: view)
+            transactionAmountViewMode = value
+
+            setCloseAmount(for: transaction)
+            setCloseTo(for: transaction)
+            setReward(for: transaction)
         }
 
-        if let id = transaction.id {
-            view.setTransactionID(id)
-        }
-
-        setNote(for: transaction, in: view)
+        transactionID = transaction.id
+        setNote(for: transaction)
     }
-    
+}
+
+extension TransactionDetailViewModel {
     func configureSentTransaction(
-        _ view: TransactionDetailView,
         with transaction: Transaction,
         and assetDetail: AssetDetail?,
         for account: Account
     ) {
-        if let status = transaction.status {
-             view.statusView.setTransactionStatus(status)
-        }
-        
-        setReward(for: transaction, in: view)
-        
-        view.userView.setTitle("transaction-detail-from".localized)
-        view.userView.setDetail(account.name)
+        transactionStatus = transaction.status
+
+        setReward(for: transaction)
+
+        userViewTitle = "transaction-detail-from".localized
+        userViewDetail = account.name
 
         if let fee = transaction.fee {
-            view.feeView.setAmountViewMode(.normal(amount: fee.toAlgos))
+            feeViewMode = .normal(amount: fee.toAlgos)
         }
 
-        setDate(for: transaction, in: view)
-        setRound(for: transaction, in: view)
-        
-        view.opponentView.setTitle("transaction-detail-to".localized)
-        
+        setDate(for: transaction)
+        setRound(for: transaction)
+        opponentViewTitle = "transaction-detail-to".localized
+
         if let assetTransaction = transaction.assetTransfer {
-            view.closeAmountView.isHidden = true
-            view.closeToView.isHidden = true
-            setOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "", in: view)
+            closeAmountViewIsHidden = true
+            closeToViewIsHidden = true
+            setOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "")
 
             if let assetDetail = assetDetail {
                 let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
 
-                let value: TransactionAmountView.Mode = transaction.isSelfTransaction()
-                    ? .normal(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
-                    : .negative(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
-                view.amountView.setAmountViewMode(value)
+                if transaction.isSelfTransaction() {
+                    transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+                } else {
+                    transactionAmountViewMode = .positive(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+                }
             } else if transaction.isAssetAdditionTransaction(for: account.address) {
-                view.amountView.setAmountViewMode(.normal(amount: 0.0))
+                transactionAmountViewMode = .normal(amount: 0.0)
             }
         } else if let payment = transaction.payment {
-            setOpponent(for: transaction, with: payment.receiver, in: view)
-            
+            setOpponent(for: transaction, with: payment.receiver)
+
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
 
-            let value: TransactionAmountView.Mode = transaction.isSelfTransaction() ? .normal(amount: amount) : .negative(amount: amount)
-            view.amountView.setAmountViewMode(value)
-            
-            setCloseAmount(for: transaction, in: view)
-            setCloseTo(for: transaction, in: view)
+            if transaction.isSelfTransaction() {
+                transactionAmountViewMode = .normal(amount: amount)
+            } else {
+                transactionAmountViewMode = .negative(amount: amount)
+            }
+
+            setCloseAmount(for: transaction)
+            setCloseTo(for: transaction)
         }
 
-        if let transactionId = transaction.id {
-            view.setTransactionID(transactionId)
-        }
+        transactionID = transaction.id
+        setNote(for: transaction)
+    }
+}
 
-        setNote(for: transaction, in: view)
-    }
-    
-    private func setCloseAmount(for transaction: Transaction, in view: TransactionDetailView) {
-        if let closeAmount = transaction.payment?.closeAmountForTransaction()?.toAlgos {
-            view.closeAmountView.setAmountViewMode(.normal(amount: closeAmount))
-        } else {
-            view.closeAmountView.isHidden = true
-        }
-    }
-    
-    private func setCloseTo(for transaction: Transaction, in view: TransactionDetailView) {
-        if let closeAddress = transaction.payment?.closeAddress {
-            view.closeToView.setDetail(closeAddress)
-        } else {
-            view.closeToView.isHidden = true
-        }
-    }
-    
-    func setOpponent(for transaction: Transaction, with address: String, in view: TransactionDetailView) {
+extension TransactionDetailViewModel {
+    func setOpponent(for transaction: Transaction, with address: String) {
         if let contact = transaction.contact {
             opponentType = .contact(address: address)
-            view.opponentView.setContact(contact)
+            opponentViewContact = contact
         } else if let localAccount = UIApplication.shared.appConfiguration?.session.accountInformation(from: address) {
             opponentType = .localAccount(address: address)
-            view.opponentView.setName(localAccount.name)
-            view.opponentView.removeContactImage()
+            opponentViewAddress = localAccount.name
         } else {
             opponentType = .address(address: address)
-            view.opponentView.setName(address)
-            view.opponentView.removeContactImage()
+            opponentViewAddress = address
         }
     }
-    
-    private func setDate(for transaction: Transaction, in view: TransactionDetailView) {
+
+    private func setDate(for transaction: Transaction) {
         if transaction.isPending() {
-            view.setDate(Date().toFormat("MMMM dd, yyyy - HH:mm"))
+            date = Date().toFormat("MMMM dd, yyyy - HH:mm")
         } else {
-            if let date = transaction.date {
-                view.setDate(date.toFormat("MMMM dd, yyyy - HH:mm"))
-            }
+            date = transaction.date?.toFormat("MMMM dd, yyyy - HH:mm")
         }
     }
-    
-    private func setRound(for transaction: Transaction, in view: TransactionDetailView) {
+
+    private func setRound(for transaction: Transaction) {
         if transaction.isPending() {
-            view.roundView.isHidden = true
+            roundViewIsHidden = true
         } else {
             if let round = transaction.confirmedRound {
-                view.roundView.setDetail("\(round)")
+                roundViewDetail = "\(round)"
             }
         }
     }
-    
-    private func setReward(for transaction: Transaction, in view: TransactionDetailView) {
-        if let rewards = transaction.senderRewards, rewards > 0 {
-            view.rewardView.setAmountViewMode(.normal(amount: rewards.toAlgos))
+
+    private func setNote(for transaction: Transaction) {
+        if let note = transaction.noteRepresentation() {
+            noteViewDetail = note
         } else {
-            view.rewardView.isHidden = true
+            noteViewIsHidden = true
         }
     }
-    
-    private func setNote(for transaction: Transaction, in view: TransactionDetailView) {
-        if let note = transaction.noteRepresentation() {
-            view.noteView.setDetail(note)
+
+    private func setCloseAmount(for transaction: Transaction) {
+        if let closeAmount = transaction.payment?.closeAmountForTransaction()?.toAlgos {
+            closeAmountViewMode = .normal(amount: closeAmount)
         } else {
-            view.noteView.isHidden = true
+            closeAmountViewIsHidden = true
+        }
+    }
+
+    private func setCloseTo(for transaction: Transaction) {
+        if let closeAddress = transaction.payment?.closeAddress {
+            closeToViewDetail = closeAddress
+        } else {
+            closeToViewIsHidden = true
+        }
+    }
+
+    private func setReward(for transaction: Transaction) {
+        if let rewards = transaction.senderRewards,
+           rewards > 0 {
+            rewardViewMode = .normal(amount: rewards.toAlgos)
+        } else {
+            rewardViewIsHidden = true
         }
     }
 }

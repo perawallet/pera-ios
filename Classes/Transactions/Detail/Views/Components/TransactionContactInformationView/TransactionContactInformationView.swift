@@ -61,7 +61,7 @@ extension TransactionContactInformationView {
 }
 
 extension TransactionContactInformationView {
-    func setTitle(_ title: String) {
+    func setTitle(_ title: String?) {
         titleLabel.text = title
     }
     
@@ -75,10 +75,6 @@ extension TransactionContactInformationView {
     
     func removeAddContactButton() {
         contactDisplayView.removeAddContactButton()
-    }
-    
-    func removeContactImage() {
-        contactDisplayView.removeContactImage()
     }
 }
 

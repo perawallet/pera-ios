@@ -110,6 +110,7 @@ extension ContactDisplayView {
     
     func setName(_ name: String) {
         nameLabel.text = name
+        removeContactImage()
     }
     
     func removeContactImage() {

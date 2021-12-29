@@ -278,13 +278,46 @@ extension TransactionDetailView {
     }
 }
 
-extension TransactionDetailView {
-    func setTransactionID(_ id: String) {
-        idView.setDetail(id)
+extension TransactionDetailView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionDetailViewModel?) {
+        closeToView.setDetail(viewModel?.closeToViewDetail)
+        closeToView.isHidden = (viewModel?.closeToViewIsHidden).falseIfNil
+        if let rewardViewMode = viewModel?.rewardViewMode {
+            rewardView.setAmountViewMode(rewardViewMode)
+        }
+        rewardView.isHidden = (viewModel?.rewardViewIsHidden).falseIfNil
+        if let closeAmountViewMode = viewModel?.closeAmountViewMode {
+            closeAmountView.setAmountViewMode(closeAmountViewMode)
+        }
+        closeAmountView.isHidden = (viewModel?.closeAmountViewIsHidden).falseIfNil
+        noteView.setDetail(viewModel?.noteViewDetail)
+        noteView.isHidden = (viewModel?.noteViewIsHidden).falseIfNil
+        roundView.setDetail(viewModel?.roundViewDetail)
+        roundView.isHidden = (viewModel?.roundViewIsHidden).falseIfNil
+        dateView.setDetail(viewModel?.date)
+        idView.setDetail(viewModel?.transactionID)
+        if let status = viewModel?.transactionStatus {
+            statusView.setTransactionStatus(status)
+        }
+        userView.setTitle(viewModel?.userViewTitle)
+        userView.setDetail(viewModel?.userViewDetail)
+        if let feeViewMode = viewModel?.feeViewMode {
+            feeView.setAmountViewMode(feeViewMode)
+        }
+        opponentView.setTitle(viewModel?.opponentViewTitle)
+        if let transactionAmountViewMode = viewModel?.transactionAmountViewMode {
+            amountView.setAmountViewMode(transactionAmountViewMode)
+        }
+
+        bindOpponentViewDetail(viewModel)
     }
-    
-    func setDate(_ date: String) {
-        dateView.setDetail(date)
+
+    func bindOpponentViewDetail(_ viewModel: TransactionDetailViewModel?) {
+        if let contact = viewModel?.opponentViewContact {
+            opponentView.setContact(contact)
+        } else if let opponentViewAddress = viewModel?.opponentViewAddress {
+            opponentView.setName(opponentViewAddress)
+        }
     }
 }
 

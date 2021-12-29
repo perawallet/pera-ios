@@ -55,7 +55,7 @@ extension TransactionTextInformationView {
 }
 
 extension TransactionTextInformationView {
-    func setTitle(_ title: String) {
+    func setTitle(_ title: String?) {
         titleLabel.text = title
     }
     
