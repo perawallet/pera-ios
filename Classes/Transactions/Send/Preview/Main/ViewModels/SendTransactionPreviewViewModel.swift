@@ -51,22 +51,21 @@ final class SendTransactionPreviewViewModel {
         _ view: NewSendTransactionPreviewView,
         with draft: AssetTransactionSendDraft
     ) {
-        guard let amount = draft.amount else {
+        guard let amount = draft.amount, let assetDetail = draft.assetDetail else {
             return
         }
 
         view.amountView.setAmountViewMode(
-            .normal(amount: amount, isAlgos: false, fraction: algosFraction)
+            .normal(amount: amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.assetName)
         )
 
         setUserView(for: draft, in: view)
         setOpponentView(for: draft, in: view)
         setFee(for: draft, in: view)
 
-        if let assetDetail = draft.assetDetail,
-           let balance = draft.from.amount(for: assetDetail) {
+        if let balance = draft.from.amount(for: assetDetail) {
             view.balanceView.setAmountViewMode(
-                .normal(amount: balance - amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+                .normal(amount: balance - amount, isAlgos: false, fraction: assetDetail.fractionDecimals, assetSymbol: assetDetail.assetName)
             )
         }
 

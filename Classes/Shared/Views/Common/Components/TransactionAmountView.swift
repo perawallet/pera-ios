@@ -59,29 +59,29 @@ extension TransactionAmountView {
 extension TransactionAmountView {
     private func updateAmountView() {
         switch mode {
-        case let .normal(amount, isAlgos, assetFraction):
+        case let .normal(amount, isAlgos, assetFraction, assetSymbol):
             signLabel.isHidden = true
             
-            setAmount(amount, with: assetFraction, isAlgos: isAlgos)
+            setAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol)
             amountLabel.textColor = AppColors.Components.Text.main.uiColor
         case let .positive(amount, isAlgos, assetFraction):
             signLabel.isHidden = false
             signLabel.text = "+"
             signLabel.textColor = AppColors.Shared.Helpers.positive.uiColor
             
-            setAmount(amount, with: assetFraction, isAlgos: isAlgos)
+            setAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: nil)
             amountLabel.textColor = AppColors.Shared.Helpers.positive.uiColor
         case let .negative(amount, isAlgos, assetFraction):
             signLabel.isHidden = false
             signLabel.text = "-"
             signLabel.textColor = AppColors.Shared.Helpers.negative.uiColor
             
-            setAmount(amount, with: assetFraction, isAlgos: isAlgos)
+            setAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: nil)
             amountLabel.textColor = AppColors.Shared.Helpers.negative.uiColor
         }
     }
     
-    private func setAmount(_ amount: Decimal, with assetFraction: Int?, isAlgos: Bool) {
+    private func setAmount(_ amount: Decimal, with assetFraction: Int?, isAlgos: Bool, assetSymbol: String?) {
         if let fraction = assetFraction {
             amountLabel.text = amount.toFractionStringForLabel(fraction: fraction)
         } else {
@@ -90,13 +90,18 @@ extension TransactionAmountView {
 
         if isAlgos {
             amountLabel.text?.append(" ALGO")
+        } else {
+            if let assetSymbol = assetSymbol {
+                amountLabel.text?.append(" \(assetSymbol)")
+
+            }
         }
     }
 }
 
 extension TransactionAmountView {
     enum Mode {
-        case normal(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil)
+        case normal(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil, assetSymbol: String? = nil)
         case positive(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil)
         case negative(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil)
     }
