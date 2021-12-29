@@ -49,6 +49,15 @@ struct SendTransactionDraft: TransactionSendDraft {
     }
     var toContact: Contact?
     var note: String?
+
+    var assetDetail: AssetDetail? {
+        switch transactionMode {
+        case .algo:
+            return nil
+        case .assetDetail(let assetDetail):
+            return assetDetail
+        }
+    }
 }
 
 enum TransactionMode {

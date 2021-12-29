@@ -24,18 +24,17 @@ final class NewSendTransactionPreviewView: View {
     private lazy var verticalStackView = UIStackView()
     private(set) lazy var amountView = TransactionAmountInformationView()
     private(set) lazy var userView = TransactionTextInformationView()
-    private(set) lazy var opponentView = TransactionContactInformationView()
+    private(set) lazy var opponentView = TransactionTextInformationView()
     private(set) lazy var feeView = TransactionAmountInformationView()
     private(set) lazy var balanceView = TransactionAmountInformationView()
     private(set) lazy var noteView = TransactionTextInformationView()
 
-    private let transactionDraft: SendTransactionDraft
+    private lazy var theme = TransactionDetailViewTheme()
 
-    init(draft: SendTransactionDraft) {
-        self.transactionDraft = draft
+    init() {
         super.init(frame: .zero)
 
-        customize(TransactionDetailViewTheme())
+        customize(theme)
     }
 
     func customize(_ theme: TransactionDetailViewTheme) {
@@ -46,15 +45,20 @@ final class NewSendTransactionPreviewView: View {
         addOpponentView(theme)
         addFeeView(theme)
         addBalanceView(theme)
-
-        if transactionDraft.note != nil {
-            addNoteView(theme)
-        }
+        addNoteView(theme)
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: ViewStyle) {}
+
+    func setNoteViewVisible(_ isVisible: Bool) {
+        if isVisible {
+            balanceView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
+            verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: balanceView)
+        }
+        noteView.isHidden = !isVisible
+    }
 }
 
 extension NewSendTransactionPreviewView {
@@ -80,6 +84,7 @@ extension NewSendTransactionPreviewView {
 
     private func addUserView(_ theme: TransactionDetailViewTheme) {
         userView.customize(theme.transactionTextInformationViewCommonTheme)
+        userView.setTitle("title-account".localized)
 
         verticalStackView.addArrangedSubview(userView)
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: amountView)
@@ -87,8 +92,8 @@ extension NewSendTransactionPreviewView {
     }
 
     private func addOpponentView(_ theme: TransactionDetailViewTheme) {
-        opponentView.customize(theme.transactionContactInformationViewTheme)
-        opponentView.isUserInteractionEnabled = true
+        opponentView.customize(theme.transactionTextInformationViewCommonTheme)
+        opponentView.setTitle("transaction-detail-to".localized)
 
         verticalStackView.addArrangedSubview(opponentView)
     }
@@ -98,6 +103,8 @@ extension NewSendTransactionPreviewView {
         feeView.setTitle("transaction-detail-fee".localized)
 
         verticalStackView.addArrangedSubview(feeView)
+        feeView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
+        verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: feeView)
     }
 
     private func addBalanceView(_ theme: TransactionDetailViewTheme) {
@@ -105,17 +112,12 @@ extension NewSendTransactionPreviewView {
         balanceView.setTitle("title-account-balance".localized)
 
         verticalStackView.addArrangedSubview(balanceView)
-
-        if transactionDraft.note != nil {
-            balanceView.addSeparator(theme.separator, padding: 16)
-        }
     }
 
     private func addNoteView(_ theme: TransactionDetailViewTheme) {
+        noteView.customize(theme.transactionTextInformationViewCommonTheme)
         noteView.setTitle("transaction-detail-note".localized)
-        noteView.isUserInteractionEnabled = true
 
         verticalStackView.addArrangedSubview(noteView)
-        verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: noteView)
     }
 }

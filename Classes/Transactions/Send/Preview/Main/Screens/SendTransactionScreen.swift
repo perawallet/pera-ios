@@ -409,13 +409,16 @@ extension SendTransactionScreen: EditNoteScreenDelegate {
         didUpdateNote note: String?
     ) {
         self.note = note
+        self.draft.note = note
     }
 }
 
 extension SendTransactionScreen: MaximumBalanceWarningViewControllerDelegate {
     func maximumBalanceWarningViewControllerDidConfirmWarning(_ maximumBalanceWarningViewController: MaximumBalanceWarningViewController) {
         maximumBalanceWarningViewController.dismissScreen()
-        //next screen
+
+        draft.amount = amount.decimalAmount
+        open(.transactionAccountSelect(draft: self.draft), by: .push)
     }
 }
 

@@ -24,43 +24,92 @@ final class SendTransactionPreviewViewModel {
 
     func configureReceivedTransaction(
         _ view: NewSendTransactionPreviewView,
-        with draft: SendTransactionDraft
+        with draft: AlgosTransactionSendDraft
     ) {
-        view.amountView.setTitle("transaction-detail-amount".localized)
-        view.amountView.setAmountViewMode(.normal(amount: draft.amount!, isAlgos: true, fraction: 2))
+        guard let amount = draft.amount else {
+            return
+        }
 
-        view.userView.setTitle("title-account".localized)
-        view.userView.setDetail(draft.from.name ?? draft.from.address)
+        view.amountView.setAmountViewMode(
+            .normal(amount: amount, isAlgos: true, fraction: algosFraction)
+        )
 
-        view.opponentView.setTitle("transaction-detail-to".localized)
-        if let contact = draft.toContact {
-            view.opponentView.setContact(contact)
+        setUserView(for: draft, in: view)
+        setOpponentView(for: draft, in: view)
+        setFee(for: draft, in: view)
+
+        let balance = draft.from.amount.toAlgos - amount - (draft.fee?.toAlgos ?? 0)
+
+        view.balanceView.setAmountViewMode(
+            .normal(amount: balance, isAlgos: true, fraction: algosFraction)
+        )
+
+        setNote(for: draft, in: view)
+    }
+
+    func configureReceivedTransaction(
+        _ view: NewSendTransactionPreviewView,
+        with draft: AssetTransactionSendDraft
+    ) {
+        guard let amount = draft.amount else {
+            return
+        }
+
+        view.amountView.setAmountViewMode(
+            .normal(amount: amount, isAlgos: false, fraction: algosFraction)
+        )
+
+        setUserView(for: draft, in: view)
+        setOpponentView(for: draft, in: view)
+        setFee(for: draft, in: view)
+
+        if let assetDetail = draft.assetDetail,
+           let balance = draft.from.amount(for: assetDetail) {
+            view.balanceView.setAmountViewMode(
+                .normal(amount: balance - amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+            )
+        }
+
+        setNote(for: draft, in: view)
+    }
+
+    private func setUserView(
+        for transactionDraft: TransactionSendDraft,
+        in view: NewSendTransactionPreviewView
+    ) {
+        view.userView.setDetail(transactionDraft.from.name ?? transactionDraft.from.address)
+    }
+
+    private func setOpponentView(
+        for transactionDraft: TransactionSendDraft,
+        in view: NewSendTransactionPreviewView
+    ) {
+        if let contact = transactionDraft.toContact {
+            view.opponentView.setDetail(contact.name ?? contact.address)
         } else {
-            view.opponentView.setName(draft.toAccount ?? "")
+            view.opponentView.setDetail(transactionDraft.toAccount ?? "")
         }
     }
 
-
-    func setOpponent(for transaction: Transaction, with address: String, in view: TransactionDetailView) {
-        if let contact = transaction.contact {
-            opponentType = .contact(address: address)
-            view.opponentView.setContact(contact)
-        } else if let localAccount = UIApplication.shared.appConfiguration?.session.accountInformation(from: address) {
-            opponentType = .localAccount(address: address)
-            view.opponentView.setName(localAccount.name)
-            view.opponentView.removeContactImage()
-        } else {
-            opponentType = .address(address: address)
-            view.opponentView.setName(address)
-            view.opponentView.removeContactImage()
+    private func setFee(
+        for transactionDraft: TransactionSendDraft,
+        in view: NewSendTransactionPreviewView
+    ) {
+        if let fee = transactionDraft.fee {
+            view.feeView.setAmountViewMode(
+                .normal(amount: fee.toAlgos, isAlgos: true, fraction: algosFraction)
+            )
         }
     }
 
-    private func setNote(for transaction: Transaction, in view: NewSendTransactionPreviewView) {
-        if let note = transaction.noteRepresentation() {
+    private func setNote(
+        for transactionDraft: TransactionSendDraft,
+        in view: NewSendTransactionPreviewView
+    ) {
+        if let note = transactionDraft.note {
             view.noteView.setDetail(note)
-        } else {
-            view.noteView.isHidden = true
         }
+
+        view.setNoteViewVisible(!transactionDraft.note.isNilOrEmpty)
     }
 }
