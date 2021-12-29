@@ -133,7 +133,7 @@ extension SettingsViewController {
         case .notifications:
             open(.notificationFilter(flow: .settings), by: .push)
         case .walletConnect:
-            open(.walletConnectSessionsList, by: .push)
+            open(.walletConnectSessionList, by: .push)
         default:
             break
         }

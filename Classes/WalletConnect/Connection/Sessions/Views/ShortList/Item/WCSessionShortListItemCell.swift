@@ -22,7 +22,7 @@ final class WCSessionShortListItemCell: BaseCollectionViewCell<WCSessionShortLis
 
     override func prepareLayout() {
         super.prepareLayout()
-        contextView.customize(WCSessionsShortListItemViewTheme())
+        contextView.customize(WCSessionShortListItemViewTheme())
     }
 
     override func linkInteractors() {
@@ -38,7 +38,7 @@ final class WCSessionShortListItemCell: BaseCollectionViewCell<WCSessionShortLis
 }
 
 extension WCSessionShortListItemCell {
-    func bindData(_ viewModel: WCSessionsShortListItemViewModel) {
+    func bindData(_ viewModel: WCSessionShortListItemViewModel) {
         contextView.bindData(viewModel)
     }
 }

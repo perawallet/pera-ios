@@ -40,7 +40,7 @@ extension WCSessionShortListDataSource: UICollectionViewDataSource {
         let cell = collectionView.dequeue(WCSessionShortListItemCell.self, at: indexPath)
 
         if let session = sessions[safe: indexPath.item] {
-            cell.bindData(WCSessionsShortListItemViewModel(session))
+            cell.bindData(WCSessionShortListItemViewModel(session))
         }
 
         cell.delegate = self

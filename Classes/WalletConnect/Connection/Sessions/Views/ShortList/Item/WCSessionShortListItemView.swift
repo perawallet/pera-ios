@@ -31,7 +31,7 @@ final class WCSessionShortListItemView: View {
         disconnectOptionsButton.addTarget(self, action: #selector(notifyDelegateToOpenDisconnectionMenu), for: .touchUpInside)
     }
 
-    func customize(_ theme: WCSessionsShortListItemViewTheme) {
+    func customize(_ theme: WCSessionShortListItemViewTheme) {
         addDappImageView(theme)
         addDisconnectOptionsButton(theme)
         addNameLabel(theme)
@@ -44,7 +44,7 @@ final class WCSessionShortListItemView: View {
 }
 
 extension WCSessionShortListItemView {
-    private func addDappImageView(_ theme: WCSessionsShortListItemViewTheme) {
+    private func addDappImageView(_ theme: WCSessionShortListItemViewTheme) {
         dappImageView.draw(border: theme.imageBorder)
         dappImageView.draw(corner: theme.imageCorner)
 
@@ -57,7 +57,7 @@ extension WCSessionShortListItemView {
         }
     }
 
-    private func addDisconnectOptionsButton(_ theme: WCSessionsShortListItemViewTheme) {
+    private func addDisconnectOptionsButton(_ theme: WCSessionShortListItemViewTheme) {
         disconnectOptionsButton.customizeAppearance(theme.disconnectOptionsButton)
 
         addSubview(disconnectOptionsButton)
@@ -68,7 +68,7 @@ extension WCSessionShortListItemView {
         }
     }
 
-    private func addNameLabel(_ theme: WCSessionsShortListItemViewTheme) {
+    private func addNameLabel(_ theme: WCSessionShortListItemViewTheme) {
         nameLabel.customizeAppearance(theme.nameLabel)
 
         addSubview(nameLabel)
@@ -79,7 +79,7 @@ extension WCSessionShortListItemView {
         }
     }
 
-    private func addDescriptionLabel(_ theme: WCSessionsShortListItemViewTheme) {
+    private func addDescriptionLabel(_ theme: WCSessionShortListItemViewTheme) {
         descriptionLabel.customizeAppearance(theme.descriptionLabel)
 
         addSubview(descriptionLabel)
@@ -100,7 +100,7 @@ extension WCSessionShortListItemView {
 }
 
 extension WCSessionShortListItemView: ViewModelBindable {
-    func bindData(_ viewModel: WCSessionsShortListItemViewModel?) {
+    func bindData(_ viewModel: WCSessionShortListItemViewModel?) {
         dappImageView.load(from: viewModel?.image)
         nameLabel.text = viewModel?.name
         descriptionLabel.text = viewModel?.description

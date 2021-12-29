@@ -13,14 +13,14 @@
 // limitations under the License.
 
 //
-//   WCSessionsShortListItemViewModel.swift
+//   WCSessionShortListItemViewModel.swift
 
 import UIKit
 import MacaroonUIKit
 import SwiftDate
 import MacaroonURLImage
 
-final class WCSessionsShortListItemViewModel: PairedViewModel {
+final class WCSessionShortListItemViewModel: PairedViewModel {
     private(set) var image: ImageSource?
     private(set) var name: String?
     private(set) var description: String?
@@ -32,7 +32,7 @@ final class WCSessionsShortListItemViewModel: PairedViewModel {
     }
 }
 
-extension WCSessionsShortListItemViewModel {
+extension WCSessionShortListItemViewModel {
     private func bindImage(_ session: WCSession) {
         let placeholderImages: [Image] = [
             "icon-session-placeholder-1",
