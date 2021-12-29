@@ -13,11 +13,25 @@
 // limitations under the License.
 
 //
-//   TitledInformation.swift
+//   TransactionTextInformationViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-struct TitledInformation {
-    let title: String?
-    let detail: String?
+final class TransactionTextInformationViewModel: ViewModel {
+    private(set) var title: String?
+    private(set) var detail: String?
+
+    init(_ draft: TitledInformation) {
+        title = draft.title
+        detail = draft.detail
+    }
+
+    init(title: String?) {
+        self.title = title
+    }
+
+    init(detail: String?) {
+        self.detail = detail
+    }
 }

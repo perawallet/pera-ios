@@ -60,21 +60,15 @@ extension TransactionContactInformationView {
     }
 }
 
-extension TransactionContactInformationView {
-    func setTitle(_ title: String?) {
-        titleLabel.text = title
-    }
-    
-    func setContact(_ contact: Contact) {
-        contactDisplayView.setContact(contact)
-    }
-    
-    func setName(_ name: String) {
-        contactDisplayView.setName(name)
-    }
-    
-    func removeAddContactButton() {
-        contactDisplayView.removeAddContactButton()
+extension TransactionContactInformationView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionContactInformationViewModel?) {
+        if let title = viewModel?.title {
+            titleLabel.text = title
+        }
+
+        if let contactDisplayViewModel = viewModel?.contactDisplayViewModel {
+            contactDisplayView.bindData(contactDisplayViewModel)
+        }
     }
 }
 

@@ -13,11 +13,20 @@
 // limitations under the License.
 
 //
-//   TitledInformation.swift
+//   TransactionContactInformationViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-struct TitledInformation {
-    let title: String?
-    let detail: String?
+final class TransactionContactInformationViewModel: ViewModel {
+    private(set) var title: String?
+    private(set) var contactDisplayViewModel: ContactDisplayViewModel?
+
+    init(contactDisplayViewModel: ContactDisplayViewModel) {
+        self.contactDisplayViewModel = contactDisplayViewModel
+    }
+
+    init(title: String?) {
+        self.title = title
+    }
 }
