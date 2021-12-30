@@ -13,27 +13,20 @@
 // limitations under the License.
 
 //
-//   TransactionTextInformationViewTheme.swift
+//   TransactionContactInformationViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
-protocol TransactionTextInformationViewTheme: LayoutSheet, StyleSheet {
-    var title: TextStyle { get }
-    var detail: TextStyle { get }
-    var detailLabelLeadingPadding: LayoutMetric { get }
-}
+final class TransactionContactInformationViewModel: ViewModel {
+    private(set) var title: String?
+    private(set) var contactDisplayViewModel: ContactDisplayViewModel?
 
-extension TransactionTextInformationViewTheme {
-    var title: TextStyle {
-        return [
-            .textAlignment(.left),
-            .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.gray),
-            .font(Fonts.DMSans.regular.make(15))
-        ]
+    init(contactDisplayViewModel: ContactDisplayViewModel) {
+        self.contactDisplayViewModel = contactDisplayViewModel
     }
 
-    var detailLabelLeadingPadding: LayoutMetric {
-        return 137
+    init(title: String?) {
+        self.title = title
     }
 }

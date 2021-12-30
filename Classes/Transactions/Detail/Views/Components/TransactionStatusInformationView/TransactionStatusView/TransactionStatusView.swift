@@ -41,22 +41,16 @@ extension TransactionStatusView {
     }
 }
 
-extension TransactionStatusView {
-    func setStatus(_ status: Transaction.Status) {
-        switch status {
-        case .completed:
-            statusLabel.text = "transaction-detail-completed".localized
-            statusLabel.textColor = AppColors.Shared.Helpers.positive.uiColor
-            backgroundColor = AppColors.Shared.Global.turquoise600.uiColor.withAlphaComponent(0.1)
-        case .pending:
-            statusLabel.text = "transaction-detail-pending".localized
-            statusLabel.textColor = AppColors.Components.Text.main.uiColor
+extension TransactionStatusView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionStatusViewModel?) {
+        statusLabel.text = viewModel?.statusLabelTitle
+        statusLabel.textColor = viewModel?.statusLabelTextColor?.uiColor
+
+        if viewModel?.status == .pending {
             backgroundColor = .clear
             draw(border: Border(color: AppColors.Components.Text.grayLighter.uiColor, width: 1))
-        case .failed:
-            statusLabel.text = "transaction-detail-failed".localized
-            statusLabel.textColor = AppColors.Shared.Helpers.negative.uiColor
-            backgroundColor = AppColors.Shared.Helpers.negative.uiColor.withAlphaComponent(0.1)
+        } else {
+            backgroundColor = viewModel?.backgroundColor?.uiColor.withAlphaComponent(0.1)
         }
     }
 }

@@ -54,12 +54,14 @@ extension TransactionStatusInformationView {
     }
 }
 
-extension TransactionStatusInformationView {
-    func setTitle(_ title: String) {
-        titleLabel.text = title
-    }
-    
-    func setTransactionStatus(_ status: Transaction.Status) {
-        transactionStatusView.setStatus(status)
+extension TransactionStatusInformationView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionStatusInformationViewModel?) {
+        if let title = viewModel?.title {
+            titleLabel.text = title
+        }
+
+        if let transactionStatusViewModel = viewModel?.transactionStatusViewModel {
+            transactionStatusView.bindData(transactionStatusViewModel)
+        }
     }
 }

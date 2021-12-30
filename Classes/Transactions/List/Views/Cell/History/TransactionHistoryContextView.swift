@@ -80,6 +80,6 @@ extension TransactionHistoryContextView {
     func prepareForReuse() {
         titleLabel.text = nil
         subtitleLabel.text = nil
-        transactionAmountView.amountLabel.text = nil
+        transactionAmountView.prepareForReuse()
     }
 }

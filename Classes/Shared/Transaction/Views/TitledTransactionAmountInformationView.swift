@@ -79,7 +79,7 @@ extension TitledTransactionAmountInformationView {
         titleLabel.text = viewModel.title
 
         if let amountMode = viewModel.amountMode {
-            transactionAmountView.mode = amountMode
+            transactionAmountView.bindData(TransactionAmountViewModel(amountMode))
         }
 
         separatorView.isHidden = viewModel.isSeparatorHidden

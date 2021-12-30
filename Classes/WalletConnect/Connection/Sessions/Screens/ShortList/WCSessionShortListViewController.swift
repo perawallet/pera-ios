@@ -13,14 +13,14 @@
 // limitations under the License.
 
 //
-//   WCSessionListModalViewController.swift
+//   WCSessionShortListViewController.swift
 
 import UIKit
 import MacaroonUIKit
 import MacaroonBottomSheet
 
-final class WCSessionListModalViewController: BaseViewController {
-    weak var delegate: WCSessionListModalViewControllerDelegate?
+final class WCSessionShortListViewController: BaseViewController {
+    weak var delegate: WCSessionShortListViewControllerDelegate?
 
     override var shouldShowNavigationBar: Bool {
         return false
@@ -28,10 +28,10 @@ final class WCSessionListModalViewController: BaseViewController {
 
     private lazy var theme = Theme()
 
-    private(set) lazy var sessionListView = WCSessionListModalView()
+    private(set) lazy var sessionListView = WCSessionShortListView()
 
-    private lazy var dataSource = WCSessionListModalDataSource(walletConnector: walletConnector)
-    private lazy var layoutBuilder = WCSessionListModalLayout(theme)
+    private lazy var dataSource = WCSessionShortListDataSource(walletConnector: walletConnector)
+    private lazy var layoutBuilder = WCSessionShortListLayout(theme)
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -53,7 +53,7 @@ final class WCSessionListModalViewController: BaseViewController {
     }
 }
 
-extension WCSessionListModalViewController {
+extension WCSessionShortListViewController {
     private func addSessionListView() {
         view.addSubview(sessionListView)
         sessionListView.snp.makeConstraints {
@@ -62,29 +62,29 @@ extension WCSessionListModalViewController {
     }
 }
 
-extension WCSessionListModalViewController: BottomSheetPresentable {
+extension WCSessionShortListViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
         return theme.calculateModalHeightAsBottomSheet(self)
     }
 }
 
-extension WCSessionListModalViewController: WCSessionListModalViewDelegate {
-    func wcSessionListModalViewDidTapCloseButton(_ wcSessionListModalView: WCSessionListModalView) {
-        delegate?.wcSessionListModalViewControllerDidClose(self)
+extension WCSessionShortListViewController: WCSessionShortListViewDelegate {
+    func wcSessionShortListViewDidTapCloseButton(_ wcSessionShortListView: WCSessionShortListView) {
+        delegate?.wcSessionShortListViewControllerDidClose(self)
         dismissScreen()
     }
 }
 
-extension WCSessionListModalViewController: WCSessionListModalDataSourceDelegate {
-    func wcSessionListModalDataSource(_ wSessionListDataSource: WCSessionListModalDataSource, didOpenDisconnectMenuFrom cell: WCSessionListModalItemCell) {
+extension WCSessionShortListViewController: WCSessionShortListDataSourceDelegate {
+    func wcSessionShortListDataSource(_ wSessionListDataSource: WCSessionShortListDataSource, didOpenDisconnectMenuFrom cell: WCSessionShortListItemCell) {
         displayDisconnectionMenu(for: cell)
     }
 }
 
-extension WCSessionListModalViewController: WalletConnectorDelegate {
+extension WCSessionShortListViewController: WalletConnectorDelegate {
     func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession) {
         guard !walletConnector.allWalletConnectSessions.isEmpty else {
-            delegate?.wcSessionListModalViewControllerDidClose(self)
+            delegate?.wcSessionShortListViewControllerDidClose(self)
             dismissScreen()
             return
         }
@@ -97,14 +97,14 @@ extension WCSessionListModalViewController: WalletConnectorDelegate {
     }
 }
 
-extension WCSessionListModalViewController {
-    private func index(of cell: WCSessionListModalItemCell) -> Int? {
+extension WCSessionShortListViewController {
+    private func index(of cell: WCSessionShortListItemCell) -> Int? {
         return sessionListView.collectionView.indexPath(for: cell)?.item
     }
 }
 
-extension WCSessionListModalViewController {
-    private func displayDisconnectionMenu(for cell: WCSessionListModalItemCell) {
+extension WCSessionShortListViewController {
+    private func displayDisconnectionMenu(for cell: WCSessionShortListItemCell) {
         guard let index = index(of: cell),
               let session = dataSource.session(at: index) else {
             return
@@ -156,6 +156,6 @@ extension WCSessionListModalViewController {
     }
 }
 
-protocol WCSessionListModalViewControllerDelegate: AnyObject {
-    func wcSessionListModalViewControllerDidClose(_ controller: WCSessionListModalViewController)
+protocol WCSessionShortListViewControllerDelegate: AnyObject {
+    func wcSessionShortListViewControllerDidClose(_ controller: WCSessionShortListViewController)
 }

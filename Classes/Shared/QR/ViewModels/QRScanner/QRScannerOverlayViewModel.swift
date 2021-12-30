@@ -17,10 +17,10 @@
 
 import MacaroonUIKit
 
-final class QRScannerOverlayViewModel: PairedViewModel {
+final class QRScannerOverlayViewModel: ViewModel {
     private(set) var connectedAppsButtonTitle: String?
 
-    init(_ dAppCount: UInt) {
+    init(dAppCount: UInt) {
         bindTitle(dAppCount)
     }
 }

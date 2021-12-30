@@ -29,7 +29,12 @@ final class TransactionDetailViewController: BaseScrollViewController {
     private var assetDetail: AssetDetail?
     private let transactionType: TransactionType
 
-    private let viewModel = TransactionDetailViewModel()
+    private lazy var transactionDetailViewModel = TransactionDetailViewModel(
+        transactionType: transactionType,
+        transaction: transaction,
+        account: account,
+        assetDetail: assetDetail
+    )
     
     init(
         account: Account,
@@ -106,17 +111,14 @@ extension TransactionDetailViewController {
         }
         
         transaction.contact = contact
-        viewModel.setOpponent(for: transaction, with: contact.address ?? "", in: transactionDetailView)
+        transactionDetailViewModel.bindOpponent(for: transaction, with: contact.address ?? "")
+        transactionDetailView.bindOpponentViewDetail(transactionDetailViewModel)
     }
 }
 
 extension TransactionDetailViewController: TooltipPresenter {
     private func configureTransactionDetail() {
-        if transactionType == .sent {
-            viewModel.configureSentTransaction(transactionDetailView, with: transaction, and: assetDetail, for: account)
-        } else {
-            viewModel.configureReceivedTransaction(transactionDetailView, with: transaction, and: assetDetail, for: account)
-        }
+        transactionDetailView.bindData(transactionDetailViewModel)
     }
     
     func adaptivePresentationStyle(
@@ -129,7 +131,7 @@ extension TransactionDetailViewController: TooltipPresenter {
 
 extension TransactionDetailViewController: TransactionDetailViewDelegate {
     func transactionDetailViewDidTapAddContactButton(_ transactionDetailView: TransactionDetailView) {
-        guard let opponentType = viewModel.opponentType else {
+        guard let opponentType = transactionDetailViewModel.opponentType else {
             return
         }
 
@@ -139,7 +141,7 @@ extension TransactionDetailViewController: TransactionDetailViewDelegate {
     }
     
     func transactionDetailViewDidCopyOpponentAddress(_ transactionDetailView: TransactionDetailView) {
-        guard let opponentType = viewModel.opponentType else {
+        guard let opponentType = transactionDetailViewModel.opponentType else {
             return
         }
         

@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   WCSessionListModalViewController+Theme.swift
+//   WCSessionShortListViewController+Theme.swift
 
 import MacaroonUIKit
 import UIKit
 
-extension WCSessionListModalViewController {
+extension WCSessionShortListViewController {
     struct Theme: LayoutSheet {
         let cellSize: LayoutSize
 
@@ -28,14 +28,14 @@ extension WCSessionListModalViewController {
     }
 }
 
-extension WCSessionListModalViewController.Theme {
-    func calculateModalHeightAsBottomSheet(_ viewController: WCSessionListModalViewController) -> ModalHeight {
+extension WCSessionShortListViewController.Theme {
+    func calculateModalHeightAsBottomSheet(_ viewController: WCSessionShortListViewController) -> ModalHeight {
         return .preferred(
                 calculateHeightAsBottomSheet(viewController)
             )
     }
 
-    func calculateHeightAsBottomSheet(_ viewController: WCSessionListModalViewController) -> LayoutMetric {
+    func calculateHeightAsBottomSheet(_ viewController: WCSessionShortListViewController) -> LayoutMetric {
         let numberOfItems = viewController.walletConnector.allWalletConnectSessions.count
         let listContentInset = viewController.sessionListView.collectionView.contentInset
         let listHeight = listContentInset.top + (CGFloat(numberOfItems) * cellSize.h) + listContentInset.bottom

@@ -13,20 +13,20 @@
 // limitations under the License.
 
 //
-//   WCSessionListModalLayout.swift
+//   WCSessionShortListLayout.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class WCSessionListModalLayout: NSObject {
-    private let theme: WCSessionListModalViewController.Theme
+final class WCSessionShortListLayout: NSObject {
+    private let theme: WCSessionShortListViewController.Theme
 
-    init(_ theme: WCSessionListModalViewController.Theme) {
+    init(_ theme: WCSessionShortListViewController.Theme) {
         self.theme = theme
     }
-}
+} 
 
-extension WCSessionListModalLayout: UICollectionViewDelegateFlowLayout {
+extension WCSessionShortListLayout: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
