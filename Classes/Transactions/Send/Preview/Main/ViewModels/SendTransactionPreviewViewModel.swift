@@ -18,134 +18,90 @@
 
 import Foundation
 import UIKit
+import MacaroonUIKit
 
-final class SendTransactionPreviewViewModel {
-    private(set) var opponentType: TransactionDetailViewModel.Opponent?
+final class SendTransactionPreviewViewModel: PairedViewModel {
+    private(set) var amountViewMode: TransactionAmountView.Mode?
+    private(set) var userViewDetail: String?
+    private(set) var opponentViewAddress: String?
+    private(set) var feeViewMode: TransactionAmountView.Mode?
+    private(set) var balanceViewMode: TransactionAmountView.Mode?
+    private(set) var noteViewDetail: String?
 
-    func configureReceivedTransaction(
-        _ view: NewSendTransactionPreviewView,
-        with draft: AlgosTransactionSendDraft
-    ) {
+    init(_ model: TransactionSendDraft) {
+        if let algoTransactionSendDraft = model as? AlgosTransactionSendDraft {
+            bindAlgoTransactionPreview(algoTransactionSendDraft)
+        } else if let assetTransactionSendDraft = model as? AssetTransactionSendDraft {
+            bindAssetTransactionPreview(assetTransactionSendDraft)
+        }
+    }
+
+    private func bindAlgoTransactionPreview(_ draft: AlgosTransactionSendDraft) {
         guard let amount = draft.amount else {
             return
         }
 
-        view.amountView.bindData(
-            TransactionAmountInformationViewModel(
-                transactionViewModel: TransactionAmountViewModel(
-                    .normal(amount: amount, isAlgos: true, fraction: algosFraction)
-                )
-            )
-        )
+        amountViewMode = .normal(amount: amount, isAlgos: true, fraction: algosFraction)
 
-        setUserView(for: draft, in: view)
-        setOpponentView(for: draft, in: view)
-        setFee(for: draft, in: view)
+        setUserView(for: draft)
+        setOpponentView(for: draft)
+        setFee(for: draft)
 
         let balance = draft.from.amount.toAlgos - amount - (draft.fee?.toAlgos ?? 0)
 
-        view.balanceView.bindData(
-            TransactionAmountInformationViewModel(
-                transactionViewModel: TransactionAmountViewModel(
-                    .normal(amount: balance, isAlgos: true, fraction: algosFraction)
-                )
-            )
-        )
+        balanceViewMode = .normal(amount: balance, isAlgos: true, fraction: algosFraction)
 
-        setNote(for: draft, in: view)
+        setNote(for: draft)
     }
 
-    func configureReceivedTransaction(
-        _ view: NewSendTransactionPreviewView,
-        with draft: AssetTransactionSendDraft
-    ) {
+    private func bindAssetTransactionPreview(_ draft: AssetTransactionSendDraft) {
         guard let amount = draft.amount, let assetDetail = draft.assetDetail else {
             return
         }
 
-        view.amountView.bindData(
-            TransactionAmountInformationViewModel(
-                transactionViewModel: TransactionAmountViewModel(
-                    .normal(amount: amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.assetName)
-                )
-            )
-        )
+        amountViewMode = .normal(amount: amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.assetName)
 
-        setUserView(for: draft, in: view)
-        setOpponentView(for: draft, in: view)
-        setFee(for: draft, in: view)
+        setUserView(for: draft)
+        setOpponentView(for: draft)
+        setFee(for: draft)
 
-        
         if let balance = draft.from.amount(for: assetDetail) {
-            view.balanceView.bindData(
-                TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(
-                        .normal(amount: balance - amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.assetName)
-                    )
-                )
-            )
+            balanceViewMode = .normal(amount: balance - amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.assetName)
         }
 
-        setNote(for: draft, in: view)
+        setNote(for: draft)
     }
 
     private func setUserView(
-        for transactionDraft: TransactionSendDraft,
-        in view: NewSendTransactionPreviewView
+        for draft: TransactionSendDraft
     ) {
-        view.userView.bindData(
-            TransactionTextInformationViewModel(
-                detail: transactionDraft.from.name ?? transactionDraft.from.address
-            )
-        )
+        userViewDetail = draft.from.name ?? draft.from.address
     }
 
+
     private func setOpponentView(
-        for transactionDraft: TransactionSendDraft,
-        in view: NewSendTransactionPreviewView
+        for draft: TransactionSendDraft
     ) {
-        if let contact = transactionDraft.toContact {
-            view.opponentView.bindData(
-                TransactionTextInformationViewModel(
-                    detail: contact.name ?? contact.address
-                )
-            )
+        if let contact = draft.toContact {
+            opponentViewAddress = contact.name ?? contact.address
         } else {
-            view.opponentView.bindData(
-                TransactionTextInformationViewModel(
-                    detail: transactionDraft.toAccount
-                )
-            )
+            opponentViewAddress = draft.toAccount
         }
     }
 
     private func setFee(
-        for transactionDraft: TransactionSendDraft,
-        in view: NewSendTransactionPreviewView
+        for draft: TransactionSendDraft
     ) {
-        if let fee = transactionDraft.fee {
-            view.feeView.bindData(
-                TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(
-                        .normal(amount: fee.toAlgos, isAlgos: true, fraction: algosFraction)
-                    )
-                )
-            )
+        if let fee = draft.fee {
+            feeViewMode = .normal(amount: fee.toAlgos, isAlgos: true, fraction: algosFraction)
         }
     }
 
     private func setNote(
-        for transactionDraft: TransactionSendDraft,
-        in view: NewSendTransactionPreviewView
+        for draft: TransactionSendDraft
     ) {
-        if let note = transactionDraft.note {
-            view.opponentView.bindData(
-                TransactionTextInformationViewModel(
-                    detail: note
-                )
-            )
+        if let note = draft.note {
+            noteViewDetail = note
         }
-
-        view.setNoteViewVisible(!transactionDraft.note.isNilOrEmpty)
     }
 }

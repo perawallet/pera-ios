@@ -145,3 +145,45 @@ extension NewSendTransactionPreviewView {
         verticalStackView.addArrangedSubview(noteView)
     }
 }
+
+extension NewSendTransactionPreviewView: ViewModelBindable {
+    func bindData(_ viewModel: SendTransactionPreviewViewModel?) {
+        if let amountViewMode = viewModel?.amountViewMode {
+            amountView.bindData(
+                TransactionAmountInformationViewModel(
+                    transactionViewModel: TransactionAmountViewModel(amountViewMode)
+                )
+            )
+        }
+
+        userView.bindData(
+            TransactionTextInformationViewModel(detail: viewModel?.userViewDetail)
+        )
+
+        opponentView.bindData(
+            TransactionTextInformationViewModel(detail: viewModel?.opponentViewAddress)
+        )
+
+        if let feeViewMode = viewModel?.feeViewMode {
+            feeView.bindData(
+                TransactionAmountInformationViewModel(
+                    transactionViewModel: TransactionAmountViewModel(feeViewMode)
+                )
+            )
+        }
+
+        if let balanceViewMode = viewModel?.balanceViewMode {
+            balanceView.bindData(
+                TransactionAmountInformationViewModel(
+                    transactionViewModel: TransactionAmountViewModel(balanceViewMode)
+                )
+            )
+        }
+
+        noteView.bindData(
+            TransactionTextInformationViewModel(detail: viewModel?.noteViewDetail)
+        )
+
+        setNoteViewVisible(!(viewModel?.noteViewDetail.isNilOrEmpty ?? true))
+    }
+}

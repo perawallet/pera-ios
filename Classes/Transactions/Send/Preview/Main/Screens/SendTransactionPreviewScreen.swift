@@ -29,8 +29,6 @@ final class SendTransactionPreviewScreen: BaseViewController {
    private let draft: TransactionSendDraft?
    private let transactionController: TransactionController
 
-   private let viewModel = SendTransactionPreviewViewModel()
-
    init(
       draft: TransactionSendDraft?,
       transactionController: TransactionController,
@@ -56,11 +54,13 @@ final class SendTransactionPreviewScreen: BaseViewController {
    override func bindData() {
       super.bindData()
 
-      if let algoTransactionDraft = draft as? AlgosTransactionSendDraft {
-         viewModel.configureReceivedTransaction(transactionDetailView, with: algoTransactionDraft)
-      } else if let assetTransactionDraft = draft as? AssetTransactionSendDraft {
-         viewModel.configureReceivedTransaction(transactionDetailView, with: assetTransactionDraft)
+      guard let transactionDraft = draft else {
+         return
       }
+
+      transactionDetailView.bindData(
+         SendTransactionPreviewViewModel(transactionDraft)
+      )
    }
 
    override func linkInteractors() {
@@ -97,7 +97,7 @@ extension SendTransactionPreviewScreen {
 
    private func addNextButton() {
       nextButton.customize(theme.nextButtonStyle)
-      nextButton.setTitle("title-send".localized, for: .normal)
+      nextButton.bindData(ButtonCommonViewModel(title: "title-send".localized))
       view.addSubview(nextButton)
       
       nextButton.snp.makeConstraints {
