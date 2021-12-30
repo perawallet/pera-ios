@@ -38,7 +38,7 @@ struct WalletRatingViewTheme: StyleSheet, LayoutSheet {
             .backgroundImage([.normal("icon-settings-like")])
         ]
         self.dislikeButton = [
-            .backgroundImage([.normal("icon-settings-dislike")])
+            .icon([.normal("icon-settings-dislike")])
         ]
         self.title = [
             .textColor(AppColors.Components.Text.main),
