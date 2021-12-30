@@ -30,8 +30,12 @@ final class SendTransactionPreviewViewModel {
             return
         }
 
-        view.amountView.setAmountViewMode(
-            .normal(amount: amount, isAlgos: true, fraction: algosFraction)
+        view.amountView.bindData(
+            TransactionAmountInformationViewModel(
+                transactionViewModel: TransactionAmountViewModel(
+                    .normal(amount: amount, isAlgos: true, fraction: algosFraction)
+                )
+            )
         )
 
         setUserView(for: draft, in: view)
@@ -40,8 +44,12 @@ final class SendTransactionPreviewViewModel {
 
         let balance = draft.from.amount.toAlgos - amount - (draft.fee?.toAlgos ?? 0)
 
-        view.balanceView.setAmountViewMode(
-            .normal(amount: balance, isAlgos: true, fraction: algosFraction)
+        view.balanceView.bindData(
+            TransactionAmountInformationViewModel(
+                transactionViewModel: TransactionAmountViewModel(
+                    .normal(amount: balance, isAlgos: true, fraction: algosFraction)
+                )
+            )
         )
 
         setNote(for: draft, in: view)
@@ -55,17 +63,26 @@ final class SendTransactionPreviewViewModel {
             return
         }
 
-        view.amountView.setAmountViewMode(
-            .normal(amount: amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.assetName)
+        view.amountView.bindData(
+            TransactionAmountInformationViewModel(
+                transactionViewModel: TransactionAmountViewModel(
+                    .normal(amount: amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.assetName)
+                )
+            )
         )
 
         setUserView(for: draft, in: view)
         setOpponentView(for: draft, in: view)
         setFee(for: draft, in: view)
 
+        
         if let balance = draft.from.amount(for: assetDetail) {
-            view.balanceView.setAmountViewMode(
-                .normal(amount: balance - amount, isAlgos: false, fraction: assetDetail.fractionDecimals, assetSymbol: assetDetail.assetName)
+            view.balanceView.bindData(
+                TransactionAmountInformationViewModel(
+                    transactionViewModel: TransactionAmountViewModel(
+                        .normal(amount: balance - amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.assetName)
+                    )
+                )
             )
         }
 
@@ -76,7 +93,11 @@ final class SendTransactionPreviewViewModel {
         for transactionDraft: TransactionSendDraft,
         in view: NewSendTransactionPreviewView
     ) {
-        view.userView.setDetail(transactionDraft.from.name ?? transactionDraft.from.address)
+        view.userView.bindData(
+            TransactionTextInformationViewModel(
+                detail: transactionDraft.from.name ?? transactionDraft.from.address
+            )
+        )
     }
 
     private func setOpponentView(
@@ -84,9 +105,17 @@ final class SendTransactionPreviewViewModel {
         in view: NewSendTransactionPreviewView
     ) {
         if let contact = transactionDraft.toContact {
-            view.opponentView.setDetail(contact.name ?? contact.address)
+            view.opponentView.bindData(
+                TransactionTextInformationViewModel(
+                    detail: contact.name ?? contact.address
+                )
+            )
         } else {
-            view.opponentView.setDetail(transactionDraft.toAccount ?? "")
+            view.opponentView.bindData(
+                TransactionTextInformationViewModel(
+                    detail: transactionDraft.toAccount
+                )
+            )
         }
     }
 
@@ -95,8 +124,12 @@ final class SendTransactionPreviewViewModel {
         in view: NewSendTransactionPreviewView
     ) {
         if let fee = transactionDraft.fee {
-            view.feeView.setAmountViewMode(
-                .normal(amount: fee.toAlgos, isAlgos: true, fraction: algosFraction)
+            view.feeView.bindData(
+                TransactionAmountInformationViewModel(
+                    transactionViewModel: TransactionAmountViewModel(
+                        .normal(amount: fee.toAlgos, isAlgos: true, fraction: algosFraction)
+                    )
+                )
             )
         }
     }
@@ -106,7 +139,11 @@ final class SendTransactionPreviewViewModel {
         in view: NewSendTransactionPreviewView
     ) {
         if let note = transactionDraft.note {
-            view.noteView.setDetail(note)
+            view.opponentView.bindData(
+                TransactionTextInformationViewModel(
+                    detail: note
+                )
+            )
         }
 
         view.setNoteViewVisible(!transactionDraft.note.isNilOrEmpty)

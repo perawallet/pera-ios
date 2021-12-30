@@ -76,7 +76,11 @@ extension NewSendTransactionPreviewView {
 
     private func addAmountView(_ theme: TransactionDetailViewTheme) {
         amountView.customize(TransactionAmountInformationViewTheme(transactionAmountViewTheme: TransactionAmountViewBiggerTheme()))
-        amountView.setTitle("transaction-detail-amount".localized)
+        amountView.bindData(
+            TransactionAmountInformationViewModel(
+                title: "transaction-detail-amount".localized
+            )
+        )
 
         verticalStackView.addArrangedSubview(amountView)
 
@@ -84,7 +88,11 @@ extension NewSendTransactionPreviewView {
 
     private func addUserView(_ theme: TransactionDetailViewTheme) {
         userView.customize(theme.transactionTextInformationViewCommonTheme)
-        userView.setTitle("title-account".localized)
+        userView.bindData(
+            TransactionTextInformationViewModel(
+                title: "title-account".localized
+            )
+        )
 
         verticalStackView.addArrangedSubview(userView)
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: amountView)
@@ -93,14 +101,22 @@ extension NewSendTransactionPreviewView {
 
     private func addOpponentView(_ theme: TransactionDetailViewTheme) {
         opponentView.customize(theme.transactionTextInformationViewCommonTheme)
-        opponentView.setTitle("transaction-detail-to".localized)
+        opponentView.bindData(
+            TransactionTextInformationViewModel(
+                title: "transaction-detail-to".localized
+            )
+        )
 
         verticalStackView.addArrangedSubview(opponentView)
     }
 
     private func addFeeView(_ theme: TransactionDetailViewTheme) {
         feeView.customize(theme.commonTransactionAmountInformationViewTheme)
-        feeView.setTitle("transaction-detail-fee".localized)
+        feeView.bindData(
+            TransactionAmountInformationViewModel(
+                title: "transaction-detail-fee".localized
+            )
+        )
 
         verticalStackView.addArrangedSubview(feeView)
         feeView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
@@ -109,14 +125,22 @@ extension NewSendTransactionPreviewView {
 
     private func addBalanceView(_ theme: TransactionDetailViewTheme) {
         balanceView.customize(theme.commonTransactionAmountInformationViewTheme)
-        balanceView.setTitle("title-account-balance".localized)
+        balanceView.bindData(
+            TransactionAmountInformationViewModel(
+                title: "title-account-balance".localized
+            )
+        )
 
         verticalStackView.addArrangedSubview(balanceView)
     }
 
     private func addNoteView(_ theme: TransactionDetailViewTheme) {
         noteView.customize(theme.transactionTextInformationViewCommonTheme)
-        noteView.setTitle("transaction-detail-note".localized)
+        noteView.bindData(
+            TransactionTextInformationViewModel(
+                title: "transaction-detail-note".localized
+            )
+        )
 
         verticalStackView.addArrangedSubview(noteView)
     }
