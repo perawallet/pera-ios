@@ -102,11 +102,11 @@ extension TransactionListView {
         transactionsCollectionView.reloadData()
     }
     
-    func setDelegate(_ delegate: UICollectionViewDelegate?) {
+    func setCollectionViewDelegate(_ delegate: UICollectionViewDelegate?) {
         transactionsCollectionView.delegate = delegate
     }
     
-    func setDataSource(_ dataSource: UICollectionViewDataSource?) {
+    func setCollectionViewDataSource(_ dataSource: UICollectionViewDataSource?) {
         transactionsCollectionView.dataSource = dataSource
     }
     

@@ -68,18 +68,15 @@ extension TransactionHistoryContextView {
     }
 }
 
-extension TransactionHistoryContextView {
-    func setAddress(_ address: String?) {
-        titleLabel.text = address.shortAddressDisplay()
+extension TransactionHistoryContextView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionHistoryContextViewModel?) {
+        titleLabel.text = viewModel?.title
     }
-    
-    func setContact(_ contact: String?) {
-        titleLabel.text = contact
-    }
-    
+
     func prepareForReuse() {
         titleLabel.text = nil
         subtitleLabel.text = nil
+        subtitleLabel.isHidden = false
         transactionAmountView.prepareForReuse()
     }
 }

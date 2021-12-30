@@ -19,17 +19,14 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-class TransactionFilterViewController: BaseViewController {
-    
+final class TransactionFilterViewController: BaseViewController {
     weak var delegate: TransactionFilterViewControllerDelegate?
     
-    private let layout = Layout<LayoutConstants>()
-    
-    private lazy var transactionFilterView = TransactionFilterView()
-    
-    private let viewModel = TransactionFilterViewModel()
+    private lazy var theme = Theme()
+    private(set) lazy var transactionFilterView = TransactionFilterView()
+
     private var selectedOption: FilterOption
-    private var filterOptions: [FilterOption] = [.allTime, .today, .yesterday, .lastWeek, .lastMonth, .customRange(from: nil, to: nil)]
+    private(set) var filterOptions = FilterOption.allCases
     
     init(filterOption: FilterOption, configuration: ViewControllerConfiguration) {
         self.selectedOption = filterOption
@@ -37,34 +34,26 @@ class TransactionFilterViewController: BaseViewController {
     }
     
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.secondary
         title = "transaction-filter-title-sort".localized
     }
     
     override func linkInteractors() {
         transactionFilterView.delegate = self
-        transactionFilterView.filterOptionsCollectionView.delegate = self
-        transactionFilterView.filterOptionsCollectionView.dataSource = self
+        transactionFilterView.setCollectionViewDelegate(self)
+        transactionFilterView.setCollectionViewDataSource(self)
     }
     
     override func prepareLayout() {
-        setupTransactionFilterViewLayout()
-    }
-}
-
-extension TransactionFilterViewController {
-    private func setupTransactionFilterViewLayout() {
         view.addSubview(transactionFilterView)
-        
-        transactionFilterView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        transactionFilterView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
 
 extension TransactionFilterViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
-        return .preferred(506)
+        return theme.calculateModalHeightAsBottomSheet(self)
     }
 }
 
@@ -81,21 +70,16 @@ extension TransactionFilterViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TransactionFilterOptionCell.reusableIdentifier,
-            for: indexPath
-        ) as? TransactionFilterOptionCell else {
-            fatalError("Index path is out of bounds")
-        }
-        
-        let filterOption = filterOptions[indexPath.item]
-        
-        if selectedOption.isCustomRange() && filterOption == selectedOption {
-            viewModel.configure(cell, with: selectedOption, isSelected: true)
-        } else {
-            viewModel.configure(cell, with: filterOption, isSelected: filterOption == selectedOption)
-        }
-        
+        let cell = collectionView.dequeue(TransactionFilterOptionCell.self, at: indexPath)
+        let selectedFilterOption = filterOptions[indexPath.item]
+
+        cell.bindData(
+            TransactionFilterOptionViewModel(
+                selectedFilterOption,
+                isSelected: selectedFilterOption == selectedOption
+            )
+        )
+
         return cell
     }
 }
@@ -138,7 +122,7 @@ extension TransactionFilterViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return layout.current.cellSize
+        return CGSize(theme.cellSize)
     }
 }
 
@@ -154,14 +138,18 @@ extension TransactionFilterViewController: TransactionCustomRangeSelectionViewCo
 }
 
 extension TransactionFilterViewController {
-    enum FilterOption: Equatable {
+    enum FilterOption: Equatable, CaseIterable {
+        static let allCases: [TransactionFilterViewController.FilterOption] = {
+            [.allTime, .today, .yesterday, .lastWeek, .lastMonth, .customRange(from: nil, to: nil)]
+        }()
+
         case allTime
         case today
         case yesterday
         case lastWeek
         case lastMonth
         case customRange(from: Date?, to: Date?)
-        
+
         static func == (lhs: FilterOption, rhs: FilterOption) -> Bool {
             switch (lhs, rhs) {
             case (.allTime, .allTime):
@@ -184,12 +172,6 @@ extension TransactionFilterViewController {
         func isCustomRange() -> Bool {
             return self == .customRange(from: nil, to: nil)
         }
-    }
-}
-
-extension TransactionFilterViewController {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellSize = CGSize(width: UIScreen.main.bounds.width, height: 52.0)
     }
 }
 

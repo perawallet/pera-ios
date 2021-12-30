@@ -16,51 +16,46 @@
 //  TransactionFilterView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class TransactionFilterView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
+final class TransactionFilterView: View {
     weak var delegate: TransactionFilterViewDelegate?
-    
-    private(set) lazy var filterOptionsCollectionView: UICollectionView = {
+
+    private lazy var theme = TransactionFilterViewTheme()
+
+    private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 4.0
-        flowLayout.minimumInteritemSpacing = 0.0
-        flowLayout.scrollDirection = .vertical
-        
+        flowLayout.minimumLineSpacing = theme.cellSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = .clear
-        collectionView.register(
-            TransactionFilterOptionCell.self,
-            forCellWithReuseIdentifier: TransactionFilterOptionCell.reusableIdentifier
-        )
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
+        collectionView.contentInset = UIEdgeInsets(theme.contentInset)
+        collectionView.register(TransactionFilterOptionCell.self)
         return collectionView
     }()
+
+    private lazy var closeButton = ViewFactory.Button.makeSecondaryButton("title-close".localized)
     
-    private lazy var closeButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("bg-light-gray-button"))
-            .withTitle("title-close".localized)
-            .withTitleColor(Colors.Text.primary)
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 14.0)))
-    }()
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(theme)
+        setListeners()
     }
-    
-    override func setListeners() {
+
+    func setListeners() {
         closeButton.addTarget(self, action: #selector(notifyDelegateToDismissView), for: .touchUpInside)
     }
-    
-    override func prepareLayout() {
-        setupCloseButtonLayout()
-        setupFilterOptionsCollectionViewLayout()
+
+    func customize(_ theme: TransactionFilterViewTheme) {
+        addCollectionView()
+        addCloseButton(theme)
     }
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) { }
+
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
 }
 
 extension TransactionFilterView {
@@ -71,32 +66,29 @@ extension TransactionFilterView {
 }
 
 extension TransactionFilterView {
-    private func setupCloseButtonLayout() {
-        addSubview(closeButton)
-        
-        closeButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset + safeAreaBottom)
+    private func addCollectionView() {
+        addSubview(collectionView)
+        collectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
-    
-    private func setupFilterOptionsCollectionViewLayout() {
-        addSubview(filterOptionsCollectionView)
-        
-        filterOptionsCollectionView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.topInset)
-            make.leading.trailing.equalToSuperview()
-            make.bottom.equalTo(closeButton.snp.top).offset(-layout.current.bottomInset)
+
+    private func addCloseButton(_ theme: TransactionFilterViewTheme) {
+        addSubview(closeButton)
+        closeButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomInset)
         }
     }
 }
 
 extension TransactionFilterView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let bottomInset: CGFloat = 16.0
-        let topInset: CGFloat = 8.0
-        let horizontalInset: CGFloat = 20.0
+    func setCollectionViewDelegate(_ delegate: UICollectionViewDelegate?) {
+        collectionView.delegate = delegate
+    }
+
+    func setCollectionViewDataSource(_ dataSource: UICollectionViewDataSource?) {
+        collectionView.dataSource = dataSource
     }
 }
 

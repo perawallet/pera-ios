@@ -13,33 +13,33 @@
 // limitations under the License.
 
 //
-//   WCSessionShortListViewController+Theme.swift
+//   TransactionFilterViewController+Theme.swift
 
 import MacaroonUIKit
 import UIKit
 
-extension WCSessionShortListViewController {
+extension TransactionFilterViewController {
     struct Theme: LayoutSheet {
         let cellSize: LayoutSize
 
         init(_ family: LayoutFamily) {
-            self.cellSize = (UIScreen.main.bounds.width, 44)
+            let horizontalPadding: LayoutMetric = 24
+            self.cellSize = (UIScreen.main.bounds.width - (2 * horizontalPadding), 60)
         }
     }
 }
 
-extension WCSessionShortListViewController.Theme {
-    func calculateModalHeightAsBottomSheet(_ viewController: WCSessionShortListViewController) -> ModalHeight {
+extension TransactionFilterViewController.Theme {
+    func calculateModalHeightAsBottomSheet(_ viewController: TransactionFilterViewController) -> ModalHeight {
         return .preferred(
-                calculateHeightAsBottomSheet(viewController)
-            )
+            calculateHeightAsBottomSheet(viewController)
+        )
     }
 
-    private func calculateHeightAsBottomSheet(_ viewController: WCSessionShortListViewController) -> LayoutMetric {
-        let numberOfItems = viewController.walletConnector.allWalletConnectSessions.count
-        let listContentInset = viewController.sessionListView.collectionView.contentInset
+    private func calculateHeightAsBottomSheet(_ viewController: TransactionFilterViewController) -> LayoutMetric {
+        let numberOfItems = viewController.filterOptions.count
+        let listContentInset = viewController.transactionFilterView.collectionView.contentInset
         let listHeight = listContentInset.top + (CGFloat(numberOfItems) * cellSize.h) + listContentInset.bottom
         return listHeight
-
     }
 }

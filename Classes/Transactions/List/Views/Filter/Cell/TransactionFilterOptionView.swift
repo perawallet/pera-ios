@@ -16,129 +16,105 @@
 //  TransactionFilterOptionView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class TransactionFilterOptionView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    private lazy var dateImageView = DateWithTextImageView()
-    
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-    }()
-    
-    private lazy var dateLabel: UILabel = {
-        UILabel()
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
-            .withTextColor(Colors.Text.secondary)
-    }()
-    
-    private lazy var selectedIconImageView = UIImageView(image: img("icon-check"))
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
-        selectedIconImageView.isHidden = true
+final class TransactionFilterOptionView: View {
+    private lazy var dateImageView = UIImageView()
+    private lazy var dateImageViewLabel = UILabel()
+    private lazy var titleLabel = UILabel()
+    private lazy var dateLabel = UILabel()
+    private lazy var checkmarkImageView = UIImageView()
+
+    func customize(_ theme: TransactionFilterOptionViewTheme) {
+        addDateImageView(theme)
+        addCheckmarkImageView(theme)
+        addTitleLabel(theme)
+        addDateLabel(theme)
     }
-    
-    override func prepareLayout() {
-        setupDateImageViewLayout()
-        setupDateLabelLayout()
-        setupTitleLabelLayout()
-        setupSelectedIconImageViewLayout()
-    }
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
 }
 
 extension TransactionFilterOptionView {
-    private func setupDateImageViewLayout() {
+    private func addDateImageView(_ theme: TransactionFilterOptionViewTheme) {
         addSubview(dateImageView)
-        
-        dateImageView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.size.equalTo(layout.current.imageSize)
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
+        dateImageView.snp.makeConstraints {
+            $0.fitToSize(theme.iconImageSize)
+            $0.leading.centerY.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(theme.dateImageVerticalInset)
+        }
+
+        addDateImageViewLabel(theme)
+    }
+
+    private func addDateImageViewLabel(_ theme: TransactionFilterOptionViewTheme) {
+        dateImageViewLabel.customizeAppearance(theme.dateImageViewLabel)
+
+        dateImageView.addSubview(dateImageViewLabel)
+        dateImageViewLabel.snp.makeConstraints {
+            $0.bottom.leading.trailing.equalToSuperview()
+            $0.top.equalToSuperview().inset(theme.dateImageLabelTopPadding)
         }
     }
-    
-    private func setupDateLabelLayout() {
-        addSubview(dateLabel)
-        
-        dateLabel.snp.makeConstraints { make in
-            make.leading.equalTo(dateImageView.snp.trailing).offset(layout.current.labelHorizontalInset)
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+
+    private func addCheckmarkImageView(_ theme: TransactionFilterOptionViewTheme) {
+        checkmarkImageView.customizeAppearance(theme.checkmarkImage)
+
+        addSubview(checkmarkImageView)
+        checkmarkImageView.snp.makeConstraints {
+            $0.fitToSize(theme.checkmarkImageSize)
+            $0.trailing.centerY.equalToSuperview()
         }
     }
-    
-    private func setupTitleLabelLayout() {
+
+    private func addTitleLabel(_ theme: TransactionFilterOptionViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
         addSubview(titleLabel)
-        
-        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
-        titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalTo(dateImageView.snp.trailing).offset(layout.current.labelHorizontalInset)
-            make.bottom.equalTo(dateLabel.snp.top)
-            make.centerY.equalTo(dateImageView).priority(.medium)
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalTo(dateImageView.snp.trailing).offset(theme.titleLabelLeadingInset)
+            $0.top.equalToSuperview().inset(theme.verticalInset)
+            $0.centerY.equalTo(dateImageView).priority(.medium)
+            $0.trailing.lessThanOrEqualTo(checkmarkImageView.snp.leading).offset(theme.minimumHorizontalInset)
         }
     }
     
-    private func setupSelectedIconImageViewLayout() {
-        addSubview(selectedIconImageView)
-        
-        selectedIconImageView.snp.makeConstraints { make in
-            make.size.equalTo(layout.current.imageSize)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalToSuperview()
+    private func addDateLabel(_ theme: TransactionFilterOptionViewTheme) {
+        dateLabel.customizeAppearance(theme.date)
+
+        addSubview(dateLabel)
+        dateLabel.snp.makeConstraints {
+            $0.leading.equalTo(titleLabel.snp.leading)
+            $0.top.equalTo(titleLabel.snp.bottom)
+            $0.bottom.equalToSuperview().inset(theme.verticalInset)
+            $0.trailing.lessThanOrEqualTo(checkmarkImageView.snp.leading).offset(theme.minimumHorizontalInset)
         }
     }
 }
 
-extension TransactionFilterOptionView {
-    func setDateImage(_ image: UIImage?) {
-        dateImageView.setImage(image)
-    }
-    
-    func setDayText(_ day: String) {
-        dateImageView.setDate(day)
-    }
-    
-    func setTitle(_ title: String) {
-        titleLabel.text = title
-    }
-    
-    func setDate(_ date: String) {
-        dateLabel.text = date
-    }
-    
-    func removeDateLabel() {
-        dateLabel.removeFromSuperview()
-    }
-    
-    func setSelected() {
-        selectedIconImageView.isHidden = false
-        titleLabel.textColor = Colors.General.selected
-        dateImageView.setSelected()
-    }
-    
-    func setDeselected() {
-        selectedIconImageView.isHidden = true
-        titleLabel.textColor = Colors.Text.primary
-        dateImageView.setDeselected()
-    }
-    
-    func setDayLabelHidden(_ isHidden: Bool) {
-        dateImageView.setDayLabelHidden(isHidden)
-    }
-}
+extension TransactionFilterOptionView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionFilterOptionViewModel?) {
+        titleLabel.text = viewModel?.title
 
-extension TransactionFilterOptionView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let horizontalInset: CGFloat = 20.0
-        let bottomInset: CGFloat = 8.0
-        let labelHorizontalInset: CGFloat = 12.0
-        let imageSize = CGSize(width: 24.0, height: 24.0)
+        if let date = viewModel?.date {
+            dateLabel.text = date
+        } else {
+            dateLabel.removeFromSuperview()
+        }
+
+        if let dateImageText = viewModel?.dateImageText {
+            dateImageViewLabel.text = dateImageText
+        } else {
+            dateImageViewLabel.isHidden = true
+        }
+
+        dateImageView.image = viewModel?.dateImage
+        checkmarkImageView.isHidden = !((viewModel?.isSelected).falseIfNil)
+    }
+    
+    func deselect() {
+        checkmarkImageView.isHidden = true
     }
 }

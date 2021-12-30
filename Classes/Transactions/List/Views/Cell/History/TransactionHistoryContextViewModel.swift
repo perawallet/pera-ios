@@ -13,27 +13,18 @@
 // limitations under the License.
 
 //
-//   AlgoStatisticsDateOptionViewTheme.swift
+//   TransactionHistoryContextViewModel.swift
 
 import MacaroonUIKit
 
-struct AlgoStatisticsDateOptionViewTheme: LayoutSheet, StyleSheet {
-    let title: TextStyle
-    let selectedImage: ImageStyle
+final class TransactionHistoryContextViewModel: ViewModel {
+    private(set) var title: String?
 
-    let selectedImageSize: LayoutSize
-    let horizontalPadding: LayoutMetric
+    init(address: String?) {
+        self.title = address.shortAddressDisplay()
+    }
 
-    init(_ family: LayoutFamily) {
-        self.title = [
-            .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main)
-        ]
-        self.selectedImage = [
-            .image("icon-circle-check")
-        ]
-
-        self.selectedImageSize = (40, 40)
-        self.horizontalPadding = 24
+    init(contact: String?) {
+        self.title = contact
     }
 }

@@ -19,7 +19,6 @@ import UIKit
 import SwiftDate
 
 class TransactionHistoryViewModel {
-    
     func configure(_ view: TransactionHistoryContextView, with dependencies: TransactionViewModelDependencies) {
         guard let transaction = dependencies.transaction as? Transaction else {
             return
@@ -43,7 +42,7 @@ class TransactionHistoryViewModel {
             } else if assetTransaction.receiverAddress == account.address &&
                 assetTransaction.amount == 0 &&
                 transaction.type == .assetTransfer {
-                view.setContact("asset-creation-fee-title".localized)
+                view.bindData(TransactionHistoryContextViewModel(contact: "asset-creation-fee-title".localized))
                 view.subtitleLabel.isHidden = true
                 if let fee = transaction.fee {
                     view.transactionAmountView.bindData(TransactionAmountViewModel(.negative(amount: fee.toAlgos)))
@@ -69,7 +68,7 @@ class TransactionHistoryViewModel {
                     assetTransaction.receiverAddress == account.address
                     && assetTransaction.amount == 0
                     && transaction.type == .assetTransfer {
-                    view.setContact("asset-creation-fee-title".localized)
+                    view.bindData(TransactionHistoryContextViewModel(contact: "asset-creation-fee-title".localized))
                     view.subtitleLabel.isHidden = true
                     if let fee = transaction.fee {
                         view.transactionAmountView.bindData(TransactionAmountViewModel(.negative(amount: fee.toAlgos)))
@@ -98,14 +97,14 @@ class TransactionHistoryViewModel {
     
     private func configure(_ view: TransactionHistoryContextView, with contact: Contact?, and address: String?) {
         if let contact = contact {
-            view.setContact(contact.name)
+            view.bindData(TransactionHistoryContextViewModel(contact: contact.name))
             view.subtitleLabel.text = contact.address?.shortAddressDisplay()
         } else if let address = address,
             let localAccount = UIApplication.shared.appConfiguration?.session.accountInformation(from: address) {
-            view.setContact(localAccount.name)
+            view.bindData(TransactionHistoryContextViewModel(contact: localAccount.name))
             view.subtitleLabel.text = address.shortAddressDisplay()
         } else {
-            view.setAddress(address)
+            view.bindData(TransactionHistoryContextViewModel(address: address))
             view.subtitleLabel.isHidden = true
         }
     }
@@ -127,7 +126,7 @@ class TransactionHistoryViewModel {
                     fraction: assetDetail.fractionDecimals
                 )))
             } else if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
-                view.setContact("asset-creation-fee-title".localized)
+                view.bindData(TransactionHistoryContextViewModel(contact: "asset-creation-fee-title".localized))
                 view.subtitleLabel.isHidden = true
                 if let fee = transaction.fee {
                     view.transactionAmountView.bindData(TransactionAmountViewModel(.negative(amount: fee.toAlgos)))

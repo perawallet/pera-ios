@@ -13,27 +13,23 @@
 // limitations under the License.
 
 //
-//   AlgoStatisticsDateOptionViewTheme.swift
+//   TransactionCustomRangeSelectionViewTheme.swift
 
 import MacaroonUIKit
 
-struct AlgoStatisticsDateOptionViewTheme: LayoutSheet, StyleSheet {
-    let title: TextStyle
-    let selectedImage: ImageStyle
-
-    let selectedImageSize: LayoutSize
-    let horizontalPadding: LayoutMetric
+struct TransactionCustomRangeSelectionViewTheme: LayoutSheet, StyleSheet {
+    let backgroundColor: Color
+    let horizontalInset: LayoutMetric
+    let topInset: LayoutMetric
+    let pickerTopInset: LayoutMetric
+    let pickerBottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.title = [
-            .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main)
-        ]
-        self.selectedImage = [
-            .image("icon-circle-check")
-        ]
+        self.backgroundColor = AppColors.Shared.System.background
 
-        self.selectedImageSize = (40, 40)
-        self.horizontalPadding = 24
+        self.horizontalInset = 24
+        self.topInset = 8
+        self.pickerTopInset = 19
+        self.pickerBottomInset = 16
     }
 }

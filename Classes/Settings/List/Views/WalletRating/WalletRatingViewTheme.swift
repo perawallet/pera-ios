@@ -35,10 +35,10 @@ struct WalletRatingViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.likeButton = [
-            .icon([.normal("icon-settings-like")])
+            .backgroundImage([.normal("icon-settings-like")])
         ]
         self.dislikeButton = [
-            .icon([.normal("icon-settings-dislike")])
+            .backgroundImage([.normal("icon-settings-dislike")])
         ]
         self.title = [
             .textColor(AppColors.Components.Text.main),

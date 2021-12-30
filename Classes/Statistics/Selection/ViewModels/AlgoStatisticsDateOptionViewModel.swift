@@ -17,7 +17,7 @@
 
 import MacaroonUIKit
 
-final class AlgoStatisticsDateOptionViewModel {
+final class AlgoStatisticsDateOptionViewModel: ViewModel {
     private(set) var title: String?
     private(set) var isSelected: Bool?
 
