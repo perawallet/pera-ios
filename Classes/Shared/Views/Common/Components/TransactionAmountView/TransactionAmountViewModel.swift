@@ -33,26 +33,26 @@ final class TransactionAmountViewModel: PairedViewModel {
 extension TransactionAmountViewModel {
     private func bindMode(_ mode: TransactionAmountView.Mode) {
         switch mode {
-        case let .normal(amount, isAlgos, assetFraction):
+        case let .normal(amount, isAlgos, assetFraction, assetSymbol):
             signLabelIsHidden = true
-            bindAmount(amount, with: assetFraction, isAlgos: isAlgos)
+            bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol)
             amountLabelColor = AppColors.Components.Text.main
-        case let .positive(amount, isAlgos, assetFraction):
+        case let .positive(amount, isAlgos, assetFraction, assetSymbol):
             signLabelIsHidden = false
             signLabelText = "+"
             signLabelColor = AppColors.Shared.Helpers.positive
-            bindAmount(amount, with: assetFraction, isAlgos: isAlgos)
+            bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol)
             amountLabelColor = AppColors.Shared.Helpers.positive
-        case let .negative(amount, isAlgos, assetFraction):
+        case let .negative(amount, isAlgos, assetFraction, assetSymbol):
             signLabelIsHidden = false
             signLabelText = "-"
             signLabelColor = AppColors.Shared.Helpers.negative
-            bindAmount(amount, with: assetFraction, isAlgos: isAlgos)
+            bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol)
             amountLabelColor = AppColors.Shared.Helpers.negative
         }
     }
 
-    private func bindAmount(_ amount: Decimal, with assetFraction: Int?, isAlgos: Bool) {
+    private func bindAmount(_ amount: Decimal, with assetFraction: Int?, isAlgos: Bool, assetSymbol: String? = nil) {
         if let fraction = assetFraction {
             amountLabelText = amount.toFractionStringForLabel(fraction: fraction)
         } else {
@@ -61,6 +61,10 @@ extension TransactionAmountViewModel {
 
         if isAlgos {
             amountLabelText?.append(" ALGO")
+        } else {
+            if let assetSymbol = assetSymbol {
+                amountLabelText?.append(" \(assetSymbol)")
+            }
         }
     }
 }

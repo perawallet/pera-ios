@@ -18,8 +18,25 @@
 
 import Foundation
 
-struct SendTransactionDraft {
-    var account: Account
+struct SendTransactionDraft: TransactionSendDraft {
+    var from: Account
+    var toAccount: String?
+    var amount: Decimal?
+    var fee: UInt64?
+    var isMaxTransaction: Bool {
+        get {
+            switch transactionMode {
+            case .algo:
+                return self.amount == from.amount.toAlgos
+            case .assetDetail(let assetDetail):
+                return self.amount == from.amount(for: assetDetail)
+            }
+        }
+
+        set {
+        }
+    }
+    var identifier: String?
     var transactionMode: TransactionMode
 
     var fractionCount: Int {
@@ -31,7 +48,16 @@ struct SendTransactionDraft {
         }
     }
     var toContact: Contact?
-    var toAddress: String?
+    var note: String?
+
+    var assetDetail: AssetDetail? {
+        switch transactionMode {
+        case .algo:
+            return nil
+        case .assetDetail(let assetDetail):
+            return assetDetail
+        }
+    }
 }
 
 enum TransactionMode {

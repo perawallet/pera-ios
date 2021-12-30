@@ -25,6 +25,8 @@ struct RekeyTransactionSendDraft: TransactionSendDraft {
     var isMaxTransaction = false
     var identifier: String?
     var note: String?
+
+    var toContact: Contact?
     
     init(account: Account, rekeyedTo: String) {
         self.from = account

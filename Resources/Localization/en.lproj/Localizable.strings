@@ -830,3 +830,6 @@ on your Ledger device (%d)";
 "account-select-search-empty-title" = "No account found";
 "account-select-search-empty-detail" = "Try different account name";
 "account-select-clipboard-title" = "Paste From Clipboard";
+
+// MARK: SendTransactionPreview
+"send-transaction-preview-title" = "Confirm Order";

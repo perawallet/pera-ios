@@ -124,6 +124,7 @@ indirect enum Screen {
     case editNote(note: String?, delegate: EditNoteScreenDelegate?)
     case transactionResult
     case transactionAccountSelect(draft: SendTransactionDraft)
+    case sendTransactionPreview(draft: TransactionSendDraft?, transactionController: TransactionController)
 }
 
 extension Screen {

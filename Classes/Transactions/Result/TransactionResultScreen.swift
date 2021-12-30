@@ -35,6 +35,8 @@ final class TransactionResultScreen: BaseViewController {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         titleLabel.customizeAppearance(theme.titleLabel)
         subtitleLabel.customizeAppearance(theme.subtitleLabel)
+
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
 
     override func prepareLayout() {
