@@ -30,7 +30,7 @@ final class TransactionCustomRangeSelectionView: View {
     func setListeners() {
         fromRangeSelectionView.addTarget(self, action: #selector(notifyDelegateToOpenPickerForFromDate), for: .touchUpInside)
         toRangeSelectionView.addTarget(self, action: #selector(notifyDelegateToOpenPickerForToDate), for: .touchUpInside)
-        datePickerView.addTarget(self, action: #selector(notifyDelegateToUpdatePickerDate(datePickerView:)), for: .valueChanged)
+        datePickerView.addTarget(self, action: #selector(notifyDelegateToUpdatePickerDate), for: .valueChanged)
     }
 
     func customize(_ theme: TransactionCustomRangeSelectionViewTheme) {
@@ -49,26 +49,17 @@ final class TransactionCustomRangeSelectionView: View {
 extension TransactionCustomRangeSelectionView {
     @objc
     private func notifyDelegateToOpenPickerForFromDate() {
-        guard let fromRangeSelectionHandler = fromRangeSelectionHandler else {
-            return
-        }
-        fromRangeSelectionHandler(fromRangeSelectionView)
+        fromRangeSelectionHandler?(fromRangeSelectionView)
     }
     
     @objc
     private func notifyDelegateToOpenPickerForToDate() {
-        guard let toRangeSelectionHandler = toRangeSelectionHandler else {
-            return
-        }
-        toRangeSelectionHandler(toRangeSelectionView)
+        toRangeSelectionHandler?(toRangeSelectionView)
     }
     
     @objc
      private func notifyDelegateToUpdatePickerDate(datePickerView: UIDatePicker) {
-        guard let datePickerChangesHandler = datePickerChangesHandler else {
-            return
-        }
-        datePickerChangesHandler(datePickerView)
+        datePickerChangesHandler?(datePickerView)
      }
 }
 
@@ -105,32 +96,27 @@ extension TransactionCustomRangeSelectionView {
 
         addSubview(datePickerView)
         datePickerView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.centerX.trailing.equalToSuperview()
             $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.pickerBottomInset)
             $0.top.equalTo(fromRangeSelectionView.snp.bottom).offset(theme.pickerTopInset)
         }
     }
 }
 
-extension TransactionCustomRangeSelectionView {
-    func bindFromDate(_ date: String) {
-        fromRangeSelectionView.bindDate(date)
-    }
-    
-    func bindToDate(_ date: String) {
-        toRangeSelectionView.bindDate(date)
-    }
-    
-    func bindPickerDate(_ date: Date) {
-        datePickerView.date = date
-    }
-    
-    func setFromRangeSelectionViewSelected(_ isSelected: Bool) {
-        fromRangeSelectionView.setSelected(isSelected)
-    }
-    
-    func setToRangeSelectionViewSelected(_ isSelected: Bool) {
-        toRangeSelectionView.setSelected(isSelected)
+extension TransactionCustomRangeSelectionView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionCustomRangeSelectionViewModel?) {
+        if let fromDateRangeSelectionViewModel = viewModel?.fromDateRangeSelectionViewModel {
+            fromRangeSelectionView.bindData(fromDateRangeSelectionViewModel)
+        }
+
+        if let toDateRangeSelectionViewModel = viewModel?.toDateRangeSelectionViewModel {
+            toRangeSelectionView.bindData(toDateRangeSelectionViewModel)
+        }
+
+        if let detePickerViewDate = viewModel?.datePickerViewDate {
+            fromRangeSelectionView.setSelected(viewModel?.fromRangeSelectionViewIsSelected)
+            toRangeSelectionView.setSelected(viewModel?.toRangeSelectionViewIsSelected)
+            datePickerView.date = detePickerViewDate
+        }
     }
 }

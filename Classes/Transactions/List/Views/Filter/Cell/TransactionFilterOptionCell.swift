@@ -25,7 +25,7 @@ final class TransactionFilterOptionCell: BaseCollectionViewCell<TransactionFilte
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        contextView.deselect()
+        contextView.prepareForReuse()
     }
 
     func bindData(_ viewModel: TransactionFilterOptionViewModel?) {

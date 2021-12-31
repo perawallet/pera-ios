@@ -101,7 +101,7 @@ extension TransactionFilterOptionView: ViewModelBindable {
         if let date = viewModel?.date {
             dateLabel.text = date
         } else {
-            dateLabel.removeFromSuperview()
+            dateLabel.isHidden = true
         }
 
         if let dateImageText = viewModel?.dateImageText {
@@ -114,7 +114,13 @@ extension TransactionFilterOptionView: ViewModelBindable {
         checkmarkImageView.isHidden = !((viewModel?.isSelected).falseIfNil)
     }
     
-    func deselect() {
+    func prepareForReuse() {
+        titleLabel.text = nil
+        dateLabel.text = nil
+        dateImageViewLabel.text = nil
+        dateImageView.image = nil
+        dateLabel.isHidden = false
+        dateImageViewLabel.isHidden = false
         checkmarkImageView.isHidden = true
     }
 }

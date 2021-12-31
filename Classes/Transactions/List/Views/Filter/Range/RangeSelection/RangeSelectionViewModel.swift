@@ -21,12 +21,17 @@ import UIKit
 final class RangeSelectionViewModel: ViewModel {
     private(set) var title: String?
     private(set) var image: UIImage?
-    private(set) var isSelected: Bool = false
+    private(set) var isSelected: Bool?
+    private(set) var date: String?
 
     init(range: Range) {
         bindTitle(range)
         bindImage(range)
         bindIsSelected(range)
+    }
+
+    init(date: Date) {
+        self.date = date.toFormat("dd.MM.yyyy")
     }
 }
 

@@ -47,9 +47,16 @@ final class TransactionCustomRangeSelectionViewController: BaseViewController {
     override func bindData() {
         title = "transaction-filter-option-custom".localized
 
-        transactionCustomRangeSelectionView.bindFromDate(fromDate.toFormat("dd.MM.yyyy"))
-        transactionCustomRangeSelectionView.bindToDate(toDate.toFormat("dd.MM.yyyy"))
-        transactionCustomRangeSelectionView.bindPickerDate(fromDate)
+        transactionCustomRangeSelectionView.bindData(
+            TransactionCustomRangeSelectionViewModel(
+                fromDateRangeSelectionViewModel: RangeSelectionViewModel(date: fromDate),
+                toDateRangeSelectionViewModel: RangeSelectionViewModel(date: toDate)
+            )
+        )
+
+        transactionCustomRangeSelectionView.bindData(
+            TransactionCustomRangeSelectionViewModel(.from, datePickerViewDate: fromDate)
+        )
     }
     
     override func prepareLayout() {
@@ -87,9 +94,9 @@ extension TransactionCustomRangeSelectionViewController {
             }
             
             strongSelf.isFromRangeSelectionSelected = true
-            strongSelf.transactionCustomRangeSelectionView.setFromRangeSelectionViewSelected(true)
-            strongSelf.transactionCustomRangeSelectionView.setToRangeSelectionViewSelected(false)
-            strongSelf.transactionCustomRangeSelectionView.bindPickerDate(strongSelf.fromDate)
+            strongSelf.transactionCustomRangeSelectionView.bindData(
+                TransactionCustomRangeSelectionViewModel(.from, datePickerViewDate: strongSelf.fromDate)
+            )
         }
     }
     
@@ -100,9 +107,9 @@ extension TransactionCustomRangeSelectionViewController {
             }
             
             strongSelf.isFromRangeSelectionSelected = false
-            strongSelf.transactionCustomRangeSelectionView.setFromRangeSelectionViewSelected(false)
-            strongSelf.transactionCustomRangeSelectionView.setToRangeSelectionViewSelected(true)
-            strongSelf.transactionCustomRangeSelectionView.bindPickerDate(strongSelf.toDate)
+            strongSelf.transactionCustomRangeSelectionView.bindData(
+                TransactionCustomRangeSelectionViewModel(.to, datePickerViewDate: strongSelf.toDate)
+            )
         }
     }
     
@@ -119,7 +126,11 @@ extension TransactionCustomRangeSelectionViewController {
                 }
                 
                 strongSelf.fromDate = datePickerView.date
-                strongSelf.transactionCustomRangeSelectionView.bindFromDate(strongSelf.fromDate.toFormat("dd.MM.yyyy"))
+                strongSelf.transactionCustomRangeSelectionView.bindData(
+                    TransactionCustomRangeSelectionViewModel(
+                        fromDateRangeSelectionViewModel: RangeSelectionViewModel(date: strongSelf.fromDate)
+                    )
+                )
             } else {
                 if datePickerView.date < strongSelf.fromDate {
                     datePickerView.date = strongSelf.toDate
@@ -127,7 +138,11 @@ extension TransactionCustomRangeSelectionViewController {
                 }
                 
                 strongSelf.toDate = datePickerView.date
-                strongSelf.transactionCustomRangeSelectionView.bindToDate(strongSelf.toDate.toFormat("dd.MM.yyyy"))
+                strongSelf.transactionCustomRangeSelectionView.bindData(
+                    TransactionCustomRangeSelectionViewModel(
+                        toDateRangeSelectionViewModel: RangeSelectionViewModel(date: strongSelf.toDate)
+                    )
+                )
             }
         }
     }

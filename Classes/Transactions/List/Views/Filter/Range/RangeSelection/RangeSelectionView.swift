@@ -111,13 +111,13 @@ extension RangeSelectionView {
 
 extension RangeSelectionView: ViewModelBindable {
     func bindData(_ viewModel: RangeSelectionViewModel?) {
+        if let date = viewModel?.date {
+            dateLabel.text = date
+            return
+        }
+
         titleLabel.text = viewModel?.title
         imageView.image = viewModel?.image
-        setSelected(viewModel?.isSelected)
-    }
-    
-    func bindDate(_ date: String) {
-        dateLabel.text = date
     }
     
     func setSelected(_ isSelected: Bool?) {
