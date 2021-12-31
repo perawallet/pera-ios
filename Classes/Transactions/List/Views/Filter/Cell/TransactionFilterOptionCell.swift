@@ -17,9 +17,18 @@
 
 import UIKit
 
-class TransactionFilterOptionCell: BaseCollectionViewCell<TransactionFilterOptionView> {
+final class TransactionFilterOptionCell: BaseCollectionViewCell<TransactionFilterOptionView> {
+    override func prepareLayout() {
+        super.prepareLayout()
+        contextView.customize(TransactionFilterOptionViewTheme())
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
-        contextView.setDeselected()
+        contextView.prepareForReuse()
+    }
+
+    func bindData(_ viewModel: TransactionFilterOptionViewModel?) {
+        contextView.bindData(viewModel)
     }
 }

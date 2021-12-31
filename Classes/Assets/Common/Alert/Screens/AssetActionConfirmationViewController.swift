@@ -31,6 +31,10 @@ final class AssetActionConfirmationViewController: BaseViewController {
         self.assetAlertDraft = assetAlertDraft
         super.init(configuration: configuration)
     }
+
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

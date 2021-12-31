@@ -36,7 +36,6 @@ class TransactionsViewController: BaseViewController {
         }
     }
         
-    private let transactionsTooltipStorage = TransactionsTooltipStorage()
     private var filterOption = TransactionFilterViewController.FilterOption.allTime
     
     private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
@@ -67,23 +66,11 @@ class TransactionsViewController: BaseViewController {
         api?.addListener(self)
         startPendingTransactionPolling()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.presentFilterTooltipIfNeeded()
-        }
-    }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         api?.removeListener(self)
         pendingTransactionPolling?.invalidate()
-    }
-    
-    override func configureAppearance() {
-        view.backgroundColor = Colors.Background.secondary
     }
     
     override func setListeners() {
@@ -116,12 +103,15 @@ class TransactionsViewController: BaseViewController {
     
     override func linkInteractors() {
         transactionListView.delegate = self
-        transactionListView.setDelegate(self)
-        transactionListView.setDataSource(transactionHistoryDataSource)
+        transactionListView.setCollectionViewDelegate(self)
+        transactionListView.setCollectionViewDataSource(transactionHistoryDataSource)
     }
     
     override func prepareLayout() {
-        setupTransactionListViewLayout()
+        view.addSubview(transactionListView)
+        transactionListView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 }
 
@@ -286,16 +276,6 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension TransactionsViewController {
-    private func setupTransactionListViewLayout() {
-        view.addSubview(transactionListView)
-        
-        transactionListView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-    }
-}
-
-extension TransactionsViewController {
     @objc
     private func didContactAdded(notification: Notification) {
         transactionHistoryDataSource.setupContacts()
@@ -321,10 +301,6 @@ extension TransactionsViewController {
         self.assetDetail = assetDetail
         transactionHistoryDataSource.updateAssetDetail(assetDetail)
         updateList()
-    }
-    
-    var isTransactionListEmpty: Bool {
-        return transactionHistoryDataSource.isEmpty
     }
 }
 
@@ -356,28 +332,6 @@ extension TransactionsViewController: TransactionFilterViewControllerDelegate {
             headerView.bindData(TransactionHistoryHeaderViewModel(filterOption))
         }
         updateList()
-    }
-}
-
-extension TransactionsViewController: TooltipPresenter {
-    func presentFilterTooltipIfNeeded() {
-        if transactionsTooltipStorage.isFilterOptionTooltipDisplayed() || !isViewAppeared {
-            return
-        }
-        
-        guard let headerView = transactionListView.headerView() else {
-            return
-        }
-        
-        presentTooltip(with: "transaction-filter-tooltip".localized, using: configuration, at: headerView.contextView.filterButton)
-        transactionsTooltipStorage.setFilterOptionTooltipDisplayed()
-    }
-    
-    func adaptivePresentationStyle(
-        for controller: UIPresentationController,
-        traitCollection: UITraitCollection
-    ) -> UIModalPresentationStyle {
-        return .none
     }
 }
 
@@ -504,19 +458,5 @@ extension TransactionsViewController {
     struct LayoutConstants: AdaptiveLayoutConstants {
         let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72)
         let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 68.0)
-    }
-}
-
-private struct TransactionsTooltipStorage: Storable {
-    typealias Object = Any
-    
-    private let filterOptionTooltipKey = "com.algorand.algorand.transaction.list.filter.option.tooltip"
-    
-    func setFilterOptionTooltipDisplayed() {
-        save(true, for: filterOptionTooltipKey, to: .defaults)
-    }
-    
-    func isFilterOptionTooltipDisplayed() -> Bool {
-        return bool(with: filterOptionTooltipKey, to: .defaults)
     }
 }

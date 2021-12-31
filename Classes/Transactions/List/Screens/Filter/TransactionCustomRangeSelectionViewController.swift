@@ -18,13 +18,9 @@
 import UIKit
 import SwiftDate
 
-// <todo>: Handle initial & old modal sizes
-class TransactionCustomRangeSelectionViewController: BaseViewController {
-    
+final class TransactionCustomRangeSelectionViewController: BaseViewController {
     weak var delegate: TransactionCustomRangeSelectionViewControllerDelegate?
-    
-    private let layout = Layout<LayoutConstants>()
-    
+
     private lazy var transactionCustomRangeSelectionView = TransactionCustomRangeSelectionView()
     
     private var isFromRangeSelectionSelected = true
@@ -38,99 +34,87 @@ class TransactionCustomRangeSelectionViewController: BaseViewController {
     }
     
     override func configureNavigationBarAppearance() {
+       addBarButtons()
+    }
+    
+    override func setListeners() {
+        transactionCustomRangeSelectionView.setListeners()
+        handleFromRangeSelectionActions()
+        handleToRangeSelectionActions()
+        handleDatePickerChangeActions()
+    }
+
+    override func bindData() {
+        title = "transaction-filter-option-custom".localized
+
+        transactionCustomRangeSelectionView.bindData(
+            TransactionCustomRangeSelectionViewModel(
+                fromRangeSelectionViewModel: RangeSelectionViewModel(date: fromDate),
+                toRangeSelectionViewModel: RangeSelectionViewModel(date: toDate)
+            )
+        )
+
+        transactionCustomRangeSelectionView.bindData(
+            TransactionCustomRangeSelectionViewModel(.from, datePickerViewDate: fromDate)
+        )
+    }
+    
+    override func prepareLayout() {
+        transactionCustomRangeSelectionView.customize(TransactionCustomRangeSelectionViewTheme())
+        view.addSubview(transactionCustomRangeSelectionView)
+        transactionCustomRangeSelectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+}
+
+extension TransactionCustomRangeSelectionViewController {
+    private func addBarButtons() {
         let doneBarButtonItem = ALGBarButtonItem(kind: .done) { [weak self] in
             guard let strongSelf = self else {
                 return
             }
-            
+
             strongSelf.delegate?.transactionCustomRangeSelectionViewController(
                 strongSelf,
                 didSelect: (from: strongSelf.fromDate, to: strongSelf.toDate)
             )
             strongSelf.dismissScreen()
         }
-        
-        rightBarButtonItems = [doneBarButtonItem]
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setIntiailModalSize()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        updateToOldModalSize()
-    }
-    
-    override func configureAppearance() {
-        view.backgroundColor = Colors.Background.secondary
-        title = "transaction-filter-option-custom".localized
-        transactionCustomRangeSelectionView.setFromDate(fromDate.toFormat("dd.MM.yyyy"))
-        transactionCustomRangeSelectionView.setToDate(toDate.toFormat("dd.MM.yyyy"))
-        transactionCustomRangeSelectionView.setPickerDate(fromDate)
-    }
-    
-    override func setListeners() {
-        handleFromRangeSelectionActions()
-        handleToRangeSelectionActions()
-        handleDatePickerChangeActions()
-    }
-    
-    override func prepareLayout() {
-        setupTransactionCustomRangeSelectionViewLayout()
-    }
-}
 
-extension TransactionCustomRangeSelectionViewController {
-    private func setIntiailModalSize() {
-        // <todo>: Handle initial modal size
-        view.layoutIfNeeded()
-    }
-    
-    private func updateToOldModalSize() {
-        // <todo>: Handle old modal size
-        view.layoutIfNeeded()
-    }
-    
-    private func setupTransactionCustomRangeSelectionViewLayout() {
-        view.addSubview(transactionCustomRangeSelectionView)
-        
-        transactionCustomRangeSelectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        rightBarButtonItems = [doneBarButtonItem]
     }
 }
 
 extension TransactionCustomRangeSelectionViewController {
     private func handleFromRangeSelectionActions() {
-        transactionCustomRangeSelectionView.fromRangeSelectionHandler = { [weak self] _ -> Void in
+        transactionCustomRangeSelectionView.fromRangeSelectionHandler = { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }
             
             strongSelf.isFromRangeSelectionSelected = true
-            strongSelf.transactionCustomRangeSelectionView.setFromRangeSelectionViewSelected(true)
-            strongSelf.transactionCustomRangeSelectionView.setToRangeSelectionViewSelected(false)
-            strongSelf.transactionCustomRangeSelectionView.setPickerDate(strongSelf.fromDate)
+            strongSelf.transactionCustomRangeSelectionView.bindData(
+                TransactionCustomRangeSelectionViewModel(.from, datePickerViewDate: strongSelf.fromDate)
+            )
         }
     }
     
     private func handleToRangeSelectionActions() {
-        transactionCustomRangeSelectionView.toRangeSelectionHandler = { [weak self] _ -> Void in
+        transactionCustomRangeSelectionView.toRangeSelectionHandler = { [weak self] _ in
             guard let strongSelf = self else {
                 return
             }
             
             strongSelf.isFromRangeSelectionSelected = false
-            strongSelf.transactionCustomRangeSelectionView.setFromRangeSelectionViewSelected(false)
-            strongSelf.transactionCustomRangeSelectionView.setToRangeSelectionViewSelected(true)
-            strongSelf.transactionCustomRangeSelectionView.setPickerDate(strongSelf.toDate)
+            strongSelf.transactionCustomRangeSelectionView.bindData(
+                TransactionCustomRangeSelectionViewModel(.to, datePickerViewDate: strongSelf.toDate)
+            )
         }
     }
     
     private func handleDatePickerChangeActions() {
-        transactionCustomRangeSelectionView.datePickerChangesHandler = { [weak self] datePickerView -> Void in
+        transactionCustomRangeSelectionView.datePickerChangesHandler = { [weak self] datePickerView in
             guard let strongSelf = self else {
                 return
             }
@@ -142,7 +126,11 @@ extension TransactionCustomRangeSelectionViewController {
                 }
                 
                 strongSelf.fromDate = datePickerView.date
-                strongSelf.transactionCustomRangeSelectionView.setFromDate(strongSelf.fromDate.toFormat("dd.MM.yyyy"))
+                strongSelf.transactionCustomRangeSelectionView.bindData(
+                    TransactionCustomRangeSelectionViewModel(
+                        fromDateRangeSelectionViewModel: RangeSelectionViewModel(date: strongSelf.fromDate)
+                    )
+                )
             } else {
                 if datePickerView.date < strongSelf.fromDate {
                     datePickerView.date = strongSelf.toDate
@@ -150,16 +138,13 @@ extension TransactionCustomRangeSelectionViewController {
                 }
                 
                 strongSelf.toDate = datePickerView.date
-                strongSelf.transactionCustomRangeSelectionView.setToDate(strongSelf.toDate.toFormat("dd.MM.yyyy"))
+                strongSelf.transactionCustomRangeSelectionView.bindData(
+                    TransactionCustomRangeSelectionViewModel(
+                        toDateRangeSelectionViewModel: RangeSelectionViewModel(date: strongSelf.toDate)
+                    )
+                )
             }
         }
-    }
-}
-
-extension TransactionCustomRangeSelectionViewController {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let modalSize = CGSize(width: UIScreen.main.bounds.width, height: 416.0)
-        let oldModalSize = CGSize(width: UIScreen.main.bounds.width, height: 506.0)
     }
 }
 

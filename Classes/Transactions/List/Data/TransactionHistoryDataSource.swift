@@ -18,7 +18,7 @@
 import UIKit
 import MagpieCore
 
-class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
+final class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     private var transactions = [TransactionItem]()
     private var account: Account
     private var assetDetail: AssetDetail?

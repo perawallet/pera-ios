@@ -65,10 +65,10 @@ extension AlgoStatisticsDateOptionView {
     }
 }
 
-extension AlgoStatisticsDateOptionView {
-    func bindData(_ viewModel: AlgoStatisticsDateOptionViewModel) {
-        titleLabel.text = viewModel.title
-        selectedIconImageView.isHidden = !(viewModel.isSelected.falseIfNil)
+extension AlgoStatisticsDateOptionView: ViewModelBindable {
+    func bindData(_ viewModel: AlgoStatisticsDateOptionViewModel?) {
+        titleLabel.text = viewModel?.title
+        selectedIconImageView.isHidden = !((viewModel?.isSelected).falseIfNil)
     }
 
     func deselect() {
