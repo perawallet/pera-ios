@@ -49,8 +49,8 @@ final class TransactionCustomRangeSelectionViewController: BaseViewController {
 
         transactionCustomRangeSelectionView.bindData(
             TransactionCustomRangeSelectionViewModel(
-                fromDateRangeSelectionViewModel: RangeSelectionViewModel(date: fromDate),
-                toDateRangeSelectionViewModel: RangeSelectionViewModel(date: toDate)
+                fromRangeSelectionViewModel: RangeSelectionViewModel(date: fromDate),
+                toRangeSelectionViewModel: RangeSelectionViewModel(date: toDate)
             )
         )
 

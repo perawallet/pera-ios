@@ -19,26 +19,26 @@ import MacaroonUIKit
 import UIKit
 
 final class TransactionCustomRangeSelectionViewModel: ViewModel {
-    private(set) var fromDateRangeSelectionViewModel: RangeSelectionViewModel?
-    private(set) var toDateRangeSelectionViewModel: RangeSelectionViewModel?
+    private(set) var fromRangeSelectionViewModel: RangeSelectionViewModel?
+    private(set) var toRangeSelectionViewModel: RangeSelectionViewModel?
     private(set) var fromRangeSelectionViewIsSelected: Bool?
     private(set) var toRangeSelectionViewIsSelected: Bool?
     private(set) var datePickerViewDate: Date?
 
     init(
-        fromDateRangeSelectionViewModel: RangeSelectionViewModel,
-        toDateRangeSelectionViewModel: RangeSelectionViewModel
+        fromRangeSelectionViewModel: RangeSelectionViewModel,
+        toRangeSelectionViewModel: RangeSelectionViewModel
     ) {
-        self.fromDateRangeSelectionViewModel = fromDateRangeSelectionViewModel
-        self.toDateRangeSelectionViewModel = toDateRangeSelectionViewModel
+        self.fromRangeSelectionViewModel = fromRangeSelectionViewModel
+        self.toRangeSelectionViewModel = toRangeSelectionViewModel
     }
 
     init(fromDateRangeSelectionViewModel: RangeSelectionViewModel) {
-        self.fromDateRangeSelectionViewModel = fromDateRangeSelectionViewModel
+        self.fromRangeSelectionViewModel = fromDateRangeSelectionViewModel
     }
 
     init(toDateRangeSelectionViewModel: RangeSelectionViewModel) {
-        self.toDateRangeSelectionViewModel = toDateRangeSelectionViewModel
+        self.toRangeSelectionViewModel = toDateRangeSelectionViewModel
     }
 
     init(_ range: RangeSelectionViewModel.Range, datePickerViewDate: Date) {

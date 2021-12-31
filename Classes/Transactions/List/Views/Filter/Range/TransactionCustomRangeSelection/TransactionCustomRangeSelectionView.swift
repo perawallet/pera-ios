@@ -105,11 +105,11 @@ extension TransactionCustomRangeSelectionView {
 
 extension TransactionCustomRangeSelectionView: ViewModelBindable {
     func bindData(_ viewModel: TransactionCustomRangeSelectionViewModel?) {
-        if let fromDateRangeSelectionViewModel = viewModel?.fromDateRangeSelectionViewModel {
+        if let fromDateRangeSelectionViewModel = viewModel?.fromRangeSelectionViewModel {
             fromRangeSelectionView.bindData(fromDateRangeSelectionViewModel)
         }
 
-        if let toDateRangeSelectionViewModel = viewModel?.toDateRangeSelectionViewModel {
+        if let toDateRangeSelectionViewModel = viewModel?.toRangeSelectionViewModel {
             toRangeSelectionView.bindData(toDateRangeSelectionViewModel)
         }
 
