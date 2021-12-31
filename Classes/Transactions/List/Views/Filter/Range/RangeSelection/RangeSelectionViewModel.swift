@@ -36,13 +36,6 @@ final class RangeSelectionViewModel: ViewModel {
 }
 
 extension RangeSelectionViewModel {
-    enum Range {
-        case from
-        case to
-    }
-}
-
-extension RangeSelectionViewModel {
     private func bindTitle(_ range: Range) {
         switch range {
         case .from:
@@ -65,5 +58,12 @@ extension RangeSelectionViewModel {
         if case .from = range {
             isSelected = true
         }
+    }
+}
+
+extension RangeSelectionViewModel {
+    enum Range {
+        case from
+        case to
     }
 }
