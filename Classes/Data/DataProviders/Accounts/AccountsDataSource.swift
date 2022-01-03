@@ -42,8 +42,8 @@ class AccountsDataSource: NSObject, UICollectionViewDataSource {
     }
 
     private var isCurrentGovernanceStakingDate: Bool {
-        let governanceStartDate = TimeInterval(1640361600)
-        let governanceEndDate = TimeInterval(1641484800)
+        let governanceStartDate = TimeInterval(1640448000)
+        let governanceEndDate = TimeInterval(1641571200)
         let currentDate = Date().timeIntervalSince1970
         return currentDate >= governanceStartDate && currentDate <= governanceEndDate
     }
