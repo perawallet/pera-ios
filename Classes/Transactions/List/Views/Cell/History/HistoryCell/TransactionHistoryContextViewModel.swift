@@ -44,7 +44,7 @@ final class TransactionHistoryContextViewModel: ViewModel {
             }
 
             if assetTransaction.receiverAddress == assetTransaction.senderAddress {
-                bindTitleAndSubtitle(with: contact, and: .receiver(assetTransaction.receiverAddress))
+                bindTitleAndSubtitle(with: contact, and: .send(assetTransaction.receiverAddress))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .normal(
                         amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
@@ -60,7 +60,7 @@ final class TransactionHistoryContextViewModel: ViewModel {
                     transactionAmountViewModel = TransactionAmountViewModel(.negative(amount: fee.toAlgos))
                 }
             } else if assetTransaction.receiverAddress == account.address {
-                bindTitleAndSubtitle(with: contact, and: .receiver(assetTransaction.receiverAddress))
+                bindTitleAndSubtitle(with: contact, and: .receive(assetTransaction.receiverAddress))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .positive(
                         amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
@@ -69,7 +69,7 @@ final class TransactionHistoryContextViewModel: ViewModel {
                     )
                 )
             } else {
-                bindTitleAndSubtitle(with: contact, and: .receiver(assetTransaction.receiverAddress))
+                bindTitleAndSubtitle(with: contact, and: .send(assetTransaction.receiverAddress))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .negative(
                         amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
@@ -93,17 +93,17 @@ final class TransactionHistoryContextViewModel: ViewModel {
             }
 
             if payment.receiver == transaction.sender {
-                bindTitleAndSubtitle(with: contact, and: .sender(transaction.sender))
+                bindTitleAndSubtitle(with: contact, and: .receive(transaction.sender))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .normal(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
                 )
             } else if payment.receiver == account.address {
-                bindTitleAndSubtitle(with: contact, and: .sender(transaction.sender))
+                bindTitleAndSubtitle(with: contact, and: .receive(transaction.sender))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .positive(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
                 )
             } else {
-                bindTitleAndSubtitle(with: contact, and: .receiver(payment.receiver))
+                bindTitleAndSubtitle(with: contact, and: .send(payment.receiver))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .negative(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
                 )
@@ -121,7 +121,7 @@ final class TransactionHistoryContextViewModel: ViewModel {
 
         if let assetDetail = pendingTransactionDependencies.assetDetail {
             if transaction.receiver == transaction.sender {
-                bindTitleAndSubtitle(with: contact, and: .receiver(transaction.receiver))
+                bindTitleAndSubtitle(with: contact, and: .send(transaction.receiver))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .normal(
                         amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
@@ -135,7 +135,7 @@ final class TransactionHistoryContextViewModel: ViewModel {
                     transactionAmountViewModel = TransactionAmountViewModel(.negative(amount: fee.toAlgos))
                 }
             } else if transaction.receiver == account.address {
-                bindTitleAndSubtitle(with: contact, and: .receiver(transaction.receiver))
+                bindTitleAndSubtitle(with: contact, and: .send(transaction.receiver))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .positive(
                         amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
@@ -144,7 +144,7 @@ final class TransactionHistoryContextViewModel: ViewModel {
                     )
                 )
             } else {
-                bindTitleAndSubtitle(with: contact, and: .receiver(transaction.receiver))
+                bindTitleAndSubtitle(with: contact, and: .send(transaction.receiver))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .negative(
                         amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
@@ -155,13 +155,13 @@ final class TransactionHistoryContextViewModel: ViewModel {
             }
         } else {
             if transaction.receiver == transaction.sender {
-                bindTitleAndSubtitle(with: contact, and: .receiver(transaction.receiver))
+                bindTitleAndSubtitle(with: contact, and: .send(transaction.receiver))
                 transactionAmountViewModel = TransactionAmountViewModel(.normal(amount: transaction.amount.toAlgos))
             } else if transaction.receiver == account.address {
-                bindTitleAndSubtitle(with: contact, and: .sender(transaction.sender))
+                bindTitleAndSubtitle(with: contact, and: .receive(transaction.sender))
                 transactionAmountViewModel = TransactionAmountViewModel(.positive(amount: transaction.amount.toAlgos))
             } else {
-                bindTitleAndSubtitle(with: contact, and: .receiver(transaction.receiver))
+                bindTitleAndSubtitle(with: contact, and: .send(transaction.receiver))
                 transactionAmountViewModel = TransactionAmountViewModel(.negative(amount: transaction.amount.toAlgos))
             }
         }
@@ -185,21 +185,21 @@ extension TransactionHistoryContextViewModel {
     }
 
     private enum Address {
-        case sender(String?)
-        case receiver(String?)
+        case send(String?)
+        case receive(String?)
 
         var title: String {
             switch self {
-            case .sender:
-                return "transaction-detail-sender".localized
-            case .receiver:
-                return "transaction-detail-receiver".localized
+            case .send:
+                return "transaction-detail-send".localized
+            case .receive:
+                return "transaction-detail-receive".localized
             }
         }
 
         var associatedValue: String? {
             switch self {
-            case let .sender(value), let .receiver(value):
+            case let .send(value), let .receive(value):
                 return value
             }
         }
