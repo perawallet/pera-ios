@@ -30,13 +30,7 @@ final class AlgoStatisticsViewController: BaseScrollViewController {
     private lazy var algoStatisticsView = AlgoStatisticsView()
 
     private lazy var algoStatisticsDataController = AlgoStatisticsDataController(api: api)
-    private lazy var assetCardDisplayDataController: AssetCardDisplayDataController = {
-        guard let api = api else {
-            fatalError("Api must be set before accessing this view controller.")
-        }
-        return AssetCardDisplayDataController(api: api)
-    }()
-    
+
     private var chartEntries: [AlgosUSDValue]?
     private var selectedTimeInterval: AlgosUSDValueInterval = .hourly
 
@@ -88,7 +82,7 @@ extension AlgoStatisticsViewController: BottomSheetPresentable {
 
 extension AlgoStatisticsViewController {
     private func fetchCurrency(then completion: @escaping () -> Void) {
-        assetCardDisplayDataController.getCurrency { [weak self] currency in
+        algoStatisticsDataController.getCurrency { [weak self] currency in
             if let currency = currency {
                 self?.currency = currency
                 completion()

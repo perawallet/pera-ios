@@ -17,6 +17,7 @@
 
 import Foundation
 
+// <todo>: Not used anymore
 struct ChangeAssetDetailEvent: AnalyticsEvent {
     let assetId: Int64?
     
