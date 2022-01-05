@@ -13,11 +13,11 @@
 // limitations under the License.
 
 //
-//   TransactionHistoryDateContextViewTheme.swift
+//   TransactionHistoryTitleContextViewTheme.swift
 
 import MacaroonUIKit
 
-struct TransactionHistoryDateContextViewTheme: StyleSheet, LayoutSheet {
+struct TransactionHistoryTitleContextViewTheme: StyleSheet, LayoutSheet {
     let dateLabel: TextStyle
     let paddings: LayoutPaddings
 

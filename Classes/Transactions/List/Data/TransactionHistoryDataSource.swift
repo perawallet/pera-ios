@@ -42,37 +42,65 @@ final class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     var shareHistoryHandler: ((TransactionHistoryDataSource) -> Void)?
     var copyAssetIDHandler: ((TransactionHistoryDataSource, _ assetID: String?) -> Void)?
 
-    private let provider: AssetDetailConfigurationProtocol
+    private let draft: AssetDetailDraftProtocol
 
     lazy var sections: [Section] = {
         var sections: [Section] = [.transactionHistory]
-        if provider.infoViewConfiguration != nil {
+        if draft.infoViewConfiguration != nil {
             sections.insert(.info, at: 0)
         }
         return sections
     }()
 
-    // <todo>: Sort
+    // <todo>: Sort by date
     var groupedTransactionItemsByDate: [TransactionHistoryDraft] {
-        let groupedTransactionItemsByDate = Dictionary(grouping: transactions) {
-            return $0.date?.toFormat("MMMM dd, yyyy")
+        guard !transactions.isEmpty else {
+            return []
         }
 
-        var transactionHistoryViewModels: [TransactionHistoryDraft] = []
+        /// Groups transaction items with dates.
+        /// Dictionary's key can also be nil since pending transaction has no date.
+        let groupedTransactionItemsByDate = Dictionary(grouping: transactions) {
+            return $0.date?.toFormat("MM-dd-yyyy")
+        }
+
+        var transactionHistoryDrafts: [TransactionHistoryDraft] = []
 
         for key in groupedTransactionItemsByDate.keys {
-            let viewModel = TransactionHistoryDraft(date: key, item: nil)
-            transactionHistoryViewModels.append(viewModel)
-            for value in groupedTransactionItemsByDate[key] ?? [] {
-                let viewModel = TransactionHistoryDraft(date: nil, item: value)
-                transactionHistoryViewModels.append(viewModel)
+            if let key = key {
+                let viewModel = TransactionHistoryDraft(title: key)
+                transactionHistoryDrafts.append(viewModel)
+                for value in groupedTransactionItemsByDate[key] ?? [] {
+                    let viewModel = TransactionHistoryDraft(item: value)
+                    transactionHistoryDrafts.append(viewModel)
+                }
             }
         }
-        return transactionHistoryViewModels
+
+        for key in groupedTransactionItemsByDate.keys {
+            if key == nil {
+                var isDraftForPendingTransactionsCellInserted = false
+                for value in groupedTransactionItemsByDate[key] ?? [] {
+                    if !isDraftForPendingTransactionsCellInserted {
+                        let pendingTransactionsDraft = TransactionHistoryDraft(
+                            title: "transaction-detail-pending-transactions".localized
+                        )
+                        transactionHistoryDrafts.insert(pendingTransactionsDraft, at: 0)
+                        isDraftForPendingTransactionsCellInserted = true
+                    }
+
+                    let viewModel = TransactionHistoryDraft(item: value)
+                    transactionHistoryDrafts.insert(viewModel, at: 1)
+                }
+                break
+            }
+        }
+
+        return transactionHistoryDrafts
     }
 
-    init(api: ALGAPI?, provider: AssetDetailConfigurationProtocol) {
-        self.provider = provider
+    init(api: ALGAPI?, provider: AssetDetailDraftProtocol) {
+        self.draft = provider
         self.api = api
         self.account = provider.account
         self.assetDetail = provider.assetDetail
@@ -82,8 +110,9 @@ final class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
 
 extension TransactionHistoryDataSource {
     struct TransactionHistoryDraft {
-        let date: String?
-        let item: TransactionItem?
+        /// According to current design, title can represent TransactionItem's date or "Pending Transaction"
+        var title: String? = nil
+        var item: TransactionItem? = nil
     }
 
     enum Section {
@@ -109,7 +138,7 @@ extension TransactionHistoryDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch sections[indexPath.section] {
         case .info:
-            if let cellType = provider.infoViewConfiguration?.cellType {
+            if let cellType = draft.infoViewConfiguration?.cellType {
                 switch cellType {
                 case is AlgosDetailInfoViewCell.Type:
                     return dequeueAlgosDetailInfoViewCell(in: collectionView, at: indexPath)
@@ -121,8 +150,8 @@ extension TransactionHistoryDataSource {
             }
         case .transactionHistory:
             let viewModel = groupedTransactionItemsByDate[indexPath.item]
-            if let date = viewModel.date {
-                return dequeueHistoryDateCell(in: collectionView, with: date, at: indexPath)
+            if let title = viewModel.title {
+                return dequeueHistoryTitleCell(in: collectionView, with: title, at: indexPath)
             } else {
                 if let reward = viewModel.item as? Reward {
                     return dequeueHistoryCell(in: collectionView, with: reward, at: indexPath)
@@ -176,13 +205,13 @@ extension TransactionHistoryDataSource {
 }
 
 extension TransactionHistoryDataSource {
-    private func dequeueHistoryDateCell(
+    private func dequeueHistoryTitleCell(
         in collectionView: UICollectionView,
-        with date: String,
+        with title: String,
         at indexPath: IndexPath
-    ) -> TransactionHistoryDateCell {
-        let cell = collectionView.dequeue(TransactionHistoryDateCell.self, at: indexPath)
-        cell.bindData(TransactionHistoryDateContextViewModel(date: date))
+    ) -> TransactionHistoryTitleCell {
+        let cell = collectionView.dequeue(TransactionHistoryTitleCell.self, at: indexPath)
+        cell.bindData(TransactionHistoryTitleContextViewModel(date: title))
         return cell
     }
 

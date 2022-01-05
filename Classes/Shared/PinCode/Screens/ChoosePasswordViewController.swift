@@ -174,9 +174,9 @@ extension ChoosePasswordViewController {
             }
 
             if let assetDetail = assetDetail {
-                route = .assetDetail(provider: AssetDetailConfiguration(assetDetail: assetDetail, account: account))
+                route = .assetDetail(draft: AssetDetailDraft(assetDetail: assetDetail, account: account))
             } else {
-                route = .assetDetail(provider: AlgosDetailConfiguration(account: account))
+                route = .algosDetail(draft: AlgosDetailDraft(account: account))
             }
         case let .assetActionConfirmationNotification(address, assetId):
             guard let account = session?.account(from: address),

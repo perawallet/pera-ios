@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   AssetDetailViewControllerNew.swift
+//   AssetDetailViewController.swift
 
 import MacaroonUIKit
 import UIKit
 
-final class AssetDetailViewControllerNew: TransactionsViewController {
+final class AssetDetailViewController: TransactionsViewController {
     override var name: AnalyticsScreenName? {
         return .assetDetail
     }
@@ -42,7 +42,7 @@ final class AssetDetailViewControllerNew: TransactionsViewController {
     }
 }
 
-extension AssetDetailViewControllerNew {
+extension AssetDetailViewController {
     private func addTitleView() {
         let assetDetailTitleView = ImageWithTitleView()
         assetDetailTitleView.customize(ImageWithTitleAssetDetailViewTheme())

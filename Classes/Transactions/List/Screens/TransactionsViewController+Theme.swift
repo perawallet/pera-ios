@@ -20,12 +20,12 @@ import UIKit
 
 extension TransactionsViewController {
     struct Theme: LayoutSheet {
-        let transactionHistoryDateCellSize: LayoutSize
+        let transactionHistoryTitleCellSize: LayoutSize
         let transactionHistoryCellSize: LayoutSize
         let transactionHistoryHeaderSize: LayoutSize
 
         init(_ family: LayoutFamily) {
-            self.transactionHistoryDateCellSize = (UIScreen.main.bounds.width, 49)
+            self.transactionHistoryTitleCellSize = (UIScreen.main.bounds.width, 49)
             self.transactionHistoryCellSize = (UIScreen.main.bounds.width, 72)
             self.transactionHistoryHeaderSize = (UIScreen.main.bounds.width, 40)
         }

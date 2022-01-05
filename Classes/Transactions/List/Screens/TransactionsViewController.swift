@@ -19,6 +19,7 @@ import UIKit
 import MagpieCore
 import MacaroonUIKit
 
+// <todo> Refactor DataSource & ViewController, it is tightly coupled to AssetDetailDraft.
 class TransactionsViewController: BaseViewController {
     private lazy var theme = Theme()
 
@@ -44,15 +45,15 @@ class TransactionsViewController: BaseViewController {
     private let transactionHistoryDataSource: TransactionHistoryDataSource
     private lazy var transactionListView = TransactionListView()
 
-    private let provider: AssetDetailConfigurationProtocol
+    private let provider: AssetDetailDraftProtocol
     
-    init(provider: AssetDetailConfigurationProtocol, configuration: ViewControllerConfiguration) {
-        self.provider = provider
-        self.account = provider.account
-        self.assetDetail = provider.assetDetail
+    init(draft: AssetDetailDraftProtocol, configuration: ViewControllerConfiguration) {
+        self.provider = draft
+        self.account = draft.account
+        self.assetDetail = draft.assetDetail
         self.transactionHistoryDataSource = TransactionHistoryDataSource(
             api: configuration.api,
-            provider: provider
+            provider: draft
         )
         super.init(configuration: configuration)
     }
@@ -298,8 +299,8 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
         if let cellSize = provider.infoViewConfiguration?.infoViewSize,
            indexPath.section == 0 {
             return CGSize(cellSize)
-        } else if transactionHistoryDataSource.groupedTransactionItemsByDate[indexPath.item].date != nil {
-            return CGSize(theme.transactionHistoryDateCellSize)
+        } else if transactionHistoryDataSource.groupedTransactionItemsByDate[indexPath.item].title != nil {
+            return CGSize(theme.transactionHistoryTitleCellSize)
         } else {
             return CGSize(theme.transactionHistoryCellSize)
         }

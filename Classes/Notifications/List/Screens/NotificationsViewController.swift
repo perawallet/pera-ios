@@ -154,9 +154,9 @@ extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
 
             let screen: Screen
             if let assetDetail = accountDetails.assetDetail {
-                screen = .assetDetail(provider: AssetDetailConfiguration(assetDetail: assetDetail, account: account))
+                screen = .assetDetail(draft: AssetDetailDraft(assetDetail: assetDetail, account: account))
             } else {
-                screen = .assetDetail(provider: AlgosDetailConfiguration(account: account))
+                screen = .algosDetail(draft: AlgosDetailDraft(account: account))
             }
 
             open(screen, by: .push)

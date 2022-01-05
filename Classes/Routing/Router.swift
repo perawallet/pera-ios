@@ -273,8 +273,10 @@ class Router {
                 assetDetail: assetDetail,
                 configuration: configuration
             )
-        case let .assetDetail(provider):
-            viewController = AssetDetailViewControllerNew(provider: provider, configuration: configuration)
+        case let .assetDetail(draft):
+            viewController = AssetDetailViewController(draft: draft, configuration: configuration)
+        case let .algosDetail(draft):
+            viewController = AlgosDetailViewController(draft: draft, configuration: configuration)
         case let .accountDetail(account):
             viewController = AccountDetailViewController(account: account, configuration: configuration)
         case let .assetSearch(account):

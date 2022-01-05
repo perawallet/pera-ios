@@ -43,7 +43,7 @@ final class TransactionListView: View {
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.register(TransactionHistoryCell.self)
         collectionView.register(PendingTransactionCell.self)
-        collectionView.register(TransactionHistoryDateCell.self)
+        collectionView.register(TransactionHistoryTitleCell.self)
         collectionView.register(header: TransactionHistoryHeaderSupplementaryView.self)
         return collectionView
     }()

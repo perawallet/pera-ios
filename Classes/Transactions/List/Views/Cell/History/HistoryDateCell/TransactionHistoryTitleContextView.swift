@@ -13,16 +13,16 @@
 // limitations under the License.
 
 //
-//   TransactionHistoryDateContextView.swift
+//   TransactionHistoryTitleContextView.swift
 
 import MacaroonUIKit
 import UIKit
 
-final class TransactionHistoryDateContextView: View {
-    private lazy var dateLabel = UILabel()
+final class TransactionHistoryTitleContextView: View {
+    private lazy var titleLabel = UILabel()
 
-    func customize(_ theme: TransactionHistoryDateContextViewTheme) {
-        addDateLabel(theme)
+    func customize(_ theme: TransactionHistoryTitleContextViewTheme) {
+        addTitleLabel(theme)
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
@@ -30,12 +30,12 @@ final class TransactionHistoryDateContextView: View {
     func customizeAppearance(_ styleSheet: ViewStyle) {}
 }
 
-extension TransactionHistoryDateContextView {
-    private func addDateLabel(_ theme: TransactionHistoryDateContextViewTheme) {
-        dateLabel.customizeAppearance(theme.dateLabel)
+extension TransactionHistoryTitleContextView {
+    private func addTitleLabel(_ theme: TransactionHistoryTitleContextViewTheme) {
+        titleLabel.customizeAppearance(theme.dateLabel)
 
-        addSubview(dateLabel)
-        dateLabel.snp.makeConstraints {
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.paddings.top)
             $0.leading.trailing.equalToSuperview().inset(theme.paddings.leading)
             $0.bottom.equalToSuperview().inset(theme.paddings.bottom)
@@ -43,8 +43,8 @@ extension TransactionHistoryDateContextView {
     }
 }
 
-extension TransactionHistoryDateContextView: ViewModelBindable {
-    func bindData(_ viewModel: TransactionHistoryDateContextViewModel?) {
-        dateLabel.text = viewModel?.date
+extension TransactionHistoryTitleContextView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionHistoryTitleContextViewModel?) {
+        titleLabel.text = viewModel?.title
     }
 }

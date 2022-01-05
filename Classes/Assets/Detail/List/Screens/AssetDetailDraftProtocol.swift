@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//   AssetDetailConfiguration.swift
+//   AssetDetailDraftProtocol.swift
 
 import MacaroonUIKit
 import UIKit
@@ -23,13 +23,13 @@ struct InfoViewConfiguration {
     let cellType: UICollectionViewCell.Type
 }
 
-protocol AssetDetailConfigurationProtocol {
+protocol AssetDetailDraftProtocol {
     var assetDetail: AssetDetail? { get }
     var account: Account { get }
     var infoViewConfiguration: InfoViewConfiguration? { get }
 }
 
-extension AssetDetailConfigurationProtocol {
+extension AssetDetailDraftProtocol {
     var assetDetail: AssetDetail? {
         nil
     }
@@ -39,7 +39,7 @@ extension AssetDetailConfigurationProtocol {
     }
 }
 
-struct AssetDetailConfiguration: AssetDetailConfigurationProtocol {
+struct AssetDetailDraft: AssetDetailDraftProtocol {
     var assetDetail: AssetDetail?
     var account: Account
 
@@ -51,7 +51,7 @@ struct AssetDetailConfiguration: AssetDetailConfigurationProtocol {
     }
 }
 
-struct AlgosDetailConfiguration: AssetDetailConfigurationProtocol {
+struct AlgosDetailDraft: AssetDetailDraftProtocol {
     var account: Account
 
     var infoViewConfiguration: InfoViewConfiguration? {
