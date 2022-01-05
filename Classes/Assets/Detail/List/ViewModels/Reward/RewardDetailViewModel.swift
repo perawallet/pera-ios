@@ -30,7 +30,7 @@ final class RewardDetailViewModel: PairedViewModel {
 
 extension RewardDetailViewModel {
     private func bindRate(from account: Account) {
-        rate = "17.52%"
+        rate = "17.52%" // <todo>: Remove mock
     }
 
     private func bindAmount(from account: Account) {
