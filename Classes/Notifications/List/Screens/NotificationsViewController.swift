@@ -151,7 +151,15 @@ extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
     private func openAssetDetail(from notificationDetail: NotificationDetail) {
         let accountDetails = dataSource.getUserAccount(from: notificationDetail)
         if let account = accountDetails.account {
-            open(.assetDetail(account: account, assetDetail: accountDetails.assetDetail), by: .push)
+
+            let screen: Screen
+            if let assetDetail = accountDetails.assetDetail {
+                screen = .assetDetail(provider: AssetDetailConfiguration(assetDetail: assetDetail, account: account))
+            } else {
+                screen = .assetDetail(provider: AlgosDetailConfiguration(account: account))
+            }
+
+            open(screen, by: .push)
         }
     }
 }

@@ -186,13 +186,14 @@ extension AccountAssetListViewController {
     private func openAssetDetail(
         _ assetDetail: AssetDetail?
     ) {
-        open(
-            .assetDetail(
-                account: account,
-                assetDetail: assetDetail
-            ),
-            by: .push
-        )
+        let screen: Screen
+        if let assetDetail = assetDetail {
+            screen = .assetDetail(provider: AssetDetailConfiguration(assetDetail: assetDetail, account: account))
+        } else {
+            screen = .assetDetail(provider: AlgosDetailConfiguration(account: account))
+        }
+
+        open(screen, by: .push)
     }
 
     private func applySnapshot(

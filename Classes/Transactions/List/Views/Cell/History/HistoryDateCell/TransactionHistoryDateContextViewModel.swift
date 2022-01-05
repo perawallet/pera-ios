@@ -13,18 +13,14 @@
 // limitations under the License.
 
 //
-//  TransactionHistoryCell.swift
+//   TransactionHistoryDateContextViewModel.swift
 
-import UIKit
+import MacaroonUIKit
 
-final class TransactionHistoryCell: BaseCollectionViewCell<TransactionHistoryContextView> {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contextView.customize(TransactionHistoryContextViewTheme())
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contextView.prepareForReuse()
+final class TransactionHistoryDateContextViewModel: ViewModel {
+    private(set) var date: String
+
+    init(date: String) {
+        self.date = date
     }
 }

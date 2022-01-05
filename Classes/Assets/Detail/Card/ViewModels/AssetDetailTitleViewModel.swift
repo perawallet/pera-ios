@@ -16,23 +16,36 @@
 //  AssetDetailTitleViewModel.swift
 
 import Foundation
+import UIKit
+import MacaroonUIKit
 
-class AssetDetailTitleViewModel {
+final class AssetDetailTitleViewModel: ViewModel {
+    private(set) var image: UIImage?
+    private(set) var title: String?
     
-    private(set) var detail: String?
-    
-    init(account: Account, assetDetail: AssetDetail?) {
-        setDetail(from: assetDetail, in: account)
+    init(assetDetail: AssetDetail? = nil) {
+        bindTitle(assetDetail)
+        bindImage(assetDetail)
     }
-    
-    private func setDetail(from assetDetail: AssetDetail?, in account: Account) {
+}
+
+extension AssetDetailTitleViewModel {
+    private func bindImage(_ assetDetail: AssetDetail?) {
+        guard assetDetail == nil else {
+            return
+        }
+        image = "icon-algo-circle-green".uiImage
+    }
+
+    private func bindTitle(_ assetDetail: AssetDetail?) {
         if let assetDetail = assetDetail {
-            guard let amount = account.amount(for: assetDetail) else {
-                return
+            if let assetName = assetDetail.assetName {
+                title = TextFormatter.assetShortName.format(assetName)
+            } else {
+                title = "title-unknown".localized
             }
-            detail = "\(amount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "") \(assetDetail.getAssetCode())"
         } else {
-            detail = "\(account.amount.toAlgos.toAlgosStringForLabel ?? "") ALGO"
+            title = "ALGO"
         }
     }
 }

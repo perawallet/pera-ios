@@ -30,7 +30,7 @@ indirect enum Screen {
     case home(route: Screen?)
     case accountDetail(account: Account)
     case assetSearch(account: Account)
-    case assetDetail(account: Account, assetDetail: AssetDetail?)
+    case assetDetail(provider: AssetDetailConfigurationProtocol)
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
     case editAccount(account: Account)

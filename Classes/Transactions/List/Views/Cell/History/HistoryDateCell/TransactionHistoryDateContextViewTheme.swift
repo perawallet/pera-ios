@@ -13,18 +13,21 @@
 // limitations under the License.
 
 //
-//   TransactionHistoryContextViewModel.swift
+//   TransactionHistoryDateContextViewTheme.swift
 
 import MacaroonUIKit
 
-final class TransactionHistoryContextViewModel: ViewModel {
-    private(set) var title: String?
+struct TransactionHistoryDateContextViewTheme: StyleSheet, LayoutSheet {
+    let dateLabel: TextStyle
+    let paddings: LayoutPaddings
 
-    init(address: String?) {
-        self.title = address.shortAddressDisplay()
-    }
-
-    init(contact: String?) {
-        self.title = contact
+    init(_ family: LayoutFamily) {
+        self.dateLabel = [
+            .textAlignment(.left),
+            .textOverflow(SingleLineFittingText()),
+            .textColor(AppColors.Components.Text.gray),
+            .font(Fonts.DMSans.regular.make(13)),
+        ]
+        self.paddings = (28, 24, 4, 24)
     }
 }

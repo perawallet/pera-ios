@@ -21,7 +21,7 @@ import MacaroonUIKit
 final class AccountNameSwitchView: View {
     weak var delegate: AccountNameSwitchViewDelegate?
 
-    private lazy var accountNameView = AccountNameView()
+    private lazy var accountNameView = ImageWithTitleView()
     private lazy var toggleView = Toggle()
 
     override init(frame: CGRect) {

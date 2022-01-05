@@ -18,7 +18,6 @@
 import UIKit
 
 class AssetDetailViewController: BaseViewController {
-    
     override var name: AnalyticsScreenName? {
         return .assetDetail
     }
@@ -28,9 +27,7 @@ class AssetDetailViewController: BaseViewController {
     var route: Screen?
 
 //    private lazy var transactionActionsView = TransactionActionsView() <todo>: This will be floating action button
-    
-    private lazy var assetDetailTitleView = AssetDetailTitleView(title: account.name)
-    
+        
     private lazy var assetCardDisplayViewController: AssetCardDisplayViewController = {
         var selectedIndex = 0
         if let assetDetail = assetDetail {
@@ -41,9 +38,8 @@ class AssetDetailViewController: BaseViewController {
     }()
     
     private lazy var transactionsViewController = TransactionsViewController(
-        account: account,
-        configuration: configuration,
-        assetDetail: assetDetail
+        provider: AssetDetailConfiguration(assetDetail: assetDetail, account: account),
+        configuration: configuration
     )
     
     init(account: Account, configuration: ViewControllerConfiguration, assetDetail: AssetDetail? = nil) {
@@ -60,12 +56,6 @@ class AssetDetailViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         log(DisplayAssetDetailEvent(assetId: assetDetail?.id))
-    }
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        navigationItem.titleView = assetDetailTitleView
-        assetDetailTitleView.bind(AssetDetailTitleViewModel(account: account, assetDetail: assetDetail))
     }
     
     override func linkInteractors() {
@@ -191,7 +181,6 @@ extension AssetDetailViewController: AssetCardDisplayViewControllerDelegate {
     func assetCardDisplayViewController(_ assetCardDisplayViewController: AssetCardDisplayViewController, didSelect index: Int) {
         assetDetail = index == 0 ? nil : account.assetDetails[safe: index - 1]
         log(ChangeAssetDetailEvent(assetId: assetDetail?.id))
-        assetDetailTitleView.bind(AssetDetailTitleViewModel(account: account, assetDetail: assetDetail))
         transactionsViewController.updateSelectedAsset(assetDetail)
     }
 }

@@ -28,7 +28,14 @@ struct RewardsInfoViewTheme: StyleSheet, LayoutSheet {
     let separator: Separator
     let infoButton: ButtonStyle
 
+    let containerCorner: Corner
+    let containerBorder: Border
+    let containerFirstShadow: MacaroonUIKit.Shadow
+    let containerSecondShadow: MacaroonUIKit.Shadow
+    let containerThirdShadow: MacaroonUIKit.Shadow
+
     let separatorTopPadding: LayoutMetric
+    let verticalSeparatorVericalPadding: LayoutMetric
     let rewardsRateTitleLabelTopPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let rewardsRateValueLabelTopPadding: LayoutMetric
@@ -37,10 +44,11 @@ struct RewardsInfoViewTheme: StyleSheet, LayoutSheet {
     let bottomPadding: LayoutMetric
     let verticalSeparatorLeadingPadding: LayoutMetric
     let rewardsLabelLeadingPadding: LayoutMetric
+    let infoButtonSize: LayoutSize
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.separator = Separator(color: AppColors.SendTransaction.Shadow.first.uiColor, size: 1)
         self.rewardsRateTitleLabel = [
             .text("rewards-rate".localized),
             .textAlignment(.left),
@@ -71,6 +79,37 @@ struct RewardsInfoViewTheme: StyleSheet, LayoutSheet {
             .icon([.normal("icon-info-gray")])
         ]
 
+        // <todo>: Remove duplication of shadow
+        self.containerCorner = Corner(radius: 4)
+        self.containerBorder = Border(color: AppColors.SendTransaction.Shadow.first.uiColor, width: 1)
+        self.containerFirstShadow = MacaroonUIKit.Shadow(
+            color: AppColors.SendTransaction.Shadow.first.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+        self.containerSecondShadow = MacaroonUIKit.Shadow(
+            color: AppColors.SendTransaction.Shadow.second.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+        self.containerThirdShadow = MacaroonUIKit.Shadow(
+            color: AppColors.SendTransaction.Shadow.third.uiColor,
+            opacity: 1,
+            offset: (0, 0),
+            radius: 0,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+
         self.separatorTopPadding = -68
         self.horizontalPadding = 16
         self.rewardsRateValueLabelTopPadding = 4
@@ -80,5 +119,7 @@ struct RewardsInfoViewTheme: StyleSheet, LayoutSheet {
         self.bottomPadding = 14
         self.verticalSeparatorLeadingPadding = 26
         self.rewardsLabelLeadingPadding = 47
+        self.infoButtonSize = (40, 40)
+        self.verticalSeparatorVericalPadding = 1
     }
 }

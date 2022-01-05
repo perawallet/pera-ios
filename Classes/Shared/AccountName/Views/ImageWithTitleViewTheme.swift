@@ -19,13 +19,13 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-protocol AccountNameViewTheme: StyleSheet, LayoutSheet {
+protocol ImageWithTitleViewTheme: StyleSheet, LayoutSheet {
     var titleLabel: TextStyle { get }
     var horizontalPadding: LayoutMetric { get }
     var imageSize: LayoutSize { get }
 }
 
-extension AccountNameViewTheme {
+extension ImageWithTitleViewTheme {
     var titleLabel: TextStyle {
         return [
             .textOverflow(SingleLineFittingText()),
@@ -36,7 +36,7 @@ extension AccountNameViewTheme {
     }
 }
 
-struct AccountNameViewLargeTheme: AccountNameViewTheme {
+struct AccountNameViewLargeTheme: ImageWithTitleViewTheme {
     let horizontalPadding: LayoutMetric
     let imageSize: LayoutSize
 
@@ -46,12 +46,29 @@ struct AccountNameViewLargeTheme: AccountNameViewTheme {
     }
 }
 
-struct AccountNameViewSmallTheme: AccountNameViewTheme {
+struct AccountNameViewSmallTheme: ImageWithTitleViewTheme {
     let horizontalPadding: LayoutMetric
     let imageSize: LayoutSize
 
     init(_ family: LayoutFamily) {
         self.imageSize = (24, 24)
         self.horizontalPadding = 12
+    }
+}
+
+struct ImageWithTitleAssetDetailViewTheme: ImageWithTitleViewTheme {
+    let horizontalPadding: LayoutMetric
+    let imageSize: LayoutSize
+    var titleLabel: TextStyle
+
+    init(_ family: LayoutFamily) {
+        self.imageSize = (24, 24)
+        self.horizontalPadding = 12
+        self.titleLabel = [
+            .textOverflow(SingleLineFittingText()),
+            .textAlignment(.left),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.medium.make(15))
+        ]
     }
 }

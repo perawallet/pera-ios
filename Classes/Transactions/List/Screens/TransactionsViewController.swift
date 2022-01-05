@@ -17,14 +17,16 @@
 
 import UIKit
 import MagpieCore
+import MacaroonUIKit
 
 class TransactionsViewController: BaseViewController {
-    
-    let layout = Layout<LayoutConstants>()
-    
+    private lazy var theme = Theme()
+
+    private lazy var bottomSheetTransition = BottomSheetTransition(presentingViewController: self)
+
     private var pendingTransactionPolling: PollingOperation?
-    private var account: Account
-    private var assetDetail: AssetDetail?
+    private(set) var account: Account
+    private(set) var assetDetail: AssetDetail?
     private var isConnectedToInternet = true {
         didSet {
             if isConnectedToInternet {
@@ -37,17 +39,21 @@ class TransactionsViewController: BaseViewController {
     }
         
     private var filterOption = TransactionFilterViewController.FilterOption.allTime
-    
     private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
     
-    private var transactionHistoryDataSource: TransactionHistoryDataSource
-    
+    private let transactionHistoryDataSource: TransactionHistoryDataSource
     private lazy var transactionListView = TransactionListView()
+
+    private let provider: AssetDetailConfigurationProtocol
     
-    init(account: Account, configuration: ViewControllerConfiguration, assetDetail: AssetDetail? = nil) {
-        self.account = account
-        self.assetDetail = assetDetail
-        transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api, account: account, assetDetail: assetDetail)
+    init(provider: AssetDetailConfigurationProtocol, configuration: ViewControllerConfiguration) {
+        self.provider = provider
+        self.account = provider.account
+        self.assetDetail = provider.assetDetail
+        self.transactionHistoryDataSource = TransactionHistoryDataSource(
+            api: configuration.api,
+            provider: provider
+        )
         super.init(configuration: configuration)
     }
     
@@ -87,6 +93,16 @@ class TransactionsViewController: BaseViewController {
             name: .ContactEdit,
             object: nil
         )
+
+        if provider.infoViewConfiguration?.cellType == AlgosDetailInfoViewCell.self {
+            transactionHistoryDataSource.openRewardDetailHandler = { [weak self] _ in
+                guard let self = self else {
+                    return
+                }
+
+                self.bottomSheetTransition.perform(.rewardDetail(account: self.account))
+            }
+        }
         
         transactionHistoryDataSource.openFilterOptionsHandler = { [weak self] _ in
             guard let self = self else {
@@ -108,6 +124,15 @@ class TransactionsViewController: BaseViewController {
     }
     
     override func prepareLayout() {
+        if let cellType = provider.infoViewConfiguration?.cellType {
+            transactionListView.transactionsCollectionView.register(cellType)
+        }
+        addTransactionListView()
+    }
+}
+
+extension TransactionsViewController {
+    private func addTransactionListView() {
         view.addSubview(transactionListView)
         transactionListView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -227,9 +252,10 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let transaction = transactionHistoryDataSource.transaction(at: indexPath) else {
-            return
-        }
+        guard let transaction = transactionHistoryDataSource.transaction(at: indexPath),
+              transactionHistoryDataSource.sections[indexPath.section] == .transactionHistory else {
+                  return
+              }
         
         openTransactionDetail(transaction)
     }
@@ -263,7 +289,14 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return layout.current.transactionCellSize
+        if let cellSize = provider.infoViewConfiguration?.infoViewSize,
+           indexPath.section == 0 {
+            return CGSize(cellSize)
+        } else if transactionHistoryDataSource.groupedTransactionItemsByDate[indexPath.item].date != nil {
+            return CGSize(theme.transactionHistoryDateCellSize)
+        } else {
+            return CGSize(theme.transactionHistoryCellSize)
+        }
     }
     
     func collectionView(
@@ -271,7 +304,12 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        return layout.current.headerSize
+        if provider.infoViewConfiguration != nil,
+            section == 0 {
+            return .zero
+        }
+
+        return CGSize(theme.transactionHistoryHeaderSize)
     }
 }
 
@@ -451,12 +489,5 @@ extension TransactionsViewController: APIListener {
         if UIApplication.shared.isActive {
             isConnectedToInternet = networkMonitor.isConnected
         }
-    }
-}
-
-extension TransactionsViewController {
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72)
-        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 68.0)
     }
 }

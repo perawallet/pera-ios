@@ -46,7 +46,7 @@ extension AssetDetailInfoView {
 
         addSubview(yourBalanceTitleLabel)
         yourBalanceTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalToSuperview().inset(theme.topPadding)
             $0.leading.equalToSuperview().offset(theme.horizontalPadding)
         }
     }
@@ -88,7 +88,7 @@ extension AssetDetailInfoView {
             $0.top.equalTo(assetNameLabel.snp.bottom).offset(theme.assetIDLabelTopPadding)
             $0.leading.equalTo(yourBalanceTitleLabel)
             $0.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalPadding)
-            $0.bottom.equalToSuperview().inset(theme.bottomPadding)
+            $0.bottom.lessThanOrEqualToSuperview().inset(theme.bottomPadding)
         }
     }
 }

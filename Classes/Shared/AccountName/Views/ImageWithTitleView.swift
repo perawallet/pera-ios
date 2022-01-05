@@ -13,18 +13,18 @@
 // limitations under the License.
 
 //
-//  AccountNameView.swift
+//  ImageWithTitleView.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class AccountNameView: View {
+final class ImageWithTitleView: View {
     private lazy var imageView = UIImageView()
-    private lazy var nameLabel = UILabel()
+    private lazy var titleLabel = UILabel()
 
-    func customize(_ theme: AccountNameViewTheme) {
+    func customize(_ theme: ImageWithTitleViewTheme) {
         addImageView(theme)
-        addNameLabel(theme)
+        addTitleLabel(theme)
     }
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}
@@ -32,8 +32,8 @@ final class AccountNameView: View {
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
-extension AccountNameView {
-    private func addImageView(_ theme: AccountNameViewTheme) {
+extension ImageWithTitleView {
+    private func addImageView(_ theme: ImageWithTitleViewTheme) {
         addSubview(imageView)
         imageView.snp.makeConstraints {
             $0.leading.bottom.top.equalToSuperview()
@@ -41,28 +41,39 @@ extension AccountNameView {
         }
     }
     
-    private func addNameLabel(_ theme: AccountNameViewTheme) {
-        addSubview(nameLabel)
-        nameLabel.snp.makeConstraints {
+    private func addTitleLabel(_ theme: ImageWithTitleViewTheme) {
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)
+            $0.leading.equalToSuperview().priority(.medium)
             $0.centerY.trailing.equalToSuperview()
         }
     }
 }
 
-extension AccountNameView: ViewModelBindable {
+extension ImageWithTitleView {
     func bindData(_ viewModel: AccountNameViewModel?) {
         imageView.image = viewModel?.image
-        nameLabel.text = viewModel?.name
+        titleLabel.text = viewModel?.name
+    }
+
+    func bindData(_ viewModel: AssetDetailTitleViewModel?) {
+        if let image = viewModel?.image {
+            imageView.image = image
+        } else {
+            imageView.removeFromSuperview()
+        }
+
+        titleLabel.text = viewModel?.title
     }
 }
 
-extension AccountNameView {
+extension ImageWithTitleView {
     func setAccountImage(_ image: UIImage?) {
         imageView.image = image
     }
     
     func setAccountName(_ name: String?) {
-        nameLabel.text = name
+        titleLabel.text = name
     }
 }

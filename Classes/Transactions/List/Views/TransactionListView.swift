@@ -33,7 +33,7 @@ final class TransactionListView: View {
     private lazy var otherErrorView = ListErrorView()
     private lazy var internetConnectionErrorView = ListErrorView()
     
-    private lazy var transactionsCollectionView: UICollectionView = {
+    private(set) lazy var transactionsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = theme.cellSpacing
         flowLayout.sectionHeadersPinToVisibleBounds = true
@@ -43,6 +43,7 @@ final class TransactionListView: View {
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.register(TransactionHistoryCell.self)
         collectionView.register(PendingTransactionCell.self)
+        collectionView.register(TransactionHistoryDateCell.self)
         collectionView.register(header: TransactionHistoryHeaderSupplementaryView.self)
         return collectionView
     }()

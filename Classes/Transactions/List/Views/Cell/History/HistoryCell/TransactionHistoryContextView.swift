@@ -42,6 +42,7 @@ extension TransactionHistoryContextView {
         titleLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalToSuperview().inset(theme.verticalInset)
+            $0.centerY.equalToSuperview().priority(.low)
         }
     }
     
@@ -71,6 +72,16 @@ extension TransactionHistoryContextView {
 extension TransactionHistoryContextView: ViewModelBindable {
     func bindData(_ viewModel: TransactionHistoryContextViewModel?) {
         titleLabel.text = viewModel?.title
+
+        if let subtitle = viewModel?.subtitle {
+            subtitleLabel.text = subtitle
+        } else {
+            subtitleLabel.isHidden = true
+        }
+
+        if let transactionAmountViewModel = viewModel?.transactionAmountViewModel {
+            transactionAmountView.bindData(transactionAmountViewModel)
+        }
     }
 
     func prepareForReuse() {

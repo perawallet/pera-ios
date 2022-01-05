@@ -28,6 +28,7 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
     let verifiedImage: ImageStyle
     let separator: Separator
 
+    let topPadding: LayoutMetric
     let topSeparatorTopPadding: LayoutMetric
     let bottomSeparatorTopPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
@@ -68,6 +69,7 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
         self.verifiedImage = [
             .image("icon-verified-shield")
         ]
+        self.topPadding = 24
         self.topSeparatorTopPadding = -32
         self.horizontalPadding = 24
         self.balanceLabelTopPadding = 8
@@ -75,6 +77,6 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
         self.assetIDInfoButtonLeadingPadding = 5
         self.assetNameLabelTopPadding = 65
         self.bottomSeparatorTopPadding = -67
-        self.bottomPadding = 33
+        self.bottomPadding = 65
     }
 }
