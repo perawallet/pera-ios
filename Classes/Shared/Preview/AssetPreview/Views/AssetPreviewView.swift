@@ -75,6 +75,7 @@ extension AssetPreviewView {
 
     private func addPrimaryAssetTitleLabel(_ theme: AssetPreviewViewTheme) {
         primaryAssetTitleLabel.customizeAppearance(theme.primaryAssetTitle)
+        primaryAssetTitleLabel.adjustsFontSizeToFitWidth = false
 
         assetTitleHorizontalStackView.addArrangedSubview(primaryAssetTitleLabel)
     }
@@ -85,6 +86,7 @@ extension AssetPreviewView {
 
     private func addSecondaryAssetTitleLabel(_ theme: AssetPreviewViewTheme) {
         secondaryAssetTitleLabel.customizeAppearance(theme.secondaryAssetTitle)
+        secondaryAssetTitleLabel.adjustsFontSizeToFitWidth = false
 
         assetTitleVerticalStackView.addArrangedSubview(secondaryAssetTitleLabel)
     }
@@ -125,5 +127,46 @@ extension AssetPreviewView: ViewModelBindable {
         secondaryAssetTitleLabel.text = viewModel?.assetSecondaryTitle
         primaryAssetValueLabel.text = viewModel?.assetPrimaryValue
         secondaryAssetValueLabel.text = viewModel?.assetSecondaryAssetValue
+    }
+
+    func reset() {
+        imageView.prepareForReuse()
+        secondaryImageView.image = nil
+        primaryAssetTitleLabel.text = nil
+        secondaryAssetTitleLabel.text = nil
+        primaryAssetValueLabel.text = nil
+        secondaryAssetValueLabel.text = nil
+    }
+}
+
+final class AssetPreviewCell: BaseCollectionViewCell<AssetPreviewView> {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contextView.customize(AssetPreviewViewCommonTheme())
+    }
+
+    func bindData(_ viewModel: AssetPreviewViewModel) {
+        contextView.bindData(viewModel)
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        contextView.reset()
+    }
+}
+
+final class AssetPreviewAdditionCell: BaseCollectionViewCell<AssetPreviewView> {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        contextView.customize(AssetPreviewViewAdditionTheme())
+    }
+
+    func bindData(_ viewModel: AssetPreviewViewModel) {
+        contextView.bindData(viewModel)
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        contextView.reset()
     }
 }

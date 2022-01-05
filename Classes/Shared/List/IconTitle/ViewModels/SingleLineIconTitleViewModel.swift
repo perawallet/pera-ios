@@ -44,6 +44,6 @@ extension SingleLineIconTitleViewModel {
 }
 
 struct SingleLineIconTitleItem {
-    let icon: Image
-    let title: EditText
+    let icon: Image?
+    let title: EditText?
 }

@@ -21,6 +21,11 @@ import MacaroonUIKit
 final class SearchBarItemView: View {
     private lazy var searchInputView = SearchInputView()
 
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+        customize(SearchBarItemViewTheme(placeholder: "account-detail-assets-search".localized))
+    }
+
     func customize(_ theme: SearchBarItemViewTheme) {
         addSearchInputView(theme)
     }
@@ -33,6 +38,7 @@ final class SearchBarItemView: View {
 extension SearchBarItemView {
     private func addSearchInputView(_ theme: SearchBarItemViewTheme) {
         searchInputView.customize(theme.searchInput)
+        searchInputView.isUserInteractionEnabled = false
 
         addSubview(searchInputView)
         searchInputView.snp.makeConstraints {

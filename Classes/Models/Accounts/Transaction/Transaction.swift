@@ -24,6 +24,8 @@ protocol TransactionItem {}
 final class Transaction:
     ALGEntityModel,
     TransactionItem {
+    let uuid: UUID
+    
     let closeRewards: UInt64?
     let closeAmount: UInt64?
     let confirmedRound: UInt64?
@@ -50,6 +52,7 @@ final class Transaction:
     init(
         _ apiModel: APIModel = APIModel()
     ) {
+        self.uuid = UUID()
         self.closeRewards = apiModel.closeRewards
         self.closeAmount = apiModel.closeAmount
         self.confirmedRound = apiModel.confirmedRound
@@ -148,6 +151,21 @@ extension Transaction {
             return false
         }
         return assetTransfer.receiverAddress == account && assetTransfer.amount == 0
+    }
+}
+
+extension Transaction: Hashable {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(uuid)
+    }
+
+    static func == (
+        lhs: Transaction,
+        rhs: Transaction
+    ) -> Bool {
+        return lhs.uuid == rhs.uuid
     }
 }
 

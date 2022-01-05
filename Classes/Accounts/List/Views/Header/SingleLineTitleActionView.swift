@@ -84,7 +84,7 @@ extension SingleLineTitleActionView {
 
 class SingleLineTitleActionHeaderView: BaseSupplementaryView<SingleLineTitleActionView> {
 
-    func bind(_ viewModel: SingleLineTitleActionViewModel) {
+    func bindData(_ viewModel: SingleLineTitleActionViewModel) {
         contextView.bindData(viewModel)
     }
 }

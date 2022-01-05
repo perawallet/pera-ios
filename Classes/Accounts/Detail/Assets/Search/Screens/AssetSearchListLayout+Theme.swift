@@ -13,28 +13,22 @@
 // limitations under the License.
 
 //
-//  Reward.swift
+//   AssetSearchListLayout+Theme.swift
 
 import Foundation
 
-struct Reward: TransactionItem {
-    let uuid = UUID()
+import Foundation
+import MacaroonUIKit
+import UIKit
 
-    let amount: UInt64
-    let date: Date?
-}
+extension AssetSearchListLayout {
+    struct Theme: LayoutSheet, StyleSheet {
+        let assetItemSize: LayoutSize
+        let listHeaderSize: LayoutSize
 
-extension Reward: Hashable {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(uuid)
-    }
-
-    static func == (
-        lhs: Reward,
-        rhs: Reward
-    ) -> Bool {
-        return lhs.uuid == rhs.uuid
+        init(_ family: LayoutFamily) {
+            self.assetItemSize = (UIScreen.main.bounds.width - 48, 72)
+            self.listHeaderSize = (UIScreen.main.bounds.width, 40)
+        }
     }
 }

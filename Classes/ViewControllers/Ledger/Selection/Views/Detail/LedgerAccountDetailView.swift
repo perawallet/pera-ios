@@ -75,18 +75,6 @@ final class AccountPreviewCell: BaseCollectionViewCell<AccountPreviewView> {
     }
 }
 
-// MARK: - AssetPreviewCell
-
-final class AssetPreviewCell: BaseCollectionViewCell<AssetPreviewView> {
-    func customize(_ theme: AssetPreviewViewTheme) {
-        contextView.customize(theme)
-    }
-
-    func bindData(_ viewModel: AssetPreviewViewModel) {
-        contextView.bindData(viewModel)
-    }
-}
-
 // MARK: - LedgerAccountDetailSectionHeaderReusableView
 
 final class LedgerAccountDetailSectionHeaderReusableView: BaseSupplementaryView<LedgerAccountDetailSectionHeaderView> {

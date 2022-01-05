@@ -13,26 +13,26 @@
 // limitations under the License.
 
 //
-//   SelectAssetViewController+Theme.swift
+//   AccountAssetListLayout+Theme.swift
 
 import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-extension SelectAssetViewController {
+extension AccountAssetListLayout {
     struct Theme: LayoutSheet, StyleSheet {
-        let listBackgroundColor: UIColor
-        let listMinimumLineSpacing: LayoutMetric
-        let listItemHeight: LayoutMetric
-        let listContentInsetTop: LayoutMetric
-        let listLeadingInset: LayoutMetric
+        let assetItemSize: LayoutSize
+        let searchItemSize: LayoutSize
+        let portfolioItemSize: LayoutSize
+        let listHeaderSize: LayoutSize
+        let listFooterSize: LayoutSize
 
         init(_ family: LayoutFamily) {
-            listBackgroundColor = AppColors.Shared.System.background.uiColor
-            listMinimumLineSpacing = 0
-            listItemHeight = 72
-            listContentInsetTop = 28
-            listLeadingInset = 24
+            self.assetItemSize = (UIScreen.main.bounds.width - 48, 72)
+            self.searchItemSize = (UIScreen.main.bounds.width, 72)
+            self.portfolioItemSize = (UIScreen.main.bounds.width, 200)
+            self.listHeaderSize = (UIScreen.main.bounds.width, 40)
+            self.listFooterSize = (UIScreen.main.bounds.width, 72)
         }
     }
 }
