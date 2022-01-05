@@ -355,6 +355,7 @@
 "transaction-detail-reward" = "Reward";
 "transaction-detail-from" = "From";
 "transaction-detail-sender" = "Sender";
+"transaction-detail-receiver" = "Receiver";
 "transaction-detail-to" = "To";
 "transaction-detail-fee" = "Fee";
 "transaction-detail-date" = "Date";

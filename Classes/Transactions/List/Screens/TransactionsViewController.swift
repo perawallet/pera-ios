@@ -102,6 +102,12 @@ class TransactionsViewController: BaseViewController {
 
                 self.bottomSheetTransition.perform(.rewardDetail(account: self.account))
             }
+        } else if provider.infoViewConfiguration?.cellType == AssetDetailInfoViewCell.self {
+            transactionHistoryDataSource.copyAssetIDHandler = { [weak self] _, assetID in
+                guard  UIPasteboard.general.string != assetID else { return }
+                self?.bannerController?.presentInfoBanner("asset-id-copied-title".localized)
+                UIPasteboard.general.string = assetID
+            }
         }
         
         transactionHistoryDataSource.openFilterOptionsHandler = { [weak self] _ in

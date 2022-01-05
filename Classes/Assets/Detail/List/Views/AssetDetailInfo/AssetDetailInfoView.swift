@@ -19,12 +19,23 @@ import MacaroonUIKit
 import UIKit
 
 final class AssetDetailInfoView: View {
+    weak var delegate: AssetDetailInfoViewDelegate?
+
     private lazy var yourBalanceTitleLabel = UILabel()
     private lazy var balanceLabel = UILabel()
     private lazy var horizontalStackView = UIStackView()
     private lazy var assetNameLabel = UILabel()
     private lazy var assetIDLabel = UILabel()
     private lazy var verifiedImage = UIImageView()
+
+    func setListeners() {
+        assetIDLabel.addGestureRecognizer(
+            UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(notifyDelegateToCopyAssetID)
+            )
+        )
+    }
 
     func customize(_ theme: AssetDetailInfoViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -38,6 +49,13 @@ final class AssetDetailInfoView: View {
     func customizeAppearance(_ styleSheet: StyleSheet) {}
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
+}
+
+extension AssetDetailInfoView {
+    @objc
+    private func notifyDelegateToCopyAssetID() {
+        delegate?.assetDetailInfoViewDidTapAssetID(self, assetID: assetIDLabel.text)
+    }
 }
 
 extension AssetDetailInfoView {
@@ -100,4 +118,8 @@ extension AssetDetailInfoView: ViewModelBindable {
         assetNameLabel.text = viewModel?.name
         assetIDLabel.text = viewModel?.ID
     }
+}
+
+protocol AssetDetailInfoViewDelegate: AnyObject {
+    func assetDetailInfoViewDidTapAssetID(_ assetDetailInfoView: AssetDetailInfoView, assetID: String?)
 }

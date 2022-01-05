@@ -191,9 +191,9 @@ extension TransactionHistoryContextViewModel {
         var title: String {
             switch self {
             case .sender:
-                return "Sender"
+                return "transaction-detail-sender".localized
             case .receiver:
-                return "Receiver"
+                return "transaction-detail-receiver".localized
             }
         }
 

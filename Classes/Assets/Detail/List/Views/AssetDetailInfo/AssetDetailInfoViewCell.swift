@@ -18,12 +18,29 @@
 import UIKit
 
 final class AssetDetailInfoViewCell: BaseCollectionViewCell<AssetDetailInfoView> {
+    weak var delegate: AssetDetailInfoViewCellDelegate?
+
     override func prepareLayout() {
         super.prepareLayout()
         contextView.customize(AssetDetailInfoViewTheme())
     }
 
+    override func setListeners() {
+        contextView.setListeners()
+        contextView.delegate = self
+    }
+
     func bindData(_ viewModel: AssetDetailInfoViewModel?) {
         contextView.bindData(viewModel)
     }
+}
+
+extension AssetDetailInfoViewCell: AssetDetailInfoViewDelegate {
+    func assetDetailInfoViewDidTapAssetID(_ assetDetailInfoView: AssetDetailInfoView, assetID: String?) {
+        delegate?.assetDetailInfoViewCellDidTapAssetID(self, assetID: assetID)
+    }
+}
+
+protocol AssetDetailInfoViewCellDelegate: AnyObject {
+    func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell, assetID: String?)
 }

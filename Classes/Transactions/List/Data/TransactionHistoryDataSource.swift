@@ -40,6 +40,7 @@ final class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     var openRewardDetailHandler: ((TransactionHistoryDataSource) -> Void)?
     var openFilterOptionsHandler: ((TransactionHistoryDataSource) -> Void)?
     var shareHistoryHandler: ((TransactionHistoryDataSource) -> Void)?
+    var copyAssetIDHandler: ((TransactionHistoryDataSource, _ assetID: String?) -> Void)?
 
     private let provider: AssetDetailConfigurationProtocol
 
@@ -157,6 +158,7 @@ extension TransactionHistoryDataSource {
         }
         let cell = collectionView.dequeue(AssetDetailInfoViewCell.self, at: indexPath)
         cell.bindData(AssetDetailInfoViewModel(account: account, assetDetail: assetDetail))
+        cell.delegate = self
         return cell
     }
 }
@@ -524,5 +526,11 @@ extension TransactionHistoryDataSource {
 extension TransactionHistoryDataSource: AlgosDetailInfoViewCellDelegate {
     func algosDetailInfoViewCellDidTapInfoButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell) {
         openRewardDetailHandler?(self)
+    }
+}
+
+extension TransactionHistoryDataSource: AssetDetailInfoViewCellDelegate {
+    func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell, assetID: String?) {
+        copyAssetIDHandler?(self, assetID)
     }
 }
