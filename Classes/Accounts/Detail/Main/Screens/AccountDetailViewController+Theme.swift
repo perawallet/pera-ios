@@ -13,26 +13,17 @@
 // limitations under the License.
 
 //
-//   SearchBarItemViewTheme.swift
+//   AccountDetailViewController+Theme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct SearchBarItemViewTheme: StyleSheet, LayoutSheet {
-    let searchInput: SearchInputViewTheme
+extension AccountDetailViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: Color
 
-    let horizontalInset: LayoutMetric
-    let verticalInset: LayoutMetric
-
-    init(placeholder: String, family: LayoutFamily = .current) {
-        self.searchInput = SearchInputViewCommonTheme(placeholder: placeholder, family: family)
-
-        self.horizontalInset = 24
-        self.verticalInset = 16
-    }
-
-    init(_ family: LayoutFamily) {
-        self.init(placeholder: .empty, family: family)
+        init(_ family: LayoutFamily) {
+            backgroundColor = AppColors.Shared.System.background
+        }
     }
 }

@@ -19,10 +19,11 @@ import Foundation
 import UIKit
 
 final class AccountDetailViewController: PageContainer {
-
-    private lazy var assetListScreen = AccountAssetListViewController(configuration: configuration)
-    private lazy var nftListScreen = AccountNFTListViewController(configuration: configuration)
-    private lazy var transactionListScreen = AccountTransactionListViewController(configuration: configuration)
+    private lazy var theme = Theme()
+    
+    private lazy var assetListScreen = AccountAssetListViewController(account: account, configuration: configuration)
+    private lazy var nftListScreen = AccountNFTListViewController(account: account, configuration: configuration)
+    private lazy var transactionListScreen = AccountTransactionListViewController(account: account, configuration: configuration)
 
     private lazy var accountTitleView = AccountNameView()
 
@@ -37,6 +38,11 @@ final class AccountDetailViewController: PageContainer {
         super.viewDidLoad()
         setPageBarItems()
         addTitleView()
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 }
 
@@ -77,7 +83,7 @@ extension AccountDetailViewController {
 
         init(screen: UIViewController) {
             self.id = AccountDetailPageBarItemID.nfts.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-ntfs".localized)
+            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-nfts".localized)
             self.screen = screen
         }
     }

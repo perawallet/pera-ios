@@ -21,9 +21,36 @@ import MacaroonUIKit
 
 final class AccountNFTListViewController: BaseViewController {
 
+    private let account: Account
+
+    init(account: Account, configuration: ViewControllerConfiguration) {
+        self.account = account
+        super.init(configuration: configuration)
+    }
+
     private lazy var listStateView = ListStateView()
 
+    override func prepareLayout() {
+        super.prepareLayout()
+        addListStateView()
+    }
+
     override func bindData() {
+        super.bindData()
+        bindStateViewData()
+    }
+}
+
+extension AccountNFTListViewController {
+    private func addListStateView() {
+        view.addSubview(listStateView)
+
+        listStateView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+
+    private func bindStateViewData() {
         listStateView.bindData(
             ListStateViewModel(
                 ListStateDraft(
