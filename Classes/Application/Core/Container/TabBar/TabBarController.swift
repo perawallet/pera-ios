@@ -373,7 +373,13 @@ extension TabBarController {
 
 extension TabBarController: TabBarModalViewControllerDelegate {
     func tabBarModalViewControllerDidSend(_ tabBarModalViewController: TabBarModalViewController) {
-        open(.accountSelection, by: .present)
+//        open(.accountSelection, by: .present)
+        let fullScreenPresentation = Screen.Transition.Open.customPresent(
+            presentationStyle: .fullScreen,
+            transitionStyle: nil,
+            transitioningDelegate: nil
+        )
+        open(.wcMainTransactionScreen, by: fullScreenPresentation)
     }
 
     func tabBarModalViewControllerDidReceive(_ tabBarModalViewController: TabBarModalViewController) {

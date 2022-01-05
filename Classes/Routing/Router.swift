@@ -495,6 +495,8 @@ class Router {
                 transactionController: transactionController,
                 configuration: configuration
             )
+        case .wcMainTransactionScreen:
+            viewController = WCMainTransactionScreen(configuration: configuration)
         }
 
         return viewController as? T
