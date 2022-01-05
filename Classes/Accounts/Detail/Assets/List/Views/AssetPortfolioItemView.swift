@@ -48,6 +48,12 @@ extension AssetPortfolioItemView {
 }
 
 final class AssetPortfolioItemCell: BaseCollectionViewCell<AssetPortfolioItemView> {
+
+    override func prepareLayout() {
+        super.prepareLayout()
+        contextView.customize(AssetPortfolioItemViewTheme())
+    }
+
     func bindData(_ viewModel: PortfolioValueViewModel?) {
         contextView.bindData(viewModel)
     }

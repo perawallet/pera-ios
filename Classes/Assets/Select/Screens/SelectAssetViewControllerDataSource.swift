@@ -39,7 +39,6 @@ UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
-        cell.customize(AssetPreviewViewCommonTheme())
 
         if indexPath.item == 0 {
             cell.bindData(
@@ -55,5 +54,4 @@ UICollectionViewDataSource {
 
         return cell
     }
-
 }

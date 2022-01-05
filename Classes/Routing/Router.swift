@@ -275,6 +275,10 @@ class Router {
             )
         case let .assetDetail(account, assetDetail):
             viewController = AssetDetailViewController(account: account, configuration: configuration, assetDetail: assetDetail)
+        case let .accountDetail(account):
+            viewController = AccountDetailViewController(account: account, configuration: configuration)
+        case let .assetSearch(account):
+            viewController = AssetSearchViewController(account: account, configuration: configuration)
         case let .addAsset(account):
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case let .removeAsset(account):

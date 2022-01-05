@@ -13,28 +13,17 @@
 // limitations under the License.
 
 //
-//  Reward.swift
+//   AccountAssetListViewController+Theme.swift
 
 import Foundation
+import MacaroonUIKit
 
-struct Reward: TransactionItem {
-    let uuid = UUID()
+extension AccountAssetListViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let listBackgroundColor: Color
 
-    let amount: UInt64
-    let date: Date?
-}
-
-extension Reward: Hashable {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(uuid)
-    }
-
-    static func == (
-        lhs: Reward,
-        rhs: Reward
-    ) -> Bool {
-        return lhs.uuid == rhs.uuid
+        init(_ family: LayoutFamily) {
+            self.listBackgroundColor = AppColors.Shared.System.background.uiColor
+        }
     }
 }

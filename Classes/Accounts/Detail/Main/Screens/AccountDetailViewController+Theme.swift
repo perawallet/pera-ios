@@ -13,12 +13,17 @@
 // limitations under the License.
 
 //
-//   AccountAssetListViewController.swift
+//   AccountDetailViewController+Theme.swift
 
 import Foundation
-import UIKit
 import MacaroonUIKit
 
-final class AccountAssetListViewController: BaseViewController {
+extension AccountDetailViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: Color
 
+        init(_ family: LayoutFamily) {
+            backgroundColor = AppColors.Shared.System.background
+        }
+    }
 }

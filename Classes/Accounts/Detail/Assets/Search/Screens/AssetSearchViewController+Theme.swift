@@ -13,26 +13,27 @@
 // limitations under the License.
 
 //
-//   SelectAssetViewController+Theme.swift
+//   AssetSearchViewController+Theme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-extension SelectAssetViewController {
+extension AssetSearchViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let listBackgroundColor: UIColor
-        let listMinimumLineSpacing: LayoutMetric
-        let listItemHeight: LayoutMetric
-        let listContentInsetTop: LayoutMetric
-        let listLeadingInset: LayoutMetric
+        let listBackgroundColor: Color
+        let searchInputViewTheme: SearchInputViewTheme
+        let topInset: LayoutMetric
+        let horizontalPadding: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            listBackgroundColor = AppColors.Shared.System.background.uiColor
-            listMinimumLineSpacing = 0
-            listItemHeight = 72
-            listContentInsetTop = 28
-            listLeadingInset = 24
+            self.listBackgroundColor = AppColors.Shared.System.background
+            self.searchInputViewTheme = SearchInputViewCommonTheme(
+                placeholder: "asset-search-placeholder".localized,
+                family: family
+            )
+            self.topInset = 16
+            self.horizontalPadding = 24
         }
     }
 }

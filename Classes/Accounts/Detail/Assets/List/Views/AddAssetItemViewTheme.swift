@@ -20,30 +20,18 @@ import MacaroonUIKit
 import UIKit
 
 struct AddAssetItemViewTheme: StyleSheet, LayoutSheet {
-    let icon: ImageStyle
-    let title: TextStyle
+    let button: ButtonStyle
 
     let iconLeadingInset: LayoutMetric
-    let iconSize: LayoutSize
-    let verticalInset: LayoutMetric
-    let titleHorizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.icon = [
-            .contentMode(.scaleAspectFit),
-            .image("add-icon-40")
-        ]
-        self.title = [
-            .textOverflow(FittingText()),
-            .textAlignment(.left),
-            .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Shared.System.background.uiColor),
-            .text("title-add-asset".localized)
+        self.button = [
+            .icon([.normal("add-icon-40")]),
+            .font(Fonts.DMSans.regular.make(15)),
+            .title("title-add-asset".localized),
+            .titleColor([.normal(AppColors.Components.Text.main)])
         ]
 
-        self.iconLeadingInset = 24
-        self.iconSize = LayoutSize(w: 40, h: 40)
-        self.verticalInset = 16
-        self.titleHorizontalPadding = 16
+        self.iconLeadingInset = 32
     }
 }

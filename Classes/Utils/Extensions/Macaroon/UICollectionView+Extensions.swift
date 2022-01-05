@@ -31,4 +31,16 @@ extension UICollectionView {
 
         return header
     }
+
+    public func dequeueFooter<T: UICollectionReusableView>(_ someClass: T.Type, at indexPath: IndexPath) -> T {
+        guard let footer = dequeueReusableSupplementaryView(
+            ofKind: UICollectionView.elementKindSectionFooter,
+            withReuseIdentifier: someClass.reuseIdentifier,
+            for: indexPath
+        ) as? T else {
+            crash("Footer not supported of \(type(of: T.self))")
+        }
+
+        return footer
+    }
 }

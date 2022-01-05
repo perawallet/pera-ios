@@ -37,9 +37,10 @@ final class ListStateView: View {
     }
 
     func customize(_ theme: ListStateViewTheme) {
+        customizeAppearance(theme.view)
         addStackView(theme)
         addImageView(theme)
-        addTitleabel(theme)
+        addTitleLabel(theme)
         addDetailLabel(theme)
         addActionButton(theme)
     }
@@ -57,7 +58,8 @@ extension ListStateView {
 
         addSubview(stackView)
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.top.bottom.lessThanOrEqualToSuperview()
         }
     }
 
@@ -66,7 +68,7 @@ extension ListStateView {
         stackView.addArrangedSubview(imageView)
     }
 
-    private func addTitleabel(_ theme: ListStateViewTheme) {
+    private func addTitleLabel(_ theme: ListStateViewTheme) {
         titleLabel.customizeAppearance(theme.title)
 
         stackView.addArrangedSubview(titleLabel)
@@ -80,7 +82,7 @@ extension ListStateView {
 
     private func addActionButton(_ theme: ListStateViewTheme) {
         actionButton.customize(theme.action)
-        stackView.addArrangedSubview(imageView)
+        stackView.addArrangedSubview(actionButton)
     }
 }
 
@@ -98,7 +100,7 @@ extension ListStateView: ViewModelBindable {
         detailLabel.editText = viewModel?.detail
         actionButton.setEditTitle(viewModel?.actionTitle, for: .normal)
 
-        if viewModel?.actionTitle == nil {
+        if viewModel?.actionTitle?.string == nil {
             actionButton.isHidden = true
         }
     }

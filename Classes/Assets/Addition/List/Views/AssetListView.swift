@@ -30,7 +30,7 @@ final class AssetListView: View {
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.contentInset)
         collectionView.keyboardDismissMode = .onDrag
-        collectionView.register(AssetPreviewCell.self)
+        collectionView.register(AssetPreviewAdditionCell.self)
         return collectionView
     }()
 

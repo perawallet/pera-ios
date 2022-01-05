@@ -20,6 +20,7 @@ import MacaroonUIKit
 import UIKit
 
 struct ListStateViewTheme: StyleSheet, LayoutSheet {
+    let view: ViewStyle
     let icon: ImageStyle
     let title: TextStyle
     let detail: TextStyle
@@ -29,6 +30,9 @@ struct ListStateViewTheme: StyleSheet, LayoutSheet {
     let detailTopPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
+        self.view = [
+            .backgroundColor(AppColors.Shared.System.background)
+        ]
         self.icon = [
             .contentMode(.scaleAspectFit)
         ]
