@@ -15,7 +15,6 @@
 //
 //   SelectAssetViewController+Theme.swift
 
-
 import Foundation
 import MacaroonUIKit
 import UIKit
