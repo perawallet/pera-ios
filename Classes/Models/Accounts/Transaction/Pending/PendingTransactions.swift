@@ -22,6 +22,8 @@ import MacaroonUtils
 final class PendingTransaction:
     ALGEntityModel,
     TransactionItem {
+    let uuid: UUID
+
     let signature: String?
     private let algosAmount: UInt64?
     private let assetAmount: UInt64?
@@ -47,6 +49,7 @@ final class PendingTransaction:
     init(
         _ apiModel: APIModel = APIModel()
     ) {
+        self.uuid = UUID()
         self.signature = apiModel.sig
         self.algosAmount = apiModel.txn?.amt
         self.assetAmount = apiModel.txn?.aamt
@@ -77,6 +80,21 @@ final class PendingTransaction:
         apiModel.sig = signature
         apiModel.txn = transaction
         return apiModel
+    }
+}
+
+extension PendingTransaction: Hashable {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(uuid)
+    }
+
+    static func == (
+        lhs: PendingTransaction,
+        rhs: PendingTransaction
+    ) -> Bool {
+        return lhs.uuid == rhs.uuid
     }
 }
 

@@ -18,6 +18,23 @@
 import Foundation
 
 struct Reward: TransactionItem {
+    let uuid = UUID()
+
     let amount: UInt64
     let date: Date?
+}
+
+extension Reward: Hashable {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(uuid)
+    }
+
+    static func == (
+        lhs: Reward,
+        rhs: Reward
+    ) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
 }
