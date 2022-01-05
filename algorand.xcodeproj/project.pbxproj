@@ -12342,9 +12342,8 @@
 		D4D746582779ACDB000545BD /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */,
-				2BD5476923182636007179FE /* RewardDetailViewModel.swift */,
 				2BF0FB36253D156300D704D5 /* AssetDetailTitleViewModel.swift */,
+				D4DF53A42786105D00820DD0 /* Reward */,
 				D4D746622779BDF4000545BD /* AlgosDetailInfo */,
 				D4D746632779BDFC000545BD /* AssetDetailInfo */,
 			);
@@ -12373,6 +12372,15 @@
 				D4DDF3B127395CAA00BC8F42 /* TextFormatter.swift */,
 			);
 			path = Formatter;
+			sourceTree = "<group>";
+		};
+		D4DF53A42786105D00820DD0 /* Reward */ = {
+			isa = PBXGroup;
+			children = (
+				2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */,
+				2BD5476923182636007179FE /* RewardDetailViewModel.swift */,
+			);
+			path = Reward;
 			sourceTree = "<group>";
 		};
 		D4EC4C602777A3DA00428A3C /* AlgosDetailInfo */ = {
