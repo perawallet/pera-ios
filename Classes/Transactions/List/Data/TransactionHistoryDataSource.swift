@@ -211,7 +211,7 @@ extension TransactionHistoryDataSource {
         at indexPath: IndexPath
     ) -> TransactionHistoryTitleCell {
         let cell = collectionView.dequeue(TransactionHistoryTitleCell.self, at: indexPath)
-        cell.bindData(TransactionHistoryTitleContextViewModel(date: title))
+        cell.bindData(TransactionHistoryTitleContextViewModel(title: title))
         return cell
     }
 
