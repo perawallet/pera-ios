@@ -111,6 +111,7 @@ class TransactionsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         transactionHistoryDataSource.setupContacts()
+        applySnapshot()
         fetchTransactions()
     }
     
