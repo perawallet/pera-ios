@@ -18,7 +18,7 @@
 import UIKit
 import MagpieCore
 
-final class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
+final class TransactionHistoryDataSource: NSObject {
     private var transactions = [TransactionItem]()
     private var account: Account
     private var assetDetail: AssetDetail?
@@ -43,14 +43,6 @@ final class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
     var copyAssetIDHandler: ((TransactionHistoryDataSource, _ assetID: String?) -> Void)?
 
     private let draft: AssetDetailDraftProtocol
-
-    lazy var sections: [Section] = {
-        var sections: [Section] = [.transactionHistory]
-        if draft.infoViewConfiguration != nil {
-            sections.insert(.info, at: 0)
-        }
-        return sections
-    }()
 
     // <todo>: Sort by date
     var groupedTransactionItemsByDate: [TransactionHistoryDraft] {
@@ -95,7 +87,6 @@ final class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
                 break
             }
         }
-
         return transactionHistoryDrafts
     }
 
@@ -109,66 +100,27 @@ final class TransactionHistoryDataSource: NSObject, UICollectionViewDataSource {
 }
 
 extension TransactionHistoryDataSource {
-    struct TransactionHistoryDraft {
+    struct TransactionHistoryDraft: Hashable {
+        static func == (
+            lhs: TransactionHistoryDataSource.TransactionHistoryDraft,
+            rhs: TransactionHistoryDataSource.TransactionHistoryDraft
+        ) -> Bool {
+            lhs.title == rhs.title && lhs.item?.uuid == rhs.item?.uuid
+        }
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(item?.uuid)
+            hasher.combine(title)
+        }
+        
         /// According to current design, title can represent TransactionItem's date or "Pending Transaction"
         var title: String? = nil
         var item: TransactionItem? = nil
     }
-
-    enum Section {
-        case info
-        case transactionHistory
-    }
 }
 
 extension TransactionHistoryDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return sections.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        switch sections[section] {
-        case .info:
-            return 1
-        case .transactionHistory:
-            return groupedTransactionItemsByDate.count
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch sections[indexPath.section] {
-        case .info:
-            if let cellType = draft.infoViewConfiguration?.cellType {
-                switch cellType {
-                case is AlgosDetailInfoViewCell.Type:
-                    return dequeueAlgosDetailInfoViewCell(in: collectionView, at: indexPath)
-                case is AssetDetailInfoViewCell.Type:
-                    return dequeueAssetDetailInfoViewCell(in: collectionView, at: indexPath)
-                default:
-                    break
-                }
-            }
-        case .transactionHistory:
-            let viewModel = groupedTransactionItemsByDate[indexPath.item]
-            if let title = viewModel.title {
-                return dequeueHistoryTitleCell(in: collectionView, with: title, at: indexPath)
-            } else {
-                if let reward = viewModel.item as? Reward {
-                    return dequeueHistoryCell(in: collectionView, with: reward, at: indexPath)
-                } else if let transaction = viewModel.item as? Transaction {
-                    return dequeueHistoryCell(in: collectionView, with: transaction, at: indexPath)
-                } else if let transaction = viewModel.item as? PendingTransaction {
-                    return dequeuePendingCell(in: collectionView, with: transaction, at: indexPath)
-                }
-            }
-        }
-
-        fatalError("Index path is out of bounds")
-    }
-}
-
-extension TransactionHistoryDataSource {
-    private func dequeueAlgosDetailInfoViewCell(
+    func dequeueAlgosDetailInfoViewCell(
         in collectionView: UICollectionView,
         at indexPath: IndexPath
     ) -> AlgosDetailInfoViewCell {
@@ -178,7 +130,7 @@ extension TransactionHistoryDataSource {
         return cell
     }
 
-    private func dequeueAssetDetailInfoViewCell(
+    func dequeueAssetDetailInfoViewCell(
         in collectionView: UICollectionView,
         at indexPath: IndexPath
     ) -> AssetDetailInfoViewCell {
@@ -193,19 +145,18 @@ extension TransactionHistoryDataSource {
 }
 
 extension TransactionHistoryDataSource {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        viewForSupplementaryElementOfKind kind: String,
+    func dequeueTransactionHistoryHeader(
+        in collectionView: UICollectionView,
+        with filterOption: TransactionFilterViewController.FilterOption,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
         let header = collectionView.dequeueHeader(TransactionHistoryHeaderSupplementaryView.self, at: indexPath)
+        header.bindData(TransactionHistoryHeaderViewModel(filterOption))
         header.delegate = self
         return header
     }
-}
 
-extension TransactionHistoryDataSource {
-    private func dequeueHistoryTitleCell(
+    func dequeueHistoryTitleCell(
         in collectionView: UICollectionView,
         with title: String,
         at indexPath: IndexPath
@@ -215,7 +166,7 @@ extension TransactionHistoryDataSource {
         return cell
     }
 
-    private func dequeueHistoryCell(
+    func dequeueHistoryCell(
         in collectionView: UICollectionView,
         with transaction: Transaction,
         at indexPath: IndexPath
@@ -238,7 +189,7 @@ extension TransactionHistoryDataSource {
         return cell
     }
 
-    private func dequeueHistoryCell(
+    func dequeueHistoryCell(
         in collectionView: UICollectionView,
         with reward: Reward,
         at indexPath: IndexPath
@@ -252,7 +203,7 @@ extension TransactionHistoryDataSource {
         return cell
     }
     
-    private func configure(_ cell: TransactionHistoryCell, with transaction: Transaction, for address: String?) {
+    func configure(_ cell: TransactionHistoryCell, with transaction: Transaction, for address: String?) {
         if let contact = contacts.first(where: { contact in
             contact.address == address
         }) {
@@ -270,7 +221,7 @@ extension TransactionHistoryDataSource {
         }
     }
     
-    private func dequeuePendingCell(
+    func dequeuePendingCell(
         in collectionView: UICollectionView,
         with transaction: PendingTransaction,
         at indexPath: IndexPath
@@ -282,7 +233,7 @@ extension TransactionHistoryDataSource {
         return cell
     }
     
-    private func configure(_ cell: PendingTransactionCell, with transaction: PendingTransaction, for address: String?) {
+    func configure(_ cell: PendingTransactionCell, with transaction: PendingTransaction, for address: String?) {
         if let contact = contacts.first(where: { contact  in
             contact.address == address
         }) {
@@ -468,17 +419,6 @@ extension TransactionHistoryDataSource {
     
     func transactionCount() -> Int {
         return transactions.count
-    }
-    
-    func transaction(at indexPath: IndexPath) -> Transaction? {
-        if indexPath.item >= 0 && indexPath.item < transactions.count {
-            guard let transaction = transactions[indexPath.item] as? Transaction else {
-                return nil
-            }
-            return transaction
-        }
-        
-        return nil
     }
     
     func clear() {

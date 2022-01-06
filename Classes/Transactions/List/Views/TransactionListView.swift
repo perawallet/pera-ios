@@ -99,16 +99,8 @@ extension TransactionListView {
 }
 
 extension TransactionListView {
-    func reloadData() {
-        transactionsCollectionView.reloadData()
-    }
-    
     func setCollectionViewDelegate(_ delegate: UICollectionViewDelegate?) {
         transactionsCollectionView.delegate = delegate
-    }
-    
-    func setCollectionViewDataSource(_ dataSource: UICollectionViewDataSource?) {
-        transactionsCollectionView.dataSource = dataSource
     }
     
     var isListRefreshing: Bool {
@@ -141,13 +133,6 @@ extension TransactionListView {
     
     func setNormalState() {
         transactionsCollectionView.contentState = .none
-    }
-    
-    func headerView() -> TransactionHistoryHeaderSupplementaryView? {
-        return transactionsCollectionView.supplementaryView(
-            forElementKind: UICollectionView.elementKindSectionHeader,
-            at: IndexPath(item: 0, section: 0)
-        ) as? TransactionHistoryHeaderSupplementaryView
     }
 }
 

@@ -35,10 +35,10 @@ class TransactionsViewController: BaseViewController {
             } else {
                 transactionListView.setNormalState()
             }
-            transactionListView.reloadData()
+            applySnapshot()
         }
     }
-        
+
     private var filterOption = TransactionFilterViewController.FilterOption.allTime
     private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
     
@@ -46,7 +46,53 @@ class TransactionsViewController: BaseViewController {
     private lazy var transactionListView = TransactionListView()
 
     private let provider: AssetDetailDraftProtocol
-    
+
+    typealias DataSource = UICollectionViewDiffableDataSource<Section, TransactionHistoryItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, TransactionHistoryItem>
+
+    private lazy var dataSource: DataSource = {
+        let dataSource = DataSource(collectionView: transactionListView.transactionsCollectionView) {
+            [unowned self] collectionView, indexPath, identifier in
+
+            switch identifier {
+            case .info:
+                // <todo> Move type to info
+                if let cellType = provider.infoViewConfiguration?.cellType {
+                    switch cellType {
+                    case is AlgosDetailInfoViewCell.Type:
+                        return transactionHistoryDataSource.dequeueAlgosDetailInfoViewCell(in: collectionView, at: indexPath)
+                    case is AssetDetailInfoViewCell.Type:
+                        return transactionHistoryDataSource.dequeueAssetDetailInfoViewCell(in: collectionView, at: indexPath)
+                    default:
+                        break
+                    }
+                }
+            case .title(let title):
+                return transactionHistoryDataSource.dequeueHistoryTitleCell(in: collectionView, with: title, at: indexPath)
+            case .transaction(transaction: let transaction):
+                return transactionHistoryDataSource.dequeueHistoryCell(in: collectionView, with: transaction, at: indexPath)
+            case .pending(pendingTransaction: let pendingTransaction):
+                return transactionHistoryDataSource.dequeuePendingCell(in: collectionView, with: pendingTransaction, at: indexPath)
+            case .reward(let reward):
+                return transactionHistoryDataSource.dequeueHistoryCell(in: collectionView, with: reward, at: indexPath)
+            }
+            fatalError()
+        }
+
+        dataSource.supplementaryViewProvider = {
+            [unowned self] collectionView, kind, indexPath in
+            guard let section = Section(rawValue: indexPath.section),
+                  section == .transactionHistory,
+                  kind == UICollectionView.elementKindSectionHeader else {
+                      return nil
+                  }
+            let header = transactionHistoryDataSource.dequeueTransactionHistoryHeader(in: collectionView, with: filterOption, at: indexPath)
+            return header
+        }
+        
+        return dataSource
+    }()
+
     init(draft: AssetDetailDraftProtocol, configuration: ViewControllerConfiguration) {
         self.provider = draft
         self.account = draft.account
@@ -127,7 +173,6 @@ class TransactionsViewController: BaseViewController {
     override func linkInteractors() {
         transactionListView.delegate = self
         transactionListView.setCollectionViewDelegate(self)
-        transactionListView.setCollectionViewDataSource(transactionHistoryDataSource)
     }
     
     override func prepareLayout() {
@@ -158,7 +203,7 @@ extension TransactionsViewController: TransactionListViewDelegate {
     
     private func reloadData() {
         transactionHistoryDataSource.clear()
-        transactionListView.reloadData()
+        applySnapshot()
         fetchTransactions()
     }
 }
@@ -180,7 +225,7 @@ extension TransactionsViewController {
                 }
                 
                 strongSelf.transactionListView.setNormalState()
-                strongSelf.transactionListView.reloadData()
+                strongSelf.applySnapshot()
             }
         }
         
@@ -192,15 +237,15 @@ extension TransactionsViewController {
         
         transactionHistoryDataSource.loadData(
             for: account,
-            withRefresh: refresh,
-            between: getTransactionFilterDates(),
-            isPaginated: isPaginated
+               withRefresh: refresh,
+               between: getTransactionFilterDates(),
+               isPaginated: isPaginated
         ) { transactions, error in
             self.transactionListView.endRefreshing()
             
             if !self.isConnectedToInternet {
                 self.transactionListView.setInternetConnectionErrorState()
-                self.transactionListView.reloadData()
+                self.applySnapshot()
                 return
             }
             
@@ -208,7 +253,7 @@ extension TransactionsViewController {
                 if !error.isCancelled {
                     self.transactionListView.setOtherErrorState()
                 }
-                self.transactionListView.reloadData()
+                self.applySnapshot()
                 return
             }
             
@@ -223,7 +268,7 @@ extension TransactionsViewController {
             }
             
             self.transactionListView.setNormalState()
-            self.transactionListView.reloadData()
+            self.applySnapshot()
         }
     }
     
@@ -259,11 +304,11 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let transaction = transactionHistoryDataSource.transaction(at: indexPath),
-              transactionHistoryDataSource.sections[indexPath.section] == .transactionHistory else {
+        guard let section = Section(rawValue: indexPath.section),
+              section == .transactionHistory,
+              case .transaction(let transaction) = dataSource.itemIdentifier(for: indexPath) else {
                   return
               }
-        
         openTransactionDetail(transaction)
     }
     
@@ -299,7 +344,7 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
         if let cellSize = provider.infoViewConfiguration?.infoViewSize,
            indexPath.section == 0 {
             return CGSize(cellSize)
-        } else if transactionHistoryDataSource.groupedTransactionItemsByDate[indexPath.item].title != nil {
+        } else if case .title = dataSource.itemIdentifier(for: indexPath) {
             return CGSize(theme.transactionHistoryTitleCellSize)
         } else {
             return CGSize(theme.transactionHistoryCellSize)
@@ -312,7 +357,7 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
         if provider.infoViewConfiguration != nil,
-            section == 0 {
+           section == 0 {
             return .zero
         }
 
@@ -324,20 +369,20 @@ extension TransactionsViewController {
     @objc
     private func didContactAdded(notification: Notification) {
         transactionHistoryDataSource.setupContacts()
-        transactionListView.reloadData()
+        applySnapshot()
     }
     
     @objc
     private func didContactEdited(notification: Notification) {
         transactionHistoryDataSource.setupContacts()
-        transactionListView.reloadData()
+        applySnapshot()
     }
 }
 
 extension TransactionsViewController {
     func updateList() {
         transactionHistoryDataSource.clear()
-        transactionListView.reloadData()
+        applySnapshot()
         transactionListView.setLoadingState()
         fetchTransactions()
     }
@@ -363,7 +408,7 @@ extension TransactionsViewController: TransactionFilterViewControllerDelegate {
             pendingTransactionPolling?.start()
         case let .customRange(_, to):
             if let isToDateLaterThanNow = to?.isAfterDate(Date(), granularity: .day),
-                isToDateLaterThanNow {
+               isToDateLaterThanNow {
                 pendingTransactionPolling?.invalidate()
             } else {
                 pendingTransactionPolling?.start()
@@ -373,9 +418,6 @@ extension TransactionsViewController: TransactionFilterViewControllerDelegate {
         }
         
         self.filterOption = filterOption
-        if let headerView = transactionListView.headerView() {
-            headerView.bindData(TransactionHistoryHeaderViewModel(filterOption))
-        }
         updateList()
     }
 }
@@ -386,8 +428,8 @@ extension TransactionsViewController: CSVExportable {
 
         transactionHistoryDataSource.fetchAllTransactions(
             for: account,
-            between: getTransactionFilterDates(),
-            nextToken: nil
+               between: getTransactionFilterDates(),
+               nextToken: nil
         ) { transactions, error in
             if error != nil {
                 self.loadingController?.stopLoading()
@@ -440,7 +482,7 @@ extension TransactionsViewController: CSVExportable {
         var fileName = "\(account.name ?? "")_\(assetId)"
         let dates = getTransactionFilterDates()
         if let fromDate = dates.from,
-            let toDate = dates.to {
+           let toDate = dates.to {
             if filterOption == .today {
                 fileName += "-" + fromDate.toFormat("MM-dd-yyyy")
             } else {
@@ -496,5 +538,63 @@ extension TransactionsViewController: APIListener {
         if UIApplication.shared.isActive {
             isConnectedToInternet = networkMonitor.isConnected
         }
+    }
+}
+
+extension TransactionsViewController {
+    private func applySnapshot(
+        animatingDifferences: Bool = true
+    ) {
+        var snapshot = Snapshot()
+        snapshot.appendSections(Section.allCases)
+
+        snapshot.appendItems(
+            [.info],
+            toSection: .info
+        )
+
+        var transactionHistoryItems: [TransactionHistoryItem] = []
+
+        transactionHistoryDataSource.groupedTransactionItemsByDate.forEach {
+            let item: TransactionHistoryItem
+            if let transaction = $0.item as? Transaction {
+                item = .transaction(transaction: transaction)
+            } else if let reward = $0.item as? Reward {
+                item = .reward(reward: reward)
+            } else if let pendingTransaction = $0.item as? PendingTransaction {
+                item = .pending(pendingTransaction: pendingTransaction)
+            } else if let title = $0.title {
+                item = .title(title: title)
+            } else {
+                fatalError()
+            }
+
+            transactionHistoryItems.append(item)
+        }
+
+        snapshot.appendItems(
+            transactionHistoryItems,
+            toSection: .transactionHistory // <todo>: apply header
+        )
+
+        dataSource.apply(
+            snapshot,
+            animatingDifferences: animatingDifferences
+        )
+    }
+}
+
+extension TransactionsViewController {
+    enum Section: Int, CaseIterable {
+        case info
+        case transactionHistory
+    }
+
+    enum TransactionHistoryItem: Hashable {
+      case info
+      case transaction(transaction: Transaction)
+      case pending(pendingTransaction: PendingTransaction)
+      case reward(reward: Reward)
+      case title(title: String)
     }
 }

@@ -20,6 +20,7 @@ import MagpieCore
 import MacaroonUtils
 
 protocol TransactionItem {
+    var uuid: UUID { get }
     var date: Date? { get }
 }
 
