@@ -39,7 +39,7 @@ class LedgerPairWarningView: BaseView {
             .font(UIFont.font(withWeight: .regular(size: 14.0))),
             .textColor(Colors.Text.primary)
         ])
-        let secondText = "ledger-pairing-first-warning-message-second".attributed([
+        let secondText = "ledger-pairing-first-warning-message-second".localized.attributed([
             .font(UIFont.font(withWeight: .semiBold(size: 14.0))),
             .textColor(Colors.Text.primary)
         ])
