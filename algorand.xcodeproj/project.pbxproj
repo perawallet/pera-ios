@@ -6845,8 +6845,6 @@
 			isa = PBXGroup;
 			children = (
 				2B80C52F27720BFF00BB071E /* Screens */,
-				2B80C52E27720BF900BB071E /* ViewModels */,
-				2B80C52D27720BF500BB071E /* Views */,
 			);
 			path = Transactions;
 			sourceTree = "<group>";
@@ -6905,20 +6903,6 @@
 				2BB0B12627830E7B00A16494 /* AccountAssetListLayout+Theme.swift */,
 			);
 			path = Screens;
-			sourceTree = "<group>";
-		};
-		2B80C52D27720BF500BB071E /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		2B80C52E27720BF900BB071E /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		2B80C52F27720BFF00BB071E /* Screens */ = {

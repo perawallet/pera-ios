@@ -583,10 +583,9 @@ extension TransactionsViewController {
     private func appendPendingTransactions(to snapshot: inout Snapshot) {
         if !pendingTransactions.isEmpty {
             snapshot.appendItems(
-                [.title(title: "transaction-detail-pending-transactions".localized)],
+                [.title(title: "transaction-detail-pending-transactions".localized)] + pendingTransactions,
                 toSection: .transactionHistory
             )
-            snapshot.appendItems(pendingTransactions, toSection: .transactionHistory)
         }
     }
 
