@@ -130,12 +130,12 @@ extension SettingsViewController {
     
     func didSelectItemFromAccountSettings(_ setting: AccountSettings) {
         switch setting {
+        case .security:
+            open(.securitySettings, by: .push)
         case .notifications:
             open(.notificationFilter(flow: .settings), by: .push)
         case .walletConnect:
             open(.walletConnectSessionList, by: .push)
-        default:
-            break
         }
     }
     

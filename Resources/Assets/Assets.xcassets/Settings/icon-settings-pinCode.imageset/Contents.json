@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "settings-node-inactive.pdf",
+      "filename" : "locked.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "settings-node-inactive-1.pdf",
+      "filename" : "locked-1.pdf",
       "idiom" : "universal"
     }
   ],

@@ -323,6 +323,13 @@
 "settings-security-title" = "Security";
 "settings-wallet-connect-title" = "WalletConnect Sessions";
 
+// MARK: Security Settings
+"security-settings-title" = "Security";
+"security-settings-section" = "Security Preferences";
+"security-settings-pinCode-activation" = "Enable PIN Code";
+"security-settings-pinCode-change" = "Set / Change PIN Code";
+"security-settings-localAuthentication" = "Enable Face ID/Touch ID";
+
 // MARK: Node Settings
 "node-settings-title" = "Node Settings";
 "node-settings-warning-title" = "Warning";

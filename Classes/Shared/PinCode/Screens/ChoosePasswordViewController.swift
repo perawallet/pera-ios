@@ -55,19 +55,6 @@ final class ChoosePasswordViewController: BaseViewController {
         displayPinLimitScreenIfNeeded()
     }
     
-    override func configureNavigationBarAppearance() {
-        switch mode {
-        case .confirm,
-             .resetPassword:
-            let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-                self.dismissScreen()
-            }
-            leftBarButtonItems = [closeBarButtonItem]
-        default:
-            break
-        }
-    }
-    
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -113,12 +100,8 @@ extension ChoosePasswordViewController {
     
     private func setTitle() {
         switch mode {
-        case .setup:
-            title = "choose-password-title".localized
         case .verify:
             title = "password-verify-title".localized
-        case .resetPassword, .resetVerify:
-            title = "password-change-title".localized
         case let .confirm(viewTitle):
             title = viewTitle
         default:
