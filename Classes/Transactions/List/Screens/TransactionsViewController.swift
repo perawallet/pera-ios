@@ -19,7 +19,7 @@ import UIKit
 import MagpieCore
 import MacaroonUIKit
 
-// <todo> Refactor DataSource & ViewController, it is tightly coupled to AssetDetailDraft.
+// <todo> Refactor
 class TransactionsViewController: BaseViewController {
     private lazy var theme = Theme()
 
@@ -215,7 +215,7 @@ extension TransactionsViewController {
                     return
                 }
                 guard let pendingTransactions = pendingTransactions, !pendingTransactions.isEmpty else {
-                    var currentSnapshot = self.currentSnapshot
+                    var currentSnapshot = self.dataSource.snapshot()
                     currentSnapshot.deleteItems(self.pendingTransactions)
                     self.dataSource.apply(
                         currentSnapshot
@@ -236,7 +236,7 @@ extension TransactionsViewController {
         pendingTransactionPolling?.start()
     }
     
-    private func fetchTransactions(witRefresh refresh: Bool = true, isPaginated: Bool = false) {
+    private func fetchTransactions(withRefresh refresh: Bool = true, isPaginated: Bool = false) {
         transactionListView.setLoadingState()
         
         transactionHistoryDataSourceController.loadData(
@@ -303,7 +303,7 @@ extension TransactionsViewController {
 extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if transactionHistoryDataSourceController.shouldSendPaginatedRequest(at: indexPath.item) {
-            fetchTransactions(witRefresh: false, isPaginated: true)
+            fetchTransactions(withRefresh: false, isPaginated: true)
         }
     }
     
