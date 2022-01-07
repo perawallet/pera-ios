@@ -25,16 +25,11 @@ final class AssetDetailInfoView: View {
     private lazy var balanceLabel = UILabel()
     private lazy var horizontalStackView = UIStackView()
     private lazy var assetNameLabel = UILabel()
-    private lazy var assetIDLabel = UILabel()
+    private lazy var assetIDButton = Button(.imageAtRight(spacing: 8))
     private lazy var verifiedImage = UIImageView()
 
     func setListeners() {
-        assetIDLabel.addGestureRecognizer(
-            UILongPressGestureRecognizer(
-                target: self,
-                action: #selector(notifyDelegateToCopyAssetID)
-            )
-        )
+        assetIDButton.addTarget(self, action: #selector(notifyDelegateToCopyAssetID), for: .touchUpInside)
     }
 
     func customize(_ theme: AssetDetailInfoViewTheme) {
@@ -43,7 +38,7 @@ final class AssetDetailInfoView: View {
         addYourBalanceTitleLabel(theme)
         addBalanceLabel(theme)
         addAssetNameLabel(theme)
-        addAssetIDLabel(theme)
+        addAssetIDButton(theme)
     }
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}
@@ -54,7 +49,7 @@ final class AssetDetailInfoView: View {
 extension AssetDetailInfoView {
     @objc
     private func notifyDelegateToCopyAssetID() {
-        delegate?.assetDetailInfoViewDidTapAssetID(self, assetID: assetIDLabel.text)
+        delegate?.assetDetailInfoViewDidTapAssetID(self, assetID: assetIDButton.title(for: .normal))
     }
 }
 
@@ -98,11 +93,11 @@ extension AssetDetailInfoView {
         horizontalStackView.addSeparator(theme.separator, padding: theme.bottomSeparatorTopPadding)
     }
 
-    private func addAssetIDLabel(_ theme: AssetDetailInfoViewTheme) {
-        assetIDLabel.customizeAppearance(theme.assetIDLabel)
+    private func addAssetIDButton(_ theme: AssetDetailInfoViewTheme) {
+        assetIDButton.customizeAppearance(theme.assetIDButton)
 
-        addSubview(assetIDLabel)
-        assetIDLabel.snp.makeConstraints {
+        addSubview(assetIDButton)
+        assetIDButton.snp.makeConstraints {
             $0.top.equalTo(assetNameLabel.snp.bottom).offset(theme.assetIDLabelTopPadding)
             $0.leading.equalTo(yourBalanceTitleLabel)
             $0.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalPadding)
@@ -116,7 +111,7 @@ extension AssetDetailInfoView: ViewModelBindable {
         verifiedImage.isHidden = !(viewModel?.isVerified ?? false)
         balanceLabel.text = viewModel?.amount
         assetNameLabel.text = viewModel?.name
-        assetIDLabel.text = viewModel?.ID
+        assetIDButton.setTitle(viewModel?.ID, for: .normal)
     }
 }
 
