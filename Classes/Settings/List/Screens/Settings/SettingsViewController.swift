@@ -217,8 +217,8 @@ extension SettingsViewController: SettingsDataSourceDelegate {
             image: "icon-settings-logout".uiImage,
             title: "settings-logout-title".localized,
             description: "settings-logout-detail".localized,
-            primaryActionButtonTitle: "node-settings-action-delete-title".localized,
-            secondaryActionButtonTitle: "title-cancel".localized,
+            primaryActionButtonTitle: "settings-logout-button-delete".localized,
+            secondaryActionButtonTitle: "settings-logout-button-cancel".localized,
             primaryAction: { [weak self] in
                 guard let self = self else {
                     return

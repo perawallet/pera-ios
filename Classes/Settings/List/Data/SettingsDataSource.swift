@@ -22,7 +22,7 @@ final class SettingsDataSource: NSObject {
     
     private(set) lazy var sections: [GeneralSettings] = [.account, .appPreferences, .support]
     private(set) lazy var settings: [[Settings]] = [accountSettings, appPreferenceSettings, supportSettings]
-    private(set) lazy var accountSettings: [AccountSettings] = [.backup, .security, .notifications, .walletConnect]
+    private(set) lazy var accountSettings: [AccountSettings] = [.security, .notifications, .walletConnect]
     private(set) lazy var appPreferenceSettings: [AppPreferenceSettings] = [.rewards, .language, .currency, .appearance]
     private(set) lazy var supportSettings: [SupportSettings] = [.feedback, .appReview, .termsAndServices, .privacyPolicy, .developer]
     
@@ -49,7 +49,7 @@ extension SettingsDataSource: UICollectionViewDataSource {
             case .account:
                 if let setting = accountSettings[safe: indexPath.item] {
                     switch setting {
-                    case .backup, .security, .notifications, .walletConnect:
+                    case .security, .notifications, .walletConnect:
                         return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
                     }
                 }
