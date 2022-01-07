@@ -61,3 +61,7 @@ struct AlgosDetailDraft: AssetDetailDraftProtocol {
         )
     }
 }
+
+struct AccountTransactionListDraft: AssetDetailDraftProtocol {
+    var account: Account
+}

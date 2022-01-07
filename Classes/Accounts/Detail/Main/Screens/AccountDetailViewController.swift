@@ -23,7 +23,10 @@ final class AccountDetailViewController: PageContainer {
     
     private lazy var assetListScreen = AccountAssetListViewController(account: account, configuration: configuration)
     private lazy var nftListScreen = AccountNFTListViewController(account: account, configuration: configuration)
-    private lazy var transactionListScreen = AccountTransactionListViewController(account: account, configuration: configuration)
+    private lazy var transactionListScreen = AccountTransactionListViewController(
+        draft: AccountTransactionListDraft(account: account),
+        configuration: configuration
+    )
 
     private lazy var accountTitleView = ImageWithTitleView()
 

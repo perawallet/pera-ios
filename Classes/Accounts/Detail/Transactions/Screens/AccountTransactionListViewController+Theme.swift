@@ -13,24 +13,17 @@
 // limitations under the License.
 
 //
-//   AccountTransactionListViewController.swift
+//   AccountTransactionListViewController+Theme.swift
 
-import Foundation
-import UIKit
 import MacaroonUIKit
+import UIKit
 
-final class AccountTransactionListViewController: TransactionsViewController {
-    private lazy var theme = Theme()
+extension AccountTransactionListViewController {
+    struct Theme: LayoutSheet {
+        let topPadding: LayoutMetric
 
-    init(draft: AccountTransactionListDraft, configuration: ViewControllerConfiguration) {
-        super.init(draft: draft, configuration: configuration)
-    }
-
-    override func prepareLayout() {
-        view.addSubview(transactionListView)
-        transactionListView.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.top.equalToSuperview().inset(theme.topPadding)
+        init(_ family: LayoutFamily) {
+            self.topPadding = 24
         }
     }
 }

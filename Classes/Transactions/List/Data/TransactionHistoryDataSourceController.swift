@@ -44,11 +44,11 @@ final class TransactionHistoryDataSourceController: NSObject {
 
     private let draft: AssetDetailDraftProtocol
 
-    init(api: ALGAPI?, provider: AssetDetailDraftProtocol) {
-        self.draft = provider
+    init(api: ALGAPI?, draft: AssetDetailDraftProtocol) {
+        self.draft = draft
         self.api = api
-        self.account = provider.account
-        self.assetDetail = provider.assetDetail
+        self.account = draft.account
+        self.assetDetail = draft.assetDetail
         super.init()
     }
 }
