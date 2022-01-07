@@ -215,12 +215,7 @@ extension TransactionsViewController {
                     return
                 }
                 guard let pendingTransactions = pendingTransactions, !pendingTransactions.isEmpty else {
-                    var currentSnapshot = self.dataSource.snapshot()
-                    currentSnapshot.deleteItems(self.pendingTransactions)
-                    self.dataSource.apply(
-                        currentSnapshot
-                    )
-                    self.pendingTransactions = []
+                    self.removePendingTransactionsFromSnapshot()
                     return
                 }
                 
@@ -572,9 +567,7 @@ extension TransactionsViewController {
             }
         }
 
-        if !pendingTransactions.isEmpty {
-            newSnapshot.appendItems(pendingTransactions, toSection: .transactionHistory)
-        }
+        appendPendingTransactions(to: &newSnapshot)
 
         newSnapshot.appendItems(
             transactionHistoryItems,
@@ -585,6 +578,27 @@ extension TransactionsViewController {
             newSnapshot,
             animatingDifferences: animatingDifferences
         )
+    }
+
+    private func appendPendingTransactions(to snapshot: inout Snapshot) {
+        if !pendingTransactions.isEmpty {
+            snapshot.appendItems(
+                [.title(title: "transaction-detail-pending-transactions".localized)],
+                toSection: .transactionHistory
+            )
+            snapshot.appendItems(pendingTransactions, toSection: .transactionHistory)
+        }
+    }
+
+    private func removePendingTransactionsFromSnapshot() {
+        var currentSnapshot = dataSource.snapshot()
+        currentSnapshot.deleteItems(
+            [.title(title: "transaction-detail-pending-transactions".localized)] + pendingTransactions
+        )
+        dataSource.apply(
+            currentSnapshot
+        )
+        pendingTransactions = []
     }
 }
 
