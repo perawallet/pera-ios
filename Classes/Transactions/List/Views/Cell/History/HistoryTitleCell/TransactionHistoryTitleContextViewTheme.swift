@@ -18,11 +18,11 @@
 import MacaroonUIKit
 
 struct TransactionHistoryTitleContextViewTheme: StyleSheet, LayoutSheet {
-    let dateLabel: TextStyle
+    let titleLabel: TextStyle
     let paddings: LayoutPaddings
 
     init(_ family: LayoutFamily) {
-        self.dateLabel = [
+        self.titleLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.gray),

@@ -32,7 +32,7 @@ final class TransactionHistoryTitleContextView: View {
 
 extension TransactionHistoryTitleContextView {
     private func addTitleLabel(_ theme: TransactionHistoryTitleContextViewTheme) {
-        titleLabel.customizeAppearance(theme.dateLabel)
+        titleLabel.customizeAppearance(theme.titleLabel)
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {

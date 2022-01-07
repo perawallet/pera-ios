@@ -27,10 +27,7 @@ final class AccountTransactionListViewController: TransactionsViewController {
     }
 
     override func prepareLayout() {
-        view.addSubview(transactionListView)
-        transactionListView.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.top.equalToSuperview().inset(theme.topPadding)
-        }
+        super.prepareLayout()
+        transactionListView.transactionsCollectionView.contentInset = UIEdgeInsets(theme.contentEdgePaddings)
     }
 }

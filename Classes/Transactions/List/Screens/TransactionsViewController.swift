@@ -549,16 +549,16 @@ extension TransactionsViewController {
 
         var transactionHistoryItems: [TransactionHistoryItem] = []
 
-        if var currentDate = transactionHistoryDataSourceController.transactions.first?.date?.toFormat("MM-dd-yyyy") {
+        if var currentDate = transactionHistoryDataSourceController.transactions.first?.date?.toFormat("MMM d, yyyy") {
             let item: TransactionHistoryItem = .title(title: currentDate)
             transactionHistoryItems.append(item)
 
-            for (_, transactionItem) in transactionHistoryDataSourceController.transactions.enumerated() {
+            for transactionItem in transactionHistoryDataSourceController.transactions {
                 if let transactionItemDate = transactionItem.date,
-                   transactionItemDate.toFormat("MM-dd-yyyy") != currentDate {
-                    let item: TransactionHistoryItem = .title(title: transactionItemDate.toFormat("MM-dd-yyyy"))
+                   transactionItemDate.toFormat("MMM d, yyyy") != currentDate {
+                    let item: TransactionHistoryItem = .title(title: transactionItemDate.toFormat("MMM d, yyyy"))
                     transactionHistoryItems.append(item)
-                    currentDate = transactionItemDate.toFormat("MM-dd-yyyy")
+                    currentDate = transactionItemDate.toFormat("MMM d, yyyy")
                 }
                 let item: TransactionHistoryItem
                 if let transaction = transactionItem as? Transaction {

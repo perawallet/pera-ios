@@ -6141,7 +6141,7 @@
 			isa = PBXGroup;
 			children = (
 				D4A647AF2784F9A5009DE241 /* HistoryFilterCell */,
-				D4A647AE2784F984009DE241 /* HistoryDateCell */,
+				D4A647AE2784F984009DE241 /* HistoryTitleCell */,
 				D4A647AD2784F971009DE241 /* HistoryCell */,
 			);
 			path = History;
@@ -12152,7 +12152,7 @@
 			path = HistoryCell;
 			sourceTree = "<group>";
 		};
-		D4A647AE2784F984009DE241 /* HistoryDateCell */ = {
+		D4A647AE2784F984009DE241 /* HistoryTitleCell */ = {
 			isa = PBXGroup;
 			children = (
 				D4A6479D278479B8009DE241 /* TransactionHistoryTitleCell.swift */,
@@ -12160,7 +12160,7 @@
 				D4A647A92784E1D9009DE241 /* TransactionHistoryTitleContextViewModel.swift */,
 				D4A647A527847AE2009DE241 /* TransactionHistoryTitleContextViewTheme.swift */,
 			);
-			path = HistoryDateCell;
+			path = HistoryTitleCell;
 			sourceTree = "<group>";
 		};
 		D4A647AF2784F9A5009DE241 /* HistoryFilterCell */ = {
