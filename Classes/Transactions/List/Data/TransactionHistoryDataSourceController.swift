@@ -18,7 +18,7 @@
 import UIKit
 import MagpieCore
 
-final class TransactionHistoryDataSource: NSObject {
+final class TransactionHistoryDataSourceController: NSObject {
     private(set) var transactions = [TransactionItem]()
     private var account: Account
     private var assetDetail: AssetDetail?
@@ -37,10 +37,10 @@ final class TransactionHistoryDataSource: NSObject {
 
     private let paginationRequestThreshold = 5
 
-    var openRewardDetailHandler: ((TransactionHistoryDataSource) -> Void)?
-    var openFilterOptionsHandler: ((TransactionHistoryDataSource) -> Void)?
-    var shareHistoryHandler: ((TransactionHistoryDataSource) -> Void)?
-    var copyAssetIDHandler: ((TransactionHistoryDataSource, _ assetID: String?) -> Void)?
+    var openRewardDetailHandler: ((TransactionHistoryDataSourceController) -> Void)?
+    var openFilterOptionsHandler: ((TransactionHistoryDataSourceController) -> Void)?
+    var shareHistoryHandler: ((TransactionHistoryDataSourceController) -> Void)?
+    var copyAssetIDHandler: ((TransactionHistoryDataSourceController, _ assetID: String?) -> Void)?
 
     private let draft: AssetDetailDraftProtocol
 
@@ -53,11 +53,11 @@ final class TransactionHistoryDataSource: NSObject {
     }
 }
 
-extension TransactionHistoryDataSource {
+extension TransactionHistoryDataSourceController {
     struct TransactionHistoryDraft: Hashable {
         static func == (
-            lhs: TransactionHistoryDataSource.TransactionHistoryDraft,
-            rhs: TransactionHistoryDataSource.TransactionHistoryDraft
+            lhs: TransactionHistoryDataSourceController.TransactionHistoryDraft,
+            rhs: TransactionHistoryDataSourceController.TransactionHistoryDraft
         ) -> Bool {
             lhs.title == rhs.title && lhs.item?.uuid == rhs.item?.uuid
         }
@@ -73,7 +73,7 @@ extension TransactionHistoryDataSource {
     }
 }
 
-extension TransactionHistoryDataSource {
+extension TransactionHistoryDataSourceController {
     func dequeueAlgosDetailInfoViewCell(
         in collectionView: UICollectionView,
         at indexPath: IndexPath
@@ -98,7 +98,7 @@ extension TransactionHistoryDataSource {
     }
 }
 
-extension TransactionHistoryDataSource {
+extension TransactionHistoryDataSourceController {
     func dequeueTransactionHistoryFilterCell(
         in collectionView: UICollectionView,
         with filterOption: TransactionFilterViewController.FilterOption,
@@ -206,7 +206,7 @@ extension TransactionHistoryDataSource {
     }
 }
 
-extension TransactionHistoryDataSource {
+extension TransactionHistoryDataSourceController {
     func loadData(
         for account: Account,
         withRefresh refresh: Bool,
@@ -226,7 +226,7 @@ extension TransactionHistoryDataSource {
     }
 }
 
-extension TransactionHistoryDataSource {
+extension TransactionHistoryDataSourceController {
     private func fetchTransactions(
         for account: Account,
         between dates: (Date?, Date?),
@@ -293,7 +293,7 @@ extension TransactionHistoryDataSource {
     }
 }
 
-extension TransactionHistoryDataSource {
+extension TransactionHistoryDataSourceController {
     private func setRewards(from transactions: TransactionList, for account: Account, isPaginated: Bool) {
         let filteredTransactions = transactions.transactions.filter { transaction in
             if let assetTransfer = transaction.assetTransfer,
@@ -315,7 +315,7 @@ extension TransactionHistoryDataSource {
     }
 }
 
-extension TransactionHistoryDataSource {
+extension TransactionHistoryDataSourceController {
     func fetchPendingTransactions(for account: Account, then handler: @escaping ([PendingTransaction]?, APIError?) -> Void) {
         api?.fetchPendingTransactions(account.address) { response in
             switch response {
@@ -349,7 +349,7 @@ extension TransactionHistoryDataSource {
     }
 }
 
-extension TransactionHistoryDataSource {
+extension TransactionHistoryDataSourceController {
     func setupContacts() {
         contacts.removeAll()
         fetchContacts()
@@ -397,7 +397,7 @@ extension TransactionHistoryDataSource {
     }
 }
 
-extension TransactionHistoryDataSource: TransactionHistoryFilterCellDelegate {
+extension TransactionHistoryDataSourceController: TransactionHistoryFilterCellDelegate {
     func transactionHistoryFilterCellDidOpenFilterOptions(
         _ transactionHistoryHeaderSupplementaryView: TransactionHistoryFilterCell
     ) {
@@ -411,7 +411,7 @@ extension TransactionHistoryDataSource: TransactionHistoryFilterCellDelegate {
     }
 }
 
-extension TransactionHistoryDataSource {
+extension TransactionHistoryDataSourceController {
     func fetchAllTransactions(
         for account: Account,
         between dates: (Date?, Date?),
@@ -445,13 +445,13 @@ extension TransactionHistoryDataSource {
     }
 }
 
-extension TransactionHistoryDataSource: AlgosDetailInfoViewCellDelegate {
+extension TransactionHistoryDataSourceController: AlgosDetailInfoViewCellDelegate {
     func algosDetailInfoViewCellDidTapInfoButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell) {
         openRewardDetailHandler?(self)
     }
 }
 
-extension TransactionHistoryDataSource: AssetDetailInfoViewCellDelegate {
+extension TransactionHistoryDataSourceController: AssetDetailInfoViewCellDelegate {
     func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell, assetID: String?) {
         copyAssetIDHandler?(self, assetID)
     }
