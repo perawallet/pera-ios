@@ -36,7 +36,6 @@ final class TransactionListView: View {
     private(set) lazy var transactionsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = theme.cellSpacing
-        flowLayout.sectionHeadersPinToVisibleBounds = true
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -44,7 +43,7 @@ final class TransactionListView: View {
         collectionView.register(TransactionHistoryCell.self)
         collectionView.register(PendingTransactionCell.self)
         collectionView.register(TransactionHistoryTitleCell.self)
-        collectionView.register(header: TransactionHistoryHeaderSupplementaryView.self)
+        collectionView.register(TransactionHistoryFilterCell.self)
         return collectionView
     }()
 

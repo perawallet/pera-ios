@@ -22,7 +22,6 @@ import UIKit
 struct TransactionHistoryHeaderViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let titleLabel: TextStyle
-    let filterButton: ButtonStyle
     let shareButton: ButtonStyle
 
     let buttonSize: LayoutSize
@@ -36,13 +35,9 @@ struct TransactionHistoryHeaderViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(15)),
-            .text("contacts-transactions-title".localized)
         ]
         self.shareButton = [
             .icon([.normal("icon-share-gray")])
-        ]
-        self.filterButton = [
-            .icon([.normal("icon-transaction-filter-gray")])
         ]
         self.buttonSize = (40, 40)
         self.buttonInset = 4

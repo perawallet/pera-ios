@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//  TransactionHistoryHeaderView.swift
+//  TransactionHistoryFilterView.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class TransactionHistoryHeaderView: View {
-    weak var delegate: TransactionHistoryHeaderViewDelegate?
+final class TransactionHistoryFilterView: View {
+    weak var delegate: TransactionHistoryFilterViewDelegate?
 
     private lazy var titleLabel = UILabel()
     private lazy var shareButton = UIButton()
@@ -43,19 +43,19 @@ final class TransactionHistoryHeaderView: View {
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
-extension TransactionHistoryHeaderView {
+extension TransactionHistoryFilterView {
     @objc
     private func notifyDelegateToOpenFilterOptions() {
-        delegate?.transactionHistoryHeaderViewDidOpenFilterOptions(self)
+        delegate?.transactionHistoryFilterViewDidOpenFilterOptions(self)
     }
     
     @objc
     private func notifyDelegateToShareHistory() {
-        delegate?.transactionHistoryHeaderViewDidShareHistory(self)
+        delegate?.transactionHistoryFilterViewDidShareHistory(self)
     }
 }
 
-extension TransactionHistoryHeaderView {
+extension TransactionHistoryFilterView {
     private func addShareButton(_ theme: TransactionHistoryHeaderViewTheme) {
         shareButton.customizeAppearance(theme.shareButton)
 
@@ -68,8 +68,6 @@ extension TransactionHistoryHeaderView {
     }
     
     private func addFilterButton(_ theme: TransactionHistoryHeaderViewTheme) {
-        filterButton.customizeAppearance(theme.filterButton)
-
         addSubview(filterButton)
         filterButton.snp.makeConstraints {
             $0.fitToSize(theme.buttonSize)
@@ -90,14 +88,14 @@ extension TransactionHistoryHeaderView {
     }
 }
 
-extension TransactionHistoryHeaderView: ViewModelBindable {
-    func bindData(_ viewModel: TransactionHistoryHeaderViewModel?) {
+extension TransactionHistoryFilterView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionHistoryFilterViewModel?) {
         titleLabel.text = viewModel?.title
         filterButton.setImage(viewModel?.image, for: .normal)
     }
 }
 
-protocol TransactionHistoryHeaderViewDelegate: AnyObject {
-    func transactionHistoryHeaderViewDidOpenFilterOptions(_ transactionHistoryHeaderView: TransactionHistoryHeaderView)
-    func transactionHistoryHeaderViewDidShareHistory(_ transactionHistoryHeaderView: TransactionHistoryHeaderView)
+protocol TransactionHistoryFilterViewDelegate: AnyObject {
+    func transactionHistoryFilterViewDidOpenFilterOptions(_ transactionHistoryFilterView: TransactionHistoryFilterView)
+    func transactionHistoryFilterViewDidShareHistory(_ transactionHistoryFilterView: TransactionHistoryFilterView)
 }

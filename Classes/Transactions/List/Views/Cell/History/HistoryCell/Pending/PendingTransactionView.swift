@@ -40,6 +40,7 @@ extension PendingTransactionView {
 
         addSubview(indicatorView)
         indicatorView.snp.makeConstraints {
+            $0.fitToSize(theme.indicatorSize)
             $0.centerY.equalToSuperview()
             $0.leading.equalToSuperview().inset(theme.indicatorLeadingPadding)
         }

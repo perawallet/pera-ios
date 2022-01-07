@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//  TransactionHistoryHeaderViewModel.swift
+//  TransactionHistoryFilterViewModel.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class TransactionHistoryHeaderViewModel: PairedViewModel {
+final class TransactionHistoryFilterViewModel: PairedViewModel {
     private(set) var image: UIImage?
     private(set) var title: String?
 
@@ -28,11 +28,11 @@ final class TransactionHistoryHeaderViewModel: PairedViewModel {
     }
 }
 
-extension TransactionHistoryHeaderViewModel {
-    private func bindImage(from filterOption: TransactionFilterViewController.FilterOption) { // <todo> Ask
+extension TransactionHistoryFilterViewModel {
+    private func bindImage(from filterOption: TransactionFilterViewController.FilterOption) {
         switch filterOption {
         case .allTime:
-            image = img("icon-transaction-filter")
+            image = img("icon-transaction-filter-gray")
         case .today:
             image = img("icon-transaction-filter-badge")
         case .yesterday:

@@ -19,7 +19,7 @@ import UIKit
 import MagpieCore
 
 final class TransactionHistoryDataSource: NSObject {
-    private var transactions = [TransactionItem]()
+    private(set) var transactions = [TransactionItem]()
     private var account: Account
     private var assetDetail: AssetDetail?
     private var contacts = [Contact]()
@@ -43,52 +43,6 @@ final class TransactionHistoryDataSource: NSObject {
     var copyAssetIDHandler: ((TransactionHistoryDataSource, _ assetID: String?) -> Void)?
 
     private let draft: AssetDetailDraftProtocol
-
-    // <todo>: Sort by date
-    var groupedTransactionItemsByDate: [TransactionHistoryDraft] {
-        guard !transactions.isEmpty else {
-            return []
-        }
-
-        /// Groups transaction items with dates.
-        /// Dictionary's key can also be nil since pending transaction has no date.
-        let groupedTransactionItemsByDate = Dictionary(grouping: transactions) {
-            return $0.date?.toFormat("MM-dd-yyyy")
-        }
-
-        var transactionHistoryDrafts: [TransactionHistoryDraft] = []
-
-        for key in groupedTransactionItemsByDate.keys {
-            if let key = key {
-                let viewModel = TransactionHistoryDraft(title: key)
-                transactionHistoryDrafts.append(viewModel)
-                for value in groupedTransactionItemsByDate[key] ?? [] {
-                    let viewModel = TransactionHistoryDraft(item: value)
-                    transactionHistoryDrafts.append(viewModel)
-                }
-            }
-        }
-
-        for key in groupedTransactionItemsByDate.keys {
-            if key == nil {
-                var isDraftForPendingTransactionsCellInserted = false
-                for value in groupedTransactionItemsByDate[key] ?? [] {
-                    if !isDraftForPendingTransactionsCellInserted {
-                        let pendingTransactionsDraft = TransactionHistoryDraft(
-                            title: "transaction-detail-pending-transactions".localized
-                        )
-                        transactionHistoryDrafts.insert(pendingTransactionsDraft, at: 0)
-                        isDraftForPendingTransactionsCellInserted = true
-                    }
-
-                    let viewModel = TransactionHistoryDraft(item: value)
-                    transactionHistoryDrafts.insert(viewModel, at: 1)
-                }
-                break
-            }
-        }
-        return transactionHistoryDrafts
-    }
 
     init(api: ALGAPI?, provider: AssetDetailDraftProtocol) {
         self.draft = provider
@@ -145,13 +99,13 @@ extension TransactionHistoryDataSource {
 }
 
 extension TransactionHistoryDataSource {
-    func dequeueTransactionHistoryHeader(
+    func dequeueTransactionHistoryFilterCell(
         in collectionView: UICollectionView,
         with filterOption: TransactionFilterViewController.FilterOption,
         at indexPath: IndexPath
-    ) -> UICollectionReusableView {
-        let header = collectionView.dequeueHeader(TransactionHistoryHeaderSupplementaryView.self, at: indexPath)
-        header.bindData(TransactionHistoryHeaderViewModel(filterOption))
+    ) -> TransactionHistoryFilterCell { 
+        let header = collectionView.dequeue(TransactionHistoryFilterCell.self, at: indexPath)
+        header.bindData(TransactionHistoryFilterViewModel(filterOption))
         header.delegate = self
         return header
     }
@@ -362,7 +316,7 @@ extension TransactionHistoryDataSource {
 }
 
 extension TransactionHistoryDataSource {
-    func fetchPendingTransactions(for account: Account, then handler: @escaping ([TransactionItem]?, APIError?) -> Void) {
+    func fetchPendingTransactions(for account: Account, then handler: @escaping ([PendingTransaction]?, APIError?) -> Void) {
         api?.fetchPendingTransactions(account.address) { response in
             switch response {
             case let .success(pendingTransactionList):
@@ -392,7 +346,6 @@ extension TransactionHistoryDataSource {
             
             return !containsPendingTransaction
         }
-        self.transactions.insert(contentsOf: pendingTransactions, at: 0)
     }
 }
 
@@ -444,15 +397,15 @@ extension TransactionHistoryDataSource {
     }
 }
 
-extension TransactionHistoryDataSource: TransactionHistoryHeaderSupplementaryViewDelegate {
-    func transactionHistoryHeaderSupplementaryViewDidOpenFilterOptions(
-        _ transactionHistoryHeaderSupplementaryView: TransactionHistoryHeaderSupplementaryView
+extension TransactionHistoryDataSource: TransactionHistoryFilterCellDelegate {
+    func transactionHistoryFilterCellDidOpenFilterOptions(
+        _ transactionHistoryHeaderSupplementaryView: TransactionHistoryFilterCell
     ) {
         openFilterOptionsHandler?(self)
     }
     
-    func transactionHistoryHeaderSupplementaryViewDidShareHistory(
-        _ transactionHistoryHeaderSupplementaryView: TransactionHistoryHeaderSupplementaryView
+    func transactionHistoryFilterCellDidShareHistory(
+        _ transactionHistoryHeaderSupplementaryView: TransactionHistoryFilterCell
     ) {
         shareHistoryHandler?(self)
     }

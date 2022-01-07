@@ -24,14 +24,16 @@ struct PendingTransactionViewTheme: StyleSheet, LayoutSheet {
     let transactionHistoryContextLeadingPadding: LayoutMetric
     let indicatorLeadingPadding: LayoutMetric
     let indicator: ImageStyle
+    let indicatorSize: LayoutSize
 
     init(_ family: LayoutFamily) {
         self.transactionHistoryContextViewTheme = TransactionHistoryContextViewTheme()
         self.transactionHistoryContextLeadingPadding = 56
         self.indicatorLeadingPadding = 24
         self.indicator = [
-            .image("red-loading-indicator"), // <todo>: Change image
-            .contentMode(.scaleAspectFill)
+            .image("loading-indicator"),
+            .contentMode(.scaleAspectFit)
         ]
+        self.indicatorSize = (16, 16)
     }
 }
