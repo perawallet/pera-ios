@@ -40,7 +40,8 @@ final class AccountAssetListViewController: BaseViewController {
         collectionView.register(footer: AddAssetItemFooterView.self)
         return collectionView
     }()
-    private lazy var transactionFABButton = FloatingActionItemButton()
+
+    private lazy var transactionFABButton = FloatingActionItemButton(hasTitleLabel: false)
 
     private let account: Account
 

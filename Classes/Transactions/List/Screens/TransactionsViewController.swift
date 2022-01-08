@@ -44,7 +44,7 @@ class TransactionsViewController: BaseViewController {
     
     private let transactionHistoryDataSourceController: TransactionHistoryDataSourceController
     private(set) lazy var transactionListView = TransactionListView()
-    private lazy var transactionFABButton = FloatingActionItemButton()
+    private lazy var transactionFABButton = FloatingActionItemButton(hasTitleLabel: false)
 
     private var pendingTransactions: [TransactionHistoryItem] = []
 
