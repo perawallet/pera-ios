@@ -128,6 +128,7 @@ indirect enum Screen {
     case transactionResult
     case transactionAccountSelect(draft: SendTransactionDraft)
     case sendTransactionPreview(draft: TransactionSendDraft?, transactionController: TransactionController)
+    case transactionFloatingActionButton
 }
 
 extension Screen {

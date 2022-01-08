@@ -19,12 +19,18 @@ import MacaroonUIKit
 import UIKit
 
 extension TransactionsViewController {
-    struct Theme: LayoutSheet {
+    struct Theme: LayoutSheet, StyleSheet {
         let transactionHistoryTitleCellSize: LayoutSize
         let transactionHistoryCellSize: LayoutSize
         let transactionHistoryFilterCellSize: LayoutSize
+        let transactionFABButton: ButtonStyle
+        let transactionFABButtonPaddings: LayoutPaddings
 
         init(_ family: LayoutFamily) {
+            self.transactionFABButton = [
+                .icon([.normal("fab-swap")])
+            ]
+            self.transactionFABButtonPaddings = (.noMetric, .noMetric, UIApplication.shared.safeAreaBottom + 24, 24)
             self.transactionHistoryTitleCellSize = (UIScreen.main.bounds.width, 49)
             self.transactionHistoryCellSize = (UIScreen.main.bounds.width, 72)
             self.transactionHistoryFilterCellSize = (UIScreen.main.bounds.width, 40)

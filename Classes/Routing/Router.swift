@@ -501,6 +501,8 @@ class Router {
                 transactionController: transactionController,
                 configuration: configuration
             )
+        case .transactionFloatingActionButton:
+            viewController = TransactionFloatingActionButtonViewController(configuration: configuration)
         }
 
         return viewController as? T

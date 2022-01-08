@@ -44,6 +44,8 @@ class TransactionsViewController: BaseViewController {
     
     private let transactionHistoryDataSourceController: TransactionHistoryDataSourceController
     private(set) lazy var transactionListView = TransactionListView()
+    private lazy var transactionFABButton = UIButton()
+
     private var pendingTransactions: [TransactionHistoryItem] = []
 
     private let draft: AssetDetailDraftProtocol
@@ -163,6 +165,8 @@ class TransactionsViewController: BaseViewController {
         transactionHistoryDataSourceController.shareHistoryHandler = { [weak self] _ in
             self?.fetchAllTransactionsForCSV()
         }
+
+        transactionFABButton.addTarget(self, action: #selector(didTapTransactionsFABButton), for: .touchUpInside)
     }
     
     override func linkInteractors() {
@@ -174,7 +178,9 @@ class TransactionsViewController: BaseViewController {
         if let cellType = draft.infoViewConfiguration?.cellType {
             transactionListView.transactionsCollectionView.register(cellType)
         }
+
         addTransactionListView()
+        addTransactionsFABButton(theme)
     }
 }
 
@@ -184,6 +190,30 @@ extension TransactionsViewController {
         transactionListView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+
+    private func addTransactionsFABButton(_ theme: Theme) {
+        transactionFABButton.customizeAppearance(theme.transactionFABButton)
+        
+        view.addSubview(transactionFABButton)
+        transactionFABButton.snp.makeConstraints {
+            $0.setPaddings(theme.transactionFABButtonPaddings)
+        }
+    }
+}
+
+extension TransactionsViewController {
+    @objc
+    private func didTapTransactionsFABButton() {
+        open(
+            .transactionFloatingActionButton,
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            ),
+            animated: false
+        )
     }
 }
 
