@@ -24,13 +24,11 @@ extension TransactionFloatingActionButtonViewController {
         let trailingPadding: LayoutMetric
         let bottomPadding: LayoutMetric
         let buttonVerticalSpacing: LayoutMetric
-        let floatingActionItemButtonTheme: FloatingActionItemButtonTheme
 
         init(_ family: LayoutFamily) {
             chromeStyle = [
                 .backgroundColor(color("bottomOverlayBackground"))
             ]
-            floatingActionItemButtonTheme = FloatingActionItemButtonTheme()
             trailingPadding = 24
             bottomPadding = 24
             buttonVerticalSpacing = 20

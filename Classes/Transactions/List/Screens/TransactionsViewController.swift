@@ -44,7 +44,7 @@ class TransactionsViewController: BaseViewController {
     
     private let transactionHistoryDataSourceController: TransactionHistoryDataSourceController
     private(set) lazy var transactionListView = TransactionListView()
-    private lazy var transactionFABButton = UIButton()
+    private lazy var transactionFABButton = FloatingActionItemButton()
 
     private var pendingTransactions: [TransactionHistoryItem] = []
 
@@ -166,7 +166,7 @@ class TransactionsViewController: BaseViewController {
             self?.fetchAllTransactionsForCSV()
         }
 
-        transactionFABButton.addTarget(self, action: #selector(didTapTransactionsFABButton), for: .touchUpInside)
+        transactionFABButton.addTarget(self, action: #selector(didTapTransactionFABButton), for: .touchUpInside)
     }
     
     override func linkInteractors() {
@@ -180,7 +180,7 @@ class TransactionsViewController: BaseViewController {
         }
 
         addTransactionListView()
-        addTransactionsFABButton(theme)
+        addTransactionFABButton(theme)
     }
 }
 
@@ -192,8 +192,8 @@ extension TransactionsViewController {
         }
     }
 
-    private func addTransactionsFABButton(_ theme: Theme) {
-        transactionFABButton.customizeAppearance(theme.transactionFABButton)
+    private func addTransactionFABButton(_ theme: Theme) {
+        transactionFABButton.image = "fab-swap".uiImage
         
         view.addSubview(transactionFABButton)
         transactionFABButton.snp.makeConstraints {
@@ -204,16 +204,8 @@ extension TransactionsViewController {
 
 extension TransactionsViewController {
     @objc
-    private func didTapTransactionsFABButton() {
-        open(
-            .transactionFloatingActionButton,
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: nil,
-                transitioningDelegate: nil
-            ),
-            animated: false
-        )
+    private func didTapTransactionFABButton() {
+        transactionFABButton.didTapTransactionFABButton(on: self)
     }
 }
 

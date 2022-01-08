@@ -20,6 +20,8 @@ import UIKit
 import MacaroonUIKit
 
 final class FloatingActionItemButton: Control {
+    private lazy var theme = FloatingActionItemButtonTheme()
+
     var image: UIImage? {
         didSet {
             imageView.image = image
@@ -28,13 +30,27 @@ final class FloatingActionItemButton: Control {
 
     var title: String? {
         didSet {
+            guard hasTitleLabel else { return }
             titleLabel.text = title
         }
     }
 
-    private lazy var imageViewContainer = UIView()
+    private lazy var imageViewContainer = FloatingButtomItemImageViewContainer()
     private lazy var imageView = UIImageView()
     private lazy var titleLabel = Label()
+
+    private let hasTitleLabel: Bool
+
+    init(hasTitleLabel: Bool = true) {
+        self.hasTitleLabel = hasTitleLabel
+        super.init(frame: .zero)
+
+        addImageView(theme)
+
+        if hasTitleLabel {
+            addTitleLabel(theme)
+        }
+    }
 
     func customize(_ theme: FloatingActionItemButtonTheme) {
         addImageView(theme)
@@ -48,9 +64,18 @@ final class FloatingActionItemButton: Control {
 
 extension FloatingActionItemButton {
     private func addImageView(_ theme: FloatingActionItemButtonTheme) {
-        addSubview(imageView)
-        imageView.snp.makeConstraints {
+        imageViewContainer.customize(theme)
+
+        addSubview(imageViewContainer)
+        imageViewContainer.snp.makeConstraints {
             $0.trailing.top.bottom.equalToSuperview()
+            $0.leading.equalToSuperview().priority(.low)
+        }
+
+
+        imageViewContainer.addSubview(imageView)
+        imageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 
@@ -63,5 +88,35 @@ extension FloatingActionItemButton {
             $0.centerY.equalTo(imageView)
             $0.leading.equalToSuperview()
         }
+    }
+}
+
+final fileprivate class FloatingButtomItemImageViewContainer: View, DoubleShadowDrawable {
+    var secondShadow: MacaroonUIKit.Shadow?
+    var secondShadowLayer = CAShapeLayer()
+
+    func customize(_ theme: FloatingActionItemButtonTheme) {
+        isUserInteractionEnabled = false
+
+        draw(shadow: theme.containerFirstShadow)
+        draw(secondShadow: theme.containerSecondShadow)
+    }
+
+    func customizeAppearance(_ styleSheet: FloatingActionItemButtonTheme) {}
+
+    func prepareLayout(_ layoutSheet: FloatingActionItemButtonTheme) {}
+}
+
+extension FloatingActionItemButton {
+    func didTapTransactionFABButton(on viewController: UIViewController) {
+        viewController.open(
+            .transactionFloatingActionButton,
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            ),
+            animated: false
+        )
     }
 }

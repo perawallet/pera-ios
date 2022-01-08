@@ -24,6 +24,8 @@ struct FloatingActionItemButtonTheme: StyleSheet, LayoutSheet {
     let title: TextStyle
     let titleLabelTrailingPadding: LayoutMetric
     let titleShadow: MacaroonUIKit.Shadow
+    let containerFirstShadow: MacaroonUIKit.Shadow
+    let containerSecondShadow: MacaroonUIKit.Shadow
 
     init(_ family: LayoutFamily) {
         self.container = [
@@ -38,11 +40,26 @@ struct FloatingActionItemButtonTheme: StyleSheet, LayoutSheet {
         ]
         self.titleLabelTrailingPadding = 22
 
+        // <todo> Apply same shadow with designs.
         self.titleShadow = MacaroonUIKit.Shadow(
             color: AppColors.SendTransaction.Shadow.second.uiColor,
             opacity: 1,
             offset: (0, 1),
             radius: 3,
+            fillColor: UIColor.clear
+        )
+        self.containerFirstShadow = MacaroonUIKit.Shadow(
+            color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.16),
+            opacity: 1,
+            offset: (0, 28),
+            radius: 32,
+            fillColor: UIColor.clear
+        )
+        self.containerSecondShadow = MacaroonUIKit.Shadow(
+            color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.16),
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
             fillColor: UIColor.clear
         )
     }

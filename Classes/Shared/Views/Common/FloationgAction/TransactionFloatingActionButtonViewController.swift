@@ -58,7 +58,6 @@ extension TransactionFloatingActionButtonViewController {
     }
 
     private func addCloseButton(_ theme: Theme) {
-        closeButton.customize(theme.floatingActionItemButtonTheme)
         closeButton.image = "fab-close".uiImage
         closeButton.title = "title-close".localized
 
@@ -70,7 +69,6 @@ extension TransactionFloatingActionButtonViewController {
     }
 
     private func addReceiveButton(_ theme: Theme) {
-        receiveButton.customize(theme.floatingActionItemButtonTheme)
         receiveButton.image = "fab-receive".uiImage
         receiveButton.title = "title-receive".localized
 
@@ -84,7 +82,6 @@ extension TransactionFloatingActionButtonViewController {
     }
 
     private func addSendButton(_ theme: Theme) {
-        sendButton.customize(theme.floatingActionItemButtonTheme)
         sendButton.image = "fab-send".uiImage
         sendButton.title = "title-send".localized
         
