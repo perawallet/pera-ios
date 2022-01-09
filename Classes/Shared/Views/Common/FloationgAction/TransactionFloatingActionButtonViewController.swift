@@ -210,7 +210,7 @@ extension TransactionFloatingActionButtonViewController: OldSelectAssetViewContr
         )
 
         if transactionAction == .send {
-            log(SendTabEvent())
+            log(SendAssetDetailEvent(address: account.address))
             open(
                 .sendAssetTransactionPreview(
                     account: account,

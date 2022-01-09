@@ -113,9 +113,7 @@ extension AccountRecoverViewController {
 
         contentView.addSubview(accountRecoverView)
         accountRecoverView.snp.makeConstraints {
-            $0.leading.trailing.top.equalToSuperview()
-            $0.height.equalTo(theme.inputViewHeight)
-            $0.bottom.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
     }
 
@@ -125,8 +123,8 @@ extension AccountRecoverViewController {
 
         view.addSubview(recoverButton)
         recoverButton.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(theme.defaultInset)
-            $0.bottom.equalToSuperview().inset(theme.defaultInset + view.safeAreaBottom)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.bottom.equalToSuperview().inset(theme.bottomInset + view.safeAreaBottom)
         }
     }
 }
@@ -144,13 +142,13 @@ extension AccountRecoverViewController {
 
     private func updateRecoverButtonLayoutWhenKeyboardIsShown(_ keyboard: KeyboardController.UserInfo) {
         recoverButton.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(theme.defaultInset + keyboard.height)
+            $0.bottom.equalToSuperview().inset(theme.bottomInset + keyboard.height)
         }
     }
 
     private func updateRecoverButtonLayoutWhenKeyboardIsHidden() {
         recoverButton.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(theme.defaultInset + view.safeAreaBottom)
+            $0.bottom.equalToSuperview().inset(theme.bottomInset + view.safeAreaBottom)
         }
     }
 }
@@ -360,12 +358,6 @@ extension AccountRecoverViewController {
     }
 
     private func finishUpdates(for recoverInputView: RecoverInputView) {
-        if !hasValidSuggestion(for: recoverInputView) {
-            return
-        }
-
-        recoverInputView.removeInputAccessoryView()
-
         if let nextInputView = recoverInputViews.nextView(of: recoverInputView) as? RecoverInputView {
             nextInputView.beginEditing()
             return
@@ -512,6 +504,6 @@ extension AccountRecoverViewController: KeyboardControllerDataSource {
     }
 
     func bottomInsetWhenKeyboardDismissed(for keyboardController: KeyboardController) -> CGFloat {
-        return theme.defaultInset
+        return theme.bottomInset
     }
 }
