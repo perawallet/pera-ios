@@ -226,6 +226,7 @@ extension AccountRecoverViewController {
 extension AccountRecoverViewController: AccountRecoverViewDelegate {
     func accountRecoverView(_ view: AccountRecoverView, didBeginEditing recoverInputView: RecoverInputView) {
         if let index = view.index(of: recoverInputView) {
+            customizeRecoverInputViewWhenInputDidChange(recoverInputView)
             recoverInputView.bindData(RecoverInputViewModel(state: .active, index: index))
         }
     }
@@ -361,9 +362,7 @@ extension AccountRecoverViewController {
     }
 
     private func finishUpdates(for recoverInputView: RecoverInputView) {
-        let nextInputView = recoverInputViews.nextView(of: recoverInputView) as? RecoverInputView
-
-        if let nextInputView = nextInputView {
+        if let nextInputView = recoverInputViews.nextView(of: recoverInputView) as? RecoverInputView {
             nextInputView.beginEditing()
             return
         }
