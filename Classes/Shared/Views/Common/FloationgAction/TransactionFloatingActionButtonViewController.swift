@@ -181,7 +181,7 @@ extension TransactionFloatingActionButtonViewController: OldSelectAssetViewContr
         )
 
         if transactionAction == .send {
-            log(SendTabEvent())
+            log(SendAssetDetailEvent(address: account.address))
             open(
                 .sendAlgosTransactionPreview(
                     account: account,
@@ -191,7 +191,7 @@ extension TransactionFloatingActionButtonViewController: OldSelectAssetViewContr
                 by: fullScreenPresentation
             )
         } else {
-            log(ReceiveTabEvent())
+            log(ReceiveAssetDetailEvent(address: account.address))
             let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
             open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
         }
@@ -222,7 +222,7 @@ extension TransactionFloatingActionButtonViewController: OldSelectAssetViewContr
                 by: fullScreenPresentation
             )
         } else {
-            log(ReceiveTabEvent())
+            log(ReceiveAssetDetailEvent(address: account.address))
             let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
             open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
         }
