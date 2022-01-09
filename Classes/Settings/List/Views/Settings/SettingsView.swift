@@ -32,9 +32,8 @@ final class SettingsView: View {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.bounces = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
-        collectionView.contentInset = .zero
+        collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
         collectionView.keyboardDismissMode = .onDrag
         
         collectionView.register(SettingsDetailCell.self, forCellWithReuseIdentifier: SettingsDetailCell.reusableIdentifier)

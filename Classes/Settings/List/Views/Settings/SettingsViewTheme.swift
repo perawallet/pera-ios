@@ -25,6 +25,7 @@ struct SettingsViewTheme: LayoutSheet, StyleSheet {
     let titleTopInset: LayoutMetric
     let collectionTopInset: LayoutMetric
     let horizontalInset: LayoutMetric
+    let collectionViewEdgeInsets: LayoutPaddings
     let sectionInset: LayoutPaddings
     
     init(_ family: LayoutFamily) {
@@ -35,7 +36,8 @@ struct SettingsViewTheme: LayoutSheet, StyleSheet {
             .font(Fonts.DMSans.medium.make(32))
         ]
         self.titleTopInset = 46
-        self.collectionTopInset = 46
+        self.collectionTopInset = 22
+        self.collectionViewEdgeInsets = (24, 0, 0, 0)
         self.horizontalInset = 24
         self.sectionInset = (8, 0, 36, 0)
     }
