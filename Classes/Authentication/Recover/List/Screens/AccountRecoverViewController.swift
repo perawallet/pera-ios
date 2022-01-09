@@ -236,18 +236,21 @@ extension AccountRecoverViewController: AccountRecoverViewDelegate {
 
     private func customizeRecoverInputViewWhenInputDidChange(_ view: RecoverInputView) {
         recoverButton.isEnabled = isRecoverEnabled
-        updateRecoverInputSuggestor(in: view)
         inputSuggestionsViewController.findTopSuggestions(for: view.input)
+        updateRecoverInputSuggestor(in: view)
         updateRecoverInputViewStateForSuggestions(view)
     }
 
     private func updateRecoverInputSuggestor(in view: RecoverInputView) {
         if !view.isInputAccessoryViewSet {
-            if !view.input.isNilOrEmpty {
+            if !view.input.isNilOrEmpty,
+               inputSuggestionsViewController.hasSuggestions {
                 view.setInputAccessoryView(inputSuggestionsViewController.view)
-           } else {
+            }
+        } else {
+            if !inputSuggestionsViewController.hasSuggestions || view.input.isNilOrEmpty {
                 view.removeInputAccessoryView()
-           }
+            }
         }
     }
 
@@ -296,8 +299,8 @@ extension AccountRecoverViewController {
     private func hasValidSuggestion(for view: RecoverInputView) -> Bool {
         guard let input = view.input,
               !input.isEmptyOrBlank else {
-            return false
-        }
+                  return false
+              }
 
         return inputSuggestionsViewController.hasMatchingSuggestion(with: input)
     }
@@ -358,7 +361,9 @@ extension AccountRecoverViewController {
     }
 
     private func finishUpdates(for recoverInputView: RecoverInputView) {
-        if let nextInputView = recoverInputViews.nextView(of: recoverInputView) as? RecoverInputView {
+        let nextInputView = recoverInputViews.nextView(of: recoverInputView) as? RecoverInputView
+
+        if let nextInputView = nextInputView {
             nextInputView.beginEditing()
             return
         }
