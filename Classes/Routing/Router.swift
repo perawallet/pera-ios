@@ -281,6 +281,8 @@ class Router {
             viewController = AssetSearchViewController(account: account, configuration: configuration)
         case let .addAsset(account):
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
+        case .notifications:
+            viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(account):
             viewController = ManageAssetsViewController(account: account, configuration: configuration)
         case let .assetActionConfirmation(assetAlertDraft):
@@ -475,10 +477,10 @@ class Router {
             let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
             ledgerPairWarningViewController.delegate = delegate
             viewController = ledgerPairWarningViewController
-        case .accountListOptions:
-            viewController = AccountListOptionsViewController(configuration: configuration)
-        case .orderAccountList:
-            viewController = OrderAccountListViewController(configuration: configuration)
+        case let .accountListOptions(accountType):
+            viewController = AccountListOptionsViewController(accountType: accountType, configuration: configuration)
+        case let .orderAccountList(accountType):
+            viewController = OrderAccountListViewController(accountType: accountType, configuration: configuration)
         case .accountSelection:
             viewController = SelectAccountViewController(configuration: configuration)
         case .assetSelection(let account):

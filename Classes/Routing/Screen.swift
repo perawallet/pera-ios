@@ -35,6 +35,7 @@ indirect enum Screen {
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
     case editAccount(account: Account)
     case contactSelection
+    case notifications
     case addContact(address: String? = nil, name: String? = nil)
     case editContact(contact: Contact)
     case contactDetail(contact: Contact)
@@ -118,8 +119,8 @@ indirect enum Screen {
     case tabBarModal
     case algoStatisticsDateSelection(option: AlgosUSDValueInterval, delegate: AlgoStatisticsDateSelectionViewControllerDelegate)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
-    case accountListOptions
-    case orderAccountList
+    case accountListOptions(accountType: AccountType)
+    case orderAccountList(accountType: AccountType)
     case accountSelection
     case assetSelection(account: Account)
     case sendTransaction(draft: SendTransactionDraft)
