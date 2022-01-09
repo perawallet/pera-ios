@@ -13,23 +13,25 @@
 // limitations under the License.
 
 //
-//   TransactionsViewController+Theme.swift
+//   TransactionFloatingActionButtonViewController+Theme.swift
 
 import MacaroonUIKit
 import UIKit
 
-extension TransactionsViewController {
+extension TransactionFloatingActionButtonViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let transactionHistoryTitleCellSize: LayoutSize
-        let transactionHistoryCellSize: LayoutSize
-        let transactionHistoryFilterCellSize: LayoutSize
-        let transactionFABButtonPaddings: LayoutPaddings
+        let chromeStyle: ViewStyle
+        let trailingPadding: LayoutMetric
+        let bottomPadding: LayoutMetric
+        let buttonVerticalSpacing: LayoutMetric
 
         init(_ family: LayoutFamily) {
-            self.transactionFABButtonPaddings = (.noMetric, .noMetric, UIApplication.shared.safeAreaBottom + 24, 24)
-            self.transactionHistoryTitleCellSize = (UIScreen.main.bounds.width, 49)
-            self.transactionHistoryCellSize = (UIScreen.main.bounds.width, 72)
-            self.transactionHistoryFilterCellSize = (UIScreen.main.bounds.width, 40)
+            chromeStyle = [
+                .backgroundColor(color("bottomOverlayBackground"))
+            ]
+            trailingPadding = 24
+            bottomPadding = 24
+            buttonVerticalSpacing = 20
         }
     }
 }

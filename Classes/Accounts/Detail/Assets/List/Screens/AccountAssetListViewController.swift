@@ -41,6 +41,8 @@ final class AccountAssetListViewController: BaseViewController {
         return collectionView
     }()
 
+    private lazy var transactionFABButton = FloatingActionItemButton(hasTitleLabel: false)
+
     private let account: Account
 
     init(account: Account, configuration: ViewControllerConfiguration) {
@@ -121,6 +123,7 @@ final class AccountAssetListViewController: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
         addListView()
+        addTransactionFABButton(theme)
         view.layoutIfNeeded()
     }
 
@@ -133,6 +136,7 @@ final class AccountAssetListViewController: BaseViewController {
     override func setListeners() {
         super.setListeners()
         setListActions()
+        setTransactionFABButtonAction()
     }
 }
 
@@ -141,6 +145,15 @@ extension AccountAssetListViewController {
         view.addSubview(listView)
         listView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+    }
+
+    private func addTransactionFABButton(_ theme: Theme) {
+        transactionFABButton.image = "fab-swap".uiImage
+
+        view.addSubview(transactionFABButton)
+        transactionFABButton.snp.makeConstraints {
+            $0.setPaddings(theme.transactionFABButtonPaddings)
         }
     }
 }
@@ -225,6 +238,17 @@ extension AccountAssetListViewController {
             snapshot,
             animatingDifferences: animatingDifferences
         )
+    }
+}
+
+extension AccountAssetListViewController {
+    private func setTransactionFABButtonAction() {
+        transactionFABButton.addTarget(self, action: #selector(didTapTransactionFABButton), for: .touchUpInside)
+    }
+
+    @objc
+    private func didTapTransactionFABButton() {
+        transactionFABButton.didTapTransactionFABButton(on: self)
     }
 }
 

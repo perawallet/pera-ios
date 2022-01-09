@@ -141,15 +141,13 @@ extension AddContactView {
 }
 
 extension AddContactView {
-    func createAddressTextInput(
+    func createAccountNameTextInput(
         placeholder: String,
         floatingPlaceholder: String?
     ) -> FloatingTextInputFieldView {
-        /// <todo>
-        /// Multi line is not supported.
         let view = FloatingTextInputFieldView()
         let textInputBaseStyle: TextInputStyle = [
-            .font(Fonts.DMSans.regular.make(15, .body)),
+            .font(Fonts.DMSans.regular.make(15)),
             .tintColor(AppColors.Components.Text.main),
             .textColor(AppColors.Components.Text.main),
             .returnKeyType(.next)
@@ -161,6 +159,7 @@ extension AddContactView {
                 placeholder: placeholder,
                 floatingPlaceholder: floatingPlaceholder
             )
+        view.delegate = self
         view.customize(theme)
         view.snp.makeConstraints {
             $0.greaterThanHeight(48)
@@ -168,13 +167,15 @@ extension AddContactView {
         return view
     }
 
-    func createAccountNameTextInput(
+    func createAddressTextInput(
         placeholder: String,
         floatingPlaceholder: String?
     ) -> FloatingTextInputFieldView {
+        /// <todo>
+        /// Multi line is not supported.
         let view = FloatingTextInputFieldView()
         let textInputBaseStyle: TextInputStyle = [
-            .font(Fonts.DMSans.regular.make(15, .body)),
+            .font(Fonts.DMSans.regular.make(15)),
             .tintColor(AppColors.Components.Text.main),
             .textColor(AppColors.Components.Text.main),
             .returnKeyType(.done)
@@ -186,6 +187,7 @@ extension AddContactView {
                 placeholder: placeholder,
                 floatingPlaceholder: floatingPlaceholder
             )
+        view.delegate = self
         view.customize(theme)
         view.snp.makeConstraints {
             $0.greaterThanHeight(48)
@@ -194,8 +196,22 @@ extension AddContactView {
     }
 }
 
+extension AddContactView: FloatingTextInputFieldViewDelegate {
+    func floatingTextInputFieldViewShouldReturn(_ view: FloatingTextInputFieldView) -> Bool {
+        guard let delegate = delegate else {
+            return true
+        }
+
+        return delegate.addContactViewInputFieldViewShouldReturn(self, inputFieldView: view)
+    }
+}
+
 protocol AddContactViewDelegate: AnyObject {
     func addContactViewDidTapAddContactButton(_ addContactView: AddContactView)
     func addContactViewDidTapAddImageButton(_ addContactView: AddContactView)
     func addContactViewDidTapQRCodeButton(_ addContactView: AddContactView)
+    func addContactViewInputFieldViewShouldReturn(
+        _ addContactView: AddContactView,
+        inputFieldView: FloatingTextInputFieldView
+    ) -> Bool
 }
