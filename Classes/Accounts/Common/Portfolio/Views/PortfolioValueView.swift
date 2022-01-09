@@ -21,12 +21,17 @@ import UIKit
 final class PortfolioValueView: View {
     lazy var handlers = Handlers()
 
-    private lazy var titleButton = Button()
+    private lazy var titleButton = Button(.imageAtRight(spacing: 8))
     private lazy var portfolioValueLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        setListeners()
         customize(PortfolioValueViewTheme())
+    }
+
+    func setListeners() {
+        titleButton.addTarget(self, action: #selector(didTapTitle), for: .touchUpInside)
     }
 
     func customize(_ theme: PortfolioValueViewTheme) {

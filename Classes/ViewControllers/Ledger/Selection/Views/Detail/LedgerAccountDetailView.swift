@@ -57,26 +57,6 @@ extension LedgerAccountDetailView {
     }
 }
 
-// MARK: - AccountPreviewCell
-
-final class AccountPreviewCell: BaseCollectionViewCell<AccountPreviewView> {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        customize(AccountPreviewViewTheme())
-    }
-
-    func customize(_ theme: AccountPreviewViewTheme) {
-        contextView.customize(theme)
-    }
-
-    func bindData(_ viewModel: AccountPreviewViewModel) {
-        contextView.bindData(viewModel)
-    }
-}
-
-// MARK: - LedgerAccountDetailSectionHeaderReusableView
-
 final class LedgerAccountDetailSectionHeaderReusableView: BaseSupplementaryView<LedgerAccountDetailSectionHeaderView> {
     func bindData(_ viewModel: LedgerAccountDetailSectionHeaderViewModel?) {
         contextView.bindData(viewModel)

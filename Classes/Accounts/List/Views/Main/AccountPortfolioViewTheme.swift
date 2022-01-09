@@ -26,6 +26,7 @@ struct AccountPortfolioViewTheme: StyleSheet, LayoutSheet {
     let assetHoldingsValue: TextStyle
 
     let horizontalInset: LayoutMetric
+    let algosValueHorizontalInset: LayoutMetric
     let titleTopPadding: LayoutMetric
     let portfolioTopPadding: LayoutMetric
     let holdingsTopPadding: LayoutMetric
@@ -43,12 +44,12 @@ struct AccountPortfolioViewTheme: StyleSheet, LayoutSheet {
         self.algoHoldingsValue = [
             .font(Fonts.DMSans.regular.make(15)),
             .titleColor([.normal(AppColors.Components.Text.main.uiColor)]),
-            .icon([.normal("icon-algo-circle-green")])
+            .icon([.normal("icon-algo-circle-green-24")])
         ]
         self.assetHoldingsTitle = [
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),
-            .text("portfolio-sset-holdings-title".localized),
+            .text("portfolio-asset-holdings-title".localized),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.gray.uiColor)
         ]
@@ -60,6 +61,7 @@ struct AccountPortfolioViewTheme: StyleSheet, LayoutSheet {
         ]
 
         self.horizontalInset = 24
+        self.algosValueHorizontalInset = 30
         self.titleTopPadding = 24
         self.portfolioTopPadding = 32
         self.holdingsTopPadding = 24

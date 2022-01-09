@@ -18,7 +18,9 @@
 import MacaroonUIKit
 import UIKit
 
-final class AccountPreviewView: View {
+final class AccountPreviewView:
+    View,
+    ListReusable {
     private lazy var imageView = UIImageView()
     private lazy var accountNameAndAssetsNFTsVerticalStackView = UIStackView()
     private lazy var accountNameLabel = UILabel()
@@ -109,5 +111,43 @@ extension AccountPreviewView: ViewModelBindable {
         assetsAndNFTsLabel.text = viewModel?.assetsAndNFTs
         assetValueLabel.text = viewModel?.assetValue
         secondaryAssetValueLabel.text = viewModel?.secondaryAssetValue
+    }
+}
+
+final class AccountPreviewCell: BaseCollectionViewCell<AccountPreviewView> {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(AccountPreviewViewTheme())
+    }
+
+    func customize(_ theme: AccountPreviewViewTheme) {
+        contextView.customize(theme)
+    }
+
+    func bindData(_ viewModel: AccountPreviewViewModel) {
+        contextView.bindData(viewModel)
+    }
+}
+
+final class AccountPreviewTableCell:
+    TableCell<AccountPreviewView>,
+    ViewModelBindable,
+    ListIdentifiable {
+    override class var contextPaddings: LayoutPaddings {
+        return (0, 24, 0, 24)
+    }
+    
+    override init(
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
+    ) {
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
+
+        contextView.customize(AccountPreviewViewTheme())
+        selectionStyle = .none
     }
 }
