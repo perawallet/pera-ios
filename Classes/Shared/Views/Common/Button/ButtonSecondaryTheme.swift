@@ -29,6 +29,7 @@ struct ButtonSecondaryTheme: ButtonTheme {
 
     init(_ family: LayoutFamily) {
         self.label = [
+            .isInteractable(false),
             .font(Fonts.DMSans.medium.make(15)),
             .textAlignment(.center),
             .textOverflow(SingleLineFittingText())
@@ -42,8 +43,11 @@ struct ButtonSecondaryTheme: ButtonTheme {
             .disabled(AppColors.Components.Button.Secondary.disabledBackground)
         ]
         self.corner = Corner(radius: 4)
-        self.icon = []
+        self.icon = [
+            .isInteractable(false)
+        ]
         self.indicator = [
+            .isInteractable(false),
             .image("button-loading-indicator"),
             .contentMode(.scaleAspectFill)
         ]
