@@ -26,11 +26,18 @@ final class RewardDetailViewModel: PairedViewModel {
         bindRate(from: account)
         bindAmount(from: account)
     }
+
+    /**
+     * <src>: https://www.purestake.com/blog/algorand-rewards-distribution-explained/
+     * The current daily rewards percentage return based on the assumption of 1 microAlgo every 3 minutes is:
+     * (10^-6 * 60 * 24 * 365) / 3 * 100% = Yearly Rewards Rate = 17.52%
+     */
+    private let yearlyRewardsRate = 17.52
 }
 
 extension RewardDetailViewModel {
     private func bindRate(from account: Account) {
-        rate = "17.52%" // <todo>: Remove mock
+        rate = (yearlyRewardsRate / 100.0).toPercentage
     }
 
     private func bindAmount(from account: Account) {
