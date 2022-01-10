@@ -354,7 +354,13 @@ extension TransactionDetailView: ViewModelBindable {
         } else if let opponentViewAddress = viewModel?.opponentViewAddress {
             opponentView.bindData(
                 TransactionContactInformationViewModel(
-                    contactDisplayViewModel: ContactDisplayViewModel(name: opponentViewAddress)
+                    contactDisplayViewModel: ContactDisplayViewModel(address: opponentViewAddress)
+                )
+            )
+        } else if let localAddress = viewModel?.localAddress {
+            opponentView.bindData(
+                TransactionContactInformationViewModel(
+                    contactDisplayViewModel: ContactDisplayViewModel(localAddress: localAddress)
                 )
             )
         }

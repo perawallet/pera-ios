@@ -83,13 +83,6 @@ final class NotificationsViewController: BaseViewController {
 
 extension NotificationsViewController {
     private func addBarButtons() {
-        let backBarButtonItem = ALGBarButtonItem(kind: .back) {
-            [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [backBarButtonItem]
-
         let filterBarButtonItem = ALGBarButtonItem(kind: .filter) {
             [unowned self] in
             self.openNotificationFilters()
@@ -99,7 +92,8 @@ extension NotificationsViewController {
     }
 
     private func openNotificationFilters() {
-        open(.notificationFilter(flow: .notifications), by: .present)
+        let controller = open(.notificationFilter(flow: .notifications), by: .present) as? NotificationFilterViewController
+        controller?.delegate = self
     }
 }
 
@@ -207,6 +201,12 @@ extension NotificationsViewController: NotificationsViewDelegate {
         dataSource.clear()
         notificationsView.reloadData()
         getNotifications()
+    }
+}
+
+extension NotificationsViewController: NotificationFilterViewControllerDelegate {
+    func notificationFilterViewControllerDidDismiss(_ controller: NotificationFilterViewController) {
+        reloadNotifications()
     }
 }
 

@@ -34,8 +34,9 @@ struct NotificationViewTheme: StyleSheet, LayoutSheet {
     let badgeImageHorizontalPaddings: LayoutHorizontalPaddings
     let notificationImageTopPadding: LayoutMetric
     let titleLabelLeadingPadding: LayoutMetric
-    let timeLabelVerticalPaddings: LayoutVerticalPaddings
+    let timeLabelTopPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
+    let titleLabelBottomPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -43,6 +44,7 @@ struct NotificationViewTheme: StyleSheet, LayoutSheet {
             .image("img-nc-item-badge")
         ]
         self.titleLabel = [
+            .textOverflow(FittingText()),
             .textAlignment(.left),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15))
@@ -58,12 +60,13 @@ struct NotificationViewTheme: StyleSheet, LayoutSheet {
         self.badgeImageHorizontalPaddings = (12, 8)
         self.notificationImageTopPadding = 16
         self.titleLabelLeadingPadding = 12
-        self.timeLabelVerticalPaddings = (4, 16)
+        self.timeLabelTopPadding = 4
         self.cellSpacing = 0
         self.collectionViewEdgeInsets = (0, 0, 20, 0)
         self.topInset = 10
         self.horizontalPadding = 24
         self.notificationImageSize = (40, 40)
         self.badgeImageSize = (4, 4)
+        self.titleLabelBottomPadding = 37
     }
 }

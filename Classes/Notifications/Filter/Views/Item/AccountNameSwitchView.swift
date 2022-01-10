@@ -74,7 +74,7 @@ extension AccountNameSwitchView {
 extension AccountNameSwitchView: ViewModelBindable {
     func bindData(_ viewModel: AccountNameSwitchViewModel?) {
         accountNameView.bindData(viewModel?.accountNameViewModel)
-        toggleView.setOn(viewModel?.isSelected ?? true, animated: true)
+        toggleView.setOn(viewModel?.isSelected ?? false, animated: true)
     }
 }
 
