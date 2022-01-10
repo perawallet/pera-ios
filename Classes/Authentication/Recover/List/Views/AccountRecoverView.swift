@@ -64,6 +64,7 @@ extension AccountRecoverView {
         horizontalStackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.horizontalStackViewTopInset)
+            $0.bottom.lessThanOrEqualToSuperview()
         }
 
         configureVerticalStackViews(firstColumnStackView, secondColumnStackView, with: theme)

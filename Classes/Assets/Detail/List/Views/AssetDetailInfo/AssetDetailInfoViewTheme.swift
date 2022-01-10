@@ -24,10 +24,11 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
     let yourBalanceTitleLabel: TextStyle
     let balanceLabel: TextStyle
     let assetNameLabel: TextStyle
-    let assetIDLabel: TextStyle
+    let assetIDButton: ButtonStyle
     let verifiedImage: ImageStyle
     let separator: Separator
 
+    let topPadding: LayoutMetric
     let topSeparatorTopPadding: LayoutMetric
     let bottomSeparatorTopPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
@@ -59,15 +60,15 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(15)),
         ]
-        self.assetIDLabel = [
-            .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.gray),
+        self.assetIDButton = [
+            .icon([.normal("icon-copy-gray")]),
+            .titleColor([.normal(AppColors.Components.Text.gray)]),
             .font(Fonts.DMSans.regular.make(15)),
         ]
         self.verifiedImage = [
             .image("icon-verified-shield")
         ]
+        self.topPadding = 24
         self.topSeparatorTopPadding = -32
         self.horizontalPadding = 24
         self.balanceLabelTopPadding = 8
@@ -75,6 +76,6 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
         self.assetIDInfoButtonLeadingPadding = 5
         self.assetNameLabelTopPadding = 65
         self.bottomSeparatorTopPadding = -67
-        self.bottomPadding = 33
+        self.bottomPadding = 65
     }
 }

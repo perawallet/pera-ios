@@ -68,6 +68,18 @@ final class AddContactViewController: BaseScrollViewController {
 }
 
 extension AddContactViewController: AddContactViewDelegate {
+    func addContactViewInputFieldViewShouldReturn(
+        _ addContactView: AddContactView,
+        inputFieldView: FloatingTextInputFieldView
+    ) -> Bool {
+        if inputFieldView == addContactView.nameInputView {
+            addContactView.addressInputView.beginEditing()
+        } else {
+            inputFieldView.endEditing()
+        }
+        return true
+    }
+
     func addContactViewDidTapAddContactButton(_ addContactView: AddContactView) {
         guard let keyedValues = parseFieldsForContact() else {
             return

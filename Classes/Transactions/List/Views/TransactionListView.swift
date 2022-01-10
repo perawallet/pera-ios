@@ -33,17 +33,17 @@ final class TransactionListView: View {
     private lazy var otherErrorView = ListErrorView()
     private lazy var internetConnectionErrorView = ListErrorView()
     
-    private lazy var transactionsCollectionView: UICollectionView = {
+    private(set) lazy var transactionsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = theme.cellSpacing
-        flowLayout.sectionHeadersPinToVisibleBounds = true
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.register(TransactionHistoryCell.self)
         collectionView.register(PendingTransactionCell.self)
-        collectionView.register(header: TransactionHistoryHeaderSupplementaryView.self)
+        collectionView.register(TransactionHistoryTitleCell.self)
+        collectionView.register(TransactionHistoryFilterCell.self)
         return collectionView
     }()
 
@@ -98,16 +98,8 @@ extension TransactionListView {
 }
 
 extension TransactionListView {
-    func reloadData() {
-        transactionsCollectionView.reloadData()
-    }
-    
     func setCollectionViewDelegate(_ delegate: UICollectionViewDelegate?) {
         transactionsCollectionView.delegate = delegate
-    }
-    
-    func setCollectionViewDataSource(_ dataSource: UICollectionViewDataSource?) {
-        transactionsCollectionView.dataSource = dataSource
     }
     
     var isListRefreshing: Bool {
@@ -140,13 +132,6 @@ extension TransactionListView {
     
     func setNormalState() {
         transactionsCollectionView.contentState = .none
-    }
-    
-    func headerView() -> TransactionHistoryHeaderSupplementaryView? {
-        return transactionsCollectionView.supplementaryView(
-            forElementKind: UICollectionView.elementKindSectionHeader,
-            at: IndexPath(item: 0, section: 0)
-        ) as? TransactionHistoryHeaderSupplementaryView
     }
 }
 

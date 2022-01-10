@@ -138,7 +138,7 @@ extension TransactionFilterViewController: TransactionCustomRangeSelectionViewCo
 }
 
 extension TransactionFilterViewController {
-    enum FilterOption: Equatable, CaseIterable {
+    enum FilterOption: Equatable, CaseIterable, Hashable {
         static let allCases: [TransactionFilterViewController.FilterOption] = {
             [.allTime, .today, .yesterday, .lastWeek, .lastMonth, .customRange(from: nil, to: nil)]
         }()

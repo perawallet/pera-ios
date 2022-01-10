@@ -273,8 +273,10 @@ class Router {
                 assetDetail: assetDetail,
                 configuration: configuration
             )
-        case let .assetDetail(account, assetDetail):
-            viewController = AssetDetailViewController(account: account, configuration: configuration, assetDetail: assetDetail)
+        case let .assetDetail(draft):
+            viewController = AssetDetailViewController(draft: draft, configuration: configuration)
+        case let .algosDetail(draft):
+            viewController = AlgosDetailViewController(draft: draft, configuration: configuration)
         case let .accountDetail(account):
             viewController = AccountDetailViewController(account: account, configuration: configuration)
         case let .assetSearch(account):
@@ -505,6 +507,8 @@ class Router {
                 transactionController: transactionController,
                 configuration: configuration
             )
+        case .transactionFloatingActionButton:
+            viewController = TransactionFloatingActionButtonViewController(configuration: configuration)
         }
 
         return viewController as? T

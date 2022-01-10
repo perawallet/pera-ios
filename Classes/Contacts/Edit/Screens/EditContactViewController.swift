@@ -130,6 +130,18 @@ extension EditContactViewController {
 }
 
 extension EditContactViewController: EditContactViewDelegate {
+    func editContactViewInputFieldViewShouldReturn(
+        _ editContactView: EditContactView,
+        inputFieldView: FloatingTextInputFieldView
+    ) -> Bool {
+        if inputFieldView == editContactView.nameInputView {
+            editContactView.addressInputView.beginEditing()
+        } else {
+            inputFieldView.endEditing()
+        }
+        return true
+    }
+
     func editContactViewDidTapDeleteButton(_ editContactView: EditContactView) {
         displayDeleteAlert(for: contact)
     }

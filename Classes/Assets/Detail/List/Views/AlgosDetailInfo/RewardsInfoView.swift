@@ -18,7 +18,7 @@
 import UIKit
 import MacaroonUIKit
 
-final class RewardsInfoView: View {
+final class RewardsInfoView: View, TripleShadowDrawable {
     weak var delegate: RewardsInfoViewDelegate?
 
     private lazy var rewardsRateTitleLabel = UILabel()
@@ -28,12 +28,22 @@ final class RewardsInfoView: View {
     private lazy var rewardsValueLabel = UILabel()
     private lazy var infoButton = UIButton()
 
+    var thirdShadow: MacaroonUIKit.Shadow?
+    var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
+    var secondShadow: MacaroonUIKit.Shadow?
+    var secondShadowLayer: CAShapeLayer = CAShapeLayer()
+
     func setListeners() {
         infoButton.addTarget(self, action: #selector(didTapInfoButton), for: .touchUpInside)
     }
 
     func customize(_ theme: RewardsInfoViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        draw(corner: theme.containerCorner)
+        draw(border: theme.containerBorder)
+        draw(shadow: theme.containerFirstShadow)
+        draw(secondShadow: theme.containerSecondShadow)
+        draw(thirdShadow: theme.containerThirdShadow)
 
         addRewardsRateTitleLabel(theme)
         addRewardsRateValueLabel(theme)
@@ -84,7 +94,7 @@ extension RewardsInfoView {
         addSubview(verticalSeparator)
         verticalSeparator.snp.makeConstraints {
             $0.fitToWidth(theme.separator.size)
-            $0.top.bottom.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(theme.verticalSeparatorVericalPadding)
             $0.leading.equalTo(rewardsRateTitleLabel.snp.trailing).offset(theme.verticalSeparatorLeadingPadding)
         }
     }
@@ -94,6 +104,7 @@ extension RewardsInfoView {
 
         addSubview(infoButton)
         infoButton.snp.makeConstraints {
+            $0.fitToSize(theme.infoButtonSize)
             $0.centerY.equalToSuperview()
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }

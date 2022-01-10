@@ -21,6 +21,7 @@ import UIKit
 
 struct TutorialStepsViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
+    let textViewLinkAttributes: [AttributedTextBuilder.Attribute]
 
     let verticalSpacing: LayoutMetric
     let horizontalSpacing: LayoutMetric
@@ -29,7 +30,11 @@ struct TutorialStepsViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-
+        self.textViewLinkAttributes = [
+            .textColor(AppColors.Components.Link.primary.uiColor),
+            .underline(UIColor.clear),
+            .font(Fonts.DMSans.medium.make(15).uiFont),
+        ]
         self.verticalSpacing = 40
         self.horizontalSpacing = 16
         self.horizontalPadding = 24

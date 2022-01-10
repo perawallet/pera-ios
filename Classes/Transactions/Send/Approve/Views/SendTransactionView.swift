@@ -52,7 +52,6 @@ class SendTransactionView: BaseView {
         noteInformationView.backgroundColor = Colors.Background.secondary
         amountInformationView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-amount".localized))
         receiverInformationView.bindData(TransactionContactInformationViewModel(title: "transaction-detail-to".localized))
-//        receiverInformationView.removeAddContactButton() // <todo>: Implement this if needed for this view.
         feeInformationView.bindData(TransactionAmountInformationViewModel(title: "transaction-detail-fee".localized))
         noteInformationView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-note".localized))
     }

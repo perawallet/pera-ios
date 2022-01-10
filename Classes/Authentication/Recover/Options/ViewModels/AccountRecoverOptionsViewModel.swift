@@ -36,7 +36,7 @@ extension AccountRecoverOptionsViewModel {
         case .scanQR:
             image = img("icon-qr-scan")
         case .info:
-            image = img("icon-info-24")
+            image = img("icon-info-black-24")
         }
     }
 

@@ -19,7 +19,16 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-protocol TransactionItem {}
+protocol TransactionItem {
+    var uuid: UUID { get }
+    var date: Date? { get }
+}
+
+extension TransactionItem {
+    var date: Date? {
+        return nil
+    }
+}
 
 final class Transaction:
     ALGEntityModel,

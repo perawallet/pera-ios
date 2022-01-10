@@ -23,7 +23,8 @@ extension AccountRecoverViewController {
         let accountRecoverViewTheme: AccountRecoverViewTheme
         let backgroundColor: Color
 
-        let defaultInset: LayoutMetric
+        let bottomInset: LayoutMetric
+        let horizontalPadding: LayoutMetric
         let inputSuggestionsFrame: CGRect
         let keyboardInset: LayoutMetric
         let inputViewHeight: LayoutMetric
@@ -32,7 +33,8 @@ extension AccountRecoverViewController {
             self.accountRecoverViewTheme = AccountRecoverViewTheme()
             self.backgroundColor = AppColors.Shared.System.background
 
-            self.defaultInset = 20
+            self.horizontalPadding = 24
+            self.bottomInset = 16
             self.inputSuggestionsFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 44)
             self.keyboardInset = 92
             self.inputViewHeight = 732

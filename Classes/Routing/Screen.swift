@@ -30,7 +30,8 @@ indirect enum Screen {
     case home(route: Screen?)
     case accountDetail(account: Account)
     case assetSearch(account: Account)
-    case assetDetail(account: Account, assetDetail: AssetDetail?)
+    case assetDetail(draft: AssetDetailDraftProtocol)
+    case algosDetail(draft: AssetDetailDraftProtocol)
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
     case editAccount(account: Account)
@@ -130,6 +131,7 @@ indirect enum Screen {
     case transactionResult
     case transactionAccountSelect(draft: SendTransactionDraft)
     case sendTransactionPreview(draft: TransactionSendDraft?, transactionController: TransactionController)
+    case transactionFloatingActionButton
 }
 
 extension Screen {

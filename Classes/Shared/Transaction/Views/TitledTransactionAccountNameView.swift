@@ -23,7 +23,7 @@ class TitledTransactionAccountNameView: BaseView {
 
     private lazy var titleLabel = TransactionDetailTitleLabel()
 
-    private lazy var accountNameView = AccountNameView()
+    private lazy var accountNameView = ImageWithTitleView()
 
     private lazy var separatorView = LineSeparatorView()
 

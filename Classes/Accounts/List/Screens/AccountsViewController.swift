@@ -243,10 +243,16 @@ extension AccountsViewController: AccountsDataSourceDelegate {
         }
         
         if indexPath.item == 0 {
-            open(.assetDetail(account: account, assetDetail: nil), by: .push)
+            open(
+                .algosDetail(draft: AlgosDetailDraft(account: account)),
+                by: .push
+            )
         } else {
             if let assetDetail = account.assetDetails[safe: indexPath.item - 1] {
-                open(.assetDetail(account: account, assetDetail: assetDetail), by: .push)
+                open(
+                    .assetDetail(draft: AssetDetailDraft(assetDetail: assetDetail, account: account)),
+                    by: .push
+                )
             }
         }
     }

@@ -44,15 +44,12 @@ final class TutorialStepsView: View {
             numberView.bindData(TutorialNumberViewModel(index + 1))
 
             let textView = UITextView()
+            textView.backgroundColor = theme.backgroundColor.uiColor
             textView.isEditable = false
             textView.isScrollEnabled = false
             textView.dataDetectorTypes = .link
             textView.textContainerInset = .zero
-            textView.linkTextAttributes = [
-                .foregroundColor: AppColors.Components.Link.primary.uiColor,
-                .underlineColor: UIColor.clear,
-                .font: Fonts.DMSans.medium.make(15).uiFont
-            ]
+            textView.linkTextAttributes = theme.textViewLinkAttributes.asSystemAttributes()
             textView.delegate = self
             textView.attributedText = bindHTML(step.explanation)
 
