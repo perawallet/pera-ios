@@ -55,20 +55,3 @@ struct AccountNameViewSmallTheme: ImageWithTitleViewTheme {
         self.horizontalPadding = 12
     }
 }
-
-struct ImageWithTitleAssetDetailViewTheme: ImageWithTitleViewTheme {
-    let horizontalPadding: LayoutMetric
-    let imageSize: LayoutSize
-    var titleLabel: TextStyle
-
-    init(_ family: LayoutFamily) {
-        self.imageSize = (24, 24)
-        self.horizontalPadding = 12
-        self.titleLabel = [
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.left),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(15))
-        ]
-    }
-}

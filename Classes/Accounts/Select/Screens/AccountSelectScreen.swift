@@ -21,6 +21,7 @@ import UIKit
 import MacaroonUIKit
 
 final class AccountSelectScreen: BaseViewController {
+    private lazy var assetDetailTitleView = AssetDetailTitleView()
     private lazy var accountView = SelectAccountView()
     private lazy var searchEmptyStateView = SearchEmptyView()
     private lazy var theme = Theme()
@@ -71,17 +72,11 @@ final class AccountSelectScreen: BaseViewController {
         super.configureAppearance()
         searchEmptyStateView.setTitle("account-select-search-empty-title".localized)
         searchEmptyStateView.setDetail("account-select-search-empty-detail".localized)
-
-        switch draft.transactionMode {
-        case .assetDetail(let assetDetail):
-            title = assetDetail.getDisplayNames().0
-        case .algo:
-            title = "asset-algos-title".localized
-        }
     }
 
     override func prepareLayout() {
         addAccountView()
+        addTitleView()
     }
 
     override func bindData() {
@@ -363,6 +358,13 @@ extension AccountSelectScreen {
             $0.top.safeEqualToTop(of: self)
             $0.leading.trailing.bottom.equalToSuperview()
         }
+    }
+
+    private func addTitleView() {
+        assetDetailTitleView.customize(AssetDetailTitleViewTheme())
+        assetDetailTitleView.bindData(AssetDetailTitleViewModel(assetDetail: draft.assetDetail))
+
+        navigationItem.titleView = assetDetailTitleView
     }
 }
 
