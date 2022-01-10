@@ -24,9 +24,11 @@ struct AccountPreviewViewTheme: StyleSheet, LayoutSheet {
     let assetAndNFTs: TextStyle
     let assetValue: TextStyle
     let secondaryAssetValue: TextStyle
+    let errorImage: ImageStyle
     
     let horizontalPadding: LayoutMetric
     let verticalPadding: LayoutMetric
+    let errorImageSize: LayoutSize
 
     init(_ family: LayoutFamily) {
         self.accountName = [
@@ -53,8 +55,12 @@ struct AccountPreviewViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.grayLighter),
             .font(Fonts.DMMono.regular.make(13))
         ]
+        self.errorImage = [
+            .image("icon-red-warning")
+        ]
 
         self.horizontalPadding = 16
         self.verticalPadding = 16
+        self.errorImageSize = (24, 24)
     }
 }

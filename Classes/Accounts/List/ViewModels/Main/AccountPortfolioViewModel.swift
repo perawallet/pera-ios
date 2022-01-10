@@ -36,7 +36,7 @@ extension AccountPortfolioViewModel {
         _ accounts: [Account]
     ) {
         let totalAlgo = accounts.map( {$0.amount} ).reduce(0, +).toAlgos
-        portfolioValueViewModel = PortfolioValueViewModel(.all(value: totalAlgo))
+        portfolioValueViewModel = PortfolioValueViewModel(.all(value: .value(totalAlgo)))
     }
 
     private func bindAlgoHoldingsValue(

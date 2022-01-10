@@ -28,11 +28,13 @@ final class AccountPreviewView:
     private lazy var valueVerticalStackView = UIStackView()
     private lazy var assetValueLabel = UILabel()
     private lazy var secondaryAssetValueLabel = UILabel()
+    private lazy var errorImageView = UIImageView()
 
     func customize(_ theme: AccountPreviewViewTheme) {
         addImage(theme)
         addAccountNameAndAssetsNFTsVerticalStackView(theme)
         addValueVerticalStackView(theme)
+        addErrorImageView(theme)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -102,6 +104,18 @@ extension AccountPreviewView {
 
         valueVerticalStackView.addArrangedSubview(secondaryAssetValueLabel)
     }
+
+    private func addErrorImageView(_ theme: AccountPreviewViewTheme) {
+        errorImageView.customizeAppearance(theme.errorImage)
+        
+        addSubview(errorImageView)
+        errorImageView.snp.makeConstraints {
+            $0.trailing.equalToSuperview()
+            $0.size.equalTo(CGSize(theme.errorImageSize))
+            $0.centerY.equalTo(accountNameAndAssetsNFTsVerticalStackView.snp.centerY)
+        }
+
+    }
 }
 
 extension AccountPreviewView: ViewModelBindable {
@@ -111,6 +125,7 @@ extension AccountPreviewView: ViewModelBindable {
         assetsAndNFTsLabel.text = viewModel?.assetsAndNFTs
         assetValueLabel.text = viewModel?.assetValue
         secondaryAssetValueLabel.text = viewModel?.secondaryAssetValue
+        errorImageView.isHidden = !(viewModel?.hasError ?? false)
     }
 }
 

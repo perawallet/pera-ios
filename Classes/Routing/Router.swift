@@ -491,6 +491,10 @@ class Router {
             let editNoteScreen = EditNoteScreen(note: note, configuration: configuration)
             editNoteScreen.delegate = delegate
             viewController = editNoteScreen
+        case .portfolioDescription:
+            viewController = PortfolioCalculationDescriptionViewController(configuration: configuration)
+        case let .unavailableAccount(account):
+            viewController = UnavailableAccountOptionsViewController(account: account, configuration: configuration)
         case .transactionResult:
             viewController = TransactionResultScreen(configuration: configuration)
         case .transactionAccountSelect(let draft):

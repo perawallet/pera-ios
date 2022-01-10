@@ -98,7 +98,9 @@ extension LedgerAccountDetailDataSource {
                     accountName: accountNameViewModel.name,
                     assetsAndNFTs: nil,
                     assetValue: nil,
-                    secondaryAssetValue: nil)
+                    secondaryAssetValue: nil,
+                    hasError: false
+                )
             )
         )
         return cell
