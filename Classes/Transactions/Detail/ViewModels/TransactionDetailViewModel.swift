@@ -31,6 +31,7 @@ final class TransactionDetailViewModel: ViewModel {
     private(set) var noteViewIsHidden: Bool = false
     private(set) var opponentType: Opponent?
     private(set) var opponentViewContact: Contact?
+    private(set) var localAddress: String?
     private(set) var opponentViewAddress: String?
     private(set) var closeAmountViewMode: TransactionAmountView.Mode?
     private(set) var closeAmountViewIsHidden: Bool = false
@@ -169,7 +170,7 @@ extension TransactionDetailViewModel {
             opponentViewContact = contact
         } else if let localAccount = UIApplication.shared.appConfiguration?.session.accountInformation(from: address) {
             opponentType = .localAccount(address: address)
-            opponentViewAddress = localAccount.name
+            localAddress = localAccount.name
         } else {
             opponentType = .address(address: address)
             opponentViewAddress = address
@@ -229,7 +230,7 @@ extension TransactionDetailViewModel {
 }
 
 extension TransactionDetailViewModel {
-    enum Opponent {
+    enum Opponent: Equatable {
         case localAccount(address: String)
         case contact(address: String)
         case address(address: String)

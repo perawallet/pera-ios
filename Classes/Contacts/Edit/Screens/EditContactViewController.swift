@@ -153,7 +153,7 @@ extension EditContactViewController: EditContactViewDelegate {
 
     private func parseFieldsForContact() -> [String: Any]? {
         guard let name = editContactView.nameInputView.text,
-              !name.isEmpty else {
+              !name.isEmptyOrBlank else {
                   displaySimpleAlertWith(title: "title-error".localized, message: "contacts-name-validation-error".localized)
                   return nil
               }

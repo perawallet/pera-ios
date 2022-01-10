@@ -94,7 +94,7 @@ extension AddContactViewController: AddContactViewDelegate {
     
     private func parseFieldsForContact() -> [String: Any]? {
         guard let name = addContactView.nameInputView.text,
-              !name.isEmpty else {
+              !name.isEmptyOrBlank else {
                   displaySimpleAlertWith(title: "title-error".localized, message: "contacts-name-validation-error".localized)
                   return nil
               }

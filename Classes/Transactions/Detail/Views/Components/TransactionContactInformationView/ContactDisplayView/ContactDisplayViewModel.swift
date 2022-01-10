@@ -22,13 +22,18 @@ import UIKit
 final class ContactDisplayViewModel: ViewModel {
     private(set) var contact: Contact?
     private(set) var name: String?
+    private(set) var localAddress: String?
 
     init(contact: Contact) {
         self.contact = contact
     }
 
-    init(name: String) {
-        self.name = name
+    init(address: String) {
+        self.name = address
+    }
+
+    init(localAddress: String) {
+        self.localAddress = localAddress
     }
 }
 
