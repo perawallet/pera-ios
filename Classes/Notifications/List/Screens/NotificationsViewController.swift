@@ -92,7 +92,8 @@ extension NotificationsViewController {
     }
 
     private func openNotificationFilters() {
-        open(.notificationFilter(flow: .notifications), by: .present)
+        let controller = open(.notificationFilter(flow: .notifications), by: .present) as? NotificationFilterViewController
+        controller?.delegate = self
     }
 }
 
@@ -200,6 +201,12 @@ extension NotificationsViewController: NotificationsViewDelegate {
         dataSource.clear()
         notificationsView.reloadData()
         getNotifications()
+    }
+}
+
+extension NotificationsViewController: NotificationFilterViewControllerDelegate {
+    func notificationFilterViewControllerDidDismiss(_ controller: NotificationFilterViewController) {
+        reloadNotifications()
     }
 }
 
