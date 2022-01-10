@@ -20,6 +20,8 @@ import UIKit
 import SnapKit
 
 final class TransactionFloatingActionButtonViewController: BaseViewController {
+    weak var delegate: TransactionFloatingActionButtonViewControllerDelegate?
+
     private lazy var chromeView = UIControl()
     private lazy var closeButton = FloatingActionItemButton()
     private lazy var receiveButton = FloatingActionItemButton()
@@ -158,73 +160,16 @@ extension TransactionFloatingActionButtonViewController {
 extension TransactionFloatingActionButtonViewController {
     @objc
     private func didTapSendButton() {
-        open(.accountSelection, by: .present)
+        delegate?.transactionFloatingActionButtonViewControllerDidSend(self)
     }
 
     @objc
     private func didTapReceiveButton() {
-        let controller = open(.selectAsset(transactionAction: .request), by: .present) as? OldSelectAssetViewController
-        controller?.delegate = self
+        delegate?.transactionFloatingActionButtonViewControllerDidReceive(self)
     }
 }
 
-extension TransactionFloatingActionButtonViewController: OldSelectAssetViewControllerDelegate {
-    func oldSelectAssetViewController(
-        _ oldSelectAssetViewController: OldSelectAssetViewController,
-        didSelectAlgosIn account: Account,
-        forAction transactionAction: TransactionAction
-    ) {
-        let fullScreenPresentation = Screen.Transition.Open.customPresent(
-            presentationStyle: .fullScreen,
-            transitionStyle: nil,
-            transitioningDelegate: nil
-        )
-
-        if transactionAction == .send {
-            log(SendAssetDetailEvent(address: account.address))
-            open(
-                .sendAlgosTransactionPreview(
-                    account: account,
-                    receiver: .initial,
-                    isSenderEditable: true
-                ),
-                by: fullScreenPresentation
-            )
-        } else {
-            log(ReceiveAssetDetailEvent(address: account.address))
-            let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
-            open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
-        }
-    }
-
-    func oldSelectAssetViewController(
-        _ oldSelectAssetViewController: OldSelectAssetViewController,
-        didSelect assetDetail: AssetDetail,
-        in account: Account,
-        forAction transactionAction: TransactionAction
-    ) {
-        let fullScreenPresentation = Screen.Transition.Open.customPresent(
-            presentationStyle: .fullScreen,
-            transitionStyle: nil,
-            transitioningDelegate: nil
-        )
-
-        if transactionAction == .send {
-            log(SendAssetDetailEvent(address: account.address))
-            open(
-                .sendAssetTransactionPreview(
-                    account: account,
-                    receiver: .initial,
-                    assetDetail: assetDetail,
-                    isSenderEditable: true,
-                    isMaxTransaction: false
-                ),
-                by: fullScreenPresentation
-            )
-        } else {
-            log(ReceiveAssetDetailEvent(address: account.address))
-            let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
-            open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
-        }
-    }
+protocol TransactionFloatingActionButtonViewControllerDelegate: AnyObject {
+    func transactionFloatingActionButtonViewControllerDidSend(_ viewController: TransactionFloatingActionButtonViewController)
+    func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController)
 }

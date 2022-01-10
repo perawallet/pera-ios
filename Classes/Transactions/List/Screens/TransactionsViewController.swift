@@ -44,7 +44,7 @@ class TransactionsViewController: BaseViewController {
     
     private let transactionHistoryDataSourceController: TransactionHistoryDataSourceController
     private(set) lazy var transactionListView = TransactionListView()
-    private lazy var transactionFABButton = FloatingActionItemButton(hasTitleLabel: false)
+    private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
 
     private var pendingTransactions: [TransactionHistoryItem] = []
 
@@ -166,7 +166,7 @@ class TransactionsViewController: BaseViewController {
             self?.fetchAllTransactionsForCSV()
         }
 
-        transactionFABButton.addTarget(self, action: #selector(didTapTransactionFABButton), for: .touchUpInside)
+        transactionActionButton.addTarget(self, action: #selector(didTapTransactionActionButton), for: .touchUpInside)
     }
     
     override func linkInteractors() {
@@ -180,7 +180,7 @@ class TransactionsViewController: BaseViewController {
         }
 
         addTransactionListView()
-        addTransactionFABButton(theme)
+        addTransactionActionButton(theme)
     }
 }
 
@@ -192,20 +192,50 @@ extension TransactionsViewController {
         }
     }
 
-    private func addTransactionFABButton(_ theme: Theme) {
-        transactionFABButton.image = "fab-swap".uiImage
+    private func addTransactionActionButton(_ theme: Theme) {
+        transactionActionButton.image = "fab-swap".uiImage
         
-        view.addSubview(transactionFABButton)
-        transactionFABButton.snp.makeConstraints {
-            $0.setPaddings(theme.transactionFABButtonPaddings)
+        view.addSubview(transactionActionButton)
+        transactionActionButton.snp.makeConstraints {
+            $0.setPaddings(theme.transactionActionButtonPaddings)
         }
     }
 }
 
 extension TransactionsViewController {
     @objc
-    private func didTapTransactionFABButton() {
-        transactionFABButton.didTapTransactionFABButton(on: self)
+    private func didTapTransactionActionButton() {
+        let viewController = open(
+            .transactionFloatingActionButton,
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            ),
+            animated: false
+        ) as? TransactionFloatingActionButtonViewController
+
+        viewController?.delegate = self
+    }
+}
+
+extension TransactionsViewController: TransactionFloatingActionButtonViewControllerDelegate {
+    func transactionFloatingActionButtonViewControllerDidSend(_ viewController: TransactionFloatingActionButtonViewController) {
+        let draft: SendTransactionDraft
+
+        if let assetDetail = assetDetail {
+            draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(assetDetail))
+        } else {
+            draft = SendTransactionDraft(from: account, transactionMode: .algo)
+        }
+
+        open(.sendTransaction(draft: draft), by: .present)
+    }
+
+    func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController) {
+        log(ReceiveAssetDetailEvent(address: account.address))
+        let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
+        open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
     }
 }
 

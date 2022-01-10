@@ -22,11 +22,11 @@ import UIKit
 extension AccountAssetListViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let listBackgroundColor: Color
-        let transactionFABButtonPaddings: LayoutPaddings
+        let transactionActionButtonPaddings: LayoutPaddings
 
         init(_ family: LayoutFamily) {
             self.listBackgroundColor = AppColors.Shared.System.background.uiColor
-            self.transactionFABButtonPaddings = (.noMetric, .noMetric, UIApplication.shared.safeAreaBottom + 24, 24)
+            self.transactionActionButtonPaddings = (.noMetric, .noMetric, UIApplication.shared.safeAreaBottom + 24, 24)
         }
     }
 }

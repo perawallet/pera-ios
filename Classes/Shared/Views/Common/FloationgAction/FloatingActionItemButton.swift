@@ -106,17 +106,3 @@ final fileprivate class FloatingButtomItemImageViewContainer: View, DoubleShadow
 
     func prepareLayout(_ layoutSheet: FloatingActionItemButtonTheme) {}
 }
-
-extension FloatingActionItemButton {
-    func didTapTransactionFABButton(on viewController: UIViewController) {
-        viewController.open(
-            .transactionFloatingActionButton,
-            by: .customPresentWithoutNavigationController(
-                presentationStyle: .overCurrentContext,
-                transitionStyle: nil,
-                transitioningDelegate: nil
-            ),
-            animated: false
-        )
-    }
-}

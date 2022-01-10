@@ -23,10 +23,10 @@ extension TransactionsViewController {
         let transactionHistoryTitleCellSize: LayoutSize
         let transactionHistoryCellSize: LayoutSize
         let transactionHistoryFilterCellSize: LayoutSize
-        let transactionFABButtonPaddings: LayoutPaddings
+        let transactionActionButtonPaddings: LayoutPaddings
 
         init(_ family: LayoutFamily) {
-            self.transactionFABButtonPaddings = (.noMetric, .noMetric, UIApplication.shared.safeAreaBottom + 24, 24)
+            self.transactionActionButtonPaddings = (.noMetric, .noMetric, UIApplication.shared.safeAreaBottom + 24, 24)
             self.transactionHistoryTitleCellSize = (UIScreen.main.bounds.width, 49)
             self.transactionHistoryCellSize = (UIScreen.main.bounds.width, 72)
             self.transactionHistoryFilterCellSize = (UIScreen.main.bounds.width, 40)
