@@ -795,9 +795,12 @@ on your Ledger device (%d)";
 "portfolio-title" = "Portfolio Value";
 "portfolio-algo-holdings-title" = "Algo Holdings";
 "portfolio-asset-holdings-title" = "Asset Holdings";
+"portfolio-title-accounts" = "Accounts";
+"portfolio-title-watchlist" = "Watchlist";
 
 "account-options-add-account-title" = "Add Account";
 "account-options-arrange-list-title" = "Arrange List";
+"account-listing-error-message" = "Sorry, we can’t show the details of this account. It looks like we are having some internal issues. Please refresh the page.";
 
 "account-detail-portfolio-title" = "Account Value";
 "account-detail-assets-search" = "Search my assets";
@@ -833,3 +836,5 @@ on your Ledger device (%d)";
 
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Order";
+
+"portfolio-calculation-title" = "How we calculate portfolio value";

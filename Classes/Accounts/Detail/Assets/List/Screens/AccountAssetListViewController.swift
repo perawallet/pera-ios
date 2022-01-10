@@ -58,7 +58,7 @@ final class AccountAssetListViewController: BaseViewController {
                 switch identifier {
                 case .portfolio:
                     let cell = collectionView.dequeue(AssetPortfolioItemCell.self, at: indexPath)
-                    cell.bindData(PortfolioValueViewModel(.singleAccount(value: self.account.amount.toAlgos)))
+                    cell.bindData(PortfolioValueViewModel(.singleAccount(value: .value(self.account.amount.toAlgos))))
                     return cell
                 case .search:
                     return collectionView.dequeue(SearchBarItemCell.self, at: indexPath)
