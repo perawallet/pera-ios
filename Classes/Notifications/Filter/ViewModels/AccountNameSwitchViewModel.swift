@@ -20,7 +20,7 @@ import MacaroonUIKit
 
 final class AccountNameSwitchViewModel: PairedViewModel {
     private(set) var accountNameViewModel: AccountNameViewModel?
-    private(set) var isSelected = true
+    private(set) var isSelected: Bool?
 
     init(_ model: Account) {
         bindAccountNameViewModel(model)

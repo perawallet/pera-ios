@@ -69,6 +69,15 @@ extension NotificationMessage {
             self.message = nil
             self.metadata = nil
         }
+
+        enum CodingKeys: String, CodingKey {
+            case id = "id"
+            case account = "account"
+            case type = "type"
+            case creationDatetime = "creation_datetime"
+            case message = "message"
+            case metadata = "metadata"
+        }
     }
 }
 
