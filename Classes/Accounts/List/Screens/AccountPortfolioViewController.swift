@@ -161,6 +161,14 @@ extension AccountPortfolioViewController {
     }
 
     private func setSectionSelectionListeners() {
+        portfolioDataSource.handlers.didTapPortfolioTitle = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.modalTransition.perform(.portfolioDescription)
+        }
+
         portfolioDataSource.handlers.didSelectSection = { [weak self] section in
             guard let self = self else {
                 return

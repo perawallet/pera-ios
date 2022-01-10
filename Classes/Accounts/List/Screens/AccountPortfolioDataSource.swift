@@ -48,6 +48,15 @@ final class AccountPortfolioDataSource: NSObject {
                 case .portfolio:
                     let cell = collectionView.dequeue(AccountPortfolioCell.self, at: indexPath)
                     cell.bindData(AccountPortfolioViewModel(self.session.accounts))
+
+                    cell.contextView.handlers.didTapPortfolioTitle = { [weak self] in
+                        guard let self = self else {
+                            return
+                        }
+
+                        self.handlers.didTapPortfolioTitle?()
+                    }
+
                     return cell
                 case .announcement:
                     let cell = collectionView.dequeue(AnnouncementBannerCell.self, at: indexPath)
@@ -160,6 +169,7 @@ extension AccountPortfolioDataSource {
 
 extension AccountPortfolioDataSource {
     struct Handlers {
+        var didTapPortfolioTitle: EmptyHandler?
         var didSelectSection: ((AccountPortfolioSection) -> Void)?
     }
 }
