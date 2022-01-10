@@ -83,13 +83,6 @@ final class NotificationsViewController: BaseViewController {
 
 extension NotificationsViewController {
     private func addBarButtons() {
-        let backBarButtonItem = ALGBarButtonItem(kind: .back) {
-            [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [backBarButtonItem]
-
         let filterBarButtonItem = ALGBarButtonItem(kind: .filter) {
             [unowned self] in
             self.openNotificationFilters()
