@@ -40,7 +40,7 @@ extension SingleLineIconTitleView {
         addSubview(iconView)
         iconView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(theme.verticalInset)
-            $0.leading.equalToSuperview().inset(theme.iconLeadingInset)
+            $0.leading.equalToSuperview()
             $0.size.equalTo(CGSize(theme.iconSize))
         }
     }
@@ -51,7 +51,8 @@ extension SingleLineIconTitleView {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(theme.verticalInset)
-            $0.leading.trailing.equalToSuperview().inset(theme.titleHorizontalPadding)
+            $0.leading.equalTo(iconView.snp.trailing).offset(theme.titleHorizontalPadding)
+            $0.trailing.equalToSuperview().inset(theme.titleHorizontalPadding)
         }
     }
 }

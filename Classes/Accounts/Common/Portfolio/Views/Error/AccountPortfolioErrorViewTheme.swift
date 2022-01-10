@@ -13,34 +13,36 @@
 // limitations under the License.
 
 //
-//   SingleLineIconTitleViewTheme.swift
+//   AccountPortfolioErrorViewTheme.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
-import SwiftUI
 
-struct SingleLineIconTitleViewTheme: StyleSheet, LayoutSheet {
+struct AccountPortfolioErrorViewTheme: StyleSheet, LayoutSheet {
     let icon: ImageStyle
-    let title: TextStyle
+    let message: TextStyle
+    let separator: Separator
 
+    let horizontalInset: LayoutMetric
     let iconSize: LayoutSize
-    let verticalInset: LayoutMetric
-    let titleHorizontalPadding: LayoutMetric
+    let messageLeadingInset: LayoutMetric
+    let separatorTopPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.icon = [
-            .contentMode(.scaleAspectFit)
+            .image("icon-red-warning")
         ]
-        self.title = [
+        self.message = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main.uiColor)
+            .textColor(AppColors.Shared.Helpers.negative.uiColor),
+            .text("account-listing-error-message".localized)
         ]
+        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
 
-        self.iconSize = LayoutSize(w: 24, h: 24)
-        self.verticalInset = 18
-        self.titleHorizontalPadding = 20
+        self.horizontalInset = 24
+        self.iconSize = (24, 24)
+        self.messageLeadingInset = 8
+        self.separatorTopPadding = 24
     }
 }

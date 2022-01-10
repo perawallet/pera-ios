@@ -13,34 +13,39 @@
 // limitations under the License.
 
 //
-//   SingleLineIconTitleViewTheme.swift
+//   PortfolioCalculationDescriptionViewTheme.swift
+
+import Foundation
 
 import Foundation
 import MacaroonUIKit
 import UIKit
-import SwiftUI
 
-struct SingleLineIconTitleViewTheme: StyleSheet, LayoutSheet {
-    let icon: ImageStyle
+struct PortfolioCalculationDescriptionViewTheme: StyleSheet, LayoutSheet {
     let title: TextStyle
+    let detail: TextStyle
 
-    let iconSize: LayoutSize
-    let verticalInset: LayoutMetric
-    let titleHorizontalPadding: LayoutMetric
+    let topPadding: LayoutMetric
+    let detailPadding: LayoutMetric
+    let bottomPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.icon = [
-            .contentMode(.scaleAspectFit)
-        ]
         self.title = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
-            .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main.uiColor)
+            .font(Fonts.DMSans.medium.make(19)),
+            .textColor(AppColors.Components.Text.main),
+            .text("portfolio-calculation-title".localized)
+        ]
+        self.detail = [
+            .textOverflow(FittingText()),
+            .textAlignment(.left),
+            .font(Fonts.DMSans.regular.make(15)),
+            .textColor(AppColors.Components.Text.gray)
         ]
 
-        self.iconSize = LayoutSize(w: 24, h: 24)
-        self.verticalInset = 18
-        self.titleHorizontalPadding = 20
+        self.topPadding = 28
+        self.detailPadding = 20
+        self.bottomPadding = 28
     }
 }

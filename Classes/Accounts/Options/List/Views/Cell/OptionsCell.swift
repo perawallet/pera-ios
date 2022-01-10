@@ -32,6 +32,10 @@ final class OptionsCell: BaseCollectionViewCell<OptionsContextView> {
         contextView.bind(viewModel)
     }
 
+    func bindData(_ viewModel: UnavailableAccountOptionsViewModel) {
+        contextView.bindData(viewModel)
+    }
+
     func bind(_ viewModel: AccountRecoverOptionsViewModel) {
         contextView.bind(viewModel)
     }

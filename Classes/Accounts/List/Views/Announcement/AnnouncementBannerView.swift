@@ -111,9 +111,12 @@ extension AnnouncementBannerView: ViewModelBindable {
 }
 
 final class AnnouncementBannerCell: BaseCollectionViewCell<AnnouncementBannerView> {
-
     override func configureAppearance() {
         super.configureAppearance()
         contextView.customize(AnnouncementBannerViewTheme())
+    }
+
+    func bindData(_ viewModel: AnnouncementBannerViewModel?) {
+
     }
 }

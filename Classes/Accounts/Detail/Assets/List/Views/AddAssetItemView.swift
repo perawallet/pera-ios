@@ -26,6 +26,7 @@ final class AddAssetItemView: View {
     override init(frame: CGRect) {
         super.init(frame: frame)
         customize(AddAssetItemViewTheme())
+        setListeners()
     }
 
     private func customize(_ theme: AddAssetItemViewTheme) {
