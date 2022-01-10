@@ -66,4 +66,14 @@ enum AssetPreviewModelAdapter {
             assetSecondaryValue: nil
         )
     }
+
+    static func adaptPendingAsset(_ adaptee: AssetDetail) -> PendingAssetPreviewModel {
+        let status = adaptee.isRecentlyAdded ? "asset-add-confirmation-title".localized : "asset-removing-status".localized
+        return PendingAssetPreviewModel(
+            secondaryImage: adaptee.isVerified ? img("icon-verified-shield") : nil,
+            assetPrimaryTitle: adaptee.assetName,
+            assetSecondaryTitle: "ID \(adaptee.id)",
+            assetStatus: status
+        )
+    }
 }

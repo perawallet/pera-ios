@@ -21,11 +21,10 @@ import MacaroonUIKit
 
 final class AccountAssetListViewController: BaseViewController {
     private lazy var theme = Theme()
+    private lazy var listLayout = AccountAssetListLayout(account: account)
 
     typealias DataSource = UICollectionViewDiffableDataSource<AccountAssetsSection, AccountAssetsItem>
     typealias Snapshot = NSDiffableDataSourceSnapshot<AccountAssetsSection, AccountAssetsItem>
-
-    private lazy var listLayout = AccountAssetListLayout(account: account)
 
     private lazy var listView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -36,12 +35,16 @@ final class AccountAssetListViewController: BaseViewController {
         collectionView.register(AssetPortfolioItemCell.self)
         collectionView.register(SearchBarItemCell.self)
         collectionView.register(AssetPreviewCell.self)
+        collectionView.register(PendingAssetPreviewCell.self)
         collectionView.register(header: SingleLineTitleActionHeaderView.self)
         collectionView.register(footer: AddAssetItemFooterView.self)
         return collectionView
     }()
 
     private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
+
+    private var addedAssetDetails = [AssetDetail]()
+    private var removedAssetDetails = [AssetDetail]()
 
     private let account: Account
 
@@ -79,6 +82,20 @@ final class AccountAssetListViewController: BaseViewController {
                             AssetPreviewViewModel(
                                 AssetPreviewModelAdapter.adaptAssetSelection(
                                     (assetDetail, asset)
+                                )
+                            )
+                        )
+                    }
+
+                    return cell
+                case let .pendingAsset(assetDetail):
+                    let cell = collectionView.dequeue(PendingAssetPreviewCell.self, at: indexPath)
+
+                    if let assetDetail = assetDetail {
+                        cell.bindData(
+                            PendingAssetPreviewViewModel(
+                                AssetPreviewModelAdapter.adaptPendingAsset(
+                                    assetDetail
                                 )
                             )
                         )
@@ -229,6 +246,17 @@ extension AccountAssetListViewController {
             assetSectionItems.append(.asset(asset: $0))
         }
 
+        clearAddedAssetDetailsIfNeeded()
+        clearRemovedAssetDetailsIfNeeded()
+
+        addedAssetDetails.forEach {
+            assetSectionItems.append(.pendingAsset(asset: $0))
+        }
+
+        removedAssetDetails.forEach {
+            assetSectionItems.append(.pendingAsset(asset: $0))
+        }
+
         snapshot.appendItems(
             assetSectionItems,
             toSection: .assets
@@ -238,6 +266,14 @@ extension AccountAssetListViewController {
             snapshot,
             animatingDifferences: animatingDifferences
         )
+    }
+
+    private func clearAddedAssetDetailsIfNeeded() {
+        addedAssetDetails = addedAssetDetails.filter { !account.assetDetails.contains($0) }
+    }
+
+    private func clearRemovedAssetDetailsIfNeeded() {
+        removedAssetDetails = removedAssetDetails.filter { account.assetDetails.contains($0) }
     }
 }
 
@@ -281,6 +317,18 @@ extension AccountAssetListViewController: AddAssetItemFooterViewDelegate {
     }
 }
 
+extension AccountAssetListViewController {
+    func addAsset(_ assetDetail: AssetDetail) {
+        addedAssetDetails.append(assetDetail)
+        applySnapshot()
+    }
+
+    func removeAsset(_ assetDetail: AssetDetail) {
+        removedAssetDetails.append(assetDetail)
+        applySnapshot()
+    }
+}
+
 extension AccountAssetListViewController: AssetAdditionViewControllerDelegate {
     func assetAdditionViewController(
         _ assetAdditionViewController: AssetAdditionViewController,
@@ -289,9 +337,9 @@ extension AccountAssetListViewController: AssetAdditionViewControllerDelegate {
     ) {
         let assetDetail = AssetDetail(assetInformation: assetSearchResult)
         assetDetail.isRecentlyAdded = true
+        addAsset(assetDetail)
     }
 }
-
 
 enum AccountAssetsSection: Int, Hashable {
     case portfolio
@@ -302,4 +350,5 @@ enum AccountAssetsItem: Hashable {
     case portfolio
     case search
     case asset(asset: AssetDetail?)
+    case pendingAsset(asset: AssetDetail?)
 }
