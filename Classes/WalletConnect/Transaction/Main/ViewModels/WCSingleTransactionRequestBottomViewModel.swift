@@ -17,15 +17,18 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
 final class WCSingleTransactionRequestBottomViewModel {
     private(set) var senderAddress: String?
     private(set) var networkFee: String?
     private(set) var warningMessage: String?
+    private(set) var assetIcon: UIImage?
 
     init(transaction: WCTransaction, account: Account?) {
         networkFee = "\(transaction.transactionDetail?.fee?.toAlgos.toAlgosStringForLabel ?? "") ALGO"
         senderAddress = account?.name ?? transaction.transactionDetail?.sender
-        //TODO: Warning message will be set here 
+        //TODO: Warning message will be set here
+        assetIcon = account?.type.image(for: .orange)
     }
 }

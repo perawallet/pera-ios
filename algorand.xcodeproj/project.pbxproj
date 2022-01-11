@@ -13974,7 +13974,6 @@
 				D4AEDD31271C6E1700AD2725 /* AlgoStatisticsFooterViewTheme.swift in Sources */,
 				17BD4EB42292F1260003E49A /* AccountListView.swift in Sources */,
 				D482274C272C57D9004CB9BF /* EditContactViewController+Theme.swift in Sources */,
-				2BF0FAD925387C6D00D704D5 /* AssetCardCell.swift in Sources */,
 				955B618D27858E1B005A5C7E /* WCSingleTransactionRequestViewTheme.swift in Sources */,
 				17BD4EB62292F1260003E49A /* AppConfiguration.swift in Sources */,
 				D4AEDD3E271C711100AD2725 /* AlgoStatisticsInfoViewTheme.swift in Sources */,
@@ -15290,7 +15289,6 @@
 				D4822750272C5C86004CB9BF /* EditContactView.swift in Sources */,
 				D4F068AA26EF2D1C00C26F43 /* TutorialStepsViewTheme.swift in Sources */,
 				2B0F62D924EC129D00DA22A6 /* AssetConfigTransactionType.swift in Sources */,
-				2BF0FAE725387CA400D704D5 /* AssetCardViewModel.swift in Sources */,
 				95C9590B278A1132003D0D78 /* WCSingleTransactionRequestBottomView.swift in Sources */,
 				2B0F62DA24EC129D00DA22A6 /* AccountsViewController.swift in Sources */,
 				2B288ACB268E377300BC6FB6 /* WCWalletMeta.swift in Sources */,
@@ -16704,6 +16702,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -16716,6 +16715,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 4.10.8;
+				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;

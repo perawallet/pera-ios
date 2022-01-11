@@ -104,10 +104,17 @@ extension WCSingleTransactionRequestBottomView {
             make.trailing.equalToSuperview().inset(theme.defaultHorizontalInset)
         }
 
+        addSubview(assetIcon)
+        assetIcon.snp.makeConstraints { make in
+            make.leading.equalToSuperview().inset(theme.defaultHorizontalInset)
+            make.bottom.equalTo(networkFeeTitleLabel.snp.top).offset(theme.networkFeeTitleLabelBottomOffset)
+            make.fitToSize(theme.assetIconSize)
+        }
+
         addSubview(assetTitleLabel)
         assetTitleLabel.snp.makeConstraints { make in
             make.bottom.equalTo(assetAmountLabel)
-            make.leading.equalToSuperview().inset(theme.defaultHorizontalInset)
+            make.leading.equalTo(assetIcon.snp.trailing).offset(theme.assetIconLeadingOffset)
             make.trailing.lessThanOrEqualTo(assetAmountLabel.snp.leading).offset(-theme.networkFeeTitleLabelTrailingOffset)
         }
 
@@ -121,5 +128,6 @@ extension WCSingleTransactionRequestBottomView {
         assetTitleLabel.text = viewModel?.senderAddress
         warningLabel.text = viewModel?.warningMessage
         warningIcon.isHidden = viewModel?.warningMessage.isNilOrEmpty ?? true
+        assetIcon.image = viewModel?.assetIcon
     }
 }

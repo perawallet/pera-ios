@@ -35,6 +35,8 @@ struct WCSingleTransactionRequestBottomViewTheme: LayoutSheet, StyleSheet {
     let networkFeeTitleLabelTrailingOffset: LayoutMetric
     let defaultHorizontalInset: LayoutMetric
     let showTransactionButtonTopOffset: LayoutMetric
+    let assetIconSize: LayoutSize
+    let assetIconLeadingOffset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         showTransactionDetailsButton = [
@@ -76,5 +78,7 @@ struct WCSingleTransactionRequestBottomViewTheme: LayoutSheet, StyleSheet {
         networkFeeTitleLabelTrailingOffset = 8
         defaultHorizontalInset = 24
         showTransactionButtonTopOffset = -8
+        assetIconSize = (20, 20)
+        assetIconLeadingOffset = 8
     }
 }
