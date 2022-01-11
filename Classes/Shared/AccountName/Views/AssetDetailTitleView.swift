@@ -34,6 +34,8 @@ final class AssetDetailTitleView: View {
 
 extension AssetDetailTitleView {
     private func addImageView(_ theme: AssetDetailTitleViewTheme) {
+        imageView.theme = theme.assetImageViewSmallerTheme
+
         addSubview(imageView)
         imageView.snp.makeConstraints {
             $0.leading.bottom.top.equalToSuperview()

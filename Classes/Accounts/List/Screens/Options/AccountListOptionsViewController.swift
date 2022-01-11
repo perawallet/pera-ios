@@ -27,6 +27,10 @@ final class AccountListOptionsViewController: BaseViewController {
 
     private lazy var listView = UITableView()
 
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+
     init(accountType: AccountType, configuration: ViewControllerConfiguration) {
         self.accountType = accountType
         super.init(configuration: configuration)
@@ -56,7 +60,7 @@ extension AccountListOptionsViewController {
         listView.estimatedRowHeight = theme.itemHeight
         listView.separatorStyle = .none
         listView.separatorInset = .zero
-        listView.verticalScrollIndicatorInsets.top = .leastNonzeroMagnitude
+        listView.showsVerticalScrollIndicator = false
     }
 }
 
@@ -98,7 +102,7 @@ extension AccountListOptionsViewController: UITableViewDelegate {
 
 extension AccountListOptionsViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight + view.safeAreaBottom)
+        return .preferred(theme.modalHeight)
     }
 }
 

@@ -32,6 +32,6 @@ struct AddAssetItemViewTheme: StyleSheet, LayoutSheet {
             .titleColor([.normal(AppColors.Components.Text.main)])
         ]
 
-        self.iconLeadingInset = 32
+        self.iconLeadingInset = 24
     }
 }

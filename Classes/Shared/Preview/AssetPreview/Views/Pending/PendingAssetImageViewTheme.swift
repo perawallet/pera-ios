@@ -23,6 +23,7 @@ struct PendingAssetImageViewTheme: StyleSheet, LayoutSheet {
     let indicator: ImageStyle
     let indicatorSize: LayoutSize
     let border: Border
+    let corner: Corner
 
     init(_ family: LayoutFamily) {
         self.indicator = [
@@ -31,5 +32,6 @@ struct PendingAssetImageViewTheme: StyleSheet, LayoutSheet {
         ]
         self.indicatorSize = (16, 16)
         self.border = Border(color: AppColors.Shared.Layer.grayLighter.uiColor, width: 1)
+        self.corner = Corner(radius: 20)
     }
 }
