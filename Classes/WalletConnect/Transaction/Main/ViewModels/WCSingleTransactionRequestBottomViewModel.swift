@@ -13,18 +13,19 @@
 // limitations under the License.
 
 //
-//   WCMainTransactionViewModel.swift
+//   WCTransactionRequestBottomViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-final class WCMainTransactionViewModel {
-    private(set) var buttonTitle: String?
+final class WCSingleTransactionRequestBottomViewModel {
+    private(set) var senderAddress: String?
+    private(set) var networkFee: String?
+    private(set) var warningMessage: String?
 
-    init(transactions: [WCTransaction]) {
-        setButtonTitle(from: transactions)
-    }
-
-    private func setButtonTitle(from transactions: [WCTransaction]) {
-        buttonTitle = transactions.count == 1 ? "title-confirm".localized : "title-confirm-all".localized
+    init(transaction: WCTransaction, account: Account?) {
+        networkFee = "\(transaction.transactionDetail?.fee?.toAlgos.toAlgosStringForLabel ?? "") ALGO"
+        senderAddress = account?.name ?? transaction.transactionDetail?.sender
+        //TODO: Warning message will be set here 
     }
 }

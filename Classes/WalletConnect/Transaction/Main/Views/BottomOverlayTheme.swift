@@ -27,7 +27,9 @@ struct BottomOverlayCommonStyleSheet: BottomOverlayViewStyleSheet {
 
     init() {
         background = []
-        handle = []
+        handle = [
+            .image("icon-bottom-sheet-handle")
+        ]
     }
 }
 

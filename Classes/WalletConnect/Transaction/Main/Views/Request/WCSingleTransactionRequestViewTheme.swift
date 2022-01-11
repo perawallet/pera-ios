@@ -13,19 +13,23 @@
 // limitations under the License.
 
 //
-//   WCTransactionRequestViewTheme.swift
+//   WCSingleTransactionRequestViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct WCTransactionRequestViewTheme: StyleSheet, LayoutSheet {
+struct WCSingleTransactionRequestViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let confirmButton: ButtonPrimaryTheme
     let cancelButton: ButtonSecondaryTheme
     let buttonPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let confirmButtonWidthMultiplier: LayoutMetric
+    let buttonHeight: LayoutMetric
+    let bottomHeight: LayoutMetric
+    let bottomViewBottomOffset: LayoutMetric
+    let separator: Separator
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -34,5 +38,9 @@ struct WCTransactionRequestViewTheme: StyleSheet, LayoutSheet {
         self.buttonPadding = 20
         self.horizontalPadding = 24
         self.confirmButtonWidthMultiplier = 2
+        self.buttonHeight = 52
+        self.bottomHeight = 109
+        self.bottomViewBottomOffset = -35
+        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
     }
 }

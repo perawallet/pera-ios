@@ -55,6 +55,7 @@ class RootViewController: UIViewController {
     private var currentWCTransactionRequest: WalletConnectRequest?
 
     private var wcMainTransactionViewController: WCMainTransactionViewController?
+    private var wcRequestScreen: WCSingleTransactionRequestScreen?
     
     init(appConfiguration: AppConfiguration) {
         self.appConfiguration = appConfiguration
@@ -190,17 +191,27 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
 
         currentWCTransactionRequest = request
 
-        wcMainTransactionViewController = open(
-            .wcMainTransaction(
+        wcRequestScreen = open(
+            .wcMainTransactionScreen(
                 transactions: transactions,
                 transactionRequest: request,
                 transactionOption: transactionOption
             ),
-            by: fullScreenPresentation,
-            animated: animated
-        ) as? WCMainTransactionViewController
+            by: fullScreenPresentation
+        ) as? WCSingleTransactionRequestScreen
+        wcRequestScreen?.delegate = self
 
-        wcMainTransactionViewController?.delegate = self
+//        wcMainTransactionViewController = open(
+//            .wcMainTransaction(
+//                transactions: transactions,
+//                transactionRequest: request,
+//                transactionOption: transactionOption
+//            ),
+//            by: fullScreenPresentation,
+//            animated: animated
+//        ) as? WCMainTransactionViewController
+//
+//        wcMainTransactionViewController?.delegate = self
     }
 }
 
@@ -215,6 +226,14 @@ extension RootViewController: WCMainTransactionViewControllerDelegate {
     private func resetCurrentWCTransaction() {
         currentWCTransactionRequest = nil
         wcMainTransactionViewController = nil
+    }
+}
+
+extension RootViewController: WCSingleTransactionRequestScreenDelegate {
+    func wcSingleTransactionRequestScreenDidCompleted(
+        _ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen
+    ) {
+        resetCurrentWCTransaction()
     }
 }
 

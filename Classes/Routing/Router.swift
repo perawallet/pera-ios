@@ -499,8 +499,19 @@ class Router {
                 transactionController: transactionController,
                 configuration: configuration
             )
-        case .wcMainTransactionScreen:
-            viewController = WCMainTransactionScreen(configuration: configuration)
+        case let .wcMainTransactionScreen(transactions, transactionRequest, transactionOption):
+            let dataSource = WCMainTransactionDataSource(
+                transactions: transactions,
+                transactionRequest: transactionRequest,
+                transactionOption: transactionOption,
+                session: configuration.session,
+                walletConnector: configuration.walletConnector
+            )
+            viewController = WCSingleTransactionRequestScreen(
+                dataSource: dataSource,
+                configuration: configuration
+            )
+//            viewController = WCMainTransactionScreen(configuration: configuration)
         }
 
         return viewController as? T

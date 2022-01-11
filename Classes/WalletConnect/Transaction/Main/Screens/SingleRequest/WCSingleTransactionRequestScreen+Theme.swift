@@ -13,18 +13,17 @@
 // limitations under the License.
 
 //
-//   WCMainTransactionViewModel.swift
+//   WCSingleTransactionRequestScreen+Theme.swift
 
 import Foundation
+import MacaroonUIKit
 
-final class WCMainTransactionViewModel {
-    private(set) var buttonTitle: String?
-
-    init(transactions: [WCTransaction]) {
-        setButtonTitle(from: transactions)
-    }
-
-    private func setButtonTitle(from transactions: [WCTransaction]) {
-        buttonTitle = transactions.count == 1 ? "title-confirm".localized : "title-confirm-all".localized
+extension WCSingleTransactionRequestScreen {
+    struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: Color
+        
+        init(_ family: LayoutFamily) {
+            backgroundColor = AppColors.Shared.System.background
+        }
     }
 }

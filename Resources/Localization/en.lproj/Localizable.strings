@@ -718,7 +718,11 @@ on your Ledger device (%d)";
 "wallet-connect-transaction-title-atomic" = "Atomic Transaction Request";
 "wallet-connect-transaction-title-asset" = "Transfer Asset Request";
 "wallet-connect-transaction-title-opt-in" = "Assets Opt-in Request";
-"wallet-connect-transaction-title-app-call" = "App Call";
+"wallet-connect-transaction-title-possible-opt-in" = "Possible Assets Opt-in Request";
+"wallet-connect-transaction-title-app-call" = "Application Call";
+"wallet-connect-transaction-title-app-create" = "Application Creation";
+"wallet-connect-transaction-title-app-update" = "Application Call Update";
+"wallet-connect-transaction-title-app-delete" = "Application Call Delete";
 "wallet-connect-transaction-title-multiple" = "Multiple Transaction Request";
 "wallet-connect-transaction-all-count" = "All transactions (%d)";
 "wallet-connect-transaction-all-count-singular" = "All transaction (1)";
@@ -833,3 +837,9 @@ on your Ledger device (%d)";
 
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Order";
+
+// MARK: SingleTransactionRequest
+"single-transaction-request-show-detail-title" = "Show Transaction Details";
+"single-transaction-request-network-fee-title" = "Network Fee";
+"single-transaction-request-opt-in-title" = "Opt-in";
+"single-transaction-request-opt-in-subtitle" = "OnCompletion";

@@ -22,7 +22,7 @@ class WCMainTransactionDataSource: NSObject {
     weak var delegate: WCMainTransactionDataSourceDelegate?
 
     private let walletConnector: WalletConnector
-    private let transactionRequest: WalletConnectRequest
+    private(set) var transactionRequest: WalletConnectRequest
     let transactionOption: WCTransactionOption?
     private(set) var groupedTransactions: [Int64: [WCTransaction]] = [:]
     private let session: Session?
@@ -65,6 +65,16 @@ class WCMainTransactionDataSource: NSObject {
                 groupedTransactions[group]?.append(transactions[index])
             }
         }
+    }
+}
+
+extension WCMainTransactionDataSource {
+    func rejectTransaction(reason: WCTransactionErrorResponse = .rejected(.user)) {
+        walletConnector.rejectTransactionRequest(transactionRequest, with: reason)
+    }
+
+    func signTransactionRequest(signature: [Data?]) {
+        walletConnector.signTransactionRequest(transactionRequest, with: signature)
     }
 }
 
