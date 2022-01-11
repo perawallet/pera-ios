@@ -79,7 +79,7 @@ extension AssetImageView {
 }
 
 extension AssetImageView: ViewModelBindable {
-    func bindData(_ viewModel: AssetPreviewViewModel?) {
+    func bindData(_ viewModel: AssetImageViewModel?) {
         if let image = viewModel?.image {
             self.image = image
             return

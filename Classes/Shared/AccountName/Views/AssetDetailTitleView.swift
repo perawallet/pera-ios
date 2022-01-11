@@ -13,16 +13,16 @@
 // limitations under the License.
 
 //
-//  ImageWithTitleView.swift
+//   AssetDetailTitleView.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class ImageWithTitleView: View {
-    private lazy var imageView = UIImageView()
+final class AssetDetailTitleView: View {
+    private lazy var imageView = AssetImageView()
     private lazy var titleLabel = UILabel()
 
-    func customize(_ theme: ImageWithTitleViewTheme) {
+    func customize(_ theme: AssetDetailTitleViewTheme) {
         addImageView(theme)
         addTitleLabel(theme)
     }
@@ -32,38 +32,32 @@ final class ImageWithTitleView: View {
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
-extension ImageWithTitleView {
-    private func addImageView(_ theme: ImageWithTitleViewTheme) {
+extension AssetDetailTitleView {
+    private func addImageView(_ theme: AssetDetailTitleViewTheme) {
         addSubview(imageView)
         imageView.snp.makeConstraints {
             $0.leading.bottom.top.equalToSuperview()
             $0.fitToSize(theme.imageSize)
         }
     }
-    
-    private func addTitleLabel(_ theme: ImageWithTitleViewTheme) {
+
+    private func addTitleLabel(_ theme: AssetDetailTitleViewTheme) {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)
-            $0.leading.equalToSuperview().priority(.medium)
             $0.centerY.trailing.equalToSuperview()
         }
     }
 }
 
-extension ImageWithTitleView {
-    func bindData(_ viewModel: AccountNameViewModel?) {
-        imageView.image = viewModel?.image
-        titleLabel.text = viewModel?.name
-    }
-}
-
-extension ImageWithTitleView {
-    func setAccountImage(_ image: UIImage?) {
-        imageView.image = image
-    }
-    
-    func setAccountName(_ name: String?) {
-        titleLabel.text = name
+extension AssetDetailTitleView {
+    func bindData(_ viewModel: AssetDetailTitleViewModel?) {
+        imageView.bindData(
+            AssetImageViewModel(
+                image: viewModel?.image,
+                assetAbbreviationForImage: viewModel?.assetAbbreviationForImage
+            )
+        )
+        titleLabel.text = viewModel?.title
     }
 }

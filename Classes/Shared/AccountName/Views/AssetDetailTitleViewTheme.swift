@@ -13,16 +13,23 @@
 // limitations under the License.
 
 //
-//   QRCreationViewController+Theme.swift
+//   AssetDetailTitleViewTheme.swift
 
 import MacaroonUIKit
 
-extension QRCreationViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        
-        init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
-        }
+struct AssetDetailTitleViewTheme: LayoutSheet, StyleSheet {
+    let horizontalPadding: LayoutMetric
+    let imageSize: LayoutSize
+    var titleLabel: TextStyle
+
+    init(_ family: LayoutFamily) {
+        self.imageSize = (24, 24)
+        self.horizontalPadding = 12
+        self.titleLabel = [
+            .textOverflow(SingleLineFittingText()),
+            .textAlignment(.left),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMSans.medium.make(15))
+        ]
     }
 }

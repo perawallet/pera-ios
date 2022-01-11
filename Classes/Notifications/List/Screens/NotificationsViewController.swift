@@ -58,6 +58,13 @@ final class NotificationsViewController: BaseViewController {
             name: .NotificationDidReceived,
             object: nil
         )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didUpdateAccount),
+            name: .AccountUpdate,
+            object: nil
+        )
     }
     
     override func linkInteractors() {
@@ -92,8 +99,7 @@ extension NotificationsViewController {
     }
 
     private func openNotificationFilters() {
-        let controller = open(.notificationFilter(flow: .notifications), by: .present) as? NotificationFilterViewController
-        controller?.delegate = self
+        open(.notificationFilter(flow: .notifications), by: .present)
     }
 }
 
@@ -101,6 +107,13 @@ extension NotificationsViewController {
     @objc
     private func didReceiveNotification(notification: Notification) {
         if isInitialFetchCompleted && isViewAppeared {
+            reloadNotifications()
+        }
+    }
+
+    @objc
+    private func didUpdateAccount(notification: Notification) {
+        if isInitialFetchCompleted {
             reloadNotifications()
         }
     }
@@ -204,12 +217,6 @@ extension NotificationsViewController: NotificationsViewDelegate {
     }
 }
 
-extension NotificationsViewController: NotificationFilterViewControllerDelegate {
-    func notificationFilterViewControllerDidDismiss(_ controller: NotificationFilterViewController) {
-        reloadNotifications()
-    }
-}
-
 extension NotificationsViewController: APIListener {
     func api(
         _ api: API,
@@ -221,7 +228,7 @@ extension NotificationsViewController: APIListener {
             isConnectedToInternet = networkMonitor.isConnected
         }
     }
-
+    
     func api(_ api: API, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
         if UIApplication.shared.isActive {
             isConnectedToInternet = networkMonitor.isConnected

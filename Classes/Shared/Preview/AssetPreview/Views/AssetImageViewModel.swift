@@ -13,16 +13,18 @@
 // limitations under the License.
 
 //
-//   QRCreationViewController+Theme.swift
+//   AssetImageViewModel.swift
 
+import Foundation
+import UIKit
 import MacaroonUIKit
 
-extension QRCreationViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        
-        init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
-        }
+final class AssetImageViewModel: ViewModel {
+    private(set) var image: UIImage?
+    private(set) var assetAbbreviationForImage: String?
+
+    init(image: UIImage? = nil, assetAbbreviationForImage: String? = nil) {
+        self.image = image
+        self.assetAbbreviationForImage = assetAbbreviationForImage
     }
 }

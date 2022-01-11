@@ -43,8 +43,8 @@ final class AlgosDetailViewController: TransactionsViewController {
 
 extension AlgosDetailViewController {
     private func addTitleView() {
-        let assetDetailTitleView = ImageWithTitleView()
-        assetDetailTitleView.customize(ImageWithTitleAssetDetailViewTheme())
+        let assetDetailTitleView = AssetDetailTitleView()
+        assetDetailTitleView.customize(AssetDetailTitleViewTheme())
         assetDetailTitleView.bindData(AssetDetailTitleViewModel())
 
         navigationItem.titleView = assetDetailTitleView
