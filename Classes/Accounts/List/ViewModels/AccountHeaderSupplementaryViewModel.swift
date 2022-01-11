@@ -33,7 +33,7 @@ class AccountHeaderSupplementaryViewModel {
     }
 
     private func setAccountImage(from account: Account) {
-        accountImage = account.accountImage()
+        accountImage = account.accountTypeImage()
     }
 
     private func setIsActionEnabled(from isActionEnabled: Bool) {

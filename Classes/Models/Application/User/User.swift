@@ -72,6 +72,8 @@ extension User {
         accounts[index].ledgerDetail = account.ledgerDetail
         accounts[index].receivesNotification = account.receivesNotification
         accounts[index].rekeyDetail = account.rekeyDetail
+        accounts[index].preferredOrder = account.preferredOrder
+        accounts[index].accountImage = account.accountImage
         syncronize()
     }
     

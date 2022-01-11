@@ -35,7 +35,7 @@ extension AccountNameViewModel {
             return
         }
 
-        image = account.type.image(for: .orange) /// <todo>: Remove mock
+        image = account.image ?? accountType.image(for: AccountImageType.getRandomImage(for: accountType))
     }
 
     private func bindName(from account: Account, with hasImage: Bool) {

@@ -43,7 +43,7 @@ class SendAssetTransactionPreviewViewModel {
         
         if let account = selectedAccount,
             let assetAmount = account.amount(for: assetDetail) {
-            view.transactionAccountInformationView.setAccountImage(account.accountImage())
+            view.transactionAccountInformationView.setAccountImage(account.accountTypeImage())
             view.transactionAccountInformationView.setAccountName(account.name)
             
             view.amountInputView.maxAmount = assetAmount
@@ -61,7 +61,7 @@ class SendAssetTransactionPreviewViewModel {
             return
         }
         
-        view.transactionAccountInformationView.setAccountImage(account.accountImage())
+        view.transactionAccountInformationView.setAccountImage(account.accountTypeImage())
         view.transactionAccountInformationView.setAccountName(account.name)
         
         view.amountInputView.maxAmount = assetAmount

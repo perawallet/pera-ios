@@ -94,7 +94,7 @@ extension LedgerAccountDetailDataSource {
             AccountPreviewViewModel(
                 AccountPreviewModel(
                     accountType: account.type,
-                    accountImageType: .orange,
+                    accountImage: account.image ?? account.type.image(for: AccountImageType.getRandomImage(for: account.type)),
                     accountName: accountNameViewModel.name,
                     assetsAndNFTs: nil,
                     assetValue: nil,
