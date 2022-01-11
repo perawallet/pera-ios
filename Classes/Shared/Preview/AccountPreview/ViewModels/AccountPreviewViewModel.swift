@@ -20,7 +20,7 @@ import UIKit
 
 struct AccountPreviewModel {
     let accountType: AccountType
-    let accountImageType: AccountImageType
+    let accountImage: UIImage?
     let accountName: String?
     var assetsAndNFTs: String?
     var assetValue: String?
@@ -29,7 +29,7 @@ struct AccountPreviewModel {
 }
 
 final class AccountPreviewViewModel: PairedViewModel {
-    private(set) var accountImageTypeImage: UIImage?
+    private(set) var accountImage: UIImage?
     private(set) var accountName: String?
     private(set) var assetsAndNFTs: String?
     private(set) var assetValue: String?
@@ -37,7 +37,7 @@ final class AccountPreviewViewModel: PairedViewModel {
     private(set) var hasError: Bool = false
 
     init(_ model: AccountPreviewModel) {
-        bindAccountImageTypeImage(accountImageType: model.accountImageType, accountType: model.accountType)
+        bindAccountImage(model.accountImage)
         bindAccountName(model.accountName)
         bindAssetsAndNFTs(model.assetsAndNFTs)
         bindAssetValue(model.assetValue)
@@ -57,7 +57,7 @@ final class AccountPreviewViewModel: PairedViewModel {
         self.init(
             AccountPreviewModel(
                 accountType: account.type,
-                accountImageType: .orange,
+                accountImage: account.image,
                 accountName: account.name,
                 assetsAndNFTs: assetsAndNFTs,
                 assetValue: account.amount.toAlgos.toAlgosStringForLabel,
@@ -71,7 +71,7 @@ final class AccountPreviewViewModel: PairedViewModel {
         self.init(
             AccountPreviewModel(
                 accountType: viewModel.accountType,
-                accountImageType: .orange,
+                accountImage: viewModel.image,
                 accountName: viewModel .name,
                 hasError: false
             )
@@ -82,7 +82,7 @@ final class AccountPreviewViewModel: PairedViewModel {
         self.init(
             AccountPreviewModel(
                 accountType: viewModel.accountType,
-                accountImageType: .orange,
+                accountImage: viewModel.image,
                 accountName: viewModel.address,
                 hasError: false
             )
@@ -91,8 +91,8 @@ final class AccountPreviewViewModel: PairedViewModel {
 }
 
 extension AccountPreviewViewModel {
-    private func bindAccountImageTypeImage(accountImageType: AccountImageType, accountType: AccountType) {
-        self.accountImageTypeImage = accountType.image(for: accountImageType)
+    private func bindAccountImage(_ accountImage: UIImage?) {
+        self.accountImage = accountImage
     }
 
     private func bindAccountName(_ name: String?) {

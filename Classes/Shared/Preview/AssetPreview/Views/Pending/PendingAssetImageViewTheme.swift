@@ -13,24 +13,23 @@
 // limitations under the License.
 
 //
-//  SelectAssetViewModel.swift
+//   PendingAssetImageViewTheme.swift
 
+import Foundation
+import MacaroonUIKit
 import UIKit
 
-class SelectAssetViewModel {
-    private(set) var accountName: String?
-    private(set) var accountImage: UIImage?
+struct PendingAssetImageViewTheme: StyleSheet, LayoutSheet {
+    let indicator: ImageStyle
+    let indicatorSize: LayoutSize
+    let border: Border
 
-    init(account: Account) {
-        setAccountName(from: account)
-        setAccountImage(from: account)
-    }
-
-    private func setAccountName(from account: Account) {
-        accountName = account.name
-    }
-
-    private func setAccountImage(from account: Account) {
-        accountImage = account.accountTypeImage()
+    init(_ family: LayoutFamily) {
+        self.indicator = [
+            .image("loading-indicator"),
+            .contentMode(.scaleAspectFit)
+        ]
+        self.indicatorSize = (16, 16)
+        self.border = Border(color: AppColors.Shared.Layer.grayLighter.uiColor, width: 1)
     }
 }
