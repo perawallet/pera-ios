@@ -30,11 +30,13 @@ indirect enum Screen {
     case home(route: Screen?)
     case accountDetail(account: Account)
     case assetSearch(account: Account)
-    case assetDetail(account: Account, assetDetail: AssetDetail?)
+    case assetDetail(draft: AssetDetailDraftProtocol)
+    case algosDetail(draft: AssetDetailDraftProtocol)
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
     case editAccount(account: Account)
     case contactSelection
+    case notifications
     case addContact(address: String? = nil, name: String? = nil)
     case editContact(contact: Contact)
     case contactDetail(contact: Contact)
@@ -118,12 +120,14 @@ indirect enum Screen {
     case tabBarModal
     case algoStatisticsDateSelection(option: AlgosUSDValueInterval, delegate: AlgoStatisticsDateSelectionViewControllerDelegate)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
-    case accountListOptions
-    case orderAccountList
+    case accountListOptions(accountType: AccountType)
+    case orderAccountList(accountType: AccountType)
     case accountSelection
     case assetSelection(account: Account)
     case sendTransaction(draft: SendTransactionDraft)
     case editNote(note: String?, delegate: EditNoteScreenDelegate?)
+    case portfolioDescription
+    case unavailableAccount(account: AccountInformation)
     case transactionResult
     case transactionAccountSelect(draft: SendTransactionDraft)
     case sendTransactionPreview(draft: TransactionSendDraft?, transactionController: TransactionController)
@@ -132,6 +136,7 @@ indirect enum Screen {
         transactionRequest: WalletConnectRequest,
         transactionOption: WCTransactionOption?
      )
+    case transactionFloatingActionButton
 }
 
 extension Screen {

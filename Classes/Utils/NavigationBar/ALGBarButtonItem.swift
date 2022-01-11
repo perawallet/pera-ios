@@ -72,7 +72,7 @@ struct ALGBarButtonItem: BarButtonItem {
             }
             return nil
         case .add:
-            if let icon = img("img-accounts-add") {
+            if let icon = img("add-icon-40") {
                 return ImageContent(normal: icon)
             }
             return nil
@@ -84,7 +84,7 @@ struct ALGBarButtonItem: BarButtonItem {
         case .save:
             return nil
         case .qr:
-            if let icon = img("icon-qr-bar-button") {
+            if let icon = img("icon-qr-scan") {
                 return ImageContent(normal: icon)
             }
             return nil
@@ -126,6 +126,11 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
+        case  .notification:
+            if let icon = img("icon-bar-notification") {
+                return ImageContent(normal: icon)
+            }
+            return nil
         }
     }
     
@@ -145,7 +150,7 @@ struct ALGBarButtonItem: BarButtonItem {
         case .close:
             return .explicit(CGSize(width: 44.0, height: 44.0))
         case .qr:
-            return .explicit(CGSize(width: 44.0, height: 44.0))
+            return .explicit(CGSize(width: 40, height: 40))
         case .save:
             return .expanded(
                 width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(
@@ -198,6 +203,8 @@ struct ALGBarButtonItem: BarButtonItem {
             return .explicit(CGSize(width: 40, height: 40))
         case .troubleshoot:
             return .explicit(CGSize(width: 40, height: 40))
+        case .notification:
+            return .explicit(CGSize(width: 40, height: 40))
         }
     }
     
@@ -220,6 +227,7 @@ extension ALGBarButtonItem {
         case back
         case options
         case add
+        case notification
         case close
         case save
         case qr

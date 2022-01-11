@@ -117,7 +117,6 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
 
     func bindData() {}
 
-    @available(iOS 12.0, *)
     func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {}
 
     override func viewWillAppear(_ animated: Bool) {

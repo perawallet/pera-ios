@@ -68,6 +68,18 @@ final class AddContactViewController: BaseScrollViewController {
 }
 
 extension AddContactViewController: AddContactViewDelegate {
+    func addContactViewInputFieldViewShouldReturn(
+        _ addContactView: AddContactView,
+        inputFieldView: FloatingTextInputFieldView
+    ) -> Bool {
+        if inputFieldView == addContactView.nameInputView {
+            addContactView.addressInputView.beginEditing()
+        } else {
+            inputFieldView.endEditing()
+        }
+        return true
+    }
+
     func addContactViewDidTapAddContactButton(_ addContactView: AddContactView) {
         guard let keyedValues = parseFieldsForContact() else {
             return
@@ -82,7 +94,7 @@ extension AddContactViewController: AddContactViewDelegate {
     
     private func parseFieldsForContact() -> [String: Any]? {
         guard let name = addContactView.nameInputView.text,
-              !name.isEmpty else {
+              !name.isEmptyOrBlank else {
                   displaySimpleAlertWith(title: "title-error".localized, message: "contacts-name-validation-error".localized)
                   return nil
               }

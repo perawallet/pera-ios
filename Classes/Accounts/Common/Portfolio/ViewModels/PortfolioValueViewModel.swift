@@ -21,6 +21,7 @@ import UIKit
 
 final class PortfolioValueViewModel: PairedViewModel {
     private(set) var title: EditText?
+    private(set) var titleColor: UIColor?
     private(set) var icon: UIImage?
     private(set) var value: EditText?
 
@@ -28,6 +29,7 @@ final class PortfolioValueViewModel: PairedViewModel {
         _ type: PortfolioType
     ) {
         bindTitle(type)
+        bindTitleColor(type)
         bindIcon(type)
         bindValue(type)
     }
@@ -42,6 +44,21 @@ extension PortfolioValueViewModel {
             title = .string("account-detail-portfolio-title".localized)
         case .all:
             title = .string("portfolio-title".localized)
+        }
+    }
+
+    private func bindTitleColor(
+        _ type: PortfolioType
+    ) {
+        switch type {
+        case let .singleAccount(portfolioValue),
+            let .all(portfolioValue):
+            switch portfolioValue {
+            case .unknown:
+                titleColor = AppColors.Shared.Helpers.negative.uiColor
+            case .value:
+                titleColor = AppColors.Components.Text.gray.uiColor
+            }
         }
     }
 
@@ -61,15 +78,32 @@ extension PortfolioValueViewModel {
     ) {
         /// <todo> Amount will be formatted later with the currency values.
         switch type {
-        case let .singleAccount(amount):
-            value = .string("\(amount)")
-        case let .all(amount):
-            value = .string("\(amount)")
+        case let .singleAccount(portfolioValue):
+            switch portfolioValue {
+            case .unknown:
+                value = "N/A"
+            case let .value(amount):
+                value = .string("\(amount)")
+            }
+        case let .all(portfolioValue):
+            switch portfolioValue {
+            case .unknown:
+                value = "N/A"
+            case let .value(amount):
+                value = .string("\(amount)")
+            }
         }
     }
 }
 
 enum PortfolioType {
-    case singleAccount(value: Decimal)
-    case all(value: Decimal)
+    case singleAccount(value: Value)
+    case all(value: Value)
+}
+
+extension PortfolioType {
+    enum Value {
+        case unknown
+        case value(Decimal)
+    }
 }

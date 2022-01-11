@@ -17,7 +17,7 @@
 
 import UIKit
 
-class VerifiedAssetInformationViewController: BaseViewController {
+final class VerifiedAssetInformationViewController: BaseViewController {
     private lazy var verifiedAssetInformationView = VerifiedAssetInformationView()
     private lazy var theme = Theme()
     

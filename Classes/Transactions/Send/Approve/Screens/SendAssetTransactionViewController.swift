@@ -17,8 +17,7 @@
 
 import UIKit
 
-class SendAssetTransactionViewController: SendTransactionViewController, TestNetTitleDisplayable {
-    
+final class SendAssetTransactionViewController: SendTransactionViewController, TestNetTitleDisplayable {
     private var assetTransactionSendDraft: AssetTransactionSendDraft
     
     init(

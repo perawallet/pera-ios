@@ -18,7 +18,9 @@
 import MacaroonUIKit
 import UIKit
 
-final class AccountPreviewView: View {
+final class AccountPreviewView:
+    View,
+    ListReusable {
     private lazy var imageView = UIImageView()
     private lazy var accountNameAndAssetsNFTsVerticalStackView = UIStackView()
     private lazy var accountNameLabel = UILabel()
@@ -26,11 +28,13 @@ final class AccountPreviewView: View {
     private lazy var valueVerticalStackView = UIStackView()
     private lazy var assetValueLabel = UILabel()
     private lazy var secondaryAssetValueLabel = UILabel()
+    private lazy var errorImageView = UIImageView()
 
     func customize(_ theme: AccountPreviewViewTheme) {
         addImage(theme)
         addAccountNameAndAssetsNFTsVerticalStackView(theme)
         addValueVerticalStackView(theme)
+        addErrorImageView(theme)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -100,6 +104,18 @@ extension AccountPreviewView {
 
         valueVerticalStackView.addArrangedSubview(secondaryAssetValueLabel)
     }
+
+    private func addErrorImageView(_ theme: AccountPreviewViewTheme) {
+        errorImageView.customizeAppearance(theme.errorImage)
+        
+        addSubview(errorImageView)
+        errorImageView.snp.makeConstraints {
+            $0.trailing.equalToSuperview()
+            $0.size.equalTo(CGSize(theme.errorImageSize))
+            $0.centerY.equalTo(accountNameAndAssetsNFTsVerticalStackView.snp.centerY)
+        }
+
+    }
 }
 
 extension AccountPreviewView: ViewModelBindable {
@@ -109,5 +125,44 @@ extension AccountPreviewView: ViewModelBindable {
         assetsAndNFTsLabel.text = viewModel?.assetsAndNFTs
         assetValueLabel.text = viewModel?.assetValue
         secondaryAssetValueLabel.text = viewModel?.secondaryAssetValue
+        errorImageView.isHidden = !(viewModel?.hasError ?? false)
+    }
+}
+
+final class AccountPreviewCell: BaseCollectionViewCell<AccountPreviewView> {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(AccountPreviewViewTheme())
+    }
+
+    func customize(_ theme: AccountPreviewViewTheme) {
+        contextView.customize(theme)
+    }
+
+    func bindData(_ viewModel: AccountPreviewViewModel) {
+        contextView.bindData(viewModel)
+    }
+}
+
+final class AccountPreviewTableCell:
+    TableCell<AccountPreviewView>,
+    ViewModelBindable,
+    ListIdentifiable {
+    override class var contextPaddings: LayoutPaddings {
+        return (0, 24, 0, 24)
+    }
+    
+    override init(
+        style: UITableViewCell.CellStyle,
+        reuseIdentifier: String?
+    ) {
+        super.init(
+            style: style,
+            reuseIdentifier: reuseIdentifier
+        )
+
+        contextView.customize(AccountPreviewViewTheme())
+        selectionStyle = .none
     }
 }

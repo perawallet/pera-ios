@@ -27,7 +27,7 @@ class TransactionAccountInformationView: BaseView {
     
     private lazy var containerView = UIView()
     
-    private lazy var accountNameView = AccountNameView()
+    private lazy var accountNameView = ImageWithTitleView()
     
     private lazy var separatorView = UIView()
     

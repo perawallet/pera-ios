@@ -27,11 +27,16 @@ final class SingleLineTitleActionView: View {
     override init(frame: CGRect) {
         super.init(frame: frame)
         customize(SingleLineTitleActionViewTheme())
+        setListeners()
     }
 
     func customize(_ theme: SingleLineTitleActionViewTheme) {
         addActionButton(theme)
         addTitleLabel(theme)
+    }
+
+    func setListeners() {
+        actionButton.addTarget(self, action: #selector(didHandleAction), for: .touchUpInside)
     }
 
     func customizeAppearance(_ styleSheet: StyleSheet) { }
@@ -84,7 +89,25 @@ extension SingleLineTitleActionView {
 
 class SingleLineTitleActionHeaderView: BaseSupplementaryView<SingleLineTitleActionView> {
 
+    lazy var handlers = Handlers()
+
+    override func setListeners() {
+        contextView.handlers.didHandleAction = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.handlers.didHandleAction?()
+        }
+    }
+
     func bindData(_ viewModel: SingleLineTitleActionViewModel) {
         contextView.bindData(viewModel)
+    }
+}
+
+extension SingleLineTitleActionHeaderView {
+    struct Handlers {
+        var didHandleAction: EmptyHandler?
     }
 }

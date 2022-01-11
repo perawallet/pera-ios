@@ -21,7 +21,7 @@ class LedgerInfoAccountNameView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var accountNameView = AccountNameView()
+    private lazy var accountNameView = ImageWithTitleView()
     
     private lazy var separatorView = LineSeparatorView()
     

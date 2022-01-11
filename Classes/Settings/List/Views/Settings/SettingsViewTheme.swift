@@ -20,23 +20,15 @@ import MacaroonUIKit
 
 struct SettingsViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color
-    let title: TextStyle
     
-    let titleTopInset: LayoutMetric
-    let collectionTopInset: LayoutMetric
-    let horizontalInset: LayoutMetric
+    let cellSpacing: LayoutMetric
+    let collectionViewEdgeInsets: LayoutPaddings
     let sectionInset: LayoutPaddings
     
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-        self.title = [
-            .text("settings-title".localized),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(32))
-        ]
-        self.titleTopInset = 46
-        self.collectionTopInset = 46
-        self.horizontalInset = 24
+        self.cellSpacing = 0
+        self.collectionViewEdgeInsets = (24, 0, 0, 0)
         self.sectionInset = (8, 0, 36, 0)
     }
 }

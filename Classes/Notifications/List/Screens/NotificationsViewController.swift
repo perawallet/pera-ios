@@ -83,13 +83,6 @@ final class NotificationsViewController: BaseViewController {
 
 extension NotificationsViewController {
     private func addBarButtons() {
-        let backBarButtonItem = ALGBarButtonItem(kind: .back) {
-            [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [backBarButtonItem]
-
         let filterBarButtonItem = ALGBarButtonItem(kind: .filter) {
             [unowned self] in
             self.openNotificationFilters()
@@ -99,7 +92,8 @@ extension NotificationsViewController {
     }
 
     private func openNotificationFilters() {
-        open(.notificationFilter(flow: .notifications), by: .present)
+        let controller = open(.notificationFilter(flow: .notifications), by: .present) as? NotificationFilterViewController
+        controller?.delegate = self
     }
 }
 
@@ -151,7 +145,15 @@ extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
     private func openAssetDetail(from notificationDetail: NotificationDetail) {
         let accountDetails = dataSource.getUserAccount(from: notificationDetail)
         if let account = accountDetails.account {
-            open(.assetDetail(account: account, assetDetail: accountDetails.assetDetail), by: .push)
+
+            let screen: Screen
+            if let assetDetail = accountDetails.assetDetail {
+                screen = .assetDetail(draft: AssetDetailDraft(assetDetail: assetDetail, account: account))
+            } else {
+                screen = .algosDetail(draft: AlgosDetailDraft(account: account))
+            }
+
+            open(screen, by: .push)
         }
     }
 }
@@ -199,6 +201,12 @@ extension NotificationsViewController: NotificationsViewDelegate {
         dataSource.clear()
         notificationsView.reloadData()
         getNotifications()
+    }
+}
+
+extension NotificationsViewController: NotificationFilterViewControllerDelegate {
+    func notificationFilterViewControllerDidDismiss(_ controller: NotificationFilterViewController) {
+        reloadNotifications()
     }
 }
 

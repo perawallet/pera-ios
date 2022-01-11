@@ -355,6 +355,9 @@
 "transaction-detail-reward" = "Reward";
 "transaction-detail-from" = "From";
 "transaction-detail-sender" = "Sender";
+"transaction-detail-send" = "Send";
+"transaction-detail-pending-transactions" = "Pending Transactions";
+"transaction-detail-receive" = "Receive";
 "transaction-detail-to" = "To";
 "transaction-detail-fee" = "Fee";
 "transaction-detail-date" = "Date";
@@ -799,9 +802,12 @@ on your Ledger device (%d)";
 "portfolio-title" = "Portfolio Value";
 "portfolio-algo-holdings-title" = "Algo Holdings";
 "portfolio-asset-holdings-title" = "Asset Holdings";
+"portfolio-title-accounts" = "Accounts";
+"portfolio-title-watchlist" = "Watchlist";
 
 "account-options-add-account-title" = "Add Account";
 "account-options-arrange-list-title" = "Arrange List";
+"account-listing-error-message" = "Sorry, we can’t show the details of this account. It looks like we are having some internal issues. Please refresh the page.";
 
 "account-detail-portfolio-title" = "Account Value";
 "account-detail-assets-search" = "Search my assets";
@@ -843,3 +849,5 @@ on your Ledger device (%d)";
 "single-transaction-request-network-fee-title" = "Network Fee";
 "single-transaction-request-opt-in-title" = "Opt-in";
 "single-transaction-request-opt-in-subtitle" = "OnCompletion";
+
+"portfolio-calculation-title" = "How we calculate portfolio value";

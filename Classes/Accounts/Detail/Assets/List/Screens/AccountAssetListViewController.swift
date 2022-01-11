@@ -41,6 +41,8 @@ final class AccountAssetListViewController: BaseViewController {
         return collectionView
     }()
 
+    private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
+
     private let account: Account
 
     init(account: Account, configuration: ViewControllerConfiguration) {
@@ -58,7 +60,7 @@ final class AccountAssetListViewController: BaseViewController {
                 switch identifier {
                 case .portfolio:
                     let cell = collectionView.dequeue(AssetPortfolioItemCell.self, at: indexPath)
-                    cell.bindData(PortfolioValueViewModel(.singleAccount(value: self.account.amount.toAlgos)))
+                    cell.bindData(PortfolioValueViewModel(.singleAccount(value: .value(self.account.amount.toAlgos))))
                     return cell
                 case .search:
                     return collectionView.dequeue(SearchBarItemCell.self, at: indexPath)
@@ -121,6 +123,7 @@ final class AccountAssetListViewController: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
         addListView()
+        addTransactionActionButton(theme)
         view.layoutIfNeeded()
     }
 
@@ -133,6 +136,7 @@ final class AccountAssetListViewController: BaseViewController {
     override func setListeners() {
         super.setListeners()
         setListActions()
+        setTransactionActionButtonAction()
     }
 }
 
@@ -141,6 +145,15 @@ extension AccountAssetListViewController {
         view.addSubview(listView)
         listView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+    }
+
+    private func addTransactionActionButton(_ theme: Theme) {
+        transactionActionButton.image = "fab-swap".uiImage
+
+        view.addSubview(transactionActionButton)
+        transactionActionButton.snp.makeConstraints {
+            $0.setPaddings(theme.transactionActionButtonPaddings)
         }
     }
 }
@@ -186,13 +199,14 @@ extension AccountAssetListViewController {
     private func openAssetDetail(
         _ assetDetail: AssetDetail?
     ) {
-        open(
-            .assetDetail(
-                account: account,
-                assetDetail: assetDetail
-            ),
-            by: .push
-        )
+        let screen: Screen
+        if let assetDetail = assetDetail {
+            screen = .assetDetail(draft: AssetDetailDraft(assetDetail: assetDetail, account: account))
+        } else {
+            screen = .algosDetail(draft: AlgosDetailDraft(account: account))
+        }
+
+        open(screen, by: .push)
     }
 
     private func applySnapshot(
@@ -224,6 +238,39 @@ extension AccountAssetListViewController {
             snapshot,
             animatingDifferences: animatingDifferences
         )
+    }
+}
+
+extension AccountAssetListViewController {
+    private func setTransactionActionButtonAction() {
+        transactionActionButton.addTarget(self, action: #selector(didTapTransactionActionButton), for: .touchUpInside)
+    }
+
+    @objc
+    private func didTapTransactionActionButton() {
+        let viewController = open(
+            .transactionFloatingActionButton,
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            ),
+            animated: false
+        ) as? TransactionFloatingActionButtonViewController
+
+        viewController?.delegate = self
+    }
+}
+
+extension AccountAssetListViewController: TransactionFloatingActionButtonViewControllerDelegate {
+    func transactionFloatingActionButtonViewControllerDidSend(_ viewController: TransactionFloatingActionButtonViewController) {
+        open(.assetSelection(account: account), by: .present)
+    }
+
+    func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController) {
+        log(ReceiveAssetDetailEvent(address: account.address))
+        let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
+        open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
     }
 }
 

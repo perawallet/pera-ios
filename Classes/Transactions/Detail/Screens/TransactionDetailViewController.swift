@@ -131,13 +131,10 @@ extension TransactionDetailViewController: TooltipPresenter {
 
 extension TransactionDetailViewController: TransactionDetailViewDelegate {
     func transactionDetailViewDidTapAddContactButton(_ transactionDetailView: TransactionDetailView) {
-        guard let opponentType = transactionDetailViewModel.opponentType else {
+        guard case let .address(address) = transactionDetailViewModel.opponentType else {
             return
         }
-
-        if case let .address(address) = opponentType {
-            open(.addContact(address: address), by: .push)
-        }
+        open(.addContact(address: address), by: .push)
     }
     
     func transactionDetailViewDidCopyOpponentAddress(_ transactionDetailView: TransactionDetailView) {

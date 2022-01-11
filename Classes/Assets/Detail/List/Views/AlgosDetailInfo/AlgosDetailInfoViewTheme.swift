@@ -22,19 +22,20 @@ import UIKit
 struct AlgosDetailInfoViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let yourBalanceTitleLabel: TextStyle
-    let valueTitleLabel: TextStyle
-    let algoImageView: ImageStyle
     let algosValueLabel: TextStyle
     let secondaryValueLabel: TextStyle
     let separator: Separator
     let rewardsInfoViewTheme: RewardsInfoViewTheme
 
+    let topPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let algoImageViewSize: LayoutSize
-    let algoImageViewTopPadding: LayoutMetric
-    let algosValueLabelLeadingPadding: LayoutMetric
+    let algosValueLabelTopPadding: LayoutMetric
+    let secondaryValueLabelTopPadding: LayoutMetric
     let minimumHorizontalInset: LayoutMetric
     let rewardsInfoViewTopPadding: LayoutMetric
+    let bottomPadding: LayoutMetric
+    let bottomSeparatorTopPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -43,38 +44,30 @@ struct AlgosDetailInfoViewTheme: StyleSheet, LayoutSheet {
             .text("accounts-transaction-your-balance".localized),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(15)),
-        ]
-        self.valueTitleLabel = [
-            .text("accounts-transaction-value".localized),
-            .textAlignment(.right),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(15)),
-        ]
-        self.algoImageView = [
-            .image("icon-algo-circle-green"),
-            .contentMode(.scaleAspectFit)
+            .textColor(AppColors.Components.Text.gray),
+            .font(Fonts.DMSans.regular.make(15)),
         ]
         self.algosValueLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMMono.regular.make(19)),
+            .font(Fonts.DMMono.regular.make(36)),
         ]
         self.secondaryValueLabel = [
-            .textAlignment(.right),
+            .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMMono.regular.make(19)),
+            .font(Fonts.DMMono.regular.make(15)),
         ]
         self.rewardsInfoViewTheme = RewardsInfoViewTheme()
+        self.topPadding = 24
         self.horizontalPadding = 24
         self.algoImageViewSize = (24, 24)
         self.minimumHorizontalInset = 4
-        self.algoImageViewTopPadding = 14
-        self.algosValueLabelLeadingPadding = 12
+        self.algosValueLabelTopPadding = 8
         self.rewardsInfoViewTopPadding = 32
+        self.bottomSeparatorTopPadding = -32
+        self.bottomPadding = 65 - 32
+        self.secondaryValueLabelTopPadding = 4
     }
 }

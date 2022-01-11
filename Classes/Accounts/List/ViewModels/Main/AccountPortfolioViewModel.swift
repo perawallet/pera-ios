@@ -18,5 +18,37 @@
 import MacaroonUIKit
 
 final class AccountPortfolioViewModel: ViewModel {
-    
+    private(set) var portfolioValueViewModel: PortfolioValueViewModel?
+    private(set) var algoHoldingsValue: EditText?
+    private(set) var assetHoldingsValue: EditText?
+
+    init(
+        _ accounts: [Account]
+    ) {
+        bindPortfolioValueViewModel(accounts)
+        bindAlgoHoldingsValue(accounts)
+        bindAssetHoldingsValue(accounts)
+    }
+}
+
+extension AccountPortfolioViewModel {
+    private func bindPortfolioValueViewModel(
+        _ accounts: [Account]
+    ) {
+        let totalAlgo = accounts.map( {$0.amount} ).reduce(0, +).toAlgos
+        portfolioValueViewModel = PortfolioValueViewModel(.all(value: .value(totalAlgo)))
+    }
+
+    private func bindAlgoHoldingsValue(
+        _ accounts: [Account]
+    ) {
+        let totalAlgo = accounts.map( {$0.amount} ).reduce(0, +).toAlgos
+        algoHoldingsValue = .string("\(totalAlgo)")
+    }
+
+    private func bindAssetHoldingsValue(
+        _ accounts: [Account]
+    ) {
+        assetHoldingsValue = .string("1234")
+    }
 }

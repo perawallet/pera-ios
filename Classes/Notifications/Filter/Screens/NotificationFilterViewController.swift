@@ -21,6 +21,8 @@ import MagpieHipo
 import MagpieExceptions
 
 final class NotificationFilterViewController: BaseViewController {
+    weak var delegate: NotificationFilterViewControllerDelegate?
+
     private lazy var notificationFilterView = NotificationFilterView()
 
     private lazy var dataSource: NotificationFilterDataSource = {
@@ -37,6 +39,12 @@ final class NotificationFilterViewController: BaseViewController {
     init(flow: Flow, configuration: ViewControllerConfiguration) {
         self.flow = flow
         super.init(configuration: configuration)
+    }
+
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        delegate?.notificationFilterViewControllerDidDismiss(self)
     }
 
     override func configureNavigationBarAppearance() {
@@ -60,7 +68,6 @@ final class NotificationFilterViewController: BaseViewController {
             $0.top.safeEqualToTop(of: self)
             $0.leading.trailing.bottom.equalToSuperview()
         }
-
     }
 }
 
@@ -185,4 +192,8 @@ extension NotificationFilterViewController {
         case notifications
         case settings
     }
+}
+
+protocol NotificationFilterViewControllerDelegate: AnyObject {
+    func notificationFilterViewControllerDidDismiss(_ controller: NotificationFilterViewController)
 }

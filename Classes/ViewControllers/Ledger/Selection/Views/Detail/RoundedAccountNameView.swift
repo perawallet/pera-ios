@@ -21,7 +21,7 @@ class RoundedAccountNameView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
-    private lazy var accountNameView = AccountNameView()
+    private lazy var accountNameView = ImageWithTitleView()
     
     override func configureAppearance() {
         layer.cornerRadius = 12.0

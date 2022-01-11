@@ -22,7 +22,6 @@ final class AlgosDetailInfoView: View {
     weak var delegate: AlgosDetailInfoViewDelegate?
 
     private lazy var yourBalanceTitleLabel = UILabel()
-    private lazy var valueTitleLabel = UILabel()
     private lazy var algoImageView = UIImageView()
     private lazy var algosValueLabel = UILabel()
     private lazy var secondaryValueLabel = UILabel()
@@ -32,8 +31,6 @@ final class AlgosDetailInfoView: View {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
         addYourBalanceTitleLabel(theme)
-        addValueTitleLabel(theme)
-        addAlgoImageView(theme)
         addAlgosValueLabel(theme)
         addSecondaryValueLabel(theme)
         addRewardsInfoView(theme)
@@ -55,30 +52,8 @@ extension AlgosDetailInfoView {
 
         addSubview(yourBalanceTitleLabel)
         yourBalanceTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalToSuperview().inset(theme.topPadding)
             $0.leading.equalToSuperview().inset(theme.horizontalPadding)
-        }
-    }
-
-    private func addValueTitleLabel(_ theme: AlgosDetailInfoViewTheme) {
-        valueTitleLabel.customizeAppearance(theme.valueTitleLabel)
-
-        addSubview(valueTitleLabel)
-        valueTitleLabel.snp.makeConstraints {
-            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.top.equalToSuperview()
-            $0.leading.greaterThanOrEqualTo(yourBalanceTitleLabel.snp.trailing).inset(theme.minimumHorizontalInset)
-        }
-    }
-
-    private func addAlgoImageView(_ theme: AlgosDetailInfoViewTheme) {
-        algoImageView.customizeAppearance(theme.algoImageView)
-
-        addSubview(algoImageView)
-        algoImageView.snp.makeConstraints {
-            $0.top.equalTo(yourBalanceTitleLabel.snp.bottom).offset(theme.algoImageViewTopPadding)
-            $0.leading.equalTo(yourBalanceTitleLabel)
-            $0.fitToSize(theme.algoImageViewSize)
         }
     }
 
@@ -87,8 +62,9 @@ extension AlgosDetailInfoView {
 
         addSubview(algosValueLabel)
         algosValueLabel.snp.makeConstraints {
-            $0.leading.equalTo(algoImageView.snp.trailing).offset(theme.algosValueLabelLeadingPadding)
-            $0.centerY.equalTo(algoImageView)
+            $0.top.equalTo(yourBalanceTitleLabel.snp.bottom).offset(theme.algosValueLabelTopPadding)
+            $0.leading.equalTo(yourBalanceTitleLabel)
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
 
@@ -97,9 +73,9 @@ extension AlgosDetailInfoView {
 
         addSubview(secondaryValueLabel)
         secondaryValueLabel.snp.makeConstraints {
-            $0.centerY.equalTo(algoImageView)
-            $0.trailing.equalTo(valueTitleLabel)
-            $0.leading.greaterThanOrEqualTo(algosValueLabel.snp.trailing).inset(theme.minimumHorizontalInset)
+            $0.top.equalTo(algosValueLabel.snp.bottom).offset(theme.secondaryValueLabelTopPadding)
+            $0.leading.equalTo(yourBalanceTitleLabel)
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
 
@@ -108,10 +84,12 @@ extension AlgosDetailInfoView {
 
         addSubview(rewardsInfoView)
         rewardsInfoView.snp.makeConstraints {
-            $0.top.equalTo(algosValueLabel.snp.bottom).offset(theme.rewardsInfoViewTopPadding)
+            $0.top.equalTo(secondaryValueLabel.snp.bottom).offset(theme.rewardsInfoViewTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.bottom.equalToSuperview()
+            $0.bottom.lessThanOrEqualToSuperview().inset(theme.bottomPadding)
         }
+
+        rewardsInfoView.addSeparator(theme.separator, padding: theme.bottomSeparatorTopPadding)
     }
 }
 
