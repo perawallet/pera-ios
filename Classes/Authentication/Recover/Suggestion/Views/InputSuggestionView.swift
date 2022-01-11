@@ -16,76 +16,51 @@
 //   InputSuggestionView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class InputSuggestionView: BaseView {
+final class InputSuggestionView: View {
+    private lazy var suggestionLabel = UILabel()
+    private lazy var separatorView = UIView()
 
-    private let layout = Layout<LayoutConstants>()
+    func customize(_ theme: InputSuggestionViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-    private lazy var suggestionLabel: UILabel = {
-        let label = UILabel()
-            .withFont(UIFont.systemFont(ofSize: 16.0, weight: .regular))
-            .withTextColor(Colors.Component.inputSuggestionText)
-            .withAlignment(.center)
-        label.minimumScaleFactor = 0.7
-        label.adjustsFontSizeToFitWidth = true
-        return label
-    }()
-
-    private lazy var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.InputSuggestionView.separator
-        return view
-    }()
-
-    override func configureAppearance() {
-        backgroundColor = Colors.Component.inputSuggestionBackground
+        addSuggestionLabel(theme)
+        addSeparatorView(theme)
     }
 
-    override func prepareLayout() {
-        setupSuggestionLabelLayout()
-        setupSeparatorViewLayout()
-    }
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
 extension InputSuggestionView {
-    private func setupSuggestionLabelLayout() {
+    private func addSuggestionLabel(_ theme: InputSuggestionViewTheme) {
+        suggestionLabel.customizeAppearance(theme.suggestionTitle)
+
         addSubview(suggestionLabel)
-
-        suggestionLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.leading.top.bottom.lessThanOrEqualToSuperview()
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.suggestionTrailingInset)
+        suggestionLabel.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.leading.top.bottom.lessThanOrEqualToSuperview()
+            $0.trailing.lessThanOrEqualToSuperview().inset(theme.suggestionTrailingInset)
         }
     }
 
-    private func setupSeparatorViewLayout() {
+    private func addSeparatorView(_ theme: InputSuggestionViewTheme) {
+        separatorView.backgroundColor = theme.separator.color
+
         addSubview(separatorView)
-
-        separatorView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview()
-            make.top.bottom.equalToSuperview().inset(layout.current.separatorVerticalInset)
-            make.width.equalTo(layout.current.separatorWidth)
+        separatorView.snp.makeConstraints {
+            $0.trailing.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(theme.separatorVerticalInset)
+            $0.fitToWidth(theme.separator.size)
         }
     }
 }
 
-extension InputSuggestionView {
-    func bind(_ viewModel: InputSuggestionViewModel) {
-        suggestionLabel.text = viewModel.suggestion
-        separatorView.isHidden = viewModel.isSeparatorHidden
-    }
-}
-
-extension InputSuggestionView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let suggestionTrailingInset: CGFloat = 2.0
-        let separatorVerticalInset: CGFloat = 10.0
-        let separatorWidth: CGFloat = 1.0
-    }
-}
-
-extension Colors {
-    fileprivate enum InputSuggestionView {
-        static let separator = color("inputSuggestionSeparatorColor")
+extension InputSuggestionView: ViewModelBindable {
+    func bindData(_ viewModel: InputSuggestionViewModel?) {
+        suggestionLabel.text = viewModel?.suggestion
+        separatorView.isHidden = (viewModel?.isSeparatorHidden).falseIfNil
     }
 }
