@@ -100,7 +100,7 @@ extension QRCreationView {
     private func addQRView(_ theme: QRCreationViewTheme) {
         addSubview(qrView)
         qrView.snp.makeConstraints {
-            $0.top.equalToSuperview().priority(.medium)
+            $0.top.equalToSuperview().priority(.low)
             $0.top.greaterThanOrEqualToSuperview().inset(theme.topInset)
             $0.centerX.equalToSuperview()
         }
@@ -126,7 +126,7 @@ extension QRCreationView {
 
         addSubview(copyButton)
         copyButton.snp.makeConstraints {
-            $0.top.greaterThanOrEqualTo(addressView.snp.bottom).offset(theme.copyButtonTopInset)
+            $0.top.greaterThanOrEqualTo(addressView.snp.bottom).offset(theme.copyButtonTopInset).priority(.medium)
             $0.leading.trailing.equalToSuperview().inset(theme.buttonHorizontalInset)
         }
     }

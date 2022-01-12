@@ -54,7 +54,7 @@ struct QRCreationViewTheme: StyleSheet, LayoutSheet {
         self.addressTheme = QRAddressLabelTheme()
         
         self.copyFeedBackInsets = (8, 16, 8, 16)
-        self.topInset = 92
+        self.topInset = 92 * verticalScale
         self.labelTopInset = 28
         self.labelHorizontalInset = 40
         self.copyButtonTopInset = 16
