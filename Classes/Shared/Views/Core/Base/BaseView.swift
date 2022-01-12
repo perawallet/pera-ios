@@ -65,11 +65,10 @@ class BaseView: UIView {
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
-        if #available(iOS 12.0, *) {
-            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-                preferredUserInterfaceStyleDidChange(to: traitCollection.userInterfaceStyle)
-            }
+        
+        
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            preferredUserInterfaceStyleDidChange(to: traitCollection.userInterfaceStyle)
         }
     }
 }

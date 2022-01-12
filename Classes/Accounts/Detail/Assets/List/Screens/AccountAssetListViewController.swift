@@ -31,6 +31,7 @@ final class AccountAssetListViewController: BaseViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = theme.listBackgroundColor.uiColor
         collectionView.register(AssetPortfolioItemCell.self)
         collectionView.register(SearchBarItemCell.self)

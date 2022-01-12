@@ -17,8 +17,7 @@
 
 import UIKit
 
-class NavigationController: UINavigationController {
-    
+final class NavigationController: UINavigationController {
     override var childForStatusBarHidden: UIViewController? {
         return topViewController
     }
@@ -41,27 +40,27 @@ extension NavigationController {
     }
     
     private func configureNavigationBarAppearance() {
+        let appearance = UINavigationBarAppearance()
+        appearance.titleTextAttributes = [
+            NSAttributedString.Key.font: Fonts.DMSans.medium.make(15).uiFont,
+            NSAttributedString.Key.foregroundColor: AppColors.Components.Text.main.uiColor
+        ]
+        appearance.largeTitleTextAttributes = [
+            NSAttributedString.Key.font: Fonts.DMSans.medium.make(32).uiFont,
+            NSAttributedString.Key.foregroundColor: AppColors.Components.Text.main.uiColor
+        ]
+
+        appearance.configureWithDefaultBackground()
+        appearance.backgroundColor = AppColors.Shared.System.background.uiColor
+        appearance.shadowColor = .clear
         navigationBar.isTranslucent = false
-
-        if #available(iOS 13.0, *) {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithDefaultBackground()
-            appearance.backgroundColor = Colors.Background.primary
-            appearance.shadowColor = .clear
-            navigationBar.standardAppearance = appearance
-            navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
-        } else {
-            navigationBar.barTintColor = Colors.Background.primary
-            navigationBar.tintColor = Colors.Background.primary
-            navigationBar.shadowImage = UIImage()
-            navigationBar.setBackgroundImage(UIImage(), for: .default)
-        }
-
-        navigationBar.layoutMargins = .zero
+        navigationBar.prefersLargeTitles = true
+        navigationBar.standardAppearance = appearance
+        navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
     }
     
     private func configureViewAppearance() {
-        view.backgroundColor = Colors.Background.primary
+        view.backgroundColor = AppColors.Shared.System.background.uiColor
     }
 }
 

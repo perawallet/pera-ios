@@ -37,6 +37,8 @@ final class AccountPortfolioViewController: BaseViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
+        collectionView.backgroundColor = .clear
         collectionView.register(AccountPortfolioCell.self)
         collectionView.register(AccountPreviewCell.self)
         collectionView.register(AnnouncementBannerCell.self)
@@ -135,7 +137,7 @@ extension AccountPortfolioViewController {
             qrScannerViewController?.delegate = self
         }
 
-        let addBarButtonItem = ALGBarButtonItem(kind: .add) { [weak self] in
+        let addBarButtonItem = ALGBarButtonItem(kind: .circleAdd) { [weak self] in
             guard let self = self else {
                 return
             }

@@ -34,7 +34,6 @@ class ContactSelectionViewController: ContactsViewController {
     override func configureAppearance() {
         super.configureAppearance()
         title = "contacts-title".localized
-        removeHeader()
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

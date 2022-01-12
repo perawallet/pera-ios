@@ -33,7 +33,7 @@ final class UnavailableAccountOptionsViewController: BaseViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = theme.backgroundColor.uiColor
+        collectionView.backgroundColor = .clear
         collectionView.register(OptionsCell.self)
         collectionView.register(header: AccountPortfolioErrorSupplementaryView.self)
         return collectionView
