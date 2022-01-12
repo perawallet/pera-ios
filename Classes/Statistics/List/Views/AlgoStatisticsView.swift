@@ -63,7 +63,8 @@ extension AlgoStatisticsView {
 
         addSubview(titleView)
         titleView.snp.makeConstraints {
-            $0.leading.top.trailing.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
+            $0.top.equalToSuperview().offset(safeAreaTop)
         }
     }
 
