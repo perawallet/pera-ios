@@ -21,16 +21,7 @@ final class SecuritySettingsViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var securitySettingsView = SecuritySettingsView()
     
-    private lazy var settings: [[SecuritySettings]] = {
-        var securitySettings: [[SecuritySettings]] = [[.pinCodeActivation]]
-        
-        let isActive = session?.hasPassword() ?? false
-        if isActive {
-            securitySettings.append(pinActiveSettings)
-            securitySettingsView.collectionView.reloadData()
-        }
-        return securitySettings
-    }()
+    private lazy var settings: [[SecuritySettings]] = [[.pinCodeActivation]]
     private lazy var pinActiveSettings: [SecuritySettings] = [.pinCodeChange, .localAuthentication]
     
     private let localAuthenticator = LocalAuthenticator()
@@ -48,6 +39,11 @@ final class SecuritySettingsViewController: BaseViewController {
     override func prepareLayout() {
         addSecuritySettingsView()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        checkPINCodeActivation()
+    }
 }
 
 extension SecuritySettingsViewController {
@@ -59,6 +55,27 @@ extension SecuritySettingsViewController {
             $0.top.safeEqualToTop(of: self)
             $0.bottom.safeEqualToBottom(of: self)
         }
+    }
+}
+
+extension SecuritySettingsViewController {
+    private func checkPINCodeActivation() {
+        let isActive = session?.hasPassword() ?? false
+        if isActive {
+            createSettingsWithPreferences()
+            return
+        }
+        createSettingsWithoutPreferences()
+    }
+    
+    private func createSettingsWithPreferences() {
+        settings = [[.pinCodeActivation], [.pinCodeChange, .localAuthentication]]
+        securitySettingsView.collectionView.reloadData()
+    }
+    
+    private func createSettingsWithoutPreferences() {
+        settings = [[.pinCodeActivation]]
+        securitySettingsView.collectionView.reloadData()
     }
 }
 
@@ -154,14 +171,11 @@ extension SecuritySettingsViewController: SettingsToggleCellDelegate {
         switch setting {
         case .pinCodeActivation:
             if value {
-                open(.choosePassword(mode: .setup, flow: nil, route: nil), by: .push)
-                settings.append(pinActiveSettings)
-                securitySettingsView.collectionView.reloadData()
+                open(.choosePassword(mode: .resetPassword, flow: nil, route: nil), by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil))
                 return
             }
             
-            settings.removeLast()
-            securitySettingsView.collectionView.reloadData()
+            createSettingsWithoutPreferences()
             return
         case .localAuthentication:
             if !value {
