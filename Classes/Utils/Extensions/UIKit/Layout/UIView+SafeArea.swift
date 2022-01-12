@@ -36,10 +36,6 @@ extension UIView {
 
 extension UIView {
     var isDarkModeDisplay: Bool {
-        if #available(iOS 12.0, *) {
-            return traitCollection.userInterfaceStyle == .dark
-        }
-        
-        return false
+        return traitCollection.userInterfaceStyle == .dark
     }
 }

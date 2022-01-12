@@ -18,10 +18,6 @@
 import UIKit
 
 final class SettingsViewController: BaseViewController {
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-    
     private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
     
     private lazy var pushNotificationController: PushNotificationController = {
@@ -35,7 +31,11 @@ final class SettingsViewController: BaseViewController {
     private lazy var settingsView = SettingsView()
     
     private lazy var dataSource = SettingsDataSource(session: session)
-        
+
+    override var prefersLargeTitle: Bool {
+        return true
+    }
+
     override func customizeTabBarAppearence() {
         isTabBarHidden = false
     }
@@ -53,6 +53,10 @@ final class SettingsViewController: BaseViewController {
             name: .ApplicationWillEnterForeground,
             object: nil
         )
+    }
+
+    override func configureAppearance() {
+        title = "settings-title".localized
     }
     
     override func prepareLayout() {

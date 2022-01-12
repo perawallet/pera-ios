@@ -20,9 +20,7 @@ import MacaroonUIKit
 
 final class SettingsView: View {
     private lazy var theme = SettingsViewTheme()
-
-    private lazy var headerView = HeaderView()
-
+    
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = theme.cellSpacing
@@ -48,7 +46,6 @@ final class SettingsView: View {
     func customize(_ theme: SettingsViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
-        addHeaderView()
         addCollectionView()
     }
 
@@ -58,20 +55,10 @@ final class SettingsView: View {
 }
 
 extension SettingsView {
-    private func addHeaderView() {
-        headerView.bindData(HeaderViewModel(title: "settings-title".localized))
-        
-        addSubview(headerView)
-        headerView.snp.makeConstraints {
-            $0.leading.top.trailing.equalToSuperview()
-        }
-    }
-    
     private func addCollectionView() {
         addSubview(collectionView)
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(headerView.snp.bottom)
-            $0.leading.bottom.trailing.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
     }
 }

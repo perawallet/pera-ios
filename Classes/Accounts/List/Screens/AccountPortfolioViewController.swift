@@ -37,6 +37,8 @@ final class AccountPortfolioViewController: BaseViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
+        collectionView.backgroundColor = .clear
         collectionView.register(AccountPortfolioCell.self)
         collectionView.register(AccountPreviewCell.self)
         collectionView.register(AnnouncementBannerCell.self)
