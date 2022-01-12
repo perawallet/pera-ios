@@ -21,10 +21,31 @@ import Foundation
 enum AccountResult {
     case idle(AccountInformation)
     case loading(AccountInformation)
-    case refreshing(Account)
-    case assetsLoading(Account)
-    case assetsRefreshing(Account)
-    case assetsMissing(Account)
-    case ready(Account)
     case fault(AccountInformation)
+    case refreshing(Account)
+    case expired(Account) /// Refreshing failed
+    case loadingAssets(Account)
+    case faultAssets(Account)
+    case refreshingAssets(Account)
+    case expiredAssets(Account) /// Refreshing failed
+    case ready(Account)
+}
+
+extension AccountResult {
+    var address: String {
+        switch self {
+        case .idle(let account),
+             .loading(let account),
+             .fault(let account):
+            return account.address
+        case .refreshing(let accountDetail),
+             .expired(let accountDetail),
+             .loadingAssets(let accountDetail),
+             .faultAssets(let accountDetail),
+             .refreshingAssets(let accountDetail),
+             .expiredAssets(let accountDetail),
+             .ready(let accountDetail):
+            return accountDetail.address
+        }
+    }
 }

@@ -22,56 +22,169 @@ import MagpieCore
 import MagpieHipo
 
 final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
-    typealias CompletionHandler = (Result<[AssetInformation], HIPNetworkError<NoAPIModel>>) -> Void
+    typealias Error = HIPNetworkError<NoAPIModel>
     
-    var completionHandler: CompletionHandler?
+    var input: Input
     
-    private var ongoingEndpoint: EndpointOperatable?
+    private(set) var result: Result<Output, Error> =
+        .failure(.unexpected(UnexpectedError(responseData: nil, underlyingError: nil)))
     
-    private let ids: [AssetID]
+    private var ongoingEndpoints: [Int: EndpointOperatable] = [:]
+
     private let api: ALGAPI
+    private let completionQueue =
+        DispatchQueue(label: "com.algorand.queue.operation.assetGroupFetch", qos: .userInitiated)
+    private let apiQueryLimit = 100
     
     init(
-        ids: [AssetID],
+        input: Input,
         api: ALGAPI
     ) {
-        self.ids = ids
+        self.input = input
         self.api = api
     }
     
     override func main() {
-        let draft = AssetFetchQuery(ids: ids)
+        if self.finishIfCancelled() {
+            return
+        }
         
-        ongoingEndpoint =
-            api.fetchAssetDetails(draft) { [weak self] result in
-                guard let self = self else { return }
+        if let error = input.error {
+            result = .failure(error)
+            finish()
+
+            return
+        }
+        
+        guard let account = input.account else {
+            result = .failure(.unexpected(UnexpectedError(responseData: nil, underlyingError: nil)))
+            finish()
+
+            return
+        }
+        
+        let assets = account.assets.someArray
+        let newAssets: [Asset]
+        
+        if let cacheAccount = input.cachedAccounts.account(for: account.address) {
+            newAssets = Array(Set(assets).subtracting(cacheAccount.assets.someArray))
+        } else {
+            newAssets = assets
+        }
+        
+        if self.finishIfCancelled() {
+            return
+        }
+        
+        let dispatchGroup = DispatchGroup()
+        
+        var newAssetDetails: [AssetID: AssetInformation] = [:]
+        var error: Error?
+        
+        newAssets.chunked(by: apiQueryLimit).enumerated().forEach {
+            order, subNewAssets in
+            
+            dispatchGroup.enter()
+            
+            let endpoint =
+                fetchAssetDetails(subNewAssets) { [weak self] result in
+                    dispatchGroup.leave()
                 
-                if self.finishIfCancelled() {
-                    return
+                    guard let self = self else {return }
+                
+                    self.ongoingEndpoints[order] = nil
+                
+                    switch result {
+                    case .success(let subAssetDetails):
+                        subAssetDetails.forEach {
+                            newAssetDetails[$0.id] = $0
+                        }
+                    case .failure(let subError):
+                        if subError.isCancelled {
+                            return
+                        }
+
+                        error = subError
+
+                        self.cancelOngoingEndpoints()
+                    }
                 }
-                
-                self.ongoingEndpoint = nil
-                
-                switch result {
-                case .success(let assetList):
-                    let assets = assetList.results
-                    
-                    /// <todo>
-                    /// ???
-                    assets.forEach { self.api.session.assetInformations[$0.id] = $0 }
-                    
-                    self.completionHandler?(.success(assets))
-                case .failure(let apiError, let apiErrorDetail):
-                    let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
-                    self.completionHandler?(.failure(error))
-                }
+            ongoingEndpoints[order] = endpoint
+        }
+        
+        dispatchGroup.notify(queue: completionQueue) { [weak self] in
+            guard let self = self else { return }
+            
+            if self.finishIfCancelled() {
+                return
             }
+            
+            if let error = error {
+                self.result = .failure(error)
+            } else {
+                account.assetInformations =
+                    assets.compactMap {
+                        let id = $0.id
+                        return newAssetDetails[id] ?? self.input.cachedAssetDetails[id]
+                    }
+                
+                let output = Output(account: account, newAssetDetails: newAssetDetails)
+                self.result = .success(output)
+            }
+            
+            self.finish()
+        }
     }
     
     override func cancel() {
+        cancelOngoingEndpoints()
         super.cancel()
-        
-        ongoingEndpoint?.cancel()
-        ongoingEndpoint = nil
+    }
+}
+
+extension AssetDetailGroupFetchOperation {
+    private func fetchAssetDetails(
+        _ assets: [Asset],
+        onComplete handler: @escaping (Result<[AssetInformation], Error>) -> Void
+    ) -> EndpointOperatable {
+        let ids = assets.map(\.id)
+        let draft = AssetFetchQuery(ids: ids)
+        return
+            api.fetchAssetDetails(
+                draft,
+                queue: completionQueue,
+                ignoreResponseOnCancelled: false
+            ) { result in
+                switch result {
+                case .success(let assetList):
+                    handler(.success(assetList.results))
+                case .failure(let apiError, let apiErrorDetail):
+                    let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+                    handler(.failure(error))
+                }
+            }
+    }
+}
+
+extension AssetDetailGroupFetchOperation {
+    private func cancelOngoingEndpoints() {
+        ongoingEndpoints.forEach {
+            $0.value.cancel()
+        }
+        ongoingEndpoints = [:]
+    }
+}
+
+extension AssetDetailGroupFetchOperation {
+    struct Input {
+        var account: Account?
+        var cachedAccounts: AccountCollection = []
+        var cachedAssetDetails: AssetDetailCollection = []
+        var error: AssetDetailGroupFetchOperation.Error?
+    }
+    
+    struct Output {
+        let account: Account
+        let newAssetDetails: [AssetID: AssetInformation]
     }
 }

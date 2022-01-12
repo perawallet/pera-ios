@@ -19,9 +19,7 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class Account:
-    ALGEntityModel,
-    AccountIdentity {
+final class Account: ALGEntityModel {
     let address: String
     var amount: UInt64
     var amountWithoutRewards: UInt64
@@ -109,7 +107,9 @@ final class Account:
         self.accountImage = accountImage ?? AccountImageType.getRandomImage(for: type).rawValue
     }
     
-    init(accountInformation: AccountInformation) {
+    init(
+        accountInformation: AccountInformation
+    ) {
         self.address = accountInformation.address
         self.amount = 0
         self.amountWithoutRewards = 0

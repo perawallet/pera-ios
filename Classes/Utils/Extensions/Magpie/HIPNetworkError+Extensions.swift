@@ -13,20 +13,18 @@
 // limitations under the License.
 
 //
-//   BlockProcessor.swift
+//   HIPNetworkError+Extensions.swift
 
 
 import Foundation
 import MagpieCore
 import MagpieHipo
 
-protocol BlockProcessor: AnyObject {
-    typealias BlockEventHandler = (BlockEvent) -> Void
-    
-    func notify(
-        queue: DispatchQueue,
-        execute handler: @escaping BlockEventHandler
-    )
-    func start()
-    func stop()
+extension HIPNetworkError {
+    var isCancelled: Bool {
+        switch self {
+        case .connection(let connectionError): return connectionError.isCancelled
+        default: return false
+        }
+    }
 }

@@ -19,7 +19,9 @@ import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class Asset: ALGAPIModel {
+final class Asset:
+    ALGAPIModel,
+    Hashable {
     let creator: String?
     let amount: UInt64
     let isFrozen: Bool?
@@ -35,9 +37,21 @@ final class Asset: ALGAPIModel {
     }
 }
 
-extension Asset: Equatable {
-    static func == (lhs: Asset, rhs: Asset) -> Bool {
-        return lhs.id == rhs.id && lhs.amount == rhs.amount
+extension Asset {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(id)
+        hasher.combine(amount)
+    }
+    
+    static func == (
+        lhs: Asset,
+        rhs: Asset
+    ) -> Bool {
+        return
+            lhs.id == rhs.id &&
+            lhs.amount == rhs.amount
     }
 }
 

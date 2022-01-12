@@ -51,6 +51,8 @@ extension ALGAPI {
     @discardableResult
     func fetchAssetDetails(
         _ draft: AssetFetchQuery,
+        queue: DispatchQueue,
+        ignoreResponseOnCancelled: Bool,
         onCompleted handler: @escaping (Response.ModelResult<AssetInformationList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
@@ -58,7 +60,9 @@ extension ALGAPI {
             .path(.assets)
             .method(.get)
             .query(draft)
+            .ignoreResponseWhenEndpointCancelled(ignoresResponseOnCancelled)
             .completionHandler(handler)
+            .responseDispatcher(queue)
             .execute()
     }
 

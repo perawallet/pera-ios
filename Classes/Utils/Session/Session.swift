@@ -171,16 +171,8 @@ class Session: Storable {
     
     var accounts = [Account]()
     
-    @Atomic(identifier: "accountResults")
-    private var accountResults: [String: AccountResult] = [:]
-    
     init() {
         removeOldTermsAndServicesKeysFromDefaults()
-    }
-    
-    subscript (_ id: AccountIdentity) -> AccountResult? {
-        get { accountResults[id.address] }
-        set { $accountResults.modify { $0[id.address] = newValue } }
     }
 }
 

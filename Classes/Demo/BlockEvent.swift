@@ -13,20 +13,20 @@
 // limitations under the License.
 
 //
-//   BlockProcessor.swift
+//   BlockEvent.swift
 
 
 import Foundation
 import MagpieCore
 import MagpieHipo
 
-protocol BlockProcessor: AnyObject {
-    typealias BlockEventHandler = (BlockEvent) -> Void
-    
-    func notify(
-        queue: DispatchQueue,
-        execute handler: @escaping BlockEventHandler
-    )
-    func start()
-    func stop()
+enum BlockEvent {
+    case willStart
+    case willFetchAccount(address: String)
+    case didFetchAccount(Account)
+    case didFailToFetchAccount(address: String, error: HIPNetworkError<NoAPIModel>)
+    case willFetchAssetDetails(accountAddress: String)
+    case didFetchAssetDetails([AssetID: AssetInformation], accountAddress: String)
+    case didFailToFetchAssetDetails(accountAddress: String, error: HIPNetworkError<NoAPIModel>)
+    case didFinish
 }

@@ -13,20 +13,25 @@
 // limitations under the License.
 
 //
-//   BlockProcessor.swift
+//   AccountItem.swift
 
 
 import Foundation
-import MagpieCore
-import MagpieHipo
 
-protocol BlockProcessor: AnyObject {
-    typealias BlockEventHandler = (BlockEvent) -> Void
+final class AccountItem {
+    var status: Status = .idle
     
-    func notify(
-        queue: DispatchQueue,
-        execute handler: @escaping BlockEventHandler
-    )
-    func start()
-    func stop()
+    let account: Account
+    
+    init(
+        account: Account
+    ) {
+        self.account = account
+    }
+}
+
+extension AccountItem {
+    enum Status {
+        case idle
+    }
 }
