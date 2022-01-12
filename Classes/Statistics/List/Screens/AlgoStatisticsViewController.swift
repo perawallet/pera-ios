@@ -68,8 +68,7 @@ extension AlgoStatisticsViewController {
     private func addAlgoStatisticsView() {
         contentView.addSubview(algoStatisticsView)
         algoStatisticsView.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.top.safeEqualToTop(of: self)
+            $0.edges.equalToSuperview()
         }
     }
 }

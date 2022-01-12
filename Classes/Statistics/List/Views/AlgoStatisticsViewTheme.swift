@@ -38,6 +38,6 @@ struct AlgoStatisticsViewTheme: StyleSheet, LayoutSheet {
         self.chartVerticalInset = 75
         self.chartHeight = 130
         self.footerViewPaddings = (42, 21, .noMetric, 21)
-        self.bottomInset = 24
+        self.bottomInset = 32
     }
 }

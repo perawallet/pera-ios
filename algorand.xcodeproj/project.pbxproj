@@ -8749,8 +8749,8 @@
 				D411B38426EA232F004FF980 /* AssetPreviewViewCommonTheme.swift */,
 				D442AA0727397331009E60D4 /* AssetPreviewViewAdditionTheme.swift */,
 				D4BF4A2326F4F6C5009B53D8 /* AssetImageView.swift */,
-				D4C3BD46278CE75300E898FD /* AssetImageViewModel.swift */,
 				D4BF4A2726F4FC0D009B53D8 /* AssetImageViewTheme.swift */,
+				D4C3BD46278CE75300E898FD /* AssetImageViewModel.swift */,
 				D446A73C272A8BDD0081D60B /* AssetPreviewActionView.swift */,
 				D446A740272A8BFA0081D60B /* AssetPreviewActionViewTheme.swift */,
 			);

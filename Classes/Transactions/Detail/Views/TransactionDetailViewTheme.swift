@@ -23,6 +23,13 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
     let openInAlgoExplorerButton: ButtonStyle
     let openInGoalSeekerButton: ButtonStyle
     let buttonsCorner: Corner
+
+    let transactionTextInformationViewTransactionIDTheme: TransactionTextInformationViewTheme
+    let transactionTextInformationViewCommonTheme: TransactionTextInformationViewTheme
+    let commonTransactionAmountInformationViewTheme: TransactionAmountInformationViewTheme
+    let transactionStatusInformationViewTheme: TransactionStatusInformationViewTheme
+    let transactionContactInformationViewTheme: TransactionContactInformationViewTheme
+
     let buttonEdgeInsets: LayoutPaddings
     let openInGoalSeekerButtonLeadingPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
@@ -30,11 +37,7 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
     let verticalStackViewTopPadding: LayoutMetric
     let bottomPaddingForSeparator: LayoutMetric
     let separatorTopPadding: LayoutMetric
-    let transactionTextInformationViewTransactionIDTheme: TransactionTextInformationViewTheme
-    let transactionTextInformationViewCommonTheme: TransactionTextInformationViewTheme
-    let commonTransactionAmountInformationViewTheme: TransactionAmountInformationViewTheme
-    let transactionStatusInformationViewTheme: TransactionStatusInformationViewTheme
-    let transactionContactInformationViewTheme: TransactionContactInformationViewTheme
+    let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -65,5 +68,6 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
         self.verticalStackViewSpacing = 24
         self.verticalStackViewTopPadding = 72
         self.bottomPaddingForSeparator = 65
+        self.bottomInset = 24
     }
 }
