@@ -72,12 +72,12 @@ struct ALGBarButtonItem: BarButtonItem {
             }
             return nil
         case .circleAdd:
-            if let icon = img("img-contacts-add") {
+            if let icon = img("add-icon-40") {
                 return ImageContent(normal: icon)
             }
             return nil
         case .add:
-            if let icon = img("add-icon-40") {
+            if let icon = img("img-contacts-add") {
                 return ImageContent(normal: icon)
             }
             return nil
