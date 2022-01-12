@@ -137,7 +137,7 @@ extension AccountPortfolioViewController {
             qrScannerViewController?.delegate = self
         }
 
-        let addBarButtonItem = ALGBarButtonItem(kind: .add) { [weak self] in
+        let addBarButtonItem = ALGBarButtonItem(kind: .circleAdd) { [weak self] in
             guard let self = self else {
                 return
             }
