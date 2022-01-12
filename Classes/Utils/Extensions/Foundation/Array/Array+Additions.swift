@@ -60,3 +60,25 @@ extension Array {
         return nil
     }
 }
+
+/// <todo>
+/// Move it to `MacaroonUtils` later
+extension Array {
+    func chunked(
+        by size: Int
+    ) -> [[Element]] {
+            return stride(
+                from: startIndex,
+                to: endIndex,
+                by: size
+            ).map {
+                let lastIndex =
+                    index(
+                        $0,
+                        offsetBy: size,
+                        limitedBy: endIndex
+                    ) ?? endIndex
+                return Array(self[$0 ..< lastIndex])
+            }
+        }
+}

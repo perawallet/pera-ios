@@ -40,7 +40,7 @@ final class AccountFetcher: AccountFetching {
         var fetchedAccounts = [Account]()
 
         for localAccount in localAccounts {
-            let accountDetailRequest = api.fetchAccount(AccountFetchDraft(publicKey: localAccount.address)) { [weak self] response in
+            let accountDetailRequest = api.fetchAccount(AccountFetchDraft(publicKey: localAccount.address), queue: .main) { [weak self] response in
                 guard let self = self else {
                     return
                 }

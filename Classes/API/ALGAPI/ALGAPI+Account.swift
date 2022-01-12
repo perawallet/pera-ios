@@ -15,12 +15,14 @@
 //
 //  API+Account.swift
 
+import Foundation
 import MagpieCore
 
 extension ALGAPI {
     @discardableResult
     func fetchAccount(
         _ draft: AccountFetchDraft,
+        queue: DispatchQueue,
         onCompleted handler: @escaping (Response.ModelResult<AccountResponse>) -> Void
     ) -> EndpointOperatable {
         enableLogsInConsole()
@@ -29,6 +31,7 @@ extension ALGAPI {
             .path(.accountDetail, args: draft.publicKey)
             .method(.get)
             .completionHandler(handler)
+            .responseDispatcher(queue)
             .execute()
     }
 

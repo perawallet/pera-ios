@@ -13,28 +13,13 @@
 // limitations under the License.
 
 //
-//   BlockOperationQueue.swift
+//   ALGBlockRequest.swift
 
 
 import Foundation
 
-final class BlockOperationQueue {
-    private lazy var underlyingQueue = createUnderlyingQueue()
-}
-
-extension BlockOperationQueue {
-    func enqueue(
-        _ operation: Operation
-    ) {
-        underlyingQueue.addOperation(operation)
-    }
-}
-
-extension BlockOperationQueue {
-    private func createUnderlyingQueue() -> OperationQueue {
-        let queue = OperationQueue()
-        queue.name = "Block Operation Queue"
-        queue.qualityOfService = .userInitiated
-        return queue
-    }
+struct ALGBlockRequest {
+    var localAccounts: [AccountInformation] = []
+    var cachedAccounts: AccountCollection = []
+    var cachedAssetDetails: AssetDetailCollection = []
 }

@@ -33,7 +33,7 @@ final class AssetFetcher: AssetFetching {
     func getAssetsByIDs(
         _ ids: [AssetID]
     ) {
-        assetInformationRequest = api.fetchAssetDetails(AssetFetchQuery(ids: ids)) { [weak self] response in
+        assetInformationRequest = api.fetchAssetDetails(AssetFetchQuery(ids: ids), queue: .main, ignoreResponseOnCancelled: false) { [weak self] response in
             guard let self = self else {
                 return
             }

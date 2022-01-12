@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//   BlockWatcher.swift
+//   ALGBlockCycle.swift
 
 
 import Foundation
@@ -21,9 +21,7 @@ import MacaroonUtils
 import MagpieCore
 import MagpieHipo
 
-final class BlockWatcher {
-    typealias Handler = () -> Void
-    
+final class ALGBlockCycle: BlockCycle {
     private var lastRound: BlockRound?
     private var handler: Handler?
     
@@ -39,9 +37,9 @@ final class BlockWatcher {
     }
 }
 
-extension BlockWatcher {
-    func start(
-        onReceive handler: @escaping Handler
+extension ALGBlockCycle {
+    func startListening(
+        onChange handler: @escaping Handler
     ) {
         self.handler = handler
         
@@ -52,7 +50,7 @@ extension BlockWatcher {
         }
     }
 
-    func stop() {
+    func stopListening() {
         handler = nil
         
         ongoingEndpointToFetchTransactionParams?.cancel()
@@ -63,7 +61,7 @@ extension BlockWatcher {
     }
 }
 
-extension BlockWatcher {
+extension ALGBlockCycle {
     private func watchNextBlock() {
         self.fetchTransactionParams { [weak self] result in
             guard let self = self else { return }
@@ -102,7 +100,7 @@ extension BlockWatcher {
     }
 }
 
-extension BlockWatcher {
+extension ALGBlockCycle {
     private typealias FetchTransactionParamsCompletionHandler = (Result<BlockRound, HIPNetworkError<NoAPIModel>>) -> Void
     
     private func fetchTransactionParams(
@@ -125,7 +123,7 @@ extension BlockWatcher {
     }
 }
 
-extension BlockWatcher {
+extension ALGBlockCycle {
     private typealias WaitForNextBlockCompletionHandler = (Result<RoundDetail, HIPNetworkError<NoAPIModel>>) -> Void
     
     private func waitForNextBlock(
@@ -150,3 +148,4 @@ extension BlockWatcher {
             }
     }
 }
+

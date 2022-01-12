@@ -138,6 +138,10 @@ extension Account {
         preferredOrder = localAccount.preferredOrder
         accountImage = localAccount.accountImage
     }
+    
+    func removeDeletedAssets() {
+        assets = nonDeletedAssets()
+    }
 }
 
 extension Account {

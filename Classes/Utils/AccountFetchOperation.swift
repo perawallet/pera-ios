@@ -23,22 +23,22 @@ typealias AccountFetchHandler = (Account?, Error?) -> Void
 class AccountFetchOperation: AsyncOperation {
     let accountInformation: AccountInformation
     let api: ALGAPI
-    
+
     var onStarted: EmptyHandler?
     var onCompleted: AccountFetchHandler?
-    
+
     init(accountInformation: AccountInformation, api: ALGAPI) {
         self.accountInformation = accountInformation
         self.api = api
         super.init()
     }
-    
+
     override func main() {
         if isCancelled {
             return
         }
-        
-        api.fetchAccount(AccountFetchDraft(publicKey: accountInformation.address)) { response in
+
+        api.fetchAccount(AccountFetchDraft(publicKey: accountInformation.address), queue: .main) { response in
             switch response {
             case .success(let accountWrapper):
                 accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
@@ -56,10 +56,10 @@ class AccountFetchOperation: AsyncOperation {
             }
             self.finish()
         }
-        
+
         onStarted?()
     }
-    
+
     func finish(with error: Error? = nil) {
         state = .finished
     }
@@ -71,12 +71,12 @@ extension AccountFetchOperation {
             onCompleted?(account, nil)
             return
         }
-        
+
         var removedAssetCount = 0
         for asset in assets {
             if let assetDetail = api.session.assetDetails[asset.id] {
                 account.assetDetails.append(assetDetail)
-                
+
                 if assets.count == account.assetDetails.count + removedAssetCount {
                     self.onCompleted?(account, nil)
                 }
@@ -101,23 +101,23 @@ extension AccountFetchOperation {
             }
         }
     }
-    
+
     private func composeAssetDetail(_ assetDetail: AssetDetail, of account: Account, with id: Int64, removedAssetCount: inout Int) {
         guard let assets = account.assets else {
             onCompleted?(account, nil)
             return
         }
-        
+
         var assetDetail = assetDetail
         setVerifiedIfNeeded(&assetDetail, with: id)
         account.assetDetails.append(assetDetail)
         api.session.assetDetails[id] = assetDetail
-        
+
         if assets.count == account.assetDetails.count + removedAssetCount {
             self.onCompleted?(account, nil)
         }
     }
-    
+
     private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail, with id: Int64) {
         if let verifiedAssets = api.session.verifiedAssets,
             verifiedAssets.contains(where: { verifiedAsset -> Bool in

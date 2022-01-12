@@ -13,20 +13,20 @@
 // limitations under the License.
 
 //
-//   AccountCollection.swift
+//   AssetDetailCollection.swift
 
 
 import Foundation
 import MacaroonUtils
 
-struct AccountCollection:
+struct AssetDetailCollection:
     Collection,
     ExpressibleByArrayLiteral {
-    typealias Key = String
-    typealias Index = AccountCollectionIndex
-    typealias Element = AccountItem
+    typealias Key = AssetID
+    typealias Index = AssetDetailCollectionIndex
+    typealias Element = AssetInformation
     
-    fileprivate typealias Table = [String: Element]
+    fileprivate typealias Table = [Key: Element]
 
     var startIndex: Index {
         return Index(table.startIndex)
@@ -35,19 +35,19 @@ struct AccountCollection:
         return Index(table.endIndex)
     }
     
-    @Atomic(identifier: "accountCollection.table")
+    @Atomic(identifier: "assetDetailCollection.table")
     private var table = Table()
 
     init(
         arrayLiteral elements: Element...
     ) {
-        let keysAndValues = elements.map { ($0.account.address, $0) }
+        let keysAndValues = elements.map { ($0.id, $0) }
         let aTable = Table(keysAndValues, uniquingKeysWith: { $1 })
         $table.modify { $0 = aTable }
     }
 }
 
-extension AccountCollection {
+extension AssetDetailCollection {
     subscript (position: Index) -> Element {
         return table[position.wrapped].value
     }
@@ -58,15 +58,7 @@ extension AccountCollection {
     }
 }
 
-extension AccountCollection {
-    func account(
-        for key: Key
-    ) -> Account? {
-        return self[key]?.account
-    }
-}
-
-extension AccountCollection {
+extension AssetDetailCollection {
     func index(
         after i: Index
     ) -> Index {
@@ -74,8 +66,8 @@ extension AccountCollection {
     }
 }
 
-struct AccountCollectionIndex: Comparable {
-    fileprivate typealias InternalIndex = AccountCollection.Table.Index
+struct AssetDetailCollectionIndex: Comparable {
+    fileprivate typealias InternalIndex = AssetDetailCollection.Table.Index
     
     fileprivate let wrapped: InternalIndex
     

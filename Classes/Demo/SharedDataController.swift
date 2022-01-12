@@ -13,11 +13,12 @@
 // limitations under the License.
 
 //
-//   AccountIdentity.swift
+//   SharedDataController.swift
 
 
 import Foundation
 
-protocol AccountIdentity {
-    var address: String { get }
+protocol SharedDataController: AnyObject {
+    var accountCollection: AccountCollection { get }
+    var assetDetailCollection: AssetDetailCollection { get }
 }

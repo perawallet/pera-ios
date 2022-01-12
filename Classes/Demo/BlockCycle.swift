@@ -13,20 +13,16 @@
 // limitations under the License.
 
 //
-//   BlockProcessor.swift
+//   BlockCycle.swift
 
 
 import Foundation
-import MagpieCore
-import MagpieHipo
 
-protocol BlockProcessor: AnyObject {
-    typealias BlockEventHandler = (BlockEvent) -> Void
+protocol BlockCycle: AnyObject {
+    typealias Handler = () -> Void
     
-    func notify(
-        queue: DispatchQueue,
-        execute handler: @escaping BlockEventHandler
+    func startListening(
+        onChange handler: @escaping Handler
     )
-    func start()
-    func stop()
+    func stopListening()
 }
