@@ -21,7 +21,7 @@ import MacaroonUIKit
 final class SettingsView: View {
     private lazy var theme = SettingsViewTheme()
 
-    private lazy var titleView = MainHeaderView()
+    private lazy var headerView = HeaderView()
 
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -48,7 +48,7 @@ final class SettingsView: View {
     func customize(_ theme: SettingsViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
-        addTitleView()
+        addHeaderView()
         addCollectionView()
     }
 
@@ -58,24 +58,19 @@ final class SettingsView: View {
 }
 
 extension SettingsView {
-    private func addTitleView() {
-        titleView.setTitle("settings-title".localized)
-        titleView.setQRButtonHidden(true)
-        titleView.setAddButtonHidden(true)
-        titleView.setTestNetLabelHidden(true)
-        titleView.backgroundColor = AppColors.Shared.System.background.uiColor
+    private func addHeaderView() {
+        headerView.bindData(HeaderViewModel(title: "settings-title".localized))
         
-        addSubview(titleView)
-        titleView.snp.makeConstraints {
+        addSubview(headerView)
+        headerView.snp.makeConstraints {
             $0.leading.top.trailing.equalToSuperview()
         }
     }
     
     private func addCollectionView() {
         addSubview(collectionView)
-        
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(titleView.snp.bottom)
+            $0.top.equalTo(headerView.snp.bottom)
             $0.leading.bottom.trailing.equalToSuperview()
         }
     }

@@ -33,7 +33,7 @@ struct AlgoStatisticsViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.footerViewHorizontalPadding = 21
-        self.headerTopInset = 22
+        self.headerTopInset = 12
         self.headerHorizontalInset = 24
         self.chartVerticalInset = 75
         self.chartHeight = 130

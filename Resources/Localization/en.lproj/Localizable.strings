@@ -652,7 +652,7 @@ on your Ledger device (%d)";
 "title-algo-rewards" = "Rewards";
 "value-one-algo" = "1 ALGO = %@";
 
-"title-algorand" = "Algorand";
+"title-algorand" = "Algo";
 "title-account-balance" = "Balance";
 "title-algorand-value" = "Value";
 

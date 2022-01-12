@@ -17,15 +17,16 @@
 
 import UIKit
 
+// <todo> This file will be removed after account screen integration.
 class AccountsView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: AccountsViewDelegate?
     
-    private lazy var accountsHeaderView: MainHeaderView = {
-        let view = MainHeaderView()
-        view.setTitle("accounts-title".localized)
+    private lazy var accountsHeaderView: HeaderView = {
+        let view = HeaderView()
+        view.bindData(HeaderViewModel(title: "accounts-title".localized))
         return view
     }()
     
@@ -60,7 +61,7 @@ class AccountsView: BaseView {
     }()
     
     override func setListeners() {
-        accountsHeaderView.delegate = self
+//        accountsHeaderView.delegate = self
     }
     
     override func prepareLayout() {
@@ -93,8 +94,8 @@ extension AccountsView {
 
 extension AccountsView {
     func setHeaderButtonsHidden(_ hidden: Bool) {
-        accountsHeaderView.setQRButtonHidden(hidden)
-        accountsHeaderView.setAddButtonHidden(hidden)
+//        accountsHeaderView.setQRButtonHidden(hidden)
+//        accountsHeaderView.setAddButtonHidden(hidden)
     }
     
     func setTestNetLabelHidden(_ hidden: Bool) {
@@ -102,12 +103,12 @@ extension AccountsView {
     }
 }
 
-extension AccountsView: MainHeaderViewDelegate {
-    func mainHeaderViewDidTapQRButton(_ mainHeaderView: MainHeaderView) {
+extension AccountsView {
+    func mainHeaderViewDidTapQRButton(_ mainHeaderView: HeaderView) {
         delegate?.accountsViewDidTapQRButton(self)
     }
     
-    func mainHeaderViewDidTapAddButton(_ mainHeaderView: MainHeaderView) {
+    func mainHeaderViewDidTapAddButton(_ mainHeaderView: HeaderView) {
         delegate?.accountsViewDidTapAddButton(self)
     }
 }

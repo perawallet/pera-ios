@@ -13,22 +13,20 @@
 // limitations under the License.
 
 //
-//   SettingsViewTheme.swift
+//   File.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct SettingsViewTheme: LayoutSheet, StyleSheet {
-    let backgroundColor: Color
-    
-    let cellSpacing: LayoutMetric
-    let collectionViewEdgeInsets: LayoutPaddings
-    let sectionInset: LayoutPaddings
-    
-    init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
-        self.cellSpacing = 0
-        self.collectionViewEdgeInsets = (36, 0, 0, 0)
-        self.sectionInset = (8, 0, 36, 0)
+final class HeaderViewModel: ViewModel {
+    private(set) var title: String
+    private(set) var testNetLabelIsHidden: Bool
+    private(set) var rightButtonImage: UIImage?
+
+    init(title: String, testNetLabelIsHidden: Bool = true, rightButtonImage: UIImage? = nil) {
+        self.testNetLabelIsHidden = testNetLabelIsHidden
+        self.title = title
+        self.rightButtonImage = rightButtonImage
     }
 }

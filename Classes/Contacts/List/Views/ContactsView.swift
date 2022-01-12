@@ -22,7 +22,7 @@ final class ContactsView: View {
     weak var delegate: ContactsViewDelegate?
 
     private lazy var theme = ContactsViewTheme()
-    private lazy var contactsHeaderView = MainHeaderView()
+    private lazy var contactsHeaderView = HeaderView()
     private(set) lazy var searchInputView = SearchInputView()
 
     private(set) lazy var contactsCollectionView: UICollectionView = {
@@ -48,9 +48,15 @@ final class ContactsView: View {
         customize(theme)
         linkInteractors()
     }
-    
+
     func linkInteractors() {
-        contactsHeaderView.delegate = self
+        contactsHeaderView.handlers.didTapRightButton = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.delegate?.contactsViewDidTapAddButton(self)
+        }
     }
 
     func customize(_ theme: ContactsViewTheme) {
@@ -68,10 +74,12 @@ final class ContactsView: View {
 
 extension ContactsView {
     private func addContactsHeaderView() {
-        contactsHeaderView.backgroundColor = AppColors.Shared.System.background.uiColor
-        contactsHeaderView.setTitle("contacts-title".localized)
-        contactsHeaderView.setQRButtonHidden(true)
-        contactsHeaderView.setTestNetLabelHidden(true)
+        contactsHeaderView.bindData(
+            HeaderViewModel(
+                title: "contacts-title".localized,
+                rightButtonImage: "img-accounts-add".uiImage
+            )
+        )
 
         addSubview(contactsHeaderView)
         contactsHeaderView.snp.makeConstraints {
@@ -105,14 +113,6 @@ extension ContactsView {
     func removeHeader() {
         contactsHeaderView.removeFromSuperview()
     }
-}
-
-extension ContactsView: MainHeaderViewDelegate {
-    func mainHeaderViewDidTapAddButton(_ mainHeaderView: MainHeaderView) {
-        delegate?.contactsViewDidTapAddButton(self)
-    }
-    
-    func mainHeaderViewDidTapQRButton(_ mainHeaderView: MainHeaderView) {}
 }
 
 protocol ContactsViewDelegate: AnyObject {
