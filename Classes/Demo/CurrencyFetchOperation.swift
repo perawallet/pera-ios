@@ -13,27 +13,25 @@
 // limitations under the License.
 
 //
-//   AccountDetailFetchOperation.swift
-
+//   CurrencyFetchOperation.swift
 
 import Foundation
 import MacaroonUtils
 import MagpieCore
 import MagpieHipo
 
-final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
+final class CurrencyFetchOperation: MacaroonUtils.AsyncOperation {
     typealias Error = HIPNetworkError<NoAPIModel>
+    typealias CompletionHandler = (Result<Output, Error>) -> Void
     
-    let input: Input
-    
-    private(set) var result: Result<Output, Error> =
-        .failure(.unexpected(UnexpectedError(responseData: nil, underlyingError: nil)))
+    var completionHandler: CompletionHandler?
     
     private var ongoingEndpoint: EndpointOperatable?
 
+    private let input: Input
     private let api: ALGAPI
     private let completionQueue =
-        DispatchQueue(label: "com.algorand.queue.operation.accountFetch", qos: .userInitiated)
+        DispatchQueue(label: "com.algorand.queue.operation.currencyFetch", qos: .userInitiated)
     
     init(
         input: Input,
@@ -48,15 +46,13 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
             return
         }
         
-        let draft = AccountFetchDraft(publicKey: input.localAccount.address)
-
         ongoingEndpoint =
-            api.fetchAccount(
-                draft,
+            api.getCurrencyValue(
+                input.currencyId,
                 queue: completionQueue
             ) { [weak self] result in
                 guard let self = self else { return }
-            
+                
                 self.ongoingEndpoint = nil
                 
                 if self.finishIfCancelled() {
@@ -64,26 +60,12 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
                 }
                 
                 switch result {
-                case .success(let response):
-                    let account = response.account
-                    account.removeDeletedAssets()
-                    account.update(from: self.input.localAccount)
-                    
-                    if self.finishIfCancelled() {
-                        return
-                    }
-
-                    let output = Output(account: account)
-                    self.result = .success(output)
+                case .success(let currency):
+                    let output = Output(currency: currency)
+                    self.completionHandler?(.success(output))
                 case .failure(let apiError, let apiErrorDetail):
-                    if apiError.isHttpNotFound {
-                        let account = Account(localAccount: self.input.localAccount)
-                        let output = Output(account: account)
-                        self.result = .success(output)
-                    } else {
-                        let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
-                        self.result = .failure(error)
-                    }
+                    let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
+                    self.completionHandler?(.failure(error))
                 }
                 
                 self.finish()
@@ -96,19 +78,19 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
     }
 }
 
-extension AccountDetailFetchOperation {
+extension CurrencyFetchOperation {
     private func cancelOngoingEndpoint() {
         ongoingEndpoint?.cancel()
         ongoingEndpoint = nil
     }
 }
 
-extension AccountDetailFetchOperation {
+extension CurrencyFetchOperation {
     struct Input {
-        let localAccount: AccountInformation
+        let currencyId: String
     }
     
     struct Output {
-        let account: Account
+        let currency: Currency
     }
 }

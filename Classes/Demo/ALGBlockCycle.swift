@@ -23,7 +23,8 @@ import MagpieHipo
 
 final class ALGBlockCycle: BlockCycle {
     private var lastRound: BlockRound?
-    private var handler: Handler?
+    private var notificationQueue: DispatchQueue?
+    private var notificationHandler: NotificationHandler?
     
     private var ongoingEndpointToFetchTransactionParams: EndpointOperatable?
     private var ongoingEndpointToWaitForNextBlock: EndpointOperatable?
@@ -38,11 +39,15 @@ final class ALGBlockCycle: BlockCycle {
 }
 
 extension ALGBlockCycle {
-    func startListening(
-        onChange handler: @escaping Handler
+    func notify(
+        queue: DispatchQueue,
+        execute handler: @escaping NotificationHandler
     ) {
-        self.handler = handler
-        
+        notificationQueue = queue
+        notificationHandler = handler
+    }
+    
+    func startListening() {
         if let lastRound = lastRound {
             watchNextBlock(after: lastRound)
         } else {
@@ -51,7 +56,7 @@ extension ALGBlockCycle {
     }
 
     func stopListening() {
-        handler = nil
+        notificationHandler = nil
         
         ongoingEndpointToFetchTransactionParams?.cancel()
         ongoingEndpointToFetchTransactionParams = nil
@@ -88,7 +93,7 @@ extension ALGBlockCycle {
                 let lastRound = roundDetail.lastRound
                 
                 self.lastRound = lastRound
-                self.handler?()
+                self.sendNotification()
                 
                 self.watchNextBlock(after: lastRound)
             case .failure:
@@ -149,3 +154,11 @@ extension ALGBlockCycle {
     }
 }
 
+extension ALGBlockCycle {
+    private func sendNotification() {
+        notificationQueue?.async { [weak self] in
+            guard let self = self else { return }
+            self.notificationHandler?()
+        }
+    }
+}

@@ -17,8 +17,13 @@
 
 
 import Foundation
+import MacaroonUtils
 
 protocol SharedDataController: AnyObject {
     var accountCollection: AccountCollection { get }
     var assetDetailCollection: AssetDetailCollection { get }
+    var currency: CurrencyHandle { get }
+    
+    func startPolling()
+    func stopPolling()
 }

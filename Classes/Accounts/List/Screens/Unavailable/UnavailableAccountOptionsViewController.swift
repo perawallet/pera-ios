@@ -80,7 +80,7 @@ extension UnavailableAccountOptionsViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(OptionsCell.self, at: indexPath)
-        let remoteAccount = Account(accountInformation: account)
+        let remoteAccount = Account(localAccount: account)
         cell.bindData(UnavailableAccountOptionsViewModel(option: options[indexPath.item], account: remoteAccount))
         return cell
     }

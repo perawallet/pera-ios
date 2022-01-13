@@ -120,6 +120,7 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
             }
             
             if let error = error {
+                account.assetInformations = []
                 self.result = .failure(error)
             } else {
                 account.assetInformations =

@@ -182,7 +182,7 @@ extension LedgerAccountVerificationViewController {
             user = User(accounts: [localAccount])
         }
 
-        api?.session.addAccount(Account(accountInformation: localAccount))
+        api?.session.addAccount(Account(localAccount: localAccount))
         api?.session.authenticatedUser = user
     }
 

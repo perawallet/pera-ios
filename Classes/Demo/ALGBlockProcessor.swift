@@ -32,6 +32,8 @@ final class ALGBlockProcessor: BlockProcessor {
     private let blockRequest: BlockRequest
     private let blockCycle: BlockCycle
     private let api: ALGAPI
+    private let blockCycleNotificationQueue =
+        DispatchQueue(label: "com.algorand.queue.blockCycle.notifications")
     
     init(
         blockRequest: @escaping BlockRequest,
@@ -54,7 +56,8 @@ extension ALGBlockProcessor {
     }
 
     func start() {
-        blockCycle.startListening { [weak self] in
+        blockCycle.notify(queue: blockCycleNotificationQueue) {
+            [weak self] in
             guard let self = self else { return }
             
             if !self.canProceedOnBlock() {
@@ -64,6 +67,7 @@ extension ALGBlockProcessor {
             let newBlockRequest = self.blockRequest()
             self.proceed(with: newBlockRequest)
         }
+        blockCycle.startListening()
     }
     
     func stop() {
@@ -82,12 +86,39 @@ extension ALGBlockProcessor {
     private func proceed(
         with newBlockRequest: ALGBlockRequest
     ) {
+        currentBlockRequest = newBlockRequest
+        
         send(blockEvent: .willStart)
         
-        currentBlockRequest = newBlockRequest
-        currentBlockRequest?.localAccounts.forEach { localAccount in
-            send(blockEvent: .willFetchAccount(address: localAccount.address))
+        var currencyFetchOperation: Operation?
+
+        if newBlockRequest.cachedCurrency.isExpired {
+            send(blockEvent: .willFetchCurrency)
+
+            let aCurrencyFetchOperation =
+                CurrencyFetchOperation(
+                    input: .init(currencyId: newBlockRequest.localCurrencyId), api: api
+                )
+            aCurrencyFetchOperation.completionHandler = {
+                [weak self] result in
+                guard let self = self else { return }
+                
+                switch result {
+                case .success(let output):
+                    self.send(blockEvent: .didFetchCurrency(output.currency))
+                case .failure(let error):
+                    self.send(blockEvent: .didFailToFetchCurrency(error))
+                }
+            }
+
+            queue.enqueue(aCurrencyFetchOperation)
             
+            currencyFetchOperation = aCurrencyFetchOperation
+        }
+
+        newBlockRequest.localAccounts.forEach { localAccount in
+            send(blockEvent: .willFetchAccount(localAccount))
+
             let accountFetchOperation =
                 AccountDetailFetchOperation(input: .init(localAccount: localAccount), api: api)
             let assetDetailGroupFetchOperation =
@@ -108,11 +139,11 @@ extension ALGBlockProcessor {
                     input.cachedAccounts = self.currentBlockRequest?.cachedAccounts ?? []
                     input.cachedAssetDetails = self.currentBlockRequest?.cachedAssetDetails ?? []
                     
-                    self.send(blockEvent: .willFetchAssetDetails(accountAddress: account.address))
+                    self.send(blockEvent: .willFetchAssetDetails(account))
                 case .failure(let error):
                     self.send(
                         blockEvent: .didFailToFetchAccount(
-                            address: accountFetchOperation.input.localAccount.address,
+                            localAccount: accountFetchOperation.input.localAccount,
                             error: error
                         )
                     )
@@ -130,15 +161,15 @@ extension ALGBlockProcessor {
                 case .success(let output):
                     self.send(
                         blockEvent: .didFetchAssetDetails(
-                            output.newAssetDetails,
-                            accountAddress: output.account.address
+                            account: output.account,
+                            assetDetails: output.newAssetDetails
                         )
                     )
                 case .failure(let error):
                     if let account = assetDetailGroupFetchOperation.input.account {
                         self.send(
                             blockEvent: .didFailToFetchAssetDetails(
-                                accountAddress: account.address,
+                                account: account,
                                 error: error
                             )
                         )
@@ -151,6 +182,10 @@ extension ALGBlockProcessor {
             finishOperation.addDependency(assetDetailGroupFetchOperation)
             assetDetailGroupFetchOperation.addDependency(adapterOperation)
             adapterOperation.addDependency(accountFetchOperation)
+            
+            if let currencyFetchOperation = currencyFetchOperation {
+                accountFetchOperation.addDependency(currencyFetchOperation)
+            }
             
             let operations = [
                 accountFetchOperation,

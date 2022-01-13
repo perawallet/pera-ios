@@ -31,8 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    private lazy var api = ALGAPI(session: session)
     private lazy var session = Session()
+    private lazy var api = ALGAPI(session: session)
+    private lazy var sharedDataController = SharedAPIDataController(session: session, api: api)
     private lazy var walletConnector = WalletConnector()
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window ?? UIWindow())
     private lazy var bannerController = BannerController(window: window ?? UIWindow())
@@ -69,6 +70,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setupFirebase()
         SwiftDate.setupDateRegion()
         setupWindow()
+        
+        sharedDataController.startPolling()
+        
         return true
     }
 
@@ -85,10 +89,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
+        sharedDataController.startPolling()
         updateForegroundActions()
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
+        sharedDataController.stopPolling()
         decideToInvalidateSessionInBackground()
     }
     

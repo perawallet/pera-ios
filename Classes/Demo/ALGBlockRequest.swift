@@ -22,4 +22,6 @@ struct ALGBlockRequest {
     var localAccounts: [AccountInformation] = []
     var cachedAccounts: AccountCollection = []
     var cachedAssetDetails: AssetDetailCollection = []
+    var localCurrencyId: String = "USD"
+    var cachedCurrency: CurrencyHandle = .idle
 }

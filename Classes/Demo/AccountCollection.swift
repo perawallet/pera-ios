@@ -21,10 +21,11 @@ import MacaroonUtils
 
 struct AccountCollection:
     Collection,
-    ExpressibleByArrayLiteral {
+    ExpressibleByArrayLiteral,
+    Printable {
     typealias Key = String
     typealias Index = AccountCollectionIndex
-    typealias Element = AccountItem
+    typealias Element = AccountHandle
     
     fileprivate typealias Table = [String: Element]
 
@@ -33,6 +34,10 @@ struct AccountCollection:
     }
     var endIndex: Index {
         return Index(table.endIndex)
+    }
+    
+    var debugDescription: String {
+        return table.debugDescription
     }
     
     @Atomic(identifier: "accountCollection.table")
