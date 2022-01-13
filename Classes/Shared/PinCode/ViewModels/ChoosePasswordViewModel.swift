@@ -41,6 +41,8 @@ extension ChoosePasswordViewModel {
             choosePasswordView.titleLabel.text = "password-verify-subtitle".localized
         case .login:
             choosePasswordView.titleLabel.text = "login-subtitle".localized
+        case .deletePassword:
+            choosePasswordView.titleLabel.text = "login-subtitle".localized
         case .resetPassword:
             choosePasswordView.titleLabel.text = "password-change-subtitle".localized
         case .resetVerify:

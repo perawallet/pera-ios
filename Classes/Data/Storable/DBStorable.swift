@@ -174,6 +174,31 @@ extension DBStorable where Self: NSManagedObject {
         }
     }
     
+    func removeValue(
+        entity: String,
+        with key: String,
+        then handler: DBOperationHandler? = nil,
+        in persistentContainer: NSPersistentContainer? = UIApplication.shared.appDelegate?.persistentContainer
+    ) {
+        guard let context = persistentContainer?.viewContext else {
+            return
+        }
+        
+        do {
+            let object = try context.existingObject(with: objectID)
+            object.setValue(nil, forKey: key)
+            
+            do {
+                try context.save()
+                handler?(.result(object: object))
+            } catch {
+                handler?(.error(error: .writeFailed))
+            }
+        } catch {
+            handler?(.error(error: .readFailed))
+        }
+    }
+    
     func remove(
         entity: String,
         then handler: DBOperationHandler? = nil,

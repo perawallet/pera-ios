@@ -203,6 +203,12 @@ extension Session {
         }
     }
     
+    func deletePassword() {
+        if let config = applicationConfiguration {
+            config.removeValue(entity: ApplicationConfiguration.entityName, with: ApplicationConfiguration.DBKeys.password.rawValue)
+        }
+    }
+    
     func isPasswordMatching(with password: String) -> Bool {
         guard let config = applicationConfiguration else {
             return false

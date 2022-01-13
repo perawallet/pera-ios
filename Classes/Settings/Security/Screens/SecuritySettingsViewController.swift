@@ -102,7 +102,10 @@ extension SecuritySettingsViewController: UICollectionViewDelegateFlowLayout {
         }
         
         if setting == .pinCodeChange {
-            open(.choosePassword(mode: .resetPassword, flow: nil, route: nil), by: .push)
+            open(
+                .choosePassword(mode: .resetPassword, flow: nil, route: nil),
+                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+            )
         }
     }
 }
@@ -171,11 +174,14 @@ extension SecuritySettingsViewController: SettingsToggleCellDelegate {
         switch setting {
         case .pinCodeActivation:
             if value {
-                open(.choosePassword(mode: .resetPassword, flow: nil, route: nil), by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil))
+                open(
+                    .choosePassword(mode: .resetPassword, flow: nil, route: nil),
+                    by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                )
                 return
             }
             
-            createSettingsWithoutPreferences()
+            open(.choosePassword(mode: .deletePassword, flow: nil, route: nil), by: .present)
             return
         case .localAuthentication:
             if !value {
