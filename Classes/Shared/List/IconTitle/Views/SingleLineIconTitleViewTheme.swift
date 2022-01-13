@@ -18,9 +18,9 @@
 import Foundation
 import MacaroonUIKit
 import UIKit
-import SwiftUI
 
 struct SingleLineIconTitleViewTheme: StyleSheet, LayoutSheet {
+    let backgroundColor: Color
     let icon: ImageStyle
     let title: TextStyle
 
@@ -29,6 +29,7 @@ struct SingleLineIconTitleViewTheme: StyleSheet, LayoutSheet {
     let titleHorizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
         self.icon = [
             .contentMode(.scaleAspectFit)
         ]

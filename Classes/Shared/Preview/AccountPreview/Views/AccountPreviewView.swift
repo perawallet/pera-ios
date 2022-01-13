@@ -163,6 +163,8 @@ final class AccountPreviewTableCell:
         )
 
         contextView.customize(AccountPreviewViewTheme())
+
+        backgroundColor = .clear
         selectionStyle = .none
     }
 }

@@ -25,6 +25,7 @@ extension AssetSearchViewController {
         let searchInputViewTheme: SearchInputViewTheme
         let topInset: LayoutMetric
         let horizontalPadding: LayoutMetric
+        let collectionViewEdgeInsets: LayoutPaddings
 
         init(_ family: LayoutFamily) {
             self.listBackgroundColor = AppColors.Shared.System.background
@@ -34,6 +35,7 @@ extension AssetSearchViewController {
             )
             self.topInset = 16
             self.horizontalPadding = 24
+            self.collectionViewEdgeInsets = (24, 0, 0, 0)
         }
     }
 }

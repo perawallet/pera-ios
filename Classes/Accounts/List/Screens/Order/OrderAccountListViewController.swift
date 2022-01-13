@@ -71,6 +71,7 @@ extension OrderAccountListViewController {
         listView.separatorInset = .zero
         listView.verticalScrollIndicatorInsets.top = .leastNonzeroMagnitude
         listView.dragInteractionEnabled = true
+        listView.backgroundColor = .clear
         listView.isEditing = true
     }
 

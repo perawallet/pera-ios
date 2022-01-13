@@ -26,7 +26,6 @@ struct TransactionHistoryContextViewTheme: StyleSheet, LayoutSheet {
 
     let horizontalInset: LayoutMetric
     let verticalInset: LayoutMetric
-    let minimumHorizontalSpacing: LayoutMetric
     let subtitleTopInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
@@ -45,7 +44,6 @@ struct TransactionHistoryContextViewTheme: StyleSheet, LayoutSheet {
         ]
         self.horizontalInset = 24
         self.verticalInset = 14
-        self.minimumHorizontalSpacing = 4
         self.subtitleTopInset = 7
     }
 }

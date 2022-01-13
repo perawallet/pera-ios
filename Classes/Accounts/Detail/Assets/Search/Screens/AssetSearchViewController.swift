@@ -40,6 +40,7 @@ final class AssetSearchViewController: BaseViewController {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.listBackgroundColor.uiColor
+        collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
         collectionView.register(AssetPreviewCell.self)
         collectionView.register(header: SingleLineTitleActionHeaderView.self)
         return collectionView

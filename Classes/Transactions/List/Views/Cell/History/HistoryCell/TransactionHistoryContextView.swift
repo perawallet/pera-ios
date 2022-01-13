@@ -55,6 +55,8 @@ extension TransactionHistoryContextView {
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.subtitleTopInset)
             $0.bottom.equalToSuperview().inset(theme.verticalInset)
         }
+
+        subtitleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 
     private func addTransactionAmountView(_ theme: TransactionHistoryContextViewTheme) {
@@ -64,7 +66,7 @@ extension TransactionHistoryContextView {
         transactionAmountView.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.centerY.equalToSuperview()
-            $0.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(theme.minimumHorizontalSpacing)
+            $0.leading.greaterThanOrEqualTo(subtitleLabel.snp.trailing).offset(theme.horizontalInset)
         }
     }
 }

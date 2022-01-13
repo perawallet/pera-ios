@@ -23,19 +23,17 @@ final class SingleSelectionListView: View {
     
     private lazy var theme = SingleSelectionListViewTheme()
     private lazy var errorView = ListErrorView()
+
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = theme.collectionViewMinimumLineSpacing
         flowLayout.minimumInteritemSpacing = theme.collectionViewMinimumInteritemSpacing
-        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
-        collectionView.contentInset = .zero
-        collectionView.keyboardDismissMode = .onDrag
-        collectionView.register(SingleSelectionCell.self, forCellWithReuseIdentifier: SingleSelectionCell.reusableIdentifier)
+        collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
+        collectionView.register(SingleSelectionCell.self)
         return collectionView
     }()
     
@@ -70,8 +68,7 @@ extension SingleSelectionListView {
     private func addCollectionView(_ theme: SingleSelectionListViewTheme) {
         addSubview(collectionView)
         collectionView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.topInset)
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
     }
 }

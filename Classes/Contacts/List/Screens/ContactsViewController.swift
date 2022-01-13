@@ -47,6 +47,17 @@ class ContactsViewController: BaseViewController {
     private var contacts = [Contact]()
     private var searchResults = [Contact]()
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        /// <note> This solves the UIRefreshControl stuck after switching tabs.
+        if !refreshControl.isRefreshing {
+            refreshControl.beginRefreshing()
+            refreshControl.endRefreshing()
+            contactsView.contactsCollectionView.contentInset = UIEdgeInsets(contactsView.theme.contentInset)
+        }
+    }
+
     override func customizeTabBarAppearence() {
         isTabBarHidden = false
     }
