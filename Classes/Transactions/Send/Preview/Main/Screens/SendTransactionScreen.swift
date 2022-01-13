@@ -287,7 +287,10 @@ extension SendTransactionScreen {
 
     @objc
     private func didTapNote() {
-        modalTransition.perform(.editNote(note: self.note, delegate: self), completion: nil)
+        modalTransition.perform(
+            .editNote(note: self.note, delegate: self),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
@@ -399,7 +402,10 @@ extension SendTransactionScreen: NumpadViewDelegate {
     }
 
     private func displayMaxTransactionWarning() {
-        modalTransition.perform(.maximumBalanceWarning(account: draft.from, delegate: self))
+        modalTransition.perform(
+            .maximumBalanceWarning(account: draft.from, delegate: self),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 

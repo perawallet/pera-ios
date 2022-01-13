@@ -155,7 +155,8 @@ extension PinLimitViewController: PinLimitViewDelegate {
         )
 
         bottomModalTransition.perform(
-            .bottomWarning(configurator: bottomWarningViewConfigurator)
+            .bottomWarning(configurator: bottomWarningViewConfigurator),
+            by: .presentWithoutNavigationController
         )
     }
 }

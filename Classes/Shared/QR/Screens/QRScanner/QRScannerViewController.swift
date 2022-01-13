@@ -298,7 +298,10 @@ extension QRScannerViewController: WalletConnectorDelegate {
             return
         }
         dAppName = session.dAppInfo.peerMeta.name
-        wcConnectionModalTransition.perform(.wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion))
+        wcConnectionModalTransition.perform(
+            .wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion),
+            by: .present
+        )
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
@@ -355,7 +358,8 @@ extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
                             self?.popScreen()
                         }
                     )
-            )
+            ),
+            by: .presentWithoutNavigationController
         )
     }
 }
@@ -366,7 +370,10 @@ extension QRScannerViewController: QRScannerOverlayViewDelegate {
     }
 
     func qrScannerOverlayViewDidTapConnectedAppsButton(_ qrScannerOverlayView: QRScannerOverlayView) {
-        let walletConnectSessionsShortList: WCSessionShortListViewController? = wcConnectionModalTransition.perform(.walletConnectSessionShortList)
+        let walletConnectSessionsShortList: WCSessionShortListViewController? = wcConnectionModalTransition.perform(
+            .walletConnectSessionShortList,
+            by: .presentWithoutNavigationController
+        )
         walletConnectSessionsShortList?.delegate = self
     }
 }

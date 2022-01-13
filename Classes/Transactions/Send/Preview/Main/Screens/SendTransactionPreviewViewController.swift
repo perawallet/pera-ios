@@ -354,7 +354,10 @@ extension SendTransactionPreviewViewController: OldSelectAssetViewControllerDele
 extension SendTransactionPreviewViewController {
     private func displayTransactionTutorial(isInitialDisplay: Bool) {
         DispatchQueue.main.asyncAfter(deadline: .now() + (isInitialDisplay ? 0.1 : 0)) {
-            self.transactionTutorialTransition.perform(.transactionTutorial(isInitialDisplay: isInitialDisplay, delegate: self))
+            self.transactionTutorialTransition.perform(
+                .transactionTutorial(isInitialDisplay: isInitialDisplay, delegate: self),
+                by: .presentWithoutNavigationController
+            )
         }
     }
 }

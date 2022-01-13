@@ -90,7 +90,8 @@ extension WCSingleTransactionViewController: WCSingleTransactionViewDelegate {
             .wcTransactionFullDappDetail(
                 wcSession: wcSession,
                 message: message
-            )
+            ),
+            by: .presentWithoutNavigationController
         )
     }
 }

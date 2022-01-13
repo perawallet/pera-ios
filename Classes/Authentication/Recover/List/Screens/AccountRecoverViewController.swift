@@ -174,7 +174,10 @@ extension AccountRecoverViewController {
     }
 
     private func openRecoverOptions() {
-        optionsModalTransition.perform(.recoverOptions(delegate: self))
+        optionsModalTransition.perform(
+            .recoverOptions(delegate: self),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 

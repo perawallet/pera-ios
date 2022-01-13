@@ -417,7 +417,10 @@ extension AccountsViewController: WalletConnectorDelegate {
             return
         }
 
-        modalTransition.perform(.wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion))
+        modalTransition.perform(
+            .wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion),
+            by: .presentWithoutNavigationController
+        )
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
@@ -437,7 +440,10 @@ extension AccountsViewController: WCConnectionApprovalViewControllerDelegate {
 
 extension AccountsViewController {
     private func presentOptions(for account: Account) {
-        modalTransition.perform(.options(account: account, delegate: self))
+        modalTransition.perform(
+            .options(account: account, delegate: self),
+            by: .present
+        )
     }
     
     private func setAccountsCollectionViewContentState(isInitialEmptyStateIncluded: Bool = false) {
@@ -533,7 +539,10 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     cancelTitle: "title-cancel".localized
                 )
 
-                modalTransition.perform(.assetActionConfirmation(assetAlertDraft: assetAlertDraft))
+                modalTransition.perform(
+                    .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
+                    by: .presentWithoutNavigationController
+                )
                 return
             }
             

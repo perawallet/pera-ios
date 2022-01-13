@@ -175,7 +175,10 @@ extension TransactionsViewController {
                     return
                 }
 
-                self.bottomSheetTransition.perform(.rewardDetail(account: self.account))
+                self.bottomSheetTransition.perform(
+                    .rewardDetail(account: self.account),
+                    by: .presentWithoutNavigationController
+                )
             }
         } else if draft.type == .asset {
             transactionsDataSource.handlers.copyAssetIDHandler = { [weak self] assetID in
@@ -190,7 +193,10 @@ extension TransactionsViewController {
                 return
             }
 
-            self.filterOptionsTransition.perform(.transactionFilter(filterOption: self.filterOption, delegate: self))
+            self.filterOptionsTransition.perform(
+                .transactionFilter(filterOption: self.filterOption, delegate: self),
+                by: .presentWithoutNavigationController
+            )
         }
 
         transactionsDataSource.handlers.shareHistoryHandler = { [weak self] in

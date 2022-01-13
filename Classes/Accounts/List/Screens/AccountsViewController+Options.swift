@@ -86,7 +86,10 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             return
         }
         
-        modalTransition.perform(.passphraseDisplay(address: account.address))
+        modalTransition.perform(
+            .passphraseDisplay(address: account.address),
+            by: .presentWithoutNavigationController
+        )
     }
     
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
@@ -113,7 +116,10 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             }
         )
 
-        modalTransition.perform(.bottomWarning(configurator: configurator))
+        modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
     }
 
     private func removeAccount() {

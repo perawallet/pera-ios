@@ -20,10 +20,6 @@ import MacaroonBottomSheet
 import MacaroonUIKit
 
 final class LedgerApprovalViewController: BaseViewController {
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-    
     private lazy var ledgerApprovalView = LedgerApprovalView()
     private lazy var theme = Theme()
 

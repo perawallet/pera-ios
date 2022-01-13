@@ -32,7 +32,7 @@ final class BottomSheetTransition {
 
 extension BottomSheetTransition {
     @discardableResult
-    func perform<T: UIViewController>(_ screen: Screen, completion: (() -> Void)? = nil) -> T? {
+    func perform<T: UIViewController>(_ screen: Screen, by style: Transition, completion: (() -> Void)? = nil) -> T? {
         let transitionController =
             BottomSheetTransitionController(
                 presentingViewController: presentingViewController
@@ -46,16 +46,38 @@ extension BottomSheetTransition {
 
                 self.transitionController = nil
             }
+
+        let transition: Screen.Transition.Open
+
+        switch style {
+        case .present:
+            transition = .customPresent(
+                presentationStyle: .custom,
+                transitionStyle: .coverVertical,
+                transitioningDelegate: transitionController
+            )
+        case .presentWithoutNavigationController:
+            transition = .customPresentWithoutNavigationController(
+                presentationStyle: .custom,
+                transitionStyle: .coverVertical,
+                transitioningDelegate: transitionController
+            )
+        }
         
         let presentedViewController = presentingViewController.open(
             screen,
-            by: .customPresent(presentationStyle: .custom, transitionStyle: .coverVertical, transitioningDelegate: transitionController),
+            by: transition,
             animated: true
         ) as? T
 
         self.transitionController = transitionController
 
         return presentedViewController
+    }
+
+    enum Transition {
+        case present
+        case presentWithoutNavigationController
     }
 }
 

@@ -96,7 +96,10 @@ extension AlgoStatisticsViewController {
 
 extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
     func algoStatisticsViewDidTapDate(_ view: AlgoStatisticsView) {
-        filterOptionsTransition.perform(.algoStatisticsDateSelection(option: selectedTimeInterval, delegate: self))
+        filterOptionsTransition.perform(
+            .algoStatisticsDateSelection(option: selectedTimeInterval, delegate: self),
+            by: .presentWithoutNavigationController
+        )
     }
 
     func algoStatisticsView(_ view: AlgoStatisticsView, didSelectItemAt index: Int) {

@@ -56,7 +56,8 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             .accountList(
                 mode: accountSelectionState == .sender ? .transactionSender(assetDetail: nil) : .transactionReceiver(assetDetail: nil),
                 delegate: self
-            )
+            ),
+            by: .presentWithoutNavigationController
         )
     }
     
@@ -193,7 +194,8 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
         )
 
         bottomModalTransition.perform(
-            .bottomWarning(configurator: bottomWarningViewConfigurator)
+            .bottomWarning(configurator: bottomWarningViewConfigurator),
+            by: .presentWithoutNavigationController
         )
     }
 
@@ -202,7 +204,10 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
 
-        bottomModalTransition.perform(.maximumBalanceWarning(account: account, delegate: self))
+        bottomModalTransition.perform(
+            .maximumBalanceWarning(account: account, delegate: self),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 

@@ -22,10 +22,6 @@ import MacaroonUIKit
 final class AccountRecoverOptionsViewController: BaseViewController {
     weak var delegate: AccountRecoverOptionsViewControllerDelegate?
 
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-
     private lazy var optionsView = OptionsView()
     private lazy var theme = Theme()
 

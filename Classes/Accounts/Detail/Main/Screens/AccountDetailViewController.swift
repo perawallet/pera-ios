@@ -61,7 +61,10 @@ extension AccountDetailViewController {
                 return
             }
 
-            self.modalTransition.perform(.options(account: self.account, delegate: self))
+            self.modalTransition.perform(
+                .options(account: self.account, delegate: self),
+                by: .present
+            )
         }
 
         rightBarButtonItems = [optionsBarButtonItem]
@@ -136,7 +139,10 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     private func presentPassphraseView() {
-        modalTransition.perform(.passphraseDisplay(address: account.address))
+        modalTransition.perform(
+            .passphraseDisplay(address: account.address),
+            by: .presentWithoutNavigationController
+        )
     }
 
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
@@ -164,7 +170,10 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             }
         )
 
-        modalTransition.perform(.bottomWarning(configurator: configurator))
+        modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
     }
 
     private func removeAccount() {

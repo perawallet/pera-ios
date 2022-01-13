@@ -92,7 +92,7 @@ extension BottomWarningView {
         verticalStackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.verticalInset)
-            $0.bottom.lessThanOrEqualToSuperview()
+            $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.bottomInset)
         }
 
         addPrimaryActionButton(theme)
