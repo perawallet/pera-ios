@@ -64,7 +64,11 @@ final class TabBarController: UIViewController {
 
     private(set) lazy var tabBar = TabBar()
 
-    private lazy var accountsViewController = AccountPortfolioViewController(configuration: configuration)
+    private lazy var accountsViewController =
+        AccountPortfolioViewController(
+            dataController: HomeAPIDataController(configuration.sharedDataController),
+            configuration: configuration
+        )
     private lazy var contactsViewController = ContactsViewController(configuration: configuration)
     private lazy var algoStatisticsViewController = AlgoStatisticsViewController(configuration: configuration)
     private lazy var settingsViewController = SettingsViewController(configuration: configuration)

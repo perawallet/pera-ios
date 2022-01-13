@@ -25,8 +25,7 @@ final class SharedAPIDataController:
     SharedDataController,
     WeakPublisher {
     var observations: [ObjectIdentifier: WeakObservation] = [:]
-    
-    @Atomic(identifier: "currency")
+
     private(set) var currency: CurrencyHandle = .idle
     private(set) var accountCollection: AccountCollection = []
     private(set) var assetDetailCollection: AssetDetailCollection = []
@@ -34,6 +33,10 @@ final class SharedAPIDataController:
     private lazy var blockProcessor = createBlockProcessor()
     private lazy var blockProcessorEventQueue =
         DispatchQueue(label: "com.algorand.queue.blockProcessor.events")
+    
+    @Atomic(identifier: "sharedAPIDataController.status")
+    private var status: Status = .idle
+    private var isFirstPollingRoundCompleted = false
     
     private let session: Session
     private let api: ALGAPI
@@ -45,13 +48,32 @@ final class SharedAPIDataController:
         self.session = session
         self.api = api
     }
-    
+}
+
+extension SharedAPIDataController {
     func startPolling() {
+        $status.modify { $0 = .running }
+
         blockProcessor.start()
     }
     
     func stopPolling() {
         blockProcessor.stop()
+
+        $status.modify { $0 = .suspended }
+        
+        publishNotificationForCurrentStatus()
+    }
+}
+
+extension SharedAPIDataController {
+    func add(
+        _ observer: SharedDataControllerObserver
+    ) {
+        publishNotificationForCurrentStatus()
+        
+        let id = ObjectIdentifier(observer as AnyObject)
+        observations[id] = WeakObservation(observer)
     }
 }
 
@@ -114,14 +136,15 @@ extension SharedAPIDataController {
     }
     
     private func blockProcessorWillStart() {
-        publish(.willStartPollingCycle)
+        $status.modify { $0 = .running }
+        publishNotificationForCurrentStatus()
     }
     
     private func blockProcessorWillFetchCurrency() {
         if let currencyValue = currency.value {
-            $currency.modify { $0 = .refreshing(currencyValue) }
+            currency = .refreshing(currencyValue)
         } else {
-            $currency.modify { $0 = .loading }
+            currency = .loading
         }
         
         publish(.didUpdateCurrency)
@@ -130,7 +153,7 @@ extension SharedAPIDataController {
     private func blockProcessorDidFetchCurrency(
         _ currencyValue: Currency
     ) {
-        $currency.modify { $0 = .ready(currency: currencyValue, lastUpdateDate: Date()) }
+        currency = .ready(currency: currencyValue, lastUpdateDate: Date())
         publish(.didUpdateCurrency)
     }
     
@@ -138,7 +161,7 @@ extension SharedAPIDataController {
         _ error: HIPNetworkError<NoAPIModel>
     ) {
         if !currency.isAvailable {
-            $currency.modify { $0 = .fault(error) }
+            currency = .fault(error)
         }
         
         publish(.didUpdateCurrency)
@@ -152,7 +175,7 @@ extension SharedAPIDataController {
 
         if let cachedAccount = accountCollection[address],
            cachedAccount.canRefresh() {
-            updatedAccount = AccountHandle(account: cachedAccount.account, status: .refreshing)
+            updatedAccount = AccountHandle(account: cachedAccount.value, status: .refreshing)
         } else {
             updatedAccount = AccountHandle(localAccount: localAccount, status: .loading)
         }
@@ -180,7 +203,7 @@ extension SharedAPIDataController {
         
         if let cachedAccount = accountCollection[address],
            cachedAccount.status == .refreshing {
-            updatedAccount = AccountHandle(account: cachedAccount.account, status: .expired(error))
+            updatedAccount = AccountHandle(account: cachedAccount.value, status: .expired(error))
         } else {
             updatedAccount = AccountHandle(localAccount: localAccount, status: .fault(error))
         }
@@ -248,13 +271,25 @@ extension SharedAPIDataController {
     }
     
     private func blockProcessorDidFinish() {
-        publish(.didEndPollingCycle)
+        isFirstPollingRoundCompleted = true
+        $status.modify { $0 = .completed }
+        
+        publishNotificationForCurrentStatus()
     }
 }
 
 extension SharedAPIDataController {
+    private func publishNotificationForCurrentStatus() {
+        switch status {
+        case .idle: publish(.didBecomeIdle)
+        case .running: publish(.didStartRunning(first: !isFirstPollingRoundCompleted))
+        case .suspended: publish(isFirstPollingRoundCompleted ? .didFinishRunning : .didBecomeIdle)
+        case .completed: publish(.didFinishRunning)
+        }
+    }
+    
     private func publish(
-        _ notification: SharedDataControllerNotification
+        _ event: SharedDataControllerEvent
     ) {
         DispatchQueue.main.async {
             [weak self] in
@@ -263,7 +298,7 @@ extension SharedAPIDataController {
             self.notifyObservers {
                 $0.sharedDataController(
                     self,
-                    didPublish: notification
+                    didPublish: event
                 )
             }
         }
@@ -279,5 +314,14 @@ extension SharedAPIDataController {
         ) {
             self.observer = observer
         }
+    }
+}
+
+extension SharedAPIDataController {
+    private enum Status: Equatable {
+        case idle
+        case running
+        case suspended
+        case completed /// Waiting for the next polling cycle to be running
     }
 }

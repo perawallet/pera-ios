@@ -13,11 +13,29 @@
 // limitations under the License.
 
 //
-//   AnnouncementBannerViewModel.swift
+//   HomeLoadingView.swift
 
+import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct AnnouncementBannerViewModel:
-    ViewModel,
-    Hashable {
+final class HomeLoadingView:
+    View,
+    ListReusable {
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        backgroundColor = .red
+    }
+    
+    func customizeAppearance(
+        _ styleSheet: NoStyleSheet
+    ) {}
+
+    func prepareLayout(
+        _ layoutSheet: NoLayoutSheet
+    ) {}
 }
+
+final class HomeLoadingCell: CollectionCell<HomeLoadingView> {}
