@@ -21,7 +21,11 @@ import MacaroonUtils
 import MagpieCore
 import MagpieHipo
 
-final class SharedAPIDataController: SharedDataController {
+final class SharedAPIDataController:
+    SharedDataController,
+    WeakPublisher {
+    var observations: [ObjectIdentifier: WeakObservation] = [:]
+    
     @Atomic(identifier: "currency")
     private(set) var currency: CurrencyHandle = .idle
     private(set) var accountCollection: AccountCollection = []
@@ -109,7 +113,9 @@ extension SharedAPIDataController {
         return processor
     }
     
-    private func blockProcessorWillStart() {}
+    private func blockProcessorWillStart() {
+        publish(.willStartPollingCycle)
+    }
     
     private func blockProcessorWillFetchCurrency() {
         if let currencyValue = currency.value {
@@ -117,12 +123,15 @@ extension SharedAPIDataController {
         } else {
             $currency.modify { $0 = .loading }
         }
+        
+        publish(.didUpdateCurrency)
     }
     
     private func blockProcessorDidFetchCurrency(
         _ currencyValue: Currency
     ) {
         $currency.modify { $0 = .ready(currency: currencyValue, lastUpdateDate: Date()) }
+        publish(.didUpdateCurrency)
     }
     
     private func blockProcessorDidFailToFetchCurrency(
@@ -131,27 +140,35 @@ extension SharedAPIDataController {
         if !currency.isAvailable {
             $currency.modify { $0 = .fault(error) }
         }
+        
+        publish(.didUpdateCurrency)
     }
     
     private func blockProcessorWillFetchAccount(
         _ localAccount: AccountInformation
     ) {
         let address = localAccount.address
+        let updatedAccount: AccountHandle
 
         if let cachedAccount = accountCollection[address],
            cachedAccount.canRefresh() {
-            accountCollection[address] =
-                AccountHandle(account: cachedAccount.account, status: .refreshing)
+            updatedAccount = AccountHandle(account: cachedAccount.account, status: .refreshing)
         } else {
-            accountCollection[address] =
-                AccountHandle(localAccount: localAccount, status: .loading)
+            updatedAccount = AccountHandle(localAccount: localAccount, status: .loading)
         }
+        
+        accountCollection[address] = updatedAccount
+
+        publish(.didUpdateAccountCollection(updatedAccount))
     }
     
     private func blockProcessorDidFetchAccount(
         _ account: Account
     ) {
-        accountCollection[account.address] = AccountHandle(account: account, status: .upToDate)
+        let updatedAccount = AccountHandle(account: account, status: .upToDate)
+        accountCollection[account.address] = updatedAccount
+
+        publish(.didUpdateAccountCollection(updatedAccount))
     }
     
     private func blockProcessorDidFailToFetchAccount(
@@ -159,41 +176,56 @@ extension SharedAPIDataController {
         _ error: HIPNetworkError<NoAPIModel>
     ) {
         let address = localAccount.address
+        let updatedAccount: AccountHandle
         
         if let cachedAccount = accountCollection[address],
            cachedAccount.status == .refreshing {
-            accountCollection[address] =
-                AccountHandle(account: cachedAccount.account, status: .expired(error))
+            updatedAccount = AccountHandle(account: cachedAccount.account, status: .expired(error))
         } else {
-            accountCollection[address] =
-                AccountHandle(localAccount: localAccount, status: .fault(error))
+            updatedAccount = AccountHandle(localAccount: localAccount, status: .fault(error))
         }
+        
+        accountCollection[address] = updatedAccount
+        
+        publish(.didUpdateAccountCollection(updatedAccount))
     }
     
     private func blockProcessorWillFetchAssetDetails(
         for account: Account
     ) {
         let address = account.address
+        let updatedAccount: AccountHandle
         
         if let cachedAccount = accountCollection[address],
            cachedAccount.canRefreshAssetDetails() {
-            accountCollection[address] =
-                AccountHandle(account: account, status: .refreshingAssetDetails)
+            updatedAccount = AccountHandle(account: account, status: .refreshingAssetDetails)
         } else {
-            accountCollection[address] =
-                AccountHandle(account: account, status: .loadingAssetDetails)
+            updatedAccount = AccountHandle(account: account, status: .loadingAssetDetails)
         }
+        
+        accountCollection[address] = updatedAccount
+        
+        publish(.didUpdateAccountCollection(updatedAccount))
     }
     
     private func blockProcessorDidFetchAssetDetails(
         _ assetDetails: [AssetID: AssetInformation],
         for account: Account
     ) {
-        accountCollection[account.address] = AccountHandle(account: account, status: .ready)
+        let updatedAccount = AccountHandle(account: account, status: .ready)
+        accountCollection[account.address] = updatedAccount
+        
+        publish(.didUpdateAccountCollection(updatedAccount))
+        
+        if assetDetails.isEmpty {
+            return
+        }
         
         assetDetails.forEach {
             assetDetailCollection[$0.key] = $0.value
         }
+        
+        publish(.didUpdateAssetDetailCollection)
     }
     
     private func blockProcessorDidFailToFetchAssetDetails(
@@ -201,16 +233,51 @@ extension SharedAPIDataController {
         for account: Account
     ) {
         let address = account.address
+        let updatedAccount: AccountHandle
         
         if let cachedAccount = accountCollection[address],
            cachedAccount.status == .refreshingAssetDetails {
-            accountCollection[address] =
-                AccountHandle(account: account, status: .expiredAssetDetails(error))
+            updatedAccount = AccountHandle(account: account, status: .expiredAssetDetails(error))
         } else {
-            accountCollection[address] =
-                AccountHandle(account: account, status: .faultAssetDetails(error))
+            updatedAccount = AccountHandle(account: account, status: .faultAssetDetails(error))
         }
+        
+        accountCollection[address] = updatedAccount
+        
+        publish(.didUpdateAccountCollection(updatedAccount))
     }
     
-    private func blockProcessorDidFinish() {}
+    private func blockProcessorDidFinish() {
+        publish(.didEndPollingCycle)
+    }
+}
+
+extension SharedAPIDataController {
+    private func publish(
+        _ notification: SharedDataControllerNotification
+    ) {
+        DispatchQueue.main.async {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.notifyObservers {
+                $0.sharedDataController(
+                    self,
+                    didPublish: notification
+                )
+            }
+        }
+    }
+}
+
+extension SharedAPIDataController {
+    final class WeakObservation: WeakObservable {
+        weak var observer: SharedDataControllerObserver?
+
+        init(
+            _ observer: SharedDataControllerObserver
+        ) {
+            self.observer = observer
+        }
+    }
 }
