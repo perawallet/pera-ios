@@ -243,13 +243,13 @@ extension AccountsViewController: AccountsDataSourceDelegate {
         
         if indexPath.item == 0 {
             open(
-                .algosDetail(draft: AlgosDetailDraft(account: account)),
+                .algosDetail(draft: AlgoTransactionListing(account: account)),
                 by: .push
             )
         } else {
             if let assetDetail = account.assetDetails[safe: indexPath.item - 1] {
                 open(
-                    .assetDetail(draft: AssetDetailDraft(assetDetail: assetDetail, account: account)),
+                    .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail)),
                     by: .push
                 )
             }
