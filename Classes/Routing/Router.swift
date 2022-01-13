@@ -178,6 +178,7 @@ class Router {
         let configuration = ViewControllerConfiguration(
             api: rootViewController.appConfiguration.api,
             session: rootViewController.appConfiguration.session,
+            sharedDataController: rootViewController.appConfiguration.sharedDataController,
             walletConnector: rootViewController.appConfiguration.walletConnector,
             loadingControlller: rootViewController.appConfiguration.loadingController,
             bannerController: rootViewController.appConfiguration.bannerController

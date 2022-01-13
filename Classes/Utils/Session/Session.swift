@@ -411,8 +411,9 @@ extension Session {
         self.clear(.keychain)
         self.isValid = false
         
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.invalidateAccountManagerFetchPolling()
+        asyncMain { [weak self] in
+            /// <todo> Add stop polling
+            // self.sharedDataController.stopPolling()
         }
     }
 }

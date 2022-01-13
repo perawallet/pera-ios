@@ -17,6 +17,7 @@
 
 import UIKit
 import MagpieCore
+import MacaroonUtils
 
 class AccountsViewController: BaseViewController {
     
@@ -108,11 +109,15 @@ class AccountsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchAccountsIfNeeded()
-        
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.sharedDataController.startPolling()
         }
-        
+
         pushNotificationController.requestAuthorization()
         pushNotificationController.sendDeviceDetails()
         

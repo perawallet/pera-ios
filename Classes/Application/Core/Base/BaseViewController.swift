@@ -211,6 +211,10 @@ extension BaseViewController {
     var bannerController: BannerController? {
         return configuration.bannerController
     }
+
+    var sharedDataController: SharedDataController {
+        return configuration.sharedDataController
+    }
 }
 
 extension BaseViewController: NavigationBarConfigurable {
