@@ -24,13 +24,13 @@ struct SingleSelectionListViewTheme: StyleSheet, LayoutSheet {
     
     let collectionViewMinimumLineSpacing: LayoutMetric
     let collectionViewMinimumInteritemSpacing: LayoutMetric
-    let topInset: LayoutMetric
+    let collectionViewEdgeInsets: LayoutPaddings
     
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         
         self.collectionViewMinimumLineSpacing = 0.0
         self.collectionViewMinimumInteritemSpacing = 0.0
-        self.topInset = 16
+        self.collectionViewEdgeInsets = (16, 0, 0, 0)
     }
 }

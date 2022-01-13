@@ -21,12 +21,14 @@ import MacaroonUIKit
 
 extension AccountListOptionsViewController {
     struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: Color
         let itemHeight: LayoutMetric
         let modalHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
+            self.backgroundColor = AppColors.Shared.System.background
             self.itemHeight = 60
-            self.modalHeight = 140
+            self.modalHeight = 130 
         }
     }
 }

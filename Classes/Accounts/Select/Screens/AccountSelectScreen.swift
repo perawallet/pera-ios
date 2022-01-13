@@ -149,18 +149,15 @@ final class AccountSelectScreen: BaseViewController {
                 switch accountResponse {
                 case let .failure(error, _):
                     if error.isHttpNotFound {
-                        self.loadingController?.stopLoading()
                         self.displaySimpleAlertWith(
                             title: "title-error".localized,
                             message: "send-algos-minimum-amount-error-new-account".localized
                         )
                     } else {
-                        self.loadingController?.stopLoading()
                         self.displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
                     }
                 case let .success(accountWrapper):
                     if !accountWrapper.account.isSameAccount(with: receiverAddress) {
-                        self.loadingController?.stopLoading()
                         UIApplication.shared.firebaseAnalytics?.record(
                             MismatchAccountErrorLog(requestedAddress: receiverAddress, receivedAddress: accountWrapper.account.address)
                         )
@@ -169,8 +166,6 @@ final class AccountSelectScreen: BaseViewController {
 
                     accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                     if accountWrapper.account.amount == 0 {
-                        self.loadingController?.stopLoading()
-
                         self.displaySimpleAlertWith(
                             title: "title-error".localized,
                             message: "send-algos-minimum-amount-error-new-account".localized
