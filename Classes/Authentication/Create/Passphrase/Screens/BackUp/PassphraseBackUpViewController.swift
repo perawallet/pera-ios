@@ -154,7 +154,8 @@ extension PassphraseBackUpViewController {
                         description: "screenshot-description".localized,
                         secondaryActionButtonTitle: "title-close".localized
                     )
-            )
+            ),
+            by: .presentWithoutNavigationController
         )
     }
 }

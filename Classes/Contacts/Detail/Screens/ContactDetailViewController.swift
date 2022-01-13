@@ -215,7 +215,8 @@ extension ContactDetailViewController: AssetPreviewActionCellDelegate {
             .accountList(
                 mode: .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.assetDetails[itemIndex.item - 1]),
                 delegate: self
-            )
+            ),
+            by: .presentWithoutNavigationController
         )
 
         if itemIndex.item != 0 {

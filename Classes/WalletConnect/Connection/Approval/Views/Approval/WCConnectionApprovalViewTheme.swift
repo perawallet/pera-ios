@@ -34,6 +34,7 @@ struct WCConnectionApprovalViewTheme: StyleSheet, LayoutSheet {
     let titleTopInset: LayoutMetric 
     let urlTopInset: LayoutMetric
     let imageTopInset: LayoutMetric
+    let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -59,5 +60,6 @@ struct WCConnectionApprovalViewTheme: StyleSheet, LayoutSheet {
         self.urlTopInset = 16
         self.dappImageSize = (72, 72)
         self.dappImageViewCorner = Corner(radius: dappImageSize.h / 2)
+        self.bottomInset = 16
     }
 }

@@ -27,10 +27,6 @@ final class AccountListOptionsViewController: BaseViewController {
 
     private lazy var listView = UITableView()
 
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-
     init(accountType: AccountType, configuration: ViewControllerConfiguration) {
         self.accountType = accountType
         super.init(configuration: configuration)

@@ -182,7 +182,10 @@ extension AccountPortfolioViewController {
                 return
             }
 
-            self.modalTransition.perform(.portfolioDescription)
+            self.modalTransition.perform(
+                .portfolioDescription,
+                by: .presentWithoutNavigationController
+            )
         }
 
         portfolioDataSource.handlers.didSelectSection = { [weak self] section in
@@ -193,7 +196,8 @@ extension AccountPortfolioViewController {
             let accountType: AccountType = section == .watchAccount ? .watch : .standard
 
             let controller = self.modalTransition.perform(
-                .accountListOptions(accountType: accountType)
+                .accountListOptions(accountType: accountType),
+                by: .presentWithoutNavigationController
             ) as? AccountListOptionsViewController
 
             controller?.handlers.didSelect = { [weak self] option, accountType in
@@ -304,7 +308,10 @@ extension AccountPortfolioViewController: WalletConnectorDelegate {
             return
         }
 
-        modalTransition.perform(.wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion))
+        modalTransition.perform(
+            .wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion),
+            by: .present
+        )
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
@@ -379,7 +386,10 @@ extension AccountPortfolioViewController: QRScannerViewControllerDelegate {
                     cancelTitle: "title-cancel".localized
                 )
 
-                modalTransition.perform(.assetActionConfirmation(assetAlertDraft: assetAlertDraft))
+                modalTransition.perform(
+                    .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
+                    by: .presentWithoutNavigationController
+                )
                 return
             }
 

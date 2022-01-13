@@ -269,7 +269,10 @@ final class AccountSelectScreen: BaseViewController {
             api?.sendAssetSupportRequest(draft)
         }
 
-        modalTransition.perform(.assetActionConfirmation(assetAlertDraft: assetAlertDraft))
+        modalTransition.perform(
+            .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
+            by: .presentWithoutNavigationController
+        )
     }
 
     private func validateAssetTransaction() {

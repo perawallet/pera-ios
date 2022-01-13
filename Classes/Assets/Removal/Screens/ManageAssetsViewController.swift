@@ -146,7 +146,10 @@ extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
             )
         }
 
-        let controller = assetActionConfirmationTransition.perform(.assetActionConfirmation(assetAlertDraft: assetAlertDraft)) as? AssetActionConfirmationViewController
+        let controller = assetActionConfirmationTransition.perform(
+            .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
+            by: .presentWithoutNavigationController
+        ) as? AssetActionConfirmationViewController
         controller?.delegate = self
     }
 }

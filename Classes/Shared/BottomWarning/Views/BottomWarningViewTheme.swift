@@ -32,6 +32,7 @@ struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
     let topInset: LayoutMetric
     let descriptionTopInset: LayoutMetric
     let titleTopInset: LayoutMetric
+    let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -59,5 +60,6 @@ struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
         self.topInset = 34
         self.titleTopInset = 28
         self.descriptionTopInset = 12
+        self.bottomInset = 16
     }
 }

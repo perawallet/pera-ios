@@ -20,10 +20,6 @@ import MacaroonBottomSheet
 import MacaroonUIKit
 
 final class BottomWarningViewController: BaseViewController {
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-
     private let viewConfigurator: BottomWarningViewConfigurator
 
     init(_ viewModel: BottomWarningViewConfigurator, configuration: ViewControllerConfiguration) {

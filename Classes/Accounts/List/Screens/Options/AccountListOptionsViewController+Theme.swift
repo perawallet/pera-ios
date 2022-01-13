@@ -28,7 +28,7 @@ extension AccountListOptionsViewController {
         init(_ family: LayoutFamily) {
             self.backgroundColor = AppColors.Shared.System.background
             self.itemHeight = 60
-            self.modalHeight = 130 
+            self.modalHeight = 136 + UIApplication.shared.safeAreaBottom
         }
     }
 }

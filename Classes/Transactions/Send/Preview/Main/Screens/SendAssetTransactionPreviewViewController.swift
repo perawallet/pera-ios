@@ -76,7 +76,8 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             .accountList(
                 mode: accountSelectionState == .sender ? .transactionSender(assetDetail: assetDetail) : .transactionReceiver(assetDetail: assetDetail),
                 delegate: self
-            )
+            ),
+            by: .presentWithoutNavigationController
         )
     }
     
@@ -227,7 +228,10 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             }
         )
 
-        modalTransition.perform(.bottomWarning(configurator: bottomWarningViewConfigurator))
+        modalTransition.perform(
+            .bottomWarning(configurator: bottomWarningViewConfigurator),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
@@ -307,7 +311,10 @@ extension SendAssetTransactionPreviewViewController {
             api?.sendAssetSupportRequest(draft)
         }
 
-        modalTransition.perform(.assetActionConfirmation(assetAlertDraft: assetAlertDraft))
+        modalTransition.perform(
+            .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
+            by: .presentWithoutNavigationController
+        )
     }
     
     private func validateTransaction() {

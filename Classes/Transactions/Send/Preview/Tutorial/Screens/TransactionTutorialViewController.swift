@@ -20,11 +20,6 @@ import MacaroonBottomSheet
 import MacaroonUIKit
 
 class TransactionTutorialViewController: BaseScrollViewController {
-
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-
     weak var delegate: TransactionTutorialViewControllerDelegate?
 
     private lazy var transactionTutorialView = TransactionTutorialView()

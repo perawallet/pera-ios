@@ -168,7 +168,9 @@ extension SettingsViewController {
                 open(url)
             }
         case .appReview:
-            bottomModalTransition.perform(.walletRating)
+            bottomModalTransition.perform(
+                .walletRating, by: .presentWithoutNavigationController
+            )
         case .termsAndServices:
             guard let url = AlgorandWeb.termsAndServices.link else {
                 return
@@ -230,9 +232,10 @@ extension SettingsViewController: SettingsDataSourceDelegate {
                 self.logout()
             }
         )
-
+        
         bottomModalTransition.perform(
-            .bottomWarning(configurator: bottomWarningViewConfigurator)
+            .bottomWarning(configurator: bottomWarningViewConfigurator),
+            by: .presentWithoutNavigationController
         )
     }
     

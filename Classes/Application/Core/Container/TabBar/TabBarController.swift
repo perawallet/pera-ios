@@ -152,7 +152,10 @@ extension TabBarController {
                 selectedItem = items[0]
                 if let presentingViewController = topMostController {
                     let bottomSheetTransition = BottomSheetTransition(presentingViewController: presentingViewController)
-                    let controller = bottomSheetTransition.perform(route) as? AssetActionConfirmationViewController
+                    let controller = bottomSheetTransition.perform(
+                        route,
+                        by: .presentWithoutNavigationController
+                    ) as? AssetActionConfirmationViewController
                     controller?.delegate = self
                 }
 

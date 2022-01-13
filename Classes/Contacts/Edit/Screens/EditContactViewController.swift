@@ -218,9 +218,10 @@ extension EditContactViewController: EditContactViewDelegate {
         )
 
         removeContactModalTransition.perform(
-            .bottomWarning(configurator: bottomWarningViewConfigurator)
+            .bottomWarning(configurator: bottomWarningViewConfigurator),
+            by: .presentWithoutNavigationController
         )
-     }
+    }
 
     func editContactViewDidTapQRCodeButton(_ editContactView: EditContactView) {
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
