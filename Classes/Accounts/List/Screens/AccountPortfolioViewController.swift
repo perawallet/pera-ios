@@ -108,6 +108,20 @@ final class AccountPortfolioViewController: BaseViewController {
         super.linkInteractors()
         listView.delegate = listLayout
         listView.dataSource = portfolioDataSource.dataSource
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didUpdateAuthenticatedUser(notification:)),
+            name: .AuthenticatedUserUpdate,
+            object: nil
+        )
+    }
+}
+
+extension AccountPortfolioViewController {
+    @objc
+    private func didUpdateAuthenticatedUser(notification: Notification) {
+        registerWCRequests()
     }
 }
 
