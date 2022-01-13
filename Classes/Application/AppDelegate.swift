@@ -41,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private(set) lazy var appConfiguration = AppConfiguration(
         api: api,
         session: session,
+        sharedDataController: sharedDataController,
         walletConnector: walletConnector,
         loadingController: loadingController,
         bannerController: bannerController
@@ -55,7 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private(set) lazy var accountManager: AccountManager = AccountManager(api: api)
     
     private var timer: PollingOperation?
-    private var shouldInvalidateAccountFetch = false
     
     private var shouldInvalidateUserSession: Bool = false
 
@@ -89,20 +89,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        sharedDataController.startPolling()
-        updateForegroundActions()
-    }
-    
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        sharedDataController.stopPolling()
-        decideToInvalidateSessionInBackground()
+        NotificationCenter.default.post(name: .ApplicationWillEnterForeground, object: self, userInfo: nil)
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
+        decideToInvalidateSessionInBackground()
         showBlurOnWindow()
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
+        updateForegroundActions()
         removeBlurOnWindow()
     }
 
@@ -154,7 +150,6 @@ extension AppDelegate {
     private func updateForegroundActions() {
         timer?.invalidate()
         updateUserInterfaceStyleIfNeeded()
-        NotificationCenter.default.post(name: .ApplicationWillEnterForeground, object: self, userInfo: nil)
         validateUserSessionIfNeeded()
     }
 
@@ -172,7 +167,7 @@ extension AppDelegate {
             }
             return
         } else {
-            validateAccountManagerFetchPolling()
+            sharedDataController.startPolling()
         }
     }
 
@@ -197,7 +192,7 @@ extension AppDelegate {
 
         timer?.start()
 
-        invalidateAccountManagerFetchPolling()
+        sharedDataController.stopPolling()
     }
     
     private func showBlurOnWindow() {
@@ -309,29 +304,6 @@ extension AppDelegate {
             } catch {
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
-            }
-        }
-    }
-}
-
-extension AppDelegate {
-    func validateAccountManagerFetchPolling() {
-        shouldInvalidateAccountFetch = false
-        fetchAccounts()
-    }
-
-    func invalidateAccountManagerFetchPolling() {
-        shouldInvalidateAccountFetch = true
-    }
-
-    private func fetchAccounts(round: UInt64? = nil) {
-        guard !shouldInvalidateAccountFetch else {
-            return
-        }
-
-        if session.authenticatedUser != nil {
-            accountManager.waitForNextRoundAndFetchAccounts(round: round) { nextRound in
-                self.fetchAccounts(round: nextRound)
             }
         }
     }

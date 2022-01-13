@@ -17,6 +17,7 @@
 
 import Foundation
 import UIKit
+import MacaroonUtils
 import MacaroonUIKit
 
 final class AccountPortfolioViewController: BaseViewController {
@@ -54,8 +55,12 @@ final class AccountPortfolioViewController: BaseViewController {
         super.viewDidLoad()
         fetchAccountsIfNeeded()
 
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.sharedDataController.startPolling()
         }
 
         portfolioDataSource.applySnapshot(animatingDifferences: false)

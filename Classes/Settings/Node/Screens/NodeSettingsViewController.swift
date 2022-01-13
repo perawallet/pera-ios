@@ -126,7 +126,7 @@ extension NodeSettingsViewController {
         }
         
         self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
-            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+            self.sharedDataController.startPolling()
             self.nodeSettingsView.reloadData()
         }
     }

@@ -17,6 +17,7 @@
 
 import UIKit
 import MagpieCore
+import MacaroonUtils
 
 // <todo> Remove this file after refactor since it is not used anymore.
 class AccountsViewController: BaseViewController {
@@ -109,11 +110,15 @@ class AccountsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchAccountsIfNeeded()
-        
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.sharedDataController.startPolling()
         }
-        
+
         pushNotificationController.requestAuthorization()
         pushNotificationController.sendDeviceDetails()
         
