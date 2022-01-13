@@ -53,6 +53,8 @@ class TransactionsViewController: BaseViewController {
         collectionView.register(PendingTransactionCell.self)
         collectionView.register(TransactionHistoryTitleCell.self)
         collectionView.register(TransactionHistoryFilterCell.self)
+        collectionView.register(AlgosDetailInfoViewCell.self)
+        collectionView.register(AssetDetailInfoViewCell.self)
         return collectionView
     }()
 
@@ -92,6 +94,7 @@ class TransactionsViewController: BaseViewController {
     
     override func setListeners() {
         setNotificationObservers()
+        setListLayoutListeners()
         setDataSourceListeners()
         transactionActionButton.addTarget(self, action: #selector(didTapTransactionActionButton), for: .touchUpInside)
     }
@@ -165,7 +168,7 @@ extension TransactionsViewController {
     }
 
     private func setDataSourceListeners() {
-        if draft.infoViewConfiguration?.cellType == AlgosDetailInfoViewCell.self {
+        if draft.type == .algos {
             transactionsDataSource.handlers.openRewardDetailHandler = { [weak self] in
                 guard let self = self else {
                     return
@@ -173,7 +176,7 @@ extension TransactionsViewController {
 
                 self.bottomSheetTransition.perform(.rewardDetail(account: self.account))
             }
-        } else if draft.infoViewConfiguration?.cellType == AssetDetailInfoViewCell.self {
+        } else if draft.type == .asset {
             transactionsDataSource.handlers.copyAssetIDHandler = { [weak self] assetID in
                 guard  UIPasteboard.general.string != assetID else { return }
                 self?.bannerController?.presentInfoBanner("asset-id-copied-title".localized)
@@ -300,20 +303,36 @@ extension TransactionsViewController {
                     account: account,
                     transaction: transaction,
                     transactionType: .sent,
-                    assetDetail: assetDetail
+                    assetDetail: getAssetDetailForTransactionType(transaction)
                 ),
                 by: .present
             )
-        } else {
-            open(
-                .transactionDetail(
-                    account: account,
-                    transaction: transaction,
-                    transactionType: .received,
-                    assetDetail: assetDetail
-                ),
-                by: .present
-            )
+
+            return
+        }
+
+        open(
+            .transactionDetail(
+                account: account,
+                transaction: transaction,
+                transactionType: .received,
+                assetDetail: getAssetDetailForTransactionType(transaction)
+            ),
+            by: .present
+        )
+    }
+
+    private func getAssetDetailForTransactionType(_ transaction: Transaction) -> AssetDetail? {
+        switch draft.type {
+        case .all:
+            if let assetId = transaction.assetTransfer?.assetId {
+                return account.assetDetails.first(matching: (\.id, assetId))
+            }
+
+            return assetDetail
+        case .algos,
+                .asset:
+            return assetDetail
         }
     }
 }

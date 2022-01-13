@@ -41,9 +41,9 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
             return .zero
         }
 
-        if let cellSize = draft.infoViewConfiguration?.infoViewSize,
+        if (draft.type == .algos || draft.type == .asset),
            indexPath.section == 0 {
-            return CGSize(cellSize)
+            return draft.type == .algos ? CGSize(theme.algosInfoSize) : CGSize(theme.assetInfoSize)
         } else if case .title = dataSource.itemIdentifier(for: indexPath) {
             return CGSize(theme.transactionHistoryTitleCellSize)
         } else if case .filter = dataSource.itemIdentifier(for: indexPath) {
@@ -59,8 +59,6 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let transactionDataSource = transactionDataSource,
-              let section = TransactionHistorySection(rawValue: indexPath.section),
-              section == .transactionHistory,
               case .transaction(let transaction) = transactionDataSource.dataSource.itemIdentifier(for: indexPath) else {
                   return
               }

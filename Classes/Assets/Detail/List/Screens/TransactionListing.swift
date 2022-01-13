@@ -22,22 +22,12 @@ protocol TransactionListing {
     var type: TransactionTypeFilter { get }
     var account: Account { get }
     var assetDetail: AssetDetail? { get }
-    var infoViewConfiguration: TransactionInfoConfiguration? { get }
 }
 
 extension TransactionListing {
     var assetDetail: AssetDetail? {
         nil
     }
-
-    var infoViewConfiguration: TransactionInfoConfiguration? {
-        nil
-    }
-}
-
-struct TransactionInfoConfiguration {
-    let infoViewSize: LayoutSize?
-    let cellType: UICollectionViewCell.Type
 }
 
 struct AlgoTransactionListing: TransactionListing {
@@ -46,29 +36,15 @@ struct AlgoTransactionListing: TransactionListing {
     }
 
     var account: Account
-
-    var infoViewConfiguration: TransactionInfoConfiguration? {
-        TransactionInfoConfiguration(
-            infoViewSize: (UIScreen.main.bounds.width, 255 + 32),
-            cellType: AlgosDetailInfoViewCell.self
-        )
-    }
 }
 
 struct AssetTransactionListing: TransactionListing {
     var type: TransactionTypeFilter {
-        return .asset(assetDetail.id)
+        return .asset
     }
 
     var account: Account
-    var assetDetail: AssetDetail
-
-    var infoViewConfiguration: TransactionInfoConfiguration? {
-        TransactionInfoConfiguration(
-            infoViewSize: (UIScreen.main.bounds.width, 251 + 32),
-            cellType: AssetDetailInfoViewCell.self
-        )
-    }
+    var assetDetail: AssetDetail?
 }
 
 struct AccountTransactionListing: TransactionListing {
@@ -81,6 +57,6 @@ struct AccountTransactionListing: TransactionListing {
 
 enum TransactionTypeFilter {
     case algos
-    case asset(AssetID)
+    case asset
     case all
 }

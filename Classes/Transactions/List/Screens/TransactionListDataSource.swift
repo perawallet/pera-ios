@@ -150,7 +150,7 @@ final class TransactionListDataSource: NSObject {
     ) {
         var newSnapshot = Snapshot()
 
-        if draft.infoViewConfiguration != nil {
+        if draft.type != .all {
             newSnapshot.appendSections([.info])
             newSnapshot.appendItems(
                 [.info],
@@ -358,16 +358,20 @@ extension TransactionListDataSource {
         _ transactions: [Transaction],
         isPaginated: Bool
     ) {
+        let filteredTransactions = transactions.filter { transaction in
+            return transaction.type == .assetTransfer || transaction.type == .payment
+        }
+
         if session.rewardDisplayPreference == .allowed {
             setTransactionsWithRewards(
-                transactions,
+                filteredTransactions,
                 isPaginated: isPaginated
             )
             return
         }
 
         setTransactionItems(
-            transactions,
+            filteredTransactions,
             isPaginated: isPaginated
         )
     }

@@ -38,10 +38,9 @@ final class TransactionHistoryContextViewModel: ViewModel {
         let account = transactionDependencies.account
         let contact = transactionDependencies.contact
 
-        if let assetDetail = transactionDependencies.assetDetail {
-            guard let assetTransaction = transaction.assetTransfer else {
-                return
-            }
+        if let assetTransaction = transaction.assetTransfer,
+           let assetId = transaction.assetTransfer?.assetId,
+           let assetDetail = account.assetDetails.first(matching: (\.id, assetId)) {
 
             if assetTransaction.receiverAddress == assetTransaction.senderAddress {
                 bindTitleAndSubtitle(with: contact, and: .send(assetTransaction.receiverAddress))
@@ -49,12 +48,11 @@ final class TransactionHistoryContextViewModel: ViewModel {
                     .normal(
                         amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                         isAlgos: false,
-                        fraction: assetDetail.fractionDecimals
+                        fraction: assetDetail.fractionDecimals,
+                        assetSymbol: assetDetail.unitName ?? assetDetail.assetName
                     )
                 )
-            } else if assetTransaction.receiverAddress == account.address &&
-                assetTransaction.amount == 0 &&
-                transaction.type == .assetTransfer {
+            } else if transaction.isAssetAdditionTransaction(for: account.address) {
                 title = "asset-creation-fee-title".localized
                 if let fee = transaction.fee {
                     transactionAmountViewModel = TransactionAmountViewModel(.negative(amount: fee.toAlgos))
@@ -65,7 +63,8 @@ final class TransactionHistoryContextViewModel: ViewModel {
                     .positive(
                         amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                         isAlgos: false,
-                        fraction: assetDetail.fractionDecimals
+                        fraction: assetDetail.fractionDecimals,
+                        assetSymbol: assetDetail.unitName ?? assetDetail.assetName
                     )
                 )
             } else {
@@ -74,16 +73,14 @@ final class TransactionHistoryContextViewModel: ViewModel {
                     .negative(
                         amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                         isAlgos: false,
-                        fraction: assetDetail.fractionDecimals
+                        fraction: assetDetail.fractionDecimals,
+                        assetSymbol: assetDetail.unitName ?? assetDetail.assetName
                     )
                 )
             }
         } else {
             guard let payment = transaction.payment else {
-                if let assetTransaction = transaction.assetTransfer,
-                    assetTransaction.receiverAddress == account.address
-                    && assetTransaction.amount == 0
-                    && transaction.type == .assetTransfer {
+                if transaction.isAssetAdditionTransaction(for: account.address) {
                     title = "asset-creation-fee-title".localized
                     if let fee = transaction.fee {
                         transactionAmountViewModel = TransactionAmountViewModel(.negative(amount: fee.toAlgos))
@@ -126,7 +123,8 @@ final class TransactionHistoryContextViewModel: ViewModel {
                     .normal(
                         amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                         isAlgos: false,
-                        fraction: assetDetail.fractionDecimals
+                        fraction: assetDetail.fractionDecimals,
+                        assetSymbol: assetDetail.unitName ?? assetDetail.assetName
                     )
                 )
             } else if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
@@ -140,7 +138,8 @@ final class TransactionHistoryContextViewModel: ViewModel {
                     .positive(
                         amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                         isAlgos: false,
-                        fraction: assetDetail.fractionDecimals
+                        fraction: assetDetail.fractionDecimals,
+                        assetSymbol: assetDetail.unitName ?? assetDetail.assetName
                     )
                 )
             } else {
@@ -149,7 +148,8 @@ final class TransactionHistoryContextViewModel: ViewModel {
                     .negative(
                         amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
                         isAlgos: false,
-                        fraction: assetDetail.fractionDecimals
+                        fraction: assetDetail.fractionDecimals,
+                        assetSymbol: assetDetail.unitName ?? assetDetail.assetName
                     )
                 )
             }
