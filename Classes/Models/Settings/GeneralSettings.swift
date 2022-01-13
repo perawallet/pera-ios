@@ -24,15 +24,12 @@ enum GeneralSettings {
 }
 
 enum AccountSettings: Settings {
-    case backup
     case security
     case notifications
     case walletConnect
     
     var image: UIImage? {
         switch self {
-        case .backup:
-            return img("icon-settings-backup")
         case .security:
             return img("icon-settings-security")
         case .notifications:
@@ -44,8 +41,6 @@ enum AccountSettings: Settings {
     
     var name: String {
         switch self {
-        case .backup:
-            return "settings-backup-title".localized
         case .security:
             return "settings-security-title".localized
         case .notifications:

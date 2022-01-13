@@ -83,6 +83,7 @@ indirect enum Screen {
     case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, ledgerAddress: String)
     case ledgerAccountSelection(flow: AccountSetupFlow, accounts: [Account])
     case walletRating
+    case securitySettings
     case developerSettings
     case currencySelection
     case appearanceSelection

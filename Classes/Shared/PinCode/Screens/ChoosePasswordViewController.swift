@@ -55,19 +55,6 @@ final class ChoosePasswordViewController: BaseViewController {
         displayPinLimitScreenIfNeeded()
     }
     
-    override func configureNavigationBarAppearance() {
-        switch mode {
-        case .confirm,
-             .resetPassword:
-            let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-                self.dismissScreen()
-            }
-            leftBarButtonItems = [closeBarButtonItem]
-        default:
-            break
-        }
-    }
-    
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -113,12 +100,8 @@ extension ChoosePasswordViewController {
     
     private func setTitle() {
         switch mode {
-        case .setup:
-            title = "choose-password-title".localized
         case .verify:
             title = "password-verify-title".localized
-        case .resetPassword, .resetVerify:
-            title = "password-change-title".localized
         case let .confirm(viewTitle):
             title = viewTitle
         default:
@@ -234,6 +217,8 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             verifyPassword(with: value, and: previousPassword)
         case .login:
             login(with: value)
+        case .deletePassword:
+            deletePassword(with: value)
         case .resetPassword:
             openResetVerify(with: value)
         case let .resetVerify(previousPassword):
@@ -316,6 +301,15 @@ extension ChoosePasswordViewController {
             }
         }
     }
+    
+    private func deletePassword(with value: NumpadKey) {
+        viewModel.configureSelection(in: choosePasswordView, for: value) { password in
+            if session?.isPasswordMatching(with: password) ?? false {
+                session?.deletePassword()
+                dismissScreen()
+            }
+        }
+    }
 }
 
 extension ChoosePasswordViewController: PinLimitViewControllerDelegate {
@@ -330,6 +324,7 @@ extension ChoosePasswordViewController {
         case setup
         case verify(String)
         case login
+        case deletePassword
         case resetPassword
         case resetVerify(String)
         case confirm(String)

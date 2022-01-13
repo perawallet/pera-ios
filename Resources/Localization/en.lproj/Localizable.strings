@@ -309,6 +309,8 @@
 "settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
 "settings-logout-title" = "Delete All Data";
 "settings-logout-detail" = "Are you sure you want to delete all the data?";
+"settings-logout-button-delete" = "Yes, delete all data";
+"settings-logout-button-cancel" = "Keep it";
 "settings-developer" = "Developer Settings";
 "settings-currency" = "Currency";
 "settings-developer-dispenser" = "Algorand Dispenser";
@@ -321,6 +323,13 @@
 "settings-support-title" = "Send Feedback";
 "settings-security-title" = "Security";
 "settings-wallet-connect-title" = "WalletConnect Sessions";
+
+// MARK: Security Settings
+"security-settings-title" = "Security";
+"security-settings-section" = "Security Preferences";
+"security-settings-pinCode-activation" = "Enable PIN Code";
+"security-settings-pinCode-change" = "Set / Change PIN Code";
+"security-settings-localAuthentication" = "Enable Face ID/Touch ID";
 
 // MARK: Node Settings
 "node-settings-title" = "Node Settings";

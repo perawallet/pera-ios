@@ -134,12 +134,12 @@ extension SettingsViewController {
     
     func didSelectItemFromAccountSettings(_ setting: AccountSettings) {
         switch setting {
+        case .security:
+            open(.securitySettings, by: .push)
         case .notifications:
             open(.notificationFilter(flow: .settings), by: .push)
         case .walletConnect:
             open(.walletConnectSessionList, by: .push)
-        default:
-            break
         }
     }
     
@@ -221,8 +221,8 @@ extension SettingsViewController: SettingsDataSourceDelegate {
             image: "icon-settings-logout".uiImage,
             title: "settings-logout-title".localized,
             description: "settings-logout-detail".localized,
-            primaryActionButtonTitle: "node-settings-action-delete-title".localized,
-            secondaryActionButtonTitle: "title-cancel".localized,
+            primaryActionButtonTitle: "settings-logout-button-delete".localized,
+            secondaryActionButtonTitle: "settings-logout-button-cancel".localized,
             primaryAction: { [weak self] in
                 guard let self = self else {
                     return

@@ -25,6 +25,10 @@ final class SingleGrayTitleHeaderViewModel: ViewModel {
         setTitle(name)
     }
     
+    init(_ name: String) {
+        setTitle(name)
+    }
+    
     private func setTitle(_ name: GeneralSettings) {
         switch name {
         case .account:
@@ -34,5 +38,9 @@ final class SingleGrayTitleHeaderViewModel: ViewModel {
         case .support:
             self.title = "settings-sections-support".localized
         }
+    }
+    
+    private func setTitle(_ name: String) {
+        self.title = name.localized
     }
 }
