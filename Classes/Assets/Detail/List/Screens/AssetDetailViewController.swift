@@ -32,13 +32,7 @@ final class AssetDetailViewController: TransactionsViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-
         addTitleView()
-    }
-
-    override func linkInteractors() {
-        super.linkInteractors()
-//        transactionActionsView.delegate = self
     }
 }
 

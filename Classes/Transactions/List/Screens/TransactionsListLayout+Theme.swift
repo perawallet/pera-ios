@@ -13,16 +13,21 @@
 // limitations under the License.
 
 //
-//   TransactionListViewTheme.swift
+//   TransactionsListLayout+Theme.swift
 
 import MacaroonUIKit
+import UIKit
 
-struct TransactionListViewTheme: LayoutSheet, StyleSheet {
-    let backgroundColor: Color
-    let cellSpacing: LayoutMetric
+extension TransactionsListLayout {
+    struct Theme: LayoutSheet, StyleSheet {
+        let transactionHistoryTitleCellSize: LayoutSize
+        let transactionHistoryCellSize: LayoutSize
+        let transactionHistoryFilterCellSize: LayoutSize
 
-    init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
-        self.cellSpacing = 0
+        init(_ family: LayoutFamily) {
+            self.transactionHistoryTitleCellSize = (UIScreen.main.bounds.width, 49)
+            self.transactionHistoryCellSize = (UIScreen.main.bounds.width, 72)
+            self.transactionHistoryFilterCellSize = (UIScreen.main.bounds.width, 40)
+        }
     }
 }

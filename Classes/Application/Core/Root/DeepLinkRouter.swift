@@ -178,9 +178,9 @@ extension DeepLinkRouter {
         rootViewController?.tabBarContainer?.selectedItem = rootViewController?.tabBarContainer?.items[0]
         let screen: Screen
         if let assetDetail = assetDetail {
-            screen = .algosDetail(draft: AssetDetailDraft(assetDetail: assetDetail, account: account))
+            screen = .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail))
         } else {
-            screen = .assetDetail(draft: AlgosDetailDraft(account: account))
+            screen = .algosDetail(draft: AlgoTransactionListing(account: account))
         }
         rootViewController?.tabBarViewController.route = screen
         rootViewController?.tabBarViewController.routeForDeeplink()

@@ -201,9 +201,9 @@ extension AccountAssetListViewController {
     ) {
         let screen: Screen
         if let assetDetail = assetDetail {
-            screen = .assetDetail(draft: AssetDetailDraft(assetDetail: assetDetail, account: account))
+            screen = .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail))
         } else {
-            screen = .algosDetail(draft: AlgosDetailDraft(account: account))
+            screen = .algosDetail(draft: AlgoTransactionListing(account: account))
         }
 
         open(screen, by: .push)
@@ -264,6 +264,7 @@ extension AccountAssetListViewController {
 
 extension AccountAssetListViewController: TransactionFloatingActionButtonViewControllerDelegate {
     func transactionFloatingActionButtonViewControllerDidSend(_ viewController: TransactionFloatingActionButtonViewController) {
+        log(SendAssetDetailEvent(address: account.address))
         open(.assetSelection(account: account), by: .present)
     }
 
