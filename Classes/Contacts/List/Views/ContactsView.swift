@@ -19,7 +19,7 @@ import UIKit
 import MacaroonUIKit
 
 final class ContactsView: View {
-    private lazy var theme = ContactsViewTheme()
+    private(set) lazy var theme = ContactsViewTheme()
     private(set) lazy var searchInputView = SearchInputView()
 
     private(set) lazy var contactsCollectionView: UICollectionView = {
