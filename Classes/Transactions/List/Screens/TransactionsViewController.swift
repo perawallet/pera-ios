@@ -48,6 +48,7 @@ class TransactionsViewController: BaseViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.register(TransactionHistoryCell.self)
         collectionView.register(PendingTransactionCell.self)
@@ -249,7 +250,11 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
             draft = SendTransactionDraft(from: account, transactionMode: .algo)
         }
 
-        open(.sendTransaction(draft: draft), by: .present)
+        let controller = open(.sendTransaction(draft: draft), by: .present) as? SendTransactionScreen
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            controller?.closeScreen(by: .dismiss, animated: true)
+        }
+        controller?.leftBarButtonItems = [closeBarButtonItem]
     }
 
     func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController) {

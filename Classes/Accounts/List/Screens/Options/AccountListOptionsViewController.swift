@@ -54,13 +54,15 @@ extension AccountListOptionsViewController {
         listView.snp.makeConstraints {
             $0.setPaddings()
         }
-
+    
         listView.register(SingleLineIconTitleCell.self, forCellReuseIdentifier: SingleLineIconTitleCell.reuseIdentifier)
         listView.rowHeight = UITableView.automaticDimension
         listView.estimatedRowHeight = theme.itemHeight
         listView.separatorStyle = .none
         listView.separatorInset = .zero
+        listView.bounces = false
         listView.showsVerticalScrollIndicator = false
+        listView.backgroundColor = theme.backgroundColor.uiColor
     }
 }
 

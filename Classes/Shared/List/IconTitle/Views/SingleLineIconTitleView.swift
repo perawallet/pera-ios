@@ -25,6 +25,8 @@ final class SingleLineIconTitleView:
     private lazy var titleLabel = UILabel()
 
     func customize(_ theme: SingleLineIconTitleViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
         addIconView(theme)
         addTitleLabel(theme)
     }
@@ -80,8 +82,10 @@ final class SingleLineIconTitleCell:
             style: style,
             reuseIdentifier: reuseIdentifier
         )
-
+        
         contextView.customize(SingleLineIconTitleViewTheme())
+
+        backgroundColor = .clear
         selectionStyle = .none
     }
 }

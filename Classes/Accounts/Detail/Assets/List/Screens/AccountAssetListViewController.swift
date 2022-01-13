@@ -302,7 +302,11 @@ extension AccountAssetListViewController {
 extension AccountAssetListViewController: TransactionFloatingActionButtonViewControllerDelegate {
     func transactionFloatingActionButtonViewControllerDidSend(_ viewController: TransactionFloatingActionButtonViewController) {
         log(SendAssetDetailEvent(address: account.address))
-        open(.assetSelection(account: account), by: .present)
+        let controller = open(.assetSelection(account: account), by: .present) as? SelectAssetViewController
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            controller?.closeScreen(by: .dismiss, animated: true)
+        }
+        controller?.leftBarButtonItems = [closeBarButtonItem]
     }
 
     func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController) {
