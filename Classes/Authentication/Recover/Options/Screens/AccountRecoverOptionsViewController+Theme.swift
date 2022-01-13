@@ -29,7 +29,7 @@ extension AccountRecoverOptionsViewController {
             self.optionsViewTheme = OptionsViewTheme()
             self.backgroundColor = AppColors.Shared.System.background
             self.cellSize = (UIScreen.main.bounds.width, 60)
-            self.modalHeight = 254
+            self.modalHeight = 196 + UIApplication.shared.safeAreaBottom
         }
     }
 }

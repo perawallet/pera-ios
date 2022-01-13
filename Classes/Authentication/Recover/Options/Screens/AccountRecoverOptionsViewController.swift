@@ -41,8 +41,7 @@ final class AccountRecoverOptionsViewController: BaseViewController {
         view.addSubview(optionsView)
 
         optionsView.snp.makeConstraints {
-            $0.leading.trailing.top.equalToSuperview()
-            $0.bottom.safeEqualToBottom(of: self)
+            $0.edges.equalToSuperview()
         }
     }
 }
