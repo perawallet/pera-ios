@@ -26,4 +26,31 @@ protocol SharedDataController: AnyObject {
     
     func startPolling()
     func stopPolling()
+    
+    func add(
+        _ observer: SharedDataControllerObserver
+    )
+    func remove(
+        _ observer: SharedDataControllerObserver
+    )
+}
+
+/// <todo>
+/// Can this approach move to 'Macaroon' library???
+///
+/// <note>
+/// Observers will be notified on the main thread.
+protocol SharedDataControllerObserver: AnyObject {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish notification: SharedDataControllerNotification
+    )
+}
+
+enum SharedDataControllerNotification {
+    case willStartPollingCycle
+    case didUpdateAccountCollection(AccountHandle)
+    case didUpdateAssetDetailCollection
+    case didUpdateCurrency
+    case didEndPollingCycle
 }
