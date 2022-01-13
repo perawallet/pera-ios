@@ -48,6 +48,7 @@ class TransactionsViewController: BaseViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.register(TransactionHistoryCell.self)
         collectionView.register(PendingTransactionCell.self)
