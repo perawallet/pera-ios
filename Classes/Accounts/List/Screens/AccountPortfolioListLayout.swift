@@ -22,10 +22,16 @@ final class AccountPortfolioListLayout: NSObject {
     private lazy var theme = Theme()
     lazy var handlers = Handlers()
 
+    private let dataSource: HomeDataSource
     private let session: Session
 
-    init(session: Session) {
+    init(
+        dataSource: HomeDataSource,
+        session: Session
+    ) {
+        self.dataSource = dataSource
         self.session = session
+
         super.init()
     }
 }
@@ -36,39 +42,44 @@ extension AccountPortfolioListLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        guard let section = AccountPortfolioSection(rawValue: indexPath.section) else {
-            return .zero
+        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
+            return CGSize((collectionView.bounds.width, 0))
         }
-
-        switch section {
+        
+        switch itemIdentifier {
+        case .empty:
+            let width = collectionView.bounds.width
+            let height =
+                collectionView.bounds.height -
+                collectionView.adjustedContentInset.bottom
+            return CGSize((width, height))
         case .portfolio:
             return CGSize(theme.portfolioItemSize)
         case .announcement:
-            return .zero
-        case .standardAccount,
-                .watchAccount:
+            return CGSize((collectionView.bounds.width, 0))
+        case .account:
             return CGSize(theme.accountItemSize)
         }
     }
 
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        guard let section = AccountPortfolioSection(rawValue: section) else {
-            return .zero
-        }
-
-        switch section {
-        case .portfolio,
-                .announcement:
-            return .zero
-        case .standardAccount,
-                .watchAccount:
-            return CGSize(theme.listHeaderSize)
-        }
-    }
+//    func collectionView(
+//        _ collectionView: UICollectionView,
+//        layout collectionViewLayout: UICollectionViewLayout,
+//        referenceSizeForHeaderInSection section: Int
+//    ) -> CGSize {
+//        guard let section = AccountPortfolioSection(rawValue: section) else {
+//            return .zero
+//        }
+//
+//        switch section {
+//        case .portfolio,
+//                .announcement:
+//            return .zero
+//        case .standardAccount,
+//                .watchAccount:
+//            return CGSize(theme.listHeaderSize)
+//        }
+//    }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let section = AccountPortfolioSection(rawValue: indexPath.section),

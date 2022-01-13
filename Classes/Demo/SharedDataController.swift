@@ -43,14 +43,15 @@ protocol SharedDataController: AnyObject {
 protocol SharedDataControllerObserver: AnyObject {
     func sharedDataController(
         _ sharedDataController: SharedDataController,
-        didPublish notification: SharedDataControllerNotification
+        didPublish event: SharedDataControllerEvent
     )
 }
 
-enum SharedDataControllerNotification {
-    case willStartPollingCycle
+enum SharedDataControllerEvent {
+    case didStartRunning(first: Bool)
     case didUpdateAccountCollection(AccountHandle)
     case didUpdateAssetDetailCollection
     case didUpdateCurrency
-    case didEndPollingCycle
+    case didFinishRunning
+    case didBecomeIdle
 }

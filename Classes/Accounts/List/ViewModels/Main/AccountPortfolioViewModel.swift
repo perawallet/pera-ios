@@ -18,7 +18,9 @@
 import Foundation
 import MacaroonUIKit
 
-final class AccountPortfolioViewModel: ViewModel {
+struct AccountPortfolioViewModel:
+    ViewModel,
+    Hashable {
     private(set) var portfolioValueViewModel: PortfolioValueViewModel?
     private(set) var algoHoldingsValue: EditText?
     private(set) var assetHoldingsValue: EditText?
@@ -31,10 +33,16 @@ final class AccountPortfolioViewModel: ViewModel {
         bindAlgoHoldingsValue(accounts, currency)
         bindAssetHoldingsValue(accounts, currency)
     }
+    
+    init(
+        _ accountCollection: AccountCollection
+    ) {
+        self.init(accountCollection.map(\.value), currency: nil)
+    }
 }
 
 extension AccountPortfolioViewModel: PortfolioCalculating {
-    private func bindPortfolioValueViewModel(
+    private mutating func bindPortfolioValueViewModel(
         _ accounts: [Account],
         _ currency: Currency?
     ) {
@@ -46,7 +54,7 @@ extension AccountPortfolioViewModel: PortfolioCalculating {
         portfolioValueViewModel = PortfolioValueViewModel(.all(value: .unknown), currency)
     }
 
-    private func bindAlgoHoldingsValue(
+    private mutating func bindAlgoHoldingsValue(
         _ accounts: [Account],
         _ currency: Currency?
     ) {
@@ -59,7 +67,7 @@ extension AccountPortfolioViewModel: PortfolioCalculating {
         algoHoldingsValue = .string("N/A")
     }
 
-    private func bindAssetHoldingsValue(
+    private mutating func bindAssetHoldingsValue(
         _ accounts: [Account],
         _ currency: Currency?
     ) {

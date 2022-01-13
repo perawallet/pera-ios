@@ -46,7 +46,7 @@ struct AccountCollection:
     init(
         arrayLiteral elements: Element...
     ) {
-        let keysAndValues = elements.map { ($0.account.address, $0) }
+        let keysAndValues = elements.map { ($0.value.address, $0) }
         let aTable = Table(keysAndValues, uniquingKeysWith: { $1 })
         $table.modify { $0 = aTable }
     }
@@ -67,7 +67,7 @@ extension AccountCollection {
     func account(
         for key: Key
     ) -> Account? {
-        return self[key]?.account
+        return self[key]?.value
     }
 }
 

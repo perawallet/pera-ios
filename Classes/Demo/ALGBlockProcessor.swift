@@ -88,12 +88,12 @@ extension ALGBlockProcessor {
     ) {
         currentBlockRequest = newBlockRequest
         
-        send(blockEvent: .willStart)
+        publish(blockEvent: .willStart)
         
         var currencyFetchOperation: Operation?
 
         if newBlockRequest.cachedCurrency.isExpired {
-            send(blockEvent: .willFetchCurrency)
+            publish(blockEvent: .willFetchCurrency)
 
             let aCurrencyFetchOperation =
                 CurrencyFetchOperation(
@@ -105,9 +105,9 @@ extension ALGBlockProcessor {
                 
                 switch result {
                 case .success(let output):
-                    self.send(blockEvent: .didFetchCurrency(output.currency))
+                    self.publish(blockEvent: .didFetchCurrency(output.currency))
                 case .failure(let error):
-                    self.send(blockEvent: .didFailToFetchCurrency(error))
+                    self.publish(blockEvent: .didFailToFetchCurrency(error))
                 }
             }
 
@@ -117,7 +117,7 @@ extension ALGBlockProcessor {
         }
 
         newBlockRequest.localAccounts.forEach { localAccount in
-            send(blockEvent: .willFetchAccount(localAccount))
+            publish(blockEvent: .willFetchAccount(localAccount))
 
             let accountFetchOperation =
                 AccountDetailFetchOperation(input: .init(localAccount: localAccount), api: api)
@@ -133,15 +133,15 @@ extension ALGBlockProcessor {
                 case .success(let output):
                     let account = output.account
                     
-                    self.send(blockEvent: .didFetchAccount(account))
+                    self.publish(blockEvent: .didFetchAccount(account))
                     
                     input.account = account
                     input.cachedAccounts = self.currentBlockRequest?.cachedAccounts ?? []
                     input.cachedAssetDetails = self.currentBlockRequest?.cachedAssetDetails ?? []
                     
-                    self.send(blockEvent: .willFetchAssetDetails(account))
+                    self.publish(blockEvent: .willFetchAssetDetails(account))
                 case .failure(let error):
-                    self.send(
+                    self.publish(
                         blockEvent: .didFailToFetchAccount(
                             localAccount: accountFetchOperation.input.localAccount,
                             error: error
@@ -159,7 +159,7 @@ extension ALGBlockProcessor {
                 
                 switch assetDetailGroupFetchOperation.result {
                 case .success(let output):
-                    self.send(
+                    self.publish(
                         blockEvent: .didFetchAssetDetails(
                             account: output.account,
                             assetDetails: output.newAssetDetails
@@ -167,7 +167,7 @@ extension ALGBlockProcessor {
                     )
                 case .failure(let error):
                     if let account = assetDetailGroupFetchOperation.input.account {
-                        self.send(
+                        self.publish(
                             blockEvent: .didFailToFetchAssetDetails(
                                 account: account,
                                 error: error
@@ -202,13 +202,13 @@ extension ALGBlockProcessor {
         
         queue.addBarrier { [weak self] in
             guard let self = self else { return }
-            self.send(blockEvent: .didFinish)
+            self.publish(blockEvent: .didFinish)
         }
     }
 }
 
 extension ALGBlockProcessor {
-    private func send(
+    private func publish(
         blockEvent event: BlockEvent
     ) {
         blockEventQueue?.async { [weak self] in

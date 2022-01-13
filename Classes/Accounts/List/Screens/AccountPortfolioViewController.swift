@@ -21,9 +21,6 @@ import MacaroonUtils
 import MacaroonUIKit
 
 final class AccountPortfolioViewController: BaseViewController {
-    private lazy var listLayout = AccountPortfolioListLayout(session: session!)
-    private lazy var portfolioDataSource = AccountPortfolioDataSource(listView: listView, session: session!)
-    private lazy var accountManager = AccountManager(api: api!)
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var pushNotificationController = PushNotificationController(api: api!, bannerController: bannerController)
     
@@ -40,12 +37,21 @@ final class AccountPortfolioViewController: BaseViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = .clear
-        collectionView.register(AccountPortfolioCell.self)
-        collectionView.register(AccountPreviewCell.self)
-        collectionView.register(AnnouncementBannerCell.self)
-        collectionView.register(header: SingleLineTitleActionHeaderView.self)
         return collectionView
     }()
+    private lazy var dataSource = HomeDataSource(listView)
+    private lazy var listLayout =
+        AccountPortfolioListLayout(dataSource: dataSource, session: session!)
+    
+    private let dataController: HomeDataController
+    
+    init(
+        dataController: HomeDataController,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.dataController = dataController
+        super.init(configuration: configuration)
+    }
 
     override func configureNavigationBarAppearance() {
         addBarButtons()
@@ -53,17 +59,17 @@ final class AccountPortfolioViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchAccountsIfNeeded()
-
-        asyncMain { [weak self] in
-            guard let self = self else {
-                return
+        
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            switch event {
+            case .didUpdate(let snapshot):
+                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             }
-
-            self.sharedDataController.startPolling()
         }
-
-        portfolioDataSource.applySnapshot(animatingDifferences: false)
+        dataController.load()
 
         pushNotificationController.requestAuthorization()
         pushNotificationController.sendDeviceDetails()
@@ -76,22 +82,6 @@ final class AccountPortfolioViewController: BaseViewController {
         super.viewDidAppear(animated)
         reconnectToOldWCSessions()
         connectToWCSessionRequestFromDeeplink()
-    }
-
-    private func fetchAccountsIfNeeded() {
-        guard let session = session,
-              let user = session.authenticatedUser,
-              !session.hasPassword(),
-              !user.accounts.isEmpty else {
-            return
-        }
-
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-        accountManager.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) { [weak self] in
-                self?.portfolioDataSource.applySnapshot()
-            }
-        }
     }
 
     override func customizeTabBarAppearence() {
@@ -112,7 +102,6 @@ final class AccountPortfolioViewController: BaseViewController {
     override func linkInteractors() {
         super.linkInteractors()
         listView.delegate = listLayout
-        listView.dataSource = portfolioDataSource.dataSource
 
         NotificationCenter.default.addObserver(
             self,
@@ -182,45 +171,45 @@ extension AccountPortfolioViewController {
     }
 
     private func setSectionSelectionListeners() {
-        portfolioDataSource.handlers.didTapPortfolioTitle = { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.modalTransition.perform(
-                .portfolioDescription,
-                by: .presentWithoutNavigationController
-            )
-        }
-
-        portfolioDataSource.handlers.didSelectSection = { [weak self] section in
-            guard let self = self else {
-                return
-            }
-
-            let accountType: AccountType = section == .watchAccount ? .watch : .standard
-
-            let controller = self.modalTransition.perform(
-                .accountListOptions(accountType: accountType),
-                by: .presentWithoutNavigationController
-            ) as? AccountListOptionsViewController
-
-            controller?.handlers.didSelect = { [weak self] option, accountType in
-                guard let self = self else {
-                    return
-                }
-
-                switch option {
-                case .add:
-                    self.open(
-                        .welcome(flow: .addNewAccount(mode: .none)),
-                        by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-                    )
-                case .arrange:
-                    self.open(.orderAccountList(accountType: accountType), by: .present)
-                }
-            }
-        }
+//        portfolioDataSource.handlers.didTapPortfolioTitle = { [weak self] in
+//            guard let self = self else {
+//                return
+//            }
+//
+//            self.modalTransition.perform(
+//                .portfolioDescription,
+//                by: .presentWithoutNavigationController
+//            )
+//        }
+//
+//        portfolioDataSource.handlers.didSelectSection = { [weak self] section in
+//            guard let self = self else {
+//                return
+//            }
+//
+//            let accountType: AccountType = section == .watchAccount ? .watch : .standard
+//
+//            let controller = self.modalTransition.perform(
+//                .accountListOptions(accountType: accountType),
+//                by: .presentWithoutNavigationController
+//            ) as? AccountListOptionsViewController
+//
+//            controller?.handlers.didSelect = { [weak self] option, accountType in
+//                guard let self = self else {
+//                    return
+//                }
+//
+//                switch option {
+//                case .add:
+//                    self.open(
+//                        .welcome(flow: .addNewAccount(mode: .none)),
+//                        by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+//                    )
+//                case .arrange:
+//                    self.open(.orderAccountList(accountType: accountType), by: .present)
+//                }
+//            }
+//        }
     }
 }
 

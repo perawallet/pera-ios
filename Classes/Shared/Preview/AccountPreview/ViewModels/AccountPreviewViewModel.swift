@@ -28,7 +28,9 @@ struct AccountPreviewModel {
     var hasError: Bool
 }
 
-final class AccountPreviewViewModel: PairedViewModel {
+struct AccountPreviewViewModel:
+    PairedViewModel,
+    Hashable {
     private(set) var accountImage: UIImage?
     private(set) var accountName: String?
     private(set) var assetsAndNFTs: String?
@@ -45,7 +47,7 @@ final class AccountPreviewViewModel: PairedViewModel {
         bindHasError(model.hasError)
     }
 
-    convenience init(from account: Account) {
+    init(from account: Account) {
         let assetsAndNFTs: String
 
         if let count = account.assets?.count, count > 1 {
@@ -67,7 +69,7 @@ final class AccountPreviewViewModel: PairedViewModel {
         )
     }
 
-    convenience init(viewModel: AccountNameViewModel) {
+    init(viewModel: AccountNameViewModel) {
         self.init(
             AccountPreviewModel(
                 accountType: viewModel.accountType,
@@ -78,7 +80,7 @@ final class AccountPreviewViewModel: PairedViewModel {
         )
     }
 
-    convenience init(viewModel: AuthAccountNameViewModel) {
+    init(viewModel: AuthAccountNameViewModel) {
         self.init(
             AccountPreviewModel(
                 accountType: viewModel.accountType,
@@ -88,30 +90,36 @@ final class AccountPreviewViewModel: PairedViewModel {
             )
         )
     }
+    
+    init(
+        account: AccountHandle
+    ) {
+        self.init(from: account.value)
+    }
 }
 
 extension AccountPreviewViewModel {
-    private func bindAccountImage(_ accountImage: UIImage?) {
+    private mutating func bindAccountImage(_ accountImage: UIImage?) {
         self.accountImage = accountImage
     }
 
-    private func bindAccountName(_ name: String?) {
+    private mutating func bindAccountName(_ name: String?) {
         self.accountName = name ?? "title-unknown".localized
     }
 
-    private func bindAssetsAndNFTs(_ assets: String?) {
+    private mutating func bindAssetsAndNFTs(_ assets: String?) {
         self.assetsAndNFTs = assets
     }
 
-    private func bindAssetValue(_ value: String?) {
+    private mutating func bindAssetValue(_ value: String?) {
         self.assetValue = value
     }
 
-    private func bindSecondaryAssetValue(_ value: String?) {
+    private mutating func bindSecondaryAssetValue(_ value: String?) {
         self.secondaryAssetValue = value
     }
 
-    private func bindHasError(_ hasError: Bool) {
+    private mutating func bindHasError(_ hasError: Bool) {
         self.hasError = hasError
     }
 }

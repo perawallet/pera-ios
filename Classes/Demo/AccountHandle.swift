@@ -38,7 +38,7 @@ struct AccountHandle {
         return status == .ready
     }
     
-    let account: Account
+    let value: Account
     let status: Status
     
     init(
@@ -55,7 +55,7 @@ struct AccountHandle {
         account: Account,
         status: Status
     ) {
-        self.account = account
+        self.value = account
         self.status = status
     }
 }

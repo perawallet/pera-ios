@@ -68,11 +68,6 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
                     let account = response.account
                     account.removeDeletedAssets()
                     account.update(from: self.input.localAccount)
-                    
-                    if self.finishIfCancelled() {
-                        return
-                    }
-
                     let output = Output(account: account)
                     self.result = .success(output)
                 case .failure(let apiError, let apiErrorDetail):
