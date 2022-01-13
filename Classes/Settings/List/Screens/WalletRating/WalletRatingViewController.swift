@@ -20,10 +20,6 @@ import MacaroonUIKit
 import MacaroonBottomSheet
 
 final class WalletRatingViewController: BaseViewController {
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-    
     private lazy var theme = Theme()
     private lazy var walletRatingView = WalletRatingView()
     
