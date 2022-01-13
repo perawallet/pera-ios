@@ -20,8 +20,8 @@ import UIKit
 class ContactsViewController: BaseViewController {
     weak var delegate: ContactsViewControllerDelegate?
 
-    override var shouldShowNavigationBar: Bool {
-        return false
+    override var prefersLargeTitle: Bool {
+        return true
     }
     
     override var name: AnalyticsScreenName? {
@@ -47,6 +47,17 @@ class ContactsViewController: BaseViewController {
     private var contacts = [Contact]()
     private var searchResults = [Contact]()
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        /// <note> This solves the UIRefreshControl stuck after switching tabs.
+        if !refreshControl.isRefreshing {
+            refreshControl.beginRefreshing()
+            refreshControl.endRefreshing()
+            contactsView.contactsCollectionView.contentInset = UIEdgeInsets(contactsView.theme.contentInset)
+        }
+    }
+
     override func customizeTabBarAppearence() {
         isTabBarHidden = false
     }
@@ -71,14 +82,18 @@ class ContactsViewController: BaseViewController {
     
     override func linkInteractors() {
         emptyStateView.delegate = self
-        contactsView.delegate = self
         contactsView.searchInputView.delegate = self
         contactsView.contactsCollectionView.delegate = self
         contactsView.contactsCollectionView.dataSource = self
     }
+
+    override func configureNavigationBarAppearance() {
+        addBarButtons()
+    }
     
     override func configureAppearance() {
         super.configureAppearance()
+        title = "contacts-title".localized
         contactsView.contactsCollectionView.refreshControl = refreshControl
         searchEmptyStateView.setTitle("contact-search-empty-title".localized)
         searchEmptyStateView.setDetail("contact-search-empty-detail".localized)
@@ -127,6 +142,21 @@ extension ContactsViewController {
                 break
             }
         }
+    }
+}
+
+extension ContactsViewController {
+    private func addBarButtons() {
+        let addBarButtonItem = ALGBarButtonItem(kind: .add) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            let controller = self.open(.addContact(), by: .push) as? AddContactViewController
+            controller?.delegate = self
+        }
+
+        rightBarButtonItems = [addBarButtonItem]
     }
 }
 
@@ -326,19 +356,6 @@ extension ContactsViewController: ContactsEmptyViewDelegate {
     func contactsEmptyViewDidTapAddContactButton(_ contactsEmptyView: ContactsEmptyView) {
         let controller = self.open(.addContact(), by: .push) as? AddContactViewController
         controller?.delegate = self
-    }
-}
-
-extension ContactsViewController: ContactsViewDelegate {
-    func contactsViewDidTapAddButton(_ contactsView: ContactsView) {
-        let controller = open(.addContact(), by: .push) as? AddContactViewController
-        controller?.delegate = self
-    }
-}
-
-extension ContactsViewController {
-    func removeHeader() {
-        contactsView.removeHeader()
     }
 }
 

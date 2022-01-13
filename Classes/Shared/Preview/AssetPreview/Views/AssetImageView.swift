@@ -19,27 +19,30 @@ import MacaroonUIKit
 import UIKit
 
 final class AssetImageView: View {
-    private lazy var theme = AssetImageViewTheme()
+    lazy var theme: AssetImageViewTheme = AssetImageViewLargerTheme()
     private lazy var assetImageView = UIImageView()
     private lazy var assetNameLabel = UILabel()
 
     private var assetName: String? {
         didSet {
+            guard assetName != nil else {
+                return
+            }
+
             addLabel(theme)
-            addBorder(theme)
+            draw(corner: theme.corner)
+            draw(border: theme.border)
         }
     }
     
     private var image: UIImage? {
         didSet {
-            addImage()
+            guard image != nil else {
+                return
+            }
+
+            addImage(theme)
         }
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        draw(corner: Corner(radius: frame.height / 2))
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -48,7 +51,7 @@ final class AssetImageView: View {
 }
 
 extension AssetImageView {
-    func addImage() {
+    func addImage(_ theme: AssetImageViewTheme) {
         assetImageView.image = image
 
         addSubview(assetImageView)
@@ -66,20 +69,17 @@ extension AssetImageView {
             $0.edges.equalToSuperview()
         }
     }
-
-    func addBorder(_ theme: AssetImageViewTheme) {
-        draw(border: theme.border)
-    }
 }
 
 extension AssetImageView {
     func prepareForReuse() {
-        image = nil
+        assetNameLabel.text = nil
+        assetImageView.image = nil
     }
 }
 
 extension AssetImageView: ViewModelBindable {
-    func bindData(_ viewModel: AssetPreviewViewModel?) {
+    func bindData(_ viewModel: AssetImageViewModel?) {
         if let image = viewModel?.image {
             self.image = image
             return

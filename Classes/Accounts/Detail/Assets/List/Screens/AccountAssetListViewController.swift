@@ -21,25 +21,31 @@ import MacaroonUIKit
 
 final class AccountAssetListViewController: BaseViewController {
     private lazy var theme = Theme()
+    private lazy var listLayout = AccountAssetListLayout(account: account)
 
     typealias DataSource = UICollectionViewDiffableDataSource<AccountAssetsSection, AccountAssetsItem>
     typealias Snapshot = NSDiffableDataSourceSnapshot<AccountAssetsSection, AccountAssetsItem>
-
-    private lazy var listLayout = AccountAssetListLayout(account: account)
 
     private lazy var listView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = theme.listBackgroundColor.uiColor
         collectionView.register(AssetPortfolioItemCell.self)
         collectionView.register(SearchBarItemCell.self)
         collectionView.register(AssetPreviewCell.self)
+        collectionView.register(PendingAssetPreviewCell.self)
         collectionView.register(header: SingleLineTitleActionHeaderView.self)
         collectionView.register(footer: AddAssetItemFooterView.self)
         return collectionView
     }()
+
+    private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
+
+    private var addedAssetDetails = [AssetDetail]()
+    private var removedAssetDetails = [AssetDetail]()
 
     private let account: Account
 
@@ -58,7 +64,7 @@ final class AccountAssetListViewController: BaseViewController {
                 switch identifier {
                 case .portfolio:
                     let cell = collectionView.dequeue(AssetPortfolioItemCell.self, at: indexPath)
-                    cell.bindData(PortfolioValueViewModel(.singleAccount(value: self.account.amount.toAlgos)))
+                    cell.bindData(PortfolioValueViewModel(.singleAccount(value: .value(self.account.amount.toAlgos))))
                     return cell
                 case .search:
                     return collectionView.dequeue(SearchBarItemCell.self, at: indexPath)
@@ -77,6 +83,20 @@ final class AccountAssetListViewController: BaseViewController {
                             AssetPreviewViewModel(
                                 AssetPreviewModelAdapter.adaptAssetSelection(
                                     (assetDetail, asset)
+                                )
+                            )
+                        )
+                    }
+
+                    return cell
+                case let .pendingAsset(assetDetail):
+                    let cell = collectionView.dequeue(PendingAssetPreviewCell.self, at: indexPath)
+
+                    if let assetDetail = assetDetail {
+                        cell.bindData(
+                            PendingAssetPreviewViewModel(
+                                AssetPreviewModelAdapter.adaptPendingAsset(
+                                    assetDetail
                                 )
                             )
                         )
@@ -121,6 +141,7 @@ final class AccountAssetListViewController: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
         addListView()
+        addTransactionActionButton(theme)
         view.layoutIfNeeded()
     }
 
@@ -133,6 +154,7 @@ final class AccountAssetListViewController: BaseViewController {
     override func setListeners() {
         super.setListeners()
         setListActions()
+        setTransactionActionButtonAction()
     }
 }
 
@@ -141,6 +163,15 @@ extension AccountAssetListViewController {
         view.addSubview(listView)
         listView.snp.makeConstraints {
             $0.edges.equalToSuperview()
+        }
+    }
+
+    private func addTransactionActionButton(_ theme: Theme) {
+        transactionActionButton.image = "fab-swap".uiImage
+
+        view.addSubview(transactionActionButton)
+        transactionActionButton.snp.makeConstraints {
+            $0.setPaddings(theme.transactionActionButtonPaddings)
         }
     }
 }
@@ -186,13 +217,14 @@ extension AccountAssetListViewController {
     private func openAssetDetail(
         _ assetDetail: AssetDetail?
     ) {
-        open(
-            .assetDetail(
-                account: account,
-                assetDetail: assetDetail
-            ),
-            by: .push
-        )
+        let screen: Screen
+        if let assetDetail = assetDetail {
+            screen = .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail))
+        } else {
+            screen = .algosDetail(draft: AlgoTransactionListing(account: account))
+        }
+
+        open(screen, by: .push)
     }
 
     private func applySnapshot(
@@ -215,6 +247,17 @@ extension AccountAssetListViewController {
             assetSectionItems.append(.asset(asset: $0))
         }
 
+        clearAddedAssetDetailsIfNeeded()
+        clearRemovedAssetDetailsIfNeeded()
+
+        addedAssetDetails.forEach {
+            assetSectionItems.append(.pendingAsset(asset: $0))
+        }
+
+        removedAssetDetails.forEach {
+            assetSectionItems.append(.pendingAsset(asset: $0))
+        }
+
         snapshot.appendItems(
             assetSectionItems,
             toSection: .assets
@@ -225,12 +268,70 @@ extension AccountAssetListViewController {
             animatingDifferences: animatingDifferences
         )
     }
+
+    private func clearAddedAssetDetailsIfNeeded() {
+        addedAssetDetails = addedAssetDetails.filter { !account.assetDetails.contains($0) }
+    }
+
+    private func clearRemovedAssetDetailsIfNeeded() {
+        removedAssetDetails = removedAssetDetails.filter { account.assetDetails.contains($0) }
+    }
+}
+
+extension AccountAssetListViewController {
+    private func setTransactionActionButtonAction() {
+        transactionActionButton.addTarget(self, action: #selector(didTapTransactionActionButton), for: .touchUpInside)
+    }
+
+    @objc
+    private func didTapTransactionActionButton() {
+        let viewController = open(
+            .transactionFloatingActionButton,
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            ),
+            animated: false
+        ) as? TransactionFloatingActionButtonViewController
+
+        viewController?.delegate = self
+    }
+}
+
+extension AccountAssetListViewController: TransactionFloatingActionButtonViewControllerDelegate {
+    func transactionFloatingActionButtonViewControllerDidSend(_ viewController: TransactionFloatingActionButtonViewController) {
+        log(SendAssetDetailEvent(address: account.address))
+        let controller = open(.assetSelection(account: account), by: .present) as? SelectAssetViewController
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            controller?.closeScreen(by: .dismiss, animated: true)
+        }
+        controller?.leftBarButtonItems = [closeBarButtonItem]
+    }
+
+    func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController) {
+        log(ReceiveAssetDetailEvent(address: account.address))
+        let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
+        open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
+    }
 }
 
 extension AccountAssetListViewController: AddAssetItemFooterViewDelegate {
     func addAssetItemFooterViewDidTapAddAsset(_ addAssetItemFooterView: AddAssetItemFooterView) {
         let controller = open(.addAsset(account: account), by: .push)
         (controller as? AssetAdditionViewController)?.delegate = self
+    }
+}
+
+extension AccountAssetListViewController {
+    func addAsset(_ assetDetail: AssetDetail) {
+        addedAssetDetails.append(assetDetail)
+        applySnapshot()
+    }
+
+    func removeAsset(_ assetDetail: AssetDetail) {
+        removedAssetDetails.append(assetDetail)
+        applySnapshot()
     }
 }
 
@@ -242,9 +343,9 @@ extension AccountAssetListViewController: AssetAdditionViewControllerDelegate {
     ) {
         let assetDetail = AssetDetail(assetInformation: assetSearchResult)
         assetDetail.isRecentlyAdded = true
+        addAsset(assetDetail)
     }
 }
-
 
 enum AccountAssetsSection: Int, Hashable {
     case portfolio
@@ -255,4 +356,5 @@ enum AccountAssetsItem: Hashable {
     case portfolio
     case search
     case asset(asset: AssetDetail?)
+    case pendingAsset(asset: AssetDetail?)
 }

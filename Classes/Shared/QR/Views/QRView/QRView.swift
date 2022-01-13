@@ -51,7 +51,6 @@ final class QRView: View {
 extension QRView {
     private func addImageView(_ theme: QRViewTheme) {
         addSubview(imageView)
-        
         imageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }

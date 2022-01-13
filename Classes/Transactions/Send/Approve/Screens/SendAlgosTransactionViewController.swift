@@ -17,8 +17,7 @@
 
 import UIKit
 
-class SendAlgosTransactionViewController: SendTransactionViewController, TestNetTitleDisplayable {
-    
+final class SendAlgosTransactionViewController: SendTransactionViewController, TestNetTitleDisplayable {
     private var algosTransactionSendDraft: AlgosTransactionSendDraft
     
     init(

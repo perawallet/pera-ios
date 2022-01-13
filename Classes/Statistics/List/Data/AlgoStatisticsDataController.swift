@@ -30,7 +30,9 @@ final class AlgoStatisticsDataController {
     init(api: ALGAPI?) {
         self.api = api
     }
+}
 
+extension AlgoStatisticsDataController {
     func getChartData(for interval: AlgosUSDValueInterval) {
         fetchData(for: interval)
         fetchDataForLastFiveMinutes()
@@ -41,7 +43,7 @@ final class AlgoStatisticsDataController {
             }
 
             self.addLastFiveMinutesToValuesIfNeeded()
-            self.returnValues()
+            self.delegate?.algoStatisticsDataController(self, didFetch: self.values)
         }
     }
 
@@ -92,9 +94,22 @@ final class AlgoStatisticsDataController {
             }
         }
     }
+}
 
-    private func returnValues() {
-        delegate?.algoStatisticsDataController(self, didFetch: values)
+extension AlgoStatisticsDataController {
+    func getCurrency(_ completion: @escaping (Currency?) -> Void) {
+        guard let api = api else {
+            fatalError("API must be set")
+        }
+
+        api.getCurrencyValue(api.session.preferredCurrency) { response in
+            switch response {
+            case let .success(result):
+                completion(result)
+            case .failure:
+                completion(nil)
+            }
+        }
     }
 }
 

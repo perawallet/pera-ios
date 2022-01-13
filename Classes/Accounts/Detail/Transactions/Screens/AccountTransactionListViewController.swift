@@ -19,24 +19,15 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class AccountTransactionListViewController: BaseViewController {
+final class AccountTransactionListViewController: TransactionsViewController {
+    private lazy var theme = Theme()
 
-    private let account: Account
-
-    init(account: Account, configuration: ViewControllerConfiguration) {
-        self.account = account
-        super.init(configuration: configuration)
+    init(draft: AccountTransactionListing, configuration: ViewControllerConfiguration) {
+        super.init(draft: draft, configuration: configuration)
     }
-}
 
-enum TransactionHistorySection: Int, Hashable {
-    case assetInformation
-    case transactions
-}
-
-enum TransactionHistoryItem: Hashable {
-    case transaction(transaction: Transaction)
-    case pending(pendingTransaction: PendingTransaction)
-    case reward(reward: Reward)
-    case date
+    override func prepareLayout() {
+        super.prepareLayout()
+        listView.contentInset = UIEdgeInsets(theme.contentEdgePaddings)
+    }
 }

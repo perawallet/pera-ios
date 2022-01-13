@@ -28,7 +28,6 @@ final class AlgoStatisticsDateSelectionView: View {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
-        collectionView.contentInset = UIEdgeInsets(theme.contentInset)
         collectionView.register(AlgoStatisticsDateOptionCell.self)
         return collectionView
     }()
@@ -40,10 +39,13 @@ final class AlgoStatisticsDateSelectionView: View {
     }
 
     func customize(_ theme: StatisticsDateSelectionViewTheme) {
-        customizeBaseAppearance(backgroundColor: Colors.Background.secondary)
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addSubview(dateOptionsCollectionView)
-        dateOptionsCollectionView.pinToSuperview()
+        dateOptionsCollectionView.snp.makeConstraints {
+            $0.top.equalToSuperview().inset(theme.topInset)
+            $0.leading.bottom.trailing.equalToSuperview()
+        }
     }
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}

@@ -21,7 +21,7 @@ import MacaroonUIKit
 final class AccountNameSwitchView: View {
     weak var delegate: AccountNameSwitchViewDelegate?
 
-    private lazy var accountNameView = AccountNameView()
+    private lazy var accountNameView = ImageWithTitleView()
     private lazy var toggleView = Toggle()
 
     override init(frame: CGRect) {
@@ -74,7 +74,7 @@ extension AccountNameSwitchView {
 extension AccountNameSwitchView: ViewModelBindable {
     func bindData(_ viewModel: AccountNameSwitchViewModel?) {
         accountNameView.bindData(viewModel?.accountNameViewModel)
-        toggleView.setOn(viewModel?.isSelected ?? true, animated: true)
+        toggleView.setOn(viewModel?.isSelected ?? false, animated: true)
     }
 }
 

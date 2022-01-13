@@ -70,7 +70,6 @@ class AccountsViewController: BaseViewController {
                 accountsDataSource.accounts.removeAll()
                 accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
                 accountsDataSource.isContentStateAvailableForBanner = false
-                accountsView.setHeaderButtonsHidden(true)
                 accountsView.accountsCollectionView.reloadData()
             }
         }
@@ -243,10 +242,16 @@ extension AccountsViewController: AccountsDataSourceDelegate {
         }
         
         if indexPath.item == 0 {
-            open(.assetDetail(account: account, assetDetail: nil), by: .push)
+            open(
+                .algosDetail(draft: AlgoTransactionListing(account: account)),
+                by: .push
+            )
         } else {
             if let assetDetail = account.assetDetails[safe: indexPath.item - 1] {
-                open(.assetDetail(account: account, assetDetail: assetDetail), by: .push)
+                open(
+                    .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail)),
+                    by: .push
+                )
             }
         }
     }
@@ -448,7 +453,6 @@ extension AccountsViewController {
         if !isConnectedToInternet {
             accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
             accountsDataSource.isContentStateAvailableForBanner = false
-            accountsView.setHeaderButtonsHidden(true)
             return
         }
 
@@ -461,22 +465,20 @@ extension AccountsViewController {
 
         accountsView.accountsCollectionView.contentState = .none
         accountsDataSource.isContentStateAvailableForBanner = true
-        accountsView.setHeaderButtonsHidden(false)
     }
 
     func setEmptyAccountsState() {
         emptyStateView.bind(EmptyStateViewModel(emptyState: .accounts))
         accountsView.accountsCollectionView.contentState = .empty(emptyStateView)
         accountsDataSource.isContentStateAvailableForBanner = false
-        accountsView.setHeaderButtonsHidden(true)
     }
     
     private func displayTestNetBannerIfNeeded() {
-        guard let isTestNet = api?.isTestNet else {
-            return
-        }
-        
-        accountsView.setTestNetLabelHidden(!isTestNet)
+//        guard let isTestNet = api?.isTestNet else {
+//            return
+//        }
+        // <todo> Display test net label
+//        accountsView.setTestNetLabelHidden(!isTestNet)
     }
 }
 

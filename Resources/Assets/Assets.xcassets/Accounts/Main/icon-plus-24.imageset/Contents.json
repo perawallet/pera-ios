@@ -3,6 +3,16 @@
     {
       "filename" : "icon-plus-24.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-plus-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

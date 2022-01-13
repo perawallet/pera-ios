@@ -64,7 +64,7 @@ final class TabBarController: UIViewController {
 
     private(set) lazy var tabBar = TabBar()
 
-    private lazy var accountsViewController = AccountsViewController(configuration: configuration)
+    private lazy var accountsViewController = AccountPortfolioViewController(configuration: configuration)
     private lazy var contactsViewController = ContactsViewController(configuration: configuration)
     private lazy var algoStatisticsViewController = AlgoStatisticsViewController(configuration: configuration)
     private lazy var settingsViewController = SettingsViewController(configuration: configuration)
@@ -347,7 +347,7 @@ enum TransactionAction {
 
 extension TabBarController {
     private func dismissTabBarModal() {
-        animateCenterButtonAsSelected(false)
+        didTapCenterButton(false)
         let tabBarModalViewController = selectedContent?.presentedViewController as? TabBarModalViewController
         tabBarModalViewController?.dismissWithAnimation {
             self.tabBar.toggleTabBarItems(to: true)
@@ -355,7 +355,7 @@ extension TabBarController {
     }
 
     private func presentTabBarModal() {
-        animateCenterButtonAsSelected(true)
+        didTapCenterButton(true)
         let tabBarModalViewController = selectedContent?.open(
             .tabBarModal,
             by: .customPresentWithoutNavigationController(
@@ -368,6 +368,12 @@ extension TabBarController {
         tabBarModalViewController?.delegate = self
 
         tabBar.toggleTabBarItems(to: false)
+    }
+
+    private func didTapCenterButton(_ isSelected: Bool) {
+        let centerBarButton = tabBar.barButtons[2].contentView
+        let icon = isSelected ? items[2].barButtonItem.selectedIcon : items[2].barButtonItem.icon
+        centerBarButton.setImage(icon, for: .normal)
     }
 }
 

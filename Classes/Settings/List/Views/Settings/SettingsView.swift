@@ -20,35 +20,20 @@ import MacaroonUIKit
 
 final class SettingsView: View {
     private lazy var theme = SettingsViewTheme()
-
-    private lazy var titleView = UILabel()
+    
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
-        flowLayout.minimumLineSpacing = 0.0
-        flowLayout.minimumInteritemSpacing = 0.0
+        flowLayout.minimumLineSpacing = theme.cellSpacing
         flowLayout.sectionInset = UIEdgeInsets(theme.sectionInset)
-        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.bounces = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
-        collectionView.contentInset = .zero
-        collectionView.keyboardDismissMode = .onDrag
-        
-        collectionView.register(SettingsDetailCell.self, forCellWithReuseIdentifier: SettingsDetailCell.reusableIdentifier)
-        collectionView.register(SettingsToggleCell.self, forCellWithReuseIdentifier: SettingsToggleCell.reusableIdentifier)
-        collectionView.register(
-            SettingsFooterSupplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
-            withReuseIdentifier: SettingsFooterSupplementaryView.reusableIdentifier
-        )
-        collectionView.register(
-            SingleGrayTitleHeaderSuplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: SingleGrayTitleHeaderSuplementaryView.reusableIdentifier
-        )
+        collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
+        collectionView.register(SettingsDetailCell.self)
+        collectionView.register(SettingsToggleCell.self)
+        collectionView.register(footer: SettingsFooterSupplementaryView.self)
+        collectionView.register(header: SingleGrayTitleHeaderSuplementaryView.self)
         return collectionView
     }()
     
@@ -61,7 +46,6 @@ final class SettingsView: View {
     func customize(_ theme: SettingsViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
-        addTitleView()
         addCollectionView()
     }
 
@@ -71,23 +55,10 @@ final class SettingsView: View {
 }
 
 extension SettingsView {
-    private func addTitleView() {
-        titleView.customizeAppearance(theme.title)
-
-        addSubview(titleView)
-        titleView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.titleTopInset)
-            $0.leading.equalToSuperview().inset(theme.horizontalInset)
-            $0.trailing.equalToSuperview()
-        }
-    }
-    
     private func addCollectionView() {
         addSubview(collectionView)
-        
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(titleView.snp.bottom).offset(theme.collectionTopInset)
-            $0.leading.bottom.trailing.equalToSuperview()
+            $0.edges.equalToSuperview()
         }
     }
 }

@@ -20,15 +20,16 @@ import MacaroonUIKit
 import UIKit
 
 struct SingleLineIconTitleViewTheme: StyleSheet, LayoutSheet {
+    let backgroundColor: Color
     let icon: ImageStyle
     let title: TextStyle
 
-    let iconLeadingInset: LayoutMetric
     let iconSize: LayoutSize
     let verticalInset: LayoutMetric
     let titleHorizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
+        self.backgroundColor = AppColors.Shared.System.background
         self.icon = [
             .contentMode(.scaleAspectFit)
         ]
@@ -36,12 +37,11 @@ struct SingleLineIconTitleViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Shared.System.background.uiColor)
+            .textColor(AppColors.Components.Text.main.uiColor)
         ]
 
-        self.iconLeadingInset = 24
         self.iconSize = LayoutSize(w: 24, h: 24)
-        self.verticalInset = 18.0
+        self.verticalInset = 18
         self.titleHorizontalPadding = 20
     }
 }

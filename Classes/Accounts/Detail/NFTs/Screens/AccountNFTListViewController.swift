@@ -46,7 +46,8 @@ extension AccountNFTListViewController {
         view.addSubview(listStateView)
 
         listStateView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.center.equalToSuperview()
+            $0.leading.trailing.equalToSuperview()
         }
     }
 

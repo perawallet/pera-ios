@@ -61,7 +61,7 @@ struct QRScannerOverlayViewTheme: StyleSheet, LayoutSheet {
         self.horizontalInset = 24
         self.overlayViewSize = 260
         self.overlayCornerRadius = 12
-        self.overlayImageViewSize = 264
+        self.overlayImageViewSize = 266
         self.connectedAppsButtonContentEdgeInsets = (12, 20, 12, 16)
         self.connectedAppsButtonTitleImageSpacing = 8
         self.connectedAppsButtonCorner = Corner(radius: 4)

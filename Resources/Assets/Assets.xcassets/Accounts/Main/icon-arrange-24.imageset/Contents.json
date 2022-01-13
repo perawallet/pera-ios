@@ -3,6 +3,16 @@
     {
       "filename" : "icon-arrange-24.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "arrange-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

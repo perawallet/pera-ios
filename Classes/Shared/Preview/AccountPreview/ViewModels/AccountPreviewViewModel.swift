@@ -20,26 +20,29 @@ import UIKit
 
 struct AccountPreviewModel {
     let accountType: AccountType
-    let accountImageType: AccountImageType
+    let accountImage: UIImage?
     let accountName: String?
     var assetsAndNFTs: String?
     var assetValue: String?
     var secondaryAssetValue: String?
+    var hasError: Bool
 }
 
 final class AccountPreviewViewModel: PairedViewModel {
-    var accountImageTypeImage: UIImage?
-    var accountName: String?
-    var assetsAndNFTs: String?
-    var assetValue: String?
-    var secondaryAssetValue: String?
+    private(set) var accountImage: UIImage?
+    private(set) var accountName: String?
+    private(set) var assetsAndNFTs: String?
+    private(set) var assetValue: String?
+    private(set) var secondaryAssetValue: String?
+    private(set) var hasError: Bool = false
 
     init(_ model: AccountPreviewModel) {
-        bindAccountImageTypeImage(accountImageType: model.accountImageType, accountType: model.accountType)
+        bindAccountImage(model.accountImage)
         bindAccountName(model.accountName)
         bindAssetsAndNFTs(model.assetsAndNFTs)
         bindAssetValue(model.assetValue)
         bindSecondaryAssetValue(model.secondaryAssetValue)
+        bindHasError(model.hasError)
     }
 
     convenience init(from account: Account) {
@@ -54,11 +57,12 @@ final class AccountPreviewViewModel: PairedViewModel {
         self.init(
             AccountPreviewModel(
                 accountType: account.type,
-                accountImageType: .orange,
+                accountImage: account.image,
                 accountName: account.name,
                 assetsAndNFTs: assetsAndNFTs,
                 assetValue: account.amount.toAlgos.toAlgosStringForLabel,
-                secondaryAssetValue: nil /// TODO: Dollar value should be added
+                secondaryAssetValue: nil, /// TODO: Dollar value should be added
+                hasError: false
             )
         )
     }
@@ -67,8 +71,9 @@ final class AccountPreviewViewModel: PairedViewModel {
         self.init(
             AccountPreviewModel(
                 accountType: viewModel.accountType,
-                accountImageType: .orange,
-                accountName: viewModel .name
+                accountImage: viewModel.image,
+                accountName: viewModel .name,
+                hasError: false
             )
         )
     }
@@ -77,16 +82,17 @@ final class AccountPreviewViewModel: PairedViewModel {
         self.init(
             AccountPreviewModel(
                 accountType: viewModel.accountType,
-                accountImageType: .orange,
-                accountName: viewModel.address
+                accountImage: viewModel.image,
+                accountName: viewModel.address,
+                hasError: false
             )
         )
     }
 }
 
 extension AccountPreviewViewModel {
-    private func bindAccountImageTypeImage(accountImageType: AccountImageType, accountType: AccountType) {
-        self.accountImageTypeImage = accountType.image(for: accountImageType)
+    private func bindAccountImage(_ accountImage: UIImage?) {
+        self.accountImage = accountImage
     }
 
     private func bindAccountName(_ name: String?) {
@@ -103,5 +109,9 @@ extension AccountPreviewViewModel {
 
     private func bindSecondaryAssetValue(_ value: String?) {
         self.secondaryAssetValue = value
+    }
+
+    private func bindHasError(_ hasError: Bool) {
+        self.hasError = hasError
     }
 }

@@ -130,6 +130,18 @@ extension EditContactViewController {
 }
 
 extension EditContactViewController: EditContactViewDelegate {
+    func editContactViewInputFieldViewShouldReturn(
+        _ editContactView: EditContactView,
+        inputFieldView: FloatingTextInputFieldView
+    ) -> Bool {
+        if inputFieldView == editContactView.nameInputView {
+            editContactView.addressInputView.beginEditing()
+        } else {
+            inputFieldView.endEditing()
+        }
+        return true
+    }
+
     func editContactViewDidTapDeleteButton(_ editContactView: EditContactView) {
         displayDeleteAlert(for: contact)
     }
@@ -141,7 +153,7 @@ extension EditContactViewController: EditContactViewDelegate {
 
     private func parseFieldsForContact() -> [String: Any]? {
         guard let name = editContactView.nameInputView.text,
-              !name.isEmpty else {
+              !name.isEmptyOrBlank else {
                   displaySimpleAlertWith(title: "title-error".localized, message: "contacts-name-validation-error".localized)
                   return nil
               }

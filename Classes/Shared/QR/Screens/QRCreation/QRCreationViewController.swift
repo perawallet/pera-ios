@@ -60,7 +60,6 @@ final class QRCreationViewController: BaseScrollViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        qrCreationView.customize(theme.qrCreationViewTheme)
         prepareWholeScreenLayoutFor(qrCreationView)
     }
     

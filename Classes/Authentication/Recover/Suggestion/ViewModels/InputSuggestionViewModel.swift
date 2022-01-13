@@ -16,23 +16,31 @@
 //   InputSuggestionViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-class InputSuggestionViewModel {
+final class InputSuggestionViewModel: ViewModel {
     private let lastSuggestionIndex = 2
 
     private(set) var suggestion: String?
     private(set) var isSeparatorHidden = false
 
-    init(suggestion: String, index: Int) {
-        setSuggestion(from: suggestion)
-        setIsSeparatorHidden(from: index)
+    init(suggestion: String?, index: Int) {
+        bindSuggestion(from: suggestion)
+        bindIsSeparatorHidden(from: index)
+    }
+}
+
+extension InputSuggestionViewModel {
+    private func bindSuggestion(from suggestion: String?) {
+        guard let suggestion = suggestion else {
+            self.suggestion = .empty
+            return
+        }
+
+        self.suggestion = suggestion.isEmpty ? .empty : "\"\(suggestion)\""
     }
 
-    private func setSuggestion(from suggestion: String) {
-        self.suggestion = suggestion.isEmpty ? "" : "\"\(suggestion)\""
-    }
-
-    private func setIsSeparatorHidden(from index: Int) {
+    private func bindIsSeparatorHidden(from index: Int) {
         isSeparatorHidden = index == lastSuggestionIndex
     }
 }

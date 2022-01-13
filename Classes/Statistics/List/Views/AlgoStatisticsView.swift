@@ -22,7 +22,6 @@ final class AlgoStatisticsView: View {
     weak var delegate: AlgoStatisticsViewDelegate?
 
     private lazy var theme = AlgoStatisticsViewTheme()
-    private lazy var titleView = MainHeaderView()
     private lazy var algoStatisticsHeaderView = AlgoStatisticsHeaderView()
     private lazy var lineChartView = AlgorandChartView(chartCustomizer: AlgoUSDValueChartCustomizer())
     private lazy var algoStatisticsFooterView = AlgoStatisticsFooterView()
@@ -37,7 +36,6 @@ final class AlgoStatisticsView: View {
     func customize(_ theme: AlgoStatisticsViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-        addTitleView(theme)
         addAlgoStatisticsHeaderView(theme)
         addLineChartView(theme)
         addAlgoStatisticsFooterView(theme)
@@ -54,25 +52,11 @@ final class AlgoStatisticsView: View {
 }
 
 extension AlgoStatisticsView {
-    private func addTitleView(_ theme: AlgoStatisticsViewTheme) {
-        titleView.setTitle("title-algorand".localized)
-        titleView.setQRButtonHidden(true)
-        titleView.setAddButtonHidden(true)
-        titleView.setTestNetLabelHidden(true)
-        titleView.backgroundColor = AppColors.Shared.System.background.uiColor
-
-        addSubview(titleView)
-        titleView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.top.equalToSuperview()
-        }
-    }
-
     private func addAlgoStatisticsHeaderView(_ theme: AlgoStatisticsViewTheme) {
         addSubview(algoStatisticsHeaderView)
         algoStatisticsHeaderView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.headerHorizontalInset)
-            $0.top.equalTo(titleView.snp.bottom).offset(theme.headerTopInset)
+            $0.top.equalToSuperview().offset(theme.headerTopInset)
         }
     }
 

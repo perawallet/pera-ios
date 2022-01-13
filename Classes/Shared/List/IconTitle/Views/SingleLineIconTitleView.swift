@@ -25,6 +25,8 @@ final class SingleLineIconTitleView:
     private lazy var titleLabel = UILabel()
 
     func customize(_ theme: SingleLineIconTitleViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
         addIconView(theme)
         addTitleLabel(theme)
     }
@@ -40,7 +42,7 @@ extension SingleLineIconTitleView {
         addSubview(iconView)
         iconView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(theme.verticalInset)
-            $0.leading.equalToSuperview().inset(theme.iconLeadingInset)
+            $0.leading.equalToSuperview()
             $0.size.equalTo(CGSize(theme.iconSize))
         }
     }
@@ -51,7 +53,8 @@ extension SingleLineIconTitleView {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(theme.verticalInset)
-            $0.leading.trailing.equalToSuperview().inset(theme.titleHorizontalPadding)
+            $0.leading.equalTo(iconView.snp.trailing).offset(theme.titleHorizontalPadding)
+            $0.trailing.equalToSuperview().inset(theme.titleHorizontalPadding)
         }
     }
 }
@@ -79,8 +82,10 @@ final class SingleLineIconTitleCell:
             style: style,
             reuseIdentifier: reuseIdentifier
         )
-
+        
         contextView.customize(SingleLineIconTitleViewTheme())
+
+        backgroundColor = .clear
         selectionStyle = .none
     }
 }

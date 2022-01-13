@@ -16,11 +16,34 @@
 //   OrderAccountListViewController.swift
 
 import MacaroonUIKit
+import MacaroonUtils
 import UIKit
 
 final class OrderAccountListViewController: BaseViewController {
-
+    private lazy var theme = Theme()
     private lazy var listView = UITableView()
+    private let accountType: AccountType
+    private var accounts: [Account] = []
+
+    init(accountType: AccountType, configuration: ViewControllerConfiguration) {
+        self.accountType = accountType
+        super.init(configuration: configuration)
+
+        switch accountType {
+        case .watch:
+            accounts = session!.accounts.filter { $0.isWatchAccount() }
+        default:
+            accounts = session!.accounts.filter { !$0.isWatchAccount() }
+        }
+    }
+
+    override func configureNavigationBarAppearance() {
+        setBarButtons()
+    }
+
+    override func configureAppearance() {
+        title = "account-options-arrange-list-title".localized
+    }
 
     override func prepareLayout() {
         super.prepareLayout()
@@ -31,8 +54,6 @@ final class OrderAccountListViewController: BaseViewController {
         super.setListeners()
         listView.dataSource = self
         listView.delegate = self
-        listView.dragDelegate = self
-        listView.dropDelegate = self
     }
 }
 
@@ -43,22 +64,59 @@ extension OrderAccountListViewController {
             $0.setPaddings()
         }
 
+        listView.register(AccountPreviewTableCell.self, forCellReuseIdentifier: AccountPreviewTableCell.reuseIdentifier)
         listView.rowHeight = UITableView.automaticDimension
-        listView.estimatedRowHeight = 72
+        listView.estimatedRowHeight = theme.itemHeight
         listView.separatorStyle = .none
         listView.separatorInset = .zero
         listView.verticalScrollIndicatorInsets.top = .leastNonzeroMagnitude
         listView.dragInteractionEnabled = true
+        listView.backgroundColor = .clear
+        listView.isEditing = true
+    }
+
+    private func setBarButtons() {
+        let doneBarButtonItem = ALGBarButtonItem(kind: .done) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.reorderAccounts()
+            self.dismissScreen()
+        }
+
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.dismissScreen()
+        }
+
+        leftBarButtonItems = [closeBarButtonItem]
+        rightBarButtonItems = [doneBarButtonItem]
+    }
+}
+
+extension OrderAccountListViewController {
+    private func reorderAccounts() {
+
     }
 }
 
 extension OrderAccountListViewController: UITableViewDelegate {
     func tableView(
         _ tableView: UITableView,
-        moveRowAt sourceIndexPath: IndexPath,
-        to destinationIndexPath: IndexPath
-    ) {
+        editingStyleForRowAt indexPath: IndexPath
+    ) -> UITableViewCell.EditingStyle {
+        return .none
+    }
 
+    func tableView(
+        _ tableView: UITableView,
+        shouldIndentWhileEditingRowAt indexPath: IndexPath
+    ) -> Bool {
+        return false
     }
 }
 
@@ -67,34 +125,33 @@ extension OrderAccountListViewController: UITableViewDataSource {
         _ tableView: UITableView,
         numberOfRowsInSection section: Int
     ) -> Int {
-        return 1
+        return accounts.count
     }
 
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        fatalError()
-    }
-}
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: AccountPreviewTableCell.reuseIdentifier,
+            for: indexPath
+        ) as? AccountPreviewTableCell else {
+            crash("Cell not supported of \(type(of: SingleLineIconTitleCell.self))")
+        }
 
-extension OrderAccountListViewController: UITableViewDragDelegate {
+        let account = accounts[indexPath.item]
+        let accountNameViewModel = AccountNameViewModel(account: account)
+        cell.bindData(AccountPreviewViewModel(viewModel: accountNameViewModel))
+        return cell
+    }
+
     func tableView(
         _ tableView: UITableView,
-        itemsForBeginning
-        session: UIDragSession,
-        at indexPath: IndexPath
-    ) -> [UIDragItem] {
-        let dragItem = UIDragItem(itemProvider: NSItemProvider())
-        return [dragItem]
-    }
-}
-
-extension OrderAccountListViewController: UITableViewDropDelegate {
-    func tableView(
-        _ tableView: UITableView,
-        performDropWith coordinator: UITableViewDropCoordinator
+        moveRowAt sourceIndexPath: IndexPath,
+        to destinationIndexPath: IndexPath
     ) {
-
+        let movedObject = accounts[sourceIndexPath.row]
+        accounts.remove(at: sourceIndexPath.row)
+        accounts.insert(movedObject, at: destinationIndexPath.row)
     }
 }

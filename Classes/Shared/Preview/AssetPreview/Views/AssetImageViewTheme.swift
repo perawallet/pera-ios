@@ -19,9 +19,16 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AssetImageViewTheme: StyleSheet, LayoutSheet {
+protocol AssetImageViewTheme: StyleSheet, LayoutSheet {
+    var nameText: TextStyle { get }
+    var border: Border { get }
+    var corner: Corner { get }
+}
+
+struct AssetImageViewLargerTheme: AssetImageViewTheme {
     let nameText: TextStyle
     let border: Border
+    let corner: Corner
 
     init(_ family: LayoutFamily) {
         self.nameText = [
@@ -31,5 +38,23 @@ struct AssetImageViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.regular.make(13))
         ]
         self.border = Border(color: AppColors.Shared.Layer.grayLighter.uiColor, width: 1)
+        self.corner = Corner(radius: 20)
+    }
+}
+
+struct AssetImageViewSmallerTheme: AssetImageViewTheme {
+    let nameText: TextStyle
+    let border: Border
+    let corner: Corner
+
+    init(_ family: LayoutFamily) {
+        self.nameText = [
+            .textAlignment(.center),
+            .textOverflow(SingleLineFittingText()),
+            .textColor(AppColors.Components.Text.gray),
+            .font(Fonts.DMSans.regular.make(10))
+        ]
+        self.border = Border(color: AppColors.Shared.Layer.grayLighter.uiColor, width: 1)
+        self.corner = Corner(radius: 12)
     }
 }

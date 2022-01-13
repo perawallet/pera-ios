@@ -58,8 +58,6 @@ extension Colors {
         static let accountHeader = color("accountHeaderColor")
         static let assetHeader = color("selectAssetHeaderColor")
         static let transactionDetailCopyIcon = color("transactionDetailCopyColor")
-        static let inputSuggestionText = color("inputSuggestionTextColor")
-        static let inputSuggestionBackground = color("inputSuggestionBackgroundColor")
         static let dappImageBorderColor = color("wcAccountSelectionBorderColor")
     }
 }

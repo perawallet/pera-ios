@@ -15,11 +15,9 @@
 //
 //   SendTransactionPreviewScreen.swift
 
-
 import Foundation
 import UIKit
 import MacaroonUIKit
-
 
 final class SendTransactionPreviewScreen: BaseViewController {
    private lazy var transactionDetailView = NewSendTransactionPreviewView()

@@ -23,9 +23,14 @@ final class AccountPortfolioView: View {
 
     private lazy var portfolioValueView = PortfolioValueView()
     private lazy var algoHoldingsTitleLabel = UILabel()
-    private lazy var algoHoldingsValueButton = Button()
+    private lazy var algoHoldingsValueButton = Button(.imageAtLeft(spacing: 12))
     private lazy var assetHoldingsTitleLabel = UILabel()
     private lazy var assetHoldingsValueLabel = UILabel()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setListeners()
+    }
 
     func customize(_ theme: AccountPortfolioViewTheme) {
         addPortfolioValueView(theme)
@@ -95,15 +100,17 @@ extension AccountPortfolioView {
         addSubview(algoHoldingsValueButton)
         algoHoldingsValueButton.snp.makeConstraints {
             $0.top.equalTo(algoHoldingsTitleLabel.snp.bottom).offset(theme.valuesTopPadding)
-            $0.leading.equalTo(algoHoldingsTitleLabel)
-            $0.trailing.greaterThanOrEqualTo(assetHoldingsValueLabel.snp.leading).offset(theme.horizontalInset)
+            $0.leading.equalToSuperview().inset(theme.algosValueHorizontalInset)
+            $0.trailing.lessThanOrEqualTo(assetHoldingsValueLabel.snp.leading).offset(theme.horizontalInset)
         }
     }
 }
 
 extension AccountPortfolioView: ViewModelBindable {
     func bindData(_ viewModel: AccountPortfolioViewModel?) {
-
+        portfolioValueView.bindData(viewModel?.portfolioValueViewModel)
+        algoHoldingsValueButton.editTitle = viewModel?.algoHoldingsValue
+        assetHoldingsValueLabel.editText = viewModel?.assetHoldingsValue
     }
 }
 
@@ -118,5 +125,9 @@ final class AccountPortfolioCell: BaseCollectionViewCell<AccountPortfolioView> {
     override func configureAppearance() {
         super.configureAppearance()
         contextView.customize(AccountPortfolioViewTheme())
+    }
+
+    func bindData(_ viewModel: AccountPortfolioViewModel?) {
+        contextView.bindData(viewModel)
     }
 }

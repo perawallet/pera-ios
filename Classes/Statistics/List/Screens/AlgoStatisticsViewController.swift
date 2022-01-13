@@ -20,8 +20,8 @@ import MacaroonBottomSheet
 import MacaroonUIKit
 
 final class AlgoStatisticsViewController: BaseScrollViewController {
-    override var shouldShowNavigationBar: Bool {
-        return false
+    override var prefersLargeTitle: Bool {
+        return true
     }
 
     private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
@@ -30,13 +30,7 @@ final class AlgoStatisticsViewController: BaseScrollViewController {
     private lazy var algoStatisticsView = AlgoStatisticsView()
 
     private lazy var algoStatisticsDataController = AlgoStatisticsDataController(api: api)
-    private lazy var assetCardDisplayDataController: AssetCardDisplayDataController = {
-        guard let api = api else {
-            fatalError("Api must be set before accessing this view controller.")
-        }
-        return AssetCardDisplayDataController(api: api)
-    }()
-    
+
     private var chartEntries: [AlgosUSDValue]?
     private var selectedTimeInterval: AlgosUSDValueInterval = .hourly
 
@@ -55,7 +49,7 @@ final class AlgoStatisticsViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        title = "title-algorand".localized
     }
 
     override func prepareLayout() {
@@ -74,8 +68,7 @@ extension AlgoStatisticsViewController {
     private func addAlgoStatisticsView() {
         contentView.addSubview(algoStatisticsView)
         algoStatisticsView.snp.makeConstraints {
-            $0.leading.trailing.bottom.equalToSuperview()
-            $0.top.safeEqualToTop(of: self)
+            $0.edges.equalToSuperview()
         }
     }
 }
@@ -88,7 +81,7 @@ extension AlgoStatisticsViewController: BottomSheetPresentable {
 
 extension AlgoStatisticsViewController {
     private func fetchCurrency(then completion: @escaping () -> Void) {
-        assetCardDisplayDataController.getCurrency { [weak self] currency in
+        algoStatisticsDataController.getCurrency { [weak self] currency in
             if let currency = currency {
                 self?.currency = currency
                 completion()

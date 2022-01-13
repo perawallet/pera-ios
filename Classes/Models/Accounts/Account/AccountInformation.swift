@@ -30,7 +30,8 @@ final class AccountInformation:
     var ledgerDetail: LedgerDetail?
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
-    let preferredOrder: Int
+    var preferredOrder: Int
+    var accountImage: String?
     
     init(
         address: String,
@@ -39,7 +40,8 @@ final class AccountInformation:
         ledgerDetail: LedgerDetail? = nil,
         rekeyDetail: RekeyDetail? = nil,
         receivesNotification: Bool = true,
-        preferredOrder: Int = 0
+        preferredOrder: Int = -1,
+        accountImage: String? = nil
     ) {
         self.address = address
         self.name = name
@@ -48,6 +50,7 @@ final class AccountInformation:
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
         self.preferredOrder = preferredOrder
+        self.accountImage = accountImage ?? AccountImageType.getRandomImage(for: type).rawValue
     }
     
     required init(from decoder: Decoder) throws {
@@ -58,7 +61,8 @@ final class AccountInformation:
         ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
         receivesNotification = try container.decodeIfPresent(Bool.self, forKey: .receivesNotification) ?? true
         rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
-        preferredOrder = try container.decodeIfPresent(Int.self, forKey: .preferredOrder) ?? 0
+        preferredOrder = try container.decodeIfPresent(Int.self, forKey: .preferredOrder) ?? -1
+        accountImage = try container.decodeIfPresent(String.self, forKey: .accountImage) ?? AccountImageType.getRandomImage(for: type).rawValue
     }
 }
 
@@ -104,6 +108,7 @@ extension AccountInformation {
         case receivesNotification = "receivesNotification"
         case rekeyDetail = "rekeyDetail"
         case preferredOrder = "preferredOrder"
+        case accountImage = "accountImage"
     }
 }
 
@@ -122,5 +127,17 @@ enum AccountType: String, Codable {
 
     func image(for accountImageType: AccountImageType) -> UIImage? {
         return img("\(rawValue)-\(accountImageType.rawValue)")
+    }
+}
+
+enum AccountImageType: String, CaseIterable {
+    case blush = "blush"
+    case orange = "orange"
+    case purple = "purple"
+    case turquoise = "turquoise"
+    case salmon = "salmon"
+
+    static func getRandomImage(for accountType: AccountType) -> AccountImageType {
+        return AccountImageType.allCases.randomElement()!
     }
 }

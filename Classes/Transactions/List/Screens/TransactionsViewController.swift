@@ -17,185 +17,266 @@
 
 import UIKit
 import MagpieCore
+import MacaroonUIKit
 
 class TransactionsViewController: BaseViewController {
-    
-    let layout = Layout<LayoutConstants>()
-    
-    private var pendingTransactionPolling: PollingOperation?
-    private var account: Account
-    private var assetDetail: AssetDetail?
-    private var isConnectedToInternet = true {
-        didSet {
-            if isConnectedToInternet {
-                transactionListView.setInternetConnectionErrorState()
-            } else {
-                transactionListView.setNormalState()
-            }
-            transactionListView.reloadData()
-        }
-    }
-        
-    private var filterOption = TransactionFilterViewController.FilterOption.allTime
-    
+    private lazy var theme = Theme()
+    private lazy var bottomSheetTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
-    
-    private var transactionHistoryDataSource: TransactionHistoryDataSource
-    
-    private lazy var transactionListView = TransactionListView()
-    
-    init(account: Account, configuration: ViewControllerConfiguration, assetDetail: AssetDetail? = nil) {
-        self.account = account
-        self.assetDetail = assetDetail
-        transactionHistoryDataSource = TransactionHistoryDataSource(api: configuration.api, account: account, assetDetail: assetDetail)
+
+    private(set) var account: Account
+    private(set) var assetDetail: AssetDetail?
+    private(set) var filterOption = TransactionFilterViewController.FilterOption.allTime
+
+    private lazy var listLayout = TransactionsListLayout(
+        draft: draft,
+        transactionDataSource: transactionsDataSource
+    )
+    private(set) lazy var dataController = TransactionsDataController(
+        api: api!,
+        draft: draft
+    )
+    private lazy var transactionsDataSource = TransactionListDataSource(
+        session: session!,
+        draft: draft,
+        filterOption: filterOption,
+        listView: listView,
+        dataController: dataController
+    )
+
+    private(set) lazy var listView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
+        collectionView.register(TransactionHistoryCell.self)
+        collectionView.register(PendingTransactionCell.self)
+        collectionView.register(TransactionHistoryTitleCell.self)
+        collectionView.register(TransactionHistoryFilterCell.self)
+        collectionView.register(AlgosDetailInfoViewCell.self)
+        collectionView.register(AssetDetailInfoViewCell.self)
+        return collectionView
+    }()
+
+    private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
+    private let draft: TransactionListing
+
+    init(draft: TransactionListing, configuration: ViewControllerConfiguration) {
+        self.draft = draft
+        self.account = draft.account
+        self.assetDetail = draft.assetDetail
         super.init(configuration: configuration)
     }
     
     deinit {
-        pendingTransactionPolling?.invalidate()
+        dataController.stopPendingTransactionPolling()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        transactionHistoryDataSource.setupContacts()
-        fetchTransactions()
+        dataController.fetchContacts()
+        transactionsDataSource.applySnapshot(animatingDifferences: false)
+
+        dataController.fetchTransactions(
+            between: getTransactionFilterDates()
+        )
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        api?.addListener(self)
-        startPendingTransactionPolling()
+        dataController.startPendingTransactionPolling()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        api?.removeListener(self)
-        pendingTransactionPolling?.invalidate()
+        dataController.stopPendingTransactionPolling()
     }
     
     override func setListeners() {
+        setNotificationObservers()
+        setListLayoutListeners()
+        setDataSourceListeners()
+        transactionActionButton.addTarget(self, action: #selector(didTapTransactionActionButton), for: .touchUpInside)
+    }
+
+    override func prepareLayout() {
+        addListView()
+        addTransactionActionButton(theme)
+    }
+
+    override func linkInteractors() {
+        listView.delegate = listLayout
+        listView.dataSource = transactionsDataSource.dataSource
+    }
+}
+
+extension TransactionsViewController {
+    private func addListView() {
+        view.addSubview(listView)
+        listView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+
+    private func addTransactionActionButton(_ theme: Theme) {
+        transactionActionButton.image = "fab-swap".uiImage
+        
+        view.addSubview(transactionActionButton)
+        transactionActionButton.snp.makeConstraints {
+            $0.setPaddings(theme.transactionActionButtonPaddings)
+        }
+    }
+}
+
+extension TransactionsViewController {
+    private func setNotificationObservers() {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didContactAdded(notification:)),
             name: .ContactAddition,
             object: nil
         )
-        
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didContactEdited(notification:)),
             name: .ContactEdit,
             object: nil
         )
-        
-        transactionHistoryDataSource.openFilterOptionsHandler = { [weak self] _ in
+    }
+
+    private func setListLayoutListeners() {
+        listLayout.handlers.didSelectTransaction = { [weak self] transaction in
+            guard let self = self else {
+                return
+            }
+
+            self.openTransactionDetail(transaction)
+        }
+
+        listLayout.handlers.willDisplay = { [weak self] indexPath in
+            guard let self = self else {
+                return
+            }
+
+            if self.transactionsDataSource.shouldSendPaginatedRequest(at: indexPath.item) {
+                self.dataController.fetchPaginatedTransactions(
+                    between: self.getTransactionFilterDates()
+                )
+            }
+        }
+    }
+
+    private func setDataSourceListeners() {
+        if draft.type == .algos {
+            transactionsDataSource.handlers.openRewardDetailHandler = { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.bottomSheetTransition.perform(.rewardDetail(account: self.account))
+            }
+        } else if draft.type == .asset {
+            transactionsDataSource.handlers.copyAssetIDHandler = { [weak self] assetID in
+                guard  UIPasteboard.general.string != assetID else { return }
+                self?.bannerController?.presentInfoBanner("asset-id-copied-title".localized)
+                UIPasteboard.general.string = assetID
+            }
+        }
+
+        transactionsDataSource.handlers.openFilterOptionsHandler = { [weak self] in
             guard let self = self else {
                 return
             }
 
             self.filterOptionsTransition.perform(.transactionFilter(filterOption: self.filterOption, delegate: self))
         }
-        
-        transactionHistoryDataSource.shareHistoryHandler = { [weak self] _ in
-            self?.fetchAllTransactionsForCSV()
-        }
-    }
-    
-    override func linkInteractors() {
-        transactionListView.delegate = self
-        transactionListView.setCollectionViewDelegate(self)
-        transactionListView.setCollectionViewDataSource(transactionHistoryDataSource)
-    }
-    
-    override func prepareLayout() {
-        view.addSubview(transactionListView)
-        transactionListView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-}
 
-extension TransactionsViewController: TransactionListViewDelegate {
-    func transactionListViewDidRefreshList(_ transactionListView: TransactionListView) {
-        reloadData()
+        transactionsDataSource.handlers.shareHistoryHandler = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.fetchAllTransactionsForCSV()
+        }
     }
-    
-    func transactionListViewDidTryAgain(_ transactionListView: TransactionListView) {
-        reloadData()
-    }
-    
-    private func reloadData() {
-        transactionHistoryDataSource.clear()
-        transactionListView.reloadData()
-        fetchTransactions()
+
+    private func setDataControllerListeners() {
+        dataController.handlers.didFetchCSVTransactions = { [weak self] transactions in
+            guard let self = self else {
+                return
+            }
+
+            self.shareCSVFile(for: transactions)
+        }
+
+        dataController.handlers.didFailToFetchCSVTransactions = { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+
+            self.loadingController?.stopLoading()
+        }
     }
 }
 
 extension TransactionsViewController {
-    private func startPendingTransactionPolling() {
-        pendingTransactionPolling = PollingOperation(interval: 0.8) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            strongSelf.transactionHistoryDataSource.fetchPendingTransactions(for: strongSelf.account) { pendingTransactions, error in
-                if error != nil {
-                    return
-                }
-                
-                guard let pendingTransactions = pendingTransactions, !pendingTransactions.isEmpty else {
-                    return
-                }
-                
-                strongSelf.transactionListView.setNormalState()
-                strongSelf.transactionListView.reloadData()
-            }
-        }
-        
-        pendingTransactionPolling?.start()
+    @objc
+    private func didTapTransactionActionButton() {
+        let viewController = open(
+            .transactionFloatingActionButton,
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            ),
+            animated: false
+        ) as? TransactionFloatingActionButtonViewController
+
+        viewController?.delegate = self
     }
-    
-    private func fetchTransactions(witRefresh refresh: Bool = true, isPaginated: Bool = false) {
-        transactionListView.setLoadingState()
+}
+
+extension TransactionsViewController: TransactionFloatingActionButtonViewControllerDelegate {
+    func transactionFloatingActionButtonViewControllerDidSend(_ viewController: TransactionFloatingActionButtonViewController) {
+        log(SendAssetDetailEvent(address: account.address))
         
-        transactionHistoryDataSource.loadData(
-            for: account,
-            withRefresh: refresh,
-            between: getTransactionFilterDates(),
-            isPaginated: isPaginated
-        ) { transactions, error in
-            self.transactionListView.endRefreshing()
-            
-            if !self.isConnectedToInternet {
-                self.transactionListView.setInternetConnectionErrorState()
-                self.transactionListView.reloadData()
-                return
-            }
-            
-            if let error = error {
-                if !error.isCancelled {
-                    self.transactionListView.setOtherErrorState()
-                }
-                self.transactionListView.reloadData()
-                return
-            }
-            
-            guard let transactions = transactions else {
-                self.transactionListView.setNormalState()
-                return
-            }
-            
-            if transactions.isEmpty {
-                self.transactionListView.setEmptyState()
-                return
-            }
-            
-            self.transactionListView.setNormalState()
-            self.transactionListView.reloadData()
+        let draft: SendTransactionDraft
+
+        if let assetDetail = assetDetail {
+            draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(assetDetail))
+        } else {
+            draft = SendTransactionDraft(from: account, transactionMode: .algo)
         }
+
+        let controller = open(.sendTransaction(draft: draft), by: .present) as? SendTransactionScreen
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            controller?.closeScreen(by: .dismiss, animated: true)
+        }
+        controller?.leftBarButtonItems = [closeBarButtonItem]
     }
-    
-    private func getTransactionFilterDates() -> (from: Date?, to: Date?) {
+
+    func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController) {
+        log(ReceiveAssetDetailEvent(address: account.address))
+        let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
+        open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
+    }
+}
+
+extension TransactionsViewController {
+    private func reloadData() {
+        transactionsDataSource.clear()
+        transactionsDataSource.applySnapshot()
+
+        dataController.fetchTransactions(
+            between: getTransactionFilterDates()
+        )
+    }
+}
+
+extension TransactionsViewController {
+    func getTransactionFilterDates() -> (from: Date?, to: Date?) {
         switch filterOption {
         case .allTime:
             return (nil, nil)
@@ -219,21 +300,7 @@ extension TransactionsViewController {
     }
 }
 
-extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if transactionHistoryDataSource.shouldSendPaginatedRequest(at: indexPath.item) {
-            fetchTransactions(witRefresh: false, isPaginated: true)
-        }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let transaction = transactionHistoryDataSource.transaction(at: indexPath) else {
-            return
-        }
-        
-        openTransactionDetail(transaction)
-    }
-    
+extension TransactionsViewController {
     private func openTransactionDetail(_ transaction: Transaction) {
         if transaction.sender == account.address {
             open(
@@ -241,66 +308,51 @@ extension TransactionsViewController: UICollectionViewDelegateFlowLayout {
                     account: account,
                     transaction: transaction,
                     transactionType: .sent,
-                    assetDetail: assetDetail
+                    assetDetail: getAssetDetailForTransactionType(transaction)
                 ),
                 by: .present
             )
-        } else {
-            open(
-                .transactionDetail(
-                    account: account,
-                    transaction: transaction,
-                    transactionType: .received,
-                    assetDetail: assetDetail
-                ),
-                by: .present
-            )
+
+            return
         }
+
+        open(
+            .transactionDetail(
+                account: account,
+                transaction: transaction,
+                transactionType: .received,
+                assetDetail: getAssetDetailForTransactionType(transaction)
+            ),
+            by: .present
+        )
     }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return layout.current.transactionCellSize
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        return layout.current.headerSize
+
+    private func getAssetDetailForTransactionType(_ transaction: Transaction) -> AssetDetail? {
+        switch draft.type {
+        case .all:
+            if let assetId = transaction.assetTransfer?.assetId {
+                return account.assetDetails.first(matching: (\.id, assetId))
+            }
+
+            return assetDetail
+        case .algos,
+                .asset:
+            return assetDetail
+        }
     }
 }
 
 extension TransactionsViewController {
     @objc
     private func didContactAdded(notification: Notification) {
-        transactionHistoryDataSource.setupContacts()
-        transactionListView.reloadData()
+        dataController.fetchContacts()
+        transactionsDataSource.applySnapshot()
     }
     
     @objc
     private func didContactEdited(notification: Notification) {
-        transactionHistoryDataSource.setupContacts()
-        transactionListView.reloadData()
-    }
-}
-
-extension TransactionsViewController {
-    func updateList() {
-        transactionHistoryDataSource.clear()
-        transactionListView.reloadData()
-        transactionListView.setLoadingState()
-        fetchTransactions()
-    }
-    
-    func updateSelectedAsset(_ assetDetail: AssetDetail?) {
-        self.assetDetail = assetDetail
-        transactionHistoryDataSource.updateAssetDetail(assetDetail)
-        updateList()
+        dataController.fetchContacts()
+        transactionsDataSource.applySnapshot()
     }
 }
 
@@ -315,148 +367,20 @@ extension TransactionsViewController: TransactionFilterViewControllerDelegate {
         
         switch filterOption {
         case .allTime:
-            pendingTransactionPolling?.start()
+            dataController.startPendingTransactionPolling()
         case let .customRange(_, to):
             if let isToDateLaterThanNow = to?.isAfterDate(Date(), granularity: .day),
-                isToDateLaterThanNow {
-                pendingTransactionPolling?.invalidate()
+               isToDateLaterThanNow {
+                dataController.stopPendingTransactionPolling()
             } else {
-                pendingTransactionPolling?.start()
+                dataController.startPendingTransactionPolling()
             }
         default:
-            pendingTransactionPolling?.invalidate()
+            dataController.startPendingTransactionPolling()
         }
-        
+
         self.filterOption = filterOption
-        if let headerView = transactionListView.headerView() {
-            headerView.bindData(TransactionHistoryHeaderViewModel(filterOption))
-        }
-        updateList()
-    }
-}
-
-extension TransactionsViewController: CSVExportable {
-    private func fetchAllTransactionsForCSV() {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-
-        transactionHistoryDataSource.fetchAllTransactions(
-            for: account,
-            between: getTransactionFilterDates(),
-            nextToken: nil
-        ) { transactions, error in
-            if error != nil {
-                self.loadingController?.stopLoading()
-                return
-            }
-            
-            guard let transactions = transactions else {
-                self.loadingController?.stopLoading()
-                return
-            }
-            
-            self.shareCSVFile(for: transactions)
-        }
-    }
-    
-    private func shareCSVFile(for transactions: [Transaction]) {
-        let keys: [String] = [
-            "transaction-detail-amount".localized,
-            "transaction-detail-reward".localized,
-            "transaction-detail-close-amount".localized,
-            "transaction-download-close-to".localized,
-            "transaction-download-to".localized,
-            "transaction-download-from".localized,
-            "transaction-detail-fee".localized,
-            "transaction-detail-round".localized,
-            "transaction-detail-date".localized,
-            "title-id".localized,
-            "transaction-detail-note".localized
-        ]
-        let config = CSVConfig(fileName: formCSVFileName(), keys: NSOrderedSet(array: keys))
-        
-        if let fileUrl = exportCSV(from: createCSVData(from: transactions), with: config) {
-            loadingController?.stopLoading()
-            
-            let activityViewController = UIActivityViewController(activityItems: [fileUrl], applicationActivities: nil)
-            activityViewController.completionWithItemsHandler = { _, _, _, _ in
-                try? FileManager.default.removeItem(at: fileUrl)
-            }
-            present(activityViewController, animated: true)
-        } else {
-            loadingController?.stopLoading()
-        }
-    }
-    
-    private func formCSVFileName() -> String {
-        var assetId = "algos"
-        if let assetDetailId = assetDetail?.id {
-            assetId = "\(assetDetailId)"
-        }
-        var fileName = "\(account.name ?? "")_\(assetId)"
-        let dates = getTransactionFilterDates()
-        if let fromDate = dates.from,
-            let toDate = dates.to {
-            if filterOption == .today {
-                fileName += "-" + fromDate.toFormat("MM-dd-yyyy")
-            } else {
-                fileName += "-" + fromDate.toFormat("MM-dd-yyyy") + "_" + toDate.toFormat("MM-dd-yyyy")
-            }
-        }
-        return "\(fileName).csv"
-    }
-    
-    private func createCSVData(from transactions: [Transaction]) -> [[String: Any]] {
-        var csvData = [[String: Any]]()
-        for transaction in transactions {
-            let transactionData: [String: Any] = [
-                "transaction-detail-amount".localized: getFormattedAmount(transaction.getAmount()),
-                "transaction-detail-reward".localized: transaction.getRewards(for: account.address)?.toAlgos ?? " ",
-                "transaction-detail-close-amount".localized: getFormattedAmount(transaction.getCloseAmount()),
-                "transaction-download-close-to".localized: transaction.getCloseAddress() ?? " ",
-                "transaction-download-to".localized: transaction.getReceiver() ?? " ",
-                "transaction-download-from".localized: transaction.sender ?? " ",
-                "transaction-detail-fee".localized: transaction.fee?.toAlgos.toAlgosStringForLabel ?? " ",
-                "transaction-detail-round".localized: transaction.lastRound ?? " ",
-                "transaction-detail-date".localized: transaction.date?.toFormat("MMMM dd, yyyy - HH:mm") ?? " ",
-                "title-id".localized: transaction.id ?? " ",
-                "transaction-detail-note".localized: transaction.noteRepresentation() ?? " "
-            ]
-            csvData.append(transactionData)
-        }
-        return csvData
-    }
-    
-    private func getFormattedAmount(_ amount: UInt64?) -> String {
-        if let assetDetail = assetDetail {
-            return amount?.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? " "
-        } else {
-            return amount?.toAlgos.toAlgosStringForLabel ?? " "
-        }
-    }
-}
-
-extension TransactionsViewController: APIListener {
-    func api(
-        _ api: API,
-        networkMonitor: NetworkMonitor,
-        didConnectVia connection: NetworkConnection,
-        from oldConnection: NetworkConnection
-    ) {
-        if UIApplication.shared.isActive {
-            isConnectedToInternet = networkMonitor.isConnected
-        }
-    }
-    
-    func api(_ api: API, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
-        if UIApplication.shared.isActive {
-            isConnectedToInternet = networkMonitor.isConnected
-        }
-    }
-}
-
-extension TransactionsViewController {
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        let transactionCellSize = CGSize(width: UIScreen.main.bounds.width, height: 72)
-        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 68.0)
+        transactionsDataSource.updateFilterOption(filterOption)
+        reloadData()
     }
 }

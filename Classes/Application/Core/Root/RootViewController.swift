@@ -72,6 +72,7 @@ class RootViewController: UIViewController {
         view.backgroundColor = Colors.Background.primary
 
         initializeNetwork()
+        setInitialWalletOrders()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -247,5 +248,22 @@ extension WalletConnectRequest {
         }
 
         return false
+    }
+}
+
+extension RootViewController {
+    private func setInitialWalletOrders() {
+        if let nonwatchAccounts = appConfiguration.session.authenticatedUser?.accounts.filter({ $0.type != .watch }) {
+            for (index, account) in nonwatchAccounts.enumerated() where account.preferredOrder != -1 {
+                account.preferredOrder = index
+            }
+        }
+
+        if let watchAccounts = appConfiguration.session.authenticatedUser?.accounts.filter({ $0.type == .watch }) {
+            let watchAccountOrderOffset = 100000
+            for (index, account) in watchAccounts.enumerated() where account.preferredOrder != -1 {
+                account.preferredOrder = index + watchAccountOrderOffset
+            }
+        }
     }
 }

@@ -18,10 +18,23 @@
 import MacaroonUIKit
 import UIKit
 import MacaroonUtils
+import MacaroonBottomSheet
 
 final class AccountListOptionsViewController: BaseViewController {
-    private lazy var handlers = Handlers()
+    private lazy var theme = Theme()
+    lazy var handlers = Handlers()
+    private let accountType: AccountType
+
     private lazy var listView = UITableView()
+
+    override var shouldShowNavigationBar: Bool {
+        return false
+    }
+
+    init(accountType: AccountType, configuration: ViewControllerConfiguration) {
+        self.accountType = accountType
+        super.init(configuration: configuration)
+    }
 
     override func prepareLayout() {
         super.prepareLayout()
@@ -41,12 +54,15 @@ extension AccountListOptionsViewController {
         listView.snp.makeConstraints {
             $0.setPaddings()
         }
-
+    
+        listView.register(SingleLineIconTitleCell.self, forCellReuseIdentifier: SingleLineIconTitleCell.reuseIdentifier)
         listView.rowHeight = UITableView.automaticDimension
-        listView.estimatedRowHeight = 60
+        listView.estimatedRowHeight = theme.itemHeight
         listView.separatorStyle = .none
         listView.separatorInset = .zero
-        listView.verticalScrollIndicatorInsets.top = .leastNonzeroMagnitude
+        listView.bounces = false
+        listView.showsVerticalScrollIndicator = false
+        listView.backgroundColor = theme.backgroundColor.uiColor
     }
 }
 
@@ -80,14 +96,21 @@ extension AccountListOptionsViewController: UITableViewDataSource {
 extension AccountListOptionsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let option = AccountListOptions(rawValue: indexPath.item) {
-            handlers.didSelect?(option)
+            dismissScreen()
+            handlers.didSelect?(option, accountType)
         }
+    }
+}
+
+extension AccountListOptionsViewController: BottomSheetPresentable {
+    var modalHeight: ModalHeight {
+        return .preferred(theme.modalHeight)
     }
 }
 
 extension AccountListOptionsViewController {
     struct Handlers {
-        var didSelect: ((AccountListOptions) -> Void)?
+        var didSelect: ((AccountListOptions, AccountType) -> Void)?
     }
 }
 

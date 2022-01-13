@@ -79,6 +79,8 @@ extension AccountManager {
                 fetchedAccount.ledgerDetail = account.ledgerDetail
                 fetchedAccount.receivesNotification = account.receivesNotification
                 fetchedAccount.rekeyDetail = account.rekeyDetail
+                fetchedAccount.preferredOrder = account.preferredOrder
+                fetchedAccount.accountImage = account.accountImage
                 
                 guard let currentAccount = self.api.session.account(from: fetchedAccount.address) else {
                     self.api.session.addAccount(fetchedAccount)

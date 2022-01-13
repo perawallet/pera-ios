@@ -18,7 +18,7 @@
 import UIKit
 import MacaroonUIKit
 
-class VerifiedAssetInformationView: View {
+final class VerifiedAssetInformationView: View {
     weak var delegate: VerifiedAssetInformationViewDelegate?
     
     private lazy var labelTapGestureRecognizer = UITapGestureRecognizer(
@@ -31,7 +31,7 @@ class VerifiedAssetInformationView: View {
     private lazy var verifiedImageView = UIImageView()
     
     func customize(_ theme: VerifiedAssetInformationViewTheme) {
-        customizeBaseAppearance(backgroundColor: Colors.Background.tertiary)
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
         addTitle(theme)
         addImage(theme)

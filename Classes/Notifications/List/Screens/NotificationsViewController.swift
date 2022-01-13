@@ -58,6 +58,13 @@ final class NotificationsViewController: BaseViewController {
             name: .NotificationDidReceived,
             object: nil
         )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didUpdateAccount),
+            name: .AccountUpdate,
+            object: nil
+        )
     }
     
     override func linkInteractors() {
@@ -83,13 +90,6 @@ final class NotificationsViewController: BaseViewController {
 
 extension NotificationsViewController {
     private func addBarButtons() {
-        let backBarButtonItem = ALGBarButtonItem(kind: .back) {
-            [unowned self] in
-            self.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [backBarButtonItem]
-
         let filterBarButtonItem = ALGBarButtonItem(kind: .filter) {
             [unowned self] in
             self.openNotificationFilters()
@@ -107,6 +107,13 @@ extension NotificationsViewController {
     @objc
     private func didReceiveNotification(notification: Notification) {
         if isInitialFetchCompleted && isViewAppeared {
+            reloadNotifications()
+        }
+    }
+
+    @objc
+    private func didUpdateAccount(notification: Notification) {
+        if isInitialFetchCompleted {
             reloadNotifications()
         }
     }
@@ -151,7 +158,15 @@ extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
     private func openAssetDetail(from notificationDetail: NotificationDetail) {
         let accountDetails = dataSource.getUserAccount(from: notificationDetail)
         if let account = accountDetails.account {
-            open(.assetDetail(account: account, assetDetail: accountDetails.assetDetail), by: .push)
+
+            let screen: Screen
+            if let assetDetail = accountDetails.assetDetail {
+                screen = .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail))
+            } else {
+                screen = .algosDetail(draft: AlgoTransactionListing(account: account))
+            }
+
+            open(screen, by: .push)
         }
     }
 }
@@ -213,7 +228,7 @@ extension NotificationsViewController: APIListener {
             isConnectedToInternet = networkMonitor.isConnected
         }
     }
-
+    
     func api(_ api: API, networkMonitor: NetworkMonitor, didDisconnectFrom oldConnection: NetworkConnection) {
         if UIApplication.shared.isActive {
             isConnectedToInternet = networkMonitor.isConnected

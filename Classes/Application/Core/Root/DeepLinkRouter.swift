@@ -176,7 +176,13 @@ extension DeepLinkRouter {
 
     private func openAssetDetail(for account: Account, with assetDetail: AssetDetail?) {
         rootViewController?.tabBarContainer?.selectedItem = rootViewController?.tabBarContainer?.items[0]
-        rootViewController?.tabBarViewController.route = .assetDetail(account: account, assetDetail: assetDetail)
+        let screen: Screen
+        if let assetDetail = assetDetail {
+            screen = .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail))
+        } else {
+            screen = .algosDetail(draft: AlgoTransactionListing(account: account))
+        }
+        rootViewController?.tabBarViewController.route = screen
         rootViewController?.tabBarViewController.routeForDeeplink()
     }
 }

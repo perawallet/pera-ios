@@ -101,7 +101,12 @@ extension QRScannerOverlayView {
         let path = CGMutablePath()
         path.addRect(UIScreen.main.bounds)
         let size = theme.overlayViewSize
-        let rect = CGRect(x: UIScreen.main.bounds.midX - (size / 2), y: UIScreen.main.bounds.midY - (size / 2), width: size, height: size)
+        let rect = CGRect(
+            x: UIScreen.main.bounds.midX - (size / 2),
+            y: UIScreen.main.bounds.midY - (size / 2),
+            width: size,
+            height: size
+        )
         path.addRoundedRect(
             in: rect,
             cornerWidth: theme.overlayCornerRadius,
@@ -119,7 +124,12 @@ extension QRScannerOverlayView {
         overlayImageView.customizeAppearance(theme.overlayImage)
 
         let size = theme.overlayImageViewSize
-        let frame = CGRect(x: UIScreen.main.bounds.midX - (size / 2), y: UIScreen.main.bounds.midY - (size / 2), width: size, height: size)
+        let frame = CGRect(
+            x: UIScreen.main.bounds.midX - (size / 2),
+            y: UIScreen.main.bounds.midY - (size / 2),
+            width: size,
+            height: size
+        )
         overlayImageView.frame = frame
 
         addSubview(overlayImageView)
