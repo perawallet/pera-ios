@@ -55,6 +55,10 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
         return true
     }
 
+    var prefersLargeTitle: Bool {
+        return false
+    }
+
     private(set) var isViewFirstLoaded = true
     private(set) var isViewAppearing = false
     private(set) var isViewAppeared = false
@@ -93,18 +97,12 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setPrimaryBackgroundColor()
         setNeedsNavigationBarAppearanceUpdate()
         linkInteractors()
         setListeners()
         configureAppearance()
         prepareLayout()
         bindData()
-
-        navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.font: Fonts.DMSans.regular.make(15).uiFont,
-            NSAttributedString.Key.foregroundColor: AppColors.Components.Text.main.uiColor
-        ]
     }
 
     func configureAppearance() {}
@@ -123,7 +121,8 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
         super.viewWillAppear(animated)
         setNeedsStatusBarLayoutUpdateWhenAppearing()
         setNeedsNavigationBarAppearanceUpdateWhenAppearing()
-        setNeedsTabBarAppearanceUpdateOnAppearing()
+        customizeNavigationBarTitle()
+        setNeedsTabBarAppearanceUpdateOnAppearing() // <todo>: Causes to navigation bar title flashing when cancelling back swipe
 
         isViewDisappeared = false
         isViewAppearing = true
@@ -164,30 +163,27 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
     func didTapDismissBarButton() -> Bool {
         return true
     }
-
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
-        if #available(iOS 12.0, *) {
-            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
-                preferredUserInterfaceStyleDidChange(to: traitCollection.userInterfaceStyle)
-            }
+        if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+            preferredUserInterfaceStyleDidChange(to: traitCollection.userInterfaceStyle)
         }
     }
 }
 
 extension BaseViewController {
-    func setPrimaryBackgroundColor() {
-        if #available(iOS 13.0, *) {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = AppColors.Shared.System.background.uiColor
-            appearance.shadowColor = .clear
-            navigationController?.navigationBar.standardAppearance = appearance
-            navigationController?.navigationBar.scrollEdgeAppearance = navigationController?.navigationBar.standardAppearance
+    private func customizeNavigationBarTitle() {
+        guard shouldShowNavigationBar else { return }
+
+        if prefersLargeTitle {
+            let navigationBar = navigationController?.navigationBar
+            navigationItem.largeTitleDisplayMode = .always
+            navigationBar?.layoutMargins.left = 24
+            navigationBar?.layoutMargins.right = 24
         } else {
-            navigationController?.navigationBar.barTintColor = AppColors.Shared.System.background.uiColor
-            navigationController?.navigationBar.tintColor = AppColors.Shared.System.background.uiColor
+            navigationItem.largeTitleDisplayMode =  .never
         }
     }
 }

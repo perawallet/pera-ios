@@ -32,20 +32,14 @@ final class AssetDetailViewController: TransactionsViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-
         addTitleView()
-    }
-
-    override func linkInteractors() {
-        super.linkInteractors()
-//        transactionActionsView.delegate = self
     }
 }
 
 extension AssetDetailViewController {
     private func addTitleView() {
-        let assetDetailTitleView = ImageWithTitleView()
-        assetDetailTitleView.customize(ImageWithTitleAssetDetailViewTheme())
+        let assetDetailTitleView = AssetDetailTitleView()
+        assetDetailTitleView.customize(AssetDetailTitleViewTheme())
         assetDetailTitleView.bindData(AssetDetailTitleViewModel(assetDetail: assetDetail))
 
         navigationItem.titleView = assetDetailTitleView

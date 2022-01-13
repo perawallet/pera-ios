@@ -129,6 +129,7 @@ extension Account {
         receivesNotification = localAccount.receivesNotification
         rekeyDetail = localAccount.rekeyDetail
         preferredOrder = localAccount.preferredOrder
+        accountImage = localAccount.accountImage
     }
 }
 
@@ -220,13 +221,14 @@ extension Account {
         appsTotalSchema = account.appsTotalSchema
         createdApps = account.createdApps
         preferredOrder = account.preferredOrder
+        accountImage = account.accountImage
 
         if let updatedName = account.name {
             name = updatedName
         }
     }
     
-    func accountImage() -> UIImage? {
+    func accountTypeImage() -> UIImage? {
         if isWatchAccount() {
             return img("icon-account-type-watch")
         } else if isRekeyed() {
@@ -236,5 +238,13 @@ extension Account {
         } else {
             return img("icon-account-type-standard")
         }
+    }
+
+    var image: UIImage? {
+        guard let accountImage = accountImage else {
+            return nil
+        }
+
+        return img("\(type.rawValue)-\(accountImage)")
     }
 }

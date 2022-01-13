@@ -58,6 +58,13 @@ extension Currency {
         var usdValue: Decimal?
         var exchangePrice: String?
         var lastUpdatedAt: String?
+        
+        static var encodingStrategy: JSONEncodingStrategy {
+            return JSONEncodingStrategy(keys: .convertToSnakeCase)
+        }
+        static var decodingStrategy: JSONDecodingStrategy {
+            return JSONDecodingStrategy(keys: .convertFromSnakeCase)
+        }
 
         init() {
             self.currencyId = nil
@@ -75,3 +82,5 @@ extension Currency: Equatable {
         return lhs.id == rhs.id
     }
 }
+
+final class CurrencyList: ListEntityModel<Currency> {}

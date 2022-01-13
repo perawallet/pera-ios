@@ -20,15 +20,11 @@ import MacaroonUIKit
 struct StatisticsDateSelectionViewTheme: LayoutSheet, StyleSheet {
     let backgroundColor: Color
     let cellSpacing: LayoutMetric
-    let bottomInset: LayoutMetric
     let topInset: LayoutMetric
-    let contentInset: LayoutPaddings
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.cellSpacing = 0
-        self.bottomInset = 16
-        self.topInset = 30
-        self.contentInset = (30, 0, 0, 0)
+        self.topInset = 10
     }
 }

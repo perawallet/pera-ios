@@ -19,11 +19,9 @@ import MacaroonUIKit
 
 extension QRCreationViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let qrCreationViewTheme: QRCreationViewTheme
         let backgroundColor: Color
         
         init(_ family: LayoutFamily) {
-            qrCreationViewTheme = QRCreationViewTheme()
             backgroundColor = AppColors.Shared.System.background
         }
     }

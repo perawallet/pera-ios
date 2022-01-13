@@ -37,7 +37,7 @@ final class AccountCellViewModel {
     init(account: Account, mode: AccountListViewController.Mode) {
         self.mode = mode
         self.account = account
-        bindAccountImageTypeImage(accountImageType: .orange, accountType: account.type)
+        bindAccountImageTypeImage(account)
         bindName(account)
         bindDetail(account, for: mode)
     }
@@ -80,7 +80,7 @@ extension AccountCellViewModel {
         }
     }
 
-    private func bindAccountImageTypeImage(accountImageType: AccountImageType, accountType: AccountType) {
-        accountImageTypeImage = accountType.image(for: accountImageType)
+    private func bindAccountImageTypeImage(_ account: Account) {
+        accountImageTypeImage = account.image
     }
 }

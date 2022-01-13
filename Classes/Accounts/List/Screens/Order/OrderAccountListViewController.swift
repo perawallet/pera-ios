@@ -80,6 +80,7 @@ extension OrderAccountListViewController {
                 return
             }
 
+            self.reorderAccounts()
             self.dismissScreen()
         }
 
@@ -93,6 +94,12 @@ extension OrderAccountListViewController {
 
         leftBarButtonItems = [closeBarButtonItem]
         rightBarButtonItems = [doneBarButtonItem]
+    }
+}
+
+extension OrderAccountListViewController {
+    private func reorderAccounts() {
+
     }
 }
 

@@ -22,12 +22,12 @@ import MacaroonUIKit
 final class AccountTransactionListViewController: TransactionsViewController {
     private lazy var theme = Theme()
 
-    init(draft: AccountTransactionListDraft, configuration: ViewControllerConfiguration) {
+    init(draft: AccountTransactionListing, configuration: ViewControllerConfiguration) {
         super.init(draft: draft, configuration: configuration)
     }
 
     override func prepareLayout() {
         super.prepareLayout()
-        transactionListView.transactionsCollectionView.contentInset = UIEdgeInsets(theme.contentEdgePaddings)
+        listView.contentInset = UIEdgeInsets(theme.contentEdgePaddings)
     }
 }

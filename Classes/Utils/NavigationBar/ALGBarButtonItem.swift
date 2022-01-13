@@ -71,8 +71,13 @@ struct ALGBarButtonItem: BarButtonItem {
                 return ImageContent(normal: icon)
             }
             return nil
-        case .add:
+        case .circleAdd:
             if let icon = img("add-icon-40") {
+                return ImageContent(normal: icon)
+            }
+            return nil
+        case .add:
+            if let icon = img("img-contacts-add") {
                 return ImageContent(normal: icon)
             }
             return nil
@@ -145,6 +150,8 @@ struct ALGBarButtonItem: BarButtonItem {
                 width: .dynamicWidth(BarButtonExpandedSizeHorizontalInsets(contentInsets: (left: 4.0, right: 4.0))),
                 height: .equal(44.0)
             )
+        case .circleAdd:
+            return .explicit(CGSize(width: 40, height: 40))
         case .add:
             return .explicit(CGSize(width: 40, height: 40))
         case .close:
@@ -226,6 +233,7 @@ extension ALGBarButtonItem {
     enum Kind: Hashable {
         case back
         case options
+        case circleAdd
         case add
         case notification
         case close

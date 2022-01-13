@@ -19,10 +19,7 @@ import UIKit
 import MacaroonUIKit
 
 final class ContactsView: View {
-    weak var delegate: ContactsViewDelegate?
-
     private lazy var theme = ContactsViewTheme()
-    private lazy var contactsHeaderView = MainHeaderView()
     private(set) lazy var searchInputView = SearchInputView()
 
     private(set) lazy var contactsCollectionView: UICollectionView = {
@@ -46,17 +43,11 @@ final class ContactsView: View {
         super.init(frame: frame)
 
         customize(theme)
-        linkInteractors()
-    }
-    
-    func linkInteractors() {
-        contactsHeaderView.delegate = self
     }
 
     func customize(_ theme: ContactsViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-        addContactsHeaderView()
         addSearchInputView(theme)
         addContactsCollectionView(theme)
     }
@@ -67,24 +58,12 @@ final class ContactsView: View {
 }
 
 extension ContactsView {
-    private func addContactsHeaderView() {
-        contactsHeaderView.backgroundColor = AppColors.Shared.System.background.uiColor
-        contactsHeaderView.setTitle("contacts-title".localized)
-        contactsHeaderView.setQRButtonHidden(true)
-        contactsHeaderView.setTestNetLabelHidden(true)
-
-        addSubview(contactsHeaderView)
-        contactsHeaderView.snp.makeConstraints {
-            $0.leading.trailing.top.equalToSuperview()
-        }
-    }
-    
     private func addSearchInputView(_ theme: ContactsViewTheme) {
         searchInputView.customize(theme.searchInputViewTheme)
                                             
         addSubview(searchInputView)
         searchInputView.snp.makeConstraints {
-            $0.top.equalTo(contactsHeaderView.snp.bottom).offset(theme.topInset)
+            $0.top.equalToSuperview().offset(theme.topInset)
             $0.top.equalToSuperview().inset(theme.topInset).priority(.low)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
@@ -99,22 +78,4 @@ extension ContactsView {
         
         contactsCollectionView.backgroundView = contentStateView
     }
-}
-
-extension ContactsView {
-    func removeHeader() {
-        contactsHeaderView.removeFromSuperview()
-    }
-}
-
-extension ContactsView: MainHeaderViewDelegate {
-    func mainHeaderViewDidTapAddButton(_ mainHeaderView: MainHeaderView) {
-        delegate?.contactsViewDidTapAddButton(self)
-    }
-    
-    func mainHeaderViewDidTapQRButton(_ mainHeaderView: MainHeaderView) {}
-}
-
-protocol ContactsViewDelegate: AnyObject {
-    func contactsViewDidTapAddButton(_ contactsView: ContactsView)
 }

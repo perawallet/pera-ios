@@ -17,17 +17,12 @@
 
 import UIKit
 
+// <todo> This file will be removed after account screen integration.
 class AccountsView: BaseView {
     
     private let layout = Layout<LayoutConstants>()
     
     weak var delegate: AccountsViewDelegate?
-    
-    private lazy var accountsHeaderView: MainHeaderView = {
-        let view = MainHeaderView()
-        view.setTitle("accounts-title".localized)
-        return view
-    }()
     
     private lazy var contentStateView = ContentStateView()
     
@@ -59,56 +54,20 @@ class AccountsView: BaseView {
         return collectionView
     }()
     
-    override func setListeners() {
-        accountsHeaderView.delegate = self
-    }
-    
     override func prepareLayout() {
-        setupAccountsHeaderViewLayout()
         setupAccountsCollectionViewLayout()
     }
 }
 
 extension AccountsView {
-    private func setupAccountsHeaderViewLayout() {
-        addSubview(accountsHeaderView)
-        
-        accountsHeaderView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
-        }
-    }
-    
     private func setupAccountsCollectionViewLayout() {
         addSubview(accountsCollectionView)
         
         accountsCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(accountsHeaderView.snp.bottom).offset(layout.current.listTopInset)
+            make.edges.equalToSuperview()
         }
         
         accountsCollectionView.backgroundView = contentStateView
-    }
-}
-
-extension AccountsView {
-    func setHeaderButtonsHidden(_ hidden: Bool) {
-        accountsHeaderView.setQRButtonHidden(hidden)
-        accountsHeaderView.setAddButtonHidden(hidden)
-    }
-    
-    func setTestNetLabelHidden(_ hidden: Bool) {
-        accountsHeaderView.setTestNetLabelHidden(hidden)
-    }
-}
-
-extension AccountsView: MainHeaderViewDelegate {
-    func mainHeaderViewDidTapQRButton(_ mainHeaderView: MainHeaderView) {
-        delegate?.accountsViewDidTapQRButton(self)
-    }
-    
-    func mainHeaderViewDidTapAddButton(_ mainHeaderView: MainHeaderView) {
-        delegate?.accountsViewDidTapAddButton(self)
     }
 }
 

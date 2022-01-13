@@ -17,14 +17,11 @@
 
 import Foundation
 
-class InputSuggestionsDataController: NSObject {
-
+final class InputSuggestionsDataController: NSObject {
     weak var delegate: InputSuggestionsDataControllerDelegate?
 
-    private let suggestionCount = 3
-
+    private(set) var suggestionCount = 3
     private var allSuggestions: [String] = []
-
     private var currentSuggestions: [String]
     
     var hasSuggestions: Bool {

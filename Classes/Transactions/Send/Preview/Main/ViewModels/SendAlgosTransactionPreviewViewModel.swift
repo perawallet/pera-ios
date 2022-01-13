@@ -35,7 +35,7 @@ class SendAlgosTransactionPreviewViewModel {
             view.transactionAccountInformationView.setDisabled()
         }
         
-        view.transactionAccountInformationView.setAccountImage(account.accountImage())
+        view.transactionAccountInformationView.setAccountImage(account.accountTypeImage())
         view.transactionAccountInformationView.setAccountName(account.name)
         view.transactionAccountInformationView.setAmount(account.amount.toAlgos.toAlgosStringForLabel)
         view.amountInputView.maxAmount = account.amount.toAlgos
@@ -45,7 +45,7 @@ class SendAlgosTransactionPreviewViewModel {
     
     func update(_ view: SendTransactionPreviewView, with account: Account, isMaxTransaction: Bool) {
         view.transactionAccountInformationView.setAccountName(account.name)
-        view.transactionAccountInformationView.setAccountImage(account.accountImage())
+        view.transactionAccountInformationView.setAccountImage(account.accountTypeImage())
         view.transactionAccountInformationView.setAmount(account.amount.toAlgos.toAlgosStringForLabel)
         view.amountInputView.maxAmount = account.amount.toAlgos
 

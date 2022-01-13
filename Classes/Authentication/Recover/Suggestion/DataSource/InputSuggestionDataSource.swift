@@ -17,8 +17,7 @@
 
 import UIKit
 
-class InputSuggestionDataSource: NSObject {
-
+final class InputSuggestionDataSource: NSObject {
     weak var dataController: InputSuggestionsDataController?
 
     init(dataController: InputSuggestionsDataController) {
@@ -29,18 +28,12 @@ class InputSuggestionDataSource: NSObject {
 
 extension InputSuggestionDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return (dataController?.suggestionCount).ifNil(0)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let suggestion = dataController?.suggestion(at: indexPath.item),
-              let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: InputSuggestionCell.reusableIdentifier,
-                for: indexPath
-            ) as? InputSuggestionCell else {
-            fatalError("Index path is out of bounds")
-        }
-
+        let suggestion = dataController?.suggestion(at: indexPath.item)
+        let cell = collectionView.dequeue(InputSuggestionCell.self, at: indexPath)
         cell.bind(InputSuggestionViewModel(suggestion: suggestion, index: indexPath.item))
         return cell
     }

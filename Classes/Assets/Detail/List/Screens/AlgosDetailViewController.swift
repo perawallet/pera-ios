@@ -27,24 +27,19 @@ final class AlgosDetailViewController: TransactionsViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        log(DisplayAssetDetailEvent(assetId: assetDetail?.id)) // <todo>: Log for algo detail
+        log(DisplayAssetDetailEvent(assetId: assetDetail?.id))
     }
 
     override func configureAppearance() {
         super.configureAppearance()
         addTitleView()
     }
-
-    override func linkInteractors() {
-        super.linkInteractors()
-//        transactionActionsView.delegate = self
-    }
 }
 
 extension AlgosDetailViewController {
     private func addTitleView() {
-        let assetDetailTitleView = ImageWithTitleView()
-        assetDetailTitleView.customize(ImageWithTitleAssetDetailViewTheme())
+        let assetDetailTitleView = AssetDetailTitleView()
+        assetDetailTitleView.customize(AssetDetailTitleViewTheme())
         assetDetailTitleView.bindData(AssetDetailTitleViewModel())
 
         navigationItem.titleView = assetDetailTitleView

@@ -119,7 +119,6 @@ extension TransactionDetailView {
         verticalStackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.verticalStackViewTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.bottom.lessThanOrEqualToSuperview()
         }
     }
     
@@ -223,6 +222,7 @@ extension TransactionDetailView {
         openInAlgoExplorerButton.snp.makeConstraints {
             $0.leading.equalToSuperview().inset(theme.horizontalPadding)
             $0.top.equalTo(verticalStackView.snp.bottom).offset(theme.bottomPaddingForSeparator)
+            $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.bottomInset)
         }
     }
 

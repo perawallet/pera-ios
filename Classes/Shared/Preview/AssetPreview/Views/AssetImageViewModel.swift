@@ -13,16 +13,18 @@
 // limitations under the License.
 
 //
-//   TransactionListViewTheme.swift
+//   AssetImageViewModel.swift
 
+import Foundation
+import UIKit
 import MacaroonUIKit
 
-struct TransactionListViewTheme: LayoutSheet, StyleSheet {
-    let backgroundColor: Color
-    let cellSpacing: LayoutMetric
+final class AssetImageViewModel: ViewModel {
+    private(set) var image: UIImage?
+    private(set) var assetAbbreviationForImage: String?
 
-    init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
-        self.cellSpacing = 0
+    init(image: UIImage? = nil, assetAbbreviationForImage: String? = nil) {
+        self.image = image
+        self.assetAbbreviationForImage = assetAbbreviationForImage
     }
 }

@@ -20,16 +20,12 @@ import UIKit
 
 extension TransactionsViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let transactionHistoryTitleCellSize: LayoutSize
-        let transactionHistoryCellSize: LayoutSize
-        let transactionHistoryFilterCellSize: LayoutSize
+        let backgroundColor: Color
         let transactionActionButtonPaddings: LayoutPaddings
 
         init(_ family: LayoutFamily) {
+            self.backgroundColor = AppColors.Shared.System.background
             self.transactionActionButtonPaddings = (.noMetric, .noMetric, UIApplication.shared.safeAreaBottom + 24, 24)
-            self.transactionHistoryTitleCellSize = (UIScreen.main.bounds.width, 49)
-            self.transactionHistoryCellSize = (UIScreen.main.bounds.width, 72)
-            self.transactionHistoryFilterCellSize = (UIScreen.main.bounds.width, 40)
         }
     }
 }

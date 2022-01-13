@@ -120,7 +120,7 @@ extension AccountPreviewView {
 
 extension AccountPreviewView: ViewModelBindable {
     func bindData(_ viewModel: AccountPreviewViewModel?) {
-        imageView.image = viewModel?.accountImageTypeImage
+        imageView.image = viewModel?.accountImage
         accountNameLabel.text = viewModel?.accountName
         assetsAndNFTsLabel.text = viewModel?.assetsAndNFTs
         assetValueLabel.text = viewModel?.assetValue

@@ -189,6 +189,7 @@
 "asset-support-error" = "Unfortunately, this account has not added this asset. Please instruct the account owner to add the asset, and then try again.";
 "asset-support-title" = "Account does not accept this asset";
 "asset-add-confirmation-title" = "Adding Asset";
+"asset-removing-status" = "Removing Asset";
 "internet-connection-error-title" = "Connect to the Internet";
 "internet-connection-error-detail" = "We couldn’t reach the server, make sure you are connected to the internet";
 "asset-remove-warning" = "To remove %@, the balance must be 0. Please transfer the balance to another account and try again.";
@@ -651,7 +652,7 @@ on your Ledger device (%d)";
 "title-algo-rewards" = "Rewards";
 "value-one-algo" = "1 ALGO = %@";
 
-"title-algorand" = "Algorand";
+"title-algorand" = "Algo";
 "title-account-balance" = "Balance";
 "title-algorand-value" = "Value";
 

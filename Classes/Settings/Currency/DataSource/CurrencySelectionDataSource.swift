@@ -39,8 +39,8 @@ extension CurrencySelectionDataSource {
             }
             
             switch response {
-            case let .success(currencies):
-                self.currencies = currencies
+            case let .success(currencyList):
+                self.currencies = currencyList.items
                 self.delegate?.currencySelectionDataSourceDidFetchCurrencies(self)
             case .failure:
                 self.delegate?.currencySelectionDataSourceDidFailToFetch(self)

@@ -17,9 +17,13 @@
 
 import UIKit
 
-class InputSuggestionCell: BaseCollectionViewCell<InputSuggestionView> {
+final class InputSuggestionCell: BaseCollectionViewCell<InputSuggestionView> {
+    override func prepareLayout() {
+        super.prepareLayout()
+        contextView.customize(InputSuggestionViewTheme())
+    }
 
     func bind(_ viewModel: InputSuggestionViewModel) {
-        contextView.bind(viewModel)
+        contextView.bindData(viewModel)
     }
 }

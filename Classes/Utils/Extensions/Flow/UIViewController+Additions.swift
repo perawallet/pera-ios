@@ -156,11 +156,7 @@ extension UIViewController {
 extension UIViewController {
     func statusBarStyleForNetwork(isTestNet: Bool) -> UIStatusBarStyle {
         if isTestNet {
-            if #available(iOS 13.0, *) {
                 return .darkContent
-            } else {
-                return .default
-            }
         }
 
         if isDarkModeDisplay {

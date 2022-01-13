@@ -55,6 +55,7 @@ final class Account:
     var receivesNotification: Bool
     var rekeyDetail: RekeyDetail?
     var preferredOrder: Int
+    var accountImage: String?
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -80,7 +81,8 @@ final class Account:
         appsTotalSchema = apiModel.appsTotalSchema
         createdApps = apiModel.createdApps
         receivesNotification = true
-        preferredOrder = 0
+        preferredOrder = -1
+        accountImage = AccountImageType.getRandomImage(for: type).rawValue
     }
 
     init(
@@ -90,7 +92,8 @@ final class Account:
         name: String? = nil,
         rekeyDetail: RekeyDetail? = nil,
         receivesNotification: Bool = true,
-        preferredOrder: Int = 0
+        preferredOrder: Int = -1,
+        accountImage: String? = nil
     ) {
         self.address = address
         self.amount = 0
@@ -103,6 +106,7 @@ final class Account:
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
         self.preferredOrder = preferredOrder
+        self.accountImage = accountImage ?? AccountImageType.getRandomImage(for: type).rawValue
     }
     
     init(accountInformation: AccountInformation) {
@@ -117,6 +121,7 @@ final class Account:
         self.receivesNotification = accountInformation.receivesNotification
         self.rekeyDetail = accountInformation.rekeyDetail
         self.preferredOrder = accountInformation.preferredOrder
+        self.accountImage = accountInformation.accountImage
     }
 
     func encode() -> APIModel {
