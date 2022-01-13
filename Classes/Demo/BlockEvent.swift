@@ -22,11 +22,14 @@ import MagpieHipo
 
 enum BlockEvent {
     case willStart
-    case willFetchAccount(address: String)
+    case willFetchCurrency
+    case didFetchCurrency(Currency)
+    case didFailToFetchCurrency(HIPNetworkError<NoAPIModel>)
+    case willFetchAccount(AccountInformation)
     case didFetchAccount(Account)
-    case didFailToFetchAccount(address: String, error: HIPNetworkError<NoAPIModel>)
-    case willFetchAssetDetails(accountAddress: String)
-    case didFetchAssetDetails([AssetID: AssetInformation], accountAddress: String)
-    case didFailToFetchAssetDetails(accountAddress: String, error: HIPNetworkError<NoAPIModel>)
+    case didFailToFetchAccount(localAccount: AccountInformation, error: HIPNetworkError<NoAPIModel>)
+    case willFetchAssetDetails(Account)
+    case didFetchAssetDetails(account: Account, assetDetails: [AssetID: AssetInformation])
+    case didFailToFetchAssetDetails(account: Account, error: HIPNetworkError<NoAPIModel>)
     case didFinish
 }

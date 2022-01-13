@@ -102,7 +102,7 @@ extension AlgoStatisticsDataController {
             fatalError("API must be set")
         }
 
-        api.getCurrencyValue(api.session.preferredCurrency) { response in
+        api.getCurrencyValue(api.session.preferredCurrency, queue: .main) { response in
             switch response {
             case let .success(result):
                 completion(result)

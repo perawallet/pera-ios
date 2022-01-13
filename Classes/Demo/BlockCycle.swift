@@ -19,10 +19,12 @@
 import Foundation
 
 protocol BlockCycle: AnyObject {
-    typealias Handler = () -> Void
-    
-    func startListening(
-        onChange handler: @escaping Handler
+    typealias NotificationHandler = () -> Void
+
+    func notify(
+        queue: DispatchQueue,
+        execute handler: @escaping NotificationHandler
     )
+    func startListening()
     func stopListening()
 }

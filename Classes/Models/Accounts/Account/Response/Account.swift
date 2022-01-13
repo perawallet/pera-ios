@@ -108,20 +108,20 @@ final class Account: ALGEntityModel {
     }
     
     init(
-        accountInformation: AccountInformation
+        localAccount: AccountInformation
     ) {
-        self.address = accountInformation.address
+        self.address = localAccount.address
         self.amount = 0
         self.amountWithoutRewards = 0
         self.pendingRewards = 0
         self.status = .offline
-        self.name = accountInformation.name
-        self.type = accountInformation.type
-        self.ledgerDetail = accountInformation.ledgerDetail
-        self.receivesNotification = accountInformation.receivesNotification
-        self.rekeyDetail = accountInformation.rekeyDetail
-        self.preferredOrder = accountInformation.preferredOrder
-        self.accountImage = accountInformation.accountImage
+        self.name = localAccount.name
+        self.type = localAccount.type
+        self.ledgerDetail = localAccount.ledgerDetail
+        self.receivesNotification = localAccount.receivesNotification
+        self.rekeyDetail = localAccount.rekeyDetail
+        self.preferredOrder = localAccount.preferredOrder
+        self.accountImage = localAccount.accountImage
     }
 
     func encode() -> APIModel {

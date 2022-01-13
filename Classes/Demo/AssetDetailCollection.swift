@@ -21,7 +21,8 @@ import MacaroonUtils
 
 struct AssetDetailCollection:
     Collection,
-    ExpressibleByArrayLiteral {
+    ExpressibleByArrayLiteral,
+    Printable {
     typealias Key = AssetID
     typealias Index = AssetDetailCollectionIndex
     typealias Element = AssetInformation
@@ -33,6 +34,10 @@ struct AssetDetailCollection:
     }
     var endIndex: Index {
         return Index(table.endIndex)
+    }
+    
+    var debugDescription: String {
+        return table.debugDescription
     }
     
     @Atomic(identifier: "assetDetailCollection.table")

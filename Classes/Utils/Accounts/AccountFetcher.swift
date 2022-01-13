@@ -58,7 +58,7 @@ final class AccountFetcher: AccountFetching {
                 case let .failure(error, _):
                     /// Error 404 means that the account exists with 0 balance. So, it should be added to the account list of the user.
                     if error.isHttpNotFound {
-                        let account = Account(accountInformation: localAccount)
+                        let account = Account(localAccount: localAccount)
                         account.update(from: localAccount)
                         fetchedAccounts.append(account)
 

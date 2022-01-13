@@ -30,6 +30,12 @@ final class ALGBlockOperationQueue {
 
 extension ALGBlockOperationQueue {
     func enqueue(
+        _ operation: Operation
+    ) {
+        underlyingQueue.addOperation(operation)
+    }
+    
+    func enqueue(
         _ operations: [Operation],
         forAccountAddress address: String
     ) {

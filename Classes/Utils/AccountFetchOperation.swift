@@ -49,7 +49,7 @@ class AccountFetchOperation: AsyncOperation {
                 }
             case let .failure(error, _):
                 if error.isHttpNotFound {
-                    self.onCompleted?(Account(accountInformation: self.accountInformation), nil)
+                    self.onCompleted?(Account(localAccount: self.accountInformation), nil)
                 } else {
                     self.onCompleted?(nil, error)
                 }
