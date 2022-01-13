@@ -93,8 +93,11 @@ extension TransactionDetailViewModel {
         } else if let payment = transaction.payment {
             let amount = payment.amountForTransaction(includesCloseAmount: false).toAlgos
 
-            let value: TransactionAmountView.Mode = transaction.isSelfTransaction() ? .normal(amount: amount) : .positive(amount: amount)
-            transactionAmountViewMode = value
+            if transaction.isSelfTransaction() {
+                transactionAmountViewMode = .normal(amount: amount)
+            } else {
+                transactionAmountViewMode = .positive(amount: amount)
+            }
 
             bindCloseAmount(for: transaction)
             bindCloseTo(for: transaction)
@@ -138,7 +141,7 @@ extension TransactionDetailViewModel {
                 if transaction.isSelfTransaction() {
                     transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
                 } else {
-                    transactionAmountViewMode = .positive(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+                    transactionAmountViewMode = .negative(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
                 }
             } else if transaction.isAssetAdditionTransaction(for: account.address) {
                 transactionAmountViewMode = .normal(amount: 0.0)

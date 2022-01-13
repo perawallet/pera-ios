@@ -204,6 +204,7 @@ extension TransactionDetailView {
     }
     
     private func addNoteView(_ theme: TransactionDetailViewTheme) {
+        noteView.customize(theme.transactionTextInformationViewCommonTheme)
         noteView.bindData(TransactionTextInformationViewModel(title: "transaction-detail-note".localized))
         noteView.isUserInteractionEnabled = true
 
