@@ -54,7 +54,6 @@ extension NavigationController {
         appearance.backgroundColor = AppColors.Shared.System.background.uiColor
         appearance.shadowColor = .clear
         navigationBar.isTranslucent = false
-        navigationBar.prefersLargeTitles = true
         navigationBar.standardAppearance = appearance
         navigationBar.scrollEdgeAppearance = navigationBar.standardAppearance
     }
