@@ -22,6 +22,7 @@ import MacaroonUIKit
 final class AssetDetailTitleViewModel: ViewModel {
     private(set) var image: UIImage?
     private(set) var title: String?
+    private(set) var assetAbbreviationForImage: String?
     
     init(assetDetail: AssetDetail? = nil) {
         bindTitle(assetDetail)
@@ -32,6 +33,7 @@ final class AssetDetailTitleViewModel: ViewModel {
 extension AssetDetailTitleViewModel {
     private func bindImage(_ assetDetail: AssetDetail?) {
         guard assetDetail == nil else {
+            assetAbbreviationForImage = TextFormatter.assetShortName.format(assetDetail?.assetName)
             return
         }
         image = "icon-algo-circle-green".uiImage
@@ -40,7 +42,7 @@ extension AssetDetailTitleViewModel {
     private func bindTitle(_ assetDetail: AssetDetail?) {
         if let assetDetail = assetDetail {
             if let assetName = assetDetail.assetName {
-                title = TextFormatter.assetShortName.format(assetName)
+                title = assetName
             } else {
                 title = "title-unknown".localized
             }

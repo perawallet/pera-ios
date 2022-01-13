@@ -56,16 +56,6 @@ extension ImageWithTitleView {
         imageView.image = viewModel?.image
         titleLabel.text = viewModel?.name
     }
-
-    func bindData(_ viewModel: AssetDetailTitleViewModel?) {
-        if let image = viewModel?.image {
-            imageView.image = image
-        } else {
-            imageView.removeFromSuperview()
-        }
-
-        titleLabel.text = viewModel?.title
-    }
 }
 
 extension ImageWithTitleView {

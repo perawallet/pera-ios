@@ -31,6 +31,6 @@ class SelectAssetViewModel {
     }
 
     private func setAccountImage(from account: Account) {
-        accountImage = account.accountImage()
+        accountImage = account.accountTypeImage()
     }
 }

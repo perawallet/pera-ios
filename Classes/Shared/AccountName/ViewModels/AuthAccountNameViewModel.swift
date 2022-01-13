@@ -20,16 +20,22 @@ import MacaroonUIKit
 
 final class AuthAccountNameViewModel: PairedViewModel {
     private(set) var accountType: AccountType
+    private(set) var image: UIImage?
     private(set) var address: String?
     
     init(_ model: Account) {
         accountType = model.type
         bindAddress(model)
+        bindImage(model)
     }
 }
 
 extension AuthAccountNameViewModel {
     private func bindAddress(_ account: Account) {
         address = account.authAddress.unwrap(or: account.address).shortAddressDisplay()
+    }
+
+    private func bindImage(_ account: Account) {
+        image = account.image ?? accountType.image(for: AccountImageType.getRandomImage(for: accountType))
     }
 }

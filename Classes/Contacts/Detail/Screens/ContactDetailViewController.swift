@@ -147,6 +147,7 @@ extension ContactDetailViewController {
                                         strongSelf.contactDetailView.assetsCollectionView.reloadData()
                                     }
                                 case .failure:
+                                    self?.loadingController?.stopLoading()
                                     failedAssetFetchCount += 1
                                 }
                             }

@@ -112,7 +112,7 @@ extension WCConnectionAccountSelectionView {
 
 extension WCConnectionAccountSelectionView: ViewModelBindable {
     func bindData(_ viewModel: AccountPreviewViewModel?) {
-        typeImageView.image = viewModel?.accountImageTypeImage
+        typeImageView.image = viewModel?.accountImage
         nameLabel.text = viewModel?.accountName
         detailLabel.text = viewModel?.assetsAndNFTs
     }

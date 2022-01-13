@@ -20,7 +20,7 @@ import MagpieCore
 extension ALGAPI {
     @discardableResult
     func getCurrencies(
-        onCompleted handler: @escaping (Response.ModelResult<[Currency]>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<CurrencyList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)

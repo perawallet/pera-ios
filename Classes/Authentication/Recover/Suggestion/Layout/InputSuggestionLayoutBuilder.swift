@@ -16,16 +16,12 @@
 //   InputSuggestionLayoutBuilder.swift
 
 import UIKit
+import MacaroonUIKit
 
-class InputSuggestionLayoutBuilder: NSObject {
-
-    private let layout = Layout<LayoutConstants>()
-
+final class InputSuggestionLayoutBuilder: NSObject {
     weak var delegate: InputSuggestionLayoutBuilderDelegate?
 
-    func registerCells(to collectionView: UICollectionView) {
-        collectionView.register(InputSuggestionCell.self, forCellWithReuseIdentifier: InputSuggestionCell.reusableIdentifier)
-    }
+    private let theme = Theme()
 }
 
 extension InputSuggestionLayoutBuilder: UICollectionViewDelegateFlowLayout {
@@ -34,7 +30,7 @@ extension InputSuggestionLayoutBuilder: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return layout.current.cellSize
+        return CGSize(theme.cellSize)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -43,11 +39,18 @@ extension InputSuggestionLayoutBuilder: UICollectionViewDelegateFlowLayout {
 }
 
 extension InputSuggestionLayoutBuilder {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellSize = CGSize(width: UIScreen.main.bounds.width / 3.0, height: 44.0)
+    private struct Theme: LayoutSheet {
+        let cellSize: LayoutSize
+
+        init(_ family: LayoutFamily) {
+            cellSize = (UIScreen.main.bounds.width / 3, 44)
+        }
     }
 }
 
 protocol InputSuggestionLayoutBuilderDelegate: AnyObject {
-    func inputSuggestionLayoutBuilder(_ inputSuggestionLayoutBuilder: InputSuggestionLayoutBuilder, didSelectItemAt index: Int)
+    func inputSuggestionLayoutBuilder(
+        _ inputSuggestionLayoutBuilder: InputSuggestionLayoutBuilder,
+        didSelectItemAt index: Int
+    )
 }

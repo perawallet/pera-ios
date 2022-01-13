@@ -60,7 +60,6 @@ final class NotificationFilterViewController: BaseViewController {
             $0.top.safeEqualToTop(of: self)
             $0.leading.trailing.bottom.equalToSuperview()
         }
-
     }
 }
 

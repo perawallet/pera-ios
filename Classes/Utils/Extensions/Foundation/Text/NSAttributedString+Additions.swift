@@ -16,6 +16,7 @@
 //  NSAttributedString+Additions.swift
 
 import Foundation
+import CoreGraphics
 
 extension NSAttributedString {
     static func + (lhs: NSAttributedString, rhs: NSAttributedString) -> NSAttributedString {
@@ -25,5 +26,17 @@ extension NSAttributedString {
         compoundAttributedString.append(rhs)
         
         return compoundAttributedString
+    }
+
+    func height(withConstrained width: CGFloat) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+
+        let rect = self.boundingRect(
+            with: constraintRect,
+            options: [.usesLineFragmentOrigin],
+            context: nil
+        )
+
+        return ceil(rect.size.height)
     }
 }

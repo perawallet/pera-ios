@@ -79,6 +79,7 @@ extension NotificationView {
             $0.top.equalTo(notificationImageView)
             $0.leading.equalTo(notificationImageView.snp.trailing).offset(theme.titleLabelLeadingPadding)
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.bottom.equalToSuperview().inset(theme.titleLabelBottomPadding)
         }
     }
     
@@ -87,8 +88,7 @@ extension NotificationView {
 
         addSubview(timeLabel)
         timeLabel.snp.makeConstraints {
-            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.timeLabelVerticalPaddings.top)
-            $0.bottom.equalToSuperview().inset(theme.timeLabelVerticalPaddings.bottom)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.timeLabelTopPadding)
             $0.leading.equalTo(titleLabel)
         }
     }
@@ -100,6 +100,7 @@ extension NotificationView {
         notificationImageView.image = nil
         titleLabel.attributedText = nil
         timeLabel.text = nil
+        timeLabel.isHidden = false
     }
 }
 
@@ -108,7 +109,12 @@ extension NotificationView: ViewModelBindable {
         badgeImageView.isHidden = viewModel?.isRead ?? true
         notificationImageView.image = viewModel?.notificationImage
         titleLabel.attributedText = viewModel?.title
-        timeLabel.text = viewModel?.time
+
+        if let time = viewModel?.time {
+            timeLabel.text = time
+        } else {
+            timeLabel.isHidden = true
+        }
     }
 }
 
@@ -119,23 +125,21 @@ extension NotificationView {
         }
 
         let width = UIScreen.main.bounds.width
-        let constantHeight =
-        theme.timeLabelVerticalPaddings.top +
-        theme.timeLabelVerticalPaddings.bottom +
-        theme.notificationImageTopPadding
 
-        let titleLabelHeight = viewModel.title?.string.height(
+        let titleLabelHeight = viewModel.title?.height(
             withConstrained: width - (
                 theme.badgeImageSize.w +
                 (theme.badgeImageHorizontalPaddings.leading + theme.badgeImageHorizontalPaddings.trailing) +
                 theme.notificationImageSize.w +
                 theme.titleLabelLeadingPadding +
                 theme.horizontalPadding
-            ),
-            font: Fonts.DMSans.regular.make(15).uiFont
+            )
         ) ?? 40
-        let timeLabelHeight: CGFloat = 17
-        let height: CGFloat = constantHeight + titleLabelHeight + timeLabelHeight
+        
+        let height: CGFloat =
+        titleLabelHeight +
+        theme.notificationImageTopPadding +
+        theme.titleLabelBottomPadding
         return CGSize(width: width, height: height)
     }
 }

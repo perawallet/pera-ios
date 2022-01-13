@@ -42,5 +42,9 @@ extension NotificationFilterResponse {
         init() {
             self.receiveNotifications = nil
         }
+
+        enum CodingKeys: String, CodingKey {
+            case receiveNotifications = "receive_notifications"
+        }
     }
 }

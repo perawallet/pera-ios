@@ -230,7 +230,7 @@ extension SendTransactionView {
         } else if let receiver = viewModel.receiverName {
             receiverInformationView.bindData(
                 TransactionContactInformationViewModel(
-                    contactDisplayViewModel: ContactDisplayViewModel(name: receiver)
+                    contactDisplayViewModel: ContactDisplayViewModel(address: receiver)
                 )
             )
         }

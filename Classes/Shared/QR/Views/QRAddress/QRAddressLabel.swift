@@ -37,21 +37,20 @@ final class QRAddressLabel: View {
 extension QRAddressLabel {
     private func addTitle(_ theme: QRAddressLabelTheme) {
         titleLabel.customizeAppearance(theme.title)
+
         addSubview(titleLabel)
-        
         titleLabel.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview()
-            $0.centerX.equalToSuperview()
         }
     }
     
     private func addAddress(_ theme: QRAddressLabelTheme) {
         addressLabel.customizeAppearance(theme.address)
-        addSubview(addressLabel)
         
+        addSubview(addressLabel)
         addressLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.spacing)
-            $0.leading.trailing.equalToSuperview()
+            $0.leading.trailing.bottom.equalToSuperview()
         }
     }
 }

@@ -22,7 +22,6 @@ import UIKit
 struct QRCreationViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let copyFeedbackLabel: TextStyle
-    let copyFeedbackView: ViewStyle
     let copyButtonTheme: ButtonPrimaryTheme
     let shareButtonTheme: ButtonSecondaryTheme
     let addressTheme: QRAddressLabelTheme
@@ -33,35 +32,36 @@ struct QRCreationViewTheme: StyleSheet, LayoutSheet {
     let labelHorizontalInset: LayoutMetric
     let copyButtonTopInset: LayoutMetric
     let shareButtonTopInset: LayoutMetric
-    let buttonTitleInsets: LayoutPaddings
+    let buttonTitleInset: LayoutMetric
     let buttonHorizontalInset: LayoutMetric
     let bottomInset: LayoutMetric
+    let copyFeedbackLabelTopInset: LayoutMetric
+    let copyFeedbackLabelCorner: Corner
     
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.copyFeedbackLabel = [
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(UIColor.clear),
+            .backgroundColor(AppColors.Components.Text.main.uiColor.withAlphaComponent(0.9)),
             .textColor(AppColors.Components.TextField.defaultBackground),
             .text("qr-creation-copied".localized),
             .textAlignment(.center),
             .textOverflow(FittingText())
         ]
-        self.copyFeedbackView = [
-            .backgroundColor(AppColors.Components.Text.main.uiColor.withAlphaComponent(0.9))
-        ]
+        self.copyFeedbackLabelCorner = Corner(radius: 4)
         self.copyButtonTheme = ButtonPrimaryTheme()
         self.shareButtonTheme = ButtonSecondaryTheme()
         self.addressTheme = QRAddressLabelTheme()
         
         self.copyFeedBackInsets = (8, 16, 8, 16)
-        self.topInset = 92
+        self.topInset = 92 * verticalScale
         self.labelTopInset = 28
         self.labelHorizontalInset = 40
-        self.copyButtonTopInset = 92
+        self.copyButtonTopInset = 16
         self.shareButtonTopInset = 16
-        self.buttonTitleInsets = (0, 16, 0, 0)
+        self.buttonTitleInset = 12
         self.buttonHorizontalInset = 24
         self.bottomInset = 16
+        self.copyFeedbackLabelTopInset = 16
     }
 }

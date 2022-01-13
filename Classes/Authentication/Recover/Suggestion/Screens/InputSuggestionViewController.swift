@@ -17,30 +17,23 @@
 
 import UIKit
 
-class InputSuggestionViewController: BaseViewController {
-
+final class InputSuggestionViewController: BaseViewController {
     weak var delegate: InputSuggestionViewControllerDelegate?
 
     private lazy var dataController = InputSuggestionsDataController()
-
     private lazy var dataSource = InputSuggestionDataSource(dataController: dataController)
-
     private lazy var layoutBuilder = InputSuggestionLayoutBuilder()
 
     private lazy var suggestionsCollectionView: UICollectionView = {
         let collectionViewLayout = UICollectionViewFlowLayout()
-        collectionViewLayout.minimumLineSpacing = 0.0
-        collectionViewLayout.minimumInteritemSpacing = 0.0
+        collectionViewLayout.minimumLineSpacing = 0
+        collectionViewLayout.minimumInteritemSpacing = 0
         collectionViewLayout.scrollDirection = .horizontal
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-        collectionView.backgroundColor = .clear
+        collectionView.backgroundColor = AppColors.InputSuggestionView.background.uiColor
+        collectionView.register(InputSuggestionCell.self)
         return collectionView
     }()
-
-    override func configureAppearance() {
-        view.backgroundColor = Colors.Component.inputSuggestionBackground
-        layoutBuilder.registerCells(to: suggestionsCollectionView)
-    }
 
     override func linkInteractors() {
         suggestionsCollectionView.dataSource = dataSource
@@ -50,12 +43,22 @@ class InputSuggestionViewController: BaseViewController {
     }
 
     override func prepareLayout() {
-        prepareWholeScreenLayoutFor(suggestionsCollectionView)
+        addSuggestionsCollectionView()
+    }
+}
+
+extension InputSuggestionViewController {
+    private func addSuggestionsCollectionView() {
+        view.addSubview(suggestionsCollectionView)
+        suggestionsCollectionView.pinToSuperview()
     }
 }
 
 extension InputSuggestionViewController: InputSuggestionLayoutBuilderDelegate {
-    func inputSuggestionLayoutBuilder(_ inputSuggestionLayoutBuilder: InputSuggestionLayoutBuilder, didSelectItemAt index: Int) {
+    func inputSuggestionLayoutBuilder(
+        _ inputSuggestionLayoutBuilder: InputSuggestionLayoutBuilder,
+        didSelectItemAt index: Int
+    ) {
         if let suggestion = dataController.suggestion(at: index),
            !suggestion.isEmpty {
             delegate?.inputSuggestionViewController(self, didSelect: suggestion)
@@ -67,9 +70,7 @@ extension InputSuggestionViewController: InputSuggestionsDataControllerDelegate 
     func inputSuggestionsDataController(
         _ inputSuggestionsDataController: InputSuggestionsDataController,
         didFailedWith error: InputSuggestionsDataController.SuggestionError
-    ) {
-
-    }
+    ) { }
 }
 
 extension InputSuggestionViewController {
@@ -92,5 +93,8 @@ extension InputSuggestionViewController {
 }
 
 protocol InputSuggestionViewControllerDelegate: AnyObject {
-    func inputSuggestionViewController(_ inputSuggestionViewController: InputSuggestionViewController, didSelect mnemonic: String)
+    func inputSuggestionViewController(
+        _ inputSuggestionViewController: InputSuggestionViewController,
+        didSelect mnemonic: String
+    )
 }
