@@ -36,6 +36,7 @@ final class WCSingleTransactionRequestScreen:
 
     var assetDetail: AssetDetail?
 
+    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var requestView = WCSingleTransactionRequestView()
     private lazy var viewModel: WCSingleTransactionRequestViewModel? = {
         guard let transaction = transactions.first else {
@@ -128,6 +129,11 @@ final class WCSingleTransactionRequestScreen:
         wcTransactionSigner.disonnectFromLedger()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        presentInitialWarningAlertIfNeeded()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -183,6 +189,49 @@ extension WCSingleTransactionRequestScreen {
             make.bottom.equalToSuperview()
         }
     }
+
+    private func presentSigningAlert() {
+        guard let params = transactionParams ?? UIApplication.shared.accountManager?.params else {
+            return
+        }
+
+        let containsFutureTransaction = transactions.contains { $0.isFutureTransaction(with: params) }
+        let description = containsFutureTransaction ?
+            "wallet-connect-transaction-warning-future".localized + "wallet-connect-transaction-warning-confirmation".localized :
+            "wallet-connect-transaction-warning-confirmation".localized
+
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: "transaction-request-signing-alert-title".localized,
+            description: description,
+            primaryActionButtonTitle: "title-accept".localized,
+            secondaryActionButtonTitle: "title-cancel".localized,
+            primaryAction: { [weak self] in
+                self?.confirmSigning()
+            }
+        )
+
+        modalTransition.perform(.bottomWarning(configurator: configurator))
+    }
+
+    private func presentInitialWarningAlertIfNeeded() {
+        let oneTimeDisplayStorage = OneTimeDisplayStorage()
+
+        if oneTimeDisplayStorage.isDisplayedOnce(for: .wcInitialWarning) {
+            return
+        }
+
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-green-large".uiImage,
+            title: "node-settings-warning-title".localized,
+            description: "wallet-connect-transaction-warning-initial".localized,
+            primaryActionButtonTitle: nil,
+            secondaryActionButtonTitle: "title-close".localized
+        )
+
+        modalTransition.perform(.bottomWarning(configurator: configurator))
+        oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
+    }
 }
 
 extension WCSingleTransactionRequestScreen: UIScrollViewDelegate {
@@ -208,11 +257,10 @@ extension WCSingleTransactionRequestScreen: WCSingleTransactionRequestViewDelega
     func wcSingleTransactionRequestViewDidTapCancel(_ requestView: WCSingleTransactionRequestView) {
         rejectSigning()
         dismissScreen()
-
     }
 
     func wcSingleTransactionRequestViewDidTapConfirm(_ requestView: WCSingleTransactionRequestView) {
-        confirmSigning()
+        presentSigningAlert()
     }
 
     func wcSingleTransactionRequestViewDidTapShowTransaction(_ requestView: WCSingleTransactionRequestView) {

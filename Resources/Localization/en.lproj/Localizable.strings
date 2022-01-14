@@ -845,6 +845,8 @@ on your Ledger device (%d)";
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Order";
 
+"transaction-request-signing-alert-title" = "Are you sure?";
+
 // MARK: SingleTransactionRequest
 "single-transaction-request-show-detail-title" = "Show Transaction Details";
 "single-transaction-request-network-fee-title" = "Network Fee";
