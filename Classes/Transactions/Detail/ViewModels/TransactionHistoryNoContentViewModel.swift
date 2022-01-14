@@ -24,17 +24,12 @@ struct TransactionHistoryNoContentViewModel: NoContentViewModel {
     private(set) var body: EditText?
 
     init() {
-        bindImage()
         bindTitle()
         bindBody()
     }
 }
 
 extension TransactionHistoryNoContentViewModel {
-    private mutating func bindImage() {
-        icon = "img-nft-empty"
-    }
-
     private mutating func bindTitle() {
         title = .string("accounts-tranaction-empty-text".localized)
     }

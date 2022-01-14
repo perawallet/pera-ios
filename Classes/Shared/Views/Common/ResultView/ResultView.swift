@@ -45,7 +45,12 @@ final class ResultView:
     func bindData(
         _ viewModel: ResultViewModel?
     ) {
-        iconView.image = viewModel?.icon?.uiImage
+        if let icon = viewModel?.icon?.uiImage {
+            iconView.image = icon
+        } else {
+            iconView.removeFromSuperview()
+        }
+
         titleView.editText = viewModel?.title
         bodyView.editText = viewModel?.body
     }
@@ -104,6 +109,7 @@ extension ResultView {
         titleView.fitToVerticalIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.top == iconView.snp.bottom + theme.titleTopMargin
+            $0.top.equalToSuperview().priority(.low)
 
             $0.setPaddings((.noMetric, 0, .noMetric, 0))
         }
@@ -123,4 +129,3 @@ extension ResultView {
         }
     }
 }
-
