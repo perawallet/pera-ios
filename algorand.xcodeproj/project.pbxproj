@@ -3314,9 +3314,9 @@
 		D47C4A9D279173220012D7A6 /* AccountNFTListNoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47C4A9C279173220012D7A6 /* AccountNFTListNoContentViewModel.swift */; };
 		D47C4A9E279173C10012D7A6 /* AccountNFTListNoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47C4A9C279173220012D7A6 /* AccountNFTListNoContentViewModel.swift */; };
 		D47C4A9F279173C10012D7A6 /* AccountNFTListNoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47C4A9C279173220012D7A6 /* AccountNFTListNoContentViewModel.swift */; };
-		D47C4AA1279181A50012D7A6 /* ContactsNoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47C4AA0279181A50012D7A6 /* ContactsNoContentViewModel.swift */; };
-		D47C4AA2279182010012D7A6 /* ContactsNoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47C4AA0279181A50012D7A6 /* ContactsNoContentViewModel.swift */; };
-		D47C4AA3279182010012D7A6 /* ContactsNoContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47C4AA0279181A50012D7A6 /* ContactsNoContentViewModel.swift */; };
+		D47C4AA1279181A50012D7A6 /* ContactsNoContentWithActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47C4AA0279181A50012D7A6 /* ContactsNoContentWithActionViewModel.swift */; };
+		D47C4AA2279182010012D7A6 /* ContactsNoContentWithActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47C4AA0279181A50012D7A6 /* ContactsNoContentWithActionViewModel.swift */; };
+		D47C4AA3279182010012D7A6 /* ContactsNoContentWithActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47C4AA0279181A50012D7A6 /* ContactsNoContentWithActionViewModel.swift */; };
 		D4822735272BF37F004CB9BF /* AddContactViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4822734272BF37F004CB9BF /* AddContactViewTheme.swift */; };
 		D4822736272BF37F004CB9BF /* AddContactViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4822734272BF37F004CB9BF /* AddContactViewTheme.swift */; };
 		D4822737272BF37F004CB9BF /* AddContactViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4822734272BF37F004CB9BF /* AddContactViewTheme.swift */; };
@@ -4908,7 +4908,7 @@
 		D479D10C26D4FD7100110E04 /* BannerViewErrorTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewErrorTheme.swift; sourceTree = "<group>"; };
 		D479D11026D51C4F00110E04 /* BannerViewInfoTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerViewInfoTheme.swift; sourceTree = "<group>"; };
 		D47C4A9C279173220012D7A6 /* AccountNFTListNoContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountNFTListNoContentViewModel.swift; sourceTree = "<group>"; };
-		D47C4AA0279181A50012D7A6 /* ContactsNoContentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsNoContentViewModel.swift; sourceTree = "<group>"; };
+		D47C4AA0279181A50012D7A6 /* ContactsNoContentWithActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsNoContentWithActionViewModel.swift; sourceTree = "<group>"; };
 		D4822734272BF37F004CB9BF /* AddContactViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactViewTheme.swift; sourceTree = "<group>"; };
 		D4822738272BFC3F004CB9BF /* BadgedImageVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgedImageVIew.swift; sourceTree = "<group>"; };
 		D482273C272C0DA8004CB9BF /* BadgedImageViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgedImageViewTheme.swift; sourceTree = "<group>"; };
@@ -10970,7 +10970,7 @@
 			isa = PBXGroup;
 			children = (
 				2B82B1CB2253DE2500A8909F /* ContactsViewModel.swift */,
-				D47C4AA0279181A50012D7A6 /* ContactsNoContentViewModel.swift */,
+				D47C4AA0279181A50012D7A6 /* ContactsNoContentWithActionViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -14423,7 +14423,7 @@
 				D473CA5226E1733700558598 /* BottomWarningViewTheme.swift in Sources */,
 				17BD4F032292F1260003E49A /* SingleLineInputField.swift in Sources */,
 				2B38C92924D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */,
-				D47C4AA3279182010012D7A6 /* ContactsNoContentViewModel.swift in Sources */,
+				D47C4AA3279182010012D7A6 /* ContactsNoContentWithActionViewModel.swift in Sources */,
 				F07CD2F5276A034B006665FE /* AccountResult.swift in Sources */,
 				17BD4F052292F1260003E49A /* PollingOperation.swift in Sources */,
 				2BD54767231714A9007179FE /* RewardDetailViewController.swift in Sources */,
@@ -15553,7 +15553,7 @@
 				D4092BB6276B56020009722D /* WCSessionShortListItemCell.swift in Sources */,
 				2B0F631324EC129D00DA22A6 /* SendAssetTransactionViewController.swift in Sources */,
 				F0772B59275F5C4F003A9329 /* CurrencyFetchOperation.swift in Sources */,
-				D47C4AA2279182010012D7A6 /* ContactsNoContentViewModel.swift in Sources */,
+				D47C4AA2279182010012D7A6 /* ContactsNoContentWithActionViewModel.swift in Sources */,
 				18058CAA26B150CE009E89D8 /* WarningAlertViewModel.swift in Sources */,
 				2B0F631424EC129D00DA22A6 /* TransactionAccountInformationView.swift in Sources */,
 				2B7E3017267A253D00E89EE3 /* WCSessionListEmptyView.swift in Sources */,
@@ -16549,7 +16549,7 @@
 				171111B8225E0C8400DAF55C /* Toggle.swift in Sources */,
 				D4CCA1D927242B3B00DF1B76 /* RekeyTransitionItemView.swift in Sources */,
 				2B03D69925C23BFD0079A973 /* MaximumBalanceWarningViewController.swift in Sources */,
-				D47C4AA1279181A50012D7A6 /* ContactsNoContentViewModel.swift in Sources */,
+				D47C4AA1279181A50012D7A6 /* ContactsNoContentWithActionViewModel.swift in Sources */,
 				2B0AD8372757DEDD00F83660 /* SingleLineTitleActionViewModel.swift in Sources */,
 				2B5671572400751C0037FCFA /* LedgerTutorialInstructionListViewController.swift in Sources */,
 				2B0D84EB239488A500F0EAA7 /* AssetConfigTransactionType.swift in Sources */,

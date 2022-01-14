@@ -13,7 +13,7 @@
 // limitations under the License.
 
 //
-//   ContactsNoContentViewModel.swift
+//   ContactsNoContentWithActionViewModel.swift
 
 import Foundation
 import MacaroonUIKit

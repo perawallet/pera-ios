@@ -30,7 +30,7 @@ class ContactsViewController: BaseViewController {
     
     private lazy var contactsView = ContactsView()
     
-    private lazy var noContentView = NoContentWithActionView()
+    private lazy var noContentWithActionView = NoContentWithActionView()
     private lazy var searchEmptyStateView = SearchEmptyView()
     
     private lazy var refreshControl: UIRefreshControl = {
@@ -60,8 +60,8 @@ class ContactsViewController: BaseViewController {
     override func setListeners() {
         super.setListeners()
 
-        noContentView.setListeners()
-        noContentView.handlers.didTapActionView = { [weak self] in
+        noContentWithActionView.setListeners()
+        noContentWithActionView.handlers.didTapActionView = { [weak self] in
             guard let self = self else {
                 return
 
@@ -96,7 +96,7 @@ class ContactsViewController: BaseViewController {
     }
 
     override func bindData() {
-        noContentView.bindData(ContactsNoContentWithActionViewModel())
+        noContentWithActionView.bindData(ContactsNoContentWithActionViewModel())
     }
 
     override func configureAppearance() {
@@ -109,7 +109,7 @@ class ContactsViewController: BaseViewController {
     }
     
     override func prepareLayout() {
-        noContentView.customize(NoContentWithActionViewCommonTheme())
+        noContentWithActionView.customize(NoContentWithActionViewCommonTheme())
 
         view.addSubview(contactsView)
         contactsView.snp.makeConstraints {
@@ -142,7 +142,7 @@ extension ContactsViewController {
                 self.searchResults = self.contacts
 
                 if self.searchResults.isEmpty {
-                    self.contactsView.contactsCollectionView.contentState = .empty(self.noContentView)
+                    self.contactsView.contactsCollectionView.contentState = .empty(self.noContentWithActionView)
                 } else {
                     self.contactsView.contactsCollectionView.contentState = .none
                 }
@@ -262,7 +262,7 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
 extension ContactsViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         if contacts.isEmpty {
-            contactsView.contactsCollectionView.contentState = .empty(noContentView)
+            contactsView.contactsCollectionView.contentState = .empty(noContentWithActionView)
             return
         }
 
