@@ -37,24 +37,47 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        guard let dataSource = transactionDataSource?.dataSource else {
-            return .zero
+        guard let itemIdentifier = transactionDataSource?.dataSource.itemIdentifier(for: indexPath) else {
+            return CGSize((collectionView.bounds.width, 0))
         }
 
-        if (draft.type == .algos || draft.type == .asset),
-           indexPath.section == 0 {
+        switch itemIdentifier {
+        case .info:
             return draft.type == .algos ? CGSize(theme.algosInfoSize) : CGSize(theme.assetInfoSize)
-        } else if case .title = dataSource.itemIdentifier(for: indexPath) {
-            return CGSize(theme.transactionHistoryTitleCellSize)
-        } else if case .filter = dataSource.itemIdentifier(for: indexPath) {
+        case .filter:
             return CGSize(theme.transactionHistoryFilterCellSize)
-        } else {
+        case .transaction, .pending, .reward:
             return CGSize(theme.transactionHistoryCellSize)
+        case .title:
+            return CGSize(theme.transactionHistoryTitleCellSize)
+        case .empty:
+            let width = collectionView.bounds.width
+            let height =
+            collectionView.bounds.height -
+            collectionView.adjustedContentInset.bottom
+            return CGSize((width, height))
+        case .nextList:
+            return CGSize((collectionView.bounds.width, 100))
         }
     }
 
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if let loadingCell = cell as? LoadingCell {
+            loadingCell.startAnimating()
+            return
+        }
+
         handlers.willDisplay?(indexPath)
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        if let loadingCell = cell as? LoadingCell {
+            loadingCell.stopAnimating()
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

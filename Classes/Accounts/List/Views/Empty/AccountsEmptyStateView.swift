@@ -156,6 +156,6 @@ protocol AccountsEmptyStateViewDelegate: AnyObject {
     func accountsEmptyStateViewDidTapActionButton(_ accountsEmptyStateView: AccountsEmptyStateView)
 }
 
-enum EmptyState {
+enum AccountsEmptyState {
     case accounts
 }

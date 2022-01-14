@@ -23,35 +23,35 @@ class EmptyStateViewModel {
     private(set) var detail: String?
     private(set) var action: String?
 
-    init(emptyState: EmptyState) {
+    init(emptyState: AccountsEmptyState) {
         setImage(from: emptyState)
         setTitle(from: emptyState)
         setDetail(from: emptyState)
         setAction(from: emptyState)
     }
 
-    private func setImage(from state: EmptyState) {
+    private func setImage(from state: AccountsEmptyState) {
         switch state {
         case .accounts:
             image = img("img-accounts-empty")
         }
     }
 
-    private func setTitle(from state: EmptyState) {
+    private func setTitle(from state: AccountsEmptyState) {
         switch state {
         case .accounts:
             title = "empty-accounts-title".localized
         }
     }
 
-    private func setDetail(from state: EmptyState) {
+    private func setDetail(from state: AccountsEmptyState) {
         switch state {
         case .accounts:
             detail = "empty-accounts-detail".localized
         }
     }
 
-    private func setAction(from state: EmptyState) {
+    private func setAction(from state: AccountsEmptyState) {
         switch state {
         case .accounts:
             action = "empty-accounts-action".localized
