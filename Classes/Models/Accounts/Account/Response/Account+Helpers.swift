@@ -34,6 +34,13 @@ extension Account {
         return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
     }
 
+    func amount(for assetInformation: AssetInformation) -> Decimal? {
+        guard let asset = assets?.first(where: { $0.id == assetInformation.id }) else {
+            return nil
+        }
+        return asset.amount.assetAmount(fromFraction: assetInformation.decimals)
+    }
+
     func amountWithoutFraction(for assetDetail: AssetDetail) -> UInt64? {
         guard let asset = assets?.first(where: { $0.id == assetDetail.id }) else {
             return nil

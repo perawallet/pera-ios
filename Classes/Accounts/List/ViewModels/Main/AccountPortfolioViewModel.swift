@@ -15,6 +15,7 @@
 //
 //   AccountPortfolioViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
 final class AccountPortfolioViewModel: ViewModel {
@@ -23,32 +24,51 @@ final class AccountPortfolioViewModel: ViewModel {
     private(set) var assetHoldingsValue: EditText?
 
     init(
-        _ accounts: [Account]
+        _ accounts: [Account],
+        currency: Currency?
     ) {
-        bindPortfolioValueViewModel(accounts)
-        bindAlgoHoldingsValue(accounts)
-        bindAssetHoldingsValue(accounts)
+        bindPortfolioValueViewModel(accounts, currency)
+        bindAlgoHoldingsValue(accounts, currency)
+        bindAssetHoldingsValue(accounts, currency)
     }
 }
 
-extension AccountPortfolioViewModel {
+extension AccountPortfolioViewModel: PortfolioCalculating {
     private func bindPortfolioValueViewModel(
-        _ accounts: [Account]
+        _ accounts: [Account],
+        _ currency: Currency?
     ) {
-        let totalAlgo = accounts.map( {$0.amount} ).reduce(0, +).toAlgos
-        portfolioValueViewModel = PortfolioValueViewModel(.all(value: .value(totalAlgo)))
+        if let totalPortfolioValue = calculatePortfolio(for: accounts, with: currency) {
+            portfolioValueViewModel = PortfolioValueViewModel(.all(value: .value(totalPortfolioValue)), currency)
+            return
+        }
+
+        portfolioValueViewModel = PortfolioValueViewModel(.all(value: .unknown), currency)
     }
 
     private func bindAlgoHoldingsValue(
-        _ accounts: [Account]
+        _ accounts: [Account],
+        _ currency: Currency?
     ) {
-        let totalAlgo = accounts.map( {$0.amount} ).reduce(0, +).toAlgos
-        algoHoldingsValue = .string("\(totalAlgo)")
+        if let totalAlgoHoldings = calculateAlgoHoldings(for: accounts, with: currency),
+           let currency = currency {
+            algoHoldingsValue = .string(totalAlgoHoldings.toCurrencyStringForLabel(with: currency.id))
+            return
+        }
+
+        algoHoldingsValue = .string("N/A")
     }
 
     private func bindAssetHoldingsValue(
-        _ accounts: [Account]
+        _ accounts: [Account],
+        _ currency: Currency?
     ) {
-        assetHoldingsValue = .string("1234")
+        if let totalAssetHoldings = calculateAssetHoldings(for: accounts, with: currency),
+           let currency = currency {
+            assetHoldingsValue = .string(totalAssetHoldings.toCurrencyStringForLabel(with: currency.id))
+            return
+        }
+
+        assetHoldingsValue = .string("N/A")
     }
 }

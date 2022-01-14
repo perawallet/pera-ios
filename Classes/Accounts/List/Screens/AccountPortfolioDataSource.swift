@@ -47,7 +47,7 @@ final class AccountPortfolioDataSource: NSObject {
                 switch identifier {
                 case .portfolio:
                     let cell = collectionView.dequeue(AccountPortfolioCell.self, at: indexPath)
-                    cell.bindData(AccountPortfolioViewModel(self.session.accounts))
+                    cell.bindData(AccountPortfolioViewModel(self.session.accounts, currency: self.session.preferredCurrencyDetails))
 
                     cell.contextView.handlers.didTapPortfolioTitle = { [weak self] in
                         guard let self = self else {

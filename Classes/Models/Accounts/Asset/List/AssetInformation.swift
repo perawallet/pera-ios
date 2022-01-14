@@ -23,7 +23,7 @@ final class AssetInformation: ALGEntityModel {
     let id: Int64
     let name: String?
     let unitName: String?
-    let decimals: Int64
+    let decimals: Int
     let usdValue: String?
     let isVerified: Bool
     let creator: AssetCreator?
@@ -58,7 +58,7 @@ extension AssetInformation {
         var assetId: Int64
         var name: String?
         var unitName: String?
-        var fractionDecimals: Int64?
+        var fractionDecimals: Int?
         var usdValue: String?
         var isVerified: Bool?
         var creator: AssetCreator.APIModel?

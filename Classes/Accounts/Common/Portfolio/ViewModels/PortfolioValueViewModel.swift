@@ -19,19 +19,20 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class PortfolioValueViewModel: PairedViewModel {
+final class PortfolioValueViewModel: ViewModel {
     private(set) var title: EditText?
     private(set) var titleColor: UIColor?
     private(set) var icon: UIImage?
     private(set) var value: EditText?
 
     init(
-        _ type: PortfolioType
+        _ type: PortfolioType,
+        _ currency: Currency?
     ) {
         bindTitle(type)
         bindTitleColor(type)
         bindIcon(type)
-        bindValue(type)
+        bindValue(type, currency)
     }
 }
 
@@ -74,23 +75,29 @@ extension PortfolioValueViewModel {
     }
 
     private func bindValue(
-        _ type: PortfolioType
+        _ type: PortfolioType,
+        _ currency: Currency?
     ) {
-        /// <todo> Amount will be formatted later with the currency values.
         switch type {
         case let .singleAccount(portfolioValue):
             switch portfolioValue {
             case .unknown:
                 value = "N/A"
             case let .value(amount):
-                value = .string("\(amount)")
+                if let currency = currency {
+                    value = .string(amount.toCurrencyStringForLabel(with: currency.id))
+                }
+                value = "N/A"
             }
         case let .all(portfolioValue):
             switch portfolioValue {
             case .unknown:
                 value = "N/A"
             case let .value(amount):
-                value = .string("\(amount)")
+                if let currency = currency {
+                    value = .string(amount.toCurrencyStringForLabel(with: currency.id))
+                }
+                value = "N/A"
             }
         }
     }

@@ -52,15 +52,18 @@ extension PortfolioCalculationDescriptionView {
 
         addSubview(stackView)
         stackView.snp.makeConstraints {
-            $0.leading.trailing.top.equalToSuperview()
+            $0.top.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomPadding)
         }
 
         stackView.addArrangedSubview(errorView)
         stackView.addArrangedSubview(titleLabel)
+        titleLabel.customizeAppearance(theme.title)
 
         stackView.setCustomSpacing(theme.detailPadding, after: titleLabel)
         stackView.addArrangedSubview(detailLabel)
+        detailLabel.customizeAppearance(theme.detail)
 
         stackView.setCustomSpacing(theme.bottomPadding, after: detailLabel)
         stackView.addArrangedSubview(closeButton)

@@ -962,6 +962,9 @@
 		2B2C2FA12768A726002418E3 /* ListStateViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C2FA02768A726002418E3 /* ListStateViewTheme.swift */; };
 		2B2C2FA22768A726002418E3 /* ListStateViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C2FA02768A726002418E3 /* ListStateViewTheme.swift */; };
 		2B2C2FA32768A726002418E3 /* ListStateViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C2FA02768A726002418E3 /* ListStateViewTheme.swift */; };
+		2B2C80E92790987B00532C78 /* PortfolioCalculating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C80E82790987B00532C78 /* PortfolioCalculating.swift */; };
+		2B2C80EA2790987B00532C78 /* PortfolioCalculating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C80E82790987B00532C78 /* PortfolioCalculating.swift */; };
+		2B2C80EB2790987B00532C78 /* PortfolioCalculating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2C80E82790987B00532C78 /* PortfolioCalculating.swift */; };
 		2B2EE87925B6E8B8006A53C5 /* AssetAdditionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE87825B6E8B8006A53C5 /* AssetAdditionViewModelTests.swift */; };
 		2B2EE88325B6E8CE006A53C5 /* AssetRemovalViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE88225B6E8CE006A53C5 /* AssetRemovalViewModelTests.swift */; };
 		2B2EE88A25B6E936006A53C5 /* AssetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE88925B6E936006A53C5 /* AssetViewModelTests.swift */; };
@@ -3915,6 +3918,7 @@
 		2B2C2F982768A6E4002418E3 /* ListStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListStateView.swift; sourceTree = "<group>"; };
 		2B2C2F9C2768A6F0002418E3 /* ListStateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListStateViewModel.swift; sourceTree = "<group>"; };
 		2B2C2FA02768A726002418E3 /* ListStateViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListStateViewTheme.swift; sourceTree = "<group>"; };
+		2B2C80E82790987B00532C78 /* PortfolioCalculating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioCalculating.swift; sourceTree = "<group>"; };
 		2B2EE87825B6E8B8006A53C5 /* AssetAdditionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAdditionViewModelTests.swift; sourceTree = "<group>"; };
 		2B2EE88225B6E8CE006A53C5 /* AssetRemovalViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRemovalViewModelTests.swift; sourceTree = "<group>"; };
 		2B2EE88925B6E936006A53C5 /* AssetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewModelTests.swift; sourceTree = "<group>"; };
@@ -5410,6 +5414,7 @@
 				2B0AD80927566A3400F83660 /* AccountInformationController.swift */,
 				2B0AD81127566CCD00F83660 /* AccountsDataController.swift */,
 				2B0AD81527566CF700F83660 /* AccountsDataState.swift */,
+				2B2C80E82790987B00532C78 /* PortfolioCalculating.swift */,
 			);
 			path = Accounts;
 			sourceTree = "<group>";
@@ -14211,6 +14216,7 @@
 				2B5BE0722519356000324BEE /* AccountTypeViewModel.swift in Sources */,
 				2B288AC4268E374700BC6FB6 /* WCURLMeta.swift in Sources */,
 				2B0D84EF239488BD00F0EAA7 /* AssetTransferTransactionType.swift in Sources */,
+				2B2C80EB2790987B00532C78 /* PortfolioCalculating.swift in Sources */,
 				2BA4B3FB267819B20041586B /* WCSessionItemCell.swift in Sources */,
 				95D11CFA2770A3ED001B2C37 /* SelectAccountView.swift in Sources */,
 				2BB64BE42402AC8400519981 /* LedgerDeviceListViewController.swift in Sources */,
@@ -14857,6 +14863,7 @@
 				2B0F623824EC129D00DA22A6 /* UserDefaults+Additions.swift in Sources */,
 				2B0F623B24EC129D00DA22A6 /* PassphraseVerifyView.swift in Sources */,
 				2B5F6FA22768EC8600C9B780 /* SingleGrayTitleHeaderView.swift in Sources */,
+				2B2C80EA2790987B00532C78 /* PortfolioCalculating.swift in Sources */,
 				2B0F623C24EC129D00DA22A6 /* AssetSupportDraft.swift in Sources */,
 				D421178D26D8EDBA00C032B2 /* ScreenLoadingIndicatorTheme.swift in Sources */,
 				2B80C53A27720F6A00BB071E /* AccountTransactionListViewController.swift in Sources */,
@@ -15693,6 +15700,7 @@
 				D4CC46F026DD17DD00AA1BFE /* Fonts.swift in Sources */,
 				2B8BE4D422391C38005D8565 /* RootViewController.swift in Sources */,
 				2B7E580C257E56BE00731C97 /* Int+Byte.swift in Sources */,
+				2B2C80E92790987B00532C78 /* PortfolioCalculating.swift in Sources */,
 				95B01155276A828600B5CA7B /* EditNoteView.swift in Sources */,
 				2BB64BE02402ABDD00519981 /* LedgerDeviceListView.swift in Sources */,
 				D4BADD8A277C8F3E0078FACB /* TransactionAmountViewModel.swift in Sources */,
@@ -17275,8 +17283,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/danielgindi/Charts";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.0;
+				kind = exactVersion;
+				version = 3.6.0;
 			};
 		};
 		2B187DB426E54B6F005BEDFD /* XCRemoteSwiftPackageReference "WalletConnectSwift" */ = {

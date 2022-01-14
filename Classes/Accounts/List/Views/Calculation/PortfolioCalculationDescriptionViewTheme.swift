@@ -27,6 +27,7 @@ struct PortfolioCalculationDescriptionViewTheme: StyleSheet, LayoutSheet {
 
     let topPadding: LayoutMetric
     let detailPadding: LayoutMetric
+    let horizontalPadding: LayoutMetric
     let bottomPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
@@ -41,11 +42,13 @@ struct PortfolioCalculationDescriptionViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.gray)
+            .textColor(AppColors.Components.Text.gray),
+            .text("portfolio-calculation-description".localized)
         ]
 
         self.topPadding = 28
         self.detailPadding = 20
+        self.horizontalPadding = 24
         self.bottomPadding = 28
     }
 }
