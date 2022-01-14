@@ -353,8 +353,6 @@ extension AccountAssetListViewController: AssetAdditionViewControllerDelegate {
     }
 }
 
-extension AccountAssetListViewController: PortfolioCalculating { }
-
 enum AccountAssetsSection: Int, Hashable {
     case portfolio
     case assets

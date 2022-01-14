@@ -20,7 +20,7 @@ import MacaroonUIKit
 import UIKit
 
 struct PortfolioValueViewModel:
-    PairedViewModel,
+    ViewModel,
     Hashable {
     private(set) var title: EditText?
     private(set) var titleColor: UIColor?
