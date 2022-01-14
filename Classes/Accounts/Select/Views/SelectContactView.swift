@@ -67,6 +67,11 @@ extension SelectContactView: ViewModelBindable {
 }
 
 final class SelectContactCell: BaseCollectionViewCell<SelectContactView> {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        customize(SelectContactViewTheme())
+    }
+
     override func prepareForReuse() {
         super.prepareForReuse()
         contextView.userImageView.image = img("icon-user-placeholder")
