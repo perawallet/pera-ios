@@ -19,7 +19,7 @@ import Foundation
 import UIKit
 import Charts
 
-class AlgoUSDValueFormatter: ValueFormatter {
+class AlgoUSDValueFormatter: IValueFormatter {
     private let values: [ChartDataEntry]
     private var minimumIndex: Double?
     private var maximumIndex: Double?

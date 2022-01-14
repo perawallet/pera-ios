@@ -78,7 +78,11 @@ struct AlgoUSDValueChartCustomizer: AlgorandChartViewCustomizable {
     }
 
     var minimumOffset: CGFloat {
-        return 20.0
+        return 0.0
+    }
+
+    var extraOffset: CGFloat {
+        return 25.0
     }
 }
 
