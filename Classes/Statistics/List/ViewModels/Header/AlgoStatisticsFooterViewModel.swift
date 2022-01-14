@@ -19,16 +19,34 @@ import Foundation
 import MacaroonUIKit
 
 final class AlgoStatisticsFooterViewModel {
-    private(set) var last24hVolumeViewModel: AlgoStatisticsInfoViewModel?
-    private(set) var marketCapViewModel: AlgoStatisticsInfoViewModel?
     private(set) var previousCloseViewModel: AlgoStatisticsInfoViewModel?
     private(set) var openViewModel: AlgoStatisticsInfoViewModel?
 
-    init(_ model: String) {
-        /// <note>: Remove mock data
-        last24hVolumeViewModel = AlgoStatisticsInfoViewModel(title: "algo-statistics-24h-volume".localized, value: "63,041,896")
-        marketCapViewModel = AlgoStatisticsInfoViewModel(title: "algo-statistics-market-cap".localized, value: "2.581B")
-        previousCloseViewModel = AlgoStatisticsInfoViewModel(title: "algo-statistics-previous-close".localized, value: "0.849725")
-        openViewModel = AlgoStatisticsInfoViewModel(title: "algo-statistics-open".localized, value: "0.849725")
+    init(
+        priceChange: AlgoUSDPriceChange,
+        timeInterval: AlgosUSDValueInterval,
+        currency: Currency
+    ) {
+        bindPreviousCloseViewModel(from: priceChange)
+        bindOpenViewModel(from: priceChange)
+    }
+}
+
+extension AlgoStatisticsFooterViewModel {
+    private func bindPreviousCloseViewModel(from priceChange: AlgoUSDPriceChange) {
+        guard let openPrice = priceChange.firstPrice?.open,
+              let price = openPrice.toCurrencyStringForLabel else {
+            return
+        }
+
+        previousCloseViewModel = AlgoStatisticsInfoViewModel(title: "algo-statistics-previous-close".localized, value: "\(price)")
+    }
+    private func bindOpenViewModel(from priceChange: AlgoUSDPriceChange) {
+        guard let openPrice = priceChange.firstPrice?.open,
+              let price = openPrice.toCurrencyStringForLabel else {
+            return
+        }
+
+        openViewModel = AlgoStatisticsInfoViewModel(title: "algo-statistics-open".localized, value: "\(price)")
     }
 }

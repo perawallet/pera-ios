@@ -495,8 +495,7 @@
 // MARK: Ledger Approval
 "ledger-approval-title" = "Ledger Approval";
 "ledger-approval-cancel-title" = "Cancel Approval";
-"ledger-approval-message" = "Please verify the account address
-on your Ledger device (%d)";
+"ledger-approval-message" = "Please verify the account address on your Ledger device (%@)";
 "ledger-approval-connection-title" = "Ledger Connection";
 "ledger-approval-connection-message" = "Waiting for ledger to connect.";
 
@@ -813,7 +812,7 @@ on your Ledger device (%d)";
 
 "account-options-add-account-title" = "Add Account";
 "account-options-arrange-list-title" = "Arrange List";
-"account-listing-error-message" = "Sorry, we can’t show the details of this account. It looks like we are having some internal issues. Please refresh the page.";
+"account-listing-error-message" = "Sorry, we can't show the details of this portfolio. It looks like we are having issues for the calculation.\n\nPlease note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.";
 
 "account-detail-portfolio-title" = "Account Value";
 "account-detail-assets-search" = "Search my assets";
@@ -851,3 +850,4 @@ on your Ledger device (%d)";
 "send-transaction-preview-title" = "Confirm Order";
 
 "portfolio-calculation-title" = "How we calculate portfolio value";
+"portfolio-calculation-description" = "The total portfolio value is calculated by adding up all assets and Algo available in your accounts. If you hold multiple wallets, the Total Portfolio value is a sum of all accounts.\n\nAsset prices are estimated based on daily values fetched from Tinyman. Please note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.\n\nWatch accounts are not considered a part of your portfolio and are not included in the Total Portfolio calculation.";

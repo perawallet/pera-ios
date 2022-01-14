@@ -32,7 +32,7 @@ final class AlgoStatisticsViewController: BaseScrollViewController {
     private lazy var algoStatisticsDataController = AlgoStatisticsDataController(api: api)
 
     private var chartEntries: [AlgosUSDValue]?
-    private var selectedTimeInterval: AlgosUSDValueInterval = .hourly
+    private var selectedTimeInterval: AlgosUSDValueInterval = .daily
 
     private var currency: Currency?
 
@@ -89,7 +89,7 @@ extension AlgoStatisticsViewController {
         }
     }
     
-    private func getChartData(for interval: AlgosUSDValueInterval = .hourly) {
+    private func getChartData(for interval: AlgosUSDValueInterval = .daily) {
         algoStatisticsDataController.getChartData(for: interval)
     }
 }

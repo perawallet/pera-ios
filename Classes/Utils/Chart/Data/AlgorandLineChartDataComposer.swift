@@ -61,7 +61,7 @@ struct AlgorandLineChartDataComposer {
                 dataSet.circleColors = [customizer.circleColor]
                 dataSet.drawHorizontalHighlightIndicatorEnabled = customizer.isDrawingHorizontalHighlightIndicatorEnabled
                 dataSet.drawVerticalHighlightIndicatorEnabled = customizer.isDrawingVerticalHighlightIndicatorEnabled
-                data.append(dataSet)
+                data.addDataSet(dataSet)
             }
         }
 
