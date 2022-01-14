@@ -42,7 +42,7 @@ struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
         self.titleTopMargin = resultTheme.titleTopMargin
         self.body = resultTheme.body
         self.bodyTopMargin = resultTheme.bodyTopMargin
-        self.contentHorizontalPaddings = (16, 16)
+        self.contentHorizontalPaddings = (24, 24)
         self.contentVerticalPadding = 16
         self.actionContentEdgeInsets = (14, 24, 14, 24)
         self.actionCornerRadius = 4
