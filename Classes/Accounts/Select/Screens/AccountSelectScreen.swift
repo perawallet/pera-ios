@@ -23,7 +23,7 @@ import MacaroonUIKit
 final class AccountSelectScreen: BaseViewController {
     private lazy var assetDetailTitleView = AssetDetailTitleView()
     private lazy var accountView = SelectAccountView()
-    private lazy var searchEmptyStateView = SearchEmptyView()
+    private lazy var searchNoContentView = NoContentView()
     private lazy var theme = Theme()
 
     private lazy var dataSource = AccountSelectScreenDataSource(session: session)
@@ -70,8 +70,8 @@ final class AccountSelectScreen: BaseViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        searchEmptyStateView.setTitle("account-select-search-empty-title".localized)
-        searchEmptyStateView.setDetail("account-select-search-empty-detail".localized)
+        searchNoContentView.customize(NoContentViewCommonTheme())
+        searchNoContentView.bindData(AccountSelectSearchNoContentViewModel())
     }
 
     override func prepareLayout() {
@@ -488,7 +488,7 @@ extension AccountSelectScreen: SearchInputViewDelegate {
         accountView.nextButton.isHidden = true
 
         if dataSource.isEmpty {
-            accountView.listView.contentState = .empty(searchEmptyStateView)
+            accountView.listView.contentState = .empty(searchNoContentView)
             return
         }
 
@@ -504,7 +504,7 @@ extension AccountSelectScreen: SearchInputViewDelegate {
 
 
         if dataSource.isListEmtpy {
-            accountView.listView.contentState = .empty(searchEmptyStateView)
+            accountView.listView.contentState = .empty(searchNoContentView)
         } else {
             accountView.listView.contentState = .none
         }

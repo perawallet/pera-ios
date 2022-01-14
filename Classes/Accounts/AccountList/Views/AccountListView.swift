@@ -32,14 +32,12 @@ final class AccountListView: View {
         return collectionView
     }()
 
-    private lazy var emptyStateView: SearchEmptyView = {
-        let emptyStateView = SearchEmptyView()
-        emptyStateView.setTitle("asset-not-found-title".localized)
-        emptyStateView.setDetail("asset-not-found-detail".localized)
-        return emptyStateView
-    }()
+    private lazy var searchNoContentView = NoContentView()
 
     func customize(_ theme: AccountListViewTheme) {
+        searchNoContentView.customize(NoContentViewCommonTheme())
+        searchNoContentView.bindData(AssetListSearchNoContentViewModel())
+
         addAccountCollectionView(theme)
     }
 
@@ -66,6 +64,6 @@ extension AccountListView: ViewModelBindable {
     }
 
     func updateContentStateView(isEmpty: Bool) {
-        accountsCollectionView.contentState = isEmpty ? .empty(emptyStateView) : .none
+        accountsCollectionView.contentState = isEmpty ? .empty(searchNoContentView) : .none
     }
 }

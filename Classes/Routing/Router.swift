@@ -485,8 +485,8 @@ class Router {
             viewController = AccountListOptionsViewController(accountType: accountType, configuration: configuration)
         case let .orderAccountList(accountType):
             viewController = OrderAccountListViewController(accountType: accountType, configuration: configuration)
-        case .accountSelection:
-            viewController = SelectAccountViewController(configuration: configuration)
+        case let .accountSelection(transactionAction):
+            viewController = SelectAccountViewController(transactionAction: transactionAction, configuration: configuration)
         case .assetSelection(let account):
             viewController = SelectAssetViewController(account: account, configuration: configuration)
         case .sendTransaction(let draft):

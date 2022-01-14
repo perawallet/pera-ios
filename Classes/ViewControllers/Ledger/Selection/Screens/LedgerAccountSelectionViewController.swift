@@ -142,6 +142,12 @@ extension LedgerAccountSelectionViewController: LedgerAccountSelectionDataSource
 }
 
 extension LedgerAccountSelectionViewController: LedgerAccountSelectionViewDelegate {
+    func ledgerAccountSelectionViewDidTryAgain(_ ledgerAccountSelectionView: LedgerAccountSelectionView) {
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+        ledgerAccountSelectionView.setLoadingState()
+        dataSource.loadData()
+    }
+
     func ledgerAccountSelectionViewDidAddAccount(_ ledgerAccountSelectionView: LedgerAccountSelectionView) {
         switch accountSetupFlow {
         case let .addNewAccount(mode):

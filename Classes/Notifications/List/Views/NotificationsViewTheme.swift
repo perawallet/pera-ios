@@ -21,11 +21,15 @@ import UIKit
 
 struct NotificationsViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
+    let noContentViewCommonTheme: NoContentViewCommonTheme
+    let noContentWithActionViewCommonTheme: NoContentWithActionViewCommonTheme
     let cellSpacing: LayoutMetric
     let contentInset: LayoutPaddings
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
+        self.noContentViewCommonTheme = NoContentViewCommonTheme()
+        self.noContentWithActionViewCommonTheme = NoContentWithActionViewCommonTheme()
 
         self.cellSpacing = 0
         self.contentInset = (24, 0, 0, 0)

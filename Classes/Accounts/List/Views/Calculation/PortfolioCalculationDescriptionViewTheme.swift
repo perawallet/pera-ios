@@ -26,6 +26,7 @@ struct PortfolioCalculationDescriptionViewTheme: StyleSheet, LayoutSheet {
     let detail: TextStyle
 
     let topPadding: LayoutMetric
+    let stackViewSpacing: LayoutMetric
     let detailPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let bottomPadding: LayoutMetric
@@ -46,9 +47,10 @@ struct PortfolioCalculationDescriptionViewTheme: StyleSheet, LayoutSheet {
             .text("portfolio-calculation-description".localized)
         ]
 
-        self.topPadding = 28
+        self.topPadding = 34
+        self.stackViewSpacing = 28
         self.detailPadding = 20
         self.horizontalPadding = 24
-        self.bottomPadding = 28
+        self.bottomPadding = 16
     }
 }

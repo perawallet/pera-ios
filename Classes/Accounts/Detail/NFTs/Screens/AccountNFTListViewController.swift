@@ -20,7 +20,7 @@ import UIKit
 import MacaroonUIKit
 
 final class AccountNFTListViewController: BaseViewController {
-
+    
     private let account: Account
 
     init(account: Account, configuration: ViewControllerConfiguration) {
@@ -28,39 +28,30 @@ final class AccountNFTListViewController: BaseViewController {
         super.init(configuration: configuration)
     }
 
-    private lazy var listStateView = ListStateView()
+    private lazy var noContentView = NoContentView()
 
     override func prepareLayout() {
         super.prepareLayout()
-        addListStateView()
+        addNoContentView()
     }
 
     override func bindData() {
         super.bindData()
-        bindStateViewData()
+        bindNoContentViewData()
     }
 }
 
 extension AccountNFTListViewController {
-    private func addListStateView() {
-        view.addSubview(listStateView)
+    private func addNoContentView() {
+        noContentView.customize(NoContentViewCommonTheme())
 
-        listStateView.snp.makeConstraints {
-            $0.center.equalToSuperview()
-            $0.leading.trailing.equalToSuperview()
+        view.addSubview(noContentView)
+        noContentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 
-    private func bindStateViewData() {
-        listStateView.bindData(
-            ListStateViewModel(
-                ListStateDraft(
-                    icon: img("img-nft-empty"),
-                    title: "nft-list-empty-title".localized,
-                    detail: "nft-list-empty-detail".localized,
-                    actionTitle: nil
-                )
-            )
-        )
+    private func bindNoContentViewData() {
+        noContentView.bindData(AccountNFTListNoContentViewModel())
     }
 }

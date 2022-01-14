@@ -23,16 +23,10 @@ final class NotificationsView: View {
 
     private lazy var theme = NotificationsViewTheme()
     private lazy var refreshControl = UIRefreshControl()
-    private lazy var noConnectionView = NoInternetConnectionView()
+    private lazy var noConnectionView = NoContentView()
     private lazy var contentStateView = ContentStateView()
-
-    private lazy var errorView: ListErrorView = {
-        let errorView = ListErrorView()
-        errorView.setImage(img("icon-warning-error"))
-        errorView.setTitle("transaction-filter-error-title".localized)
-        errorView.setSubtitle("transaction-filter-error-subtitle".localized)
-        return errorView
-    }()
+    private lazy var noContentView = NoContentView()
+    private lazy var errorView = NoContentWithActionView()
 
     private lazy var notificationsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -46,12 +40,6 @@ final class NotificationsView: View {
         return collectionView
     }()
 
-    private lazy var emptyStateView = EmptyStateView(
-        image: img("img-nc-empty"),
-        title: "notifications-empty-title".localized,
-        subtitle: "notifications-empty-subtitle".localized
-    )
-
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -60,6 +48,15 @@ final class NotificationsView: View {
     }
 
     func customize(_ theme: NotificationsViewTheme) {
+        errorView.customize(theme.noContentWithActionViewCommonTheme)
+        errorView.bindData(ListErrorViewModel())
+
+        noContentView.customize(theme.noContentViewCommonTheme)
+        noContentView.bindData(NotificationsNoContentViewModel())
+
+        noConnectionView.customize(theme.noContentViewCommonTheme)
+        noConnectionView.bindData(NoInternetConnectionViewModel())
+
         addNotificationsCollectionView()
     }
 
@@ -68,8 +65,16 @@ final class NotificationsView: View {
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 
     func linkInteractors() {
+        errorView.setListeners()
+        errorView.handlers.didTapActionView = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.delegate?.notificationsViewDidTryAgain(self)
+        }
+
         refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
-        errorView.delegate = self
     }
 }
 
@@ -114,7 +119,7 @@ extension NotificationsView {
     }
     
     func setEmptyState() {
-        notificationsCollectionView.contentState = .empty(emptyStateView)
+        notificationsCollectionView.contentState = .empty(noContentView)
     }
     
     func setErrorState() {
@@ -136,11 +141,6 @@ extension NotificationsView {
     }
 }
 
-extension NotificationsView: ListErrorViewDelegate {
-    func listErrorViewDidTryAgain(_ listErrorView: ListErrorView) {
-        delegate?.notificationsViewDidTryAgain(self)
-    }
-}
 
 protocol NotificationsViewDelegate: AnyObject {
     func notificationsViewDidRefreshList(_ notificationsView: NotificationsView)

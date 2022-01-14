@@ -48,11 +48,11 @@ final class PortfolioCalculationDescriptionView: View {
 extension PortfolioCalculationDescriptionView {
     private func addStackView(_ theme: PortfolioCalculationDescriptionViewTheme) {
         stackView.distribution = .equalSpacing
-        stackView.spacing = theme.topPadding
+        stackView.spacing = theme.stackViewSpacing
 
         addSubview(stackView)
         stackView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalToSuperview().offset(theme.topPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomPadding)
         }

@@ -29,20 +29,9 @@ class ContactsViewController: BaseViewController {
     }
     
     private lazy var contactsView = ContactsView()
-    
-    private lazy var emptyStateView = ContactsEmptyView(
-        image: img("icon-contacts-empty"),
-        title: "contacts-empty-text".localized,
-        subtitle: "contacts-empty-detail-text".localized
-    )
-    
-    private lazy var searchEmptyStateView = SearchEmptyView()
-    
-    private lazy var refreshControl: UIRefreshControl = {
-        let refreshControl = UIRefreshControl()
-        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
-        return refreshControl
-    }()
+    private lazy var noContentWithActionView = NoContentWithActionView()
+    private lazy var searchNoContentView = NoContentView()
+    private lazy var refreshControl = UIRefreshControl()
     
     private var contacts = [Contact]()
     private var searchResults = [Contact]()
@@ -64,7 +53,17 @@ class ContactsViewController: BaseViewController {
     
     override func setListeners() {
         super.setListeners()
-        
+
+        noContentWithActionView.setListeners()
+        noContentWithActionView.handlers.didTapActionView = { [weak self] in
+            guard let self = self else {
+                return
+
+            }
+            let controller = self.open(.addContact(), by: .push) as? AddContactViewController
+            controller?.delegate = self
+        }
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didContactAdded(notification:)),
@@ -78,10 +77,11 @@ class ContactsViewController: BaseViewController {
             name: .ContactDeletion,
             object: nil
         )
+
+        refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
     }
     
     override func linkInteractors() {
-        emptyStateView.delegate = self
         contactsView.searchInputView.delegate = self
         contactsView.contactsCollectionView.delegate = self
         contactsView.contactsCollectionView.dataSource = self
@@ -90,17 +90,23 @@ class ContactsViewController: BaseViewController {
     override func configureNavigationBarAppearance() {
         addBarButtons()
     }
-    
+
+    override func bindData() {
+        noContentWithActionView.bindData(ContactsNoContentWithActionViewModel())
+        searchNoContentView.bindData(ContactsSearchNoContentViewModel())
+    }
+
     override func configureAppearance() {
         super.configureAppearance()
         title = "contacts-title".localized
         contactsView.contactsCollectionView.refreshControl = refreshControl
-        searchEmptyStateView.setTitle("contact-search-empty-title".localized)
-        searchEmptyStateView.setDetail("contact-search-empty-detail".localized)
         fetchContacts()
     }
     
     override func prepareLayout() {
+        noContentWithActionView.customize(NoContentWithActionViewCommonTheme())
+        searchNoContentView.customize(NoContentViewCommonTheme())
+
         view.addSubview(contactsView)
         contactsView.snp.makeConstraints {
             $0.top.safeEqualToTop(of: self)
@@ -112,6 +118,7 @@ class ContactsViewController: BaseViewController {
 extension ContactsViewController {
     @objc
     private func didRefreshList() {
+        contactsView.searchInputView.setText(.empty)
         contacts.removeAll()
         fetchContacts()
     }
@@ -132,7 +139,7 @@ extension ContactsViewController {
                 self.searchResults = self.contacts
 
                 if self.searchResults.isEmpty {
-                    self.contactsView.contactsCollectionView.contentState = .empty(self.emptyStateView)
+                    self.contactsView.contactsCollectionView.contentState = .empty(self.noContentWithActionView)
                 } else {
                     self.contactsView.contactsCollectionView.contentState = .none
                 }
@@ -252,7 +259,7 @@ extension ContactsViewController: UICollectionViewDelegateFlowLayout {
 extension ContactsViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         if contacts.isEmpty {
-            contactsView.contactsCollectionView.contentState = .empty(emptyStateView)
+            contactsView.contactsCollectionView.contentState = .empty(noContentWithActionView)
             return
         }
 
@@ -278,7 +285,7 @@ extension ContactsViewController: SearchInputViewDelegate {
         }
 
         if searchResults.isEmpty {
-            contactsView.contactsCollectionView.contentState = .empty(searchEmptyStateView)
+            contactsView.contactsCollectionView.contentState = .empty(searchNoContentView)
         } else {
             contactsView.contactsCollectionView.contentState = .none
         }
@@ -349,13 +356,6 @@ extension ContactsViewController: ContactDetailViewControllerDelegate {
         searchResults[index] = contact
         
         contactsView.contactsCollectionView.reloadItems(at: [IndexPath(row: index, section: 0)])
-    }
-}
-
-extension ContactsViewController: ContactsEmptyViewDelegate {
-    func contactsEmptyViewDidTapAddContactButton(_ contactsEmptyView: ContactsEmptyView) {
-        let controller = self.open(.addContact(), by: .push) as? AddContactViewController
-        controller?.delegate = self
     }
 }
 
