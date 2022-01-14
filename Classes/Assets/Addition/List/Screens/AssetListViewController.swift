@@ -22,7 +22,6 @@ final class AssetListViewController: BaseViewController {
 
     private lazy var theme = Theme()
     private lazy var assetListView = AssetListView()
-    private lazy var emptyStateView = SearchEmptyView()
     private lazy var assetListViewLayoutBuilder = AssetListViewLayoutBuilder(theme: theme)
     private lazy var assetListViewDataSource = AssetListViewDataSource()
 

@@ -19,7 +19,7 @@ import UIKit
 
 final class WCSessionListViewController: BaseViewController {
     private lazy var sessionListView = WCSessionListView()
-    private lazy var emptyStateView = WCSessionListEmptyView()
+    private lazy var noContentWithActionView = NoContentWithActionView()
 
     private lazy var dataSource = WCSessionListDataSource(walletConnector: walletConnector)
     private lazy var layoutBuilder = WCSessionListLayout(dataSource: dataSource)
@@ -40,11 +40,18 @@ final class WCSessionListViewController: BaseViewController {
         sessionListView.setDelegate(layoutBuilder)
         dataSource.delegate = self
         walletConnector.delegate = self
-        emptyStateView.delegate = self
+
+        noContentWithActionView.setListeners()
+        noContentWithActionView.handlers.didTapActionView = { [weak self] in
+            self?.openQRScanner()
+        }
     }
 
     override func prepareLayout() {
         super.prepareLayout()
+        noContentWithActionView.customize(NoContentWithActionViewCommonTheme())
+        noContentWithActionView.bindData(WCSessionListNoContentViewModel())
+
         addSessionListView()
     }
 }
@@ -88,15 +95,9 @@ extension WCSessionListViewController: WalletConnectorDelegate {
     }
 }
 
-extension WCSessionListViewController: WCSessionListEmptyViewDelegate {
-    func wcSessionListEmptyViewDidOpenScanQR(_ wcSessionListEmptyView: WCSessionListEmptyView) {
-        openQRScanner()
-    }
-}
-
 extension WCSessionListViewController {
     private func setListContentState() {
-        sessionListView.collectionView.contentState = dataSource.isEmpty ? .empty(emptyStateView) : .none
+        sessionListView.collectionView.contentState = dataSource.isEmpty ? .empty(noContentWithActionView) : .none
     }
 
     private func index(of cell: WCSessionItemCell) -> Int? {
