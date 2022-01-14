@@ -95,6 +95,8 @@ extension NoContentWithActionView {
             $0.top == resultView.snp.bottom + theme.actionTopMargin
             $0.centerX == resultView
             $0.bottom <= 0
+            $0.trailing <= 0
+            $0.leading >= 0
         }
 
         actionView.draw(corner: Corner(radius: theme.actionCornerRadius))

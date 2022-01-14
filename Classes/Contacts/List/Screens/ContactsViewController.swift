@@ -109,6 +109,8 @@ class ContactsViewController: BaseViewController {
     }
     
     override func prepareLayout() {
+        noContentView.customize(NoContentWithActionViewCommonTheme())
+
         view.addSubview(contactsView)
         contactsView.snp.makeConstraints {
             $0.top.safeEqualToTop(of: self)
