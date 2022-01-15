@@ -79,6 +79,14 @@ extension AccountCollection {
     }
 }
 
+extension AccountCollection {
+    func sorted() -> [AccountHandle] {
+        return sorted {
+            $0.value.preferredOrder < $1.value.preferredOrder
+        }
+    }
+}
+
 struct AccountCollectionIndex: Comparable {
     fileprivate typealias InternalIndex = AccountCollection.Table.Index
     

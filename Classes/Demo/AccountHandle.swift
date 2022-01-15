@@ -26,7 +26,7 @@ struct AccountHandle {
         case .upToDate,
              .loadingAssetDetails,
              .refreshingAssetDetails,
-             .faultAssetDetails,
+             .failedAssetDetails,
              .expiredAssetDetails,
              .ready:
             return true
@@ -63,11 +63,12 @@ struct AccountHandle {
 extension AccountHandle {
     func canRefresh() -> Bool {
         switch status {
-        case .expired,
+        case .refreshing,
+             .expired,
              .upToDate,
              .loadingAssetDetails,
              .refreshingAssetDetails,
-             .faultAssetDetails,
+             .failedAssetDetails,
              .expiredAssetDetails,
              .ready:
             return true
@@ -78,7 +79,8 @@ extension AccountHandle {
     
     func canRefreshAssetDetails() -> Bool {
         switch status {
-        case .expiredAssetDetails,
+        case .refreshingAssetDetails,
+             .expiredAssetDetails,
              .ready:
             return true
         default:
@@ -93,7 +95,7 @@ extension AccountHandle {
 
         case loading
         case refreshing
-        case fault(HIPNetworkError<NoAPIModel>)
+        case failed(HIPNetworkError<NoAPIModel>)
         case expired(HIPNetworkError<NoAPIModel>) /// Update is failed
         case upToDate /// Account is fetched
 
@@ -101,7 +103,7 @@ extension AccountHandle {
         /// For below status for the asset details, the account must be `upToDate`.
         case loadingAssetDetails
         case refreshingAssetDetails
-        case faultAssetDetails(HIPNetworkError<NoAPIModel>)
+        case failedAssetDetails(HIPNetworkError<NoAPIModel>)
         case expiredAssetDetails(HIPNetworkError<NoAPIModel>) /// Update is failed
 
         case ready /// Account and its asset details are fetched
