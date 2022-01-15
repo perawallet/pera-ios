@@ -197,7 +197,7 @@ extension TransactionsViewController {
 
             self.filterOptionsTransition.perform(
                 .transactionFilter(filterOption: self.filterOption, delegate: self),
-                by: .presentWithoutNavigationController
+                by: .present
             )
         }
 
