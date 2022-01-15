@@ -25,6 +25,8 @@ final class HomeAPIDataController:
     private var accounts: [AccountHandle] = []
     private var watchAccounts: [AccountHandle] = []
     
+    private var lastSnapshot: Snapshot?
+    
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.homeDataController")
     
@@ -52,10 +54,9 @@ extension HomeAPIDataController {
     ) {
         switch event {
         case .didStartRunning(let first):
-            if first {
+            if first ||
+               lastSnapshot == nil {
                 deliverLoadingSnapshot()
-            } else {
-                deliverContentSnapshot()
             }
         case .didFinishRunning:
             deliverContentSnapshot()
@@ -90,28 +91,13 @@ extension HomeAPIDataController {
             [weak self] in
             guard let self = self else { return Snapshot() }
             
-            let accountCollection = self.sharedDataController.accountCollection
-            
-            var snapshot = Snapshot()
-            
-            snapshot.appendSections([.portfolio])
-            snapshot.appendItems(
-                [.portfolio(AccountPortfolioViewModel(accountCollection))],
-                toSection: .portfolio
-            )
-            
-            /// <todo>
-            /// Add announcement section
-
             var accounts: [AccountHandle] = []
             var accountItems: [HomeItem] = []
             var watchAccounts: [AccountHandle] = []
             var watchAccountItems: [HomeItem] = []
             
-            accountCollection
-                .sorted {
-                    $0.value.preferredOrder < $1.value.preferredOrder
-                }
+            self.sharedDataController.accountCollection
+                .sorted()
                 .forEach {
                     let isNonWatchAccount = $0.value.type != .watch
                     let item: HomeItem = .account(AccountPreviewViewModel(account: $0))
@@ -124,6 +110,24 @@ extension HomeAPIDataController {
                         watchAccountItems.append(item)
                     }
                 }
+            
+            var snapshot = Snapshot()
+            
+            snapshot.appendSections([.portfolio])
+            
+            let currency = self.sharedDataController.currency
+            let calculator = ALGPortfolioCalculator()
+            let portfolio =
+                Portfolio(accounts: accounts, currency: currency, calculator: calculator)
+            let portfolioItem = HomePortfolioViewModel(portfolio)
+
+            snapshot.appendItems(
+                [.portfolio(portfolioItem)],
+                toSection: .portfolio
+            )
+            
+            /// <todo>
+            /// Add announcement section
             
             self.accounts = accounts
             
@@ -169,6 +173,8 @@ extension HomeAPIDataController {
             guard let self = self else { return }
             
             let newSnapshot = snapshot()
+            
+            self.lastSnapshot = newSnapshot
             self.publish(.didUpdate(newSnapshot))
         }
     }

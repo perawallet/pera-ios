@@ -13,14 +13,16 @@
 // limitations under the License.
 
 //
-//   AccountPortfolioViewController.swift
+//   HomeViewController.swift
 
 import Foundation
 import UIKit
 import MacaroonUtils
 import MacaroonUIKit
 
-final class AccountPortfolioViewController: BaseViewController {
+final class HomeViewController:
+    BaseViewController,
+    UICollectionViewDelegateFlowLayout {
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var pushNotificationController = PushNotificationController(api: api!, bannerController: bannerController)
     
@@ -31,17 +33,17 @@ final class AccountPortfolioViewController: BaseViewController {
     }
 
     private lazy var listView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        let collectionViewLayout = HomeListLayout.build()
+        let collectionView =
+            UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = .clear
         return collectionView
     }()
-    private lazy var dataSource = HomeDataSource(listView)
-    private lazy var listLayout =
-        AccountPortfolioListLayout(dataSource: dataSource, session: session!)
+    private lazy var listLayout = HomeListLayout(listDataSource: listDataSource)
+    private lazy var listDataSource = HomeListDataSource(listView)
     
     private let dataController: HomeDataController
     
@@ -66,7 +68,7 @@ final class AccountPortfolioViewController: BaseViewController {
             
             switch event {
             case .didUpdate(let snapshot):
-                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             }
         }
         dataController.load()
@@ -95,13 +97,13 @@ final class AccountPortfolioViewController: BaseViewController {
 
     override func setListeners() {
         super.setListeners()
-        setListSelectionListeners()
         setSectionSelectionListeners()
     }
 
     override func linkInteractors() {
         super.linkInteractors()
-        listView.delegate = listLayout
+
+        listView.delegate = self
 
         NotificationCenter.default.addObserver(
             self,
@@ -112,14 +114,14 @@ final class AccountPortfolioViewController: BaseViewController {
     }
 }
 
-extension AccountPortfolioViewController {
+extension HomeViewController {
     @objc
     private func didUpdateAuthenticatedUser(notification: Notification) {
         registerWCRequests()
     }
 }
 
-extension AccountPortfolioViewController {
+extension HomeViewController {
     private func addListView() {
         view.addSubview(listView)
         listView.snp.makeConstraints {
@@ -158,16 +160,6 @@ extension AccountPortfolioViewController {
 
         leftBarButtonItems = [notificationBarButtonItem]
         rightBarButtonItems = [addBarButtonItem, qrBarButtonItem]
-    }
-
-    private func setListSelectionListeners() {
-        listLayout.handlers.didSelectAccount = { [weak self] account in
-            guard let self = self else {
-                return
-            }
-
-            self.open(.accountDetail(account: account), by: .push)
-        }
     }
 
     private func setSectionSelectionListeners() {
@@ -213,7 +205,7 @@ extension AccountPortfolioViewController {
     }
 }
 
-extension AccountPortfolioViewController {
+extension HomeViewController {
     private func requestAppReview() {
         asyncMain(afterDuration: 1.0) {
             AlgorandAppStoreReviewer().requestReviewIfAppropriate()
@@ -248,7 +240,7 @@ extension AccountPortfolioViewController {
     }
 }
 
-extension AccountPortfolioViewController {
+extension HomeViewController {
     private func reconnectToOldWCSessions() {
         onceWhenViewDidAppear.execute {
             asyncMain(afterDuration: 2.0) { [weak self] in
@@ -287,7 +279,7 @@ extension AccountPortfolioViewController {
     }
 }
 
-extension AccountPortfolioViewController: WalletConnectorDelegate {
+extension HomeViewController: WalletConnectorDelegate {
     func walletConnector(
         _ walletConnector: WalletConnector,
         shouldStart session: WalletConnectSession,
@@ -313,7 +305,7 @@ extension AccountPortfolioViewController: WalletConnectorDelegate {
     }
 }
 
-extension AccountPortfolioViewController: WCConnectionApprovalViewControllerDelegate {
+extension HomeViewController: WCConnectionApprovalViewControllerDelegate {
     func wcConnectionApprovalViewControllerDidApproveConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
         wcConnectionApprovalViewController.dismissScreen()
     }
@@ -323,13 +315,13 @@ extension AccountPortfolioViewController: WCConnectionApprovalViewControllerDele
     }
 }
 
-extension AccountPortfolioViewController {
+extension HomeViewController {
     private func presentOptions(for account: Account) {
        // modalTransition.perform(.options(account: account, delegate: self))
     }
 }
 
-extension AccountPortfolioViewController: QRScannerViewControllerDelegate {
+extension HomeViewController: QRScannerViewControllerDelegate {
     func qrScannerViewController(_ controller: QRScannerViewController, didRead qrText: QRText, completionHandler: EmptyHandler?) {
         switch qrText.mode {
         case .address:
@@ -414,5 +406,49 @@ extension AccountPortfolioViewController: QRScannerViewControllerDelegate {
                 handler()
             }
         }
+    }
+}
+
+extension HomeViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            insetForSectionAt: section
+        )
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            sizeForItemAt: indexPath
+        )
+    }
+}
+
+extension HomeViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+//        guard let section = AccountPortfolioSection(rawValue: indexPath.section),
+//              section == .standardAccount || section == .watchAccount,
+//            let account = session.accounts[safe: indexPath.item] else {
+//                return
+//        }
+//        guard let self = self else {
+//            return
+//        }
+//
+//        self.open(.accountDetail(account: account), by: .push)
     }
 }

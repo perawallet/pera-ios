@@ -62,7 +62,7 @@ extension SharedAPIDataController {
 
         $status.modify { $0 = .suspended }
         
-        publishNotificationForCurrentStatus()
+        publishEventForCurrentStatus()
     }
 }
 
@@ -70,7 +70,7 @@ extension SharedAPIDataController {
     func add(
         _ observer: SharedDataControllerObserver
     ) {
-        publishNotificationForCurrentStatus()
+        publishEventForCurrentStatus()
         
         let id = ObjectIdentifier(observer as AnyObject)
         observations[id] = WeakObservation(observer)
@@ -94,8 +94,6 @@ extension SharedAPIDataController {
         processor.notify(queue: blockProcessorEventQueue) {
             [weak self] event in
             guard let self = self else { return }
-            
-            print("Event: \(event)")
             
             switch event {
             case .willStart:
@@ -137,7 +135,7 @@ extension SharedAPIDataController {
     
     private func blockProcessorWillStart() {
         $status.modify { $0 = .running }
-        publishNotificationForCurrentStatus()
+        publishEventForCurrentStatus()
     }
     
     private func blockProcessorWillFetchCurrency() {
@@ -161,7 +159,7 @@ extension SharedAPIDataController {
         _ error: HIPNetworkError<NoAPIModel>
     ) {
         if !currency.isAvailable {
-            currency = .fault(error)
+            currency = .failed(error)
         }
         
         publish(.didUpdateCurrency)
@@ -205,7 +203,7 @@ extension SharedAPIDataController {
            cachedAccount.status == .refreshing {
             updatedAccount = AccountHandle(account: cachedAccount.value, status: .expired(error))
         } else {
-            updatedAccount = AccountHandle(localAccount: localAccount, status: .fault(error))
+            updatedAccount = AccountHandle(localAccount: localAccount, status: .failed(error))
         }
         
         accountCollection[address] = updatedAccount
@@ -262,7 +260,7 @@ extension SharedAPIDataController {
            cachedAccount.status == .refreshingAssetDetails {
             updatedAccount = AccountHandle(account: account, status: .expiredAssetDetails(error))
         } else {
-            updatedAccount = AccountHandle(account: account, status: .faultAssetDetails(error))
+            updatedAccount = AccountHandle(account: account, status: .failedAssetDetails(error))
         }
         
         accountCollection[address] = updatedAccount
@@ -274,12 +272,12 @@ extension SharedAPIDataController {
         isFirstPollingRoundCompleted = true
         $status.modify { $0 = .completed }
         
-        publishNotificationForCurrentStatus()
+        publishEventForCurrentStatus()
     }
 }
 
 extension SharedAPIDataController {
-    private func publishNotificationForCurrentStatus() {
+    private func publishEventForCurrentStatus() {
         switch status {
         case .idle: publish(.didBecomeIdle)
         case .running: publish(.didStartRunning(first: !isFirstPollingRoundCompleted))

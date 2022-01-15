@@ -65,11 +65,11 @@ final class AccountAssetListViewController: BaseViewController {
                 case .portfolio:
                     let cell = collectionView.dequeue(AssetPortfolioItemCell.self, at: indexPath)
                     let currency = self.session?.preferredCurrencyDetails
-                    if let totalPortfolioValue = self.calculatePortfolio(for: [self.account], with: currency) {
-                        cell.bindData(PortfolioValueViewModel(.singleAccount(value: .value(totalPortfolioValue)), currency))
-                    } else {
-                        cell.bindData(PortfolioValueViewModel(.singleAccount(value: .unknown), nil))
-                    }
+//                    if let totalPortfolioValue = self.calculatePortfolio(for: [self.account], with: currency) {
+//                        cell.bindData(PortfolioValueViewModel(.singleAccount(value: .value(totalPortfolioValue)), currency))
+//                    } else {
+//                        cell.bindData(PortfolioValueViewModel(.singleAccount(value: .unknown), nil))
+//                    }
 
                     return cell
                 case .search:
@@ -352,8 +352,6 @@ extension AccountAssetListViewController: AssetAdditionViewControllerDelegate {
         addAsset(assetDetail)
     }
 }
-
-extension AccountAssetListViewController: PortfolioCalculating {}
 
 enum AccountAssetsSection: Int, Hashable {
     case portfolio

@@ -17,7 +17,7 @@
 
 import UIKit
 
-class AccountsTabBarItem: TabBarItem {
+class HomeTabBarItem: TabBarItem {
     init(content: UIViewController) {
         super.init(
             name: "accounts",

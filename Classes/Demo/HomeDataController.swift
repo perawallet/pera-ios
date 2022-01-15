@@ -38,7 +38,7 @@ enum HomeSection:
 
 enum HomeItem: Hashable {
     case empty(HomeEmptyItem)
-    case portfolio(AccountPortfolioViewModel)
+    case portfolio(HomePortfolioViewModel)
     case announcement(AnnouncementBannerViewModel)
     case account(AccountPreviewViewModel)
 }

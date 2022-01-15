@@ -21,11 +21,13 @@ import MagpieHipo
 import SwiftDate
 
 enum CurrencyHandle {
+    typealias Error = HIPNetworkError<NoAPIModel>
+    
     case idle
     case loading
     case refreshing(Currency)
     case ready(currency: Currency, lastUpdateDate: Date)
-    case fault(HIPNetworkError<NoAPIModel>)
+    case failed(Error)
 }
 
 extension CurrencyHandle {

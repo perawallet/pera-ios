@@ -41,42 +41,42 @@ struct AccountPortfolioViewModel:
     }
 }
 
-extension AccountPortfolioViewModel: PortfolioCalculating {
+extension AccountPortfolioViewModel {
     private mutating func bindPortfolioValueViewModel(
         _ accounts: [Account],
         _ currency: Currency?
     ) {
-        if let totalPortfolioValue = calculatePortfolio(for: accounts, with: currency) {
-            portfolioValueViewModel = PortfolioValueViewModel(.all(value: .value(totalPortfolioValue)), currency)
-            return
-        }
-
-        portfolioValueViewModel = PortfolioValueViewModel(.all(value: .unknown), currency)
+//        if let totalPortfolioValue = calculatePortfolio(for: accounts, with: currency) {
+//            portfolioValueViewModel = PortfolioValueViewModel(.all(value: .value(totalPortfolioValue)), currency)
+//            return
+//        }
+//
+//        portfolioValueViewModel = PortfolioValueViewModel(.all(value: .unknown), currency)
     }
 
     private mutating func bindAlgoHoldingsValue(
         _ accounts: [Account],
         _ currency: Currency?
     ) {
-        if let totalAlgoHoldings = calculateAlgoHoldings(for: accounts, with: currency),
-           let currency = currency {
-            algoHoldingsValue = .string(totalAlgoHoldings.toCurrencyStringForLabel(with: currency.id))
-            return
-        }
-
-        algoHoldingsValue = .string("N/A")
+//        if let totalAlgoHoldings = calculateAlgoHoldings(for: accounts, with: currency),
+//           let currency = currency {
+//            algoHoldingsValue = .string(totalAlgoHoldings.toCurrencyStringForLabel(with: currency.id))
+//            return
+//        }
+//
+//        algoHoldingsValue = .string("N/A")
     }
 
     private mutating func bindAssetHoldingsValue(
         _ accounts: [Account],
         _ currency: Currency?
     ) {
-        if let totalAssetHoldings = calculateAssetHoldings(for: accounts, with: currency),
-           let currency = currency {
-            assetHoldingsValue = .string(totalAssetHoldings.toCurrencyStringForLabel(with: currency.id))
-            return
-        }
-
-        assetHoldingsValue = .string("N/A")
+//        if let totalAssetHoldings = calculateAssetHoldings(for: accounts, with: currency),
+//           let currency = currency {
+//            assetHoldingsValue = .string(totalAssetHoldings.toCurrencyStringForLabel(with: currency.id))
+//            return
+//        }
+//
+//        assetHoldingsValue = .string("N/A")
     }
 }

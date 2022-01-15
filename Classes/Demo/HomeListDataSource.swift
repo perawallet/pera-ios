@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//   HomeDataSource.swift
+//   HomeListDataSource.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, HomeItem> {
+final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, HomeItem> {
     init(
         _ collectionView: UICollectionView
     ) {
@@ -42,7 +42,7 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
                 }
             case .portfolio(let item):
                 let cell = collectionView.dequeue(
-                    AccountPortfolioCell.self,
+                    HomePortfolioCell.self,
                     at: indexPath
                 )
                 cell.bindData(item)
@@ -64,15 +64,39 @@ final class HomeDataSource: UICollectionViewDiffableDataSource<HomeSection, Home
             }
         }
         
-//        supplementaryViewProvider = {
-//            collectionView, kind, indexPath in
-//            return nil
+//        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
+//            guard kind == UICollectionView.elementKindSectionHeader,
+//                  let section = AccountPortfolioSection(rawValue: indexPath.section),
+//                  section == .standardAccount || section == .watchAccount else {
+//                return nil
+//            }
+//
+//            let title = section == .watchAccount ? "portfolio-title-watchlist".localized : "portfolio-title-accounts".localized
+//            let view = collectionView.dequeueHeader(SingleLineTitleActionHeaderView.self, at: indexPath)
+//            view.bindData(
+//                SingleLineTitleActionViewModel(
+//                    item: SingleLineIconTitleItem(
+//                        icon: "icon-options",
+//                        title: .string(title)
+//                    )
+//                )
+//            )
+//
+//            view.handlers.didHandleAction = { [weak self] in
+//                guard let self = self else {
+//                    return
+//                }
+//
+//                self.handlers.didSelectSection?(section)
+//            }
+//
+//            return view
 //        }
         
         [
             HomeLoadingCell.self,
             HomeNoContentCell.self,
-            AccountPortfolioCell.self,
+            HomePortfolioCell.self,
             AnnouncementBannerCell.self,
             AccountPreviewCell.self
         ].forEach {

@@ -64,8 +64,8 @@ final class TabBarController: UIViewController {
 
     private(set) lazy var tabBar = TabBar()
 
-    private lazy var accountsViewController =
-        AccountPortfolioViewController(
+    private lazy var homeViewController =
+        HomeViewController(
             dataController: HomeAPIDataController(configuration.sharedDataController),
             configuration: configuration
         )
@@ -129,7 +129,7 @@ final class TabBarController: UIViewController {
 extension TabBarController {
     private func setupTabBarController() {
         items = [
-            AccountsTabBarItem(content: NavigationController(rootViewController: accountsViewController)),
+            HomeTabBarItem(content: NavigationController(rootViewController: homeViewController)),
             AlgoStatisticsTabBarItem(content: NavigationController(rootViewController: algoStatisticsViewController)),
             TransactionTabBarItem(),
             ContactsTabBarItem(content: NavigationController(rootViewController: contactsViewController)),

@@ -13,22 +13,21 @@
 // limitations under the License.
 
 //
-//   AccountPortfolioListLayout+Theme.swift
+//   HomePortfolioCell.swift
 
 import Foundation
-import UIKit
 import MacaroonUIKit
+import UIKit
 
-extension AccountPortfolioListLayout {
-    struct Theme: LayoutSheet, StyleSheet {
-        let portfolioItemSize: LayoutSize
-        let listHeaderSize: LayoutSize
-        let accountItemSize: LayoutSize
-
-        init(_ family: LayoutFamily) {
-            self.portfolioItemSize = (UIScreen.main.bounds.width, 240)
-            self.listHeaderSize = (UIScreen.main.bounds.width, 40)
-            self.accountItemSize = (UIScreen.main.bounds.width - 48, 72)
-        }
+final class HomePortfolioCell:
+    CollectionCell<HomePortfolioView>,
+    ViewModelBindable {
+    static let theme = HomePortfolioViewTheme()
+    
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }
