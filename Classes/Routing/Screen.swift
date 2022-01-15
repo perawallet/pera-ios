@@ -137,6 +137,11 @@ indirect enum Screen {
         transactionOption: WCTransactionOption?
      )
     case transactionFloatingActionButton
+    case wcSingleTransactionScreen(
+        transactions: [WCTransaction],
+        transactionRequest: WalletConnectRequest,
+        transactionOption: WCTransactionOption?
+    )
 }
 
 extension Screen {

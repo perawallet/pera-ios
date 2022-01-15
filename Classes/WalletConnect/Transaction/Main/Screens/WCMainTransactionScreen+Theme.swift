@@ -17,48 +17,22 @@
 
 import Foundation
 import MacaroonUIKit
-import MacaroonBottomOverlay
+import UIKit
 
-struct WCMainTransactionScreenStyleSheet: StyleSheet, BottomDetailOverlayContainerStyleSheet, BottomScrollOverlayContainerStyleSheet {
-    var detailOverlay: BottomOverlayViewStyleSheet
-    var scrollOverlay: BottomOverlayViewStyleSheet
+extension WCMainTransactionScreen {
+    struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: UIColor
+        let fragmentRadius: LayoutMetric
+        let fragmentTopInset: LayoutMetric
+        let dappViewTopInset: LayoutMetric
+        let dappViewLeadingInset: LayoutMetric
 
-    init() {
-        detailOverlay = BottomOverlayCommonStyleSheet()
-        scrollOverlay = BottomOverlayCommonStyleSheet()
-    }
-}
-
-struct WCMainTransactionScreenLayoutSheet: LayoutSheet, BottomDetailOverlayContainerLayoutSheet, BottomScrollOverlayContainerLayoutSheet {
-    var scrollOverlay: BottomOverlayViewLayoutSheet
-    var scrollOverlayHorizontalPaddings: LayoutHorizontalPaddings
-    private var scrollOverlayOffsetsPerPosition: [BottomScrollOverlayPosition: LayoutMetric]
-
-    subscript(pos: BottomScrollOverlayPosition) -> LayoutMetric {
-        get { scrollOverlayOffsetsPerPosition[pos] ?? .noMetric }
-        set { scrollOverlayOffsetsPerPosition[pos] = newValue }
-    }
-
-    var detailOverlay: BottomOverlayViewLayoutSheet
-    var detailOverlayHorizontalPaddings: LayoutHorizontalPaddings
-
-    init(_ family: LayoutFamily) {
-        scrollOverlay = BottomOverlayCommonLayoutSheet(family)
-        scrollOverlayHorizontalPaddings = (0, 0)
-        scrollOverlayOffsetsPerPosition = [:]
-        detailOverlay = BottomOverlayCommonLayoutSheet(family)
-        detailOverlayHorizontalPaddings = (0, 0)
-    }
-}
-extension WCMainTransactionScreenLayoutSheet {
-    mutating func calculateScrollOverlayOffsetsAtEachPosition(
-        in screen: WCMainTransactionScreen
-    ) {
-        let minScrollOverlayOffset: LayoutMetric = 24
-        let scrollOverlayHeight = screen.view.bounds.height - minScrollOverlayOffset
-
-        self[.top] = minScrollOverlayOffset
-        self[.mid] = (scrollOverlayHeight * 0.58).ceil()
-        self[.bottom] = (scrollOverlayHeight * 0.92).ceil()
+        init(_ family: LayoutFamily) {
+            self.fragmentRadius = 10
+            self.fragmentTopInset = 200
+            self.backgroundColor = .black
+            self.dappViewTopInset = 32
+            self.dappViewLeadingInset = 24
+        }
     }
 }

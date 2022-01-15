@@ -21,156 +21,95 @@ import MacaroonBottomOverlay
 import UIKit
 import SnapKit
 
-final class WCMainTransactionScreen:
-    BaseViewController,
-    Container,
-    BottomScrollOverlayContainer,
-    BottomDetailOverlayContainer
-{
+final class WCMainTransactionScreen: BaseViewController, Container {
     override var shouldShowNavigationBar: Bool {
         return false
     }
 
-    /// Common
-    lazy var styleSheet = WCMainTransactionScreenStyleSheet()
-    lazy var layoutSheet = WCMainTransactionScreenLayoutSheet()
+    private lazy var dappMessageView = WCTransactionDappMessageView()
 
+    private lazy var theme = Theme()
 
-    /// Scroll
-    var scrollOverlayViewTopConstraint: Constraint!
-    var lastScrollOverlayOffset: LayoutMetric = 0
-    var lastScrollOverlayTranslationOnScroll: LayoutMetric = 0
-    var runningScrollOverlayAnimator: UIViewPropertyAnimator?
+    private lazy var singleTransactionFragment: WCSingleTransactionRequestScreen = {
+        let dataSource = WCMainTransactionDataSource(
+            transactions: transactions,
+            transactionRequest: transactionRequest,
+            transactionOption: transactionOption,
+            session: self.session,
+            walletConnector: self.walletConnector
+        )
 
-    private(set) lazy var scrollOverlayView = BottomOverlayView(
-        contentView: scrollFragmentScreen.view
-    )
-    private(set) lazy var scrollFragmentScreen = WCScrollOverlayFragment(configuration: configuration)
+        return WCSingleTransactionRequestScreen(
+            dataSource: dataSource,
+            configuration: configuration
+        )
+    }()
 
-    private var lastScrollOverlayPositionBeforeDetail: BottomScrollOverlayPosition = .mid
-    /// Detail
-    var detailOverlayViewTopConstraint: Constraint!
-    var initialDetailOverlayOffset: LayoutMetric = 0
-    var runningDetailOverlayAnimator: UIViewPropertyAnimator?
-    private(set) lazy var detailOverlayView = BottomOverlayView(
-        contentView: detailFragmentScreen.view
-    )
+    let transactions: [WCTransaction]
+    let transactionRequest: WalletConnectRequest
+    let transactionOption: WCTransactionOption?
 
-    private(set) lazy var detailFragmentScreen = WCDetailOverlayFragment(configuration: configuration)
-    private var isDetailBeingShown = true
-    private var isLayoutFinalized = false
+    init(
+        transactions: [WCTransaction],
+        transactionRequest: WalletConnectRequest,
+        transactionOption: WCTransactionOption?,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.transactions = transactions
+        self.transactionRequest = transactionRequest
+        self.transactionOption = transactionOption
+        super.init(configuration: configuration)
+    }
 
     override func configureAppearance() {
         super.configureAppearance()
 
-        view.backgroundColor = UIColor.black
-        customizeScrollOverlayAppearance()
-        customizeDetailOverlayAppearance()
+        view.backgroundColor = theme.backgroundColor
     }
 
     override func prepareLayout() {
         super.prepareLayout()
 
-        self.addScrollOverlay()
-        self.addDetailOverlay()
+        addDappInfoView()
+        addSingleTransaction()
     }
 
     override func linkInteractors() {
         super.linkInteractors()
 
-        scrollFragmentScreen.scrollView.panGestureRecognizer.addTarget(
-            self,
-            action: #selector(moveScrollOverlayOnPan(_:))
-        )
-        detailOverlayView.addGestureRecognizer(
-            UIPanGestureRecognizer(
-                target: self,
-                action: #selector(moveDetailOverlayOnPan(_:))
-            )
-        )
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    override func bindData() {
+        super.bindData()
 
-        if view.bounds.isEmpty {
+        guard let wcSession = walletConnector.allWalletConnectSessions.first(matching: (\.urlMeta.wcURL, transactionRequest.url)) else {
             return
         }
 
-        if !isLayoutFinalized {
-            updateLayoutWhenViewDidFirstLayoutSubviews()
-            isLayoutFinalized = true
+        let viewModel = WCTransactionDappMessageViewModel(
+            session: wcSession,
+            imageSize: CGSize(width: 48.0, height: 48.0)
+        )
+
+        dappMessageView.bind(viewModel)
+    }
+
+    private func addDappInfoView() {
+        view.addSubview(dappMessageView)
+        dappMessageView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(theme.dappViewLeadingInset)
+            make.top.safeEqualToTop(of: self).offset(theme.dappViewTopInset)
         }
-
-        updateScrollFragmentLayoutWhenViewDidLayoutSubviews()
     }
 
-    private func updateLayoutWhenViewDidFirstLayoutSubviews() {
-        layoutSheet.calculateScrollOverlayOffsetsAtEachPosition(
-            in: self
-        )
-
-        updateScrollOverlayLayoutWhenViewDidFirstLayoutSubviews()
-        updateDetailOverlayLayoutWhenViewDidFirstLayoutSubviews()
-    }
-}
-
-extension WCMainTransactionScreen {
-    @objc
-    private func moveScrollOverlayOnPan(
-        _ sender: UIPanGestureRecognizer
-    ) {
-        moveScrollOverlay(
-            by: sender
-        )
-    }
-
-    @objc
-    private func moveDetailOverlayOnPan(
-        _ sender: UIPanGestureRecognizer
-    ) {
-        moveDetailOverlay(
-            by: sender
-        )
-    }
-}
-
-
-
-extension WCMainTransactionScreen {
-    func scrollOverlayWillMove(to position: BottomScrollOverlayPosition) {
-        print("scrollOverlayWillMove")
-//        updateLayoutWhenScrollOverlayWillMove(
-//            to: position
-//        )
-    }
-
-    func scrollOverlayDidMove(to position: BottomScrollOverlayPosition) {
-        if isDetailBeingShown {
-            return
+    private func addSingleTransaction() {
+        addFragment(NavigationController(rootViewController: singleTransactionFragment)) { fragmentView in
+            fragmentView.roundCorners(corners: [.topLeft, .topRight], radius: theme.fragmentRadius)
+            view.addSubview(fragmentView)
+            fragmentView.snp.makeConstraints { make in
+                make.top.equalToSuperview().inset(theme.fragmentTopInset)
+                make.leading.trailing.bottom.equalToSuperview()
+            }
         }
-
-        lastScrollOverlayPositionBeforeDetail = position
     }
 }
-
-extension WCMainTransactionScreen {
-
-    func detailOverlayViewWillBecomeVisible(_ isVisible: Bool) {
-        print("detailOverlayViewWillBecomeVisible")
-//        updateLayoutWhenDetailOverlayWillBecomeVisible(
-//            isVisible
-//        )
-
-    }
-    func detailOverlayViewDidBecomevisible(_ isVisible: Bool) {
-        print("detailOverlayViewDidBecomevisible")
-//        updateLayoutWhenDetailOverlayDidBecomeVisible(
-//            isVisible
-//        )
-    }
-}
-
-
-
-

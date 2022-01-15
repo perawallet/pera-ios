@@ -28,6 +28,7 @@ enum AppColors {
 extension AppColors.Shared {
     enum Global: String, Color {
         case white = "Shared/Global/white"
+        case gray400 = "Shared/Global/gray400"
         case gray800 = "Shared/Global/gray800"
         case turquoise600 = "Shared/Global/turquoise600"
     }

@@ -40,7 +40,6 @@ class WCTransactionFullDappDetailViewController: BaseViewController {
         fullDappDetailView.bind(
             WCTransactionDappMessageViewModel(
                 session: wcSession,
-                text: message,
                 imageSize: CGSize(width: 60.0, height: 60.0)
             )
         )

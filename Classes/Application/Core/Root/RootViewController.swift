@@ -192,15 +192,15 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
 
         currentWCTransactionRequest = request
 
-        wcRequestScreen = open(
+        open(
             .wcMainTransactionScreen(
                 transactions: transactions,
                 transactionRequest: request,
                 transactionOption: transactionOption
             ),
             by: fullScreenPresentation
-        ) as? WCSingleTransactionRequestScreen
-        wcRequestScreen?.delegate = self
+        )
+//        wcRequestScreen?.delegate = self
 
 //        wcMainTransactionViewController = open(
 //            .wcMainTransaction(

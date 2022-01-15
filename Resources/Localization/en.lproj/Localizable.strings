@@ -714,7 +714,7 @@ on your Ledger device (%d)";
 "wallet-connect-transaction-warning-confirmation" = "Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
 
 // MARK: Wallet Connect Transaction Dapp Message
-"wallet-connect-transaction-dapp-show-more" = "Show More Info";
+"wallet-connect-transaction-dapp-show-more" = "Read More";
 
 // MARK: Wallet Connect Transaction
 "wallet-connect-transaction-title-transaction" = "Transaction Request";

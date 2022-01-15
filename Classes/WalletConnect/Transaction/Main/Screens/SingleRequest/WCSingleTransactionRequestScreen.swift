@@ -18,7 +18,6 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
-import MacaroonBottomOverlay
 
 protocol WCSingleTransactionRequestScreenDelegate: AnyObject {
     func wcSingleTransactionRequestScreenDidCompleted(
@@ -27,9 +26,8 @@ protocol WCSingleTransactionRequestScreenDelegate: AnyObject {
 }
 
 final class WCSingleTransactionRequestScreen:
-    BaseViewController,
-    BottomScrollOverlayFragment {
-
+    BaseViewController {
+    
     weak var delegate: WCSingleTransactionRequestScreenDelegate?
     var isScrollEnabled: Bool = true
     lazy var scrollView: UIScrollView = UIScrollView()
@@ -93,7 +91,6 @@ final class WCSingleTransactionRequestScreen:
     override func linkInteractors() {
         super.linkInteractors()
 
-        scrollView.delegate = self
         requestView.delegate = self
         wcTransactionSigner.delegate = self
     }
@@ -231,25 +228,6 @@ extension WCSingleTransactionRequestScreen {
 
         modalTransition.perform(.bottomWarning(configurator: configurator))
         oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
-    }
-}
-
-extension WCSingleTransactionRequestScreen: UIScrollViewDelegate {
-    func scrollViewDidScroll(
-        _ scrollView: UIScrollView
-    ) {
-        updateLayoutWhenScrollViewDidScroll()
-    }
-
-    func scrollViewWillEndDragging(
-        _ scrollView: UIScrollView,
-        withVelocity velocity: CGPoint,
-        targetContentOffset: UnsafeMutablePointer<CGPoint>
-    ) {
-        updateLayoutWhenScrollViewWillEndDragging(
-            withVelocity: velocity,
-            targetContentOffset: targetContentOffset
-        )
     }
 }
 
