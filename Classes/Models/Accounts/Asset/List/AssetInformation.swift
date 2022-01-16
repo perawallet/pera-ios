@@ -28,6 +28,9 @@ final class AssetInformation: ALGEntityModel {
     let isVerified: Bool
     let creator: AssetCreator?
 
+    var isRemoved = false
+    var isRecentlyAdded = false
+
     init(
         _ apiModel: APIModel = APIModel()
     ) {
@@ -82,6 +85,37 @@ extension AssetInformation {
             case isVerified = "is_verified"
             case creator
         }
+    }
+}
+
+extension AssetInformation {
+    func hasDisplayName() -> Bool {
+        return !name.isNilOrEmpty || !unitName.isNilOrEmpty
+    }
+
+    func getDisplayNames() -> (String, String?) {
+        if let name = name, !name.isEmptyOrBlank,
+            let code = unitName, !code.isEmptyOrBlank {
+            return (name, "\(code.uppercased())")
+        } else if let name = name, !name.isEmptyOrBlank {
+            return (name, nil)
+        } else if let code = unitName, !code.isEmptyOrBlank {
+            return ("\(code.uppercased())", nil)
+        } else {
+            return ("title-unknown".localized, nil)
+        }
+    }
+}
+
+extension AssetInformation: Equatable {
+    static func == (lhs: AssetInformation, rhs: AssetInformation) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+extension AssetInformation: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id.hashValue)
     }
 }
 

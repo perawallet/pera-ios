@@ -24,7 +24,7 @@ final class AssetDetailInfoViewModel: ViewModel {
     private(set) var name: String?
     private(set) var ID: String?
 
-    init(account: Account, assetDetail: AssetDetail) {
+    init(account: Account, assetDetail: AssetInformation) {
         bindName(from: assetDetail)
         bindAmount(from: assetDetail, in: account)
         bindID(from: assetDetail)
@@ -32,22 +32,22 @@ final class AssetDetailInfoViewModel: ViewModel {
 }
 
 extension AssetDetailInfoViewModel {
-    private func bindIsVerified(from assetDetail: AssetDetail) {
+    private func bindIsVerified(from assetDetail: AssetInformation) {
         isVerified = assetDetail.isVerified
     }
 
-    private func bindName(from assetDetail: AssetDetail) {
+    private func bindName(from assetDetail: AssetInformation) {
         name = assetDetail.getDisplayNames().0
     }
 
-    private func bindAmount(from assetDetail: AssetDetail, in account: Account) {
+    private func bindAmount(from assetDetail: AssetInformation, in account: Account) {
         guard let assetAmount = account.amount(for: assetDetail) else {
             return
         }
-        amount = assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+        amount = assetAmount.toFractionStringForLabel(fraction: assetDetail.decimals)
     }
 
-    private func bindID(from assetDetail: AssetDetail) {
+    private func bindID(from assetDetail: AssetInformation) {
         ID = "asset-detail-id-title".localized(params: "\(assetDetail.id)")
     }
 }

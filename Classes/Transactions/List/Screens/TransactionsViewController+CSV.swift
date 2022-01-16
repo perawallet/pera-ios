@@ -98,7 +98,7 @@ extension TransactionsViewController: CSVExportable {
 
     private func getFormattedAmount(_ amount: UInt64?) -> String {
         if let assetDetail = assetDetail {
-            return amount?.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? " "
+            return amount?.toFractionStringForLabel(fraction: assetDetail.decimals) ?? " "
         } else {
             return amount?.toAlgos.toAlgosStringForLabel ?? " "
         }

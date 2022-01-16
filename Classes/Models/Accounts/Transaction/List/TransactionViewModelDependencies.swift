@@ -19,7 +19,7 @@ import Foundation
 
 struct TransactionViewModelDependencies {
     let account: Account
-    let assetDetail: AssetDetail?
+    let assetDetail: AssetInformation?
     let transaction: TransactionItem
     var contact: Contact?
 }

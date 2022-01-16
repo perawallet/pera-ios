@@ -18,24 +18,36 @@
 import MacaroonUIKit
 import UIKit
 
-struct PendingAssetPreviewModel {
+struct PendingAssetPreviewModel: Hashable {
     let secondaryImage: UIImage?
     let assetPrimaryTitle: String?
     let assetSecondaryTitle: String?
     let assetStatus: String?
 }
 
-final class PendingAssetPreviewViewModel: PairedViewModel {
+final class PendingAssetPreviewViewModel:
+    PairedViewModel,
+    Hashable {
+    private let uuid: UUID
     private(set) var secondaryImage: UIImage?
     private(set) var assetPrimaryTitle: String?
     private(set) var assetSecondaryTitle: String?
     private(set) var assetStatus: String?
 
     init(_ model: PendingAssetPreviewModel) {
+        self.uuid = UUID()
         bindSecondaryImage(model.secondaryImage)
         bindAssetPrimaryTitle(model.assetPrimaryTitle)
         bindAssetSecondaryTitle(model.assetSecondaryTitle)
         bindAssetStatus(model.assetStatus)
+    }
+
+    static func == (lhs: PendingAssetPreviewViewModel, rhs: PendingAssetPreviewViewModel) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(uuid.hashValue)
     }
 }
 

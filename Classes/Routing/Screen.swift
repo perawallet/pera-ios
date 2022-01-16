@@ -62,7 +62,7 @@ indirect enum Screen {
         isSenderEditable: Bool
     )
     case nodeSettings
-    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetDetail?)
+    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetInformation?)
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)

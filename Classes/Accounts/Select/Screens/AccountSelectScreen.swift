@@ -332,7 +332,7 @@ final class AccountSelectScreen: BaseViewController {
             toAccount: toAccountAddress,
             amount: draft.amount,
             assetIndex: assetDetail.id,
-            assetDecimalFraction: assetDetail.fractionDecimals,
+            assetDecimalFraction: assetDetail.decimals,
             isVerifiedAsset: assetDetail.isVerified,
             note: draft.note
         )

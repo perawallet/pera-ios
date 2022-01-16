@@ -59,14 +59,14 @@ final class SendTransactionPreviewViewModel: PairedViewModel {
             return
         }
 
-        amountViewMode = .normal(amount: amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.assetName)
+        amountViewMode = .normal(amount: amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name)
 
         setUserView(for: draft)
         setOpponentView(for: draft)
         setFee(for: draft)
 
         if let balance = draft.from.amount(for: assetDetail) {
-            balanceViewMode = .normal(amount: balance - amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.assetName)
+            balanceViewMode = .normal(amount: balance - amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name)
         }
 
         setNote(for: draft)

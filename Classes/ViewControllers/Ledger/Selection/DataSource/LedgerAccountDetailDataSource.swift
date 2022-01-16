@@ -151,15 +151,15 @@ extension LedgerAccountDetailDataSource {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
         assets.forEach { asset in
-            if let assetDetail = api.session.assetDetails[asset.id] {
-                account.assetDetails.append(assetDetail)
+            if let assetDetail = api.session.assetInformations[asset.id] {
+                account.assetInformations.append(assetDetail)
                 let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset))
                 assetPreviews.append(assetPreviewModel)
             } else {
-                api.getAssetDetails(AssetFetchDraft(assetId: "\(asset.id)")) { [weak self] assetResponse in
+                api.getAssetDetails(AssetFetchQuery(ids: [asset.id])) { [weak self] assetResponse in
                     switch assetResponse {
                     case .success(let assetDetailResponse):
-                        self?.composeAssetDetail(assetDetailResponse.assetDetail, of: account, with: asset)
+                        self?.composeAssetDetail(assetDetailResponse.results[0], of: account, with: asset)
                     case .failure:
                         account.removeAsset(asset.id)
                     }
@@ -169,11 +169,9 @@ extension LedgerAccountDetailDataSource {
         loadingController?.stopLoading()
     }
 
-    private func composeAssetDetail(_ assetDetail: AssetDetail, of account: Account, with asset: Asset) {
-        var assetDetail = assetDetail
-        setVerifiedIfNeeded(&assetDetail, with: asset.id)
-        account.assetDetails.append(assetDetail)
-        api.session.assetDetails[asset.id] = assetDetail
+    private func composeAssetDetail(_ assetDetail: AssetInformation, of account: Account, with asset: Asset) {
+        account.assetInformations.append(assetDetail)
+        api.session.assetInformations[asset.id] = assetDetail
         let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset))
         assetPreviews.append(assetPreviewModel)
     }

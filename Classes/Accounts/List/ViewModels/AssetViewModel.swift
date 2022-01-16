@@ -18,27 +18,27 @@
 import UIKit
 
 final class AssetViewModel {
-    private(set) var assetDetail: AssetDetail?
+    private(set) var assetDetail: AssetInformation?
     private(set) var amount: String?
 
-    init(assetDetail: AssetDetail?, asset: Asset?) {
+    init(assetDetail: AssetInformation?, asset: Asset?) {
         bindAssetDetail(assetDetail)
         bindAmount(from: assetDetail, with: asset)
     }
 }
 
 extension AssetViewModel {
-    private func bindAssetDetail(_ assetDetail: AssetDetail?) {
+    private func bindAssetDetail(_ assetDetail: AssetInformation?) {
         self.assetDetail = assetDetail
     }
 
-    private func bindAmount(from assetDetail: AssetDetail?, with asset: Asset?) {
+    private func bindAmount(from assetDetail: AssetInformation?, with asset: Asset?) {
         guard let assetDetail = assetDetail else {
             return
         }
 
         amount = asset?.amount
-            .assetAmount(fromFraction: assetDetail.fractionDecimals)
-            .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+            .assetAmount(fromFraction: assetDetail.decimals)
+            .toFractionStringForLabel(fraction: assetDetail.decimals)
     }
 }

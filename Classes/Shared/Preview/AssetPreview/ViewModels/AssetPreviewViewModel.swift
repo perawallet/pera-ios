@@ -18,7 +18,7 @@
 import MacaroonUIKit
 import UIKit
 
-struct AssetPreviewModel {
+struct AssetPreviewModel: Hashable {
     let image: UIImage?
     let secondaryImage: UIImage?
     let assetPrimaryTitle: String?
@@ -27,16 +27,20 @@ struct AssetPreviewModel {
     let assetSecondaryValue: String?
 }
 
-final class AssetPreviewViewModel: PairedViewModel {
+final class AssetPreviewViewModel:
+    PairedViewModel,
+    Hashable {
+    private let uuid: UUID
     private(set) var image: UIImage?
     private(set) var secondaryImage: UIImage?
-    private(set) var assetPrimaryTitle: String?
-    private(set) var assetSecondaryTitle: String?
-    private(set) var assetPrimaryValue: String?
-    private(set) var assetSecondaryAssetValue: String?
-    private(set) var assetAbbreviationForImage: String?
+    private(set) var assetPrimaryTitle: EditText?
+    private(set) var assetSecondaryTitle: EditText?
+    private(set) var assetPrimaryValue: EditText?
+    private(set) var assetSecondaryAssetValue: EditText?
+    private(set) var assetAbbreviationForImage: EditText?
     
     init(_ model: AssetPreviewModel) {
+        self.uuid = UUID()
         bindImage(model.image)
         bindSecondaryImage(model.secondaryImage)
         bindAssetPrimaryTitle(model.assetPrimaryTitle)
@@ -44,6 +48,14 @@ final class AssetPreviewViewModel: PairedViewModel {
         bindAssetPrimaryValue(model.assetPrimaryValue)
         bindAssetSecondaryValue(model.assetSecondaryValue)
         bindAssetAbbreviationForImage()
+    }
+
+    static func == (lhs: AssetPreviewViewModel, rhs: AssetPreviewViewModel) -> Bool {
+        return lhs.uuid == rhs.uuid
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(uuid.hashValue)
     }
 }
 
@@ -57,22 +69,22 @@ extension AssetPreviewViewModel {
     }
     
     private func bindAssetPrimaryTitle(_ title: String?) {
-        self.assetPrimaryTitle = title.isNilOrEmpty ? "title-unknown".localized : title
+        self.assetPrimaryTitle =  .string(title.isNilOrEmpty ? "title-unknown".localized : title)
     }
     
     private func bindAssetSecondaryTitle(_ title: String?) {
-        self.assetSecondaryTitle = title
+        self.assetSecondaryTitle = .string(title)
     }
     
     private func bindAssetPrimaryValue(_ value: String?) {
-        self.assetPrimaryValue = value
+        self.assetPrimaryValue = .string(value)
     }
     
     private func bindAssetSecondaryValue(_ value: String?) {
-        self.assetSecondaryAssetValue = value
+        self.assetSecondaryAssetValue = .string(value)
     }
 
     private func bindAssetAbbreviationForImage() {
-        self.assetAbbreviationForImage = TextFormatter.assetShortName.format(assetPrimaryTitle)
+        self.assetAbbreviationForImage = .string(TextFormatter.assetShortName.format(assetPrimaryTitle?.string))
     }
 }

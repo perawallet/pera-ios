@@ -76,7 +76,7 @@ extension AssetView {
 
     func bind(_ viewModel: AssetRemovalViewModel) {
         if let assetDetail = viewModel.assetDetail {
-            assetNameView.setAssetName(for: assetDetail)
+            // assetNameView.setAssetName(for: assetDetail)
         }
         actionButton.titleLabel?.font = viewModel.actionFont
         actionButton.setTitleColor(viewModel.actionColor, for: .normal)

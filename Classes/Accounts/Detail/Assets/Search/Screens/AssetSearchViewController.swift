@@ -32,7 +32,7 @@ final class AssetSearchViewController: BaseViewController {
 
     private lazy var searchInputView = SearchInputView()
 
-    private var searchResults: [AssetDetail] = []
+    private var searchResults: [AssetInformation] = []
 
     private lazy var listView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -54,7 +54,7 @@ final class AssetSearchViewController: BaseViewController {
     ) {
         self.account = account
         super.init(configuration: configuration)
-        searchResults = account.assetDetails
+        searchResults = account.assetInformations
     }
 
     private lazy var dataSource: DataSource = {
@@ -188,9 +188,9 @@ extension AssetSearchViewController: SearchInputViewDelegate {
                 return
             }
 
-            self.searchResults = self.account.assetDetails.filter {
+            self.searchResults = self.account.assetInformations.filter {
                 String($0.id).contains(query) ||
-                    $0.assetName.unwrap(or: "").contains(query) ||
+                    $0.name.unwrap(or: "").contains(query) ||
                     $0.unitName.unwrap(or: "").contains(query)
             }
 
@@ -213,7 +213,7 @@ extension AssetSearchViewController: SearchInputViewDelegate {
     }
 
     private func resetSearch() {
-        searchResults = account.assetDetails
+        searchResults = account.assetInformations
         applySnapshot()
     }
 }
@@ -258,7 +258,7 @@ extension AssetSearchViewController {
 
 extension AssetSearchViewController {
     struct Handlers {
-        var didSelectAssetDetail: ((AssetDetail) -> Void)?
+        var didSelectAssetDetail: ((AssetInformation) -> Void)?
     }
 }
 
@@ -267,5 +267,5 @@ enum AssetSearchSection: Int, Hashable {
 }
 
 enum AssetSearchItem: Hashable {
-    case asset(asset: AssetDetail?)
+    case asset(asset: AssetInformation?)
 }

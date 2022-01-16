@@ -86,7 +86,7 @@ extension ManageAssetsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AssetPreviewActionCell.self, at: indexPath)
         cell.customize(theme.assetPreviewActionViewTheme)
-        cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(account.assetDetails[indexPath.item])))
+        cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(account.assetInformations[indexPath.item])))
         cell.delegate = self
         return cell
     }
@@ -105,11 +105,11 @@ extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
 extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
     func assetPreviewSendCellDidTapSendButton(_ assetPreviewSendCell: AssetPreviewActionCell) {
         guard let index = manageAssetsView.assetsCollectionView.indexPath(for: assetPreviewSendCell),
-              index.item < account.assetDetails.count else {
+              index.item < account.assetInformations.count else {
                   return
               }
 
-        let assetDetail = account.assetDetails[index.item]
+        let assetDetail = account.assetInformations[index.item]
         guard let assetAmount = account.amount(for: assetDetail) else {
             return
         }
@@ -157,7 +157,7 @@ extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
 extension ManageAssetsViewController: AssetActionConfirmationViewControllerDelegate {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetDetail
+        didConfirmedActionFor assetDetail: AssetInformation
     ) {
         guard let session = session,
               session.canSignTransaction(for: &account) else {
@@ -166,30 +166,29 @@ extension ManageAssetsViewController: AssetActionConfirmationViewControllerDeleg
         
         if let assetAmount = account.amount(for: assetDetail),
            assetAmount != 0 {
-            let controller = open(
-                .sendAssetTransactionPreview(
-                    account: account,
-                    receiver: .initial,
-                    assetDetail: assetDetail,
-                    isSenderEditable: false,
-                    isMaxTransaction: true
-                ),
+            /// <todo> Implement forced max transaction
+            let draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(assetDetail))
+            open(
+                .sendTransaction(draft: draft),
                 by: .push
             )
-            (controller as? SendAssetTransactionPreviewViewController)?.delegate = self
             return
         }
         
         removeAssetFromAccount(assetDetail)
     }
     
-    private func removeAssetFromAccount(_ assetDetail: AssetDetail) {
+    private func removeAssetFromAccount(_ assetDetail: AssetInformation) {
+        guard let creator = assetDetail.creator?.address else {
+            return
+        }
+
         let assetTransactionDraft = AssetTransactionSendDraft(
             from: account,
-            toAccount: assetDetail.creator,
+            toAccount: creator,
             amount: 0,
             assetIndex: assetDetail.id,
-            assetCreator: assetDetail.creator
+            assetCreator: creator
         )
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
@@ -260,8 +259,8 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         }
     }
     
-    private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetDetail? {
-        guard let removedAssetDetail = account.assetDetails.first(where: { assetDetail -> Bool in
+    private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetInformation? {
+        guard let removedAssetDetail = account.assetInformations.first(where: { assetDetail -> Bool in
             guard let assetId = draft?.assetIndex else {
                 return false
             }
@@ -274,21 +273,21 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
     }
 }
 
-extension ManageAssetsViewController: SendAssetTransactionPreviewViewControllerDelegate {
-    func sendAssetTransactionPreviewViewController(
-        _ viewController: SendAssetTransactionPreviewViewController,
-        didCompleteTransactionFor assetDetail: AssetDetail
-    ) {
-        removeAssetFromAccount(assetDetail)
-        delegate?.manageAssetsViewController(self, didRemove: assetDetail, from: account)
-        closeScreen(by: .dismiss, animated: false)
-    }
-}
+//extension ManageAssetsViewController: SendAssetTransactionPreviewViewControllerDelegate {
+//    func sendAssetTransactionPreviewViewController(
+//        _ viewController: SendAssetTransactionPreviewViewController,
+//        didCompleteTransactionFor assetDetail: AssetDetail
+//    ) {
+//        removeAssetFromAccount(assetDetail)
+//        delegate?.manageAssetsViewController(self, didRemove: assetDetail, from: account)
+//        closeScreen(by: .dismiss, animated: false)
+//    }
+//}
 
 protocol ManageAssetsViewControllerDelegate: AnyObject {
     func manageAssetsViewController(
         _ manageAssetsViewController: ManageAssetsViewController,
-        didRemove assetDetail: AssetDetail,
+        didRemove assetDetail: AssetInformation,
         from account: Account
     )
 }

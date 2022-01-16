@@ -42,6 +42,7 @@ final class HomeViewController:
         collectionView.backgroundColor = .clear
         return collectionView
     }()
+
     private lazy var listLayout = HomeListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = HomeListDataSource(listView)
     

@@ -104,7 +104,7 @@ extension AccountAssetListLayout: UICollectionViewDelegateFlowLayout {
         }
 
         /// Reduce search and algos cells from index
-        if let assetDetail = account.assetDetails[safe: indexPath.item - 2] {
+        if let assetDetail = account.assetInformations[safe: indexPath.item - 2] {
             handlers.didSelectAssetDetail?(assetDetail)
         }
     }
@@ -114,6 +114,6 @@ extension AccountAssetListLayout {
     struct Handlers {
         var didSelectSearch: EmptyHandler?
         var didSelectAlgoDetail: EmptyHandler?
-        var didSelectAssetDetail: ((AssetDetail) -> Void)?
+        var didSelectAssetDetail: ((AssetInformation) -> Void)?
     }
 }

@@ -22,9 +22,9 @@ final class AssetSearchListLayout: NSObject {
     private lazy var theme = Theme()
     lazy var handlers = Handlers()
 
-    private var searchResults: [AssetDetail]
+    private var searchResults: [AssetInformation]
 
-    init(searchResults: [AssetDetail]) {
+    init(searchResults: [AssetInformation]) {
         self.searchResults = searchResults
         super.init()
     }
@@ -60,14 +60,14 @@ extension AssetSearchListLayout: UICollectionViewDelegateFlowLayout {
 }
 
 extension AssetSearchListLayout {
-    func updateSearchResults(_ searchResults: [AssetDetail]) {
+    func updateSearchResults(_ searchResults: [AssetInformation]) {
         self.searchResults = searchResults
     }
 }
 
 extension AssetSearchListLayout {
     struct Handlers {
-        var didSelectAssetDetail: ((AssetDetail) -> Void)?
+        var didSelectAssetDetail: ((AssetInformation) -> Void)?
     }
 }
 

@@ -44,13 +44,13 @@ struct SendTransactionDraft: TransactionSendDraft {
         case .algo:
             return algosFraction
         case .assetDetail(let assetDetail):
-            return assetDetail.fractionDecimals
+            return assetDetail.decimals
         }
     }
     var toContact: Contact?
     var note: String?
 
-    var assetDetail: AssetDetail? {
+    var assetDetail: AssetInformation? {
         switch transactionMode {
         case .algo:
             return nil
@@ -62,5 +62,5 @@ struct SendTransactionDraft: TransactionSendDraft {
 
 enum TransactionMode {
     case algo
-    case assetDetail(AssetDetail)
+    case assetDetail(AssetInformation)
 }
