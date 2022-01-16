@@ -84,18 +84,20 @@ extension AccountAssetListLocalDataController {
 
             var snapshot = Snapshot()
 
-//            let portfolioItem: AccountAssetsItem
+            let portfolioItem: AccountAssetsItem
 //            if let totalPortfolioValue = self.calculatePortfolio(for: [account], with: currency) {
 //                portfolioItem = .portfolio(PortfolioValueViewModel(.singleAccount(value: .value(totalPortfolioValue)), currency))
 //            } else {
 //                portfolioItem = .portfolio(PortfolioValueViewModel(.singleAccount(value: .unknown), nil))
 //            }
 //
-//            snapshot.appendSections([.portfolio])
-//            snapshot.appendItems(
-//                [portfolioItem],
-//                toSection: .portfolio
-//            )
+            portfolioItem = .portfolio(PortfolioValueViewModel(.singleAccount(value: .unknown), nil))
+
+            snapshot.appendSections([.portfolio])
+            snapshot.appendItems(
+                [portfolioItem],
+                toSection: .portfolio
+            )
 
             var assets: [AssetInformation] = []
             var assetItems: [AccountAssetsItem] = []
