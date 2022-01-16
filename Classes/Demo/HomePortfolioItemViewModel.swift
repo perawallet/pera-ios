@@ -71,6 +71,7 @@ extension HomePortfolioItemViewModel {
                 .letterSpacing(-0.3),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
+                    .lineBreakMode(.byTruncatingTail),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ]),
                 .textColor(AppColors.Components.Text.main)

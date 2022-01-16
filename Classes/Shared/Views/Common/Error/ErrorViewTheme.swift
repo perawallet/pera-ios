@@ -13,36 +13,31 @@
 // limitations under the License.
 
 //
-//   AccountPortfolioErrorViewTheme.swift
+//   ErrorViewTheme.swift
 
+import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct AccountPortfolioErrorViewTheme: StyleSheet, LayoutSheet {
-    let icon: ImageStyle
-    let message: TextStyle
-    let separator: Separator
-
-    let horizontalInset: LayoutMetric
-    let iconSize: LayoutSize
-    let messageLeadingInset: LayoutMetric
-    let separatorTopPadding: LayoutMetric
+struct ErrorViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var icon: ImageStyle
+    var iconContentEdgeInsets: LayoutOffset
+    var message: TextStyle
+    var separator: Separator
+    var spacingBetweenMessageAndSeparator: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.icon = [
-            .image("icon-red-warning")
+            .contentMode(.left)
         ]
+        self.iconContentEdgeInsets = (8, 0)
         self.message = [
-            .textOverflow(FittingText()),
-            .textAlignment(.left),
-            .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Shared.Helpers.negative.uiColor),
-            .text("account-listing-error-message".localized)
+            .textOverflow(FittingText())
         ]
         self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
-
-        self.horizontalInset = 24
-        self.iconSize = (24, 24)
-        self.messageLeadingInset = 8
-        self.separatorTopPadding = 24
+        self.spacingBetweenMessageAndSeparator = 28
     }
 }

@@ -25,7 +25,6 @@ final class ALGBlockProcessor: BlockProcessor {
     
     private lazy var queue = ALGBlockOperationQueue()
     
-    private var currentBlockRequest: ALGBlockRequest?
     private var blockEventQueue: DispatchQueue?
     private var blockEventHandler: BlockEventHandler?
 
@@ -71,8 +70,6 @@ extension ALGBlockProcessor {
     }
     
     func stop() {
-        currentBlockRequest = nil
-        
         blockCycle.stopListening()
         queue.cancelAllOperations()
     }
@@ -85,9 +82,7 @@ extension ALGBlockProcessor {
     
     private func proceed(
         with newBlockRequest: ALGBlockRequest
-    ) {
-        currentBlockRequest = newBlockRequest
-        
+    ) {        
         publish(blockEvent: .willStart)
         
         var currencyFetchOperation: Operation?
@@ -136,8 +131,8 @@ extension ALGBlockProcessor {
                     self.publish(blockEvent: .didFetchAccount(account))
                     
                     input.account = account
-                    input.cachedAccounts = self.currentBlockRequest?.cachedAccounts ?? []
-                    input.cachedAssetDetails = self.currentBlockRequest?.cachedAssetDetails ?? []
+                    input.cachedAccounts = newBlockRequest.cachedAccounts
+                    input.cachedAssetDetails = newBlockRequest.cachedAssetDetails
                     
                     self.publish(blockEvent: .willFetchAssetDetails(account))
                 case .failure(let error):

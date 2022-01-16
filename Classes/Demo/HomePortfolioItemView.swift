@@ -118,6 +118,7 @@ extension HomePortfolioItemView {
         
         addSubview(iconView)
         iconView.contentEdgeInsets = theme.iconContentEdgeInsets
+        iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {
             $0.centerY == valueView
             $0.leading == 0

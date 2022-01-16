@@ -22,7 +22,7 @@ final class PortfolioCalculationDescriptionView: View {
     lazy var handlers = Handlers()
 
     private lazy var stackView = VStackView()
-    private lazy var errorView = AccountPortfolioErrorView()
+    private lazy var errorView = ErrorView()
     private lazy var titleLabel = UILabel()
     private lazy var detailLabel = UILabel()
     private lazy var closeButton = ViewFactory.Button.makeSecondaryButton("title-close".localized)

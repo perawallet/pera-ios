@@ -42,13 +42,25 @@ struct AssetDetailCollection:
     
     @Atomic(identifier: "assetDetailCollection.table")
     private var table = Table()
-
+    
     init(
-        arrayLiteral elements: Element...
+        _ collection: AssetDetailCollection
+    ) {
+        $table.modify { $0 = collection.table }
+    }
+    
+    init(
+        _ elements: [Element]
     ) {
         let keysAndValues = elements.map { ($0.id, $0) }
         let aTable = Table(keysAndValues, uniquingKeysWith: { $1 })
         $table.modify { $0 = aTable }
+    }
+
+    init(
+        arrayLiteral elements: Element...
+    ) {
+        self.init(elements)
     }
 }
 

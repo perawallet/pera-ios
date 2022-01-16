@@ -82,8 +82,9 @@ extension SharedAPIDataController {
         let request: ALGBlockProcessor.BlockRequest = { [unowned self] in
             var request = ALGBlockRequest()
             request.localAccounts = self.session.authenticatedUser?.accounts ?? []
-            request.cachedAccounts = self.accountCollection
-            request.cachedAssetDetails = self.assetDetailCollection
+            /// <warning>
+            request.cachedAccounts = AccountCollection(self.accountCollection)
+            request.cachedAssetDetails = AssetDetailCollection(self.assetDetailCollection)
             request.localCurrencyId = self.session.preferredCurrency
             request.cachedCurrency = self.currency
             return request

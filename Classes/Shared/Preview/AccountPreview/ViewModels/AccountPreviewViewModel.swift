@@ -225,8 +225,7 @@ extension AccountPreviewViewModel {
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
                     .lineBreakMode(.byTruncatingMiddle),
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
+                    .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])
         )
@@ -265,8 +264,8 @@ extension AccountPreviewViewModel {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
+                    .lineBreakMode(.byTruncatingTail),
+                    .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])
         )
@@ -289,6 +288,7 @@ extension AccountPreviewViewModel {
                 .letterSpacing(-0.3),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
+                    .lineBreakMode(.byTruncatingTail),
                     .lineHeightMultiple(lineHeightMultiplier),
                     .textAlignment(.right)
                 ])
@@ -313,6 +313,7 @@ extension AccountPreviewViewModel {
                 .letterSpacing(-0.3),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
+                    .lineBreakMode(.byTruncatingTail),
                     .lineHeightMultiple(lineHeightMultiplier),
                     .textAlignment(.right)
                 ])

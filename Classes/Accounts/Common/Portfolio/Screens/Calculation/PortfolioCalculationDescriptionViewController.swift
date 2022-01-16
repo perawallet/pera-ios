@@ -24,6 +24,7 @@ final class PortfolioCalculationDescriptionViewController: BaseViewController {
     private lazy var portfolioCalculationDescriptionView = PortfolioCalculationDescriptionView()
 
     override func configureAppearance() {
+        view.backgroundColor = AppColors.Shared.System.background.uiColor
         portfolioCalculationDescriptionView.bindData(PortfolioCalculationDescriptionViewModel(hasError: false))
     }
 

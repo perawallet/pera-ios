@@ -61,8 +61,7 @@ extension HomePortfolioViewModel {
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
-                        .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.left)
+                        .lineHeightMultiple(lineHeightMultiplier)
                     ])
                 ])
             )
@@ -87,8 +86,8 @@ extension HomePortfolioViewModel {
                 .letterSpacing(-0.72),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.left)
+                    .lineBreakMode(.byTruncatingTail),
+                    .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])
         )
