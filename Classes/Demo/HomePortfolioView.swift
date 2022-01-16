@@ -69,17 +69,17 @@ final class HomePortfolioView:
             return CGSize((size.width, 0))
         }
         
-        let contentWidth = size.width
+        let width = size.width
         let titleSize = viewModel.title.boundingSize(
             multiline: false,
-            fittingSize: CGSize((contentWidth, .greatestFiniteMagnitude))
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
         let valueSize = viewModel.value.boundingSize(
             multiline: false,
             fittingSize: .greatestFiniteMagnitude
         )
         let holdingsMaxWidth =
-            (contentWidth - theme.minSpacingBetweenAlgoHoldingsAndAssetHoldings) / 2
+            (width - theme.minSpacingBetweenAlgoHoldingsAndAssetHoldings) / 2
         let algoHoldingsSize = HomePortfolioItemView.calculatePreferredSize(
             viewModel.algoHoldings,
             for: theme.algoHoldings,
@@ -108,8 +108,7 @@ extension HomePortfolioView {
         titleView.customizeAppearance(theme.title)
         
         addSubview(titleView)
-        titleView.fitToHorizontalIntrinsicSize()
-        titleView.fitToVerticalIntrinsicSize()
+        titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.top == theme.titleTopPadding
             $0.leading == 0
@@ -134,8 +133,7 @@ extension HomePortfolioView {
         valueView.customizeAppearance(theme.value)
         
         addSubview(valueView)
-        valueView.fitToHorizontalIntrinsicSize()
-        valueView.fitToVerticalIntrinsicSize()
+        valueView.fitToIntrinsicSize()
         valueView.snp.makeConstraints {
             $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndValue
             $0.leading == 0

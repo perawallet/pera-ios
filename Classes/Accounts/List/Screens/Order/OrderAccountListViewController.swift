@@ -141,7 +141,8 @@ extension OrderAccountListViewController: UITableViewDataSource {
 
         let account = accounts[indexPath.item]
         let accountNameViewModel = AccountNameViewModel(account: account)
-        cell.bindData(AccountPreviewViewModel(viewModel: accountNameViewModel))
+        let preview = CustomAccountPreview(accountNameViewModel)
+        cell.bindData(AccountPreviewViewModel(preview))
         return cell
     }
 

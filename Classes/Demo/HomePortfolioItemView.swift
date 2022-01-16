@@ -59,14 +59,14 @@ final class HomePortfolioItemView:
             return CGSize((size.width, 0))
         }
         
-        let contentWidth = size.width
+        let width = size.width
         let titleSize = viewModel.title.boundingSize(
             multiline: false,
-            fittingSize: CGSize((contentWidth, .greatestFiniteMagnitude))
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
         let valueSize = viewModel.value.boundingSize(
             multiline: false,
-            fittingSize: CGSize((contentWidth, .greatestFiniteMagnitude))
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
         let preferredHeight =
             titleSize.height +
@@ -101,8 +101,7 @@ extension HomePortfolioItemView {
         valueView.customizeAppearance(theme.value)
         
         addSubview(valueView)
-        valueView.fitToHorizontalIntrinsicSize()
-        valueView.fitToVerticalIntrinsicSize()
+        valueView.fitToIntrinsicSize()
         valueView.snp.makeConstraints {
             $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndValue
             $0.bottom == 0

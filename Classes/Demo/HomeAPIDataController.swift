@@ -96,11 +96,18 @@ extension HomeAPIDataController {
             var watchAccounts: [AccountHandle] = []
             var watchAccountItems: [HomeItem] = []
             
+            let currency = self.sharedDataController.currency
+            let calculator = ALGPortfolioCalculator()
+            
             self.sharedDataController.accountCollection
                 .sorted()
                 .forEach {
                     let isNonWatchAccount = $0.value.type != .watch
-                    let item: HomeItem = .account(AccountPreviewViewModel(account: $0))
+                    let accountPortfolio =
+                        AccountPortfolio(account: $0, currency: currency, calculator: calculator)
+                    let cellItem: HomeAccountItem =
+                        .cell(AccountPreviewViewModel(accountPortfolio))
+                    let item: HomeItem = .account(cellItem)
                 
                     if isNonWatchAccount {
                         accounts.append($0)
@@ -115,8 +122,6 @@ extension HomeAPIDataController {
             
             snapshot.appendSections([.portfolio])
             
-            let currency = self.sharedDataController.currency
-            let calculator = ALGPortfolioCalculator()
             let portfolio =
                 Portfolio(accounts: accounts, currency: currency, calculator: calculator)
             let portfolioItem = HomePortfolioViewModel(portfolio)
@@ -132,6 +137,13 @@ extension HomeAPIDataController {
             self.accounts = accounts
             
             if !accounts.isEmpty {
+                let headerItem: HomeAccountItem =
+                    .header(HomeSectionSupplementaryViewModel(.accounts))
+                accountItems.insert(
+                    .account(headerItem),
+                    at: 0
+                )
+                
                 snapshot.appendSections([.accounts])
                 snapshot.appendItems(
                     accountItems,
@@ -142,6 +154,13 @@ extension HomeAPIDataController {
             self.watchAccounts = watchAccounts
             
             if !watchAccounts.isEmpty {
+                let headerItem: HomeAccountItem =
+                    .header(HomeSectionSupplementaryViewModel(.watchAccounts))
+                watchAccountItems.insert(
+                    .account(headerItem),
+                    at: 0
+                )
+                
                 snapshot.appendSections([.watchAccounts])
                 snapshot.appendItems(
                     watchAccountItems,

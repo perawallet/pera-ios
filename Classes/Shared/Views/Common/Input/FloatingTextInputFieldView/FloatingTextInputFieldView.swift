@@ -546,8 +546,7 @@ extension FloatingTextInputFieldView {
             placeholderView,
             belowSubview: textInputView
         )
-        placeholderView.fitToHorizontalIntrinsicSize()
-        placeholderView.fitToVerticalIntrinsicSize()
+        placeholderView.fitToIntrinsicSize()
         placeholderView.snp.makeConstraints {
             $0.leading == 0
             $0.trailing <= 0

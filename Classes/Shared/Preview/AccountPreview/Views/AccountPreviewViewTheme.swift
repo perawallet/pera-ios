@@ -19,48 +19,44 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AccountPreviewViewTheme: StyleSheet, LayoutSheet {
-    let accountName: TextStyle
-    let assetAndNFTs: TextStyle
-    let assetValue: TextStyle
-    let secondaryAssetValue: TextStyle
-    let errorImage: ImageStyle
-    
-    let horizontalPadding: LayoutMetric
-    let verticalPadding: LayoutMetric
-    let errorImageSize: LayoutSize
+struct AccountPreviewViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var icon: ImageStyle
+    var iconContentEdgeInsets: LayoutOffset
+    var contentMinWidthRatio: LayoutMetric
+    var title: TextStyle
+    var subtitle: TextStyle
+    var primaryAccessory: TextStyle
+    var secondaryAccessory: TextStyle
+    var accessoryIcon: ImageStyle
+    var accessoryIconContentEdgeInsets: LayoutOffset
+    var minSpacingBetweenContentAndAccessory: LayoutMetric
 
-    init(_ family: LayoutFamily) {
-        self.accountName = [
-            .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.regular.make(15))
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.icon = [
+            .contentMode(.left)
         ]
-        self.assetAndNFTs = [
-            .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
-            .font(Fonts.DMSans.regular.make(13))
+        self.iconContentEdgeInsets = (16, 0)
+        self.contentMinWidthRatio = 0.25
+        self.title = [
+            .textColor(AppColors.Components.Text.main)
         ]
-        self.assetValue = [
-            .textAlignment(.right),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMMono.regular.make(15))
+        self.subtitle = [
+            .textColor(AppColors.Components.Text.grayLighter)
         ]
-        self.secondaryAssetValue = [
-            .textAlignment(.right),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.grayLighter),
-            .font(Fonts.DMMono.regular.make(13))
+        self.primaryAccessory = [
+            .textColor(AppColors.Components.Text.main)
         ]
-        self.errorImage = [
-            .image("icon-red-warning")
+        self.secondaryAccessory = [
+            .textColor(AppColors.Components.Text.grayLighter)
         ]
-
-        self.horizontalPadding = 16
-        self.verticalPadding = 16
-        self.errorImageSize = (24, 24)
+        self.accessoryIcon = [
+            .contentMode(.right)
+        ]
+        self.accessoryIconContentEdgeInsets = (8, 0)
+        self.minSpacingBetweenContentAndAccessory = 8
     }
 }

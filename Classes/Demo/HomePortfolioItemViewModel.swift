@@ -34,11 +34,11 @@ struct HomePortfolioItemViewModel:
 
 extension HomePortfolioItemViewModel {
     mutating func bind(
-        _ model: PortfolioItem
+        _ item: PortfolioItem
     ) {
-        bindTitle(model)
-        bindValue(model)
-        bindIcon(model)
+        bindTitle(item)
+        bindValue(item)
+        bindIcon(item)
     }
     
     mutating func bindTitle(

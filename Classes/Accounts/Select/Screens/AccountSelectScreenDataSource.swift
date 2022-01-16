@@ -116,11 +116,9 @@ UICollectionViewDataSource {
             let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
 
             if let account = accounts[safe: indexPath.item] {
-                cell.bindData(
-                    AccountPreviewViewModel(
-                        viewModel: AccountNameViewModel(account: account)
-                    )
-                )
+                let accountNameViewModel = AuthAccountNameViewModel(account)
+                let preview = CustomAccountPreview(accountNameViewModel)
+                cell.bindData(AccountPreviewViewModel(preview))
             }
 
             return cell

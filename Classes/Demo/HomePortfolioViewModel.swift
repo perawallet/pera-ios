@@ -37,15 +37,15 @@ struct HomePortfolioViewModel:
 
 extension HomePortfolioViewModel {
     mutating func bind(
-        _ model: Portfolio
+        _ portfolio: Portfolio
     ) {
-        var portfolio = model
-        portfolio.calculate()
+        var mPortfolio = portfolio
+        mPortfolio.calculate()
         
-        bindTitle(portfolio)
-        bindValue(portfolio)
-        bindAlgoHoldings(portfolio)
-        bindAssetHoldings(portfolio)
+        bindTitle(mPortfolio)
+        bindValue(mPortfolio)
+        bindAlgoHoldings(mPortfolio)
+        bindAssetHoldings(mPortfolio)
     }
     
     mutating func bindTitle(

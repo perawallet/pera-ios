@@ -40,7 +40,7 @@ UICollectionViewDataSource {
 
         if let account = accounts[safe: indexPath.item] {
             cell.bindData(
-                AccountPreviewViewModel(from: account)
+                AccountPreviewViewModel(account)
             )
         }
 
