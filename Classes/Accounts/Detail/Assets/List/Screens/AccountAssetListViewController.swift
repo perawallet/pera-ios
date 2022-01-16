@@ -73,6 +73,12 @@ final class AccountAssetListViewController: BaseViewController {
         super.linkInteractors()
         listView.dataSource = dataSource
         listView.delegate = listLayout
+
+        dataSource.handlers.didAddAsset = { [weak self] in
+            guard let self = self else { return }
+            let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push)
+            (controller as? AssetAdditionViewController)?.delegate = self
+        }
     }
 
     override func setListeners() {
@@ -190,22 +196,13 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
     }
 }
 
-extension AccountAssetListViewController: AddAssetItemFooterViewDelegate {
-    func addAssetItemFooterViewDidTapAddAsset(_ addAssetItemFooterView: AddAssetItemFooterView) {
-        let controller = open(.addAsset(account: accountHandle.value), by: .push)
-        (controller as? AssetAdditionViewController)?.delegate = self
-    }
-}
-
 extension AccountAssetListViewController {
     func addAsset(_ assetDetail: AssetInformation) {
         dataController.addedAssetDetails.append(assetDetail)
-        // dataSource.apply(snapshot, animatingDifferences: true)
     }
 
     func removeAsset(_ assetDetail: AssetInformation) {
         dataController.removedAssetDetails.append(assetDetail)
-        // dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
 

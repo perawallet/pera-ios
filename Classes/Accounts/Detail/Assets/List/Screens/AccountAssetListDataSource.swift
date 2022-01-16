@@ -20,6 +20,8 @@ import MacaroonUIKit
 import UIKit
 
 final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<AccountAssetsSection, AccountAssetsItem> {
+    lazy var handlers = Handlers()
+
     init(
         _ collectionView: UICollectionView
     ) {
@@ -64,7 +66,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
             }
 
             let view = collectionView.dequeueFooter(AddAssetItemFooterView.self, at: indexPath)
-            // view.delegate = self
+            view.delegate = self
             return view
         }
 
@@ -79,5 +81,17 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
 
         collectionView.register(header: SingleLineTitleActionHeaderView.self)
         collectionView.register(footer: AddAssetItemFooterView.self)
+    }
+}
+
+extension AccountAssetListDataSource: AddAssetItemFooterViewDelegate {
+    func addAssetItemFooterViewDidTapAddAsset(_ addAssetItemFooterView: AddAssetItemFooterView) {
+        handlers.didAddAsset?()
+    }
+}
+
+extension AccountAssetListDataSource {
+    struct Handlers {
+        var didAddAsset: EmptyHandler?
     }
 }
