@@ -74,7 +74,7 @@ final class AccountAssetListViewController: BaseViewController {
         listView.dataSource = listDataSource
         listView.delegate = listLayout
 
-        dataSource.handlers.didAddAsset = { [weak self] in
+        listDataSource.handlers.didAddAsset = { [weak self] in
             guard let self = self else { return }
             let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push)
             (controller as? AssetAdditionViewController)?.delegate = self
