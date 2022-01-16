@@ -45,7 +45,8 @@ UICollectionViewDataSource {
                 AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(account))
             )
         } else {
-            if let assetDetail = assetDetails[safe: indexPath.item.advanced(by: -1)], let asset = account.assets?.first(matching: (\.id, assetDetail.id)) {
+            if let assetDetail = assetDetails[safe: indexPath.item.advanced(by: -1)],
+               let asset = account.assets?.first(matching: (\.id, assetDetail.id)) {
                 cell.bindData(
                     AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, asset)))
                 )

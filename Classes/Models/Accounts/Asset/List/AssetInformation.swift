@@ -24,7 +24,7 @@ final class AssetInformation: ALGEntityModel {
     let name: String?
     let unitName: String?
     let decimals: Int
-    let usdValue: String?
+    let usdValue: Decimal?
     let isVerified: Bool
     let creator: AssetCreator?
 
@@ -38,7 +38,7 @@ final class AssetInformation: ALGEntityModel {
         self.name = apiModel.name
         self.unitName = apiModel.unitName
         self.decimals = apiModel.fractionDecimals ?? 0
-        self.usdValue = apiModel.usdValue
+        self.usdValue = apiModel.usdValue.unwrap { Decimal(string: $0) }
         self.isVerified = apiModel.isVerified ?? false
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
     }
@@ -49,7 +49,7 @@ final class AssetInformation: ALGEntityModel {
         apiModel.name = name
         apiModel.unitName = unitName
         apiModel.fractionDecimals = decimals
-        apiModel.usdValue = usdValue
+        apiModel.usdValue = usdValue.unwrap { String(describing: $0) }
         apiModel.isVerified = isVerified
         apiModel.creator = creator?.encode()
         return apiModel

@@ -25,7 +25,7 @@ final class SelectAccountViewController: BaseViewController {
     private let theme = Theme()
 
     private lazy var accountListDataSource = SelectAccountViewControllerDataSource(
-        session: UIApplication.shared.appConfiguration?.session
+        sharedDataController: sharedDataController
     )
 
     private lazy var listView: UICollectionView = {
@@ -65,7 +65,6 @@ final class SelectAccountViewController: BaseViewController {
     override func prepareLayout() {
         addListView()
     }
-    
 }
 
 extension SelectAccountViewController {
@@ -100,7 +99,7 @@ extension SelectAccountViewController: UICollectionViewDelegate, UICollectionVie
             return
         }
 
-        delegate?.selectAccountViewController(self, didSelect: account, for: transactionAction)
+        delegate?.selectAccountViewController(self, didSelect: account.value, for: transactionAction)
     }
 }
 

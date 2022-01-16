@@ -15,16 +15,16 @@
 //
 //   AccountSelectScreenDataSource.swift
 
-
 import Foundation
 import UIKit
 
 final class AccountSelectScreenDataSource: NSObject {
     weak var delegate: AccountSelectScreenDataSourceDelegate?
 
-    private var accounts = [Account]()
+    private let sharedDataController: SharedDataController
+    private var accounts = [AccountHandle]()
     private var contacts = [Contact]()
-    private(set) var list = [[AnyObject]]()
+    private(set) var list = [[Any]]()
 
     var isEmpty: Bool {
         return accounts.isEmpty && contacts.isEmpty
@@ -35,10 +35,11 @@ final class AccountSelectScreenDataSource: NSObject {
         (list[safe: 0]?.isEmpty ?? false) && (list[safe: 1]?.isEmpty ?? false)
     }
 
-    init(session: Session?) {
+    init(sharedDataController: SharedDataController) {
+        self.sharedDataController = sharedDataController
         super.init()
 
-        accounts = session?.accounts ?? []
+        accounts = sharedDataController.accountCollection.sorted()
     }
 
     func loadData() {
@@ -79,8 +80,8 @@ final class AccountSelectScreenDataSource: NSObject {
         }
 
         let filteredAccounts = accounts.filter { account in
-            (account.name?.containsCaseInsensitive(searchKeyword) ?? false) ||
-            (account.address.containsCaseInsensitive(searchKeyword))
+            (account.value.name?.containsCaseInsensitive(searchKeyword) ?? false) ||
+            (account.value.address.containsCaseInsensitive(searchKeyword))
         }
 
         let filteredContacts = contacts.filter { contact in
@@ -91,7 +92,7 @@ final class AccountSelectScreenDataSource: NSObject {
         self.list = [filteredAccounts, filteredContacts]
     }
 
-    func item(at indexPath: IndexPath) -> AnyObject? {
+    func item(at indexPath: IndexPath) -> Any? {
         guard let safeArray = list[safe: indexPath.section] else {
             return nil
         }
@@ -115,7 +116,7 @@ UICollectionViewDataSource {
         if indexPath.section == 0 {
             let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
 
-            if let account = accounts[safe: indexPath.item] {
+            if let account = accounts[safe: indexPath.item]?.value {
                 let accountNameViewModel = AuthAccountNameViewModel(account)
                 let preview = CustomAccountPreview(accountNameViewModel)
                 cell.bindData(AccountPreviewViewModel(preview))

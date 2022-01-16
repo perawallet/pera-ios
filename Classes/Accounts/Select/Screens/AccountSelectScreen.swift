@@ -26,7 +26,7 @@ final class AccountSelectScreen: BaseViewController {
     private lazy var searchNoContentView = NoContentView()
     private lazy var theme = Theme()
 
-    private lazy var dataSource = AccountSelectScreenDataSource(session: session)
+    private lazy var dataSource = AccountSelectScreenDataSource(sharedDataController: sharedDataController)
 
     private var draft: SendTransactionDraft
 

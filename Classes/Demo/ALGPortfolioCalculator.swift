@@ -50,7 +50,7 @@ struct ALGPortfolioCalculator: PortfolioCalculator {
     ) -> Self.Result {
         guard
             let currencyValue = currency.value,
-            let currencyPriceValue = currencyValue.priceValue
+            let currencyUSDValue = currencyValue.usdValue
         else {
             return .failure(.failedCurrency)
         }
@@ -66,7 +66,7 @@ struct ALGPortfolioCalculator: PortfolioCalculator {
 
                 let assetAmount = account.value
                     .amount(for: assetDetail)
-                    .unwrap { $0 * currencyPriceValue } ?? 0
+                    .unwrap { $0 * currencyUSDValue * assetDetail.usdValue.unwrap(or: 0) } ?? 0
                 return result + assetAmount
             }
         }
