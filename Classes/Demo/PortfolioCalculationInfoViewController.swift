@@ -16,17 +16,42 @@
 //   PortfolioCalculationInfoViewController.swift
 
 import Foundation
+import MacaroonBottomSheet
 import MacaroonUIKit
 import UIKit
 
-final class PortfolioCalculationInfoViewController: BaseScrollViewController {
+final class PortfolioCalculationInfoViewController:
+    BaseScrollViewController,
+    BottomSheetPresentable {
+    typealias EventHandler = (Event) -> Void
+    
+    var eventHandler: EventHandler?
+    
+    var modalHeight: ModalHeight {
+        return .compressed
+    }
+    var presentedScrollView: UIScrollView? {
+        return scrollView
+    }
+    var presentedScrollContentView: UIView? {
+        return contentView
+    }
+    
+    private lazy var contextView = VStackView()
+    private lazy var closeActionView =
+        ViewFactory.Button.makeSecondaryButton("title-close".localized)
+    
+    private let result: PortfolioCalculator.Result
     private let theme: PortfolioCalculationInfoViewControllerTheme
     
     init(
+        result: PortfolioCalculator.Result,
         configuration: ViewControllerConfiguration,
         theme: PortfolioCalculationInfoViewControllerTheme = .init()
     ) {
+        self.result = result
         self.theme = theme
+
         super.init(configuration: configuration)
     }
     
@@ -37,6 +62,22 @@ final class PortfolioCalculationInfoViewController: BaseScrollViewController {
     
     private func build() {
         addBackground()
+        addContext()
+        
+        switch result {
+        case .success:
+            addInfo(topPadding: theme.infoTopPadding)
+        case .failure:
+            addError()
+            addInfo(topPadding: theme.spacingBetweenErrorAndInfo)
+        }
+        
+        addCloseAction()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateScrollWhenViewDidLayoutSubviews()
     }
 }
 
@@ -45,15 +86,83 @@ extension PortfolioCalculationInfoViewController {
         view.customizeAppearance(theme.background)
     }
     
+    private func updateScrollWhenViewDidLayoutSubviews() {
+        let bottom =
+            theme.footerVerticalPaddings.top +
+            closeActionView.bounds.height +
+            theme.footerVerticalPaddings.bottom
+        scrollView.setContentInset(bottom: bottom)
+    }
+    
+    private func addContext() {
+        contentView.addSubview(contextView)
+        contextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: theme.contentTopPadding,
+            leading: theme.contentHorizontalPaddings.leading,
+            bottom: 0,
+            trailing: theme.contentHorizontalPaddings.trailing
+        )
+        contextView.isLayoutMarginsRelativeArrangement = true
+        contextView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+    }
+    
     private func addError() {
         let errorView = ErrorView()
-        
+
         errorView.customize(theme.error)
+        errorView.bindData(PortfolioCalculationErrorViewModel())
         
-        contentView.addSubview(errorView)
-        errorView.snp.makeConstraints {
-            $0.top == theme.contentPaddings.top
-            $0.leading == theme.contentPaddings.leading
+        contextView.addArrangedSubview(errorView)
+    }
+    
+    private func addInfo(
+        topPadding: LayoutMetric
+    ) {
+        let infoCanvasView = UIView()
+        let infoView = PortfolioCalculationInfoView()
+        
+        infoView.customize(theme.info)
+        
+        infoCanvasView.addSubview(infoView)
+        infoView.snp.makeConstraints {
+            $0.top == topPadding
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
         }
+        
+        contextView.addArrangedSubview(infoCanvasView)
+    }
+    
+    private func addCloseAction() {
+        view.addSubview(closeActionView)
+        closeActionView.snp.makeConstraints {
+            $0.leading == theme.contentHorizontalPaddings.leading
+            $0.bottom == theme.footerVerticalPaddings.bottom + view.safeAreaBottom
+            $0.trailing == theme.contentHorizontalPaddings.trailing
+        }
+        
+        closeActionView.addTouch(
+            target: self,
+            action: #selector(close)
+        )
+    }
+}
+
+extension PortfolioCalculationInfoViewController {
+    @objc
+    private func close() {
+        eventHandler?(.close)
+    }
+}
+
+extension PortfolioCalculationInfoViewController {
+    enum Event {
+        case close
     }
 }

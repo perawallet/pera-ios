@@ -23,8 +23,13 @@ struct PortfolioCalculationInfoViewControllerTheme:
     StyleSheet,
     LayoutSheet {
     var background: ViewStyle
-    var contentPaddings: LayoutPaddings
+    var contentTopPadding: LayoutMetric
+    var contentHorizontalPaddings: LayoutHorizontalPaddings
     var error: ErrorViewTheme
+    var info: PortfolioCalculationInfoViewTheme
+    var infoTopPadding: LayoutMetric
+    var spacingBetweenErrorAndInfo: LayoutMetric
+    var footerVerticalPaddings: LayoutVerticalPaddings
     
     init(
         _ family: LayoutFamily
@@ -32,7 +37,12 @@ struct PortfolioCalculationInfoViewControllerTheme:
         self.background = [
             .backgroundColor(AppColors.Shared.System.background)
         ]
-        self.contentPaddings = (24, 24, 16, 24)
+        self.contentTopPadding = 24
+        self.contentHorizontalPaddings = (24, 24)
         self.error = ErrorViewTheme(family)
+        self.info = PortfolioCalculationInfoViewTheme(family)
+        self.infoTopPadding = 12
+        self.spacingBetweenErrorAndInfo = 28
+        self.footerVerticalPaddings = (32, 16)
     }
 }

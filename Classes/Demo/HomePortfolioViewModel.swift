@@ -22,6 +22,7 @@ import UIKit
 struct HomePortfolioViewModel:
     PairedViewModel,
     Hashable {
+    private(set) var totalValueResult: PortfolioCalculator.Result = .failure(.idle)
     private(set) var title: EditText?
     private(set) var titleColor: UIColor?
     private(set) var value: EditText?
@@ -77,11 +78,13 @@ extension HomePortfolioViewModel {
     mutating func bindValue(
         _ portfolio: Portfolio
     ) {
+        totalValueResult = portfolio.totalValueResult
+        
         let font = Fonts.DMMono.regular.make(36)
         let lineHeightMultiplier = 1.02
         
         value = .attributedString(
-            portfolio.totalValueResult.uiDescription.attributed([
+            totalValueResult.uiDescription.attributed([
                 .font(font),
                 .letterSpacing(-0.72),
                 .lineHeightMultiplier(lineHeightMultiplier, font),

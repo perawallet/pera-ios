@@ -59,6 +59,7 @@ extension ErrorView {
 
         addSubview(iconView)
         iconView.contentEdgeInsets = theme.iconContentEdgeInsets
+        iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0

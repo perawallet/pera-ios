@@ -161,14 +161,30 @@ extension HomeViewController {
 
 extension HomeViewController {
     private func linkInteractors(
-        _ cell: HomePortfolioCell
+        _ cell: HomePortfolioCell,
+        for item: HomePortfolioViewModel
     ) {
         cell.observe(event: .showInfo) {
             [weak self] in
             guard let self = self else { return }
+            
+            /// <todo>
+            /// How to manage it without knowing view controller. Name conventions vs. protocols???
+            let eventHandler: PortfolioCalculationInfoViewController.EventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+            
+                switch event {
+                case .close:
+                    self.dismiss(animated: true)
+                }
+            }
 
             self.modalTransition.perform(
-                .portfolioDescription,
+                .portfolioCalculationInfo(
+                    result: item.totalValueResult,
+                    eventHandler: eventHandler
+                ),
                 by: .presentWithoutNavigationController
             )
         }
@@ -453,8 +469,11 @@ extension HomeViewController {
         }
         
         switch itemIdentifier {
-        case .portfolio:
-            linkInteractors(cell as! HomePortfolioCell)
+        case .portfolio(let item):
+            linkInteractors(
+                cell as! HomePortfolioCell,
+                for: item
+            )
         case .account(let item):
             switch item {
             case .header(let headerItem):
