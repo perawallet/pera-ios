@@ -22,6 +22,8 @@ import MacaroonUIKit
 final class AccountAssetListViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var listLayout = AccountAssetListLayout(account: account)
+    private lazy var dataSource = AccountAssetListDataSource(listView)
+    private lazy var dataController = AccountAssetListLocalDataController(sharedDataController)
 
     typealias DataSource = UICollectionViewDiffableDataSource<AccountAssetsSection, AccountAssetsItem>
     typealias Snapshot = NSDiffableDataSourceSnapshot<AccountAssetsSection, AccountAssetsItem>
@@ -33,20 +35,11 @@ final class AccountAssetListViewController: BaseViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
         collectionView.backgroundColor = theme.listBackgroundColor.uiColor
-        collectionView.register(AssetPortfolioItemCell.self)
-        collectionView.register(SearchBarItemCell.self)
-        collectionView.register(AssetPreviewCell.self)
-        collectionView.register(PendingAssetPreviewCell.self)
-        collectionView.register(header: SingleLineTitleActionHeaderView.self)
-        collectionView.register(footer: AddAssetItemFooterView.self)
         return collectionView
     }()
 
     private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
-
-    private var addedAssetDetails = [AssetDetail]()
-    private var removedAssetDetails = [AssetDetail]()
-
+    
     private let account: Account
 
     init(account: Account, configuration: ViewControllerConfiguration) {
@@ -54,94 +47,20 @@ final class AccountAssetListViewController: BaseViewController {
         super.init(configuration: configuration)
     }
 
-    private lazy var dataSource: DataSource = {
-        let dataSource = DataSource(collectionView: listView) {
-            [weak self] collectionView, indexPath, identifier in
-                guard let self = self else {
-                    return nil
-                }
-
-                switch identifier {
-                case .portfolio:
-                    let cell = collectionView.dequeue(AssetPortfolioItemCell.self, at: indexPath)
-                    let currency = self.session?.preferredCurrencyDetails
-//                    if let totalPortfolioValue = self.calculatePortfolio(for: [self.account], with: currency) {
-//                        cell.bindData(PortfolioValueViewModel(.singleAccount(value: .value(totalPortfolioValue)), currency))
-//                    } else {
-//                        cell.bindData(PortfolioValueViewModel(.singleAccount(value: .unknown), nil))
-//                    }
-
-                    return cell
-                case .search:
-                    return collectionView.dequeue(SearchBarItemCell.self, at: indexPath)
-                case let .asset(assetDetail):
-                    let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
-
-                    /// Algo preview
-                    if assetDetail == nil {
-                        cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(self.account)))
-                        return cell
-                    }
-
-                    if let assetDetail = assetDetail,
-                       let asset = self.account.assets?.first(matching: (\.id, assetDetail.id)) {
-                        cell.bindData(
-                            AssetPreviewViewModel(
-                                AssetPreviewModelAdapter.adaptAssetSelection(
-                                    (assetDetail, asset)
-                                )
-                            )
-                        )
-                    }
-
-                    return cell
-                case let .pendingAsset(assetDetail):
-                    let cell = collectionView.dequeue(PendingAssetPreviewCell.self, at: indexPath)
-
-                    if let assetDetail = assetDetail {
-                        cell.bindData(
-                            PendingAssetPreviewViewModel(
-                                AssetPreviewModelAdapter.adaptPendingAsset(
-                                    assetDetail
-                                )
-                            )
-                        )
-                    }
-
-                    return cell
-                }
-        }
-
-        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
-            guard let section = AccountAssetsSection(rawValue: indexPath.section),
-                  section == .assets else {
-                return nil
-            }
-
-            if kind == UICollectionView.elementKindSectionHeader {
-                let view = collectionView.dequeueHeader(SingleLineTitleActionHeaderView.self, at: indexPath)
-                view.bindData(
-                    SingleLineTitleActionViewModel(
-                        item: SingleLineIconTitleItem(
-                            icon: nil,
-                            title: .string("accounts-title-assets".localized)
-                        )
-                    )
-                )
-                return view
-            }
-
-            let view = collectionView.dequeueFooter(AddAssetItemFooterView.self, at: indexPath)
-            view.delegate = self
-            return view
-        }
-
-        return dataSource
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        applySnapshot(animatingDifferences: false)
+
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdate(let snapshot):
+                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            }
+        }
+        dataController.load()
+        dataController.deliverContentSnapshot(for: account)
     }
 
     override func prepareLayout() {
@@ -221,7 +140,7 @@ extension AccountAssetListViewController {
     }
 
     private func openAssetDetail(
-        _ assetDetail: AssetDetail?
+        _ assetDetail: AssetInformation?
     ) {
         let screen: Screen
         if let assetDetail = assetDetail {
@@ -231,56 +150,6 @@ extension AccountAssetListViewController {
         }
 
         open(screen, by: .push)
-    }
-
-    private func applySnapshot(
-        animatingDifferences: Bool = true
-    ) {
-        var snapshot = Snapshot()
-        snapshot.appendSections([.portfolio, .assets])
-
-        let portfolioSectionItems: [AccountAssetsItem] = [.portfolio]
-
-        snapshot.appendItems(
-            portfolioSectionItems,
-            toSection: .portfolio
-        )
-
-        var assetSectionItems: [AccountAssetsItem] = []
-        assetSectionItems.append(.search)
-        assetSectionItems.append(.asset(asset: nil))
-        account.assetDetails.forEach {
-            assetSectionItems.append(.asset(asset: $0))
-        }
-
-        clearAddedAssetDetailsIfNeeded()
-        clearRemovedAssetDetailsIfNeeded()
-
-        addedAssetDetails.forEach {
-            assetSectionItems.append(.pendingAsset(asset: $0))
-        }
-
-        removedAssetDetails.forEach {
-            assetSectionItems.append(.pendingAsset(asset: $0))
-        }
-
-        snapshot.appendItems(
-            assetSectionItems,
-            toSection: .assets
-        )
-
-        dataSource.apply(
-            snapshot,
-            animatingDifferences: animatingDifferences
-        )
-    }
-
-    private func clearAddedAssetDetailsIfNeeded() {
-        addedAssetDetails = addedAssetDetails.filter { !account.assetDetails.contains($0) }
-    }
-
-    private func clearRemovedAssetDetailsIfNeeded() {
-        removedAssetDetails = removedAssetDetails.filter { account.assetDetails.contains($0) }
     }
 }
 
@@ -330,14 +199,14 @@ extension AccountAssetListViewController: AddAssetItemFooterViewDelegate {
 }
 
 extension AccountAssetListViewController {
-    func addAsset(_ assetDetail: AssetDetail) {
-        addedAssetDetails.append(assetDetail)
-        applySnapshot()
+    func addAsset(_ assetDetail: AssetInformation) {
+        dataController.addedAssetDetails.append(assetDetail)
+        // dataSource.apply(snapshot, animatingDifferences: true)
     }
 
-    func removeAsset(_ assetDetail: AssetDetail) {
-        removedAssetDetails.append(assetDetail)
-        applySnapshot()
+    func removeAsset(_ assetDetail: AssetInformation) {
+        dataController.removedAssetDetails.append(assetDetail)
+        // dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
 
@@ -347,20 +216,7 @@ extension AccountAssetListViewController: AssetAdditionViewControllerDelegate {
         didAdd assetSearchResult: AssetInformation,
         to account: Account
     ) {
-        let assetDetail = AssetDetail(assetInformation: assetSearchResult)
-        assetDetail.isRecentlyAdded = true
-        addAsset(assetDetail)
+        assetSearchResult.isRecentlyAdded = true
+        addAsset(assetSearchResult)
     }
-}
-
-enum AccountAssetsSection: Int, Hashable {
-    case portfolio
-    case assets
-}
-
-enum AccountAssetsItem: Hashable {
-    case portfolio
-    case search
-    case asset(asset: AssetDetail?)
-    case pendingAsset(asset: AssetDetail?)
 }
