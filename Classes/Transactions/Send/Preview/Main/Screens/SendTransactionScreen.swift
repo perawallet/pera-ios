@@ -108,15 +108,16 @@ final class SendTransactionScreen: BaseViewController {
 
 extension SendTransactionScreen {
     private func bindAssetPreview() {
+        let currency = sharedDataController.currency.value
         switch draft.transactionMode {
         case .algo:
             accountView.bindData(
-                AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(draft.from))
+                AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((draft.from, currency)))
             )
         case .assetDetail(let assetDetail):
             if let asset = draft.from.assets?.first(matching: (\.id, assetDetail.id)) {
                 accountView.bindData(
-                    AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, asset)))
+                    AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, asset, currency)))
                 )
             }
         }

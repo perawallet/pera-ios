@@ -103,13 +103,15 @@ extension AccountAssetListAPIDataController {
 
             assetItems.append(.search)
 
-            assetItems.append(.asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(self.accountHandle.value))))
+            let currency = self.sharedDataController.currency.value
+
+            assetItems.append(.asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((self.accountHandle.value, currency)))))
 
             self.accountHandle.value.assetInformations.forEach {
                 assets.append($0)
 
                 let asset = self.accountHandle.value.assets!.first(matching: (\.id, $0.id))!
-                let assetItem: AccountAssetsItem = .asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection(($0, asset))))
+                let assetItem: AccountAssetsItem = .asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection(($0, asset, currency))))
                 assetItems.append(assetItem)
             }
 

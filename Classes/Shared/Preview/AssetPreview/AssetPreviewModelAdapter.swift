@@ -19,27 +19,27 @@ import Foundation
 import UIKit
 
 enum AssetPreviewModelAdapter {
-    static func adapt(_ adaptee: (assetDetail: AssetInformation, asset: Asset)) -> AssetPreviewModel {
-        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset)
+    static func adapt(_ adaptee: (assetDetail: AssetInformation, asset: Asset, currency: Currency?)) -> AssetPreviewModel {
+        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset, currency: adaptee.currency)
         return AssetPreviewModel(
             image: nil,
             secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
             assetPrimaryTitle: assetViewModel.assetDetail?.name,
             assetSecondaryTitle: assetViewModel.assetDetail?.unitName,
             assetPrimaryValue: assetViewModel.amount,
-            assetSecondaryValue: nil
+            assetSecondaryValue: assetViewModel.currencyAmount
         )
     }
 
-    static func adapt(_ adaptee: Account) -> AssetPreviewModel {
-        let algoAssetViewModel = AlgoAssetViewModel(account: adaptee)
+    static func adapt(_ adaptee: (account: Account, currency: Currency?)) -> AssetPreviewModel {
+        let algoAssetViewModel = AlgoAssetViewModel(account: adaptee.account, currency: adaptee.currency)
         return AssetPreviewModel(
             image: img("icon-algo-circle-green"),
             secondaryImage: img("icon-verified-shield"),
             assetPrimaryTitle: "asset-algos-title".localized,
             assetSecondaryTitle: "Algorand",
             assetPrimaryValue: algoAssetViewModel.amount,
-            assetSecondaryValue: nil
+            assetSecondaryValue: algoAssetViewModel.currencyAmount
         )
     }
 
@@ -54,8 +54,8 @@ enum AssetPreviewModelAdapter {
         )
     }
 
-    static func adaptAssetSelection(_ adaptee: (assetDetail: AssetInformation, asset: Asset)) -> AssetPreviewModel {
-        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset)
+    static func adaptAssetSelection(_ adaptee: (assetDetail: AssetInformation, asset: Asset, currency: Currency?)) -> AssetPreviewModel {
+        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset, currency: adaptee.currency)
         let assetId = assetViewModel.assetDetail?.id ?? 0
         return AssetPreviewModel(
             image: nil,
@@ -63,7 +63,7 @@ enum AssetPreviewModelAdapter {
             assetPrimaryTitle: assetViewModel.assetDetail?.name,
             assetSecondaryTitle: "ID \(assetId)",
             assetPrimaryValue: assetViewModel.amount,
-            assetSecondaryValue: nil
+            assetSecondaryValue: assetViewModel.currencyAmount
         )
     }
 

@@ -166,7 +166,7 @@ extension OldSelectAssetViewController {
 
         if indexPath.section < accounts.count {
             let account = accounts[indexPath.section]
-            cell.bind(AlgoAssetViewModel(account: account))
+          //  cell.bind(AlgoAssetViewModel(account: account))
         }
 
         return cell

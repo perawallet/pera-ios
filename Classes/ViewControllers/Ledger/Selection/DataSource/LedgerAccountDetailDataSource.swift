@@ -20,14 +20,22 @@ import UIKit
 
 final class LedgerAccountDetailDataSource: NSObject {
     private let api: ALGAPI
+    private let sharedDataController: SharedDataController
     private let loadingController: LoadingController?
     private let account: Account
     private let rekeyedAccounts: [Account]
 
     private var assetPreviews: [AssetPreviewModel] = []
 
-    init(api: ALGAPI, loadingController: LoadingController?, account: Account, rekeyedAccounts: [Account]) {
+    init(
+        api: ALGAPI,
+        sharedDataController: SharedDataController,
+        loadingController: LoadingController?,
+        account: Account,
+        rekeyedAccounts: [Account]
+    ) {
         self.api = api
+        self.sharedDataController = sharedDataController
         self.loadingController = loadingController
         self.account = account
         self.rekeyedAccounts = rekeyedAccounts
@@ -127,7 +135,8 @@ extension LedgerAccountDetailDataSource {
 
 extension LedgerAccountDetailDataSource {
     private func fetchAssets(for account: Account) {
-        let assetPreviewModel = AssetPreviewModelAdapter.adapt(account)
+        let currency = sharedDataController.currency.value
+        let assetPreviewModel = AssetPreviewModelAdapter.adapt((account, currency))
         assetPreviews.append(assetPreviewModel)
 
         guard let assets = account.assets,
@@ -140,7 +149,7 @@ extension LedgerAccountDetailDataSource {
         assets.forEach { asset in
             if let assetDetail = api.session.assetInformations[asset.id] {
                 account.assetInformations.append(assetDetail)
-                let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset))
+                let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset, currency: currency))
                 assetPreviews.append(assetPreviewModel)
             } else {
                 api.getAssetDetails(AssetFetchQuery(ids: [asset.id])) { [weak self] assetResponse in
@@ -159,7 +168,13 @@ extension LedgerAccountDetailDataSource {
     private func composeAssetDetail(_ assetDetail: AssetInformation, of account: Account, with asset: Asset) {
         account.assetInformations.append(assetDetail)
         api.session.assetInformations[asset.id] = assetDetail
-        let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset))
+        let assetPreviewModel = AssetPreviewModelAdapter.adapt(
+            (
+                assetDetail: assetDetail,
+                asset: asset,
+                currency: sharedDataController.currency.value
+            )
+        )
         assetPreviews.append(assetPreviewModel)
     }
 

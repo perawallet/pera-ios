@@ -16,15 +16,30 @@
 //  AlgoAssetViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-class AlgoAssetViewModel {
+struct AlgoAssetViewModel: ViewModel {
     private(set) var amount: String?
+    private(set) var currencyAmount: String?
 
-    init(account: Account) {
-        setAmount(from: account)
+    init(account: Account, currency: Currency?) {
+        bindAmount(from: account)
+        bindCurrencyAmount(from: account, with: currency)
+    }
+}
+
+extension AlgoAssetViewModel {
+    private mutating func bindAmount(from account: Account) {
+        amount = account.amount.toAlgos.toAlgosStringForLabel
     }
 
-    private func setAmount(from account: Account) {
-        amount = account.amount.toAlgos.toAlgosStringForLabel
+    private mutating func bindCurrencyAmount(from account: Account, with currency: Currency?) {
+        guard let currency = currency,
+              let currencyPriceValue = currency.priceValue else {
+            return
+        }
+
+        let totalAmount = account.amount.toAlgos * currencyPriceValue
+        currencyAmount = totalAmount.toCurrencyStringForLabel(with: currency.id)
     }
 }

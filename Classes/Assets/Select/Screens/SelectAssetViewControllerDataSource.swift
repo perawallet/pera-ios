@@ -21,9 +21,11 @@ import UIKit
 
 final class SelectAssetViewControllerDataSource: NSObject {
     private(set) var assetDetails: [AssetInformation] = []
+    private let sharedDataController: SharedDataController
     private let account: Account
 
-    init(account: Account) {
+    init(sharedDataController: SharedDataController, account: Account) {
+        self.sharedDataController = sharedDataController
         self.account = account
         super.init()
 
@@ -31,24 +33,24 @@ final class SelectAssetViewControllerDataSource: NSObject {
     }
 }
 
-extension SelectAssetViewControllerDataSource:
-UICollectionViewDataSource {
+extension SelectAssetViewControllerDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return assetDetails.count.advanced(by: 1)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
+        let currency = sharedDataController.currency.value
 
         if indexPath.item == 0 {
             cell.bindData(
-                AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(account))
+                AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((account, currency)))
             )
         } else {
             if let assetDetail = assetDetails[safe: indexPath.item.advanced(by: -1)],
                let asset = account.assets?.first(matching: (\.id, assetDetail.id)) {
                 cell.bindData(
-                    AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, asset)))
+                    AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, asset, currency)))
                 )
             }
         }

@@ -172,7 +172,7 @@ extension AccountsDataSource {
         }
         
         if let account = account(at: indexPath.section) {
-            cell.bind(AlgoAssetViewModel(account: account))
+           // cell.bind(AlgoAssetViewModel(account: account))
         }
         
         return cell

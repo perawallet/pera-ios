@@ -20,6 +20,7 @@ import UIKit
 final class SelectAssetViewController: BaseViewController {
     private let theme = Theme()
     private lazy var accountListDataSource = SelectAssetViewControllerDataSource(
+        sharedDataController: sharedDataController,
         account: account
     )
     private lazy var listView: UICollectionView = {

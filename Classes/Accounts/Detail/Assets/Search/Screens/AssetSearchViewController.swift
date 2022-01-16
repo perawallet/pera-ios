@@ -64,6 +64,8 @@ final class AssetSearchViewController: BaseViewController {
                     return nil
                 }
 
+                let currency = self.sharedDataController.currency.value
+
                 switch identifier {
                 case let .asset(assetDetail):
                     let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
@@ -73,7 +75,7 @@ final class AssetSearchViewController: BaseViewController {
                         cell.bindData(
                             AssetPreviewViewModel(
                                 AssetPreviewModelAdapter.adaptAssetSelection(
-                                    (assetDetail, asset)
+                                    (assetDetail, asset, currency)
                                 )
                             )
                         )
