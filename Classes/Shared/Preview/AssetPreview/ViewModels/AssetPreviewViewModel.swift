@@ -27,10 +27,9 @@ struct AssetPreviewModel: Hashable {
     let assetSecondaryValue: String?
 }
 
-final class AssetPreviewViewModel:
+struct AssetPreviewViewModel:
     PairedViewModel,
     Hashable {
-    private let uuid: UUID
     private(set) var image: UIImage?
     private(set) var secondaryImage: UIImage?
     private(set) var assetPrimaryTitle: EditText?
@@ -40,7 +39,6 @@ final class AssetPreviewViewModel:
     private(set) var assetAbbreviationForImage: EditText?
     
     init(_ model: AssetPreviewModel) {
-        self.uuid = UUID()
         bindImage(model.image)
         bindSecondaryImage(model.secondaryImage)
         bindAssetPrimaryTitle(model.assetPrimaryTitle)
@@ -49,42 +47,34 @@ final class AssetPreviewViewModel:
         bindAssetSecondaryValue(model.assetSecondaryValue)
         bindAssetAbbreviationForImage()
     }
-
-    static func == (lhs: AssetPreviewViewModel, rhs: AssetPreviewViewModel) -> Bool {
-        return lhs.uuid == rhs.uuid
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(uuid.hashValue)
-    }
 }
 
 extension AssetPreviewViewModel {
-    private func bindImage(_ image: UIImage?) {
+    private mutating func bindImage(_ image: UIImage?) {
         self.image = image
     }
     
-    private func bindSecondaryImage(_ image: UIImage?) {
+    private mutating func bindSecondaryImage(_ image: UIImage?) {
         self.secondaryImage = image
     }
     
-    private func bindAssetPrimaryTitle(_ title: String?) {
+    private mutating func bindAssetPrimaryTitle(_ title: String?) {
         self.assetPrimaryTitle =  .string(title.isNilOrEmpty ? "title-unknown".localized : title)
     }
     
-    private func bindAssetSecondaryTitle(_ title: String?) {
+    private mutating func bindAssetSecondaryTitle(_ title: String?) {
         self.assetSecondaryTitle = .string(title)
     }
     
-    private func bindAssetPrimaryValue(_ value: String?) {
+    private mutating func bindAssetPrimaryValue(_ value: String?) {
         self.assetPrimaryValue = .string(value)
     }
     
-    private func bindAssetSecondaryValue(_ value: String?) {
+    private mutating func bindAssetSecondaryValue(_ value: String?) {
         self.assetSecondaryAssetValue = .string(value)
     }
 
-    private func bindAssetAbbreviationForImage() {
+    private mutating func bindAssetAbbreviationForImage() {
         self.assetAbbreviationForImage = .string(TextFormatter.assetShortName.format(assetPrimaryTitle?.string))
     }
 }

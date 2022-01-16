@@ -25,46 +25,36 @@ struct PendingAssetPreviewModel: Hashable {
     let assetStatus: String?
 }
 
-final class PendingAssetPreviewViewModel:
+struct PendingAssetPreviewViewModel:
     PairedViewModel,
     Hashable {
-    private let uuid: UUID
     private(set) var secondaryImage: UIImage?
     private(set) var assetPrimaryTitle: String?
     private(set) var assetSecondaryTitle: String?
     private(set) var assetStatus: String?
 
     init(_ model: PendingAssetPreviewModel) {
-        self.uuid = UUID()
         bindSecondaryImage(model.secondaryImage)
         bindAssetPrimaryTitle(model.assetPrimaryTitle)
         bindAssetSecondaryTitle(model.assetSecondaryTitle)
         bindAssetStatus(model.assetStatus)
     }
-
-    static func == (lhs: PendingAssetPreviewViewModel, rhs: PendingAssetPreviewViewModel) -> Bool {
-        return lhs.uuid == rhs.uuid
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(uuid.hashValue)
-    }
 }
 
 extension PendingAssetPreviewViewModel {
-    private func bindSecondaryImage(_ image: UIImage?) {
+    private mutating func bindSecondaryImage(_ image: UIImage?) {
         self.secondaryImage = image
     }
 
-    private func bindAssetPrimaryTitle(_ title: String?) {
+    private mutating func bindAssetPrimaryTitle(_ title: String?) {
         self.assetPrimaryTitle = title.isNilOrEmpty ? "title-unknown".localized : title
     }
 
-    private func bindAssetSecondaryTitle(_ title: String?) {
+    private mutating func bindAssetSecondaryTitle(_ title: String?) {
         self.assetSecondaryTitle = title
     }
 
-    private func bindAssetStatus(_ value: String?) {
+    private mutating func bindAssetStatus(_ value: String?) {
         self.assetStatus = value
     }
 }

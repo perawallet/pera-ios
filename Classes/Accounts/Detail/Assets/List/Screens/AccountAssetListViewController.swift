@@ -21,7 +21,7 @@ import MacaroonUIKit
 
 final class AccountAssetListViewController: BaseViewController {
     private lazy var theme = Theme()
-    private lazy var listLayout = AccountAssetListLayout(account: account)
+    private lazy var listLayout = AccountAssetListLayout(accountHandle: accountHandle)
     private lazy var dataSource = AccountAssetListDataSource(listView)
     private lazy var dataController = AccountAssetListLocalDataController(sharedDataController)
 
@@ -40,10 +40,10 @@ final class AccountAssetListViewController: BaseViewController {
 
     private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
     
-    private let account: Account
+    private let accountHandle: AccountHandle
 
-    init(account: Account, configuration: ViewControllerConfiguration) {
-        self.account = account
+    init(accountHandle: AccountHandle, configuration: ViewControllerConfiguration) {
+        self.accountHandle = accountHandle
         super.init(configuration: configuration)
     }
 
@@ -60,7 +60,7 @@ final class AccountAssetListViewController: BaseViewController {
             }
         }
         dataController.load()
-        dataController.deliverContentSnapshot(for: account)
+        dataController.deliverContentSnapshot(for: accountHandle)
     }
 
     override func prepareLayout() {
@@ -109,7 +109,7 @@ extension AccountAssetListViewController {
             }
 
             let searchScreen = self.open(
-                .assetSearch(account: self.account),
+                .assetSearch(account: self.accountHandle.value),
                 by: .present
             ) as? AssetSearchViewController
             
@@ -144,9 +144,9 @@ extension AccountAssetListViewController {
     ) {
         let screen: Screen
         if let assetDetail = assetDetail {
-            screen = .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail))
+            screen = .assetDetail(draft: AssetTransactionListing(account: accountHandle.value, assetDetail: assetDetail))
         } else {
-            screen = .algosDetail(draft: AlgoTransactionListing(account: account))
+            screen = .algosDetail(draft: AlgoTransactionListing(account: accountHandle.value))
         }
 
         open(screen, by: .push)
@@ -176,8 +176,8 @@ extension AccountAssetListViewController {
 
 extension AccountAssetListViewController: TransactionFloatingActionButtonViewControllerDelegate {
     func transactionFloatingActionButtonViewControllerDidSend(_ viewController: TransactionFloatingActionButtonViewController) {
-        log(SendAssetDetailEvent(address: account.address))
-        let controller = open(.assetSelection(account: account), by: .present) as? SelectAssetViewController
+        log(SendAssetDetailEvent(address: accountHandle.value.address))
+        let controller = open(.assetSelection(account: accountHandle.value), by: .present) as? SelectAssetViewController
         let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
             controller?.closeScreen(by: .dismiss, animated: true)
         }
@@ -185,15 +185,15 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
     }
 
     func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController) {
-        log(ReceiveAssetDetailEvent(address: account.address))
-        let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
-        open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
+        log(ReceiveAssetDetailEvent(address: accountHandle.value.address))
+        let draft = QRCreationDraft(address: accountHandle.value.address, mode: .address, title: accountHandle.value.name)
+        open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
     }
 }
 
 extension AccountAssetListViewController: AddAssetItemFooterViewDelegate {
     func addAssetItemFooterViewDidTapAddAsset(_ addAssetItemFooterView: AddAssetItemFooterView) {
-        let controller = open(.addAsset(account: account), by: .push)
+        let controller = open(.addAsset(account: accountHandle.value), by: .push)
         (controller as? AssetAdditionViewController)?.delegate = self
     }
 }

@@ -28,6 +28,8 @@ final class AccountAssetListLocalDataController:
     var addedAssetDetails: [AssetInformation] = []
     var removedAssetDetails: [AssetInformation] = []
 
+    private var lastSnapshot: Snapshot?
+
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.accountAssetListDataController")
 
@@ -60,7 +62,7 @@ extension AccountAssetListLocalDataController {
             break
         case .didUpdateAccountCollection(let accountHandle):
             if accountHandle.isReady {
-                deliverContentSnapshot(for: accountHandle.value)
+                deliverContentSnapshot(for: accountHandle)
             }
         case .didUpdateAssetDetailCollection:
             break
@@ -73,7 +75,7 @@ extension AccountAssetListLocalDataController {
 }
 
 extension AccountAssetListLocalDataController {
-    func deliverContentSnapshot(for account: Account) {
+    func deliverContentSnapshot(for accountHandle: AccountHandle) {
         deliverSnapshot {
             [weak self] in
             guard let self = self else {
@@ -82,37 +84,36 @@ extension AccountAssetListLocalDataController {
 
             var snapshot = Snapshot()
 
-            let portfolioItem: AccountAssetsItem
-            let currency = self.sharedDataController.currency.value
-            if let totalPortfolioValue = self.calculatePortfolio(for: [account], with: currency) {
-                portfolioItem = .portfolio(PortfolioValueViewModel(.singleAccount(value: .value(totalPortfolioValue)), currency))
-            } else {
-                portfolioItem = .portfolio(PortfolioValueViewModel(.singleAccount(value: .unknown), nil))
-            }
-
-            snapshot.appendSections([.portfolio])
-            snapshot.appendItems(
-                [portfolioItem],
-                toSection: .portfolio
-            )
+//            let portfolioItem: AccountAssetsItem
+//            if let totalPortfolioValue = self.calculatePortfolio(for: [account], with: currency) {
+//                portfolioItem = .portfolio(PortfolioValueViewModel(.singleAccount(value: .value(totalPortfolioValue)), currency))
+//            } else {
+//                portfolioItem = .portfolio(PortfolioValueViewModel(.singleAccount(value: .unknown), nil))
+//            }
+//
+//            snapshot.appendSections([.portfolio])
+//            snapshot.appendItems(
+//                [portfolioItem],
+//                toSection: .portfolio
+//            )
 
             var assets: [AssetInformation] = []
             var assetItems: [AccountAssetsItem] = []
 
             assetItems.append(.search)
 
-            assetItems.append(.asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(account))))
+            assetItems.append(.asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(accountHandle.value))))
 
-            account.assetInformations.forEach {
+            accountHandle.value.assetInformations.forEach {
                 assets.append($0)
 
-                let asset = account.assets!.first(matching: (\.id, $0.id))!
+                let asset = accountHandle.value.assets!.first(matching: (\.id, $0.id))!
                 let assetItem: AccountAssetsItem = .asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection(($0, asset))))
                 assetItems.append(assetItem)
             }
 
-            self.clearAddedAssetDetailsIfNeeded(for: account)
-            self.clearRemovedAssetDetailsIfNeeded(for: account)
+            self.clearAddedAssetDetailsIfNeeded(for: accountHandle.value)
+            self.clearRemovedAssetDetailsIfNeeded(for: accountHandle.value)
 
             self.addedAssetDetails.forEach {
                 let assetItem: AccountAssetsItem = .pendingAsset(PendingAssetPreviewViewModel(AssetPreviewModelAdapter.adaptPendingAsset($0)))
@@ -142,6 +143,8 @@ extension AccountAssetListLocalDataController {
             guard let self = self else { return }
 
             let newSnapshot = snapshot()
+
+            self.lastSnapshot = newSnapshot
             self.publish(.didUpdate(newSnapshot))
         }
     }
@@ -168,5 +171,3 @@ extension AccountAssetListLocalDataController {
         removedAssetDetails = removedAssetDetails.filter { account.assetInformations.contains($0) }
     }
 }
-
-extension AccountAssetListLocalDataController: PortfolioCalculating {}
