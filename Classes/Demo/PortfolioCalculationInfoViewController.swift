@@ -27,21 +27,12 @@ final class PortfolioCalculationInfoViewController:
     
     var eventHandler: EventHandler?
     
-    var modalHeight: ModalHeight {
-        return .compressed
-    }
-    var presentedScrollView: UIScrollView? {
-        return scrollView
-    }
-    var presentedScrollContentView: UIView? {
-        return contentView
-    }
-    
     private lazy var contextView = VStackView()
     private lazy var closeActionView =
         ViewFactory.Button.makeSecondaryButton("title-close".localized)
     
     private let result: PortfolioCalculator.Result
+
     private let theme: PortfolioCalculationInfoViewControllerTheme
     
     init(
@@ -60,6 +51,11 @@ final class PortfolioCalculationInfoViewController:
         build()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        updateScrollWhenViewDidLayoutSubviews()
+    }
+    
     private func build() {
         addBackground()
         addContext()
@@ -73,11 +69,6 @@ final class PortfolioCalculationInfoViewController:
         }
         
         addCloseAction()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        updateScrollWhenViewDidLayoutSubviews()
     }
 }
 

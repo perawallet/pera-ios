@@ -500,8 +500,8 @@ class Router {
             let aViewController = PortfolioCalculationInfoViewController(result: result, configuration: configuration)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .unavailableAccount(account):
-            viewController = UnavailableAccountOptionsViewController(account: account, configuration: configuration)
+        case let .invalidAccount(account):
+            viewController = InvalidAccountOptionsViewController(account: account, configuration: configuration)
         case .transactionResult:
             viewController = TransactionResultScreen(configuration: configuration)
         case .transactionAccountSelect(let draft):

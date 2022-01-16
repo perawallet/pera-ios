@@ -21,10 +21,7 @@ final class HomeAPIDataController:
     HomeDataController,
     SharedDataControllerObserver {
     var eventHandler: ((HomeDataControllerEvent) -> Void)?
-    
-    private var accounts: [AccountHandle] = []
-    private var watchAccounts: [AccountHandle] = []
-    
+
     private var lastSnapshot: Snapshot?
     
     private let sharedDataController: SharedDataController
@@ -38,6 +35,12 @@ final class HomeAPIDataController:
     
     deinit {
         sharedDataController.remove(self)
+    }
+    
+    subscript (address: String?) -> AccountHandle? {
+        return address.unwrap {
+            sharedDataController.accountCollection[$0]
+        }
     }
 }
 
@@ -134,8 +137,6 @@ extension HomeAPIDataController {
             /// <todo>
             /// Add announcement section
             
-            self.accounts = accounts
-            
             if !accounts.isEmpty {
                 let headerItem: HomeAccountItem =
                     .header(HomeAccountSectionHeaderViewModel(.standard))
@@ -150,8 +151,6 @@ extension HomeAPIDataController {
                     toSection: .accounts
                 )
             }
-            
-            self.watchAccounts = watchAccounts
             
             if !watchAccounts.isEmpty {
                 let headerItem: HomeAccountItem =

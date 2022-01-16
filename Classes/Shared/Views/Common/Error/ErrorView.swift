@@ -93,7 +93,3 @@ extension ErrorView {
         }
     }
 }
-
-final class AccountPortfolioErrorSupplementaryView: BaseSupplementaryView<ErrorView> {
-
-}

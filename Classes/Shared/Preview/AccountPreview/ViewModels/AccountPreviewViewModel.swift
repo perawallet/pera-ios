@@ -19,19 +19,10 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AccountPreviewModel {
-    let accountType: AccountType
-    let accountImage: UIImage?
-    let accountName: String?
-    var assetsAndNFTs: String?
-    var assetValue: String?
-    var secondaryAssetValue: String?
-    var hasError: Bool
-}
-
 struct AccountPreviewViewModel:
     BindableViewModel,
     Hashable {
+    private(set) var address: String?
     private(set) var icon: UIImage?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
@@ -51,6 +42,8 @@ extension AccountPreviewViewModel {
         _ model: T
     ) {
         if var accountPortfolio = model as? AccountPortfolio {
+            address = accountPortfolio.account.value.address
+            
             accountPortfolio.calculate()
             
             bindIcon(accountPortfolio)
@@ -64,6 +57,8 @@ extension AccountPreviewViewModel {
         }
         
         if let account = model as? Account {
+            address = account.address
+            
             bindIcon(account)
             bindTitle(account)
             bindSubtitle(account)

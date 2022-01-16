@@ -13,20 +13,19 @@
 // limitations under the License.
 
 //
-//   TitleWithAccessoryViewModel.swift
+//   ListActionViewModel.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-protocol TitleWithAccessoryViewModel: ViewModel {
+protocol ListActionViewModel: ViewModel {
+    var icon: Image? { get }
     var title: EditText? { get }
-    var accessory: ButtonStyle? { get }
-    var accessoryContentEdgeInsets: UIEdgeInsets? { get }
+    var subtitle: EditText? { get }
 }
 
-extension TitleWithAccessoryViewModel {
-    func getTitle(
+extension ListActionViewModel {
+    static func getTitle(
         _ aTitle: String?
     ) -> EditText? {
         guard let aTitle = aTitle else {
@@ -47,16 +46,26 @@ extension TitleWithAccessoryViewModel {
             ])
         )
     }
-}
-
-extension TitleWithAccessoryViewModel {
-    typealias AccessoryItem = (style: ButtonStyle, contentEdgeInsets: UIEdgeInsets)
     
-    func getOptionsAccessoryItem() -> AccessoryItem {
-        let style: ButtonStyle = [
-            .icon([ .normal("icon-options") ])
-        ]
-        let contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 0)
-        return (style, contentEdgeInsets)
+    static func getSubtitle(
+        _ aSubtitle: String?
+    ) -> EditText? {
+        guard let aSubtitle = aSubtitle else {
+            return nil
+        }
+        
+        let font = Fonts.DMMono.regular.make(11)
+        let lineHeightMultiplier = 1.12
+        
+        return .attributedString(
+            aSubtitle.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineBreakMode(.byTruncatingMiddle),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
     }
 }

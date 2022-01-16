@@ -13,26 +13,19 @@
 // limitations under the License.
 
 //
-//  OptionsCell.swift
+//   ShowQrCodeListActionViewModel.swift
 
-import UIKit
+import Foundation
+import MacaroonUIKit
 
-final class OptionsCell: BaseCollectionViewCell<OptionsContextView> {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        customize(OptionsContextViewTheme())
-    }
-
-    private func customize(_ theme: OptionsContextViewTheme) {
-        contextView.customize(theme)
-    }
-
-    func bind(_ viewModel: OptionsViewModel) {
-        contextView.bind(viewModel)
-    }
-
-    func bind(_ viewModel: AccountRecoverOptionsViewModel) {
-        contextView.bind(viewModel)
+struct ShowQrCodeListActionViewModel: ListActionViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
+    
+    init() {
+        icon = "icon-qr"
+        title = Self.getTitle("options-show-qr".localized)
+        subtitle = nil
     }
 }

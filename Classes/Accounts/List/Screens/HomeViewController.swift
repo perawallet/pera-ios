@@ -493,5 +493,33 @@ extension HomeViewController {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+        
+        switch itemIdentifier {
+        case .account(let item):
+            switch item {
+            case .cell(let cellItem):
+                guard let account = dataController[cellItem.address] else {
+                    return
+                }
+                
+//                if account.isReady {
+//                    open(
+//                        .accountDetail(accountHandle: account),
+//                        by: .push
+//                    )
+//                } else {
+                    modalTransition.perform(
+                        .invalidAccount(account: account),
+                        by: .presentWithoutNavigationController
+                    )
+//                }
+            default:
+                break
+            }
+        default: break
+        }
     }
 }

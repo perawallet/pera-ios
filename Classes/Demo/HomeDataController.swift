@@ -23,6 +23,8 @@ protocol HomeDataController: AnyObject {
     
     var eventHandler: ((HomeDataControllerEvent) -> Void)? { get set }
     
+    subscript (address: String?) -> AccountHandle? { get }
+    
     func load()
 }
 

@@ -128,7 +128,7 @@ indirect enum Screen {
     case sendTransaction(draft: SendTransactionDraft)
     case editNote(note: String?, delegate: EditNoteScreenDelegate?)
     case portfolioCalculationInfo(result: PortfolioCalculator.Result, eventHandler: PortfolioCalculationInfoViewController.EventHandler)
-    case unavailableAccount(account: AccountInformation)
+    case invalidAccount(account: AccountHandle)
     case transactionResult
     case transactionAccountSelect(draft: SendTransactionDraft)
     case sendTransactionPreview(draft: TransactionSendDraft?, transactionController: TransactionController)

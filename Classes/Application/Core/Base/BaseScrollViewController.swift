@@ -15,11 +15,12 @@
 //
 //  BaseScrollViewController.swift
 
+import Foundation
+import MacaroonBottomSheet
+import MacaroonUIKit
 import UIKit
-import SnapKit
 
 class BaseScrollViewController: BaseViewController {
-    
     private(set) lazy var scrollView: TouchDetectingScrollView = {
         let scrollView = TouchDetectingScrollView()
         scrollView.alwaysBounceVertical = true
@@ -67,5 +68,18 @@ extension BaseScrollViewController {
             make.leading.trailing.equalTo(view)
             make.height.equalToSuperview().priority(.low)
         }
+    }
+}
+
+extension BottomSheetPresentable where Self: BaseScrollViewController {
+    var modalHeight: ModalHeight {
+        return .compressed
+    }
+
+    var presentedScrollView: UIScrollView? {
+        return scrollView
+    }
+    var presentedScrollContentView: UIView? {
+        return contentView
     }
 }
