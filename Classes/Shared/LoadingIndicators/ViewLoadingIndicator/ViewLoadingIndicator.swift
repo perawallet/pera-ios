@@ -77,8 +77,7 @@ extension ViewLoadingIndicator {
 extension ViewLoadingIndicator {
     private func addIndicator() {
         addSubview(indicatorView)
-        indicatorView.fitToHorizontalIntrinsicSize()
-        indicatorView.fitToVerticalIntrinsicSize()
+        indicatorView.fitToIntrinsicSize()
         indicatorView.snp.makeConstraints {
             $0.centerHorizontally(offset: 0, verticalPaddings: (0, 0))
         }

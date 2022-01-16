@@ -40,12 +40,17 @@ enum HomeItem: Hashable {
     case empty(HomeEmptyItem)
     case portfolio(HomePortfolioViewModel)
     case announcement(AnnouncementBannerViewModel)
-    case account(AccountPreviewViewModel)
+    case account(HomeAccountItem)
 }
 
 enum HomeEmptyItem: Hashable {
     case loading
     case noContent
+}
+
+enum HomeAccountItem: Hashable {
+    case header(HomeSectionSupplementaryViewModel)
+    case cell(AccountPreviewViewModel)
 }
 
 enum HomeDataControllerEvent {

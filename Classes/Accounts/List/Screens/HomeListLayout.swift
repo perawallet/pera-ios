@@ -34,7 +34,9 @@ final class HomeListLayout: NSObject {
     }
     
     class func build() -> UICollectionViewLayout {
-        return UICollectionViewFlowLayout()
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 0
+        return flowLayout
     }
 }
 
@@ -99,30 +101,14 @@ extension HomeListLayout {
             )
         case .announcement:
             return CGSize((calculateContentWidth(for: collectionView), 0))
-        case .account:
-            return CGSize((calculateContentWidth(for: collectionView), 72))
+        case .account(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAccountItem: item
+            )
         }
     }
-
-//    func collectionView(
-//        _ collectionView: UICollectionView,
-//        layout collectionViewLayout: UICollectionViewLayout,
-//        referenceSizeForHeaderInSection section: Int
-//    ) -> CGSize {
-//        guard let section = AccountPortfolioSection(rawValue: section) else {
-//            return .zero
-//        }
-//
-//        switch section {
-//        case .portfolio,
-//                .announcement:
-//            return .zero
-//        case .standardAccount,
-//                .watchAccount:
-//            return CGSize(theme.listHeaderSize)
-//              (UIScreen.main.bounds.width, 40)
-//        }
-//    }
 }
 
 extension HomeListLayout {
@@ -152,6 +138,79 @@ extension HomeListLayout {
             item,
             for: HomePortfolioCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude)))
+        
+        sizeCache[sizeCacheIdentifier] = newSize
+        
+        return newSize
+    }
+    
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAccountItem item: HomeAccountItem
+    ) -> CGSize {
+        switch item {
+        case .header(let headerItem):
+            return self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForAccountHeaderItem: headerItem
+            )
+        case .cell(let cellItem):
+            return self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForAccountCellItem: cellItem
+            )
+        }
+    }
+    
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAccountHeaderItem item: HomeSectionSupplementaryViewModel
+    ) -> CGSize {
+        let sizeCacheIdentifier = TitleWithAccessorySupplementaryCell.reuseIdentifier
+        
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+        
+        let width = calculateContentWidth(for: listView)
+        let newSize = TitleWithAccessorySupplementaryCell.calculatePreferredSize(
+            item,
+            for: TitleWithAccessorySupplementaryCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+        
+        sizeCache[sizeCacheIdentifier] = newSize
+        
+        return newSize
+    }
+    
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAccountCellItem item: AccountPreviewViewModel
+    ) -> CGSize {
+        let sizeCacheIdentifier = AccountPreviewCell.reuseIdentifier
+        
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+        
+        let width = calculateContentWidth(for: listView)
+        let sampleAccountPreview = CustomAccountPreview(
+            icon: "standard-orange".uiImage,
+            title: "title-unknown".localized,
+            subtitle: "title-plus-asset-singular-count".localized(params: "1")
+        )
+        let sampleAccountItem = AccountPreviewViewModel(sampleAccountPreview)
+        let newSize = AccountPreviewCell.calculatePreferredSize(
+            sampleAccountItem,
+            for: AccountPreviewCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
         
         sizeCache[sizeCacheIdentifier] = newSize
         

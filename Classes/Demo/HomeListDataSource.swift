@@ -55,49 +55,31 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
                 cell.bindData(item)
                 return cell
             case .account(let item):
-                let cell = collectionView.dequeue(
-                    AccountPreviewCell.self,
-                    at: indexPath
-                )
-                cell.bindData(item)
-                return cell
+                switch item {
+                case .header(let headerItem):
+                    let cell = collectionView.dequeue(
+                        TitleWithAccessorySupplementaryCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(headerItem)
+                    return cell
+                case .cell(let cellItem):
+                    let cell = collectionView.dequeue(
+                        AccountPreviewCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(cellItem)
+                    return cell
+                }
             }
         }
-        
-//        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
-//            guard kind == UICollectionView.elementKindSectionHeader,
-//                  let section = AccountPortfolioSection(rawValue: indexPath.section),
-//                  section == .standardAccount || section == .watchAccount else {
-//                return nil
-//            }
-//
-//            let title = section == .watchAccount ? "portfolio-title-watchlist".localized : "portfolio-title-accounts".localized
-//            let view = collectionView.dequeueHeader(SingleLineTitleActionHeaderView.self, at: indexPath)
-//            view.bindData(
-//                SingleLineTitleActionViewModel(
-//                    item: SingleLineIconTitleItem(
-//                        icon: "icon-options",
-//                        title: .string(title)
-//                    )
-//                )
-//            )
-//
-//            view.handlers.didHandleAction = { [weak self] in
-//                guard let self = self else {
-//                    return
-//                }
-//
-//                self.handlers.didSelectSection?(section)
-//            }
-//
-//            return view
-//        }
-        
+
         [
             HomeLoadingCell.self,
             HomeNoContentCell.self,
             HomePortfolioCell.self,
             AnnouncementBannerCell.self,
+            TitleWithAccessorySupplementaryCell.self,
             AccountPreviewCell.self
         ].forEach {
             collectionView.register($0)
