@@ -28,7 +28,7 @@ indirect enum Screen {
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case home(route: Screen?)
-    case accountDetail(account: Account)
+    case accountDetail(accountHandle: AccountHandle)
     case assetSearch(account: Account)
     case assetDetail(draft: TransactionListing)
     case algosDetail(draft: TransactionListing)
@@ -62,7 +62,7 @@ indirect enum Screen {
         isSenderEditable: Bool
     )
     case nodeSettings
-    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetDetail?)
+    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetInformation?)
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)

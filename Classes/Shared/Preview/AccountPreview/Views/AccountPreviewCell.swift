@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
 //   AccountPreviewCollectionCell.swift
 
 import Foundation
@@ -33,5 +32,6 @@ final class AccountPreviewCell:
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
+
     }
 }

@@ -32,5 +32,5 @@ struct AssetTransactionSendDraft: TransactionSendDraft {
     var note: String?
 
     var toContact: Contact?
-    var assetDetail: AssetDetail?
+    var assetDetail: AssetInformation?
 }

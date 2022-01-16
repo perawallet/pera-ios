@@ -205,7 +205,7 @@ extension AssetAdditionViewController: SearchInputViewDelegate {
 extension AssetAdditionViewController: AssetActionConfirmationViewControllerDelegate {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetDetail
+        didConfirmedActionFor assetDetail: AssetInformation
     ) {
         guard let session = session,
               session.canSignTransaction(for: &account) else {
@@ -235,7 +235,7 @@ extension AssetAdditionViewController: AssetActionConfirmationViewControllerDele
         let assetAlertDraft = AssetAlertDraft(
             account: account,
             assetIndex: assetResult.id,
-            assetDetail: AssetDetail(assetInformation: assetResult),
+            assetDetail: assetResult,
             title: "asset-add-confirmation-title".localized,
             detail: "asset-add-warning".localized,
             actionTitle: "title-approve".localized,

@@ -25,7 +25,7 @@ class TransactionsViewController: BaseViewController {
     private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
 
     private(set) var account: Account
-    private(set) var assetDetail: AssetDetail?
+    private(set) var assetDetail: AssetInformation?
     private(set) var filterOption = TransactionFilterViewController.FilterOption.allTime
 
     private lazy var listLayout = TransactionsListLayout(
@@ -335,11 +335,11 @@ extension TransactionsViewController {
         )
     }
 
-    private func getAssetDetailForTransactionType(_ transaction: Transaction) -> AssetDetail? {
+    private func getAssetDetailForTransactionType(_ transaction: Transaction) -> AssetInformation? {
         switch draft.type {
         case .all:
             if let assetId = transaction.assetTransfer?.assetId {
-                return account.assetDetails.first(matching: (\.id, assetId))
+                return account.assetInformations.first(matching: (\.id, assetId))
             }
 
             return assetDetail

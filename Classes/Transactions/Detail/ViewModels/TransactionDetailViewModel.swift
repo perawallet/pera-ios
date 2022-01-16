@@ -46,7 +46,7 @@ final class TransactionDetailViewModel: ViewModel {
         transactionType: TransactionType,
         transaction: Transaction,
         account: Account,
-        assetDetail: AssetDetail?
+        assetDetail: AssetInformation?
     ) {
         if transactionType == .received {
             bindReceivedTransaction(with: transaction, and: assetDetail, for: account)
@@ -59,7 +59,7 @@ final class TransactionDetailViewModel: ViewModel {
 extension TransactionDetailViewModel {
     private func bindReceivedTransaction(
         with transaction: Transaction,
-        and assetDetail: AssetDetail?,
+        and assetDetail: AssetInformation?,
         for account: Account
     ) {
         transactionStatus = transaction.status
@@ -82,12 +82,12 @@ extension TransactionDetailViewModel {
             closeAmountViewIsHidden = true
             closeToViewIsHidden = true
 
-            let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
+            let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals)
 
             if transaction.isSelfTransaction() {
-                transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+                transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
             } else {
-                transactionAmountViewMode = .positive(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+                transactionAmountViewMode = .positive(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
             }
             rewardViewIsHidden = true
         } else if let payment = transaction.payment {
@@ -112,7 +112,7 @@ extension TransactionDetailViewModel {
 extension TransactionDetailViewModel {
     private func bindSentTransaction(
         with transaction: Transaction,
-        and assetDetail: AssetDetail?,
+        and assetDetail: AssetInformation?,
         for account: Account
     ) {
         transactionStatus = transaction.status
@@ -136,12 +136,12 @@ extension TransactionDetailViewModel {
             bindOpponent(for: transaction, with: assetTransaction.receiverAddress ?? "")
 
             if let assetDetail = assetDetail {
-                let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
+                let amount = assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals)
 
                 if transaction.isSelfTransaction() {
-                    transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+                    transactionAmountViewMode = .normal(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
                 } else {
-                    transactionAmountViewMode = .negative(amount: amount, isAlgos: false, fraction: assetDetail.fractionDecimals)
+                    transactionAmountViewMode = .negative(amount: amount, isAlgos: false, fraction: assetDetail.decimals)
                 }
             } else if transaction.isAssetAdditionTransaction(for: account.address) {
                 transactionAmountViewMode = .normal(amount: 0.0)

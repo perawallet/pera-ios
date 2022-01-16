@@ -38,7 +38,7 @@ final class TitleWithAccessoryView:
         super.init(frame: frame)
         setListeners()
     }
-    
+
     func customize(
         _ theme: TitleWithAccessoryViewTheme
     ) {
@@ -117,7 +117,7 @@ extension TitleWithAccessoryView {
             $0.leading >= titleView.snp.trailing
             $0.trailing == 0
         }
-        
+
         startPublishing(
             event: .performAccessory,
             for: accessoryView

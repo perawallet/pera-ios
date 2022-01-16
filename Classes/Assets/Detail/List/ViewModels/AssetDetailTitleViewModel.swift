@@ -24,24 +24,24 @@ final class AssetDetailTitleViewModel: ViewModel {
     private(set) var title: String?
     private(set) var assetAbbreviationForImage: String?
     
-    init(assetDetail: AssetDetail? = nil) {
+    init(assetDetail: AssetInformation? = nil) {
         bindTitle(assetDetail)
         bindImage(assetDetail)
     }
 }
 
 extension AssetDetailTitleViewModel {
-    private func bindImage(_ assetDetail: AssetDetail?) {
+    private func bindImage(_ assetDetail: AssetInformation?) {
         guard assetDetail == nil else {
-            assetAbbreviationForImage = TextFormatter.assetShortName.format(assetDetail?.assetName)
+            assetAbbreviationForImage = TextFormatter.assetShortName.format(assetDetail?.name)
             return
         }
         image = "icon-algo-circle-green".uiImage
     }
 
-    private func bindTitle(_ assetDetail: AssetDetail?) {
+    private func bindTitle(_ assetDetail: AssetInformation?) {
         if let assetDetail = assetDetail {
-            if let assetName = assetDetail.assetName {
+            if let assetName = assetDetail.name {
                 title = assetName
             } else {
                 title = "title-unknown".localized

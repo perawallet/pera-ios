@@ -124,14 +124,14 @@ extension AssetPreviewView: ViewModelBindable {
         imageView.bindData(
             AssetImageViewModel(
                 image: viewModel?.image,
-                assetAbbreviationForImage: viewModel?.assetAbbreviationForImage
+                assetAbbreviationForImage: viewModel?.assetAbbreviationForImage?.string
             )
         )
-        primaryAssetTitleLabel.text = viewModel?.assetPrimaryTitle
+        primaryAssetTitleLabel.editText = viewModel?.assetPrimaryTitle
         secondaryImageView.image = viewModel?.secondaryImage
-        secondaryAssetTitleLabel.text = viewModel?.assetSecondaryTitle
-        primaryAssetValueLabel.text = viewModel?.assetPrimaryValue
-        secondaryAssetValueLabel.text = viewModel?.assetSecondaryAssetValue
+        secondaryAssetTitleLabel.editText = viewModel?.assetSecondaryTitle
+        primaryAssetValueLabel.editText = viewModel?.assetPrimaryValue
+        secondaryAssetValueLabel.editText = viewModel?.assetSecondaryAssetValue
     }
 
     func reset() {

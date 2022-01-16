@@ -97,9 +97,9 @@ final class AssetDetail: ALGEntityModel {
         self.assetName = assetInformation.name
         self.unitName = assetInformation.unitName
         self.isVerified = assetInformation.isVerified
-        self.fractionDecimals = 0
+        self.fractionDecimals = assetInformation.decimals
         self.total = 0
-        self.creator = ""
+        self.creator = assetInformation.creator?.address ?? ""
         isDefaultFrozen = nil
         url = nil
         managerKey = nil

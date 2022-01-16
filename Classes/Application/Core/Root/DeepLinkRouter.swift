@@ -164,17 +164,17 @@ extension DeepLinkRouter {
         rootViewController?.tabBarViewController.routeForDeeplink()
     }
 
-    private func getAssetDetail(from notification: NotificationDetail, for account: Account) -> AssetDetail? {
-        var assetDetail: AssetDetail?
+    private func getAssetDetail(from notification: NotificationDetail, for account: Account) -> AssetInformation? {
+        var assetDetail: AssetInformation?
 
         if let assetId = notification.asset?.id {
-            assetDetail = account.assetDetails.first { $0.id == assetId }
+            assetDetail = account.assetInformations.first { $0.id == assetId }
         }
 
         return assetDetail
     }
 
-    private func openAssetDetail(for account: Account, with assetDetail: AssetDetail?) {
+    private func openAssetDetail(for account: Account, with assetDetail: AssetInformation?) {
         rootViewController?.tabBarContainer?.selectedItem = rootViewController?.tabBarContainer?.items[0]
         let screen: Screen
         if let assetDetail = assetDetail {

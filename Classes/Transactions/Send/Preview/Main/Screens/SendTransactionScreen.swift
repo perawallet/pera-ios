@@ -136,7 +136,7 @@ extension SendTransactionScreen {
                     .appending(decimalStrings)
             case .assetDetail(let assetDetail):
                 showingValue = (amountValue.replacingOccurrences(of: decimalStrings, with: "")
-                    .decimalAmountWithSeparator?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.fractionDecimals) ?? amountValue)
+                    .decimalAmountWithSeparator?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals) ?? amountValue)
                     .appending(decimalStrings)
             }
         } else {
@@ -377,7 +377,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
         return .valid
     }
 
-    private func validateAsset(for value: String, on assetDetail: AssetDetail) -> TransactionValidation {
+    private func validateAsset(for value: String, on assetDetail: AssetInformation) -> TransactionValidation {
         guard let assetAmount = draft.from.amount(for: assetDetail),
               let decimalAmount = value.decimalAmountWithSeparator else {
                   return .otherAsset

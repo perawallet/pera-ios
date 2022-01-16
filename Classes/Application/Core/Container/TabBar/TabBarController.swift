@@ -174,7 +174,7 @@ extension TabBarController {
 extension TabBarController: AssetActionConfirmationViewControllerDelegate {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetDetail
+        didConfirmedActionFor assetDetail: AssetInformation
     ) {
         guard let account = assetAlertDraft?.account,
             let assetId = assetAlertDraft?.assetIndex,

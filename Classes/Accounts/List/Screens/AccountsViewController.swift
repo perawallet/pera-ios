@@ -254,10 +254,10 @@ extension AccountsViewController: AccountsDataSourceDelegate {
             )
         } else {
             if let assetDetail = account.assetDetails[safe: indexPath.item - 1] {
-                open(
-                    .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail)),
-                    by: .push
-                )
+//                open(
+//                    .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail)),
+//                    by: .push
+//                )
             }
         }
     }
@@ -274,7 +274,7 @@ extension AccountsViewController: AccountsDataSourceDelegate {
     }
     
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account) {
-        open(.accountDetail(account: account), by: .push)
+       // open(.accountDetail(account: account), by: .push)
        // let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
        // open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft, isTrackable: true), by: .present)
     }

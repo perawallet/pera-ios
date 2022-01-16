@@ -122,29 +122,18 @@ extension ContactDetailViewController {
                     if let assets = account.assets {
                         var failedAssetFetchCount = 0
                         for asset in assets {
-                            self?.api?.getAssetDetails(AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
+                            self?.api?.getAssetDetails(AssetFetchQuery(ids: [asset.id])) { assetResponse in
                                 switch assetResponse {
                                 case let .success(assetDetailResponse):
-                                    let assetDetail = assetDetailResponse.assetDetail
-                                    if let verifiedAssets = self?.session?.verifiedAssets,
-                                        verifiedAssets.contains(where: { verifiedAsset -> Bool in
-                                            verifiedAsset.id == asset.id
-                                        }) {
-                                        assetDetail.isVerified = true
-                                    }
-                                    
-                                    account.assetDetails.append(assetDetail)
+                                    let assetDetail = assetDetailResponse.results[0]
+                                    account.assetInformations.append(assetDetail)
                                     let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset))
                                     self?.assetPreviews.append(assetPreviewModel)
 
                                     if assets.count == account.assetDetails.count + failedAssetFetchCount {
                                         self?.loadingController?.stopLoading()
-                                        
-                                        guard let strongSelf = self else {
-                                            return
-                                        }
-                                        strongSelf.contactAccount = account
-                                        strongSelf.contactDetailView.assetsCollectionView.reloadData()
+                                        self?.contactAccount = account
+                                        self?.contactDetailView.assetsCollectionView.reloadData()
                                     }
                                 case .failure:
                                     self?.loadingController?.stopLoading()

@@ -39,18 +39,18 @@ final class LedgerAccountDetailViewDataSource: NSObject {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
         for (index, asset) in assets.enumerated() {
-            if let assetDetail = api.session.assetDetails[asset.id] {
-                account.assetDetails.append(assetDetail)
+            if let assetDetail = api.session.assetInformations[asset.id] {
+                account.assetInformations.append(assetDetail)
 
                 if index == assets.count - 1 {
                     loadingController?.stopLoading()
                     delegate?.ledgerAccountDetailViewDataSource(self, didReturn: account)
                 }
             } else {
-                api.getAssetDetails(AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
+                api.getAssetDetails(AssetFetchQuery(ids: [asset.id])) { assetResponse in
                     switch assetResponse {
                     case .success(let assetDetailResponse):
-                        self.composeAssetDetail(assetDetailResponse.assetDetail, of: account, with: asset.id)
+                        self.composeAssetDetail(assetDetailResponse.results[0], of: account, with: asset.id)
                     case .failure:
                         account.removeAsset(asset.id)
                     }
@@ -64,20 +64,9 @@ final class LedgerAccountDetailViewDataSource: NSObject {
         }
     }
 
-    private func composeAssetDetail(_ assetDetail: AssetDetail, of account: Account, with id: Int64) {
-        var assetDetail = assetDetail
-        setVerifiedIfNeeded(&assetDetail, with: id)
-        account.assetDetails.append(assetDetail)
-        api.session.assetDetails[id] = assetDetail
-    }
-
-    private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail, with id: Int64) {
-        if let verifiedAssets = api.session.verifiedAssets,
-            verifiedAssets.contains(where: { verifiedAsset -> Bool in
-                verifiedAsset.id == id
-            }) {
-            assetDetail.isVerified = true
-        }
+    private func composeAssetDetail(_ assetDetail: AssetInformation, of account: Account, with id: Int64) {
+        account.assetInformations.append(assetDetail)
+        api.session.assetInformations[id] = assetDetail
     }
 }
 

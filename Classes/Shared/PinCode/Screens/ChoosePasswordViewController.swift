@@ -150,10 +150,10 @@ extension ChoosePasswordViewController {
                 return
             }
             
-            var assetDetail: AssetDetail?
+            var assetDetail: AssetInformation?
             
             if let assetId = assetId {
-                assetDetail = account.assetDetails.first { $0.id == assetId }
+                assetDetail = account.assetInformations.first { $0.id == assetId }
             }
 
             if let assetDetail = assetDetail {

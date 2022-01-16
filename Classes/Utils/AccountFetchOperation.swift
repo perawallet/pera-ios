@@ -81,23 +81,23 @@ extension AccountFetchOperation {
                     self.onCompleted?(account, nil)
                 }
             } else {
-                self.api.getAssetDetails(AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
-                    switch assetResponse {
-                    case .success(let assetDetailResponse):
-                        self.composeAssetDetail(
-                            assetDetailResponse.assetDetail,
-                            of: account,
-                            with: asset.id,
-                            removedAssetCount: &removedAssetCount
-                        )
-                    case .failure:
-                        removedAssetCount += 1
-                        account.removeAsset(asset.id)
-                        if assets.count == account.assetDetails.count + removedAssetCount {
-                            self.onCompleted?(account, nil)
-                        }
-                    }
-                }
+//                self.api.getAssetDetails(AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
+//                    switch assetResponse {
+//                    case .success(let assetDetailResponse):
+//                        self.composeAssetDetail(
+//                            assetDetailResponse.assetDetail,
+//                            of: account,
+//                            with: asset.id,
+//                            removedAssetCount: &removedAssetCount
+//                        )
+//                    case .failure:
+//                        removedAssetCount += 1
+//                        account.removeAsset(asset.id)
+//                        if assets.count == account.assetDetails.count + removedAssetCount {
+//                            self.onCompleted?(account, nil)
+//                        }
+//                    }
+//                }
             }
         }
     }

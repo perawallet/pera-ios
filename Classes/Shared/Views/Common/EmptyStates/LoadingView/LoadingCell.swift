@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
 //   LoadingCell.swift
 
 import Foundation
@@ -40,4 +39,3 @@ extension LoadingCell {
         contextView.stopAnimating()
     }
 }
-
