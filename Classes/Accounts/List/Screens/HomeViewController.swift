@@ -161,6 +161,24 @@ extension HomeViewController {
 
 extension HomeViewController {
     private func linkInteractors(
+        _ cell: HomeNoContentCell
+    ) {
+        cell.observe(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.open(
+                .welcome(flow: .addNewAccount(mode: .none)),
+                by: .customPresent(
+                    presentationStyle: .fullScreen,
+                    transitionStyle: nil,
+                    transitioningDelegate: nil
+                )
+            )
+        }
+    }
+    
+    private func linkInteractors(
         _ cell: HomePortfolioCell,
         for item: HomePortfolioViewModel
     ) {
@@ -469,6 +487,14 @@ extension HomeViewController {
         }
         
         switch itemIdentifier {
+        case .empty(let item):
+            switch item {
+            case .loading:
+                let loadingCell = cell as! HomeLoadingCell
+                loadingCell.startAnimating()
+            case .noContent:
+                linkInteractors(cell as! HomeNoContentCell)
+            }
         case .portfolio(let item):
             linkInteractors(
                 cell as! HomePortfolioCell,
@@ -481,6 +507,29 @@ extension HomeViewController {
                     cell as! TitleWithAccessorySupplementaryCell,
                     for: headerItem
                 )
+            default:
+                break
+            }
+        default:
+            break
+        }
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+        
+        switch itemIdentifier {
+        case .empty(let item):
+            switch item {
+            case .loading:
+                let loadingCell = cell as! HomeLoadingCell
+                loadingCell.stopAnimating()
             default:
                 break
             }

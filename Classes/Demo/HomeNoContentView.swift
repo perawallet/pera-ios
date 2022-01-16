@@ -19,14 +19,23 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
+/// <todo>
+/// Refactor
 final class HomeNoContentView:
     View,
+    UIInteractionObservable,
     ListReusable {
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .performAction: UIBlockInteraction()
+    ]
+    
+    private lazy var contentView = NoContentWithActionView()
+    
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
-        backgroundColor = .blue
+        addContent()
     }
     
     func customizeAppearance(
@@ -38,4 +47,49 @@ final class HomeNoContentView:
     ) {}
 }
 
-final class HomeNoContentCell: CollectionCell<HomeNoContentView> {}
+extension HomeNoContentView {
+    func addContent() {
+        contentView.customize(NoContentWithActionViewCommonTheme())
+        contentView.bindData(HomeNoContentViewModel())
+        
+        addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+        
+        contentView.handlers.didTapActionView = {
+            [weak self] in
+            guard let self = self else { return }
+            
+            let interaction = self.uiInteractions[.performAction] as? UIBlockInteraction
+            interaction?.notify()
+        }
+    }
+}
+
+extension HomeNoContentView {
+    enum Event {
+        case performAction
+    }
+}
+
+final class UIBlockInteraction: MacaroonUIKit.UIInteraction {
+    private var handler: Handler?
+    
+    func activate(
+        _ handler: @escaping Handler
+    ) {
+        self.handler = handler
+    }
+
+    func deactivate() {
+        self.handler = nil
+    }
+    
+    func notify() {
+        handler?()
+    }
+}

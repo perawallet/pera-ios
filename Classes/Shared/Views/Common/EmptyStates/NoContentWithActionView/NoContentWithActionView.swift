@@ -28,6 +28,13 @@ final class NoContentWithActionView:
     private lazy var contentView = UIView()
     private lazy var resultView = ResultView()
     private lazy var actionView = Button()
+    
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        setListeners()
+    }
 
     func customize(
         _ theme: NoContentViewWithActionTheme

@@ -22,11 +22,13 @@ import UIKit
 final class HomeLoadingView:
     View,
     ListReusable {
+    private lazy var loadingView = LoadingView()
+    
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
-        backgroundColor = .red
+        addLoading()
     }
     
     func customizeAppearance(
@@ -38,4 +40,26 @@ final class HomeLoadingView:
     ) {}
 }
 
-final class HomeLoadingCell: CollectionCell<HomeLoadingView> {}
+extension HomeLoadingView {
+    func startAnimating() {
+        loadingView.startAnimating()
+    }
+    
+    func stopAnimating() {
+        loadingView.stopAnimating()
+    }
+}
+
+extension HomeLoadingView {
+    private func addLoading() {
+        loadingView.customize(LoadingViewCommonTheme())
+        
+        addSubview(loadingView)
+        loadingView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+    }
+}
