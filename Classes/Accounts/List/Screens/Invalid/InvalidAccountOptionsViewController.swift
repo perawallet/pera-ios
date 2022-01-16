@@ -36,6 +36,7 @@ final class InvalidAccountOptionsViewController:
     ) {
         self.account = account
         self.theme = theme
+
         super.init(configuration: configuration)
     }
     

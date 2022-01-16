@@ -24,6 +24,7 @@ struct ListActionViewTheme:
     LayoutSheet {
     var icon: ImageStyle
     var iconContentEdgeInsets: LayoutOffset
+    var contentMinHeight: LayoutMetric
     var contentVerticalPaddings: LayoutVerticalPaddings
     var title: TextStyle
     var subtitle: TextStyle
@@ -33,13 +34,16 @@ struct ListActionViewTheme:
         _ family: LayoutFamily
     ) {
         self.icon = [
-            .contentMode(.left)
+            .contentMode(.left),
+            .isInteractable(false)
         ]
         self.iconContentEdgeInsets = (20, 0)
+        self.contentMinHeight = 36
         self.contentVerticalPaddings = (12, 12)
         self.title = [
             .textColor(AppColors.Components.Text.main),
-            .textOverflow(FittingText())
+            .textOverflow(FittingText()),
+            .isInteractable(false)
         ]
         self.subtitle = [
             .textColor(AppColors.Components.Text.gray)

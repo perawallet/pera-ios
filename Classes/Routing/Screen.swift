@@ -121,7 +121,7 @@ indirect enum Screen {
     case tabBarModal
     case algoStatisticsDateSelection(option: AlgosUSDValueInterval, delegate: AlgoStatisticsDateSelectionViewControllerDelegate)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
-    case accountListOptions(accountType: AccountType)
+    case accountListOptions(accountType: AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
     case orderAccountList(accountType: AccountType)
     case accountSelection(transactionAction: TransactionAction)
     case assetSelection(account: Account)

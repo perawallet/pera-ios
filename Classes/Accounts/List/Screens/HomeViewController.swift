@@ -216,32 +216,37 @@ extension HomeViewController {
             [weak self] in
             guard let self = self else { return }
             
-            let controller = self.modalTransition.perform(
-                .accountListOptions(accountType: item.type),
-                by: .presentWithoutNavigationController
-            ) as? AccountListOptionsViewController
-
-            controller?.handlers.didSelect = {
-                [weak self] option, accountType in
+            let eventHandler: AccountListOptionsViewController.EventHandler = {
+                [weak self] event in
                 guard let self = self else { return }
-
-                switch option {
-                case .add:
-                    self.open(
-                        .welcome(flow: .addNewAccount(mode: .none)),
-                        by: .customPresent(
-                            presentationStyle: .fullScreen,
-                            transitionStyle: nil,
-                            transitioningDelegate: nil
+                
+                self.dismiss(animated: true) {
+                    [weak self] in
+                    guard let self = self else { return }
+                    
+                    switch event {
+                    case .addAccount:
+                        self.open(
+                            .welcome(flow: .addNewAccount(mode: .none)),
+                            by: .customPresent(
+                                presentationStyle: .fullScreen,
+                                transitionStyle: nil,
+                                transitioningDelegate: nil
+                            )
                         )
-                    )
-                case .arrange:
-                    self.open(
-                        .orderAccountList(accountType: accountType),
-                        by: .present
-                    )
+                    case .arrangeAccounts(let accountType):
+                        self.open(
+                            .orderAccountList(accountType: accountType),
+                            by: .present
+                        )
+                    }
                 }
             }
+            
+            self.modalTransition.perform(
+                .accountListOptions(accountType: item.type, eventHandler: eventHandler),
+                by: .presentWithoutNavigationController
+            )
         }
     }
 }

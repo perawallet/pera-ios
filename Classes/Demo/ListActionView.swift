@@ -69,13 +69,17 @@ extension ListActionView {
     private func addContent(
         _ theme: ListActionViewTheme
     ) {
+        contentView.isUserInteractionEnabled = false
+        
         addSubview(contentView)
         contentView.snp.makeConstraints {
-            $0.height >= iconView
+            $0.centerY == 0
             $0.top == 0 + theme.contentVerticalPaddings.top
             $0.leading == iconView.snp.trailing
             $0.bottom == 0 + theme.contentVerticalPaddings.bottom
             $0.trailing == 0
+            
+            $0.greaterThanHeight(theme.contentMinHeight)
         }
         
         addTitle(theme)

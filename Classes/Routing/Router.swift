@@ -482,8 +482,10 @@ class Router {
             let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
             ledgerPairWarningViewController.delegate = delegate
             viewController = ledgerPairWarningViewController
-        case let .accountListOptions(accountType):
-            viewController = AccountListOptionsViewController(accountType: accountType, configuration: configuration)
+        case let .accountListOptions(accountType, eventHandler):
+            let aViewController = AccountListOptionsViewController(accountType: accountType, configuration: configuration)
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .orderAccountList(accountType):
             viewController = OrderAccountListViewController(accountType: accountType, configuration: configuration)
         case let .accountSelection(transactionAction):

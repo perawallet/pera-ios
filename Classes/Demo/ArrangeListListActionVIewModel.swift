@@ -13,22 +13,19 @@
 // limitations under the License.
 
 //
-//   AccountListOptionsViewController+Theme.swift
+//   ArrangeListListActionVIewModel.swift
 
 import Foundation
-import UIKit
 import MacaroonUIKit
 
-extension AccountListOptionsViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        let itemHeight: LayoutMetric
-        let modalHeight: LayoutMetric
-
-        init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
-            self.itemHeight = 60
-            self.modalHeight = 136 + UIApplication.shared.safeAreaBottom
-        }
+struct ArrangeListListActionVIewModel: ListActionViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
+    
+    init() {
+        icon = "icon-arrange-24"
+        title = Self.getTitle("account-options-arrange-list-title".localized)
+        subtitle = nil
     }
 }
