@@ -23,6 +23,7 @@ final class AccountAssetListLocalDataController:
     SharedDataControllerObserver {
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)?
 
+    private var accountHandle: AccountHandle
     private var assets: [AssetInformation] = []
 
     var addedAssetDetails: [AssetInformation] = []
@@ -34,8 +35,10 @@ final class AccountAssetListLocalDataController:
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.accountAssetListDataController")
 
     init(
+        _ accountHandle: AccountHandle,
         _ sharedDataController: SharedDataController
     ) {
+        self.accountHandle = accountHandle
         self.sharedDataController = sharedDataController
     }
 
@@ -56,18 +59,16 @@ extension AccountAssetListLocalDataController {
         didPublish event: SharedDataControllerEvent
     ) {
         switch event {
-        case .didStartRunning:
-            break
-        case .didFinishRunning:
-            break
-        case .didUpdateAccountCollection(let accountHandle):
-            if accountHandle.isReady {
-                deliverContentSnapshot(for: accountHandle)
+        case let .didStartRunning(first):
+            if first ||
+                lastSnapshot == nil {
+                deliverContentSnapshot()
             }
-        case .didUpdateAssetDetailCollection:
-            break
-        case .didUpdateCurrency:
-            break
+        case .didFinishRunning:
+            if let updatedAccountHandle = sharedDataController.accountCollection[accountHandle.value.address] {
+                accountHandle = updatedAccountHandle
+            }
+            deliverContentSnapshot()
         default:
             break
         }
@@ -75,7 +76,7 @@ extension AccountAssetListLocalDataController {
 }
 
 extension AccountAssetListLocalDataController {
-    func deliverContentSnapshot(for accountHandle: AccountHandle) {
+    private func deliverContentSnapshot() {
         deliverSnapshot {
             [weak self] in
             guard let self = self else {
@@ -104,18 +105,18 @@ extension AccountAssetListLocalDataController {
 
             assetItems.append(.search)
 
-            assetItems.append(.asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(accountHandle.value))))
+            assetItems.append(.asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(self.accountHandle.value))))
 
-            accountHandle.value.assetInformations.forEach {
+            self.accountHandle.value.assetInformations.forEach {
                 assets.append($0)
 
-                let asset = accountHandle.value.assets!.first(matching: (\.id, $0.id))!
+                let asset = self.accountHandle.value.assets!.first(matching: (\.id, $0.id))!
                 let assetItem: AccountAssetsItem = .asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection(($0, asset))))
                 assetItems.append(assetItem)
             }
 
-            self.clearAddedAssetDetailsIfNeeded(for: accountHandle.value)
-            self.clearRemovedAssetDetailsIfNeeded(for: accountHandle.value)
+            self.clearAddedAssetDetailsIfNeeded(for: self.accountHandle.value)
+            self.clearRemovedAssetDetailsIfNeeded(for: self.accountHandle.value)
 
             self.addedAssetDetails.forEach {
                 let assetItem: AccountAssetsItem = .pendingAsset(PendingAssetPreviewViewModel(AssetPreviewModelAdapter.adaptPendingAsset($0)))

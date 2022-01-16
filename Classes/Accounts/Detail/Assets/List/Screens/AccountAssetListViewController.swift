@@ -23,7 +23,7 @@ final class AccountAssetListViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var listLayout = AccountAssetListLayout(accountHandle: accountHandle)
     private lazy var dataSource = AccountAssetListDataSource(listView)
-    private lazy var dataController = AccountAssetListLocalDataController(sharedDataController)
+    private lazy var dataController = AccountAssetListLocalDataController(accountHandle, sharedDataController)
 
     typealias DataSource = UICollectionViewDiffableDataSource<AccountAssetsSection, AccountAssetsItem>
     typealias Snapshot = NSDiffableDataSourceSnapshot<AccountAssetsSection, AccountAssetsItem>
@@ -60,7 +60,6 @@ final class AccountAssetListViewController: BaseViewController {
             }
         }
         dataController.load()
-        dataController.deliverContentSnapshot(for: accountHandle)
     }
 
     override func prepareLayout() {
