@@ -13,54 +13,54 @@
 // limitations under the License.
 
 //
-//   HomeSectionSupplementaryViewModel.swift
+//   HomeAccountSectionHeaderViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct HomeSectionSupplementaryViewModel:
+struct HomeAccountSectionHeaderViewModel:
     TitleWithAccessoryViewModel,
     PairedViewModel,
     Hashable {
+    private(set) var type: AccountType
     private(set) var title: EditText?
     private(set) var accessory: ButtonStyle?
     private(set) var accessoryContentEdgeInsets: UIEdgeInsets?
     
     init(
-        _ model: HomeSection
+        _ model: AccountType
     ) {
+        self.type = model
         bind(model)
     }
 }
 
-extension HomeSectionSupplementaryViewModel {
+extension HomeAccountSectionHeaderViewModel {
     mutating func bind(
-        _ section: HomeSection
+        _ type: AccountType
     ) {
-        bindTitle(section)
-        bindAccessory(section)
+        self.type = type
+        
+        bindTitle(type)
+        bindAccessory(type)
     }
     
     mutating func bindTitle(
-        _ section: HomeSection
+        _ type: AccountType
     ) {
         let aTitle: String?
         
-        switch section {
-        case .accounts:
-            aTitle = "portfolio-title-accounts".localized
-        case .watchAccounts:
-            aTitle = "portfolio-title-watchlist".localized
-        default:
-            aTitle = nil
+        switch type {
+        case .watch: aTitle = "portfolio-title-watchlist".localized
+        default: aTitle = "portfolio-title-accounts".localized
         }
         
         title = getTitle(aTitle)
     }
     
     mutating func bindAccessory(
-        _ section: HomeSection
+        _ type: AccountType
     ) {
         let item = getOptionsAccessoryItem()
         
@@ -69,7 +69,7 @@ extension HomeSectionSupplementaryViewModel {
     }
 }
 
-extension HomeSectionSupplementaryViewModel {
+extension HomeAccountSectionHeaderViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
@@ -77,8 +77,8 @@ extension HomeSectionSupplementaryViewModel {
     }
     
     static func == (
-        lhs: HomeSectionSupplementaryViewModel,
-        rhs: HomeSectionSupplementaryViewModel
+        lhs: HomeAccountSectionHeaderViewModel,
+        rhs: HomeAccountSectionHeaderViewModel
     ) -> Bool {
         return lhs.title == rhs.title
     }

@@ -21,7 +21,8 @@ import UIKit
 
 final class TitleWithAccessorySupplementaryCell:
     CollectionCell<TitleWithAccessoryView>,
-    ViewModelBindable {
+    ViewModelBindable,
+    UIInteractionObservable {
     static let theme = TitleWithAccessoryViewTheme()
     
     override init(

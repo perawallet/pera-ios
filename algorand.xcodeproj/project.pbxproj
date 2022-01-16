@@ -3857,9 +3857,9 @@
 		F0DB41612793854D00EA437D /* TitleWithAccessorySupplementaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41602793854D00EA437D /* TitleWithAccessorySupplementaryCell.swift */; };
 		F0DB41622793854D00EA437D /* TitleWithAccessorySupplementaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41602793854D00EA437D /* TitleWithAccessorySupplementaryCell.swift */; };
 		F0DB41632793854D00EA437D /* TitleWithAccessorySupplementaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41602793854D00EA437D /* TitleWithAccessorySupplementaryCell.swift */; };
-		F0DB416527938F2300EA437D /* HomeSectionSupplementaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB416427938F2300EA437D /* HomeSectionSupplementaryViewModel.swift */; };
-		F0DB416627938F2300EA437D /* HomeSectionSupplementaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB416427938F2300EA437D /* HomeSectionSupplementaryViewModel.swift */; };
-		F0DB416727938F2300EA437D /* HomeSectionSupplementaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB416427938F2300EA437D /* HomeSectionSupplementaryViewModel.swift */; };
+		F0DB416527938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB416427938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift */; };
+		F0DB416627938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB416427938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift */; };
+		F0DB416727938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB416427938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -5179,8 +5179,6 @@
 		F08709352792217100BEE5C2 /* Portfolio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Portfolio.swift; sourceTree = "<group>"; };
 		F09E62A22767968300FEC701 /* ALGBlockOperationQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGBlockOperationQueue.swift; sourceTree = "<group>"; };
 		F0C64B1E277355C000E5A6D2 /* AssetDetailCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailCollection.swift; sourceTree = "<group>"; };
-		F0DB41412792CF6100EA437D /* macaroon */ = {isa = PBXFileReference; lastKnownFileType = folder; name = macaroon; path = "../../../Open Source/iOS/macaroon"; sourceTree = "<group>"; };
-		F0DB41432793431D00EA437D /* macaroon-utils */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "macaroon-utils"; path = "../../../Open Source/iOS/macaroon-utils"; sourceTree = "<group>"; };
 		F0DB414427935FC400EA437D /* AccounPortfolio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccounPortfolio.swift; sourceTree = "<group>"; };
 		F0DB414827936DF000EA437D /* AccountPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPreviewCell.swift; sourceTree = "<group>"; };
 		F0DB414C27936DFB00EA437D /* AccountPreviewTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPreviewTableCell.swift; sourceTree = "<group>"; };
@@ -5188,7 +5186,7 @@
 		F0DB4158279382EC00EA437D /* TitleWithAccessoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWithAccessoryViewModel.swift; sourceTree = "<group>"; };
 		F0DB415C2793839B00EA437D /* TitleWithAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWithAccessoryView.swift; sourceTree = "<group>"; };
 		F0DB41602793854D00EA437D /* TitleWithAccessorySupplementaryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleWithAccessorySupplementaryCell.swift; sourceTree = "<group>"; };
-		F0DB416427938F2300EA437D /* HomeSectionSupplementaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSectionSupplementaryViewModel.swift; sourceTree = "<group>"; };
+		F0DB416427938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAccountSectionHeaderViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -7392,8 +7390,6 @@
 			children = (
 				2B191C892321998600EAB1B8 /* algorand.entitlements */,
 				2B191C882321998100EAB1B8 /* algorand-staging.entitlements */,
-				F0DB41432793431D00EA437D /* macaroon-utils */,
-				F0DB41412792CF6100EA437D /* macaroon */,
 				2B8BE4D022391C38005D8565 /* Classes */,
 				2B95407825A75FB20098805B /* algorand-tests */,
 				9F18DC6D0E56430348850CDE /* Frameworks */,
@@ -12863,6 +12859,7 @@
 				F022D1DC276365DE00D786CD /* BlockProcessor.swift */,
 				F08708F1278F622600BEE5C2 /* CurrencyFetchOperation.swift */,
 				F08708ED278F5E2E00BEE5C2 /* CurrencyHandle.swift */,
+				F0DB416427938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift */,
 				F08708F92790878900BEE5C2 /* HomeAPIDataController.swift */,
 				F08708F52790877300BEE5C2 /* HomeDataController.swift */,
 				F08709042790D67B00BEE5C2 /* HomeListDataSource.swift */,
@@ -12875,7 +12872,6 @@
 				F087091D27918FE400BEE5C2 /* HomePortfolioView.swift */,
 				F087091927918E1A00BEE5C2 /* HomePortfolioViewModel.swift */,
 				F08709212791907D00BEE5C2 /* HomePortfolioViewTheme.swift */,
-				F0DB416427938F2300EA437D /* HomeSectionSupplementaryViewModel.swift */,
 				F08709352792217100BEE5C2 /* Portfolio.swift */,
 				F087091127917CB500BEE5C2 /* PortfolioCalculator.swift */,
 				F08708C7278C21D900BEE5C2 /* SharedDataController.swift */,
@@ -13811,7 +13807,7 @@
 				2B698256278C9D7B008EC669 /* PendingAssetImageViewTheme.swift in Sources */,
 				2B0E00C027881AB800D6B2E2 /* SecuritySettings.swift in Sources */,
 				D4190061273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift in Sources */,
-				F0DB416727938F2300EA437D /* HomeSectionSupplementaryViewModel.swift in Sources */,
+				F0DB416727938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift in Sources */,
 				17BD4E4A2292F1260003E49A /* ChoosePasswordViewModel.swift in Sources */,
 				17BD4E4B2292F1260003E49A /* BaseInputView.swift in Sources */,
 				17BD4E4C2292F1260003E49A /* AssetInputView.swift in Sources */,
@@ -14997,7 +14993,7 @@
 				2B0F61EA24EC129D00DA22A6 /* ContactSelectionViewController.swift in Sources */,
 				2B01FE6726148482006C3C56 /* AccountRecoverOptionsViewModel.swift in Sources */,
 				2BB93C3025BF2475001F1D6C /* LedgerTransactionSigner.swift in Sources */,
-				F0DB416627938F2300EA437D /* HomeSectionSupplementaryViewModel.swift in Sources */,
+				F0DB416627938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift in Sources */,
 				2B0F61EC24EC129D00DA22A6 /* AssetInformation.swift in Sources */,
 				D4789FDA2775CBB8001395BA /* AssetDetailInfoView.swift in Sources */,
 				D4D746602779AF5A000545BD /* AssetDetailInfoViewModel.swift in Sources */,
@@ -16181,7 +16177,7 @@
 				2BA9F012268C8DEF003BDDA8 /* WCTransactionErrorResponse.swift in Sources */,
 				D419005F273FBF7F00F7829D /* ManageAssetsViewController+Theme.swift in Sources */,
 				2B270391263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift in Sources */,
-				F0DB416527938F2300EA437D /* HomeSectionSupplementaryViewModel.swift in Sources */,
+				F0DB416527938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift in Sources */,
 				2B8954C02244047D00D6D068 /* BaseInputView.swift in Sources */,
 				2B56F7DC225B51C100E58737 /* AssetInputView.swift in Sources */,
 				2B432A4F237C4F5D009191BF /* AssetViewModel.swift in Sources */,

@@ -168,7 +168,7 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAccountHeaderItem item: HomeSectionSupplementaryViewModel
+        sizeForAccountHeaderItem item: HomeAccountSectionHeaderViewModel
     ) -> CGSize {
         let sizeCacheIdentifier = TitleWithAccessorySupplementaryCell.reuseIdentifier
         
