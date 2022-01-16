@@ -12,33 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-<<<<<<< HEAD:Classes/Shared/Preview/AccountPreview/Views/AccountPreviewCell.swift
-//   AccountPreviewCollectionCell.swift
-=======
 //   LoadingCell.swift
->>>>>>> accounts-management-refactor:Classes/Shared/Views/Common/EmptyStates/LoadingView/LoadingCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-<<<<<<< HEAD:Classes/Shared/Preview/AccountPreview/Views/AccountPreviewCell.swift
-final class AccountPreviewCell:
-    CollectionCell<AccountPreviewView>,
-    ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return (14, 0, 14, 0)
-    }
-    
-    static let theme = AccountPreviewViewTheme()
-    
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
-=======
 final class LoadingCell: BaseCollectionViewCell<LoadingView> {
     override init(
         frame: CGRect
@@ -58,7 +37,5 @@ extension LoadingCell {
 
     func stopAnimating() {
         contextView.stopAnimating()
->>>>>>> accounts-management-refactor:Classes/Shared/Views/Common/EmptyStates/LoadingView/LoadingCell.swift
     }
 }
-

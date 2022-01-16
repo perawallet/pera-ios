@@ -42,18 +42,6 @@ final class HomeViewController:
         collectionView.backgroundColor = .clear
         return collectionView
     }()
-    private lazy var listLayout = HomeListLayout(listDataSource: listDataSource)
-    private lazy var listDataSource = HomeListDataSource(listView)
-    
-    private let dataController: HomeDataController
-    
-    init(
-        dataController: HomeDataController,
-        configuration: ViewControllerConfiguration
-    ) {
-        self.dataController = dataController
-        super.init(configuration: configuration)
-    }
 
     private lazy var listLayout = HomeListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = HomeListDataSource(listView)
@@ -486,15 +474,5 @@ extension HomeViewController {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-//        guard let section = AccountPortfolioSection(rawValue: indexPath.section),
-//              section == .standardAccount || section == .watchAccount,
-//            let account = session.accounts[safe: indexPath.item] else {
-//                return
-//        }
-//        guard let self = self else {
-//            return
-//        }
-//
-//        self.open(.accountDetail(account: account), by: .push)
     }
 }

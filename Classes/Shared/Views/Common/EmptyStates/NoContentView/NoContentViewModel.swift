@@ -12,28 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-<<<<<<< HEAD:Classes/Demo/BlockCycle.swift
-//   BlockCycle.swift
-
-
-import Foundation
-
-protocol BlockCycle: AnyObject {
-    typealias NotificationHandler = () -> Void
-
-    func notify(
-        queue: DispatchQueue,
-        execute handler: @escaping NotificationHandler
-    )
-    func startListening()
-    func stopListening()
-}
-=======
 //   NoContentViewModel.swift
 
 import Foundation
 
 protocol NoContentViewModel: ResultViewModel {}
-
->>>>>>> accounts-management-refactor:Classes/Shared/Views/Common/EmptyStates/NoContentView/NoContentViewModel.swift
