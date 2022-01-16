@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   AccountAssetListLocalDataController.swift
+//   AccountAssetListAPIDataController.swift
 
 import Foundation
 import MacaroonUtils
 
-final class AccountAssetListLocalDataController:
+final class AccountAssetListAPIDataController:
     AccountAssetListDataController,
     SharedDataControllerObserver {
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)?
@@ -47,13 +47,13 @@ final class AccountAssetListLocalDataController:
     }
 }
 
-extension AccountAssetListLocalDataController {
+extension AccountAssetListAPIDataController {
     func load() {
         sharedDataController.add(self)
     }
 }
 
-extension AccountAssetListLocalDataController {
+extension AccountAssetListAPIDataController {
     func sharedDataController(
         _ sharedDataController: SharedDataController,
         didPublish event: SharedDataControllerEvent
@@ -75,7 +75,7 @@ extension AccountAssetListLocalDataController {
     }
 }
 
-extension AccountAssetListLocalDataController {
+extension AccountAssetListAPIDataController {
     private func deliverContentSnapshot() {
         deliverSnapshot {
             [weak self] in
@@ -85,18 +85,16 @@ extension AccountAssetListLocalDataController {
 
             var snapshot = Snapshot()
 
-            let portfolioItem: AccountAssetsItem
-//            if let totalPortfolioValue = self.calculatePortfolio(for: [account], with: currency) {
-//                portfolioItem = .portfolio(PortfolioValueViewModel(.singleAccount(value: .value(totalPortfolioValue)), currency))
-//            } else {
-//                portfolioItem = .portfolio(PortfolioValueViewModel(.singleAccount(value: .unknown), nil))
-//            }
-//
-            portfolioItem = .portfolio(PortfolioValueViewModel(.singleAccount(value: .unknown), nil))
+            let portfolio = AccountPortfolio(
+                account: accountHandle,
+                currency: self.sharedDataController.currency,
+                calculator: ALGPortfolioCalculator()
+            )
+            let portfolioItem = AccountPortfolioViewModel(portfolio)
 
             snapshot.appendSections([.portfolio])
             snapshot.appendItems(
-                [portfolioItem],
+                [.portfolio(portfolioItem)],
                 toSection: .portfolio
             )
 
@@ -153,7 +151,7 @@ extension AccountAssetListLocalDataController {
     }
 }
 
-extension AccountAssetListLocalDataController {
+extension AccountAssetListAPIDataController {
     private func publish(
         _ event: AccountAssetListDataControllerEvent
     ) {

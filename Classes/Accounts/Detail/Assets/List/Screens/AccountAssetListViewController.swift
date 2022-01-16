@@ -21,9 +21,9 @@ import MacaroonUIKit
 
 final class AccountAssetListViewController: BaseViewController {
     private lazy var theme = Theme()
-    private lazy var listLayout = AccountAssetListLayout(accountHandle: accountHandle)
-    private lazy var dataSource = AccountAssetListDataSource(listView)
-    private lazy var dataController = AccountAssetListLocalDataController(accountHandle, sharedDataController)
+    private lazy var listLayout = AccountAssetListLayout(accountHandle: accountHandle, listDataSource: listDataSource)
+    private lazy var listDataSource = AccountAssetListDataSource(listView)
+    private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
     typealias DataSource = UICollectionViewDiffableDataSource<AccountAssetsSection, AccountAssetsItem>
     typealias Snapshot = NSDiffableDataSourceSnapshot<AccountAssetsSection, AccountAssetsItem>
@@ -56,7 +56,7 @@ final class AccountAssetListViewController: BaseViewController {
 
             switch event {
             case .didUpdate(let snapshot):
-                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             }
         }
         dataController.load()
@@ -71,7 +71,7 @@ final class AccountAssetListViewController: BaseViewController {
 
     override func linkInteractors() {
         super.linkInteractors()
-        listView.dataSource = dataSource
+        listView.dataSource = listDataSource
         listView.delegate = listLayout
 
         dataSource.handlers.didAddAsset = { [weak self] in

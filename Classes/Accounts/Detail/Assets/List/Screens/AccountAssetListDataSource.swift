@@ -30,7 +30,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
 
             switch itemIdentifier {
             case let .portfolio(item):
-                let cell = collectionView.dequeue(AssetPortfolioItemCell.self, at: indexPath)
+                let cell = collectionView.dequeue(AccountPortfolioCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
             case .search:
@@ -71,7 +71,7 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
         }
 
         [
-            AssetPortfolioItemCell.self,
+            AccountPortfolioCell.self,
             SearchBarItemCell.self,
             AssetPreviewCell.self,
             PendingAssetPreviewCell.self

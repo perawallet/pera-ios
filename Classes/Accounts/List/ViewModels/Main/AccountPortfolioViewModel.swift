@@ -19,64 +19,79 @@ import Foundation
 import MacaroonUIKit
 
 struct AccountPortfolioViewModel:
-    ViewModel,
+    PairedViewModel,
     Hashable {
-    private(set) var portfolioValueViewModel: PortfolioValueViewModel?
-    private(set) var algoHoldingsValue: EditText?
-    private(set) var assetHoldingsValue: EditText?
+    private(set) var title: EditText?
+    private(set) var value: EditText?
 
     init(
-        _ accounts: [Account],
-        currency: Currency?
+        _ model: AccountPortfolio
     ) {
-        bindPortfolioValueViewModel(accounts, currency)
-        bindAlgoHoldingsValue(accounts, currency)
-        bindAssetHoldingsValue(accounts, currency)
-    }
-    
-    init(
-        _ accountCollection: AccountCollection
-    ) {
-        self.init(accountCollection.map(\.value), currency: nil)
+        bind(model)
     }
 }
 
 extension AccountPortfolioViewModel {
-    private mutating func bindPortfolioValueViewModel(
-        _ accounts: [Account],
-        _ currency: Currency?
+    mutating func bind(
+        _ portfolio: AccountPortfolio
     ) {
-//        if let totalPortfolioValue = calculatePortfolio(for: accounts, with: currency) {
-//            portfolioValueViewModel = PortfolioValueViewModel(.all(value: .value(totalPortfolioValue)), currency)
-//            return
-//        }
-//
-//        portfolioValueViewModel = PortfolioValueViewModel(.all(value: .unknown), currency)
+        var mPortfolio = portfolio
+        mPortfolio.calculate()
+        
+        bindTitle(mPortfolio)
+        bindValue(mPortfolio)
     }
-
-    private mutating func bindAlgoHoldingsValue(
-        _ accounts: [Account],
-        _ currency: Currency?
+    
+    mutating func bindTitle(
+        _ portfolio: AccountPortfolio
     ) {
-//        if let totalAlgoHoldings = calculateAlgoHoldings(for: accounts, with: currency),
-//           let currency = currency {
-//            algoHoldingsValue = .string(totalAlgoHoldings.toCurrencyStringForLabel(with: currency.id))
-//            return
-//        }
-//
-//        algoHoldingsValue = .string("N/A")
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+        
+        title = .attributedString(
+            "account-detail-portfolio-title"
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
+            )
     }
-
-    private mutating func bindAssetHoldingsValue(
-        _ accounts: [Account],
-        _ currency: Currency?
+    
+    mutating func bindValue(
+        _ portfolio: AccountPortfolio
     ) {
-//        if let totalAssetHoldings = calculateAssetHoldings(for: accounts, with: currency),
-//           let currency = currency {
-//            assetHoldingsValue = .string(totalAssetHoldings.toCurrencyStringForLabel(with: currency.id))
-//            return
-//        }
-//
-//        assetHoldingsValue = .string("N/A")
+        let font = Fonts.DMMono.regular.make(36)
+        let lineHeightMultiplier = 1.02
+        
+        value = .attributedString(
+            portfolio.valueResult.uiDescription.attributed([
+                .font(font),
+                .letterSpacing(-0.72),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineBreakMode(.byTruncatingTail),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
+    }
+}
+
+extension AccountPortfolioViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(value)
+    }
+    
+    static func == (
+        lhs: AccountPortfolioViewModel,
+        rhs: AccountPortfolioViewModel
+    ) -> Bool {
+        return lhs.value == rhs.value
     }
 }

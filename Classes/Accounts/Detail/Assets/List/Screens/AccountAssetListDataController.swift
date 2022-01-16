@@ -36,7 +36,7 @@ enum AccountAssetsSection:
 }
 
 enum AccountAssetsItem: Hashable {
-    case portfolio(PortfolioValueViewModel)
+    case portfolio(AccountPortfolioViewModel)
     case search
     case asset(AssetPreviewViewModel)
     case pendingAsset(PendingAssetPreviewViewModel)

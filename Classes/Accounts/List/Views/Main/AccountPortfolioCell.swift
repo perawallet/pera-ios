@@ -13,29 +13,25 @@
 // limitations under the License.
 
 //
-//   AccountPortfolioViewTheme.swift
+//   AccountPortfolioCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AccountPortfolioViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    let contentHorizontalPaddings: LayoutHorizontalPaddings
-    var title: TextStyle
-    var value: TextStyle
-    var spacingBetweenTitleAndValue: LayoutMetric
-
-    init(
-        _ family: LayoutFamily
+final class AccountPortfolioCell:
+    CollectionCell<AccountPortfolioView>,
+    ViewModelBindable {
+    override class var contextPaddings: LayoutPaddings {
+        return (60, 0, 60, 0)
+    }
+    
+    static let theme = AccountPortfolioViewTheme()
+    
+    override init(
+        frame: CGRect
     ) {
-        self.contentHorizontalPaddings = (24, 24)
-        self.title = []
-        self.value = [
-            .textColor(AppColors.Components.Text.main.uiColor),
-            .textOverflow(SingleLineFittingText())
-        ]
-        self.spacingBetweenTitleAndValue = 8
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }

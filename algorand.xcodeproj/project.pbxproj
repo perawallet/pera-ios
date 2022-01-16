@@ -2194,9 +2194,9 @@
 		2BCFD6782791A35900406A2A /* AccountAssetListDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCFD6772791A35900406A2A /* AccountAssetListDataController.swift */; };
 		2BCFD6792791A35900406A2A /* AccountAssetListDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCFD6772791A35900406A2A /* AccountAssetListDataController.swift */; };
 		2BCFD67A2791A35900406A2A /* AccountAssetListDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCFD6772791A35900406A2A /* AccountAssetListDataController.swift */; };
-		2BCFD67C2792268400406A2A /* AccountAssetListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCFD67B2792268400406A2A /* AccountAssetListLocalDataController.swift */; };
-		2BCFD67D2792268400406A2A /* AccountAssetListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCFD67B2792268400406A2A /* AccountAssetListLocalDataController.swift */; };
-		2BCFD67E2792268400406A2A /* AccountAssetListLocalDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCFD67B2792268400406A2A /* AccountAssetListLocalDataController.swift */; };
+		2BCFD67C2792268400406A2A /* AccountAssetListAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCFD67B2792268400406A2A /* AccountAssetListAPIDataController.swift */; };
+		2BCFD67D2792268400406A2A /* AccountAssetListAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCFD67B2792268400406A2A /* AccountAssetListAPIDataController.swift */; };
+		2BCFD67E2792268400406A2A /* AccountAssetListAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BCFD67B2792268400406A2A /* AccountAssetListAPIDataController.swift */; };
 		2BD063E425CEC8B6008BD15E /* BottomWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD063E325CEC8B6008BD15E /* BottomWarningViewController.swift */; };
 		2BD063E525CEC8B6008BD15E /* BottomWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD063E325CEC8B6008BD15E /* BottomWarningViewController.swift */; };
 		2BD063E625CEC8B6008BD15E /* BottomWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD063E325CEC8B6008BD15E /* BottomWarningViewController.swift */; };
@@ -3884,6 +3884,9 @@
 		F0DB419B279496A600EA437D /* ShowQrCodeListActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB419A279496A600EA437D /* ShowQrCodeListActionViewModel.swift */; };
 		F0DB419C279496A600EA437D /* ShowQrCodeListActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB419A279496A600EA437D /* ShowQrCodeListActionViewModel.swift */; };
 		F0DB419D279496A600EA437D /* ShowQrCodeListActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB419A279496A600EA437D /* ShowQrCodeListActionViewModel.swift */; };
+		F0DB41A32794A43800EA437D /* AccountPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41A22794A43800EA437D /* AccountPortfolioCell.swift */; };
+		F0DB41A42794A43800EA437D /* AccountPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41A22794A43800EA437D /* AccountPortfolioCell.swift */; };
+		F0DB41A52794A43800EA437D /* AccountPortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41A22794A43800EA437D /* AccountPortfolioCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -4630,7 +4633,7 @@
 		2BCBBB0124AB9B6C002CD56F /* RangeSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeSelectionView.swift; sourceTree = "<group>"; };
 		2BCFD6732791A34D00406A2A /* AccountAssetListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAssetListDataSource.swift; sourceTree = "<group>"; };
 		2BCFD6772791A35900406A2A /* AccountAssetListDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAssetListDataController.swift; sourceTree = "<group>"; };
-		2BCFD67B2792268400406A2A /* AccountAssetListLocalDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAssetListLocalDataController.swift; sourceTree = "<group>"; };
+		2BCFD67B2792268400406A2A /* AccountAssetListAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountAssetListAPIDataController.swift; sourceTree = "<group>"; };
 		2BD063E325CEC8B6008BD15E /* BottomWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomWarningViewController.swift; sourceTree = "<group>"; };
 		2BD063EC25CEC8E5008BD15E /* BottomWarningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomWarningView.swift; sourceTree = "<group>"; };
 		2BD063F825CED2E3008BD15E /* UIViewController+Layout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Layout.swift"; sourceTree = "<group>"; };
@@ -5219,6 +5222,7 @@
 		F0DB4192279494D700EA437D /* CopyAddressListActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyAddressListActionViewModel.swift; sourceTree = "<group>"; };
 		F0DB41962794961C00EA437D /* ViewPassphraseListActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPassphraseListActionViewModel.swift; sourceTree = "<group>"; };
 		F0DB419A279496A600EA437D /* ShowQrCodeListActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowQrCodeListActionViewModel.swift; sourceTree = "<group>"; };
+		F0DB41A22794A43800EA437D /* AccountPortfolioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPortfolioCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -5658,6 +5662,7 @@
 		2B0AD81D2757D98900F83660 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				F0DB41A22794A43800EA437D /* AccountPortfolioCell.swift */,
 				2B0AD81E2757D99600F83660 /* AccountPortfolioView.swift */,
 				2B0AD83E2757E1B600F83660 /* AccountPortfolioViewTheme.swift */,
 			);
@@ -7267,7 +7272,7 @@
 				2BB0B12627830E7B00A16494 /* AccountAssetListLayout+Theme.swift */,
 				2BCFD6732791A34D00406A2A /* AccountAssetListDataSource.swift */,
 				2BCFD6772791A35900406A2A /* AccountAssetListDataController.swift */,
-				2BCFD67B2792268400406A2A /* AccountAssetListLocalDataController.swift */,
+				2BCFD67B2792268400406A2A /* AccountAssetListAPIDataController.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -13738,6 +13743,7 @@
 				2B0AD7FF27565EE900F83660 /* AccountFetcher.swift in Sources */,
 				2BC1827523D8DF1100888476 /* AssetAdditionDraft.swift in Sources */,
 				D4092BAE276B522C0009722D /* WCSessionShortListViewTheme.swift in Sources */,
+				F0DB41A52794A43800EA437D /* AccountPortfolioCell.swift in Sources */,
 				2BECB4CE25A0F8DB0081870A /* TitledToggleViewModel.swift in Sources */,
 				2BA4B3C526735ACB0041586B /* WalletConnectResponse.swift in Sources */,
 				2BF811E825E6447D00D6B406 /* TutorialNumberViewModel.swift in Sources */,
@@ -14620,7 +14626,7 @@
 				2BA4B3E42673F8D50041586B /* WCConnectionAccountSelectionView.swift in Sources */,
 				2BEE061B23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */,
 				D473CA5226E1733700558598 /* BottomWarningViewTheme.swift in Sources */,
-				2BCFD67E2792268400406A2A /* AccountAssetListLocalDataController.swift in Sources */,
+				2BCFD67E2792268400406A2A /* AccountAssetListAPIDataController.swift in Sources */,
 				17BD4F032292F1260003E49A /* SingleLineInputField.swift in Sources */,
 				2B38C92924D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */,
 				D47C4AA3279182010012D7A6 /* ContactsNoContentWithActionViewModel.swift in Sources */,
@@ -15205,6 +15211,7 @@
 				2B6B3EF72774C58D006379F4 /* WalletRatingViewTheme.swift in Sources */,
 				2B69824D278C90DF008EC669 /* PendingAssetPreviewViewModel.swift in Sources */,
 				2B0F623624EC129D00DA22A6 /* NotificationDetail.swift in Sources */,
+				F0DB41A42794A43800EA437D /* AccountPortfolioCell.swift in Sources */,
 				F0DB415E2793839B00EA437D /* TitleWithAccessoryView.swift in Sources */,
 				D4822736272BF37F004CB9BF /* AddContactViewTheme.swift in Sources */,
 				2B0F623724EC129D00DA22A6 /* EditAccountView.swift in Sources */,
@@ -15818,7 +15825,7 @@
 				2BB0B12427830DDF00A16494 /* AccountAssetListLayout.swift in Sources */,
 				D47C4ABE2791CF380012D7A6 /* AccountSelectSearchNoContentViewModel.swift in Sources */,
 				2B0F632124EC129D00DA22A6 /* TouchDetectingScrollView.swift in Sources */,
-				2BCFD67D2792268400406A2A /* AccountAssetListLocalDataController.swift in Sources */,
+				2BCFD67D2792268400406A2A /* AccountAssetListAPIDataController.swift in Sources */,
 				2B0F632424EC129D00DA22A6 /* SingleLineInputField.swift in Sources */,
 				2B0F632524EC129D00DA22A6 /* PollingOperation.swift in Sources */,
 				2B0F632624EC129D00DA22A6 /* RewardDetailViewController.swift in Sources */,
@@ -16131,6 +16138,7 @@
 				2B3D73B623C3621500597D32 /* VerifiedAssetList.swift in Sources */,
 				2B6B3EFA2774E235006379F4 /* WalletRatingViewController.swift in Sources */,
 				2BC1827423D8DF1100888476 /* AssetAdditionDraft.swift in Sources */,
+				F0DB41A32794A43800EA437D /* AccountPortfolioCell.swift in Sources */,
 				2BECB4CC25A0F8DB0081870A /* TitledToggleViewModel.swift in Sources */,
 				D4D7465F2779AE41000545BD /* AssetDetailInfoViewModel.swift in Sources */,
 				2BD739FE22411A0100B66EEF /* Reusable.swift in Sources */,
@@ -17014,7 +17022,7 @@
 				2B0AD7F227565D7300F83660 /* AssetFetcher.swift in Sources */,
 				2BEE061A23E44B20004EBD6F /* TouchDetectingScrollView.swift in Sources */,
 				D473CA5026E1733700558598 /* BottomWarningViewTheme.swift in Sources */,
-				2BCFD67C2792268400406A2A /* AccountAssetListLocalDataController.swift in Sources */,
+				2BCFD67C2792268400406A2A /* AccountAssetListAPIDataController.swift in Sources */,
 				2B8954C2224404B700D6D068 /* SingleLineInputField.swift in Sources */,
 				2B38C92824D435C70059AB02 /* RekeyInstructionsViewController.swift in Sources */,
 				2BF53174224A940E00A7455F /* PollingOperation.swift in Sources */,

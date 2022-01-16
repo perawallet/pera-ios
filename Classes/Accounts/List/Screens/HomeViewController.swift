@@ -505,17 +505,17 @@ extension HomeViewController {
                     return
                 }
                 
-//                if account.isReady {
-//                    open(
-//                        .accountDetail(accountHandle: account),
-//                        by: .push
-//                    )
-//                } else {
+                if account.isReady {
+                    open(
+                        .accountDetail(accountHandle: account),
+                        by: .push
+                    )
+                } else {
                     modalTransition.perform(
                         .invalidAccount(account: account),
                         by: .presentWithoutNavigationController
                     )
-//                }
+                }
             default:
                 break
             }
