@@ -56,6 +56,8 @@ class TransactionsViewController: BaseViewController {
         collectionView.register(TransactionHistoryFilterCell.self)
         collectionView.register(AlgosDetailInfoViewCell.self)
         collectionView.register(AssetDetailInfoViewCell.self)
+        collectionView.register(NoContentCell.self)
+        collectionView.register(LoadingCell.self)
         return collectionView
     }()
 
@@ -195,7 +197,7 @@ extension TransactionsViewController {
 
             self.filterOptionsTransition.perform(
                 .transactionFilter(filterOption: self.filterOption, delegate: self),
-                by: .presentWithoutNavigationController
+                by: .present
             )
         }
 

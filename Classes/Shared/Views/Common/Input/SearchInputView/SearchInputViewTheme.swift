@@ -59,7 +59,7 @@ struct SearchInputViewCommonTheme: SearchInputViewTheme {
             .textColor(AppColors.Components.Text.main),
             .placeholder(placeholder),
             .placeholderColor(AppColors.Components.Text.gray),
-            .returnKeyType(.done)
+            .returnKeyType(.search)
         ]
         self.textInputBackground = [
             .backgroundColor(AppColors.Shared.Layer.grayLighter)

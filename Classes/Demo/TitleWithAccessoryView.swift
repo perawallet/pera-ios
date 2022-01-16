@@ -22,10 +22,23 @@ import UIKit
 final class TitleWithAccessoryView:
     View,
     ViewModelBindable,
+    UIInteractionObservable,
+    UIControlInteractionPublisher,
     ListReusable {
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .performAccessory: UIControlInteraction()
+    ]
+    
     private lazy var titleView = Label()
     private lazy var accessoryView = Button()
     
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        setListeners()
+    }
+
     func customize(
         _ theme: TitleWithAccessoryViewTheme
     ) {
@@ -104,5 +117,16 @@ extension TitleWithAccessoryView {
             $0.leading >= titleView.snp.trailing
             $0.trailing == 0
         }
+
+        startPublishing(
+            event: .performAccessory,
+            for: accessoryView
+        )
+    }
+}
+
+extension TitleWithAccessoryView {
+    enum Event {
+        case performAccessory
     }
 }

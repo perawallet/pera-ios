@@ -298,9 +298,14 @@ extension SendTransactionScreen: NumpadViewDelegate {
     func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey) {
         var newValue = self.amount
 
-        if newValue.fractionCount >= draft.fractionCount && value != .delete {
+        let hasDraftFraction = draft.fractionCount > 0
+
+        if hasDraftFraction &&
+            newValue.fractionCount >= draft.fractionCount &&
+            value != .delete {
             return
         }
+
 
         switch value {
         case .number(let numberValue):
@@ -321,6 +326,10 @@ extension SendTransactionScreen: NumpadViewDelegate {
             }
 
         case .decimalSeparator:
+            guard hasDraftFraction else {
+                return
+            }
+
             let decimalSeparator = Locale.preferred().decimalSeparator?.first ?? "."
 
             if self.amount.contains(decimalSeparator) {
@@ -331,7 +340,6 @@ extension SendTransactionScreen: NumpadViewDelegate {
 
         self.amount = newValue
         bindAmount()
-
     }
 
     private func validate(value: String) -> TransactionValidation {

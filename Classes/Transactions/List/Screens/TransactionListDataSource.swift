@@ -139,6 +139,15 @@ final class TransactionListDataSource: NSObject {
                     )
                 )
                 return cell
+            case .empty(state: let state):
+                switch state {
+                case .noContent:
+                    let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
+                    cell.bindData(TransactionHistoryNoContentViewModel())
+                    return cell
+                }
+            case .nextList:
+                return collectionView.dequeue(LoadingCell.self, at: indexPath)
             }
         }
 
@@ -166,6 +175,13 @@ final class TransactionListDataSource: NSObject {
 
         let transactionsHistoryItems = getTransactionHistoryItemsWithDates()
         appendPendingTransactions(to: &newSnapshot)
+
+        if animatingDifferences,
+           pendingTransactions.isEmpty,
+           transactionsHistoryItems.isEmpty {
+            newSnapshot.appendSections([.empty])
+            newSnapshot.appendItems([.empty(state: .noContent)], toSection: .empty)
+        }
 
         newSnapshot.appendItems(
             transactionsHistoryItems,
@@ -545,6 +561,8 @@ extension TransactionListDataSource {
 enum TransactionHistorySection: Int, CaseIterable {
     case info
     case transactionHistory
+    case nextList
+    case empty
 }
 
 enum TransactionHistoryItem: Hashable {
@@ -554,4 +572,10 @@ enum TransactionHistoryItem: Hashable {
     case pending(pendingTransaction: PendingTransaction)
     case reward(reward: Reward)
     case title(title: String)
+    case empty(state: EmptyState)
+    case nextList
+}
+
+enum EmptyState: Hashable {
+    case noContent
 }

@@ -19,6 +19,7 @@ import UIKit
 import MagpieCore
 import MacaroonUtils
 
+// <todo> Remove this file after refactor since it is not used anymore.
 class AccountsViewController: BaseViewController {
     
     override var shouldShowNavigationBar: Bool {
@@ -44,8 +45,8 @@ class AccountsViewController: BaseViewController {
     }()
     
     private(set) lazy var accountsView = AccountsView()
-    private lazy var noConnectionView = NoInternetConnectionView()
-    private lazy var emptyStateView = AccountsEmptyStateView()
+//    private lazy var noConnectionView = NoInternetConnectionView()
+//    private lazy var emptyStateView = AccountsEmptyStateView()
     private lazy var refreshControl = UIRefreshControl()
     
     private(set) var selectedAccount: Account?
@@ -69,7 +70,7 @@ class AccountsViewController: BaseViewController {
                 refreshAccounts()
             } else {
                 accountsDataSource.accounts.removeAll()
-                accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
+//                accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
                 accountsDataSource.isContentStateAvailableForBanner = false
                 accountsView.accountsCollectionView.reloadData()
             }
@@ -181,7 +182,7 @@ class AccountsViewController: BaseViewController {
         accountsView.delegate = self
         accountsView.accountsCollectionView.delegate = accountsDataSource
         accountsView.accountsCollectionView.dataSource = accountsDataSource
-        emptyStateView.delegate = self
+//        emptyStateView.delegate = self
     }
     
     override func linkInteractors() {
@@ -297,7 +298,7 @@ extension AccountsViewController: AccountsViewDelegate {
     }
     
     func accountsViewDidTapAddButton(_ accountsView: AccountsView) {
-        openWelcomeScreen()
+//        openWelcomeScreen()
     }
 }
 
@@ -462,7 +463,7 @@ extension AccountsViewController {
         }
 
         if !isConnectedToInternet {
-            accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
+//            accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
             accountsDataSource.isContentStateAvailableForBanner = false
             return
         }
@@ -479,8 +480,8 @@ extension AccountsViewController {
     }
 
     func setEmptyAccountsState() {
-        emptyStateView.bind(EmptyStateViewModel(emptyState: .accounts))
-        accountsView.accountsCollectionView.contentState = .empty(emptyStateView)
+//        emptyStateView.bind(EmptyStateViewModel(emptyState: .accounts))
+//        accountsView.accountsCollectionView.contentState = .empty(emptyStateView)
         accountsDataSource.isContentStateAvailableForBanner = false
     }
     
@@ -581,18 +582,18 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
     }
 }
 
-extension AccountsViewController: AccountsEmptyStateViewDelegate {
-    func accountsEmptyStateViewDidTapActionButton(_ accountsEmptyStateView: AccountsEmptyStateView) {
-        openWelcomeScreen()
-    }
-
-    private func openWelcomeScreen() {
-        open(
-            .welcome(flow: .addNewAccount(mode: .none)),
-            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-        )
-    }
-}
+//extension AccountsViewController: AccountsEmptyStateViewDelegate {
+//    func accountsEmptyStateViewDidTapActionButton(_ accountsEmptyStateView: AccountsEmptyStateView) {
+//        openWelcomeScreen()
+//    }
+//
+//    private func openWelcomeScreen() {
+//        open(
+//            .welcome(flow: .addNewAccount(mode: .none)),
+//            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+//        )
+//    }
+//}
 
 extension AccountsViewController: TooltipPresenter {
     func presentQRTooltipIfNeeded() {

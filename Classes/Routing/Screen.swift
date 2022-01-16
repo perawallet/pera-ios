@@ -123,7 +123,7 @@ indirect enum Screen {
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case accountListOptions(accountType: AccountType)
     case orderAccountList(accountType: AccountType)
-    case accountSelection
+    case accountSelection(transactionAction: TransactionAction)
     case assetSelection(account: Account)
     case sendTransaction(draft: SendTransactionDraft)
     case editNote(note: String?, delegate: EditNoteScreenDelegate?)

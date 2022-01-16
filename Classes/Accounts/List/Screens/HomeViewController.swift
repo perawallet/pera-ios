@@ -42,6 +42,18 @@ final class HomeViewController:
         collectionView.backgroundColor = .clear
         return collectionView
     }()
+    private lazy var listLayout = HomeListLayout(listDataSource: listDataSource)
+    private lazy var listDataSource = HomeListDataSource(listView)
+    
+    private let dataController: HomeDataController
+    
+    init(
+        dataController: HomeDataController,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.dataController = dataController
+        super.init(configuration: configuration)
+    }
 
     private lazy var listLayout = HomeListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = HomeListDataSource(listView)
@@ -94,11 +106,6 @@ final class HomeViewController:
     override func prepareLayout() {
         super.prepareLayout()
         addListView()
-    }
-
-    override func setListeners() {
-        super.setListeners()
-        setSectionSelectionListeners()
     }
 
     override func linkInteractors() {
@@ -162,47 +169,58 @@ extension HomeViewController {
         leftBarButtonItems = [notificationBarButtonItem]
         rightBarButtonItems = [addBarButtonItem, qrBarButtonItem]
     }
+}
 
-    private func setSectionSelectionListeners() {
-//        portfolioDataSource.handlers.didTapPortfolioTitle = { [weak self] in
-//            guard let self = self else {
-//                return
-//            }
-//
-//            self.modalTransition.perform(
-//                .portfolioDescription,
-//                by: .presentWithoutNavigationController
-//            )
-//        }
-//
-//        portfolioDataSource.handlers.didSelectSection = { [weak self] section in
-//            guard let self = self else {
-//                return
-//            }
-//
-//            let accountType: AccountType = section == .watchAccount ? .watch : .standard
-//
-//            let controller = self.modalTransition.perform(
-//                .accountListOptions(accountType: accountType),
-//                by: .presentWithoutNavigationController
-//            ) as? AccountListOptionsViewController
-//
-//            controller?.handlers.didSelect = { [weak self] option, accountType in
-//                guard let self = self else {
-//                    return
-//                }
-//
-//                switch option {
-//                case .add:
-//                    self.open(
-//                        .welcome(flow: .addNewAccount(mode: .none)),
-//                        by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-//                    )
-//                case .arrange:
-//                    self.open(.orderAccountList(accountType: accountType), by: .present)
-//                }
-//            }
-//        }
+extension HomeViewController {
+    private func linkInteractors(
+        _ cell: HomePortfolioCell
+    ) {
+        cell.observe(event: .showInfo) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.modalTransition.perform(
+                .portfolioDescription,
+                by: .presentWithoutNavigationController
+            )
+        }
+    }
+    
+    private func linkInteractors(
+        _ cell: TitleWithAccessorySupplementaryCell,
+        for item: HomeAccountSectionHeaderViewModel
+    ) {
+        cell.observe(event: .performAccessory) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            let controller = self.modalTransition.perform(
+                .accountListOptions(accountType: item.type),
+                by: .presentWithoutNavigationController
+            ) as? AccountListOptionsViewController
+
+            controller?.handlers.didSelect = {
+                [weak self] option, accountType in
+                guard let self = self else { return }
+
+                switch option {
+                case .add:
+                    self.open(
+                        .welcome(flow: .addNewAccount(mode: .none)),
+                        by: .customPresent(
+                            presentationStyle: .fullScreen,
+                            transitionStyle: nil,
+                            transitioningDelegate: nil
+                        )
+                    )
+                case .arrange:
+                    self.open(
+                        .orderAccountList(accountType: accountType),
+                        by: .present
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -437,6 +455,33 @@ extension HomeViewController {
 }
 
 extension HomeViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+        
+        switch itemIdentifier {
+        case .portfolio:
+            linkInteractors(cell as! HomePortfolioCell)
+        case .account(let item):
+            switch item {
+            case .header(let headerItem):
+                linkInteractors(
+                    cell as! TitleWithAccessorySupplementaryCell,
+                    for: headerItem
+                )
+            default:
+                break
+            }
+        default:
+            break
+        }
+    }
+    
     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath

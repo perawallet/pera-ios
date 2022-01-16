@@ -21,7 +21,8 @@ import UIKit
 
 final class HomePortfolioCell:
     CollectionCell<HomePortfolioView>,
-    ViewModelBindable {
+    ViewModelBindable,
+    UIInteractionObservable {
     static let theme = HomePortfolioViewTheme()
     
     override init(

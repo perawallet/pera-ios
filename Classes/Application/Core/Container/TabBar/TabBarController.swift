@@ -191,84 +191,6 @@ extension TabBarController: AssetActionConfirmationViewControllerDelegate {
         assetAlertDraft = nil
     }
 }
-    
-extension TabBarController {
-    @objc
-    private func notifyDelegateToOpenAssetSelectionForSendFlow() {
-        open(.accountSelection, by: .present)
-    }
-    
-    @objc
-    private func notifyDelegateToOpenAssetSelectionForRequestFlow() {
-        let controller = open(.selectAsset(transactionAction: .request), by: .present) as? OldSelectAssetViewController
-        controller?.delegate = self
-    }
-}
-
-extension TabBarController: OldSelectAssetViewControllerDelegate {
-    func oldSelectAssetViewController(
-        _ oldSelectAssetViewController: OldSelectAssetViewController,
-        didSelectAlgosIn account: Account,
-        forAction transactionAction: TransactionAction
-    ) {
-        isDisplayingTransactionButtons = false
-        
-        let fullScreenPresentation = Screen.Transition.Open.customPresent(
-            presentationStyle: .fullScreen,
-            transitionStyle: nil,
-            transitioningDelegate: nil
-        )
-        
-        if transactionAction == .send {
-            log(SendTabEvent())
-            open(
-                .sendAlgosTransactionPreview(
-                    account: account,
-                    receiver: .initial,
-                    isSenderEditable: true
-                ),
-                by: fullScreenPresentation
-            )
-        } else {
-            log(ReceiveTabEvent())
-            let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
-            open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
-        }
-    }
-    
-    func oldSelectAssetViewController(
-        _ oldSelectAssetViewController: OldSelectAssetViewController,
-        didSelect assetDetail: AssetDetail,
-        in account: Account,
-        forAction transactionAction: TransactionAction
-    ) {
-        isDisplayingTransactionButtons = false
-        
-        let fullScreenPresentation = Screen.Transition.Open.customPresent(
-            presentationStyle: .fullScreen,
-            transitionStyle: nil,
-            transitioningDelegate: nil
-        )
-        
-        if transactionAction == .send {
-            log(SendTabEvent())
-            open(
-                .sendAssetTransactionPreview(
-                    account: account,
-                    receiver: .initial,
-                    assetDetail: assetDetail,
-                    isSenderEditable: true,
-                    isMaxTransaction: false
-                ),
-                by: fullScreenPresentation
-            )
-        } else {
-            log(ReceiveTabEvent())
-            let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
-            open(.qrGenerator(title: account.name ?? account.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
-        }
-    }
-}
 
 extension TabBarController {
     func getBadge(forItemAt index: Int) -> String? {
@@ -347,11 +269,6 @@ extension TabBarController {
     }
 }
 
-enum TransactionAction {
-    case send
-    case request
-}
-
 extension TabBarController {
     private func dismissTabBarModal() {
         didTapCenterButton(false)
@@ -386,11 +303,46 @@ extension TabBarController {
 
 extension TabBarController: TabBarModalViewControllerDelegate {
     func tabBarModalViewControllerDidSend(_ tabBarModalViewController: TabBarModalViewController) {
-        open(.accountSelection, by: .present)
+        log(SendTabEvent())
+        openAccountSelection(for: .send)
     }
 
     func tabBarModalViewControllerDidReceive(_ tabBarModalViewController: TabBarModalViewController) {
-        let controller = open(.selectAsset(transactionAction: .request), by: .present) as? OldSelectAssetViewController
+        log(ReceiveTabEvent())
+        openAccountSelection(for: .receive)
+    }
+
+    private func openAccountSelection(for transactionAction: TransactionAction) {
+        let controller = open(
+            .accountSelection(transactionAction: transactionAction),
+            by: .present
+        ) as? SelectAccountViewController
         controller?.delegate = self
+    }
+}
+
+extension TabBarController: SelectAccountViewControllerDelegate {
+    func selectAccountViewController(
+        _ selectAccountViewController: SelectAccountViewController,
+        didSelect account: Account,
+        for transactionAction: TransactionAction
+    ) {
+        if transactionAction == .send {
+            selectAccountViewController.open(.assetSelection(account: account), by: .push)
+        } else {
+            selectAccountViewController.closeScreen(by: .dismiss) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
+                self.open(
+                    .qrGenerator(
+                        title: account.name ?? account.address.shortAddressDisplay(),
+                        draft: draft, isTrackable: true),
+                    by: .present
+                )
+            }
+        }
     }
 }

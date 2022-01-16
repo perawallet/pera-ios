@@ -21,8 +21,14 @@ import UIKit
 
 final class HomePortfolioView:
     View,
-    ViewModelBindable, 
+    ViewModelBindable,
+    UIInteractionObservable,
+    UIControlInteractionPublisher,
     ListReusable {
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .showInfo: UIControlInteraction()
+    ]
+
     private lazy var titleView = Label()
     private lazy var infoActionView = Button()
     private lazy var valueView = Label()
@@ -125,6 +131,11 @@ extension HomePortfolioView {
             $0.centerY == titleView
             $0.leading == titleView.snp.trailing + theme.spacingBetweenTitleAndInfoAction
         }
+
+        startPublishing(
+            event: .showInfo,
+            for: infoActionView
+        )
     }
     
     private func addValue(
@@ -200,5 +211,11 @@ extension HomePortfolioView {
             $0.top == 0
             $0.bottom == 0
         }
+    }
+}
+
+extension HomePortfolioView {
+    enum Event {
+        case showInfo
     }
 }

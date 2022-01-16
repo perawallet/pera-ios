@@ -23,7 +23,7 @@ final class LedgerAccountSelectionView: View {
     weak var delegate: LedgerAccountSelectionViewDelegate?
 
     private lazy var theme = LedgerAccountSelectionViewTheme()
-    private lazy var errorView = ListErrorView()
+    private lazy var errorView = NoContentWithActionView()
     private lazy var accountsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = theme.collectionViewMinimumLineSpacing
@@ -33,7 +33,7 @@ final class LedgerAccountSelectionView: View {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.listContentInset)
-        collectionView.register(LedgerAccountCell.self, forCellWithReuseIdentifier: LedgerAccountCell.reusableIdentifier)
+        collectionView.register(LedgerAccountCell.self)
         return collectionView
     }()
     private lazy var verticalStackView = UIStackView()
@@ -53,9 +53,8 @@ final class LedgerAccountSelectionView: View {
     }
 
     private func customize(_ theme: LedgerAccountSelectionViewTheme) {
-        errorView.setImage(img("icon-warning-error"))
-        errorView.setTitle("transaction-filter-error-title".localized)
-        errorView.setSubtitle("transaction-filter-error-subtitle".localized)
+        errorView.customize(NoContentWithActionViewCommonTheme())
+        errorView.bindData(ListErrorViewModel())
 
         addVerticalStackView(theme)
         addAccountsCollectionView(theme)
@@ -67,6 +66,15 @@ final class LedgerAccountSelectionView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func setListeners() {
+        errorView.setListeners()
+        errorView.handlers.didTapActionView = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.delegate?.ledgerAccountSelectionViewDidTryAgain(self)
+        }
+
         verifyButton.addTarget(self, action: #selector(notifyDelegateToAddAccount), for: .touchUpInside)
     }
 }
@@ -179,4 +187,5 @@ extension LedgerAccountSelectionView: ViewModelBindable {
 
 protocol LedgerAccountSelectionViewDelegate: AnyObject {
     func ledgerAccountSelectionViewDidAddAccount(_ ledgerAccountSelectionView: LedgerAccountSelectionView)
+    func ledgerAccountSelectionViewDidTryAgain(_ ledgerAccountSelectionView: LedgerAccountSelectionView)
 }

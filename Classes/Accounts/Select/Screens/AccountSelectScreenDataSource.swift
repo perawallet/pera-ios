@@ -125,7 +125,6 @@ UICollectionViewDataSource {
         } else {
             let cell = collectionView.dequeue(SelectContactCell.self, at: indexPath)
             let theme = SelectContactViewTheme()
-            cell.customize(theme)
 
             if let contact = contacts[safe: indexPath.item] {
                 cell.bindData(

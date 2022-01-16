@@ -34,14 +34,12 @@ final class AssetListView: View {
         return collectionView
     }()
 
-    private lazy var emptyStateView: SearchEmptyView = {
-        let emptyStateView = SearchEmptyView()
-        emptyStateView.setTitle("asset-not-found-title".localized)
-        emptyStateView.setDetail("asset-not-found-detail".localized)
-        return emptyStateView
-    }()
+    private lazy var searchNoContentView = NoContentView()
 
     func customize(_ theme: AssetListViewTheme) {
+        searchNoContentView.customize(NoContentViewCommonTheme())
+        searchNoContentView.bindData(AssetListSearchNoContentViewModel())
+
         addCollectionView(theme)
     }
 
@@ -59,6 +57,6 @@ extension AssetListView {
     }
 
     func updateContentStateView(_ isEmpty: Bool) {
-        collectionView.contentState = isEmpty ? .empty(emptyStateView) : .none
+        collectionView.contentState = isEmpty ? .empty(searchNoContentView) : .none
     }
 }

@@ -27,7 +27,7 @@ class OldSelectAssetViewController: BaseViewController {
 
     private lazy var selectAssetView = SelectAssetView()
 
-    private lazy var emptyStateView = SearchEmptyView()
+//    private lazy var emptyStateView = SearchEmptyView()
 
     private var accounts = [Account]()
 
@@ -61,7 +61,7 @@ class OldSelectAssetViewController: BaseViewController {
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.tertiary
         navigationItem.title = "send-select-asset".localized
-        emptyStateView.setTitle("asset-not-found-title".localized)
+//        emptyStateView.setTitle("asset-not-found-title".localized)
     }
 
     override func setListeners() {
@@ -86,7 +86,7 @@ extension OldSelectAssetViewController {
     private func initAccounts(with filter: FilterOption) -> [Account] {
         guard var allAccounts = session?.accounts,
               !allAccounts.isEmpty else {
-            selectAssetView.accountsCollectionView.contentState = .empty(emptyStateView)
+//            selectAssetView.accountsCollectionView.contentState = .empty(emptyStateView)
             return []
         }
 
