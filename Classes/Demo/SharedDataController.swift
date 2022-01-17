@@ -26,6 +26,8 @@ protocol SharedDataController: AnyObject {
     
     func startPolling()
     func stopPolling()
+    func reset() /// stop polling -> delete data -> start polling
+    func cancel() /// stop polling -> delete data
     
     func add(
         _ observer: SharedDataControllerObserver

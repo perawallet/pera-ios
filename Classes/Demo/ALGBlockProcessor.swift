@@ -73,6 +73,11 @@ extension ALGBlockProcessor {
         blockCycle.stopListening()
         queue.cancelAllOperations()
     }
+    
+    func cancel() {
+        blockCycle.cancel()
+        queue.cancelAllOperations()
+    }
 }
 
 extension ALGBlockProcessor {

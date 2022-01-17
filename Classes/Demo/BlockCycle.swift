@@ -25,4 +25,5 @@ protocol BlockCycle: AnyObject {
     )
     func startListening()
     func stopListening()
+    func cancel()
 }

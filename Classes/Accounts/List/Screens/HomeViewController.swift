@@ -85,6 +85,16 @@ final class HomeViewController:
         super.viewDidAppear(animated)
         reconnectToOldWCSessions()
         connectToWCSessionRequestFromDeeplink()
+        
+        let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
+        loadingCell?.startAnimating()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
+        loadingCell?.stopAnimating()
     }
 
     override func customizeTabBarAppearence() {
@@ -495,8 +505,8 @@ extension HomeViewController {
         case .empty(let item):
             switch item {
             case .loading:
-                let loadingCell = cell as! HomeLoadingCell
-                loadingCell.startAnimating()
+                let loadingCell = cell as? HomeLoadingCell
+                loadingCell?.startAnimating()
             case .noContent:
                 linkInteractors(cell as! HomeNoContentCell)
             }
@@ -533,8 +543,8 @@ extension HomeViewController {
         case .empty(let item):
             switch item {
             case .loading:
-                let loadingCell = cell as! HomeLoadingCell
-                loadingCell.stopAnimating()
+                let loadingCell = cell as? HomeLoadingCell
+                loadingCell?.stopAnimating()
             default:
                 break
             }

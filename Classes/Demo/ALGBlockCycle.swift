@@ -64,6 +64,11 @@ extension ALGBlockCycle {
         ongoingEndpointToWaitForNextBlock?.cancel()
         ongoingEndpointToWaitForNextBlock = nil
     }
+    
+    func cancel() {
+        stopListening()
+        lastRound = nil
+    }
 }
 
 extension ALGBlockCycle {

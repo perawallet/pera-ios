@@ -29,4 +29,5 @@ protocol BlockProcessor: AnyObject {
     )
     func start()
     func stop()
+    func cancel()
 }

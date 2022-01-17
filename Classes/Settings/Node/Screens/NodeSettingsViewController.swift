@@ -99,6 +99,8 @@ extension NodeSettingsViewController {
     private func changeNode(at indexPath: IndexPath) {
         loadingController?.startLoadingWithMessage("title-loading".localized)
         
+        sharedDataController.cancel()
+        
         let selectedNode = nodes[indexPath.item]
         
         if pushNotificationController.token == nil {
@@ -125,7 +127,7 @@ extension NodeSettingsViewController {
             UIApplication.shared.rootViewController()?.addBanner()
         }
         
-        self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
+        self.loadingController?.stopLoadingAfter(seconds: 2, on: .main) {
             self.sharedDataController.startPolling()
             self.nodeSettingsView.reloadData()
         }

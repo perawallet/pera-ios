@@ -52,15 +52,45 @@ final class SharedAPIDataController:
 
 extension SharedAPIDataController {
     func startPolling() {
+        if status.isActive {
+            return
+        }
+        
         $status.modify { $0 = .running }
 
         blockProcessor.start()
     }
     
     func stopPolling() {
+        if !status.isActive {
+            return
+        }
+        
         blockProcessor.stop()
 
         $status.modify { $0 = .suspended }
+        
+        publishEventForCurrentStatus()
+    }
+    
+    func reset() {
+        stopPolling()
+        deleteData()
+        
+        $status.modify { $0 = .completed }
+        
+        publishEventForCurrentStatus()
+        
+        $status.modify { $0 = .idle }
+        
+        startPolling()
+    }
+    
+    func cancel() {
+        blockProcessor.cancel()
+        deleteData()
+        
+        $status.modify { $0 = .idle }
         
         publishEventForCurrentStatus()
     }
@@ -74,6 +104,14 @@ extension SharedAPIDataController {
         
         let id = ObjectIdentifier(observer as AnyObject)
         observations[id] = WeakObservation(observer)
+    }
+}
+
+extension SharedAPIDataController {
+    private func deleteData() {
+        currency = .idle
+        accountCollection = []
+        assetDetailCollection = []
     }
 }
 
@@ -322,5 +360,14 @@ extension SharedAPIDataController {
         case running
         case suspended
         case completed /// Waiting for the next polling cycle to be running
+        
+        var isActive: Bool {
+            switch self {
+            case .idle: return false
+            case .running: return true
+            case .suspended: return false
+            case .completed: return true
+            }
+        }
     }
 }

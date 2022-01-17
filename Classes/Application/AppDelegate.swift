@@ -54,10 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var rootViewController: RootViewController?
     
     private(set) lazy var accountManager: AccountManager = AccountManager(api: api)
-    
-    private var timer: PollingOperation?
-    
-    private var shouldInvalidateUserSession: Bool = false
+
+    private var lastActiveDate: Date?
 
     private(set) var incomingWCSessionRequest: String?
     
@@ -70,9 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setupFirebase()
         SwiftDate.setupDateRegion()
         setupWindow()
-        
-        sharedDataController.startPolling()
-        
+
         return true
     }
 
@@ -148,27 +144,43 @@ extension AppDelegate {
 
 extension AppDelegate {
     private func updateForegroundActions() {
-        timer?.invalidate()
         updateUserInterfaceStyleIfNeeded()
         validateUserSessionIfNeeded()
     }
 
     private func validateUserSessionIfNeeded() {
-        guard appConfiguration.session.isValid,
-            !appConfiguration.session.accounts.isEmpty else {
+        defer {
+            lastActiveDate = nil
+        }
+        
+        if !appConfiguration.session.isValid {
             return
         }
-
-        if shouldInvalidateUserSession {
-            shouldInvalidateUserSession = false
-            if appConfiguration.session.hasPassword() {
-                appConfiguration.session.isValid = false
-                openPasswordEntryScreen()
-            }
+        
+        /// <note>
+        /// The application has not becommen inactive yet.
+        guard let lastActiveDate = lastActiveDate else {
             return
-        } else {
+        }
+        
+        if !appConfiguration.session.hasPassword() {
             sharedDataController.startPolling()
+            return
         }
+        
+        let expireDate = lastActiveDate + Constants.sessionInvalidateTime.seconds
+        let isPasscodeExpired = Date.now().isAfterDate(
+            expireDate,
+            granularity: .second
+        )
+        
+        if !isPasscodeExpired {
+            sharedDataController.startPolling()
+            return
+        }
+        
+        appConfiguration.session.isValid = false
+        openPasswordEntryScreen()
     }
 
     private func openPasswordEntryScreen() {
@@ -186,13 +198,8 @@ extension AppDelegate {
     }
 
     private func decideToInvalidateSessionInBackground() {
-        timer = PollingOperation(interval: Constants.sessionInvalidateTime) { [weak self] in
-            self?.shouldInvalidateUserSession = true
-        }
-
-        timer?.start()
-
         sharedDataController.stopPolling()
+        lastActiveDate = Date()
     }
     
     private func showBlurOnWindow() {
@@ -325,6 +332,6 @@ extension AppDelegate {
 
 extension AppDelegate {
     private enum Constants {
-        static let sessionInvalidateTime: Double = 60.0
+        static let sessionInvalidateTime = 60
     }
 }

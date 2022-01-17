@@ -410,11 +410,6 @@ extension Session {
         self.clear(.defaults)
         self.clear(.keychain)
         self.isValid = false
-        
-        asyncMain { [weak self] in
-            /// <todo> Add stop polling
-            // self.sharedDataController.stopPolling()
-        }
     }
 }
 
