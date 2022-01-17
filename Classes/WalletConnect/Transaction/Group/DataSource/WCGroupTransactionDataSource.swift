@@ -20,12 +20,16 @@ import MacaroonUtils
 
 class WCGroupTransactionDataSource: NSObject {
 
-    private let session: Session?
+    private let sharedDataController: SharedDataController
     private let transactions: [WCTransaction]
     private let walletConnector: WalletConnector
 
-    init(session: Session?, transactions: [WCTransaction], walletConnector: WalletConnector) {
-        self.session = session
+    init(
+        sharedDataController: SharedDataController,
+        transactions: [WCTransaction],
+        walletConnector: WalletConnector
+    ) {
+        self.sharedDataController = sharedDataController
         self.transactions = transactions
         self.walletConnector = walletConnector
         super.init()
@@ -42,29 +46,38 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected transaction")
         }
 
+        let account: Account?
+
+        if let address = transaction.transactionDetail?.sender ?? transaction.transactionDetail?.receiver {
+            account = sharedDataController.accountCollection[address]?.value
+        } else {
+            account = nil
+        }
+
         if transaction.transactionDetail?.isAppCallTransaction ?? false {
-            return dequeueAppCallCell(in: collectionView, at: indexPath, for: transaction)
+            return dequeueAppCallCell(in: collectionView, at: indexPath, for: transaction, with: account)
         }
 
         if transaction.transactionDetail?.isAssetConfigTransaction ?? false {
             if transaction.signerAccount == nil {
-                return dequeueUnsignableAssetConfigCell(in: collectionView, at: indexPath, for: transaction)
+                return dequeueUnsignableAssetConfigCell(in: collectionView, at: indexPath, for: transaction, with: account)
             }
 
-            return dequeueAssetConfigCell(in: collectionView, at: indexPath, for: transaction)
+            return dequeueAssetConfigCell(in: collectionView, at: indexPath, for: transaction, with: account)
         }
 
         if transaction.signerAccount == nil {
             return dequeueUnsignableCell(in: collectionView, at: indexPath, for: transaction)
         }
 
-        return dequeueSingleSignerCell(in: collectionView, at: indexPath, for: transaction)
+        return dequeueSingleSignerCell(in: collectionView, at: indexPath, for: transaction, with: account)
     }
 
     private func dequeueAppCallCell(
         in collectionView: UICollectionView,
         at indexPath: IndexPath,
-        for transaction: WCTransaction
+        for transaction: WCTransaction,
+        with account: Account?
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: WCAppCallTransactionItemCell.reusableIdentifier,
@@ -72,8 +85,6 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
         ) as? WCAppCallTransactionItemCell else {
             fatalError("Unexpected cell type")
         }
-
-        let account = session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender)) ?? Account(address: transaction.transactionDetail!.receiver!, type: .standard)
 
         cell.bind(
             WCAppCallTransactionItemViewModel(
@@ -87,7 +98,8 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
     private func dequeueUnsignableAssetConfigCell(
         in collectionView: UICollectionView,
         at indexPath: IndexPath,
-        for transaction: WCTransaction
+        for transaction: WCTransaction,
+        with account: Account?
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: WCAssetConfigAnotherAccountTransactionItemCell.reusableIdentifier,
@@ -99,8 +111,8 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
         cell.bind(
             WCAssetConfigTransactionItemViewModel(
                 transaction: transaction,
-                account: session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender)),
-                assetDetail: assetDetail(from: transaction)
+                account: account,
+                assetInformation: assetInformation(from: transaction)
             )
         )
 
@@ -110,7 +122,8 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
     private func dequeueAssetConfigCell(
         in collectionView: UICollectionView,
         at indexPath: IndexPath,
-        for transaction: WCTransaction
+        for transaction: WCTransaction,
+        with account: Account?
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: WCAssetConfigTransactionItemCell.reusableIdentifier,
@@ -122,8 +135,8 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
         cell.bind(
             WCAssetConfigTransactionItemViewModel(
                 transaction: transaction,
-                account: session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender)),
-                assetDetail: assetDetail(from: transaction)
+                account: account,
+                assetInformation: assetInformation(from: transaction)
             )
         )
 
@@ -146,7 +159,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: nil,
-                assetDetail: assetDetail(from: transaction)
+                assetInformation: assetInformation(from: transaction)
             )
         )
 
@@ -156,7 +169,8 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
     private func dequeueSingleSignerCell(
         in collectionView: UICollectionView,
         at indexPath: IndexPath,
-        for transaction: WCTransaction
+        for transaction: WCTransaction,
+        with account: Account?
     ) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: WCGroupTransactionItemCell.reusableIdentifier,
@@ -168,8 +182,8 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
         cell.bind(
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
-                account: session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender)),
-                assetDetail: assetDetail(from: transaction)
+                account: account,
+                assetInformation: assetInformation(from: transaction)
             )
         )
 
@@ -203,13 +217,12 @@ extension WCGroupTransactionDataSource {
         return transactions[safe: index]
     }
 
-    private func assetDetail(from transaction: WCTransaction) -> AssetDetail? {
-        guard let session = session,
-              let assetId = transaction.transactionDetail?.assetId ??
+    private func assetInformation(from transaction: WCTransaction) -> AssetInformation? {
+        guard let assetId = transaction.transactionDetail?.assetId ??
                 transaction.transactionDetail?.assetId ?? transaction.transactionDetail?.assetIdBeingConfigured else {
             return nil
         }
 
-        return session.assetDetails[assetId]
+        return sharedDataController.assetDetailCollection[assetId]
     }
 }

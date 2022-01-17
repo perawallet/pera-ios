@@ -19,7 +19,18 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
+protocol WCUnsignedRequestScreenDelegate: AnyObject {
+    func wcUnsignedRequestScreenDidConfirm(
+        _ wcUnsignedRequestScreen: WCUnsignedRequestScreen
+    )
+    func wcUnsignedRequestScreenDidReject(
+        _ wcUnsignedRequestScreen: WCUnsignedRequestScreen
+    )
+}
+
 final class WCUnsignedRequestScreen: BaseViewController {
+    weak var delegate: WCUnsignedRequestScreenDelegate?
+
     lazy var scrollView: UIScrollView = UIScrollView()
 
     private lazy var theme = Theme()
@@ -51,7 +62,7 @@ final class WCUnsignedRequestScreen: BaseViewController {
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
 
-        title = "Unsigned Transactions"
+        title = "wallet-connect-transaction-title-unsigned".localized
     }
 
     override func prepareLayout() {
@@ -66,6 +77,7 @@ final class WCUnsignedRequestScreen: BaseViewController {
 
         unsignedRequestView.setDataSource(dataSource)
         unsignedRequestView.setDelegate(layoutBuilder)
+        unsignedRequestView.delegate = self
     }
 }
 
@@ -94,5 +106,15 @@ extension WCUnsignedRequestScreen {
             make.top.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+    }
+}
+
+extension WCUnsignedRequestScreen: WCUnsignedRequestViewDelegate {
+    func wcUnsignedRequestViewDidTapCancel(_ requestView: WCUnsignedRequestView) {
+        delegate?.wcUnsignedRequestScreenDidReject(self)
+    }
+
+    func wcUnsignedRequestViewDidTapConfirm(_ requestView: WCUnsignedRequestView) {
+        delegate?.wcUnsignedRequestScreenDidConfirm(self)
     }
 }

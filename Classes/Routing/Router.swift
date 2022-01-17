@@ -525,10 +525,10 @@ class Router {
             viewController = TransactionFloatingActionButtonViewController(configuration: configuration)
         case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):
             let dataSource = WCMainTransactionDataSource(
+                sharedDataController: configuration.sharedDataController,
                 transactions: transactions,
                 transactionRequest: transactionRequest,
                 transactionOption: transactionOption,
-                session: configuration.session,
                 walletConnector: configuration.walletConnector
             )
             viewController = WCSingleTransactionRequestScreen(

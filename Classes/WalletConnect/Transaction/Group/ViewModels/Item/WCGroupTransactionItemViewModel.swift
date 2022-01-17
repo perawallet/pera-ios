@@ -25,13 +25,13 @@ class WCGroupTransactionItemViewModel {
     private(set) var assetName: String?
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
-    init(transaction: WCTransaction, account: Account?, assetDetail: AssetDetail?) {
+    init(transaction: WCTransaction, account: Account?, assetInformation: AssetInformation?) {
         setHasWarning(from: transaction)
         setTitle(from: transaction, and: account)
         setIsAlgos(from: transaction)
-        setAmount(from: transaction, and: assetDetail)
-        setAssetName(from: assetDetail)
-        setAccountInformationViewModel(from: account, with: assetDetail)
+        setAmount(from: transaction, and: assetInformation)
+        setAssetName(from: assetInformation)
+        setAccountInformationViewModel(from: account, with: assetInformation)
     }
 
     private func setHasWarning(from transaction: WCTransaction) {
@@ -103,31 +103,31 @@ class WCGroupTransactionItemViewModel {
         isAlgos = transactionDetail.isAlgosTransaction
     }
 
-    private func setAmount(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
+    private func setAmount(from transaction: WCTransaction, and assetInformation: AssetInformation?) {
         guard let transactionDetail = transaction.transactionDetail else {
             return
         }
         
-        if let assetDetail = assetDetail {
-            let decimals = assetDetail.fractionDecimals
+        if let assetInformation = assetInformation {
+            let decimals = assetInformation.decimals
             amount = transactionDetail.amount.assetAmount(fromFraction: decimals).toFractionStringForLabel(fraction: decimals) ?? ""
         } else {
             amount = transactionDetail.amount.toAlgos.toAlgosStringForLabel ?? ""
         }
     }
 
-    private func setAssetName(from assetDetail: AssetDetail?) {
-        guard let assetDetail = assetDetail else {
+    private func setAssetName(from assetInformation: AssetInformation?) {
+        guard let assetInformation = assetInformation else {
             return
         }
 
-        assetName = assetDetail.getDisplayNames().1
+        assetName = assetInformation.getDisplayNames().1
     }
 
-    private func setAccountInformationViewModel(from account: Account?, with assetDetail: AssetDetail?) {
+    private func setAccountInformationViewModel(from account: Account?, with assetInformation: AssetInformation?) {
         accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
             account: account,
-            assetDetail: assetDetail,
+            assetInformation: assetInformation,
             isDisplayingAmount: true
         )
     }

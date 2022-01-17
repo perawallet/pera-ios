@@ -20,7 +20,10 @@ import UIKit
 import MacaroonUIKit
 
 protocol WCSingleTransactionRequestScreenDelegate: AnyObject {
-    func wcSingleTransactionRequestScreenDidCompleted(
+    func wcSingleTransactionRequestScreenDidConfirm(
+        _ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen
+    )
+    func wcSingleTransactionRequestScreenDidReject(
         _ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen
     )
 }
@@ -34,46 +37,37 @@ final class WCSingleTransactionRequestScreen:
 
     var assetDetail: AssetDetail?
 
-    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var requestView = WCSingleTransactionRequestView()
     private lazy var viewModel: WCSingleTransactionRequestViewModel? = {
         guard let transaction = transactions.first else {
             return nil
         }
 
-        let account: Account? = session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender))
+        let account: Account?
+
+        if let address = transaction.transactionDetail?.sender {
+            account = sharedDataController.accountCollection[address]?.value
+        } else {
+            account = nil
+        }
 
         return WCSingleTransactionRequestViewModel(transaction: transaction, account: account)
     }()
 
     private lazy var theme = Theme()
 
-    private lazy var wcTransactionSigner: WCTransactionSigner = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return WCTransactionSigner(api: api, bannerController: bannerController)
-    }()
-
-    private var transactionParams: TransactionParams?
-
-    private var signedTransactions: [Data?] = []
-
     var transactions: [WCTransaction] {
         dataSource.transactions(at: 0) ?? []
     }
 
     let dataSource: WCMainTransactionDataSource
-    private let wcSession: WCSession?
 
     init(
         dataSource: WCMainTransactionDataSource,
         configuration: ViewControllerConfiguration
     ) {
         self.dataSource = dataSource
-        self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: dataSource.transactionRequest.url))
         super.init(configuration: configuration)
-        setTransactionSigners()
     }
 
     override func configureAppearance() {
@@ -92,7 +86,6 @@ final class WCSingleTransactionRequestScreen:
         super.linkInteractors()
 
         requestView.delegate = self
-        wcTransactionSigner.delegate = self
     }
 
     override func configureNavigationBarAppearance() {
@@ -114,27 +107,9 @@ final class WCSingleTransactionRequestScreen:
         requestView.bind(viewModel)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        loadingController?.stopLoading()
-
-        if !transactions.allSatisfy({ ($0.signerAccount?.requiresLedgerConnection() ?? false) }) {
-            return
-        }
-
-        wcTransactionSigner.disonnectFromLedger()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        presentInitialWarningAlertIfNeeded()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        validateTransactions(transactions, with: dataSource.groupedTransactions)
         setCacheAssetIfNeeded()
     }
 
@@ -147,7 +122,7 @@ final class WCSingleTransactionRequestScreen:
 
         setCachedAsset {
             if self.assetDetail == nil {
-                self.rejectSigning()
+                self.delegate?.wcSingleTransactionRequestScreenDidReject(self)
                 self.dismissScreen()
                 return
             }
@@ -186,201 +161,22 @@ extension WCSingleTransactionRequestScreen {
             make.bottom.equalToSuperview()
         }
     }
-
-    private func presentSigningAlert() {
-        guard let params = transactionParams ?? UIApplication.shared.accountManager?.params else {
-            return
-        }
-
-        let containsFutureTransaction = transactions.contains { $0.isFutureTransaction(with: params) }
-        let description = containsFutureTransaction ?
-            "wallet-connect-transaction-warning-future".localized + "wallet-connect-transaction-warning-confirmation".localized :
-            "wallet-connect-transaction-warning-confirmation".localized
-
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-info-red".uiImage,
-            title: "transaction-request-signing-alert-title".localized,
-            description: description,
-            primaryActionButtonTitle: "title-accept".localized,
-            secondaryActionButtonTitle: "title-cancel".localized,
-            primaryAction: { [weak self] in
-                self?.confirmSigning()
-            }
-        )
-
-        modalTransition.perform(.bottomWarning(configurator: configurator))
-    }
-
-    private func presentInitialWarningAlertIfNeeded() {
-        let oneTimeDisplayStorage = OneTimeDisplayStorage()
-
-        if oneTimeDisplayStorage.isDisplayedOnce(for: .wcInitialWarning) {
-            return
-        }
-
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-info-green-large".uiImage,
-            title: "node-settings-warning-title".localized,
-            description: "wallet-connect-transaction-warning-initial".localized,
-            primaryActionButtonTitle: nil,
-            secondaryActionButtonTitle: "title-close".localized
-        )
-
-        modalTransition.perform(.bottomWarning(configurator: configurator))
-        oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
-    }
 }
 
 extension WCSingleTransactionRequestScreen: WCSingleTransactionRequestViewDelegate {
     func wcSingleTransactionRequestViewDidTapCancel(_ requestView: WCSingleTransactionRequestView) {
-        rejectSigning()
-        dismissScreen()
+        delegate?.wcSingleTransactionRequestScreenDidReject(self)
     }
 
     func wcSingleTransactionRequestViewDidTapConfirm(_ requestView: WCSingleTransactionRequestView) {
-        presentSigningAlert()
+        delegate?.wcSingleTransactionRequestScreenDidConfirm(self)
     }
 
     func wcSingleTransactionRequestViewDidTapShowTransaction(_ requestView: WCSingleTransactionRequestView) {
 
     }
-
-    private func rejectSigning(reason: WCTransactionErrorResponse = .rejected(.user)) {
-        rejectTransactionRequest(with: reason)
-    }
 }
 
-extension WCSingleTransactionRequestScreen: WCTransactionValidator {
-    func rejectTransactionRequest(with error: WCTransactionErrorResponse) {
-        dataSource.rejectTransaction(reason: error)
-        delegate?.wcSingleTransactionRequestScreenDidCompleted(
-            self
-        )
-        dismissScreen()
-    }
-}
-
-extension WCSingleTransactionRequestScreen: WCTransactionSignerDelegate {
-    private func setTransactionSigners() {
-        if let session = session {
-            transactions.forEach { $0.findSignerAccount(in: session) }
-        }
-    }
-
-    private func confirmSigning() {
-        if let transaction = getFirstSignableTransaction(),
-           let index = transactions.firstIndex(of: transaction) {
-            fillInitialUnsignedTransactions(until: index)
-            signTransaction(transaction)
-        }
-    }
-
-    private func getFirstSignableTransaction() -> WCTransaction? {
-        return transactions.first { transaction in
-            transaction.signerAccount != nil
-        }
-    }
-
-    private func fillInitialUnsignedTransactions(until index: Int) {
-        for _ in 0..<index {
-            signedTransactions.append(nil)
-        }
-    }
-
-    private func signTransaction(_ transaction: WCTransaction) {
-        if let signerAccount = transaction.signerAccount {
-            wcTransactionSigner.signTransaction(transaction, with: dataSource.transactionRequest, for: signerAccount)
-        } else {
-            signedTransactions.append(nil)
-        }
-    }
-
-    func wcMainTransactionViewDidDeclineSigning(_ wcMainTransactionView: WCMainTransactionView) {
-        if let session = wcSession {
-            log(
-                WCTransactionDeclinedEvent(
-                    transactionCount: transactions.count,
-                    dappName: session.peerMeta.name,
-                    dappURL: session.peerMeta.url.absoluteString,
-                    address: session.walletMeta?.accounts?.first
-                )
-            )
-        }
-
-        rejectSigning()
-    }
-
-    func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didSign transaction: WCTransaction, signedTransaction: Data) {
-        signedTransactions.append(signedTransaction)
-        continueSigningTransactions(after: transaction)
-    }
-
-    private func continueSigningTransactions(after transaction: WCTransaction) {
-        if let nextTransaction = transactions.element(after: transaction) {
-            if let signerAccount = nextTransaction.signerAccount {
-                wcTransactionSigner.signTransaction(nextTransaction, with: dataSource.transactionRequest, for: signerAccount)
-            } else {
-                signedTransactions.append(nil)
-                continueSigningTransactions(after: nextTransaction)
-            }
-            return
-        }
-
-        if transactions.count != signedTransactions.count {
-            rejectSigning(reason: .invalidInput(.unsignable))
-            return
-        }
-
-        sendSignedTransactions()
-    }
-
-    private func sendSignedTransactions() {
-        dataSource.signTransactionRequest(signature: signedTransactions)
-        logAllTransactions()
-        delegate?.wcSingleTransactionRequestScreenDidCompleted(self)
-        dismissScreen()
-    }
-
-    private func logAllTransactions() {
-        transactions.forEach { transaction in
-            if let transactionData = transaction.unparsedTransactionDetail,
-               let session = wcSession {
-                let transactionID = AlgorandSDK().getTransactionID(for: transactionData)
-                log(
-                    WCTransactionConfirmedEvent(
-                        transactionID: transactionID,
-                        dappName: session.peerMeta.name,
-                        dappURL: session.peerMeta.url.absoluteString
-                    )
-                )
-            }
-        }
-    }
-
-    func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didFailedWith error: WCTransactionSigner.WCSignError) {
-        switch error {
-        case .api:
-            rejectSigning(reason: .rejected(.unsignable))
-        case let .ledger(ledgerError):
-            showLedgerError(ledgerError)
-        }
-    }
-
-    private func showLedgerError(_ ledgerError: LedgerOperationError) {
-        switch ledgerError {
-        case .cancelled:
-            bannerController?.presentErrorBanner(
-                title: "ble-error-transaction-cancelled-title".localized, message: "ble-error-fail-sign-transaction".localized
-            )
-        case .closedApp:
-            bannerController?.presentErrorBanner(
-                title: "ble-error-ledger-connection-title".localized, message: "ble-error-ledger-connection-open-app-error".localized
-            )
-        default:
-            break
-        }
-    }
-}
 
 extension WCSingleTransactionRequestScreen: WCSingleTransactionScreenAssetManagable {
 }

@@ -28,10 +28,10 @@ class WCMainTransactionViewController: BaseViewController {
     weak var delegate: WCMainTransactionViewControllerDelegate?
 
     private lazy var dataSource = WCMainTransactionDataSource(
+        sharedDataController: sharedDataController,
         transactions: transactions,
         transactionRequest: transactionRequest,
         transactionOption: transactionOption,
-        session: session,
         walletConnector: walletConnector
     )
 
@@ -119,7 +119,7 @@ class WCMainTransactionViewController: BaseViewController {
 extension WCMainTransactionViewController {
     private func setTransactionSigners() {
         if let session = session {
-            transactions.forEach { $0.findSignerAccount(in: session) }
+            transactions.forEach { $0.findSignerAccount(in: sharedDataController.accountCollection, on: session) }
         }
     }
 

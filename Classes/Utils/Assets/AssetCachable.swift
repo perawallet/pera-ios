@@ -38,7 +38,11 @@ extension AssetCachable where Self: BaseViewController {
             api.getAssetDetails(AssetFetchQuery(ids: [id])) { assetResponse in
                 switch assetResponse {
                 case .success(let assetDetailResponse):
-                    let assetDetail = AssetDetail(assetInformation: assetDetailResponse.results[0])
+                    guard let assetInformation = assetDetailResponse.results.first else {
+                        completion(nil)
+                        return
+                    }
+                    let assetDetail = AssetDetail(assetInformation: assetInformation)
                     api.session.assetDetails[id] = assetDetail
                     completion(assetDetail)
                 case .failure:

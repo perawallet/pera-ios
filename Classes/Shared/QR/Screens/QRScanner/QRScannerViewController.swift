@@ -289,8 +289,9 @@ extension QRScannerViewController: WalletConnectorDelegate {
         shouldStart session: WalletConnectSession,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
-        guard let accounts = self.session?.accounts,
-              accounts.contains(where: { $0.type != .watch }) else {
+        let accounts = self.sharedDataController.accountCollection.sorted()
+
+        guard accounts.contains(where: { $0.value.type != .watch }) else {
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,
                 message: "wallet-connect-session-error-no-account".localized

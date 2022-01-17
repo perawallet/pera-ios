@@ -60,17 +60,20 @@ extension WCTransactionValidator {
     }
 
     private func hasValidNetwork(for transactions: [WCTransaction]) -> Bool {
-        guard let params = UIApplication.shared.appDelegate?.accountManager.params else {
-            return false
-        }
-
-        for transaction in transactions {
-            if !transaction.isInTheSameNetwork(with: params) {
-                return false
-            }
-        }
-
         return true
+
+        //TODO: Will be updated
+//        guard let params = UIApplication.shared.appDelegate?.accountManager.params else {
+//            return false
+//        }
+//
+//        for transaction in transactions {
+//            if !transaction.isInTheSameNetwork(with: params) {
+//                return false
+//            }
+//        }
+//
+//        return true
     }
 
     private func hasValidAddresses(in transactions: [WCTransaction]) -> Bool {

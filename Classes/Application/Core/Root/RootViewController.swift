@@ -55,7 +55,7 @@ class RootViewController: UIViewController {
     private var currentWCTransactionRequest: WalletConnectRequest?
 
     private var wcMainTransactionViewController: WCMainTransactionViewController?
-    private var wcRequestScreen: WCSingleTransactionRequestScreen?
+    private var wcRequestScreen: WCMainTransactionScreen?
     
     init(appConfiguration: AppConfiguration) {
         self.appConfiguration = appConfiguration
@@ -196,7 +196,7 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
 
         currentWCTransactionRequest = request
 
-        open(
+        wcRequestScreen = open(
             .wcMainTransactionScreen(
                 transactions: transactions,
                 transactionRequest: request,
@@ -204,7 +204,7 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
             ),
             by: fullScreenPresentation
         )
-//        wcRequestScreen?.delegate = self
+        wcRequestScreen?.delegate = self
 
 //        wcMainTransactionViewController = open(
 //            .wcMainTransaction(
@@ -234,9 +234,9 @@ extension RootViewController: WCMainTransactionViewControllerDelegate {
     }
 }
 
-extension RootViewController: WCSingleTransactionRequestScreenDelegate {
-    func wcSingleTransactionRequestScreenDidCompleted(
-        _ wcSingleTransactionRequestScreen: WCSingleTransactionRequestScreen
+extension RootViewController: WCMainTransactionScreenDelegate {
+    func wcMainTransactionScreenDidCompleted(
+        _ wcMainTransactionScreen: WCMainTransactionScreen
     ) {
         resetCurrentWCTransaction()
     }

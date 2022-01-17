@@ -22,7 +22,7 @@ class WCGroupTransactionViewController: BaseViewController {
     private lazy var groupTransactionView = WCGroupTransactionView()
 
     private lazy var dataSource = WCGroupTransactionDataSource(
-        session: session,
+        sharedDataController: sharedDataController,
         transactions: transactions,
         walletConnector: walletConnector
     )
