@@ -22,11 +22,11 @@ final class TransactionsListLayout: NSObject {
     lazy var handlers = Handlers()
 
     private let draft: TransactionListing
-    private weak var transactionDataSource: TransactionListDataSource?
+    private weak var transactionsDataSource: TransactionsDataSource?
 
-    init(draft: TransactionListing, transactionDataSource: TransactionListDataSource?) {
+    init(draft: TransactionListing, transactionsDataSource: TransactionsDataSource?) {
         self.draft = draft
-        self.transactionDataSource = transactionDataSource
+        self.transactionsDataSource = transactionsDataSource
         super.init()
     }
 }
@@ -37,13 +37,15 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        guard let itemIdentifier = transactionDataSource?.dataSource.itemIdentifier(for: indexPath) else {
+        guard let itemIdentifier = transactionsDataSource?.itemIdentifier(for: indexPath) else {
             return CGSize((collectionView.bounds.width, 0))
         }
 
         switch itemIdentifier {
-        case .info:
-            return draft.type == .algos ? CGSize(theme.algosInfoSize) : CGSize(theme.assetInfoSize)
+        case .algosInfo:
+            return CGSize(theme.algosInfoSize)
+        case .assetInfo:
+            return CGSize(theme.assetInfoSize)
         case .filter:
             return CGSize(theme.transactionHistoryFilterCellSize)
         case .transaction, .pending, .reward:
@@ -65,13 +67,12 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if let loadingCell = cell as? LoadingCell {
-            loadingCell.startAnimating()
-            return
-        }
-
-        handlers.willDisplay?(indexPath)
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        handlers.willDisplay?(cell, indexPath)
     }
 
     func collectionView(
@@ -84,19 +85,17 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
         }
     }
 
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let transactionDataSource = transactionDataSource,
-              case .transaction(let transaction) = transactionDataSource.dataSource.itemIdentifier(for: indexPath) else {
-                  return
-              }
-
-        handlers.didSelectTransaction?(transaction)
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        handlers.didSelect?(indexPath)
     }
 }
 
 extension TransactionsListLayout {
     struct Handlers {
-        var didSelectTransaction: ((Transaction) -> Void)?
-        var willDisplay: ((IndexPath) -> Void)?
+        var willDisplay: ((UICollectionViewCell, IndexPath) -> Void)?
+        var didSelect: ((IndexPath) -> Void)?
     }
 }

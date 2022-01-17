@@ -17,74 +17,17 @@
 
 
 import Foundation
+import MagpieCore
+import MagpieHipo
 
-final class BlockProcessor {
-    private lazy var queue = BlockOperationQueue()
+protocol BlockProcessor: AnyObject {
+    typealias BlockEventHandler = (BlockEvent) -> Void
     
-    private let watcher: BlockWatcher
-    private let session: Session
-    private let api: ALGAPI
-    
-    init(
-        watcher: BlockWatcher,
-        session: Session,
-        api: ALGAPI
-    ) {
-        self.watcher = watcher
-        self.session = session
-        self.api = api
-    }
-}
-
-extension BlockProcessor {
-    func start() {
-        watcher.start { [weak self] in
-            guard let self = self else { return }
-
-            self.process()
-        }
-    }
-    
-    func stop() {
-        watcher.stop()
-    }
-}
-
-extension BlockProcessor {
-    private func process() {
-        session.authenticatedUser?.accounts.forEach { account in
-            let op = createFetchOperation(for: account)
-            queue.enqueue(op)
-            
-            session[account] = .loading(account)
-        }
-    }
-    
-    private func createFetchOperation(
-        for account: AccountInformation
-    ) -> Operation {
-        let operation = AccountDetailFetchOperation(account: account, api: api)
-        operation.completionHandler = { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let accountDetail):
-                break
-            case .failure(let error):
-                break
-            }
-        }
-        return operation
-    }
-    
-    private func createAssetFetchOperation(
-        for accountDetail: Account
-    ) -> Operation {
-        return BlockOperation { [weak self, weak accountDetail] in
-            guard
-                let self = self,
-                let accountDetail = accountDetail
-            else { return }
-        }
-    }
+    func notify(
+        queue: DispatchQueue,
+        execute handler: @escaping BlockEventHandler
+    )
+    func start()
+    func stop()
+    func cancel()
 }

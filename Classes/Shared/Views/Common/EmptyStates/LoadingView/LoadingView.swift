@@ -34,7 +34,6 @@ final class LoadingView:
         _ theme: LoadingViewTheme
     ) {
         addLoadingIndicator(theme)
-
     }
 
     func customizeAppearance(

@@ -31,7 +31,7 @@ final class CurrencyFetcher: CurrencyFetching {
     }
 
     func getPreferredCurrencyDetails() {
-        currencyDetailRequest = api.getCurrencyValue(api.session.preferredCurrency) { [weak self] response in
+        currencyDetailRequest = api.getCurrencyValue(api.session.preferredCurrency, queue: .main) { [weak self] response in
             guard let self = self else {
                 return
             }

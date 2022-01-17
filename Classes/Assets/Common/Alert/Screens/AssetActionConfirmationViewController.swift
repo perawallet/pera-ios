@@ -68,15 +68,15 @@ extension AssetActionConfirmationViewController: BottomSheetPresentable {
 extension AssetActionConfirmationViewController {
     private func fetchAssetDetailIfNeeded() {
         if !assetAlertDraft.isValid() {
-            if let assetDetail = session?.assetDetails[assetAlertDraft.assetIndex] {
+            if let assetDetail = session?.assetInformations[assetAlertDraft.assetIndex] {
                 handleAssetDetailSetup(with: assetDetail)
             } else {
                 loadingController?.startLoadingWithMessage("title-loading".localized)
 
-                api?.getAssetDetails(AssetFetchDraft(assetId: "\(assetAlertDraft.assetIndex)")) { [weak self] response in
+                api?.getAssetDetails(AssetFetchQuery(ids: [assetAlertDraft.assetIndex])) { [weak self] response in
                     switch response {
                     case let .success(assetResponse):
-                        self?.handleAssetDetailSetup(with: assetResponse.assetDetail)
+                        self?.handleAssetDetailSetup(with: assetResponse.results[0])
                     case .failure:
                         self?.loadingController?.stopLoading()
                     }
@@ -85,21 +85,10 @@ extension AssetActionConfirmationViewController {
         }
     }
     
-    private func handleAssetDetailSetup(with asset: AssetDetail) {
+    private func handleAssetDetailSetup(with asset: AssetInformation) {
         self.loadingController?.stopLoading()
-        var assetDetail = asset
-        setVerifiedIfNeeded(&assetDetail)
-        assetAlertDraft.assetDetail = assetDetail
+        assetAlertDraft.assetDetail = asset
         assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(assetAlertDraft))
-    }
-    
-    private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail) {
-        if let verifiedAssets = session?.verifiedAssets,
-           verifiedAssets.contains(where: { verifiedAsset in
-               verifiedAsset.id == self.assetAlertDraft.assetIndex
-           }) {
-            assetDetail.isVerified = true
-        }
     }
 }
 
@@ -124,6 +113,6 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
 protocol AssetActionConfirmationViewControllerDelegate: AnyObject {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetDetail
+        didConfirmedActionFor assetDetail: AssetInformation
     )
 }

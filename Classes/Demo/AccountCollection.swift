@@ -17,6 +17,110 @@
 
 
 import Foundation
+import MacaroonUtils
 
-struct AccountCollection {
+struct AccountCollection:
+    Collection,
+    ExpressibleByArrayLiteral,
+    Printable {
+    typealias Key = String
+    typealias Index = AccountCollectionIndex
+    typealias Element = AccountHandle
+    
+    fileprivate typealias Table = [String: Element]
+
+    var startIndex: Index {
+        return Index(table.startIndex)
+    }
+    var endIndex: Index {
+        return Index(table.endIndex)
+    }
+    
+    var debugDescription: String {
+        return table.debugDescription
+    }
+    
+    @Atomic(identifier: "accountCollection.table")
+    private var table = Table()
+    
+    init(
+        _ collection: AccountCollection
+    ) {
+        $table.modify { $0 = collection.table }
+    }
+    
+    init(
+        _ elements: [Element]
+    ) {
+        let keysAndValues = elements.map { ($0.value.address, $0) }
+        let aTable = Table(keysAndValues, uniquingKeysWith: { $1 })
+        $table.modify { $0 = aTable }
+    }
+    
+    init(
+        arrayLiteral elements: Element...
+    ) {
+        self.init(elements)
+    }
+}
+
+extension AccountCollection {
+    subscript (position: Index) -> Element {
+        return table[position.wrapped].value
+    }
+    
+    subscript (key: Key) -> Element? {
+        get { table[key] }
+        set { $table.modify { $0[key] = newValue } }
+    }
+}
+
+extension AccountCollection {
+    func account(
+        for key: Key
+    ) -> Account? {
+        return self[key]?.value
+    }
+}
+
+extension AccountCollection {
+    func index(
+        after i: Index
+    ) -> Index {
+        return Index(table.index(after: i.wrapped))
+    }
+}
+
+extension AccountCollection {
+    func sorted() -> [AccountHandle] {
+        return sorted {
+            $0.value.preferredOrder < $1.value.preferredOrder
+        }
+    }
+}
+
+struct AccountCollectionIndex: Comparable {
+    fileprivate typealias InternalIndex = AccountCollection.Table.Index
+    
+    fileprivate let wrapped: InternalIndex
+    
+    fileprivate init(
+        _ wrapped: InternalIndex
+    ) {
+        self.wrapped = wrapped
+    }
+    
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.wrapped == rhs.wrapped
+    }
+
+    static func < (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return  lhs.wrapped < rhs.wrapped
+    }
 }

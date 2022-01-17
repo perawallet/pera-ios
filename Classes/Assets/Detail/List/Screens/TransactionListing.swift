@@ -20,12 +20,12 @@ import UIKit
 
 protocol TransactionListing {
     var type: TransactionTypeFilter { get }
-    var account: Account { get }
-    var assetDetail: AssetDetail? { get }
+    var accountHandle: AccountHandle { get set }
+    var assetDetail: AssetInformation? { get }
 }
 
 extension TransactionListing {
-    var assetDetail: AssetDetail? {
+    var assetDetail: AssetInformation? {
         nil
     }
 }
@@ -35,7 +35,7 @@ struct AlgoTransactionListing: TransactionListing {
         return .algos
     }
 
-    var account: Account
+    var accountHandle: AccountHandle
 }
 
 struct AssetTransactionListing: TransactionListing {
@@ -43,8 +43,8 @@ struct AssetTransactionListing: TransactionListing {
         return .asset
     }
 
-    var account: Account
-    var assetDetail: AssetDetail?
+    var accountHandle: AccountHandle
+    var assetDetail: AssetInformation?
 }
 
 struct AccountTransactionListing: TransactionListing {
@@ -52,7 +52,7 @@ struct AccountTransactionListing: TransactionListing {
         return .all
     }
 
-    var account: Account
+    var accountHandle: AccountHandle
 }
 
 enum TransactionTypeFilter {

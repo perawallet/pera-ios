@@ -26,7 +26,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
     
     private var transaction: Transaction
     private let account: Account
-    private var assetDetail: AssetDetail?
+    private var assetDetail: AssetInformation?
     private let transactionType: TransactionType
 
     private lazy var transactionDetailViewModel = TransactionDetailViewModel(
@@ -40,7 +40,7 @@ final class TransactionDetailViewController: BaseScrollViewController {
         account: Account,
         transaction: Transaction,
         transactionType: TransactionType,
-        assetDetail: AssetDetail?,
+        assetDetail: AssetInformation?,
         configuration: ViewControllerConfiguration
     ) {
         self.account = account

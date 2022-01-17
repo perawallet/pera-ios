@@ -19,53 +19,23 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct AccountPortfolioViewTheme: StyleSheet, LayoutSheet {
-    let algoHoldingsTitle: TextStyle
-    let algoHoldingsValue: ButtonStyle
-    let assetHoldingsTitle: TextStyle
-    let assetHoldingsValue: TextStyle
+struct AccountPortfolioViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    let contentHorizontalPaddings: LayoutHorizontalPaddings
+    var title: TextStyle
+    var value: TextStyle
+    var spacingBetweenTitleAndValue: LayoutMetric
 
-    let horizontalInset: LayoutMetric
-    let algosValueHorizontalInset: LayoutMetric
-    let titleTopPadding: LayoutMetric
-    let portfolioTopPadding: LayoutMetric
-    let holdingsTopPadding: LayoutMetric
-    let valuesTopPadding: LayoutMetric
-    let valueTrailingInset: LayoutMetric
-
-    init(_ family: LayoutFamily) {
-        self.algoHoldingsTitle = [
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.left),
-            .text("portfolio-algo-holdings-title".localized),
-            .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.gray.uiColor)
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.contentHorizontalPaddings = (24, 24)
+        self.title = []
+        self.value = [
+            .textColor(AppColors.Components.Text.main.uiColor),
+            .textOverflow(SingleLineFittingText())
         ]
-        self.algoHoldingsValue = [
-            .font(Fonts.DMSans.regular.make(15)),
-            .titleColor([.normal(AppColors.Components.Text.main.uiColor)]),
-            .icon([.normal("icon-algo-circle-green-24")])
-        ]
-        self.assetHoldingsTitle = [
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.left),
-            .text("portfolio-asset-holdings-title".localized),
-            .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.gray.uiColor)
-        ]
-        self.assetHoldingsValue = [
-            .textOverflow(SingleLineFittingText()),
-            .textAlignment(.left),
-            .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main.uiColor)
-        ]
-
-        self.horizontalInset = 24
-        self.algosValueHorizontalInset = 30
-        self.titleTopPadding = 24
-        self.portfolioTopPadding = 32
-        self.holdingsTopPadding = 24
-        self.valuesTopPadding = 12
-        self.valueTrailingInset = 40
+        self.spacingBetweenTitleAndValue = 8
     }
 }

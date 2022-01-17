@@ -17,6 +17,7 @@
 
 import UIKit
 import MagpieCore
+import MacaroonUtils
 
 // <todo> Remove this file after refactor since it is not used anymore.
 class AccountsViewController: BaseViewController {
@@ -109,11 +110,15 @@ class AccountsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchAccountsIfNeeded()
-        
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.sharedDataController.startPolling()
         }
-        
+
         pushNotificationController.requestAuthorization()
         pushNotificationController.sendDeviceDetails()
         
@@ -243,16 +248,16 @@ extension AccountsViewController: AccountsDataSourceDelegate {
         }
         
         if indexPath.item == 0 {
-            open(
-                .algosDetail(draft: AlgoTransactionListing(account: account)),
-                by: .push
-            )
+//            open(
+//                .algosDetail(draft: AlgoTransactionListing(account: account)),
+//                by: .push
+//            )
         } else {
             if let assetDetail = account.assetDetails[safe: indexPath.item - 1] {
-                open(
-                    .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail)),
-                    by: .push
-                )
+//                open(
+//                    .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail)),
+//                    by: .push
+//                )
             }
         }
     }
@@ -269,7 +274,7 @@ extension AccountsViewController: AccountsDataSourceDelegate {
     }
     
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account) {
-        open(.accountDetail(account: account), by: .push)
+       // open(.accountDetail(account: account), by: .push)
        // let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
        // open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft, isTrackable: true), by: .present)
     }

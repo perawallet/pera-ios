@@ -100,8 +100,9 @@ extension ContactDetailViewController {
         }
         
         loadingController?.startLoadingWithMessage("title-loading".localized)
-        
-        api?.fetchAccount(AccountFetchDraft(publicKey: address)) { [weak self] response in
+        let currency = sharedDataController.currency.value
+
+        api?.fetchAccount(AccountFetchDraft(publicKey: address), queue: .main) { [weak self] response in
             switch response {
             case let .success(accountWrapper):
                 if !accountWrapper.account.isSameAccount(with: address) {
@@ -115,36 +116,25 @@ extension ContactDetailViewController {
                 accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                 let account = accountWrapper.account
                 self?.contactAccount = account
-                let assetPreviewModel = AssetPreviewModelAdapter.adapt(account)
+                let assetPreviewModel = AssetPreviewModelAdapter.adapt((account, currency))
                 self?.assetPreviews.append(assetPreviewModel)
                 
                 if account.isThereAnyDifferentAsset {
                     if let assets = account.assets {
                         var failedAssetFetchCount = 0
                         for asset in assets {
-                            self?.api?.getAssetDetails(AssetFetchDraft(assetId: "\(asset.id)")) { assetResponse in
+                            self?.api?.getAssetDetails(AssetFetchQuery(ids: [asset.id])) { assetResponse in
                                 switch assetResponse {
                                 case let .success(assetDetailResponse):
-                                    let assetDetail = assetDetailResponse.assetDetail
-                                    if let verifiedAssets = self?.session?.verifiedAssets,
-                                        verifiedAssets.contains(where: { verifiedAsset -> Bool in
-                                            verifiedAsset.id == asset.id
-                                        }) {
-                                        assetDetail.isVerified = true
-                                    }
-                                    
-                                    account.assetDetails.append(assetDetail)
-                                    let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset))
+                                    let assetDetail = assetDetailResponse.results[0]
+                                    account.assetInformations.append(assetDetail)
+                                    let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset, currency: currency))
                                     self?.assetPreviews.append(assetPreviewModel)
 
                                     if assets.count == account.assetDetails.count + failedAssetFetchCount {
                                         self?.loadingController?.stopLoading()
-                                        
-                                        guard let strongSelf = self else {
-                                            return
-                                        }
-                                        strongSelf.contactAccount = account
-                                        strongSelf.contactDetailView.assetsCollectionView.reloadData()
+                                        self?.contactAccount = account
+                                        self?.contactDetailView.assetsCollectionView.reloadData()
                                     }
                                 case .failure:
                                     self?.loadingController?.stopLoading()
@@ -164,7 +154,7 @@ extension ContactDetailViewController {
                     self?.loadingController?.stopLoading()
 
                     guard let account = self?.contactAccount else { return }
-                    let assetPreviewModel = AssetPreviewModelAdapter.adapt(account)
+                    let assetPreviewModel = AssetPreviewModelAdapter.adapt((account, currency))
                     self?.assetPreviews.append(assetPreviewModel)
                 } else {
                     self?.contactAccount = nil

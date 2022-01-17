@@ -16,29 +16,47 @@
 //  AssetViewModel.swift
 
 import UIKit
+import MacaroonUIKit
 
-final class AssetViewModel {
-    private(set) var assetDetail: AssetDetail?
+struct AssetViewModel: ViewModel {
+    private(set) var assetDetail: AssetInformation?
     private(set) var amount: String?
+    private(set) var currencyAmount: String?
 
-    init(assetDetail: AssetDetail?, asset: Asset?) {
+    init(assetDetail: AssetInformation?, asset: Asset?, currency: Currency?) {
         bindAssetDetail(assetDetail)
         bindAmount(from: assetDetail, with: asset)
+        bindCurrencyAmount(from: assetDetail, with: asset, and: currency)
     }
 }
 
 extension AssetViewModel {
-    private func bindAssetDetail(_ assetDetail: AssetDetail?) {
+    private mutating func bindAssetDetail(_ assetDetail: AssetInformation?) {
         self.assetDetail = assetDetail
     }
 
-    private func bindAmount(from assetDetail: AssetDetail?, with asset: Asset?) {
+    private mutating func bindAmount(from assetDetail: AssetInformation?, with asset: Asset?) {
         guard let assetDetail = assetDetail else {
             return
         }
 
         amount = asset?.amount
-            .assetAmount(fromFraction: assetDetail.fractionDecimals)
-            .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
+            .assetAmount(fromFraction: assetDetail.decimals)
+            .toFractionStringForLabel(fraction: assetDetail.decimals)
+    }
+
+    private mutating func bindCurrencyAmount(from assetDetail: AssetInformation?, with asset: Asset?, and currency: Currency?) {
+        guard let asset = asset,
+              let assetDetail = assetDetail,
+              let assetUSDValue = assetDetail.usdValue,
+              let currency = currency,
+              let currencyUSDValue = currency.usdValue else {
+            return
+        }
+
+        let currencyValue = assetUSDValue * asset.amount.assetAmount(fromFraction: assetDetail.decimals) * currencyUSDValue
+        if currencyValue > 0 {
+            currencyAmount = currencyValue.toCurrencyStringForLabel(with: currency.id)
+        }
     }
 }

@@ -15,119 +15,95 @@
 //
 //   AccountPortfolioView.swift
 
+import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AccountPortfolioView: View {
-    lazy var handlers = Handlers()
+final class AccountPortfolioView:
+    View,
+    ViewModelBindable,
+    ListReusable {
+    private lazy var titleView = Label()
+    private lazy var valueView = Label()
 
-    private lazy var portfolioValueView = PortfolioValueView()
-    private lazy var algoHoldingsTitleLabel = UILabel()
-    private lazy var algoHoldingsValueButton = Button(.imageAtLeft(spacing: 12))
-    private lazy var assetHoldingsTitleLabel = UILabel()
-    private lazy var assetHoldingsValueLabel = UILabel()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setListeners()
+    func customize(
+        _ theme: AccountPortfolioViewTheme
+    ) {
+        addTitle(theme)
+        addValue(theme)
     }
 
-    func customize(_ theme: AccountPortfolioViewTheme) {
-        addPortfolioValueView(theme)
-        addAssetHoldingsTitleLabel(theme)
-        addAssetHoldingsValueLabel(theme)
-        addAlgoHoldingsTitleLabel(theme)
-        addAlgoHoldingsValueButton(theme)
+    func customizeAppearance(
+        _ styleSheet: NoStyleSheet
+    ) {}
+    
+    func prepareLayout(
+        _ layoutSheet: LayoutSheet
+    ) {}
+    
+    func bindData(
+        _ viewModel: AccountPortfolioViewModel?
+    ) {
+        titleView.editText = viewModel?.title
+        valueView.editText = viewModel?.value
     }
-
-    func setListeners() {
-        portfolioValueView.handlers.didTapTitle = { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.handlers.didTapPortfolioTitle?()
+    
+    class func calculatePreferredSize(
+        _ viewModel: AccountPortfolioViewModel?,
+        for theme: AccountPortfolioViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
         }
-    }
-
-    func customizeAppearance(_ styleSheet: StyleSheet) { }
-    func prepareLayout(_ layoutSheet: LayoutSheet) { }
-}
-
-extension AccountPortfolioView {
-    private func addPortfolioValueView(_ theme: AccountPortfolioViewTheme) {
-        addSubview(portfolioValueView)
-        portfolioValueView.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.titleTopPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
-        }
-    }
-
-    private func addAssetHoldingsTitleLabel(_ theme: AccountPortfolioViewTheme) {
-        assetHoldingsTitleLabel.customizeAppearance(theme.assetHoldingsTitle)
-
-        addSubview(assetHoldingsTitleLabel)
-        assetHoldingsTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(portfolioValueView.snp.bottom).offset(theme.holdingsTopPadding)
-            $0.trailing.equalToSuperview().inset(theme.valueTrailingInset)
-        }
-    }
-
-    private func addAssetHoldingsValueLabel(_ theme: AccountPortfolioViewTheme) {
-        assetHoldingsValueLabel.customizeAppearance(theme.assetHoldingsValue)
-
-        addSubview(assetHoldingsValueLabel)
-        assetHoldingsValueLabel.snp.makeConstraints {
-            $0.top.equalTo(assetHoldingsTitleLabel.snp.bottom).offset(theme.valuesTopPadding)
-            $0.leading.equalTo(assetHoldingsTitleLabel)
-            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
-        }
-    }
-
-    private func addAlgoHoldingsTitleLabel(_ theme: AccountPortfolioViewTheme) {
-        algoHoldingsTitleLabel.customizeAppearance(theme.algoHoldingsTitle)
-
-        addSubview(algoHoldingsTitleLabel)
-        algoHoldingsTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(portfolioValueView.snp.bottom).offset(theme.holdingsTopPadding)
-            $0.leading.equalToSuperview().inset(theme.horizontalInset)
-        }
-    }
-
-    private func addAlgoHoldingsValueButton(_ theme: AccountPortfolioViewTheme) {
-        algoHoldingsValueButton.customizeAppearance(theme.algoHoldingsValue)
-
-        addSubview(algoHoldingsValueButton)
-        algoHoldingsValueButton.snp.makeConstraints {
-            $0.top.equalTo(algoHoldingsTitleLabel.snp.bottom).offset(theme.valuesTopPadding)
-            $0.leading.equalToSuperview().inset(theme.algosValueHorizontalInset)
-            $0.trailing.lessThanOrEqualTo(assetHoldingsValueLabel.snp.leading).offset(theme.horizontalInset)
-        }
-    }
-}
-
-extension AccountPortfolioView: ViewModelBindable {
-    func bindData(_ viewModel: AccountPortfolioViewModel?) {
-        portfolioValueView.bindData(viewModel?.portfolioValueViewModel)
-        algoHoldingsValueButton.editTitle = viewModel?.algoHoldingsValue
-        assetHoldingsValueLabel.editText = viewModel?.assetHoldingsValue
+        
+        let width =
+            size.width -
+            theme.contentHorizontalPaddings.leading -
+            theme.contentHorizontalPaddings.trailing
+        let titleSize = viewModel.title.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let valueSize = viewModel.value.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let preferredHeight =
+            titleSize.height +
+            theme.spacingBetweenTitleAndValue +
+            valueSize.height
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
 
 extension AccountPortfolioView {
-    struct Handlers {
-        var didTapPortfolioTitle: EmptyHandler?
+    private func addTitle(
+        _ theme: AccountPortfolioViewTheme
+    ) {
+        titleView.customizeAppearance(theme.title)
+        
+        addSubview(titleView)
+        titleView.fitToIntrinsicSize()
+        titleView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == theme.contentHorizontalPaddings.leading
+            $0.trailing == theme.contentHorizontalPaddings.trailing
+        }
     }
-}
-
-final class AccountPortfolioCell: BaseCollectionViewCell<AccountPortfolioView> {
-
-    override func configureAppearance() {
-        super.configureAppearance()
-        contextView.customize(AccountPortfolioViewTheme())
-    }
-
-    func bindData(_ viewModel: AccountPortfolioViewModel?) {
-        contextView.bindData(viewModel)
+    
+    private func addValue(
+        _ theme: AccountPortfolioViewTheme
+    ) {
+        valueView.customizeAppearance(theme.value)
+        
+        addSubview(valueView)
+        valueView.fitToIntrinsicSize()
+        valueView.snp.makeConstraints {
+            $0.top == titleView.snp.bottom + theme.spacingBetweenTitleAndValue
+            $0.leading == theme.contentHorizontalPaddings.leading
+            $0.bottom == 0
+            $0.trailing == theme.contentHorizontalPaddings.trailing
+        }
     }
 }

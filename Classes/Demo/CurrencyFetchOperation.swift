@@ -15,55 +15,82 @@
 //
 //   CurrencyFetchOperation.swift
 
-
 import Foundation
 import MacaroonUtils
 import MagpieCore
 import MagpieHipo
 
 final class CurrencyFetchOperation: MacaroonUtils.AsyncOperation {
-    typealias CompletionHandler = (Result<Currency, HIPNetworkError<NoAPIModel>>) -> Void
+    typealias Error = HIPNetworkError<NoAPIModel>
+    typealias CompletionHandler = (Result<Output, Error>) -> Void
     
     var completionHandler: CompletionHandler?
     
     private var ongoingEndpoint: EndpointOperatable?
-    
+
+    private let input: Input
     private let api: ALGAPI
+    private let completionQueue =
+        DispatchQueue(label: "com.algorand.queue.operation.currencyFetch", qos: .userInitiated)
     
     init(
+        input: Input,
         api: ALGAPI
     ) {
+        self.input = input
         self.api = api
     }
     
     override func main() {
+        if finishIfCancelled() {
+            return
+        }
+        
         ongoingEndpoint =
-            api.getCurrencyValue(api.session.preferredCurrency) { [weak self] result in
+            api.getCurrencyValue(
+                input.currencyId,
+                queue: completionQueue
+            ) { [weak self] result in
                 guard let self = self else { return }
+                
+                self.ongoingEndpoint = nil
                 
                 if self.finishIfCancelled() {
                     return
                 }
                 
-                self.ongoingEndpoint = nil
-                
                 switch result {
                 case .success(let currency):
-                    /// <todo>
-                    /// ???
-                    self.api.session.preferredCurrencyDetails = currency
-                    self.completionHandler?(.success(currency))
+                    let output = Output(currency: currency)
+                    self.completionHandler?(.success(output))
                 case .failure(let apiError, let apiErrorDetail):
                     let error = HIPNetworkError(apiError: apiError, apiErrorDetail: apiErrorDetail)
                     self.completionHandler?(.failure(error))
                 }
+                
+                self.finish()
             }
     }
     
     override func cancel() {
+        cancelOngoingEndpoint()
         super.cancel()
-        
+    }
+}
+
+extension CurrencyFetchOperation {
+    private func cancelOngoingEndpoint() {
         ongoingEndpoint?.cancel()
         ongoingEndpoint = nil
+    }
+}
+
+extension CurrencyFetchOperation {
+    struct Input {
+        let currencyId: String
+    }
+    
+    struct Output {
+        let currency: Currency
     }
 }

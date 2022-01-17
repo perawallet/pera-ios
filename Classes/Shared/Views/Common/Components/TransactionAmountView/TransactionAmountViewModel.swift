@@ -18,12 +18,14 @@
 import MacaroonUIKit
 import UIKit
 
-final class TransactionAmountViewModel: PairedViewModel {
+struct TransactionAmountViewModel:
+    PairedViewModel,
+    Hashable {
     private(set) var signLabelIsHidden = false
     private(set) var signLabelText: String?
-    private(set) var signLabelColor: Color?
+    private(set) var signLabelColor: UIColor?
     private(set) var amountLabelText: String?
-    private(set) var amountLabelColor: Color?
+    private(set) var amountLabelColor: UIColor?
 
     init(_ mode: TransactionAmountView.Mode) {
         bindMode(mode)
@@ -31,28 +33,28 @@ final class TransactionAmountViewModel: PairedViewModel {
 }
 
 extension TransactionAmountViewModel {
-    private func bindMode(_ mode: TransactionAmountView.Mode) {
+    private mutating func bindMode(_ mode: TransactionAmountView.Mode) {
         switch mode {
         case let .normal(amount, isAlgos, assetFraction, assetSymbol):
             signLabelIsHidden = true
             bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol)
-            amountLabelColor = AppColors.Components.Text.main
+            amountLabelColor = AppColors.Components.Text.main.uiColor
         case let .positive(amount, isAlgos, assetFraction, assetSymbol):
             signLabelIsHidden = false
             signLabelText = "+"
-            signLabelColor = AppColors.Shared.Helpers.positive
+            signLabelColor = AppColors.Shared.Helpers.positive.uiColor
             bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol)
-            amountLabelColor = AppColors.Shared.Helpers.positive
+            amountLabelColor = AppColors.Shared.Helpers.positive.uiColor
         case let .negative(amount, isAlgos, assetFraction, assetSymbol):
             signLabelIsHidden = false
             signLabelText = "-"
-            signLabelColor = AppColors.Shared.Helpers.negative
+            signLabelColor = AppColors.Shared.Helpers.negative.uiColor
             bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol)
-            amountLabelColor = AppColors.Shared.Helpers.negative
+            amountLabelColor = AppColors.Shared.Helpers.negative.uiColor
         }
     }
 
-    private func bindAmount(_ amount: Decimal, with assetFraction: Int?, isAlgos: Bool, assetSymbol: String? = nil) {
+    private mutating func bindAmount(_ amount: Decimal, with assetFraction: Int?, isAlgos: Bool, assetSymbol: String? = nil) {
         if let fraction = assetFraction {
             amountLabelText = amount.toFractionStringForLabel(fraction: fraction)
         } else {

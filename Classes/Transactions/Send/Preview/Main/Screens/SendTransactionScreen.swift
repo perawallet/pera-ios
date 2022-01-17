@@ -108,15 +108,16 @@ final class SendTransactionScreen: BaseViewController {
 
 extension SendTransactionScreen {
     private func bindAssetPreview() {
+        let currency = sharedDataController.currency.value
         switch draft.transactionMode {
         case .algo:
             accountView.bindData(
-                AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(draft.from))
+                AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((draft.from, currency)))
             )
         case .assetDetail(let assetDetail):
             if let asset = draft.from.assets?.first(matching: (\.id, assetDetail.id)) {
                 accountView.bindData(
-                    AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, asset)))
+                    AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, asset, currency)))
                 )
             }
         }
@@ -136,7 +137,7 @@ extension SendTransactionScreen {
                     .appending(decimalStrings)
             case .assetDetail(let assetDetail):
                 showingValue = (amountValue.replacingOccurrences(of: decimalStrings, with: "")
-                    .decimalAmountWithSeparator?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.fractionDecimals) ?? amountValue)
+                    .decimalAmountWithSeparator?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals) ?? amountValue)
                     .appending(decimalStrings)
             }
         } else {
@@ -377,7 +378,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
         return .valid
     }
 
-    private func validateAsset(for value: String, on assetDetail: AssetDetail) -> TransactionValidation {
+    private func validateAsset(for value: String, on assetDetail: AssetInformation) -> TransactionValidation {
         guard let assetAmount = draft.from.amount(for: assetDetail),
               let decimalAmount = value.decimalAmountWithSeparator else {
                   return .otherAsset

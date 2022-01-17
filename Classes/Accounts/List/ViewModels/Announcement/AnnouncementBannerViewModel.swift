@@ -17,6 +17,7 @@
 
 import MacaroonUIKit
 
-final class AnnouncementBannerViewModel: ViewModel {
-
+struct AnnouncementBannerViewModel:
+    ViewModel,
+    Hashable {
 }

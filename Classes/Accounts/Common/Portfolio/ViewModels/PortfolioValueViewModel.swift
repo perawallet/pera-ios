@@ -19,7 +19,9 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class PortfolioValueViewModel: ViewModel {
+struct PortfolioValueViewModel:
+    ViewModel,
+    Hashable {
     private(set) var title: EditText?
     private(set) var titleColor: UIColor?
     private(set) var icon: UIImage?
@@ -37,7 +39,7 @@ final class PortfolioValueViewModel: ViewModel {
 }
 
 extension PortfolioValueViewModel {
-    private func bindTitle(
+    private mutating func bindTitle(
         _ type: PortfolioType
     ) {
         switch type {
@@ -48,7 +50,7 @@ extension PortfolioValueViewModel {
         }
     }
 
-    private func bindTitleColor(
+    private mutating func bindTitleColor(
         _ type: PortfolioType
     ) {
         switch type {
@@ -63,7 +65,7 @@ extension PortfolioValueViewModel {
         }
     }
 
-    private func bindIcon(
+    private mutating func bindIcon(
         _ type: PortfolioType
     ) {
         switch type {
@@ -74,7 +76,7 @@ extension PortfolioValueViewModel {
         }
     }
 
-    private func bindValue(
+    private mutating func bindValue(
         _ type: PortfolioType,
         _ currency: Currency?
     ) {

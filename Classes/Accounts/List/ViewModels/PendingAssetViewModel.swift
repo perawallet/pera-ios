@@ -18,19 +18,19 @@
 import Foundation
 
 class PendingAssetViewModel {
-    private(set) var assetDetail: AssetDetail?
+    private(set) var assetDetail: AssetInformation?
     private(set) var detail: String?
 
-    init(assetDetail: AssetDetail) {
+    init(assetDetail: AssetInformation) {
         setAssetDetail(from: assetDetail)
         setDetail(from: assetDetail)
     }
 
-    private func setAssetDetail(from assetDetail: AssetDetail) {
+    private func setAssetDetail(from assetDetail: AssetInformation) {
         self.assetDetail = assetDetail
     }
 
-    private func setDetail(from assetDetail: AssetDetail) {
+    private func setDetail(from assetDetail: AssetInformation) {
         if assetDetail.isRecentlyAdded {
             detail = "asset-add-confirmation-title".localized
             return

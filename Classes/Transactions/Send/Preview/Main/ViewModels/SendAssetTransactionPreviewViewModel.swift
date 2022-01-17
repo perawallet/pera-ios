@@ -35,7 +35,7 @@ class SendAssetTransactionPreviewViewModel {
             view.transactionAccountInformationView.setDisabled()
         }
         
-        view.transactionAccountInformationView.setAssetName(for: assetDetail)
+        // view.transactionAccountInformationView.setAssetName(for: assetDetail)
         
         if !assetDetail.isVerified {
             view.transactionAccountInformationView.removeVerifiedAsset()

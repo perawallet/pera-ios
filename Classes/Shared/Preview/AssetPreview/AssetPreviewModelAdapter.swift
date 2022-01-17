@@ -19,59 +19,59 @@ import Foundation
 import UIKit
 
 enum AssetPreviewModelAdapter {
-    static func adapt(_ adaptee: (assetDetail: AssetDetail, asset: Asset)) -> AssetPreviewModel {
-        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset)
+    static func adapt(_ adaptee: (assetDetail: AssetInformation, asset: Asset, currency: Currency?)) -> AssetPreviewModel {
+        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset, currency: adaptee.currency)
         return AssetPreviewModel(
             image: nil,
             secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: assetViewModel.assetDetail?.assetName,
+            assetPrimaryTitle: assetViewModel.assetDetail?.name,
             assetSecondaryTitle: assetViewModel.assetDetail?.unitName,
             assetPrimaryValue: assetViewModel.amount,
-            assetSecondaryValue: nil
+            assetSecondaryValue: assetViewModel.currencyAmount
         )
     }
 
-    static func adapt(_ adaptee: Account) -> AssetPreviewModel {
-        let algoAssetViewModel = AlgoAssetViewModel(account: adaptee)
+    static func adapt(_ adaptee: (account: Account, currency: Currency?)) -> AssetPreviewModel {
+        let algoAssetViewModel = AlgoAssetViewModel(account: adaptee.account, currency: adaptee.currency)
         return AssetPreviewModel(
             image: img("icon-algo-circle-green"),
             secondaryImage: img("icon-verified-shield"),
             assetPrimaryTitle: "asset-algos-title".localized,
             assetSecondaryTitle: "Algorand",
             assetPrimaryValue: algoAssetViewModel.amount,
-            assetSecondaryValue: nil
+            assetSecondaryValue: algoAssetViewModel.currencyAmount
         )
     }
 
-    static func adapt(_ adaptee: AssetDetail) -> AssetPreviewModel {
+    static func adapt(_ adaptee: AssetInformation) -> AssetPreviewModel {
         return AssetPreviewModel(
             image: nil,
             secondaryImage: adaptee.isVerified ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: adaptee.assetName,
+            assetPrimaryTitle: adaptee.name,
             assetSecondaryTitle: adaptee.unitName,
             assetPrimaryValue: String(adaptee.id),
             assetSecondaryValue: nil
         )
     }
 
-    static func adaptAssetSelection(_ adaptee: (assetDetail: AssetDetail, asset: Asset)) -> AssetPreviewModel {
-        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset)
+    static func adaptAssetSelection(_ adaptee: (assetDetail: AssetInformation, asset: Asset, currency: Currency?)) -> AssetPreviewModel {
+        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset, currency: adaptee.currency)
         let assetId = assetViewModel.assetDetail?.id ?? 0
         return AssetPreviewModel(
             image: nil,
             secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: assetViewModel.assetDetail?.assetName,
+            assetPrimaryTitle: assetViewModel.assetDetail?.name,
             assetSecondaryTitle: "ID \(assetId)",
             assetPrimaryValue: assetViewModel.amount,
-            assetSecondaryValue: nil
+            assetSecondaryValue: assetViewModel.currencyAmount
         )
     }
 
-    static func adaptPendingAsset(_ adaptee: AssetDetail) -> PendingAssetPreviewModel {
+    static func adaptPendingAsset(_ adaptee: AssetInformation) -> PendingAssetPreviewModel {
         let status = adaptee.isRecentlyAdded ? "asset-add-confirmation-title".localized : "asset-removing-status".localized
         return PendingAssetPreviewModel(
             secondaryImage: adaptee.isVerified ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: adaptee.assetName,
+            assetPrimaryTitle: adaptee.name,
             assetSecondaryTitle: "ID \(adaptee.id)",
             assetStatus: status
         )

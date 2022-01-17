@@ -166,35 +166,14 @@ extension OldSelectAssetViewController {
 
         if indexPath.section < accounts.count {
             let account = accounts[indexPath.section]
-            cell.bind(AlgoAssetViewModel(account: account))
+          //  cell.bind(AlgoAssetViewModel(account: account))
         }
 
         return cell
     }
 
     private func dequeueAssetCell(in collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let account = accounts[indexPath.section]
-        let assetDetail: AssetDetail
-
-        switch filterOption {
-        case .none:
-            assetDetail = account.assetDetails[indexPath.item - 1]
-        default:
-            assetDetail = account.assetDetails[indexPath.item]
-        }
-
-        let cell = layoutBuilder.dequeueAssetCells(
-            in: collectionView,
-            cellForItemAt: indexPath,
-            for: assetDetail
-        )
-
-        if let assets = account.assets,
-           let asset = assets.first(where: { $0.id == assetDetail.id }) {
-            cell.bind(AssetViewModel(assetDetail: assetDetail, asset: asset))
-        }
-
-        return cell
+        return UICollectionViewCell()
     }
 }
 

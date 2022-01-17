@@ -94,7 +94,7 @@ class AccountRecoverDataController: NSObject {
             user = User(accounts: [account])
         }
 
-        session.addAccount(Account(accountInformation: account))
+        session.addAccount(Account(localAccount: account))
         session.authenticatedUser = user
     }
 }

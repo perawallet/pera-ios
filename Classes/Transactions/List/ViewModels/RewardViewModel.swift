@@ -18,7 +18,9 @@
 import Foundation
 import MacaroonUIKit
 
-final class RewardViewModel: PairedViewModel {
+struct RewardViewModel:
+    PairedViewModel,
+    Hashable {
     private(set) var amountMode: TransactionAmountView.Mode?
     private(set) var date: String?
     
@@ -29,11 +31,11 @@ final class RewardViewModel: PairedViewModel {
 }
 
 extension RewardViewModel {
-    private func bindAmountMode(from reward: Reward) {
+    private mutating func bindAmountMode(from reward: Reward) {
         amountMode = .positive(amount: reward.amount.toAlgos)
     }
 
-    private func bindDate(from reward: Reward) {
+    private mutating func bindDate(from reward: Reward) {
         date = reward.date?.toFormat("MMMM dd, yyyy")
     }
 }

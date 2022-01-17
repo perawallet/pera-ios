@@ -21,13 +21,14 @@ import MagpieCore
 extension ALGAPI {
     @discardableResult
     func getAssetDetails(
-        _ draft: AssetFetchDraft,
-        onCompleted handler: @escaping (Response.ModelResult<AssetDetailResponse>) -> Void
+        _ draft: AssetFetchQuery,
+        onCompleted handler: @escaping (Response.ModelResult<AssetInformationList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
-            .base(.indexer(network))
-            .path(.assetDetail, args: "\(draft.assetId)")
+            .base(.mobile)
+            .path(.assets)
             .method(.get)
+            .query(draft)
             .completionHandler(handler)
             .execute()
     }
@@ -51,6 +52,8 @@ extension ALGAPI {
     @discardableResult
     func fetchAssetDetails(
         _ draft: AssetFetchQuery,
+        queue: DispatchQueue,
+        ignoreResponseOnCancelled: Bool,
         onCompleted handler: @escaping (Response.ModelResult<AssetInformationList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
@@ -58,7 +61,9 @@ extension ALGAPI {
             .path(.assets)
             .method(.get)
             .query(draft)
+            .ignoreResponseWhenEndpointCancelled(ignoresResponseOnCancelled)
             .completionHandler(handler)
+            .responseDispatcher(queue)
             .execute()
     }
 

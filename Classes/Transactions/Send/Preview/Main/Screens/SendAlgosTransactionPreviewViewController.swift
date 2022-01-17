@@ -297,7 +297,7 @@ extension SendAlgosTransactionPreviewViewController {
             let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
                    
             loadingController?.startLoadingWithMessage("title-loading".localized)
-            self.api?.fetchAccount(receiverFetchDraft) { accountResponse in
+            self.api?.fetchAccount(receiverFetchDraft, queue: .main) { accountResponse in
                 if !selectedAccount.requiresLedgerConnection() {
                     self.loadingController?.stopLoading()
                 }

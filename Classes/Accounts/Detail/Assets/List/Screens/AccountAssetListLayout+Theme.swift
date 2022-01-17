@@ -23,14 +23,12 @@ extension AccountAssetListLayout {
     struct Theme: LayoutSheet, StyleSheet {
         let assetItemSize: LayoutSize
         let searchItemSize: LayoutSize
-        let portfolioItemSize: LayoutSize
         let listHeaderSize: LayoutSize
         let listFooterSize: LayoutSize
 
         init(_ family: LayoutFamily) {
             self.assetItemSize = (UIScreen.main.bounds.width - 48, 72)
             self.searchItemSize = (UIScreen.main.bounds.width, 72)
-            self.portfolioItemSize = (UIScreen.main.bounds.width, 200)
             self.listHeaderSize = (UIScreen.main.bounds.width, 40)
             self.listFooterSize = (UIScreen.main.bounds.width, 72)
         }

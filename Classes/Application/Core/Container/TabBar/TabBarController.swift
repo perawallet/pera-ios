@@ -64,7 +64,11 @@ final class TabBarController: UIViewController {
 
     private(set) lazy var tabBar = TabBar()
 
-    private lazy var accountsViewController = AccountPortfolioViewController(configuration: configuration)
+    private lazy var homeViewController =
+        HomeViewController(
+            dataController: HomeAPIDataController(configuration.sharedDataController),
+            configuration: configuration
+        )
     private lazy var contactsViewController = ContactsViewController(configuration: configuration)
     private lazy var algoStatisticsViewController = AlgoStatisticsViewController(configuration: configuration)
     private lazy var settingsViewController = SettingsViewController(configuration: configuration)
@@ -125,7 +129,7 @@ final class TabBarController: UIViewController {
 extension TabBarController {
     private func setupTabBarController() {
         items = [
-            AccountsTabBarItem(content: NavigationController(rootViewController: accountsViewController)),
+            HomeTabBarItem(content: NavigationController(rootViewController: homeViewController)),
             AlgoStatisticsTabBarItem(content: NavigationController(rootViewController: algoStatisticsViewController)),
             TransactionTabBarItem(),
             ContactsTabBarItem(content: NavigationController(rootViewController: contactsViewController)),
@@ -170,7 +174,7 @@ extension TabBarController {
 extension TabBarController: AssetActionConfirmationViewControllerDelegate {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetDetail
+        didConfirmedActionFor assetDetail: AssetInformation
     ) {
         guard let account = assetAlertDraft?.account,
             let assetId = assetAlertDraft?.assetIndex,
