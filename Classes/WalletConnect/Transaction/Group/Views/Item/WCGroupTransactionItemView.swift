@@ -16,8 +16,9 @@
 //   WCGroupTransactionItemView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class WCGroupTransactionItemView: BaseView {
+class WCGroupTransactionItemView: TripleShadowView {
 
     private let layout = Layout<LayoutConstants>()
 
@@ -34,10 +35,10 @@ class WCGroupTransactionItemView: BaseView {
 
     private lazy var senderLabel: UILabel = {
         UILabel()
-            .withTextColor(Colors.Text.primary)
+            .withTextColor(AppColors.Components.Text.grayLighter.uiColor)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withFont(Fonts.DMSans.regular.make(13).uiFont)
     }()
 
     private lazy var balanceStackView: HStackView = {
@@ -50,67 +51,100 @@ class WCGroupTransactionItemView: BaseView {
         return stackView
     }()
 
-    private lazy var algoIconImageView: UIImageView = {
-        let imageView = UIImageView(image: img("icon-algo-gray", isTemplate: true))
-        imageView.tintColor = Colors.Text.primary
-        return imageView
-    }()
-
     private lazy var balanceLabel: UILabel = {
         UILabel()
-            .withTextColor(Colors.Text.primary)
+            .withTextColor(AppColors.Components.Text.main.uiColor)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withFont(Fonts.DMMono.regular.make(19).uiFont)
     }()
 
     private lazy var assetNameLabel: UILabel = {
         UILabel()
-            .withTextColor(Colors.Text.primary)
+            .withTextColor(AppColors.Components.Text.main.uiColor)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withFont(Fonts.DMMono.regular.make(19).uiFont)
     }()
 
-    private lazy var arrowImageView = UIImageView(image: img("icon-arrow-gray-24"))
+    private lazy var showDetailLabel: UILabel = {
+        UILabel()
+            .withTextColor(AppColors.Components.Link.primary.uiColor)
+            .withLine(.single)
+            .withAlignment(.left)
+            .withFont(Fonts.DMSans.bold.make(13).uiFont)
+            .withText("title-show-transaction-detail".localized)
+    }()
 
     private(set) lazy var accountInformationView = WCGroupTransactionAccountInformationView()
 
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
-        layer.cornerRadius = 12.0
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        configureAppearance()
+        prepareLayout()
     }
 
-    override func prepareLayout() {
-        setupSenderStackViewLayout()
-        setupArrowImageViewLayout()
-        setupBalanceStackViewLayout()
+    func configureAppearance() {
+        backgroundColor = Colors.Background.secondary
+        layer.cornerRadius = 12.0
+
+        let accountContainerCorner = Corner(radius: 4)
+        let accountContainerBorder = Border(color: AppColors.SendTransaction.Shadow.first.uiColor, width: 1)
+
+        let accountContainerFirstShadow = MacaroonUIKit.Shadow(
+            color: AppColors.SendTransaction.Shadow.first.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+
+        let accountContainerSecondShadow = MacaroonUIKit.Shadow(
+            color: AppColors.SendTransaction.Shadow.second.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+
+        let accountContainerThirdShadow = MacaroonUIKit.Shadow(
+            color: AppColors.SendTransaction.Shadow.third.uiColor,
+            opacity: 1,
+            offset: (0, 0),
+            radius: 0,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+
+        draw(corner: accountContainerCorner)
+        drawAppearance(border: accountContainerBorder)
+
+        drawAppearance(shadow: accountContainerFirstShadow)
+        drawAppearance(secondShadow: accountContainerSecondShadow)
+        drawAppearance(thirdShadow: accountContainerThirdShadow)
+    }
+
+    func prepareLayout() {
         setupAccountInformationViewLayout()
+        setupBalanceStackViewLayout()
+        setupShowDetailLabelLayout()
     }
 }
 
 extension WCGroupTransactionItemView {
-    private func setupSenderStackViewLayout() {
-        addSubview(senderStackView)
+    private func setupAccountInformationViewLayout() {
+        addSubview(accountInformationView)
 
-        senderStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.defaultInset)
-            make.leading.equalToSuperview().inset(layout.current.defaultInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.defaultInset)
-            make.height.equalTo(layout.current.senderStackHeight)
-        }
-
-        senderStackView.addArrangedSubview(warningImageView)
-        senderStackView.addArrangedSubview(senderLabel)
-    }
-
-    private func setupArrowImageViewLayout() {
-        addSubview(arrowImageView)
-
-        arrowImageView.snp.makeConstraints { make in
-            make.size.equalTo(layout.current.arrowImageSize)
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
-            make.top.equalToSuperview().inset(layout.current.arrowImageTopInset)
+        accountInformationView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.accountInformationViewInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.accountInformationViewInset)
+            make.height.greaterThanOrEqualTo(layout.current.accountInformationHeight)
         }
     }
 
@@ -118,25 +152,21 @@ extension WCGroupTransactionItemView {
         addSubview(balanceStackView)
 
         balanceStackView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.defaultInset)
-            make.trailing.lessThanOrEqualTo(arrowImageView.snp.leading).offset(-layout.current.defaultInset)
-            make.top.equalTo(senderStackView.snp.bottom).offset(layout.current.balanceStackTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.top.equalTo(accountInformationView.snp.bottom).offset(layout.current.balanceStackTopInset)
             make.height.equalTo(layout.current.balanceStackHeight)
         }
 
-        balanceStackView.addArrangedSubview(algoIconImageView)
         balanceStackView.addArrangedSubview(balanceLabel)
         balanceStackView.addArrangedSubview(assetNameLabel)
     }
 
-    private func setupAccountInformationViewLayout() {
-        addSubview(accountInformationView)
+    private func setupShowDetailLabelLayout() {
+        addSubview(showDetailLabel)
 
-        accountInformationView.snp.makeConstraints { make in
-            make.top.equalTo(balanceStackView.snp.bottom).offset(layout.current.accountInformationViewTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.accountInformationViewInset)
-            make.height.greaterThanOrEqualTo(layout.current.accountInformationHeight)
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.accountInformationViewInset)
+        showDetailLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.bottom.equalToSuperview().inset(layout.current.defaultInset)
         }
     }
 }
@@ -144,8 +174,6 @@ extension WCGroupTransactionItemView {
 extension WCGroupTransactionItemView {
     func bind(_ viewModel: WCGroupTransactionItemViewModel) {
         warningImageView.isHidden = !viewModel.hasWarning
-        senderLabel.text = viewModel.title
-        algoIconImageView.isHidden = !viewModel.isAlgos
         balanceLabel.text = viewModel.amount
         assetNameLabel.isHidden = viewModel.isAlgos
         assetNameLabel.text = viewModel.assetName

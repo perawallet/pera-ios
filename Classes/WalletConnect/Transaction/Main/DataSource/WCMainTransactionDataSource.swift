@@ -94,18 +94,6 @@ extension WCMainTransactionDataSource: UICollectionViewDataSource {
 
         return dequeueMultipleTransactionCell(in: collectionView, at: indexPath)
     }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        viewForSupplementaryElementOfKind kind: String,
-        at indexPath: IndexPath
-    ) -> UICollectionReusableView {
-        if kind != UICollectionView.elementKindSectionHeader {
-            fatalError("Unexpected element kind")
-        }
-
-        return dequeueHeaderView(in: collectionView, at: indexPath)
-    }
 }
 
 extension WCMainTransactionDataSource {
@@ -145,7 +133,14 @@ extension WCMainTransactionDataSource {
             fatalError("Unexpected cell type")
         }
 
-        cell.bind(WCAppCallTransactionItemViewModel(transaction: transaction))
+        let account = session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender)) ?? Account(address: transaction.transactionDetail!.receiver!, type: .standard)
+
+        cell.bind(
+            WCAppCallTransactionItemViewModel(
+                transaction: transaction,
+                account: account
+            )
+        )
         return cell
     }
 
@@ -210,7 +205,7 @@ extension WCMainTransactionDataSource {
         cell.bind(
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
-                account: nil,
+                account: Account.init(address: transaction.transactionDetail!.receiver!, type: .standard),
                 assetDetail: assetDetail(from: transaction)
             )
         )
@@ -255,29 +250,6 @@ extension WCMainTransactionDataSource {
 
         return cell
     }
-
-    private func dequeueHeaderView(in collectionView: UICollectionView, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let headerView = collectionView.dequeueReusableSupplementaryView(
-            ofKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: WCMainTransactionSupplementaryHeaderView.reusableIdentifier,
-            for: indexPath
-        ) as? WCMainTransactionSupplementaryHeaderView else {
-            fatalError("Unexpected element kind")
-        }
-
-        if let session = walletConnector.allWalletConnectSessions.first(matching: (\.urlMeta.wcURL, transactionRequest.url)) {
-            headerView.bind(
-                WCMainTransactionHeaderViewModel(
-                    session: session,
-                    text: transactionOption?.message,
-                    transactionCount: groupedTransactions.count
-                )
-            )
-        }
-
-        headerView.delegate = self
-        return headerView
-    }
 }
 
 extension WCMainTransactionDataSource {
@@ -292,14 +264,6 @@ extension WCMainTransactionDataSource {
         }
 
         return session.assetDetails[assetId]
-    }
-}
-
-extension WCMainTransactionDataSource: WCMainTransactionSupplementaryHeaderViewDelegate {
-    func wcMainTransactionSupplementaryHeaderViewDidOpenLongMessageView(
-        _ wcMainTransactionSupplementaryHeaderView: WCMainTransactionSupplementaryHeaderView
-    ) {
-        delegate?.wcMainTransactionDataSourceDidOpenLongDappMessageView(self)
     }
 }
 

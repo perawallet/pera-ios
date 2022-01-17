@@ -20,10 +20,12 @@ import Foundation
 class WCAppCallTransactionItemViewModel {
     private(set) var hasWarning = false
     private(set) var title: String?
+    private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
-    init(transaction: WCTransaction) {
+    init(transaction: WCTransaction, account: Account?) {
         setHasWarning(from: transaction)
         setTitle(from: transaction)
+        setAccountInformationViewModel(from: account)
     }
 
     private func setHasWarning(from transaction: WCTransaction) {
@@ -62,5 +64,13 @@ class WCAppCallTransactionItemViewModel {
         default:
             title = "wallet-connect-transaction-group-app-call-title".localized(params: "\(appCallId)")
         }
+    }
+
+    private func setAccountInformationViewModel(from account: Account?) {
+        accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
+            account: account,
+            assetDetail: nil,
+            isDisplayingAmount: false
+        )
     }
 }

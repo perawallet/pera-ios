@@ -16,85 +16,98 @@
 //   WCAssetConfigTransactionItemView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class WCAssetConfigTransactionItemView: BaseView {
+class WCAssetConfigTransactionItemView: TripleShadowView {
 
     private let layout = Layout<LayoutConstants>()
 
-    private lazy var senderStackView: HStackView = {
-        let stackView = HStackView()
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 8.0
-        stackView.alignment = .leading
-        stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        return stackView
+    private lazy var showDetailLabel: UILabel = {
+        UILabel()
+            .withTextColor(AppColors.Components.Link.primary.uiColor)
+            .withLine(.single)
+            .withAlignment(.left)
+            .withFont(Fonts.DMSans.bold.make(13).uiFont)
+            .withText("title-show-all-detail".localized)
     }()
 
     private lazy var warningImageView = UIImageView(image: img("icon-orange-warning"))
 
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withTextColor(Colors.Text.primary)
+            .withTextColor(AppColors.Components.Text.main.uiColor)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withFont(Fonts.DMSans.regular.make(19).uiFont)
     }()
-
-    private lazy var detailLabel: UILabel = {
-        UILabel()
-            .withTextColor(Colors.Text.primary)
-            .withLine(.single)
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-    }()
-
-    private lazy var arrowImageView = UIImageView(image: img("icon-arrow-gray-24"))
 
     private(set) lazy var accountInformationView = WCGroupTransactionAccountInformationView()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureAppearance()
+        prepareLayout()
+    }
     
-    override func configureAppearance() {
+    func configureAppearance() {
         backgroundColor = Colors.Background.secondary
         layer.cornerRadius = 12.0
+
+        let accountContainerCorner = Corner(radius: 4)
+        let accountContainerBorder = Border(color: AppColors.SendTransaction.Shadow.first.uiColor, width: 1)
+
+        let accountContainerFirstShadow = MacaroonUIKit.Shadow(
+            color: AppColors.SendTransaction.Shadow.first.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+
+        let accountContainerSecondShadow = MacaroonUIKit.Shadow(
+            color: AppColors.SendTransaction.Shadow.second.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+
+        let accountContainerThirdShadow = MacaroonUIKit.Shadow(
+            color: AppColors.SendTransaction.Shadow.third.uiColor,
+            opacity: 1,
+            offset: (0, 0),
+            radius: 0,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+
+        draw(corner: accountContainerCorner)
+        drawAppearance(border: accountContainerBorder)
+
+        drawAppearance(shadow: accountContainerFirstShadow)
+        drawAppearance(secondShadow: accountContainerSecondShadow)
+        drawAppearance(thirdShadow: accountContainerThirdShadow)
     }
 
-    override func prepareLayout() {
-        setupSenderStackViewLayout()
-        setupArrowImageViewLayout()
-        setupDetailLabelLayout()
+    func prepareLayout() {
         setupAccountInformationViewLayout()
+        setupTitleLabelLayout()
+        setupShowDetailLabelLayout()
     }
 }
 
 extension WCAssetConfigTransactionItemView {
-    private func setupSenderStackViewLayout() {
-        addSubview(senderStackView)
+    private func setupTitleLabelLayout() {
+        addSubview(titleLabel)
 
-        senderStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.defaultInset)
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.trailing.lessThanOrEqualToSuperview().offset(layout.current.stackTrailingOffset)
-        }
-
-        senderStackView.addArrangedSubview(warningImageView)
-        senderStackView.addArrangedSubview(titleLabel)
-    }
-
-    private func setupArrowImageViewLayout() {
-        addSubview(arrowImageView)
-
-        arrowImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.centerY.equalTo(senderStackView)
-            make.size.equalTo(layout.current.arrowImageSize)
-        }
-    }
-
-    private func setupDetailLabelLayout() {
-        addSubview(detailLabel)
-
-        detailLabel.snp.makeConstraints { make in
-            make.top.equalTo(senderStackView.snp.bottom).offset(layout.current.detailTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(accountInformationView.snp.bottom).offset(layout.current.detailTopInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
         }
     }
 
@@ -102,10 +115,18 @@ extension WCAssetConfigTransactionItemView {
         addSubview(accountInformationView)
 
         accountInformationView.snp.makeConstraints { make in
-            make.top.equalTo(detailLabel.snp.bottom).offset(layout.current.accountInformationViewTopInset)
+            make.top.equalToSuperview().inset(layout.current.accountInformationViewInset)
             make.leading.trailing.equalToSuperview().inset(layout.current.accountInformationViewInset)
             make.height.greaterThanOrEqualTo(layout.current.accountInformationHeight)
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.accountInformationViewInset)
+        }
+    }
+
+    private func setupShowDetailLabelLayout() {
+        addSubview(showDetailLabel)
+
+        showDetailLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.bottom.equalToSuperview().inset(layout.current.defaultInset)
         }
     }
 }
@@ -113,8 +134,8 @@ extension WCAssetConfigTransactionItemView {
 extension WCAssetConfigTransactionItemView {
     func bind(_ viewModel: WCAssetConfigTransactionItemViewModel) {
         warningImageView.isHidden = !viewModel.hasWarning
+
         titleLabel.text = viewModel.title
-        detailLabel.text = viewModel.detail
 
         if let accountInformationViewModel = viewModel.accountInformationViewModel {
             accountInformationView.bind(accountInformationViewModel)

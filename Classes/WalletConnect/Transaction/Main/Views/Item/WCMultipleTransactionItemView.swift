@@ -16,8 +16,9 @@
 //   WCMultipleTransactionItemView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class WCMultipleTransactionItemView: BaseView {
+class WCMultipleTransactionItemView: TripleShadowView {
 
     private let layout = Layout<LayoutConstants>()
 
@@ -35,53 +36,96 @@ class WCMultipleTransactionItemView: BaseView {
 
     private lazy var titleLabel: UILabel = {
         UILabel()
-            .withTextColor(Colors.Text.primary)
+            .withTextColor(AppColors.Components.Text.main.uiColor)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
+            .withFont(Fonts.DMSans.regular.make(19).uiFont)
             .withText("wallet-connect-transaction-title-multiple".localized)
     }()
 
     private lazy var detailLabel: UILabel = {
         UILabel()
-            .withTextColor(Colors.Text.secondary)
+            .withTextColor(AppColors.Components.Text.grayLighter.uiColor)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
+            .withFont(Fonts.DMSans.regular.make(13).uiFont)
     }()
 
-    private lazy var arrowImageView = UIImageView(image: img("icon-arrow-gray-24"))
+    private lazy var showDetailLabel: UILabel = {
+        UILabel()
+            .withTextColor(AppColors.Components.Link.primary.uiColor)
+            .withLine(.single)
+            .withAlignment(.left)
+            .withFont(Fonts.DMSans.bold.make(13).uiFont)
+            .withText("title-show-transaction-detail".localized)
+    }()
 
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
-        layer.cornerRadius = 12.0
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        configureAppearance()
+        prepareLayout()
     }
 
-    override func prepareLayout() {
-        setupArrowImageViewLayout()
+    func configureAppearance() {
+        backgroundColor = Colors.Background.secondary
+        layer.cornerRadius = 12.0
+
+        let accountContainerCorner = Corner(radius: 4)
+        let accountContainerBorder = Border(color: AppColors.SendTransaction.Shadow.first.uiColor, width: 1)
+
+        let accountContainerFirstShadow = MacaroonUIKit.Shadow(
+            color: AppColors.SendTransaction.Shadow.first.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+
+        let accountContainerSecondShadow = MacaroonUIKit.Shadow(
+            color: AppColors.SendTransaction.Shadow.second.uiColor,
+            opacity: 1,
+            offset: (0, 2),
+            radius: 4,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+
+        let accountContainerThirdShadow = MacaroonUIKit.Shadow(
+            color: AppColors.SendTransaction.Shadow.third.uiColor,
+            opacity: 1,
+            offset: (0, 0),
+            radius: 0,
+            fillColor: AppColors.Shared.System.background.uiColor,
+            cornerRadii: (4, 4),
+            corners: .allCorners
+        )
+
+        draw(corner: accountContainerCorner)
+        drawAppearance(border: accountContainerBorder)
+
+        drawAppearance(shadow: accountContainerFirstShadow)
+        drawAppearance(secondShadow: accountContainerSecondShadow)
+        drawAppearance(thirdShadow: accountContainerThirdShadow)
+    }
+
+    func prepareLayout() {
         setupTitleStackViewLayout()
         setupDetailLabelLayout()
+        setupShowDetailLabelLayout()
     }
 }
 
 extension WCMultipleTransactionItemView {
-    private func setupArrowImageViewLayout() {
-        addSubview(arrowImageView)
-
-        arrowImageView.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
-            make.centerY.equalToSuperview()
-            make.size.equalTo(layout.current.arrowImageSize)
-        }
-    }
-
     private func setupTitleStackViewLayout() {
         addSubview(titleStackView)
 
         titleStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.defaultInset)
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.stackTrailingOffset)
+            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
         }
 
         titleStackView.addArrangedSubview(warningImageView)
@@ -92,8 +136,16 @@ extension WCMultipleTransactionItemView {
         addSubview(detailLabel)
 
         detailLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.trailing.lessThanOrEqualTo(arrowImageView.snp.leading).offset(-layout.current.minimumOffset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+            make.top.equalTo(titleStackView.snp.bottom).offset(layout.current.minimumOffset)
+        }
+    }
+
+    private func setupShowDetailLabelLayout() {
+        addSubview(showDetailLabel)
+
+        showDetailLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
             make.bottom.equalToSuperview().inset(layout.current.defaultInset)
         }
     }
@@ -110,7 +162,6 @@ extension WCMultipleTransactionItemView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let defaultInset: CGFloat = 20.0
         let horizontalInset: CGFloat = 24.0
-        let arrowImageSize = CGSize(width: 24.0, height: 24.0)
         let stackTrailingOffset: CGFloat = 44.0
         let minimumOffset: CGFloat = 4.0
         let detailTopInset: CGFloat = 8.0

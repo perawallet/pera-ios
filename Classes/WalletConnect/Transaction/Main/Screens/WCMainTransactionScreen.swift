@@ -45,6 +45,22 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         )
     }()
 
+    private lazy var unsignedTransactionFragment: WCUnsignedRequestScreen = {
+        let dataSource = WCMainTransactionDataSource(
+            transactions: transactions,
+            transactionRequest: transactionRequest,
+            transactionOption: transactionOption,
+            session: self.session,
+            walletConnector: self.walletConnector
+        )
+
+        return WCUnsignedRequestScreen(
+            dataSource: dataSource,
+            configuration: configuration
+        )
+
+    }()
+
     let transactions: [WCTransaction]
     let transactionRequest: WalletConnectRequest
     let transactionOption: WCTransactionOption?
@@ -103,7 +119,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     }
 
     private func addSingleTransaction() {
-        addFragment(NavigationController(rootViewController: singleTransactionFragment)) { fragmentView in
+        addFragment(NavigationController(rootViewController: unsignedTransactionFragment)) { fragmentView in
             fragmentView.roundCorners(corners: [.topLeft, .topRight], radius: theme.fragmentRadius)
             view.addSubview(fragmentView)
             fragmentView.snp.makeConstraints { make in

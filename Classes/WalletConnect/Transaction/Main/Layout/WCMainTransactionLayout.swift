@@ -57,14 +57,6 @@ extension WCMainTransactionLayout: UICollectionViewDelegateFlowLayout {
         return layout.current.multipleTransactionCellSize
     }
 
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        return layout.current.headerSize
-    }
-
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let transactions = dataSource?.transactions(at: indexPath.item) {
             delegate?.wcMainTransactionLayout(self, didSelect: transactions)
@@ -75,10 +67,9 @@ extension WCMainTransactionLayout: UICollectionViewDelegateFlowLayout {
 extension WCMainTransactionLayout {
     private struct LayoutConstants: AdaptiveLayoutConstants {
         let singleTransactionCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 130.0)
-        let multipleTransactionCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 92.0)
-        let appCallCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 68.0)
-        let anotherAccountCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 96.0)
-        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 164.0)
+        let multipleTransactionCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 132.0)
+        let appCallCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 132.0)
+        let anotherAccountCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 132.0)
     }
 }
 

@@ -38,13 +38,16 @@
 "title-connect" = "Connect";
 "title-disconnect" = "Disconnect";
 "title-confirm" = "Confirm";
-"title-confirm-all" = "Confirm All Transactions";
+"title-confirm-all" = "Confirm All";
 "title-decline" = "Decline";
 "title-decline-all" = "Decline All";
 "title-got-it" = "Got it!";
 "title-off" = "Off";
 "title-on" = "On";
 "title-retry" = "Retry";
+
+"title-show-transaction-detail" = "Show Transaction Details";
+"title-show-all-detail" = "Show All Details";
 
 // MARK: Account Type Selection
 "account-type-choose-title" = "Choose Account Type";
@@ -732,8 +735,8 @@ on your Ledger device (%d)";
 "wallet-connect-transaction-all-count-singular" = "All transaction (1)";
 "wallet-connect-transaction-request-count" = "Transaction Requests (%d)";
 "wallet-connect-transaction-request-count-singular" = "Transaction Request (1)";
-"wallet-connect-transaction-count" = "%d Txns  ·  Group ID: %@";
-"wallet-connect-transaction-count-singular" = "1 Txn  ·  Group ID: %@";
+"wallet-connect-transaction-count" = "%d Transactions  ·  Group ID: %@";
+"wallet-connect-transaction-count-singular" = "1 Transaction  ·  Group ID: %@";
 "wallet-connect-transaction-group-id" = "Group ID";
 "wallet-connect-transaction-title-raw" = "Raw Txns";
 "wallet-connect-transaction-detail-raw" = "Show Raw Transaction";

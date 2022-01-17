@@ -73,7 +73,14 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected cell type")
         }
 
-        cell.bind(WCAppCallTransactionItemViewModel(transaction: transaction))
+        let account = session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender)) ?? Account(address: transaction.transactionDetail!.receiver!, type: .standard)
+
+        cell.bind(
+            WCAppCallTransactionItemViewModel(
+                transaction: transaction,
+                account: account
+            )
+        )
         return cell
     }
 

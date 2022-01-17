@@ -35,8 +35,6 @@ class WCGroupTransactionAccountInformationView: BaseView {
         return stackView
     }()
 
-    private lazy var algosIcon = UIImageView(image: img("img-algorand-16"))
-
     private lazy var balanceLabel: UILabel = {
         UILabel()
             .withTextColor(Colors.Text.tertiary)
@@ -54,8 +52,9 @@ class WCGroupTransactionAccountInformationView: BaseView {
     }()
 
     override func configureAppearance() {
-        backgroundColor = Colors.WCGroupTransactionAccountInformationView.background
-        layer.cornerRadius = 12.0
+        super.configureAppearance()
+
+        backgroundColor = Colors.Background.secondary
     }
 
     override func prepareLayout() {
@@ -94,7 +93,6 @@ extension WCGroupTransactionAccountInformationView {
             make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
         }
 
-        balanceStackView.addArrangedSubview(algosIcon)
         balanceStackView.addArrangedSubview(balanceLabel)
         balanceStackView.addArrangedSubview(assetNameLabel)
     }
@@ -106,9 +104,9 @@ extension WCGroupTransactionAccountInformationView {
             accountNameView.bind(accountNameViewModel)
         }
 
-        algosIcon.isHidden = !viewModel.isAlgos
         dotImage.isHidden = !viewModel.isDisplayingDotSeparator
         balanceLabel.text = viewModel.balance
+        balanceLabel.isHidden = !viewModel.isDisplayingDotSeparator
         assetNameLabel.isHidden = viewModel.isAlgos
         assetNameLabel.text = viewModel.assetName
     }
@@ -120,11 +118,5 @@ extension WCGroupTransactionAccountInformationView {
         let dotImageLeadingInset: CGFloat = 8.0
         let balanceLeadingInset: CGFloat = 4.0
         let imageSize = CGSize(width: 2.0, height: 2.0)
-    }
-}
-
-fileprivate extension Colors {
-    enum WCGroupTransactionAccountInformationView {
-        static let background = color("wcAccountInfoBackground")
     }
 }

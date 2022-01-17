@@ -13,12 +13,17 @@
 // limitations under the License.
 
 //
-//   WCGroupAnotherAccountTransactionItemCell.swift
+//   WCUnsignedRequestScreen+Theme.swift
 
 import Foundation
+import MacaroonUIKit
 
-class WCGroupAnotherAccountTransactionItemCell: BaseCollectionViewCell<WCGroupTransactionItemView> {
-    func bind(_ viewModel: WCGroupTransactionItemViewModel) {
-        contextView.bind(viewModel)
+extension WCUnsignedRequestScreen {
+    struct Theme: LayoutSheet, StyleSheet {
+        let backgroundColor: Color
+
+        init(_ family: LayoutFamily) {
+            backgroundColor = AppColors.Shared.System.background
+        }
     }
 }

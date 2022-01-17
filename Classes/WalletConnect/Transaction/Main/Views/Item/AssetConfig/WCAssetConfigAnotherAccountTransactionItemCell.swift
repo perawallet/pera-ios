@@ -21,7 +21,6 @@ class WCAssetConfigAnotherAccountTransactionItemCell: BaseCollectionViewCell<WCA
 
     override func prepareLayout() {
         super.prepareLayout()
-        contextView.accountInformationView.removeFromSuperview()
     }
 
     func bind(_ viewModel: WCAssetConfigTransactionItemViewModel) {
