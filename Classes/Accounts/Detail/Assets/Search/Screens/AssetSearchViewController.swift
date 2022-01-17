@@ -32,7 +32,7 @@ final class AssetSearchViewController: BaseViewController {
 
     private lazy var searchInputView = SearchInputView()
 
-    private var searchResults: [AssetInformation] = []
+    private var searchResults: [CompoundAsset] = []
 
     private lazy var listView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -54,7 +54,7 @@ final class AssetSearchViewController: BaseViewController {
     ) {
         self.account = account
         super.init(configuration: configuration)
-        searchResults = account.assetInformations
+        searchResults = account.compoundAssets
     }
 
     private lazy var dataSource: DataSource = {
@@ -190,10 +190,10 @@ extension AssetSearchViewController: SearchInputViewDelegate {
                 return
             }
 
-            self.searchResults = self.account.assetInformations.filter {
+            self.searchResults = self.account.compoundAssets.filter {
                 String($0.id).contains(query) ||
-                    $0.name.unwrap(or: "").contains(query) ||
-                    $0.unitName.unwrap(or: "").contains(query)
+                $0.detail.name.unwrap(or: "").contains(query) ||
+                $0.detail.unitName.unwrap(or: "").contains(query)
             }
 
             asyncMain { [weak self] in
@@ -215,7 +215,7 @@ extension AssetSearchViewController: SearchInputViewDelegate {
     }
 
     private func resetSearch() {
-        searchResults = account.assetInformations
+        searchResults = account.compoundAssets
         applySnapshot()
     }
 }
@@ -232,7 +232,7 @@ extension AssetSearchViewController {
         var searchSectionItems: [AssetSearchItem] = []
 
         searchResults.forEach {
-            searchSectionItems.append(.asset(asset: $0))
+            searchSectionItems.append(.asset(asset: $0.detail))
         }
 
         snapshot.appendItems(

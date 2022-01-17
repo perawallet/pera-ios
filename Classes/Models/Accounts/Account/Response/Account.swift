@@ -20,6 +20,8 @@ import MagpieCore
 import MacaroonUtils
 
 final class Account: ALGEntityModel {
+    typealias CompoundAssetIndexer = [Int64: Int] /// asset id -> compound asset index
+    
     let address: String
     var amount: UInt64
     var amountWithoutRewards: UInt64
@@ -43,9 +45,6 @@ final class Account: ALGEntityModel {
     var createdApps: [AlgorandApplication]?
     
     var assetDetails: [AssetDetail] = []
-    /// <todo>
-    /// Will be changed with assetDetails after the transition to the new api is completed.
-    var assetInformations: [AssetInformation] = []
     
     var name: String?
     var type: AccountType = .standard
@@ -54,6 +53,9 @@ final class Account: ALGEntityModel {
     var rekeyDetail: RekeyDetail?
     var preferredOrder: Int
     var accountImage: String?
+    
+    private(set) var compoundAssets: [CompoundAsset] = []
+    private(set) var compoundAssetsIndexer: CompoundAssetIndexer = [:]
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -144,6 +146,39 @@ final class Account: ALGEntityModel {
         apiModel.appsTotalSchema = appsTotalSchema
         apiModel.createdApps = createdApps
         return apiModel
+    }
+    
+    subscript (assetId: Int64) -> CompoundAsset? {
+        let index = compoundAssetsIndexer[assetId]
+        return index.unwrap { compoundAssets[safe: $0] }
+    }
+}
+
+extension Account {
+    func setCompoundAssets(
+        _ assets: [CompoundAsset],
+        _ indexer: CompoundAssetIndexer
+    ) {
+        compoundAssets = assets
+        compoundAssetsIndexer = indexer
+    }
+    
+    func append(
+        _ compoundAsset: CompoundAsset
+    ) {
+        compoundAssets.append(compoundAsset)
+        compoundAssetsIndexer[compoundAsset.id] = compoundAssets.lastIndex!
+    }
+    
+    func removeAllCompoundAssets() {
+        compoundAssets = []
+        compoundAssetsIndexer = [:]
+    }
+    
+    func contains(
+        _ assetDetail: AssetInformation
+    ) -> Bool {
+        return self[assetDetail.id] != nil
     }
 }
 

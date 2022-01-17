@@ -120,14 +120,25 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
             }
             
             if let error = error {
-                account.assetInformations = []
+                account.removeAllCompoundAssets()
                 self.result = .failure(error)
             } else {
-                account.assetInformations =
-                    assets.compactMap {
-                        let id = $0.id
-                        return newAssetDetails[id] ?? self.input.cachedAssetDetails[id]
+                var newCompoundAssets: [CompoundAsset] = []
+                var newCompoundAssetsIndexer: Account.CompoundAssetIndexer = [:]
+                
+                assets.enumerated().forEach { index, asset in
+                    let id = asset.id
+                    
+                    if let assetDetail = newAssetDetails[id] ?? self.input.cachedAssetDetails[id] {
+                        newCompoundAssets.append(CompoundAsset(asset, assetDetail))
+                        newCompoundAssetsIndexer[asset.id] = index
                     }
+                }
+                
+                account.setCompoundAssets(
+                    newCompoundAssets,
+                    newCompoundAssetsIndexer
+                )
                 
                 let output = Output(account: account, newAssetDetails: newAssetDetails)
                 self.result = .success(output)

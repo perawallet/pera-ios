@@ -84,9 +84,10 @@ extension ManageAssetsViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let assetDetail = account.compoundAssets[indexPath.item].detail
         let cell = collectionView.dequeue(AssetPreviewActionCell.self, at: indexPath)
         cell.customize(theme.assetPreviewActionViewTheme)
-        cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(account.assetInformations[indexPath.item])))
+        cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(assetDetail)))
         cell.delegate = self
         return cell
     }
@@ -105,11 +106,11 @@ extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
 extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
     func assetPreviewSendCellDidTapSendButton(_ assetPreviewSendCell: AssetPreviewActionCell) {
         guard let index = manageAssetsView.assetsCollectionView.indexPath(for: assetPreviewSendCell),
-              index.item < account.assetInformations.count else {
+              index.item < account.compoundAssets.count else {
                   return
               }
 
-        let assetDetail = account.assetInformations[index.item]
+        let assetDetail = account.compoundAssets[index.item].detail
         guard let assetAmount = account.amount(for: assetDetail) else {
             return
         }
@@ -260,16 +261,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
     }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetInformation? {
-        guard let removedAssetDetail = account.assetInformations.first(where: { assetDetail -> Bool in
-            guard let assetId = draft?.assetIndex else {
-                return false
-            }
-            return assetDetail.id == assetId
-        }) else {
-            return nil
-        }
-        
-        return removedAssetDetail
+        return draft?.assetIndex.unwrap { account[$0]?.detail }
     }
 }
 

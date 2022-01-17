@@ -107,11 +107,11 @@ extension AccountAssetListAPIDataController {
 
             assetItems.append(.asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((self.accountHandle.value, currency)))))
 
-            self.accountHandle.value.assetInformations.forEach {
-                assets.append($0)
-
-                let asset = self.accountHandle.value.assets!.first(matching: (\.id, $0.id))!
-                let assetItem: AccountAssetsItem = .asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection(($0, asset, currency))))
+            self.accountHandle.value.compoundAssets.forEach {
+                assets.append($0.detail)
+                
+                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(($0.detail, $0.base, currency))
+                let assetItem: AccountAssetsItem = .asset(AssetPreviewViewModel(assetPreview))
                 assetItems.append(assetItem)
             }
 
@@ -167,10 +167,10 @@ extension AccountAssetListAPIDataController {
     }
 
     private func clearAddedAssetDetailsIfNeeded(for account: Account) {
-        addedAssetDetails = addedAssetDetails.filter { !account.assetInformations.contains($0) }
+        addedAssetDetails = addedAssetDetails.filter { !account.contains($0) }
     }
 
     private func clearRemovedAssetDetailsIfNeeded(for account: Account) {
-        removedAssetDetails = removedAssetDetails.filter { account.assetInformations.contains($0) }
+        removedAssetDetails = removedAssetDetails.filter { account.contains($0) }
     }
 }

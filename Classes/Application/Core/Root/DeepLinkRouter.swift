@@ -165,13 +165,7 @@ extension DeepLinkRouter {
     }
 
     private func getAssetDetail(from notification: NotificationDetail, for account: Account) -> AssetInformation? {
-        var assetDetail: AssetInformation?
-
-        if let assetId = notification.asset?.id {
-            assetDetail = account.assetInformations.first { $0.id == assetId }
-        }
-
-        return assetDetail
+        return notification.asset?.id.unwrap { account[$0]?.detail }
     }
 
     private func openAssetDetail(for account: Account, with assetDetail: AssetInformation?) {
