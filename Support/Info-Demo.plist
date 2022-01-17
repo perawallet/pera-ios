@@ -72,24 +72,10 @@
 	<string>Algorand will save QR codes to your photo library.</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>PublicSans-Black.ttf</string>
-		<string>PublicSans-BlackItalic.ttf</string>
-		<string>PublicSans-Bold.ttf</string>
-		<string>PublicSans-BoldItalic.ttf</string>
-		<string>PublicSans-ExtraBold.ttf</string>
-		<string>PublicSans-ExtraBoldItalic.ttf</string>
-		<string>PublicSans-ExtraLight.ttf</string>
-		<string>PublicSans-ExtraLightItalic.ttf</string>
-		<string>PublicSans-Italic.ttf</string>
-		<string>PublicSans-Light.ttf</string>
-		<string>PublicSans-LightItalic.ttf</string>
-		<string>PublicSans-Medium.ttf</string>
-		<string>PublicSans-MediumItalic.ttf</string>
-		<string>PublicSans-Regular.ttf</string>
-		<string>PublicSans-SemiBold.ttf</string>
-		<string>PublicSans-SemiBoldItalic.ttf</string>
-		<string>PublicSans-Thin.ttf</string>
-		<string>PublicSans-ThinItalic.ttf</string>
+        <string>PublicSans-Bold.ttf</string>
+        <string>PublicSans-Medium.ttf</string>
+        <string>PublicSans-Regular.ttf</string>
+        <string>PublicSans-SemiBold.ttf</string>
 		<string>DMMono-Italic.ttf</string>
 		<string>DMMono-Light.ttf</string>
 		<string>DMMono-LightItalic.ttf</string>
