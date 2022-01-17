@@ -33,13 +33,6 @@ final class LedgerAccountVerificationViewController: BaseScrollViewController {
         }
     }
 
-    private lazy var accountManager: AccountManager? = {
-        guard let api = api else {
-            return nil
-        }
-        return AccountManager(api: api)
-    }()
-
     private let accountSetupFlow: AccountSetupFlow
     private let selectedAccounts: [Account]
 
@@ -198,24 +191,15 @@ extension LedgerAccountVerificationViewController {
     }
 
     private func launchHome() {
-        guard let accountManager = accountManager else {
-            return
-        }
-
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-        accountManager.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
-                switch self.accountSetupFlow {
-                case .initializeAccount:
-                    self.closeScreen(by: .dismiss, animated: false) {
-                        UIApplication.shared.rootViewController()?.setupTabBarController()
-                    }
-                case .addNewAccount:
-                    self.closeScreen(by: .dismiss, animated: true)
-                case .none:
-                    break
-                }
+        switch self.accountSetupFlow {
+        case .initializeAccount:
+            closeScreen(by: .dismiss, animated: false) {
+                UIApplication.shared.rootViewController()?.setupTabBarController()
             }
+        case .addNewAccount:
+            closeScreen(by: .dismiss, animated: true)
+        case .none:
+            break
         }
     }
 }

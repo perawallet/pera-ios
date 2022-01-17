@@ -23,14 +23,6 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
     
     private var keyboardController = KeyboardController()
     
-    private lazy var accountManager: AccountManager? = {
-        guard let api = self.api else {
-            return nil
-        }
-        let manager = AccountManager(api: api)
-        return manager
-    }()
-    
     private let accountSetupFlow: AccountSetupFlow
     
     init(accountSetupFlow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
@@ -154,27 +146,20 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
             by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
         ) as? TutorialViewController
         controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
-            self.launchHome(with: account)
+            self.launchHome()
         }
     }
 
-    private func launchHome(with account: AccountInformation) {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-        accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
-                switch self.accountSetupFlow {
-                case .initializeAccount:
-                    DispatchQueue.main.async {
-                        self.dismiss(animated: false) {
-                            UIApplication.shared.rootViewController()?.setupTabBarController()
-                        }
-                    }
-                case .addNewAccount:
-                    self.closeScreen(by: .dismiss, animated: false)
-                case .none:
-                    break
-                }
+    private func launchHome() {
+        switch self.accountSetupFlow {
+        case .initializeAccount:
+            dismiss(animated: false) {
+                UIApplication.shared.rootViewController()?.setupTabBarController()
             }
+        case .addNewAccount:
+            closeScreen(by: .dismiss, animated: false)
+        case .none:
+            break
         }
     }
 }

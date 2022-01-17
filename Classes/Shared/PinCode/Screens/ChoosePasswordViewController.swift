@@ -30,16 +30,7 @@ final class ChoosePasswordViewController: BaseViewController {
     private let localAuthenticator = LocalAuthenticator()
     
     private var pinLimitStore = PinLimitStore()
-    
-    private lazy var accountManager: AccountManager? = {
-        guard let api = api,
-              mode == .login else {
-            return nil
-        }
-        let manager = AccountManager(api: api)
-        return manager
-    }()
-    
+
     weak var delegate: ChoosePasswordViewControllerDelegate?
     
     init(mode: Mode, accountSetupFlow: AccountSetupFlow?, route: Screen?, configuration: ViewControllerConfiguration) {
@@ -124,18 +115,14 @@ extension ChoosePasswordViewController {
     }
     
     private func launchHome() {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-        accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            self.setupRouteFromNotification()
-            DispatchQueue.main.async {
-                UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
-            }
+        setupRouteFromNotification()
 
-            self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
-                self.dismiss(animated: false) {
-                    UIApplication.shared.rootViewController()?.setupTabBarController()
-                }
-            }
+        DispatchQueue.main.async {
+            UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
+        }
+
+        dismiss(animated: false) {
+            UIApplication.shared.rootViewController()?.setupTabBarController()
         }
     }
     
