@@ -37,6 +37,7 @@ final class WCUnsignedRequestView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
+        collectionView.contentInset = UIEdgeInsets(top: 36, left: 0, bottom: 0, right: 0)
         collectionView.register(
             WCMultipleTransactionItemCell.self,
             forCellWithReuseIdentifier: WCMultipleTransactionItemCell.reusableIdentifier

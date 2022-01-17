@@ -78,6 +78,7 @@ final class WCUnsignedRequestScreen: BaseViewController {
         unsignedRequestView.setDataSource(dataSource)
         unsignedRequestView.setDelegate(layoutBuilder)
         unsignedRequestView.delegate = self
+        layoutBuilder.delegate = self
     }
 }
 
@@ -118,3 +119,23 @@ extension WCUnsignedRequestScreen: WCUnsignedRequestViewDelegate {
         delegate?.wcUnsignedRequestScreenDidConfirm(self)
     }
 }
+
+extension WCUnsignedRequestScreen: WCMainTransactionLayoutDelegate {
+    func wcMainTransactionLayout(
+        _ wcMainTransactionLayout: WCMainTransactionLayout,
+        didSelect transactions: [WCTransaction]
+    ) {
+        if transactions.count == 1 {
+            if let transaction = transactions.first {
+                presentSingleWCTransaction(transaction, with: dataSource.transactionRequest)
+            }
+
+            return
+        }
+
+
+        open(.wcGroupTransaction(transactions: transactions, transactionRequest: dataSource.transactionRequest), by: .push)
+    }
+}
+
+extension WCUnsignedRequestScreen: WalletConnectSingleTransactionRequestPresentable { }

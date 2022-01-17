@@ -72,7 +72,7 @@ extension WCGroupTransactionLayout {
         let appCallCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 68.0)
         let anotherAccountCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 132.0)
         let cellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 130.0)
-        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 176.0)
+        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 100.0)
     }
 }
 

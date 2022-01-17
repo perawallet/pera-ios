@@ -22,20 +22,14 @@ class WCGroupTransactionHeaderViewModel {
     private(set) var groupID: String?
 
     init(transactions: [WCTransaction]) {
-        setTitle(from: transactions)
         setGroupID(from: transactions)
     }
 
-    private func setTitle(from transactions: [WCTransaction]) {
-        if transactions.count == 1 {
-            title = "wallet-connect-transaction-all-count-singular".localized
+    private func setGroupID(from transactions: [WCTransaction]) {
+        guard let groupID = transactions.first?.transactionDetail?.transactionGroupId else {
             return
         }
 
-        title = "wallet-connect-transaction-all-count".localized(transactions.count)
-    }
-
-    private func setGroupID(from transactions: [WCTransaction]) {
-        groupID = transactions.first?.transactionDetail?.transactionGroupId
+        self.groupID = "wallet-connect-group-transaction-header-title".localized(groupID)
     }
 }
