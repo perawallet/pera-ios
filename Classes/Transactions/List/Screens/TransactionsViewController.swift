@@ -33,10 +33,9 @@ class TransactionsViewController: BaseViewController {
         transactionsDataSource: transactionsDataSource
     )
 
-    private lazy var dataController = TransactionsAPIDataController(
+    private(set) lazy var dataController = TransactionsAPIDataController(
         api!,
         draft,
-        accountHandle,
         filterOption,
         sharedDataController
     )
@@ -82,9 +81,7 @@ class TransactionsViewController: BaseViewController {
         dataController.load()
 
         dataController.loadContacts()
-        dataController.loadTransactions(
-            between: getTransactionFilterDates()
-        )
+        dataController.loadTransactions()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -171,9 +168,7 @@ extension TransactionsViewController {
             }
 
             if self.dataController.shouldSendPaginatedRequest(at: indexPath.item) {
-                self.dataController.loadNextTransactions(
-                    between: self.getTransactionFilterDates()
-                )
+                self.dataController.loadNextTransactions()
             }
 
             guard let itemIdentifier = self.transactionsDataSource.itemIdentifier(for: indexPath) else {
@@ -276,35 +271,7 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
 extension TransactionsViewController {
     private func reloadData() {
         dataController.clear()
-
-        dataController.loadTransactions(
-            between: getTransactionFilterDates()
-        )
-    }
-}
-
-extension TransactionsViewController {
-    func getTransactionFilterDates() -> (from: Date?, to: Date?) {
-        switch filterOption {
-        case .allTime:
-            return (nil, nil)
-        case .today:
-            return (Date().dateAt(.startOfDay), Date().dateAt(.endOfDay))
-        case .yesterday:
-            let yesterday = Date().dateAt(.yesterday)
-            let endOfYesterday = yesterday.dateAt(.endOfDay)
-            return (yesterday, endOfYesterday)
-        case .lastWeek:
-            let prevOfLastWeek = Date().dateAt(.prevWeek)
-            let endOfLastWeek = prevOfLastWeek.dateAt(.endOfWeek)
-            return (prevOfLastWeek, endOfLastWeek)
-        case .lastMonth:
-            let prevOfLastMonth = Date().dateAt(.prevMonth)
-            let endOfLastMonth = prevOfLastMonth.dateAt(.endOfMonth)
-            return (prevOfLastMonth, endOfLastMonth)
-        case let .customRange(from, to):
-            return (from, to)
-        }
+        dataController.loadTransactions()
     }
 }
 

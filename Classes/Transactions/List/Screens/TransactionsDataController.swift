@@ -27,8 +27,8 @@ protocol TransactionsDataController: AnyObject {
     func startPendingTransactionPolling()
     func stopPendingTransactionPolling()
     func loadContacts()
-    func loadTransactions(between dates: (Date?, Date?))
-    func loadNextTransactions(between dates: (Date?, Date?))
+    func loadTransactions()
+    func loadNextTransactions()
 }
 
 enum TransactionsSection:
@@ -54,6 +54,7 @@ enum TransactionsItem: Hashable {
 
 enum EmptyState: Hashable {
     case noContent
+    case loading
 }
 
 enum TransactionsDataControllerEvent {

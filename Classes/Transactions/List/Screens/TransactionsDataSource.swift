@@ -61,6 +61,8 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
                     let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
                     cell.bindData(TransactionHistoryNoContentViewModel())
                     return cell
+                case .loading:
+                    return collectionView.dequeue(LoadingCell.self, at: indexPath)
                 }
             case .nextList:
                 return collectionView.dequeue(LoadingCell.self, at: indexPath)

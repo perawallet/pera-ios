@@ -20,7 +20,7 @@ import UIKit
 
 protocol TransactionListing {
     var type: TransactionTypeFilter { get }
-    var accountHandle: AccountHandle { get }
+    var accountHandle: AccountHandle { get set }
     var assetDetail: AssetInformation? { get }
 }
 

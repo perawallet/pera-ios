@@ -23,12 +23,19 @@ struct AssetDetailInfoViewModel:
     Hashable {
     private(set) var isVerified: Bool = false
     private(set) var amount: String?
+    private(set) var secondaryValue: String?
     private(set) var name: String?
     private(set) var ID: String?
 
-    init(account: Account, assetDetail: AssetInformation) {
+    init(
+        _ account: Account,
+        _ assetDetail: AssetInformation,
+        _ currency: Currency?
+    ) {
+        bindIsVerified(from: assetDetail)
         bindName(from: assetDetail)
         bindAmount(from: assetDetail, in: account)
+        bindSecondaryValue(from: assetDetail, with: account, and: currency)
         bindID(from: assetDetail)
     }
 }
@@ -47,6 +54,20 @@ extension AssetDetailInfoViewModel {
             return
         }
         amount = assetAmount.toFractionStringForLabel(fraction: assetDetail.decimals)
+    }
+
+    private mutating func bindSecondaryValue(from assetDetail: AssetInformation, with account: Account, and currency: Currency?) {
+        guard let assetUSDValue = assetDetail.usdValue,
+              let currency = currency,
+              let currencyUSDValue = currency.usdValue,
+              let assetAmount = account.amount(for: assetDetail) else {
+            return
+        }
+
+        let currencyValue = assetUSDValue * assetAmount * currencyUSDValue
+        if currencyValue > 0 {
+            secondaryValue = currencyValue.toCurrencyStringForLabel(with: currency.id)
+        }
     }
 
     private mutating func bindID(from assetDetail: AssetInformation) {

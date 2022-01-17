@@ -35,8 +35,7 @@ final class TransactionsAPIDataController:
     private var pendingTransactions = [PendingTransaction]()
 
     private let api: ALGAPI
-    private let draft: TransactionListing
-    private var accountHandle: AccountHandle
+    private var draft: TransactionListing
     private var filterOption: TransactionFilterViewController.FilterOption
     private let sharedDataController: SharedDataController
 
@@ -47,13 +46,11 @@ final class TransactionsAPIDataController:
     init(
         _ api: ALGAPI,
         _ draft: TransactionListing,
-        _ accountHandle: AccountHandle,
         _ filterOption: TransactionFilterViewController.FilterOption,
         _ sharedDataController: SharedDataController
     ) {
         self.api = api
         self.draft = draft
-        self.accountHandle = accountHandle
         self.filterOption = filterOption
         self.sharedDataController = sharedDataController
     }
@@ -131,7 +128,7 @@ extension TransactionsAPIDataController {
                 case let .success(pendingTransactionList):
                     let pendingTransactions = pendingTransactionList.pendingTransactions
                     if pendingTransactions.isEmpty {
-                        self.removePendingTransactionsFromSnapshot()
+                        self.removePendingTransactionsFromSnapshotIfNeeded()
                         return
                     }
 
@@ -153,9 +150,10 @@ extension TransactionsAPIDataController {
 }
 
 extension TransactionsAPIDataController {
-    func loadTransactions(
-        between dates: (Date?, Date?)
-    ) {
+    func loadTransactions() {
+        clear()
+
+        let dates = getTransactionFilterDates()
         var assetId: String?
         if let id = draft.assetDetail?.id {
             assetId = String(id)
@@ -180,9 +178,8 @@ extension TransactionsAPIDataController {
         }
     }
 
-    func loadNextTransactions(
-        between dates: (Date?, Date?)
-    ) {
+    func loadNextTransactions() {
+        let dates = getTransactionFilterDates()
         var assetId: String?
         if let id = draft.assetDetail?.id {
             assetId = String(id)
@@ -206,6 +203,29 @@ extension TransactionsAPIDataController {
             }
         }
     }
+
+    func getTransactionFilterDates() -> (from: Date?, to: Date?) {
+        switch filterOption {
+        case .allTime:
+            return (nil, nil)
+        case .today:
+            return (Date().dateAt(.startOfDay), Date().dateAt(.endOfDay))
+        case .yesterday:
+            let yesterday = Date().dateAt(.yesterday)
+            let endOfYesterday = yesterday.dateAt(.endOfDay)
+            return (yesterday, endOfYesterday)
+        case .lastWeek:
+            let prevOfLastWeek = Date().dateAt(.prevWeek)
+            let endOfLastWeek = prevOfLastWeek.dateAt(.endOfWeek)
+            return (prevOfLastWeek, endOfLastWeek)
+        case .lastMonth:
+            let prevOfLastMonth = Date().dateAt(.prevMonth)
+            let endOfLastMonth = prevOfLastMonth.dateAt(.endOfMonth)
+            return (prevOfLastMonth, endOfLastMonth)
+        case let .customRange(from, to):
+            return (from, to)
+        }
+    }
 }
 
 extension TransactionsAPIDataController {
@@ -216,14 +236,14 @@ extension TransactionsAPIDataController {
         switch event {
         case let .didStartRunning(first):
             if first ||
-                lastSnapshot == nil {
-                deliverContentSnapshot()
+               lastSnapshot == nil {
+                deliverLoadingSnapshot()
             }
         case .didFinishRunning:
-            if let updatedAccountHandle = sharedDataController.accountCollection[accountHandle.value.address] {
-                accountHandle = updatedAccountHandle
+            if let updatedAccountHandle = sharedDataController.accountCollection[draft.accountHandle.value.address] {
+                draft.accountHandle = updatedAccountHandle
             }
-            deliverContentSnapshot()
+            loadTransactions()
         default:
             break
         }
@@ -352,6 +372,18 @@ extension TransactionsAPIDataController {
 }
 
 extension TransactionsAPIDataController {
+    private func deliverLoadingSnapshot() {
+        deliverSnapshot {
+            var snapshot = Snapshot()
+            snapshot.appendSections([.empty])
+            snapshot.appendItems(
+                [.empty(.loading)],
+                toSection: .empty
+            )
+            return snapshot
+        }
+    }
+    
     private func deliverContentSnapshot() {
         deliverSnapshot {
             [weak self] in
@@ -365,13 +397,13 @@ extension TransactionsAPIDataController {
             case .asset:
                 snapshot.appendSections([.info])
                 snapshot.appendItems(
-                    [.assetInfo(AssetDetailInfoViewModel(account: self.draft.accountHandle.value, assetDetail: self.draft.assetDetail!))],
+                    [.assetInfo(AssetDetailInfoViewModel(self.draft.accountHandle.value, self.draft.assetDetail!, self.sharedDataController.currency.value))],
                     toSection: .info
                 )
             case .algos:
                 snapshot.appendSections([.info])
                 snapshot.appendItems(
-                    [.algosInfo(AlgosDetailInfoViewModel(self.draft.accountHandle.value))],
+                    [.algosInfo(AlgosDetailInfoViewModel(self.draft.accountHandle.value, self.sharedDataController.currency.value))],
                     toSection: .info
                 )
             case .all:
@@ -418,7 +450,11 @@ extension TransactionsAPIDataController {
         }
     }
 
-    private func removePendingTransactionsFromSnapshot() {
+    private func removePendingTransactionsFromSnapshotIfNeeded() {
+        if pendingTransactions.isEmpty {
+            return
+        }
+
         pendingTransactions = []
         deliverContentSnapshot()
     }
