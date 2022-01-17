@@ -210,8 +210,6 @@ class Router {
             let qrCreationController = QRCreationViewController(draft: draft, configuration: configuration, isTrackable: isTrackable)
             qrCreationController.title = title
             viewController = qrCreationController
-        case .home:
-            viewController = TabBarController(configuration: configuration)
         case let .accountList(mode, delegate):
             let accountListViewController = AccountListViewController(mode: mode, configuration: configuration)
             accountListViewController.delegate = delegate
@@ -313,8 +311,6 @@ class Router {
             )
         case let .passphraseDisplay(address):
             viewController = PassphraseDisplayViewController(address: address, configuration: configuration)
-        case let .tooltip(title):
-            viewController = TooltipViewController(title: title, configuration: configuration)
         case .pinLimit:
             viewController = PinLimitViewController(configuration: configuration)
         case .assetActionConfirmationNotification,
@@ -388,8 +384,6 @@ class Router {
             let accountRecoverOptionsViewController = AccountRecoverOptionsViewController(configuration: configuration)
             accountRecoverOptionsViewController.delegate = delegate
             viewController = accountRecoverOptionsViewController
-        case .algoStatistics:
-            viewController = AlgoStatisticsViewController(configuration: configuration)
         case let .ledgerAccountVerification(flow, selectedAccounts):
             viewController = LedgerAccountVerificationViewController(
                 accountSetupFlow: flow,
