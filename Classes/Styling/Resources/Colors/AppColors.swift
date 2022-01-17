@@ -34,7 +34,6 @@ extension AppColors.Shared {
 
     enum System: String, Color {
         case background = "Shared/System/background"
-        case systemElements = "Shared/System/systemElements"
     }
 
     enum Layer: String, Color {
@@ -43,18 +42,9 @@ extension AppColors.Shared {
         case grayLightest = "Shared/Layer/grayLightest"
     }
 
-    enum Modality: String, Color {
-        case background = "Shared/Modality/background"
-    }
-
     enum Helpers: String, Color {
         case negative = "Shared/Helpers/negative"
-        case negativeLighter = "Shared/Helpers/negativeLighter"
         case positive = "Shared/Helpers/positive"
-    }
-
-    enum Shadow: String, Color {
-        case `default` = "Shared/Shadow/default"
     }
 }
 
@@ -70,7 +60,6 @@ extension AppColors.Components {
     enum Button {
         enum Primary: String, Color {
             case background = "Components/Button/Primary/background"
-            case focusBackground = "Components/Button/Primary/focusBackground"
             case disabledBackground = "Components/Button/Primary/disabledBackground"
             case text = "Components/Button/Primary/text"
             case disabledText = "Components/Button/Primary/disabledText"
@@ -78,18 +67,13 @@ extension AppColors.Components {
 
         enum Secondary: String, Color {
             case background = "Components/Button/Secondary/background"
-            case focusBackground = "Components/Button/Secondary/focusBackground"
             case disabledBackground = "Components/Button/Secondary/disabledBackground"
             case text = "Components/Button/Secondary/text"
             case disabledText = "Components/Button/Secondary/disabledText"
         }
 
         enum Ghost: String, Color {
-            case background = "Components/Button/Ghost/background"
-            case focusBackground = "Components/Button/Ghost/focusBackground"
-            case disabledBackground = "Components/Button/Ghost/disabledBackground"
             case text = "Components/Button/Ghost/text"
-            case disabledText = "Components/Button/Ghost/disabledText"
         }
 
         enum TransactionShadow: String, Color {
@@ -107,48 +91,8 @@ extension AppColors.Components {
 }
 
 extension AppColors.Components {
-    enum Wallet {
-        enum Wallet1: String, Color {
-            case wallet1 = "Components/Wallet/Wallet1/wallet1"
-            case icon = "Components/Wallet/Wallet1/icon"
-        }
-
-        enum Wallet2: String, Color {
-            case wallet2 = "Components/Wallet/Wallet2/wallet2"
-            case icon = "Components/Wallet/Wallet2/icon"
-        }
-
-        enum Wallet3: String, Color {
-            case wallet3 = "Components/Wallet/Wallet3/wallet3"
-            case icon = "Components/Wallet/Wallet3/icon"
-        }
-    }
-}
-
-extension AppColors.Components {
-    enum BottomSheet: String, Color {
-        case line = "Components/BottomSheet/line"
-    }
-}
-
-extension AppColors.Components {
-    enum TabBar: String, Color {
-        case button = "Components/TabBar/button"
-        case background = "Components/TabBar/background"
-    }
-}
-
-extension AppColors.Components {
-    enum Tab: String, Color {
-        case bottomLine = "Components/Tab/bottomLine"
-    }
-}
-
-extension AppColors.Components {
     enum TextField: String, Color {
         case defaultBackground = "Components/TextField/defaultBackground"
-        case typingBackground = "Components/TextField/typingBackground"
-        case errorBackground = "Components/TextField/errorBackground"
     }
 }
 

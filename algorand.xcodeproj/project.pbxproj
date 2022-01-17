@@ -7438,7 +7438,6 @@
 			isa = PBXGroup;
 			children = (
 				D4CC46E526DCF80E00AA1BFE /* AppColors.swift */,
-				D4CC46E926DD099000AA1BFE /* AppColors.xcassets */,
 				2B8AD0492244F82600939ECE /* Colors.swift */,
 			);
 			path = Colors;
@@ -7524,6 +7523,7 @@
 		2B8BE4E6223924EB005D8565 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				D4CC46E926DD099000AA1BFE /* AppColors.xcassets */,
 				CBAD47492745595300C91946 /* Assets.xcassets */,
 				CBAD47482745595300C91946 /* Colors.xcassets */,
 			);
