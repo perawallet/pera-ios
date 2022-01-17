@@ -16,8 +16,6 @@
 //   AccountAssetListDataController.swift
 
 import Foundation
-
-import Foundation
 import UIKit
 
 protocol AccountAssetListDataController: AnyObject {

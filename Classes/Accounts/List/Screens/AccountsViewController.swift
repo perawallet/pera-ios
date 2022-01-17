@@ -248,10 +248,10 @@ extension AccountsViewController: AccountsDataSourceDelegate {
         }
         
         if indexPath.item == 0 {
-            open(
-                .algosDetail(draft: AlgoTransactionListing(account: account)),
-                by: .push
-            )
+//            open(
+//                .algosDetail(draft: AlgoTransactionListing(account: account)),
+//                by: .push
+//            )
         } else {
             if let assetDetail = account.assetDetails[safe: indexPath.item - 1] {
 //                open(

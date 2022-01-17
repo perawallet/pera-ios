@@ -18,7 +18,9 @@
 import Foundation
 import MacaroonUIKit
 
-final class AlgosDetailInfoViewModel: PairedViewModel {
+struct AlgosDetailInfoViewModel:
+    PairedViewModel,
+    Hashable {
     private(set) var totalAmount: String?
     private(set) var secondaryValue: String?
     private(set) var rewardsInfoViewModel: RewardDetailViewModel?
@@ -31,15 +33,15 @@ final class AlgosDetailInfoViewModel: PairedViewModel {
 }
 
 extension AlgosDetailInfoViewModel {
-    private func bindRewardsInfoViewModel(from account: Account) {
+    private mutating func bindRewardsInfoViewModel(from account: Account) {
         rewardsInfoViewModel = RewardDetailViewModel(account)
     }
 
-    private func bindTotalAmount(from account: Account) {
+    private mutating func bindTotalAmount(from account: Account) {
         totalAmount = account.amount.toAlgos.toAlgosStringForLabel
     }
 
-    private func bindSecondaryValue() {
+    private mutating func bindSecondaryValue() {
         secondaryValue = "$6.06" // <todo> Remove mock
     }
 }

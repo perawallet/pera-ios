@@ -18,7 +18,10 @@
 import MacaroonUIKit
 import UIKit
 
-final class TransactionHistoryContextViewModel: ViewModel {
+struct TransactionHistoryContextViewModel:
+    ViewModel,
+    Hashable {
+    private(set) var id: String?
     private(set) var title: String?
     private(set) var subtitle: String?
     private(set) var transactionAmountViewModel: TransactionAmountViewModel?
@@ -34,6 +37,8 @@ final class TransactionHistoryContextViewModel: ViewModel {
         guard let transaction = transactionDependencies.transaction as? Transaction else {
             return
         }
+
+        id = transaction.id
 
         let account = transactionDependencies.account
         let contact = transactionDependencies.contact
@@ -169,7 +174,7 @@ final class TransactionHistoryContextViewModel: ViewModel {
 }
 
 extension TransactionHistoryContextViewModel {
-    private func bindTitleAndSubtitle(with contact: Contact?, and address: Address?) {
+    private mutating func bindTitleAndSubtitle(with contact: Contact?, and address: Address?) {
         title = address?.title
 
         if let contact = contact {

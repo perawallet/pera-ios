@@ -24,7 +24,7 @@ final class AccountDetailViewController: PageContainer {
     private lazy var assetListScreen = AccountAssetListViewController(accountHandle: accountHandle, configuration: configuration)
     private lazy var nftListScreen = AccountNFTListViewController(account: accountHandle.value, configuration: configuration)
     private lazy var transactionListScreen = AccountTransactionListViewController(
-        draft: AccountTransactionListing(account: accountHandle.value),
+        draft: AccountTransactionListing(accountHandle: accountHandle),
         configuration: configuration
     )
     private lazy var localAuthenticator = LocalAuthenticator()

@@ -149,9 +149,9 @@ extension AccountAssetListViewController {
     ) {
         let screen: Screen
         if let assetDetail = assetDetail {
-            screen = .assetDetail(draft: AssetTransactionListing(account: accountHandle.value, assetDetail: assetDetail))
+            screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, assetDetail: assetDetail))
         } else {
-            screen = .algosDetail(draft: AlgoTransactionListing(account: accountHandle.value))
+            screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
         }
 
         open(screen, by: .push)

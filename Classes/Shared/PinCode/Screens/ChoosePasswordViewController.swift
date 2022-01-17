@@ -143,10 +143,14 @@ extension ChoosePasswordViewController {
                 assetDetail = account.assetInformations.first { $0.id == assetId }
             }
 
+            guard let accountHandle = sharedDataController.accountCollection[account.address] else {
+                return
+            }
+
             if let assetDetail = assetDetail {
-                route = .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail))
+                route = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, assetDetail: assetDetail))
             } else {
-                route = .algosDetail(draft: AlgoTransactionListing(account: account))
+                route = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
             }
         case let .assetActionConfirmationNotification(address, assetId):
             guard let account = session?.account(from: address),

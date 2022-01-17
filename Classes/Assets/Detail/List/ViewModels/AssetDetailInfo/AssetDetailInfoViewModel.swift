@@ -18,7 +18,9 @@
 import Foundation
 import MacaroonUIKit
 
-final class AssetDetailInfoViewModel: ViewModel {
+struct AssetDetailInfoViewModel:
+    ViewModel,
+    Hashable {
     private(set) var isVerified: Bool = false
     private(set) var amount: String?
     private(set) var name: String?
@@ -32,22 +34,22 @@ final class AssetDetailInfoViewModel: ViewModel {
 }
 
 extension AssetDetailInfoViewModel {
-    private func bindIsVerified(from assetDetail: AssetInformation) {
+    private mutating func bindIsVerified(from assetDetail: AssetInformation) {
         isVerified = assetDetail.isVerified
     }
 
-    private func bindName(from assetDetail: AssetInformation) {
+    private mutating func bindName(from assetDetail: AssetInformation) {
         name = assetDetail.getDisplayNames().0
     }
 
-    private func bindAmount(from assetDetail: AssetInformation, in account: Account) {
+    private mutating func bindAmount(from assetDetail: AssetInformation, in account: Account) {
         guard let assetAmount = account.amount(for: assetDetail) else {
             return
         }
         amount = assetAmount.toFractionStringForLabel(fraction: assetDetail.decimals)
     }
 
-    private func bindID(from assetDetail: AssetInformation) {
+    private mutating func bindID(from assetDetail: AssetInformation) {
         ID = "asset-detail-id-title".localized(params: "\(assetDetail.id)")
     }
 }
