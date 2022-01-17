@@ -587,3 +587,32 @@ extension HomeViewController {
         }
     }
 }
+
+struct PasscodeSettingDisplayStore: Storable {
+    typealias Object = Any
+
+    let appOpenCountToAskPasscode = 5
+
+    private let appOpenCountKey = "com.algorand.algorand.passcode.app.count.key"
+    private let dontAskAgainKey = "com.algorand.algorand.passcode.dont.ask.again"
+
+    var appOpenCount: Int {
+        return userDefaults.integer(forKey: appOpenCountKey)
+    }
+
+    mutating func increaseAppOpenCount() {
+        userDefaults.set(appOpenCount + 1, forKey: appOpenCountKey)
+    }
+
+    var hasPermissionToAskAgain: Bool {
+        return !userDefaults.bool(forKey: dontAskAgainKey)
+    }
+
+    mutating func disableAskingPasscode() {
+        userDefaults.set(true, forKey: dontAskAgainKey)
+    }
+
+    var shouldAskForPasscode: Bool {
+        return appOpenCount % appOpenCountToAskPasscode == 0
+    }
+}
