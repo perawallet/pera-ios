@@ -134,12 +134,12 @@ extension SettingsViewController {
     
     func didSelectItemFromAccountSettings(_ setting: AccountSettings) {
         switch setting {
+        case .security:
+            open(.securitySettings, by: .push)
         case .notifications:
             open(.notificationFilter(flow: .settings), by: .push)
         case .walletConnect:
             open(.walletConnectSessionList, by: .push)
-        default:
-            break
         }
     }
     
@@ -168,7 +168,9 @@ extension SettingsViewController {
                 open(url)
             }
         case .appReview:
-            bottomModalTransition.perform(.walletRating)
+            bottomModalTransition.perform(
+                .walletRating, by: .presentWithoutNavigationController
+            )
         case .termsAndServices:
             guard let url = AlgorandWeb.termsAndServices.link else {
                 return
@@ -221,8 +223,8 @@ extension SettingsViewController: SettingsDataSourceDelegate {
             image: "icon-settings-logout".uiImage,
             title: "settings-logout-title".localized,
             description: "settings-logout-detail".localized,
-            primaryActionButtonTitle: "node-settings-action-delete-title".localized,
-            secondaryActionButtonTitle: "title-cancel".localized,
+            primaryActionButtonTitle: "settings-logout-button-delete".localized,
+            secondaryActionButtonTitle: "settings-logout-button-cancel".localized,
             primaryAction: { [weak self] in
                 guard let self = self else {
                     return
@@ -230,13 +232,15 @@ extension SettingsViewController: SettingsDataSourceDelegate {
                 self.logout()
             }
         )
-
+        
         bottomModalTransition.perform(
-            .bottomWarning(configurator: bottomWarningViewConfigurator)
+            .bottomWarning(configurator: bottomWarningViewConfigurator),
+            by: .presentWithoutNavigationController
         )
     }
     
     private func logout() {
+        sharedDataController.reset()
         session?.reset(isContactIncluded: true)
         walletConnector.resetAllSessions()
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)

@@ -23,6 +23,7 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let yourBalanceTitleLabel: TextStyle
     let balanceLabel: TextStyle
+    let secondaryValueLabel: TextStyle
     let assetNameLabel: TextStyle
     let assetIDButton: ButtonStyle
     let verifiedImage: ImageStyle
@@ -37,6 +38,7 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
     let assetIDInfoButtonLeadingPadding: LayoutMetric
     let assetNameLabelTopPadding: LayoutMetric
     let bottomPadding: LayoutMetric
+    let secondaryValueLabelTopPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -53,6 +55,12 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMMono.regular.make(36)),
+        ]
+        self.secondaryValueLabel = [
+            .textAlignment(.left),
+            .textOverflow(SingleLineFittingText()),
+            .textColor(AppColors.Components.Text.main),
+            .font(Fonts.DMMono.regular.make(15)),
         ]
         self.assetNameLabel = [
             .textAlignment(.left),
@@ -77,5 +85,6 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
         self.assetNameLabelTopPadding = 65
         self.bottomSeparatorTopPadding = -67
         self.bottomPadding = 65
+        self.secondaryValueLabelTopPadding = 4
     }
 }

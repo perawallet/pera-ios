@@ -19,7 +19,7 @@ import UIKit
 
 class AssetAdditionViewModel {
     private(set) var backgroundColor: UIColor?
-    private(set) var assetDetail: AssetDetail?
+    private(set) var assetDetail: AssetInformation?
     private(set) var actionColor: UIColor?
     private(set) var id: String?
 
@@ -35,7 +35,7 @@ class AssetAdditionViewModel {
     }
 
     private func setAssetDetail(from assetInformation: AssetInformation) {
-        assetDetail = AssetDetail(assetInformation: assetInformation)
+        self.assetDetail = assetInformation
     }
 
     private func setActionColor() {

@@ -22,10 +22,6 @@ import MacaroonBottomSheet
 final class WCSessionShortListViewController: BaseViewController {
     weak var delegate: WCSessionShortListViewControllerDelegate?
 
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-
     private lazy var theme = Theme()
 
     private(set) lazy var sessionListView = WCSessionShortListView()

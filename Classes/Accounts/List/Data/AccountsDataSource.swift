@@ -172,39 +172,13 @@ extension AccountsDataSource {
         }
         
         if let account = account(at: indexPath.section) {
-            cell.bind(AlgoAssetViewModel(account: account))
+           // cell.bind(AlgoAssetViewModel(account: account))
         }
         
         return cell
     }
     
     private func dequeueAssetCells(in collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let account = account(at: indexPath.section),
-           let assetDetail = account.assetDetails[safe: indexPath.item - 1] {
-            if assetDetail.isRemoved || assetDetail.isRecentlyAdded {
-                let cell = layoutBuilder.dequeuePendingAssetCells(
-                    in: collectionView,
-                    cellForItemAt: indexPath,
-                    for: assetDetail
-                )
-                cell.bind(PendingAssetViewModel(assetDetail: assetDetail))
-                return cell
-            } else {
-                guard let assets = account.assets,
-                    let asset = assets.first(where: { $0.id == assetDetail.id }) else {
-                        fatalError("Unexpected Element")
-                }
-                
-                let cell = layoutBuilder.dequeueAssetCells(
-                    in: collectionView,
-                    cellForItemAt: indexPath,
-                    for: assetDetail
-                )
-                cell.bind(AssetViewModel(assetDetail: assetDetail, asset: asset))
-                return cell
-            }
-        }
-        
         fatalError("Index path is out of bounds")
     }
 }

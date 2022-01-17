@@ -91,7 +91,7 @@ extension LedgerAccountFetchOperation {
 
 extension LedgerAccountFetchOperation {
     private func fetchAccount(_ address: String) {
-        api.fetchAccount(AccountFetchDraft(publicKey: address)) { response in
+        api.fetchAccount(AccountFetchDraft(publicKey: address), queue: .main) { response in
             switch response {
             case .success(let accountWrapper):
                 if !accountWrapper.account.isSameAccount(with: address) {

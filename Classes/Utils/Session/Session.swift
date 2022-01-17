@@ -171,16 +171,8 @@ class Session: Storable {
     
     var accounts = [Account]()
     
-    @Atomic(identifier: "accountResults")
-    private var accountResults: [String: AccountResult] = [:]
-    
     init() {
         removeOldTermsAndServicesKeysFromDefaults()
-    }
-    
-    subscript (_ id: AccountIdentity) -> AccountResult? {
-        get { accountResults[id.address] }
-        set { $accountResults.modify { $0[id.address] = newValue } }
     }
 }
 
@@ -200,6 +192,12 @@ extension Session {
                 entity: ApplicationConfiguration.entityName,
                 with: [ApplicationConfiguration.DBKeys.password.rawValue: password]
             )
+        }
+    }
+    
+    func deletePassword() {
+        if let config = applicationConfiguration {
+            config.removeValue(entity: ApplicationConfiguration.entityName, with: ApplicationConfiguration.DBKeys.password.rawValue)
         }
     }
     
@@ -412,10 +410,6 @@ extension Session {
         self.clear(.defaults)
         self.clear(.keychain)
         self.isValid = false
-        
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.invalidateAccountManagerFetchPolling()
-        }
     }
 }
 

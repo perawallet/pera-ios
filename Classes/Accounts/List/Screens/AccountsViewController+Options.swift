@@ -86,7 +86,10 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             return
         }
         
-        modalTransition.perform(.passphraseDisplay(address: account.address))
+        modalTransition.perform(
+            .passphraseDisplay(address: account.address),
+            by: .presentWithoutNavigationController
+        )
     }
     
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
@@ -113,7 +116,10 @@ extension AccountsViewController: OptionsViewControllerDelegate {
             }
         )
 
-        modalTransition.perform(.bottomWarning(configurator: configurator))
+        modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
     }
 
     private func removeAccount() {
@@ -149,15 +155,15 @@ extension AccountsViewController: ChoosePasswordViewControllerDelegate {
 extension AccountsViewController: ManageAssetsViewControllerDelegate {
     func manageAssetsViewController(
         _ assetRemovalViewController: ManageAssetsViewController,
-        didRemove assetDetail: AssetDetail,
+        didRemove assetDetail: AssetInformation,
         from account: Account
     ) {
-        guard let section = accountsDataSource.section(for: account),
-            let index = accountsDataSource.item(for: assetDetail, in: account) else {
-            return
-        }
-        
-        accountsDataSource.remove(assetDetail: assetDetail, from: account)
-        accountsView.accountsCollectionView.reloadItems(at: [IndexPath(item: index + 1, section: section)])
+//        guard let section = accountsDataSource.section(for: account),
+//            let index = accountsDataSource.item(for: assetDetail, in: account) else {
+//            return
+//        }
+//
+//        accountsDataSource.remove(assetDetail: assetDetail, from: account)
+//        accountsView.accountsCollectionView.reloadItems(at: [IndexPath(item: index + 1, section: section)])
     }
 }

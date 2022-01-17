@@ -17,7 +17,9 @@
 
 import MacaroonUIKit
 
-final class TransactionHistoryTitleContextViewModel: ViewModel {
+struct TransactionHistoryTitleContextViewModel:
+    ViewModel,
+    Hashable {
     private(set) var title: String
 
     init(title: String) {

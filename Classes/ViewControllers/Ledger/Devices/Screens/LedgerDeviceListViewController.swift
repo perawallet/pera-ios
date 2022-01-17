@@ -117,7 +117,10 @@ extension LedgerDeviceListViewController: UICollectionViewDataSource {
 
         oneTimeDisplayStorage.setDisplayedOnce(for: .ledgerPairingWarning)
 
-        initialPairingWarningTransition.perform(.ledgerPairWarning(delegate: self))
+        initialPairingWarningTransition.perform(
+            .ledgerPairWarning(delegate: self),
+            by: .presentWithoutNavigationController
+        )
         
         ledgerAccountFetchOperation.connectToDevice(ledgerDevices[indexPath.item])
     }

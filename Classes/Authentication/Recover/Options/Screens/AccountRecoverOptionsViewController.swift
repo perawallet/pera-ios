@@ -22,10 +22,6 @@ import MacaroonUIKit
 final class AccountRecoverOptionsViewController: BaseViewController {
     weak var delegate: AccountRecoverOptionsViewControllerDelegate?
 
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-
     private lazy var optionsView = OptionsView()
     private lazy var theme = Theme()
 
@@ -45,8 +41,7 @@ final class AccountRecoverOptionsViewController: BaseViewController {
         view.addSubview(optionsView)
 
         optionsView.snp.makeConstraints {
-            $0.leading.trailing.top.equalToSuperview()
-            $0.bottom.safeEqualToBottom(of: self)
+            $0.edges.equalToSuperview()
         }
     }
 }

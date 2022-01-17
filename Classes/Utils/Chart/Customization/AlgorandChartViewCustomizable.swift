@@ -35,4 +35,5 @@ protocol AlgorandChartViewCustomizable {
     var xAxisCustomizer: AlgorandChartViewAxisCustomizable { get }
     var yAxisCustomizer: AlgorandChartViewAxisCustomizable { get }
     var minimumOffset: CGFloat { get }
+    var extraOffset: CGFloat { get }
 }

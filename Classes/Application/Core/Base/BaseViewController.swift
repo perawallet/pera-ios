@@ -178,8 +178,9 @@ extension BaseViewController {
         guard shouldShowNavigationBar else { return }
 
         if prefersLargeTitle {
-            let navigationBar = navigationController?.navigationBar
             navigationItem.largeTitleDisplayMode = .always
+            let navigationBar = navigationController?.navigationBar
+            navigationBar?.prefersLargeTitles = true
             navigationBar?.layoutMargins.left = 24
             navigationBar?.layoutMargins.right = 24
         } else {
@@ -209,6 +210,10 @@ extension BaseViewController {
 
     var bannerController: BannerController? {
         return configuration.bannerController
+    }
+
+    var sharedDataController: SharedDataController {
+        return configuration.sharedDataController
     }
 }
 

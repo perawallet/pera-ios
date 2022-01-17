@@ -18,14 +18,16 @@
 import MacaroonUIKit
 import UIKit
 
-struct PendingAssetPreviewModel {
+struct PendingAssetPreviewModel: Hashable {
     let secondaryImage: UIImage?
     let assetPrimaryTitle: String?
     let assetSecondaryTitle: String?
     let assetStatus: String?
 }
 
-final class PendingAssetPreviewViewModel: PairedViewModel {
+struct PendingAssetPreviewViewModel:
+    PairedViewModel,
+    Hashable {
     private(set) var secondaryImage: UIImage?
     private(set) var assetPrimaryTitle: String?
     private(set) var assetSecondaryTitle: String?
@@ -40,19 +42,19 @@ final class PendingAssetPreviewViewModel: PairedViewModel {
 }
 
 extension PendingAssetPreviewViewModel {
-    private func bindSecondaryImage(_ image: UIImage?) {
+    private mutating func bindSecondaryImage(_ image: UIImage?) {
         self.secondaryImage = image
     }
 
-    private func bindAssetPrimaryTitle(_ title: String?) {
+    private mutating func bindAssetPrimaryTitle(_ title: String?) {
         self.assetPrimaryTitle = title.isNilOrEmpty ? "title-unknown".localized : title
     }
 
-    private func bindAssetSecondaryTitle(_ title: String?) {
+    private mutating func bindAssetSecondaryTitle(_ title: String?) {
         self.assetSecondaryTitle = title
     }
 
-    private func bindAssetStatus(_ value: String?) {
+    private mutating func bindAssetStatus(_ value: String?) {
         self.assetStatus = value
     }
 }

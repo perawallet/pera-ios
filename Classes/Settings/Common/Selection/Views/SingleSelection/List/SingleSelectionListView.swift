@@ -22,7 +22,7 @@ final class SingleSelectionListView: View {
     weak var delegate: SingleSelectionListViewDelegate?
     
     private lazy var theme = SingleSelectionListViewTheme()
-    private lazy var errorView = ListErrorView()
+    private lazy var errorView = NoContentWithActionView()
 
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -47,10 +47,9 @@ final class SingleSelectionListView: View {
     }
 
     func customize(_ theme: SingleSelectionListViewTheme) {
-        errorView.setImage(img("icon-warning-error"))
-        errorView.setTitle("transaction-filter-error-title".localized)
-        errorView.setSubtitle("transaction-filter-error-subtitle".localized)
-        
+        errorView.customize(NoContentWithActionViewCommonTheme())
+        errorView.bindData(ListErrorViewModel())
+
         addCollectionView(theme)
     }
     
@@ -59,8 +58,16 @@ final class SingleSelectionListView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
     
     func linkInteractors() {
+        errorView.setListeners()
+        errorView.handlers.didTapActionView = { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.delegate?.singleSelectionListViewDidTryAgain(self)
+        }
+
         refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
-        errorView.delegate = self
     }
 }
 
@@ -115,12 +122,6 @@ extension SingleSelectionListView {
     
     func setRefreshControl() {
         collectionView.refreshControl = refreshControl
-    }
-}
-
-extension SingleSelectionListView: ListErrorViewDelegate {
-    func listErrorViewDidTryAgain(_ listErrorView: ListErrorView) {
-        delegate?.singleSelectionListViewDidTryAgain(self)
     }
 }
 

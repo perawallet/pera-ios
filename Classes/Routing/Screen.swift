@@ -28,7 +28,7 @@ indirect enum Screen {
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case home(route: Screen?)
-    case accountDetail(account: Account)
+    case accountDetail(accountHandle: AccountHandle)
     case assetSearch(account: Account)
     case assetDetail(draft: TransactionListing)
     case algosDetail(draft: TransactionListing)
@@ -62,7 +62,7 @@ indirect enum Screen {
         isSenderEditable: Bool
     )
     case nodeSettings
-    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetDetail?)
+    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetInformation?)
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
@@ -83,6 +83,7 @@ indirect enum Screen {
     case rekeyConfirmation(account: Account, ledgerDetail: LedgerDetail?, ledgerAddress: String)
     case ledgerAccountSelection(flow: AccountSetupFlow, accounts: [Account])
     case walletRating
+    case securitySettings
     case developerSettings
     case currencySelection
     case appearanceSelection
@@ -120,14 +121,14 @@ indirect enum Screen {
     case tabBarModal
     case algoStatisticsDateSelection(option: AlgosUSDValueInterval, delegate: AlgoStatisticsDateSelectionViewControllerDelegate)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
-    case accountListOptions(accountType: AccountType)
+    case accountListOptions(accountType: AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
     case orderAccountList(accountType: AccountType)
-    case accountSelection
+    case accountSelection(transactionAction: TransactionAction)
     case assetSelection(account: Account)
     case sendTransaction(draft: SendTransactionDraft)
     case editNote(note: String?, delegate: EditNoteScreenDelegate?)
-    case portfolioDescription
-    case unavailableAccount(account: AccountInformation)
+    case portfolioCalculationInfo(result: PortfolioCalculator.Result, eventHandler: PortfolioCalculationInfoViewController.EventHandler)
+    case invalidAccount(account: AccountHandle)
     case transactionResult
     case transactionAccountSelect(draft: SendTransactionDraft)
     case sendTransactionPreview(draft: TransactionSendDraft?, transactionController: TransactionController)

@@ -18,7 +18,9 @@
 import UIKit
 import MacaroonUIKit
 
-final class TransactionHistoryFilterViewModel: PairedViewModel {
+struct TransactionHistoryFilterViewModel:
+    PairedViewModel,
+    Hashable {
     private(set) var image: UIImage?
     private(set) var title: String?
 
@@ -29,7 +31,7 @@ final class TransactionHistoryFilterViewModel: PairedViewModel {
 }
 
 extension TransactionHistoryFilterViewModel {
-    private func bindImage(from filterOption: TransactionFilterViewController.FilterOption) {
+    private mutating func bindImage(from filterOption: TransactionFilterViewController.FilterOption) {
         switch filterOption {
         case .allTime:
             image = img("icon-transaction-filter-gray")
@@ -46,7 +48,7 @@ extension TransactionHistoryFilterViewModel {
         }
     }
 
-    private func bindTitle(from filterOption: TransactionFilterViewController.FilterOption) {
+    private mutating func bindTitle(from filterOption: TransactionFilterViewController.FilterOption) {
         switch filterOption {
         case .allTime:
             title = "contacts-transactions-title".localized

@@ -33,26 +33,18 @@ extension AssetCachable where Self: BaseViewController {
         if let assetDetail = api.session.assetDetails[id] {
             completion(assetDetail)
         } else {
-            api.getAssetDetails(AssetFetchDraft(assetId: "\(id)")) { assetResponse in
+
+            /// <todo> Change for asset details ot information
+            api.getAssetDetails(AssetFetchQuery(ids: [id])) { assetResponse in
                 switch assetResponse {
                 case .success(let assetDetailResponse):
-                    var assetDetail = assetDetailResponse.assetDetail
-                    self.setVerifiedIfNeeded(&assetDetail, with: id)
+                    let assetDetail = AssetDetail(assetInformation: assetDetailResponse.results[0])
                     api.session.assetDetails[id] = assetDetail
                     completion(assetDetail)
                 case .failure:
                     completion(nil)
                 }
             }
-        }
-    }
-
-    private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail, with id: Int64) {
-        if let verifiedAssets = api?.session.verifiedAssets,
-            verifiedAssets.contains(where: { verifiedAsset -> Bool in
-                verifiedAsset.id == id
-            }) {
-            assetDetail.isVerified = true
         }
     }
 }

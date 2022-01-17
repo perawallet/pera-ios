@@ -20,12 +20,16 @@ import Foundation
 import UIKit
 
 final class SelectAccountViewControllerDataSource: NSObject {
-    private(set) var accounts = [Account]()
+    private(set) var accounts = [AccountHandle]()
 
-    init(session: Session?) {
+    private let sharedDataController: SharedDataController
+
+    init(sharedDataController: SharedDataController) {
+        self.sharedDataController = sharedDataController
         super.init()
 
-        accounts = session?.accounts ?? []
+        // Watch accounts cannot complete a transacion
+        accounts = sharedDataController.accountCollection.sorted().filter { !$0.value.isWatchAccount() }
     }
 }
 
@@ -39,12 +43,18 @@ UICollectionViewDataSource {
         let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
 
         if let account = accounts[safe: indexPath.item] {
+            let accountPortfolio = AccountPortfolio(
+                account: account,
+                currency: sharedDataController.currency,
+                calculator: ALGPortfolioCalculator()
+            )
             cell.bindData(
-                AccountPreviewViewModel(from: account)
+                AccountPreviewViewModel(
+                    accountPortfolio
+                )
             )
         }
 
         return cell
     }
-
 }

@@ -172,7 +172,8 @@ extension LedgerOperation {
         if let presentingViewController = topMostController {
             let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: presentingViewController)
             ledgerApprovalViewController = ledgerApprovalTransition.perform(
-                .ledgerApproval(mode: .approve, deviceName: (connectedDevice?.name).emptyIfNil)
+                .ledgerApproval(mode: .approve, deviceName: (connectedDevice?.name).emptyIfNil),
+                by: .present
             )
         }
     }
@@ -194,7 +195,10 @@ extension LedgerOperation {
                 actionTitle: "title-ok".localized
             )
 
-            warningModalTransition.perform(.warningAlert(warningAlert: warningAlert))
+            warningModalTransition.perform(
+                .warningAlert(warningAlert: warningAlert),
+                by: .presentWithoutNavigationController
+            )
         }
     }
 }

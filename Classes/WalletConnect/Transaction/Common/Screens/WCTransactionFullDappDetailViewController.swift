@@ -20,10 +20,6 @@ import MacaroonBottomSheet
 import MacaroonUIKit
 
 class WCTransactionFullDappDetailViewController: BaseViewController {
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-
     private lazy var fullDappDetailView = WCTransactionFullDappDetailView()
 
     private let wcSession: WCSession

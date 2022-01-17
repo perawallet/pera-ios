@@ -30,7 +30,7 @@ final class AlgoStatisticsViewModel {
     ) {
         bindHeaderViewModel(from: priceChange, and: timeInterval, and: currency)
         bindChartViewModel(from: values, and: priceChange, and: currency)
-        bindFooterViewModel()
+        bindFooterViewModel(from: priceChange, and: timeInterval, and: currency)
     }
 
     private func bindHeaderViewModel(
@@ -49,7 +49,11 @@ final class AlgoStatisticsViewModel {
         chartViewModel = AlgosUSDChartViewModel(valueChangeStatus: priceChange.getValueChangeStatus(), values: values, currency: currency)
     }
 
-    private func bindFooterViewModel() {
-        footerViewModel = AlgoStatisticsFooterViewModel("TODO") // Remove Mock Data
+    private func bindFooterViewModel(
+        from priceChange: AlgoUSDPriceChange,
+        and timeInterval: AlgosUSDValueInterval,
+        and currency: Currency
+    ) {
+        footerViewModel = AlgoStatisticsFooterViewModel(priceChange: priceChange, timeInterval: timeInterval, currency: currency) // Remove Mock Data
     }
 }

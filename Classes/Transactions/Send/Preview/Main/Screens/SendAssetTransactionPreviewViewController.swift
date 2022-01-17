@@ -76,7 +76,8 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             .accountList(
                 mode: accountSelectionState == .sender ? .transactionSender(assetDetail: assetDetail) : .transactionReceiver(assetDetail: assetDetail),
                 delegate: self
-            )
+            ),
+            by: .presentWithoutNavigationController
         )
     }
     
@@ -227,7 +228,10 @@ class SendAssetTransactionPreviewViewController: SendTransactionPreviewViewContr
             }
         )
 
-        modalTransition.perform(.bottomWarning(configurator: bottomWarningViewConfigurator))
+        modalTransition.perform(
+            .bottomWarning(configurator: bottomWarningViewConfigurator),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
@@ -246,7 +250,7 @@ extension SendAssetTransactionPreviewViewController {
         }
         
         loadingController?.startLoadingWithMessage("title-loading".localized)
-        api?.fetchAccount(AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
+        api?.fetchAccount(AccountFetchDraft(publicKey: address), queue: .main) { fetchAccountResponse in
             switch fetchAccountResponse {
             case let .success(receiverAccountWrapper):
                 if !receiverAccountWrapper.account.isSameAccount(with: address) {
@@ -288,26 +292,29 @@ extension SendAssetTransactionPreviewViewController {
     }
     
     private func presentAssetNotSupportedAlert(receiverAddress: String?) {
-        let assetAlertDraft = AssetAlertDraft(
-            account: selectedAccount,
-            assetIndex: assetDetail.id,
-            assetDetail: assetDetail,
-            title: "asset-support-title".localized,
-            detail: "asset-support-error".localized,
-            actionTitle: "title-ok".localized
-        )
-        
-        if let receiverAddress = receiverAddress,
-            let senderAddress = selectedAccount?.address {
-            let draft = AssetSupportDraft(
-                sender: senderAddress,
-                receiver: receiverAddress,
-                assetId: assetDetail.id
-            )
-            api?.sendAssetSupportRequest(draft)
-        }
-
-        modalTransition.perform(.assetActionConfirmation(assetAlertDraft: assetAlertDraft))
+//        let assetAlertDraft = AssetAlertDraft(
+//            account: selectedAccount,
+//            assetIndex: assetDetail.id,
+//            assetDetail: assetDetail,
+//            title: "asset-support-title".localized,
+//            detail: "asset-support-error".localized,
+//            actionTitle: "title-ok".localized
+//        )
+//        
+//        if let receiverAddress = receiverAddress,
+//            let senderAddress = selectedAccount?.address {
+//            let draft = AssetSupportDraft(
+//                sender: senderAddress,
+//                receiver: receiverAddress,
+//                assetId: assetDetail.id
+//            )
+//            api?.sendAssetSupportRequest(draft)
+//        }
+//
+//        modalTransition.perform(
+//            .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
+//            by: .presentWithoutNavigationController
+//        )
     }
     
     private func validateTransaction() {

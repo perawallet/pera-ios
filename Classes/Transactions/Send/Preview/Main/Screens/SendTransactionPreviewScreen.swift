@@ -64,6 +64,7 @@ final class SendTransactionPreviewScreen: BaseViewController {
    override func linkInteractors() {
       super.linkInteractors()
 
+      transactionController.delegate = self
       nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
    }
 }
@@ -72,15 +73,7 @@ extension SendTransactionPreviewScreen {
    @objc
    private func didTapNext() {
       loadingController?.startLoadingWithMessage("title-loading".localized)
-      transactionController.uploadTransaction { [weak self] in
-         guard let self = self else {
-            return
-         }
-
-         self.loadingController?.stopLoading()
-
-         self.open(.transactionResult, by: .push)
-      }
+      transactionController.uploadTransaction()
    }
 }
 
@@ -102,6 +95,28 @@ extension SendTransactionPreviewScreen {
          $0.leading.trailing.equalToSuperview().inset(theme.nextButtonLeadingInset)
          $0.bottom.safeEqualToBottom(of: self).inset(theme.nextButtonBottomInset)
          $0.height.equalTo(theme.nextButtonHeight)
+      }
+   }
+}
+
+extension SendTransactionPreviewScreen: TransactionControllerDelegate {
+   func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID) {
+      loadingController?.stopLoading()
+      open(.transactionResult, by: .push)
+   }
+   
+   func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
+      loadingController?.stopLoading()
+      switch error {
+      case let .network(apiError):
+          switch apiError {
+          case .connection:
+              displaySimpleAlertWith(title: "title-error".localized, message: "title-internet-connection".localized)
+          default:
+              bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+          }
+      default:
+          bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
       }
    }
 }

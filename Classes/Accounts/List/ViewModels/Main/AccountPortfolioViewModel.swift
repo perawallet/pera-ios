@@ -15,40 +15,83 @@
 //
 //   AccountPortfolioViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
-final class AccountPortfolioViewModel: ViewModel {
-    private(set) var portfolioValueViewModel: PortfolioValueViewModel?
-    private(set) var algoHoldingsValue: EditText?
-    private(set) var assetHoldingsValue: EditText?
+struct AccountPortfolioViewModel:
+    PairedViewModel,
+    Hashable {
+    private(set) var title: EditText?
+    private(set) var value: EditText?
 
     init(
-        _ accounts: [Account]
+        _ model: AccountPortfolio
     ) {
-        bindPortfolioValueViewModel(accounts)
-        bindAlgoHoldingsValue(accounts)
-        bindAssetHoldingsValue(accounts)
+        bind(model)
     }
 }
 
 extension AccountPortfolioViewModel {
-    private func bindPortfolioValueViewModel(
-        _ accounts: [Account]
+    mutating func bind(
+        _ portfolio: AccountPortfolio
     ) {
-        let totalAlgo = accounts.map( {$0.amount} ).reduce(0, +).toAlgos
-        portfolioValueViewModel = PortfolioValueViewModel(.all(value: .value(totalAlgo)))
+        var mPortfolio = portfolio
+        mPortfolio.calculate()
+        
+        bindTitle(mPortfolio)
+        bindValue(mPortfolio)
     }
-
-    private func bindAlgoHoldingsValue(
-        _ accounts: [Account]
+    
+    mutating func bindTitle(
+        _ portfolio: AccountPortfolio
     ) {
-        let totalAlgo = accounts.map( {$0.amount} ).reduce(0, +).toAlgos
-        algoHoldingsValue = .string("\(totalAlgo)")
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+        
+        title = .attributedString(
+            "account-detail-portfolio-title"
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
+            )
     }
-
-    private func bindAssetHoldingsValue(
-        _ accounts: [Account]
+    
+    mutating func bindValue(
+        _ portfolio: AccountPortfolio
     ) {
-        assetHoldingsValue = .string("1234")
+        let font = Fonts.DMMono.regular.make(36)
+        let lineHeightMultiplier = 1.02
+        
+        value = .attributedString(
+            portfolio.valueResult.uiDescription.attributed([
+                .font(font),
+                .letterSpacing(-0.72),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineBreakMode(.byTruncatingTail),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
+    }
+}
+
+extension AccountPortfolioViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(value)
+    }
+    
+    static func == (
+        lhs: AccountPortfolioViewModel,
+        rhs: AccountPortfolioViewModel
+    ) -> Bool {
+        return lhs.value == rhs.value
     }
 }

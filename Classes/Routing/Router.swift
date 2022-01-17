@@ -178,6 +178,7 @@ class Router {
         let configuration = ViewControllerConfiguration(
             api: rootViewController.appConfiguration.api,
             session: rootViewController.appConfiguration.session,
+            sharedDataController: rootViewController.appConfiguration.sharedDataController,
             walletConnector: rootViewController.appConfiguration.walletConnector,
             loadingControlller: rootViewController.appConfiguration.loadingController,
             bannerController: rootViewController.appConfiguration.bannerController
@@ -277,8 +278,8 @@ class Router {
             viewController = AssetDetailViewController(draft: draft, configuration: configuration)
         case let .algosDetail(draft):
             viewController = AlgosDetailViewController(draft: draft, configuration: configuration)
-        case let .accountDetail(account):
-            viewController = AccountDetailViewController(account: account, configuration: configuration)
+        case let .accountDetail(accountHandle):
+            viewController = AccountDetailViewController(accountHandle: accountHandle, configuration: configuration)
         case let .assetSearch(account):
             viewController = AssetSearchViewController(account: account, configuration: configuration)
         case let .addAsset(account):
@@ -342,6 +343,8 @@ class Router {
             )
         case .walletRating:
             viewController = WalletRatingViewController(configuration: configuration)
+        case .securitySettings:
+            viewController = SecuritySettingsViewController(configuration: configuration)
         case .developerSettings:
             viewController = DeveloperSettingsViewController(configuration: configuration)
         case .currencySelection:
@@ -479,12 +482,14 @@ class Router {
             let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
             ledgerPairWarningViewController.delegate = delegate
             viewController = ledgerPairWarningViewController
-        case let .accountListOptions(accountType):
-            viewController = AccountListOptionsViewController(accountType: accountType, configuration: configuration)
+        case let .accountListOptions(accountType, eventHandler):
+            let aViewController = AccountListOptionsViewController(accountType: accountType, configuration: configuration)
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .orderAccountList(accountType):
             viewController = OrderAccountListViewController(accountType: accountType, configuration: configuration)
-        case .accountSelection:
-            viewController = SelectAccountViewController(configuration: configuration)
+        case let .accountSelection(transactionAction):
+            viewController = SelectAccountViewController(transactionAction: transactionAction, configuration: configuration)
         case .assetSelection(let account):
             viewController = SelectAssetViewController(account: account, configuration: configuration)
         case .sendTransaction(let draft):
@@ -493,10 +498,12 @@ class Router {
             let editNoteScreen = EditNoteScreen(note: note, configuration: configuration)
             editNoteScreen.delegate = delegate
             viewController = editNoteScreen
-        case .portfolioDescription:
-            viewController = PortfolioCalculationDescriptionViewController(configuration: configuration)
-        case let .unavailableAccount(account):
-            viewController = UnavailableAccountOptionsViewController(account: account, configuration: configuration)
+        case .portfolioCalculationInfo(let result, let eventHandler):
+            let aViewController = PortfolioCalculationInfoViewController(result: result, configuration: configuration)
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
+        case let .invalidAccount(account):
+            viewController = InvalidAccountOptionsViewController(account: account, configuration: configuration)
         case .transactionResult:
             viewController = TransactionResultScreen(configuration: configuration)
         case .transactionAccountSelect(let draft):

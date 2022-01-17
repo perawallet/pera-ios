@@ -30,16 +30,7 @@ final class ChoosePasswordViewController: BaseViewController {
     private let localAuthenticator = LocalAuthenticator()
     
     private var pinLimitStore = PinLimitStore()
-    
-    private lazy var accountManager: AccountManager? = {
-        guard let api = api,
-              mode == .login else {
-            return nil
-        }
-        let manager = AccountManager(api: api)
-        return manager
-    }()
-    
+
     weak var delegate: ChoosePasswordViewControllerDelegate?
     
     init(mode: Mode, accountSetupFlow: AccountSetupFlow?, route: Screen?, configuration: ViewControllerConfiguration) {
@@ -53,19 +44,6 @@ final class ChoosePasswordViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         displayPinLimitScreenIfNeeded()
-    }
-    
-    override func configureNavigationBarAppearance() {
-        switch mode {
-        case .confirm,
-             .resetPassword:
-            let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-                self.dismissScreen()
-            }
-            leftBarButtonItems = [closeBarButtonItem]
-        default:
-            break
-        }
     }
     
     override func configureAppearance() {
@@ -113,12 +91,8 @@ extension ChoosePasswordViewController {
     
     private func setTitle() {
         switch mode {
-        case .setup:
-            title = "choose-password-title".localized
         case .verify:
             title = "password-verify-title".localized
-        case .resetPassword, .resetVerify:
-            title = "password-change-title".localized
         case let .confirm(viewTitle):
             title = viewTitle
         default:
@@ -141,18 +115,14 @@ extension ChoosePasswordViewController {
     }
     
     private func launchHome() {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-        accountManager?.fetchAllAccounts(isVerifiedAssetsIncluded: true) {
-            self.setupRouteFromNotification()
-            DispatchQueue.main.async {
-                UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
-            }
+        setupRouteFromNotification()
 
-            self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
-                self.dismiss(animated: false) {
-                    UIApplication.shared.rootViewController()?.setupTabBarController()
-                }
-            }
+        DispatchQueue.main.async {
+            UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
+        }
+
+        dismiss(animated: false) {
+            UIApplication.shared.rootViewController()?.setupTabBarController()
         }
     }
     
@@ -167,16 +137,20 @@ extension ChoosePasswordViewController {
                 return
             }
             
-            var assetDetail: AssetDetail?
+            var assetDetail: AssetInformation?
             
             if let assetId = assetId {
-                assetDetail = account.assetDetails.first { $0.id == assetId }
+                assetDetail = account.assetInformations.first { $0.id == assetId }
+            }
+
+            guard let accountHandle = sharedDataController.accountCollection[account.address] else {
+                return
             }
 
             if let assetDetail = assetDetail {
-                route = .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail))
+                route = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, assetDetail: assetDetail))
             } else {
-                route = .algosDetail(draft: AlgoTransactionListing(account: account))
+                route = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
             }
         case let .assetActionConfirmationNotification(address, assetId):
             guard let account = session?.account(from: address),
@@ -234,6 +208,8 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             verifyPassword(with: value, and: previousPassword)
         case .login:
             login(with: value)
+        case .deletePassword:
+            deletePassword(with: value)
         case .resetPassword:
             openResetVerify(with: value)
         case let .resetVerify(previousPassword):
@@ -316,6 +292,15 @@ extension ChoosePasswordViewController {
             }
         }
     }
+    
+    private func deletePassword(with value: NumpadKey) {
+        viewModel.configureSelection(in: choosePasswordView, for: value) { password in
+            if session?.isPasswordMatching(with: password) ?? false {
+                session?.deletePassword()
+                dismissScreen()
+            }
+        }
+    }
 }
 
 extension ChoosePasswordViewController: PinLimitViewControllerDelegate {
@@ -330,6 +315,7 @@ extension ChoosePasswordViewController {
         case setup
         case verify(String)
         case login
+        case deletePassword
         case resetPassword
         case resetVerify(String)
         case confirm(String)

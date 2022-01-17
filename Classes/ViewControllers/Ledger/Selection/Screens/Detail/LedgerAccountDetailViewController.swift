@@ -25,6 +25,7 @@ final class LedgerAccountDetailViewController: BaseScrollViewController {
         guard let api = api else { fatalError("API should be set.") }
         return LedgerAccountDetailDataSource(
             api: api,
+            sharedDataController: sharedDataController,
             loadingController: loadingController,
             account: account,
             rekeyedAccounts: rekeyedAccounts ?? []

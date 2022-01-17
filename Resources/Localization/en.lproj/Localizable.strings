@@ -312,6 +312,8 @@
 "settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
 "settings-logout-title" = "Delete All Data";
 "settings-logout-detail" = "Are you sure you want to delete all the data?";
+"settings-logout-button-delete" = "Yes, delete all data";
+"settings-logout-button-cancel" = "Keep it";
 "settings-developer" = "Developer Settings";
 "settings-currency" = "Currency";
 "settings-developer-dispenser" = "Algorand Dispenser";
@@ -324,6 +326,13 @@
 "settings-support-title" = "Send Feedback";
 "settings-security-title" = "Security";
 "settings-wallet-connect-title" = "WalletConnect Sessions";
+
+// MARK: Security Settings
+"security-settings-title" = "Security";
+"security-settings-section" = "Security Preferences";
+"security-settings-pinCode-activation" = "Enable PIN Code";
+"security-settings-pinCode-change" = "Set / Change PIN Code";
+"security-settings-localAuthentication" = "Enable Face ID/Touch ID";
 
 // MARK: Node Settings
 "node-settings-title" = "Node Settings";
@@ -489,8 +498,7 @@
 // MARK: Ledger Approval
 "ledger-approval-title" = "Ledger Approval";
 "ledger-approval-cancel-title" = "Cancel Approval";
-"ledger-approval-message" = "Please verify the account address
-on your Ledger device (%d)";
+"ledger-approval-message" = "Please verify the account address on your Ledger device (%@)";
 "ledger-approval-connection-title" = "Ledger Connection";
 "ledger-approval-connection-message" = "Waiting for ledger to connect.";
 
@@ -811,7 +819,7 @@ on your Ledger device (%d)";
 
 "account-options-add-account-title" = "Add Account";
 "account-options-arrange-list-title" = "Arrange List";
-"account-listing-error-message" = "Sorry, we can’t show the details of this account. It looks like we are having some internal issues. Please refresh the page.";
+"account-listing-error-message" = "Sorry, we can't show the details of this portfolio. It looks like we are having issues for the calculation.\n\nPlease note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.";
 
 "account-detail-portfolio-title" = "Account Value";
 "account-detail-assets-search" = "Search my assets";
@@ -857,3 +865,4 @@ on your Ledger device (%d)";
 "single-transaction-request-opt-in-subtitle" = "OnCompletion";
 
 "portfolio-calculation-title" = "How we calculate portfolio value";
+"portfolio-calculation-description" = "The total portfolio value is calculated by adding up all assets and Algo available in your accounts. If you hold multiple wallets, the Total Portfolio value is a sum of all accounts.\n\nAsset prices are estimated based on daily values fetched from Tinyman. Please note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.\n\nWatch accounts are not considered a part of your portfolio and are not included in the Total Portfolio calculation.";

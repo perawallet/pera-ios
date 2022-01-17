@@ -158,12 +158,15 @@ extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
     private func openAssetDetail(from notificationDetail: NotificationDetail) {
         let accountDetails = dataSource.getUserAccount(from: notificationDetail)
         if let account = accountDetails.account {
+            guard let accountHandle = sharedDataController.accountCollection[account.address] else {
+                return
+            }
 
             let screen: Screen
             if let assetDetail = accountDetails.assetDetail {
-                screen = .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail))
+                screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, assetDetail: assetDetail))
             } else {
-                screen = .algosDetail(draft: AlgoTransactionListing(account: account))
+                screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
             }
 
             open(screen, by: .push)

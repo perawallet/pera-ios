@@ -23,6 +23,7 @@ final class AssetDetailInfoView: View {
 
     private lazy var yourBalanceTitleLabel = UILabel()
     private lazy var balanceLabel = UILabel()
+    private lazy var secondaryValueLabel = UILabel()
     private lazy var horizontalStackView = UIStackView()
     private lazy var assetNameLabel = UILabel()
     private lazy var assetIDButton = Button(.imageAtRight(spacing: 8))
@@ -37,6 +38,7 @@ final class AssetDetailInfoView: View {
 
         addYourBalanceTitleLabel(theme)
         addBalanceLabel(theme)
+        addSecondaryValueLabel(theme)
         addAssetNameLabel(theme)
         addAssetIDButton(theme)
     }
@@ -73,8 +75,19 @@ extension AssetDetailInfoView {
             $0.leading.equalTo(yourBalanceTitleLabel)
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
+    }
 
-        balanceLabel.addSeparator(theme.separator, padding: theme.topSeparatorTopPadding)
+    private func addSecondaryValueLabel(_ theme: AssetDetailInfoViewTheme) {
+        secondaryValueLabel.customizeAppearance(theme.secondaryValueLabel)
+
+        addSubview(secondaryValueLabel)
+        secondaryValueLabel.snp.makeConstraints {
+            $0.top.equalTo(balanceLabel.snp.bottom).offset(theme.secondaryValueLabelTopPadding)
+            $0.leading.equalTo(yourBalanceTitleLabel)
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
+        }
+
+        secondaryValueLabel.addSeparator(theme.separator, padding: theme.topSeparatorTopPadding)
     }
 
     private func addAssetNameLabel(_ theme: AssetDetailInfoViewTheme) {
@@ -110,6 +123,7 @@ extension AssetDetailInfoView: ViewModelBindable {
     func bindData(_ viewModel: AssetDetailInfoViewModel?) {
         verifiedImage.isHidden = !(viewModel?.isVerified ?? false)
         balanceLabel.text = viewModel?.amount
+        secondaryValueLabel.text = viewModel?.secondaryValue
         assetNameLabel.text = viewModel?.name
         assetIDButton.setTitle(viewModel?.ID, for: .normal)
     }

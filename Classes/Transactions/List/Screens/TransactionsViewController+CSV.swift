@@ -22,13 +22,46 @@ extension TransactionsViewController: CSVExportable {
     func fetchAllTransactionsForCSV() {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
-        dataController.fetchAllTransactions(
-            between: getTransactionFilterDates(),
+        fetchAllTransactions(
+            between: dataController.getTransactionFilterDates(),
             nextToken: nil
         )
     }
 
-    func shareCSVFile(for transactions: [Transaction]) {
+    private func fetchAllTransactions(
+        between dates: (Date?, Date?),
+        nextToken token: String?
+    ) {
+        var assetId: String?
+        if let id = draft.assetDetail?.id {
+            assetId = String(id)
+        }
+
+        let draft = TransactionFetchDraft(account: draft.accountHandle.value, dates: dates, nextToken: token, assetId: assetId, limit: nil)
+        var csvTransactions = [Transaction]()
+
+        api?.fetchTransactions(draft) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+
+            switch response {
+            case .failure:
+                self.loadingController?.stopLoading()
+            case let .success(transactions):
+                csvTransactions.append(contentsOf: transactions.transactions)
+
+                if transactions.nextToken == nil {
+                    self.shareCSVFile(for: csvTransactions)
+                    return
+                }
+
+                self.fetchAllTransactions(between: dates, nextToken: transactions.nextToken)
+            }
+        }
+    }
+
+    private func shareCSVFile(for transactions: [Transaction]) {
         let keys: [String] = [
             "transaction-detail-amount".localized,
             "transaction-detail-reward".localized,
@@ -62,8 +95,8 @@ extension TransactionsViewController: CSVExportable {
         if let assetDetailId = assetDetail?.id {
             assetId = "\(assetDetailId)"
         }
-        var fileName = "\(account.name ?? "")_\(assetId)"
-        let dates = getTransactionFilterDates()
+        var fileName = "\(accountHandle.value.name ?? "")_\(assetId)"
+        let dates = dataController.getTransactionFilterDates()
         if let fromDate = dates.from,
            let toDate = dates.to {
             if filterOption == .today {
@@ -80,7 +113,7 @@ extension TransactionsViewController: CSVExportable {
         for transaction in transactions {
             let transactionData: [String: Any] = [
                 "transaction-detail-amount".localized: getFormattedAmount(transaction.getAmount()),
-                "transaction-detail-reward".localized: transaction.getRewards(for: account.address)?.toAlgos ?? " ",
+                "transaction-detail-reward".localized: transaction.getRewards(for: accountHandle.value.address)?.toAlgos ?? " ",
                 "transaction-detail-close-amount".localized: getFormattedAmount(transaction.getCloseAmount()),
                 "transaction-download-close-to".localized: transaction.getCloseAddress() ?? " ",
                 "transaction-download-to".localized: transaction.getReceiver() ?? " ",
@@ -98,7 +131,7 @@ extension TransactionsViewController: CSVExportable {
 
     private func getFormattedAmount(_ amount: UInt64?) -> String {
         if let assetDetail = assetDetail {
-            return amount?.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? " "
+            return amount?.toFractionStringForLabel(fraction: assetDetail.decimals) ?? " "
         } else {
             return amount?.toAlgos.toAlgosStringForLabel ?? " "
         }

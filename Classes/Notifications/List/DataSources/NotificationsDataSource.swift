@@ -197,16 +197,16 @@ extension NotificationsDataSource {
         paginationCursor = nil
     }
     
-    func getUserAccount(from notificationDetail: NotificationDetail) -> (account: Account?, assetDetail: AssetDetail?) {
+    func getUserAccount(from notificationDetail: NotificationDetail) -> (account: Account?, assetDetail: AssetInformation?) {
         guard let account = api.session.accounts.first(where: { account -> Bool in
             account.address == notificationDetail.senderAddress || account.address == notificationDetail.receiverAddress
         }) else {
             return (account: nil, assetDetail: nil)
         }
         
-        var assetDetail: AssetDetail?
+        var assetDetail: AssetInformation?
         if let assetId = notificationDetail.asset?.id {
-            assetDetail = account.assetDetails.first { $0.id == assetId }
+            assetDetail = account.assetInformations.first { $0.id == assetId }
         }
         return (account: account, assetDetail: assetDetail)
     }

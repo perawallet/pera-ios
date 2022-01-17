@@ -20,11 +20,6 @@ import MacaroonBottomSheet
 import MacaroonUIKit
 
 class MaximumBalanceWarningViewController: BaseScrollViewController {
-
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-
     weak var delegate: MaximumBalanceWarningViewControllerDelegate?
 
     private lazy var maximumBalanceWarningView = MaximumBalanceWarningView()

@@ -121,7 +121,7 @@ extension WCConnectionApprovalView {
         connectButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalTo(accountSelectionView.snp.bottom).offset(theme.verticalInset)
-            $0.bottom.lessThanOrEqualToSuperview()
+            $0.bottom.lessThanOrEqualToSuperview().inset(theme.bottomInset)
         }
     }
 

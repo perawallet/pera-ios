@@ -23,10 +23,13 @@ final class AssetInformation: ALGEntityModel {
     let id: Int64
     let name: String?
     let unitName: String?
-    let decimals: Int64
-    let usdValue: String?
+    let decimals: Int
+    let usdValue: Decimal?
     let isVerified: Bool
     let creator: AssetCreator?
+
+    var isRemoved = false
+    var isRecentlyAdded = false
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -35,7 +38,7 @@ final class AssetInformation: ALGEntityModel {
         self.name = apiModel.name
         self.unitName = apiModel.unitName
         self.decimals = apiModel.fractionDecimals ?? 0
-        self.usdValue = apiModel.usdValue
+        self.usdValue = apiModel.usdValue.unwrap { Decimal(string: $0) }
         self.isVerified = apiModel.isVerified ?? false
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
     }
@@ -46,7 +49,7 @@ final class AssetInformation: ALGEntityModel {
         apiModel.name = name
         apiModel.unitName = unitName
         apiModel.fractionDecimals = decimals
-        apiModel.usdValue = usdValue
+        apiModel.usdValue = usdValue.unwrap { String(describing: $0) }
         apiModel.isVerified = isVerified
         apiModel.creator = creator?.encode()
         return apiModel
@@ -58,7 +61,7 @@ extension AssetInformation {
         var assetId: Int64
         var name: String?
         var unitName: String?
-        var fractionDecimals: Int64?
+        var fractionDecimals: Int?
         var usdValue: String?
         var isVerified: Bool?
         var creator: AssetCreator.APIModel?
@@ -82,6 +85,37 @@ extension AssetInformation {
             case isVerified = "is_verified"
             case creator
         }
+    }
+}
+
+extension AssetInformation {
+    func hasDisplayName() -> Bool {
+        return !name.isNilOrEmpty || !unitName.isNilOrEmpty
+    }
+
+    func getDisplayNames() -> (String, String?) {
+        if let name = name, !name.isEmptyOrBlank,
+            let code = unitName, !code.isEmptyOrBlank {
+            return (name, "\(code.uppercased())")
+        } else if let name = name, !name.isEmptyOrBlank {
+            return (name, nil)
+        } else if let code = unitName, !code.isEmptyOrBlank {
+            return ("\(code.uppercased())", nil)
+        } else {
+            return ("title-unknown".localized, nil)
+        }
+    }
+}
+
+extension AssetInformation: Equatable {
+    static func == (lhs: AssetInformation, rhs: AssetInformation) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+extension AssetInformation: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id.hashValue)
     }
 }
 

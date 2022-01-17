@@ -23,10 +23,10 @@ import MacaroonUIKit
 final class AccountSelectScreen: BaseViewController {
     private lazy var assetDetailTitleView = AssetDetailTitleView()
     private lazy var accountView = SelectAccountView()
-    private lazy var searchEmptyStateView = SearchEmptyView()
+    private lazy var searchNoContentView = NoContentView()
     private lazy var theme = Theme()
 
-    private lazy var dataSource = AccountSelectScreenDataSource(session: session)
+    private lazy var dataSource = AccountSelectScreenDataSource(sharedDataController: sharedDataController)
 
     private var draft: SendTransactionDraft
 
@@ -70,8 +70,8 @@ final class AccountSelectScreen: BaseViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        searchEmptyStateView.setTitle("account-select-search-empty-title".localized)
-        searchEmptyStateView.setDetail("account-select-search-empty-detail".localized)
+        searchNoContentView.customize(NoContentViewCommonTheme())
+        searchNoContentView.bindData(AccountSelectSearchNoContentViewModel())
     }
 
     override func prepareLayout() {
@@ -141,7 +141,8 @@ final class AccountSelectScreen: BaseViewController {
             let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
 
             loadingController?.startLoadingWithMessage("title-loading".localized)
-            self.api?.fetchAccount(receiverFetchDraft) { accountResponse in
+            api?.fetchAccount(receiverFetchDraft, queue: .main) { [weak self] accountResponse in
+                guard let self = self else { return }
                 if !selectedAccount.requiresLedgerConnection() {
                     self.loadingController?.stopLoading()
                 }
@@ -178,7 +179,7 @@ final class AccountSelectScreen: BaseViewController {
             return
         } else {
             loadingController?.startLoadingWithMessage("title-loading".localized)
-            self.composeAlgosTransactionData()
+            composeAlgosTransactionData()
         }
     }
 
@@ -204,11 +205,15 @@ final class AccountSelectScreen: BaseViewController {
         }
 
         loadingController?.startLoadingWithMessage("title-loading".localized)
-        api?.fetchAccount(AccountFetchDraft(publicKey: address)) { fetchAccountResponse in
+        api?.fetchAccount(AccountFetchDraft(publicKey: address), queue: .main) { [weak self] fetchAccountResponse in
+            guard let self = self else { return }
+            if !self.draft.from.requiresLedgerConnection() {
+                self.loadingController?.stopLoading()
+            }
+
             switch fetchAccountResponse {
             case let .success(receiverAccountWrapper):
                 if !receiverAccountWrapper.account.isSameAccount(with: address) {
-                    self.loadingController?.stopLoading()
                     UIApplication.shared.firebaseAnalytics?.record(
                         MismatchAccountErrorLog(requestedAddress: address, receivedAddress: receiverAccountWrapper.account.address)
                     )
@@ -217,9 +222,6 @@ final class AccountSelectScreen: BaseViewController {
 
                 receiverAccountWrapper.account.assets = receiverAccountWrapper.account.nonDeletedAssets()
                 let receiverAccount = receiverAccountWrapper.account
-                if !self.draft.from.requiresLedgerConnection() {
-                    self.loadingController?.stopLoading()
-                }
 
                 if let assets = receiverAccount.assets {
                     if assets.contains(where: { asset -> Bool in
@@ -234,9 +236,6 @@ final class AccountSelectScreen: BaseViewController {
                 }
             case let .failure(error, _):
                 if error.isHttpNotFound {
-                    if !self.draft.from.requiresLedgerConnection() {
-                        self.loadingController?.stopLoading()
-                    }
                     self.presentAssetNotSupportedAlert(receiverAddress: address)
                 } else {
                     self.loadingController?.stopLoading()
@@ -269,7 +268,10 @@ final class AccountSelectScreen: BaseViewController {
             api?.sendAssetSupportRequest(draft)
         }
 
-        modalTransition.perform(.assetActionConfirmation(assetAlertDraft: assetAlertDraft))
+        modalTransition.perform(
+            .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
+            by: .presentWithoutNavigationController
+        )
     }
 
     private func validateAssetTransaction() {
@@ -329,7 +331,7 @@ final class AccountSelectScreen: BaseViewController {
             toAccount: toAccountAddress,
             amount: draft.amount,
             assetIndex: assetDetail.id,
-            assetDecimalFraction: assetDetail.fractionDecimals,
+            assetDecimalFraction: assetDetail.decimals,
             isVerifiedAsset: assetDetail.isVerified,
             note: draft.note
         )
@@ -454,8 +456,8 @@ extension AccountSelectScreen: UICollectionViewDelegateFlowLayout {
         if let contact = dataSource.item(at: indexPath) as? Contact {
             draft.toContact = contact
             draft.toAccount = nil
-        } else if let account = dataSource.item(at: indexPath) as? Account {
-            draft.toAccount = account.address
+        } else if let account = dataSource.item(at: indexPath) as? AccountHandle {
+            draft.toAccount = account.value.address
             draft.toContact = nil
         } else {
             return
@@ -485,7 +487,7 @@ extension AccountSelectScreen: SearchInputViewDelegate {
         accountView.nextButton.isHidden = true
 
         if dataSource.isEmpty {
-            accountView.listView.contentState = .empty(searchEmptyStateView)
+            accountView.listView.contentState = .empty(searchNoContentView)
             return
         }
 
@@ -501,7 +503,7 @@ extension AccountSelectScreen: SearchInputViewDelegate {
 
 
         if dataSource.isListEmtpy {
-            accountView.listView.contentState = .empty(searchEmptyStateView)
+            accountView.listView.contentState = .empty(searchNoContentView)
         } else {
             accountView.listView.contentState = .none
         }

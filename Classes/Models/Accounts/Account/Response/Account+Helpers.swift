@@ -34,6 +34,13 @@ extension Account {
         return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
     }
 
+    func amount(for assetInformation: AssetInformation) -> Decimal? {
+        guard let asset = assets?.first(where: { $0.id == assetInformation.id }) else {
+            return nil
+        }
+        return asset.amount.assetAmount(fromFraction: assetInformation.decimals)
+    }
+
     func amountWithoutFraction(for assetDetail: AssetDetail) -> UInt64? {
         guard let asset = assets?.first(where: { $0.id == assetDetail.id }) else {
             return nil
@@ -45,8 +52,8 @@ extension Account {
         return amount(for: assetDetail)?.toExactFractionLabel(fraction: assetDetail.fractionDecimals)
     }
 
-    func amountNumberWithAutoFraction(for assetDetail: AssetDetail) -> String? {
-        return amount(for: assetDetail)?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.fractionDecimals)
+    func amountNumberWithAutoFraction(for assetDetail: AssetInformation) -> String? {
+        return amount(for: assetDetail)?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals)
     }
 
     func isSameAccount(with address: String) -> Bool {
@@ -130,6 +137,10 @@ extension Account {
         rekeyDetail = localAccount.rekeyDetail
         preferredOrder = localAccount.preferredOrder
         accountImage = localAccount.accountImage
+    }
+    
+    func removeDeletedAssets() {
+        assets = nonDeletedAssets()
     }
 }
 

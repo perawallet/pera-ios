@@ -17,7 +17,9 @@
 
 import UIKit
 import MagpieCore
+import MacaroonUtils
 
+// <todo> Remove this file after refactor since it is not used anymore.
 class AccountsViewController: BaseViewController {
     
     override var shouldShowNavigationBar: Bool {
@@ -43,8 +45,8 @@ class AccountsViewController: BaseViewController {
     }()
     
     private(set) lazy var accountsView = AccountsView()
-    private lazy var noConnectionView = NoInternetConnectionView()
-    private lazy var emptyStateView = AccountsEmptyStateView()
+//    private lazy var noConnectionView = NoInternetConnectionView()
+//    private lazy var emptyStateView = AccountsEmptyStateView()
     private lazy var refreshControl = UIRefreshControl()
     
     private(set) var selectedAccount: Account?
@@ -68,7 +70,7 @@ class AccountsViewController: BaseViewController {
                 refreshAccounts()
             } else {
                 accountsDataSource.accounts.removeAll()
-                accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
+//                accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
                 accountsDataSource.isContentStateAvailableForBanner = false
                 accountsView.accountsCollectionView.reloadData()
             }
@@ -108,11 +110,15 @@ class AccountsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         fetchAccountsIfNeeded()
-        
-        DispatchQueue.main.async {
-            UIApplication.shared.appDelegate?.validateAccountManagerFetchPolling()
+
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.sharedDataController.startPolling()
         }
-        
+
         pushNotificationController.requestAuthorization()
         pushNotificationController.sendDeviceDetails()
         
@@ -176,7 +182,7 @@ class AccountsViewController: BaseViewController {
         accountsView.delegate = self
         accountsView.accountsCollectionView.delegate = accountsDataSource
         accountsView.accountsCollectionView.dataSource = accountsDataSource
-        emptyStateView.delegate = self
+//        emptyStateView.delegate = self
     }
     
     override func linkInteractors() {
@@ -242,16 +248,16 @@ extension AccountsViewController: AccountsDataSourceDelegate {
         }
         
         if indexPath.item == 0 {
-            open(
-                .algosDetail(draft: AlgoTransactionListing(account: account)),
-                by: .push
-            )
+//            open(
+//                .algosDetail(draft: AlgoTransactionListing(account: account)),
+//                by: .push
+//            )
         } else {
             if let assetDetail = account.assetDetails[safe: indexPath.item - 1] {
-                open(
-                    .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail)),
-                    by: .push
-                )
+//                open(
+//                    .assetDetail(draft: AssetTransactionListing(account: account, assetDetail: assetDetail)),
+//                    by: .push
+//                )
             }
         }
     }
@@ -268,7 +274,7 @@ extension AccountsViewController: AccountsDataSourceDelegate {
     }
     
     func accountsDataSource(_ accountsDataSource: AccountsDataSource, didTapQRButtonFor account: Account) {
-        open(.accountDetail(account: account), by: .push)
+       // open(.accountDetail(account: account), by: .push)
        // let draft = QRCreationDraft(address: account.address, mode: .address, title: account.name)
        // open(.qrGenerator(title: "qr-creation-sharing-title".localized, draft: draft, isTrackable: true), by: .present)
     }
@@ -292,7 +298,7 @@ extension AccountsViewController: AccountsViewDelegate {
     }
     
     func accountsViewDidTapAddButton(_ accountsView: AccountsView) {
-        openWelcomeScreen()
+//        openWelcomeScreen()
     }
 }
 
@@ -417,7 +423,10 @@ extension AccountsViewController: WalletConnectorDelegate {
             return
         }
 
-        modalTransition.perform(.wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion))
+        modalTransition.perform(
+            .wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion),
+            by: .presentWithoutNavigationController
+        )
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
@@ -437,7 +446,10 @@ extension AccountsViewController: WCConnectionApprovalViewControllerDelegate {
 
 extension AccountsViewController {
     private func presentOptions(for account: Account) {
-        modalTransition.perform(.options(account: account, delegate: self))
+        modalTransition.perform(
+            .options(account: account, delegate: self),
+            by: .present
+        )
     }
     
     private func setAccountsCollectionViewContentState(isInitialEmptyStateIncluded: Bool = false) {
@@ -451,7 +463,7 @@ extension AccountsViewController {
         }
 
         if !isConnectedToInternet {
-            accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
+//            accountsView.accountsCollectionView.contentState = .empty(noConnectionView)
             accountsDataSource.isContentStateAvailableForBanner = false
             return
         }
@@ -468,8 +480,8 @@ extension AccountsViewController {
     }
 
     func setEmptyAccountsState() {
-        emptyStateView.bind(EmptyStateViewModel(emptyState: .accounts))
-        accountsView.accountsCollectionView.contentState = .empty(emptyStateView)
+//        emptyStateView.bind(EmptyStateViewModel(emptyState: .accounts))
+//        accountsView.accountsCollectionView.contentState = .empty(emptyStateView)
         accountsDataSource.isContentStateAvailableForBanner = false
     }
     
@@ -533,7 +545,10 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
                     cancelTitle: "title-cancel".localized
                 )
 
-                modalTransition.perform(.assetActionConfirmation(assetAlertDraft: assetAlertDraft))
+                modalTransition.perform(
+                    .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
+                    by: .presentWithoutNavigationController
+                )
                 return
             }
             
@@ -567,18 +582,18 @@ extension AccountsViewController: QRScannerViewControllerDelegate {
     }
 }
 
-extension AccountsViewController: AccountsEmptyStateViewDelegate {
-    func accountsEmptyStateViewDidTapActionButton(_ accountsEmptyStateView: AccountsEmptyStateView) {
-        openWelcomeScreen()
-    }
-
-    private func openWelcomeScreen() {
-        open(
-            .welcome(flow: .addNewAccount(mode: .none)),
-            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-        )
-    }
-}
+//extension AccountsViewController: AccountsEmptyStateViewDelegate {
+//    func accountsEmptyStateViewDidTapActionButton(_ accountsEmptyStateView: AccountsEmptyStateView) {
+//        openWelcomeScreen()
+//    }
+//
+//    private func openWelcomeScreen() {
+//        open(
+//            .welcome(flow: .addNewAccount(mode: .none)),
+//            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+//        )
+//    }
+//}
 
 extension AccountsViewController: TooltipPresenter {
     func presentQRTooltipIfNeeded() {

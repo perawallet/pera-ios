@@ -65,7 +65,7 @@ extension TransactionAmountView: ViewModelBindable {
 }
 
 extension TransactionAmountView {
-    enum Mode {
+    enum Mode: Hashable {
         case normal(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil, assetSymbol: String? = nil)
         case positive(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil, assetSymbol: String? = nil)
         case negative(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil, assetSymbol: String? = nil)

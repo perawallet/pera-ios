@@ -27,7 +27,7 @@ class OldSelectAssetViewController: BaseViewController {
 
     private lazy var selectAssetView = SelectAssetView()
 
-    private lazy var emptyStateView = SearchEmptyView()
+//    private lazy var emptyStateView = SearchEmptyView()
 
     private var accounts = [Account]()
 
@@ -61,7 +61,7 @@ class OldSelectAssetViewController: BaseViewController {
     override func configureAppearance() {
         view.backgroundColor = Colors.Background.tertiary
         navigationItem.title = "send-select-asset".localized
-        emptyStateView.setTitle("asset-not-found-title".localized)
+//        emptyStateView.setTitle("asset-not-found-title".localized)
     }
 
     override func setListeners() {
@@ -86,7 +86,7 @@ extension OldSelectAssetViewController {
     private func initAccounts(with filter: FilterOption) -> [Account] {
         guard var allAccounts = session?.accounts,
               !allAccounts.isEmpty else {
-            selectAssetView.accountsCollectionView.contentState = .empty(emptyStateView)
+//            selectAssetView.accountsCollectionView.contentState = .empty(emptyStateView)
             return []
         }
 
@@ -166,35 +166,14 @@ extension OldSelectAssetViewController {
 
         if indexPath.section < accounts.count {
             let account = accounts[indexPath.section]
-            cell.bind(AlgoAssetViewModel(account: account))
+          //  cell.bind(AlgoAssetViewModel(account: account))
         }
 
         return cell
     }
 
     private func dequeueAssetCell(in collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let account = accounts[indexPath.section]
-        let assetDetail: AssetDetail
-
-        switch filterOption {
-        case .none:
-            assetDetail = account.assetDetails[indexPath.item - 1]
-        default:
-            assetDetail = account.assetDetails[indexPath.item]
-        }
-
-        let cell = layoutBuilder.dequeueAssetCells(
-            in: collectionView,
-            cellForItemAt: indexPath,
-            for: assetDetail
-        )
-
-        if let assets = account.assets,
-           let asset = assets.first(where: { $0.id == assetDetail.id }) {
-            cell.bind(AssetViewModel(assetDetail: assetDetail, asset: asset))
-        }
-
-        return cell
+        return UICollectionViewCell()
     }
 }
 

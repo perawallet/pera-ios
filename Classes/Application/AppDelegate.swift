@@ -31,8 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    private lazy var api = ALGAPI(session: session)
     private lazy var session = Session()
+    private lazy var api = ALGAPI(session: session)
+    private lazy var sharedDataController = SharedAPIDataController(session: session, api: api)
     private lazy var walletConnector = WalletConnector()
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window ?? UIWindow())
     private lazy var bannerController = BannerController(window: window ?? UIWindow())
@@ -40,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private(set) lazy var appConfiguration = AppConfiguration(
         api: api,
         session: session,
+        sharedDataController: sharedDataController,
         walletConnector: walletConnector,
         loadingController: loadingController,
         bannerController: bannerController
@@ -52,11 +54,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var rootViewController: RootViewController?
     
     private(set) lazy var accountManager: AccountManager = AccountManager(api: api)
-    
-    private var timer: PollingOperation?
-    private var shouldInvalidateAccountFetch = false
-    
-    private var shouldInvalidateUserSession: Bool = false
+
+    private var lastActiveDate: Date?
 
     private(set) var incomingWCSessionRequest: String?
     
@@ -69,6 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         setupFirebase()
         SwiftDate.setupDateRegion()
         setupWindow()
+
         return true
     }
 
@@ -85,18 +85,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
-        updateForegroundActions()
-    }
-    
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        decideToInvalidateSessionInBackground()
+        NotificationCenter.default.post(name: .ApplicationWillEnterForeground, object: self, userInfo: nil)
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
+        decideToInvalidateSessionInBackground()
         showBlurOnWindow()
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
+        updateForegroundActions()
         removeBlurOnWindow()
     }
 
@@ -146,28 +144,43 @@ extension AppDelegate {
 
 extension AppDelegate {
     private func updateForegroundActions() {
-        timer?.invalidate()
         updateUserInterfaceStyleIfNeeded()
-        NotificationCenter.default.post(name: .ApplicationWillEnterForeground, object: self, userInfo: nil)
         validateUserSessionIfNeeded()
     }
 
     private func validateUserSessionIfNeeded() {
-        guard appConfiguration.session.isValid,
-            !appConfiguration.session.accounts.isEmpty else {
+        defer {
+            lastActiveDate = nil
+        }
+        
+        if !appConfiguration.session.isValid {
             return
         }
-
-        if shouldInvalidateUserSession {
-            shouldInvalidateUserSession = false
-            if appConfiguration.session.hasPassword() {
-                appConfiguration.session.isValid = false
-                openPasswordEntryScreen()
-            }
+        
+        /// <note>
+        /// The application has not becommen inactive yet.
+        guard let lastActiveDate = lastActiveDate else {
             return
-        } else {
-            validateAccountManagerFetchPolling()
         }
+        
+        if !appConfiguration.session.hasPassword() {
+            sharedDataController.startPolling()
+            return
+        }
+        
+        let expireDate = lastActiveDate + Constants.sessionInvalidateTime.seconds
+        let isPasscodeExpired = Date.now().isAfterDate(
+            expireDate,
+            granularity: .second
+        )
+        
+        if !isPasscodeExpired {
+            sharedDataController.startPolling()
+            return
+        }
+        
+        appConfiguration.session.isValid = false
+        openPasswordEntryScreen()
     }
 
     private func openPasswordEntryScreen() {
@@ -185,13 +198,8 @@ extension AppDelegate {
     }
 
     private func decideToInvalidateSessionInBackground() {
-        timer = PollingOperation(interval: Constants.sessionInvalidateTime) { [weak self] in
-            self?.shouldInvalidateUserSession = true
-        }
-
-        timer?.start()
-
-        invalidateAccountManagerFetchPolling()
+        sharedDataController.stopPolling()
+        lastActiveDate = Date()
     }
     
     private func showBlurOnWindow() {
@@ -309,29 +317,6 @@ extension AppDelegate {
 }
 
 extension AppDelegate {
-    func validateAccountManagerFetchPolling() {
-        shouldInvalidateAccountFetch = false
-        fetchAccounts()
-    }
-
-    func invalidateAccountManagerFetchPolling() {
-        shouldInvalidateAccountFetch = true
-    }
-
-    private func fetchAccounts(round: UInt64? = nil) {
-        guard !shouldInvalidateAccountFetch else {
-            return
-        }
-
-        if session.authenticatedUser != nil {
-            accountManager.waitForNextRoundAndFetchAccounts(round: round) { nextRound in
-                self.fetchAccounts(round: nextRound)
-            }
-        }
-    }
-}
-
-extension AppDelegate {
     private func updateUserInterfaceStyleIfNeeded() {
         /// <note> Will update the appearance style if it's set to system since it might be changed from device settings.
         /// Since user interface style is overriden, traitCollectionDidChange is not triggered
@@ -347,6 +332,6 @@ extension AppDelegate {
 
 extension AppDelegate {
     private enum Constants {
-        static let sessionInvalidateTime: Double = 60.0
+        static let sessionInvalidateTime = 60
     }
 }

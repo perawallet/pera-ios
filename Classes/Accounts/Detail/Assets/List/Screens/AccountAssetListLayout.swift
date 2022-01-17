@@ -16,16 +16,27 @@
 //   AccountAssetListLayout.swift
 
 import Foundation
+import MacaroonUIKit
 import UIKit
 
+/// <todo>
+/// Refactor. See `HomeListLayout`
 final class AccountAssetListLayout: NSObject {
     private lazy var theme = Theme()
     lazy var handlers = Handlers()
+    
+    private var sizeCache: [String: CGSize] = [:]
 
-    private let account: Account
+    private let listDataSource: AccountAssetListDataSource
+    private let accountHandle: AccountHandle
 
-    init(account: Account) {
-        self.account = account
+    init(
+        accountHandle: AccountHandle,
+        listDataSource: AccountAssetListDataSource
+    ) {
+        self.accountHandle = accountHandle
+        self.listDataSource = listDataSource
+
         super.init()
     }
 }
@@ -36,19 +47,21 @@ extension AccountAssetListLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        guard let section = AccountAssetsSection(rawValue: indexPath.section) else {
-            return .zero
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return CGSize((collectionView.bounds.width, 0))
         }
-
-        switch section {
-        case .portfolio:
-            return CGSize(theme.portfolioItemSize)
-        case .assets:
-            /// Search item size
-            if indexPath.item == 0 {
-                return CGSize(theme.searchItemSize)
-            }
-
+        
+        switch itemIdentifier {
+        case .portfolio(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForPortfolioItem: item
+            )
+        case .search:
+            return CGSize(theme.searchItemSize)
+        case .asset,
+             .pendingAsset:
             return CGSize(theme.assetItemSize)
         }
     }
@@ -104,9 +117,41 @@ extension AccountAssetListLayout: UICollectionViewDelegateFlowLayout {
         }
 
         /// Reduce search and algos cells from index
-        if let assetDetail = account.assetDetails[safe: indexPath.item - 2] {
+        if let assetDetail = accountHandle.value.assetInformations[safe: indexPath.item - 2] {
             handlers.didSelectAssetDetail?(assetDetail)
         }
+    }
+}
+
+extension AccountAssetListLayout {
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForPortfolioItem item: AccountPortfolioViewModel
+    ) -> CGSize {
+        let sizeCacheIdentifier = AccountPortfolioCell.reuseIdentifier
+        
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+        
+        let width = calculateContentWidth(for: listView)
+        let newSize = AccountPortfolioCell.calculatePreferredSize(
+            item,
+            for: AccountPortfolioCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude)))
+        
+        sizeCache[sizeCacheIdentifier] = newSize
+        
+        return newSize
+    }
+}
+
+extension AccountAssetListLayout {
+    private func calculateContentWidth(
+        for listView: UICollectionView
+    ) -> LayoutMetric {
+        return listView.bounds.width - listView.contentInset.horizontal
     }
 }
 
@@ -114,6 +159,6 @@ extension AccountAssetListLayout {
     struct Handlers {
         var didSelectSearch: EmptyHandler?
         var didSelectAlgoDetail: EmptyHandler?
-        var didSelectAssetDetail: ((AssetDetail) -> Void)?
+        var didSelectAssetDetail: ((AssetInformation) -> Void)?
     }
 }

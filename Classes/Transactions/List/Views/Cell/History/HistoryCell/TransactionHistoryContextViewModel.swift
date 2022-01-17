@@ -18,7 +18,10 @@
 import MacaroonUIKit
 import UIKit
 
-final class TransactionHistoryContextViewModel: ViewModel {
+struct TransactionHistoryContextViewModel:
+    ViewModel,
+    Hashable {
+    private(set) var id: String?
     private(set) var title: String?
     private(set) var subtitle: String?
     private(set) var transactionAmountViewModel: TransactionAmountViewModel?
@@ -35,21 +38,23 @@ final class TransactionHistoryContextViewModel: ViewModel {
             return
         }
 
+        id = transaction.id
+
         let account = transactionDependencies.account
         let contact = transactionDependencies.contact
 
         if let assetTransaction = transaction.assetTransfer,
            let assetId = transaction.assetTransfer?.assetId,
-           let assetDetail = account.assetDetails.first(matching: (\.id, assetId)) {
+           let assetDetail = account.assetInformations.first(matching: (\.id, assetId)) {
 
             if assetTransaction.receiverAddress == assetTransaction.senderAddress {
                 bindTitleAndSubtitle(with: contact, and: .send(assetTransaction.receiverAddress))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .normal(
-                        amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                        amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                         isAlgos: false,
-                        fraction: assetDetail.fractionDecimals,
-                        assetSymbol: assetDetail.unitName ?? assetDetail.assetName
+                        fraction: assetDetail.decimals,
+                        assetSymbol: assetDetail.unitName ?? assetDetail.name
                     )
                 )
             } else if transaction.isAssetAdditionTransaction(for: account.address) {
@@ -61,20 +66,20 @@ final class TransactionHistoryContextViewModel: ViewModel {
                 bindTitleAndSubtitle(with: contact, and: .receive(assetTransaction.receiverAddress))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .positive(
-                        amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                        amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                         isAlgos: false,
-                        fraction: assetDetail.fractionDecimals,
-                        assetSymbol: assetDetail.unitName ?? assetDetail.assetName
+                        fraction: assetDetail.decimals,
+                        assetSymbol: assetDetail.unitName ?? assetDetail.name
                     )
                 )
             } else {
                 bindTitleAndSubtitle(with: contact, and: .send(assetTransaction.receiverAddress))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .negative(
-                        amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                        amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                         isAlgos: false,
-                        fraction: assetDetail.fractionDecimals,
-                        assetSymbol: assetDetail.unitName ?? assetDetail.assetName
+                        fraction: assetDetail.decimals,
+                        assetSymbol: assetDetail.unitName ?? assetDetail.name
                     )
                 )
             }
@@ -121,10 +126,10 @@ final class TransactionHistoryContextViewModel: ViewModel {
                 bindTitleAndSubtitle(with: contact, and: .send(transaction.receiver))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .normal(
-                        amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                        amount: transaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                         isAlgos: false,
-                        fraction: assetDetail.fractionDecimals,
-                        assetSymbol: assetDetail.unitName ?? assetDetail.assetName
+                        fraction: assetDetail.decimals,
+                        assetSymbol: assetDetail.unitName ?? assetDetail.name
                     )
                 )
             } else if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
@@ -136,20 +141,20 @@ final class TransactionHistoryContextViewModel: ViewModel {
                 bindTitleAndSubtitle(with: contact, and: .send(transaction.receiver))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .positive(
-                        amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                        amount: transaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                         isAlgos: false,
-                        fraction: assetDetail.fractionDecimals,
-                        assetSymbol: assetDetail.unitName ?? assetDetail.assetName
+                        fraction: assetDetail.decimals,
+                        assetSymbol: assetDetail.unitName ?? assetDetail.name
                     )
                 )
             } else {
                 bindTitleAndSubtitle(with: contact, and: .send(transaction.receiver))
                 transactionAmountViewModel = TransactionAmountViewModel(
                     .negative(
-                        amount: transaction.amount.assetAmount(fromFraction: assetDetail.fractionDecimals),
+                        amount: transaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                         isAlgos: false,
-                        fraction: assetDetail.fractionDecimals,
-                        assetSymbol: assetDetail.unitName ?? assetDetail.assetName
+                        fraction: assetDetail.decimals,
+                        assetSymbol: assetDetail.unitName ?? assetDetail.name
                     )
                 )
             }
@@ -169,7 +174,7 @@ final class TransactionHistoryContextViewModel: ViewModel {
 }
 
 extension TransactionHistoryContextViewModel {
-    private func bindTitleAndSubtitle(with contact: Contact?, and address: Address?) {
+    private mutating func bindTitleAndSubtitle(with contact: Contact?, and address: Address?) {
         title = address?.title
 
         if let contact = contact {

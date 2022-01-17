@@ -108,15 +108,16 @@ final class SendTransactionScreen: BaseViewController {
 
 extension SendTransactionScreen {
     private func bindAssetPreview() {
+        let currency = sharedDataController.currency.value
         switch draft.transactionMode {
         case .algo:
             accountView.bindData(
-                AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(draft.from))
+                AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((draft.from, currency)))
             )
         case .assetDetail(let assetDetail):
             if let asset = draft.from.assets?.first(matching: (\.id, assetDetail.id)) {
                 accountView.bindData(
-                    AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, asset)))
+                    AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, asset, currency)))
                 )
             }
         }
@@ -136,7 +137,7 @@ extension SendTransactionScreen {
                     .appending(decimalStrings)
             case .assetDetail(let assetDetail):
                 showingValue = (amountValue.replacingOccurrences(of: decimalStrings, with: "")
-                    .decimalAmountWithSeparator?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.fractionDecimals) ?? amountValue)
+                    .decimalAmountWithSeparator?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals) ?? amountValue)
                     .appending(decimalStrings)
             }
         } else {
@@ -287,7 +288,10 @@ extension SendTransactionScreen {
 
     @objc
     private func didTapNote() {
-        modalTransition.perform(.editNote(note: self.note, delegate: self), completion: nil)
+        modalTransition.perform(
+            .editNote(note: self.note, delegate: self),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
@@ -295,9 +299,14 @@ extension SendTransactionScreen: NumpadViewDelegate {
     func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey) {
         var newValue = self.amount
 
-        if newValue.fractionCount >= draft.fractionCount && value != .delete {
+        let hasDraftFraction = draft.fractionCount > 0
+
+        if hasDraftFraction &&
+            newValue.fractionCount >= draft.fractionCount &&
+            value != .delete {
             return
         }
+
 
         switch value {
         case .number(let numberValue):
@@ -318,6 +327,10 @@ extension SendTransactionScreen: NumpadViewDelegate {
             }
 
         case .decimalSeparator:
+            guard hasDraftFraction else {
+                return
+            }
+
             let decimalSeparator = Locale.preferred().decimalSeparator?.first ?? "."
 
             if self.amount.contains(decimalSeparator) {
@@ -328,7 +341,6 @@ extension SendTransactionScreen: NumpadViewDelegate {
 
         self.amount = newValue
         bindAmount()
-
     }
 
     private func validate(value: String) -> TransactionValidation {
@@ -366,7 +378,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
         return .valid
     }
 
-    private func validateAsset(for value: String, on assetDetail: AssetDetail) -> TransactionValidation {
+    private func validateAsset(for value: String, on assetDetail: AssetInformation) -> TransactionValidation {
         guard let assetAmount = draft.from.amount(for: assetDetail),
               let decimalAmount = value.decimalAmountWithSeparator else {
                   return .otherAsset
@@ -399,7 +411,10 @@ extension SendTransactionScreen: NumpadViewDelegate {
     }
 
     private func displayMaxTransactionWarning() {
-        modalTransition.perform(.maximumBalanceWarning(account: draft.from, delegate: self))
+        modalTransition.perform(
+            .maximumBalanceWarning(account: draft.from, delegate: self),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 

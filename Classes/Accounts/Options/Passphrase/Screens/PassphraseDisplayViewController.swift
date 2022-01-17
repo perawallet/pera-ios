@@ -131,7 +131,8 @@ extension PassphraseDisplayViewController {
                     description: "screenshot-description".localized,
                     secondaryActionButtonTitle: "title-close".localized
                 )
-            )
+            ),
+            by: .presentWithoutNavigationController
         )
     }
 }

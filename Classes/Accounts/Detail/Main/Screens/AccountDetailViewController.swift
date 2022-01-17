@@ -21,20 +21,20 @@ import UIKit
 final class AccountDetailViewController: PageContainer {
     private lazy var theme = Theme()
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
-    private lazy var assetListScreen = AccountAssetListViewController(account: account, configuration: configuration)
-    private lazy var nftListScreen = AccountNFTListViewController(account: account, configuration: configuration)
+    private lazy var assetListScreen = AccountAssetListViewController(accountHandle: accountHandle, configuration: configuration)
+    private lazy var nftListScreen = AccountNFTListViewController(account: accountHandle.value, configuration: configuration)
     private lazy var transactionListScreen = AccountTransactionListViewController(
-        draft: AccountTransactionListing(account: account),
+        draft: AccountTransactionListing(accountHandle: accountHandle),
         configuration: configuration
     )
     private lazy var localAuthenticator = LocalAuthenticator()
 
     private lazy var accountTitleView = ImageWithTitleView()
 
-    private let account: Account
+    private let accountHandle: AccountHandle
 
-    init(account: Account, configuration: ViewControllerConfiguration) {
-        self.account = account
+    init(accountHandle: AccountHandle, configuration: ViewControllerConfiguration) {
+        self.accountHandle = accountHandle
         super.init(configuration: configuration)
     }
 
@@ -61,7 +61,10 @@ extension AccountDetailViewController {
                 return
             }
 
-            self.modalTransition.perform(.options(account: self.account, delegate: self))
+            self.modalTransition.perform(
+                .options(account: self.accountHandle.value, delegate: self),
+                by: .present
+            )
         }
 
         rightBarButtonItems = [optionsBarButtonItem]
@@ -77,7 +80,7 @@ extension AccountDetailViewController {
 
     private func addTitleView() {
         accountTitleView.customize(AccountNameViewSmallTheme())
-        accountTitleView.bindData(AccountNameViewModel(account: account))
+        accountTitleView.bindData(AccountNameViewModel(account: accountHandle.value))
 
         navigationItem.titleView = accountTitleView
     }
@@ -85,14 +88,14 @@ extension AccountDetailViewController {
 
 extension AccountDetailViewController: OptionsViewControllerDelegate {
     func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController) {
-        log(ReceiveCopyEvent(address: account.address))
-        UIPasteboard.general.string = account.address
+        log(ReceiveCopyEvent(address: accountHandle.value.address))
+        UIPasteboard.general.string = accountHandle.value.address
         bannerController?.presentInfoBanner("qr-creation-copied".localized)
     }
 
     func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController) {
         open(
-            .rekeyInstruction(account: account),
+            .rekeyInstruction(account: accountHandle.value),
             by: .customPresent(
                 presentationStyle: .fullScreen,
                 transitionStyle: nil,
@@ -102,7 +105,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
-        let controller = open(.removeAsset(account: account), by: .present) as? ManageAssetsViewController
+        let controller = open(.removeAsset(account: accountHandle.value), by: .present) as? ManageAssetsViewController
         controller?.delegate = self
     }
 
@@ -136,15 +139,18 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     private func presentPassphraseView() {
-        modalTransition.perform(.passphraseDisplay(address: account.address))
+        modalTransition.perform(
+            .passphraseDisplay(address: accountHandle.value.address),
+            by: .presentWithoutNavigationController
+        )
     }
 
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController) {
-        guard let authAddress = account.authAddress else {
+        guard let authAddress = accountHandle.value.authAddress else {
             return
         }
 
-        let draft = QRCreationDraft(address: authAddress, mode: .address, title: account.name)
+        let draft = QRCreationDraft(address: authAddress, mode: .address, title: accountHandle.value.name)
         open(.qrGenerator(title: "options-auth-account".localized, draft: draft, isTrackable: true), by: .present)
     }
 
@@ -164,16 +170,19 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             }
         )
 
-        modalTransition.perform(.bottomWarning(configurator: configurator))
+        modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
     }
 
     private func removeAccount() {
         guard let user = session?.authenticatedUser,
-              let accountInformation = session?.accountInformation(from: account.address) else {
+              let accountInformation = session?.accountInformation(from: accountHandle.value.address) else {
             return
         }
 
-        session?.removeAccount(account)
+        session?.removeAccount(accountHandle.value)
         user.removeAccount(accountInformation)
         session?.authenticatedUser = user
         popScreen()
@@ -196,7 +205,7 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
 extension AccountDetailViewController: ManageAssetsViewControllerDelegate {
     func manageAssetsViewController(
         _ assetRemovalViewController: ManageAssetsViewController,
-        didRemove assetDetail: AssetDetail,
+        didRemove assetDetail: AssetInformation,
         from account: Account
     ) {
         assetListScreen.removeAsset(assetDetail)

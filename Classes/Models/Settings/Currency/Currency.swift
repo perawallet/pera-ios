@@ -23,8 +23,9 @@ final class Currency: ALGEntityModel {
     let id: String
     let name: String?
     let symbol: String?
-    let usdValue: Decimal?
+    let usdValue: Decimal? // usd to currecy
     let price: String?
+    let priceValue: Decimal? // algo to currency
     let lastUpdateDate: String?
 
     init(
@@ -35,6 +36,7 @@ final class Currency: ALGEntityModel {
         self.symbol = apiModel.symbol
         self.usdValue = apiModel.usdValue
         self.price = apiModel.exchangePrice
+        self.priceValue = apiModel.exchangePrice.unwrap { Decimal(string: $0) }
         self.lastUpdateDate = apiModel.lastUpdatedAt
     }
 

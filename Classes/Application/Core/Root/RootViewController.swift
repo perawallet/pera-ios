@@ -102,6 +102,10 @@ extension RootViewController {
 
 extension RootViewController {
     func setupTabBarController(withInitial screen: Screen? = nil) {
+        defer {
+            appConfiguration.sharedDataController.startPolling()
+        }
+        
         if tabBarViewController.parent != nil {
             return
         }
@@ -242,6 +246,7 @@ extension RootViewController: UserInterfaceChangable { }
 
 extension RootViewController {
     func deleteAllData() {
+        appConfiguration.sharedDataController.reset()
         appConfiguration.session.reset(isContactIncluded: true)
         appConfiguration.walletConnector.resetAllSessions()
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)

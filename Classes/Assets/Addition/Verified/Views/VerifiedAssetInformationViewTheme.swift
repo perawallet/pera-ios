@@ -29,6 +29,7 @@ struct VerifiedAssetInformationViewTheme: StyleSheet, LayoutSheet {
     let horizontalInset: LayoutMetric
     let topInset: LayoutMetric
     let verticalSpacing: LayoutMetric
+    let bottomInset: LayoutMetric
     
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -78,5 +79,6 @@ struct VerifiedAssetInformationViewTheme: StyleSheet, LayoutSheet {
         self.horizontalInset = 24
         self.topInset = 32
         self.verticalSpacing = 20
+        self.bottomInset = 16
     }
 }

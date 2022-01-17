@@ -20,6 +20,7 @@ import Foundation
 final class AppConfiguration {
     let api: ALGAPI
     let session: Session
+    let sharedDataController: SharedDataController
     let walletConnector: WalletConnector
     let loadingController: LoadingController
     let bannerController: BannerController
@@ -27,12 +28,14 @@ final class AppConfiguration {
     init(
         api: ALGAPI,
         session: Session,
+        sharedDataController: SharedDataController,
         walletConnector: WalletConnector,
         loadingController: LoadingController,
         bannerController: BannerController
     ) {
         self.api = api
         self.session = session
+        self.sharedDataController = sharedDataController
         self.walletConnector = walletConnector
         self.loadingController = loadingController
         self.bannerController = bannerController
@@ -42,6 +45,7 @@ final class AppConfiguration {
         let configuration = ViewControllerConfiguration(
             api: api,
             session: session,
+            sharedDataController: sharedDataController,
             walletConnector: walletConnector,
             loadingControlller: loadingController,
             bannerController: bannerController

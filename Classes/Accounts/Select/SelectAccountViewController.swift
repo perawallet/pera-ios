@@ -20,10 +20,14 @@ import Foundation
 import UIKit
 
 final class SelectAccountViewController: BaseViewController {
+    weak var delegate: SelectAccountViewControllerDelegate?
+
     private let theme = Theme()
+
     private lazy var accountListDataSource = SelectAccountViewControllerDataSource(
-        session: UIApplication.shared.appConfiguration?.session
+        sharedDataController: sharedDataController
     )
+
     private lazy var listView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = theme.listMinimumLineSpacing
@@ -35,6 +39,13 @@ final class SelectAccountViewController: BaseViewController {
         collectionView.contentInset.top = theme.listContentInsetTop
         return collectionView
     }()
+
+    private let transactionAction: TransactionAction
+
+    init(transactionAction: TransactionAction, configuration: ViewControllerConfiguration) {
+        self.transactionAction = transactionAction
+        super.init(configuration: configuration)
+    }
 
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
@@ -54,7 +65,6 @@ final class SelectAccountViewController: BaseViewController {
     override func prepareLayout() {
         addListView()
     }
-    
 }
 
 extension SelectAccountViewController {
@@ -69,7 +79,7 @@ extension SelectAccountViewController {
     private func addListView() {
         view.addSubview(listView)
         listView.snp.makeConstraints {
-            $0.trailing.leading.equalToSuperview().inset(24)
+            $0.trailing.leading.equalToSuperview().inset(theme.horizontalPadding)
             $0.top.bottom.equalToSuperview()
         }
     }
@@ -89,6 +99,19 @@ extension SelectAccountViewController: UICollectionViewDelegate, UICollectionVie
             return
         }
 
-        open(.assetSelection(account: account), by: .push)
+        delegate?.selectAccountViewController(self, didSelect: account.value, for: transactionAction)
     }
+}
+
+enum TransactionAction {
+    case send
+    case receive
+}
+
+protocol SelectAccountViewControllerDelegate: AnyObject {
+    func selectAccountViewController(
+        _ selectAccountViewController: SelectAccountViewController,
+        didSelect account: Account,
+        for transactionAction: TransactionAction
+    )
 }

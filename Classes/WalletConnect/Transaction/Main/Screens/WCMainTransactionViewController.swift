@@ -150,7 +150,10 @@ extension WCMainTransactionViewController {
 
         oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
 
-        modalTransition.perform(.warningAlert(warningAlert: warningAlert))
+        modalTransition.perform(
+            .warningAlert(warningAlert: warningAlert),
+            by: .presentWithoutNavigationController
+        )
     }
 
     private func presentConfirmationAlert() {
@@ -170,7 +173,10 @@ extension WCMainTransactionViewController {
             actionTitle: "title-accept".localized
         )
 
-        modalTransition.perform(.actionableWarningAlert(warningAlert: warningAlert, delegate: self))
+        modalTransition.perform(
+            .actionableWarningAlert(warningAlert: warningAlert, delegate: self),
+            by: .presentWithoutNavigationController
+        )
     }
 
     private func cacheAllAssetsInTheTransactions() {
@@ -382,7 +388,8 @@ extension WCMainTransactionViewController: WCMainTransactionDataSourceDelegate {
             .wcTransactionFullDappDetail(
                 wcSession: wcSession,
                 message: message
-            )
+            ),
+            by: .presentWithoutNavigationController
         )
     }
 }

@@ -15,124 +15,122 @@
 //
 //   AccountListOptionsViewController.swift
 
-import MacaroonUIKit
-import UIKit
-import MacaroonUtils
+import Foundation
 import MacaroonBottomSheet
+import MacaroonUIKit
+import MacaroonUtils
+import UIKit
 
-final class AccountListOptionsViewController: BaseViewController {
-    private lazy var theme = Theme()
-    lazy var handlers = Handlers()
+final class AccountListOptionsViewController:
+    BaseScrollViewController,
+    BottomSheetPresentable {
+    typealias EventHandler = (Event) -> Void
+    
+    var eventHandler: EventHandler?
+    
+    private lazy var contextView = VStackView()
+
     private let accountType: AccountType
+    
+    private let theme: AccountListOptionsViewControllerTheme
 
-    private lazy var listView = UITableView()
-
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-
-    init(accountType: AccountType, configuration: ViewControllerConfiguration) {
+    init(
+        accountType: AccountType,
+        configuration: ViewControllerConfiguration,
+        theme: AccountListOptionsViewControllerTheme = .init()
+    ) {
         self.accountType = accountType
+        self.theme = theme
+
         super.init(configuration: configuration)
     }
 
-    override func prepareLayout() {
-        super.prepareLayout()
-        addListView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        build()
     }
-
-    override func setListeners() {
-        super.setListeners()
-        listView.dataSource = self
-        listView.delegate = self
-    }
-}
-
-extension AccountListOptionsViewController {
-    private func addListView() {
-        view.addSubview(listView)
-        listView.snp.makeConstraints {
-            $0.setPaddings()
-        }
     
-        listView.register(SingleLineIconTitleCell.self, forCellReuseIdentifier: SingleLineIconTitleCell.reuseIdentifier)
-        listView.rowHeight = UITableView.automaticDimension
-        listView.estimatedRowHeight = theme.itemHeight
-        listView.separatorStyle = .none
-        listView.separatorInset = .zero
-        listView.bounces = false
-        listView.showsVerticalScrollIndicator = false
-        listView.backgroundColor = theme.backgroundColor.uiColor
-    }
-}
-
-extension AccountListOptionsViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return AccountListOptions.allCases.count
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: SingleLineIconTitleCell.reuseIdentifier,
-            for: indexPath
-        ) as? SingleLineIconTitleCell,
-              let option = AccountListOptions(rawValue: indexPath.item) else {
-            crash("Cell not supported of \(type(of: SingleLineIconTitleCell.self))")
-        }
-
-        cell.bindData(
-            SingleLineIconTitleViewModel(
-                item: SingleLineIconTitleItem(
-                    icon: option.image,
-                    title: option.title
-                )
-            )
-        )
-
-        return cell
-    }
-}
-
-extension AccountListOptionsViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if let option = AccountListOptions(rawValue: indexPath.item) {
-            dismissScreen()
-            handlers.didSelect?(option, accountType)
-        }
-    }
-}
-
-extension AccountListOptionsViewController: BottomSheetPresentable {
-    var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight)
+    private func build() {
+        addBackground()
+        addContext()
+        addActions()
     }
 }
 
 extension AccountListOptionsViewController {
-    struct Handlers {
-        var didSelect: ((AccountListOptions, AccountType) -> Void)?
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+    
+    private func addContext() {
+        contentView.addSubview(contextView)
+        contextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: theme.contentPaddings.top,
+            leading: theme.contentPaddings.leading,
+            bottom: theme.contentPaddings.bottom,
+            trailing: theme.contentPaddings.trailing
+        )
+        contextView.isLayoutMarginsRelativeArrangement = true
+        contextView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+    }
+    
+    private func addActions() {
+        addAddAccountAction()
+        addArrangeAccountsAction()
+    }
+    
+    private func addAddAccountAction() {
+        addAction(
+            AddAccountListActionViewModel(),
+            #selector(addAccount)
+        )
+    }
+    
+    private func addArrangeAccountsAction() {
+        addAction(
+            ArrangeListListActionVIewModel(),
+            #selector(arrangeAccounts)
+        )
+    }
+    
+    private func addAction(
+        _ viewModel: ListActionViewModel,
+        _ selector: Selector
+    ) {
+        let actionView = ListActionView()
+        
+        actionView.customize(theme.action)
+        actionView.bindData(viewModel)
+        
+        contextView.addArrangedSubview(actionView)
+        
+        actionView.addTouch(
+            target: self,
+            action: selector
+        )
     }
 }
 
-enum AccountListOptions: Int, CaseIterable {
-    case add
-    case arrange
-
-    var image: Image {
-        switch self {
-        case .add:
-            return "icon-plus-24"
-        case .arrange:
-            return "icon-arrange-24"
-        }
+extension AccountListOptionsViewController {
+    @objc
+    private func addAccount() {
+        eventHandler?(.addAccount)
     }
+    
+    @objc
+    private func arrangeAccounts() {
+        eventHandler?(.arrangeAccounts(accountType))
+    }
+}
 
-    var title: EditText {
-        switch self {
-        case .add:
-            return .string("account-options-add-account-title".localized)
-        case .arrange:
-            return .string("account-options-arrange-list-title".localized)
-        }
+extension AccountListOptionsViewController {
+    enum Event {
+        case addAccount
+        case arrangeAccounts(AccountType)
     }
 }
