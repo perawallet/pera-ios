@@ -22,6 +22,8 @@ import MagpieCore
 import MagpieHipo
 
 final class ALGBlockCycle: BlockCycle {
+    private typealias BlockRound = UInt64
+    
     private var lastRound: BlockRound?
     private var notificationQueue: DispatchQueue?
     private var notificationHandler: NotificationHandler?

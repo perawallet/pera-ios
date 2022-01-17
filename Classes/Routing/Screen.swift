@@ -27,7 +27,6 @@ indirect enum Screen {
     case accountRecover(flow: AccountSetupFlow)
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
-    case home(route: Screen?)
     case accountDetail(accountHandle: AccountHandle)
     case assetSearch(account: Account)
     case assetDetail(draft: TransactionListing)
@@ -73,7 +72,6 @@ indirect enum Screen {
     case ledgerApproval(mode: LedgerApprovalViewController.Mode, deviceName: String)
     case selectAsset(transactionAction: TransactionAction, filterOption: OldSelectAssetViewController.FilterOption = .none)
     case passphraseDisplay(address: String)
-    case tooltip(title: String)
     case assetDetailNotification(address: String, assetId: Int64?)
     case assetActionConfirmationNotification(address: String, assetId: Int64?)
     case transactionFilter(filterOption: TransactionFilterViewController.FilterOption = .allTime, delegate: TransactionFilterViewControllerDelegate)
@@ -98,7 +96,6 @@ indirect enum Screen {
     case tutorialSteps(step: Troubleshoot.Step)
     case transactionTutorial(isInitialDisplay: Bool, delegate: TransactionTutorialViewControllerDelegate)
     case recoverOptions(delegate: AccountRecoverOptionsViewControllerDelegate)
-    case algoStatistics
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
     case wcConnectionApproval(walletConnectSession: WalletConnectSession, delegate: WCConnectionApprovalViewControllerDelegate, completion: WalletConnectSessionConnectionCompletionHandler)
     case walletConnectSessionList

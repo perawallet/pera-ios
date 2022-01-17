@@ -20,25 +20,7 @@ import UIKit
 enum Colors {
     enum Main {
         static let primary600 = color("primary600")
-        static let primary700 = color("primary700")
-        static let secondary600 = color("secondary600")
-        static let secondary700 = color("secondary700")
-        static let blue600 = color("blue600")
-        static let red600 = color("red600")
         static let white = color("white")
-        static let black = color("black")
-        static let yellow600 = color("yellow600")
-        static let yellow700 = color("yellow700")
-        static let gray50 = color("gray50")
-        static let gray100 = color("gray100")
-        static let gray200 = color("gray200")
-        static let gray300 = color("gray300")
-        static let gray400 = color("gray400")
-        static let gray500 = color("gray500")
-        static let gray600 = color("gray600")
-        static let gray700 = color("gray700")
-        static let gray800 = color("gray800")
-        static let gray900 = color("gray900")
     }
 }
 
@@ -48,7 +30,6 @@ extension Colors {
         static let secondary = color("secondaryBackground")
         static let tertiary = color("tertiaryBackground")
         static let disabled = color("disabledBackground")
-        static let reversePrimary = color("reversePrimaryBackground")
     }
 }
 
@@ -57,17 +38,14 @@ extension Colors {
         static let separator = color("separatorColor")
         static let accountHeader = color("accountHeaderColor")
         static let assetHeader = color("selectAssetHeaderColor")
-        static let transactionDetailCopyIcon = color("transactionDetailCopyColor")
         static let dappImageBorderColor = color("wcAccountSelectionBorderColor")
     }
 }
 
 extension Colors {
     enum General {
-        static let verified = color("verified")
         static let testNetBanner = color("testNetBanner")
         static let error = color("errorColor")
-        static let success = color("primary600")
         static let selected = color("selectedColor")
         static let unknown = color("unknownColor")
     }
