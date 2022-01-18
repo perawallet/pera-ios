@@ -16,7 +16,6 @@
 //   WalletConnectBridge.swift
 
 import Foundation
-import UIKit
 import WalletConnectSwift
 
 class WalletConnectBridge {
@@ -64,9 +63,7 @@ extension WalletConnectBridge: ServerDelegate {
         shouldStart session: WalletConnectSession,
         completion: @escaping (WalletConnectSession.WalletInfo) -> Void
     ) {
-        DispatchQueue.main.async {
-            self.delegate?.walletConnectBridge(self, shouldStart: session, then: completion)
-        }
+        delegate?.walletConnectBridge(self, shouldStart: session, then: completion)
     }
 
     func server(_ server: WalletConnectServer, didConnect session: WalletConnectSession) {
@@ -100,7 +97,7 @@ protocol WalletConnectBridgeDelegate: AnyObject {
 
 typealias WalletConnectSession = WalletConnectSwift.Session
 typealias WalletConnectURL = WCURL
-typealias WalletConnectServer = Server
+typealias WalletConnectServer = WalletConnectSwift.Server
 typealias WalletConnectRequest = WalletConnectSwift.Request
 typealias WalletConnectResponse = WalletConnectSwift.Response
 typealias WalletConnectSessionWalletInfo = WalletConnectSwift.Session.WalletInfo

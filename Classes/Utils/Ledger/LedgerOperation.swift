@@ -182,16 +182,10 @@ extension LedgerOperation {
         if let presentingViewController = topMostController {
            let warningModalTransition = BottomSheetTransition(presentingViewController: presentingViewController)
 
-            // These texts won't be localized for now
-            let message = """
-            Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s
-            bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.
-            """
-
             let warningAlert = WarningAlert(
-                title: "Having Ledger Nano X connection issues?",
+                title: "ledger-pairing-issue-error-title".localized,
                 image: img("img-warning-circle"),
-                description: message,
+                description: "ble-error-fail-ble-connection-repairing".localized,
                 actionTitle: "title-ok".localized
             )
 

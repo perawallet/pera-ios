@@ -335,6 +335,7 @@
 		2B03D6F825CBD4C50079A973 /* shield_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B03D6F725CBD4C50079A973 /* shield_animation.json */; };
 		2B03D6F925CBD4C50079A973 /* shield_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B03D6F725CBD4C50079A973 /* shield_animation.json */; };
 		2B03D6FA25CBD4C50079A973 /* shield_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = 2B03D6F725CBD4C50079A973 /* shield_animation.json */; };
+		2B055FC027973764004E3CA0 /* WCSessionSaveErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B055FBF27973764004E3CA0 /* WCSessionSaveErrorLog.swift */; };
 		2B05A667251E23D7008A8791 /* CurrencyChangeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B05A666251E23D7008A8791 /* CurrencyChangeEvent.swift */; };
 		2B05A668251E23D7008A8791 /* CurrencyChangeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B05A666251E23D7008A8791 /* CurrencyChangeEvent.swift */; };
 		2B05A669251E23D7008A8791 /* CurrencyChangeEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B05A666251E23D7008A8791 /* CurrencyChangeEvent.swift */; };
@@ -3914,6 +3915,7 @@
 		2B03D6E725CBD4B80079A973 /* lock_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = lock_animation.json; sourceTree = "<group>"; };
 		2B03D6EF25CBD4BE0079A973 /* pen_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = pen_animation.json; sourceTree = "<group>"; };
 		2B03D6F725CBD4C50079A973 /* shield_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = shield_animation.json; sourceTree = "<group>"; };
+		2B055FBF27973764004E3CA0 /* WCSessionSaveErrorLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionSaveErrorLog.swift; sourceTree = "<group>"; };
 		2B05A666251E23D7008A8791 /* CurrencyChangeEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyChangeEvent.swift; sourceTree = "<group>"; };
 		2B05A674251E3BED008A8791 /* UITextView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Additions.swift"; sourceTree = "<group>"; };
 		2B0823DA23B6677A00D52BCF /* AssetSupportDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSupportDraft.swift; sourceTree = "<group>"; };
@@ -5523,6 +5525,14 @@
 			path = Transfer;
 			sourceTree = "<group>";
 		};
+		2B055FBE27973756004E3CA0 /* WC */ = {
+			isa = PBXGroup;
+			children = (
+				2B055FBF27973764004E3CA0 /* WCSessionSaveErrorLog.swift */,
+			);
+			path = WC;
+			sourceTree = "<group>";
+		};
 		2B05A673251E3BDE008A8791 /* TextView */ = {
 			isa = PBXGroup;
 			children = (
@@ -5965,6 +5975,7 @@
 			children = (
 				2BCBAAAA27426E8C00B3A746 /* Address */,
 				2BE4D09F25938D7D005F5764 /* Ledger */,
+				2B055FBE27973756004E3CA0 /* WC */,
 			);
 			path = Logs;
 			sourceTree = "<group>";
@@ -16471,6 +16482,7 @@
 				2B0F5F3524E4084400DA22A6 /* RekeyTransactionDraft.swift in Sources */,
 				D4006DDF2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift in Sources */,
 				95D11D052771CC0F001B2C37 /* TitleHeaderView.swift in Sources */,
+				2B055FC027973764004E3CA0 /* WCSessionSaveErrorLog.swift in Sources */,
 				F087091A27918E1A00BEE5C2 /* HomePortfolioViewModel.swift in Sources */,
 				2B0E00BA27881A3D00D6B2E2 /* SecuritySettingsViewController.swift in Sources */,
 				D4DDF3BA27396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift in Sources */,

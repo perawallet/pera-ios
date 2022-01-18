@@ -1,17 +1,13 @@
 // Copyright 2019 Algorand, Inc.
-
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-
 //    http://www.apache.org/licenses/LICENSE-2.0
-
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 //
 //   WalletConnector.swift
 
@@ -40,18 +36,14 @@ extension WalletConnector {
 
     func connect(to session: String) {
         guard let url = WalletConnectURL(session) else {
-            DispatchQueue.main.async {
-                self.delegate?.walletConnector(self, didFailWith: .failedToCreateSession(qr: session))
-            }
+            delegate?.walletConnector(self, didFailWith: .failedToCreateSession(qr: session))
             return
         }
 
         do {
             try walletConnectBridge.connect(to: url)
         } catch {
-            DispatchQueue.main.async {
-                self.delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
-            }
+            delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
         }
     }
 
@@ -59,9 +51,7 @@ extension WalletConnector {
         do {
             try walletConnectBridge.disconnect(from: session.sessionBridgeValue)
         } catch {
-            DispatchQueue.main.async {
-                self.delegate?.walletConnector(self, didFailWith: .failedToDisconnect(session: session))
-            }
+            delegate?.walletConnector(self, didFailWith: .failedToDisconnect(session: session))
         }
     }
 
@@ -75,7 +65,7 @@ extension WalletConnector {
         }
     }
 
-    func signTransactionRequest(_ request: WalletConnectRequest, with signature: [Data?]) {
+    func signTransactionRequest(_ request: WalletConnectRequest, with signature: [Foundation.Data?]) {
         walletConnectBridge.signTransactionRequest(request, with: signature)
     }
 
@@ -100,7 +90,7 @@ extension WalletConnector {
     func getWalletConnectSession(with url: WCURLMeta) -> WCSession? {
         return sessionSource.getWalletConnectSession(with: url)
     }
-    
+
     func resetAllSessions() {
         sessionSource.resetAllSessions()
     }
@@ -110,8 +100,27 @@ extension WalletConnector {
             WCSessionHistory.create(
                 entity: WCSessionHistory.entityName,
                 with: [WCSessionHistory.DBKeys.sessionHistory.rawValue: sessionData]
-            )
+            ) { result in
+                switch result {
+                case .error:
+                    asyncMain(afterDuration: 0) { [weak self] in
+                        guard let self = self else {
+                            return
+                        }
+
+                        self.logWCSessionSavingError(session)
+                    }
+                default:
+                    break
+                }
+            }
         }
+    }
+
+    private func logWCSessionSavingError(_ session: WCSession) {
+        UIApplication.shared.firebaseAnalytics?.record(
+            WCSessionSaveErrorLog(dappURL: session.urlMeta.wcURL.absoluteString)
+        )
     }
 }
 
@@ -122,38 +131,39 @@ extension WalletConnector: WalletConnectBridgeDelegate {
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
         // Get user approval or rejection for the session
-        DispatchQueue.main.async {
-            self.delegate?.walletConnector(self, shouldStart: session, then: completion)
-        }
+        delegate?.walletConnector(self, shouldStart: session, then: completion)
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didFailToConnect url: WalletConnectURL) {
-        DispatchQueue.main.async {
-            self.delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
-        }
+        delegate?.walletConnector(self, didFailWith: .failedToConnect(url: url))
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didConnectTo session: WalletConnectSession) {
-        let wcSession = session.toWCSession()
+        asyncMain(afterDuration: 0) { [weak self] in
+            guard let self = self else {
+                return
+            }
 
-        DispatchQueue.main.async {
+            let wcSession = session.toWCSession()
             self.addToSavedSessions(wcSession)
             self.delegate?.walletConnector(self, didConnectTo: wcSession)
         }
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didDisconnectFrom session: WalletConnectSession) {
-        let wcSession = session.toWCSession()
+        asyncMain(afterDuration: 0) { [weak self] in
+            guard let self = self else {
+                return
+            }
 
-        DispatchQueue.main.async {
+            let wcSession = session.toWCSession()
             self.removeFromSessions(wcSession)
             self.delegate?.walletConnector(self, didDisconnectFrom: wcSession)
         }
     }
 
     func walletConnectBridge(_ walletConnectBridge: WalletConnectBridge, didUpdate session: WalletConnectSession) {
-        let wcSession = session.toWCSession()
-        self.delegate?.walletConnector(self, didUpdate: wcSession)
+        delegate?.walletConnector(self, didUpdate: session.toWCSession())
     }
 }
 
@@ -195,7 +205,7 @@ extension WalletConnectorDelegate {
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
-        
+
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didUpdate session: WCSession) {

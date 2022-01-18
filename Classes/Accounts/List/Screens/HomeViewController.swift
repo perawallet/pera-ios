@@ -69,6 +69,7 @@ final class HomeViewController:
             
             switch event {
             case .didUpdate(let snapshot):
+                self.configureWalletConnectIfNeeded()
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             }
         }
@@ -108,22 +109,18 @@ final class HomeViewController:
 
     override func linkInteractors() {
         super.linkInteractors()
-
         listView.delegate = self
+    }
+
+    override func setListeners() {
+        super.setListeners()
 
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(didUpdateAuthenticatedUser(notification:)),
-            name: .AuthenticatedUserUpdate,
+            selector: #selector(didBecomeActive),
+            name: UIApplication.didBecomeActiveNotification,
             object: nil
         )
-    }
-}
-
-extension HomeViewController {
-    @objc
-    private func didUpdateAuthenticatedUser(notification: Notification) {
-        registerWCRequests()
     }
 }
 
@@ -297,16 +294,31 @@ extension HomeViewController {
 }
 
 extension HomeViewController {
-    private func reconnectToOldWCSessions() {
-        onceWhenViewDidAppear.execute {
-            asyncMain(afterDuration: 2.0) { [weak self] in
-                guard let self = self else {
-                    return
-                }
+    @objc
+    private func didBecomeActive() {
+        connectToWCSessionRequestFromDeeplink()
+    }
+}
 
-                self.walletConnector.reconnectToSavedSessionsIfPossible()
+extension HomeViewController {
+    private func configureWalletConnectIfNeeded() {
+        onceWhenViewDidAppear.execute { [weak self] in
+            guard let self = self else {
+                return
             }
+
+            self.completeWalletConnectConfiguration()
         }
+    }
+
+    private func completeWalletConnectConfiguration() {
+        reconnectToOldWCSessions()
+        connectToWCSessionRequestFromDeeplink()
+        registerWCRequests()
+    }
+
+    private func reconnectToOldWCSessions() {
+        walletConnector.reconnectToSavedSessionsIfPossible()
     }
 
     private func registerWCRequests() {
@@ -321,15 +333,7 @@ extension HomeViewController {
         if let appDelegate = UIApplication.shared.appDelegate,
            let incominWCSession = appDelegate.incomingWCSessionRequest {
             walletConnector.delegate = self
-
-            asyncMain(afterDuration: 2.0) { [weak self] in
-                guard let self = self else {
-                    return
-                }
-
-                self.walletConnector.connect(to: incominWCSession)
-            }
-
+            walletConnector.connect(to: incominWCSession)
             appDelegate.resetWCSessionRequest()
         }
     }
@@ -343,17 +347,29 @@ extension HomeViewController: WalletConnectorDelegate {
     ) {
         guard let accounts = self.session?.accounts,
               accounts.contains(where: { $0.type != .watch }) else {
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "wallet-connect-session-error-no-account".localized
-            )
+                  asyncMain { [weak self] in
+                      guard let self = self else {
+                          return
+                      }
+
+                      self.bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "wallet-connect-session-error-no-account".localized
+                      )
+                  }
             return
         }
 
-        modalTransition.perform(
-            .wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion),
-            by: .present
-        )
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.modalTransition.perform(
+                .wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion),
+                by: .present
+            )
+        }
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
