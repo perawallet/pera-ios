@@ -151,4 +151,10 @@ extension UIViewController {
             return .default
         }
     }
+
+    var isModal: Bool {
+        return presentingViewController != nil ||
+            navigationController?.presentingViewController?.presentedViewController == navigationController ||
+            tabBarController?.presentingViewController is UITabBarController
+     }
 }

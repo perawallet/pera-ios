@@ -124,15 +124,36 @@ extension WCMainTransactionViewController {
     }
 
     private func getTransactionParams() {
-        api?.getTransactionParams { response in
-            switch response {
-            case .failure:
-                break
-            case let .success(params):
-                self.transactionParams = params
-            }
-        }
+        api?.getTransactionParams { [weak self] response in
+             guard let self = self else {
+                 return
+             }
+
+             switch response {
+             case .failure:
+                 break
+             case let .success(params):
+                 self.transactionParams = params
+             }
+
+             self.rejectIfTheNetworkIsInvalid()
+         }
     }
+
+    private func rejectIfTheNetworkIsInvalid() {
+         if !hasValidNetwork(for: transactions) {
+             rejectTransactionRequest(with: .unauthorized(.nodeMismatch))
+             return
+         }
+     }
+
+     private func hasValidNetwork(for transactions: [WCTransaction]) -> Bool {
+         guard let params = transactionParams else {
+             return false
+         }
+
+         return transactions.contains { $0.isInTheSameNetwork(with: params) }
+     }
 
     private func presentInitialWarningAlertIfNeeded() {
         let oneTimeDisplayStorage = OneTimeDisplayStorage()
@@ -201,7 +222,7 @@ extension WCMainTransactionViewController {
 extension WCMainTransactionViewController: WCTransactionValidator {
     func rejectTransactionRequest(with error: WCTransactionErrorResponse) {
         walletConnector.rejectTransactionRequest(transactionRequest, with: error)
-        delegate?.wcMainTransactionViewController(self, didCompleted: transactionRequest)
+        delegate?.wcMainTransactionViewController(self, didRejected: transactionRequest)
         dismissScreen()
     }
 }
@@ -283,7 +304,7 @@ extension WCMainTransactionViewController: WCTransactionSignerDelegate {
     private func sendSignedTransactions() {
         walletConnector.signTransactionRequest(transactionRequest, with: signedTransactions)
         logAllTransactions()
-        delegate?.wcMainTransactionViewController(self, didCompleted: transactionRequest)
+        delegate?.wcMainTransactionViewController(self, didSigned: transactionRequest, in: wcSession)
         dismissScreen()
     }
 
@@ -404,8 +425,13 @@ extension WCMainTransactionViewController: ActionableWarningAlertViewControllerD
 protocol WCMainTransactionViewControllerDelegate: AnyObject {
     func wcMainTransactionViewController(
         _ wcMainTransactionViewController: WCMainTransactionViewController,
-        didCompleted request: WalletConnectRequest
+        didSigned request: WalletConnectRequest,
+        in sesssion: WCSession?
     )
+    func wcMainTransactionViewController(
+         _ wcMainTransactionViewController: WCMainTransactionViewController,
+         didRejected request: WalletConnectRequest
+     )
 }
 
 enum WCTransactionType {

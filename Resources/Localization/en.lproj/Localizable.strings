@@ -47,7 +47,6 @@
 "title-retry" = "Retry";
 
 // MARK: Account Type Selection
-"account-type-choose-title" = "Choose Account Type";
 "account-type-selection-add" = "Add New Account";
 "account-type-selection-add-detail" = "I want a new account with a new address and recovery passphrase";
 "account-type-selection-create" = "Create New Account";
@@ -61,12 +60,10 @@
 
 // MARK: Introduction
 
-"introduction-title-add-text" = "Add New Account";
 "introduction-add-account-text" = "Add New Account";
 "introduction-title-terms-and-services" = "By creating an account, you agree to Algorand’s<br><a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Conditions</a> and <a href=\"https://www.algorand.com/wallet-privacy-policy\">Privacy Policy</a>";
 
 // MARK: Password Setting
-"choose-password-title" = "Choose PIN";
 "password-set-subtitle" = "Choose your 6-digit PIN";
 "password-verify-title" = "Verify PIN";
 "password-change-subtitle" = "Choose your\n6-digit PIN";
@@ -349,7 +346,7 @@
 "node-settings-has-same-result" = "You cannot create same node twice";
 "node-settings-none-active-node-error-description" = "None of the active nodes seem to be active. Please make sure you have at least one active node before proceeding.";
 "node-settings-db-error-title" = "System operation failed";
-"node-settings-test-error-title" = "Connection failed";
+"title-failed-connection" = "Connection Failed";
 "node-settings-test-success-title" = "Connection successful!";
 "node-settings-database-error-description" = "An error occured on system.";
 "node-settings-warning-message" = "This action will remove the node. Are you sure?";
@@ -656,10 +653,7 @@
 "title-paste-passphrase" = "Paste Full Passphrase";
 "title-enter-pin-for-passphrase" = "Enter a Passcode";
 
-"title-analytics" = "Analytics";
 "title-algo-rewards" = "Rewards";
-"value-one-algo" = "1 ALGO = %@";
-
 "title-algorand" = "Algo";
 "title-account-balance" = "Balance";
 "title-algorand-value" = "Value";
@@ -685,6 +679,7 @@
 "algo-statistics-24h-volume" = "24h Volume";
 "algo-statistics-market-cap" = "Market Cap";
 "algo-statistics-previous-close" = "Previous Close";
+"algo-statistics-all-time" = "All Time High";
 "algo-statistics-open" = "Open";
 
 "ledger-account-verification-status-awaiting" = "Awaiting Verification";
@@ -787,6 +782,11 @@
 "wallet-connect-transaction-group-app-update-title" = "Application Update to #%@";
 "wallet-connect-transaction-group-app-delete-title" = "Application Delete to #%@";
 
+"wc-transaction-request-signed-warning-title" = "Your transaction is being processed!";
+"wc-transaction-request-signed-warning-message" = "The transaction has been signed and sent to %@. Please visit %@ for the remaining process.";
+
+"wallet-connect-session-timeout-message" = "We are sorry, but the dApp is not responding. Please refresh the page and try scanning a new QR Code. If the error persists, please contact the dApp.";
+
 "wallet-connect-asset-creation-title" = "Asset Creation Request";
 "wallet-connect-asset-name-title" = "Asset Name";
 "wallet-connect-asset-unit-title" = "Unit Name";
@@ -817,18 +817,17 @@
 "account-detail-portfolio-title" = "Account Value";
 "account-detail-assets-search" = "Search my assets";
 
-"nft-list-empty-title" = "NFTs Coming Soon";
-"nft-list-empty-detail" ="Discover, Collect extraordinary NFTs on the Algorand World's";
+// MARK: NFTs
+"nft-list-empty-title" = "NFTs - Coming Soon!";
+"nft-list-empty-detail" ="You will be able to view your NFT collections in the Algorand Wallet soon.\nOur team is working hard to make this feature available. Stay tuned!";
 
 // MARK: SendTransaction
-
 "send-transaction-title" = "Send %@";
 "send-transaction-add-note-title" = "+ Add Note";
 "send-transaction-edit-note-title" = "Edit Note";
 "send-transaction-max-button-title" = "MAX";
 
 // MARK: EditNote
-
 "edit-note-title" = "Add Note";
 "edit-note-note-explanation" = "Enter your note";
 
@@ -849,5 +848,6 @@
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Order";
 
+// MARK: PortfolioDescription
 "portfolio-calculation-title" = "How we calculate portfolio value";
 "portfolio-calculation-description" = "The total portfolio value is calculated by adding up all assets and Algo available in your accounts. If you hold multiple wallets, the Total Portfolio value is a sum of all accounts.\n\nAsset prices are estimated based on daily values fetched from Tinyman. Please note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.\n\nWatch accounts are not considered a part of your portfolio and are not included in the Total Portfolio calculation.";

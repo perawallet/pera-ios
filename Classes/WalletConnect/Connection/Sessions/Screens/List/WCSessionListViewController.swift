@@ -16,6 +16,7 @@
 //   WCSessionListViewController.swift
 
 import UIKit
+import MacaroonUtils
 
 final class WCSessionListViewController: BaseViewController {
     private lazy var sessionListView = WCSessionListView()
@@ -91,7 +92,13 @@ extension WCSessionListViewController: WalletConnectorDelegate {
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
-        displayDisconnectionError(error)
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.displayDisconnectionError(error)
+        }
     }
 }
 
@@ -114,9 +121,15 @@ extension WCSessionListViewController {
 
 extension WCSessionListViewController: QRScannerViewControllerDelegate {
     func qrScannerViewControllerDidApproveWCConnection(_ controller: QRScannerViewController) {
-        dataSource.updateSessions(walletConnector.allWalletConnectSessions)
-        setListContentState()
-        sessionListView.collectionView.reloadData()
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.dataSource.updateSessions(self.walletConnector.allWalletConnectSessions)
+            self.setListContentState()
+            self.sessionListView.collectionView.reloadData()
+        }
     }
 
     func qrScannerViewController(_ controller: QRScannerViewController, didFail error: QRScannerError, completionHandler: EmptyHandler?) {
