@@ -229,9 +229,10 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
     }
 
     private func continueSigningTransactions(after transaction: WCTransaction) {
-        if let nextTransaction = transactions.element(after: transaction) {
+        if let index = transactions.firstIndex(of: transaction),
+           let nextTransaction = transactions.nextElement(afterElementAt: index) {
             if let signerAccount = nextTransaction.signerAccount {
-                wcTransactionSigner.signTransaction(nextTransaction, with: dataSource.transactionRequest, for: signerAccount)
+                wcTransactionSigner.signTransaction(nextTransaction, with: transactionRequest, for: signerAccount)
             } else {
                 signedTransactions.append(nil)
                 continueSigningTransactions(after: nextTransaction)
