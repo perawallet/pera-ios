@@ -20,22 +20,27 @@ import Foundation
 import UIKit
 
 final class SelectAssetViewControllerDataSource: NSObject {
-    private(set) var assetDetails: [AssetInformation] = []
     private let sharedDataController: SharedDataController
     private let account: Account
 
-    init(sharedDataController: SharedDataController, account: Account) {
-        self.sharedDataController = sharedDataController
+    init(
+        account: Account,
+        sharedDataController: SharedDataController
+    ) {
         self.account = account
-        super.init()
+        self.sharedDataController = sharedDataController
 
-        assetDetails = account.assetInformations
+        super.init()
+    }
+    
+    subscript (indexPath: IndexPath) -> CompoundAsset? {
+        return account.compoundAssets[safe: indexPath.item.advanced(by: -1)]
     }
 }
 
 extension SelectAssetViewControllerDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return assetDetails.count.advanced(by: 1)
+        return account.compoundAssets.count.advanced(by: 1)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -47,8 +52,9 @@ extension SelectAssetViewControllerDataSource: UICollectionViewDataSource {
                 AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((account, currency)))
             )
         } else {
-            if let assetDetail = assetDetails[safe: indexPath.item.advanced(by: -1)],
-               let asset = account.assets?.first(matching: (\.id, assetDetail.id)) {
+            if let compoundAsset = self[indexPath] {
+                let asset = compoundAsset.base
+                let assetDetail = compoundAsset.detail
                 cell.bindData(
                     AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, asset, currency)))
                 )

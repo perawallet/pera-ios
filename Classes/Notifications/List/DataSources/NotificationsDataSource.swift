@@ -21,6 +21,7 @@ import MagpieCore
 final class NotificationsDataSource: NSObject {
     weak var delegate: NotificationsDataSourceDelegate?
 
+    private let sharedDataController: SharedDataController
     private let api: ALGAPI
     private var notifications = [NotificationMessage]()
     private var viewModels = [NotificationsViewModel]()
@@ -34,9 +35,15 @@ final class NotificationsDataSource: NSObject {
         return paginationCursor != nil
     }
 
-    init(api: ALGAPI) {
+    init(
+        sharedDataController: SharedDataController,
+        api: ALGAPI
+    ) {
+        self.sharedDataController = sharedDataController
         self.api = api
+
         super.init()
+
         startObserving()
     }
 }
@@ -141,21 +148,13 @@ extension NotificationsDataSource: UICollectionViewDataSource {
     }
     
     private func getSenderAccountIfExists(for notification: NotificationMessage) -> Account? {
-        guard let details = notification.detail,
-            let senderAddress = details.senderAddress else {
-            return nil
-        }
-        
-        return api.session.account(from: senderAddress)
+        let senderAddress = notification.detail?.senderAddress
+        return senderAddress.unwrap { sharedDataController.accountCollection[$0]?.value }
     }
     
     private func getReceiverAccountIfExists(for notification: NotificationMessage) -> Account? {
-        guard let details = notification.detail,
-            let receiverAddress = details.receiverAddress else {
-            return nil
-        }
-        
-        return api.session.account(from: receiverAddress)
+        let receiverAddress = notification.detail?.receiverAddress
+        return receiverAddress.unwrap { sharedDataController.accountCollection[$0]?.value }
     }
     
     private func getContactIfExists(for notification: NotificationMessage) -> Contact? {
@@ -198,16 +197,14 @@ extension NotificationsDataSource {
     }
     
     func getUserAccount(from notificationDetail: NotificationDetail) -> (account: Account?, assetDetail: AssetInformation?) {
-        guard let account = api.session.accounts.first(where: { account -> Bool in
-            account.address == notificationDetail.senderAddress || account.address == notificationDetail.receiverAddress
-        }) else {
-            return (account: nil, assetDetail: nil)
-        }
+        let anAddress = notificationDetail.senderAddress ?? notificationDetail.receiverAddress
         
-        var assetDetail: AssetInformation?
-        if let assetId = notificationDetail.asset?.id {
-            assetDetail = account.assetInformations.first { $0.id == assetId }
+        guard let address = anAddress  else {
+            return (nil, nil)
         }
+
+        let account = sharedDataController.accountCollection[address]?.value
+        let assetDetail = notificationDetail.asset?.id.unwrap { account?[$0]?.detail }
         return (account: account, assetDetail: assetDetail)
     }
 }

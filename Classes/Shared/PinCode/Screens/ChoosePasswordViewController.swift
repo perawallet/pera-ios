@@ -137,11 +137,7 @@ extension ChoosePasswordViewController {
                 return
             }
             
-            var assetDetail: AssetInformation?
-            
-            if let assetId = assetId {
-                assetDetail = account.assetInformations.first { $0.id == assetId }
-            }
+            let assetDetail = assetId.unwrap { account[$0]?.detail }
 
             guard let accountHandle = sharedDataController.accountCollection[account.address] else {
                 return

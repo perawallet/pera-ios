@@ -127,7 +127,9 @@ extension ContactDetailViewController {
                                 switch assetResponse {
                                 case let .success(assetDetailResponse):
                                     let assetDetail = assetDetailResponse.results[0]
-                                    account.assetInformations.append(assetDetail)
+                                    let compoundAsset = CompoundAsset(asset, assetDetail)
+                                    account.append(compoundAsset)
+                                    
                                     let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset, currency: currency))
                                     self?.assetPreviews.append(assetPreviewModel)
 

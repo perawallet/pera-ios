@@ -20,8 +20,8 @@ import UIKit
 final class SelectAssetViewController: BaseViewController {
     private let theme = Theme()
     private lazy var accountListDataSource = SelectAssetViewControllerDataSource(
-        sharedDataController: sharedDataController,
-        account: account
+        account: account,
+        sharedDataController: sharedDataController
     )
     private lazy var listView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -84,11 +84,11 @@ extension SelectAssetViewController: UICollectionViewDelegate, UICollectionViewD
         if indexPath.item == .zero {
             draft = SendTransactionDraft(from: account, transactionMode: .algo)
         } else {
-            guard let asset = accountListDataSource.assetDetails[safe: indexPath.item.advanced(by: -1)] else {
+            guard let compoundAsset = accountListDataSource[indexPath] else {
                 return
             }
 
-            draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(asset))
+            draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(compoundAsset.detail))
         }
 
         open(.sendTransaction(draft: draft), by: .push)

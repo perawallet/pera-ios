@@ -15,17 +15,25 @@
 //
 //  LedgerAccountDetailViewDataSource.swift
 
+import MacaroonUtils
 import UIKit
 
 final class LedgerAccountDetailViewDataSource: NSObject {
     weak var delegate: LedgerAccountDetailViewDataSourceDelegate?
 
+    private let sharedDataController: SharedDataController
     private let api: ALGAPI
     private let loadingController: LoadingController?
 
-    init(api: ALGAPI, loadingController: LoadingController?) {
+    init(
+        sharedDataController: SharedDataController,
+        api: ALGAPI,
+        loadingController: LoadingController?
+    ) {
+        self.sharedDataController = sharedDataController
         self.api = api
         self.loadingController = loadingController
+
         super.init()
     }
 
@@ -39,8 +47,9 @@ final class LedgerAccountDetailViewDataSource: NSObject {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
         for (index, asset) in assets.enumerated() {
-            if let assetDetail = api.session.assetInformations[asset.id] {
-                account.assetInformations.append(assetDetail)
+            if let assetDetail = sharedDataController.assetDetailCollection[asset.id] {
+                let compoundAsset = CompoundAsset(asset, assetDetail)
+                account.append(compoundAsset)
 
                 if index == assets.count - 1 {
                     loadingController?.stopLoading()
@@ -50,7 +59,7 @@ final class LedgerAccountDetailViewDataSource: NSObject {
                 api.getAssetDetails(AssetFetchQuery(ids: [asset.id])) { assetResponse in
                     switch assetResponse {
                     case .success(let assetDetailResponse):
-                        self.composeAssetDetail(assetDetailResponse.results[0], of: account, with: asset.id)
+                        self.composeAssetDetail(assetDetailResponse.results[0], of: account, with: asset)
                     case .failure:
                         account.removeAsset(asset.id)
                     }
@@ -64,9 +73,11 @@ final class LedgerAccountDetailViewDataSource: NSObject {
         }
     }
 
-    private func composeAssetDetail(_ assetDetail: AssetInformation, of account: Account, with id: Int64) {
-        account.assetInformations.append(assetDetail)
-        api.session.assetInformations[id] = assetDetail
+    private func composeAssetDetail(_ assetDetail: AssetInformation, of account: Account, with asset: Asset) {
+        let compoundAsset = CompoundAsset(asset, assetDetail)
+        account.append(compoundAsset)
+        
+        sharedDataController.assetDetailCollection[asset.id] = assetDetail
     }
 }
 

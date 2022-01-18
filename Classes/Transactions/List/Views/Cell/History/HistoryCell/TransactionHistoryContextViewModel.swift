@@ -45,7 +45,7 @@ struct TransactionHistoryContextViewModel:
 
         if let assetTransaction = transaction.assetTransfer,
            let assetId = transaction.assetTransfer?.assetId,
-           let assetDetail = account.assetInformations.first(matching: (\.id, assetId)) {
+           let assetDetail = account[assetId]?.detail {
 
             if assetTransaction.receiverAddress == assetTransaction.senderAddress {
                 bindTitleAndSubtitle(with: contact, and: .send(assetTransaction.receiverAddress))
