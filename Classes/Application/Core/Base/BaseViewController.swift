@@ -15,19 +15,44 @@
 //
 //  BaseViewController.swift
 
+import Foundation
+import MacaroonTabBarController
 import UIKit
 
-class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen {
-    var isTabBarHidden = true
-    var tabBarSnapshot: UIView?
+class BaseViewController:
+    UIViewController,
+    StatusBarConfigurable,
+    TabBarConfigurable,
+    AnalyticsScreen {
     var isStatusBarHidden = false
     var hidesStatusBarWhenAppeared = false
     var hidesStatusBarWhenPresented = false
-
+    
+    var leftBarButtonItems: [BarButtonItemRef] = []
+    var rightBarButtonItems: [BarButtonItemRef] = []
+    
+    var tabBarHidden = true
+    var tabBarSnapshot: UIView?
+    
+    private(set) var isViewFirstLoaded = true
+    private(set) var isViewAppearing = false
+    private(set) var isViewAppeared = false
+    private(set) var isViewDisappearing = false
+    private(set) var isViewDisappeared = false
+    
+    var shouldShowNavigationBar: Bool {
+        return true
+    }
+    var hidesCloseBarButtonItem: Bool {
+        return false
+    }
+    var prefersLargeTitle: Bool {
+        return false
+    }
+    
     var name: AnalyticsScreenName? {
         return nil
     }
-
     var params: AnalyticsParameters? {
         return nil
     }
@@ -35,41 +60,22 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return statusBarStyleForNetwork(isTestNet: api?.isTestNet ?? false )
     }
-
     override var prefersStatusBarHidden: Bool {
         return isStatusBarHidden
     }
-
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return isStatusBarHidden ? .fade : .none
     }
 
-    var leftBarButtonItems: [BarButtonItemRef] = []
-    var rightBarButtonItems: [BarButtonItemRef] = []
-
-    var hidesCloseBarButtonItem: Bool {
-        return false
-    }
-
-    var shouldShowNavigationBar: Bool {
-        return true
-    }
-
-    var prefersLargeTitle: Bool {
-        return false
-    }
-
-    private(set) var isViewFirstLoaded = true
-    private(set) var isViewAppearing = false
-    private(set) var isViewAppeared = false
-    private(set) var isViewDisappearing = false
-    private(set) var isViewDisappeared = false
-
     let configuration: ViewControllerConfiguration
 
-    init(configuration: ViewControllerConfiguration) {
+    init(
+        configuration: ViewControllerConfiguration
+    ) {
         self.configuration = configuration
+        
         super.init(nibName: nil, bundle: nil)
+
         configureNavigationBarAppearance()
         customizeTabBarAppearence()
         beginTracking()
@@ -119,10 +125,14 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         setNeedsStatusBarLayoutUpdateWhenAppearing()
         setNeedsNavigationBarAppearanceUpdateWhenAppearing()
         customizeNavigationBarTitle()
-        setNeedsTabBarAppearanceUpdateOnAppearing() // <todo>: Causes to navigation bar title flashing when cancelling back swipe
+        
+        /// <todo>:
+        /// Causes to navigation bar title flashing when cancelling back swipe
+        setNeedsTabBarAppearanceUpdateOnAppearing(animated: true)
 
         isViewDisappeared = false
         isViewAppearing = true
@@ -130,14 +140,18 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
         setNeedsTabBarAppearanceUpdateOnAppeared()
+
         track(self)
+        
         isViewAppearing = false
         isViewAppeared = true
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         setNeedsStatusBarLayoutUpdateWhenDisappearing()
 
         isViewFirstLoaded = false
@@ -147,7 +161,9 @@ class BaseViewController: UIViewController, TabBarConfigurable, AnalyticsScreen 
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+
         setNeedsTabBarAppearanceUpdateOnDisappeared()
+
         isViewDisappearing = false
         isViewDisappeared = true
     }
@@ -188,8 +204,6 @@ extension BaseViewController {
         }
     }
 }
-
-extension BaseViewController: StatusBarConfigurable {}
 
 extension BaseViewController {
     var session: Session? {

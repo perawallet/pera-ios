@@ -13,21 +13,22 @@
 // limitations under the License.
 
 //
-//  TabBarItemConvertible.swift
+//   TabBarButtonItem.swift
 
-import UIKit
+import Foundation
+import MacaroonTabBarController
+import MacaroonUIKit
 
-protocol TabBarItemConvertible {
-    var name: String { get }
-    var barButtonItem: TabBarButtonItemConvertible { get }
-    var content: UIViewController? { get }
-}
+struct TabBarButtonItem: MacaroonTabBarController.TabBarButtonItem {
+    let style: ButtonStyle
+    let spacingBetweenIconAndTitle: LayoutMetric
 
-extension TabBarItemConvertible {
-    func equalsTo(_ other: TabBarItemConvertible?) -> Bool {
-        if let other = other {
-            return name == other.name
-        }
-        return false
+    init(
+        icon: StateImageGroup
+    ) {
+        self.style = [
+            .icon(icon)
+        ]
+        self.spacingBetweenIconAndTitle = 0
     }
 }
