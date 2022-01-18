@@ -27,7 +27,7 @@ extension UIViewController {
             return controller.viewControllers.last?.topMostController
         }
         if let controller = self as? TabBarController {
-            return controller.selectedItem?.content?.topMostController
+            return controller.selectedScreen?.topMostController
         }
         if let controller = presentedViewController {
             return controller.topMostController
@@ -115,20 +115,6 @@ extension UIViewController {
                 completion?()
             }
         )
-    }
-}
-
-extension UIViewController {
-    var tabBarContainer: TabBarController? {
-        var parentContainer = parent
-
-        while parentContainer != nil {
-            if let tabBarContainer = parentContainer as? TabBarController {
-                return tabBarContainer
-            }
-            parentContainer = parentContainer?.parent
-        }
-        return nil
     }
 }
 

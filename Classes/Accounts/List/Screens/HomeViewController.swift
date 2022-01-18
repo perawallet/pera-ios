@@ -98,7 +98,7 @@ final class HomeViewController:
     }
 
     override func customizeTabBarAppearence() {
-        isTabBarHidden = false
+        tabBarHidden = false
     }
 
     override func prepareLayout() {

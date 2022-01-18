@@ -37,7 +37,7 @@ final class SettingsViewController: BaseViewController {
     }
 
     override func customizeTabBarAppearence() {
-        isTabBarHidden = false
+        tabBarHidden = false
     }
     
     override func linkInteractors() {
