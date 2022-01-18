@@ -204,6 +204,7 @@ extension TabBarController {
     @objc
     private func toggleTransactionOptions() {
         toggleTransactionOptionsActionView.isSelected.toggle()
+        setTabBarItemsEnabled(!toggleTransactionOptionsActionView.isSelected)
         
         if let currentTransactionOptionsAnimator = currentTransactionOptionsAnimator,
            currentTransactionOptionsAnimator.isRunning {
@@ -341,5 +342,19 @@ extension Array where Element == TabBarItem {
         of itemId: TabBarItemID
     ) -> Int? {
         return firstIndex { $0.id == itemId.rawValue }
+    }
+}
+
+/// <todo>
+/// Move it to 'Macaroon' later.
+extension TabBarContainer {
+    func setTabBarItemsEnabled(
+        _ isEnabled: Bool
+    ) {
+        items.enumerated().forEach {
+            if $1.isSelectable {
+                tabBar.barButtons[$0].isEnabled = isEnabled
+            }
+        }
     }
 }
