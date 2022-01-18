@@ -147,8 +147,10 @@ extension LedgerAccountDetailDataSource {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
         assets.forEach { asset in
-            if let assetDetail = api.session.assetInformations[asset.id] {
-                account.assetInformations.append(assetDetail)
+            if let assetDetail = sharedDataController.assetDetailCollection[asset.id] {
+                let compoundAsset = CompoundAsset(asset, assetDetail)
+                account.append(compoundAsset)
+
                 let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset, currency: currency))
                 assetPreviews.append(assetPreviewModel)
             } else {
@@ -166,8 +168,11 @@ extension LedgerAccountDetailDataSource {
     }
 
     private func composeAssetDetail(_ assetDetail: AssetInformation, of account: Account, with asset: Asset) {
-        account.assetInformations.append(assetDetail)
-        api.session.assetInformations[asset.id] = assetDetail
+        let compoundAsset = CompoundAsset(asset, assetDetail)
+        account.append(compoundAsset)
+
+        sharedDataController.assetDetailCollection[asset.id] = assetDetail
+
         let assetPreviewModel = AssetPreviewModelAdapter.adapt(
             (
                 assetDetail: assetDetail,

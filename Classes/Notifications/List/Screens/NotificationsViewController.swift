@@ -28,7 +28,7 @@ final class NotificationsViewController: BaseViewController {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return NotificationsDataSource(api: api)
+        return NotificationsDataSource(sharedDataController: sharedDataController, api: api)
     }()
     
     override func viewDidLoad() {

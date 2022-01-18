@@ -117,7 +117,7 @@ extension AccountAssetListLayout: UICollectionViewDelegateFlowLayout {
         }
 
         /// Reduce search and algos cells from index
-        if let assetDetail = accountHandle.value.assetInformations[safe: indexPath.item - 2] {
+        if let assetDetail = accountHandle.value.compoundAssets[safe: indexPath.item - 2]?.detail {
             handlers.didSelectAssetDetail?(assetDetail)
         }
     }

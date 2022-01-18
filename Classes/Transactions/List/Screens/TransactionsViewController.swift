@@ -306,7 +306,7 @@ extension TransactionsViewController {
         switch draft.type {
         case .all:
             if let assetId = transaction.assetTransfer?.assetId {
-                return accountHandle.value.assetInformations.first(matching: (\.id, assetId))
+                return accountHandle.value[assetId]?.detail
             }
 
             return assetDetail

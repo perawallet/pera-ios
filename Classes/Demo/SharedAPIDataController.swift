@@ -26,9 +26,10 @@ final class SharedAPIDataController:
     WeakPublisher {
     var observations: [ObjectIdentifier: WeakObservation] = [:]
 
-    private(set) var currency: CurrencyHandle = .idle
+    var assetDetailCollection: AssetDetailCollection = []
+
     private(set) var accountCollection: AccountCollection = []
-    private(set) var assetDetailCollection: AssetDetailCollection = []
+    private(set) var currency: CurrencyHandle = .idle
     
     private lazy var blockProcessor = createBlockProcessor()
     private lazy var blockProcessorEventQueue =
