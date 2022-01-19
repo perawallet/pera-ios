@@ -53,4 +53,8 @@ extension Notification.Name {
     static var NotificationDidReceived: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.received")
     }
+
+    static var AssetDetailFetched: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.assetDetail.fetched")
+    }
 }

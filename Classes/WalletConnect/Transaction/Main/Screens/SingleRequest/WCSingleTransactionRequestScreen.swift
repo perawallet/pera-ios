@@ -35,8 +35,6 @@ final class WCSingleTransactionRequestScreen:
     var isScrollEnabled: Bool = true
     lazy var scrollView: UIScrollView = UIScrollView()
 
-    var assetDetail: AssetDetail?
-
     private lazy var requestView = WCSingleTransactionRequestView()
     private lazy var viewModel: WCSingleTransactionRequestViewModel? = {
         guard let transaction = transactions.first else {
@@ -68,6 +66,11 @@ final class WCSingleTransactionRequestScreen:
     ) {
         self.dataSource = dataSource
         super.init(configuration: configuration)
+        setupObserver()
+    }
+
+    deinit {
+        removeObserver()
     }
 
     override func configureAppearance() {
@@ -106,32 +109,37 @@ final class WCSingleTransactionRequestScreen:
 
         requestView.bind(viewModel)
     }
+}
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setCacheAssetIfNeeded()
+extension WCSingleTransactionRequestScreen {
+    private func setupObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didAssetFetched(notification:)),
+            name: .AssetDetailFetched,
+            object: nil
+        )
     }
 
-    private func setCacheAssetIfNeeded() {
+    private func removeObserver() {
+        NotificationCenter
+            .default
+            .removeObserver(self)
+    }
+
+    @objc
+    private func didAssetFetched(notification: Notification) {
         guard let transaction = transactions.first,
-              (transaction.transactionDetail?.assetId ?? transaction.transactionDetail?.assetIdBeingConfigured) != nil
+              let assetId = transaction.transactionDetail?.currentAssetId,
+              let assetInformation = sharedDataController.assetDetailCollection[assetId]
         else {
             return
         }
 
-        setCachedAsset {
-            if self.assetDetail == nil {
-                self.delegate?.wcSingleTransactionRequestScreenDidReject(self)
-                self.dismissScreen()
-                return
-            }
+        let assetDetail = AssetDetail(assetInformation: assetInformation)
+        self.viewModel?.middleView?.assetDetail = assetDetail
 
-            DispatchQueue.main.async {
-                self.viewModel?.middleView?.assetDetail = self.assetDetail
-                self.requestView.bind(self.viewModel)
-            }
-        }
+        bindData()
     }
 }
 
@@ -175,8 +183,4 @@ extension WCSingleTransactionRequestScreen: WCSingleTransactionRequestViewDelega
     func wcSingleTransactionRequestViewDidTapShowTransaction(_ requestView: WCSingleTransactionRequestView) {
 
     }
-}
-
-
-extension WCSingleTransactionRequestScreen: WCSingleTransactionScreenAssetManagable {
 }

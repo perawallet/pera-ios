@@ -45,6 +45,11 @@ final class WCUnsignedRequestScreen: BaseViewController {
     ) {
         self.dataSource = dataSource
         super.init(configuration: configuration)
+        setupObserver()
+    }
+
+    deinit {
+        removeObserver()
     }
 
     override func configureAppearance() {
@@ -107,6 +112,28 @@ extension WCUnsignedRequestScreen {
             make.top.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+    }
+}
+
+extension WCUnsignedRequestScreen {
+    private func setupObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didAssetFetched(notification:)),
+            name: .AssetDetailFetched,
+            object: nil
+        )
+    }
+
+    private func removeObserver() {
+        NotificationCenter
+            .default
+            .removeObserver(self)
+    }
+
+    @objc
+    private func didAssetFetched(notification: Notification) {
+        unsignedRequestView.reloadData()
     }
 }
 

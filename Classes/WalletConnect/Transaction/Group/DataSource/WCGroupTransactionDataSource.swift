@@ -218,8 +218,7 @@ extension WCGroupTransactionDataSource {
     }
 
     private func assetInformation(from transaction: WCTransaction) -> AssetInformation? {
-        guard let assetId = transaction.transactionDetail?.assetId ??
-                transaction.transactionDetail?.assetId ?? transaction.transactionDetail?.assetIdBeingConfigured else {
+        guard let assetId = transaction.transactionDetail?.currentAssetId else {
             return nil
         }
 

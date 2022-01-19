@@ -268,16 +268,8 @@ extension WCMainTransactionDataSource {
         return groupedTransactions[Int64(index)]
     }
 
-    private func assetDetail(from transaction: WCTransaction) -> AssetDetail? {
-        guard let assetId = transaction.transactionDetail?.assetId ?? transaction.transactionDetail?.assetIdBeingConfigured else {
-            return nil
-        }
-
-        return nil
-    }
-
     private func assetInformation(from transaction: WCTransaction) -> AssetInformation? {
-        guard let assetId = transaction.transactionDetail?.assetId ?? transaction.transactionDetail?.assetIdBeingConfigured else {
+        guard let assetId = transaction.transactionDetail?.currentAssetId else {
             return nil
         }
 

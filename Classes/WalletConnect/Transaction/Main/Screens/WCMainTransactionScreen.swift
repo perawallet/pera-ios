@@ -134,6 +134,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         super.viewDidLoad()
 
         validateTransactions(transactions, with: dataSource.groupedTransactions)
+        getAssetDetailsIfNeeded()
     }
 
     override func bindData() {
@@ -374,5 +375,44 @@ extension WCMainTransactionScreen: WCTransactionValidator {
             self
         )
         dismissScreen()
+    }
+}
+
+extension WCMainTransactionScreen: AssetCachable {
+    private func getAssetDetailsIfNeeded() {
+        let assetTransactions = transactions.filter {
+            $0.transactionDetail?.type == .assetTransfer || $0.transactionDetail?.type == .assetConfig
+        }
+
+        guard !assetTransactions.isEmpty else {
+            return
+        }
+
+        for (index, transaction) in assetTransactions.enumerated() {
+            guard let assetId = transaction.transactionDetail?.currentAssetId else {
+                loadingController?.stopLoading()
+                self.rejectTransactionRequest(with: .invalidInput(.asset))
+                return
+            }
+
+            cacheAssetDetail(with: assetId) { [weak self] assetDetail in
+                guard let self = self else {
+                    return
+                }
+
+                if assetDetail == nil {
+                    self.loadingController?.stopLoading()
+                    self.rejectTransactionRequest(with: .invalidInput(.asset))
+                    return
+                }
+
+                self.sharedDataController.assetDetailCollection[assetId] = assetDetail
+
+                if index == assetTransactions.count - 1 {
+                    self.loadingController?.stopLoading()
+                    NotificationCenter.default.post(name: .AssetDetailFetched, object: nil)
+                }
+            }
+        }
     }
 }
