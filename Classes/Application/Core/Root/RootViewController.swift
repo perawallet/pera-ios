@@ -16,6 +16,7 @@
 //  RootViewController.swift
 
 import UIKit
+import MacaroonUtils
 
 class RootViewController: UIViewController {
     
@@ -196,37 +197,69 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
 
         currentWCTransactionRequest = request
 
-        wcRequestScreen = open(
-            .wcMainTransactionScreen(
-                transactions: transactions,
-                transactionRequest: request,
-                transactionOption: transactionOption
-            ),
-            by: fullScreenPresentation
-        )
-        wcRequestScreen?.delegate = self
+        let presentingController: UIViewController?
+        if let controller = topMostController,
+           controller.isModal {
+            presentingController = controller
+        } else {
+            presentingController = self
+        }
 
-//        wcMainTransactionViewController = open(
-//            .wcMainTransaction(
-//                transactions: transactions,
-//                transactionRequest: request,
-//                transactionOption: transactionOption
-//            ),
-//            by: fullScreenPresentation,
-//            animated: animated
-//        ) as? WCMainTransactionViewController
-//
-//        wcMainTransactionViewController?.delegate = self
+        wcMainTransactionViewController = presentingController?.open(
+             .wcMainTransaction(
+                 transactions: transactions,
+                 transactionRequest: request,
+                 transactionOption: transactionOption
+             ),
+             by: fullScreenPresentation,
+             animated: animated
+         ) as? WCMainTransactionViewController
+
+         wcMainTransactionViewController?.delegate = self
     }
 }
 
 extension RootViewController: WCMainTransactionViewControllerDelegate {
     func wcMainTransactionViewController(
-        _ wcMainTransactionViewController: WCMainTransactionViewController,
-        didCompleted request: WalletConnectRequest
+         _ wcMainTransactionViewController: WCMainTransactionViewController,
+         didSigned request: WalletConnectRequest,
+         in session: WCSession?
     ) {
         resetCurrentWCTransaction()
+
+        guard let wcSession = session else {
+            return
+        }
+
+        presentWCTransactionSuccessMessage(for: wcSession)
     }
+
+    private func presentWCTransactionSuccessMessage(for session: WCSession) {
+        let dappName = session.peerMeta.name
+
+        let warningAlert = WarningAlert(
+            title: "wc-transaction-request-signed-warning-title".localized,
+            image: img("img-green-checkmark"),
+            description: "wc-transaction-request-signed-warning-message".localized(dappName, dappName),
+            actionTitle: "title-close".localized
+        )
+
+        let warningModalTransition = BottomSheetTransition(presentingViewController: self)
+
+        asyncMain(afterDuration: 0.3) {
+            warningModalTransition.perform(
+                .warningAlert(warningAlert: warningAlert),
+                by: .presentWithoutNavigationController
+            )
+        }
+    }
+
+    func wcMainTransactionViewController(
+         _ wcMainTransactionViewController: WCMainTransactionViewController,
+         didRejected request: WalletConnectRequest
+     ) {
+         resetCurrentWCTransaction()
+     }
 
     private func resetCurrentWCTransaction() {
         currentWCTransactionRequest = nil

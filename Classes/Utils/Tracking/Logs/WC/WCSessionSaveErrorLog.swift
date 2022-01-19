@@ -13,21 +13,17 @@
 // limitations under the License.
 
 //
-//  TabBarItemConvertible.swift
+//   WCSessionSaveErrorLog.swift
 
-import UIKit
+import Foundation
 
-protocol TabBarItemConvertible {
-    var name: String { get }
-    var barButtonItem: TabBarButtonItemConvertible { get }
-    var content: UIViewController? { get }
-}
+ struct WCSessionSaveErrorLog: AnalyticsLog {
+     let dappURL: String
 
-extension TabBarItemConvertible {
-    func equalsTo(_ other: TabBarItemConvertible?) -> Bool {
-        if let other = other {
-            return name == other.name
-        }
-        return false
-    }
-}
+     var name: AnalyticsLogName = .wcSessionSaveError
+     var params: AnalyticsParameters {
+         return [
+             .dappURL: dappURL
+         ]
+     }
+ }

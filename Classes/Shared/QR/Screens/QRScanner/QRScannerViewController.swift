@@ -17,6 +17,7 @@
 
 import UIKit
 import AVFoundation
+import MacaroonUtils
 import MacaroonUIKit
 
 final class QRScannerViewController: BaseViewController {
@@ -50,6 +51,7 @@ final class QRScannerViewController: BaseViewController {
 
     private let canReadWCSession: Bool
     private var dAppName: String? = nil
+    private var wcConnectionRepeater: Repeater?
 
     private lazy var isShowingConnectedAppsButton: Bool = {
         canReadWCSession && !walletConnector.allWalletConnectSessions.isEmpty
@@ -58,6 +60,10 @@ final class QRScannerViewController: BaseViewController {
     init(canReadWCSession: Bool, configuration: ViewControllerConfiguration) {
         self.canReadWCSession = canReadWCSession
         super.init(configuration: configuration)
+    }
+
+    deinit {
+        wcConnectionRepeater?.invalidate()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -245,11 +251,10 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
 
             if qrString.isWalletConnectConnection {
                 if !canReadWCSession {
-                    let message = """
-                    The scanned QR is not a valid Algorand public address. For other types of QR (such as WalletConnect transactions),
-                    please use the scan QR button on the homepage.
-                    """
-                    bannerController?.presentErrorBanner(title: "title-error".localized, message: message)
+                    bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "qr-scan-invalid-wc-screen-error".localized
+                    )
                     captureSession = nil
                     closeScreen(by: .pop)
                     return
@@ -257,6 +262,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
 
                 walletConnector.delegate = self
                 walletConnector.connect(to: qrString)
+                startWCConnectionTimer()
             } else if let qrText = try? JSONDecoder().decode(QRText.self, from: qrStringData) {
                 captureSession = nil
                 closeScreen(by: .pop)
@@ -289,6 +295,8 @@ extension QRScannerViewController: WalletConnectorDelegate {
         shouldStart session: WalletConnectSession,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
+        stopWCConnectionTimer()
+
         let accounts = self.sharedDataController.accountCollection.sorted()
 
         guard accounts.contains(where: { $0.value.type != .watch }) else {
@@ -299,10 +307,17 @@ extension QRScannerViewController: WalletConnectorDelegate {
             return
         }
         dAppName = session.dAppInfo.peerMeta.name
-        wcConnectionModalTransition.perform(
-            .wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion),
-            by: .present
-        )
+
+        asyncMain { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.wcConnectionModalTransition.perform(
+                .wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion),
+                by: .present
+            )
+        }
     }
 
     func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
@@ -316,18 +331,76 @@ extension QRScannerViewController: WalletConnectorDelegate {
         switch error {
         case .failedToConnect,
              .failedToCreateSession:
-            captureSessionQueue.async {
-                self.captureSession?.startRunning()
+
+            asyncMain { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.resetUIForScanning()
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-session-invalid-qr-message".localized
+                )
+                self.captureSession = nil
+                self.closeScreen(by: .pop)
             }
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "wallet-connect-session-invalid-qr-message".localized
-            )
-            captureSession = nil
-            closeScreen(by: .pop)
         default:
             break
         }
+    }
+
+    private func startWCConnectionTimer() {
+        /// We need to warn the user after 10 seconds if there's no resposne from the dApp.
+        wcConnectionRepeater = Repeater(intervalInSeconds: 10.0) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            asyncMain { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                if self.captureSession?.isRunning == true {
+                    self.captureSessionQueue.async {
+                        self.captureSession?.stopRunning()
+                    }
+                }
+
+                self.openWCConnectionError()
+            }
+
+            self.stopWCConnectionTimer()
+        }
+
+        wcConnectionRepeater?.resume(immediately: false)
+    }
+
+    private func stopWCConnectionTimer() {
+        wcConnectionRepeater?.invalidate()
+        wcConnectionRepeater = nil
+    }
+
+    private func openWCConnectionError() {
+        let warningAlert = WarningAlert(
+            title: "title-failed-connection".localized,
+            image: img("img-error-circle"),
+            description: "wallet-connect-session-timeout-message".localized,
+            actionTitle: "title-close".localized
+        )
+
+        let controller = wcConnectionModalTransition.perform(
+            .warningAlert(warningAlert: warningAlert),
+            by: .presentWithoutNavigationController
+        ) as? WarningAlertViewController
+        controller?.delegate = self
+    }
+}
+
+extension QRScannerViewController: WarningAlertViewControllerDelegate {
+    func warningAlertViewControllerDidTakeAction(_ warningAlertViewController: WarningAlertViewController) {
+        resetUIForScanning()
     }
 }
 
@@ -339,8 +412,13 @@ extension QRScannerViewController: WCConnectionApprovalViewControllerDelegate {
     }
 
     func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
-        wcConnectionApprovalViewController.dismiss(animated: true) { [weak self] in
-            self?.popScreen()
+        wcConnectionApprovalViewController.dismissScreen()
+        resetUIForScanning()
+    }
+
+    private func resetUIForScanning() {
+        captureSessionQueue.async {
+            self.captureSession?.startRunning()
         }
     }
 

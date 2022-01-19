@@ -30,7 +30,7 @@ final class TitleWithAccessoryView:
     ]
     
     private lazy var titleView = Label()
-    private lazy var accessoryView = Button()
+    private lazy var accessoryView = MacaroonUIKit.Button()
     
     override init(
         frame: CGRect

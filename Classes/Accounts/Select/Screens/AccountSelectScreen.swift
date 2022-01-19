@@ -42,7 +42,7 @@ final class AccountSelectScreen: BaseViewController {
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
     override func customizeTabBarAppearence() {
-        isTabBarHidden = false
+        tabBarHidden = false
     }
 
     init(draft: SendTransactionDraft, configuration: ViewControllerConfiguration) {

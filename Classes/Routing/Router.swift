@@ -465,9 +465,6 @@ class Router {
             )
         case let .jsonDisplay(jsonData, title):
             viewController = JSONDisplayViewController(jsonData: jsonData, title: title, configuration: configuration)
-
-        case .tabBarModal:
-            viewController = TabBarModalViewController(configuration: configuration)
         case let .algoStatisticsDateSelection(option, delegate):
             let algoStatisticsDateSelectionViewController = AlgoStatisticsDateSelectionViewController(selectedOption: option, configuration: configuration)
             algoStatisticsDateSelectionViewController.delegate = delegate

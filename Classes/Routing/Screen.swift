@@ -115,7 +115,6 @@ indirect enum Screen {
     case wcAssetReconfigurationTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case wcAssetDeletionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case jsonDisplay(jsonData: Data, title: String)
-    case tabBarModal
     case algoStatisticsDateSelection(option: AlgosUSDValueInterval, delegate: AlgoStatisticsDateSelectionViewControllerDelegate)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case accountListOptions(accountType: AccountType, eventHandler: AccountListOptionsViewController.EventHandler)

@@ -169,7 +169,7 @@ extension DeepLinkRouter {
     }
 
     private func openAssetDetail(for account: Account, with assetDetail: AssetInformation?) {
-        rootViewController?.tabBarContainer?.selectedItem = rootViewController?.tabBarContainer?.items[0]
+        rootViewController?.tabBarContainer?.selectedIndex = 0
 
         guard let accountHandle = appConfiguration.sharedDataController.accountCollection[account.address] else {
             return

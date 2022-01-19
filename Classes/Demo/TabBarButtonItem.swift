@@ -13,25 +13,22 @@
 // limitations under the License.
 
 //
-//   TabBarModalViewController+Theme.swift
+//   TabBarButtonItem.swift
 
+import Foundation
+import MacaroonTabBarController
 import MacaroonUIKit
-import UIKit
 
-extension TabBarModalViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        let chromeStyle: ViewStyle
-        let tabBarModalViewTheme: TabBarModalViewTheme
-        let modalHeight: LayoutMetric
+struct TabBarButtonItem: MacaroonTabBarController.TabBarButtonItem {
+    let style: ButtonStyle
+    let spacingBetweenIconAndTitle: LayoutMetric
 
-        init(_ family: LayoutFamily) {
-            backgroundColor = UIColor.clear
-            tabBarModalViewTheme = TabBarModalViewTheme()
-            chromeStyle = [
-                .backgroundColor(color("bottomOverlayBackground"))
-            ]
-            modalHeight = 200
-        }
+    init(
+        icon: StateImageGroup
+    ) {
+        self.style = [
+            .icon(icon)
+        ]
+        self.spacingBetweenIconAndTitle = 0
     }
 }

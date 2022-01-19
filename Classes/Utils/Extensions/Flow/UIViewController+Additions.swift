@@ -27,7 +27,7 @@ extension UIViewController {
             return controller.viewControllers.last?.topMostController
         }
         if let controller = self as? TabBarController {
-            return controller.selectedItem?.content?.topMostController
+            return controller.selectedScreen?.topMostController
         }
         if let controller = presentedViewController {
             return controller.topMostController
@@ -119,20 +119,6 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    var tabBarContainer: TabBarController? {
-        var parentContainer = parent
-
-        while parentContainer != nil {
-            if let tabBarContainer = parentContainer as? TabBarController {
-                return tabBarContainer
-            }
-            parentContainer = parentContainer?.parent
-        }
-        return nil
-    }
-}
-
-extension UIViewController {
     func open(_ url: URL?) {
         guard let url = url else {
             return
@@ -165,4 +151,10 @@ extension UIViewController {
             return .default
         }
     }
+
+    var isModal: Bool {
+        return presentingViewController != nil ||
+            navigationController?.presentingViewController?.presentedViewController == navigationController ||
+            tabBarController?.presentingViewController is UITabBarController
+     }
 }

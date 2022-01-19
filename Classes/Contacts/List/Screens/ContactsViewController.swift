@@ -48,7 +48,7 @@ class ContactsViewController: BaseViewController {
     }
 
     override func customizeTabBarAppearence() {
-        isTabBarHidden = false
+        tabBarHidden = false
     }
     
     override func setListeners() {

@@ -30,7 +30,7 @@ final class HomePortfolioView:
     ]
 
     private lazy var titleView = Label()
-    private lazy var infoActionView = Button()
+    private lazy var infoActionView = MacaroonUIKit.Button()
     private lazy var valueView = Label()
     private lazy var holdingsView = UIView()
     private lazy var algoHoldingsCanvasView = UIView()
