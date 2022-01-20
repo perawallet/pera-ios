@@ -54,7 +54,7 @@ class WCGroupTransactionAccountInformationView: BaseView {
     override func configureAppearance() {
         super.configureAppearance()
 
-        backgroundColor = Colors.Background.secondary
+        backgroundColor = .clear
     }
 
     override func prepareLayout() {

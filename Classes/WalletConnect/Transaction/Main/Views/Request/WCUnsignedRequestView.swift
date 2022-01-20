@@ -37,7 +37,7 @@ final class WCUnsignedRequestView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
-        collectionView.contentInset = UIEdgeInsets(top: 36, left: 0, bottom: 0, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 36, left: 0, bottom: theme.collectionViewBottomOffset + theme.buttonHeight, right: 0)
         collectionView.register(
             WCMultipleTransactionItemCell.self,
             forCellWithReuseIdentifier: WCMultipleTransactionItemCell.reusableIdentifier
@@ -71,6 +71,7 @@ final class WCUnsignedRequestView: BaseView {
         return collectionView
     }()
 
+    private lazy var buttonsContainerView = UIView()
     private lazy var confirmButton = Button()
     private lazy var cancelButton = Button()
 
@@ -97,8 +98,8 @@ final class WCUnsignedRequestView: BaseView {
     override func prepareLayout() {
         super.prepareLayout()
 
-        addButtons()
         addCollectionView()
+        addButtons()
     }
 }
 
@@ -130,14 +131,21 @@ extension WCUnsignedRequestView {
 
 extension WCUnsignedRequestView {
     private func addButtons() {
-        addSubview(cancelButton)
+        addButtonsGradient()
+        addSubview(buttonsContainerView)
+        buttonsContainerView.snp.makeConstraints { make in
+            make.bottom.leading.trailing.equalToSuperview()
+            make.height.equalTo(theme.buttonContainerHeight)
+        }
+
+        buttonsContainerView.addSubview(cancelButton)
         cancelButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.leading.equalToSuperview().inset(theme.horizontalPadding)
             make.height.equalTo(theme.buttonHeight)
         }
 
-        addSubview(confirmButton)
+        buttonsContainerView.addSubview(confirmButton)
         confirmButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.leading.equalTo(cancelButton.snp.trailing).offset(theme.buttonPadding)
@@ -150,9 +158,21 @@ extension WCUnsignedRequestView {
     private func addCollectionView() {
         addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.bottom.equalTo(confirmButton.snp.top).offset(theme.collectionViewBottomOffset)
+            make.bottom.equalToSuperview()
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview()
         }
+    }
+
+    private func addButtonsGradient() {
+        let layer : CAGradientLayer = CAGradientLayer()
+        layer.frame.size = CGSize(width: UIScreen.main.bounds.width, height: theme.buttonContainerHeight)
+        layer.frame.origin = .zero
+
+        let color0 = AppColors.Shared.System.background.uiColor.withAlphaComponent(0).cgColor
+        let color1 =  AppColors.Shared.System.background.uiColor.cgColor
+
+        layer.colors = [color0, color1]
+        buttonsContainerView.layer.insertSublayer(layer, at: 0)
     }
 }

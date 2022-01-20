@@ -92,9 +92,12 @@ final class WCUnsignedRequestScreen: BaseViewController {
 
 extension WCUnsignedRequestScreen {
     private func addScrollView() {
+        scrollView.isScrollEnabled = false
+        
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
-            make.top.bottom.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.safeEqualToBottom(of: self)
             make.leading.trailing.equalToSuperview()
         }
     }
@@ -106,7 +109,7 @@ extension WCUnsignedRequestScreen {
         scrollView.addSubview(contentView)
         contentView.snp.makeConstraints { make in
             make.width.equalTo(view)
-            make.height.equalToSuperview().inset(view.safeAreaBottom).priority(.low)
+            make.height.equalToSuperview().priority(.low)
             make.edges.equalToSuperview()
         }
 

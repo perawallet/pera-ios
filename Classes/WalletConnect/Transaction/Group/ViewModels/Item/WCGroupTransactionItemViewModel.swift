@@ -181,7 +181,7 @@ extension WCGroupTransactionItemViewModel {
             return CGSize(width: size.width, height: fittingSize.height + defaultHeight)
         }
 
-        currentSize.width = -4 // 4 is for spacing if asset name
+        currentSize.width -= 4 // 4 is for spacing if asset name
 
         let totalSize = amount.appending(assetName).boundingSize(
             attributes: .font(Fonts.DMMono.regular.make(19).uiFont),
