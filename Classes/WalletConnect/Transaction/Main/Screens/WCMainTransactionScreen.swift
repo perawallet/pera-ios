@@ -135,6 +135,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
 
         validateTransactions(transactions, with: dataSource.groupedTransactions)
         getAssetDetailsIfNeeded()
+        getTransactionParams()
     }
 
     override func bindData() {
@@ -415,4 +416,38 @@ extension WCMainTransactionScreen: AssetCachable {
             }
         }
     }
+}
+
+extension WCMainTransactionScreen {
+    private func getTransactionParams() {
+        api?.getTransactionParams { [weak self] response in
+             guard let self = self else {
+                 return
+             }
+
+             switch response {
+             case .failure:
+                 break
+             case let .success(params):
+                 self.transactionParams = params
+             }
+
+             self.rejectIfTheNetworkIsInvalid()
+         }
+    }
+
+    private func rejectIfTheNetworkIsInvalid() {
+         if !hasValidNetwork(for: transactions) {
+             rejectTransactionRequest(with: .unauthorized(.nodeMismatch))
+             return
+         }
+     }
+
+     private func hasValidNetwork(for transactions: [WCTransaction]) -> Bool {
+         guard let params = transactionParams else {
+             return false
+         }
+
+         return transactions.contains { $0.isInTheSameNetwork(with: params) }
+     }
 }

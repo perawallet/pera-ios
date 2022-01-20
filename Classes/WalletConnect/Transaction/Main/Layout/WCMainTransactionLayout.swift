@@ -25,8 +25,13 @@ class WCMainTransactionLayout: NSObject {
 
     private weak var dataSource: WCMainTransactionDataSource?
 
-    init(dataSource: WCMainTransactionDataSource) {
+    private let sharedDataController: SharedDataController
+    init(
+        dataSource: WCMainTransactionDataSource,
+        sharedDataController: SharedDataController
+    ) {
         self.dataSource = dataSource
+        self.sharedDataController = sharedDataController
         super.init()
     }
 }
@@ -43,15 +48,18 @@ extension WCMainTransactionLayout: UICollectionViewDelegateFlowLayout {
 
         if transactions.count == 1,
            let transaction = transactions.first {
-            if transaction.transactionDetail?.isAppCallTransaction ?? false {
-                return layout.current.appCallCellSize
-            }
 
-            if transaction.signerAccount == nil {
-                return layout.current.anotherAccountCellSize
-            }
+            let viewModel = WCGroupTransactionItemViewModel(
+                transaction: transaction,
+                account: transaction.signerAccount,
+                assetInformation: assetInformation(from: transaction)
+            )
 
-            return layout.current.singleTransactionCellSize
+            return WCGroupTransactionItemViewModel.calculatePreferredSize(
+                viewModel,
+                fittingIn: CGSize(width: UIScreen.main.bounds.width - 40.0,
+                                  height: .greatestFiniteMagnitude)
+            )
         }
 
         return layout.current.multipleTransactionCellSize
@@ -66,10 +74,15 @@ extension WCMainTransactionLayout: UICollectionViewDelegateFlowLayout {
 
 extension WCMainTransactionLayout {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let singleTransactionCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 130.0)
         let multipleTransactionCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 132.0)
-        let appCallCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 132.0)
-        let anotherAccountCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 132.0)
+    }
+
+    private func assetInformation(from transaction: WCTransaction) -> AssetInformation? {
+        guard let assetId = transaction.transactionDetail?.currentAssetId else {
+            return nil
+        }
+
+        return sharedDataController.assetDetailCollection[assetId]
     }
 }
 

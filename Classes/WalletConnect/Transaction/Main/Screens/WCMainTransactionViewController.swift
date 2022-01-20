@@ -34,8 +34,11 @@ class WCMainTransactionViewController: BaseViewController {
         transactionOption: transactionOption,
         walletConnector: walletConnector
     )
-
-    private lazy var layoutBuilder = WCMainTransactionLayout(dataSource: dataSource)
+    
+    private lazy var layoutBuilder = WCMainTransactionLayout(
+        dataSource: dataSource,
+        sharedDataController: sharedDataController
+    )
 
     private lazy var wcTransactionSigner: WCTransactionSigner = {
         guard let api = api else {

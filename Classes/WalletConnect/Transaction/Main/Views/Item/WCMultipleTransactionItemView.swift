@@ -24,15 +24,14 @@ class WCMultipleTransactionItemView: TripleShadowView {
 
     private lazy var titleStackView: HStackView = {
         let stackView = HStackView()
-        stackView.distribution = .equalSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.spacing = 8.0
         stackView.alignment = .center
+        stackView.spacing = 8.0
         stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         return stackView
     }()
 
-    private lazy var warningImageView = UIImageView(image: img("icon-orange-warning"))
+    private lazy var warningImageView = UIImageView(image: img("icon-red-warning"))
 
     private lazy var titleLabel: UILabel = {
         UILabel()
@@ -130,6 +129,10 @@ extension WCMultipleTransactionItemView {
 
         titleStackView.addArrangedSubview(warningImageView)
         titleStackView.addArrangedSubview(titleLabel)
+
+        let spacer = UIView()
+        spacer.setContentCompressionResistancePriority(.required, for: .horizontal)
+        titleStackView.addArrangedSubview(spacer)
     }
 
     private func setupDetailLabelLayout() {

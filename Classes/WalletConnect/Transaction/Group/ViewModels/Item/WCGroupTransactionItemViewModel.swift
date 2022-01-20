@@ -50,11 +50,9 @@ class WCGroupTransactionItemViewModel {
 
         switch transactionType {
         case .algos:
-            let receiver = transactionDetail.receiver?.shortAddressDisplay()
-            title = "wallet-connect-transaction-group-algos-title".localized(params: receiver ?? "")
+            return
         case .asset:
-            let receiver = transactionDetail.receiver?.shortAddressDisplay()
-            title = "wallet-connect-transaction-group-asset-title".localized(params: receiver ?? "")
+            return
         case .assetAddition:
             if let assetId = transactionDetail.assetId {
                 title = "wallet-connect-transaction-group-asset-addition-title".localized(params: "\(assetId)")
@@ -118,6 +116,7 @@ class WCGroupTransactionItemViewModel {
 
     private func setAssetName(from assetInformation: AssetInformation?) {
         guard let assetInformation = assetInformation else {
+            assetName = "ALGO"
             return
         }
 
@@ -125,10 +124,71 @@ class WCGroupTransactionItemViewModel {
     }
 
     private func setAccountInformationViewModel(from account: Account?, with assetInformation: AssetInformation?) {
+        guard let account = account else {
+            return
+        }
+
         accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
             account: account,
             assetInformation: assetInformation,
             isDisplayingAmount: true
         )
+    }
+}
+
+extension WCGroupTransactionItemViewModel {
+    static func calculatePreferredSize(_ viewModel: WCGroupTransactionItemViewModel, fittingIn size: CGSize) -> CGSize {
+
+        var currentSize = size
+        var defaultHeight: CGFloat = 65
+
+        currentSize.width -= 45 // 45 is for main insets
+
+        if viewModel.accountInformationViewModel != nil {
+            defaultHeight += 36 + 8 // 36 is for account view, 8 is for top inset
+        }
+
+        guard viewModel.title == nil else {
+            guard let title = viewModel.title else {
+                return size
+            }
+
+            let totalSize = title.boundingSize(
+                attributes: .font(Fonts.DMMono.regular.make(19).uiFont),
+                multiline: true,
+                fittingSize: currentSize
+            )
+
+            return CGSize(width: size.width, height: totalSize.height + defaultHeight)
+        }
+
+        guard let amount = viewModel.amount else {
+            return size
+        }
+
+        if viewModel.hasWarning {
+            currentSize.width -= 24 + 4 // 24 is for warning icon size, 4 is for spacing
+        }
+
+        guard let assetName = viewModel.assetName else {
+            let amountSize = viewModel.amount?.boundingSize(
+                attributes: .font(Fonts.DMMono.regular.make(19).uiFont),
+                multiline: true,
+                fittingSize: currentSize
+            )
+
+            let fittingSize = amountSize ?? size
+            return CGSize(width: size.width, height: fittingSize.height + defaultHeight)
+        }
+
+        currentSize.width = -4 // 4 is for spacing if asset name
+
+        let totalSize = amount.appending(assetName).boundingSize(
+            attributes: .font(Fonts.DMMono.regular.make(19).uiFont),
+            multiline: true,
+            fittingSize: currentSize
+        )
+
+        return CGSize(width: size.width, height: totalSize.height + defaultHeight)
     }
 }

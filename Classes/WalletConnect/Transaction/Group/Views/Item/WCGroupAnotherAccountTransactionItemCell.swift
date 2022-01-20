@@ -18,6 +18,12 @@
 import Foundation
 
 class WCGroupAnotherAccountTransactionItemCell: BaseCollectionViewCell<WCGroupTransactionItemView> {
+
+    override func prepareLayout() {
+        super.prepareLayout()
+        contextView.removeAccountInformation()
+    }
+
     func bind(_ viewModel: WCGroupTransactionItemViewModel) {
         contextView.bind(viewModel)
     }

@@ -27,7 +27,10 @@ class WCGroupTransactionViewController: BaseViewController {
         walletConnector: walletConnector
     )
 
-    private lazy var layoutBuilder = WCGroupTransactionLayout(dataSource: dataSource)
+    private lazy var layoutBuilder = WCGroupTransactionLayout(
+        dataSource: dataSource,
+        sharedDataController: sharedDataController
+    )
 
     private let transactions: [WCTransaction]
     private let transactionRequest: WalletConnectRequest

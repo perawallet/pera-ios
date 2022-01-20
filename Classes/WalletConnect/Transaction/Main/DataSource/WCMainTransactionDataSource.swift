@@ -102,27 +102,17 @@ extension WCMainTransactionDataSource {
             fatalError("Unexpected index")
         }
 
-        let account: Account?
-
-        if let address = transaction.transactionDetail?.sender ?? transaction.transactionDetail?.receiver {
-            account = sharedDataController.accountCollection[address]?.value
-        } else {
-            account = nil
-        }
-
-        if transaction.transactionDetail?.isAppCallTransaction ?? false {
-            return dequeueAppCallCell(in: collectionView, at: indexPath, for: transaction, with: account)
-        }
+        let account: Account? = transaction.signerAccount
 
         if transaction.transactionDetail?.isAssetConfigTransaction ?? false {
-            if transaction.signerAccount == nil {
+            if account == nil {
                 return dequeueUnsignableAssetConfigCell(in: collectionView, at: indexPath, for: transaction, with: account)
             }
 
             return dequeueAssetConfigCell(in: collectionView, at: indexPath, for: transaction, with: account)
         }
 
-        if transaction.signerAccount == nil {
+        if account == nil {
             return dequeueUnsignableCell(in: collectionView, at: indexPath, for: transaction, with: account)
         }
 

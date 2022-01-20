@@ -35,7 +35,10 @@ final class WCUnsignedRequestScreen: BaseViewController {
 
     private lazy var theme = Theme()
     private lazy var unsignedRequestView = WCUnsignedRequestView()
-    private lazy var layoutBuilder = WCMainTransactionLayout(dataSource: dataSource)
+    private lazy var layoutBuilder = WCMainTransactionLayout(
+        dataSource: dataSource,
+        sharedDataController: sharedDataController
+    )
 
     let dataSource: WCMainTransactionDataSource
 

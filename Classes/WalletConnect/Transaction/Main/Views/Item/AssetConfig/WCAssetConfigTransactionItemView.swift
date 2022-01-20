@@ -99,6 +99,14 @@ class WCAssetConfigTransactionItemView: TripleShadowView {
         setupTitleLabelLayout()
         setupShowDetailLabelLayout()
     }
+
+    func removeAccountInformation() {
+        accountInformationView.removeFromSuperview()
+
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.accountInformationViewInset)
+        }
+    }
 }
 
 extension WCAssetConfigTransactionItemView {

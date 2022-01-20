@@ -31,7 +31,7 @@ class WCGroupTransactionItemView: TripleShadowView {
         return stackView
     }()
 
-    private lazy var warningImageView = UIImageView(image: img("icon-orange-warning"))
+    private lazy var warningImageView = UIImageView(image: img("icon-red-warning"))
 
     private lazy var senderLabel: UILabel = {
         UILabel()
@@ -44,9 +44,8 @@ class WCGroupTransactionItemView: TripleShadowView {
     private lazy var balanceStackView: HStackView = {
         let stackView = HStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .equalSpacing
-        stackView.spacing = 4.0
         stackView.alignment = .center
+        stackView.spacing = 4.0
         stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         return stackView
     }()
@@ -54,7 +53,7 @@ class WCGroupTransactionItemView: TripleShadowView {
     private lazy var balanceLabel: UILabel = {
         UILabel()
             .withTextColor(AppColors.Components.Text.main.uiColor)
-            .withLine(.single)
+            .withLine(.contained)
             .withAlignment(.left)
             .withFont(Fonts.DMMono.regular.make(19).uiFont)
     }()
@@ -135,6 +134,14 @@ class WCGroupTransactionItemView: TripleShadowView {
         setupBalanceStackViewLayout()
         setupShowDetailLabelLayout()
     }
+
+    func removeAccountInformation() {
+        accountInformationView.removeFromSuperview()
+
+        balanceStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().inset(layout.current.accountInformationViewInset)
+        }
+    }
 }
 
 extension WCGroupTransactionItemView {
@@ -154,11 +161,22 @@ extension WCGroupTransactionItemView {
         balanceStackView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
             make.top.equalTo(accountInformationView.snp.bottom).offset(layout.current.balanceStackTopInset)
-            make.height.equalTo(layout.current.balanceStackHeight)
         }
 
+        balanceStackView.setContentCompressionResistancePriority(.required, for: .vertical)
+        balanceStackView.addArrangedSubview(warningImageView)
         balanceStackView.addArrangedSubview(balanceLabel)
         balanceStackView.addArrangedSubview(assetNameLabel)
+
+        balanceLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        let spacer = UIView()
+        spacer.setContentCompressionResistancePriority(.required, for: .horizontal)
+        balanceStackView.addArrangedSubview(spacer)
+
+        warningImageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.fitToSize((24, 24))
+        }
     }
 
     private func setupShowDetailLabelLayout() {
@@ -174,9 +192,14 @@ extension WCGroupTransactionItemView {
 extension WCGroupTransactionItemView {
     func bind(_ viewModel: WCGroupTransactionItemViewModel) {
         warningImageView.isHidden = !viewModel.hasWarning
-        balanceLabel.text = viewModel.amount
-        assetNameLabel.isHidden = viewModel.isAlgos
-        assetNameLabel.text = viewModel.assetName
+
+        if viewModel.title != nil {
+            balanceLabel.text = viewModel.title
+            assetNameLabel.text = nil
+        } else {
+            balanceLabel.text = viewModel.amount
+            assetNameLabel.text = viewModel.assetName
+        }
 
         if let accountInformationViewModel = viewModel.accountInformationViewModel {
             accountInformationView.bind(accountInformationViewModel)

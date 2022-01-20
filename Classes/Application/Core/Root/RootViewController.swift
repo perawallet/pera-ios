@@ -205,17 +205,17 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
             presentingController = self
         }
 
-        wcMainTransactionViewController = presentingController?.open(
-             .wcMainTransaction(
+        wcRequestScreen = presentingController?.open(
+             .wcMainTransactionScreen(
                  transactions: transactions,
                  transactionRequest: request,
                  transactionOption: transactionOption
              ),
              by: fullScreenPresentation,
              animated: animated
-         ) as? WCMainTransactionViewController
+         ) as? WCMainTransactionScreen
 
-         wcMainTransactionViewController?.delegate = self
+        wcRequestScreen?.delegate = self
     }
 }
 
