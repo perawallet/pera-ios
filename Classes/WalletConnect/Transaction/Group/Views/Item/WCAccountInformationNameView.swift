@@ -25,10 +25,10 @@ class WCAccountInformationNameView: BaseView {
 
     private lazy var nameLabel: UILabel = {
         UILabel()
-            .withTextColor(Colors.Text.tertiary)
-            .withLine(.contained)
+            .withTextColor(AppColors.Components.Text.gray.uiColor)
+            .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
+            .withFont(Fonts.DMSans.regular.make(13).uiFont)
     }()
 
     override func configureAppearance() {

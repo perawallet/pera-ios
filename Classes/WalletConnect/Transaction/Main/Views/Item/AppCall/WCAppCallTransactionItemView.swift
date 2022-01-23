@@ -38,7 +38,7 @@ class WCAppCallTransactionItemView: TripleShadowView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(Fonts.DMSans.bold.make(13).uiFont)
-            .withText("title-show-all-detail".localized)
+            .withText("title-show-transaction-detail".localized)
     }()
 
     private(set) lazy var accountInformationView = WCGroupTransactionAccountInformationView()

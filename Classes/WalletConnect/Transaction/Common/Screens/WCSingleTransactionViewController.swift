@@ -43,14 +43,8 @@ class WCSingleTransactionViewController: BaseScrollViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        if let wcSession = wcSession {
-            transactionView?.bind(WCSingleTransactionViewModel(wcSession: wcSession, transaction: transaction))
-        }
-    }
 
-    override func linkInteractors() {
-        super.linkInteractors()
-        transactionView?.mainDelegate = self
+        view.backgroundColor = AppColors.Shared.System.background.uiColor
     }
 
     override func prepareLayout() {
@@ -70,29 +64,8 @@ extension WCSingleTransactionViewController {
         transactionView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
+            make.bottom.equalToSuperview()//.inset(layout.current.bottomInset)
         }
-    }
-}
-
-extension WCSingleTransactionViewController: WCSingleTransactionViewDelegate {
-    func wcSingleTransactionViewDidOpenLongDappMessage(_ wcSingleTransactionView: WCSingleTransactionView) {
-        openLongDappMessageScreen()
-    }
-
-    @objc
-    private func openLongDappMessageScreen() {
-        guard let wcSession = wcSession,
-              let message = transaction.message else {
-            return
-        }
-        dappMessageModalTransition.perform(
-            .wcTransactionFullDappDetail(
-                wcSession: wcSession,
-                message: message
-            ),
-            by: .presentWithoutNavigationController
-        )
     }
 }
 

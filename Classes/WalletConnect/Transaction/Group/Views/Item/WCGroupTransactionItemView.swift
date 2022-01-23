@@ -66,6 +66,14 @@ class WCGroupTransactionItemView: TripleShadowView {
             .withFont(Fonts.DMMono.regular.make(19).uiFont)
     }()
 
+    private lazy var dollarValueLabel: UILabel = {
+        UILabel()
+            .withTextColor(AppColors.Components.Text.gray.uiColor)
+            .withLine(.single)
+            .withAlignment(.left)
+            .withFont(Fonts.DMSans.regular.make(13).uiFont)
+    }()
+
     private lazy var showDetailLabel: UILabel = {
         UILabel()
             .withTextColor(AppColors.Components.Link.primary.uiColor)
@@ -132,6 +140,7 @@ class WCGroupTransactionItemView: TripleShadowView {
     func prepareLayout() {
         setupAccountInformationViewLayout()
         setupBalanceStackViewLayout()
+        setupDollarValueViewLayout()
         setupShowDetailLabelLayout()
     }
 
@@ -179,6 +188,15 @@ extension WCGroupTransactionItemView {
         }
     }
 
+    private func setupDollarValueViewLayout() {
+        addSubview(dollarValueLabel)
+        dollarValueLabel.snp.makeConstraints { make in
+            make.top.equalTo(balanceStackView.snp.bottom).offset(layout.current.dollarValueTopInset)
+            make.leading.equalTo(balanceStackView)
+            make.trailing.equalToSuperview()
+        }
+    }
+
     private func setupShowDetailLabelLayout() {
         addSubview(showDetailLabel)
 
@@ -192,6 +210,7 @@ extension WCGroupTransactionItemView {
 extension WCGroupTransactionItemView {
     func bind(_ viewModel: WCGroupTransactionItemViewModel) {
         warningImageView.isHidden = !viewModel.hasWarning
+        dollarValueLabel.text = viewModel.usdValue
 
         if viewModel.title != nil {
             balanceLabel.text = viewModel.title
@@ -218,5 +237,6 @@ extension WCGroupTransactionItemView {
         let accountInformationHeight: CGFloat = 36.0
         let accountInformationViewTopInset: CGFloat = 12.0
         let accountInformationViewInset: CGFloat = 8.0
+        let dollarValueTopInset: CGFloat = 4.0
     }
 }

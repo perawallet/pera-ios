@@ -119,28 +119,6 @@ extension WCMainTransactionDataSource {
         return dequeueSingleSignerCell(in: collectionView, at: indexPath, for: transaction, with: account)
     }
 
-    private func dequeueAppCallCell(
-        in collectionView: UICollectionView,
-        at indexPath: IndexPath,
-        for transaction: WCTransaction,
-        with account: Account?
-    ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: WCAppCallTransactionItemCell.reusableIdentifier,
-            for: indexPath
-        ) as? WCAppCallTransactionItemCell else {
-            fatalError("Unexpected cell type")
-        }
-
-        cell.bind(
-            WCAppCallTransactionItemViewModel(
-                transaction: transaction,
-                account: account
-            )
-        )
-        return cell
-    }
-
     private func dequeueUnsignableAssetConfigCell(
         in collectionView: UICollectionView,
         at indexPath: IndexPath,
@@ -206,7 +184,8 @@ extension WCMainTransactionDataSource {
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                assetInformation: assetInformation(from: transaction)
+                assetInformation: assetInformation(from: transaction),
+                currency: sharedDataController.currency.value
             )
         )
 
@@ -230,7 +209,8 @@ extension WCMainTransactionDataSource {
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                assetInformation: assetInformation(from: transaction)
+                assetInformation: assetInformation(from: transaction),
+                currency: sharedDataController.currency.value
             )
         )
 

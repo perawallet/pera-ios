@@ -49,7 +49,11 @@ final class WCSingleTransactionRequestScreen:
             account = nil
         }
 
-        return WCSingleTransactionRequestViewModel(transaction: transaction, account: account)
+        return WCSingleTransactionRequestViewModel(
+            transaction: transaction,
+            account: account,
+            currency: sharedDataController.currency.value
+        )
     }()
 
     private lazy var theme = Theme()
@@ -135,9 +139,8 @@ extension WCSingleTransactionRequestScreen {
         else {
             return
         }
-
-        let assetDetail = AssetDetail(assetInformation: assetInformation)
-        self.viewModel?.middleView?.assetDetail = assetDetail
+        
+        self.viewModel?.middleView?.assetInformation = assetInformation
 
         bindData()
     }

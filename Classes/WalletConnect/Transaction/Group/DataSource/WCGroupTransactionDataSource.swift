@@ -46,17 +46,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             fatalError("Unexpected transaction")
         }
 
-        let account: Account?
-
-        if let address = transaction.transactionDetail?.sender ?? transaction.transactionDetail?.receiver {
-            account = sharedDataController.accountCollection[address]?.value
-        } else {
-            account = nil
-        }
-
-        if transaction.transactionDetail?.isAppCallTransaction ?? false {
-            return dequeueAppCallCell(in: collectionView, at: indexPath, for: transaction, with: account)
-        }
+        let account: Account? = transaction.signerAccount
 
         if transaction.transactionDetail?.isAssetConfigTransaction ?? false {
             if transaction.signerAccount == nil {
@@ -71,28 +61,6 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
         }
 
         return dequeueSingleSignerCell(in: collectionView, at: indexPath, for: transaction, with: account)
-    }
-
-    private func dequeueAppCallCell(
-        in collectionView: UICollectionView,
-        at indexPath: IndexPath,
-        for transaction: WCTransaction,
-        with account: Account?
-    ) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: WCAppCallTransactionItemCell.reusableIdentifier,
-            for: indexPath
-        ) as? WCAppCallTransactionItemCell else {
-            fatalError("Unexpected cell type")
-        }
-
-        cell.bind(
-            WCAppCallTransactionItemViewModel(
-                transaction: transaction,
-                account: account
-            )
-        )
-        return cell
     }
 
     private func dequeueUnsignableAssetConfigCell(
@@ -159,7 +127,8 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: nil,
-                assetInformation: assetInformation(from: transaction)
+                assetInformation: assetInformation(from: transaction),
+                currency: sharedDataController.currency.value
             )
         )
 
@@ -183,7 +152,8 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                assetInformation: assetInformation(from: transaction)
+                assetInformation: assetInformation(from: transaction),
+                currency: sharedDataController.currency.value
             )
         )
 

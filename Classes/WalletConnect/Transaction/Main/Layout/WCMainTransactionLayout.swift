@@ -52,7 +52,8 @@ extension WCMainTransactionLayout: UICollectionViewDelegateFlowLayout {
             let viewModel = WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: transaction.signerAccount,
-                assetInformation: assetInformation(from: transaction)
+                assetInformation: assetInformation(from: transaction),
+                currency: sharedDataController.currency.value
             )
 
             return WCGroupTransactionItemViewModel.calculatePreferredSize(

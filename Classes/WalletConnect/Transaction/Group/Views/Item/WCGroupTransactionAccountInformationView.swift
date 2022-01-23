@@ -37,18 +37,18 @@ class WCGroupTransactionAccountInformationView: BaseView {
 
     private lazy var balanceLabel: UILabel = {
         UILabel()
-            .withTextColor(Colors.Text.tertiary)
+            .withTextColor(AppColors.Components.Text.gray.uiColor)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
+            .withFont(Fonts.DMMono.regular.make(13).uiFont)
     }()
 
     private lazy var assetNameLabel: UILabel = {
         UILabel()
-            .withTextColor(Colors.Text.tertiary)
+            .withTextColor(AppColors.Components.Text.gray.uiColor)
             .withLine(.single)
             .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 12.0)))
+            .withFont(Fonts.DMMono.regular.make(13).uiFont)
     }()
 
     override func configureAppearance() {

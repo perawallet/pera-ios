@@ -26,8 +26,9 @@ final class WCSingleTransactionRequestBottomViewModel {
     private(set) var assetIcon: UIImage?
 
     init(transaction: WCTransaction, account: Account?) {
-        networkFee = "\(transaction.transactionDetail?.fee?.toAlgos.toAlgosStringForLabel ?? "") ALGO"
-        senderAddress = account?.name ?? transaction.transactionDetail?.sender
+        let fee = transaction.transactionDetail?.fee ?? 0
+        networkFee = "\(fee.toAlgos.toAlgosStringForLabel ?? "") ALGO"
+        senderAddress = transaction.signerAccount?.name ?? transaction.signerAccount?.address
         //TODO: Warning message will be set here
         assetIcon = account?.type.image(for: .orange)
     }

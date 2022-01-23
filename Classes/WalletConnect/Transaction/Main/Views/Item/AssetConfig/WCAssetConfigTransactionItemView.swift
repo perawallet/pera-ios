@@ -28,7 +28,7 @@ class WCAssetConfigTransactionItemView: TripleShadowView {
             .withLine(.single)
             .withAlignment(.left)
             .withFont(Fonts.DMSans.bold.make(13).uiFont)
-            .withText("title-show-all-detail".localized)
+            .withText("title-show-transaction-detail".localized)
     }()
 
     private lazy var warningImageView = UIImageView(image: img("icon-orange-warning"))

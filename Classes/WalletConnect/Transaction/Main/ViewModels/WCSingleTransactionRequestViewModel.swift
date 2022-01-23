@@ -24,9 +24,9 @@ final class WCSingleTransactionRequestViewModel {
     private(set) var bottomView: WCSingleTransactionRequestBottomViewModel?
     private(set) var middleView: WCSingleTransactionRequestMiddleViewModel?
 
-    init(transaction: WCTransaction, account: Account?) {
+    init(transaction: WCTransaction, account: Account?, currency: Currency?) {
         bottomView = WCSingleTransactionRequestBottomViewModel(transaction: transaction, account: account)
-        middleView = WCSingleTransactionRequestMiddleViewModel(transaction: transaction, account: account)
+        middleView = WCSingleTransactionRequestMiddleViewModel(transaction: transaction, account: account, currency: currency)
         setTitle(transaction: transaction, account: account)
     }
 
