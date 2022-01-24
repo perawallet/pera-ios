@@ -45,6 +45,7 @@ extension AppColors.Shared {
 
     enum Helpers: String, Color {
         case negative = "Shared/Helpers/negative"
+        case negativeLighter = "Shared/Helpers/negativeLighter"
         case positive = "Shared/Helpers/positive"
     }
 }

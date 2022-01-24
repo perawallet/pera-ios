@@ -184,6 +184,13 @@ extension WCSingleTransactionRequestScreen: WCSingleTransactionRequestViewDelega
     }
 
     func wcSingleTransactionRequestViewDidTapShowTransaction(_ requestView: WCSingleTransactionRequestView) {
+        guard let transaction = transactions.first else {
+            return
+        }
+
+        presentSingleWCTransaction(transaction, with: dataSource.transactionRequest)
 
     }
 }
+
+extension WCSingleTransactionRequestScreen: WalletConnectSingleTransactionRequestPresentable { }

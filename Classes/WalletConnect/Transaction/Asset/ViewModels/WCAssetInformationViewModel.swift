@@ -13,24 +13,39 @@
 // limitations under the License.
 
 //
-//   TransactionAmountInformationViewModel.swift
+//   WCAssetInformationViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-final class TransactionAmountInformationViewModel: ViewModel {
+final class WCAssetInformationViewModel: ViewModel {
     private(set) var title: String?
-    private(set) var transactionViewModel: TransactionAmountViewModel?
+    private(set) var asset: String?
+    private(set) var assetId: String?
 
-    init(transactionViewModel: TransactionAmountViewModel) {
-        self.transactionViewModel = transactionViewModel
+    var isAlgo: Bool {
+        assetDetail == nil
     }
 
-    init(title: String?) {
-        self.title = title
+    var isVerified: Bool {
+        isAlgo || (assetDetail?.isVerified ?? false)
     }
 
-    func setTitle(_ title: String?) {
+    private let assetDetail: AssetDetail?
+
+    init(title: String?, assetDetail: AssetDetail?) {
         self.title = title
+        self.assetDetail = assetDetail
+        setAsset()
+    }
+
+    private func setAsset() {
+        guard let assetDetail = assetDetail else {
+            asset = "ALGO"
+            return
+        }
+
+        asset = assetDetail.assetName
+        assetId = "\(assetDetail.id)"
     }
 }

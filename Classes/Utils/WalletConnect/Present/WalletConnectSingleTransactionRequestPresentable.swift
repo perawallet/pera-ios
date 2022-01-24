@@ -24,11 +24,11 @@ protocol WalletConnectSingleTransactionRequestPresentable: AnyObject {
 
 extension WalletConnectSingleTransactionRequestPresentable where Self: BaseViewController {
     func presentSingleWCTransaction(_ transaction: WCTransaction, with request: WalletConnectRequest) {
-        guard let transactionDetail = transaction.transactionDetail else {
+        guard let transactionDetail = transaction.transactionDetail, let senderAddress = transactionDetail.sender else {
             return
         }
 
-        let account = session?.accounts.first(matching: (\.address, transactionDetail.sender))
+        let account = sharedDataController.accountCollection[senderAddress]?.value
         
         guard let transactionType = transactionDetail.transactionType(for: account) else {
             walletConnector.rejectTransactionRequest(request, with: .unsupported(.unknownTransaction))

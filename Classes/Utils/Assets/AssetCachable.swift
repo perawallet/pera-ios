@@ -30,7 +30,7 @@ extension AssetCachable where Self: BaseViewController {
             return
         }
 
-        if let assetInformation = api.session.assetInformations[id] {
+        if let assetInformation = self.sharedDataController.assetDetailCollection[id] {
             completion(assetInformation)
         } else {
 
@@ -42,7 +42,7 @@ extension AssetCachable where Self: BaseViewController {
                         completion(nil)
                         return
                     }
-                    api.session.assetInformations[id] = assetInformation
+                    self.sharedDataController.assetDetailCollection[id] = assetInformation
                     completion(assetInformation)
                 case .failure:
                     completion(nil)

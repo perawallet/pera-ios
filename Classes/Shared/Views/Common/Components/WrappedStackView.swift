@@ -36,9 +36,7 @@ class WrappedStackView: BaseView {
     
     override func configureAppearance() {
         super.configureAppearance()
-        containerView.backgroundColor = Colors.Background.secondary
-        containerView.layer.cornerRadius = 12.0
-        containerView.layer.masksToBounds = true
+        containerView.backgroundColor = AppColors.Shared.System.background.uiColor
     }
     
     override func prepareLayout() {

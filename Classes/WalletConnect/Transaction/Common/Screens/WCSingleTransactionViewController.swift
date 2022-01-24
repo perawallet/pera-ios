@@ -35,10 +35,12 @@ class WCSingleTransactionViewController: BaseScrollViewController {
 
     init(transaction: WCTransaction, transactionRequest: WalletConnectRequest, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
-        self.account = configuration.session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender))
         self.transactionRequest = transactionRequest
         self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url))
-        super.init(configuration: configuration)
+        if let address = transaction.transactionDetail?.sender {
+            self.account = configuration.sharedDataController.accountCollection[address]?.value
+        }
+        super.init(configuration: configuration)                                                      
     }
 
     override func configureAppearance() {
@@ -64,14 +66,14 @@ extension WCSingleTransactionViewController {
         transactionView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(layout.current.topInset)
             make.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview()//.inset(layout.current.bottomInset)
+            make.bottom.equalToSuperview().inset(layout.current.bottomInset)
         }
     }
 }
 
 extension WCSingleTransactionViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 8.0
+        let topInset: CGFloat = 36.0
         let bottomInset: CGFloat = 40.0
     }
 }
