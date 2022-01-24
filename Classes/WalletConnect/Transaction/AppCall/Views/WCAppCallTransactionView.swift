@@ -17,58 +17,67 @@
 
 import UIKit
 
-class WCAppCallTransactionView: WCSingleTransactionView {
-
+final class WCAppCallTransactionView: WCSingleTransactionView {
     weak var delegate: WCAppCallTransactionViewDelegate?
 
-    private lazy var accountInformationView = TitledTransactionAccountNameView()
+    private lazy var theme = Theme()
 
-    private lazy var idInformationView = WCTransactionTextInformationView()
+    private lazy var senderView = TransactionTextInformationView()
+    private lazy var idInformationView = TransactionTextInformationView()
+    private lazy var onCompletionInformationView = TransactionTextInformationView()
+    private lazy var appGlobalSchemaInformationView = TransactionTextInformationView()
+    private lazy var appLocalSchemaInformationView = TransactionTextInformationView()
+    private lazy var appExtraPagesInformationView = TransactionTextInformationView()
+    private lazy var approvalHashInformationView = TransactionTextInformationView()
+    private lazy var clearStateHashInformationView = TransactionTextInformationView()
+    private lazy var closeInformationView = TransactionTextInformationView()
+    private lazy var rekeyInformationView = TransactionTextInformationView()
+    private lazy var warningInformationView = WCTransactionWarningView()
 
-    private lazy var onCompletionInformationView = WCTransactionTextInformationView()
+    private lazy var feeView = TransactionAmountInformationView()
+    private lazy var warningFeeView = WCTransactionWarningView()
 
-    private lazy var appGlobalSchemaInformationView = WCTransactionTextInformationView()
+    private lazy var noteView = TransactionTextInformationView()
 
-    private lazy var appLocalSchemaInformationView = WCTransactionTextInformationView()
+    private lazy var topButtonsContainer = HStackView()
+    private lazy var rawTransactionButton = UIButton()
+    private lazy var algoExplorerButton = UIButton()
 
-    private lazy var appExtraPagesInformationView = WCTransactionTextInformationView()
+    override func configureAppearance() {
+        super.configureAppearance()
 
-    private lazy var approvalHashInformationView = WCTransactionTextInformationView()
-
-    private lazy var clearStateHashInformationView = WCTransactionTextInformationView()
-
-    private lazy var authAccountInformationView = WCTransactionTextInformationView()
-
-    private lazy var closeWarningInformationView = WCTransactionAddressWarningInformationView()
-
-    private lazy var rekeyWarningInformationView = WCTransactionAddressWarningInformationView()
-
-    private lazy var feeInformationView = TitledTransactionAmountInformationView()
-
-    private lazy var feeWarningView = WCContainedTransactionWarningView()
-
-    private lazy var noteInformationView = WCTransactionTextInformationView()
-
-    private lazy var rawTransactionInformationView = WCTransactionActionableInformationView()
-
-    private lazy var algoExplorerInformationView = WCTransactionActionableInformationView()
+        backgroundColor = AppColors.Shared.System.background.uiColor
+    }
 
     override func prepareLayout() {
         super.prepareLayout()
         addParticipantInformationViews()
         addTransactionInformationViews()
         addDetailedInformationViews()
+        addButtons()
     }
 
     override func setListeners() {
-        rawTransactionInformationView.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
-        algoExplorerInformationView.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
+        rawTransactionButton.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
+        algoExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
     }
 }
 
 extension WCAppCallTransactionView {
     private func addParticipantInformationViews() {
-        addParticipantInformationView(accountInformationView)
+        senderView.customize(theme.textInformationTheme)
+        idInformationView.customize(theme.textInformationTheme)
+        onCompletionInformationView.customize(theme.textInformationTheme)
+        appGlobalSchemaInformationView.customize(theme.textInformationTheme)
+        appLocalSchemaInformationView.customize(theme.textInformationTheme)
+        appExtraPagesInformationView.customize(theme.textInformationTheme)
+        approvalHashInformationView.customize(theme.textInformationTheme)
+        clearStateHashInformationView.customize(theme.textInformationTheme)
+        approvalHashInformationView.customize(theme.textInformationTheme)
+        closeInformationView.customize(theme.textInformationTheme)
+        rekeyInformationView.customize(theme.textInformationTheme)
+
+        addParticipantInformationView(senderView)
         addParticipantInformationView(idInformationView)
         addParticipantInformationView(onCompletionInformationView)
         addParticipantInformationView(appGlobalSchemaInformationView)
@@ -76,20 +85,43 @@ extension WCAppCallTransactionView {
         addParticipantInformationView(appExtraPagesInformationView)
         addParticipantInformationView(approvalHashInformationView)
         addParticipantInformationView(clearStateHashInformationView)
-        addParticipantInformationView(authAccountInformationView)
-        addParticipantInformationView(closeWarningInformationView)
-        addParticipantInformationView(rekeyWarningInformationView)
+        addParticipantInformationView(closeInformationView)
+        addParticipantInformationView(rekeyInformationView)
+        addParticipantInformationView(warningInformationView)
     }
 
     private func addTransactionInformationViews() {
-        addTransactionInformationView(feeInformationView)
-        addTransactionInformationView(feeWarningView)
+        feeView.customize(theme.amountInformationTheme)
+
+        addTransactionInformationView(feeView)
+        addTransactionInformationView(warningFeeView)
     }
 
     private func addDetailedInformationViews() {
-        addDetailedInformationView(noteInformationView)
-        addDetailedInformationView(rawTransactionInformationView)
-        addDetailedInformationView(algoExplorerInformationView)
+        noteView.customize(theme.textInformationTheme)
+
+        addDetailedInformationView(noteView)
+    }
+
+    private func addButtons() {
+        rawTransactionButton.customizeAppearance(theme.rawTransactionButtonStyle)
+        rawTransactionButton.layer.draw(corner: theme.buttonsCorner)
+        rawTransactionButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+
+        algoExplorerButton.customizeAppearance(theme.algoExplorerButtonStyle)
+        algoExplorerButton.layer.draw(corner: theme.buttonsCorner)
+        algoExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+
+        addButton(topButtonsContainer)
+
+        topButtonsContainer.spacing = theme.buttonSpacing
+
+        topButtonsContainer.addArrangedSubview(rawTransactionButton)
+        topButtonsContainer.addArrangedSubview(algoExplorerButton)
+
+        let spacer = UIView()
+        spacer.setContentCompressionResistancePriority(.required, for: .horizontal)
+        topButtonsContainer.addArrangedSubview(spacer)
     }
 }
 
@@ -107,92 +139,94 @@ extension WCAppCallTransactionView {
 
 extension WCAppCallTransactionView {
     func bind(_ viewModel: WCAppCallTransactionViewModel) {
-        accountInformationView.bind(viewModel.senderInformationViewModel)
+        senderView.bindData(viewModel.senderInformationViewModel)
 
         if let idInformationViewModel = viewModel.idInformationViewModel {
-            idInformationView.bind(idInformationViewModel)
+            idInformationView.bindData(idInformationViewModel)
         } else {
             idInformationView.hideViewInStack()
         }
 
         if let onCompletionInformationViewModel = viewModel.onCompletionInformationViewModel {
-            onCompletionInformationView.bind(onCompletionInformationViewModel)
+            onCompletionInformationView.bindData(onCompletionInformationViewModel)
         }
 
         if let appGlobalSchemaInformationViewModel = viewModel.appGlobalSchemaInformationViewModel {
-            appGlobalSchemaInformationView.bind(appGlobalSchemaInformationViewModel)
+            appGlobalSchemaInformationView.bindData(appGlobalSchemaInformationViewModel)
         } else {
             appGlobalSchemaInformationView.hideViewInStack()
         }
 
         if let appLocalSchemaInformationViewModel = viewModel.appLocalSchemaInformationViewModel {
-            appLocalSchemaInformationView.bind(appLocalSchemaInformationViewModel)
+            appLocalSchemaInformationView.bindData(appLocalSchemaInformationViewModel)
         } else {
             appLocalSchemaInformationView.hideViewInStack()
         }
 
         if let appExtraPagesInformationViewModel = viewModel.appExtraPagesInformationViewModel {
-            appExtraPagesInformationView.bind(appExtraPagesInformationViewModel)
+            appExtraPagesInformationView.bindData(appExtraPagesInformationViewModel)
         } else {
             appExtraPagesInformationView.hideViewInStack()
         }
 
         if let approvalHashInformationViewModel = viewModel.approvalHashInformationViewModel {
-            approvalHashInformationView.bind(approvalHashInformationViewModel)
+            approvalHashInformationView.bindData(approvalHashInformationViewModel)
         } else {
             approvalHashInformationView.hideViewInStack()
         }
 
         if let clearStateHashInformationViewModel = viewModel.clearStateHashInformationViewModel {
-            clearStateHashInformationView.bind(clearStateHashInformationViewModel)
+            clearStateHashInformationView.bindData(clearStateHashInformationViewModel)
         } else {
             clearStateHashInformationView.hideViewInStack()
         }
 
-        if let authAccountInformationViewModel = viewModel.authAccountInformationViewModel {
-            authAccountInformationView.bind(authAccountInformationViewModel)
-        } else {
-            authAccountInformationView.hideViewInStack()
-        }
-
         if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
-            closeWarningInformationView.bind(closeWarningInformationViewModel)
+            closeInformationView.bindData(closeWarningInformationViewModel)
         } else {
-            closeWarningInformationView.hideViewInStack()
+            closeInformationView.hideViewInStack()
         }
 
         if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
-            rekeyWarningInformationView.bind(rekeyWarningInformationViewModel)
+            rekeyInformationView.bindData(rekeyWarningInformationViewModel)
         } else {
-            rekeyWarningInformationView.hideViewInStack()
+            rekeyInformationView.hideViewInStack()
+        }
+
+        if let warningInformationViewModel = viewModel.warningInformationViewModel {
+            warningInformationView.bind(warningInformationViewModel)
+        } else {
+            warningInformationView.hideViewInStack()
         }
 
         if let feeInformationViewModel = viewModel.feeInformationViewModel {
-            feeInformationView.bind(feeInformationViewModel)
+            feeView.bindData(feeInformationViewModel)
         } else {
-            feeInformationView.hideViewInStack()
+            feeView.hideViewInStack()
         }
 
         if let feeWarningViewModel = viewModel.feeWarningViewModel {
-            feeWarningView.bind(feeWarningViewModel)
+            warningFeeView.bind(feeWarningViewModel)
         } else {
-            feeWarningView.hideViewInStack()
+            warningFeeView.hideViewInStack()
         }
 
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
-            noteInformationView.bind(noteInformationViewModel)
+            noteView.bindData(noteInformationViewModel)
         } else {
-            noteInformationView.hideViewInStack()
+            noteView.hideViewInStack()
         }
 
-        if let rawTransactionInformationViewModel = viewModel.rawTransactionInformationViewModel {
-            rawTransactionInformationView.bind(rawTransactionInformationViewModel)
+        if viewModel.rawTransactionInformationViewModel != nil {
+            rawTransactionButton.showViewInStack()
+        } else {
+            rawTransactionButton.hideViewInStack()
         }
 
-        if let algoExplorerInformationViewModel = viewModel.algoExplorerInformationViewModel {
-            algoExplorerInformationView.bind(algoExplorerInformationViewModel)
+        if viewModel.algoExplorerInformationViewModel != nil {
+            algoExplorerButton.showViewInStack()
         } else {
-            algoExplorerInformationView.hideViewInStack()
+            algoExplorerButton.hideViewInStack()
         }
     }
 }
