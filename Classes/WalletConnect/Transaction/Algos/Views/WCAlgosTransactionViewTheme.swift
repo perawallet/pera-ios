@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   WCAssetTransactionViewTheme.swift
+//   WCAlgosTransactionViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 
-extension WCAssetTransactionView {
+extension WCAlgosTransactionView {
     struct Theme: LayoutSheet, StyleSheet {
         let rawTransactionButtonStyle: ButtonStyle
         let buttonEdgeInsets: LayoutPaddings

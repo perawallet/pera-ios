@@ -64,13 +64,13 @@ class WCAssetTransactionView: WCSingleTransactionView {
 
 extension WCAssetTransactionView {
     private func addParticipantInformationViews() {
-        fromView.customize(TransactionTextInformationViewCommonTheme())
-        toView.customize(TransactionTextInformationViewCommonTheme())
-        balanceView.customize(TransactionAmountInformationViewTheme())
-        assetInformationView.customize(WCAssetInformationViewTheme())
+        fromView.customize(theme.textInformationTheme)
+        toView.customize(theme.textInformationTheme)
+        balanceView.customize(theme.amountInformationTheme)
+        assetInformationView.customize(theme.assetInformationTheme)
 
-        closeInformationView.customize(TransactionTextInformationViewCommonTheme())
-        rekeyInformationView.customize(TransactionTextInformationViewCommonTheme())
+        closeInformationView.customize(theme.textInformationTheme)
+        rekeyInformationView.customize(theme.textInformationTheme)
 
         addParticipantInformationView(fromView)
         addParticipantInformationView(toView)
@@ -82,8 +82,8 @@ extension WCAssetTransactionView {
     }
 
     private func addTransactionInformationViews() {
-        amountView.customize(TransactionAmountInformationViewTheme())
-        feeView.customize(TransactionAmountInformationViewTheme())
+        amountView.customize(theme.amountInformationTheme)
+        feeView.customize(theme.amountInformationTheme)
 
         addTransactionInformationView(amountView)
         addTransactionInformationView(feeView)
@@ -91,8 +91,7 @@ extension WCAssetTransactionView {
     }
 
     private func addDetailedInformationViews() {
-        noteView.customize(TransactionTextInformationViewCommonTheme())
-
+        noteView.customize(theme.textInformationTheme)
         addDetailedInformationView(noteView)
     }
 
