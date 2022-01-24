@@ -76,7 +76,22 @@ extension User {
         accounts[index].accountImage = account.accountImage
         syncronize()
     }
-    
+
+    func updateLocalAccount(_ updatedAccount: Account) {
+        guard let localAccountIndex = indexOfAccount(updatedAccount.address) else {
+            return
+        }
+
+        accounts[localAccountIndex].updateName(updatedAccount.name ?? "")
+        accounts[localAccountIndex].type = updatedAccount.type
+        accounts[localAccountIndex].ledgerDetail = updatedAccount.ledgerDetail
+        accounts[localAccountIndex].receivesNotification = updatedAccount.receivesNotification
+        accounts[localAccountIndex].rekeyDetail = updatedAccount.rekeyDetail
+        accounts[localAccountIndex].preferredOrder = updatedAccount.preferredOrder
+        accounts[localAccountIndex].accountImage = updatedAccount.accountImage
+        syncronize()
+    }
+
     private func syncronize() {
         guard UIApplication.shared.appConfiguration?.session.authenticatedUser != nil else {
             return
@@ -120,6 +135,10 @@ extension User {
     
     func account(address: String) -> AccountInformation? {
         return accountFrom(address: address)
+    }
+
+    func indexOfAccount(_ address: String) -> Int? {
+        return accounts.firstIndex(where: { $0.address == address })
     }
 }
 

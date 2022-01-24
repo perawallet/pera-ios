@@ -21,6 +21,11 @@ import MacaroonUIKit
 final class AccountNameSetupViewController: BaseScrollViewController {
     private lazy var accountNameSetupView = AccountNameSetupView()
     private lazy var theme = Theme()
+
+    private lazy var accountOrdering = AccountOrdering(
+        sharedDataController: sharedDataController,
+        session: session!
+    )
     
     private var keyboardController = KeyboardController()
     
@@ -92,7 +97,12 @@ extension AccountNameSetupViewController {
 
         let nameInput = accountNameSetupView.accountNameInputView.text.unwrap(or: "")
         let accountName = nameInput.isEmptyOrBlank ? address.shortAddressDisplay() : nameInput
-        let account = AccountInformation(address: address, name: accountName, type: .standard)
+        let account = AccountInformation(
+            address: address,
+            name: accountName,
+            type: .standard,
+            preferredOrder: accountOrdering.getNewAccountIndex(for: .standard)
+        )
         session?.savePrivate(tempPrivateKey, for: account.address)
         session?.removePrivateData(for: "temp")
         session?.addAccount(Account(address: account.address, type: account.type, name: account.name))

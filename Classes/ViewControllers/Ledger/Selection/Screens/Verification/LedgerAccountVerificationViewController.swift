@@ -25,6 +25,11 @@ final class LedgerAccountVerificationViewController: BaseScrollViewController {
     private lazy var ledgerAccountVerificationOperation = LedgerAccountVerifyOperation(bannerController: bannerController)
     private lazy var dataController = LedgerAccountVerificationDataController(accounts: selectedAccounts)
 
+    private lazy var accountOrdering = AccountOrdering(
+        sharedDataController: sharedDataController,
+        session: session!
+    )
+
     private var currentVerificationStatusView: LedgerAccountVerificationStatusView?
     private var currentVerificationAccount: Account?
     private var isVerificationCompleted = false {
@@ -163,7 +168,12 @@ extension LedgerAccountVerificationViewController {
     }
 
     private func setupLocalAccount(from account: Account) {
-        var localAccount = AccountInformation(address: account.address, name: account.address.shortAddressDisplay(), type: account.type)
+        var localAccount = AccountInformation(
+            address: account.address,
+            name: account.address.shortAddressDisplay(),
+            type: account.type,
+            preferredOrder: accountOrdering.getNewAccountIndex(for: account.type)
+        )
         setupLedgerDetails(of: &localAccount, from: account)
 
         let user: User
