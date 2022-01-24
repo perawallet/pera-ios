@@ -40,7 +40,17 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
         super.viewDidAppear(animated)
         updateVerifyButtonAfterScroll()
     }
-    
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIApplication.userDidTakeScreenshotNotification,
+            object: nil
+        )
+    }
+
     override func configureAppearance() {
         super.configureAppearance()
         customizeBackground()
