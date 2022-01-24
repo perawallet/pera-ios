@@ -19,194 +19,470 @@ import MacaroonUIKit
 import UIKit
 
 struct TransactionHistoryContextViewModel:
-    ViewModel,
+    BindableViewModel,
     Hashable {
     private(set) var id: String?
-    private(set) var title: String?
-    private(set) var subtitle: String?
+    private(set) var title: EditText?
+    private(set) var subtitle: EditText?
     private(set) var transactionAmountViewModel: TransactionAmountViewModel?
+    private(set) var secondaryAmount: EditText?
 
-    init(rewardViewModel: RewardViewModel) {
-        title = "reward-list-title".localized
-        if let mode = rewardViewModel.amountMode {
-            transactionAmountViewModel = TransactionAmountViewModel(mode)
-        }
+    init<T>(
+        _ model: T
+    ) {
+        bind(model)
     }
 
-    init(transactionDependencies: TransactionViewModelDependencies) {
-        guard let transaction = transactionDependencies.transaction as? Transaction else {
+    mutating func bind<T>(
+        _ model: T
+    ) {
+        if let reward = model as? Reward {
+            bindTitle(reward)
+            bindAmount(reward)
             return
         }
 
-        id = transaction.id
+        if let transactionDependencies = model as? TransactionViewModelDependencies {
+            bindID(transactionDependencies)
+            bindTitle(transactionDependencies)
+            bindSubtitle(transactionDependencies)
+            bindAmount(transactionDependencies)
+            bindSecondaryAmount(transactionDependencies)
+        }
+    }
+}
 
-        let account = transactionDependencies.account
-        let contact = transactionDependencies.contact
+extension TransactionHistoryContextViewModel {
+    private mutating func bindTitle(
+        _ reward: Reward
+    ) {
+        bindTitle("reward-list-title".localized)
+    }
 
-        if let assetTransaction = transaction.assetTransfer,
-           let assetId = transaction.assetTransfer?.assetId,
-           let assetDetail = account[assetId]?.detail {
+    private mutating func bindAmount(
+        _ reward: Reward
+    ) {
+        let rewardViewModel = RewardViewModel(reward)
+        transactionAmountViewModel = rewardViewModel.amountViewModel
+    }
+}
 
-            if assetTransaction.receiverAddress == assetTransaction.senderAddress {
-                bindTitleAndSubtitle(with: contact, and: .send(assetTransaction.receiverAddress))
-                transactionAmountViewModel = TransactionAmountViewModel(
-                    .normal(
-                        amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
-                        isAlgos: false,
-                        fraction: assetDetail.decimals,
-                        assetSymbol: assetDetail.unitName ?? assetDetail.name
-                    )
-                )
-            } else if transaction.isAssetAdditionTransaction(for: account.address) {
-                title = "asset-creation-fee-title".localized
-                if let fee = transaction.fee {
-                    transactionAmountViewModel = TransactionAmountViewModel(.negative(amount: fee.toAlgos))
+extension TransactionHistoryContextViewModel {
+    private mutating func bindID(
+        _ transactionDependency: TransactionViewModelDependencies
+    ) {
+        if let transaction = transactionDependency.transaction as? Transaction {
+            id = transaction.id
+        }
+    }
+
+    private mutating func bindTitle(
+        _ transactionDependency: TransactionViewModelDependencies
+    ) {
+        let account = transactionDependency.account
+
+        if let transaction = transactionDependency.transaction as? Transaction {
+            if let assetTransaction = transaction.assetTransfer {
+                if assetTransaction.receiverAddress == assetTransaction.senderAddress {
+                    bindTitle("transaction-detail-send".localized)
+                } else if transaction.isAssetAdditionTransaction(for: account.address) {
+                    bindTitle("asset-creation-fee-title".localized)
+                } else if assetTransaction.receiverAddress == account.address {
+                    bindTitle("transaction-detail-receive".localized)
+                } else {
+                    bindTitle("transaction-detail-send".localized)
                 }
-            } else if assetTransaction.receiverAddress == account.address {
-                bindTitleAndSubtitle(with: contact, and: .receive(assetTransaction.receiverAddress))
-                transactionAmountViewModel = TransactionAmountViewModel(
-                    .positive(
-                        amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
-                        isAlgos: false,
-                        fraction: assetDetail.decimals,
-                        assetSymbol: assetDetail.unitName ?? assetDetail.name
-                    )
-                )
             } else {
-                bindTitleAndSubtitle(with: contact, and: .send(assetTransaction.receiverAddress))
-                transactionAmountViewModel = TransactionAmountViewModel(
-                    .negative(
-                        amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
-                        isAlgos: false,
-                        fraction: assetDetail.decimals,
-                        assetSymbol: assetDetail.unitName ?? assetDetail.name
-                    )
-                )
+                guard let payment = transaction.payment else {
+                    if transaction.isAssetAdditionTransaction(for: account.address) {
+                        bindTitle("asset-creation-fee-title".localized)
+                    }
+                    return
+                }
+
+                if payment.receiver == transaction.sender {
+                    bindTitle("transaction-detail-send".localized)
+                } else if payment.receiver == account.address {
+                    bindTitle("transaction-detail-receive".localized)
+                } else {
+                    bindTitle("transaction-detail-send".localized)
+                }
             }
-        } else {
-            guard let payment = transaction.payment else {
-                if transaction.isAssetAdditionTransaction(for: account.address) {
-                    title = "asset-creation-fee-title".localized
+            return
+        }
+
+        if let transaction = transactionDependency.transaction as? PendingTransaction {
+            if transaction.receiver == transaction.sender {
+                bindTitle("transaction-detail-send".localized)
+            } else if transaction.isAssetAdditionTransaction(for: account.address) {
+                bindTitle("asset-creation-fee-title".localized)
+            } else if transaction.receiver == account.address {
+                bindTitle("transaction-detail-receive".localized)
+            } else {
+                bindTitle("transaction-detail-send".localized)
+            }
+        }
+    }
+
+    private mutating func bindSubtitle(
+        _ transactionDependency: TransactionViewModelDependencies
+    ) {
+        let account = transactionDependency.account
+
+        if let transaction = transactionDependency.transaction as? Transaction {
+            if let assetTransaction = transaction.assetTransfer {
+                if assetTransaction.receiverAddress == assetTransaction.senderAddress {
+                    let subtitle = getSubtitle(
+                        from: transactionDependency,
+                        and: assetTransaction.receiverAddress
+                    )
+                    bindSubtitle(subtitle)
+                } else if transaction.isAssetAdditionTransaction(for: account.address) {
+                    subtitle = nil
+                } else if assetTransaction.receiverAddress == account.address {
+                    let subtitle = getSubtitle(
+                        from: transactionDependency,
+                        and: assetTransaction.receiverAddress
+                    )
+                    bindSubtitle(subtitle)
+                } else {
+                    let subtitle = getSubtitle(
+                        from: transactionDependency,
+                        and: assetTransaction.receiverAddress
+                    )
+                    bindSubtitle(subtitle)
+                }
+            } else {
+                guard let payment = transaction.payment else {
+                    if transaction.isAssetAdditionTransaction(for: account.address) {
+                        subtitle = nil
+                    }
+                    return
+                }
+
+                if payment.receiver == transaction.sender {
+                    let subtitle = getSubtitle(
+                        from: transactionDependency,
+                        and: transaction.sender
+                    )
+                    bindSubtitle(subtitle)
+                } else if payment.receiver == account.address {
+                    let subtitle = getSubtitle(
+                        from: transactionDependency,
+                        and: transaction.sender
+                    )
+                    bindSubtitle(subtitle)
+                } else {
+                    let subtitle = getSubtitle(
+                        from: transactionDependency,
+                        and: payment.receiver
+                    )
+                    bindSubtitle(subtitle)
+                }
+            }
+            return
+        }
+
+        if let transaction = transactionDependency.transaction as? PendingTransaction {
+            if transaction.receiver == transaction.sender {
+                let subtitle = getSubtitle(
+                    from: transactionDependency,
+                    and: transaction.receiver
+                )
+                bindSubtitle(subtitle)
+            } else if transaction.isAssetAdditionTransaction(for: account.address) {
+                subtitle = nil
+            } else if transaction.receiver == account.address {
+                let subtitle = getSubtitle(
+                    from: transactionDependency,
+                    and: transaction.sender
+                )
+                bindSubtitle(subtitle)
+            } else {
+                let subtitle = getSubtitle(
+                    from: transactionDependency,
+                    and: transaction.receiver
+                )
+                bindSubtitle(subtitle)
+            }
+        }
+    }
+
+    private mutating func bindAmount(
+        _ transactionDependency: TransactionViewModelDependencies
+    ) {
+        let account = transactionDependency.account
+
+        if let transaction = transactionDependency.transaction as? Transaction {
+            if let assetTransaction = transaction.assetTransfer,
+               let assetId = transaction.assetTransfer?.assetId,
+               let assetDetail = account[assetId]?.detail {
+                if assetTransaction.receiverAddress == assetTransaction.senderAddress {
+                    transactionAmountViewModel = TransactionAmountViewModel(
+                        .normal(
+                            amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
+                            isAlgos: false,
+                            fraction: assetDetail.decimals,
+                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                        )
+                    )
+                } else if transaction.isAssetAdditionTransaction(for: account.address) {
                     if let fee = transaction.fee {
                         transactionAmountViewModel = TransactionAmountViewModel(.negative(amount: fee.toAlgos))
                     }
+                } else if assetTransaction.receiverAddress == account.address {
+                    transactionAmountViewModel = TransactionAmountViewModel(
+                        .positive(
+                            amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
+                            isAlgos: false,
+                            fraction: assetDetail.decimals,
+                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                        )
+                    )
+                } else {
+                    transactionAmountViewModel = TransactionAmountViewModel(
+                        .negative(
+                            amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
+                            isAlgos: false,
+                            fraction: assetDetail.decimals,
+                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                        )
+                    )
                 }
-                return
-            }
-
-            if payment.receiver == transaction.sender {
-                bindTitleAndSubtitle(with: contact, and: .receive(transaction.sender))
-                transactionAmountViewModel = TransactionAmountViewModel(
-                    .normal(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
-                )
-            } else if payment.receiver == account.address {
-                bindTitleAndSubtitle(with: contact, and: .receive(transaction.sender))
-                transactionAmountViewModel = TransactionAmountViewModel(
-                    .positive(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
-                )
             } else {
-                bindTitleAndSubtitle(with: contact, and: .send(payment.receiver))
-                transactionAmountViewModel = TransactionAmountViewModel(
-                    .negative(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
-                )
+                guard let payment = transaction.payment else {
+                    if transaction.isAssetAdditionTransaction(for: account.address) {
+                        if let fee = transaction.fee {
+                            transactionAmountViewModel = TransactionAmountViewModel(.negative(amount: fee.toAlgos))
+                        }
+                    }
+                    return
+                }
+
+                if payment.receiver == transaction.sender {
+                    transactionAmountViewModel = TransactionAmountViewModel(
+                        .normal(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
+                    )
+                } else if payment.receiver == account.address {
+                    transactionAmountViewModel = TransactionAmountViewModel(
+                        .positive(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
+                    )
+                } else {
+                    transactionAmountViewModel = TransactionAmountViewModel(
+                        .negative(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
+                    )
+                }
+            }
+            return
+        }
+
+        if let transaction = transactionDependency.transaction as? PendingTransaction {
+            if let assetDetail = transactionDependency.compoundAsset?.detail {
+                if transaction.receiver == transaction.sender {
+                    transactionAmountViewModel = TransactionAmountViewModel(
+                        .normal(
+                            amount: transaction.amount.assetAmount(fromFraction: assetDetail.decimals),
+                            isAlgos: false,
+                            fraction: assetDetail.decimals,
+                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                        )
+                    )
+                } else if transaction.isAssetAdditionTransaction(for: account.address) {
+                    if let fee = transaction.fee {
+                        transactionAmountViewModel = TransactionAmountViewModel(.negative(amount: fee.toAlgos))
+                    }
+                } else if transaction.receiver == account.address {
+                    transactionAmountViewModel = TransactionAmountViewModel(
+                        .positive(
+                            amount: transaction.amount.assetAmount(fromFraction: assetDetail.decimals),
+                            isAlgos: false,
+                            fraction: assetDetail.decimals,
+                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                        )
+                    )
+                } else {
+                    transactionAmountViewModel = TransactionAmountViewModel(
+                        .negative(
+                            amount: transaction.amount.assetAmount(fromFraction: assetDetail.decimals),
+                            isAlgos: false,
+                            fraction: assetDetail.decimals,
+                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                        )
+                    )
+                }
+            } else {
+                if transaction.receiver == transaction.sender {
+                    transactionAmountViewModel = TransactionAmountViewModel(.normal(amount: transaction.amount.toAlgos))
+                } else if transaction.receiver == account.address {
+                    transactionAmountViewModel = TransactionAmountViewModel(.positive(amount: transaction.amount.toAlgos))
+                } else {
+                    transactionAmountViewModel = TransactionAmountViewModel(.negative(amount: transaction.amount.toAlgos))
+                }
             }
         }
     }
 
-    init(pendingTransactionDependencies: TransactionViewModelDependencies) {
-        guard let transaction = pendingTransactionDependencies.transaction as? PendingTransaction else {
+    private mutating func bindSecondaryAmount(
+        _ transactionDependency: TransactionViewModelDependencies
+    ) {
+        let account = transactionDependency.account
+
+        if let transaction = transactionDependency.transaction as? Transaction {
+            if let assetTransaction = transaction.assetTransfer,
+               let assetDetail = account[assetTransaction.assetId]?.detail {
+                bindSecondaryAmount(
+                    getAssetCurrencyValue(
+                        from: transactionDependency,
+                        and: transaction.getAmount()?.assetAmount(fromFraction: assetDetail.decimals)
+                    )
+                )
+            } else {
+                if transaction.payment == nil {
+                    if transaction.isAssetAdditionTransaction(for: account.address) {
+                        bindSecondaryAmount(getAlgoCurrencyValue(from: transactionDependency, and: transaction.fee?.toAlgos))
+                    }
+                    return
+                }
+
+                bindSecondaryAmount(getAlgoCurrencyValue(from: transactionDependency, and: transaction.getAmount()?.toAlgos))
+            }
             return
         }
 
-        let account = pendingTransactionDependencies.account
-        let contact = pendingTransactionDependencies.contact
-
-        if let assetDetail = pendingTransactionDependencies.assetDetail {
-            if transaction.receiver == transaction.sender {
-                bindTitleAndSubtitle(with: contact, and: .send(transaction.receiver))
-                transactionAmountViewModel = TransactionAmountViewModel(
-                    .normal(
-                        amount: transaction.amount.assetAmount(fromFraction: assetDetail.decimals),
-                        isAlgos: false,
-                        fraction: assetDetail.decimals,
-                        assetSymbol: assetDetail.unitName ?? assetDetail.name
-                    )
-                )
-            } else if transaction.receiver == account.address && transaction.amount == 0 && transaction.type == .assetTransfer {
-                title = "asset-creation-fee-title".localized
-                if let fee = transaction.fee {
-                    transactionAmountViewModel = TransactionAmountViewModel(.negative(amount: fee.toAlgos))
-                }
-            } else if transaction.receiver == account.address {
-                bindTitleAndSubtitle(with: contact, and: .send(transaction.receiver))
-                transactionAmountViewModel = TransactionAmountViewModel(
-                    .positive(
-                        amount: transaction.amount.assetAmount(fromFraction: assetDetail.decimals),
-                        isAlgos: false,
-                        fraction: assetDetail.decimals,
-                        assetSymbol: assetDetail.unitName ?? assetDetail.name
+        if let transaction = transactionDependency.transaction as? PendingTransaction {
+            if let compoundAsset = transactionDependency.compoundAsset {
+                bindSecondaryAmount(
+                    getAssetCurrencyValue(
+                        from: transactionDependency,
+                        and: transaction.amount.assetAmount(fromFraction: compoundAsset.detail.decimals)
                     )
                 )
             } else {
-                bindTitleAndSubtitle(with: contact, and: .send(transaction.receiver))
-                transactionAmountViewModel = TransactionAmountViewModel(
-                    .negative(
-                        amount: transaction.amount.assetAmount(fromFraction: assetDetail.decimals),
-                        isAlgos: false,
-                        fraction: assetDetail.decimals,
-                        assetSymbol: assetDetail.unitName ?? assetDetail.name
-                    )
-                )
-            }
-        } else {
-            if transaction.receiver == transaction.sender {
-                bindTitleAndSubtitle(with: contact, and: .send(transaction.receiver))
-                transactionAmountViewModel = TransactionAmountViewModel(.normal(amount: transaction.amount.toAlgos))
-            } else if transaction.receiver == account.address {
-                bindTitleAndSubtitle(with: contact, and: .receive(transaction.sender))
-                transactionAmountViewModel = TransactionAmountViewModel(.positive(amount: transaction.amount.toAlgos))
-            } else {
-                bindTitleAndSubtitle(with: contact, and: .send(transaction.receiver))
-                transactionAmountViewModel = TransactionAmountViewModel(.negative(amount: transaction.amount.toAlgos))
+                bindSecondaryAmount(getAlgoCurrencyValue(from: transactionDependency, and: transaction.amount.toAlgos))
             }
         }
     }
 }
 
 extension TransactionHistoryContextViewModel {
-    private mutating func bindTitleAndSubtitle(with contact: Contact?, and address: Address?) {
-        title = address?.title
-
-        if let contact = contact {
-            subtitle = contact.name
-        } else if let address = address?.associatedValue,
-                  let localAccount = UIApplication.shared.appConfiguration?.session.accountInformation(
-                    from: address
-                  ) {
-            subtitle = localAccount.name
-        } else {
-            subtitle = address?.associatedValue.shortAddressDisplay()
+    private func getAlgoCurrencyValue(
+        from transactionDependency: TransactionViewModelDependencies,
+        and amount: Decimal?
+    ) -> String? {
+        guard let amount = amount,
+              let currency = transactionDependency.currency,
+              let currencyPriceValue = currency.priceValue else {
+            return nil
         }
+
+        let totalAmount = amount * currencyPriceValue
+        return totalAmount.toCurrencyStringForLabel(with: currency.id)
     }
 
-    private enum Address {
-        case send(String?)
-        case receive(String?)
-
-        var title: String {
-            switch self {
-            case .send:
-                return "transaction-detail-send".localized
-            case .receive:
-                return "transaction-detail-receive".localized
-            }
+    private func getAssetCurrencyValue(
+        from transactionDependency: TransactionViewModelDependencies,
+        and amount: Decimal?
+    ) -> String? {
+        guard let amount = amount,
+              let assetDetail = transactionDependency.compoundAsset?.detail,
+              let assetUSDValue = assetDetail.usdValue,
+              let currency = transactionDependency.currency,
+              let currencyUSDValue = currency.usdValue else {
+            return nil
         }
 
-        var associatedValue: String? {
-            switch self {
-            case let .send(value), let .receive(value):
-                return value
-            }
+        let currencyValue = assetUSDValue * amount * currencyUSDValue
+        if currencyValue > 0 {
+            return currencyValue.toCurrencyStringForLabel(with: currency.id)
         }
+
+        return nil
+    }
+
+    private func getSubtitle(
+        from transactionDependency: TransactionViewModelDependencies,
+        and account: PublicKey?
+    ) -> String? {
+        if let contact = transactionDependency.contact {
+            return contact.name
+        }
+
+        if let address = account,
+           let localAccount = transactionDependency.localAccounts.first(matching: (\.address, address)) {
+            return localAccount.name
+        }
+
+        return account.shortAddressDisplay()
+    }
+}
+
+extension TransactionHistoryContextViewModel {
+    private mutating func bindTitle(
+        _ title: String?
+    ) {
+        guard let title = title else {
+            self.title = nil
+            return
+        }
+
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        self.title = .attributedString(
+            title.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineBreakMode(.byTruncatingTail),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
+    }
+
+    private mutating func bindSubtitle(
+        _ subtitle: String?
+    ) {
+        guard let subtitle = subtitle else {
+            self.subtitle = nil
+            return
+        }
+
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        self.subtitle = .attributedString(
+            subtitle.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineBreakMode(.byTruncatingTail),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
+    }
+
+    private mutating func bindSecondaryAmount(
+        _ secondaryAmount: String?
+    ) {
+        guard let secondaryAmount = secondaryAmount else {
+            self.secondaryAmount = nil
+            return
+        }
+
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        self.secondaryAmount = .attributedString(
+            secondaryAmount.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineHeightMultiple(lineHeightMultiplier),
+                    .textAlignment(.right)
+                ])
+            ])
+        )
     }
 }

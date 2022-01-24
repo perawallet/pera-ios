@@ -21,21 +21,23 @@ import MacaroonUIKit
 struct RewardViewModel:
     PairedViewModel,
     Hashable {
-    private(set) var amountMode: TransactionAmountView.Mode?
+    private(set) var amountViewModel: TransactionAmountViewModel?
     private(set) var date: String?
     
-    init(_ reward: Reward) {
-        bindAmountMode(from: reward)
-        bindDate(from: reward)
+    init(
+        _ reward: Reward
+    ) {
+        bindAmountViewModel(reward)
+        bindDate(reward)
     }
 }
 
 extension RewardViewModel {
-    private mutating func bindAmountMode(from reward: Reward) {
-        amountMode = .positive(amount: reward.amount.toAlgos)
+    private mutating func bindAmountViewModel(_ reward: Reward) {
+        amountViewModel = TransactionAmountViewModel(.positive(amount: reward.amount.toAlgos))
     }
 
-    private mutating func bindDate(from reward: Reward) {
+    private mutating func bindDate(_ reward: Reward) {
         date = reward.date?.toFormat("MMMM dd, yyyy")
     }
 }

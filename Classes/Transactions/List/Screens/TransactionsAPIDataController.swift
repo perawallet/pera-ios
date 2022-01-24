@@ -126,13 +126,13 @@ extension TransactionsAPIDataController {
                 }
                 switch response {
                 case let .success(pendingTransactionList):
-                    let pendingTransactions = pendingTransactionList.pendingTransactions
-                    if pendingTransactions.isEmpty {
-                        self.removePendingTransactionsFromSnapshotIfNeeded()
+                    let updatedPendingTransactions = pendingTransactionList.pendingTransactions
+                    if !self.pendingTransactions.isEmpty && updatedPendingTransactions.isEmpty {
+                        self.pendingTransactions = []
                         return
                     }
 
-                    self.pendingTransactions = pendingTransactions
+                    self.pendingTransactions = updatedPendingTransactions
                     self.deliverContentSnapshot()
                 case .failure:
                     /// <todo> Handle error case
@@ -151,11 +151,9 @@ extension TransactionsAPIDataController {
 
 extension TransactionsAPIDataController {
     func loadTransactions() {
-        clear()
-
         let dates = getTransactionFilterDates()
         var assetId: String?
-        if let id = draft.assetDetail?.id {
+        if let id = draft.compoundAsset?.id {
             assetId = String(id)
         }
 
@@ -170,7 +168,7 @@ extension TransactionsAPIDataController {
                 /// <todo> Handle error case
                 break
             case let .success(transactionResults):
-                self.nextToken = transactionResults.nextToken
+                self.nextToken = self.nextToken == nil ? transactionResults.nextToken : self.nextToken
                 transactionResults.transactions.forEach { $0.status = .completed }
                 self.groupTransactionsByType(transactionResults.transactions, isPaginated: false)
                 self.deliverContentSnapshot()
@@ -181,7 +179,7 @@ extension TransactionsAPIDataController {
     func loadNextTransactions() {
         let dates = getTransactionFilterDates()
         var assetId: String?
-        if let id = draft.assetDetail?.id {
+        if let id = draft.compoundAsset?.id {
             assetId = String(id)
         }
 
@@ -241,9 +239,14 @@ extension TransactionsAPIDataController {
             }
         case .didFinishRunning:
             if let updatedAccountHandle = sharedDataController.accountCollection[draft.accountHandle.value.address] {
-                draft.accountHandle = updatedAccountHandle
+                if updatedAccountHandle.value.amount != draft.accountHandle.value.amount ||
+                    updatedAccountHandle.value.rewards != draft.accountHandle.value.rewards ||
+                    updatedAccountHandle.value.hasDifferentAssets(than: draft.accountHandle.value) ||
+                    updatedAccountHandle.value.hasDifferentApps(than: draft.accountHandle.value) {
+                    draft.accountHandle = updatedAccountHandle
+                    loadTransactions()
+                }
             }
-            loadTransactions()
         default:
             break
         }
@@ -311,7 +314,7 @@ extension TransactionsAPIDataController {
                 return false
             }
 
-            return assetId == draft.assetDetail?.id
+            return assetId == draft.compoundAsset?.id
         }
 
         setTransactionItems(
@@ -397,7 +400,7 @@ extension TransactionsAPIDataController {
             case .asset:
                 snapshot.appendSections([.info])
                 snapshot.appendItems(
-                    [.assetInfo(AssetDetailInfoViewModel(self.draft.accountHandle.value, self.draft.assetDetail!, self.sharedDataController.currency.value))],
+                    [.assetInfo(AssetDetailInfoViewModel(self.draft.accountHandle.value, self.draft.compoundAsset!.detail, self.sharedDataController.currency.value))],
                     toSection: .info
                 )
             case .algos:
@@ -450,15 +453,6 @@ extension TransactionsAPIDataController {
         }
     }
 
-    private func removePendingTransactionsFromSnapshotIfNeeded() {
-        if pendingTransactions.isEmpty {
-            return
-        }
-
-        pendingTransactions = []
-        deliverContentSnapshot()
-    }
-
     private func deliverSnapshot(
         _ snapshot: @escaping () -> Snapshot
     ) {
@@ -505,7 +499,7 @@ extension TransactionsAPIDataController {
                         transactionItems.append(.transaction(viewModel))
                     }
                 } else if let reward = transaction as? Reward {
-                    transactionItems.append(.reward(TransactionHistoryContextViewModel(rewardViewModel: RewardViewModel(reward))))
+                    transactionItems.append(.reward(TransactionHistoryContextViewModel(reward)))
                 }
             }
         }
@@ -525,21 +519,25 @@ extension TransactionsAPIDataController {
             transaction.contact = contact
             let config = TransactionViewModelDependencies(
                 account: draft.accountHandle.value,
-                assetDetail: draft.assetDetail,
+                compoundAsset: draft.compoundAsset,
                 transaction: transaction,
-                contact: contact
+                contact: contact,
+                currency: sharedDataController.currency.value,
+                localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }
             )
 
-            return TransactionHistoryContextViewModel(transactionDependencies: config)
+            return TransactionHistoryContextViewModel(config)
         }
 
         let config = TransactionViewModelDependencies(
             account: draft.accountHandle.value,
-            assetDetail: draft.assetDetail,
-            transaction: transaction
+            compoundAsset: draft.compoundAsset,
+            transaction: transaction,
+            currency: sharedDataController.currency.value,
+            localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }
         )
 
-        return TransactionHistoryContextViewModel(transactionDependencies: config)
+        return TransactionHistoryContextViewModel(config)
     }
 
     private func composePendingTransactionItemViewModel(
@@ -552,21 +550,25 @@ extension TransactionsAPIDataController {
             transaction.contact = contact
             let config = TransactionViewModelDependencies(
                 account: draft.accountHandle.value,
-                assetDetail: draft.assetDetail,
+                compoundAsset: draft.compoundAsset,
                 transaction: transaction,
-                contact: contact
+                contact: contact,
+                currency: sharedDataController.currency.value,
+                localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }
             )
 
-            return TransactionHistoryContextViewModel(pendingTransactionDependencies: config)
+            return TransactionHistoryContextViewModel(config)
         }
 
         let config = TransactionViewModelDependencies(
             account: draft.accountHandle.value,
-            assetDetail: draft.assetDetail,
-            transaction: transaction
+            compoundAsset: draft.compoundAsset,
+            transaction: transaction,
+            currency: sharedDataController.currency.value,
+            localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }
         )
 
-        return TransactionHistoryContextViewModel(pendingTransactionDependencies: config)
+        return TransactionHistoryContextViewModel(config)
     }
 }
 
