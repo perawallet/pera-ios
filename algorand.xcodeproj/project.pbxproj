@@ -2340,6 +2340,8 @@
 		2BEC615F279F152000152D53 /* AccountOrdering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEC615E279F152000152D53 /* AccountOrdering.swift */; };
 		2BEC6160279F152000152D53 /* AccountOrdering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEC615E279F152000152D53 /* AccountOrdering.swift */; };
 		2BEC6161279F152000152D53 /* AccountOrdering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BEC615E279F152000152D53 /* AccountOrdering.swift */; };
+		2BEC6162279F455100152D53 /* WCSessionSaveErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B055FBF27973764004E3CA0 /* WCSessionSaveErrorLog.swift */; };
+		2BEC6164279F455400152D53 /* WCSessionSaveErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B055FBF27973764004E3CA0 /* WCSessionSaveErrorLog.swift */; };
 		2BECB48A25A0C64B0081870A /* TitledToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BECB48925A0C64B0081870A /* TitledToggleView.swift */; };
 		2BECB48B25A0C64B0081870A /* TitledToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BECB48925A0C64B0081870A /* TitledToggleView.swift */; };
 		2BECB48C25A0C64B0081870A /* TitledToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BECB48925A0C64B0081870A /* TitledToggleView.swift */; };
@@ -13690,6 +13692,7 @@
 				2B2AACE2250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */,
 				2B5739F726F3F752007E0252 /* WCAssetReconfigurationTransactionView.swift in Sources */,
 				D473CA5E26E24A3400558598 /* NumpadButtonViewTheme.swift in Sources */,
+				2BEC6162279F455100152D53 /* WCSessionSaveErrorLog.swift in Sources */,
 				D446A743272A8BFA0081D60B /* AssetPreviewActionViewTheme.swift in Sources */,
 				17BD4E622292F1260003E49A /* ContactContextView.swift in Sources */,
 				2BECB4A825A0F0930081870A /* ToggleTitleHeaderSupplementaryView.swift in Sources */,
@@ -14880,6 +14883,7 @@
 				2B9EEB68264ED202007A112D /* RewardCalculationViewModel.swift in Sources */,
 				D4C45BF42726C54800F4AE31 /* ContactInformationView.swift in Sources */,
 				D46AC87A26E8E416008CDE68 /* RecoverInputViewTheme.swift in Sources */,
+				2BEC6164279F455400152D53 /* WCSessionSaveErrorLog.swift in Sources */,
 				D419430F273541140055EC70 /* PageBarButton.swift in Sources */,
 				2B0F620A24EC129D00DA22A6 /* BaseScrollViewController.swift in Sources */,
 				D46C647626E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */,
