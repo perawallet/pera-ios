@@ -214,22 +214,3 @@ extension WCAssetTransactionView {
 protocol WCAssetTransactionViewDelegate: AnyObject {
     func wcAssetTransactionViewDidOpenRawTransaction(_ wcAssetTransactionView: WCAssetTransactionView)
 }
-
-extension WCAssetTransactionView {
-    struct Theme: LayoutSheet, StyleSheet {
-        let rawTransactionButtonStyle: ButtonStyle
-        let buttonEdgeInsets: LayoutPaddings
-        let buttonsCorner: Corner
-
-        init(_ family: LayoutFamily) {
-            self.rawTransactionButtonStyle = [
-                .title("wallet-connect-raw-transaction-title".localized),
-                .titleColor([.normal(AppColors.Components.Button.Secondary.text)]),
-                .font(Fonts.DMSans.medium.make(13)),
-                .backgroundColor(AppColors.Components.Button.Secondary.background)
-            ]
-            self.buttonsCorner = Corner(radius: 18)
-            self.buttonEdgeInsets = (8, 12, 8, 12)
-        }
-    }
-}
