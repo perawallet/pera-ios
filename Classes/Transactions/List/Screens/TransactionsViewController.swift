@@ -25,7 +25,7 @@ class TransactionsViewController: BaseViewController {
     private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
 
     private(set) var accountHandle: AccountHandle
-    private(set) var assetDetail: AssetInformation?
+    private(set) var compoundAsset: CompoundAsset?
     private(set) var filterOption = TransactionFilterViewController.FilterOption.allTime
 
     private lazy var listLayout = TransactionsListLayout(
@@ -57,7 +57,7 @@ class TransactionsViewController: BaseViewController {
     init(draft: TransactionListing, configuration: ViewControllerConfiguration) {
         self.draft = draft
         self.accountHandle = draft.accountHandle
-        self.assetDetail = draft.assetDetail
+        self.compoundAsset = draft.compoundAsset
         super.init(configuration: configuration)
     }
     
@@ -102,7 +102,10 @@ class TransactionsViewController: BaseViewController {
 
     override func prepareLayout() {
         addListView()
-        addTransactionActionButton(theme)
+
+        if !accountHandle.value.isWatchAccount() {
+            addTransactionActionButton(theme)
+        }
     }
 
     override func linkInteractors() {
@@ -248,8 +251,8 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
         
         let draft: SendTransactionDraft
 
-        if let assetDetail = assetDetail {
-            draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .assetDetail(assetDetail))
+        if let compoundAsset = compoundAsset {
+            draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .assetDetail(compoundAsset.detail))
         } else {
             draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .algo)
         }
@@ -309,10 +312,10 @@ extension TransactionsViewController {
                 return accountHandle.value[assetId]?.detail
             }
 
-            return assetDetail
+            return compoundAsset?.detail
         case .algos,
                 .asset:
-            return assetDetail
+            return compoundAsset?.detail
         }
     }
 }

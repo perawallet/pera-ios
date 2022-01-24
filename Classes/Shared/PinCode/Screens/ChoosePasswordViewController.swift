@@ -137,14 +137,14 @@ extension ChoosePasswordViewController {
                 return
             }
             
-            let assetDetail = assetId.unwrap { account[$0]?.detail }
+            let compoundAsset = assetId.unwrap { account[$0] }
 
             guard let accountHandle = sharedDataController.accountCollection[account.address] else {
                 return
             }
 
-            if let assetDetail = assetDetail {
-                route = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, assetDetail: assetDetail))
+            if let compoundAsset = compoundAsset {
+                route = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, compoundAsset: compoundAsset))
             } else {
                 route = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
             }

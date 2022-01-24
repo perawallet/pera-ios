@@ -21,9 +21,16 @@ class AccountRecoverDataController: NSObject {
 
     weak var delegate: AccountRecoverDataControllerDelegate?
 
+    private lazy var accountOrdering = AccountOrdering(
+        sharedDataController: sharedDataController,
+        session: session
+    )
+
+    private let sharedDataController: SharedDataController
     private let session: Session
 
-    init(session: Session) {
+    init(sharedDataController: SharedDataController, session: Session) {
+        self.sharedDataController = sharedDataController
         self.session = session
     }
 
@@ -61,19 +68,26 @@ class AccountRecoverDataController: NSObject {
             // If the recovered account is rekeyed or watch account in the app, save the passphrase.
             // Convert the account type to standard account if it's a watch account since the account has the passphrase now.
             if sameAccount.isRekeyed() || sameAccount.isWatchAccount() {
+                let accountType = sameAccount.isWatchAccount() ? .standard : sameAccount.type
                 return AccountInformation(
                     address: address,
                     name: sameAccount.name ?? address.shortAddressDisplay(),
-                    type: sameAccount.isWatchAccount() ? .standard : sameAccount.type,
+                    type: accountType,
                     ledgerDetail: sameAccount.ledgerDetail,
-                    rekeyDetail: sameAccount.rekeyDetail
+                    rekeyDetail: sameAccount.rekeyDetail,
+                    preferredOrder: accountOrdering.getNewAccountIndex(for: accountType)
                 )
             } else {
                 delegate?.accountRecoverDataController(self, didFailRecoveringWith: .alreadyExist)
                 return nil
             }
         } else {
-            return AccountInformation(address: address, name: address.shortAddressDisplay(), type: .standard)
+            return AccountInformation(
+                address: address,
+                name: address.shortAddressDisplay(),
+                type: .standard,
+                preferredOrder: accountOrdering.getNewAccountIndex(for: .standard)
+            )
         }
     }
 

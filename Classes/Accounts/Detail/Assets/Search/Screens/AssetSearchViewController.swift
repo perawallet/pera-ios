@@ -24,15 +24,12 @@ final class AssetSearchViewController: BaseViewController {
     private lazy var theme = Theme()
     lazy var handlers = Handlers()
 
-    typealias DataSource = UICollectionViewDiffableDataSource<AssetSearchSection, AssetSearchItem>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<AssetSearchSection, AssetSearchItem>
-
-    private lazy var listLayout = AssetSearchListLayout(searchResults: searchResults)
+    private lazy var listLayout = AssetSearchListLayout()
+    private lazy var dataSource = AssetSearchDataSource(listView)
+    private lazy var dataController = AssetSearchLocalDataController(accountHandle, sharedDataController)
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
 
     private lazy var searchInputView = SearchInputView()
-
-    private var searchResults: [CompoundAsset] = []
 
     private lazy var listView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -46,66 +43,15 @@ final class AssetSearchViewController: BaseViewController {
         return collectionView
     }()
 
-    private let account: Account
+    private let accountHandle: AccountHandle
 
     init(
-        account: Account,
+        accountHandle: AccountHandle,
         configuration: ViewControllerConfiguration
     ) {
-        self.account = account
+        self.accountHandle = accountHandle
         super.init(configuration: configuration)
-        searchResults = account.compoundAssets
     }
-
-    private lazy var dataSource: DataSource = {
-        let dataSource = DataSource(collectionView: listView) {
-            [weak self] collectionView, indexPath, identifier in
-                guard let self = self else {
-                    return nil
-                }
-
-                let currency = self.sharedDataController.currency.value
-
-                switch identifier {
-                case let .asset(assetDetail):
-                    let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
-
-                    if let assetDetail = assetDetail,
-                       let asset = self.account.assets?.first(matching: (\.id, assetDetail.id)) {
-                        cell.bindData(
-                            AssetPreviewViewModel(
-                                AssetPreviewModelAdapter.adaptAssetSelection(
-                                    (assetDetail, asset, currency)
-                                )
-                            )
-                        )
-                    }
-
-                    return cell
-                }
-        }
-
-        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
-            guard let section = AssetSearchSection(rawValue: indexPath.section),
-                  section == .assets,
-                  kind == UICollectionView.elementKindSectionHeader else {
-                return nil
-            }
-
-            let view = collectionView.dequeueHeader(SingleLineTitleActionHeaderView.self, at: indexPath)
-            view.bindData(
-                SingleLineTitleActionViewModel(
-                    item: SingleLineIconTitleItem(
-                        icon: nil,
-                        title: .string("accounts-title-assets".localized)
-                    )
-                )
-            )
-            return view
-        }
-
-        return dataSource
-    }()
 
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
@@ -114,7 +60,18 @@ final class AssetSearchViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        applySnapshot(animatingDifferences: false)
+
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdate(let snapshot):
+                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            }
+        }
+
+        dataController.load()
     }
 
     override func setListeners() {
@@ -175,35 +132,11 @@ extension AssetSearchViewController: SearchInputViewDelegate {
         }
 
         if query.isEmpty {
-            resetSearch()
+            dataController.resetSearch()
             return
         }
 
-        searchAssets(for: query)
-    }
-
-    private func searchAssets(for query: String) {
-        searchThrottler.performNext {
-            [weak self] in
-
-            guard let self = self else {
-                return
-            }
-
-            self.searchResults = self.account.compoundAssets.filter {
-                String($0.id).contains(query) ||
-                $0.detail.name.unwrap(or: "").contains(query) ||
-                $0.detail.unitName.unwrap(or: "").contains(query)
-            }
-
-            asyncMain { [weak self] in
-                guard let self = self else {
-                    return
-                }
-
-                self.applySnapshot()
-            }
-        }
+        dataController.search(for: query)
     }
 
     func searchInputViewDidReturn(_ view: SearchInputView) {
@@ -211,63 +144,26 @@ extension AssetSearchViewController: SearchInputViewDelegate {
     }
     
     func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
-        resetSearch()
-    }
-
-    private func resetSearch() {
-        searchResults = account.compoundAssets
-        applySnapshot()
+        dataController.resetSearch()
     }
 }
 
 extension AssetSearchViewController {
-    private func applySnapshot(
-        animatingDifferences: Bool = true
-    ) {
-        listLayout.updateSearchResults(searchResults)
-        
-        var snapshot = Snapshot()
-        snapshot.appendSections([.assets])
-
-        var searchSectionItems: [AssetSearchItem] = []
-
-        searchResults.forEach {
-            searchSectionItems.append(.asset(asset: $0.detail))
-        }
-
-        snapshot.appendItems(
-            searchSectionItems,
-            toSection: .assets
-        )
-
-        dataSource.apply(
-            snapshot,
-            animatingDifferences: animatingDifferences
-        )
-    }
-
     private func setListListeners() {
-        listLayout.handlers.didSelectAssetDetail = { [weak self] assetDetail in
-            guard let self = self else {
+        listLayout.handlers.didSelectIndex = { [weak self] index in
+            guard let self = self,
+                  let compoundAsset = self.dataController[index] else {
                 return
             }
 
             self.closeScreen(by: .dismiss, animated: false)
-            self.handlers.didSelectAssetDetail?(assetDetail)
+            self.handlers.didSelectAsset?(compoundAsset)
         }
     }
 }
 
 extension AssetSearchViewController {
     struct Handlers {
-        var didSelectAssetDetail: ((AssetInformation) -> Void)?
+        var didSelectAsset: ((CompoundAsset) -> Void)?
     }
-}
-
-enum AssetSearchSection: Int, Hashable {
-    case assets
-}
-
-enum AssetSearchItem: Hashable {
-    case asset(asset: AssetInformation?)
 }

@@ -163,8 +163,8 @@ extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
             }
 
             let screen: Screen
-            if let assetDetail = accountDetails.assetDetail {
-                screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, assetDetail: assetDetail))
+            if let compoundAsset = accountDetails.compoundAsset {
+                screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, compoundAsset: compoundAsset))
             } else {
                 screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
             }

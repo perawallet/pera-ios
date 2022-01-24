@@ -196,7 +196,7 @@ extension NotificationsDataSource {
         paginationCursor = nil
     }
     
-    func getUserAccount(from notificationDetail: NotificationDetail) -> (account: Account?, assetDetail: AssetInformation?) {
+    func getUserAccount(from notificationDetail: NotificationDetail) -> (account: Account?, compoundAsset: CompoundAsset?) {
         let anAddress = notificationDetail.senderAddress ?? notificationDetail.receiverAddress
         
         guard let address = anAddress  else {
@@ -204,8 +204,8 @@ extension NotificationsDataSource {
         }
 
         let account = sharedDataController.accountCollection[address]?.value
-        let assetDetail = notificationDetail.asset?.id.unwrap { account?[$0]?.detail }
-        return (account: account, assetDetail: assetDetail)
+        let compoundAsset = notificationDetail.asset?.id.unwrap { account?[$0] }
+        return (account: account, compoundAsset: compoundAsset)
     }
 }
 

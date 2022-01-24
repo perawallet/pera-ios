@@ -21,32 +21,33 @@ import UIKit
 struct TransactionAmountViewModel:
     PairedViewModel,
     Hashable {
-    private(set) var signLabelIsHidden = false
-    private(set) var signLabelText: String?
+    private(set) var signLabelText: EditText?
     private(set) var signLabelColor: UIColor?
-    private(set) var amountLabelText: String?
+    private(set) var amountLabelText: EditText?
     private(set) var amountLabelColor: UIColor?
 
-    init(_ mode: TransactionAmountView.Mode) {
+    init(
+        _ mode: TransactionAmountView.Mode
+    ) {
         bindMode(mode)
     }
 }
 
 extension TransactionAmountViewModel {
-    private mutating func bindMode(_ mode: TransactionAmountView.Mode) {
+    private mutating func bindMode(
+        _ mode: TransactionAmountView.Mode
+    ) {
         switch mode {
         case let .normal(amount, isAlgos, assetFraction, assetSymbol):
-            signLabelIsHidden = true
+            signLabelText = nil
             bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol)
             amountLabelColor = AppColors.Components.Text.main.uiColor
         case let .positive(amount, isAlgos, assetFraction, assetSymbol):
-            signLabelIsHidden = false
             signLabelText = "+"
             signLabelColor = AppColors.Shared.Helpers.positive.uiColor
             bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol)
             amountLabelColor = AppColors.Shared.Helpers.positive.uiColor
         case let .negative(amount, isAlgos, assetFraction, assetSymbol):
-            signLabelIsHidden = false
             signLabelText = "-"
             signLabelColor = AppColors.Shared.Helpers.negative.uiColor
             bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol)
@@ -54,18 +55,23 @@ extension TransactionAmountViewModel {
         }
     }
 
-    private mutating func bindAmount(_ amount: Decimal, with assetFraction: Int?, isAlgos: Bool, assetSymbol: String? = nil) {
+    private mutating func bindAmount(
+        _ amount: Decimal,
+        with assetFraction: Int?,
+        isAlgos: Bool,
+        assetSymbol: String? = nil
+    ) {
         if let fraction = assetFraction {
-            amountLabelText = amount.toFractionStringForLabel(fraction: fraction)
+            amountLabelText = .string(amount.toFractionStringForLabel(fraction: fraction))
         } else {
-            amountLabelText = amount.toAlgosStringForLabel
+            amountLabelText = .string(amount.toAlgosStringForLabel)
         }
 
         if isAlgos {
-            amountLabelText?.append(" ALGO")
+            amountLabelText = .string("\(amountLabelText?.string ?? "") ALGO")
         } else {
             if let assetSymbol = assetSymbol {
-                amountLabelText?.append(" \(assetSymbol)")
+                amountLabelText = .string("\(amountLabelText?.string ?? "") \(assetSymbol)")
             }
         }
     }

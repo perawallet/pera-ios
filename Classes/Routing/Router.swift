@@ -278,8 +278,8 @@ class Router {
             viewController = AlgosDetailViewController(draft: draft, configuration: configuration)
         case let .accountDetail(accountHandle):
             viewController = AccountDetailViewController(accountHandle: accountHandle, configuration: configuration)
-        case let .assetSearch(account):
-            viewController = AssetSearchViewController(account: account, configuration: configuration)
+        case let .assetSearch(accountHandle):
+            viewController = AssetSearchViewController(accountHandle: accountHandle, configuration: configuration)
         case let .addAsset(account):
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case .notifications:

@@ -13,15 +13,31 @@
 // limitations under the License.
 
 //
-//  TransactionViewModelDependencies.swift
+//   AssetSearchDataController.swift
 
 import Foundation
+import UIKit
 
-struct TransactionViewModelDependencies {
-    let account: Account
-    let compoundAsset: CompoundAsset?
-    let transaction: TransactionItem
-    var contact: Contact?
-    let currency: Currency?
-    let localAccounts: [Account]
+protocol AssetSearchDataController {
+    typealias Snapshot = NSDiffableDataSourceSnapshot<AssetSearchSection, AssetSearchItem>
+    
+    var eventHandler: ((AssetSearchDataControllerEvent) -> Void)? { get set }
+
+    func load()
+    func search(for query: String)
+    func resetSearch()
+}
+
+enum AssetSearchSection:
+    Int,
+    Hashable {
+    case assets
+}
+
+enum AssetSearchItem: Hashable {
+    case asset(AssetPreviewViewModel)
+}
+
+enum AssetSearchDataControllerEvent {
+    case didUpdate(AssetSearchDataController.Snapshot)
 }

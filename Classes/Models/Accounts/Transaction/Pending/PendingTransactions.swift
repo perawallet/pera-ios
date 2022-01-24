@@ -99,6 +99,12 @@ extension PendingTransaction: Hashable {
 }
 
 extension PendingTransaction {
+    func isAssetAdditionTransaction(for address: String) -> Bool {
+        return assetReceiver == address && assetAmount == 0 && type == .assetTransfer
+    }
+}
+
+extension PendingTransaction {
     struct APIModel: ALGAPIModel {
         var sig: String?
         var txn: TransactionDetail?
