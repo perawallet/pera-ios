@@ -47,6 +47,10 @@ final class SelectAccountViewController: BaseViewController {
         super.init(configuration: configuration)
     }
 
+    deinit {
+        sharedDataController.remove(self)
+    }
+
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
         addBarButtons()
@@ -60,6 +64,7 @@ final class SelectAccountViewController: BaseViewController {
     override func setListeners() {
         listView.delegate = self
         listView.dataSource = accountListDataSource
+        sharedDataController.add(self)
     }
 
     override func prepareLayout() {
@@ -100,6 +105,23 @@ extension SelectAccountViewController: UICollectionViewDelegate, UICollectionVie
         }
 
         delegate?.selectAccountViewController(self, didSelect: account.value, for: transactionAction)
+    }
+}
+
+extension SelectAccountViewController: SharedDataControllerObserver {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        switch event {
+        case .didFinishRunning:
+            listView.reloadData()
+
+            /// Listen data controller just for the first update
+            sharedDataController.remove(self)
+        default:
+            break
+        }
     }
 }
 

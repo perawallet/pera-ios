@@ -40,7 +40,7 @@ final class AccountRecoverViewController: BaseScrollViewController {
         guard let session = session else {
             fatalError("Session should be set")
         }
-        let dataController = AccountRecoverDataController(session: session)
+        let dataController = AccountRecoverDataController(sharedDataController: sharedDataController, session: session)
         return dataController
     }()
 

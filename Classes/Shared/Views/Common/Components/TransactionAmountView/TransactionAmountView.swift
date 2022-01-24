@@ -20,8 +20,8 @@ import MacaroonUIKit
 
 final class TransactionAmountView: View {
     private lazy var amountStackView = UIStackView()
-    private lazy var signLabel = UILabel()
-    private lazy var amountLabel = UILabel()
+    private lazy var signLabel = Label()
+    private lazy var amountLabel = Label()
 
     func customize(_ theme: TransactionAmountViewTheme) {
         addAmountStackView(theme)
@@ -38,8 +38,9 @@ extension TransactionAmountView {
         amountStackView.distribution = .equalSpacing
         amountStackView.alignment = .center
 
-        amountLabel.setContentHuggingPriority(.required, for: .horizontal)
-        amountLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        amountStackView.fitToIntrinsicSize()
+        signLabel.fitToIntrinsicSize()
+        amountLabel.fitToIntrinsicSize()
         
         amountStackView.pinToSuperview()
 
@@ -52,14 +53,14 @@ extension TransactionAmountView {
 
 extension TransactionAmountView: ViewModelBindable {
     func bindData(_ viewModel: TransactionAmountViewModel?) {
-        signLabel.isHidden = (viewModel?.signLabelIsHidden).falseIfNil
-        signLabel.text = viewModel?.signLabelText
+        signLabel.editText = viewModel?.signLabelText
         signLabel.textColor = viewModel?.signLabelColor?.uiColor
-        amountLabel.text = viewModel?.amountLabelText
+        amountLabel.editText = viewModel?.amountLabelText
         amountLabel.textColor = viewModel?.amountLabelColor?.uiColor
     }
 
     func prepareForReuse() {
+        signLabel.text = nil
         amountLabel.text = nil
     }
 }

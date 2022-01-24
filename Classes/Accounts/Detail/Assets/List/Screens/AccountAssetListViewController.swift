@@ -65,7 +65,11 @@ final class AccountAssetListViewController: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
         addListView()
-        addTransactionActionButton(theme)
+
+        if !accountHandle.value.isWatchAccount() {
+            addTransactionActionButton(theme)
+        }
+
         view.layoutIfNeeded()
     }
 
@@ -114,16 +118,16 @@ extension AccountAssetListViewController {
             }
 
             let searchScreen = self.open(
-                .assetSearch(account: self.accountHandle.value),
+                .assetSearch(accountHandle: self.accountHandle),
                 by: .present
             ) as? AssetSearchViewController
             
-            searchScreen?.handlers.didSelectAssetDetail = { [weak self] assetDetail in
+            searchScreen?.handlers.didSelectAsset = { [weak self] compoundAsset in
                 guard let self = self else {
                     return
                 }
 
-                self.openAssetDetail(assetDetail)
+                self.openAssetDetail(compoundAsset)
             }
         }
 
@@ -135,21 +139,21 @@ extension AccountAssetListViewController {
             self.openAssetDetail(nil)
         }
 
-        listLayout.handlers.didSelectAssetDetail = { [weak self] assetDetail in
+        listLayout.handlers.didSelectAsset = { [weak self] compoundAsset in
             guard let self = self else {
                 return
             }
 
-            self.openAssetDetail(assetDetail)
+            self.openAssetDetail(compoundAsset)
         }
     }
 
     private func openAssetDetail(
-        _ assetDetail: AssetInformation?
+        _ compoundAsset: CompoundAsset?
     ) {
         let screen: Screen
-        if let assetDetail = assetDetail {
-            screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, assetDetail: assetDetail))
+        if let compoundAsset = compoundAsset {
+            screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, compoundAsset: compoundAsset))
         } else {
             screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
         }

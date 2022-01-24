@@ -23,6 +23,7 @@ struct TransactionHistoryContextViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let titleLabel: TextStyle
     let subtitleLabel: TextStyle
+    let secondaryAmountLabel: TextStyle
 
     let horizontalInset: LayoutMetric
     let verticalInset: LayoutMetric
@@ -37,6 +38,12 @@ struct TransactionHistoryContextViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.regular.make(15)),
         ]
         self.subtitleLabel = [
+            .textAlignment(.left),
+            .textOverflow(SingleLineFittingText()),
+            .textColor(AppColors.Components.Text.grayLighter),
+            .font(Fonts.DMSans.regular.make(13)),
+        ]
+        self.secondaryAmountLabel = [
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.grayLighter),

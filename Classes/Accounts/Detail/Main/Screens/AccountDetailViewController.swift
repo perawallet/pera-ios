@@ -182,7 +182,6 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             return
         }
 
-        session?.removeAccount(accountHandle.value)
         user.removeAccount(accountInformation)
         session?.authenticatedUser = user
         popScreen()

@@ -22,6 +22,11 @@ final class WatchAccountAdditionViewController: BaseScrollViewController {
     private lazy var theme = Theme()
     
     private var keyboardController = KeyboardController()
+
+    private lazy var accountOrdering = AccountOrdering(
+        sharedDataController: sharedDataController,
+        session: session!
+    )
     
     private let accountSetupFlow: AccountSetupFlow
     
@@ -121,7 +126,12 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
     }
     
     private func createAccount(from address: String, with name: String) -> AccountInformation {
-        let account = AccountInformation(address: address, name: name, type: .watch)
+        let account = AccountInformation(
+            address: address,
+            name: name,
+            type: .watch,
+            preferredOrder: accountOrdering.getNewAccountIndex(for: .watch)
+        )
         let user: User
         
         if let authenticatedUser = session?.authenticatedUser {

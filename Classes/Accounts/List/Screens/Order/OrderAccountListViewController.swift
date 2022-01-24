@@ -23,7 +23,12 @@ final class OrderAccountListViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var listView = UITableView()
     private let accountType: AccountType
-    private var accounts: [Account] = []
+    private var accounts: [AccountHandle] = []
+
+    private lazy var accountOrdering = AccountOrdering(
+        sharedDataController: sharedDataController,
+        session: session!
+    )
 
     init(accountType: AccountType, configuration: ViewControllerConfiguration) {
         self.accountType = accountType
@@ -31,9 +36,9 @@ final class OrderAccountListViewController: BaseViewController {
 
         switch accountType {
         case .watch:
-            accounts = session!.accounts.filter { $0.isWatchAccount() }
+            accounts = sharedDataController.accountCollection.sorted().filter { $0.value.isWatchAccount() }
         default:
-            accounts = session!.accounts.filter { !$0.isWatchAccount() }
+            accounts = sharedDataController.accountCollection.sorted().filter { !$0.value.isWatchAccount() }
         }
     }
 
@@ -66,7 +71,7 @@ extension OrderAccountListViewController {
 
         listView.register(AccountPreviewTableCell.self, forCellReuseIdentifier: AccountPreviewTableCell.reuseIdentifier)
         listView.rowHeight = UITableView.automaticDimension
-        listView.estimatedRowHeight = theme.itemHeight
+        listView.rowHeight = theme.itemHeight
         listView.separatorStyle = .none
         listView.separatorInset = .zero
         listView.verticalScrollIndicatorInsets.top = .leastNonzeroMagnitude
@@ -76,7 +81,7 @@ extension OrderAccountListViewController {
     }
 
     private func setBarButtons() {
-        let doneBarButtonItem = ALGBarButtonItem(kind: .done) { [weak self] in
+        let doneBarButtonItem = ALGBarButtonItem(kind: .doneGreen) { [weak self] in
             guard let self = self else {
                 return
             }
@@ -100,7 +105,7 @@ extension OrderAccountListViewController {
 
 extension OrderAccountListViewController {
     private func reorderAccounts() {
-
+        accountOrdering.reorder(accounts, with: accountType)
     }
 }
 
@@ -140,7 +145,7 @@ extension OrderAccountListViewController: UITableViewDataSource {
         }
 
         let account = accounts[indexPath.item]
-        let accountNameViewModel = AccountNameViewModel(account: account)
+        let accountNameViewModel = AccountNameViewModel(account: account.value)
         let preview = CustomAccountPreview(accountNameViewModel)
         cell.bindData(AccountPreviewViewModel(preview))
         return cell

@@ -33,7 +33,7 @@ extension TransactionsViewController: CSVExportable {
         nextToken token: String?
     ) {
         var assetId: String?
-        if let id = draft.assetDetail?.id {
+        if let id = draft.compoundAsset?.id {
             assetId = String(id)
         }
 
@@ -92,7 +92,7 @@ extension TransactionsViewController: CSVExportable {
 
     private func formCSVFileName() -> String {
         var assetId = "algos"
-        if let assetDetailId = assetDetail?.id {
+        if let assetDetailId = compoundAsset?.id {
             assetId = "\(assetDetailId)"
         }
         var fileName = "\(accountHandle.value.name ?? "")_\(assetId)"
@@ -130,7 +130,7 @@ extension TransactionsViewController: CSVExportable {
     }
 
     private func getFormattedAmount(_ amount: UInt64?) -> String {
-        if let assetDetail = assetDetail {
+        if let assetDetail = compoundAsset?.detail {
             return amount?.toFractionStringForLabel(fraction: assetDetail.decimals) ?? " "
         } else {
             return amount?.toAlgos.toAlgosStringForLabel ?? " "
