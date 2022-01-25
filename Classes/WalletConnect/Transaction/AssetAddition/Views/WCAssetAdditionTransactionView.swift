@@ -226,13 +226,13 @@ extension WCAssetAdditionTransactionView {
         }
 
         if viewModel.rawTransactionInformationViewModel != nil {
-            unhideViewAnimatedIfNeeded(rawTransactionButton)
+            rawTransactionButton.showViewInStack()
         } else {
             rawTransactionButton.hideViewInStack()
         }
 
         if viewModel.algoExplorerInformationViewModel != nil {
-            unhideViewAnimatedIfNeeded(algoExplorerButton)
+            algoExplorerButton.showViewInStack()
         } else {
             algoExplorerButton.hideViewInStack()
         }
@@ -242,13 +242,13 @@ extension WCAssetAdditionTransactionView {
         }
 
         if viewModel.urlInformationViewModel != nil {
-            unhideViewAnimatedIfNeeded(showUrlButton)
+            showUrlButton.showViewInStack()
         } else {
             showUrlButton.hideViewInStack()
         }
 
         if viewModel.metadataInformationViewModel != nil {
-            unhideViewAnimatedIfNeeded(showMetaDataButton)
+            showMetaDataButton.showViewInStack()
         } else {
             showMetaDataButton.hideViewInStack()
         }

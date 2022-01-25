@@ -162,7 +162,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     }
 
     private func addSingleTransaction() {
-        let fragment = dataSource.groupedTransactions.count > 1 ? unsignedTransactionFragment : singleTransactionFragment
+        let fragment = transactions.count > 1 ? unsignedTransactionFragment : singleTransactionFragment
         addFragment(NavigationController(rootViewController: fragment)) { fragmentView in
             fragmentView.roundCorners(corners: [.topLeft, .topRight], radius: theme.fragmentRadius)
             view.addSubview(fragmentView)
