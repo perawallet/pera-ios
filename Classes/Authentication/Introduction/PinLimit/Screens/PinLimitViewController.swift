@@ -17,8 +17,9 @@
 
 import UIKit
 
-class PinLimitViewController: BaseViewController {
-    
+final class PinLimitViewController: BaseViewController {
+    weak var delegate: PinLimitViewControllerDelegate?
+
     override var shouldShowNavigationBar: Bool {
         return false
     }
@@ -26,11 +27,8 @@ class PinLimitViewController: BaseViewController {
     private var pinLimitStore = PinLimitStore()
     private var timer: PollingOperation?
     private var remainingTime = 0
-    
-    weak var delegate: PinLimitViewControllerDelegate?
-    
+
     private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
-    
     private lazy var pinLimitView = PinLimitView()
     
     override func viewDidLoad() {
@@ -42,10 +40,6 @@ class PinLimitViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         timer?.invalidate()
-    }
-    
-    override func configureAppearance() {
-        view.backgroundColor = Colors.Background.tertiary
     }
     
     override func setListeners() {
@@ -64,21 +58,24 @@ class PinLimitViewController: BaseViewController {
         )
     }
     
-    override func linkInteractors() {
-        pinLimitView.delegate = self
-    }
-    
     override func prepareLayout() {
-        setupPinLimitViewLayout()
+        addPinLimitView()
     }
 }
 
 extension PinLimitViewController {
-    private func setupPinLimitViewLayout() {
+    private func addPinLimitView() {
+        pinLimitView.customize(PinLimitViewTheme())
+
         view.addSubview(pinLimitView)
-        
-        pinLimitView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        pinLimitView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+
+        pinLimitView.observe(event: .resetAllData) {
+            [weak self] in
+            guard let self = self else { return }
+            self.presentLogoutAlert()
         }
     }
 }
@@ -98,10 +95,7 @@ extension PinLimitViewController {
 
 extension PinLimitViewController {
     private func calculateAndSetRemainingTime() {        
-        if let remainingTimeInString = remainingTime.convertSecondsToHoursMinutesSeconds() {
-            self.pinLimitView.setCounterText(remainingTimeInString)
-        }
-        
+        pinLimitView.bindData(PinLimitViewModel(remainingTime))
         remainingTime -= 1
         
         if remainingTime <= 0 {
@@ -112,9 +106,7 @@ extension PinLimitViewController {
     
     private func initializePinLimitCounter() {
         remainingTime = pinLimitStore.remainingTime
-        if let remainingTimeInString = remainingTime.convertSecondsToHoursMinutesSeconds() {
-            pinLimitView.setCounterText(remainingTimeInString)
-        }
+        pinLimitView.bindData(PinLimitViewModel(remainingTime))
     }
     
     private func startCountingForPinLimit() {
@@ -133,11 +125,7 @@ extension PinLimitViewController {
     }
 }
 
-extension PinLimitViewController: PinLimitViewDelegate {
-    func pinLimitViewDidResetAllData(_ pinLimitView: PinLimitView) {
-        presentLogoutAlert()
-    }
-    
+extension PinLimitViewController {
     private func presentLogoutAlert() {
         let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
             image: "icon-settings-logout".uiImage,

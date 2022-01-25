@@ -16,159 +16,115 @@
 //  PinLimitView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class PinLimitView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    weak var delegate: PinLimitViewDelegate?
-    
-    private lazy var lockImageView: UIImageView = {
-        let imageView = UIImageView(image: img("icon-lock", isTemplate: true))
-        imageView.tintColor = Colors.General.error
-        return imageView
-    }()
-    
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .medium(size: 24.0)))
-            .withTextColor(Colors.Text.primary)
-            .withText("pin-limit-title".localized)
-    }()
-    
-    private lazy var subtitleLabel: UILabel = {
-        UILabel()
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .regular(size: 16.0)))
-            .withTextColor(Colors.Text.tertiary)
-            .withText("pin-limit-too-many".localized)
-    }()
-    
-    private lazy var tryAgainLabel: UILabel = {
-        UILabel()
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .regular(size: 16.0)))
-            .withTextColor(Colors.Text.tertiary)
-            .withText("pin-limit-try-again".localized)
-    }()
-    
-    private lazy var counterLabel: UILabel = {
-        UILabel()
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .medium(size: 24.0)))
-            .withTextColor(Colors.Text.primary)
-    }()
-    
-    private lazy var resetButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("bg-button-red"))
-            .withTitle("pin-limit-reset-all".localized)
-            .withTitleColor(Colors.ButtonText.primary)
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-    }()
-    
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.tertiary
+final class PinLimitView:
+    View,
+    ViewModelBindable,
+    UIInteractionObservable,
+    UIControlInteractionPublisher {
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .resetAllData: UIControlInteraction(),
+    ]
+
+    private lazy var lockImageView = UIImageView()
+    private lazy var titleLabel = UILabel()
+    private lazy var subtitleLabel = UILabel()
+    private lazy var tryAgainLabel = UILabel()
+    private lazy var counterLabel = UILabel()
+    private lazy var resetButton = MacaroonUIKit.Button()
+
+    func customize(_ theme: PinLimitViewTheme) {
+        addLockImageView(theme)
+        addTitleLabel(theme)
+        addSubtitleLabel(theme)
+        addTryAgainLabel(theme)
+        addCounterLabel(theme)
+        addResetButton(theme)
+    }
+
+    func bindData(_ viewModel: PinLimitViewModel?) {
+        counterLabel.text = viewModel?.remainingTime
     }
     
-    override func setListeners() {
-        resetButton.addTarget(self, action: #selector(notifyDelegateToResetAllData), for: .touchUpInside)
-    }
-    
-    override func prepareLayout() {
-        setupLockImageViewLayout()
-        setupTryAgainLabelLayout()
-        setupSubtitleLabelLayout()
-        setupTitleLabelLayout()
-        setupCounterLabelLayout()
-        setupResetButtonLayout()
-    }
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
 
 extension PinLimitView {
-    @objc
-    private func notifyDelegateToResetAllData() {
-        delegate?.pinLimitViewDidResetAllData(self)
-    }
-}
+    private func addLockImageView(_ theme: PinLimitViewTheme) {
+        lockImageView.customizeAppearance(theme.lockIcon)
 
-extension PinLimitView {
-    private func setupLockImageViewLayout() {
         addSubview(lockImageView)
-        
-        lockImageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.imageViewTopInset)
-            make.size.equalTo(layout.current.unlockImageSize)
+        lockImageView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().inset(theme.imageViewTopInset)
         }
     }
-    
-    private func setupTryAgainLabelLayout() {
-        addSubview(tryAgainLabel)
-        
-        tryAgainLabel.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
-    }
-    
-    private func setupSubtitleLabelLayout() {
-        addSubview(subtitleLabel)
-        
-        subtitleLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(tryAgainLabel.snp.top).offset(layout.current.subtitleLabelBottomInset)
-            make.centerX.equalToSuperview()
-        }
-    }
-    
-    private func setupTitleLabelLayout() {
+
+    private func addTitleLabel(_ theme: PinLimitViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
         addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.bottom.equalTo(subtitleLabel.snp.top).offset(layout.current.titleLabelBottomInset)
-            make.centerX.equalToSuperview()
+        titleLabel.snp.makeConstraints {
+            $0.top.equalTo(lockImageView.snp.bottom).offset(theme.titleLabelTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+        }
+    }
+
+    private func addSubtitleLabel(_ theme: PinLimitViewTheme) {
+        subtitleLabel.customizeAppearance(theme.subtitle)
+
+        addSubview(subtitleLabel)
+        subtitleLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.subtitleLabelTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+        }
+
+        subtitleLabel.addSeparator(theme.separator, padding: theme.spacingBetweenSubtitleAndSeparator)
+    }
+    
+    private func addTryAgainLabel(_ theme: PinLimitViewTheme) {
+        tryAgainLabel.customizeAppearance(theme.tryAgain)
+
+        addSubview(tryAgainLabel)
+        tryAgainLabel.snp.makeConstraints {
+            $0.top.equalTo(subtitleLabel.snp.bottom).offset(theme.tryAgainLabelTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
     
-    private func setupCounterLabelLayout() {
+    private func addCounterLabel(_ theme: PinLimitViewTheme) {
+        counterLabel.customizeAppearance(theme.counter)
+
         addSubview(counterLabel)
-        
-        counterLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(tryAgainLabel.snp.bottom).offset(layout.current.counterLabelTopInset)
+        counterLabel.snp.makeConstraints {
+            $0.top.equalTo(tryAgainLabel.snp.bottom).offset(theme.counterTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
     
-    private func setupResetButtonLayout() {
+    private func addResetButton(_ theme: PinLimitViewTheme) {
+        resetButton.contentEdgeInsets = UIEdgeInsets(theme.resetButtonContentEdgeInsets)
+        resetButton.draw(corner: theme.resetButtonCorner)
+        resetButton.customizeAppearance(theme.resetButton)
+
         addSubview(resetButton)
-        
-        resetButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(layout.current.buttonBottomInset + safeAreaBottom)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        resetButton.snp.makeConstraints {
+            $0.bottom.equalToSuperview().inset(theme.bottomPadding + safeAreaBottom)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
+        
+        startPublishing(
+            event: .resetAllData,
+            for: resetButton
+        )
     }
 }
 
 extension PinLimitView {
-    func setCounterText(_ counter: String) {
-        counterLabel.text = counter
+    enum Event {
+        case resetAllData
     }
-}
-
-extension PinLimitView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleLabelBottomInset: CGFloat = -10.0
-        let subtitleLabelBottomInset: CGFloat = -24.0
-        let imageViewTopInset: CGFloat = 90.0
-        let counterLabelTopInset: CGFloat = 4.0
-        let buttonBottomInset: CGFloat = 30.0
-        let horizontalInset: CGFloat = 20.0
-        let unlockImageSize = CGSize(width: 48.0, height: 48.0)
-    }
-}
-
-protocol PinLimitViewDelegate: AnyObject {
-    func pinLimitViewDidResetAllData(_ pinLimitView: PinLimitView)
 }

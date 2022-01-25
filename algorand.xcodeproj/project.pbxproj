@@ -3236,6 +3236,12 @@
 		D4822753272C67D4004CB9BF /* EditContactViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4822752272C67D4004CB9BF /* EditContactViewTheme.swift */; };
 		D4822754272C67D4004CB9BF /* EditContactViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4822752272C67D4004CB9BF /* EditContactViewTheme.swift */; };
 		D4822755272C67D4004CB9BF /* EditContactViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4822752272C67D4004CB9BF /* EditContactViewTheme.swift */; };
+		D48281B8279FF71F004412D5 /* PinLimitViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48281B7279FF71F004412D5 /* PinLimitViewTheme.swift */; };
+		D48281B9279FF71F004412D5 /* PinLimitViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48281B7279FF71F004412D5 /* PinLimitViewTheme.swift */; };
+		D48281BA279FF71F004412D5 /* PinLimitViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48281B7279FF71F004412D5 /* PinLimitViewTheme.swift */; };
+		D48281BC27A00470004412D5 /* PinLimitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48281BB27A00470004412D5 /* PinLimitViewModel.swift */; };
+		D48281BD27A00470004412D5 /* PinLimitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48281BB27A00470004412D5 /* PinLimitViewModel.swift */; };
+		D48281BE27A00470004412D5 /* PinLimitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48281BB27A00470004412D5 /* PinLimitViewModel.swift */; };
 		D48933BC27183394009EE9AB /* AssetPreviewModelAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48933BB27183394009EE9AB /* AssetPreviewModelAdapter.swift */; };
 		D48933BD27183394009EE9AB /* AssetPreviewModelAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48933BB27183394009EE9AB /* AssetPreviewModelAdapter.swift */; };
 		D48933BE27183394009EE9AB /* AssetPreviewModelAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = D48933BB27183394009EE9AB /* AssetPreviewModelAdapter.swift */; };
@@ -4945,6 +4951,8 @@
 		D4822749272C57D9004CB9BF /* EditContactViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditContactViewController+Theme.swift"; sourceTree = "<group>"; };
 		D482274E272C5C86004CB9BF /* EditContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContactView.swift; sourceTree = "<group>"; };
 		D4822752272C67D4004CB9BF /* EditContactViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContactViewTheme.swift; sourceTree = "<group>"; };
+		D48281B7279FF71F004412D5 /* PinLimitViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinLimitViewTheme.swift; sourceTree = "<group>"; };
+		D48281BB27A00470004412D5 /* PinLimitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinLimitViewModel.swift; sourceTree = "<group>"; };
 		D48933BB27183394009EE9AB /* AssetPreviewModelAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewModelAdapter.swift; sourceTree = "<group>"; };
 		D48D11CE27425368000061CE /* NotificationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewTheme.swift; sourceTree = "<group>"; };
 		D48D11D2274279D2000061CE /* NotificationsViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewTheme.swift; sourceTree = "<group>"; };
@@ -11736,6 +11744,8 @@
 			isa = PBXGroup;
 			children = (
 				2BD6A06524A50D3E00D2D28D /* PinLimitView.swift */,
+				D48281BB27A00470004412D5 /* PinLimitViewModel.swift */,
+				D48281B7279FF71F004412D5 /* PinLimitViewTheme.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -13856,6 +13866,7 @@
 				D421179226D8EDF400C032B2 /* ViewLoadingIndicator.swift in Sources */,
 				2BA17308264B185900A613C4 /* AlgoStatisticsViewModel.swift in Sources */,
 				2BE4D04B25913771005F5764 /* AuthAccountNameViewModel.swift in Sources */,
+				D48281BA279FF71F004412D5 /* PinLimitViewTheme.swift in Sources */,
 				2BF811DA25E6443600D6B406 /* LedgerTutorialInstructionViewModel.swift in Sources */,
 				D4F068B726EF46D700C26F43 /* TutorialNumberViewTheme.swift in Sources */,
 				2B4BD9FB2389F5F900491149 /* AssetRemovalViewModel.swift in Sources */,
@@ -14260,6 +14271,7 @@
 				95631BB7275E428B002FB831 /* SendTransactionScreen.swift in Sources */,
 				2BA4B3DE2673F0E60041586B /* WCConnectionApprovalViewModel.swift in Sources */,
 				D43A0C1B2790CA90007430B9 /* LoadingViewTheme.swift in Sources */,
+				D48281BE27A00470004412D5 /* PinLimitViewModel.swift in Sources */,
 				D46C647B26E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */,
 				2B288ADA269112CF00BC6FB6 /* JSONDisplayView.swift in Sources */,
 				D4822748272C5735004CB9BF /* EditContactViewController.swift in Sources */,
@@ -15047,6 +15059,7 @@
 				D41F934A2723038F00E9F2E7 /* RekeyInstructionsViewModel.swift in Sources */,
 				D4155E96276CDB5400BCBFA4 /* AccountCheckmarkSelectionViewCell.swift in Sources */,
 				2B7E3056267A5D9D00E89EE3 /* WCGroupTransactionViewController.swift in Sources */,
+				D48281B9279FF71F004412D5 /* PinLimitViewTheme.swift in Sources */,
 				2B9E2F4C26F0DDCD003D824A /* WCAssetConfigTransactionItemCell.swift in Sources */,
 				D442E1BE27673D6B007A9D2D /* QRScannerOverlayViewTheme.swift in Sources */,
 				2B5739E226F3F26B007E0252 /* WCAssetReconfigurationTransactionViewController.swift in Sources */,
@@ -15451,6 +15464,7 @@
 				2B0F62DF24EC129D00DA22A6 /* PassphraseCellView.swift in Sources */,
 				2BECB4DE25A12C3A0081870A /* NotificationFilterListLayout.swift in Sources */,
 				2B0F62E024EC129D00DA22A6 /* CSVConfig.swift in Sources */,
+				D48281BD27A00470004412D5 /* PinLimitViewModel.swift in Sources */,
 				2BD5A6BB26334BB80048FA5E /* AlgosUSDValueInterval.swift in Sources */,
 				2B0F62E124EC129D00DA22A6 /* String+Attributes.swift in Sources */,
 				2B0F62E224EC129D00DA22A6 /* ContactDetailViewController.swift in Sources */,
@@ -16238,6 +16252,7 @@
 				D421179026D8EDF400C032B2 /* ViewLoadingIndicator.swift in Sources */,
 				2BA17306264B185900A613C4 /* AlgoStatisticsViewModel.swift in Sources */,
 				2BE4D04925913771005F5764 /* AuthAccountNameViewModel.swift in Sources */,
+				D48281B8279FF71F004412D5 /* PinLimitViewTheme.swift in Sources */,
 				2B80C547277322CB00BB071E /* AddAssetItemViewTheme.swift in Sources */,
 				2BF811D825E6443600D6B406 /* LedgerTutorialInstructionViewModel.swift in Sources */,
 				D4F068B526EF46D700C26F43 /* TutorialNumberViewTheme.swift in Sources */,
@@ -16642,6 +16657,7 @@
 				D4A647AA2784E1D9009DE241 /* TransactionHistoryTitleContextViewModel.swift in Sources */,
 				2B69BD902785A836008BD8D0 /* HomeListLayout.swift in Sources */,
 				2B3A95E6238FF99C00A3DF44 /* TransactionControllerDelegate.swift in Sources */,
+				D48281BC27A00470004412D5 /* PinLimitViewModel.swift in Sources */,
 				2B8954A52242E7D800D6D068 /* AccountNameSetupView.swift in Sources */,
 				2B7E3031267A514B00E89EE3 /* WCSingleTransactionView.swift in Sources */,
 				2BCBAAAC27426E9900B3A746 /* MismatchAccountErrorLog.swift in Sources */,
