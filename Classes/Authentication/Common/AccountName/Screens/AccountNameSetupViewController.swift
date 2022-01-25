@@ -47,6 +47,11 @@ final class AccountNameSetupViewController: BaseScrollViewController {
         addAccountNameSetupView()
     }
 
+    override func bindData() {
+        super.bindData()
+        accountNameSetupView.bindData(session?.address(for: "temp")?.shortAddressDisplay())
+    }
+
     override func configureAppearance() {
         super.configureAppearance()
         customizeBackground()
@@ -89,6 +94,8 @@ extension AccountNameSetupViewController {
 
         guard let tempPrivateKey = session?.privateData(for: "temp"),
             let address = session?.address(for: "temp") else {
+                // <todo>
+                // ?
                 accountNameSetupView.nextButton.isEnabled = true
                 return
         }
