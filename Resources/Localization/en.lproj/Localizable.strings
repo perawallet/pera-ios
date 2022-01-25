@@ -565,9 +565,11 @@
 "ledger-pairing-issue-error-title" = "Having Ledger Nano X connection issues?";
 "ledger-pairing-issue-error-message" = "Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.";
 "ledger-pairing-first-warning-title" = "Pairing Ledger with Your Device";
-"ledger-pairing-first-warning-message-first" = "Is your Ledger paired with this device?";
-"ledger-pairing-first-warning-message-second" = "If not, please follow these steps:";
-"ledger-pairing-first-warning-message-description" = "· Open your Ledger device.\n· Close the Algorand app on the Ledger device.\n· On the Ledger homescreen, confirm pairing.\n· Once pairing is confirmed, open the Algorand Ledger app.";
+"ledger-pairing-first-warning-description" = "Is your Ledger paired with this device?\nIf not, please follow these steps:";
+"ledger-pairing-first-warning-message-first-instruction" = "Open your Ledger device.";
+"ledger-pairing-first-warning-message-second-instruction" = "Close the Algorand app on the Ledger device.";
+"ledger-pairing-first-warning-message-third-instruction" = "On the Ledger homescreen, confirm pairing.";
+"ledger-pairing-first-warning-message-fourth-instruction" = "Once pairing is confirmed, open the Algorand Ledger app.";
 
 // MARK: Watch Account
 "title-watch-account" = "Watch Account";

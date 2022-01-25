@@ -48,6 +48,7 @@ extension InstructionItemView {
         titleLabel.snp.makeConstraints {
             $0.leading.equalTo(informationImageView.snp.trailing).offset(theme.horizontalPadding)
             $0.top.bottom.trailing.equalToSuperview()
+            $0.greaterThanHeight(theme.infoImageSize.h)
         }
     }
 }
