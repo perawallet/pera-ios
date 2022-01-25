@@ -88,7 +88,6 @@ indirect enum Screen {
     case watchAccountAddition(flow: AccountSetupFlow)
     case ledgerAccountDetail(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?)
     case notificationFilter(flow: NotificationFilterViewController.Flow)
-    case maximumBalanceWarning(account: Account, delegate: MaximumBalanceWarningViewControllerDelegate)
     case bottomWarning(configurator: BottomWarningViewConfigurator)
     case warningAlert(warningAlert: WarningAlert)
     case actionableWarningAlert(warningAlert: WarningAlert, delegate: ActionableWarningAlertViewControllerDelegate)

@@ -23,6 +23,7 @@ struct RekeyInstructionsViewTheme: StyleSheet, LayoutSheet {
     let subtitle: TextStyle
     let headerTitle: TextStyle
     let startButtonTheme: ButtonTheme
+    let instructionViewTheme: LargerInstructionItemViewTheme
 
     let horizontalPadding: LayoutMetric
     let titleTopPadding: LayoutMetric 
@@ -54,6 +55,7 @@ struct RekeyInstructionsViewTheme: StyleSheet, LayoutSheet {
             .text("rekey-instruction-header".localized)
         ]
         self.startButtonTheme = ButtonPrimaryTheme()
+        self.instructionViewTheme = LargerInstructionItemViewTheme()
 
         self.titleTopPadding = 2
         self.horizontalPadding = 24

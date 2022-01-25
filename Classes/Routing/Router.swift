@@ -358,10 +358,6 @@ class Router {
             )
         case let .notificationFilter(flow):
             viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
-        case let .maximumBalanceWarning(account, delegate):
-            let maximumBalanceWarningViewController = MaximumBalanceWarningViewController(account: account, configuration: configuration)
-            maximumBalanceWarningViewController.delegate = delegate
-            viewController = maximumBalanceWarningViewController
         case let .bottomWarning(viewModel):
             viewController = BottomWarningViewController(viewModel, configuration: configuration)
         case let .warningAlert(warningAlert):

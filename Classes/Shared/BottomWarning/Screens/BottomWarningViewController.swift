@@ -19,7 +19,7 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-final class BottomWarningViewController: BaseViewController {
+final class BottomWarningViewController: BaseScrollViewController {
     private let viewConfigurator: BottomWarningViewConfigurator
 
     init(_ viewModel: BottomWarningViewConfigurator, configuration: ViewControllerConfiguration) {
@@ -40,8 +40,13 @@ final class BottomWarningViewController: BaseViewController {
     }
 
     override func prepareLayout() {
+        super.prepareLayout()
         bottomWarningView.customize(theme.bottomWarningViewTheme)
-        prepareWholeScreenLayoutFor(bottomWarningView)
+
+        contentView.addSubview(bottomWarningView)
+        bottomWarningView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 
     override func bindData() {
@@ -56,6 +61,9 @@ extension BottomWarningViewController: BottomSheetPresentable {
 }
 
 extension BottomWarningViewController: BottomWarningViewDelegate {
+    // <todo>
+    // For both delegate methods, dismiss screen should be called before if primaryAction has routing job.
+
     func bottomWarningViewDidTapPrimaryActionButton(_ bottomWarningView: BottomWarningView) {
         viewConfigurator.primaryAction?()
         dismissScreen()

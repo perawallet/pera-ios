@@ -13,15 +13,46 @@
 // limitations under the License.
 
 //
-//   RekeyInstructionItemViewTheme.swift
+//   InstructionItemViewTheme.swift
 
 import MacaroonUIKit
 import UIKit
 
-struct RekeyInstructionItemViewTheme: StyleSheet, LayoutSheet {
+protocol InstructionItemViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var image: ImageStyle { get }
+    var title: TextStyle { get }
+
+    var infoImageSize: LayoutSize { get }
+    var horizontalPadding: LayoutMetric { get }
+}
+
+struct SmallerInstructionItemViewTheme: InstructionItemViewTheme {
     let image: ImageStyle
     let title: TextStyle
+    let infoImageSize: LayoutSize
+    let horizontalPadding: LayoutMetric
 
+    init(_ family: LayoutFamily) {
+        self.image = [
+            .image("icon-rekey-info")
+        ]
+        self.title = [
+            .textOverflow(FittingText()),
+            .textAlignment(.left),
+            .font(Fonts.DMSans.regular.make(13)),
+            .textColor(AppColors.Components.Text.main)
+        ]
+
+        self.infoImageSize = (40, 40)
+        self.horizontalPadding = 16
+    }
+}
+
+struct LargerInstructionItemViewTheme: InstructionItemViewTheme {
+    let image: ImageStyle
+    let title: TextStyle
     let infoImageSize: LayoutSize
     let horizontalPadding: LayoutMetric
 

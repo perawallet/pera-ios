@@ -26,7 +26,6 @@ struct PinLimitViewTheme: StyleSheet, LayoutSheet {
     let subtitle: TextStyle
     let tryAgain: TextStyle
     let counter: TextStyle
-    let seperator: ViewStyle
     let resetButton: ButtonStyle
     let resetButtonContentEdgeInsets: LayoutPaddings
     let resetButtonCorner: Corner
@@ -65,9 +64,6 @@ struct PinLimitViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMMono.regular.make(36)),
-        ]
-        self.seperator = [
-            .backgroundColor(AppColors.Shared.Layer.gray)
         ]
         self.resetButton = [
             .title("pin-limit-reset-all".localized),
