@@ -46,25 +46,19 @@ struct PinLimitViewTheme: StyleSheet, LayoutSheet {
             .image("icon-lock")
         ]
         self.title = [
-            .textAlignment(.center),
             .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(19)),
-            .text("pin-limit-title".localized)
+            .text(Self.getTitle())
         ]
         self.subtitle = [
-            .textAlignment(.center),
             .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.gray),
-            .font(Fonts.DMSans.regular.make(15)),
-            .text("pin-limit-too-many".localized)
+            .text(Self.getBody("pin-limit-too-many"))
         ]
         self.tryAgain = [
-            .textAlignment(.center),
             .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.gray),
-            .font(Fonts.DMSans.regular.make(15)),
-            .text("pin-limit-try-again".localized)
+            .text(Self.getBody("pin-limit-try-again"))
         ]
         self.counter = [
             .textAlignment(.center),
@@ -93,5 +87,45 @@ struct PinLimitViewTheme: StyleSheet, LayoutSheet {
         self.bottomPadding = 16
         self.horizontalPadding = 24
         self.counterTopInset = 12
+    }
+}
+
+extension PinLimitViewTheme {
+    private static func getTitle() -> EditText {
+        let font = Fonts.DMSans.medium.make(19)
+        let lineHeightMultiplier = 1.13
+
+        return .attributedString(
+            "pin-limit-title"
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .textAlignment(.center),
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
+        )
+    }
+
+    private static func getBody(_ text: String) -> EditText {
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        return .attributedString(
+            text
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .textAlignment(.center),
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
+        )
     }
 }

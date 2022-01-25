@@ -33,8 +33,8 @@ final class LedgerAccountSelectionViewModel: ViewModel {
     private func bindButtonText(from isMultiSelect: Bool, and selectedCount: Int) {
         if isMultiSelect {
             buttonText = selectedCount <= 1
-                ? "ledger-account-selection-verify".localized.localized
-                : "ledger-account-selection-verify-plural".localized.localized
+                ? "ledger-account-selection-verify".localized
+                : "ledger-account-selection-verify-plural".localized
         } else {
             buttonText = "ledger-account-selection-verify".localized
         }

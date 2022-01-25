@@ -44,7 +44,7 @@ final class PinLimitView:
     }
 
     func bindData(_ viewModel: PinLimitViewModel?) {
-        counterLabel.text = viewModel?.remainingTime
+        counterLabel.editText = viewModel?.remainingTime
     }
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}

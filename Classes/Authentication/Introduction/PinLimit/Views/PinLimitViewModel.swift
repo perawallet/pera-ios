@@ -18,7 +18,7 @@
 import MacaroonUIKit
 
 struct PinLimitViewModel: ViewModel {
-    private(set) var remainingTime: String?
+    private(set) var remainingTime: EditText?
 
     init(_ remainingTimeInSeconds: Int) {
         bindRemainingTime(remainingTimeInSeconds)
@@ -27,6 +27,25 @@ struct PinLimitViewModel: ViewModel {
 
 extension PinLimitViewModel {
     private mutating func bindRemainingTime(_ remainingTimeInSeconds: Int) {
-        self.remainingTime = remainingTimeInSeconds.convertSecondsToHoursMinutesSeconds()
+        guard let remainingTimeInSeconds =
+                remainingTimeInSeconds.convertSecondsToHoursMinutesSeconds() else {
+                    return
+                }
+
+        let font = Fonts.DMMono.regular.make(36)
+        let lineHeightMultiplier = 1.02
+
+        remainingTime = .attributedString(
+            remainingTimeInSeconds
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .textAlignment(.center),
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
+        )
     }
 }
