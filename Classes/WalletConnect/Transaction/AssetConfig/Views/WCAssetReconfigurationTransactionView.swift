@@ -85,8 +85,17 @@ extension WCAssetReconfigurationTransactionView {
     private func addTransactionInformationViews() {
         feeInformationView.customize(theme.amountInformationTheme)
 
+        managerAccountView.customize(theme.textInformationTheme)
+        reserveAccountView.customize(theme.textInformationTheme)
+        freezeAccountView.customize(theme.textInformationTheme)
+        clawbackAccountView.customize(theme.textInformationTheme)
+
         addTransactionInformationView(feeInformationView)
         addTransactionInformationView(feeWarningView)
+        addTransactionInformationView(managerAccountView)
+        addTransactionInformationView(reserveAccountView)
+        addTransactionInformationView(freezeAccountView)
+        addTransactionInformationView(clawbackAccountView)
     }
 
     private func addDetailedInformationViews() {
@@ -213,8 +222,10 @@ extension WCAssetReconfigurationTransactionView {
 
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
             noteView.bindData(noteInformationViewModel)
+            showNoteStackView(true)
         } else {
             noteView.hideViewInStack()
+            showNoteStackView(false)
         }
 
         if viewModel.rawTransactionInformationViewModel != nil {

@@ -143,6 +143,10 @@ extension WCSingleTransactionView {
             detailInformationSeparator.hideViewInStack()
         }
     }
+
+    func isDetailedInformationStackViewEmpty() -> Bool {
+        return detailedInformationStackView.stackView.arrangedSubviews.isEmpty
+    }
 }
 
 extension WCSingleTransactionView {

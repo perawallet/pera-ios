@@ -213,8 +213,10 @@ extension WCAppCallTransactionView {
 
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
             noteView.bindData(noteInformationViewModel)
+            showNoteStackView(true)
         } else {
             noteView.hideViewInStack()
+            showNoteStackView(false)
         }
 
         if viewModel.rawTransactionInformationViewModel != nil {

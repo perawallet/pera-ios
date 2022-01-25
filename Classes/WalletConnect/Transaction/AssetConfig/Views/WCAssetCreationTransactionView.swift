@@ -249,6 +249,8 @@ extension WCAssetCreationTransactionView {
         } else {
             metadataView.hideViewInStack()
         }
+        
+        showNoteStackView(!isDetailedInformationStackViewEmpty())
 
         if viewModel.rawTransactionInformationViewModel != nil {
             rawTransactionButton.showViewInStack()
