@@ -16,14 +16,20 @@
 //   PassphraseVerifyViewController+Theme.swift
 
 import MacaroonUIKit
-import Foundation
+import UIKit
 
 extension PassphraseVerifyViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
+        let cellSize: LayoutSize
+        let headerSize: LayoutSize
+        let sectionInset: LayoutPaddings
 
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
+            cellSize = ((UIScreen.main.bounds.width - (25 * 2) - (18 * 2)) / 3, 44)
+            headerSize = (UIScreen.main.bounds.width, 36)
+            sectionInset = (0, 24, 40, 24)
         }
     }
 }
