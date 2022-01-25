@@ -3,6 +3,16 @@
     {
       "filename" : "icon-lock.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-lock-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
