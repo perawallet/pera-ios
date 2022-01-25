@@ -27,11 +27,13 @@ extension WCSingleTransactionViewControllerAssetManagable where Self: WCSingleTr
     func setCachedAsset(then completion: @escaping EmptyHandler) {
         guard let assetId = transaction.transactionDetail?.assetId ?? transaction.transactionDetail?.assetIdBeingConfigured else {
             walletConnector.rejectTransactionRequest(transactionRequest, with: .invalidInput(.asset))
+            completion()
             return
         }
 
         cacheAssetDetail(with: assetId) { [weak self] assetDetail in
             guard let self = self else {
+                completion()
                 return
             }
 

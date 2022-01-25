@@ -21,68 +21,82 @@ class WCAssetCreationTransactionView: WCSingleTransactionView {
 
     weak var delegate: WCAssetCreationTransactionViewDelegate?
 
-    private lazy var accountInformationView = TitledTransactionAccountNameView()
+    private lazy var theme = Theme()
 
-    private lazy var assetNameView = WCTransactionTextInformationView()
+    private lazy var senderView = TransactionTextInformationView()
+    private lazy var assetInformationView = WCAssetInformationView()
+    private lazy var unitNameView = TransactionTextInformationView()
 
-    private lazy var unitNameView = WCTransactionTextInformationView()
+    private lazy var closeInformationView = TransactionTextInformationView()
+    private lazy var rekeyInformationView = TransactionTextInformationView()
+    private lazy var warningInformationView = WCTransactionWarningView()
 
-    private lazy var authAccountInformationView = WCTransactionTextInformationView()
+    private lazy var amountInformationView = TransactionAmountInformationView()
+    private lazy var feeInformationView = TransactionAmountInformationView()
+    private lazy var feeWarningView = WCTransactionWarningView()
+    private lazy var decimalPlacesView = TransactionTextInformationView()
+    private lazy var defaultFrozenView = TransactionTextInformationView()
+    private lazy var managerAccountView = TransactionTextInformationView()
+    private lazy var reserveAccountView = TransactionTextInformationView()
+    private lazy var freezeAccountView = TransactionTextInformationView()
+    private lazy var clawbackAccountView = TransactionTextInformationView()
 
-    private lazy var closeWarningInformationView = WCTransactionAddressWarningInformationView()
+    private lazy var noteView = TransactionTextInformationView()
+    private lazy var metadataView = TransactionTextInformationView()
 
-    private lazy var rekeyWarningInformationView = WCTransactionAddressWarningInformationView()
+    private lazy var topButtonsContainer = HStackView()
+    private lazy var rawTransactionButton = UIButton()
+    private lazy var showUrlButton = UIButton()
 
-    private lazy var amountInformationView = TitledTransactionAmountInformationView()
+    override func configureAppearance() {
+        super.configureAppearance()
 
-    private lazy var feeInformationView = TitledTransactionAmountInformationView()
-
-    private lazy var feeWarningView = WCContainedTransactionWarningView()
-
-    private lazy var decimalPlacesView = WCTransactionTextInformationView()
-
-    private lazy var defaultFrozenView = WCTransactionTextInformationView()
-
-    private lazy var managerAccountView = WCTransactionTextInformationView()
-
-    private lazy var reserveAccountView = WCTransactionTextInformationView()
-
-    private lazy var freezeAccountView = WCTransactionTextInformationView()
-
-    private lazy var clawbackAccountView = WCTransactionTextInformationView()
-
-    private lazy var noteInformationView = WCTransactionTextInformationView()
-
-    private lazy var metadataInformationView = WCTransactionTextInformationView()
-
-    private lazy var rawTransactionInformationView = WCTransactionActionableInformationView()
-
-    private lazy var assetURLInformationView = WCTransactionActionableInformationView()
+        backgroundColor = AppColors.Shared.System.background.uiColor
+    }
 
     override func prepareLayout() {
         super.prepareLayout()
         addParticipantInformationViews()
         addTransactionInformationViews()
         addDetailedInformationViews()
+        addButtons()
     }
 
+
     override func setListeners() {
-        rawTransactionInformationView.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
-        assetURLInformationView.addTarget(self, action: #selector(notifyDelegateToOpenAssetURL), for: .touchUpInside)
+        rawTransactionButton.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
+        showUrlButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetURL), for: .touchUpInside)
     }
 }
 
 extension WCAssetCreationTransactionView {
     private func addParticipantInformationViews() {
-        addParticipantInformationView(accountInformationView)
-        addParticipantInformationView(assetNameView)
+        senderView.customize(theme.textInformationTheme)
+        assetInformationView.customize(theme.assetInformationTheme)
+        unitNameView.customize(theme.textInformationTheme)
+
+        closeInformationView.customize(theme.textInformationTheme)
+        rekeyInformationView.customize(theme.textInformationTheme)
+
+        addParticipantInformationView(senderView)
+        addParticipantInformationView(assetInformationView)
         addParticipantInformationView(unitNameView)
-        addParticipantInformationView(authAccountInformationView)
-        addParticipantInformationView(closeWarningInformationView)
-        addParticipantInformationView(rekeyWarningInformationView)
+        addParticipantInformationView(closeInformationView)
+        addParticipantInformationView(rekeyInformationView)
+        addParticipantInformationView(warningInformationView)
     }
 
     private func addTransactionInformationViews() {
+        amountInformationView.customize(theme.amountInformationTheme)
+        feeInformationView.customize(theme.amountInformationTheme)
+
+        decimalPlacesView.customize(theme.textInformationTheme)
+        defaultFrozenView.customize(theme.textInformationTheme)
+        managerAccountView.customize(theme.textInformationTheme)
+        reserveAccountView.customize(theme.textInformationTheme)
+        freezeAccountView.customize(theme.textInformationTheme)
+        clawbackAccountView.customize(theme.textInformationTheme)
+
         addTransactionInformationView(amountInformationView)
         addTransactionInformationView(feeInformationView)
         addTransactionInformationView(feeWarningView)
@@ -95,10 +109,32 @@ extension WCAssetCreationTransactionView {
     }
 
     private func addDetailedInformationViews() {
-        addDetailedInformationView(noteInformationView)
-        addDetailedInformationView(metadataInformationView)
-        addDetailedInformationView(rawTransactionInformationView)
-        addDetailedInformationView(assetURLInformationView)
+        noteView.customize(theme.textInformationTheme)
+        metadataView.customize(theme.textInformationTheme)
+
+        addDetailedInformationView(noteView)
+        addDetailedInformationView(metadataView)
+    }
+
+    private func addButtons() {
+        rawTransactionButton.customizeAppearance(theme.rawTransactionButtonStyle)
+        rawTransactionButton.layer.draw(corner: theme.buttonsCorner)
+        rawTransactionButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+
+        showUrlButton.customizeAppearance(theme.showUrlButtonStyle)
+        showUrlButton.layer.draw(corner: theme.buttonsCorner)
+        showUrlButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+
+        addButton(topButtonsContainer)
+
+        topButtonsContainer.spacing = theme.buttonSpacing
+
+        topButtonsContainer.addArrangedSubview(rawTransactionButton)
+        topButtonsContainer.addArrangedSubview(showUrlButton)
+
+        let spacer = UIView()
+        spacer.setContentCompressionResistancePriority(.required, for: .horizontal)
+        topButtonsContainer.addArrangedSubview(spacer)
     }
 }
 
@@ -116,46 +152,46 @@ extension WCAssetCreationTransactionView {
 
 extension WCAssetCreationTransactionView {
     func bind(_ viewModel: WCAssetCreationTransactionViewModel) {
-        accountInformationView.bind(viewModel.senderInformationViewModel)
+        senderView.bindData(viewModel.senderInformationViewModel)
 
         if let assetNameViewModel = viewModel.assetNameViewModel {
-            assetNameView.bind(assetNameViewModel)
+            assetInformationView.bindData(assetNameViewModel)
         } else {
-            assetNameView.hideViewInStack()
+            assetInformationView.hideViewInStack()
         }
 
         if let unitNameViewModel = viewModel.unitNameViewModel {
-            unitNameView.bind(unitNameViewModel)
+            unitNameView.bindData(unitNameViewModel)
         } else {
             unitNameView.hideViewInStack()
         }
 
-        if let authAccountInformationViewModel = viewModel.authAccountInformationViewModel {
-            authAccountInformationView.bind(authAccountInformationViewModel)
-        } else {
-            authAccountInformationView.hideViewInStack()
-        }
-
         if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
-            closeWarningInformationView.bind(closeWarningInformationViewModel)
+            closeInformationView.bindData(closeWarningInformationViewModel)
         } else {
-            closeWarningInformationView.hideViewInStack()
+            closeInformationView.hideViewInStack()
         }
 
         if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
-            rekeyWarningInformationView.bind(rekeyWarningInformationViewModel)
+            rekeyInformationView.bindData(rekeyWarningInformationViewModel)
         } else {
-            rekeyWarningInformationView.hideViewInStack()
+            rekeyInformationView.hideViewInStack()
+        }
+
+        if let warningInformationViewModel = viewModel.warningInformationViewModel {
+            warningInformationView.bind(warningInformationViewModel)
+        } else {
+            warningInformationView.hideViewInStack()
         }
 
         if let amountInformationViewModel = viewModel.amountInformationViewModel {
-            amountInformationView.bind(amountInformationViewModel)
+            amountInformationView.bindData(amountInformationViewModel)
         } else {
             amountInformationView.hideViewInStack()
         }
 
         if let feeInformationViewModel = viewModel.feeInformationViewModel {
-            feeInformationView.bind(feeInformationViewModel)
+            feeInformationView.bindData(feeInformationViewModel)
         } else {
             feeInformationView.hideViewInStack()
         }
@@ -167,61 +203,63 @@ extension WCAssetCreationTransactionView {
         }
 
         if let decimalPlacesViewModel = viewModel.decimalPlacesViewModel {
-            decimalPlacesView.bind(decimalPlacesViewModel)
+            decimalPlacesView.bindData(decimalPlacesViewModel)
         } else {
             decimalPlacesView.hideViewInStack()
         }
 
         if let defaultFrozenViewModel = viewModel.defaultFrozenViewModel {
-            defaultFrozenView.bind(defaultFrozenViewModel)
+            defaultFrozenView.bindData(defaultFrozenViewModel)
         } else {
             defaultFrozenView.hideViewInStack()
         }
 
         if let managerAccountViewModel = viewModel.managerAccountViewModel {
-            managerAccountView.bind(managerAccountViewModel)
+            managerAccountView.bindData(managerAccountViewModel)
         } else {
             managerAccountView.hideViewInStack()
         }
 
         if let freezeAccountViewModel = viewModel.freezeAccountViewModel {
-            freezeAccountView.bind(freezeAccountViewModel)
+            freezeAccountView.bindData(freezeAccountViewModel)
         } else {
             freezeAccountView.hideViewInStack()
         }
 
         if let reserveAccountViewModel = viewModel.reserveAccountViewModel {
-            reserveAccountView.bind(reserveAccountViewModel)
+            reserveAccountView.bindData(reserveAccountViewModel)
         } else {
             reserveAccountView.hideViewInStack()
         }
 
         if let clawbackAccountViewModel = viewModel.clawbackAccountViewModel {
-            clawbackAccountView.bind(clawbackAccountViewModel)
+            clawbackAccountView.bindData(clawbackAccountViewModel)
         } else {
             clawbackAccountView.hideViewInStack()
         }
 
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
-            noteInformationView.bind(noteInformationViewModel)
+            noteView.bindData(noteInformationViewModel)
         } else {
-            noteInformationView.hideViewInStack()
+            noteView.hideViewInStack()
         }
 
         if let metadataInformationViewModel = viewModel.metadataInformationViewModel {
-            metadataInformationView.bind(metadataInformationViewModel)
+            metadataView.bindData(metadataInformationViewModel)
         } else {
-            metadataInformationView.hideViewInStack()
+            metadataView.hideViewInStack()
         }
 
-        if let rawTransactionInformationViewModel = viewModel.rawTransactionInformationViewModel {
-            rawTransactionInformationView.bind(rawTransactionInformationViewModel)
+        if viewModel.rawTransactionInformationViewModel != nil {
+            rawTransactionButton.showViewInStack()
+        } else {
+            rawTransactionButton.hideViewInStack()
         }
 
-        if let assetURLInformationViewModel = viewModel.assetURLInformationViewModel {
-            assetURLInformationView.bind(assetURLInformationViewModel)
+        if viewModel.assetURLInformationViewModel != nil {
+            showUrlButton.showViewInStack()
         } else {
-            assetURLInformationView.hideViewInStack()
+            showUrlButton.hideViewInStack()
         }
     }
 }
