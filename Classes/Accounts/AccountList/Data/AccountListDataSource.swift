@@ -18,20 +18,21 @@
 import UIKit
 
 final class AccountListDataSource: NSObject {
-    private(set) var accounts = [Account]()
+    private(set) var accounts = [AccountHandle]()
     private let mode: AccountListViewController.Mode
     
-    init(mode: AccountListViewController.Mode) {
+    init(
+        sharedDataController: SharedDataController,
+        mode: AccountListViewController.Mode
+    ) {
         self.mode = mode
         super.init()
         
-        guard let userAccounts = UIApplication.shared.appConfiguration?.session.accounts else {
-            return
-        }
-        
+        let userAccounts = sharedDataController.accountCollection.sorted()
+
         switch mode {
         case .walletConnect:
-            accounts = userAccounts.filter { $0.type != .watch }
+            accounts = userAccounts.filter { $0.value.type != .watch }
         case let .transactionReceiver(assetDetail),
             let .transactionSender(assetDetail),
             let .contact(assetDetail):
@@ -41,7 +42,7 @@ final class AccountListDataSource: NSObject {
             }
             
             let filteredAccounts = userAccounts.filter { account in
-                account.assetDetails.contains { detail in
+                account.value.compoundAssets.contains { detail in
                     assetDetail.id == detail.id
                 }
             }
@@ -67,7 +68,7 @@ extension AccountListDataSource: UICollectionViewDataSource {
         let cell = collectionView.dequeue(AccountCheckmarkSelectionViewCell.self, at: indexPath)
         if indexPath.item < accounts.count {
             let account = accounts[indexPath.item]
-            cell.bindData(AccountCellViewModel(account: account, mode: mode))
+            cell.bindData(AccountCellViewModel(account: account.value, mode: mode))
         }
         return cell
     }
@@ -76,7 +77,7 @@ extension AccountListDataSource: UICollectionViewDataSource {
         let cell = collectionView.dequeue(AccountSelectionViewCell.self, at: indexPath)
         if indexPath.item < accounts.count {
             let account = accounts[indexPath.item]
-            cell.bindData(AccountCellViewModel(account: account, mode: mode))
+            cell.bindData(AccountCellViewModel(account: account.value, mode: mode))
         }
         return cell
     }

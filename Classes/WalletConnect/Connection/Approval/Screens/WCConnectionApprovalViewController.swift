@@ -135,11 +135,11 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
 }
 
 extension WCConnectionApprovalViewController: AccountListViewControllerDelegate {
-    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
+    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: AccountHandle) {
         viewController.popScreen()
 
-        selectedAccount = AccountHandle(account: account, status: .upToDate)
-        connectionApprovalView.bindData(AccountPreviewViewModel(account))
+        selectedAccount = AccountHandle(account: account.value, status: .upToDate)
+        connectionApprovalView.bindData(AccountPreviewViewModel(account.value))
     }
 
     func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {

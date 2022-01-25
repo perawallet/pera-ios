@@ -290,20 +290,20 @@ extension SendTransactionPreviewViewController: SendTransactionPreviewViewDelega
 }
 
 extension SendTransactionPreviewViewController: AccountListViewControllerDelegate {
-    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
+    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: AccountHandle) {
         viewController.dismissScreen()
 
         if shouldUpdateReceiverForSelectedAccount {
             shouldUpdateReceiverForSelectedAccount = false
-            assetReceiverState = .myAccount(account)
-            sendTransactionPreviewView.transactionReceiverView.state = .address(address: account.address, amount: nil)
+            assetReceiverState = .myAccount(account.value)
+            sendTransactionPreviewView.transactionReceiverView.state = .address(address: account.value.address, amount: nil)
             return
         }
         
         if shouldUpdateSenderForSelectedAccount {
             shouldUpdateSenderForSelectedAccount = false
-            updateSelectedAccountForSender(account)
-            selectedAccount = account
+            updateSelectedAccountForSender(account.value)
+            selectedAccount = account.value
         }
     }
     func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {
