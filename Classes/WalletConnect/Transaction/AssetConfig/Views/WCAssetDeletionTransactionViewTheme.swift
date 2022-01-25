@@ -28,6 +28,7 @@ extension WCAssetDeletionTransactionView {
         let amountInformationTheme: TransactionAmountInformationViewTheme
         let assetInformationTheme: WCAssetInformationViewTheme
         let buttonSpacing: LayoutMetric
+        let accountInformationTheme: TitledTransactionAccountNameViewTheme
 
         init(_ family: LayoutFamily) {
             self.rawTransactionButtonStyle = [
@@ -48,6 +49,7 @@ extension WCAssetDeletionTransactionView {
             self.amountInformationTheme = TransactionAmountInformationViewTheme()
             self.assetInformationTheme = WCAssetInformationViewTheme()
             self.buttonSpacing = 16
+            self.accountInformationTheme = TitledTransactionAccountNameViewTheme(family)
         }
     }
 }

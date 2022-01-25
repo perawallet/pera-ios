@@ -26,6 +26,7 @@ extension WCAssetTransactionView {
         let textInformationTheme: TransactionTextInformationViewTheme
         let amountInformationTheme: TransactionAmountInformationViewTheme
         let assetInformationTheme: WCAssetInformationViewTheme
+        let accountInformationTheme: TitledTransactionAccountNameViewTheme
 
         init(_ family: LayoutFamily) {
             self.rawTransactionButtonStyle = [
@@ -39,6 +40,7 @@ extension WCAssetTransactionView {
             self.textInformationTheme = TransactionTextInformationViewCommonTheme()
             self.amountInformationTheme = TransactionAmountInformationViewTheme()
             self.assetInformationTheme = WCAssetInformationViewTheme()
+            self.accountInformationTheme = TitledTransactionAccountNameViewTheme(family)
         }
     }
 }

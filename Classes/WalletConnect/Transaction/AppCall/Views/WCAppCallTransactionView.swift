@@ -22,7 +22,7 @@ final class WCAppCallTransactionView: WCSingleTransactionView {
 
     private lazy var theme = Theme()
 
-    private lazy var senderView = TransactionTextInformationView()
+    private lazy var senderView = TitledTransactionAccountNameView()
     private lazy var idInformationView = TransactionTextInformationView()
     private lazy var onCompletionInformationView = TransactionTextInformationView()
     private lazy var appGlobalSchemaInformationView = TransactionTextInformationView()
@@ -65,7 +65,7 @@ final class WCAppCallTransactionView: WCSingleTransactionView {
 
 extension WCAppCallTransactionView {
     private func addParticipantInformationViews() {
-        senderView.customize(theme.textInformationTheme)
+        senderView.customize(theme.accountInformationTheme)
         idInformationView.customize(theme.textInformationTheme)
         onCompletionInformationView.customize(theme.textInformationTheme)
         appGlobalSchemaInformationView.customize(theme.textInformationTheme)

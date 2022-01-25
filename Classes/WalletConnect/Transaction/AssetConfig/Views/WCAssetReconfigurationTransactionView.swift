@@ -23,7 +23,7 @@ class WCAssetReconfigurationTransactionView: WCSingleTransactionView {
 
     private lazy var theme = Theme()
 
-    private lazy var senderView = TransactionTextInformationView()
+    private lazy var senderView = TitledTransactionAccountNameView()
     private lazy var assetInformationView = WCAssetInformationView()
     private lazy var unitNameView = TransactionTextInformationView()
 
@@ -69,7 +69,7 @@ class WCAssetReconfigurationTransactionView: WCSingleTransactionView {
 
 extension WCAssetReconfigurationTransactionView {
     private func addParticipantInformationViews() {
-        senderView.customize(theme.textInformationTheme)
+        senderView.customize(theme.accountInformationTheme)
         assetInformationView.customize(theme.assetInformationTheme)
 
         closeInformationView.customize(theme.textInformationTheme)

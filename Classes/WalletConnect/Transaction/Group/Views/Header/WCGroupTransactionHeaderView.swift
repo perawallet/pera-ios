@@ -35,7 +35,7 @@ class WCGroupTransactionHeaderView: BaseView {
 
     override func configureAppearance() {
         super.configureAppearance()
-        backgroundColor = Colors.Background.secondary
+        backgroundColor = AppColors.Shared.System.background.uiColor
     }
 }
 

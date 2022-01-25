@@ -23,7 +23,7 @@ class WCAssetCreationTransactionView: WCSingleTransactionView {
 
     private lazy var theme = Theme()
 
-    private lazy var senderView = TransactionTextInformationView()
+    private lazy var senderView = TitledTransactionAccountNameView()
     private lazy var assetInformationView = WCAssetInformationView()
     private lazy var unitNameView = TransactionTextInformationView()
 
@@ -71,7 +71,7 @@ class WCAssetCreationTransactionView: WCSingleTransactionView {
 
 extension WCAssetCreationTransactionView {
     private func addParticipantInformationViews() {
-        senderView.customize(theme.textInformationTheme)
+        senderView.customize(theme.accountInformationTheme)
         assetInformationView.customize(theme.assetInformationTheme)
         unitNameView.customize(theme.textInformationTheme)
 
@@ -249,7 +249,7 @@ extension WCAssetCreationTransactionView {
         } else {
             metadataView.hideViewInStack()
         }
-        
+
         showNoteStackView(!isDetailedInformationStackViewEmpty())
 
         if viewModel.rawTransactionInformationViewModel != nil {

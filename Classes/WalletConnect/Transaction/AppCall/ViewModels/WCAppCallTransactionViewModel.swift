@@ -18,7 +18,7 @@
 import Foundation
 
 class WCAppCallTransactionViewModel {
-    private(set) var senderInformationViewModel: TransactionTextInformationViewModel?
+    private(set) var senderInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var idInformationViewModel: TransactionTextInformationViewModel?
     private(set) var onCompletionInformationViewModel: TransactionTextInformationViewModel?
     private(set) var appGlobalSchemaInformationViewModel: TransactionTextInformationViewModel?
@@ -55,17 +55,26 @@ class WCAppCallTransactionViewModel {
         setAlgoExplorerInformationViewModel(from: transaction)
     }
 
-    private func setSenderInformationViewModel(from account: Account?, and transaction: WCTransaction) {
-        guard let fromAddress = transaction.transactionDetail?.sender else {
-            return
+    private func setSenderInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+        let account: Account
+
+        if let senderAccount = senderAccount {
+            account = senderAccount
+        } else {
+            guard let senderAddress = transaction.transactionDetail?.sender else {
+                return
+            }
+
+            account = Account(address: senderAddress, type: .standard)
         }
 
-        let titledInformation = TitledInformation(
-            title: "transaction-detail-sender".localized,
-            detail: fromAddress
+        let viewModel = TitledTransactionAccountNameViewModel(
+            title: "transaction-detail-from".localized,
+            account: account,
+            hasImage: account == senderAccount
         )
 
-        self.senderInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+        self.senderInformationViewModel = viewModel
     }
 
     private func setIdInformationViewModel(from transaction: WCTransaction) {

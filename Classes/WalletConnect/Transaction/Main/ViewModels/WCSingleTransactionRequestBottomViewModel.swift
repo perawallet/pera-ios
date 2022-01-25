@@ -30,6 +30,6 @@ final class WCSingleTransactionRequestBottomViewModel {
         networkFee = "\(fee.toAlgos.toAlgosStringForLabel ?? "") ALGO"
         senderAddress = transaction.signerAccount?.name ?? transaction.signerAccount?.address
         //TODO: Warning message will be set here
-        assetIcon = account?.type.image(for: .orange)
+        assetIcon = account?.image ?? account?.accountTypeImage()
     }
 }

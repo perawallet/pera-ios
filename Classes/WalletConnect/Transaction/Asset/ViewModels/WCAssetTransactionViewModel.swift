@@ -18,8 +18,8 @@
 import UIKit
 
 class WCAssetTransactionViewModel {
-    private(set) var fromInformationViewModel: TransactionTextInformationViewModel?
-    private(set) var toInformationViewModel: TransactionTextInformationViewModel?
+    private(set) var fromInformationViewModel: TitledTransactionAccountNameViewModel?
+    private(set) var toInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var balanceViewModel: TransactionAmountInformationViewModel?
     private(set) var assetInformationViewModel: WCAssetInformationViewModel?
     private(set) var closeInformationViewModel: TransactionTextInformationViewModel?
@@ -35,8 +35,8 @@ class WCAssetTransactionViewModel {
 
 
     init(transaction: WCTransaction, senderAccount: Account?, assetDetail: AssetDetail?) {
-        setFromInformationViewModel(transaction)
-        setToInformationViewModel(transaction)
+        setFromInformationViewModel(from: senderAccount, and: transaction)
+        setToInformationViewModel(from: senderAccount, and: transaction)
         setBalanceInformationViewModel(from: senderAccount, and: assetDetail)
         setAssetInformationViewModel(from: senderAccount, and: assetDetail)
         setCloseWarningViewModel(from: transaction, and: assetDetail)
@@ -50,30 +50,48 @@ class WCAssetTransactionViewModel {
         setRawTransactionInformationViewModel(from: transaction)
     }
 
-    private func setFromInformationViewModel(_ transaction: WCTransaction) {
-        guard let fromAddress = transaction.transactionDetail?.sender else {
+    private func setFromInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
+        guard let senderAddress = transaction.transactionDetail?.sender else {
             return
         }
 
-        let titledInformation = TitledInformation(
+        let account: Account
+
+        if let senderAccount = senderAccount, senderAddress == senderAccount.address {
+            account = senderAccount
+        } else {
+            account = Account(address: senderAddress, type: .standard)
+        }
+
+        let viewModel = TitledTransactionAccountNameViewModel(
             title: "transaction-detail-from".localized,
-            detail: fromAddress
+            account: account,
+            hasImage: account == senderAccount
         )
 
-        self.fromInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+        self.fromInformationViewModel = viewModel
     }
 
-    private func setToInformationViewModel(_ transaction: WCTransaction) {
+    private func setToInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
         guard let toAddress = transaction.transactionDetail?.receiver else {
             return
         }
 
-        let titledInformation = TitledInformation(
+        let account: Account
+
+        if let senderAccount = senderAccount, senderAccount.address == toAddress {
+            account = senderAccount
+        } else {
+            account = Account(address: toAddress, type: .standard)
+        }
+
+        let viewModel = TitledTransactionAccountNameViewModel(
             title: "transaction-detail-to".localized,
-            detail: toAddress
+            account: account,
+            hasImage: account == senderAccount
         )
 
-        self.toInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+        self.toInformationViewModel = viewModel
     }
 
     private func setBalanceInformationViewModel(from senderAccount: Account?, and assetDetail: AssetDetail?) {

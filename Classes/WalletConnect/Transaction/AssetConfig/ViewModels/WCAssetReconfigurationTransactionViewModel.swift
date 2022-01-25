@@ -19,7 +19,7 @@ import UIKit
 
 class WCAssetReconfigurationTransactionViewModel {
 
-    private(set) var senderInformationViewModel: TransactionTextInformationViewModel?
+    private(set) var senderInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var assetNameViewModel: WCAssetInformationViewModel?
     private(set) var unitNameViewModel: TransactionTextInformationViewModel?
     private(set) var rekeyWarningInformationViewModel: TransactionTextInformationViewModel?
@@ -57,16 +57,25 @@ class WCAssetReconfigurationTransactionViewModel {
     }
 
     private func setSenderInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
-        guard let fromAddress = transaction.transactionDetail?.sender else {
+        guard let senderAddress = transaction.transactionDetail?.sender else {
             return
         }
 
-        let titledInformation = TitledInformation(
+        let account: Account
+
+        if let senderAccount = senderAccount, senderAddress == senderAccount.address {
+            account = senderAccount
+        } else {
+            account = Account(address: senderAddress, type: .standard)
+        }
+
+        let viewModel = TitledTransactionAccountNameViewModel(
             title: "transaction-detail-sender".localized,
-            detail: fromAddress
+            account: account,
+            hasImage: account == senderAccount
         )
 
-        self.senderInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+        self.senderInformationViewModel = viewModel
     }
 
     private func setAssetInformationViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {

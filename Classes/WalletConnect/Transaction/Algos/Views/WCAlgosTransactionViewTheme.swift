@@ -23,6 +23,7 @@ extension WCAlgosTransactionView {
         let rawTransactionButtonStyle: ButtonStyle
         let buttonEdgeInsets: LayoutPaddings
         let buttonsCorner: Corner
+        let accountInformationTheme: TitledTransactionAccountNameViewTheme
         let textInformationTheme: TransactionTextInformationViewTheme
         let amountInformationTheme: TransactionAmountInformationViewTheme
         let assetInformationTheme: WCAssetInformationViewTheme
@@ -36,6 +37,7 @@ extension WCAlgosTransactionView {
             ]
             self.buttonsCorner = Corner(radius: 18)
             self.buttonEdgeInsets = (8, 12, 8, 12)
+            self.accountInformationTheme = TitledTransactionAccountNameViewTheme()
             self.textInformationTheme = TransactionTextInformationViewCommonTheme()
             self.amountInformationTheme = TransactionAmountInformationViewTheme()
             self.assetInformationTheme = WCAssetInformationViewTheme()

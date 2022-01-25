@@ -24,8 +24,8 @@ class WCAssetTransactionView: WCSingleTransactionView {
 
     private lazy var theme = Theme()
 
-    private lazy var fromView = TransactionTextInformationView()
-    private lazy var toView = TransactionTextInformationView()
+    private lazy var fromView = TitledTransactionAccountNameView()
+    private lazy var toView = TitledTransactionAccountNameView()
     private lazy var balanceView = TransactionAmountInformationView()
 
     private lazy var assetInformationView = WCAssetInformationView()
@@ -64,8 +64,8 @@ class WCAssetTransactionView: WCSingleTransactionView {
 
 extension WCAssetTransactionView {
     private func addParticipantInformationViews() {
-        fromView.customize(theme.textInformationTheme)
-        toView.customize(theme.textInformationTheme)
+        fromView.customize(theme.accountInformationTheme)
+        toView.customize(theme.accountInformationTheme)
         balanceView.customize(theme.amountInformationTheme)
         assetInformationView.customize(theme.assetInformationTheme)
 

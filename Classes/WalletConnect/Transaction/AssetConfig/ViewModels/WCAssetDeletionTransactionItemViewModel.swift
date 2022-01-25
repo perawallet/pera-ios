@@ -18,7 +18,7 @@
 import UIKit
 
 class WCAssetDeletionTransactionViewModel {
-    private(set) var fromInformationViewModel: TransactionTextInformationViewModel?
+    private(set) var fromInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var assetInformationViewModel: WCAssetInformationViewModel?
     private(set) var closeInformationViewModel: TransactionTextInformationViewModel?
     private(set) var rekeyInformationViewModel: TransactionTextInformationViewModel?
@@ -48,16 +48,25 @@ class WCAssetDeletionTransactionViewModel {
     }
 
     private func setSenderInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
-        guard let fromAddress = transaction.transactionDetail?.sender else {
+        guard let senderAddress = transaction.transactionDetail?.sender else {
             return
         }
 
-        let titledInformation = TitledInformation(
+        let account: Account
+
+        if let senderAccount = senderAccount, senderAddress == senderAccount.address {
+            account = senderAccount
+        } else {
+            account = Account(address: senderAddress, type: .standard)
+        }
+
+        let viewModel = TitledTransactionAccountNameViewModel(
             title: "transaction-detail-sender".localized,
-            detail: fromAddress
+            account: account,
+            hasImage: account == senderAccount
         )
 
-        self.fromInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+        self.fromInformationViewModel = viewModel
     }
 
     private func setAssetInformationViewModel(from assetDetail: AssetDetail?) {
