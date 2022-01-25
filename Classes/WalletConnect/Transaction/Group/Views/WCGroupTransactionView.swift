@@ -31,6 +31,7 @@ class WCGroupTransactionView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
+        collectionView.contentInset = .zero
         collectionView.register(
             WCGroupTransactionItemCell.self,
             forCellWithReuseIdentifier: WCGroupTransactionItemCell.reusableIdentifier
@@ -63,6 +64,12 @@ class WCGroupTransactionView: BaseView {
     override func prepareLayout() {
         super.prepareLayout()
         setupTransactionViewLayout()
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+
+        backgroundColor = Colors.Background.secondary
     }
 }
 

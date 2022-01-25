@@ -20,11 +20,10 @@ import UIKit
 class WCSingleTransactionView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
-
-    weak var mainDelegate: WCSingleTransactionViewDelegate?
-
+    
     private lazy var mainStackView: VStackView = {
         let stackView = VStackView()
+        stackView.backgroundColor = AppColors.Shared.System.background.uiColor
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .equalSpacing
         stackView.spacing = layout.current.spacing
@@ -33,68 +32,50 @@ class WCSingleTransactionView: BaseView {
         return stackView
     }()
 
-    private lazy var dappMessageView = WCTransactionDappMessageView()
-
     private lazy var participantInformationStackView: WrappedStackView = {
         let participantInformationStackView = WrappedStackView()
+        participantInformationStackView.backgroundColor = AppColors.Shared.System.background.uiColor
         participantInformationStackView.stackView.distribution = .equalSpacing
+        participantInformationStackView.stackView.spacing = 20
         return participantInformationStackView
     }()
 
+    private lazy var participantInformationSeparator = LineSeparatorView()
+
     private lazy var transactionInformationStackView: WrappedStackView = {
         let balanceInformationStackView = WrappedStackView()
+        balanceInformationStackView.backgroundColor = AppColors.Shared.System.background.uiColor
         balanceInformationStackView.stackView.distribution = .equalSpacing
+        balanceInformationStackView.stackView.spacing = 20
         return balanceInformationStackView
     }()
 
+    private lazy var transactionInformationSeparator = LineSeparatorView()
+
     private lazy var detailedInformationStackView: WrappedStackView = {
         let detailedInformationStackView = WrappedStackView()
+        detailedInformationStackView.backgroundColor = AppColors.Shared.System.background.uiColor
         detailedInformationStackView.stackView.distribution = .equalSpacing
+        detailedInformationStackView.stackView.spacing = 20
         detailedInformationStackView.isUserInteractionEnabled = true
         detailedInformationStackView.stackView.isUserInteractionEnabled = true
         return detailedInformationStackView
     }()
 
-    override func configureAppearance() {
-        super.configureAppearance()
+    private lazy var detailInformationSeparator = LineSeparatorView()
 
-        if !isDarkModeDisplay {
-            applyShadows()
-        }
-    }
-
-    override func linkInteractors() {
-        dappMessageView.delegate = self
-    }
+    private lazy var buttonsStackView: WrappedStackView = {
+        let buttonsStackView = WrappedStackView()
+        buttonsStackView.backgroundColor = AppColors.Shared.System.background.uiColor
+        buttonsStackView.stackView.distribution = .equalSpacing
+        buttonsStackView.stackView.spacing = 20
+        buttonsStackView.isUserInteractionEnabled = true
+        buttonsStackView.stackView.isUserInteractionEnabled = true
+        return buttonsStackView
+    }()
 
     override func prepareLayout() {
         setupMainStackViewLayout()
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if !isDarkModeDisplay {
-            participantInformationStackView.containerView.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 12.0)
-            transactionInformationStackView.containerView.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 12.0)
-            detailedInformationStackView.containerView.updateShadowLayoutWhenViewDidLayoutSubviews(cornerRadius: 12.0)
-        }
-    }
-
-    @available(iOS 12.0, *)
-    override func preferredUserInterfaceStyleDidChange(to userInterfaceStyle: UIUserInterfaceStyle) {
-        if userInterfaceStyle == .dark {
-            participantInformationStackView.containerView.removeShadows()
-            transactionInformationStackView.containerView.removeShadows()
-            detailedInformationStackView.containerView.removeShadows()
-        } else {
-            applyShadows()
-        }
-    }
-
-    private func applyShadows() {
-        participantInformationStackView.containerView.applyShadow(smallBottomShadow)
-        transactionInformationStackView.containerView.applyShadow(smallBottomShadow)
-        detailedInformationStackView.containerView.applyShadow(smallBottomShadow)
     }
 }
 
@@ -108,10 +89,31 @@ extension WCSingleTransactionView {
             make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
 
-        mainStackView.addArrangedSubview(dappMessageView)
         mainStackView.addArrangedSubview(participantInformationStackView)
+        mainStackView.addArrangedSubview(participantInformationSeparator)
+
+        participantInformationSeparator.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.leading.trailing.equalToSuperview()
+        }
+
         mainStackView.addArrangedSubview(transactionInformationStackView)
+        mainStackView.addArrangedSubview(transactionInformationSeparator)
+
+        transactionInformationSeparator.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.leading.trailing.equalToSuperview()
+        }
+
         mainStackView.addArrangedSubview(detailedInformationStackView)
+        mainStackView.addArrangedSubview(detailInformationSeparator)
+
+        detailInformationSeparator.snp.makeConstraints { make in
+            make.height.equalTo(1)
+            make.leading.trailing.equalToSuperview()
+        }
+
+        mainStackView.addArrangedSubview(buttonsStackView)
     }
 }
 
@@ -127,29 +129,29 @@ extension WCSingleTransactionView {
     func addDetailedInformationView(_ view: UIView) {
         detailedInformationStackView.addArrangedSubview(view)
     }
-}
 
-extension WCSingleTransactionView: WCTransactionDappMessageViewDelegate {
-    func wcTransactionDappMessageViewDidTapped(_ WCTransactionDappMessageView: WCTransactionDappMessageView) {
-        mainDelegate?.wcSingleTransactionViewDidOpenLongDappMessage(self)
+    func addButton(_ view: UIView) {
+        buttonsStackView.addArrangedSubview(view)
     }
-}
 
-extension WCSingleTransactionView {
-    func bind(_ viewModel: WCSingleTransactionViewModel) {
-        if let transactionDappMessageViewModel = viewModel.transactionDappMessageViewModel {
-            dappMessageView.bind(transactionDappMessageViewModel)
+    func showNoteStackView(_ isShown: Bool) {
+        if isShown {
+            detailedInformationStackView.showViewInStack()
+            detailInformationSeparator.showViewInStack()
+        } else {
+            detailedInformationStackView.hideViewInStack()
+            detailInformationSeparator.hideViewInStack()
         }
+    }
+
+    func isDetailedInformationStackViewEmpty() -> Bool {
+        return detailedInformationStackView.stackView.arrangedSubviews.isEmpty
     }
 }
 
 extension WCSingleTransactionView {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let spacing: CGFloat = 16.0
-        let horizontalInset: CGFloat = 20.0
+        let spacing: CGFloat = 24.0
+        let horizontalInset: CGFloat = 24.0
     }
-}
-
-protocol WCSingleTransactionViewDelegate: AnyObject {
-    func wcSingleTransactionViewDidOpenLongDappMessage(_ wcSingleTransactionView: WCSingleTransactionView)
 }

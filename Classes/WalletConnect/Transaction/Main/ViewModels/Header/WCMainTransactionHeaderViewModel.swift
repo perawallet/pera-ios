@@ -29,7 +29,6 @@ class WCMainTransactionHeaderViewModel {
     private func setTransactionDappMessageViewModel(from session: WCSession, and text: String?) {
         transactionDappMessageViewModel = WCTransactionDappMessageViewModel(
             session: session,
-            text: text,
             imageSize: CGSize(width: 44.0, height: 44.0)
         )
     }

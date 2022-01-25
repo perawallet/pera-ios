@@ -23,15 +23,17 @@ class WCGroupTransactionItemViewModel {
     private(set) var isAlgos = true
     private(set) var amount: String?
     private(set) var assetName: String?
+    private(set) var usdValue: String?
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
-    init(transaction: WCTransaction, account: Account?, assetDetail: AssetDetail?) {
+    init(transaction: WCTransaction, account: Account?, assetInformation: AssetInformation?, currency: Currency?) {
         setHasWarning(from: transaction)
         setTitle(from: transaction, and: account)
         setIsAlgos(from: transaction)
-        setAmount(from: transaction, and: assetDetail)
-        setAssetName(from: assetDetail)
-        setAccountInformationViewModel(from: account, with: assetDetail)
+        setAmount(from: transaction, and: assetInformation)
+        setAssetName(from: assetInformation)
+        setUsdValue(transaction: transaction, assetInformation: assetInformation, currency: currency)
+        setAccountInformationViewModel(from: account, with: assetInformation)
     }
 
     private func setHasWarning(from transaction: WCTransaction) {
@@ -50,11 +52,9 @@ class WCGroupTransactionItemViewModel {
 
         switch transactionType {
         case .algos:
-            let receiver = transactionDetail.receiver?.shortAddressDisplay()
-            title = "wallet-connect-transaction-group-algos-title".localized(params: receiver ?? "")
+            return
         case .asset:
-            let receiver = transactionDetail.receiver?.shortAddressDisplay()
-            title = "wallet-connect-transaction-group-asset-title".localized(params: receiver ?? "")
+            return
         case .assetAddition:
             if let assetId = transactionDetail.assetId {
                 title = "wallet-connect-transaction-group-asset-addition-title".localized(params: "\(assetId)")
@@ -103,32 +103,127 @@ class WCGroupTransactionItemViewModel {
         isAlgos = transactionDetail.isAlgosTransaction
     }
 
-    private func setAmount(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
+    private func setAmount(from transaction: WCTransaction, and assetInformation: AssetInformation?) {
         guard let transactionDetail = transaction.transactionDetail else {
             return
         }
         
-        if let assetDetail = assetDetail {
-            let decimals = assetDetail.fractionDecimals
+        if let assetInformation = assetInformation {
+            let decimals = assetInformation.decimals
             amount = transactionDetail.amount.assetAmount(fromFraction: decimals).toFractionStringForLabel(fraction: decimals) ?? ""
         } else {
             amount = transactionDetail.amount.toAlgos.toAlgosStringForLabel ?? ""
         }
     }
 
-    private func setAssetName(from assetDetail: AssetDetail?) {
-        guard let assetDetail = assetDetail else {
+    private func setAssetName(from assetInformation: AssetInformation?) {
+        guard let assetInformation = assetInformation else {
+            assetName = "ALGO"
             return
         }
 
-        assetName = assetDetail.getDisplayNames().1
+        assetName = assetInformation.getDisplayNames().1
     }
 
-    private func setAccountInformationViewModel(from account: Account?, with assetDetail: AssetDetail?) {
+    private func setUsdValue(
+        transaction: WCTransaction,
+        assetInformation: AssetInformation?,
+        currency: Currency?
+    ) {
+        guard let currency = currency,
+              let currencyPriceValue = currency.priceValue,
+              let currencyUsdValue = currency.usdValue,
+              let amount = transaction.transactionDetail?.amount else {
+                  return
+        }
+
+        if let assetInformation = assetInformation {
+            guard let assetUSDValue = assetInformation.usdValue else {
+                return
+            }
+
+            let currencyValue = assetUSDValue * amount.assetAmount(fromFraction: assetInformation.decimals) * currencyUsdValue
+            if currencyValue > 0 {
+                usdValue = currencyValue.toCurrencyStringForLabel(with: currency.id)
+            }
+
+            return
+        }
+
+        let totalAmount = amount.toAlgos * currencyPriceValue
+        usdValue = totalAmount.toCurrencyStringForLabel(with: currency.id)
+    }
+
+    private func setAccountInformationViewModel(from account: Account?, with assetInformation: AssetInformation?) {
+        guard let account = account else {
+            return
+        }
+
         accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
             account: account,
-            assetDetail: assetDetail,
+            assetInformation: assetInformation,
             isDisplayingAmount: true
         )
+    }
+}
+
+extension WCGroupTransactionItemViewModel {
+    static func calculatePreferredSize(_ viewModel: WCGroupTransactionItemViewModel, fittingIn size: CGSize) -> CGSize {
+
+        var currentSize = size
+        var defaultHeight: CGFloat = 65
+
+        currentSize.width -= 45 // 45 is for main insets
+
+        if viewModel.accountInformationViewModel != nil {
+            defaultHeight += 36 + 8 // 36 is for account view, 8 is for top inset
+        }
+
+        if viewModel.usdValue != nil {
+            defaultHeight += 20
+        }
+
+        guard viewModel.title == nil else {
+            guard let title = viewModel.title else {
+                return size
+            }
+
+            let totalSize = title.boundingSize(
+                attributes: .font(Fonts.DMMono.regular.make(19).uiFont),
+                multiline: true,
+                fittingSize: currentSize
+            )
+
+            return CGSize(width: size.width, height: totalSize.height + defaultHeight)
+        }
+
+        guard let amount = viewModel.amount else {
+            return size
+        }
+
+        if viewModel.hasWarning {
+            currentSize.width -= 24 + 4 // 24 is for warning icon size, 4 is for spacing
+        }
+
+        guard let assetName = viewModel.assetName else {
+            let amountSize = viewModel.amount?.boundingSize(
+                attributes: .font(Fonts.DMMono.regular.make(19).uiFont),
+                multiline: true,
+                fittingSize: currentSize
+            )
+
+            let fittingSize = amountSize ?? size
+            return CGSize(width: size.width, height: fittingSize.height + defaultHeight)
+        }
+
+        currentSize.width -= 4 // 4 is for spacing if asset name
+
+        let totalSize = amount.appending(assetName).boundingSize(
+            attributes: .font(Fonts.DMMono.regular.make(19).uiFont),
+            multiline: true,
+            fittingSize: currentSize
+        )
+
+        return CGSize(width: size.width, height: totalSize.height + defaultHeight)
     }
 }

@@ -42,6 +42,8 @@ extension ImageWithTitleView {
     }
     
     private func addTitleLabel(_ theme: ImageWithTitleViewTheme) {
+        titleLabel.customizeAppearance(theme.titleLabel)
+        
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)

@@ -27,7 +27,7 @@ final class WCConnectionApprovalViewController: BaseViewController {
     }
 
     private var hasMultipleAccounts: Bool {
-        return (session?.accounts.count).unwrap(or: 0) > 1
+        return sharedDataController.accountCollection.count > 1
     }
 
     private lazy var connectionApprovalView = WCConnectionApprovalView(hasMultipleAccounts: hasMultipleAccounts)
@@ -35,7 +35,7 @@ final class WCConnectionApprovalViewController: BaseViewController {
     private let walletConnectSession: WalletConnectSession
     private let walletConnectSessionConnectionCompletionHandler: WalletConnectSessionConnectionCompletionHandler
 
-    private var selectedAccount: Account?
+    private var selectedAccount: AccountHandle?
 
     init(
         walletConnectSession: WalletConnectSession,
@@ -47,14 +47,14 @@ final class WCConnectionApprovalViewController: BaseViewController {
         super.init(configuration: configuration)
 
         if !hasMultipleAccounts {
-            selectedAccount = session?.accounts.first
+            selectedAccount = sharedDataController.accountCollection.sorted().first
         }
     }
 
     override func configureAppearance() {
         connectionApprovalView.bindData(WCConnectionApprovalViewModel(walletConnectSession))
 
-        if let account = selectedAccount {
+        if let account = selectedAccount?.value {
             connectionApprovalView.bindData(AccountPreviewViewModel(account))
         }
     }
@@ -87,7 +87,7 @@ extension WCConnectionApprovalViewController: BottomSheetPresentable {
 
 extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
     func wcConnectionApprovalViewDidApproveConnection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
-        guard let account = selectedAccount else {
+        guard let account = selectedAccount?.value else {
             return
         }
 
@@ -126,7 +126,7 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
     }
 
     func wcConnectionApprovalViewDidSelectAccountSelection(_ wcConnectionApprovalView: WCConnectionApprovalView) {
-        open(.accountList(mode: .walletConnect(account: selectedAccount), delegate: self), by: .push)
+        open(.accountList(mode: .walletConnect(account: selectedAccount?.value), delegate: self), by: .push)
     }
 
     func wcConnectionApprovalViewDidOpenURL(_ wcConnectionApprovalView: WCConnectionApprovalView) {
@@ -135,11 +135,11 @@ extension WCConnectionApprovalViewController: WCConnectionApprovalViewDelegate {
 }
 
 extension WCConnectionApprovalViewController: AccountListViewControllerDelegate {
-    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
+    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: AccountHandle) {
         viewController.popScreen()
 
-        selectedAccount = account
-        connectionApprovalView.bindData(AccountPreviewViewModel(account))
+        selectedAccount = AccountHandle(account: account.value, status: .upToDate)
+        connectionApprovalView.bindData(AccountPreviewViewModel(account.value))
     }
 
     func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {

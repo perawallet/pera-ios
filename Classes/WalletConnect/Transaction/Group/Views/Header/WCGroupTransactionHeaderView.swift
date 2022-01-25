@@ -21,87 +21,37 @@ class WCGroupTransactionHeaderView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
-    private lazy var containerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = Colors.Background.secondary
-        view.layer.cornerRadius = 12.0
-        return view
-    }()
-
-    private lazy var idTitleLabel: UILabel = {
-        UILabel()
-            .withTextColor(Colors.Text.primary)
-            .withLine(.single)
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
-            .withText("wallet-connect-transaction-group-id".localized)
-    }()
-
     private lazy var groupIDLabel: UILabel = {
         UILabel()
             .withTextColor(Colors.Text.secondary)
             .withLine(.contained)
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-    }()
-
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withTextColor(Colors.Text.secondary)
-            .withLine(.single)
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .medium(size: 14.0)))
+            .withAlignment(.center)
+            .withFont(Fonts.DMMono.regular.make(15).uiFont)
     }()
 
     override func prepareLayout() {
-        setupContainerViewLayout()
-        setupIDTitleLabelLayout()
         setupGroupIDLabelLayout()
-        setupTitleLabelLayout()
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+        backgroundColor = AppColors.Shared.System.background.uiColor
     }
 }
 
 extension WCGroupTransactionHeaderView {
-    private func setupContainerViewLayout() {
-        addSubview(containerView)
-
-        containerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.topInset)
-        }
-    }
-
-    private func setupIDTitleLabelLayout() {
-        containerView.addSubview(idTitleLabel)
-
-        idTitleLabel.snp.makeConstraints { make in
-            make.leading.top.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-
     private func setupGroupIDLabelLayout() {
-        containerView.addSubview(groupIDLabel)
+        addSubview(groupIDLabel)
 
         groupIDLabel.snp.makeConstraints { make in
-            make.top.equalTo(idTitleLabel.snp.bottom).offset(layout.current.topInset)
-            make.leading.trailing.bottom.equalToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
-
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(containerView.snp.bottom).offset(layout.current.titleTopInset)
-            make.trailing.lessThanOrEqualToSuperview().inset(layout.current.horizontalInset)
+            make.top.equalToSuperview().inset(layout.current.topInset)
+            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
         }
     }
 }
 
 extension WCGroupTransactionHeaderView {
     func bind(_ viewModel: WCGroupTransactionHeaderViewModel) {
-        titleLabel.text = viewModel.title
         groupIDLabel.text = viewModel.groupID
     }
 }

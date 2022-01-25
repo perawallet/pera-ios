@@ -17,7 +17,7 @@
 
 import Foundation
 
-class WCMainTransactionViewModel {
+final class WCMainTransactionViewModel {
     private(set) var buttonTitle: String?
 
     init(transactions: [WCTransaction]) {

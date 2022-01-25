@@ -21,18 +21,18 @@ class WCTransactionWarningView: BaseView {
 
     private let layout = Layout<LayoutConstants>()
 
-    private lazy var imageView = UIImageView(image: img("icon-orange-warning-24"))
+    private lazy var imageView = UIImageView(image: img("icon-red-warning"))
 
     private lazy var warningLabel: UILabel = {
         UILabel()
             .withAlignment(.left)
             .withLine(.contained)
-            .withTextColor(Colors.General.unknown)
-            .withFont(UIFont.font(withWeight: .medium(size: 12.0)))
+            .withTextColor(AppColors.Shared.Helpers.negative.uiColor)
+            .withFont(Fonts.DMSans.medium.make(13).uiFont)
     }()
 
     override func configureAppearance() {
-        backgroundColor = Colors.WCTransactionWarningView.background
+        backgroundColor = AppColors.Shared.Helpers.negativeLighter.uiColor
         layer.cornerRadius = 12.0
     }
 
@@ -75,11 +75,5 @@ extension WCTransactionWarningView {
         let imageSize = CGSize(width: 24.0, height: 24.0)
         let horizontalInset: CGFloat = 16.0
         let warningLabelInset: CGFloat = 12.0
-    }
-}
-
-extension Colors {
-    fileprivate enum WCTransactionWarningView {
-        static let background = color("wcTransactionWarningBackground")
     }
 }

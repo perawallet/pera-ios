@@ -61,6 +61,7 @@ class RootViewController: UIViewController {
     private var currentWCTransactionRequest: WalletConnectRequest?
 
     private var wcMainTransactionViewController: WCMainTransactionViewController?
+    private var wcRequestScreen: WCMainTransactionScreen?
     
     init(appConfiguration: AppConfiguration) {
         self.appConfiguration = appConfiguration
@@ -209,17 +210,17 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
             presentingController = self
         }
 
-        wcMainTransactionViewController = presentingController?.open(
-             .wcMainTransaction(
+        wcRequestScreen = presentingController?.open(
+             .wcMainTransactionScreen(
                  transactions: transactions,
                  transactionRequest: request,
                  transactionOption: transactionOption
              ),
              by: fullScreenPresentation,
              animated: animated
-         ) as? WCMainTransactionViewController
+         ) as? WCMainTransactionScreen
 
-         wcMainTransactionViewController?.delegate = self
+        wcRequestScreen?.delegate = self
     }
 }
 
@@ -268,6 +269,29 @@ extension RootViewController: WCMainTransactionViewControllerDelegate {
     private func resetCurrentWCTransaction() {
         currentWCTransactionRequest = nil
         wcMainTransactionViewController = nil
+    }
+}
+
+extension RootViewController: WCMainTransactionScreenDelegate {
+    func wcMainTransactionScreen(
+        _ wcMainTransactionScreen: WCMainTransactionScreen,
+        didRejected request: WalletConnectRequest
+    ) {
+        resetCurrentWCTransaction()
+    }
+
+    func wcMainTransactionScreen(
+        _ wcMainTransactionScreen: WCMainTransactionScreen,
+        didSigned request: WalletConnectRequest,
+        in session: WCSession?
+    ) {
+        resetCurrentWCTransaction()
+
+        guard let wcSession = session else {
+            return
+        }
+
+        presentWCTransactionSuccessMessage(for: wcSession)
     }
 }
 

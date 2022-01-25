@@ -22,12 +22,15 @@ class WCGroupTransactionViewController: BaseViewController {
     private lazy var groupTransactionView = WCGroupTransactionView()
 
     private lazy var dataSource = WCGroupTransactionDataSource(
-        session: session,
+        sharedDataController: sharedDataController,
         transactions: transactions,
         walletConnector: walletConnector
     )
 
-    private lazy var layoutBuilder = WCGroupTransactionLayout(dataSource: dataSource)
+    private lazy var layoutBuilder = WCGroupTransactionLayout(
+        dataSource: dataSource,
+        sharedDataController: sharedDataController
+    )
 
     private let transactions: [WCTransaction]
     private let transactionRequest: WalletConnectRequest
@@ -40,11 +43,18 @@ class WCGroupTransactionViewController: BaseViewController {
         self.transactions = transactions
         self.transactionRequest = transactionRequest
         super.init(configuration: configuration)
+        setupObserver()
+    }
+
+    deinit {
+        removeObserver()
     }
 
     override func configureAppearance() {
         super.configureAppearance()
         title = "wallet-connect-transaction-title-multiple".localized
+        view.backgroundColor = AppColors.Shared.System.background.uiColor
+        groupTransactionView.backgroundColor = AppColors.Shared.System.background.uiColor
     }
 
     override func linkInteractors() {
@@ -55,6 +65,28 @@ class WCGroupTransactionViewController: BaseViewController {
 
     override func prepareLayout() {
         prepareWholeScreenLayoutFor(groupTransactionView)
+    }
+}
+
+extension WCGroupTransactionViewController {
+    private func setupObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didAssetFetched(notification:)),
+            name: .AssetDetailFetched,
+            object: nil
+        )
+    }
+
+    private func removeObserver() {
+        NotificationCenter
+            .default
+            .removeObserver(self)
+    }
+
+    @objc
+    private func didAssetFetched(notification: Notification) {
+        groupTransactionView.reloadData()
     }
 }
 
