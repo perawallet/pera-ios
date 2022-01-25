@@ -31,8 +31,9 @@ final class WCAppCallTransactionView: WCSingleTransactionView {
     private lazy var approvalHashInformationView = TransactionTextInformationView()
     private lazy var clearStateHashInformationView = TransactionTextInformationView()
     private lazy var closeInformationView = TransactionTextInformationView()
+    private lazy var closeWarningInformationView = WCTransactionWarningView()
     private lazy var rekeyInformationView = TransactionTextInformationView()
-    private lazy var warningInformationView = WCTransactionWarningView()
+    private lazy var rekeyWarningInformationView = WCTransactionWarningView()
 
     private lazy var feeView = TransactionAmountInformationView()
     private lazy var warningFeeView = WCTransactionWarningView()
@@ -86,8 +87,9 @@ extension WCAppCallTransactionView {
         addParticipantInformationView(approvalHashInformationView)
         addParticipantInformationView(clearStateHashInformationView)
         addParticipantInformationView(closeInformationView)
+        addParticipantInformationView(closeWarningInformationView)
         addParticipantInformationView(rekeyInformationView)
-        addParticipantInformationView(warningInformationView)
+        addParticipantInformationView(rekeyWarningInformationView)
     }
 
     private func addTransactionInformationViews() {
@@ -181,22 +183,28 @@ extension WCAppCallTransactionView {
             clearStateHashInformationView.hideViewInStack()
         }
 
-        if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
-            closeInformationView.bindData(closeWarningInformationViewModel)
+        if let closeInformationViewModel = viewModel.closeInformationViewModel {
+            closeInformationView.bindData(closeInformationViewModel)
         } else {
             closeInformationView.hideViewInStack()
         }
 
-        if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
-            rekeyInformationView.bindData(rekeyWarningInformationViewModel)
+        if let warningInformationViewModel = viewModel.closeWarningInformationViewModel {
+            closeWarningInformationView.bind(warningInformationViewModel)
+        } else {
+            closeWarningInformationView.hideViewInStack()
+        }
+
+        if let rekeyInformationViewModel = viewModel.rekeyInformationViewModel {
+            rekeyInformationView.bindData(rekeyInformationViewModel)
         } else {
             rekeyInformationView.hideViewInStack()
         }
 
-        if let warningInformationViewModel = viewModel.warningInformationViewModel {
-            warningInformationView.bind(warningInformationViewModel)
+        if let warningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
+            rekeyWarningInformationView.bind(warningInformationViewModel)
         } else {
-            warningInformationView.hideViewInStack()
+            rekeyWarningInformationView.hideViewInStack()
         }
 
         if let feeInformationViewModel = viewModel.feeInformationViewModel {

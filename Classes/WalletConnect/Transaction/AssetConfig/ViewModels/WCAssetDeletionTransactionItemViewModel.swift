@@ -21,8 +21,9 @@ class WCAssetDeletionTransactionViewModel {
     private(set) var fromInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var assetInformationViewModel: WCAssetInformationViewModel?
     private(set) var closeInformationViewModel: TransactionTextInformationViewModel?
+    private(set) var closeWarningInformationViewModel: WCTransactionWarningViewModel?
     private(set) var rekeyInformationViewModel: TransactionTextInformationViewModel?
-    private(set) var warningInformationViewModel: WCTransactionWarningViewModel?
+    private(set) var rekeyWarningInformationViewModel: WCTransactionWarningViewModel?
 
     private(set) var assetWarningInformationViewModel: WCTransactionWarningViewModel?
 
@@ -97,7 +98,7 @@ class WCAssetDeletionTransactionViewModel {
         )
 
         self.closeInformationViewModel = TransactionTextInformationViewModel(titledInformation)
-        self.warningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: assetDetail))
+        self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: assetDetail))
     }
 
     private func setRekeyWarningInformationViewModel(from transaction: WCTransaction) {
@@ -111,7 +112,7 @@ class WCAssetDeletionTransactionViewModel {
         )
 
         self.rekeyInformationViewModel = TransactionTextInformationViewModel(titledInformation)
-        self.warningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
+        self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }
 
     private func setFeeInformationViewModel(from transaction: WCTransaction) {

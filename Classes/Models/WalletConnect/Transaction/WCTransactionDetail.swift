@@ -283,6 +283,24 @@ extension WCTransactionDetail {
     var currentAssetId: Int64? {
         return assetId ?? assetIdBeingConfigured
     }
+
+    var warningCount: Int {
+        var count = 0
+
+        if hasHighFee {
+            count += 1
+        }
+
+        if rekeyAddress != nil {
+            count += 1
+        }
+
+        if closeAddress != nil {
+            count += 1
+        }
+        
+        return count
+    }
 }
 
 extension WCTransactionDetail {

@@ -29,7 +29,8 @@ struct WCUnsignedRequestViewTheme: StyleSheet, LayoutSheet {
     let buttonHeight: LayoutMetric
     let collectionViewBottomOffset: LayoutMetric
     let buttonContainerHeight: LayoutMetric
-
+    let buttonBottomInset: LayoutMetric
+    
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.confirmButton = ButtonPrimaryTheme(family)
@@ -40,5 +41,6 @@ struct WCUnsignedRequestViewTheme: StyleSheet, LayoutSheet {
         self.buttonHeight = 52
         self.collectionViewBottomOffset = 24
         self.buttonContainerHeight = 150
+        self.buttonBottomInset = 24
     }
 }

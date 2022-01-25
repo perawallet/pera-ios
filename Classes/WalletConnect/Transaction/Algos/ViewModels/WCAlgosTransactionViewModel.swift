@@ -23,8 +23,9 @@ class WCAlgosTransactionViewModel {
     private(set) var balanceViewModel: TransactionAmountInformationViewModel?
     private(set) var assetInformationViewModel: WCAssetInformationViewModel?
     private(set) var closeInformationViewModel: TransactionTextInformationViewModel?
+    private(set) var closeWarningInformationViewModel: WCTransactionWarningViewModel?
     private(set) var rekeyInformationViewModel: TransactionTextInformationViewModel?
-    private(set) var warningInformationViewModel: WCTransactionWarningViewModel?
+    private(set) var rekeyWarningInformationViewModel: WCTransactionWarningViewModel?
 
     private(set) var amountViewModel: TransactionAmountInformationViewModel?
     private(set) var feeViewModel: TransactionAmountInformationViewModel?
@@ -134,7 +135,7 @@ class WCAlgosTransactionViewModel {
 
         self.closeInformationViewModel = TransactionTextInformationViewModel(titledInformation)
 
-        self.warningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAlgos)
+        self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAlgos)
     }
 
     private func setRekeyWarningViewModel(from transaction: WCTransaction) {
@@ -149,7 +150,7 @@ class WCAlgosTransactionViewModel {
 
         self.rekeyInformationViewModel = TransactionTextInformationViewModel(titledInformation)
 
-        self.warningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
+        self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }
 
     private func setAmountInformationViewModel(from transaction: WCTransaction) {

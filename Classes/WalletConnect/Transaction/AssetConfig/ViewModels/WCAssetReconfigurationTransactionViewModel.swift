@@ -22,9 +22,10 @@ class WCAssetReconfigurationTransactionViewModel {
     private(set) var senderInformationViewModel: TitledTransactionAccountNameViewModel?
     private(set) var assetNameViewModel: WCAssetInformationViewModel?
     private(set) var unitNameViewModel: TransactionTextInformationViewModel?
-    private(set) var rekeyWarningInformationViewModel: TransactionTextInformationViewModel?
-    private(set) var closeWarningInformationViewModel: TransactionTextInformationViewModel?
-    private(set) var warningInformationViewModel: WCTransactionWarningViewModel?
+    private(set) var closeInformationViewModel: TransactionTextInformationViewModel?
+    private(set) var closeWarningInformationViewModel: WCTransactionWarningViewModel?
+    private(set) var rekeyInformationViewModel: TransactionTextInformationViewModel?
+    private(set) var rekeyWarningInformationViewModel: WCTransactionWarningViewModel?
     private(set) var amountInformationViewModel: TransactionAmountInformationViewModel?
     private(set) var feeInformationViewModel: TransactionAmountInformationViewModel?
     private(set) var feeWarningViewModel: WCTransactionWarningViewModel?
@@ -97,9 +98,9 @@ class WCAssetReconfigurationTransactionViewModel {
             detail: closeAddress
         )
 
-        self.closeWarningInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+        self.closeInformationViewModel = TransactionTextInformationViewModel(titledInformation)
 
-        self.warningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: assetDetail))
+        self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: assetDetail))
     }
 
     private func setRekeyWarningInformationViewModel(from transaction: WCTransaction) {
@@ -112,9 +113,9 @@ class WCAssetReconfigurationTransactionViewModel {
             detail: rekeyAddress
         )
 
-        self.rekeyWarningInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+        self.rekeyInformationViewModel = TransactionTextInformationViewModel(titledInformation)
 
-        self.warningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
+        self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }
 
     private func setFeeInformationViewModel(from transaction: WCTransaction) {

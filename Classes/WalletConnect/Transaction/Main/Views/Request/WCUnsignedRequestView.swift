@@ -134,8 +134,9 @@ extension WCUnsignedRequestView {
         addButtonsGradient()
         addSubview(buttonsContainerView)
         buttonsContainerView.snp.makeConstraints { make in
-            make.bottom.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
             make.height.equalTo(theme.buttonContainerHeight)
+            make.bottom.equalToSuperview().inset(theme.buttonBottomInset)
         }
 
         buttonsContainerView.addSubview(cancelButton)

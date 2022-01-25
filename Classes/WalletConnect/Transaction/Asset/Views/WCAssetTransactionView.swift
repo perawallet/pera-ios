@@ -31,8 +31,9 @@ class WCAssetTransactionView: WCSingleTransactionView {
     private lazy var assetInformationView = WCAssetInformationView()
 
     private lazy var closeInformationView = TransactionTextInformationView()
+    private lazy var closeWarningInformationView = WCTransactionWarningView()
     private lazy var rekeyInformationView = TransactionTextInformationView()
-    private lazy var warningInformationView = WCTransactionWarningView()
+    private lazy var rekeyWarningInformationView = WCTransactionWarningView()
 
     private lazy var amountView = TransactionAmountInformationView()
     private lazy var feeView = TransactionAmountInformationView()
@@ -77,8 +78,9 @@ extension WCAssetTransactionView {
         addParticipantInformationView(balanceView)
         addParticipantInformationView(assetInformationView)
         addParticipantInformationView(closeInformationView)
+        addParticipantInformationView(closeWarningInformationView)
         addParticipantInformationView(rekeyInformationView)
-        addParticipantInformationView(warningInformationView)
+        addParticipantInformationView(rekeyWarningInformationView)
     }
 
     private func addTransactionInformationViews() {
@@ -156,6 +158,13 @@ extension WCAssetTransactionView {
             closeInformationView.hideViewInStack()
         }
 
+        if let warningInformationViewModel = viewModel.closeWarningInformationViewModel {
+            unhideViewAnimatedIfNeeded(closeWarningInformationView)
+            closeWarningInformationView.bind(warningInformationViewModel)
+        } else {
+            closeWarningInformationView.hideViewInStack()
+        }
+
         if let rekeyInformationViewModel = viewModel.rekeyInformationViewModel {
             unhideViewAnimatedIfNeeded(rekeyInformationView)
             rekeyInformationView.bindData(rekeyInformationViewModel)
@@ -163,11 +172,11 @@ extension WCAssetTransactionView {
             rekeyInformationView.hideViewInStack()
         }
 
-        if let warningInformationViewModel = viewModel.warningInformationViewModel {
-            unhideViewAnimatedIfNeeded(warningInformationView)
-            warningInformationView.bind(warningInformationViewModel)
+        if let warningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
+            unhideViewAnimatedIfNeeded(rekeyWarningInformationView)
+            rekeyWarningInformationView.bind(warningInformationViewModel)
         } else {
-            warningInformationView.hideViewInStack()
+            rekeyWarningInformationView.hideViewInStack()
         }
 
         if let amountViewModel = viewModel.amountViewModel {
