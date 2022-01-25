@@ -21,77 +21,112 @@ class WCAssetReconfigurationTransactionView: WCSingleTransactionView {
 
     weak var delegate: WCAssetReconfigurationTransactionViewDelegate?
 
-    private lazy var accountInformationView = TitledTransactionAccountNameView()
+    private lazy var theme = Theme()
 
-    private lazy var assetInformationView: TransactionAssetView = {
-        let assetInformationView = TransactionAssetView()
-        assetInformationView.setAssetAlignment(.right)
-        return assetInformationView
-    }()
+    private lazy var senderView = TransactionTextInformationView()
+    private lazy var assetInformationView = WCAssetInformationView()
+    private lazy var unitNameView = TransactionTextInformationView()
 
-    private lazy var authAccountInformationView = WCTransactionTextInformationView()
+    private lazy var closeInformationView = TransactionTextInformationView()
+    private lazy var rekeyInformationView = TransactionTextInformationView()
+    private lazy var warningInformationView = WCTransactionWarningView()
 
-    private lazy var closeWarningInformationView = WCTransactionAddressWarningInformationView()
+    private lazy var feeInformationView = TransactionAmountInformationView()
+    private lazy var feeWarningView = WCTransactionWarningView()
+    private lazy var managerAccountView = TransactionTextInformationView()
+    private lazy var reserveAccountView = TransactionTextInformationView()
+    private lazy var freezeAccountView = TransactionTextInformationView()
+    private lazy var clawbackAccountView = TransactionTextInformationView()
 
-    private lazy var rekeyWarningInformationView = WCTransactionAddressWarningInformationView()
+    private lazy var noteView = TransactionTextInformationView()
 
-    private lazy var feeInformationView = TitledTransactionAmountInformationView()
+    private lazy var topButtonsContainer = HStackView()
+    private lazy var bottomButtonsContainer = HStackView()
+    private lazy var rawTransactionButton = UIButton()
+    private lazy var algoExplorerButton = UIButton()
+    private lazy var showUrlButton = UIButton()
 
-    private lazy var feeWarningView = WCContainedTransactionWarningView()
+    override func configureAppearance() {
+        super.configureAppearance()
 
-    private lazy var managerAccountView = WCTransactionTextInformationView()
-
-    private lazy var reserveAccountView = WCTransactionTextInformationView()
-
-    private lazy var freezeAccountView = WCTransactionTextInformationView()
-
-    private lazy var clawbackAccountView = WCTransactionTextInformationView()
-
-    private lazy var noteInformationView = WCTransactionTextInformationView()
-
-    private lazy var rawTransactionInformationView = WCTransactionActionableInformationView()
-
-    private lazy var assetURLInformationView = WCTransactionActionableInformationView()
-
-    private lazy var algoExplorerInformationView = WCTransactionActionableInformationView()
+        backgroundColor = AppColors.Shared.System.background.uiColor
+    }
 
     override func prepareLayout() {
         super.prepareLayout()
         addParticipantInformationViews()
         addTransactionInformationViews()
         addDetailedInformationViews()
+        addButtons()
     }
 
     override func setListeners() {
-        rawTransactionInformationView.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
-        assetURLInformationView.addTarget(self, action: #selector(notifyDelegateToOpenAssetURL), for: .touchUpInside)
-        algoExplorerInformationView.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
+        rawTransactionButton.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
+        algoExplorerButton.addTarget(self, action: #selector(notifyDelegateToOpenAlgoExplorer), for: .touchUpInside)
+        showUrlButton.addTarget(self, action: #selector(notifyDelegateToOpenAssetURL), for: .touchUpInside)
     }
 }
 
 extension WCAssetReconfigurationTransactionView {
     private func addParticipantInformationViews() {
-        addParticipantInformationView(accountInformationView)
+        senderView.customize(theme.textInformationTheme)
+        assetInformationView.customize(theme.assetInformationTheme)
+
+        closeInformationView.customize(theme.textInformationTheme)
+        rekeyInformationView.customize(theme.textInformationTheme)
+
+        addParticipantInformationView(senderView)
         addParticipantInformationView(assetInformationView)
-        addParticipantInformationView(authAccountInformationView)
-        addParticipantInformationView(closeWarningInformationView)
-        addParticipantInformationView(rekeyWarningInformationView)
+        addParticipantInformationView(closeInformationView)
+        addParticipantInformationView(rekeyInformationView)
+        addParticipantInformationView(warningInformationView)
     }
 
     private func addTransactionInformationViews() {
+        feeInformationView.customize(theme.amountInformationTheme)
+
         addTransactionInformationView(feeInformationView)
         addTransactionInformationView(feeWarningView)
-        addTransactionInformationView(managerAccountView)
-        addTransactionInformationView(reserveAccountView)
-        addTransactionInformationView(freezeAccountView)
-        addTransactionInformationView(clawbackAccountView)
     }
 
     private func addDetailedInformationViews() {
-        addDetailedInformationView(noteInformationView)
-        addDetailedInformationView(rawTransactionInformationView)
-        addDetailedInformationView(assetURLInformationView)
-        addDetailedInformationView(algoExplorerInformationView)
+        noteView.customize(theme.textInformationTheme)
+        addDetailedInformationView(noteView)
+    }
+
+    private func addButtons() {
+        rawTransactionButton.customizeAppearance(theme.rawTransactionButtonStyle)
+        rawTransactionButton.layer.draw(corner: theme.buttonsCorner)
+        rawTransactionButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+
+        algoExplorerButton.customizeAppearance(theme.algoExplorerButtonStyle)
+        algoExplorerButton.layer.draw(corner: theme.buttonsCorner)
+        algoExplorerButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+
+        showUrlButton.customizeAppearance(theme.showUrlButtonStyle)
+        showUrlButton.layer.draw(corner: theme.buttonsCorner)
+        showUrlButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+
+        addButton(topButtonsContainer)
+
+        topButtonsContainer.spacing = theme.buttonSpacing
+
+        topButtonsContainer.addArrangedSubview(rawTransactionButton)
+        topButtonsContainer.addArrangedSubview(showUrlButton)
+
+        let spacer = UIView()
+        spacer.setContentCompressionResistancePriority(.required, for: .horizontal)
+        topButtonsContainer.addArrangedSubview(spacer)
+
+        addButton(bottomButtonsContainer)
+
+        bottomButtonsContainer.spacing = theme.buttonSpacing
+
+        bottomButtonsContainer.addArrangedSubview(algoExplorerButton)
+
+        let bottomSpacer = UIView()
+        bottomSpacer.setContentCompressionResistancePriority(.required, for: .horizontal)
+        bottomButtonsContainer.addArrangedSubview(bottomSpacer)
     }
 }
 
@@ -114,36 +149,34 @@ extension WCAssetReconfigurationTransactionView {
 
 extension WCAssetReconfigurationTransactionView {
     func bind(_ viewModel: WCAssetReconfigurationTransactionViewModel) {
-        accountInformationView.bind(viewModel.senderInformationViewModel)
+        senderView.bindData(viewModel.senderInformationViewModel)
 
-        if let assetInformationViewModel = viewModel.assetInformationViewModel {
-            assetInformationView.bind(assetInformationViewModel)
-            unhideViewAnimatedIfNeeded(assetInformationView)
+        if let assetNameViewModel = viewModel.assetNameViewModel {
+            assetInformationView.bindData(assetNameViewModel)
         } else {
             assetInformationView.hideViewInStack()
         }
 
-        if let authAccountInformationViewModel = viewModel.authAccountInformationViewModel {
-            authAccountInformationView.bind(authAccountInformationViewModel)
-        } else {
-            authAccountInformationView.hideViewInStack()
-        }
-
         if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
-            closeWarningInformationView.bind(closeWarningInformationViewModel)
-            unhideViewAnimatedIfNeeded(closeWarningInformationView)
+            closeInformationView.bindData(closeWarningInformationViewModel)
         } else {
-            closeWarningInformationView.hideViewInStack()
+            closeInformationView.hideViewInStack()
         }
 
         if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
-            rekeyWarningInformationView.bind(rekeyWarningInformationViewModel)
+            rekeyInformationView.bindData(rekeyWarningInformationViewModel)
         } else {
-            rekeyWarningInformationView.hideViewInStack()
+            rekeyInformationView.hideViewInStack()
+        }
+
+        if let warningInformationViewModel = viewModel.warningInformationViewModel {
+            warningInformationView.bind(warningInformationViewModel)
+        } else {
+            warningInformationView.hideViewInStack()
         }
 
         if let feeInformationViewModel = viewModel.feeInformationViewModel {
-            feeInformationView.bind(feeInformationViewModel)
+            feeInformationView.bindData(feeInformationViewModel)
         } else {
             feeInformationView.hideViewInStack()
         }
@@ -155,45 +188,51 @@ extension WCAssetReconfigurationTransactionView {
         }
 
         if let managerAccountViewModel = viewModel.managerAccountViewModel {
-            managerAccountView.bind(managerAccountViewModel)
+            managerAccountView.bindData(managerAccountViewModel)
         } else {
             managerAccountView.hideViewInStack()
         }
 
         if let freezeAccountViewModel = viewModel.freezeAccountViewModel {
-            freezeAccountView.bind(freezeAccountViewModel)
+            freezeAccountView.bindData(freezeAccountViewModel)
         } else {
             freezeAccountView.hideViewInStack()
         }
 
         if let reserveAccountViewModel = viewModel.reserveAccountViewModel {
-            reserveAccountView.bind(reserveAccountViewModel)
+            reserveAccountView.bindData(reserveAccountViewModel)
         } else {
             reserveAccountView.hideViewInStack()
         }
 
         if let clawbackAccountViewModel = viewModel.clawbackAccountViewModel {
-            clawbackAccountView.bind(clawbackAccountViewModel)
+            clawbackAccountView.bindData(clawbackAccountViewModel)
         } else {
             clawbackAccountView.hideViewInStack()
         }
 
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
-            noteInformationView.bind(noteInformationViewModel)
+            noteView.bindData(noteInformationViewModel)
         } else {
-            noteInformationView.hideViewInStack()
+            noteView.hideViewInStack()
         }
 
-        if let rawTransactionInformationViewModel = viewModel.rawTransactionInformationViewModel {
-            rawTransactionInformationView.bind(rawTransactionInformationViewModel)
+        if viewModel.rawTransactionInformationViewModel != nil {
+            rawTransactionButton.showViewInStack()
+        } else {
+            rawTransactionButton.hideViewInStack()
         }
 
-        if let assetURLInformationViewModel = viewModel.assetURLInformationViewModel {
-            assetURLInformationView.bind(assetURLInformationViewModel)
+        if viewModel.assetURLInformationViewModel != nil {
+            showUrlButton.showViewInStack()
+        } else {
+            showUrlButton.hideViewInStack()
         }
 
-        if let algoExplorerInformationViewModel = viewModel.algoExplorerInformationViewModel {
-            algoExplorerInformationView.bind(algoExplorerInformationViewModel)
+        if viewModel.algoExplorerInformationViewModel != nil {
+            algoExplorerButton.showViewInStack()
+        } else {
+            algoExplorerButton.hideViewInStack()
         }
     }
 
