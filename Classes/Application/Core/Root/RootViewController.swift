@@ -273,10 +273,25 @@ extension RootViewController: WCMainTransactionViewControllerDelegate {
 }
 
 extension RootViewController: WCMainTransactionScreenDelegate {
-    func wcMainTransactionScreenDidCompleted(
-        _ wcMainTransactionScreen: WCMainTransactionScreen
+    func wcMainTransactionScreen(
+        _ wcMainTransactionScreen: WCMainTransactionScreen,
+        didRejected request: WalletConnectRequest
     ) {
         resetCurrentWCTransaction()
+    }
+
+    func wcMainTransactionScreen(
+        _ wcMainTransactionScreen: WCMainTransactionScreen,
+        didSigned request: WalletConnectRequest,
+        in session: WCSession?
+    ) {
+        resetCurrentWCTransaction()
+
+        guard let wcSession = session else {
+            return
+        }
+
+        presentWCTransactionSuccessMessage(for: wcSession)
     }
 }
 

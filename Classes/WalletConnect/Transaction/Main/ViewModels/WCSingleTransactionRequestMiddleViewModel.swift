@@ -91,9 +91,10 @@ final class WCSingleTransactionRequestMiddleViewModel {
             case .update:
                 break
             default:
+
                 if (transaction.transactionDetail?.isAppCreateTransaction ?? false) {
                     self.title = "single-transaction-request-opt-in-title".localized
-                    self.subtitle = "single-transaction-request-opt-in-subtitle".localized
+                    self.subtitle = appCallOncomplete.representation
                     self.isAssetIconHidden = true
                     return
                 }

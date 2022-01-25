@@ -22,7 +22,15 @@ import UIKit
 import SnapKit
 
 protocol WCMainTransactionScreenDelegate: AnyObject {
-    func wcMainTransactionScreenDidCompleted(_ wcMainTransactionScreen: WCMainTransactionScreen)
+    func wcMainTransactionScreen(
+        _ wcMainTransactionScreen: WCMainTransactionScreen,
+        didSigned request: WalletConnectRequest,
+        in session: WCSession?
+    )
+    func wcMainTransactionScreen(
+         _ wcMainTransactionScreen: WCMainTransactionScreen,
+         didRejected request: WalletConnectRequest
+     )
 }
 
 final class WCMainTransactionScreen: BaseViewController, Container {
@@ -253,7 +261,7 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
     private func sendSignedTransactions() {
         dataSource.signTransactionRequest(signature: signedTransactions)
         logAllTransactions()
-        delegate?.wcMainTransactionScreenDidCompleted(self)
+        delegate?.wcMainTransactionScreen(self, didSigned: transactionRequest, in: wcSession)
         dismissScreen()
     }
 
@@ -299,8 +307,13 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 
     private func presentSigningAlert() {
 
-        //TODO: Will be implemented
-        let containsFutureTransaction = false //transactions.contains { $0.isFutureTransaction(with: params) }
+        let containsFutureTransaction = transactions.contains {
+            guard let params = transactionParams else {
+                return false
+            }
+
+            return $0.isFutureTransaction(with: params)
+        }
         let description = containsFutureTransaction ?
             "wallet-connect-transaction-warning-future".localized + "wallet-connect-transaction-warning-confirmation".localized :
             "wallet-connect-transaction-warning-confirmation".localized
@@ -372,9 +385,7 @@ extension WCMainTransactionScreen {
 extension WCMainTransactionScreen: WCTransactionValidator {
     func rejectTransactionRequest(with error: WCTransactionErrorResponse) {
         dataSource.rejectTransaction(reason: error)
-        delegate?.wcMainTransactionScreenDidCompleted(
-            self
-        )
+        delegate?.wcMainTransactionScreen(self, didRejected: transactionRequest)
         dismissScreen()
     }
 }
