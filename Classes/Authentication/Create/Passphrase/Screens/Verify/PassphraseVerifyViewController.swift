@@ -23,7 +23,7 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
     private lazy var theme = Theme()
 
     private lazy var layoutBuilder: PassphraseVerifyLayoutBuilder = {
-        return PassphraseVerifyLayoutBuilder(dataSource: dataSource)
+        return PassphraseVerifyLayoutBuilder(dataSource: dataSource, theme: theme)
     }()
 
     private lazy var dataSource: PassphraseVerifyDataSource = {
@@ -46,8 +46,8 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
     
     override func linkInteractors() {
         super.linkInteractors()
-        passphraseVerifyView.setDelegate(layoutBuilder)
-        passphraseVerifyView.setDataSource(dataSource)
+        passphraseVerifyView.setCollectionViewDelegate(layoutBuilder)
+        passphraseVerifyView.setCollectionViewDataSource(dataSource)
         passphraseVerifyView.delegate = self
         dataSource.delegate = self
     }
@@ -60,10 +60,16 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
 }
 
 extension PassphraseVerifyViewController: PassphraseVerifyDataSourceDelegate {
-    func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isValidated: Bool) {
-        passphraseVerifyView.setNextButtonEnabled(isValidated)
+    func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isSelectedAllItems: Bool) {
+        passphraseVerifyView.setNextButtonEnabled(isSelectedAllItems)
+    }
+}
 
-        if !isValidated {
+extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
+    func passphraseVerifyViewDidVerifyPassphrase(_ passphraseVerifyView: PassphraseVerifyView) {
+        if !dataSource.isSelectedValidMnemonics(
+            for: passphraseVerifyView.passphraseCollectionView.indexPathsForSelectedItems
+        ) {
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             bannerController?.presentErrorBanner(
                 title: "title-error".localized,
@@ -71,12 +77,9 @@ extension PassphraseVerifyViewController: PassphraseVerifyDataSourceDelegate {
             )
             dataSource.resetVerificationData()
             passphraseVerifyView.resetSelectionStatesAndReloadData()
+            return
         }
-    }
-}
 
-extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
-    func passphraseVerifyViewDidVerifyPassphrase(_ passphraseVerifyView: PassphraseVerifyView) {
         openValidatedBottomInformation()
     }
 

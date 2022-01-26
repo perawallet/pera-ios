@@ -16,42 +16,139 @@
 //   TransactionTutorialViewModel.swift
 
 import UIKit
+import MacaroonUIKit
 
-class TransactionTutorialViewModel {
-    private(set) var subtitle: String?
-    private(set) var secondTip: NSAttributedString?
-    private(set) var tapToMoreText: NSAttributedString?
-    private(set) var animationName: String?
+final class TransactionTutorialViewModel: ViewModel {
+    private(set) var title: EditText?
+    private(set) var subtitle: EditText?
+    private(set) var firstTip: EditText?
+    private(set) var secondTip: EditText?
+    private(set) var tapToMoreText: EditText?
 
     init(isInitialDisplay: Bool) {
-        setSubtitle(from: isInitialDisplay)
-        setSecondTip()
-        setTapToMoreText()
-        setAnimationName()
+        bindTitle()
+        bindSubtitle(from: isInitialDisplay)
+        bindFirstTip()
+        bindSecondTip()
+        bindTapToMoreText()
     }
+}
 
-    private func setSubtitle(from isInitialDisplay: Bool) {
-        subtitle = isInitialDisplay ? "transaction-tutorial-subtitle".localized : "transaction-tutorial-subtitle-other".localized
-    }
+extension TransactionTutorialViewModel {
+    private func bindTitle() {
+        let font = Fonts.DMSans.medium.make(19)
+        let lineHeightMultiplier = 1.13
 
-    private func setSecondTip() {
-        secondTip = "transaction-tutorial-tip-second".localized.addAttributes(
-            [.foregroundColor: Colors.General.unknown],
-            to: "transaction-tutorial-tip-second-highlighted".localized
+        title = .attributedString(
+            "transaction-tutorial-title"
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .textAlignment(.center),
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
         )
     }
 
-    private func setTapToMoreText() {
-        tapToMoreText = "transaction-tutorial-tap-to-more".localized.addAttributes(
-            [
-                .foregroundColor: Colors.Text.link,
-                .font: UIFont.font(withWeight: .medium(size: 14.0))
-            ],
-            to: "transaction-tutorial-tap-to-more-highlighted".localized
+    private func bindSubtitle(from isInitialDisplay: Bool) {
+        let subtitle: String
+        if isInitialDisplay {
+            subtitle = "transaction-tutorial-subtitle".localized
+        } else {
+            subtitle = "transaction-tutorial-subtitle-other".localized
+        }
+
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        self.subtitle = .attributedString(
+            subtitle
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .textAlignment(.center),
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ]),
+                ])
         )
     }
 
-    private func setAnimationName() {
-        animationName = UIApplication.shared.isDarkModeDisplay ? "account_animation_dark" : "account_animation"
+    private func bindFirstTip() {
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        firstTip = .attributedString(
+            "transaction-tutorial-tip-first"
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
+        )
+    }
+
+    private func bindSecondTip() {
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        // <todo>: `appendAttributesToRange` range functionality should be added to Macaroon.
+        let attributedString =
+        "transaction-tutorial-tip-second"
+            .localized
+            .attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ]),
+            ])
+            .appendAttributesToRange(
+                [
+                    .foregroundColor: AppColors.Shared.Helpers.negative.uiColor,
+                    .font: Fonts.DMSans.regular.make(13).uiFont,
+                ],
+                of: "transaction-tutorial-tip-second-highlighted".localized
+            )
+
+        secondTip = .attributedString(
+            attributedString
+        )
+    }
+
+    private func bindTapToMoreText() {
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        // <todo>:
+        // `appendAttributesToRange` range functionality should be added to Macaroon.
+        tapToMoreText = .attributedString(
+            "transaction-tutorial-tap-to-more"
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ]),
+                ])
+                .appendAttributesToRange(
+                    [
+                        .foregroundColor: AppColors.Components.Link.primary.uiColor,
+                        .font: Fonts.DMSans.regular.make(13).uiFont
+                    ],
+                    of: "transaction-tutorial-tap-to-more-highlighted".localized
+                )
+        )
     }
 }

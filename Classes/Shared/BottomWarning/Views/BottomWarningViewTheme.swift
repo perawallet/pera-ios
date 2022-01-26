@@ -38,17 +38,11 @@ struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
             .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(19)),
-            .textAlignment(.center),
             .textOverflow(FittingText()),
-            .text("screenshot-title".localized)
         ]
         self.description = [
             .textColor(AppColors.Components.Text.gray),
-            .font(Fonts.DMSans.regular.make(15)),
-            .textAlignment(.center),
             .textOverflow(FittingText()),
-            .text("screenshot-description".localized)
         ]
 
         self.mainButtonTheme = ButtonPrimaryTheme()
@@ -57,8 +51,8 @@ struct BottomWarningViewTheme: StyleSheet, LayoutSheet {
         self.buttonInset = 16
         self.verticalInset = 32
         self.horizontalInset = 24
-        self.topInset = 34
-        self.titleTopInset = 28
+        self.topInset = 32
+        self.titleTopInset = 20
         self.descriptionTopInset = 12
         self.bottomInset = 16
     }

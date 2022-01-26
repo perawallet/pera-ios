@@ -136,7 +136,7 @@ extension TutorialViewModel {
         case .biometricAuthenticationEnabled:
             primaryActionButtonTitle = "title-go-to-accounts".localized
         case .passphraseVerified:
-            primaryActionButtonTitle = "account-name-setup-finish".localized
+            primaryActionButtonTitle = "title-next".localized
         case .accountVerified:
             primaryActionButtonTitle = "title-go-home".localized
         case .ledger:

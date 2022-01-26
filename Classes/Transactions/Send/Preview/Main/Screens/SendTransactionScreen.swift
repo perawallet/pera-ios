@@ -38,6 +38,7 @@ final class SendTransactionScreen: BaseViewController {
 
     private let theme = Theme()
     private var draft: SendTransactionDraft
+    
 
     private var amount: String = "0"
     private var note: String? {
@@ -59,9 +60,19 @@ final class SendTransactionScreen: BaseViewController {
         return draft.from.amount == decimalAmount.toMicroAlgos
     }
 
+    private lazy var transactionTutorialStorage = TransactionTutorialStorage()
+
     init(draft: SendTransactionDraft, configuration: ViewControllerConfiguration) {
         self.draft = draft
         super.init(configuration: configuration)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if !transactionTutorialStorage.isTransactionTutorialDisplayed() {
+            displayTransactionTutorial(isInitialDisplay: true)
+        }
     }
 
     override func configureAppearance() {
@@ -75,6 +86,11 @@ final class SendTransactionScreen: BaseViewController {
         case .algo:
             title = "send-transaction-title".localized("asset-algos-title".localized)
         }
+    }
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        addBarButtons()
     }
 
     override func prepareLayout() {
@@ -152,6 +168,33 @@ extension SendTransactionScreen {
         }
 
         valueLabel.text = showingValue
+    }
+}
+
+extension SendTransactionScreen {
+    private func addBarButtons() {
+        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
+            self?.displayTransactionTutorial(isInitialDisplay: false)
+        }
+
+        rightBarButtonItems = [infoBarButtonItem]
+    }
+    
+    private func displayTransactionTutorial(isInitialDisplay: Bool) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + (isInitialDisplay ? 0.1 : 0)) {
+            self.modalTransition.perform(
+                .transactionTutorial(isInitialDisplay: isInitialDisplay, delegate: self),
+                by: .presentWithoutNavigationController
+            )
+        }
+    }
+}
+
+extension SendTransactionScreen: TransactionTutorialViewControllerDelegate {
+    func transactionTutorialViewControllerDidConfirmTutorial(_ transactionTutorialViewController: TransactionTutorialViewController) {
+        let transactionTutorialStorage = TransactionTutorialStorage()
+        transactionTutorialStorage.setTransactionTutorialDisplayed()
+        transactionTutorialViewController.dismissScreen()
     }
 }
 
@@ -411,8 +454,25 @@ extension SendTransactionScreen: NumpadViewDelegate {
     }
 
     private func displayMaxTransactionWarning() {
+        let viewModel = MaximumBalanceWarningViewModel(account: draft.from)
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: "min-balance-title".localized,
+            description: viewModel.description ?? .empty,
+            primaryActionButtonTitle: "title-continue".localized,
+            secondaryActionButtonTitle: "title-cancel".localized,
+            primaryAction: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.draft.amount = self.amount.decimalAmount
+                self.open(.transactionAccountSelect(draft: self.draft), by: .push)
+            }
+        )
+
         modalTransition.perform(
-            .maximumBalanceWarning(account: draft.from, delegate: self),
+            .bottomWarning(configurator: configurator),
             by: .presentWithoutNavigationController
         )
     }
@@ -425,15 +485,6 @@ extension SendTransactionScreen: EditNoteScreenDelegate {
     ) {
         self.note = note
         self.draft.note = note
-    }
-}
-
-extension SendTransactionScreen: MaximumBalanceWarningViewControllerDelegate {
-    func maximumBalanceWarningViewControllerDidConfirmWarning(_ maximumBalanceWarningViewController: MaximumBalanceWarningViewController) {
-        maximumBalanceWarningViewController.dismissScreen()
-
-        draft.amount = amount.decimalAmount
-        open(.transactionAccountSelect(draft: self.draft), by: .push)
     }
 }
 

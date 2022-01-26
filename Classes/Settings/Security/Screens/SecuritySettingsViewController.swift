@@ -39,9 +39,9 @@ final class SecuritySettingsViewController: BaseViewController {
     override func prepareLayout() {
         addSecuritySettingsView()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
         checkPINCodeActivation()
     }
 }

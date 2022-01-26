@@ -16,8 +16,9 @@
 //   AlgoStatisticsViewModel.swift
 
 import UIKit
+import MacaroonUIKit
 
-final class AlgoStatisticsViewModel {
+final class AlgoStatisticsViewModel: ViewModel {
     private(set) var headerViewModel: AlgoStatisticsHeaderViewModel?
     private(set) var chartViewModel: AlgosUSDChartViewModel?
     private(set) var footerViewModel: AlgoStatisticsFooterViewModel?
@@ -38,7 +39,11 @@ final class AlgoStatisticsViewModel {
         and timeInterval: AlgosUSDValueInterval,
         and currency: Currency
     ) {
-        headerViewModel = AlgoStatisticsHeaderViewModel(priceChange: priceChange, timeInterval: timeInterval, currency: currency)
+        headerViewModel = AlgoStatisticsHeaderViewModel(
+            priceChange: priceChange,
+            timeInterval: timeInterval,
+            currency: currency
+        )
     }
 
     private func bindChartViewModel(
@@ -46,7 +51,11 @@ final class AlgoStatisticsViewModel {
         and priceChange: AlgoUSDPriceChange,
         and currency: Currency
     ) {
-        chartViewModel = AlgosUSDChartViewModel(valueChangeStatus: priceChange.getValueChangeStatus(), values: values, currency: currency)
+        chartViewModel = AlgosUSDChartViewModel(
+            valueChangeStatus: priceChange.getValueChangeStatus(),
+            values: values,
+            currency: currency
+        )
     }
 
     private func bindFooterViewModel(
@@ -54,6 +63,8 @@ final class AlgoStatisticsViewModel {
         and timeInterval: AlgosUSDValueInterval,
         and currency: Currency
     ) {
-        footerViewModel = AlgoStatisticsFooterViewModel(priceChange: priceChange, timeInterval: timeInterval, currency: currency) // Remove Mock Data
+        // <todo>
+        // Remove Mock Data
+        footerViewModel = AlgoStatisticsFooterViewModel()
     }
 }

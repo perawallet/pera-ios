@@ -25,13 +25,14 @@ struct PassphraseCellViewTheme: StyleSheet, LayoutSheet {
     let phraseLabel: TextStyle
 
     let leadingInset: LayoutMetric
+    let numberLabelSize: LayoutSize
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = UIColor.clear
         self.numberLabel = [
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMMono.regular.make(13)),
-            .textAlignment(.left),
+            .textAlignment(.right),
             .textOverflow(SingleLineFittingText())
         ]
         self.phraseLabel = [
@@ -41,5 +42,6 @@ struct PassphraseCellViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(FittingText())
         ]
         self.leadingInset = 16.0 * horizontalScale
+        self.numberLabelSize = (20, 20)
     }
 }

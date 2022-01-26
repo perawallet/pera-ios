@@ -16,141 +16,141 @@
 //   LedgerPairWarningView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class LedgerPairWarningView: BaseView {
+final class LedgerPairWarningView:
+    View,
+    UIInteractionObservable,
+    UIControlInteractionPublisher {
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .close: UIControlInteraction(),
+    ]
 
-    private let layout = Layout<LayoutConstants>()
+    private lazy var titleLabel = UILabel()
+    private lazy var imageView = UIImageView()
+    private lazy var subtitleLabel = UILabel()
+    private lazy var instructionVerticalStackView = VStackView()
+    private lazy var actionButton = Button()
 
-    weak var delegate: LedgerPairWarningViewDelegate?
+    private lazy var instructions = Instruction.all
 
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
-            .withAlignment(.center)
-            .withText("ledger-pairing-first-warning-title".localized)
-    }()
+    func customize(_ theme: LedgerPairWarningViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-    private lazy var imageView = UIImageView(image: img("img-warning-circle"))
-
-    private lazy var subtitleLabel: UILabel = {
-        let firstText = "ledger-pairing-first-warning-message-first".localized.attributed([
-            .font(UIFont.font(withWeight: .regular(size: 14.0))),
-            .textColor(Colors.Text.primary)
-        ])
-        let secondText = "ledger-pairing-first-warning-message-second".localized.attributed([
-            .font(UIFont.font(withWeight: .semiBold(size: 14.0))),
-            .textColor(Colors.Text.primary)
-        ])
-        let fullText = firstText + secondText
-
-        return UILabel()
-            .withLine(.contained)
-            .withAlignment(.center)
-            .withAttributedText(fullText)
-    }()
-
-    private lazy var descriptionLabel: UILabel = {
-        return UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
-            .withAlignment(.left)
-            .withText("ledger-pairing-first-warning-message-description".localized)
-    }()
-
-    private lazy var actionButton = MainButton(title: "title-continue".localized)
-
-    override func prepareLayout() {
-        setupTitleLabelLayout()
-        setupImageViewLayout()
-        setupSubtitleLabelLayout()
-        setupDescriptionLabelLayout()
-        setupActionButtonLayout()
+        addImageView(theme)
+        addTitleLabel(theme)
+        addSubtitleLabel(theme)
+        addInstructionVerticalStackView(theme)
+        addActionButton(theme)
     }
 
-    override func setListeners() {
-        actionButton.addTarget(self, action: #selector(notifyDelegateToTakeAction), for: .touchUpInside)
-    }
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
 
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
-    }
+    func customizeAppearance(_ styleSheet: ViewStyle) {}
 }
 
 extension LedgerPairWarningView {
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
+    private func addImageView(_ theme: LedgerPairWarningViewTheme) {
+        imageView.customizeAppearance(theme.image)
 
-        titleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().inset(layout.current.topInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-        }
-    }
-
-    private func setupImageViewLayout() {
         addSubview(imageView)
-
-        imageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.verticalInset)
-            make.size.equalTo(layout.current.imageSize)
+        imageView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().inset(theme.topInset)
         }
     }
 
-    private func setupSubtitleLabelLayout() {
+    private func addTitleLabel(_ theme: LedgerPairWarningViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(imageView.snp.bottom).offset(theme.titleTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+        }
+    }
+
+    private func addSubtitleLabel(_ theme: LedgerPairWarningViewTheme) {
+        subtitleLabel.customizeAppearance(theme.subtitle)
+
         addSubview(subtitleLabel)
-
-        subtitleLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(imageView.snp.bottom).offset(layout.current.subtitleTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        subtitleLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.descriptionTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
 
-    private func setupDescriptionLabelLayout() {
-        addSubview(descriptionLabel)
+    private func addInstructionVerticalStackView(_ theme: LedgerPairWarningViewTheme) {
+        addSubview(instructionVerticalStackView)
+        instructionVerticalStackView.spacing = theme.instructionSpacing
 
-        descriptionLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(layout.current.descriptionTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.descriptionHorizontalInset)
+        instructionVerticalStackView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(subtitleLabel.snp.bottom).offset(theme.instructionVerticalStackViewTopPadding)
+        }
+
+        instructions.forEach {
+            let instructionView = InstructionItemView()
+            instructionView.customize(theme.largerInstuctionViewTheme)
+            instructionView.bindTitle($0.title)
+            instructionVerticalStackView.addArrangedSubview(instructionView)
         }
     }
 
-    private func setupActionButtonLayout() {
+    private func addActionButton(_ theme: LedgerPairWarningViewTheme) {
+        actionButton.contentEdgeInsets = UIEdgeInsets(theme.actionButtonContentEdgeInsets)
+        actionButton.draw(corner: theme.actionButtonCorner)
+        actionButton.customizeAppearance(theme.actionButton)
+
         addSubview(actionButton)
-
-        actionButton.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.lessThanOrEqualToSuperview().inset(layout.current.topInset + safeAreaBottom)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(descriptionLabel.snp.bottom).offset(layout.current.verticalInset)
+        actionButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(instructionVerticalStackView.snp.bottom).offset(theme.buttonTopInset)
+            $0.bottom.lessThanOrEqualToSuperview().inset(theme.bottomInset)
         }
+
+        startPublishing(
+            event: .close,
+            for: actionButton
+        )
     }
 }
 
 extension LedgerPairWarningView {
-    @objc
-    private func notifyDelegateToTakeAction() {
-        delegate?.ledgerPairWarningViewDidTakeAction(self)
+    private struct Instruction {
+        private let font = Fonts.DMSans.regular.make(15)
+        private let lineHeightMultiplier = 1.23
+
+        private(set) var title: EditText?
+
+        init(_ title: String) {
+            self.title = .attributedString(
+                title
+                    .localized
+                    .attributed([
+                        .font(font),
+                        .lineHeightMultiplier(lineHeightMultiplier, font),
+                        .paragraph([
+                            .lineBreakMode(.byWordWrapping),
+                            .lineHeightMultiple(lineHeightMultiplier)
+                        ])
+                    ])
+            )
+        }
+
+        static let all = [
+            Instruction("ledger-pairing-first-warning-message-first-instruction"),
+            Instruction("ledger-pairing-first-warning-message-second-instruction"),
+            Instruction("ledger-pairing-first-warning-message-third-instruction"),
+            Instruction("ledger-pairing-first-warning-message-fourth-instruction")
+        ]
     }
 }
 
 extension LedgerPairWarningView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let verticalInset: CGFloat = 28.0
-        let horizontalInset: CGFloat = 20.0
-        let topInset: CGFloat = 16.0
-        let subtitleTopInset: CGFloat = 20.0
-        let descriptionTopInset: CGFloat = 28.0
-        let descriptionHorizontalInset: CGFloat = 16.0
-        let imageSize = CGSize(width: 80.0, height: 80.0)
+    enum Event {
+        case close
     }
-}
-
-protocol LedgerPairWarningViewDelegate: AnyObject {
-    func ledgerPairWarningViewDidTakeAction(_ ledgerPairWarningView: LedgerPairWarningView)
 }

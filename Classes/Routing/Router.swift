@@ -358,10 +358,6 @@ class Router {
             )
         case let .notificationFilter(flow):
             viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
-        case let .maximumBalanceWarning(account, delegate):
-            let maximumBalanceWarningViewController = MaximumBalanceWarningViewController(account: account, configuration: configuration)
-            maximumBalanceWarningViewController.delegate = delegate
-            viewController = maximumBalanceWarningViewController
         case let .bottomWarning(viewModel):
             viewController = BottomWarningViewController(viewModel, configuration: configuration)
         case let .warningAlert(warningAlert):
@@ -465,10 +461,6 @@ class Router {
             )
         case let .jsonDisplay(jsonData, title):
             viewController = JSONDisplayViewController(jsonData: jsonData, title: title, configuration: configuration)
-        case let .algoStatisticsDateSelection(option, delegate):
-            let algoStatisticsDateSelectionViewController = AlgoStatisticsDateSelectionViewController(selectedOption: option, configuration: configuration)
-            algoStatisticsDateSelectionViewController.delegate = delegate
-            viewController = algoStatisticsDateSelectionViewController
         case let .ledgerPairWarning(delegate):
             let ledgerPairWarningViewController = LedgerPairWarningViewController(configuration: configuration)
             ledgerPairWarningViewController.delegate = delegate

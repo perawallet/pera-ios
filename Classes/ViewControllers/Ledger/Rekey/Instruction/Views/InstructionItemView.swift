@@ -13,22 +13,16 @@
 // limitations under the License.
 
 //
-//  RekeyInstructionItemView.swift
+//  InstructionItemView.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class RekeyInstructionItemView: View {
+final class InstructionItemView: View {
     private lazy var informationImageView = UIImageView()
     private lazy var titleLabel = UILabel()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        customize(RekeyInstructionItemViewTheme())
-    }
-
-    func customize(_ theme: RekeyInstructionItemViewTheme) {
+    func customize(_ theme: InstructionItemViewTheme) {
         addInformationImageView(theme)
         addTitleLabel(theme)
     }
@@ -36,31 +30,31 @@ final class RekeyInstructionItemView: View {
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
-extension RekeyInstructionItemView {
-    private func addInformationImageView(_ theme: RekeyInstructionItemViewTheme) {
+extension InstructionItemView {
+    private func addInformationImageView(_ theme: InstructionItemViewTheme) {
         informationImageView.customizeAppearance(theme.image)
 
         addSubview(informationImageView)
         informationImageView.snp.makeConstraints {
-            $0.leading.centerY.bottom.top.equalToSuperview()
+            $0.leading.centerY.equalToSuperview()
             $0.fitToSize(theme.infoImageSize)
         }
     }
     
-    private func addTitleLabel(_ theme: RekeyInstructionItemViewTheme) {
+    private func addTitleLabel(_ theme: InstructionItemViewTheme) {
         titleLabel.customizeAppearance(theme.title)
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.leading.equalTo(informationImageView.snp.trailing).offset(theme.horizontalPadding)
-            $0.centerY.equalTo(informationImageView)
-            $0.trailing.equalToSuperview()
+            $0.top.bottom.trailing.equalToSuperview()
+            $0.greaterThanHeight(theme.infoImageSize.h)
         }
     }
 }
 
-extension RekeyInstructionItemView {
-    func bindTitle(_ title: String?) {
-        titleLabel.text = title
+extension InstructionItemView {
+    func bindTitle(_ title: EditText?) {
+        titleLabel.editText = title
     }
 }

@@ -24,6 +24,7 @@ final class AlgoStatisticsView: View {
     private lazy var theme = AlgoStatisticsViewTheme()
     private lazy var algoStatisticsHeaderView = AlgoStatisticsHeaderView()
     private lazy var lineChartView = AlgorandChartView(chartCustomizer: AlgoUSDValueChartCustomizer())
+    private lazy var chartTimeFrameSelectionView = ChartTimeFrameSelectionView()
     private lazy var algoStatisticsFooterView = AlgoStatisticsFooterView()
 
     override init(frame: CGRect) {
@@ -38,6 +39,7 @@ final class AlgoStatisticsView: View {
 
         addAlgoStatisticsHeaderView(theme)
         addLineChartView(theme)
+        addChartTimeFrameSelectionView(theme)
         addAlgoStatisticsFooterView(theme)
     }
 
@@ -46,8 +48,8 @@ final class AlgoStatisticsView: View {
     func customizeAppearance(_ styleSheet: AlgoStatisticsViewTheme) {}
 
     func linkInteractors() {
-        algoStatisticsHeaderView.delegate = self
         lineChartView.delegate = self
+        chartTimeFrameSelectionView.delegate = self
     }
 }
 
@@ -55,7 +57,7 @@ extension AlgoStatisticsView {
     private func addAlgoStatisticsHeaderView(_ theme: AlgoStatisticsViewTheme) {
         addSubview(algoStatisticsHeaderView)
         algoStatisticsHeaderView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(theme.headerHorizontalInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalToSuperview().offset(theme.headerTopInset)
         }
     }
@@ -69,16 +71,32 @@ extension AlgoStatisticsView {
         }
     }
 
+    private func addChartTimeFrameSelectionView(_ theme: AlgoStatisticsViewTheme) {
+        addSubview(chartTimeFrameSelectionView)
+
+        chartTimeFrameSelectionView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(lineChartView.snp.bottom).offset(theme.chartTimeFrameSelectionViewTopPadding)
+        }
+    }
+
     private func addAlgoStatisticsFooterView(_ theme: AlgoStatisticsViewTheme) {
         addSubview(algoStatisticsFooterView)
         algoStatisticsFooterView.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(theme.footerViewPaddings.leading)
             $0.trailing.equalToSuperview().inset(theme.footerViewPaddings.trailing)
-            $0.top.equalTo(lineChartView.snp.bottom).offset(theme.footerViewPaddings.top)
+            $0.top.equalTo(chartTimeFrameSelectionView.snp.bottom).offset(theme.footerViewPaddings.top)
             $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.bottomInset)
         }
     }
 }
+
+extension AlgoStatisticsView: ChartTimeFrameSelectionViewDelegate {
+    func chartTimeFrameSelectionView(_ view: ChartTimeFrameSelectionView, didSelect timeInterval: AlgosUSDValueInterval) {
+        delegate?.algoStatisticsView(self, didSelect: timeInterval)
+    }
+}
+
 
 extension AlgoStatisticsView: AlgorandChartViewDelegate {
     func algorandChartView(_ algorandChartView: AlgorandChartView, didSelectItemAt index: Int) {
@@ -87,12 +105,6 @@ extension AlgoStatisticsView: AlgorandChartViewDelegate {
 
     func algorandChartViewDidDeselect(_ algorandChartView: AlgorandChartView) {
         delegate?.algoStatisticsViewDidDeselect(self)
-    }
-}
-
-extension AlgoStatisticsView: AlgoStatisticsHeaderViewDelegate {
-    func algoStatisticsHeaderViewDidTapDate(_ view: AlgoStatisticsHeaderView) {
-        delegate?.algoStatisticsViewDidTapDate(self)
     }
 }
 
@@ -117,7 +129,7 @@ extension AlgoStatisticsView {
 }
 
 protocol AlgoStatisticsViewDelegate: AnyObject {
+    func algoStatisticsView(_ view: AlgoStatisticsView, didSelect timeInterval: AlgosUSDValueInterval)
     func algoStatisticsView(_ view: AlgoStatisticsView, didSelectItemAt index: Int)
     func algoStatisticsViewDidDeselect(_ view: AlgoStatisticsView)
-    func algoStatisticsViewDidTapDate(_ view: AlgoStatisticsView)
 }

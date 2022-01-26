@@ -15,255 +15,64 @@
 //
 //   TransactionTutorialView.swift
 
+import MacaroonUIKit
 import UIKit
-import Lottie
 
-class TransactionTutorialView: BaseView {
-
+final class TransactionTutorialView:
+    View,
+    ViewModelBindable {
     weak var delegate: TransactionTutorialViewDelegate?
 
-    private let layout = Layout<LayoutConstants>()
+    private lazy var titleLabel = UILabel()
+    private lazy var imageView = UIImageView()
+    private lazy var subtitleLabel = UILabel()
+    private lazy var firstInstructionView = InstructionItemView()
+    private lazy var secondInstructionView = InstructionItemView()
+    private lazy var tapToMoreLabel = UILabel()
+    private lazy var actionButton = Button()
 
-    private lazy var moreInfoTapGestureRecognizer = UITapGestureRecognizer(
-        target: self,
-        action: #selector(notifyDelegateToOpenMoreInfo)
-    )
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.single)
-            .withAlignment(.center)
-            .withText("transaction-tutorial-title".localized)
-    }()
-
-    private lazy var subtitleLabel: UILabel = {
-        UILabel()
-            .withLine(.contained)
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-    }()
-
-    private lazy var walletImageView: AnimationView = {
-        let walletImageView = AnimationView()
-        walletImageView.contentMode = .scaleAspectFit
-        walletImageView.backgroundColor = .clear
-        let animation = Animation.named("account_animation")
-        walletImageView.animation = animation
-        return walletImageView
-    }()
-
-    private lazy var leftDeviceImageView = UIImageView(image: img("img-device-gray"))
-
-    private lazy var rightDeviceImageView = UIImageView(image: img("img-device-green"))
-
-    private lazy var numberOneView: TutorialNumberView = {
-        let numberView = TutorialNumberView()
-        numberView.customize(TutorialNumberViewTheme())
-        numberView.bindData(TutorialNumberViewModel(1))
-        return numberView
-    }()
-
-    private lazy var firstTipLabel: UILabel = {
-        UILabel()
-            .withLine(.contained)
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-            .withText("transaction-tutorial-tip-first".localized)
-    }()
-
-    private lazy var numberTwoView: TutorialNumberView = {
-        let numberView = TutorialNumberView()
-        numberView.customize(TutorialNumberViewTheme())
-        numberView.bindData(TutorialNumberViewModel(2))
-        return numberView
-    }()
-
-    private lazy var secondTipLabel: UILabel = {
-        UILabel()
-            .withLine(.contained)
-            .withAlignment(.left)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-    }()
-
-    private lazy var separatorView = LineSeparatorView()
-
-    private lazy var tapToMoreLabel: UILabel = {
-        let label = UILabel()
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-            .withTextColor(Colors.Text.primary)
-            .withLine(.contained)
-            .withAlignment(.center)
-        label.isUserInteractionEnabled = true
-        return label
-    }()
-
-    private lazy var confirmButton = MainButton(title: "title-i-understand".localized)
-
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+        setListeners()
     }
 
-    override func setListeners() {
-        tapToMoreLabel.addGestureRecognizer(moreInfoTapGestureRecognizer)
-        confirmButton.addTarget(self, action: #selector(notifyDelegateToConfirmWarning), for: .touchUpInside)
+    func customize(_ theme: TransactionTutorialViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addImageView(theme)
+        addTitleLabel(theme)
+        addSubtitleLabel(theme)
+        addFirstInstructionView(theme)
+        addSecondInstructionView(theme)
+        addTapToMoreLabel(theme)
+        addActionButton(theme)
     }
 
-    override func prepareLayout() {
-        setupTitleLabelLayout()
-        setupSubtitleLabelLayout()
-        setupWalletImageViewLayout()
-        setupRightDeviceImageViewLayout()
-        setupLeftDeviceImageViewLayout()
-        setupNumberOneViewLayout()
-        setupFirstTipLabelLayout()
-        setupNumberTwoViewLayout()
-        setupSecondTipLabelLayout()
-        setupSeparatorViewLayout()
-        setupTapToMoreLabelLayout()
-        setupConfirmButtonLayout()
-    }
-}
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
-extension TransactionTutorialView {
-    private func setupTitleLabelLayout() {
-        addSubview(titleLabel)
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
-        titleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalToSuperview().inset(layout.current.topInset)
-            make.centerX.equalToSuperview()
-        }
+    func setListeners() {
+        tapToMoreLabel.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(notifyDelegateToOpenMoreInfo)
+            )
+        )
+        actionButton.addTarget(
+            self,
+            action: #selector(notifyDelegateToConfirmWarning),
+            for: .touchUpInside
+        )
     }
 
-    private func setupSubtitleLabelLayout() {
-        addSubview(subtitleLabel)
-
-        subtitleLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.subtitleHorizontalInset)
-            make.top.equalTo(titleLabel.snp.bottom).offset(layout.current.subtitleVerticalInset)
-        }
-    }
-
-    private func setupWalletImageViewLayout() {
-        addSubview(walletImageView)
-
-        walletImageView.snp.makeConstraints { make in
-            make.centerX.equalTo(titleLabel)
-            make.size.equalTo(layout.current.bluetoothImageSize)
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(layout.current.bluetoothTopInset)
-        }
-    }
-
-    private func setupRightDeviceImageViewLayout() {
-        addSubview(rightDeviceImageView)
-
-        rightDeviceImageView.snp.makeConstraints { make in
-            make.leading.equalTo(walletImageView.snp.trailing).offset(layout.current.deviceImageInset)
-            make.centerY.equalTo(walletImageView)
-        }
-    }
-
-    private func setupLeftDeviceImageViewLayout() {
-        addSubview(leftDeviceImageView)
-
-        leftDeviceImageView.snp.makeConstraints { make in
-            make.centerY.equalTo(walletImageView)
-            make.trailing.equalTo(walletImageView.snp.leading).offset(-layout.current.deviceImageInset)
-        }
-    }
-
-    private func setupNumberOneViewLayout() {
-        addSubview(numberOneView)
-
-        numberOneView.snp.makeConstraints { make in
-            make.size.equalTo(layout.current.numberSize)
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(leftDeviceImageView.snp.bottom).offset(layout.current.tipOneVerticalInset)
-        }
-    }
-
-    private func setupFirstTipLabelLayout() {
-        addSubview(firstTipLabel)
-
-        firstTipLabel.snp.makeConstraints { make in
-            make.leading.equalTo(numberOneView.snp.trailing).offset(layout.current.tipHorizontalInset)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(numberOneView)
-        }
-    }
-
-    private func setupNumberTwoViewLayout() {
-        addSubview(numberTwoView)
-
-        numberTwoView.snp.makeConstraints { make in
-            make.size.equalTo(layout.current.numberSize)
-            make.leading.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(firstTipLabel.snp.bottom).offset(layout.current.tipTwoVerticalInset)
-        }
-    }
-
-    private func setupSecondTipLabelLayout() {
-        addSubview(secondTipLabel)
-
-        secondTipLabel.snp.makeConstraints { make in
-            make.leading.equalTo(numberTwoView.snp.trailing).offset(layout.current.tipHorizontalInset)
-            make.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(numberTwoView)
-        }
-    }
-
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
-
-        separatorView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-            make.top.equalTo(secondTipLabel.snp.bottom).offset(layout.current.separatorTopInset)
-        }
-    }
-
-    private func setupTapToMoreLabelLayout() {
-        addSubview(tapToMoreLabel)
-
-        tapToMoreLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.equalTo(separatorView.snp.bottom).offset(layout.current.topToMoreTopInset)
-        }
-    }
-
-    private func setupConfirmButtonLayout() {
-        addSubview(confirmButton)
-
-        confirmButton.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.top.greaterThanOrEqualTo(tapToMoreLabel.snp.bottom).offset(layout.current.buttonTopInset)
-            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
-        }
-    }
-}
-
-extension TransactionTutorialView {
-    func bind(_ viewModel: TransactionTutorialViewModel) {
-        subtitleLabel.text = viewModel.subtitle
-        secondTipLabel.attributedText = viewModel.secondTip
-        tapToMoreLabel.attributedText = viewModel.tapToMoreText
-
-        if let animationName = viewModel.animationName {
-            walletImageView.animation = Animation.named(animationName)
-        }
-    }
-
-    func startAnimating() {
-        walletImageView.play(fromProgress: 0, toProgress: 1, loopMode: .loop)
-    }
-
-    func stopAnimating() {
-        walletImageView.stop()
+    func bindData(_ viewModel: TransactionTutorialViewModel?) {
+        titleLabel.editText = viewModel?.title
+        subtitleLabel.editText = viewModel?.subtitle
+        firstInstructionView.bindTitle(viewModel?.firstTip)
+        secondInstructionView.bindTitle(viewModel?.secondTip)
+        tapToMoreLabel.editText = viewModel?.tapToMoreText
     }
 }
 
@@ -280,23 +89,84 @@ extension TransactionTutorialView {
 }
 
 extension TransactionTutorialView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 16.0
-        let subtitleHorizontalInset: CGFloat = 24.0
-        let subtitleVerticalInset: CGFloat = 28.0
-        let horizontalInset: CGFloat = 20.0
-        let bottomInset: CGFloat = 16.0
-        let tipOneVerticalInset: CGFloat = 52.0
-        let tipTwoVerticalInset: CGFloat = 24.0
-        let tipHorizontalInset: CGFloat = 12.0
-        let numberSize = CGSize(width: 32.0, height: 32.0)
-        let bluetoothImageSize = CGSize(width: 155.0, height: 44.0)
-        let deviceImageInset: CGFloat = 8.0
-        let bluetoothTopInset: CGFloat = 44.0
-        let topToMoreTopInset: CGFloat = 32.0
-        let buttonTopInset: CGFloat = 20.0
-        let separatorHeight: CGFloat = 1.0
-        let separatorTopInset: CGFloat = 40.0
+    private func addImageView(_ theme: TransactionTutorialViewTheme) {
+        imageView.customizeAppearance(theme.image)
+
+        addSubview(imageView)
+        imageView.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalToSuperview().inset(theme.topInset)
+        }
+    }
+
+    private func addTitleLabel(_ theme: TransactionTutorialViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(imageView.snp.bottom).offset(theme.titleTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+        }
+    }
+
+    private func addSubtitleLabel(_ theme: TransactionTutorialViewTheme) {
+        subtitleLabel.customizeAppearance(theme.subtitle)
+
+        addSubview(subtitleLabel)
+        subtitleLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.descriptionTopInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+        }
+    }
+
+    private func addFirstInstructionView(_ theme: TransactionTutorialViewTheme) {
+        firstInstructionView.customize(theme.smallerInstuctionViewTheme)
+
+        addSubview(firstInstructionView)
+        firstInstructionView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(subtitleLabel.snp.bottom).offset(theme.firstInstructionTopPadding)
+        }
+    }
+
+    private func addSecondInstructionView(_ theme: TransactionTutorialViewTheme) {
+        secondInstructionView.customize(theme.smallerInstuctionViewTheme)
+
+        addSubview(secondInstructionView)
+        secondInstructionView.snp.makeConstraints {
+            $0.leading.trailing.equalTo(firstInstructionView)
+            $0.top.equalTo(firstInstructionView.snp.bottom).offset(theme.instructionSpacing)
+        }
+
+        secondInstructionView.addSeparator(
+            theme.separator,
+            padding: theme.spacingBetweenSecondInstructionViewAndSeparator
+        )
+    }
+
+    private func addTapToMoreLabel(_ theme: TransactionTutorialViewTheme) {
+        tapToMoreLabel.customizeAppearance(theme.tapToMore)
+
+        addSubview(tapToMoreLabel)
+        tapToMoreLabel.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(secondInstructionView.snp.bottom).offset(theme.tapMoreLabelTopPadding)
+        }
+    }
+
+    private func addActionButton(_ theme: TransactionTutorialViewTheme) {
+        actionButton.contentEdgeInsets = UIEdgeInsets(theme.actionButtonContentEdgeInsets)
+        actionButton.draw(corner: theme.actionButtonCorner)
+        actionButton.customizeAppearance(theme.actionButton)
+        
+        addSubview(actionButton)
+        actionButton.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(tapToMoreLabel.snp.bottom).offset(theme.buttonTopInset)
+            $0.bottom.lessThanOrEqualToSuperview().inset(theme.bottomInset)
+        }
     }
 }
 

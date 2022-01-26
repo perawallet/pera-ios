@@ -19,8 +19,8 @@ import MacaroonUIKit
 
 struct AlgoStatisticsFooterViewTheme: LayoutSheet, StyleSheet {
     let title: TextStyle
-    let infoViewPaddings: LayoutPaddings
-    let infoViewWidth: LayoutMetric
+    let topPadding: LayoutMetric
+    let separator: Separator
 
     init(_ family: LayoutFamily) {
         self.title = [
@@ -31,7 +31,7 @@ struct AlgoStatisticsFooterViewTheme: LayoutSheet, StyleSheet {
             .textAlignment(.left)
         ]
 
-        self.infoViewPaddings = (20, 17, 20, 17)
-        self.infoViewWidth = 155
+        self.topPadding = 4
+        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
     }
 }

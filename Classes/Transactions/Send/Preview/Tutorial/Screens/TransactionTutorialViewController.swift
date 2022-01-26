@@ -19,7 +19,7 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-class TransactionTutorialViewController: BaseScrollViewController {
+final class TransactionTutorialViewController: BaseScrollViewController {
     weak var delegate: TransactionTutorialViewControllerDelegate?
 
     private lazy var transactionTutorialView = TransactionTutorialView()
@@ -31,20 +31,9 @@ class TransactionTutorialViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        transactionTutorialView.startAnimating()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        transactionTutorialView.stopAnimating()
-    }
-
-    override func configureAppearance() {
-        super.configureAppearance()
-        view.backgroundColor = Colors.Background.secondary
-        transactionTutorialView.bind(TransactionTutorialViewModel(isInitialDisplay: isInitialDisplay))
+    override func bindData() {
+        super.bindData()
+        transactionTutorialView.bindData(TransactionTutorialViewModel(isInitialDisplay: isInitialDisplay))
     }
 
     override func linkInteractors() {
@@ -54,25 +43,24 @@ class TransactionTutorialViewController: BaseScrollViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
-        setupTransactionTutorialViewLayout()
+        addTransactionTutorialView()
     }
 }
 
 extension TransactionTutorialViewController {
-    private func setupTransactionTutorialViewLayout() {
-        contentView.addSubview(transactionTutorialView)
+    private func addTransactionTutorialView() {
+        transactionTutorialView.customize(TransactionTutorialViewTheme())
 
-        transactionTutorialView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        contentView.addSubview(transactionTutorialView)
+        transactionTutorialView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
 
 extension TransactionTutorialViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
-        let screenHeight = UIScreen.main.bounds.height
-        let height = screenHeight <= 605 ? screenHeight - 20 : 605
-        return .preferred(height)
+        return .compressed
     }
 }
 
@@ -82,12 +70,12 @@ extension TransactionTutorialViewController: TransactionTutorialViewDelegate {
     }
 
     func transactionTutorialViewDidOpenMoreInfo(_ transactionTutorialView: TransactionTutorialView) {
-        if let url = AlgorandWeb.transactionSupport.link {
-            open(url)
-        }
+        open(AlgorandWeb.transactionSupport.link)
     }
 }
 
 protocol TransactionTutorialViewControllerDelegate: AnyObject {
-    func transactionTutorialViewControllerDidConfirmTutorial(_ transactionTutorialViewController: TransactionTutorialViewController)
+    func transactionTutorialViewControllerDidConfirmTutorial(
+        _ transactionTutorialViewController: TransactionTutorialViewController
+    )
 }

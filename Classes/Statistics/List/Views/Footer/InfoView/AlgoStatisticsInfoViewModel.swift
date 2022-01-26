@@ -18,7 +18,7 @@
 import Foundation
 import MacaroonUIKit
 
-final class AlgoStatisticsInfoViewModel {
+final class AlgoStatisticsInfoViewModel: ViewModel {
     private(set) var title: String?
     private(set) var value: String?
 

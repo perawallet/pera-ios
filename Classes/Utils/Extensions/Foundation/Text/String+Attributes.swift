@@ -90,3 +90,17 @@ extension String {
         return attributedText
     }
 }
+
+extension NSAttributedString {
+    func appendAttributesToRange(
+        _ attributes: [NSAttributedString.Key: Any],
+        of targetString: String
+    ) -> NSAttributedString {
+        let range = (string as NSString).range(of: targetString)
+        let attributedText = NSMutableAttributedString(string: string)
+        attributes.forEach { key, value in
+            attributedText.addAttribute(key, value: value, range: range)
+        }
+        return attributedText
+    }
+}

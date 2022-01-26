@@ -16,15 +16,15 @@
 //  PassphraseVerifyLayoutBuilder.swift
 
 import UIKit
+import MacaroonUIKit
 
-class PassphraseVerifyLayoutBuilder: NSObject {
-
-    private let layout = Layout<LayoutConstants>()
-
+final class PassphraseVerifyLayoutBuilder: NSObject {
+    private let theme: PassphraseVerifyViewController.Theme
     private weak var dataSource: PassphraseVerifyDataSource?
 
-    init(dataSource: PassphraseVerifyDataSource) {
+    init(dataSource: PassphraseVerifyDataSource, theme: PassphraseVerifyViewController.Theme) {
         self.dataSource = dataSource
+        self.theme = theme
         super.init()
     }
 }
@@ -35,7 +35,7 @@ extension PassphraseVerifyLayoutBuilder: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return layout.current.cellSize
+        return CGSize(theme.cellSize)
     }
 
     func collectionView(
@@ -43,7 +43,7 @@ extension PassphraseVerifyLayoutBuilder: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
-        return layout.current.headerSize
+        return CGSize(theme.headerSize)
     }
 
     func collectionView(
@@ -51,27 +51,27 @@ extension PassphraseVerifyLayoutBuilder: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
-        return layout.current.sectionInset
+        return UIEdgeInsets(theme.sectionInset)
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         deselectOtherItemsInSection(of: collectionView, for: indexPath)
-        dataSource?.validateSelection(in: collectionView)
+        dataSource?.notifyDelegateForSelectedItems(in: collectionView)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        dataSource?.notifyDelegateForSelectedItems(in: collectionView)
     }
 }
 
 extension PassphraseVerifyLayoutBuilder {
     private func deselectOtherItemsInSection(of collectionView: UICollectionView, for indexPath: IndexPath) {
-        collectionView.indexPathsForSelectedItems?.filter { $0.section == indexPath.section && $0.item != indexPath.item }.forEach {
-            collectionView.deselectItem(at: $0, animated: false)
-        }
-    }
-}
-
-extension PassphraseVerifyLayoutBuilder {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let cellSize = CGSize(width: (UIScreen.main.bounds.width - (25 * 2) - (18 * 2)) / 3, height: 44.0)
-        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 36.0)
-        let sectionInset = UIEdgeInsets(top: 0.0, left: 24.0, bottom: 40.0, right: 24.0)
+        collectionView.indexPathsForSelectedItems?
+            .filter {
+                $0.section == indexPath.section && $0.item != indexPath.item
+            }
+            .forEach {
+                collectionView.deselectItem(at: $0, animated: false)
+            }
     }
 }

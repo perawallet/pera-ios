@@ -24,10 +24,10 @@ final class RekeyInstructionsView: View {
     private lazy var titleLabel = UILabel()
     private lazy var subtitleLabel = UILabel()
     private lazy var instructionHeaderLabel = UILabel()
-    private lazy var firstInstructionView = RekeyInstructionItemView()
-    private lazy var secondInstructionView = RekeyInstructionItemView()
-    private lazy var thirdInstructionView = RekeyInstructionItemView()
-    private lazy var fourthInstructionView = RekeyInstructionItemView()
+    private lazy var firstInstructionView = InstructionItemView()
+    private lazy var secondInstructionView = InstructionItemView()
+    private lazy var thirdInstructionView = InstructionItemView()
+    private lazy var fourthInstructionView = InstructionItemView()
     private lazy var startButton = Button()
 
     func customize(_ theme: RekeyInstructionsViewTheme) {
@@ -89,6 +89,8 @@ extension RekeyInstructionsView {
     }
     
     private func addFirstInstructionView(_ theme: RekeyInstructionsViewTheme) {
+        firstInstructionView.customize(theme.instructionViewTheme)
+
         addSubview(firstInstructionView)
         firstInstructionView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
@@ -97,6 +99,8 @@ extension RekeyInstructionsView {
     }
     
     private func addSecondInstructionView(_ theme: RekeyInstructionsViewTheme) {
+        secondInstructionView.customize(theme.instructionViewTheme)
+
         addSubview(secondInstructionView)
         secondInstructionView.snp.makeConstraints {
             $0.leading.trailing.equalTo(firstInstructionView)
@@ -105,6 +109,8 @@ extension RekeyInstructionsView {
     }
     
     private func addThirdInstructionView(_ theme: RekeyInstructionsViewTheme) {
+        thirdInstructionView.customize(theme.instructionViewTheme)
+
         addSubview(thirdInstructionView)
         thirdInstructionView.snp.makeConstraints {
             $0.leading.trailing.equalTo(firstInstructionView)
@@ -113,6 +119,8 @@ extension RekeyInstructionsView {
     }
 
     private func addFourthInstructionView(_ theme: RekeyInstructionsViewTheme) {
+        fourthInstructionView.customize(theme.instructionViewTheme)
+
         addSubview(fourthInstructionView)
         fourthInstructionView.snp.makeConstraints {
             $0.leading.trailing.equalTo(firstInstructionView)
