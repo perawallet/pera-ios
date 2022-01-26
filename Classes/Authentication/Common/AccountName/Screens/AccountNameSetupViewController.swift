@@ -47,6 +47,11 @@ final class AccountNameSetupViewController: BaseScrollViewController {
         addAccountNameSetupView()
     }
 
+    override func bindData() {
+        super.bindData()
+        accountNameSetupView.bindData(session?.address(for: "temp")?.shortAddressDisplay())
+    }
+
     override func configureAppearance() {
         super.configureAppearance()
         customizeBackground()
@@ -85,6 +90,8 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
 
 extension AccountNameSetupViewController {
     private func setupAccountName() {
+        // <note>
+        // We disable button to prevent double tap.
         accountNameSetupView.nextButton.isEnabled = false
 
         guard let tempPrivateKey = session?.privateData(for: "temp"),

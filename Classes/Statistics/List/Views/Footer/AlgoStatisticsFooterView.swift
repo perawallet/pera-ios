@@ -18,10 +18,13 @@
 import MacaroonUIKit
 import UIKit
 
-final class AlgoStatisticsFooterView: View {
+final class AlgoStatisticsFooterView:
+    View,
+    ViewModelBindable {
     private lazy var titleLabel = UILabel()
-    private lazy var previousCloseVolumeInfoView = AlgoStatisticsInfoView()
-    private lazy var openInfoView = AlgoStatisticsInfoView()
+    private lazy var dailyVolumeInfoView = AlgoStatisticsInfoView()
+    private lazy var marketCapInfoView = AlgoStatisticsInfoView()
+    private lazy var allTimeHighInfoView = AlgoStatisticsInfoView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,8 +34,9 @@ final class AlgoStatisticsFooterView: View {
 
     func customize(_ theme: AlgoStatisticsFooterViewTheme) {
         addTitleLabel(theme)
-        addPreviousCloseVolumeInfoView(theme)
-        addOpenInfoView(theme)
+        addDailyVolumeInfoView(theme)
+        addMarketCapInfoView(theme)
+        addAllTimeHighInfoView(theme)
     }
 
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
@@ -50,31 +54,47 @@ extension AlgoStatisticsFooterView {
         }
     }
 
-    private func addPreviousCloseVolumeInfoView(_ theme: AlgoStatisticsFooterViewTheme) {
-        addSubview(previousCloseVolumeInfoView)
-        previousCloseVolumeInfoView.snp.makeConstraints {
-            $0.top == titleLabel.snp.bottom + theme.infoViewPaddings.top
+    private func addDailyVolumeInfoView(_ theme: AlgoStatisticsFooterViewTheme) {
+        addSubview(dailyVolumeInfoView)
+        dailyVolumeInfoView.snp.makeConstraints {
+            $0.top == titleLabel.snp.bottom + theme.topPadding
             $0.leading == 0
-            $0.fitToWidth(theme.infoViewWidth)
-            $0.bottom.equalToSuperview()
+            $0.trailing == 0
         }
+
+        dailyVolumeInfoView.addSeparator(theme.separator)
     }
 
-    private func addOpenInfoView(_ theme: AlgoStatisticsFooterViewTheme) {
-        addSubview(openInfoView)
-        openInfoView.snp.makeConstraints {
-            $0.top == previousCloseVolumeInfoView
-            $0.leading == previousCloseVolumeInfoView.snp.trailing + theme.infoViewPaddings.leading
-            $0.trailing.lessThanOrEqualToSuperview()
-            $0.width == previousCloseVolumeInfoView
-            $0.bottom.equalToSuperview()
+    private func addMarketCapInfoView(_ theme: AlgoStatisticsFooterViewTheme) {
+        addSubview(marketCapInfoView)
+        marketCapInfoView.snp.makeConstraints {
+            $0.top == dailyVolumeInfoView.snp.bottom
+            $0.leading == 0
+            $0.trailing == 0
+        }
+
+        marketCapInfoView.addSeparator(theme.separator)
+    }
+
+    private func addAllTimeHighInfoView(_ theme: AlgoStatisticsFooterViewTheme) {
+        addSubview(allTimeHighInfoView)
+        allTimeHighInfoView.snp.makeConstraints {
+            $0.top == marketCapInfoView.snp.bottom
+            $0.leading == 0
+            $0.trailing == 0
+            $0.bottom == 0
         }
     }
 }
 
 extension AlgoStatisticsFooterView {
-    func bindData(_ viewModel: AlgoStatisticsFooterViewModel) {
-        previousCloseVolumeInfoView.bindData(viewModel.previousCloseViewModel)
-        openInfoView.bindData(viewModel.openViewModel)
+    func bindData(_ viewModel: AlgoStatisticsFooterViewModel?) {
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        dailyVolumeInfoView.bindData(viewModel.dailyVolumeInfoViewModel)
+        marketCapInfoView.bindData(viewModel.marketCapInfoViewModel)
+        allTimeHighInfoView.bindData(viewModel.allTimeHighInfoViewModel)
     }
 }

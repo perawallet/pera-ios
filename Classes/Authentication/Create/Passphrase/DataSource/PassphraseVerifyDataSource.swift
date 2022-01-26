@@ -143,36 +143,35 @@ extension PassphraseVerifyDataSource: UICollectionViewDataSource {
             fatalError("Unexpected element kind")
         }
 
-        guard let headerView = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind,
-            withReuseIdentifier: PasshraseMnemonicNumberHeaderSupplementaryView.reusableIdentifier,
-            for: indexPath
-        ) as? PasshraseMnemonicNumberHeaderSupplementaryView else {
-            fatalError("Unexpected element kind")
-        }
-
+        let headerView = collectionView.dequeueHeader(PasshraseMnemonicNumberHeaderSupplementaryView.self, at: indexPath)
         headerView.bind(PasshraseMnemonicNumberHeaderViewModel(order: mnemonicIndexes[indexPath.section]))
         return headerView
     }
 }
 
 extension PassphraseVerifyDataSource {
-    func validateSelection(in collectionView: UICollectionView) {
-        guard let selectedIndexes = collectionView.indexPathsForSelectedItems,
+    func notifyDelegateForSelectedItems(in collectionView: UICollectionView) {
+        delegate?.passphraseVerifyDataSource(
+            self,
+            isSelectedAllItems: collectionView.indexPathsForSelectedItems?.count == numberOfValidations
+        )
+    }
+
+    func isSelectedValidMnemonics(for indexPathsForSelectedItems: [IndexPath]?) -> Bool {
+        guard let selectedIndexes = indexPathsForSelectedItems,
               selectedIndexes.count == numberOfValidations else {
-            return
-        }
+                  return false
+              }
 
         var isValidated = true
         for indexPath in selectedIndexes {
             isValidated = selectedMnemonic(at: indexPath) == mnemonicValue(at: indexPath)
             if !isValidated {
-                delegate?.passphraseVerifyDataSource(self, isValidated: false)
-                return
+                break
             }
         }
 
-        delegate?.passphraseVerifyDataSource(self, isValidated: isValidated)
+        return isValidated
     }
 
     private func selectedMnemonic(at indexPath: IndexPath) -> String? {
@@ -198,5 +197,5 @@ extension PassphraseVerifyDataSource {
 }
 
 protocol PassphraseVerifyDataSourceDelegate: AnyObject {
-    func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isValidated: Bool)
+    func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isSelectedAllItems: Bool)
 }

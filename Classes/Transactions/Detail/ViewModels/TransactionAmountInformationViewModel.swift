@@ -30,7 +30,7 @@ final class TransactionAmountInformationViewModel: ViewModel {
         self.title = title
     }
 
-    func setTitle(_ title: String?) {
+    func setTitle(_ title: String?) {
         self.title = title
     }
 }

@@ -25,7 +25,7 @@ final class PassphraseVerifyView: View {
     private lazy var theme = PassphraseVerifyViewTheme()
     private lazy var titleLabel = UILabel()
 
-    private lazy var passphraseCollectionView: UICollectionView = {
+    private(set) lazy var passphraseCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = 0
         flowLayout.minimumInteritemSpacing = theme.cellSpacing
@@ -100,11 +100,11 @@ extension PassphraseVerifyView {
 }
 
 extension PassphraseVerifyView {
-    func setDelegate(_ delegate: UICollectionViewDelegate?) {
+    func setCollectionViewDelegate(_ delegate: UICollectionViewDelegate?) {
         passphraseCollectionView.delegate = delegate
     }
 
-    func setDataSource(_ dataSource: UICollectionViewDataSource?) {
+    func setCollectionViewDataSource(_ dataSource: UICollectionViewDataSource?) {
         passphraseCollectionView.dataSource = dataSource
     }
 
@@ -113,8 +113,11 @@ extension PassphraseVerifyView {
     }
 
     func resetSelectionStatesAndReloadData() {
-        passphraseCollectionView.indexPathsForSelectedItems?.forEach { passphraseCollectionView.deselectItem(at: $0, animated: false) }
+        passphraseCollectionView.indexPathsForSelectedItems?.forEach {
+            passphraseCollectionView.deselectItem(at: $0, animated: false)
+        }
         passphraseCollectionView.reloadData()
+        setNextButtonEnabled(false)
     }
 }
 

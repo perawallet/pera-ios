@@ -44,7 +44,7 @@ extension AlgoStatisticsInfoView {
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
+            $0.centerY.leading.equalToSuperview()
         }
     }
 
@@ -53,8 +53,9 @@ extension AlgoStatisticsInfoView {
 
         addSubview(valueLabel)
         valueLabel.snp.makeConstraints {
-            $0.top == titleLabel.snp.bottom + theme.verticalPadding
-            $0.leading.trailing.bottom.equalToSuperview()
+            $0.top.bottom.equalToSuperview().inset(theme.verticalPadding)
+            $0.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(theme.minimumHorizontalPadding)
+            $0.trailing.equalToSuperview()
         }
     }
 }

@@ -43,6 +43,7 @@ extension PassphraseCellView {
         numberLabel.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.centerY.equalToSuperview()
+            $0.fitToSize(theme.numberLabelSize)
         }
     }
     

@@ -16,23 +16,30 @@
 //  MaximumBalanceWarningViewModel.swift
 
 import UIKit
+import MacaroonUIKit
 
-class MaximumBalanceWarningViewModel {
+final class MaximumBalanceWarningViewModel: ViewModel {
     private(set) var description: String?
 
     init(account: Account) {
-        setDescription(from: account)
+        bindDescription(from: account)
     }
+}
 
-    private func setDescription(from account: Account) {
+extension MaximumBalanceWarningViewModel {
+    private func bindDescription(from account: Account) {
         let minimumAmountForAccount = "\(calculateMininmumAmount(for: account).toAlgos)"
 
         if !account.isRekeyed() {
-            description = "maximum-balance-standard-account-warning-description".localized(params: minimumAmountForAccount)
+            description =
+            "maximum-balance-standard-account-warning-description"
+                .localized(params: minimumAmountForAccount)
             return
         }
 
-        description = "maximum-balance-warning-description".localized(params: minimumAmountForAccount)
+        description =
+        "maximum-balance-warning-description"
+            .localized(params: minimumAmountForAccount)
     }
 
     private func calculateMininmumAmount(for account: Account) -> UInt64 {
@@ -41,9 +48,9 @@ class MaximumBalanceWarningViewModel {
         let calculatedFee = params?.getProjectedTransactionFee() ?? Transaction.Constant.minimumFee
         let minimumAmountForAccount = feeCalculator.calculateMinimumAmount(
             for: account,
-            with: .algosTransaction,
-            calculatedFee: calculatedFee,
-            isAfterTransaction: true
+               with: .algosTransaction,
+               calculatedFee: calculatedFee,
+               isAfterTransaction: true
         ) - calculatedFee
         return minimumAmountForAccount
     }

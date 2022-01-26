@@ -19,43 +19,43 @@ import Foundation
 import MacaroonUIKit
 import MacaroonBottomSheet
 
-class LedgerPairWarningViewController: BaseViewController {
+final class LedgerPairWarningViewController: BaseScrollViewController {
     weak var delegate: LedgerPairWarningViewControllerDelegate?
-
-    override var shouldShowNavigationBar: Bool {
-        return false
-    }
-
+    
     private lazy var ledgerPairWarningView = LedgerPairWarningView()
 
-    override func configureAppearance() {
-        super.configureAppearance()
-        view.backgroundColor = Colors.Background.secondary
-    }
-
-    override func linkInteractors() {
-        super.linkInteractors()
-        ledgerPairWarningView.delegate = self
-    }
-
     override func prepareLayout() {
-        prepareWholeScreenLayoutFor(ledgerPairWarningView)
+        super.prepareLayout()
+        addLedgerPairWarningView()
+    }
+}
+
+extension LedgerPairWarningViewController {
+    private func addLedgerPairWarningView() {
+        ledgerPairWarningView.customize(LedgerPairWarningViewTheme())
+
+        contentView.addSubview(ledgerPairWarningView)
+        ledgerPairWarningView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+
+        ledgerPairWarningView.observe(event: .close) {
+            [weak self] in
+            guard let self = self else { return }
+            self.dismissScreen()
+            self.delegate?.ledgerPairWarningViewControllerDidTakeAction(self)
+        }
     }
 }
 
 extension LedgerPairWarningViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
-        return .preferred(496)
-    }
-}
-
-extension LedgerPairWarningViewController: LedgerPairWarningViewDelegate {
-    func ledgerPairWarningViewDidTakeAction(_ ledgerPairWarningView: LedgerPairWarningView) {
-        dismissScreen()
-        delegate?.ledgerPairWarningViewControllerDidTakeAction(self)
+        return .compressed
     }
 }
 
 protocol LedgerPairWarningViewControllerDelegate: AnyObject {
-    func ledgerPairWarningViewControllerDidTakeAction(_ ledgerPairWarningViewController: LedgerPairWarningViewController)
+    func ledgerPairWarningViewControllerDidTakeAction(
+        _ ledgerPairWarningViewController: LedgerPairWarningViewController
+    )
 }

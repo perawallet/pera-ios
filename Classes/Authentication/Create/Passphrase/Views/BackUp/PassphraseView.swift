@@ -21,6 +21,7 @@ import Foundation
 
 final class PassphraseView: View {
     private lazy var passphraseContainerView = UIView()
+
     private lazy var passphraseCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal

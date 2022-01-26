@@ -19,10 +19,10 @@ import MacaroonUIKit
 
 final class RekeyInstructionsViewModel {
     private(set) var subtitle: String?
-    private(set) var firstInstructionViewTitle: String?
-    private(set) var secondInstructionViewTitle: String?
-    private(set) var thirdInstructionViewTitle: String?
-    private(set) var fourthInstructionViewTitle: String?
+    private(set) var firstInstructionViewTitle: EditText?
+    private(set) var secondInstructionViewTitle: EditText?
+    private(set) var thirdInstructionViewTitle: EditText?
+    private(set) var fourthInstructionViewTitle: EditText?
 
     init(_ requiresLedgerConnection: Bool) {
         bindSubtitle(requiresLedgerConnection)
@@ -43,22 +43,22 @@ extension RekeyInstructionsViewModel {
     }
     
     private func bindFirstInstructionViewTitle() {
-        firstInstructionViewTitle = "rekey-instruction-first".localized
+        firstInstructionViewTitle = .string("rekey-instruction-first".localized)
     }
 
     private func bindSecondInstructionViewTitle(_ requiresLedgerConnection: Bool) {
         if requiresLedgerConnection {
-            secondInstructionViewTitle = "rekey-instruction-second-ledger".localized
+            secondInstructionViewTitle = .string("rekey-instruction-second-ledger".localized)
         } else {
-            secondInstructionViewTitle = "rekey-instruction-second-standard".localized
+            secondInstructionViewTitle = .string("rekey-instruction-second-standard".localized)
         }
     }
 
     private func bindThirdInstructionViewTitle() {
-        thirdInstructionViewTitle = "rekey-instruction-third".localized
+        thirdInstructionViewTitle = .string("rekey-instruction-third".localized)
     }
 
     private func bindFourthInstructionViewTitle() {
-        fourthInstructionViewTitle = "ledger-tutorial-bluetooth".localized
+        fourthInstructionViewTitle = .string("ledger-tutorial-bluetooth".localized)
     }
 }

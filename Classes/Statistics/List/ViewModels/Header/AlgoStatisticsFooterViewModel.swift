@@ -19,34 +19,38 @@ import Foundation
 import MacaroonUIKit
 
 final class AlgoStatisticsFooterViewModel {
-    private(set) var previousCloseViewModel: AlgoStatisticsInfoViewModel?
-    private(set) var openViewModel: AlgoStatisticsInfoViewModel?
+    private(set) var dailyVolumeInfoViewModel: AlgoStatisticsInfoViewModel?
+    private(set) var marketCapInfoViewModel: AlgoStatisticsInfoViewModel?
+    private(set) var allTimeHighInfoViewModel: AlgoStatisticsInfoViewModel?
 
-    init(
-        priceChange: AlgoUSDPriceChange,
-        timeInterval: AlgosUSDValueInterval,
-        currency: Currency
-    ) {
-        bindPreviousCloseViewModel(from: priceChange)
-        bindOpenViewModel(from: priceChange)
+    init() {
+        bindDailyVolumeInfoViewModel()
+        bindMarketCapInfoViewModel()
+        bindAllTimeHighInfoViewModel()
     }
 }
 
 extension AlgoStatisticsFooterViewModel {
-    private func bindPreviousCloseViewModel(from priceChange: AlgoUSDPriceChange) {
-        guard let openPrice = priceChange.firstPrice?.open,
-              let price = openPrice.toCurrencyStringForLabel else {
-            return
-        }
-
-        previousCloseViewModel = AlgoStatisticsInfoViewModel(title: "algo-statistics-previous-close".localized, value: "\(price)")
+    // <todo>
+    // Remove mocks
+    private func bindDailyVolumeInfoViewModel() {
+        dailyVolumeInfoViewModel = AlgoStatisticsInfoViewModel(
+            title: "algo-statistics-24h-volume".localized,
+            value: "63,041,896"
+        )
     }
-    private func bindOpenViewModel(from priceChange: AlgoUSDPriceChange) {
-        guard let openPrice = priceChange.firstPrice?.open,
-              let price = openPrice.toCurrencyStringForLabel else {
-            return
-        }
 
-        openViewModel = AlgoStatisticsInfoViewModel(title: "algo-statistics-open".localized, value: "\(price)")
+    private func bindMarketCapInfoViewModel() {
+        marketCapInfoViewModel = AlgoStatisticsInfoViewModel(
+            title: "algo-statistics-market-cap".localized,
+            value: "2.581B"
+        )
+    }
+
+    private func bindAllTimeHighInfoViewModel() {
+        allTimeHighInfoViewModel = AlgoStatisticsInfoViewModel(
+            title: "algo-statistics-all-time".localized,
+            value: "$2.9308"
+        )
     }
 }

@@ -38,6 +38,7 @@ final class AlgoStatisticsViewController: BaseScrollViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         fetchCurrency { [weak self] in
             self?.getChartData()
         }
@@ -95,11 +96,9 @@ extension AlgoStatisticsViewController {
 }
 
 extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
-    func algoStatisticsViewDidTapDate(_ view: AlgoStatisticsView) {
-        filterOptionsTransition.perform(
-            .algoStatisticsDateSelection(option: selectedTimeInterval, delegate: self),
-            by: .presentWithoutNavigationController
-        )
+    func algoStatisticsView(_ view: AlgoStatisticsView, didSelect timeInterval: AlgosUSDValueInterval) {
+        selectedTimeInterval = timeInterval
+        getChartData(for: timeInterval)
     }
 
     func algoStatisticsView(_ view: AlgoStatisticsView, didSelectItemAt index: Int) {
@@ -142,23 +141,15 @@ extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
     }
 }
 
-extension AlgoStatisticsViewController: AlgoStatisticsDateSelectionViewControllerDelegate {
-    func algoStatisticsDateSelectionViewController(
-        _ algoStatisticsDateSelectionViewController: AlgoStatisticsDateSelectionViewController,
-        didSelect selectedOption: AlgosUSDValueInterval
-    ) {
-        selectedTimeInterval = selectedOption
-        getChartData(for: selectedOption)
-    }
-}
-
 extension AlgoStatisticsViewController: AlgoStatisticsDataControllerDelegate {
     func algoStatisticsDataController(_ dataController: AlgoStatisticsDataController, didFetch values: [AlgosUSDValue]) {
+        loadingController?.stopLoading()
         chartEntries = values
         bindView(with: values)
     }
 
     func algoStatisticsDataControllerDidFailToFetch(_ dataController: AlgoStatisticsDataController) {
+        loadingController?.stopLoading()
         chartEntries = nil
     }
 

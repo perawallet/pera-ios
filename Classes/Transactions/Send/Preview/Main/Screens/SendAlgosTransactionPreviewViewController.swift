@@ -204,17 +204,26 @@ class SendAlgosTransactionPreviewViewController: SendTransactionPreviewViewContr
             return
         }
 
+        let viewModel = MaximumBalanceWarningViewModel(account: account)
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: "min-balance-title".localized,
+            description: viewModel.description ?? .empty,
+            primaryActionButtonTitle: "title-continue".localized,
+            secondaryActionButtonTitle: "title-cancel".localized,
+            primaryAction: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.composeTransactionData()
+            }
+        )
+
         bottomModalTransition.perform(
-            .maximumBalanceWarning(account: account, delegate: self),
+            .bottomWarning(configurator: configurator),
             by: .presentWithoutNavigationController
         )
-    }
-}
-
-extension SendAlgosTransactionPreviewViewController: MaximumBalanceWarningViewControllerDelegate {
-    func maximumBalanceWarningViewControllerDidConfirmWarning(_ maximumBalanceWarningViewController: MaximumBalanceWarningViewController) {
-        maximumBalanceWarningViewController.dismissScreen()
-        composeTransactionData()
     }
 }
 

@@ -48,6 +48,10 @@ final class AccountNameSetupView: View {
     func setListeners() {
         nextButton.addTarget(self, action: #selector(notifyDelegateToFinishAccountCreation), for: .touchUpInside)
     }
+
+    func bindData(_ name: String?) {
+        accountNameInputView.text = name
+    }
 }
 
 extension AccountNameSetupView {

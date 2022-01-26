@@ -62,7 +62,7 @@ extension TutorialStepViewModel {
         case .bluetoothConnection:
             self.steps = [
                 Troubleshoot(
-                    explanation: "ledger-troubleshooting-bluetooth-connection-html".localized.localized
+                    explanation: "ledger-troubleshooting-bluetooth-connection-html".localized
                 )
             ]
 

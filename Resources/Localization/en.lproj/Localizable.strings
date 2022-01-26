@@ -51,14 +51,14 @@
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "Add New Account";
-"account-type-selection-add-detail" = "I want a new account with a new address and recovery passphrase";
+"account-type-selection-add-detail" = "I want a new account with a new address and recovery passphrase.";
 "account-type-selection-create" = "Create New Account";
-"account-type-selection-create-detail" = "I want to create a new Algorand Account";
-"account-type-selection-watch-detail" = "I want to monitor an account that's\nheld in cold storage";
+"account-type-selection-create-detail" = "I want to create a new Algorand Account.";
+"account-type-selection-watch-detail" = "I want to monitor an account that's\nheld in cold storage.";
 "account-type-selection-recover" = "Recover With Passphrase";
-"account-type-selection-recover-detail" = "I already have an account";
+"account-type-selection-recover-detail" = "I already have an account.";
 "account-type-selection-ledger" = "Pair Ledger Device";
-"account-type-selection-ledger-detail" = "I want to create an account that is\nbacked by my Ledger hardware wallet";
+"account-type-selection-ledger-detail" = "I want to create an account that is\nbacked by my Ledger hardware wallet.";
 "account-welcome-wallet-title" = "Welcome to the\nAlgorand Wallet";
 
 // MARK: Introduction
@@ -569,9 +569,11 @@
 "ledger-pairing-issue-error-title" = "Having Ledger Nano X connection issues?";
 "ledger-pairing-issue-error-message" = "Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.";
 "ledger-pairing-first-warning-title" = "Pairing Ledger with Your Device";
-"ledger-pairing-first-warning-message-first" = "Is your Ledger paired with this device?";
-"ledger-pairing-first-warning-message-second" = "If not, please follow these steps:";
-"ledger-pairing-first-warning-message-description" = "· Open your Ledger device.\n· Close the Algorand app on the Ledger device.\n· On the Ledger homescreen, confirm pairing.\n· Once pairing is confirmed, open the Algorand Ledger app.";
+"ledger-pairing-first-warning-description" = "Is your Ledger paired with this device?\nIf not, please follow these steps:";
+"ledger-pairing-first-warning-message-first-instruction" = "Open your Ledger device.";
+"ledger-pairing-first-warning-message-second-instruction" = "Close the Algorand app on the Ledger device.";
+"ledger-pairing-first-warning-message-third-instruction" = "On the Ledger homescreen, confirm pairing.";
+"ledger-pairing-first-warning-message-fourth-instruction" = "Once pairing is confirmed, open the Algorand Ledger app.";
 
 // MARK: Watch Account
 "title-watch-account" = "Watch Account";
@@ -636,8 +638,8 @@
 "tutorial-action-title-passcode" = "Not now";
 "tutorial-action-title-ledger" = "How does it work?";
 
-"maximum-balance-warning-description" = "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
-"maximum-balance-standard-account-warning-description" = "Based on your account configuration, your minimum balance is %@.\n\n\nBy hitting continue, your transaction amount will be updated to maintain the Algorand Blockchain’s minimum required balance. You’ll be able to preview this change in the next step.";
+"maximum-balance-warning-description" = "Sending your maximum balance on this rekeyed account requires you to maintain a minimum balance of %@ Algos. This is to ensure that nothing changes with your rekeyed account.\n\nYour transaction amount will be automatically updated to reflect this change. You will be able to preview the transaction in the next step.";
+"maximum-balance-standard-account-warning-description" = "Based on your account configuration, your minimum balance is %@.\n\nBy hitting continue, your transaction amount will be updated to maintain the Algorand Blockchain’s minimum required balance. You’ll be able to preview this change in the next step.";
 "transaction-tutorial-title" = "Transacting Tips";
 "transaction-tutorial-subtitle" = "We notice that this is your first transaction. Before you finalize, keep in mind a couple of tips:";
 "transaction-tutorial-subtitle-other" = "Before you finalize your transaction, keep in mind a couple of tips:";
