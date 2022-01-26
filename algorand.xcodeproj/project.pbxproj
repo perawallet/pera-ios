@@ -2469,7 +2469,6 @@
 		9501BBD82757BD7100E2C3A7 /* SelectAssetViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9501BBD62757BD7000E2C3A7 /* SelectAssetViewControllerDataSource.swift */; };
 		9501BBD92757BD7100E2C3A7 /* SelectAssetViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9501BBD62757BD7000E2C3A7 /* SelectAssetViewControllerDataSource.swift */; };
 		950CC44F279801DD009BEEB2 /* WCSessionSaveErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B055FBF27973764004E3CA0 /* WCSessionSaveErrorLog.swift */; };
-		950CC450279801DF009BEEB2 /* WCSessionSaveErrorLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B055FBF27973764004E3CA0 /* WCSessionSaveErrorLog.swift */; };
 		9511C297242E2B3C003211ED /* BaseControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C296242E2B3C003211ED /* BaseControl.swift */; };
 		9511C298242E2B3C003211ED /* BaseControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C296242E2B3C003211ED /* BaseControl.swift */; };
 		9511C29B242E2B6C003211ED /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9511C29A242E2B6C003211ED /* Checkbox.swift */; };
@@ -14217,7 +14216,6 @@
 				F0DB419D279496A600EA437D /* ShowQrCodeListActionViewModel.swift in Sources */,
 				17BD4EB72292F1260003E49A /* ApplicationConfiguration.swift in Sources */,
 				D41F934F272309F000E9F2E7 /* InstructionItemViewTheme.swift in Sources */,
-				950CC450279801DF009BEEB2 /* WCSessionSaveErrorLog.swift in Sources */,
 				D4241FC426E763BD0064CDD0 /* FloatingTextInputFieldViewTheme.swift in Sources */,
 				D4AEDD35271C6FC400AD2725 /* AlgoStatisticsInfoView.swift in Sources */,
 				D43A0C5C2790DA63007430B9 /* ResultViewTheme.swift in Sources */,
