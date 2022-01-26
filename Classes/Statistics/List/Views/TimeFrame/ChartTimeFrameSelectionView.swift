@@ -76,8 +76,8 @@ extension ChartTimeFrameSelectionView {
             $1.customizeAppearance(theme.buttonStyle)
             $1.draw(corner: theme.buttonCorner)
 
-            $1.setEditTitle(
-                AlgosUSDValueInterval.casesOtherThanHourly[$0].textForChartTimeFrameSelection(),
+            $1.setTitle(
+                AlgosUSDValueInterval.casesOtherThanHourly[$0].toStringForChartTimeFrameSelection(),
                 for: .normal
             )
 
@@ -135,26 +135,6 @@ extension ChartTimeFrameSelectionView {
     private func toggleButton(_ button: UIButton, isSelected: Bool) {
         button.isSelected = isSelected
         button.backgroundColor = button.isSelected ? theme.selectedButtonBackgroundColor.uiColor : .clear
-    }
-}
-
-
-fileprivate extension AlgosUSDValueInterval {
-    func textForChartTimeFrameSelection() -> EditText? {
-        switch self {
-        case .hourly:
-            fatalError("Hourly interval is not available on chart time frame selection.")
-        case .daily:
-            return .string("chart-time-selection-daily".localized)
-        case .weekly:
-            return .string("chart-time-selection-weekly".localized)
-        case .monthly:
-            return .string("chart-time-selection-monthly".localized)
-        case .yearly:
-            return .string("chart-time-selection-yearly".localized)
-        case .all:
-            return .string("chart-time-selection-all".localized)
-        }
     }
 }
 

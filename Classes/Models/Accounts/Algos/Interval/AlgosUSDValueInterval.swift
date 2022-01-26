@@ -79,6 +79,23 @@ enum AlgosUSDValueInterval: CaseIterable {
         }
     }
 
+    func toStringForChartTimeFrameSelection() -> String {
+        switch self {
+        case .hourly:
+            return "chart-time-selection-hourly".localized
+        case .daily:
+            return "chart-time-selection-daily".localized
+        case .weekly:
+            return "chart-time-selection-weekly".localized
+        case .monthly:
+            return "chart-time-selection-monthly".localized
+        case .yearly:
+            return "chart-time-selection-yearly".localized
+        case .all:
+            return "chart-time-selection-all".localized
+        }
+    }
+
     /// <note>
     /// Used in chart time frame selection
     static let casesOtherThanHourly: [AlgosUSDValueInterval] = [.daily, .weekly, .monthly, .yearly, .all]
