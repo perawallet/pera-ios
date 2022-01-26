@@ -402,7 +402,10 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             }
         )
 
-        modalTransition.perform(.bottomWarning(configurator: configurator), by: .present)
+        modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
     }
 
     private func presentInitialWarningAlertIfNeeded() {
@@ -420,7 +423,10 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
             secondaryActionButtonTitle: "title-close".localized
         )
 
-        modalTransition.perform(.bottomWarning(configurator: configurator), by: .present)
+        modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
         oneTimeDisplayStorage.setDisplayedOnce(for: .wcInitialWarning)
     }
 }
