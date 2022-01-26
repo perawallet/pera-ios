@@ -23,23 +23,13 @@ class LedgerAccountVerifyOperation: LedgerOperation, BLEConnectionManagerDelegat
     let bleConnectionManager = BLEConnectionManager()
     let ledgerBleController = LedgerBLEController()
 
-    var ledgerApprovalViewController: LedgerApprovalViewController?
-
-    var shouldDisplayLedgerApprovalModal: Bool {
-        return false
-    }
-
-    var timer: Timer?
     var connectedDevice: CBPeripheral?
 
     weak var delegate: LedgerAccountVerifyOperationDelegate?
 
     private var ledgerDetail: LedgerDetail?
 
-    private let bannerController: BannerController?
-
-    init(bannerController: BannerController?) {
-        self.bannerController = bannerController
+    init() {
         bleConnectionManager.delegate = self
         ledgerBleController.delegate = self
     }
@@ -71,10 +61,6 @@ extension LedgerAccountVerifyOperation {
         }
 
         guard let address = parseAddress(from: data) else {
-           bannerController?.presentErrorBanner(
-                title: "ble-error-transmission-title".localized,
-                message: "ble-error-fail-fetch-account-address".localized
-            )
             reset()
             delegate?.ledgerAccountVerifyOperation(self, didFailed: .failedToFetchAddress)
             return
@@ -96,11 +82,21 @@ extension LedgerAccountVerifyOperation {
         connectedDevice = nil
         stopScan()
         disconnectFromCurrentDevice()
-        ledgerApprovalViewController?.dismissScreen()
     }
+
+    func returnError(_ error: LedgerOperationError) {
+        delegate?.ledgerAccountVerifyOperation(self, didFailed: error)
+    }
+
+    func finishTimingOperation() {
+        delegate?.ledgerAccountVerifyOperationDidFinishTimingOperation(self)
+    }
+
+    func requestUserApproval() {}
 }
 
 protocol LedgerAccountVerifyOperationDelegate: AnyObject {
     func ledgerAccountVerifyOperation(_ ledgerAccountVerifyOperation: LedgerAccountVerifyOperation, didVerify account: String)
     func ledgerAccountVerifyOperation(_ ledgerAccountVerifyOperation: LedgerAccountVerifyOperation, didFailed error: LedgerOperationError)
+    func ledgerAccountVerifyOperationDidFinishTimingOperation(_ ledgerAccountVerifyOperation: LedgerAccountVerifyOperation)
 }
