@@ -39,8 +39,8 @@ class WCAssetDeletionTransactionViewModel {
         setSenderInformationViewModel(from: senderAccount, and: transaction)
         setAssetInformationViewModel(from: assetDetail)
         setAssetWarningViewModel()
-        setCloseWarningInformationViewModel(from: transaction, and: assetDetail)
-        setRekeyWarningInformationViewModel(from: transaction)
+        setCloseWarningViewModel(from: transaction, and: assetDetail)
+        setRekeyWarningViewModel(from: senderAccount, and: transaction)
         setFeeInformationViewModel(from: transaction)
         setFeeWarningViewModel(from: transaction)
         setNoteInformationViewModel(from: transaction)
@@ -85,7 +85,7 @@ class WCAssetDeletionTransactionViewModel {
         assetWarningInformationViewModel = WCTransactionWarningViewModel(warning: .assetDelete)
     }
     
-    private func setCloseWarningInformationViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
+    private func setCloseWarningViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
         guard let transactionDetail = transaction.transactionDetail,
               let closeAddress = transactionDetail.closeAddress,
               let assetDetail = assetDetail else {
@@ -101,7 +101,7 @@ class WCAssetDeletionTransactionViewModel {
         self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: assetDetail))
     }
 
-    private func setRekeyWarningInformationViewModel(from transaction: WCTransaction) {
+    private func setRekeyWarningViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
         guard let rekeyAddress = transaction.transactionDetail?.rekeyAddress else {
             return
         }
@@ -112,6 +112,11 @@ class WCAssetDeletionTransactionViewModel {
         )
 
         self.rekeyInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+
+        guard rekeyAddress == senderAccount?.address else {
+            return
+        }
+
         self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }
 
