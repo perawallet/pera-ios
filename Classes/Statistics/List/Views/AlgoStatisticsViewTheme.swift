@@ -39,7 +39,8 @@ struct AlgoStatisticsViewTheme: StyleSheet, LayoutSheet {
         self.chartVerticalInset = 15
         self.chartHeight = 180
         self.footerViewPaddings = (42, 21, .noMetric, 21)
-        self.bottomInset = 32
+        let tabBarHeight = 50.0
+        self.bottomInset = 36 + tabBarHeight
         self.chartTimeFrameSelectionViewTopPadding = 40
     }
 }

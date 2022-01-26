@@ -78,7 +78,6 @@ extension AlgoStatisticsView {
         chartTimeFrameSelectionView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalTo(lineChartView.snp.bottom).offset(theme.chartTimeFrameSelectionViewTopPadding)
-            $0.height.equalTo(28.0)
         }
     }
 

@@ -38,6 +38,7 @@ final class AlgoStatisticsViewController: BaseScrollViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadingController?.startLoadingWithMessage("title-loading".localized)
         fetchCurrency { [weak self] in
             self?.getChartData()
         }
@@ -159,11 +160,13 @@ extension AlgoStatisticsViewController: AlgoStatisticsDateSelectionViewControlle
 
 extension AlgoStatisticsViewController: AlgoStatisticsDataControllerDelegate {
     func algoStatisticsDataController(_ dataController: AlgoStatisticsDataController, didFetch values: [AlgosUSDValue]) {
+        loadingController?.stopLoading()
         chartEntries = values
         bindView(with: values)
     }
 
     func algoStatisticsDataControllerDidFailToFetch(_ dataController: AlgoStatisticsDataController) {
+        loadingController?.stopLoading()
         chartEntries = nil
     }
 

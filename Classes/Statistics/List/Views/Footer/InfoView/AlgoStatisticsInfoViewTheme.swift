@@ -21,6 +21,7 @@ struct AlgoStatisticsInfoViewTheme: LayoutSheet, StyleSheet {
     let title: TextStyle
     let value: TextStyle
     let verticalPadding: LayoutMetric
+    let minimumHorizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.title = [
@@ -30,11 +31,12 @@ struct AlgoStatisticsInfoViewTheme: LayoutSheet, StyleSheet {
             .textAlignment(.left)
         ]
         self.value = [
-            .font(Fonts.DMMono.regular.make(19)),
+            .font(Fonts.DMMono.regular.make(15)),
             .textColor(AppColors.Components.Text.main),
             .textOverflow(SingleLineFittingText()),
-            .textAlignment(.left)
+            .textAlignment(.right)
         ]
-        self.verticalPadding = 12
+        self.verticalPadding = 16
+        self.minimumHorizontalPadding = 4
     }
 }
