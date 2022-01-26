@@ -18,7 +18,7 @@
 import UIKit
 
 final class AccountRecoverViewController: BaseScrollViewController {
-    private lazy var optionsModalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var bottomSheetTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var inputSuggestionsViewController: InputSuggestionViewController = {
         let inputSuggestionViewController = InputSuggestionViewController(configuration: configuration)
@@ -166,7 +166,7 @@ extension AccountRecoverViewController {
     }
 
     private func openRecoverOptions() {
-        optionsModalTransition.perform(
+        bottomSheetTransition.perform(
             .recoverOptions(delegate: self),
             by: .presentWithoutNavigationController
         )
@@ -430,23 +430,32 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
     }
 
     private func displayRecoverError(_ error: AccountRecoverDataController.RecoverError) {
+        let errorTitle: String
+        let errorDescription: String
+
         switch error {
         case .alreadyExist:
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "recover-from-seed-verify-exist-error".localized
-            )
+            errorTitle = "title-error"
+            errorDescription = "recover-from-seed-verify-exist-error"
         case .invalid:
-            bannerController?.presentErrorBanner(
-                title: "passphrase-verify-invalid-title".localized,
-                message: "pass-phrase-verify-invalid-passphrase".localized
-            )
+            errorTitle = "passphrase-verify-invalid-title"
+            errorDescription = "pass-phrase-verify-invalid-passphrase"
         case .sdk:
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "pass-phrase-verify-sdk-error".localized
-            )
+            errorTitle = "title-error"
+            errorDescription = "pass-phrase-verify-sdk-error"
         }
+
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: errorTitle.localized,
+            description: errorDescription.localized,
+            secondaryActionButtonTitle: "title-close".localized
+        )
+
+        bottomSheetTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
