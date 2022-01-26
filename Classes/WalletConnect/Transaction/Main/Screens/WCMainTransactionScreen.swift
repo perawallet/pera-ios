@@ -59,6 +59,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     }()
 
     private var headerTransaction: WCTransaction?
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
@@ -66,7 +67,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return WCTransactionSigner(api: api, bannerController: bannerController)
+        return WCTransactionSigner(api: api)
     }()
 
     private var transactionParams: TransactionParams?
@@ -328,6 +329,25 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         }
     }
 
+    func wcTransactionSigner(
+        _ wcTransactionSigner: WCTransactionSigner,
+        didRequestUserApprovalFrom ledger: String
+    ) {
+        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+            .ledgerApproval(mode: .approve, deviceName: ledger),
+            by: .present
+        )
+    }
+
+    func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner) {
+
+    }
+
+    func wcTransactionSignerDidResetLedgerOperation(_ wcTransactionSigner: WCTransactionSigner) {
+        ledgerApprovalViewController?.dismissScreen()
+    }
+
     private func showLedgerError(_ ledgerError: LedgerOperationError) {
         switch ledgerError {
         case .cancelled:
@@ -337,6 +357,21 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
         case .closedApp:
             bannerController?.presentErrorBanner(
                 title: "ble-error-ledger-connection-title".localized, message: "ble-error-ledger-connection-open-app-error".localized
+            )
+        case .failedToFetchAddress:
+            bannerController?.presentErrorBanner(
+                title: "ble-error-transmission-title".localized,
+                message: "ble-error-fail-fetch-account-address".localized
+            )
+        case .failedToFetchAccountFromIndexer:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "ledger-account-fetct-error".localized
+            )
+        case let .custom(title, message):
+            bannerController?.presentErrorBanner(
+                title: title,
+                message: message
             )
         default:
             break

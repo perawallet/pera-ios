@@ -24,49 +24,14 @@ protocol LedgerOperation: AnyObject {
     func handleDiscoveryResults(_ peripherals: [CBPeripheral])
     func reset()
 
-    var shouldDisplayLedgerApprovalModal: Bool { get }
-    var ledgerApprovalViewController: LedgerApprovalViewController? { get set }
-    
-    var timer: Timer? { get set }
-    func startTimer()
-    func stopTimer()
+    func returnError(_ error: LedgerOperationError)
+    func finishTimingOperation()
+    func requestUserApproval()
     
     var connectedDevice: CBPeripheral? { get set }
     
     var bleConnectionManager: BLEConnectionManager { get }
     var ledgerBleController: LedgerBLEController { get }
-}
-
-extension LedgerOperation {
-    func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
-            guard let self = self else {
-                timer.invalidate()
-                return
-            }
-            
-            DispatchQueue.main.async {
-                (self.topMostController as? BaseViewController)?.loadingController?.stopLoading()
-                self.bleConnectionManager.stopScan()
-
-                (self.topMostController as? BaseViewController)?.bannerController?.presentErrorBanner(
-                    title: "ble-error-connection-title".localized,
-                    message: ""
-                )
-
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                    self.presentConnectionSupportWarningAlert()
-                }
-            }
-            
-            self.stopTimer()
-        }
-    }
-    
-    func stopTimer() {
-        timer?.invalidate()
-        timer = nil
-    }
 }
 
 extension LedgerOperation {
@@ -85,10 +50,6 @@ extension LedgerOperation {
     func disconnectFromCurrentDevice() {
         bleConnectionManager.disconnect(from: connectedDevice)
     }
-    
-    var topMostController: UIViewController? {
-        return UIApplication.shared.rootViewController()?.topMostController
-    }
 }
 
 extension LedgerOperation where Self: BLEConnectionManagerDelegate {
@@ -98,9 +59,8 @@ extension LedgerOperation where Self: BLEConnectionManagerDelegate {
     
     func bleConnectionManager(_ bleConnectionManager: BLEConnectionManager, didConnect peripheral: CBPeripheral) {
         connectedDevice = peripheral
-        (self.topMostController as? BaseViewController)?.loadingController?.stopLoading()
-        stopTimer()
-        presentLedgerApprovalModal()
+        finishTimingOperation()
+        requestUserApproval()
     }
     
     func bleConnectionManagerEnabledToWrite(_ bleConnectionManager: BLEConnectionManager) {
@@ -119,19 +79,12 @@ extension LedgerOperation where Self: BLEConnectionManagerDelegate {
                     return
             }
 
-            (self.topMostController as? BaseViewController)?.bannerController?.presentErrorBanner(title: errorTitle, message: errorSubtitle)
-            stopTimer()
-            (self.topMostController as? BaseViewController)?.loadingController?.stopLoading()
+            returnError(.custom(title: errorTitle, message: errorSubtitle))
+            finishTimingOperation()
         default:
             reset()
-            (self.topMostController as? BaseViewController)?.bannerController?.presentErrorBanner(
-                title: "ble-error-connection-title".localized,
-                message: "".localized
-            )
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                self.presentConnectionSupportWarningAlert()
-            }
+            returnError(.custom(title: "ble-error-connection-title".localized, message: ""))
+            returnError(.ledgerConnectionWarning)
         }
     }
 }
@@ -163,46 +116,15 @@ extension LedgerOperation {
     }
 }
 
-extension LedgerOperation {
-    private func presentLedgerApprovalModal() {
-        if !shouldDisplayLedgerApprovalModal {
-            return
-        }
-        
-        if let presentingViewController = topMostController {
-            let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: presentingViewController)
-            ledgerApprovalViewController = ledgerApprovalTransition.perform(
-                .ledgerApproval(mode: .approve, deviceName: (connectedDevice?.name).emptyIfNil),
-                by: .present
-            )
-        }
-    }
-
-    private func presentConnectionSupportWarningAlert() {
-        if let presentingViewController = topMostController {
-           let warningModalTransition = BottomSheetTransition(presentingViewController: presentingViewController)
-
-            let warningAlert = WarningAlert(
-                title: "ledger-pairing-issue-error-title".localized,
-                image: img("img-warning-circle"),
-                description: "ble-error-fail-ble-connection-repairing".localized,
-                actionTitle: "title-ok".localized
-            )
-
-            warningModalTransition.perform(
-                .warningAlert(warningAlert: warningAlert),
-                by: .presentWithoutNavigationController
-            )
-        }
-    }
-}
-
 enum LedgerOperationError: Error {
     case connection
     case failedToFetchAddress
+    case failedToFetchAccountFromIndexer
     case cancelled
     case closedApp
     case failedToSign
     case unknown
     case unmatchedAddress
+    case ledgerConnectionWarning
+    case custom(title: String, message: String)
 }

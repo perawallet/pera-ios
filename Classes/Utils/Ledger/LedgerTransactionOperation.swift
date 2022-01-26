@@ -26,14 +26,7 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
     var ledgerBleController: LedgerBLEController {
         return accountFetchOperation.ledgerBleController
     }
-    
-    var ledgerApprovalViewController: LedgerApprovalViewController?
 
-    var shouldDisplayLedgerApprovalModal: Bool {
-        return true
-    }
-
-    var timer: Timer?
     var connectedDevice: CBPeripheral?
     
     private var isCorrectLedgerAddressFetched = false
@@ -43,19 +36,14 @@ class LedgerTransactionOperation: LedgerOperation, BLEConnectionManagerDelegate,
     private var ledgerAccountIndex = 0
     
     private let api: ALGAPI
-    private let bannerController: BannerController?
     
     private var account: Account?
     private var unsignedTransactionData: Data?
     
-    private lazy var accountFetchOperation = LedgerAccountFetchOperation(
-        api: api,
-        bannerController: bannerController
-    )
+    private lazy var accountFetchOperation = LedgerAccountFetchOperation(api: api)
     
-    init(api: ALGAPI, bannerController: BannerController?) {
+    init(api: ALGAPI) {
         self.api = api
-        self.bannerController = bannerController
         bleConnectionManager.delegate = self
         ledgerBleController.delegate = self
         accountFetchOperation.delegate = self
@@ -124,9 +112,21 @@ extension LedgerTransactionOperation {
         stopScan()
         disconnectFromCurrentDevice()
         unsignedTransactionData = nil
-        ledgerApprovalViewController?.dismissScreen()
         connectedDevice = nil
+        delegate?.ledgerTransactionOperationDidResetOperation(self)
         isCorrectLedgerAddressFetched = false
+    }
+
+    func returnError(_ error: LedgerOperationError) {
+        delegate?.ledgerTransactionOperation(self, didFailed: error)
+    }
+
+    func finishTimingOperation() {
+        delegate?.ledgerTransactionOperationDidFinishTimingOperation(self)
+    }
+
+    func requestUserApproval() {
+        delegate?.ledgerTransactionOperation(self, didRequestUserApprovalFor: (connectedDevice?.name).emptyIfNil)
     }
 }
 
@@ -160,8 +160,7 @@ extension LedgerTransactionOperation {
 extension LedgerTransactionOperation: LedgerAccountFetchOperationDelegate {
     func ledgerAccountFetchOperation(
         _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
-        didReceive accounts: [Account],
-        in ledgerApprovalViewController: LedgerApprovalViewController?
+        didReceive accounts: [Account]
     ) {
         completeLedgerAccountFetchOperationResults(for: accounts)
         proceedSigningTransactionByLedgerIfPossible()
@@ -184,9 +183,6 @@ extension LedgerTransactionOperation: LedgerAccountFetchOperationDelegate {
         if isCorrectLedgerAddressFetched {
             sendTransactionSignInstruction()
         } else {
-            bannerController?.presentErrorBanner(
-                title: "ble-error-ledger-connection-title".localized, message: "ledger-transaction-account-match-error".localized
-            )
             reset()
             delegate?.ledgerTransactionOperation(self, didFailed: .unmatchedAddress)
         }
@@ -199,9 +195,27 @@ extension LedgerTransactionOperation: LedgerAccountFetchOperationDelegate {
         reset()
         delegate?.ledgerTransactionOperation(self, didFailed: error)
     }
+
+    func ledgerAccountFetchOperation(
+        _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
+        didRequestUserApprovalFor ledger: String
+    ) {
+
+    }
+
+    func ledgerAccountFetchOperationDidFinishTimingOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation) {
+        delegate?.ledgerTransactionOperationDidFinishTimingOperation(self)
+    }
+
+    func ledgerAccountFetchOperationDidResetOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation) {
+        
+    }
 }
 
 protocol LedgerTransactionOperationDelegate: AnyObject {
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didReceiveSignature data: Data)
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError)
+    func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didRequestUserApprovalFor ledger: String)
+    func ledgerTransactionOperationDidFinishTimingOperation(_ ledgerTransactionOperation: LedgerTransactionOperation)
+    func ledgerTransactionOperationDidResetOperation(_ ledgerTransactionOperation: LedgerTransactionOperation)
 }
