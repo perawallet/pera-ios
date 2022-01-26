@@ -37,7 +37,7 @@ final class WCUnsignedRequestView: BaseView {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
-        collectionView.contentInset = UIEdgeInsets(top: 36, left: 0, bottom: theme.collectionViewBottomOffset + theme.buttonHeight, right: 0)
+        collectionView.contentInset = UIEdgeInsets(top: 36, left: 0, bottom: theme.collectionViewBottomOffset, right: 0)
         collectionView.register(
             WCMultipleTransactionItemCell.self,
             forCellWithReuseIdentifier: WCMultipleTransactionItemCell.reusableIdentifier
@@ -153,9 +153,7 @@ extension WCUnsignedRequestView {
     private func addCollectionView() {
         addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
 
