@@ -38,7 +38,6 @@ extension TransactionsViewController: CSVExportable {
         }
 
         let draft = TransactionFetchDraft(account: draft.accountHandle.value, dates: dates, nextToken: token, assetId: assetId, limit: nil)
-        var csvTransactions = [Transaction]()
 
         api?.fetchTransactions(draft) { [weak self] response in
             guard let self = self else {
@@ -48,11 +47,13 @@ extension TransactionsViewController: CSVExportable {
             switch response {
             case .failure:
                 self.loadingController?.stopLoading()
+                self.csvTransactions.removeAll()
             case let .success(transactions):
-                csvTransactions.append(contentsOf: transactions.transactions)
+                self.csvTransactions.append(contentsOf: transactions.transactions)
 
                 if transactions.nextToken == nil {
-                    self.shareCSVFile(for: csvTransactions)
+                    self.shareCSVFile()
+                    self.csvTransactions.removeAll()
                     return
                 }
 
@@ -61,7 +62,7 @@ extension TransactionsViewController: CSVExportable {
         }
     }
 
-    private func shareCSVFile(for transactions: [Transaction]) {
+    private func shareCSVFile() {
         let keys: [String] = [
             "transaction-detail-amount".localized,
             "transaction-detail-reward".localized,
@@ -77,7 +78,7 @@ extension TransactionsViewController: CSVExportable {
         ]
         let config = CSVConfig(fileName: formCSVFileName(), keys: NSOrderedSet(array: keys))
 
-        if let fileUrl = exportCSV(from: createCSVData(from: transactions), with: config) {
+        if let fileUrl = exportCSV(from: createCSVData(from: csvTransactions), with: config) {
             loadingController?.stopLoading()
 
             let activityViewController = UIActivityViewController(activityItems: [fileUrl], applicationActivities: nil)

@@ -28,6 +28,8 @@ class TransactionsViewController: BaseViewController {
     private(set) var compoundAsset: CompoundAsset?
     private(set) var filterOption = TransactionFilterViewController.FilterOption.allTime
 
+    lazy var csvTransactions = [Transaction]()
+
     private lazy var listLayout = TransactionsListLayout(
         draft: draft,
         transactionsDataSource: transactionsDataSource
