@@ -136,7 +136,7 @@ class WCAssetAdditionTransactionViewModel {
 
         self.rekeyInformationViewModel = TransactionTextInformationViewModel(titledInformation)
 
-        guard rekeyAddress == senderAccount?.address else {
+        guard senderAccount != nil else {
             return
         }
 
