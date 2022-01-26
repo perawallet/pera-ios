@@ -161,14 +161,13 @@ class WCAssetTransactionViewModel {
     private func setAmountInformationViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
         guard
             let assetDetail = assetDetail,
-            let amount = transaction.transactionDetail?.amount else {
+            let amount = transaction.transactionDetail?.amount.assetAmount(fromFraction: assetDetail.fractionDecimals) else {
                 return
         }
-        let amountValue = Decimal(amount)
 
         let amountViewModel = TransactionAmountViewModel(
             .normal(
-                amount: amountValue,
+                amount: amount,
                 isAlgos: false,
                 fraction: assetDetail.fractionDecimals,
                 assetSymbol: assetDetail.unitName
