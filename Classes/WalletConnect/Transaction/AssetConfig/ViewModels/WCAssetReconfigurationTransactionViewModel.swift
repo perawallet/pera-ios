@@ -18,18 +18,24 @@
 import UIKit
 
 class WCAssetReconfigurationTransactionViewModel {
+
     private(set) var senderInformationViewModel: TitledTransactionAccountNameViewModel?
-    private(set) var assetInformationViewModel: TransactionAssetViewModel?
-    private(set) var authAccountInformationViewModel: WCTransactionTextInformationViewModel?
-    private(set) var rekeyWarningInformationViewModel: WCTransactionAddressWarningInformationViewModel?
-    private(set) var closeWarningInformationViewModel: WCTransactionAddressWarningInformationViewModel?
-    private(set) var feeInformationViewModel: TitledTransactionAmountInformationViewModel?
+    private(set) var assetNameViewModel: WCAssetInformationViewModel?
+    private(set) var unitNameViewModel: TransactionTextInformationViewModel?
+    private(set) var closeInformationViewModel: TransactionTextInformationViewModel?
+    private(set) var closeWarningInformationViewModel: WCTransactionWarningViewModel?
+    private(set) var rekeyInformationViewModel: TransactionTextInformationViewModel?
+    private(set) var rekeyWarningInformationViewModel: WCTransactionWarningViewModel?
+    private(set) var amountInformationViewModel: TransactionAmountInformationViewModel?
+    private(set) var feeInformationViewModel: TransactionAmountInformationViewModel?
     private(set) var feeWarningViewModel: WCTransactionWarningViewModel?
-    private(set) var managerAccountViewModel: WCTransactionTextInformationViewModel?
-    private(set) var reserveAccountViewModel: WCTransactionTextInformationViewModel?
-    private(set) var freezeAccountViewModel: WCTransactionTextInformationViewModel?
-    private(set) var clawbackAccountViewModel: WCTransactionTextInformationViewModel?
-    private(set) var noteInformationViewModel: WCTransactionTextInformationViewModel?
+    private(set) var managerAccountViewModel: TransactionTextInformationViewModel?
+    private(set) var reserveAccountViewModel: TransactionTextInformationViewModel?
+    private(set) var freezeAccountViewModel: TransactionTextInformationViewModel?
+    private(set) var clawbackAccountViewModel: TransactionTextInformationViewModel?
+    private(set) var noteInformationViewModel: TransactionTextInformationViewModel?
+    private(set) var metadataInformationViewModel: TransactionTextInformationViewModel?
+
     private(set) var rawTransactionInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var assetURLInformationViewModel: WCTransactionActionableInformationViewModel?
     private(set) var algoExplorerInformationViewModel: WCTransactionActionableInformationViewModel?
@@ -37,7 +43,6 @@ class WCAssetReconfigurationTransactionViewModel {
     init(transaction: WCTransaction, senderAccount: Account?, assetDetail: AssetDetail?) {
         setSenderInformationViewModel(from: senderAccount, and: transaction)
         setAssetInformationViewModel(from: transaction, and: assetDetail)
-        setAuthAccountInformationViewModel(from: transaction)
         setCloseWarningInformationViewModel(from: transaction, and: assetDetail)
         setRekeyWarningInformationViewModel(from: transaction)
         setFeeInformationViewModel(from: transaction)
@@ -53,53 +58,31 @@ class WCAssetReconfigurationTransactionViewModel {
     }
 
     private func setSenderInformationViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
-        if let account = senderAccount {
-            senderInformationViewModel = TitledTransactionAccountNameViewModel(
-                title: "transaction-detail-from".localized,
-                account: account
-            )
-            return
-        }
-
         guard let senderAddress = transaction.transactionDetail?.sender else {
             return
         }
 
-        let account = Account(address: senderAddress, type: .standard)
-        senderInformationViewModel = TitledTransactionAccountNameViewModel(
-            title: "transaction-detail-from".localized,
+        let account: Account
+
+        if let senderAccount = senderAccount, senderAddress == senderAccount.address {
+            account = senderAccount
+        } else {
+            account = Account(address: senderAddress, type: .standard)
+        }
+
+        let viewModel = TitledTransactionAccountNameViewModel(
+            title: "transaction-detail-sender".localized,
             account: account,
-            hasImage: false
+            hasImage: account == senderAccount
         )
+
+        self.senderInformationViewModel = viewModel
     }
 
     private func setAssetInformationViewModel(from transaction: WCTransaction, and assetDetail: AssetDetail?) {
-        guard let assetDetail = assetDetail,
-              let transactionDetail = transaction.transactionDetail else {
-            return
-        }
-
-        assetInformationViewModel = TransactionAssetViewModel(
-            assetDetail: assetDetail,
-            isLastElement: transaction.signerAccount == nil &&
-                transaction.hasValidAuthAddressForSigner &&
-                !transactionDetail.hasRekeyOrCloseAddress
-        )
-    }
-
-    private func setAuthAccountInformationViewModel(from transaction: WCTransaction) {
-        guard let transactionDetail = transaction.transactionDetail,
-              let authAddress = transaction.authAddress,
-              transaction.hasValidAuthAddressForSigner else {
-            return
-        }
-
-        authAccountInformationViewModel = WCTransactionTextInformationViewModel(
-            information: TitledInformation(
-                title: "wallet-connect-transaction-title-auth-address".localized,
-                detail: authAddress
-            ),
-            isLastElement: !transactionDetail.hasRekeyOrCloseAddress
+        assetNameViewModel = WCAssetInformationViewModel(
+            title: "asset-title".localized,
+            assetDetail: assetDetail
         )
     }
 
@@ -110,11 +93,14 @@ class WCAssetReconfigurationTransactionViewModel {
             return
         }
 
-        closeWarningInformationViewModel = WCTransactionAddressWarningInformationViewModel(
-            address: closeAddress,
-            warning: .closeAsset(asset: assetDetail),
-            isLastElement: !transactionDetail.isRekeyTransaction
+        let titledInformation = TitledInformation(
+            title: "wallet-connect-transaction-warning-close-asset-title".localized,
+            detail: closeAddress
         )
+
+        self.closeInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+
+        self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: assetDetail))
     }
 
     private func setRekeyWarningInformationViewModel(from transaction: WCTransaction) {
@@ -122,11 +108,14 @@ class WCAssetReconfigurationTransactionViewModel {
             return
         }
 
-        rekeyWarningInformationViewModel = WCTransactionAddressWarningInformationViewModel(
-            address: rekeyAddress,
-            warning: .rekeyed,
-            isLastElement: true
+        let titledInformation = TitledInformation(
+            title: "wallet-connect-transaction-warning-rekey-title".localized,
+            detail: rekeyAddress
         )
+
+        self.rekeyInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+
+        self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }
 
     private func setFeeInformationViewModel(from transaction: WCTransaction) {
@@ -136,11 +125,17 @@ class WCAssetReconfigurationTransactionViewModel {
             return
         }
 
-        feeInformationViewModel = TitledTransactionAmountInformationViewModel(
-            title: "transaction-detail-fee".localized,
-            mode: .fee(value: fee),
-            isLastElement: !transactionDetail.hasHighFee
+        let feeViewModel = TransactionAmountViewModel(
+            .normal(
+                amount: fee.toAlgos,
+                isAlgos: true,
+                fraction: algosFraction
+            )
         )
+
+        let feeInformationViewModel = TransactionAmountInformationViewModel(transactionViewModel: feeViewModel)
+        feeInformationViewModel.setTitle("transaction-detail-fee".localized)
+        self.feeInformationViewModel = feeInformationViewModel
     }
 
     private func setFeeWarningViewModel(from transaction: WCTransaction) {
@@ -157,13 +152,12 @@ class WCAssetReconfigurationTransactionViewModel {
             return
         }
 
-        managerAccountViewModel = WCTransactionTextInformationViewModel(
-            information: TitledInformation(
-                title: "wallet-connect-asset-manager-title".localized,
-                detail: manager
-            ),
-            isLastElement: false
+        let titledInformation = TitledInformation(
+            title: "wallet-connect-asset-manager-title".localized,
+            detail: manager
         )
+
+        self.managerAccountViewModel = TransactionTextInformationViewModel(titledInformation)
     }
 
     private func setReserveAccountViewModel(from transaction: WCTransaction) {
@@ -171,13 +165,12 @@ class WCAssetReconfigurationTransactionViewModel {
             return
         }
 
-        reserveAccountViewModel = WCTransactionTextInformationViewModel(
-            information: TitledInformation(
-                title: "wallet-connect-asset-reserve-title".localized,
-                detail: reserve
-            ),
-            isLastElement: false
+        let titledInformation = TitledInformation(
+            title: "wallet-connect-asset-reserve-title".localized,
+            detail: reserve
         )
+
+        self.reserveAccountViewModel = TransactionTextInformationViewModel(titledInformation)
     }
 
     private func setFreezeAccountViewModel(from transaction: WCTransaction) {
@@ -185,13 +178,12 @@ class WCAssetReconfigurationTransactionViewModel {
             return
         }
 
-        freezeAccountViewModel = WCTransactionTextInformationViewModel(
-            information: TitledInformation(
-                title: "wallet-connect-asset-freeze-title".localized,
-                detail: frozen
-            ),
-            isLastElement: false
+        let titledInformation = TitledInformation(
+            title: "wallet-connect-asset-freeze-title".localized,
+            detail: frozen
         )
+
+        self.freezeAccountViewModel = TransactionTextInformationViewModel(titledInformation)
     }
 
     private func setClawbackAccountViewModel(from transaction: WCTransaction) {
@@ -199,13 +191,12 @@ class WCAssetReconfigurationTransactionViewModel {
             return
         }
 
-        clawbackAccountViewModel = WCTransactionTextInformationViewModel(
-            information: TitledInformation(
-                title: "wallet-connect-asset-clawback-title".localized,
-                detail: clawback
-            ),
-            isLastElement: true
+        let titledInformation = TitledInformation(
+            title: "wallet-connect-asset-clawback-title".localized,
+            detail: clawback
         )
+
+        self.clawbackAccountViewModel = TransactionTextInformationViewModel(titledInformation)
     }
 
     private func setNoteInformationViewModel(from transaction: WCTransaction) {
@@ -213,10 +204,12 @@ class WCAssetReconfigurationTransactionViewModel {
             return
         }
 
-        noteInformationViewModel = WCTransactionTextInformationViewModel(
-            information: TitledInformation(title: "transaction-detail-note".localized, detail: note),
-            isLastElement: false
+        let titledInformation = TitledInformation(
+            title: "transaction-detail-note".localized,
+            detail: note
         )
+
+        self.noteInformationViewModel = TransactionTextInformationViewModel(titledInformation)
     }
 
     private func setRawTransactionInformationViewModel(from transaction: WCTransaction) {

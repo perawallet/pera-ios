@@ -22,7 +22,7 @@ final class LedgerAccountVerificationViewController: BaseScrollViewController {
     private lazy var ledgerAccountVerificationView = LedgerAccountVerificationView()
     private lazy var verifyButton = Button()
 
-    private lazy var ledgerAccountVerificationOperation = LedgerAccountVerifyOperation(bannerController: bannerController)
+    private lazy var ledgerAccountVerificationOperation = LedgerAccountVerifyOperation()
     private lazy var dataController = LedgerAccountVerificationDataController(accounts: selectedAccounts)
 
     private lazy var accountOrdering = AccountOrdering(
@@ -228,15 +228,47 @@ extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationD
         verifyNextAccountIfExist()
     }
 
+    func ledgerAccountVerifyOperationDidFinishTimingOperation(_ ledgerAccountVerifyOperation: LedgerAccountVerifyOperation) {
+        
+    }
+
     func ledgerAccountVerifyOperation(_ ledgerAccountVerifyOperation: LedgerAccountVerifyOperation, didFailed error: LedgerOperationError) {
-        if error != .cancelled {
+        switch error {
+        case .failedToFetchAddress:
+            bannerController?.presentErrorBanner(
+                 title: "ble-error-transmission-title".localized,
+                 message: "ble-error-fail-fetch-account-address".localized
+             )
+            return
+        case .cancelled:
+            break
+        case let .custom(title, message):
+            bannerController?.presentErrorBanner(
+                title: title,
+                message: message
+            )
+        case .ledgerConnectionWarning:
+            let warningModalTransition = BottomSheetTransition(presentingViewController: self)
+
+             let warningAlert = WarningAlert(
+                 title: "ledger-pairing-issue-error-title".localized,
+                 image: img("img-warning-circle"),
+                 description: "ble-error-fail-ble-connection-repairing".localized,
+                 actionTitle: "title-ok".localized
+             )
+
+             warningModalTransition.perform(
+                 .warningAlert(warningAlert: warningAlert),
+                 by: .presentWithoutNavigationController
+             )
+        default:
             bannerController?.presentErrorBanner(
                 title: "ble-error-ledger-connection-title".localized,
                 message: "ble-error-ledger-connection-open-app-error".localized
             )
             return
         }
-        
+
         updateCurrentVerificationStatusView(with: .unverified)
 
         if dataController.isLastAccount(currentVerificationAccount) {

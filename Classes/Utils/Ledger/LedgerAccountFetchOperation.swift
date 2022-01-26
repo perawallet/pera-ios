@@ -21,12 +21,7 @@ import CoreBluetooth
 final class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDelegate, LedgerBLEControllerDelegate {
     let bleConnectionManager = BLEConnectionManager()
     let ledgerBleController = LedgerBLEController()
-    
-    var ledgerApprovalViewController: LedgerApprovalViewController?
 
-    let shouldDisplayLedgerApprovalModal = true
-    
-    var timer: Timer?
     var connectedDevice: CBPeripheral?
     
     private var ledgerAccounts = [Account]()
@@ -37,11 +32,9 @@ final class LedgerAccountFetchOperation: LedgerOperation, BLEConnectionManagerDe
     weak var delegate: LedgerAccountFetchOperationDelegate?
     
     private let api: ALGAPI
-    private let bannerController: BannerController?
 
-    init(api: ALGAPI, bannerController: BannerController?) {
+    init(api: ALGAPI) {
         self.api = api
-        self.bannerController = bannerController
         self.bleConnectionManager.delegate = self
         self.ledgerBleController.delegate = self
     }
@@ -65,9 +58,6 @@ extension LedgerAccountFetchOperation {
         }
 
         guard let address = parseAddress(from: data) else {
-            self.bannerController?.presentErrorBanner(
-                title: "ble-error-transmission-title".localized, message: "ble-error-fail-fetch-account-address".localized
-            )
             reset()
             delegate?.ledgerAccountFetchOperation(self, didFailed: .failedToFetchAddress)
             return
@@ -84,8 +74,20 @@ extension LedgerAccountFetchOperation {
         stopScan()
         disconnectFromCurrentDevice()
         connectedDevice = nil
-        ledgerApprovalViewController?.dismissScreen()
+        delegate?.ledgerAccountFetchOperationDidResetOperation(self)
         ledgerAccounts.removeAll()
+    }
+
+    func returnError(_ error: LedgerOperationError) {
+        delegate?.ledgerAccountFetchOperation(self, didFailed: error)
+    }
+
+    func finishTimingOperation() {
+        delegate?.ledgerAccountFetchOperationDidFinishTimingOperation(self)
+    }
+
+    func requestUserApproval() {
+        delegate?.ledgerAccountFetchOperation(self, didRequestUserApprovalFor: (connectedDevice?.name).emptyIfNil)
     }
 }
 
@@ -95,11 +97,7 @@ extension LedgerAccountFetchOperation {
             switch response {
             case .success(let accountWrapper):
                 if !accountWrapper.account.isSameAccount(with: address) {
-                    (self.topMostController as? BaseViewController)?.bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "ledger-account-fetct-error".localized
-                    )
-                    
+                    self.delegate?.ledgerAccountFetchOperation(self, didFailed: .failedToFetchAccountFromIndexer)
                     UIApplication.shared.firebaseAnalytics?.record(
                         MismatchAccountErrorLog(requestedAddress: address, receivedAddress: accountWrapper.account.address)
                     )
@@ -123,10 +121,7 @@ extension LedgerAccountFetchOperation {
                         self.ledgerAccounts.append(account)
                     }
                 } else {
-                    self.bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "ledger-account-fetct-error".localized
-                    )
+                    self.delegate?.ledgerAccountFetchOperation(self, didFailed: .failedToFetchAccountFromIndexer)
                 }
                 self.returnAccounts()
             }
@@ -146,7 +141,7 @@ extension LedgerAccountFetchOperation {
     }
     
     private func returnAccounts() {
-        delegate?.ledgerAccountFetchOperation(self, didReceive: ledgerAccounts, in: ledgerApprovalViewController)
+        delegate?.ledgerAccountFetchOperation(self, didReceive: ledgerAccounts)
     }
 
     private var isInitialAccount: Bool {
@@ -157,9 +152,11 @@ extension LedgerAccountFetchOperation {
 protocol LedgerAccountFetchOperationDelegate: AnyObject {
     func ledgerAccountFetchOperation(
         _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
-        didReceive accounts: [Account],
-        in ledgerApprovalViewController: LedgerApprovalViewController?
+        didReceive accounts: [Account]
     )
     func ledgerAccountFetchOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation, didDiscover peripherals: [CBPeripheral])
     func ledgerAccountFetchOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation, didFailed error: LedgerOperationError)
+    func ledgerAccountFetchOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation, didRequestUserApprovalFor ledger: String)
+    func ledgerAccountFetchOperationDidFinishTimingOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation)
+    func ledgerAccountFetchOperationDidResetOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation)
 }

@@ -16,71 +16,100 @@
 //   WCAssetTransactionView.swift
 
 import UIKit
+import MacaroonUIKit
 
 class WCAssetTransactionView: WCSingleTransactionView {
 
     weak var delegate: WCAssetTransactionViewDelegate?
 
-    private lazy var accountInformationView = TitledTransactionAccountNameView()
+    private lazy var theme = Theme()
 
-    private lazy var assetInformationView: TransactionAssetView = {
-        let assetInformationView = TransactionAssetView()
-        assetInformationView.setAssetAlignment(.right)
-        return assetInformationView
-    }()
+    private lazy var fromView = TitledTransactionAccountNameView()
+    private lazy var toView = TitledTransactionAccountNameView()
+    private lazy var balanceView = TransactionAmountInformationView()
 
-    private lazy var receiverInformationView = WCTransactionTextInformationView()
+    private lazy var assetInformationView = WCAssetInformationView()
 
-    private lazy var authAccountInformationView = WCTransactionTextInformationView()
+    private lazy var closeInformationView = TransactionTextInformationView()
+    private lazy var closeWarningInformationView = WCTransactionWarningView()
+    private lazy var rekeyInformationView = TransactionTextInformationView()
+    private lazy var rekeyWarningInformationView = WCTransactionWarningView()
 
-    private lazy var rekeyWarningInformationView = WCTransactionAddressWarningInformationView()
+    private lazy var amountView = TransactionAmountInformationView()
+    private lazy var feeView = TransactionAmountInformationView()
+    private lazy var warningFeeView = WCTransactionWarningView()
 
-    private lazy var closeWarningInformationView = WCTransactionAddressWarningInformationView()
+    private lazy var noteView = TransactionTextInformationView()
 
-    private lazy var balanceInformationView = TitledTransactionAmountInformationView()
-
-    private lazy var amountInformationView = TitledTransactionAmountInformationView()
-
-    private lazy var feeInformationView = TitledTransactionAmountInformationView()
-
-    private lazy var feeWarningView = WCContainedTransactionWarningView()
-
-    private lazy var noteInformationView = WCTransactionTextInformationView()
-
-    private lazy var rawTransactionInformationView = WCTransactionActionableInformationView()
+    private lazy var topButtonsContainer = HStackView()
+    private lazy var rawTransactionButton = UIButton()
 
     override func prepareLayout() {
         super.prepareLayout()
         addParticipantInformationViews()
         addTransactionInformationViews()
         addDetailedInformationViews()
+        addButtons()
     }
 
     override func setListeners() {
-        rawTransactionInformationView.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
+        rawTransactionButton.addTarget(self, action: #selector(notifyDelegateToOpenRawTransaction), for: .touchUpInside)
+    }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+
+        backgroundColor = AppColors.Shared.System.background.uiColor
     }
 }
 
 extension WCAssetTransactionView {
     private func addParticipantInformationViews() {
-        addParticipantInformationView(accountInformationView)
+        fromView.customize(theme.accountInformationTheme)
+        toView.customize(theme.accountInformationTheme)
+        balanceView.customize(theme.amountInformationTheme)
+        assetInformationView.customize(theme.assetInformationTheme)
+
+        closeInformationView.customize(theme.textInformationTheme)
+        rekeyInformationView.customize(theme.textInformationTheme)
+
+        addParticipantInformationView(fromView)
+        addParticipantInformationView(toView)
+        addParticipantInformationView(balanceView)
         addParticipantInformationView(assetInformationView)
-        addParticipantInformationView(balanceInformationView)
-        addParticipantInformationView(authAccountInformationView)
+        addParticipantInformationView(closeInformationView)
         addParticipantInformationView(closeWarningInformationView)
+        addParticipantInformationView(rekeyInformationView)
         addParticipantInformationView(rekeyWarningInformationView)
     }
 
     private func addTransactionInformationViews() {
-        addTransactionInformationView(receiverInformationView)
-        addTransactionInformationView(amountInformationView)
-        addTransactionInformationView(feeInformationView)
-        addTransactionInformationView(feeWarningView)
+        amountView.customize(theme.amountInformationTheme)
+        feeView.customize(theme.amountInformationTheme)
+
+        addTransactionInformationView(amountView)
+        addTransactionInformationView(feeView)
+        addTransactionInformationView(warningFeeView)
     }
 
     private func addDetailedInformationViews() {
-        addDetailedInformationView(noteInformationView)
-        addDetailedInformationView(rawTransactionInformationView)
+        noteView.customize(theme.textInformationTheme)
+        addDetailedInformationView(noteView)
+    }
+
+    private func addButtons() {
+        rawTransactionButton.customizeAppearance(theme.rawTransactionButtonStyle)
+        rawTransactionButton.layer.draw(corner: theme.buttonsCorner)
+
+        rawTransactionButton.contentEdgeInsets = UIEdgeInsets(theme.buttonEdgeInsets)
+
+        addButton(topButtonsContainer)
+
+        topButtonsContainer.addArrangedSubview(rawTransactionButton)
+
+        let spacer = UIView()
+        spacer.setContentCompressionResistancePriority(.required, for: .horizontal)
+        topButtonsContainer.addArrangedSubview(spacer)
     }
 }
 
@@ -93,72 +122,91 @@ extension WCAssetTransactionView {
 
 extension WCAssetTransactionView {
     func bind(_ viewModel: WCAssetTransactionViewModel) {
-        accountInformationView.bind(viewModel.senderInformationViewModel)
+
+        if let fromInformationViewModel = viewModel.fromInformationViewModel {
+            unhideViewAnimatedIfNeeded(fromView)
+            fromView.bindData(fromInformationViewModel)
+        } else {
+            fromView.hideViewInStack()
+        }
+
+        if let toInformationViewModel = viewModel.toInformationViewModel {
+            unhideViewAnimatedIfNeeded(toView)
+            toView.bindData(toInformationViewModel)
+        } else {
+            toView.hideViewInStack()
+        }
+
+        if let balanceViewModel = viewModel.balanceViewModel {
+            unhideViewAnimatedIfNeeded(balanceView)
+            balanceView.bindData(balanceViewModel)
+        } else {
+            balanceView.hideViewInStack()
+        }
 
         if let assetInformationViewModel = viewModel.assetInformationViewModel {
-            assetInformationView.bind(assetInformationViewModel)
             unhideViewAnimatedIfNeeded(assetInformationView)
+            assetInformationView.bindData(assetInformationViewModel)
         } else {
             assetInformationView.hideViewInStack()
         }
 
-        if let receiverInformationViewModel = viewModel.receiverInformationViewModel {
-            receiverInformationView.bind(receiverInformationViewModel)
-        }
-
-        if let authAccountInformationViewModel = viewModel.authAccountInformationViewModel {
-            authAccountInformationView.bind(authAccountInformationViewModel)
+        if let closeInformationViewModel = viewModel.closeInformationViewModel {
+            unhideViewAnimatedIfNeeded(closeInformationView)
+            closeInformationView.bindData(closeInformationViewModel)
         } else {
-            authAccountInformationView.hideViewInStack()
+            closeInformationView.hideViewInStack()
         }
 
-        if let closeWarningInformationViewModel = viewModel.closeWarningInformationViewModel {
-            closeWarningInformationView.bind(closeWarningInformationViewModel)
+        if let warningInformationViewModel = viewModel.closeWarningInformationViewModel {
             unhideViewAnimatedIfNeeded(closeWarningInformationView)
+            closeWarningInformationView.bind(warningInformationViewModel)
         } else {
             closeWarningInformationView.hideViewInStack()
         }
 
-        if let rekeyWarningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
-            rekeyWarningInformationView.bind(rekeyWarningInformationViewModel)
+        if let rekeyInformationViewModel = viewModel.rekeyInformationViewModel {
+            unhideViewAnimatedIfNeeded(rekeyInformationView)
+            rekeyInformationView.bindData(rekeyInformationViewModel)
+        } else {
+            rekeyInformationView.hideViewInStack()
+        }
+
+        if let warningInformationViewModel = viewModel.rekeyWarningInformationViewModel {
+            unhideViewAnimatedIfNeeded(rekeyWarningInformationView)
+            rekeyWarningInformationView.bind(warningInformationViewModel)
         } else {
             rekeyWarningInformationView.hideViewInStack()
         }
 
-        if let balanceInformationViewModel = viewModel.balanceInformationViewModel {
-            balanceInformationView.bind(balanceInformationViewModel)
-            unhideViewAnimatedIfNeeded(balanceInformationView)
+        if let amountViewModel = viewModel.amountViewModel {
+            unhideViewAnimatedIfNeeded(amountView)
+            amountView.bindData(amountViewModel)
         } else {
-            balanceInformationView.hideViewInStack()
+            amountView.hideViewInStack()
         }
 
-        if let amountInformationViewModel = viewModel.amountInformationViewModel {
-            amountInformationView.bind(amountInformationViewModel)
-            unhideViewAnimatedIfNeeded(amountInformationView)
+        if let feeViewModel = viewModel.feeViewModel {
+            unhideViewAnimatedIfNeeded(feeView)
+            feeView.bindData(feeViewModel)
         } else {
-            amountInformationView.hideViewInStack()
+            feeView.hideViewInStack()
         }
 
-        if let feeInformationViewModel = viewModel.feeInformationViewModel {
-            feeInformationView.bind(feeInformationViewModel)
+        if let feeWarningViewModel = viewModel.feeWarningInformationViewModel {
+            unhideViewAnimatedIfNeeded(warningFeeView)
+            warningFeeView.bind(feeWarningViewModel)
         } else {
-            feeInformationView.hideViewInStack()
-        }
-
-        if let feeWarningViewModel = viewModel.feeWarningViewModel {
-            feeWarningView.bind(feeWarningViewModel)
-        } else {
-            feeWarningView.hideViewInStack()
+            warningFeeView.hideViewInStack()
         }
 
         if let noteInformationViewModel = viewModel.noteInformationViewModel {
-            noteInformationView.bind(noteInformationViewModel)
+            showNoteStackView(true)
+            unhideViewAnimatedIfNeeded(noteView)
+            noteView.bindData(noteInformationViewModel)
         } else {
-            noteInformationView.hideViewInStack()
-        }
-
-        if let rawTransactionInformationViewModel = viewModel.rawTransactionInformationViewModel {
-            rawTransactionInformationView.bind(rawTransactionInformationViewModel)
+            showNoteStackView(false)
+            noteView.hideViewInStack()
         }
     }
 

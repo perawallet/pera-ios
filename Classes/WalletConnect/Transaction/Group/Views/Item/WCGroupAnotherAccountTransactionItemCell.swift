@@ -21,7 +21,7 @@ class WCGroupAnotherAccountTransactionItemCell: BaseCollectionViewCell<WCGroupTr
 
     override func prepareLayout() {
         super.prepareLayout()
-        contextView.accountInformationView.removeFromSuperview()
+        contextView.removeAccountInformation()
     }
 
     func bind(_ viewModel: WCGroupTransactionItemViewModel) {

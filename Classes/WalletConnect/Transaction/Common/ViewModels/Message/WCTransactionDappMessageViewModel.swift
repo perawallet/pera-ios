@@ -32,11 +32,11 @@ class WCTransactionDappMessageViewModel {
         img("icon-session-placeholder-4")
     ]
 
-    init(session: WCSession, text: String?, imageSize: CGSize) {
+    init(session: WCSession, imageSize: CGSize) {
         setImage(from: session, and: imageSize)
         setName(from: session)
-        setMessage(from: text)
-        setIsReadMoreHidden(from: text)
+        setMessage(from: session)
+        setIsReadMoreHidden()
     }
 
     private func setImage(from session: WCSession, and imageSize: CGSize) {
@@ -57,15 +57,11 @@ class WCTransactionDappMessageViewModel {
         name = session.peerMeta.name
     }
 
-    private func setMessage(from text: String?) {
-        if text.isNilOrEmpty {
-            return
-        }
-        
-        message = text
+    private func setMessage(from session: WCSession) {
+        message = session.peerMeta.description
     }
 
-    private func setIsReadMoreHidden(from text: String?) {
-        isReadMoreHidden = text.isNilOrEmpty
+    private func setIsReadMoreHidden() {
+        isReadMoreHidden = message.isNilOrEmpty
     }
 }

@@ -28,6 +28,8 @@ final class ManageAssetsViewController: BaseViewController {
     private lazy var manageAssetsView = ManageAssetsView()
     
     private var account: Account
+
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
     
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
@@ -245,6 +247,20 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
                 title: "title-error".localized,
                 message: error.debugDescription
             )
+        case .ledgerConnection:
+            let warningModalTransition = BottomSheetTransition(presentingViewController: self)
+
+             let warningAlert = WarningAlert(
+                 title: "ledger-pairing-issue-error-title".localized,
+                 image: img("img-warning-circle"),
+                 description: "ble-error-fail-ble-connection-repairing".localized,
+                 actionTitle: "title-ok".localized
+             )
+
+             warningModalTransition.perform(
+                 .warningAlert(warningAlert: warningAlert),
+                 by: .presentWithoutNavigationController
+             )
         default:
             break
         }
@@ -258,6 +274,18 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         default:
             bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
         }
+    }
+
+    func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) {
+        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+            .ledgerApproval(mode: .approve, deviceName: ledger),
+            by: .present
+        )
+    }
+
+    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
+        ledgerApprovalViewController?.dismissScreen()
     }
     
     private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetInformation? {

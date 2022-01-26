@@ -52,6 +52,10 @@ extension Account {
         return amount(for: assetDetail)?.toExactFractionLabel(fraction: assetDetail.fractionDecimals)
     }
 
+    func amountDisplayWithFraction(for assetInformation: AssetInformation) -> String? {
+        return amount(for: assetInformation)?.toExactFractionLabel(fraction: assetInformation.decimals)
+    }
+
     func amountNumberWithAutoFraction(for assetDetail: AssetInformation) -> String? {
         return amount(for: assetDetail)?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals)
     }

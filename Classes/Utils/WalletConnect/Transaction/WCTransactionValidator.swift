@@ -55,12 +55,12 @@ extension WCTransactionValidator {
         }
     }
 
+    private func hasValidTransactionCount(for transactions: [WCTransaction]) -> Bool {
+        return transactions.count <= supportedTransactionCount
+    }
+    
     private func hasInvalidTransactionDetail(among transactions: [WCTransaction]) -> Bool {
          return transactions.contains { $0.transactionDetail == nil }
-     }
-
-    private func hasValidTransactionCount(for transactions: [WCTransaction]) -> Bool {
-         return transactions.count <= supportedTransactionCount
     }
 
     private func hasValidAddresses(in transactions: [WCTransaction]) -> Bool {

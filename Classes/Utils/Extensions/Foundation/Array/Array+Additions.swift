@@ -59,6 +59,14 @@ extension Array {
         }
         return nil
     }
+
+    func previousElement(beforeElementAt i: Index) -> Element? {
+        return i > startIndex ? self[index(before: i)] : nil
+    }
+
+    func nextElement(afterElementAt i: Index) -> Element? {
+        return i < index(before: endIndex) ? self[index(after: i)] : nil
+    }
 }
 
 /// <todo>

@@ -26,10 +26,13 @@ final class LedgerDeviceListViewController: BaseViewController {
         guard let api = api else {
             fatalError("Api must be set before accessing this view controller.")
         }
-        return LedgerAccountFetchOperation(api: api, bannerController: bannerController)
+        return LedgerAccountFetchOperation(api: api)
     }()
 
     private lazy var initialPairingWarningTransition = BottomSheetTransition(presentingViewController: self)
+
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var timer: Timer?
 
     private let accountSetupFlow: AccountSetupFlow
     private var ledgerDevices = [CBPeripheral]()
@@ -49,6 +52,7 @@ final class LedgerDeviceListViewController: BaseViewController {
         super.viewWillAppear(animated)
         ledgerDeviceListView.startAnimatingImageView()
         ledgerDeviceListView.startAnimatingIndicatorView()
+        startTimer()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -56,6 +60,7 @@ final class LedgerDeviceListViewController: BaseViewController {
         ledgerAccountFetchOperation.reset()
         ledgerDeviceListView.stopAnimatingImageView()
         ledgerDeviceListView.stopAnimatingIndicatorView()
+        stopTimer()
     }
     
     override func linkInteractors() {
@@ -145,11 +150,52 @@ extension LedgerDeviceListViewController: LedgerPairWarningViewControllerDelegat
     }
 }
 
+extension LedgerDeviceListViewController {
+    private func presentConnectionSupportWarningAlert() {
+        let warningModalTransition = BottomSheetTransition(presentingViewController: self)
+
+        let warningAlert = WarningAlert(
+            title: "ledger-pairing-issue-error-title".localized,
+            image: img("img-warning-circle"),
+            description: "ble-error-fail-ble-connection-repairing".localized,
+            actionTitle: "title-ok".localized
+        )
+
+        warningModalTransition.perform(
+            .warningAlert(warningAlert: warningAlert),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+
+            self.ledgerAccountFetchOperation.bleConnectionManager.stopScan()
+
+            self.bannerController?.presentErrorBanner(
+                title: "ble-error-connection-title".localized,
+                message: ""
+            )
+
+            self.presentConnectionSupportWarningAlert()
+            self.stopTimer()
+        }
+    }
+
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+}
+
 extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
     func ledgerAccountFetchOperation(
         _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
-        didReceive accounts: [Account],
-        in ledgerApprovalViewController: LedgerApprovalViewController?
+        didReceive accounts: [Account]
     ) {
         ledgerDeviceListView.stopAnimatingIndicatorView()
 
@@ -181,8 +227,42 @@ extension LedgerDeviceListViewController: LedgerAccountFetchOperationDelegate {
                 title: "ble-error-ledger-connection-title".localized,
                 message: "ble-error-ledger-connection-open-app-error".localized
             )
+        case .failedToFetchAddress:
+            bannerController?.presentErrorBanner(
+                title: "ble-error-transmission-title".localized,
+                message: "ble-error-fail-fetch-account-address".localized
+            )
+        case .failedToFetchAccountFromIndexer:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "ledger-account-fetct-error".localized
+            )
+        case let .custom(title, message):
+            bannerController?.presentErrorBanner(
+                title: title,
+                message: message
+            )
         default:
             break
         }
+    }
+
+    func ledgerAccountFetchOperation(
+        _ ledgerAccountFetchOperation: LedgerAccountFetchOperation,
+        didRequestUserApprovalFor ledger: String
+    ) {
+        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+            .ledgerApproval(mode: .approve, deviceName: ledger),
+            by: .present
+        )
+    }
+
+    func ledgerAccountFetchOperationDidFinishTimingOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation) {
+        stopTimer()
+    }
+
+    func ledgerAccountFetchOperationDidResetOperation(_ ledgerAccountFetchOperation: LedgerAccountFetchOperation) {
+        ledgerApprovalViewController?.dismissScreen()
     }
 }

@@ -25,8 +25,14 @@ class WCGroupTransactionLayout: NSObject {
 
     private weak var dataSource: WCGroupTransactionDataSource?
 
-    init(dataSource: WCGroupTransactionDataSource) {
+    private let sharedDataController: SharedDataController
+
+    init(
+        dataSource: WCGroupTransactionDataSource,
+        sharedDataController: SharedDataController
+    ) {
         self.dataSource = dataSource
+        self.sharedDataController = sharedDataController
         super.init()
     }
 }
@@ -41,15 +47,18 @@ extension WCGroupTransactionLayout: UICollectionViewDelegateFlowLayout {
             return .zero
         }
 
-        if transaction.transactionDetail?.isAppCallTransaction ?? false {
-            return layout.current.appCallCellSize
-        }
-
-        if transaction.signerAccount == nil {
-            return layout.current.anotherAccountCellSize
-        }
-
-        return layout.current.cellSize
+        let viewModel = WCGroupTransactionItemViewModel(
+            transaction: transaction,
+            account: transaction.signerAccount,
+            assetInformation: assetInformation(from: transaction),
+            currency: sharedDataController.currency.value
+        )
+        
+        return WCGroupTransactionItemViewModel.calculatePreferredSize(
+            viewModel,
+            fittingIn: CGSize(width: UIScreen.main.bounds.width - 40.0,
+                              height: .greatestFiniteMagnitude)
+        )
     }
 
     func collectionView(
@@ -69,10 +78,15 @@ extension WCGroupTransactionLayout: UICollectionViewDelegateFlowLayout {
 
 extension WCGroupTransactionLayout {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let appCallCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 68.0)
-        let anotherAccountCellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 96.0)
-        let cellSize = CGSize(width: UIScreen.main.bounds.width - 40.0, height: 130.0)
-        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 176.0)
+        let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 100.0)
+    }
+
+    private func assetInformation(from transaction: WCTransaction) -> AssetInformation? {
+        guard let assetId = transaction.transactionDetail?.currentAssetId else {
+            return nil
+        }
+
+        return sharedDataController.assetDetailCollection[assetId]
     }
 }
 

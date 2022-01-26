@@ -29,4 +29,8 @@ final class TransactionAmountInformationViewModel: ViewModel {
     init(title: String?) {
         self.title = title
     }
+
+    func setTitle(_ title: String?) {
+        self.title = title
+    }
 }

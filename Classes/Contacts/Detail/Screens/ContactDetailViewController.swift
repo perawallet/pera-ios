@@ -257,14 +257,14 @@ extension ContactDetailViewController: EditContactViewControllerDelegate {
 }
 
 extension ContactDetailViewController: AccountListViewControllerDelegate {
-    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account) {
+    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: AccountHandle) {
         viewController.dismissScreen()
         
         if let assetDetail = selectedAsset {
             selectedAsset = nil
             open(
                 .sendAssetTransactionPreview(
-                    account: account,
+                    account: account.value,
                     receiver: .contact(contact),
                     assetDetail: assetDetail,
                     isSenderEditable: false,
@@ -273,7 +273,7 @@ extension ContactDetailViewController: AccountListViewControllerDelegate {
                 by: .push
             )
         } else {
-            open(.sendAlgosTransactionPreview(account: account, receiver: .contact(contact), isSenderEditable: false), by: .push)
+            open(.sendAlgosTransactionPreview(account: account.value, receiver: .contact(contact), isSenderEditable: false), by: .push)
         }
     }
 

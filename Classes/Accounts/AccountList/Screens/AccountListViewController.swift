@@ -26,7 +26,7 @@ final class AccountListViewController: BaseViewController {
     private lazy var accountListView = AccountListView()
     
     private lazy var accountListLayoutBuilder = AccountListLayoutBuilder(theme: theme)
-    private lazy var accountListDataSource = AccountListDataSource(mode: mode)
+    private lazy var accountListDataSource = AccountListDataSource(sharedDataController: sharedDataController, mode: mode)
     private var mode: Mode
     
     init(mode: Mode, configuration: ViewControllerConfiguration) {
@@ -100,5 +100,5 @@ extension AccountListViewController {
 }
 
 protocol AccountListViewControllerDelegate: AnyObject {
-    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: Account)
+    func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: AccountHandle)
 }

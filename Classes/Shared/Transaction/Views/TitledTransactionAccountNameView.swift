@@ -16,85 +16,90 @@
 //   TitledTransactionAccountNameView.swift
 
 import UIKit
+import MacaroonUIKit
+import SnapKit
 
-class TitledTransactionAccountNameView: BaseView {
+final class TitledTransactionAccountNameView: View {
+    private lazy var titleLabel = UILabel()
+    private lazy var imageView = UIImageView()
+    private lazy var nameLabel = UILabel()
 
-    private let layout = Layout<LayoutConstants>()
+    var nameLabelImageLeadingConstraint: Constraint?
+    var nameLabelLeadingConstraint: Constraint?
 
-    private lazy var titleLabel = TransactionDetailTitleLabel()
-
-    private lazy var accountNameView = ImageWithTitleView()
-
-    private lazy var separatorView = LineSeparatorView()
-
-    override func configureAppearance() {
-        backgroundColor = .clear
+    func customize(_ theme: TitledTransactionAccountNameViewTheme) {
+        addTitleLabel(theme)
+        addImageView(theme)
+        addNameLabel(theme)
     }
 
-    override func prepareLayout() {
-        setupTitleLabelLayout()
-        setupAccountNameViewLayout()
-        setupSeparatorViewLayout()
-    }
+    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: StyleSheet) {}
 }
 
 extension TitledTransactionAccountNameView {
-    private func setupTitleLabelLayout() {
+    private func addTitleLabel(_ theme: TitledTransactionAccountNameViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+
         addSubview(titleLabel)
-
-        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
-        titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-
-        titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.titleTopInset)
-            make.leading.equalToSuperview().inset(layout.current.defaultInset)
+        titleLabel.snp.makeConstraints {
+            $0.top.leading.equalToSuperview()
         }
     }
 
-    private func setupAccountNameViewLayout() {
-        addSubview(accountNameView)
-
-        accountNameView.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(layout.current.verticalInset)
-            make.leading.greaterThanOrEqualTo(titleLabel.snp.trailing).offset(layout.current.minimumOffset)
-            make.trailing.equalToSuperview().inset(layout.current.defaultInset)
-            make.bottom.equalToSuperview().inset(layout.current.verticalInset)
+    private func addImageView(_ theme: TitledTransactionAccountNameViewTheme) {
+        addSubview(imageView)
+        imageView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.detailLabelLeadingPadding)
+            $0.centerY.equalToSuperview()
+            $0.top.bottom.greaterThanOrEqualToSuperview().priority(.high)
+            $0.fitToSize(theme.accountTheme.imageSize)
         }
     }
 
-    private func setupSeparatorViewLayout() {
-        addSubview(separatorView)
+    private func addNameLabel(_ theme: TitledTransactionAccountNameViewTheme) {
+        nameLabel.customizeAppearance(theme.accountTheme.titleLabel)
 
-        separatorView.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.height.equalTo(layout.current.separatorHeight)
-            make.leading.trailing.equalToSuperview().inset(layout.current.defaultInset)
+        addSubview(nameLabel)
+        nameLabel.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview()
+
+            nameLabelImageLeadingConstraint = $0.leading.equalTo(imageView.snp.trailing)
+                .offset(theme.nameLeadingInset)
+                .constraint
+            nameLabelLeadingConstraint = $0.leading.equalToSuperview()
+                .inset(theme.detailLabelLeadingPadding)
+                .priority(.high)
+                .constraint
+            $0.trailing.equalToSuperview()
+
+            nameLabelLeadingConstraint?.deactivate()
         }
     }
 }
 
-extension TitledTransactionAccountNameView {
-    func bind(_ viewModel: TitledTransactionAccountNameViewModel?) {
-        guard let viewModel = viewModel else {
-            return
+extension TitledTransactionAccountNameView: ViewModelBindable {
+    func bindData(_ viewModel: TitledTransactionAccountNameViewModel?) {
+        if let title = viewModel?.title {
+            titleLabel.text = title
         }
 
-        titleLabel.text = viewModel.title
-        
-        if let accountNameViewModel = viewModel.accountNameViewModel {
-            accountNameView.bindData(accountNameViewModel)
-        }
+        if let accountNameViewModel = viewModel?.accountNameViewModel {
+            imageView.image = accountNameViewModel.image
+            nameLabel.text = accountNameViewModel.name
 
-        separatorView.isHidden = viewModel.isSeparatorHidden
+            imageView.isHidden = accountNameViewModel.image == nil
+
+            if accountNameViewModel.image == nil {
+                nameLabelLeadingConstraint?.activate()
+                nameLabelImageLeadingConstraint?.deactivate()
+            } else {
+                nameLabelLeadingConstraint?.deactivate()
+                nameLabelImageLeadingConstraint?.activate()
+            }
+
+        }
     }
 }
 
-extension TitledTransactionAccountNameView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let defaultInset: CGFloat = 20.0
-        let titleTopInset: CGFloat = 22.0
-        let verticalInset: CGFloat = 18.0
-        let minimumOffset: CGFloat = 4.0
-        let separatorHeight: CGFloat = 1.0
-    }
-}

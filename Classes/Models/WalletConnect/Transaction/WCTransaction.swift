@@ -16,6 +16,7 @@
 //   WCTransaction.swift
 
 import Foundation
+import Alamofire
 
 final class WCTransaction: Codable {
     private(set) var unparsedTransactionDetail: Data? // Transaction that is not parsed for msgpack, needs to be used for signing
@@ -25,6 +26,8 @@ final class WCTransaction: Codable {
     let message: String?
     let authAddress: String?
 
+    /// ID is used to separate the transactions that contains exactly the same elements.
+    private let id = UUID()
     private(set) var signerAccount: Account?
 
     required init(from decoder: Decoder) throws {
@@ -72,21 +75,21 @@ extension WCTransaction {
         return try? JSONDecoder().decode(WCTransactionDetail.self, from: jsonData)
     }
 
-    func findSignerAccount(in session: Session) {
+    func findSignerAccount(in accountCollection: AccountCollection, on session: Session) {
         if let authAddress = authAddress {
-            signerAccount = findAccount(authAddress, in: session)
+            signerAccount = findAccount(authAddress, in: accountCollection, on: session)
             return
         }
 
         switch signer() {
         case .sender:
             if let sender = transactionDetail?.sender {
-                signerAccount = findAccount(sender, in: session)
+                signerAccount = findAccount(sender, in: accountCollection, on: session)
                 return
             }
         case let .current(address):
             if let address = address {
-                signerAccount = findAccount(address, in: session)
+                signerAccount = findAccount(address, in: accountCollection, on: session)
                 return
             }
         case .multisig:
@@ -96,10 +99,16 @@ extension WCTransaction {
         }
     }
 
-    private func findAccount(_ address: String, in session: Session) -> Account? {
-        for account in session.accounts where !account.isWatchAccount() {
+    private func findAccount(
+        _ address: String,
+        in accountCollection: AccountCollection,
+        on session: Session
+    ) -> Account? {
+        for accountHandle in accountCollection where !accountHandle.value.isWatchAccount() {
+            let account = accountHandle.value
+
             if account.isRekeyed() && (account.address == address || account.authAddress == address) {
-                return findRekeyedAccount(for: account, among: session.accounts)
+                return findRekeyedAccount(for: account, among: accountCollection)
             }
 
             if account.isLedger() && account.ledgerDetail != nil && account.address == address {
@@ -114,7 +123,7 @@ extension WCTransaction {
         return nil
     }
 
-    private func findRekeyedAccount(for account: Account, among accounts: [Account]) -> Account? {
+    private func findRekeyedAccount(for account: Account, among accountCollection: AccountCollection) -> Account? {
         guard let authAddress = account.authAddress else {
             return nil
         }
@@ -122,10 +131,8 @@ extension WCTransaction {
         if account.rekeyDetail?[authAddress] != nil {
             return account
         } else {
-            if let authAccount = accounts.first(where: { account -> Bool in
-                authAddress == account.address
-            }),
-            let ledgerDetail = authAccount.ledgerDetail {
+            if let authAccount = accountCollection[authAddress]?.value,
+                let ledgerDetail = authAccount.ledgerDetail {
                 account.addRekeyDetail(ledgerDetail, for: authAddress)
                 return account
             }
@@ -227,6 +234,6 @@ extension WCTransaction {
 
 extension WCTransaction: Equatable {
     static func == (lhs: WCTransaction, rhs: WCTransaction) -> Bool {
-        return lhs.unparsedTransactionDetail == rhs.unparsedTransactionDetail && lhs.transactionDetail == rhs.transactionDetail
+        return lhs.id == rhs.id
     }
 }

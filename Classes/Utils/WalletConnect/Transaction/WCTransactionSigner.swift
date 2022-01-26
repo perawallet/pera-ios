@@ -22,18 +22,18 @@ class WCTransactionSigner {
 
     weak var delegate: WCTransactionSignerDelegate?
 
-    private lazy var ledgerTransactionOperation = LedgerTransactionOperation(api: api, bannerController: bannerController)
+    private lazy var ledgerTransactionOperation = LedgerTransactionOperation(api: api)
+
+    private var timer: Timer?
 
     private let api: ALGAPI
-    private let bannerController: BannerController?
 
     private var account: Account?
     private var transaction: WCTransaction?
     private var transactionRequest: WalletConnectRequest?
 
-    init(api: ALGAPI, bannerController: BannerController?) {
+    init(api: ALGAPI) {
         self.api = api
-        self.bannerController = bannerController
     }
 
     func signTransaction(_ transaction: WCTransaction, with transactionRequest: WalletConnectRequest, for account: Account) {
@@ -47,7 +47,7 @@ class WCTransactionSigner {
     func disonnectFromLedger() {
         ledgerTransactionOperation.disconnectFromCurrentDevice()
         ledgerTransactionOperation.stopScan()
-        ledgerTransactionOperation.stopTimer()
+        stopTimer()
     }
 }
 
@@ -63,13 +63,31 @@ extension WCTransactionSigner {
 
         ledgerTransactionOperation.setTransactionAccount(account)
         ledgerTransactionOperation.delegate = self
-        ledgerTransactionOperation.startTimer()
+        startTimer()
         ledgerTransactionOperation.setUnsignedTransactionData(unsignedTransaction)
 
         // Needs a bit delay since the bluetooth scanning for the first time is working initially
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.ledgerTransactionOperation.startScan()
         }
+    }
+
+    private func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+
+            self.ledgerTransactionOperation.bleConnectionManager.stopScan()
+            self.delegate?.wcTransactionSigner(self, didFailedWith: .ledger(error: .ledgerConnectionWarning))
+            self.stopTimer()
+        }
+    }
+
+    private func stopTimer() {
+        timer?.invalidate()
+        timer = nil
     }
 
     private func signStandardTransaction(_ transaction: WCTransaction, with request: WalletConnectRequest, for account: Account) {
@@ -104,6 +122,22 @@ extension WCTransactionSigner: LedgerTransactionOperationDelegate {
     func ledgerTransactionOperation(_ ledgerTransactionOperation: LedgerTransactionOperation, didFailed error: LedgerOperationError) {
         delegate?.wcTransactionSigner(self, didFailedWith: .ledger(error: error))
     }
+
+    func ledgerTransactionOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation,
+        didRequestUserApprovalFor ledger: String
+    ) {
+        delegate?.wcTransactionSigner(self, didRequestUserApprovalFrom: ledger)
+    }
+
+    func ledgerTransactionOperationDidFinishTimingOperation(_ ledgerTransactionOperation: LedgerTransactionOperation) {
+        stopTimer()
+        delegate?.wcTransactionSignerDidFinishTimingOperation(self)
+    }
+
+    func ledgerTransactionOperationDidResetOperation(_ ledgerTransactionOperation: LedgerTransactionOperation) {
+        delegate?.wcTransactionSignerDidResetLedgerOperation(self)
+    }
 }
 
 extension WCTransactionSigner: TransactionSignerDelegate {
@@ -122,4 +156,7 @@ extension WCTransactionSigner {
 protocol WCTransactionSignerDelegate: AnyObject {
     func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didSign transaction: WCTransaction, signedTransaction: Data)
     func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didFailedWith error: WCTransactionSigner.WCSignError)
+    func wcTransactionSigner(_ wcTransactionSigner: WCTransactionSigner, didRequestUserApprovalFrom ledger: String)
+    func wcTransactionSignerDidFinishTimingOperation(_ wcTransactionSigner: WCTransactionSigner)
+    func wcTransactionSignerDidResetLedgerOperation(_ wcTransactionSigner: WCTransactionSigner)
 }

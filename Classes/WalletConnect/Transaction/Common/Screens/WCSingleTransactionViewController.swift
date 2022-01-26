@@ -35,22 +35,18 @@ class WCSingleTransactionViewController: BaseScrollViewController {
 
     init(transaction: WCTransaction, transactionRequest: WalletConnectRequest, configuration: ViewControllerConfiguration) {
         self.transaction = transaction
-        self.account = configuration.session?.accounts.first(matching: (\.address, transaction.transactionDetail?.sender))
         self.transactionRequest = transactionRequest
         self.wcSession = configuration.walletConnector.getWalletConnectSession(with: WCURLMeta(wcURL: transactionRequest.url))
-        super.init(configuration: configuration)
+        if let address = transaction.transactionDetail?.sender {
+            self.account = configuration.sharedDataController.accountCollection[address]?.value
+        }
+        super.init(configuration: configuration)                                                      
     }
 
     override func configureAppearance() {
         super.configureAppearance()
-        if let wcSession = wcSession {
-            transactionView?.bind(WCSingleTransactionViewModel(wcSession: wcSession, transaction: transaction))
-        }
-    }
 
-    override func linkInteractors() {
-        super.linkInteractors()
-        transactionView?.mainDelegate = self
+        view.backgroundColor = AppColors.Shared.System.background.uiColor
     }
 
     override func prepareLayout() {
@@ -75,30 +71,9 @@ extension WCSingleTransactionViewController {
     }
 }
 
-extension WCSingleTransactionViewController: WCSingleTransactionViewDelegate {
-    func wcSingleTransactionViewDidOpenLongDappMessage(_ wcSingleTransactionView: WCSingleTransactionView) {
-        openLongDappMessageScreen()
-    }
-
-    @objc
-    private func openLongDappMessageScreen() {
-        guard let wcSession = wcSession,
-              let message = transaction.message else {
-            return
-        }
-        dappMessageModalTransition.perform(
-            .wcTransactionFullDappDetail(
-                wcSession: wcSession,
-                message: message
-            ),
-            by: .presentWithoutNavigationController
-        )
-    }
-}
-
 extension WCSingleTransactionViewController {
     private struct LayoutConstants: AdaptiveLayoutConstants {
-        let topInset: CGFloat = 8.0
+        let topInset: CGFloat = 36.0
         let bottomInset: CGFloat = 40.0
     }
 }

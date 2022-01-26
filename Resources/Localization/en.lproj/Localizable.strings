@@ -38,12 +38,16 @@
 "title-connect" = "Connect";
 "title-disconnect" = "Disconnect";
 "title-confirm" = "Confirm";
+"title-confirm-all" = "Confirm All";
 "title-decline" = "Decline";
 "title-decline-all" = "Decline All";
 "title-got-it" = "Got it!";
 "title-off" = "Off";
 "title-on" = "On";
 "title-retry" = "Retry";
+
+"title-show-transaction-detail" = "Show Transaction Details";
+"title-show-all-detail" = "Show All Details";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "Add New Account";
@@ -717,18 +721,28 @@
 "wallet-connect-transaction-warning-future" = "This transaction will be submitted in the future. ";
 "wallet-connect-transaction-warning-confirmation" = "Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
 
+// MARK: Wallet Connect Transaction Dapp Message
+"wallet-connect-transaction-dapp-show-more" = "Read More";
+
 // MARK: Wallet Connect Transaction
 "wallet-connect-transaction-title-transaction" = "Transaction Request";
 "wallet-connect-transaction-title-unsigned" = "Unsigned Transactions";
 "wallet-connect-transaction-title-atomic" = "Atomic Transaction Request";
 "wallet-connect-transaction-title-asset" = "Transfer Asset Request";
 "wallet-connect-transaction-title-opt-in" = "Assets Opt-in Request";
-"wallet-connect-transaction-title-app-call" = "App Call";
+"wallet-connect-transaction-title-possible-opt-in" = "Possible Assets Opt-in Request";
+"wallet-connect-transaction-title-app-call" = "Application Call";
+"wallet-connect-transaction-title-app-create" = "Application Creation";
+"wallet-connect-transaction-title-app-update" = "Application Call Update";
+"wallet-connect-transaction-title-app-delete" = "Application Call Delete";
 "wallet-connect-transaction-title-multiple" = "Multiple Transaction Request";
 "wallet-connect-transaction-all-count" = "All transactions (%d)";
 "wallet-connect-transaction-all-count-singular" = "All transaction (1)";
 "wallet-connect-transaction-request-count" = "Transaction Requests (%d)";
 "wallet-connect-transaction-request-count-singular" = "Transaction Request (1)";
+"wallet-connect-transaction-count" = "%d Transactions  ·  Group ID: %@";
+"wallet-connect-transaction-count-singular" = "1 Transaction  ·  Group ID: %@";
+"wallet-connect-group-transaction-header-title" = "GroupID: %@";
 "wallet-connect-transaction-group-id" = "Group ID";
 "wallet-connect-transaction-title-raw" = "Raw Txns";
 "wallet-connect-transaction-detail-raw" = "Show Raw Transaction";
@@ -865,6 +879,14 @@
 
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Order";
+
+"transaction-request-signing-alert-title" = "Are you sure?";
+
+// MARK: SingleTransactionRequest
+"single-transaction-request-show-detail-title" = "Show Transaction Details";
+"single-transaction-request-network-fee-title" = "Network Fee";
+"single-transaction-request-opt-in-title" = "Opt-in";
+"single-transaction-request-opt-in-subtitle" = "OnCompletion";
 
 // MARK: PortfolioDescription
 "portfolio-calculation-title" = "How we calculate portfolio value";

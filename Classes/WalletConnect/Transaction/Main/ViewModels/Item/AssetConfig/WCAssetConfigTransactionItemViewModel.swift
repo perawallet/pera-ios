@@ -23,11 +23,11 @@ class WCAssetConfigTransactionItemViewModel {
     private(set) var detail: String?
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
-    init(transaction: WCTransaction, account: Account?, assetDetail: AssetDetail?) {
+    init(transaction: WCTransaction, account: Account?, assetInformation: AssetInformation?) {
         setHasWarning(from: transaction)
         setTitle(from: transaction, and: account)
-        setDetail(from: transaction, and: account, with: assetDetail)
-        setAccountInformationViewModel(from: account, with: assetDetail)
+        setDetail(from: transaction, and: account, with: assetInformation)
+        setAccountInformationViewModel(from: account, with: assetInformation)
     }
 
     private func setHasWarning(from transaction: WCTransaction) {
@@ -60,7 +60,7 @@ class WCAssetConfigTransactionItemViewModel {
         }
     }
 
-    private func setDetail(from transaction: WCTransaction, and account: Account?, with assetDetail: AssetDetail?) {
+    private func setDetail(from transaction: WCTransaction, and account: Account?, with assetInformation: AssetInformation?) {
         guard let transactionDetail = transaction.transactionDetail,
               let transactionType = transactionDetail.transactionType(for: account),
               transactionDetail.isAssetConfigTransaction else {
@@ -75,8 +75,8 @@ class WCAssetConfigTransactionItemViewModel {
                     detail = "\(assetConfigParams.name ?? assetConfigParams.unitName ?? "title-unknown".localized)"
                 }
             case .reconfig:
-                if let assetDetail = assetDetail {
-                    detail = "\(assetDetail.assetName ?? assetDetail.unitName ?? "title-unknown".localized)"
+                if let assetInformation = assetInformation {
+                    detail = "\(assetInformation.name ?? assetInformation.unitName ?? "title-unknown".localized)"
                 }
             case .delete:
                 if let assetId = transactionDetail.assetIdBeingConfigured {
@@ -88,10 +88,10 @@ class WCAssetConfigTransactionItemViewModel {
         }
     }
 
-    private func setAccountInformationViewModel(from account: Account?, with assetDetail: AssetDetail?) {
+    private func setAccountInformationViewModel(from account: Account?, with assetInformation: AssetInformation?) {
         accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
             account: account,
-            assetDetail: nil,
+            assetInformation: nil,
             isDisplayingAmount: false
         )
     }
