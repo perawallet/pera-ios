@@ -18,6 +18,7 @@
 import Foundation
 
 enum AlgosUSDValueInterval: CaseIterable {
+    case hourly
     case daily
     case weekly
     case monthly
@@ -28,6 +29,8 @@ enum AlgosUSDValueInterval: CaseIterable {
         let currentDate = Date()
 
         switch self {
+        case .hourly:
+            return (since: TimeIntervalConstants.lastHour, until: currentDate.timeIntervalSince1970)
         case .daily:
             return (since: TimeIntervalConstants.yesterday, until: currentDate.timeIntervalSince1970)
         case .weekly:
@@ -44,6 +47,8 @@ enum AlgosUSDValueInterval: CaseIterable {
     // Time interval values that gets data from the api.
     func getIntervalRepresentation() -> String {
         switch self {
+        case .hourly:
+            return "5m"
         case .daily:
             return "15m"
         case .weekly:
@@ -59,6 +64,8 @@ enum AlgosUSDValueInterval: CaseIterable {
 
     func toString() -> String {
         switch self {
+        case .hourly:
+            return "chart-time-last-hour".localized
         case .daily:
             return "chart-time-last-day".localized
         case .weekly:
@@ -71,6 +78,10 @@ enum AlgosUSDValueInterval: CaseIterable {
             return "chart-time-all".localized
         }
     }
+
+    /// <note>
+    /// Used in chart time frame selection
+    static let casesOtherThanHourly: [AlgosUSDValueInterval] = [.daily, .weekly, .monthly, .yearly, .all]
 }
 
 private enum TimeIntervalConstants {

@@ -77,7 +77,7 @@ extension ChartTimeFrameSelectionView {
             $1.draw(corner: theme.buttonCorner)
 
             $1.setEditTitle(
-                AlgosUSDValueInterval.allCases[$0].textForChartTimeFrameSelection(),
+                AlgosUSDValueInterval.casesOtherThanHourly[$0].textForChartTimeFrameSelection(),
                 for: .normal
             )
 
@@ -142,6 +142,8 @@ extension ChartTimeFrameSelectionView {
 fileprivate extension AlgosUSDValueInterval {
     func textForChartTimeFrameSelection() -> EditText? {
         switch self {
+        case .hourly:
+            fatalError("Hourly interval is not available on chart time frame selection.")
         case .daily:
             return .string("chart-time-selection-daily".localized)
         case .weekly:

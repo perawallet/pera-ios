@@ -35,7 +35,8 @@ final class AlgoStatisticsDataController {
 extension AlgoStatisticsDataController {
     func getChartData(for interval: AlgosUSDValueInterval) {
         fetchData(for: interval)
-        
+        fetchDataForLastFiveMinutes()
+
         chartDispatchGroup.notify(queue: .main) { [weak self] in
             guard let self = self else {
                 return
@@ -57,6 +58,26 @@ extension AlgoStatisticsDataController {
             switch response {
             case let .success(result):
                 self.values = result.history
+            case .failure:
+                self.delegate?.algoStatisticsDataControllerDidFailToFetch(self)
+            }
+
+            self.chartDispatchGroup.leave()
+        }
+    }
+
+    // Fetch last five minute data to display the latest value on the chart.
+    private func fetchDataForLastFiveMinutes() {
+        chartDispatchGroup.enter()
+
+        api?.fetchAlgosUSDValue(AlgosUSDValueQuery(valueInterval: .hourly)) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+
+            switch response {
+            case let .success(result):
+                self.lastFiveMinutesValues = result.history.last
             case .failure:
                 self.delegate?.algoStatisticsDataControllerDidFailToFetch(self)
             }
