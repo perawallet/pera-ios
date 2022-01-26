@@ -41,6 +41,8 @@ final class AccountSelectScreen: BaseViewController {
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
+
     override func customizeTabBarAppearence() {
         tabBarHidden = false
     }
@@ -410,12 +412,37 @@ extension AccountSelectScreen: TransactionControllerDelegate {
                 title: "title-error".localized,
                 message: error.debugDescription
             )
+        case .ledgerConnection:
+            let warningModalTransition = BottomSheetTransition(presentingViewController: self)
+
+             let warningAlert = WarningAlert(
+                 title: "ledger-pairing-issue-error-title".localized,
+                 image: img("img-warning-circle"),
+                 description: "ble-error-fail-ble-connection-repairing".localized,
+                 actionTitle: "title-ok".localized
+             )
+
+             warningModalTransition.perform(
+                 .warningAlert(warningAlert: warningAlert),
+                 by: .presentWithoutNavigationController
+             )
         default:
             displaySimpleAlertWith(
                 title: "title-error".localized,
                 message: "title-internet-connection".localized
             )
         }
+    }
+
+    func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) {
+        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+            .ledgerApproval(mode: .approve, deviceName: ledger),
+            by: .present
+        )
+    }
+    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
+        ledgerApprovalViewController?.dismissScreen()
     }
 }
 

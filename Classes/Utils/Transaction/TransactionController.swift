@@ -25,10 +25,12 @@ class TransactionController {
     private let bannerController: BannerController?
     private var params: TransactionParams?
     private var transactionDraft: TransactionSendDraft?
+
+    private var timer: Timer?
     
     private let transactionData = TransactionData()
     
-    private lazy var ledgerTransactionOperation = LedgerTransactionOperation(api: api, bannerController: bannerController)
+    private lazy var ledgerTransactionOperation = LedgerTransactionOperation(api: api)
 
     private lazy var transactionAPIConnector = TransactionAPIConnector(api: api)
     
@@ -86,7 +88,23 @@ extension TransactionController {
         }
 
         ledgerTransactionOperation.delegate = self
-        ledgerTransactionOperation.startTimer()
+
+        timer = Timer.scheduledTimer(withTimeInterval: 15.0, repeats: false) { [weak self] timer in
+            guard let self = self else {
+                timer.invalidate()
+                return
+            }
+
+            self.ledgerTransactionOperation.bleConnectionManager.stopScan()
+
+            self.bannerController?.presentErrorBanner(
+                title: "ble-error-connection-title".localized,
+                message: ""
+            )
+
+            self.delegate?.transactionController(self, didFailedComposing: .inapp(.ledgerConnection))
+            self.stopTimer()
+        }
     }
 
     func stopTimer() {
@@ -94,7 +112,8 @@ extension TransactionController {
             return
         }
 
-        ledgerTransactionOperation.stopTimer()
+        timer?.invalidate()
+        timer = nil
     }
 
     func initializeLedgerTransactionAccount() {
@@ -287,9 +306,44 @@ extension TransactionController: LedgerTransactionOperationDelegate {
                 title: "ble-error-ledger-connection-title".localized,
                 message: "ble-error-ledger-connection-open-app-error".localized
             )
+        case .unmatchedAddress:
+            bannerController?.presentErrorBanner(
+                title: "ble-error-ledger-connection-title".localized,
+                message: "ledger-transaction-account-match-error".localized
+            )
+        case .failedToFetchAddress:
+            bannerController?.presentErrorBanner(
+                title: "ble-error-transmission-title".localized,
+                message: "ble-error-fail-fetch-account-address".localized
+            )
+        case .failedToFetchAccountFromIndexer:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "ledger-account-fetct-error".localized
+            )
+        case let .custom(title, message):
+            bannerController?.presentErrorBanner(
+                title: title,
+                message: message
+            )
         default:
             break
         }
+    }
+
+    func ledgerTransactionOperation(
+        _ ledgerTransactionOperation: LedgerTransactionOperation,
+        didRequestUserApprovalFor ledger: String
+    ) {
+        delegate?.transactionController(self, didRequestUserApprovalFrom: ledger)
+    }
+
+    func ledgerTransactionOperationDidFinishTimingOperation(_ ledgerTransactionOperation: LedgerTransactionOperation) {
+        stopTimer()
+    }
+
+    func ledgerTransactionOperationDidResetOperation(_ ledgerTransactionOperation: LedgerTransactionOperation) {
+        delegate?.transactionControllerDidResetLedgerOperation(self)
     }
 }
 
@@ -403,6 +457,7 @@ enum TransactionError: Error, Hashable {
     case invalidAddress(address: String)
     case sdkError(error: NSError?)
     case draft(draft: TransactionSendDraft?)
+    case ledgerConnection
     case other
 }
 
@@ -415,7 +470,8 @@ extension TransactionError {
         case .invalidAddress: hasher.combine(1)
         case .sdkError: hasher.combine(2)
         case .draft: hasher.combine(3)
-        case .other: hasher.combine(4)
+        case .ledgerConnection: hasher.combine(4)
+        case .other: hasher.combine(5)
         }
     }
 
@@ -428,6 +484,7 @@ extension TransactionError {
         case (.invalidAddress, .invalidAddress): return true
         case (.sdkError, .sdkError): return true
         case (.draft, .draft): return true
+        case (.ledgerConnection, .ledgerConnection): return true
         case (.other, .other): return true
         default: return false
         }

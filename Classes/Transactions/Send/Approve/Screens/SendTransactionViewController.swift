@@ -115,4 +115,8 @@ extension SendTransactionViewController: TransactionControllerDelegate {
             bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
         }
     }
+
+    func transactionControllerDidRequestUserApprovalFromLedger(_ transactionController: TransactionController) {
+
+    }
 }
