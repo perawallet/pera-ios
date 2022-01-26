@@ -308,9 +308,10 @@
 "settings-notification-disabled-go-settings-text" = "You have disabled notifications. Please go to Settings and enable this option.";
 "settings-notification-enabled-go-settings-text" = "You have enabled notifications. Please go to Settings and disable this option.";
 "settings-logout-title" = "Delete All Data";
-"settings-logout-detail" = "Are you sure you want to delete all the data?";
+"settings-logout-detail" = "You are about to delete all data in the wallet, including your stored accounts. Make sure to have your account passphrases stored elsewhere before confirming. You will not be able to restore your accounts otherwise. Are you sure you would like to proceed?";
 "settings-logout-button-delete" = "Yes, delete all data";
 "settings-logout-button-cancel" = "Keep it";
+"settings-logout-success-message" = "Your data has been deleted successfully";
 "settings-developer" = "Developer Settings";
 "settings-currency" = "Currency";
 "settings-developer-dispenser" = "Algorand Dispenser";

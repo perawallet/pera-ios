@@ -27,7 +27,7 @@ final class NotificationFilterViewController: BaseViewController {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return NotificationFilterDataSource(api: api)
+        return NotificationFilterDataSource(sharedDataController: sharedDataController, api: api)
     }()
 
     private lazy var listLayout = NotificationFilterListLayout(dataSource: dataSource)
@@ -96,16 +96,21 @@ extension NotificationFilterViewController: NotificationFilterDataSourceDelegate
 
     func notificationFilterDataSource(
         _ notificationFilterDataSource: NotificationFilterDataSource,
-        didUpdateFilterValueFor account: Account
+        didUpdateFilterValueFor account: AccountHandle
     ) {
         loadingController?.stopLoading()
         updateAccount(account)
-        log(NotificationFilterChangeEvent(isReceivingNotifications: account.receivesNotification, address: account.address))
+        log(
+            NotificationFilterChangeEvent(
+                isReceivingNotifications: account.value.receivesNotification,
+                address: account.value.address
+            )
+        )
     }
 
     func notificationFilterDataSource(
         _ notificationFilterDataSource: NotificationFilterDataSource,
-        didFailToUpdateFilterValueFor account: Account,
+        didFailToUpdateFilterValueFor account: AccountHandle,
         with error: HIPAPIError?
     ) {
         loadingController?.stopLoading()
@@ -157,17 +162,17 @@ extension NotificationFilterViewController {
         dataSource.updateNotificationFilter(for: account, to: value)
     }
 
-    private func updateAccount(_ account: Account) {
-        guard let localAccount = api?.session.accountInformation(from: account.address) else {
+    private func updateAccount(_ account: AccountHandle) {
+        guard let localAccount = api?.session.accountInformation(from: account.value.address) else {
             return
         }
 
-        localAccount.receivesNotification = account.receivesNotification
+        localAccount.receivesNotification = account.value.receivesNotification
         api?.session.authenticatedUser?.updateAccount(localAccount)
-        api?.session.updateAccount(account)
+        api?.session.updateAccount(account.value)
     }
 
-    private func revertFilterSwitch(for account: Account) {
+    private func revertFilterSwitch(for account: AccountHandle) {
         guard let index = dataSource.index(of: account),
               let cell = notificationFilterView.collectionView.cellForItem(
                 at: IndexPath(item: index, section: 1)
@@ -175,7 +180,7 @@ extension NotificationFilterViewController {
                   return
               }
 
-        cell.bindData(AccountNameSwitchViewModel(account))
+        cell.bindData(AccountNameSwitchViewModel(account.value))
     }
 }
 

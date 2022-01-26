@@ -22,28 +22,28 @@ import MagpieExceptions
 final class NotificationFilterDataSource: NSObject {
     weak var delegate: NotificationFilterDataSourceDelegate?
 
-    private var accounts = [Account]()
+    private var accounts = [AccountHandle]()
 
     private let api: ALGAPI
 
-    init(api: ALGAPI) {
+    init(sharedDataController: SharedDataController, api: ALGAPI) {
         self.api = api
         super.init()
-        accounts = api.session.accounts
+        accounts = sharedDataController.accountCollection.sorted()
     }
 }
 
 extension NotificationFilterDataSource {
-    func updateNotificationFilter(for account: Account, to value: Bool) {
+    func updateNotificationFilter(for account: AccountHandle, to value: Bool) {
         guard let deviceId = api.session.authenticatedUser?.deviceId else {
             return
         }
 
-        let draft = NotificationFilterDraft(deviceId: deviceId, accountAddress: account.address, receivesNotifications: value)
+        let draft = NotificationFilterDraft(deviceId: deviceId, accountAddress: account.value.address, receivesNotifications: value)
         api.updateNotificationFilter(draft) { response in
             switch response {
             case let .success(result):
-                account.receivesNotification = result.receivesNotification
+                account.value.receivesNotification = result.receivesNotification
                 self.delegate?.notificationFilterDataSource(self, didUpdateFilterValueFor: account)
             case let .failure(_, hipApiError):
                 self.delegate?.notificationFilterDataSource(self, didFailToUpdateFilterValueFor: account, with: hipApiError)
@@ -94,7 +94,7 @@ extension NotificationFilterDataSource {
     private func dequeueAccountNotificationCell(in collectionView: UICollectionView, at indexPath: IndexPath) -> AccountNameSwitchCell {
         if let account = accounts[safe: indexPath.item] {
             let cell = collectionView.dequeue(AccountNameSwitchCell.self, at: indexPath)
-            cell.bindData(AccountNameSwitchViewModel(account))
+            cell.bindData(AccountNameSwitchViewModel(account.value))
             cell.delegate = self
             return cell
         }
@@ -116,12 +116,12 @@ extension NotificationFilterDataSource {
         return accounts.isEmpty
     }
 
-    func account(at index: Int) -> Account? {
+    func account(at index: Int) -> AccountHandle? {
         return accounts[safe: index]
     }
 
-    func index(of account: Account) -> Int? {
-        return accounts.firstIndex(of: account)
+    func index(of account: AccountHandle) -> Int? {
+        return accounts.firstIndex { $0.value.address == account.value.address }
     }
 }
 
@@ -149,11 +149,11 @@ protocol NotificationFilterDataSourceDelegate: AnyObject {
     )
     func notificationFilterDataSource(
         _ notificationFilterDataSource: NotificationFilterDataSource,
-        didUpdateFilterValueFor account: Account
+        didUpdateFilterValueFor account: AccountHandle
     )
     func notificationFilterDataSource(
         _ notificationFilterDataSource: NotificationFilterDataSource,
-        didFailToUpdateFilterValueFor account: Account,
+        didFailToUpdateFilterValueFor account: AccountHandle,
         with error: HIPAPIError?
     )
 }

@@ -245,6 +245,27 @@ extension SettingsViewController: SettingsDataSourceDelegate {
         walletConnector.resetAllSessions()
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()
-        open(.welcome(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
-     }
+
+        asyncMain(afterDuration: 1.5) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.presentLogoutSuccessScreen()
+        }
+    }
+
+    private func presentLogoutSuccessScreen() {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-approval-check".uiImage,
+            title: "settings-logout-success-message".localized,
+            description: "",
+            primaryActionButtonTitle: nil,
+            secondaryActionButtonTitle: "title-close".localized
+        )
+
+        bottomModalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+    }
 }
