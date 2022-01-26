@@ -92,6 +92,12 @@ extension RecoverInputView {
 
     private func addInputTextField(_ theme: RecoverInputViewTheme) {
         inputTextField.customizeAppearance(theme.inputTextField)
+        /// <todo>
+        /// Move this to Macaroon TextInputStyle
+        /// <note>
+        /// Since we use our own word suggestion bar, `spellCheckingType = .no` is
+        /// also necessary to hide native suggestion word bar on the keyboard.
+        inputTextField.spellCheckingType = .no
 
         addSubview(inputTextField)
         inputTextField.snp.makeConstraints {
