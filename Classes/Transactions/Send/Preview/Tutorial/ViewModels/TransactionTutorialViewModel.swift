@@ -98,31 +98,56 @@ extension TransactionTutorialViewModel {
     }
 
     private func bindSecondTip() {
-        // <todo>: paragraph style
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        // <todo>: `appendAttributesToRange` range functionality should be added to Macaroon.
+        let attributedString =
+        "transaction-tutorial-tip-second"
+            .localized
+            .attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ]),
+            ])
+            .appendAttributesToRange(
+                [
+                    .foregroundColor: AppColors.Shared.Helpers.negative.uiColor,
+                    .font: Fonts.DMSans.regular.make(13).uiFont,
+                ],
+                of: "transaction-tutorial-tip-second-highlighted".localized
+            )
+
         secondTip = .attributedString(
-            "transaction-tutorial-tip-second"
-                .localized
-                .addAttributes(
-                    [
-                        .foregroundColor: AppColors.Shared.Helpers.negative.uiColor,
-                        .font: Fonts.DMSans.regular.make(13).uiFont,
-                    ],
-                    to: "transaction-tutorial-tip-second-highlighted".localized
-                )
+            attributedString
         )
     }
 
     private func bindTapToMoreText() {
-        // <todo>: paragraph style
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        // <todo>:
+        // `appendAttributesToRange` range functionality should be added to Macaroon.
         tapToMoreText = .attributedString(
             "transaction-tutorial-tap-to-more"
                 .localized
-                .addAttributes(
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ]),
+                ])
+                .appendAttributesToRange(
                     [
                         .foregroundColor: AppColors.Components.Link.primary.uiColor,
                         .font: Fonts.DMSans.regular.make(13).uiFont
                     ],
-                    to: "transaction-tutorial-tap-to-more-highlighted".localized
+                    of: "transaction-tutorial-tap-to-more-highlighted".localized
                 )
         )
     }

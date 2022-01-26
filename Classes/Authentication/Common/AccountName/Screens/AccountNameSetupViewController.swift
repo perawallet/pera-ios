@@ -90,12 +90,12 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
 
 extension AccountNameSetupViewController {
     private func setupAccountName() {
+        // <note>
+        // We disable button to prevent double tap.
         accountNameSetupView.nextButton.isEnabled = false
 
         guard let tempPrivateKey = session?.privateData(for: "temp"),
             let address = session?.address(for: "temp") else {
-                // <todo>
-                // ?
                 accountNameSetupView.nextButton.isEnabled = true
                 return
         }
