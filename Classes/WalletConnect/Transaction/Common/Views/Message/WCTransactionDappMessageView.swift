@@ -80,6 +80,9 @@ class WCTransactionDappMessageView: BaseView {
             .withText("wallet-connect-transaction-dapp-show-more".localized)
     }()
 
+    private lazy var tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTap))
+
+
     override func configureAppearance() {
         backgroundColor = .clear
         layer.cornerRadius = 12.0
@@ -88,6 +91,17 @@ class WCTransactionDappMessageView: BaseView {
     override func prepareLayout() {
         setupDappImageViewLayout()
         setupStackViewLayout()
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+
+        readMoreLabel.addGestureRecognizer(tapGestureRecognizer)
+
+        stackView.isUserInteractionEnabled = true
+        subtitleContainerView.isUserInteractionEnabled = true
+        subtitleStackView.isUserInteractionEnabled = true
+        readMoreLabel.isUserInteractionEnabled = true
     }
 }
 
@@ -134,13 +148,9 @@ extension WCTransactionDappMessageView {
         readMoreLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        if frame.contains(point) {
-            delegate?.wcTransactionDappMessageViewDidTapped(self)
-            return super.hitTest(point, with: event)
-        }
-
-        return nil
+    @objc
+    private func didTap() {
+        self.delegate?.wcTransactionDappMessageViewDidTapped(self)
     }
 }
 
@@ -152,7 +162,9 @@ extension WCTransactionDappMessageView {
         readMoreLabel.isHidden = viewModel.isReadMoreHidden
 
         if viewModel.message.isNilOrEmpty {
-            stackView.removeArrangedSubview(subtitleStackView)
+            self.subtitleStackView.hideViewInStack()
+        } else {
+            self.subtitleStackView.showViewInStack()
         }
     }
 }

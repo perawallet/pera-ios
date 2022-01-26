@@ -17,131 +17,112 @@
 
 import UIKit
 import MacaroonUIKit
-import MacaroonURLImage
 
-class WCTransactionFullDappDetailView: BaseView {
-
-    private let layout = Layout<LayoutConstants>()
-
+final class WCTransactionFullDappDetailView: View {
     weak var delegate: WCTransactionFullDappDetailViewDelegate?
 
-    private lazy var dappImageView: URLImageView = {
-        let imageView = URLImageView()
-        imageView.layer.cornerRadius = 30.0
-        imageView.layer.borderWidth = 1.0
-        imageView.layer.borderColor = Colors.Component.dappImageBorderColor.cgColor
-        return imageView
-    }()
+    private lazy var titleLabel = UILabel()
+    private lazy var imageView = UIImageView()
+    private lazy var descriptionLabel = UILabel()
+    private lazy var verticalStackView = UIStackView()
+    private lazy var primaryActionButton = Button()
+    private lazy var secondaryActionButton = Button()
 
-    private lazy var nameLabel: UILabel = {
-        UILabel()
-            .withAlignment(.center)
-            .withLine(.single)
-            .withTextColor(Colors.Text.primary)
-            .withFont(UIFont.font(withWeight: .medium(size: 16.0)))
-    }()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
 
-    private lazy var messageLabel: UILabel = {
-        UILabel()
-            .withAlignment(.center)
-            .withLine(.contained)
-            .withTextColor(Colors.Text.primary)
-            .withFont(UIFont.font(withWeight: .regular(size: 14.0)))
-    }()
-
-    private lazy var closeButton: UIButton = {
-        UIButton(type: .custom)
-            .withBackgroundImage(img("bg-light-gray-button"))
-            .withTitle("title-close".localized)
-            .withTitleColor(Colors.ButtonText.secondary)
-            .withAlignment(.center)
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-    }()
-
-    override func configureAppearance() {
-        backgroundColor = Colors.Background.secondary
+        setListeners()
     }
 
-    override func prepareLayout() {
-        setupDappImageViewLayout()
-        setupNameLabelLayout()
-        setupMessageLabelLayout()
-        setupCloseButtonLayout()
+    func customize(_ theme: WCTransactionFullDappDetailViewTheme) {
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+
+        addImageView(theme)
+        addTitleLabel(theme)
+        addDescriptionLabel(theme)
+        addVerticalStackView(theme)
     }
 
-    override func setListeners() {
-        closeButton.addTarget(self, action: #selector(notifyDelegateToCloseScreen), for: .touchUpInside)
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func setListeners() {
+        primaryActionButton.addTarget(self, action: #selector(notifyDelegateToHandlePrimaryActionButton), for: .touchUpInside)
     }
 }
 
 extension WCTransactionFullDappDetailView {
-    private func setupDappImageViewLayout() {
-        addSubview(dappImageView)
-
-        dappImageView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.size.equalTo(layout.current.imageSize)
-            make.top.equalToSuperview().inset(layout.current.topInset)
+    private func addImageView(_ theme: WCTransactionFullDappDetailViewTheme) {
+        addSubview(imageView)
+        imageView.snp.makeConstraints {
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalToSuperview().inset(theme.topInset)
+            $0.size.equalTo(CGSize(width: 48, height: 48))
         }
     }
 
-    private func setupNameLabelLayout() {
-        addSubview(nameLabel)
+    private func addTitleLabel(_ theme: WCTransactionFullDappDetailViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
 
-        nameLabel.snp.makeConstraints { make in
-            make.top.equalTo(dappImageView.snp.bottom).offset(layout.current.nameTopInset)
-            make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.leading.equalTo(imageView.snp.trailing).offset(theme.titleLeadingInset)
+            $0.top.equalTo(imageView.snp.top).offset(theme.titleTopInset)
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
 
-    private func setupMessageLabelLayout() {
-        addSubview(messageLabel)
+    private func addDescriptionLabel(_ theme: WCTransactionFullDappDetailViewTheme) {
+        descriptionLabel.customizeAppearance(theme.description)
 
-        messageLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(layout.current.messageLabelTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
+        addSubview(descriptionLabel)
+        descriptionLabel.snp.makeConstraints {
+            $0.leading.equalTo(titleLabel)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.descriptionTopInset)
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
 
-    private func setupCloseButtonLayout() {
-        addSubview(closeButton)
+    private func addVerticalStackView(_ theme: WCTransactionFullDappDetailViewTheme) {
+        addSubview(verticalStackView)
+        verticalStackView.spacing = theme.buttonInset
+        verticalStackView.axis = .vertical
 
-        closeButton.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(messageLabel.snp.bottom).offset(layout.current.buttonTopInset)
-            make.leading.trailing.equalToSuperview().inset(layout.current.horizontalInset)
-            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.bottomInset)
+        verticalStackView.snp.makeConstraints {
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.verticalInset)
+            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomInset)
         }
+
+        addPrimaryActionButton(theme)
+    }
+
+    private func addPrimaryActionButton(_ theme: WCTransactionFullDappDetailViewTheme) {
+        primaryActionButton.customize(theme.mainButtonTheme)
+
+        primaryActionButton.fitToVerticalIntrinsicSize()
+        verticalStackView.addArrangedSubview(primaryActionButton)
+    }
+}
+
+extension WCTransactionFullDappDetailView {
+    func bindData(_ configurator: WCTransactionFullDappDetailConfigurator?) {
+        titleLabel.text = configurator?.title
+        descriptionLabel.text = configurator?.description
+        imageView.load(from: configurator?.image)
+        primaryActionButton.bindData(ButtonCommonViewModel(title: configurator?.primaryActionButtonTitle))
     }
 }
 
 extension WCTransactionFullDappDetailView {
     @objc
-    private func notifyDelegateToCloseScreen() {
-        delegate?.wcTransactionFullDappDetailViewDidCloseScreen(self)
+    private func notifyDelegateToHandlePrimaryActionButton() {
+        delegate?.wcTransactionFullDappDetailViewDidTapPrimaryActionButton(self)
     }
-}
 
-extension WCTransactionFullDappDetailView {
-    func bind(_ viewModel: WCTransactionDappMessageViewModel) {
-        dappImageView.load(from: viewModel.image)
-        nameLabel.text = viewModel.name
-        messageLabel.text = viewModel.message
-    }
-}
-
-extension WCTransactionFullDappDetailView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let imageSize = CGSize(width: 60.0, height: 60.0)
-        let bottomInset: CGFloat = 16.0
-        let horizontalInset: CGFloat = 20.0
-        let topInset: CGFloat = 28.0
-        let nameTopInset: CGFloat = 16.0
-        let messageLabelTopInset: CGFloat = 20.0
-        let buttonTopInset: CGFloat = 24.0
-    }
 }
 
 protocol WCTransactionFullDappDetailViewDelegate: AnyObject {
-    func wcTransactionFullDappDetailViewDidCloseScreen(_ wcTransactionFullDappDetailView: WCTransactionFullDappDetailView)
+    func wcTransactionFullDappDetailViewDidTapPrimaryActionButton(_ view: WCTransactionFullDappDetailView)
 }

@@ -53,6 +53,24 @@ class WCSingleTransactionViewController: BaseScrollViewController {
         super.prepareLayout()
         setupTransactionViewLayout()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        NotificationCenter.default.post(
+            name: .SingleTransactionHeaderUpdate,
+            object: transaction
+        )
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        NotificationCenter.default.post(
+            name: .SingleTransactionHeaderUpdate,
+            object: nil
+        )
+    }
 }
 
 extension WCSingleTransactionViewController {

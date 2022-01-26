@@ -57,4 +57,8 @@ extension Notification.Name {
     static var AssetDetailFetched: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.assetDetail.fetched")
     }
+
+    static var SingleTransactionHeaderUpdate: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.single.transaction.headerUpdate")
+    }
 }

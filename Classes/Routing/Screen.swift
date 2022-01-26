@@ -100,7 +100,7 @@ indirect enum Screen {
     case wcConnectionApproval(walletConnectSession: WalletConnectSession, delegate: WCConnectionApprovalViewControllerDelegate, completion: WalletConnectSessionConnectionCompletionHandler)
     case walletConnectSessionList
     case walletConnectSessionShortList
-    case wcTransactionFullDappDetail(wcSession: WCSession, message: String)
+    case wcTransactionFullDappDetail(configurator: WCTransactionFullDappDetailConfigurator)
     case wcMainTransaction(
             transactions: [WCTransaction],
             transactionRequest: WalletConnectRequest,

@@ -403,18 +403,7 @@ extension WCMainTransactionViewController: WCMainTransactionDataSourceDelegate {
     }
 
     func wcMainTransactionDataSourceDidOpenLongDappMessageView(_ wcMainTransactionDataSource: WCMainTransactionDataSource) {
-        guard let wcSession = wcSession,
-              let message = transactionOption?.message else {
-                  return
-              }
         
-        modalTransition.perform(
-            .wcTransactionFullDappDetail(
-                wcSession: wcSession,
-                message: message
-            ),
-            by: .presentWithoutNavigationController
-        )
     }
 }
 
