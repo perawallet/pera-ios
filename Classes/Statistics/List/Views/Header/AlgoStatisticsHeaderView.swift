@@ -19,8 +19,6 @@ import UIKit
 import MacaroonUIKit
 
 final class AlgoStatisticsHeaderView: View {
-    weak var delegate: AlgoStatisticsHeaderViewDelegate?
-
     private lazy var amountLabel = UILabel()
     private lazy var informationStackView = UIStackView()
     private lazy var valueChangeView = AlgoStatisticsValueChangeView()
@@ -43,13 +41,6 @@ final class AlgoStatisticsHeaderView: View {
     func prepareLayout(_ layoutSheet: AlgoStatisticsHeaderViewTheme) {}
 
     func customizeAppearance(_ styleSheet: AlgoStatisticsHeaderViewTheme) {}
-}
-
-extension AlgoStatisticsHeaderView {
-    @objc
-    private func didTapDate() {
-        delegate?.algoStatisticsHeaderViewDidTapDate(self)
-    }
 }
 
 extension AlgoStatisticsHeaderView {
@@ -105,8 +96,4 @@ enum ValueChangeStatus {
     case increased
     case decreased
     case stable
-}
-
-protocol AlgoStatisticsHeaderViewDelegate: AnyObject {
-    func algoStatisticsHeaderViewDidTapDate(_ view: AlgoStatisticsHeaderView)
 }

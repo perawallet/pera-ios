@@ -101,13 +101,6 @@ extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
         getChartData(for: timeInterval)
     }
 
-    func algoStatisticsViewDidTapDate(_ view: AlgoStatisticsView) {
-        filterOptionsTransition.perform(
-            .algoStatisticsDateSelection(option: selectedTimeInterval, delegate: self),
-            by: .presentWithoutNavigationController
-        )
-    }
-
     func algoStatisticsView(_ view: AlgoStatisticsView, didSelectItemAt index: Int) {
         guard let values = chartEntries,
               !values.isEmpty,
@@ -145,16 +138,6 @@ extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
                 currency: currency
             )
         )
-    }
-}
-
-extension AlgoStatisticsViewController: AlgoStatisticsDateSelectionViewControllerDelegate {
-    func algoStatisticsDateSelectionViewController(
-        _ algoStatisticsDateSelectionViewController: AlgoStatisticsDateSelectionViewController,
-        didSelect selectedOption: AlgosUSDValueInterval
-    ) {
-        selectedTimeInterval = selectedOption
-        getChartData(for: selectedOption)
     }
 }
 

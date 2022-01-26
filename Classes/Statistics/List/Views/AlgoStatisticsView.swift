@@ -48,7 +48,6 @@ final class AlgoStatisticsView: View {
     func customizeAppearance(_ styleSheet: AlgoStatisticsViewTheme) {}
 
     func linkInteractors() {
-        algoStatisticsHeaderView.delegate = self
         lineChartView.delegate = self
         chartTimeFrameSelectionView.delegate = self
     }
@@ -109,12 +108,6 @@ extension AlgoStatisticsView: AlgorandChartViewDelegate {
     }
 }
 
-extension AlgoStatisticsView: AlgoStatisticsHeaderViewDelegate {
-    func algoStatisticsHeaderViewDidTapDate(_ view: AlgoStatisticsHeaderView) {
-        delegate?.algoStatisticsViewDidTapDate(self)
-    }
-}
-
 extension AlgoStatisticsView {
     func bind(_ viewModel: AlgoStatisticsViewModel) {
         if let headerViewModel = viewModel.headerViewModel {
@@ -139,5 +132,4 @@ protocol AlgoStatisticsViewDelegate: AnyObject {
     func algoStatisticsView(_ view: AlgoStatisticsView, didSelect timeInterval: AlgosUSDValueInterval)
     func algoStatisticsView(_ view: AlgoStatisticsView, didSelectItemAt index: Int)
     func algoStatisticsViewDidDeselect(_ view: AlgoStatisticsView)
-    func algoStatisticsViewDidTapDate(_ view: AlgoStatisticsView)
 }
