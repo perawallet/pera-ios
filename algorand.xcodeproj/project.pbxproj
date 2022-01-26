@@ -3214,6 +3214,9 @@
 		D473CA6426E278A900558598 /* PassphraseMnemonicViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */; };
 		D473CA6526E278A900558598 /* PassphraseMnemonicViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */; };
 		D473CA6626E278A900558598 /* PassphraseMnemonicViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */; };
+		D47742B927A1E348008A144D /* WCGroupTransactionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47742B827A1E348008A144D /* WCGroupTransactionViewTheme.swift */; };
+		D47742BA27A1E348008A144D /* WCGroupTransactionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47742B827A1E348008A144D /* WCGroupTransactionViewTheme.swift */; };
+		D47742BB27A1E348008A144D /* WCGroupTransactionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D47742B827A1E348008A144D /* WCGroupTransactionViewTheme.swift */; };
 		D4789FD92775CBB8001395BA /* AssetDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4789FD82775CBB8001395BA /* AssetDetailInfoView.swift */; };
 		D4789FDA2775CBB8001395BA /* AssetDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4789FD82775CBB8001395BA /* AssetDetailInfoView.swift */; };
 		D4789FDB2775CBB8001395BA /* AssetDetailInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4789FD82775CBB8001395BA /* AssetDetailInfoView.swift */; };
@@ -5017,6 +5020,7 @@
 		D473CA5B26E24A3400558598 /* NumpadButtonViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumpadButtonViewTheme.swift; sourceTree = "<group>"; };
 		D473CA5F26E2668F00558598 /* PassphraseVerifyViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyViewTheme.swift; sourceTree = "<group>"; };
 		D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseMnemonicViewTheme.swift; sourceTree = "<group>"; };
+		D47742B827A1E348008A144D /* WCGroupTransactionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCGroupTransactionViewTheme.swift; sourceTree = "<group>"; };
 		D4789FD82775CBB8001395BA /* AssetDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailInfoView.swift; sourceTree = "<group>"; };
 		D4789FDC2775CD3F001395BA /* AssetDetailInfoViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailInfoViewTheme.swift; sourceTree = "<group>"; };
 		D47956842769D16F003766D2 /* WCSessionListViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCSessionListViewTheme.swift; sourceTree = "<group>"; };
@@ -11374,6 +11378,7 @@
 				2BD36E1C2684660100C57728 /* Header */,
 				2B7E303D267A51E200E89EE3 /* Item */,
 				2B7E3038267A518800E89EE3 /* WCGroupTransactionView.swift */,
+				D47742B827A1E348008A144D /* WCGroupTransactionViewTheme.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -13439,6 +13444,7 @@
 				2BA4B4132678D8EF0041586B /* WCSession.swift in Sources */,
 				2B6607E0240D170F002AC00F /* LedgerDetail.swift in Sources */,
 				95D11D272774BE01001B2C37 /* AccountClipboardViewModel.swift in Sources */,
+				D47742BB27A1E348008A144D /* WCGroupTransactionViewTheme.swift in Sources */,
 				17BD4E022292F1260003E49A /* Codable+CoreData.swift in Sources */,
 				D4C85B53276902AC00655238 /* Shadows.swift in Sources */,
 				D4241FC926E763F60064CDD0 /* FormInputFieldAssistiveView.swift in Sources */,
@@ -15546,6 +15552,7 @@
 				D4CCA1DA27242B3B00DF1B76 /* RekeyTransitionItemView.swift in Sources */,
 				2B0F62D324EC129D00DA22A6 /* TransactionTrackDraft.swift in Sources */,
 				2B0F62D424EC129D00DA22A6 /* NumpadView.swift in Sources */,
+				D47742BA27A1E348008A144D /* WCGroupTransactionViewTheme.swift in Sources */,
 				2B0F62D524EC129D00DA22A6 /* AccountFooterSupplementaryView.swift in Sources */,
 				2BFFEA0525DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */,
 				D411B36E26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift in Sources */,
@@ -16764,6 +16771,7 @@
 				F022D1DD276365DE00D786CD /* BlockProcessor.swift in Sources */,
 				2B343CFC259D176D001EA8C8 /* AccountNameSwitchView.swift in Sources */,
 				171111B8225E0C8400DAF55C /* Toggle.swift in Sources */,
+				D47742B927A1E348008A144D /* WCGroupTransactionViewTheme.swift in Sources */,
 				D4CCA1D927242B3B00DF1B76 /* RekeyTransitionItemView.swift in Sources */,
 				D47C4AA1279181A50012D7A6 /* ContactsNoContentWithActionViewModel.swift in Sources */,
 				2B0AD8372757DEDD00F83660 /* SingleLineTitleActionViewModel.swift in Sources */,

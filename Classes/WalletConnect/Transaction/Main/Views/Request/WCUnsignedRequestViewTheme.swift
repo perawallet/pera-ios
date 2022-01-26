@@ -39,8 +39,8 @@ struct WCUnsignedRequestViewTheme: StyleSheet, LayoutSheet {
         self.horizontalPadding = 24
         self.confirmButtonWidthMultiplier = 2
         self.buttonHeight = 52
-        self.collectionViewBottomOffset = 24
         self.buttonContainerHeight = 150
-        self.buttonBottomInset = 24
+        self.buttonBottomInset = UIApplication.shared.safeAreaBottom + 16
+        self.collectionViewBottomOffset = buttonBottomInset + buttonHeight + 12
     }
 }

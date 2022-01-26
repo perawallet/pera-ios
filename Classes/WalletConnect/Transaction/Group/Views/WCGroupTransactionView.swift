@@ -16,70 +16,49 @@
 //   WCGroupTransactionView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class WCGroupTransactionView: BaseView {
-
-    private let layout = Layout<LayoutConstants>()
+final class WCGroupTransactionView: View {
+    private lazy var theme = WCGroupTransactionViewTheme()
 
     private lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 12.0
-        flowLayout.minimumInteritemSpacing = 0.0
-        flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = theme.cellSpacing
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = .clear
-        collectionView.contentInset = .zero
-        collectionView.register(
-            WCGroupTransactionItemCell.self,
-            forCellWithReuseIdentifier: WCGroupTransactionItemCell.reusableIdentifier
-        )
-        collectionView.register(
-            WCAppCallTransactionItemCell.self,
-            forCellWithReuseIdentifier: WCAppCallTransactionItemCell.reusableIdentifier
-        )
-        collectionView.register(
-            WCGroupAnotherAccountTransactionItemCell.self,
-            forCellWithReuseIdentifier: WCGroupAnotherAccountTransactionItemCell.reusableIdentifier
-        )
-        collectionView.register(
-            WCAssetConfigTransactionItemCell.self,
-            forCellWithReuseIdentifier: WCAssetConfigTransactionItemCell.reusableIdentifier
-        )
-        collectionView.register(
-            WCAssetConfigAnotherAccountTransactionItemCell.self,
-            forCellWithReuseIdentifier: WCAssetConfigAnotherAccountTransactionItemCell.reusableIdentifier
-        )
-
-        collectionView.register(
-            WCGroupTransactionSupplementaryHeaderView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: WCGroupTransactionSupplementaryHeaderView.reuseIdentifier
-        )
+        collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
+        collectionView.register(WCGroupTransactionItemCell.self)
+        collectionView.register(WCAppCallTransactionItemCell.self)
+        collectionView.register(WCGroupAnotherAccountTransactionItemCell.self)
+        collectionView.register(WCAssetConfigTransactionItemCell.self)
+        collectionView.register(WCAssetConfigAnotherAccountTransactionItemCell.self)
+        collectionView.register(header: WCGroupTransactionSupplementaryHeaderView.self)
         return collectionView
     }()
 
-    override func prepareLayout() {
-        super.prepareLayout()
-        setupTransactionViewLayout()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        customize(theme)
     }
 
-    override func configureAppearance() {
-        super.configureAppearance()
-
-        backgroundColor = Colors.Background.secondary
+    func customize(_ theme: WCGroupTransactionViewTheme) {
+        addTransactionView()
     }
+
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
 
 extension WCGroupTransactionView {
-    private func setupTransactionViewLayout() {
+    private func addTransactionView() {
         addSubview(collectionView)
-
-        collectionView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
-            make.bottom.equalToSuperview().inset(safeAreaBottom + layout.current.verticalInset)
+        collectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }
@@ -95,11 +74,5 @@ extension WCGroupTransactionView {
 
     func reloadData() {
         collectionView.reloadData()
-    }
-}
-
-extension WCGroupTransactionView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let verticalInset: CGFloat = 20.0
     }
 }

@@ -96,9 +96,7 @@ extension WCUnsignedRequestScreen {
         
         view.addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.bottom.safeEqualToBottom(of: self)
-            make.leading.trailing.equalToSuperview()
+            make.edges.equalToSuperview()
         }
     }
 
