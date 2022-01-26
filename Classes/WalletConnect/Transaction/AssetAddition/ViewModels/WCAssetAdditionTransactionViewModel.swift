@@ -41,7 +41,7 @@ class WCAssetAdditionTransactionViewModel {
         setToInformationViewModel(from: senderAccount, and: transaction)
         setAssetInformationViewModel(from: senderAccount, and: assetDetail)
         setCloseWarningViewModel(from: transaction, and: assetDetail)
-        setRekeyWarningViewModel(from: transaction)
+        setRekeyWarningViewModel(from: senderAccount, and: transaction)
 
         setFeeInformationViewModel(from: transaction, and: assetDetail)
         setFeeWarningInformationViewModel(from: transaction)
@@ -124,7 +124,7 @@ class WCAssetAdditionTransactionViewModel {
         self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAsset(asset: assetDetail))
     }
 
-    private func setRekeyWarningViewModel(from transaction: WCTransaction) {
+    private func setRekeyWarningViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
         guard let rekeyAddress = transaction.transactionDetail?.rekeyAddress else {
             return
         }
@@ -135,6 +135,10 @@ class WCAssetAdditionTransactionViewModel {
         )
 
         self.rekeyInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+
+        guard senderAccount != nil else {
+            return
+        }
 
         self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }

@@ -398,12 +398,12 @@ class Router {
             viewController = WCSessionListViewController(configuration: configuration)
         case .walletConnectSessionShortList:
             viewController = WCSessionShortListViewController(configuration: configuration)
-        case let .wcTransactionFullDappDetail(wcSession, message):
+        case let .wcTransactionFullDappDetail(viewModel):
             viewController = WCTransactionFullDappDetailViewController(
-                wcSession: wcSession,
-                message: message,
+                viewModel,
                 configuration: configuration
             )
+
         case let .wcMainTransaction(transactions, transactionRequest, transactionOption):
             viewController = WCMainTransactionViewController(
                 transactions: transactions,

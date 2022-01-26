@@ -55,7 +55,8 @@ class RootViewController: UIViewController {
     private(set) var isDisplayingGovernanceBanner = true
 
     private lazy var deepLinkRouter = DeepLinkRouter(rootViewController: self, appConfiguration: appConfiguration)
-    
+
+    private lazy var bottomSheetTransition = BottomSheetTransition(presentingViewController: self)
     private(set) lazy var tabBarViewController = TabBarController(configuration: appConfiguration.all())
 
     private var currentWCTransactionRequest: WalletConnectRequest?
@@ -242,18 +243,17 @@ extension RootViewController: WCMainTransactionViewControllerDelegate {
     private func presentWCTransactionSuccessMessage(for session: WCSession) {
         let dappName = session.peerMeta.name
 
-        let warningAlert = WarningAlert(
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-approval-check".uiImage,
             title: "wc-transaction-request-signed-warning-title".localized,
-            image: img("img-green-checkmark"),
             description: "wc-transaction-request-signed-warning-message".localized(dappName, dappName),
-            actionTitle: "title-close".localized
+            primaryActionButtonTitle: nil,
+            secondaryActionButtonTitle: "title-close".localized
         )
 
-        let warningModalTransition = BottomSheetTransition(presentingViewController: self)
-
-        asyncMain(afterDuration: 0.3) {
-            warningModalTransition.perform(
-                .warningAlert(warningAlert: warningAlert),
+        asyncMain(afterDuration: 0.3) { [weak self] in
+            self?.bottomSheetTransition.perform(
+                .bottomWarning(configurator: configurator),
                 by: .presentWithoutNavigationController
             )
         }

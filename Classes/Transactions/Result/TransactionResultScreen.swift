@@ -52,6 +52,19 @@ final class TransactionResultScreen: BaseViewController {
         titleLabel.text = status.title
         subtitleLabel.text = status.subtitle
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        // Close screen after 2 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.dismissScreen()
+        }
+    }
 }
 
 extension TransactionResultScreen {

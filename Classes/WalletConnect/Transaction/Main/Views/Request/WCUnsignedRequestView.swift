@@ -62,12 +62,6 @@ final class WCUnsignedRequestView: BaseView {
             WCAssetConfigAnotherAccountTransactionItemCell.self,
             forCellWithReuseIdentifier: WCAssetConfigAnotherAccountTransactionItemCell.reusableIdentifier
         )
-
-        collectionView.register(
-            WCMainTransactionSupplementaryHeaderView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: WCMainTransactionSupplementaryHeaderView.reusableIdentifier
-        )
         return collectionView
     }()
 

@@ -58,6 +58,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         )
     }()
 
+    private var headerTransaction: WCTransaction?
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
@@ -99,6 +100,11 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         )
         super.init(configuration: configuration)
         setTransactionSigners()
+        setupObserver()
+    }
+
+    deinit {
+        removeObserver()
     }
 
     override func configureAppearance() {
@@ -120,6 +126,7 @@ final class WCMainTransactionScreen: BaseViewController, Container {
         singleTransactionFragment.delegate = self
         unsignedTransactionFragment.delegate = self
         wcTransactionSigner.delegate = self
+        dappMessageView.delegate = self
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -150,13 +157,43 @@ final class WCMainTransactionScreen: BaseViewController, Container {
     override func bindData() {
         super.bindData()
 
+        bindDappInfoView()
+    }
+
+    private func setupObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(observeHeaderUpdate(notification:)),
+            name: .SingleTransactionHeaderUpdate,
+            object: nil
+        )
+    }
+
+    private func removeObserver() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: .SingleTransactionHeaderUpdate,
+            object: nil
+        )
+    }
+
+    @objc
+    private func observeHeaderUpdate(notification: Notification) {
+        self.headerTransaction = notification.object as? WCTransaction
+
+        bindDappInfoView()
+    }
+
+    private func bindDappInfoView() {
         guard let wcSession = walletConnector.allWalletConnectSessions.first(matching: (\.urlMeta.wcURL, transactionRequest.url)) else {
             return
         }
 
         let viewModel = WCTransactionDappMessageViewModel(
             session: wcSession,
-            imageSize: CGSize(width: 48.0, height: 48.0)
+            imageSize: CGSize(width: 48.0, height: 48.0),
+            transactionOption: transactionOption,
+            transaction: headerTransaction
         )
 
         dappMessageView.bind(viewModel)
@@ -172,7 +209,8 @@ final class WCMainTransactionScreen: BaseViewController, Container {
 
     private func addSingleTransaction() {
         let fragment = transactions.count > 1 ? unsignedTransactionFragment : singleTransactionFragment
-        addFragment(NavigationController(rootViewController: fragment)) { fragmentView in
+        let container = NavigationController(rootViewController: fragment)
+        addFragment(container) { fragmentView in
             fragmentView.roundCorners(corners: [.topLeft, .topRight], radius: theme.fragmentRadius)
             view.addSubview(fragmentView)
             fragmentView.snp.makeConstraints { make in
@@ -496,4 +534,22 @@ extension WCMainTransactionScreen {
 
          return transactions.contains { $0.isInTheSameNetwork(with: params) }
      }
+}
+
+extension WCMainTransactionScreen: WCTransactionDappMessageViewDelegate {
+    func wcTransactionDappMessageViewDidTapped(
+        _ WCTransactionDappMessageView: WCTransactionDappMessageView
+    ) {
+        guard let session = wcSession else {
+            return
+        }
+
+        let configurator = WCTransactionFullDappDetailConfigurator(
+            from: session,
+            option: transactionOption,
+            transaction: transactions.first
+        )
+
+        modalTransition.perform(.wcTransactionFullDappDetail(configurator: configurator), by: .presentWithoutNavigationController)
+    }
 }

@@ -167,6 +167,29 @@ extension SendTransactionScreen {
             }
         }
 
+        if let currency = sharedDataController.currency.value,
+           let currencyPriceValue = currency.priceValue,
+           let amount = amountValue.decimalAmountWithSeparator {
+
+            switch draft.transactionMode {
+            case let .assetDetail(assetInformation):
+                guard let assetUSDValue = assetInformation.usdValue,
+                      let currencyUsdValue = currency.usdValue else {
+                          return
+                }
+
+                let currencyValue = assetUSDValue * amount * currencyUsdValue
+
+                usdValueLabel.text = currencyValue.toCurrencyStringForLabel(with: currency.id)
+
+            case .algo:
+                let usdValue = currencyPriceValue * amount
+                usdValueLabel.text = usdValue.toCurrencyStringForLabel(with: currency.id)
+            }
+        } else {
+            usdValueLabel.text = nil
+        }
+
         valueLabel.text = showingValue
     }
 }

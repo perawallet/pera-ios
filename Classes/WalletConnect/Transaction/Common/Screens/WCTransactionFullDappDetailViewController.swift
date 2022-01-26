@@ -19,46 +19,48 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-class WCTransactionFullDappDetailViewController: BaseViewController {
-    private lazy var fullDappDetailView = WCTransactionFullDappDetailView()
+final class WCTransactionFullDappDetailViewController: BaseViewController {
+    private let viewConfigurator: WCTransactionFullDappDetailConfigurator
 
-    private let wcSession: WCSession
-    private let message: String
-
-    init(wcSession: WCSession, message: String, configuration: ViewControllerConfiguration) {
-        self.wcSession = wcSession
-        self.message = message
+    init(_ viewModel: WCTransactionFullDappDetailConfigurator, configuration: ViewControllerConfiguration) {
+        self.viewConfigurator = viewModel
         super.init(configuration: configuration)
     }
 
+    private lazy var theme = Theme()
+    private lazy var detailView = WCTransactionFullDappDetailView()
+
     override func configureAppearance() {
-        view.backgroundColor = Colors.Background.secondary
-        fullDappDetailView.bind(
-            WCTransactionDappMessageViewModel(
-                session: wcSession,
-                imageSize: CGSize(width: 60.0, height: 60.0)
-            )
-        )
+        super.configureAppearance()
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
-    override func linkInteractors() {
-        super.linkInteractors()
-        fullDappDetailView.delegate = self
+    override func setListeners() {
+        detailView.delegate = self
     }
 
     override func prepareLayout() {
-        prepareWholeScreenLayoutFor(fullDappDetailView)
+        detailView.customize(theme.detailViewTheme)
+        prepareWholeScreenLayoutFor(detailView)
+    }
+
+    override func bindData() {
+        detailView.bindData(viewConfigurator)
     }
 }
 
 extension WCTransactionFullDappDetailViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
-        return .preferred(350)
+        return .compressed
     }
 }
 
 extension WCTransactionFullDappDetailViewController: WCTransactionFullDappDetailViewDelegate {
-    func wcTransactionFullDappDetailViewDidCloseScreen(_ wcTransactionFullDappDetailView: WCTransactionFullDappDetailView) {
+
+    func wcTransactionFullDappDetailViewDidTapPrimaryActionButton(
+        _ view: WCTransactionFullDappDetailView
+    ) {
+        viewConfigurator.primaryAction?()
         dismissScreen()
     }
 }

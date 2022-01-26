@@ -47,8 +47,8 @@ class WCAppCallTransactionViewModel {
         setAppExtraPagesInformationViewModel(from: transaction)
         setApprovalHashInformationViewModel(from: transaction)
         setClearStateHashInformationViewModel(from: transaction)
-        setCloseWarningInformationViewModel(from: transaction)
-        setRekeyWarningInformationViewModel(from: transaction)
+        setCloseWarningViewModel(from: transaction)
+        setRekeyWarningViewModel(from: account, and: transaction)
         setFeeInformationViewModel(from: transaction)
         setFeeWarningViewModel(from: transaction)
         setNoteInformationViewModel(from: transaction)
@@ -184,7 +184,7 @@ class WCAppCallTransactionViewModel {
 
 
 
-    private func setCloseWarningInformationViewModel(from transaction: WCTransaction) {
+    private func setCloseWarningViewModel(from transaction: WCTransaction) {
         guard let transactionDetail = transaction.transactionDetail,
               let closeAddress = transactionDetail.closeAddress else {
             return
@@ -199,7 +199,7 @@ class WCAppCallTransactionViewModel {
         self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAlgos)
     }
 
-    private func setRekeyWarningInformationViewModel(from transaction: WCTransaction) {
+    private func setRekeyWarningViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
         guard let rekeyAddress = transaction.transactionDetail?.rekeyAddress else {
             return
         }
@@ -210,6 +210,11 @@ class WCAppCallTransactionViewModel {
         )
 
         self.rekeyInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+
+        guard senderAccount != nil else {
+            return
+        }
+
         self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }
 

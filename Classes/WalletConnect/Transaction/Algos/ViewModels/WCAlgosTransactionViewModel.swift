@@ -41,7 +41,7 @@ class WCAlgosTransactionViewModel {
         setBalanceInformationViewModel(from: senderAccount)
         setAssetInformationViewModel(from: senderAccount)
         setCloseWarningViewModel(from: transaction)
-        setRekeyWarningViewModel(from: transaction)
+        setRekeyWarningViewModel(from: senderAccount, and: transaction)
 
         setAmountInformationViewModel(from: transaction)
         setFeeInformationViewModel(from: transaction)
@@ -138,7 +138,7 @@ class WCAlgosTransactionViewModel {
         self.closeWarningInformationViewModel = WCTransactionWarningViewModel(warning: .closeAlgos)
     }
 
-    private func setRekeyWarningViewModel(from transaction: WCTransaction) {
+    private func setRekeyWarningViewModel(from senderAccount: Account?, and transaction: WCTransaction) {
         guard let rekeyAddress = transaction.transactionDetail?.rekeyAddress else {
             return
         }
@@ -149,6 +149,10 @@ class WCAlgosTransactionViewModel {
         )
 
         self.rekeyInformationViewModel = TransactionTextInformationViewModel(titledInformation)
+
+        guard senderAccount != nil else {
+            return
+        }
 
         self.rekeyWarningInformationViewModel = WCTransactionWarningViewModel(warning: .rekeyed)
     }
