@@ -20,15 +20,15 @@ import MacaroonUIKit
 import UIKit
 
 struct AlgoStatisticsHeaderViewTheme: StyleSheet, LayoutSheet {
+    let backgroundColor: Color
     let amountLabel: TextStyle
     let dateLabel: TextStyle
-    let arrowDown: ImageStyle
     let valueChangeViewTheme: AlgoStatisticsValueChangeViewTheme
-    let stackViewTopPadding: LayoutMetric 
-    let horizontalSpacing: LayoutMetric
-    let dateStackViewSpacing: LayoutMetric
+    
+    let topPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
+        self.backgroundColor = UIColor.clear
         self.amountLabel = [
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMMono.regular.make(36)),
@@ -37,17 +37,12 @@ struct AlgoStatisticsHeaderViewTheme: StyleSheet, LayoutSheet {
         ]
         self.dateLabel = [
             .textColor(AppColors.Components.Text.gray),
-            .font(Fonts.DMSans.regular.make(15)),
+            .font(Fonts.DMSans.regular.make(13)),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText())
         ]
-        self.arrowDown = [
-            .image("icon-arrow-down-grey")
-        ]
         self.valueChangeViewTheme = AlgoStatisticsValueChangeViewTheme()
 
-        self.horizontalSpacing = 12
-        self.stackViewTopPadding = 10
-        self.dateStackViewSpacing = 5
+        self.topPadding = 10
     }
 }

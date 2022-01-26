@@ -23,7 +23,6 @@ final class SecuritySettingsView: View {
     
     private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.scrollDirection = .vertical
         flowLayout.minimumLineSpacing = theme.cellSpacing
         flowLayout.sectionInset = UIEdgeInsets(theme.sectionInset)
         
@@ -31,15 +30,10 @@ final class SecuritySettingsView: View {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
-        collectionView.contentInset = .zero
         collectionView.keyboardDismissMode = .onDrag
-        collectionView.register(SettingsDetailCell.self, forCellWithReuseIdentifier: SettingsDetailCell.reusableIdentifier)
-        collectionView.register(SettingsToggleCell.self, forCellWithReuseIdentifier: SettingsToggleCell.reusableIdentifier)
-        collectionView.register(
-            SingleGrayTitleHeaderSuplementaryView.self,
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: SingleGrayTitleHeaderSuplementaryView.reusableIdentifier
-        )
+        collectionView.register(SettingsDetailCell.self)
+        collectionView.register(SettingsToggleCell.self)
+        collectionView.register(header: SingleGrayTitleHeaderSuplementaryView.self)
         return collectionView
     }()
     
@@ -61,7 +55,7 @@ final class SecuritySettingsView: View {
 extension SecuritySettingsView {
     private func addCollectionView() {
         addSubview(collectionView)
-        
+
         collectionView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.topInset)
             $0.leading.trailing.bottom.equalToSuperview()

@@ -26,8 +26,8 @@ final class AlgoStatisticsHeaderViewModel: ViewModel {
 
     private let priceChange: AlgoUSDPriceChange?
 
-    var isDateSelectionArrowHidden: Bool {
-        priceChange?.selectedPrice != nil
+    var isDateHidden: Bool {
+        priceChange?.selectedPrice == nil
     }
 
     init(priceChange: AlgoUSDPriceChange, timeInterval: AlgosUSDValueInterval, currency: Currency) {

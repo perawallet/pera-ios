@@ -23,21 +23,23 @@ struct AlgoStatisticsViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
 
     let headerTopInset: LayoutMetric 
-    let headerHorizontalInset: LayoutMetric
+    let horizontalInset: LayoutMetric
     let chartVerticalInset: LayoutMetric
     let chartHeight: LayoutMetric
     let bottomInset: LayoutMetric
     let footerViewHorizontalPadding: LayoutMetric
     let footerViewPaddings: LayoutPaddings
+    let chartTimeFrameSelectionViewTopPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.footerViewHorizontalPadding = 21
         self.headerTopInset = 12
-        self.headerHorizontalInset = 24
+        self.horizontalInset = 24
         self.chartVerticalInset = 15
         self.chartHeight = 180
         self.footerViewPaddings = (42, 21, .noMetric, 21)
         self.bottomInset = 32
+        self.chartTimeFrameSelectionViewTopPadding = 40
     }
 }

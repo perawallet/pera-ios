@@ -95,6 +95,11 @@ extension AlgoStatisticsViewController {
 }
 
 extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
+    func algoStatisticsView(_ view: AlgoStatisticsView, didSelect timeInterval: AlgosUSDValueInterval) {
+        selectedTimeInterval = timeInterval
+        getChartData(for: timeInterval)
+    }
+
     func algoStatisticsViewDidTapDate(_ view: AlgoStatisticsView) {
         filterOptionsTransition.perform(
             .algoStatisticsDateSelection(option: selectedTimeInterval, delegate: self),

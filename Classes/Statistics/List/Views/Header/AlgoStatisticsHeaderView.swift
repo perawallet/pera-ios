@@ -24,31 +24,25 @@ final class AlgoStatisticsHeaderView: View {
     private lazy var amountLabel = UILabel()
     private lazy var informationStackView = UIStackView()
     private lazy var valueChangeView = AlgoStatisticsValueChangeView()
-    private lazy var dateStackView = UIStackView()
     private lazy var dateLabel = UILabel()
-    private lazy var arrowDownImageView = UIImageView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         customize(AlgoStatisticsHeaderViewTheme())
-        linkInteractors()
     }
 
     func customize(_ theme: AlgoStatisticsHeaderViewTheme) {
-        customizeBaseAppearance(backgroundColor: UIColor.clear)
+        customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addAmountLabel(theme)
-        addInformationStackView(theme)
+        addValueChangeView(theme)
+        addDateLabel(theme)
     }
 
     func prepareLayout(_ layoutSheet: AlgoStatisticsHeaderViewTheme) {}
 
     func customizeAppearance(_ styleSheet: AlgoStatisticsHeaderViewTheme) {}
-
-    func linkInteractors() {
-        dateStackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTapDate)))
-    }
 }
 
 extension AlgoStatisticsHeaderView {
@@ -68,50 +62,24 @@ extension AlgoStatisticsHeaderView {
         }
     }
 
-    private func addInformationStackView(_ theme: AlgoStatisticsHeaderViewTheme) {
-        informationStackView.distribution = .equalSpacing
-        informationStackView.alignment = .center
-        informationStackView.spacing = theme.horizontalSpacing
-
-        addSubview(informationStackView)
-        informationStackView.snp.makeConstraints {
-            $0.leading.bottom.equalToSuperview()
-            $0.top.equalTo(amountLabel.snp.bottom).offset(theme.stackViewTopPadding)
-        }
-
-        addValueChangeView(theme)
-        addDateStackView(theme)
-    }
-
     private func addValueChangeView(_ theme: AlgoStatisticsHeaderViewTheme) {
         valueChangeView.customize(theme.valueChangeViewTheme)
 
-        valueChangeView.setContentHuggingPriority(.required, for: .horizontal)
-        valueChangeView.setContentCompressionResistancePriority(.required, for: .horizontal)
-        informationStackView.addArrangedSubview(valueChangeView)
-    }
-
-    private func addDateStackView(_ theme: AlgoStatisticsHeaderViewTheme) {
-        informationStackView.addArrangedSubview(dateStackView)
-        dateStackView.spacing = theme.dateStackViewSpacing
-
-        addDateLabel(theme)
-        addArrowDownImageView(theme)
+        addSubview(valueChangeView)
+        valueChangeView.snp.makeConstraints {
+            $0.leading.bottom.trailing.equalToSuperview()
+            $0.top.equalTo(amountLabel.snp.bottom).offset(theme.topPadding)
+        }
     }
 
     private func addDateLabel(_ theme: AlgoStatisticsHeaderViewTheme) {
         dateLabel.customizeAppearance(theme.dateLabel)
 
-        dateLabel.setContentHuggingPriority(.required, for: .horizontal)
-        dateLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-        dateStackView.addArrangedSubview(dateLabel)
-    }
-
-    private func addArrowDownImageView(_ theme: AlgoStatisticsHeaderViewTheme) {
-        arrowDownImageView.customizeAppearance(theme.arrowDown)
-        arrowDownImageView.isHidden = true
-
-        dateStackView.addArrangedSubview(arrowDownImageView)
+        addSubview(dateLabel)
+        dateLabel.snp.makeConstraints {
+            $0.leading.bottom.trailing.equalToSuperview()
+            $0.top.equalTo(amountLabel.snp.bottom).offset(theme.topPadding)
+        }
     }
 }
 
@@ -122,12 +90,13 @@ extension AlgoStatisticsHeaderView: ViewModelBindable {
         }
 
         amountLabel.text = viewModel.amount
-        dateLabel.text = viewModel.date
         valueChangeView.isHidden = !viewModel.isValueChangeDisplayed
-        arrowDownImageView.isHidden = viewModel.isDateSelectionArrowHidden 
+        dateLabel.isHidden = viewModel.isDateHidden
 
         if viewModel.isValueChangeDisplayed {
             valueChangeView.bindData(viewModel.valueChangeViewModel)
+        } else {
+            dateLabel.text = viewModel.date
         }
     }
 }
