@@ -182,16 +182,16 @@ extension ManageAssetsViewController: AssetActionConfirmationViewControllerDeleg
     }
     
     private func removeAssetFromAccount(_ assetDetail: AssetInformation) {
-        guard let creator = assetDetail.creator?.address else {
+        guard let creator = assetDetail.creator else {
             return
         }
 
         let assetTransactionDraft = AssetTransactionSendDraft(
             from: account,
-            toAccount: creator,
+            toAccount: Account(address: creator.address, type: .standard),
             amount: 0,
             assetIndex: assetDetail.id,
-            assetCreator: creator
+            assetCreator: creator.address
         )
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)

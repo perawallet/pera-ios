@@ -359,7 +359,7 @@ extension SendAlgosTransactionPreviewViewController {
         
         let transactionDraft = AlgosTransactionSendDraft(
             from: selectedAccount,
-            toAccount: account.address,
+            toAccount: account,
             amount: amount,
             fee: nil,
             isMaxTransaction: isMaxTransaction,

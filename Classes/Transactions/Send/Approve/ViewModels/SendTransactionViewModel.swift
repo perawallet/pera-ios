@@ -160,7 +160,7 @@ class SendTransactionViewModel {
     }
     
     private func setReceiver(from transactionDraft: TransactionSendDraft) {
-        guard let receiverAddress = transactionDraft.toAccount else {
+        guard let receiverAddress = transactionDraft.toAccount?.address else {
             return
         }
 

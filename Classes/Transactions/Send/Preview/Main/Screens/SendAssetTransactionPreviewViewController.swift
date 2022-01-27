@@ -345,7 +345,7 @@ extension SendAssetTransactionPreviewViewController {
     
     private func composeTransactionData() {
         guard let selectedAccount = selectedAccount,
-            let toAccount = getReceiverAccount()?.address else {
+            let toAccount = getReceiverAccount() else {
             return
         }
 

@@ -28,19 +28,19 @@ class SendAssetTransactionDataBuilder: TransactionDataBuilder {
               let assetTransactionDraft = draft as? AssetTransactionSendDraft,
               let assetIndex = assetTransactionDraft.assetIndex,
               let amountDecimalValue = assetTransactionDraft.amount,
-              let toAddress = assetTransactionDraft.toAccount else {
+              let toAccount = assetTransactionDraft.toAccount else {
             delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
             return nil
         }
 
-        if !isValidAddress(toAddress.trimmed) {
+        if !isValidAddress(toAccount.address.trimmed) {
             return nil
         }
 
         var transactionError: NSError?
         let draft = AssetTransactionDraft(
             from: assetTransactionDraft.from,
-            toAccount: toAddress.trimmed,
+            toAccount: toAccount.address.trimmed,
             transactionParams: params,
             amount: amountDecimalValue.toFraction(of: assetTransactionDraft.assetDecimalFraction),
             assetIndex: assetIndex,

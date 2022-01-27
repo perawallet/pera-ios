@@ -19,7 +19,7 @@ import Foundation
 
 struct RekeyTransactionSendDraft: TransactionSendDraft {
     var from: Account
-    var toAccount: String?
+    var toAccount: Account?
     var amount: Decimal?
     var fee: UInt64?
     var isMaxTransaction = false
@@ -30,7 +30,7 @@ struct RekeyTransactionSendDraft: TransactionSendDraft {
     
     init(account: Account, rekeyedTo: String) {
         self.from = account
-        toAccount = rekeyedTo
+        toAccount = Account(address: rekeyedTo, type: .rekeyed)
         amount = nil
         fee = nil
         isMaxTransaction = false

@@ -121,7 +121,7 @@ final class AccountSelectScreen: BaseViewController {
             if let contact = draft.toContact {
                 receiverAddress = contact.address
             } else {
-                receiverAddress = draft.toAccount
+                receiverAddress = draft.toAccount?.address
             }
 
             guard var receiverAddress = receiverAddress else {
@@ -188,7 +188,7 @@ final class AccountSelectScreen: BaseViewController {
     private func routeForAssetTransaction() {
         if let contact = draft.toContact, let contactAddress = contact.address {
             checkIfAddressIsValidForTransaction(contactAddress)
-        } else if let address = draft.toAccount {
+        } else if let address = draft.toAccount?.address {
             checkIfAddressIsValidForTransaction(address)
         }
     }
@@ -299,11 +299,9 @@ final class AccountSelectScreen: BaseViewController {
 
 
     private func composeAlgosTransactionData() {
-        let toAccountAddress = draft.toContact?.address ?? draft.toAccount
-
         var transactionDraft = AlgosTransactionSendDraft(
             from: draft.from,
-            toAccount: toAccountAddress,
+            toAccount: draft.toAccount,
             amount: draft.amount,
             fee: nil,
             isMaxTransaction: draft.isMaxTransaction,
@@ -326,11 +324,9 @@ final class AccountSelectScreen: BaseViewController {
             return
         }
 
-        let toAccountAddress = draft.toContact?.address ?? draft.toAccount
-
         var transactionDraft = AssetTransactionSendDraft(
             from: draft.from,
-            toAccount: toAccountAddress,
+            toAccount: draft.toAccount,
             amount: draft.amount,
             assetIndex: assetDetail.id,
             assetDecimalFraction: assetDetail.decimals,
@@ -461,7 +457,7 @@ extension AccountSelectScreen {
                   return
         }
 
-        draft.toAccount = address
+        draft.toAccount = Account(address: address, type: .standard)
         draft.toContact = nil
 
         routePreviewScreen()
@@ -484,7 +480,7 @@ extension AccountSelectScreen: UICollectionViewDelegateFlowLayout {
             draft.toContact = contact
             draft.toAccount = nil
         } else if let account = dataSource.item(at: indexPath) as? AccountHandle {
-            draft.toAccount = account.value.address
+            draft.toAccount = account.value
             draft.toContact = nil
         } else {
             return

@@ -28,12 +28,12 @@ class RemoveAssetTransactionDataBuilder: TransactionDataBuilder {
               let assetTransactionDraft = draft as? AssetTransactionSendDraft,
               let assetIndex = assetTransactionDraft.assetIndex,
               let amountDecimalValue = assetTransactionDraft.amount,
-              let toAddress = assetTransactionDraft.toAccount else {
+              let toAccount = assetTransactionDraft.toAccount else {
             delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
             return nil
         }
 
-        if !isValidAddress(toAddress.trimmed) {
+        if !isValidAddress(toAccount.address.trimmed) {
             return nil
         }
 
