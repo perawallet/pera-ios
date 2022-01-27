@@ -26,7 +26,7 @@ final class EditAccountView: View {
         floatingPlaceholder: "account-name-setup-placeholder".localized
     )
 
-    private lazy var doneButton = Button()
+    private lazy var doneButton = MacaroonUIKit.Button()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -47,7 +47,6 @@ final class EditAccountView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func linkInteractors() {
-        accountNameInputView.editingDelegate = self
         accountNameInputView.delegate = self
     }
 
@@ -73,8 +72,9 @@ extension EditAccountView {
     }
 
     private func addDoneButton(_ theme: EditAccountViewTheme) {
-        doneButton.customize(theme.mainButtonTheme)
-        doneButton.bindData(ButtonCommonViewModel(title: "title-done".localized))
+        doneButton.contentEdgeInsets = UIEdgeInsets(theme.doneButtonContentEdgeInsets)
+        doneButton.draw(corner: theme.doneButtonCorner)
+        doneButton.customizeAppearance(theme.doneButton)
 
         addSubview(doneButton)
         doneButton.fitToVerticalIntrinsicSize()
@@ -127,30 +127,24 @@ extension EditAccountView {
     func beginEditing() {
         accountNameInputView.beginEditing()
     }
+
+    func endEditing() {
+        accountNameInputView.endEditing()
+    }
 }
 
 extension EditAccountView: FloatingTextInputFieldViewDelegate {
     func floatingTextInputFieldViewShouldReturn(_ view: FloatingTextInputFieldView) -> Bool {
+        guard let delegate = delegate else {
+            return true
+        }
+        
         view.endEditing()
-        return true
-    }
-}
-
-extension EditAccountView: FormInputFieldViewEditingDelegate {
-    func formInputFieldViewDidBeginEditing(_ view: FloatingTextInputFieldView) {
-        delegate?.editAccountViewDidChangeValue(self)
-    }
-
-    func formInputFieldViewDidEdit(_ view: FloatingTextInputFieldView) {
-        delegate?.editAccountViewDidChangeValue(self)
-    }
-
-    func formInputFieldViewDidEndEditing(_ view: FloatingTextInputFieldView) {
-        delegate?.editAccountViewDidTapDoneButton(self)
+        delegate.editAccountViewDidTapDoneButton(self)
+        return false
     }
 }
 
 protocol EditAccountViewDelegate: AnyObject {
     func editAccountViewDidTapDoneButton(_ editAccountView: EditAccountView)
-    func editAccountViewDidChangeValue(_ editAccountView: EditAccountView)
 }

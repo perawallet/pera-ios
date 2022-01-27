@@ -143,7 +143,7 @@ extension SettingsViewController {
         }
     }
     
-    func didSelectItemFromAppPreferenceSettings(_ setting: AppPreferenceSettings) {
+    func didSelectItemFromAppPreferenceSettings(_ setting: AppPreferenceSettings?) {
         switch setting {
         case .language:
             displayProceedAlertWith(
@@ -164,25 +164,15 @@ extension SettingsViewController {
     func didSelectItemFromSupportSettings(_ setting: SupportSettings) {
         switch setting {
         case .feedback:
-            if let url = AlgorandWeb.support.link {
-                open(url)
-            }
+            open(AlgorandWeb.support.link)
         case .appReview:
             bottomModalTransition.perform(
                 .walletRating, by: .presentWithoutNavigationController
             )
         case .termsAndServices:
-            guard let url = AlgorandWeb.termsAndServices.link else {
-                return
-            }
-            
-            open(url)
+            open(AlgorandWeb.termsAndServices.link)
         case .privacyPolicy:
-            guard let url = AlgorandWeb.privacyPolicy.link else {
-                return
-            }
-            
-            open(url)
+            open(AlgorandWeb.privacyPolicy.link)
         case .developer:
             open(.developerSettings, by: .push)
         }
@@ -246,10 +236,12 @@ extension SettingsViewController: SettingsDataSourceDelegate {
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()
 
-        asyncMain(afterDuration: 1.5) { [weak self] in
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.stopLoadingAfter(seconds: 1.5, on: .main) { [weak self] in
             guard let self = self else {
                 return
             }
+
             self.presentLogoutSuccessScreen()
         }
     }
@@ -258,8 +250,6 @@ extension SettingsViewController: SettingsDataSourceDelegate {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-approval-check".uiImage,
             title: "settings-logout-success-message".localized,
-            description: "",
-            primaryActionButtonTitle: nil,
             secondaryActionButtonTitle: "title-close".localized
         )
 

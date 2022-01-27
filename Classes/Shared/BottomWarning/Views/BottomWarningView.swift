@@ -92,6 +92,7 @@ extension BottomWarningView {
         verticalStackView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.verticalInset)
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.verticalInset).priority(.medium)
             $0.bottom.lessThanOrEqualToSuperview().inset(theme.bottomInset)
         }
 
@@ -117,7 +118,13 @@ extension BottomWarningView {
 extension BottomWarningView {
     func bindData(_ configurator: BottomWarningViewConfigurator?) {
         titleLabel.editText = configurator?.title
-        descriptionLabel.editText = configurator?.description
+
+        if let description = configurator?.description {
+            descriptionLabel.editText = description
+        } else {
+            descriptionLabel.removeFromSuperview()
+        }
+
         imageView.image = configurator?.image
         primaryActionButton.bindData(ButtonCommonViewModel(title: configurator?.primaryActionButtonTitle))
 

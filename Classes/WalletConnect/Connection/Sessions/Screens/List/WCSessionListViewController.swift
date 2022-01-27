@@ -30,6 +30,11 @@ final class WCSessionListViewController: BaseViewController {
         walletConnector.delegate = self
     }
 
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        addBarButtons()
+    }
+
     override func configureAppearance() {
         title = "settings-wallet-connect-title".localized
         setListContentState()

@@ -852,7 +852,7 @@
 
 // MARK: NFTs
 "nft-list-empty-title" = "NFTs - Coming Soon!";
-"nft-list-empty-detail" ="You will be able to view your NFT collections in the Algorand Wallet soon.\nOur team is working hard to make this feature available. Stay tuned!";
+"nft-list-empty-detail" = "You will be able to view your NFT collections\nin the Algorand Wallet soon.\n\n\nOur team is working hard to make this feature available. Stay tuned!";
 
 // MARK: SendTransaction
 "send-transaction-title" = "Send %@";

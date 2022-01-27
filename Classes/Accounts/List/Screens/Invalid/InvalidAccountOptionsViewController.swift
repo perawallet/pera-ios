@@ -23,6 +23,8 @@ import UIKit
 final class InvalidAccountOptionsViewController:
     BaseScrollViewController,
     BottomSheetPresentable {
+    var uiInteractions = InvalidAccountOptionsUIInteractions()
+
     private lazy var contextView = VStackView()
 
     private let account: AccountHandle
@@ -136,16 +138,27 @@ extension InvalidAccountOptionsViewController {
 extension InvalidAccountOptionsViewController {
     @objc
     private func copyAddress() {
-        
+        dismissScreen()
+        uiInteractions.didTapCopyAddress?()
     }
     
     @objc
     private func viewPassphrase() {
-        
+        dismissScreen()
+        uiInteractions.didTapViewPassphrase?()
     }
     
     @objc
     private func showQrCode() {
-        
+        dismissScreen()
+        uiInteractions.didTapShowQRCode?()
+    }
+}
+
+extension InvalidAccountOptionsViewController {
+    struct InvalidAccountOptionsUIInteractions {
+        var didTapCopyAddress: EmptyHandler?
+        var didTapViewPassphrase: EmptyHandler?
+        var didTapShowQRCode: EmptyHandler?
     }
 }

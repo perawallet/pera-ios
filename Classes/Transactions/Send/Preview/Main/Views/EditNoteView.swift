@@ -28,7 +28,7 @@ final class EditNoteView: View {
         floatingPlaceholder: "edit-note-note-explanation".localized
     )
 
-    private lazy var doneButton = Button()
+    private lazy var doneButton = MacaroonUIKit.Button()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,6 +41,7 @@ final class EditNoteView: View {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addNoteInputView(theme)
+        addDoneButton(theme)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -48,7 +49,6 @@ final class EditNoteView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func linkInteractors() {
-        noteInputView.editingDelegate = self
         noteInputView.delegate = self
     }
 }
@@ -59,6 +59,21 @@ extension EditNoteView {
         noteInputView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.top.equalToSuperview().offset(theme.verticalPadding)
+        }
+    }
+
+    private func addDoneButton(_ theme: EditNoteViewTheme) {
+        doneButton.contentEdgeInsets = UIEdgeInsets(theme.doneButtonContentEdgeInsets)
+        doneButton.draw(corner: theme.doneButtonCorner)
+        doneButton.customizeAppearance(theme.doneButton)
+        
+        addSubview(doneButton)
+        doneButton.fitToVerticalIntrinsicSize()
+        doneButton.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top.greaterThanOrEqualTo(noteInputView.snp.bottom).offset(theme.verticalPadding)
+            $0.bottom.equalToSuperview().inset(theme.verticalPadding + safeAreaBottom)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
 }
@@ -76,7 +91,6 @@ extension EditNoteView {
             .clearButtonMode(.whileEditing),
             .returnKeyType(.done),
             .autocapitalizationType(.words),
-            .textContentType(.name)
         ]
 
         let theme =
@@ -103,29 +117,24 @@ extension EditNoteView {
     func beginEditing() {
         noteInputView.beginEditing()
     }
+
+    func endEditing() {
+        noteInputView.endEditing()
+    }
 }
 
 extension EditNoteView: FloatingTextInputFieldViewDelegate {
     func floatingTextInputFieldViewShouldReturn(_ view: FloatingTextInputFieldView) -> Bool {
+        guard let delegate = delegate else {
+            return true
+        }
+        
         view.endEditing()
-        return true
-    }
-}
-
-extension EditNoteView: FormInputFieldViewEditingDelegate {
-    func formInputFieldViewDidBeginEditing(_ view: FloatingTextInputFieldView) {
-        delegate?.editNoteViewDidChangeValue(self)
-    }
-
-    func formInputFieldViewDidEdit(_ view: FloatingTextInputFieldView) {
-        delegate?.editNoteViewDidChangeValue(self)
-    }
-
-    func formInputFieldViewDidEndEditing(_ view: FloatingTextInputFieldView) {
-        delegate?.editNoteViewDidChangeValue(self)
+        delegate.editEditNoteViewDidTapDoneButton(self)
+        return false
     }
 }
 
 protocol EditNoteViewDelegate: AnyObject {
-    func editNoteViewDidChangeValue(_ editNoteView: EditNoteView)
+    func editEditNoteViewDidTapDoneButton(_ editNoteView: EditNoteView)
 }
