@@ -310,6 +310,7 @@ final class AccountSelectScreen: BaseViewController {
         )
         transactionDraft.toContact = draft.toContact
 
+        transactionController.delegate = self
         transactionController.setTransactionDraft(transactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .algosTransaction)
 
@@ -336,6 +337,7 @@ final class AccountSelectScreen: BaseViewController {
         transactionDraft.toContact = draft.toContact
         transactionDraft.assetDetail = assetDetail
 
+        transactionController.delegate = self
         transactionController.setTransactionDraft(transactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
 

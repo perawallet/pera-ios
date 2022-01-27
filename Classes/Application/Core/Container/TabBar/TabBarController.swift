@@ -281,6 +281,7 @@ extension TabBarController {
             .accountSelection(transactionAction: action),
             by: .present
         )
+        controller?.navigationController?.isModalInPresentation = true
         (controller as? SelectAccountViewController)?.delegate = self
         
         switch action {
