@@ -22,7 +22,6 @@ import MacaroonUIKit
 import MacaroonBottomSheet
 
 final class EditNoteScreen: BaseViewController {
-
     weak var delegate: EditNoteScreenDelegate?
 
     private lazy var theme = Theme()
@@ -35,16 +34,10 @@ final class EditNoteScreen: BaseViewController {
         super.init(configuration: configuration)
     }
 
-    override func configureAppearance() {
-        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        title = "edit-note-title".localized
-    }
-
     override func configureNavigationBarAppearance() {
         super.configureNavigationBarAppearance()
         addBarButtons()
     }
-
     override func setListeners() {
         editNoteView.delegate = self
     }
@@ -59,6 +52,12 @@ final class EditNoteScreen: BaseViewController {
 
     override func bindData() {
         editNoteView.bindData(note)
+
+        if note.isNilOrEmpty {
+            title = "edit-note-title".localized
+        } else {
+            title = "send-transaction-edit-note-title".localized
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -66,20 +65,26 @@ final class EditNoteScreen: BaseViewController {
         editNoteView.beginEditing()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        editNoteView.endEditing()
+    }
+
     private func addBarButtons() {
         let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.closeScreen(by: .dismiss, animated: true)
+            self?.dismissScreen()
         }
 
         leftBarButtonItems = [closeBarButtonItem]
 
-        let doneBarButtonItem = ALGBarButtonItem(kind: .done) { [weak self] in
+        let doneBarButtonItem = ALGBarButtonItem(kind: .done) {
+            [weak self] in
+
             guard let self = self else {
                 return
             }
 
-            self.delegate?.editNoteScreen(self, didUpdateNote: self.note)
-            self.closeScreen(by: .dismiss, animated: true)
+            self.didTapDoneButton()
         }
 
         rightBarButtonItems = [doneBarButtonItem]
@@ -88,13 +93,14 @@ final class EditNoteScreen: BaseViewController {
 
 extension EditNoteScreen {
     private func didTapDoneButton() {
-        delegate?.editNoteScreen(self, didUpdateNote: self.note)
+        delegate?.editNoteScreen(self, didUpdateNote: editNoteView.noteInputView.text)
+        dismissScreen()
     }
 }
 
 extension EditNoteScreen: EditNoteViewDelegate {
-    func editNoteViewDidChangeValue(_ editNoteView: EditNoteView) {
-        self.note = editNoteView.noteInputView.text
+    func editEditNoteViewDidTapDoneButton(_ editNoteView: EditNoteView) {
+        didTapDoneButton()
     }
 }
 

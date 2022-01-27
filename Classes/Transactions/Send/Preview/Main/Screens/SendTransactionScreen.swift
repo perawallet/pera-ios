@@ -43,9 +43,7 @@ final class SendTransactionScreen: BaseViewController {
     private var amount: String = "0"
     private var note: String? {
         didSet {
-            let isSelected = note != nil && note != ""
-
-            if isSelected {
+            if !note.isNilOrEmpty {
                 noteButton.setTitle("send-transaction-edit-note-title".localized, for: .normal)
             } else {
                 noteButton.setTitle("send-transaction-add-note-title".localized, for: .normal)
@@ -175,7 +173,7 @@ extension SendTransactionScreen {
             case let .assetDetail(assetInformation):
                 guard let assetUSDValue = assetInformation.usdValue,
                       let currencyUsdValue = currency.usdValue else {
-                          return
+                          break
                 }
 
                 let currencyValue = assetUSDValue * amount * currencyUsdValue
@@ -355,8 +353,8 @@ extension SendTransactionScreen {
     @objc
     private func didTapNote() {
         modalTransition.perform(
-            .editNote(note: self.note, delegate: self),
-            by: .presentWithoutNavigationController
+            .editNote(note: note, delegate: self),
+            by: .present
         )
     }
 }

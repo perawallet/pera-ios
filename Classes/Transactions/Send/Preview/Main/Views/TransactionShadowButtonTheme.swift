@@ -35,6 +35,7 @@ struct TransactionShadowButtonTheme: ButtonTheme {
 
     init(_ family: LayoutFamily) {
         self.label = [
+            .isInteractable(false),
             .font(Fonts.DMSans.medium.make(13)),
             .textAlignment(.center),
             .textOverflow(SingleLineFittingText())
