@@ -27,6 +27,12 @@ final class AccountNameViewModel {
         bindImage(from: account, with: hasImage)
         bindName(from: account, with: hasImage)
     }
+
+    init(contact: Contact, hasImage: Bool = true) {
+        accountType = .standard
+        bindImage(from: contact, with: hasImage)
+        bindName(from: contact, with: hasImage)
+    }
 }
 
 extension AccountNameViewModel {
@@ -38,6 +44,19 @@ extension AccountNameViewModel {
         image = account.image ?? accountType.image(for: AccountImageType.getRandomImage(for: accountType))
     }
 
+    private func bindImage(from contact: Contact, with hasImage: Bool) {
+        if !hasImage {
+            return
+        }
+
+        if let imageData = contact.image,
+           let image = UIImage(data: imageData) {
+            self.image = image
+        } else {
+            self.image = "icon-user-placeholder".uiImage
+        }
+    }
+
     private func bindName(from account: Account, with hasImage: Bool) {
         if !hasImage {
             name = account.address
@@ -45,5 +64,18 @@ extension AccountNameViewModel {
         }
 
         name = account.name.unwrap(or: account.address.shortAddressDisplay())
+    }
+
+    private func bindName(from contact: Contact, with hasImage: Bool) {
+        if !hasImage {
+            name = contact.address
+            return
+        }
+
+        guard let contactAddress = contact.address else {
+            return
+        }
+
+        name = contact.name.unwrap(or: contactAddress.shortAddressDisplay())
     }
 }

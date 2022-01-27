@@ -22,8 +22,8 @@ import MacaroonUIKit
 
 final class SendTransactionPreviewViewModel: PairedViewModel {
     private(set) var amountViewMode: TransactionAmountView.Mode?
-    private(set) var userViewDetail: String?
-    private(set) var opponentViewAddress: String?
+    private(set) var userView: TitledTransactionAccountNameViewModel?
+    private(set) var opponentView: TitledTransactionAccountNameViewModel?
     private(set) var feeViewMode: TransactionAmountView.Mode?
     private(set) var balanceViewMode: TransactionAmountView.Mode?
     private(set) var noteViewDetail: String?
@@ -75,17 +75,35 @@ final class SendTransactionPreviewViewModel: PairedViewModel {
     private func setUserView(
         for draft: TransactionSendDraft
     ) {
-        userViewDetail = draft.from.name ?? draft.from.address
+        userView = TitledTransactionAccountNameViewModel(
+            title: "title-account".localized,
+            account: draft.from,
+            hasImage: true
+        )
     }
 
 
     private func setOpponentView(
         for draft: TransactionSendDraft
     ) {
+        let title = "transaction-detail-to".localized
+
         if let contact = draft.toContact {
-            opponentViewAddress = contact.name ?? contact.address
+            opponentView = TitledTransactionAccountNameViewModel(
+                title: title,
+                contact: contact,
+                hasImage: true
+            )
         } else {
-            opponentViewAddress = draft.toAccount
+            guard let toAccount = draft.toAccount else {
+                return
+            }
+
+            opponentView = TitledTransactionAccountNameViewModel(
+                title: title,
+                account: toAccount,
+                hasImage: toAccount.isCreated
+            )
         }
     }
 

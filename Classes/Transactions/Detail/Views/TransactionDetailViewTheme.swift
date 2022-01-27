@@ -26,6 +26,7 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
 
     let transactionTextInformationViewTransactionIDTheme: TransactionTextInformationViewTheme
     let transactionTextInformationViewCommonTheme: TransactionTextInformationViewTheme
+    let transactionAccountInformationViewCommonTheme: TitledTransactionAccountNameViewTheme
     let commonTransactionAmountInformationViewTheme: TransactionAmountInformationViewTheme
     let transactionStatusInformationViewTheme: TransactionStatusInformationViewTheme
     let transactionContactInformationViewTheme: TransactionContactInformationViewTheme
@@ -59,6 +60,7 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
         self.transactionTextInformationViewCommonTheme = TransactionTextInformationViewCommonTheme()
         self.transactionStatusInformationViewTheme = TransactionStatusInformationViewTheme()
         self.transactionContactInformationViewTheme = TransactionContactInformationViewTheme()
+        self.transactionAccountInformationViewCommonTheme = TitledTransactionAccountNameViewTheme(family)
 
         self.separatorTopPadding = -32
         self.buttonsCorner = Corner(radius: 18)

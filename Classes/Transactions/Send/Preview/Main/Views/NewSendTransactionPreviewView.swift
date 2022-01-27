@@ -23,8 +23,8 @@ import MacaroonUIKit
 final class NewSendTransactionPreviewView: View {
     private lazy var verticalStackView = UIStackView()
     private(set) lazy var amountView = TransactionAmountInformationView()
-    private(set) lazy var userView = TransactionTextInformationView()
-    private(set) lazy var opponentView = TransactionTextInformationView()
+    private(set) lazy var userView = TitledTransactionAccountNameView()
+    private(set) lazy var opponentView = TitledTransactionAccountNameView()
     private(set) lazy var feeView = TransactionAmountInformationView()
     private(set) lazy var balanceView = TransactionAmountInformationView()
     private(set) lazy var noteView = TransactionTextInformationView()
@@ -87,12 +87,7 @@ extension NewSendTransactionPreviewView {
     }
 
     private func addUserView(_ theme: TransactionDetailViewTheme) {
-        userView.customize(theme.transactionTextInformationViewCommonTheme)
-        userView.bindData(
-            TransactionTextInformationViewModel(
-                title: "title-account".localized
-            )
-        )
+        userView.customize(theme.transactionAccountInformationViewCommonTheme)
 
         verticalStackView.addArrangedSubview(userView)
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: amountView)
@@ -100,13 +95,7 @@ extension NewSendTransactionPreviewView {
     }
 
     private func addOpponentView(_ theme: TransactionDetailViewTheme) {
-        opponentView.customize(theme.transactionTextInformationViewCommonTheme)
-        opponentView.bindData(
-            TransactionTextInformationViewModel(
-                title: "transaction-detail-to".localized
-            )
-        )
-
+        opponentView.customize(theme.transactionAccountInformationViewCommonTheme)
         verticalStackView.addArrangedSubview(opponentView)
     }
 
@@ -159,11 +148,11 @@ extension NewSendTransactionPreviewView: ViewModelBindable {
         }
 
         userView.bindData(
-            TransactionTextInformationViewModel(detail: viewModel?.userViewDetail)
+            viewModel?.userView
         )
 
         opponentView.bindData(
-            TransactionTextInformationViewModel(detail: viewModel?.opponentViewAddress)
+            viewModel?.opponentView
         )
 
         if let feeViewMode = viewModel?.feeViewMode {
