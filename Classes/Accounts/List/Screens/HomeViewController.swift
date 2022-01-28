@@ -663,7 +663,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             if localAuthenticator.localAuthenticationStatus != .allowed {
                 let controller = self.open(
                     .choosePassword(
-                        mode: .confirm("title-enter-pin-for-passphrase".localized),
+                        mode: .confirm(flow: .viewPassphrase),
                         flow: nil,
                         route: nil
                     ),
@@ -704,24 +704,21 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
         _ choosePasswordViewController: ChoosePasswordViewController,
         didConfirmPassword isConfirmed: Bool
     ) {
+        choosePasswordViewController.dismissScreen()
+        
         guard let selectedAccountHandle = selectedAccountHandle else {
             return
         }
 
         if isConfirmed {
             presentPassphraseView(selectedAccountHandle)
-        } else {
-            displaySimpleAlertWith(
-                title: "password-verify-fail-title".localized,
-                message: "options-view-passphrase-password-alert-message".localized
-            )
         }
     }
 
     private func presentPassphraseView(_ accountHandle: AccountHandle) {
         modalTransition.perform(
             .passphraseDisplay(address: accountHandle.value.address),
-            by: .presentWithoutNavigationController
+            by: .present
         )
     }
 }
