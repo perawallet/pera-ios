@@ -31,8 +31,6 @@ final class SecuritySettingsViewController: BaseViewController {
         title = "security-settings-title".localized
     }
 
-    private var isInitialLoad = true
-    
     override func linkInteractors() {
         securitySettingsView.collectionView.delegate = self
         securitySettingsView.collectionView.dataSource = self
@@ -50,8 +48,7 @@ final class SecuritySettingsViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        guard !isInitialLoad else {
-            isInitialLoad = false
+        guard !isViewFirstLoaded else {
             return
         }
 
