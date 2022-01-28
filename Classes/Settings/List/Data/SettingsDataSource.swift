@@ -48,27 +48,26 @@ extension SettingsDataSource: UICollectionViewDataSource {
             switch section {
             case .account:
                 if let setting = accountSettings[safe: indexPath.item] {
-                    switch setting {
-                    case .security, .notifications, .walletConnect:
-                        return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-                    }
+                    return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
                 }
             case .appPreferences:
                 if let setting = appPreferenceSettings[safe: indexPath.item] {
                     switch setting {
                     case .rewards:
                         let rewardDisplayPreference = session?.rewardDisplayPreference == .allowed
-                        return setSettingsToggleCell(from: setting, isOn: rewardDisplayPreference, in: collectionView, at: indexPath)
+                        return setSettingsToggleCell(
+                            from: setting,
+                            isOn: rewardDisplayPreference,
+                            in: collectionView,
+                            at: indexPath
+                        )
                     case .language, .currency, .appearance:
                         return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
                     }
                 }
             case .support:
                 if let setting = supportSettings[safe: indexPath.item] {
-                    switch setting {
-                    case .feedback, .appReview, .termsAndServices, .privacyPolicy, .developer:
-                        return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
-                    }
+                    return setSettingsDetailCell(from: setting, in: collectionView, at: indexPath)
                 }
             }
         }
@@ -105,25 +104,11 @@ extension SettingsDataSource: UICollectionViewDataSource {
     ) -> UICollectionReusableView {
         switch kind {
         case UICollectionView.elementKindSectionFooter:
-            guard let footerView = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: SettingsFooterSupplementaryView.reusableIdentifier,
-                for: indexPath
-            ) as? SettingsFooterSupplementaryView else {
-                fatalError("Unexpected element kind")
-            }
-            
+            let footerView = collectionView.dequeueFooter(SettingsFooterSupplementaryView.self, at: indexPath)
             footerView.delegate = self
             return footerView
         case UICollectionView.elementKindSectionHeader:
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: SingleGrayTitleHeaderSuplementaryView.reusableIdentifier,
-                for: indexPath
-            ) as? SingleGrayTitleHeaderSuplementaryView else {
-                fatalError("Unexpected element kind")
-            }
-            
+            let headerView = collectionView.dequeueHeader(SingleGrayTitleHeaderSuplementaryView.self, at: indexPath)
             headerView.bindData(SingleGrayTitleHeaderViewModel(sections[indexPath.section]))
             return headerView
         default:
