@@ -24,14 +24,9 @@ protocol UserInterfaceChangable {
 extension UserInterfaceChangable where Self: UIViewController {
     /// <note> overrideUserInterfaceStyle property is used to override interface style for user preference
     func changeUserInterfaceStyle(to appearance: UserInterfaceStyle) {
-        guard #available(iOS 13.0, *) else {
-            return
-        }
-
         switch appearance {
         case .system:
-            let systemAppearance: UIUserInterfaceStyle = UIApplication.shared.deviceInterfaceStyle == .light ? .light : .dark
-            UIApplication.shared.appDelegate?.window?.overrideUserInterfaceStyle = systemAppearance
+            UIApplication.shared.appDelegate?.window?.overrideUserInterfaceStyle = .unspecified
         case .dark:
             UIApplication.shared.appDelegate?.window?.overrideUserInterfaceStyle = .dark
         case .light:
