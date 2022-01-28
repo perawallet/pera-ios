@@ -31,7 +31,7 @@ final class SecuritySettingsViewController: BaseViewController {
         title = "security-settings-title".localized
     }
 
-    private let isInitialLoad = false
+    private var isInitialLoad = true
     
     override func linkInteractors() {
         securitySettingsView.collectionView.delegate = self
@@ -49,10 +49,13 @@ final class SecuritySettingsViewController: BaseViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        if !isInitialLoad {
-            checkPINCodeActivation()
+
+        guard !isInitialLoad else {
+            isInitialLoad = false
+            return
         }
+
+        checkPINCodeActivation()
     }
 }
 
