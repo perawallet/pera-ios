@@ -37,6 +37,7 @@ struct TransactionHistoryContextViewModel:
         _ model: T
     ) {
         if let reward = model as? Reward {
+            bindID(reward)
             bindTitle(reward)
             bindAmount(reward)
             return
@@ -53,6 +54,12 @@ struct TransactionHistoryContextViewModel:
 }
 
 extension TransactionHistoryContextViewModel {
+    private mutating func bindID(
+        _ reward: Reward
+    ) {
+        id = reward.transactionID
+    }
+
     private mutating func bindTitle(
         _ reward: Reward
     ) {

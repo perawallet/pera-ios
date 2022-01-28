@@ -114,7 +114,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
             return
         }
         
-        if session?.account(from: address) != nil {
+        if sharedDataController.accountCollection[address] != nil {
             displaySimpleAlertWith(title: "title-error".localized, message: "recover-from-seed-verify-exist-error".localized)
             return
         }
@@ -145,7 +145,6 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
             user = User(accounts: [account])
         }
         
-        session?.addAccount(Account(localAccount: account))
         session?.authenticatedUser = user
         return account
     }

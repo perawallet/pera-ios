@@ -18,7 +18,6 @@
 import Foundation
 import MacaroonUIKit
 
-
 final class TitledTransactionAccountNameViewTheme: LayoutSheet, StyleSheet {
     var title: TextStyle {
         return [

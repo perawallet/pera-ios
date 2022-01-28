@@ -39,7 +39,7 @@ class Router {
         switch style {
         case .push:
             if let currentViewController = self as? StatusBarConfigurable,
-                let nextViewController = viewController as? StatusBarConfigurable {
+               let nextViewController = viewController as? StatusBarConfigurable {
                 
                 let isStatusBarHidden = currentViewController.isStatusBarHidden
                 
@@ -59,8 +59,8 @@ class Router {
                 navigationController = navController
             } else {
                 if let presentingViewController = self as? StatusBarConfigurable,
-                    let presentedViewController = viewController as? StatusBarConfigurable,
-                    presentingViewController.isStatusBarHidden {
+                   let presentedViewController = viewController as? StatusBarConfigurable,
+                   presentingViewController.isStatusBarHidden {
                     
                     presentedViewController.hidesStatusBarWhenPresented = true
                     presentedViewController.isStatusBarHidden = true
@@ -73,15 +73,15 @@ class Router {
             
             rootViewController?.present(navigationController, animated: false, completion: completion)
         case .present,
-             .customPresent:
+                .customPresent:
             let navigationController: NavigationController
             
             if let navController = viewController as? NavigationController {
                 navigationController = navController
             } else {
                 if let presentingViewController = self as? StatusBarConfigurable,
-                    let presentedViewController = viewController as? StatusBarConfigurable,
-                    presentingViewController.isStatusBarHidden {
+                   let presentedViewController = viewController as? StatusBarConfigurable,
+                   presentingViewController.isStatusBarHidden {
                     
                     presentedViewController.hidesStatusBarWhenPresented = true
                     presentedViewController.isStatusBarHidden = true
@@ -108,8 +108,8 @@ class Router {
             sourceViewController.present(navigationController, animated: animated, completion: completion)
         case .presentWithoutNavigationController:
             if let presentingViewController = self as? StatusBarConfigurable,
-                let presentedViewController = viewController as? StatusBarConfigurable,
-                presentingViewController.isStatusBarHidden {
+               let presentedViewController = viewController as? StatusBarConfigurable,
+               presentingViewController.isStatusBarHidden {
                 
                 presentedViewController.hidesStatusBarWhenPresented = true
                 presentedViewController.isStatusBarHidden = true
@@ -119,8 +119,8 @@ class Router {
             
         case let .customPresentWithoutNavigationController(presentationStyle, transitionStyle, transitioningDelegate):
             if let presentingViewController = self as? StatusBarConfigurable,
-                let presentedViewController = viewController as? StatusBarConfigurable,
-                presentingViewController.isStatusBarHidden {
+               let presentedViewController = viewController as? StatusBarConfigurable,
+               presentingViewController.isStatusBarHidden {
                 
                 presentedViewController.hidesStatusBarWhenPresented = true
                 presentedViewController.isStatusBarHidden = true
@@ -138,7 +138,7 @@ class Router {
             sourceViewController.present(viewController, animated: animated, completion: completion)
         case .set:
             if let currentViewController = self as? StatusBarConfigurable,
-                let nextViewController = viewController as? StatusBarConfigurable {
+               let nextViewController = viewController as? StatusBarConfigurable {
                 
                 let isStatusBarHidden = currentViewController.isStatusBarHidden
                 
@@ -160,9 +160,9 @@ class Router {
         }
         
         guard let navigationController = viewController as? UINavigationController,
-            let firstViewController = navigationController.viewControllers.first as? T else {
-                return viewController as? T
-        }
+              let firstViewController = navigationController.viewControllers.first as? T else {
+                  return viewController as? T
+              }
         
         return firstViewController
     }
@@ -228,40 +228,6 @@ class Router {
             viewController = EditContactViewController(contact: contact, configuration: configuration)
         case let .contactDetail(contact):
             viewController = ContactDetailViewController(contact: contact, configuration: configuration)
-        case let .sendAlgosTransactionPreview(account, receiver, isSenderEditable, qrText):
-            viewController = SendAlgosTransactionPreviewViewController(
-                account: account,
-                assetReceiverState: receiver,
-                isSenderEditable: isSenderEditable,
-                qrText: qrText,
-                configuration: configuration
-            )
-        case let .sendAssetTransactionPreview(account, receiver, assetDetail, isSenderEditable, isMaxTransaction, qrText):
-            viewController = SendAssetTransactionPreviewViewController(
-                account: account,
-                assetReceiverState: receiver,
-                assetDetail: assetDetail,
-                isSenderEditable: isSenderEditable,
-                isMaxTransaction: isMaxTransaction,
-                qrText: qrText,
-                configuration: configuration
-            )
-        case let .sendAlgosTransaction(algosTransactionSendDraft, transactionController, receiver, isSenderEditable):
-            viewController = SendAlgosTransactionViewController(
-                algosTransactionSendDraft: algosTransactionSendDraft,
-                assetReceiverState: receiver,
-                transactionController: transactionController,
-                isSenderEditable: isSenderEditable,
-                configuration: configuration
-            )
-        case let .sendAssetTransaction(assetTransactionSendDraft, transactionController, receiver, isSenderEditable):
-            viewController = SendAssetTransactionViewController(
-                assetTransactionSendDraft: assetTransactionSendDraft,
-                assetReceiverState: receiver,
-                transactionController: transactionController,
-                isSenderEditable: isSenderEditable,
-                configuration: configuration
-            )
         case .nodeSettings:
             viewController = NodeSettingsViewController(configuration: configuration)
         case let .transactionDetail(account, transaction, transactionType, assetDetail):
@@ -303,18 +269,12 @@ class Router {
                 step: step,
                 configuration: configuration
             )
-        case let .selectAsset(transactionAction, filterOption):
-            viewController = OldSelectAssetViewController(
-                transactionAction: transactionAction,
-                filterOption: filterOption,
-                configuration: configuration
-            )
         case let .passphraseDisplay(address):
             viewController = PassphraseDisplayViewController(address: address, configuration: configuration)
         case .pinLimit:
             viewController = PinLimitViewController(configuration: configuration)
         case .assetActionConfirmationNotification,
-             .assetDetailNotification:
+                .assetDetailNotification:
             return nil
         case let .transactionFilter(filterOption, delegate):
             let transactionFilterViewController = TransactionFilterViewController(filterOption: filterOption, configuration: configuration)
@@ -362,10 +322,6 @@ class Router {
             viewController = BottomWarningViewController(viewModel, configuration: configuration)
         case let .warningAlert(warningAlert):
             viewController = WarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
-        case let .actionableWarningAlert(warningAlert, delegate):
-            let actionableWarningAlertViewController = ActionableWarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
-            actionableWarningAlertViewController.delegate = delegate
-            viewController = actionableWarningAlertViewController
         case let .tutorial(flow, tutorial):
             viewController = TutorialViewController(
                 flow: flow,
@@ -401,14 +357,6 @@ class Router {
         case let .wcTransactionFullDappDetail(viewModel):
             viewController = WCTransactionFullDappDetailViewController(
                 viewModel,
-                configuration: configuration
-            )
-
-        case let .wcMainTransaction(transactions, transactionRequest, transactionOption):
-            viewController = WCMainTransactionViewController(
-                transactions: transactions,
-                transactionRequest: transactionRequest,
-                transactionOption: transactionOption,
                 configuration: configuration
             )
         case let .wcAlgosTransaction(transaction, transactionRequest):

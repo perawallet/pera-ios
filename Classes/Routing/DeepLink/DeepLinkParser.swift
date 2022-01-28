@@ -58,28 +58,24 @@ struct DeepLinkParser {
             return .addContact(address: accountAddress, name: qrText.label)
         case .algosRequest:
             if let amount = qrText.amount {
-                return .sendAlgosTransactionPreview(
-                    account: nil,
-                    receiver: .address(address: accountAddress, amount: "\(amount)"),
-                    isSenderEditable: false,
-                    qrText: qrText
-                )
+                /// <todo> open send screen
+                return nil
             }
         case .assetRequest:
             guard let assetId = qrText.asset,
-                let userAccounts = UIApplication.shared.appConfiguration?.session.accounts else {
+                  let userAccounts = UIApplication.shared.appConfiguration?.sharedDataController.accountCollection.sorted() else {
                 return nil
             }
             
-            var requestedAssetDetail: AssetDetail?
+            var requestedCompoundAsset: CompoundAsset?
             
             for account in userAccounts {
-                for assetDetail in account.assetDetails where assetDetail.id == assetId {
-                    requestedAssetDetail = assetDetail
+                for compoundAsset in account.value.compoundAssets where compoundAsset.id == assetId {
+                    requestedCompoundAsset = compoundAsset
                 }
             }
             
-            guard let assetDetail = requestedAssetDetail else {
+            guard let assetDetail = requestedCompoundAsset else {
                 let assetAlertDraft = AssetAlertDraft(
                     account: nil,
                     assetIndex: assetId,
@@ -94,14 +90,8 @@ struct DeepLinkParser {
             }
                 
             if let amount = qrText.amount {
-                return .sendAssetTransactionPreview(
-                    account: nil,
-                    receiver: .address(address: accountAddress, amount: "\(amount)"),
-                    assetDetail: assetDetail,
-                    isSenderEditable: false,
-                    isMaxTransaction: false,
-                    qrText: qrText
-                )
+                /// <todo> open send screen
+                return nil
             }
         case .mnemonic:
             return nil

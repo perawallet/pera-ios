@@ -60,14 +60,14 @@ extension AccountCellViewModel {
                     return
                 }
 
-                let amountText = "\(assetAmount.toFractionStringForLabel(fraction: assetDetail.fractionDecimals) ?? "")".attributed(
+                let amountText = "\(assetAmount.toFractionStringForLabel(fraction: assetDetail.decimals) ?? "")".attributed(
                     [
                         .textColor(AppColors.Components.Text.main.uiColor),
                         .font(Fonts.DMMono.regular.make(15).uiFont)
                     ]
                 )
 
-                let codeText = " (\(assetDetail.getAssetCode()))".attributed(
+                let codeText = " (\(assetDetail.unitNameRepresentation))".attributed(
                     [
                         .textColor(AppColors.Components.Text.grayLighter.uiColor),
                         .font(Fonts.DMSans.regular.make(13).uiFont)

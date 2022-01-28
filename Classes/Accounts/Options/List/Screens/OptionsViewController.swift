@@ -175,7 +175,6 @@ extension OptionsViewController {
 
         localAccount.receivesNotification = account.receivesNotification
         api?.session.authenticatedUser?.updateAccount(localAccount)
-        api?.session.updateAccount(account)
     }
 
     private func updateNotificationFilterCell() {

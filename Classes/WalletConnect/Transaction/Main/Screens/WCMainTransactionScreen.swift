@@ -559,3 +559,18 @@ extension WCMainTransactionScreen: WCTransactionDappMessageViewDelegate {
         modalTransition.perform(.wcTransactionFullDappDetail(configurator: configurator), by: .presentWithoutNavigationController)
     }
 }
+
+enum WCTransactionType {
+    case algos
+    case asset
+    case assetAddition
+    case possibleAssetAddition
+    case appCall
+    case assetConfig(type: AssetConfigType)
+}
+
+enum AssetConfigType {
+    case create
+    case delete
+    case reconfig
+}

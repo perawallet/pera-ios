@@ -133,7 +133,7 @@ extension ChoosePasswordViewController {
         
         switch navigationRoute {
         case let .assetDetailNotification(address, assetId):
-            guard let account = session?.account(from: address) else {
+            guard let account = sharedDataController.accountCollection[address]?.value else {
                 return
             }
             
@@ -149,7 +149,7 @@ extension ChoosePasswordViewController {
                 route = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
             }
         case let .assetActionConfirmationNotification(address, assetId):
-            guard let account = session?.account(from: address),
+            guard let account = sharedDataController.accountCollection[address]?.value,
                   let assetId = assetId else {
                 return
             }

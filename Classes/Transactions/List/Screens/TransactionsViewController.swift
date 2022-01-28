@@ -76,6 +76,10 @@ class TransactionsViewController: BaseViewController {
 
             switch event {
             case .didUpdate(let snapshot):
+                if let accountHandle = self.sharedDataController.accountCollection[self.accountHandle.value.address] {
+                    self.accountHandle = accountHandle
+                }
+
                 self.transactionsDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             }
         }

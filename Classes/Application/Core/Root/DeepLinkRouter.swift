@@ -89,9 +89,9 @@ extension DeepLinkRouter {
     private func shouldStartDeepLinkRoutingInValidSession(for screen: Screen) -> Bool {
         switch screen {
         case .addContact,
-             .sendAlgosTransactionPreview,
+             .sendTransaction,
              .assetActionConfirmation,
-             .sendAssetTransactionPreview:
+             .sendTransaction:
             rootViewController?.tabBarViewController.route = screen
             rootViewController?.tabBarViewController.routeForDeeplink()
             return true
@@ -135,7 +135,7 @@ extension DeepLinkRouter {
     }
 
     private func openAssetFromValidSesion(from notification: NotificationDetail, for address: String) {
-        guard let account = appConfiguration.session.account(from: address) else {
+        guard let account = appConfiguration.sharedDataController.accountCollection[address]?.value else {
             return
         }
 
