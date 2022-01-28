@@ -121,7 +121,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
         if localAuthenticator.localAuthenticationStatus != .allowed {
             let controller = open(
-                .choosePassword(mode: .confirm("title-enter-pin-for-passphrase".localized), flow: nil, route: nil),
+                .choosePassword(mode: .confirm(flow: .viewPassphrase), flow: nil, route: nil),
                 by: .present
             ) as? ChoosePasswordViewController
             controller?.delegate = self
@@ -141,7 +141,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     private func presentPassphraseView() {
         modalTransition.perform(
             .passphraseDisplay(address: accountHandle.value.address),
-            by: .presentWithoutNavigationController
+            by: .present
         )
     }
 
@@ -189,14 +189,13 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 }
 
 extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
-    func choosePasswordViewController(_ choosePasswordViewController: ChoosePasswordViewController, didConfirmPassword isConfirmed: Bool) {
+    func choosePasswordViewController(
+        _ choosePasswordViewController: ChoosePasswordViewController,
+        didConfirmPassword isConfirmed: Bool
+    ) {
+        choosePasswordViewController.dismissScreen()
         if isConfirmed {
             presentPassphraseView()
-        } else {
-            displaySimpleAlertWith(
-                title: "password-verify-fail-title".localized,
-                message: "options-view-passphrase-password-alert-message".localized
-            )
         }
     }
 }

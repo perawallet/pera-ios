@@ -43,16 +43,32 @@ extension ChoosePasswordViewModel {
             choosePasswordView.titleLabel.text = "login-subtitle".localized
         case .deletePassword:
             choosePasswordView.titleLabel.text = "login-subtitle".localized
-        case .resetPassword:
-            choosePasswordView.titleLabel.text = "password-change-subtitle".localized
-        case .resetVerify:
-            choosePasswordView.titleLabel.text = "password-verify-subtitle".localized
+        case .resetPassword(let flow):
+            switch flow {
+            case .initial:
+                choosePasswordView.titleLabel.text = "password-change-subtitle".localized
+            case .fromVerifyOld:
+                choosePasswordView.titleLabel.text = "password-change-new-subtitle".localized
+            }
+        case .resetVerify(_, let flow):
+            switch flow {
+            case .initial:
+                choosePasswordView.titleLabel.text = "password-verify-subtitle".localized
+            case .fromVerifyOld:
+                choosePasswordView.titleLabel.text = "password-verify-new-subtitle".localized
+            }
         case .confirm:
             choosePasswordView.titleLabel.text = "login-subtitle".localized
+        case .verifyOld:
+            choosePasswordView.titleLabel.text = "password-change-old-subtitle".localized
         }
     }
 
-    func configureSelection(in choosePasswordView: ChoosePasswordView, for value: NumpadKey, then handler: (String) -> Void) {
+    func configureSelection(
+        in choosePasswordView: ChoosePasswordView,
+        for value: NumpadKey,
+        then handler: (String) -> Void
+    ) {
         switch value {
         case let .number(number):
             if isPasswordValid {
@@ -81,12 +97,11 @@ extension ChoosePasswordViewModel {
     private func update(in choosePasswordView: ChoosePasswordView, for value: NumpadKey) {
         switch value {
         case .number:
-            let passwordInputCircleView = choosePasswordView.passwordInputView.passwordInputCircleViews[password.count - 1]
+            let passwordInputCircleView =
+            choosePasswordView.passwordInputView.passwordInputCircleViews[password.count - 1]
 
             if passwordInputCircleView.state == .error {
-                for view in choosePasswordView.passwordInputView.passwordInputCircleViews {
-                    view.state = .empty
-                }
+                choosePasswordView.changeStateTo(.empty)
             }
 
             passwordInputCircleView.state = .filled
@@ -97,7 +112,8 @@ extension ChoosePasswordViewModel {
                 return
             }
 
-            let passwordInputCircleView = choosePasswordView.passwordInputView.passwordInputCircleViews[password.count]
+            let passwordInputCircleView =
+            choosePasswordView.passwordInputView.passwordInputCircleViews[password.count]
 
             if passwordInputCircleView.state == .error {
                 return
@@ -112,18 +128,11 @@ extension ChoosePasswordViewModel {
 
     func reset(_ choosePasswordView: ChoosePasswordView) {
         resetPassword()
-
-        for view in choosePasswordView.passwordInputView.passwordInputCircleViews {
-            view.state = .empty
-        }
+        choosePasswordView.changeStateTo(.empty)
     }
 
     func displayWrongPasswordState(_ choosePasswordView: ChoosePasswordView) {
-        resetPassword()
-
-        for view in choosePasswordView.passwordInputView.passwordInputCircleViews {
-            view.state = .error
-        }
+        choosePasswordView.changeStateTo(.error)
     }
 
     private func resetPassword() {
