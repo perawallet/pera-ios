@@ -29,7 +29,7 @@ final class SettingsViewController: BaseViewController {
     
     private lazy var theme = Theme()
     private lazy var settingsView = SettingsView()
-
+    
     private lazy var dataSource = SettingsDataSource(session: session)
 
     override var prefersLargeTitle: Bool {
@@ -74,7 +74,7 @@ extension SettingsViewController {
 extension SettingsViewController {
     private func addSettingsView() {
         view.addSubview(settingsView)
-
+        
         settingsView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.top.safeEqualToTop(of: self)
@@ -105,7 +105,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
-        if dataSource.sections[section] == .support {
+        if section == dataSource.sections.count - 1 {
             return CGSize(theme.footerSize)
         }
         return .zero
@@ -132,7 +132,7 @@ extension SettingsViewController {
         }
     }
     
-    private func didSelectItemFromAccountSettings(_ setting: AccountSettings) {
+    func didSelectItemFromAccountSettings(_ setting: AccountSettings) {
         switch setting {
         case .security:
             open(.securitySettings, by: .push)
@@ -143,7 +143,7 @@ extension SettingsViewController {
         }
     }
     
-    private func didSelectItemFromAppPreferenceSettings(_ setting: AppPreferenceSettings?) {
+    func didSelectItemFromAppPreferenceSettings(_ setting: AppPreferenceSettings?) {
         switch setting {
         case .language:
             displayProceedAlertWith(
@@ -161,7 +161,7 @@ extension SettingsViewController {
         }
     }
     
-    private func didSelectItemFromSupportSettings(_ setting: SupportSettings) {
+    func didSelectItemFromSupportSettings(_ setting: SupportSettings) {
         switch setting {
         case .feedback:
             open(AlgorandWeb.support.link)

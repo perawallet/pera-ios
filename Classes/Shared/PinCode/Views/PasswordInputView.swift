@@ -21,8 +21,6 @@ import Foundation
 
 final class PasswordInputView: View {
     private lazy var theme = PasswordInputViewTheme()
-
-    var shakeConfiguration = ShakeConfiguration()
     
     private(set) var passwordInputCircleViews: [PasswordInputCircleView] = []
     private lazy var stackView = UIStackView()
@@ -62,46 +60,6 @@ extension PasswordInputView {
             let circleView = PasswordInputCircleView(frame: .zero)
             passwordInputCircleViews.append(circleView)
             stackView.addArrangedSubview(circleView)
-        }
-    }
-}
-
-extension PasswordInputView {
-    struct ShakeConfiguration {
-        let keyPath = "position"
-        let duration = 0.07
-        let repeatCount: Float = 4
-        let autoReverses = true
-        let offsetChange = 10.0
-
-        var totalDuration: Double {
-            Double(repeatCount) * duration
-        }
-    }
-
-    func shake(then handler: @escaping EmptyHandler) {
-        let animation = CABasicAnimation(keyPath: shakeConfiguration.keyPath)
-        animation.duration = shakeConfiguration.duration
-        animation.repeatCount = shakeConfiguration.repeatCount
-        animation.autoreverses = shakeConfiguration.autoReverses
-        animation.fromValue = NSValue(
-            cgPoint: CGPoint(x: center.x - shakeConfiguration.offsetChange, y: center.y)
-        )
-        animation.toValue = NSValue(
-            cgPoint: CGPoint(x: center.x + shakeConfiguration.offsetChange, y: center.y)
-        )
-        self.layer.add(animation, forKey: shakeConfiguration.keyPath)
-
-        asyncMain(
-            afterDuration: shakeConfiguration.totalDuration
-        ) {
-            handler()
-        }
-    }
-
-    func changeStateTo(_ state: PasswordInputCircleView.State) {
-        for view in passwordInputCircleViews {
-            view.state = state
         }
     }
 }

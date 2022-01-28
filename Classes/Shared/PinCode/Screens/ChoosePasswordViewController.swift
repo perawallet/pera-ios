@@ -18,8 +18,6 @@
 import UIKit
 import AVFoundation
 
-/// <todo>
-/// Refactor
 final class ChoosePasswordViewController: BaseViewController {
     private let viewModel: ChoosePasswordViewModel
     private let accountSetupFlow: AccountSetupFlow?
@@ -47,19 +45,11 @@ final class ChoosePasswordViewController: BaseViewController {
         super.viewDidLoad()
         displayPinLimitScreenIfNeeded()
     }
-
-    override func configureNavigationBarAppearance() {
-        super.configureNavigationBarAppearance()
-
-        if case .confirm(let flow) = mode,
-           flow == .viewPassphrase {
-            addBarButtons()
-        }
-    }
     
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        setTitle()
     }
     
     override func prepareLayout() {
@@ -91,16 +81,6 @@ extension ChoosePasswordViewController {
 }
 
 extension ChoosePasswordViewController {
-    private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.closeScreen(by: .dismiss, animated: true)
-        }
-
-        leftBarButtonItems = [closeBarButtonItem]
-    }
-}
-
-extension ChoosePasswordViewController {
     private func displayPinLimitScreenIfNeeded() {
         if shouldDisplayPinLimitScreen(isFirstLaunch: true) && mode == .login {
             displayPinLimitScreen()
@@ -108,7 +88,18 @@ extension ChoosePasswordViewController {
             checkLoginFlow()
         }
     }
-
+    
+    private func setTitle() {
+        switch mode {
+        case .verify:
+            title = "password-verify-title".localized
+        case let .confirm(viewTitle):
+            title = viewTitle
+        default:
+            return
+        }
+    }
+    
     private func checkLoginFlow() {
         if mode == .login {
             if localAuthenticator.localAuthenticationStatus == .allowed {
@@ -160,8 +151,8 @@ extension ChoosePasswordViewController {
         case let .assetActionConfirmationNotification(address, assetId):
             guard let account = session?.account(from: address),
                   let assetId = assetId else {
-                      return
-                  }
+                return
+            }
             
             let draft = AssetAlertDraft(
                 account: account,
@@ -215,14 +206,12 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
             login(with: value)
         case .deletePassword:
             deletePassword(with: value)
-        case .resetPassword(let flow):
-            openResetVerify(with: value, flow: flow)
-        case let .resetVerify(previousPassword, flow):
-            verifyResettedPassword(with: value, and: previousPassword, flow: flow)
+        case .resetPassword:
+            openResetVerify(with: value)
+        case let .resetVerify(previousPassword):
+            verifyResettedPassword(with: value, and: previousPassword)
         case .confirm:
             confirmPassword(with: value)
-        case .verifyOld:
-            openResetPassword(with: value)
         }
     }
 }
@@ -230,17 +219,7 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
 extension ChoosePasswordViewController {
     private func openVerifyPassword(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-            open(.choosePassword(mode: .verify(password: password), flow: accountSetupFlow, route: nil), by: .push)
-        }
-    }
-
-    private func openResetPassword(with value: NumpadKey) {
-        viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-            if session?.isPasswordMatching(with: password) ?? false {
-                open(.choosePassword(mode: .resetPassword(flow: .fromVerifyOld), flow: nil, route: nil), by: .push)
-            } else {
-                handleInvalidPassword()
-            }
+            open(.choosePassword(mode: .verify(password), flow: accountSetupFlow, route: nil), by: .push)
         }
     }
     
@@ -251,7 +230,8 @@ extension ChoosePasswordViewController {
         
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if password != previousPassword {
-                handleInvalidPassword()
+                displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
+                viewModel.reset(choosePasswordView)
                 return
             }
             configuration.session?.savePassword(password)
@@ -267,11 +247,9 @@ extension ChoosePasswordViewController {
                 launchHome()
             } else {
                 pinLimitStore.increasePinAttemptCount()
-                handleInvalidPassword()
-
-                let (attemptCount, _) = pinLimitStore.attemptCount.quotientAndRemainder(
-                    dividingBy: pinLimitStore.allowedAttemptLimitCount
-                )
+                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                viewModel.displayWrongPasswordState(choosePasswordView)
+                let (attemptCount, _) = pinLimitStore.attemptCount.quotientAndRemainder(dividingBy: pinLimitStore.allowedAttemptLimitCount)
                 if shouldDisplayPinLimitScreen(isFirstLaunch: false) {
                     // Pin limit waiting time increases exponentially with respect to attempt count and 30 seconds.
                     let newRemainingTime = 30 * (pow(2, attemptCount - 1) as NSDecimalNumber).intValue
@@ -282,45 +260,31 @@ extension ChoosePasswordViewController {
         }
     }
     
-    private func openResetVerify(with value: NumpadKey, flow: Mode.ResetFlow) {
+    private func openResetVerify(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-            open(.choosePassword(mode: .resetVerify(password: password, flow: flow), flow: nil, route: nil), by: .push)
+            open(.choosePassword(mode: .resetVerify(password), flow: nil, route: nil), by: .push)
         }
     }
     
-    private func verifyResettedPassword(with value: NumpadKey, and previousPassword: String, flow: Mode.ResetFlow) {
+    private func verifyResettedPassword(with value: NumpadKey, and previousPassword: String) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if password != previousPassword {
-                handleInvalidPassword()
+                displaySimpleAlertWith(title: "password-verify-fail-title".localized, message: "password-verify-fail-message".localized)
+                self.viewModel.reset(choosePasswordView)
                 return
             }
-
             configuration.session?.savePassword(password)
-
-            guard let navigationController = navigationController else {
-                return
-            }
-
-
-            var viewControllers = navigationController.viewControllers
-
-            switch flow {
-            case .initial:
-                viewControllers.removeLast(2)
-            case .fromVerifyOld:
-                viewControllers.removeLast(3)
-            }
-
-            navigationController.setViewControllers(viewControllers, animated: true)
+            dismissScreen()
         }
     }
-
+    
     private func confirmPassword(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
+            dismissScreen()
             if session?.isPasswordMatching(with: password) ?? false {
                 delegate?.choosePasswordViewController(self, didConfirmPassword: true)
             } else {
-                handleInvalidPassword()
+                delegate?.choosePasswordViewController(self, didConfirmPassword: false)
             }
         }
     }
@@ -329,16 +293,9 @@ extension ChoosePasswordViewController {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if session?.isPasswordMatching(with: password) ?? false {
                 session?.deletePassword()
-                popScreen()
-            } else {
-                handleInvalidPassword()
+                dismissScreen()
             }
         }
-    }
-
-    private func handleInvalidPassword() {
-        viewModel.displayWrongPasswordState(choosePasswordView)
-        choosePasswordView.shake(then: self.viewModel.reset(self.choosePasswordView))
     }
 }
 
@@ -352,29 +309,15 @@ extension ChoosePasswordViewController: PinLimitViewControllerDelegate {
 extension ChoosePasswordViewController {
     enum Mode: Equatable {
         case setup
-        case verify(password: String)
+        case verify(String)
         case login
         case deletePassword
-        case verifyOld
-        case resetPassword(flow: ResetFlow)
-        case resetVerify(password: String, flow: ResetFlow)
-        case confirm(flow: ConfirmFlow)
-
-        enum ResetFlow {
-            case fromVerifyOld
-            case initial
-        }
-
-        enum ConfirmFlow {
-            case settings
-            case viewPassphrase
-        }
+        case resetPassword
+        case resetVerify(String)
+        case confirm(String)
     }
 }
 
 protocol ChoosePasswordViewControllerDelegate: AnyObject {
-    func choosePasswordViewController(
-        _ choosePasswordViewController: ChoosePasswordViewController,
-        didConfirmPassword isConfirmed: Bool
-    )
+    func choosePasswordViewController(_ choosePasswordViewController: ChoosePasswordViewController, didConfirmPassword isConfirmed: Bool)
 }

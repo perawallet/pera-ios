@@ -41,10 +41,9 @@ final class NumpadButton: UIButton, ViewComposable {
     }
 
     func customize(_ theme: NumpadButtonViewTheme) {
-        setBackgroundImage(theme.buttonBackgroundHighlightedImage.image?.uiImage, for: .highlighted)
-
         switch numpadKey {
         case .number(let value):
+            setBackgroundImage(theme.buttonBackgroundHighlightedImage.image?.uiImage, for: .highlighted)
             customizeAppearance(theme.button)
             customizeBaseAppearance(title: value)
         case .delete:
@@ -56,6 +55,7 @@ final class NumpadButton: UIButton, ViewComposable {
         case .spacing:
             break
         case .decimalSeparator:
+            setBackgroundImage(theme.buttonBackgroundHighlightedImage.image?.uiImage, for: .highlighted)
             customizeAppearance(theme.button)
             customizeBaseAppearance(title: Locale.preferred().decimalSeparator ?? ".")
         }

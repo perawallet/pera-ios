@@ -30,6 +30,7 @@ final class SecuritySettingsView: View {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
+        collectionView.keyboardDismissMode = .onDrag
         collectionView.register(SettingsDetailCell.self)
         collectionView.register(SettingsToggleCell.self)
         collectionView.register(header: SingleGrayTitleHeaderSuplementaryView.self)

@@ -67,14 +67,10 @@
 "introduction-title-terms-and-services" = "By creating an account, you agree to Algorand’s<br><a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Conditions</a> and <a href=\"https://www.algorand.com/wallet-privacy-policy\">Privacy Policy</a>";
 
 // MARK: Password Setting
-"password-set-subtitle" = "Choose your\n6-digit PIN";
+"password-set-subtitle" = "Choose your 6-digit PIN";
 "password-verify-title" = "Verify PIN";
 "password-change-subtitle" = "Choose your\n6-digit PIN";
-"password-change-new-subtitle" = "Enter your new\n6-digit PIN";
 "password-verify-subtitle" = "Re-enter your\n6-digit PIN";
-"password-verify-new-subtitle" = "Re-enter your new\n6-digit PIN";
-"password-change-old-subtitle" = "Enter your old\n6-digit PIN";
-
 "password-verify-fail-title" = "Wrong PIN";
 "password-verify-fail-message" = "PIN did not match with previous PIN.";
 "password-change-title" = "Change PIN";
@@ -161,7 +157,7 @@
 
 // MARK: Login
 "login-title" = "Unlock";
-"login-subtitle" = "Enter your\n6-digit pin";
+"login-subtitle" = "Enter six digit pin";
 
 // MARK: Accounts
 "accounts-tranaction-empty-text" = "No Transactions Yet";

@@ -50,7 +50,7 @@ extension ChoosePasswordView {
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalToSuperview().inset(theme.topInset)
         }
     }
@@ -72,16 +72,6 @@ extension ChoosePasswordView {
             $0.centerX.equalToSuperview()
             $0.leading.trailing.lessThanOrEqualToSuperview()
         }
-    }
-}
-
-extension ChoosePasswordView {
-    func shake(then handler: @autoclosure @escaping EmptyHandler) {
-        passwordInputView.shake(then: handler)
-    }
-
-    func changeStateTo(_ state: PasswordInputCircleView.State) {
-        passwordInputView.changeStateTo(state)
     }
 }
 
