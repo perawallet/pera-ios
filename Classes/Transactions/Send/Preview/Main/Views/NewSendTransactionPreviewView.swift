@@ -116,7 +116,7 @@ extension NewSendTransactionPreviewView {
         balanceView.customize(theme.smallMultipleAmountInformationViewTheme)
         balanceView.bindData(
             TransactionCurrencyAmountInformationViewModel(
-                title: "title-account-balance".localized
+                title: "send-transaction-preview-current-balance".localized
             )
         )
 

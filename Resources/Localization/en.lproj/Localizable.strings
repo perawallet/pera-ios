@@ -884,6 +884,7 @@
 
 // MARK: SendTransactionPreview
 "send-transaction-preview-title" = "Confirm Order";
+"send-transaction-preview-current-balance" = "Current\nBalance";
 
 "transaction-request-signing-alert-title" = "Are you sure?";
 

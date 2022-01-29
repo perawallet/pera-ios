@@ -28,7 +28,7 @@ struct TransactionAmountInformationViewTheme: LayoutSheet, StyleSheet {
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.gray),
-            .font(Fonts.DMMono.regular.make(15))
+            .font(Fonts.DMSans.regular.make(15))
         ]
         self.amountLeadingPadding = 137
         self.transactionAmountViewTheme = transactionAmountViewTheme
