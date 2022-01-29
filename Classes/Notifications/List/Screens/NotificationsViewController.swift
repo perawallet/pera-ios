@@ -58,13 +58,6 @@ final class NotificationsViewController: BaseViewController {
             name: .NotificationDidReceived,
             object: nil
         )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didUpdateAccount),
-            name: .AccountUpdate,
-            object: nil
-        )
     }
     
     override func linkInteractors() {
@@ -107,13 +100,6 @@ extension NotificationsViewController {
     @objc
     private func didReceiveNotification(notification: Notification) {
         if isInitialFetchCompleted && isViewAppeared {
-            reloadNotifications()
-        }
-    }
-
-    @objc
-    private func didUpdateAccount(notification: Notification) {
-        if isInitialFetchCompleted {
             reloadNotifications()
         }
     }

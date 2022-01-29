@@ -182,11 +182,4 @@ extension LedgerAccountDetailDataSource {
         )
         assetPreviews.append(assetPreviewModel)
     }
-
-    private func setVerifiedIfNeeded(_ assetDetail: inout AssetDetail, with id: Int64) {
-        if let verifiedAssets = api.session.verifiedAssets,
-           verifiedAssets.contains(where: { $0.id == id }) {
-            assetDetail.isVerified = true
-        }
-    }
 }

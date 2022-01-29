@@ -349,8 +349,7 @@ extension HomeViewController: WalletConnectorDelegate {
         shouldStart session: WalletConnectSession,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
-        guard let accounts = self.session?.accounts,
-              accounts.contains(where: { $0.type != .watch }) else {
+        if !sharedDataController.accountCollection.sorted().contains(where: { $0.value.type != .watch }) {
                   asyncMain { [weak self] in
                       guard let self = self else {
                           return
@@ -417,19 +416,7 @@ extension HomeViewController: QRScannerViewControllerDelegate {
                       return
                   }
 
-            open(
-                .sendAlgosTransactionPreview(
-                    account: nil,
-                    receiver: .address(address: address, amount: "\(amount)"),
-                    isSenderEditable: true,
-                    qrText: qrText
-                ),
-                by: .customPresent(
-                    presentationStyle: .fullScreen,
-                    transitionStyle: nil,
-                    transitioningDelegate: nil
-                )
-            )
+            /// <todo> open send screen
         case .assetRequest:
             guard let address = qrText.address,
                   let amount = qrText.amount,
@@ -437,11 +424,11 @@ extension HomeViewController: QRScannerViewControllerDelegate {
                       return
                   }
 
-            var asset: AssetDetail?
+            var asset: AssetInformation?
 
-            for account in session!.accounts {
-                for assetDetail in account.assetDetails where assetDetail.id == assetId {
-                    asset = assetDetail
+            for accountHandle in sharedDataController.accountCollection.sorted() {
+                for compoundAsset in accountHandle.value.compoundAssets where compoundAsset.id == assetId {
+                    asset = compoundAsset.detail
                     break
                 }
             }
@@ -464,22 +451,7 @@ extension HomeViewController: QRScannerViewControllerDelegate {
                 return
             }
 
-            open(
-                .sendAssetTransactionPreview(
-                    account: nil,
-                    receiver: .address(
-                        address: address,
-                        amount: amount
-                            .assetAmount(fromFraction: assetDetail.fractionDecimals)
-                            .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
-                    ),
-                    assetDetail: assetDetail,
-                    isSenderEditable: false,
-                    isMaxTransaction: false,
-                    qrText: qrText
-                ),
-                by: .push
-            )
+            /// <todo> open send screen
         case .mnemonic:
             break
         }

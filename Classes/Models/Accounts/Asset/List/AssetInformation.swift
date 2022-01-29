@@ -105,17 +105,39 @@ extension AssetInformation {
             return ("title-unknown".localized, nil)
         }
     }
-}
 
-extension AssetInformation: Equatable {
-    static func == (lhs: AssetInformation, rhs: AssetInformation) -> Bool {
-        return lhs.id == rhs.id
+    var assetNameRepresentation: String {
+        if let name = name, !name.isEmptyOrBlank {
+            return name
+        }
+        return "title-unknown".localized
+    }
+
+    var unitNameRepresentation: String {
+        if let code = unitName, !code.isEmptyOrBlank {
+            return code.uppercased()
+        }
+        return "title-unknown".localized
     }
 }
 
 extension AssetInformation: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id.hashValue)
+    }
+}
+
+extension AssetInformation: Comparable {
+    static func == (lhs: AssetInformation, rhs: AssetInformation) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.decimals == rhs.decimals &&
+            lhs.isVerified == rhs.isVerified &&
+            lhs.name == rhs.name &&
+            lhs.unitName == rhs.unitName
+    }
+
+    static func < (lhs: AssetInformation, rhs: AssetInformation) -> Bool {
+        return lhs.id < rhs.id
     }
 }
 

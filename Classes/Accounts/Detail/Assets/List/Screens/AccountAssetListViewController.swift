@@ -40,7 +40,7 @@ final class AccountAssetListViewController: BaseViewController {
 
     private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
     
-    private let accountHandle: AccountHandle
+    private var accountHandle: AccountHandle
 
     init(accountHandle: AccountHandle, configuration: ViewControllerConfiguration) {
         self.accountHandle = accountHandle
@@ -56,6 +56,9 @@ final class AccountAssetListViewController: BaseViewController {
 
             switch event {
             case .didUpdate(let snapshot):
+                if let accountHandle = self.sharedDataController.accountCollection[self.accountHandle.value.address] {
+                    self.accountHandle = accountHandle
+                }
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             }
         }

@@ -164,7 +164,6 @@ extension LedgerAccountVerificationViewController {
         setupLedgerDetails(of: &localAccount, from: account)
 
         api?.session.authenticatedUser?.updateAccount(localAccount)
-        api?.session.updateAccount(account)
     }
 
     private func setupLocalAccount(from account: Account) {
@@ -185,7 +184,6 @@ extension LedgerAccountVerificationViewController {
             user = User(accounts: [localAccount])
         }
 
-        api?.session.addAccount(Account(localAccount: localAccount))
         api?.session.authenticatedUser = user
     }
 

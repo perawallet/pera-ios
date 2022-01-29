@@ -97,8 +97,7 @@ extension TabBarController {
             case .addContact:
                 selectedIndex = items.index(of: .contacts)
                 topMostController?.open(route, by: .push)
-            case .sendAlgosTransactionPreview,
-                 .sendAssetTransactionPreview:
+            case .sendTransaction:
                 selectedIndex = items.index(of: .home)
                 topMostController?.open(route, by: .push)
             case .assetDetail:

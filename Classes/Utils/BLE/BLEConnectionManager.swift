@@ -33,7 +33,14 @@ final class BLEConnectionManager: NSObject {
     
     override init() {
         super.init()
-        centralManager = CBCentralManager(delegate: self, queue: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: false])
+        centralManager = CBCentralManager(
+            delegate: self,
+            queue: nil,
+            options: [
+                CBCentralManagerScanOptionAllowDuplicatesKey: false,
+                CBCentralManagerOptionShowPowerAlertKey: true
+            ]
+        )
     }
 }
 
@@ -44,7 +51,10 @@ extension BLEConnectionManager {
             peripherals = []
             centralManager?.scanForPeripherals(
                 withServices: [BLEConnectionManager.Keys.serviceUuid],
-                options: [CBCentralManagerScanOptionAllowDuplicatesKey: false]
+                options: [
+                    CBCentralManagerScanOptionAllowDuplicatesKey: false,
+                    CBCentralManagerOptionShowPowerAlertKey: true
+                ]
             )
         }
     }

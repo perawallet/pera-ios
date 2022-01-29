@@ -52,8 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
     
     private var rootViewController: RootViewController?
-    
-    private(set) lazy var accountManager: AccountManager = AccountManager(api: api)
 
     private var lastActiveDate: Date?
 

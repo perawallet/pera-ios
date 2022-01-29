@@ -61,7 +61,6 @@ class RootViewController: UIViewController {
 
     private var currentWCTransactionRequest: WalletConnectRequest?
 
-    private var wcMainTransactionViewController: WCMainTransactionViewController?
     private var wcRequestScreen: WCMainTransactionScreen?
     
     init(appConfiguration: AppConfiguration) {
@@ -181,7 +180,7 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
 
             appConfiguration.walletConnector.rejectTransactionRequest(currentWCTransactionRequest, with: .rejected(.alreadyDisplayed))
 
-            wcMainTransactionViewController?.closeScreen(by: .dismiss, animated: false) {
+            wcRequestScreen?.closeScreen(by: .dismiss, animated: false) {
                 self.openMainViewController(animated: false, for: transactions, with: request, and: transactionOption)
             }
         } else {
@@ -225,11 +224,18 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
     }
 }
 
-extension RootViewController: WCMainTransactionViewControllerDelegate {
-    func wcMainTransactionViewController(
-         _ wcMainTransactionViewController: WCMainTransactionViewController,
-         didSigned request: WalletConnectRequest,
-         in session: WCSession?
+extension RootViewController: WCMainTransactionScreenDelegate {
+    func wcMainTransactionScreen(
+        _ wcMainTransactionScreen: WCMainTransactionScreen,
+        didRejected request: WalletConnectRequest
+    ) {
+        resetCurrentWCTransaction()
+    }
+
+    func wcMainTransactionScreen(
+        _ wcMainTransactionScreen: WCMainTransactionScreen,
+        didSigned request: WalletConnectRequest,
+        in session: WCSession?
     ) {
         resetCurrentWCTransaction()
 
@@ -259,39 +265,9 @@ extension RootViewController: WCMainTransactionViewControllerDelegate {
         }
     }
 
-    func wcMainTransactionViewController(
-         _ wcMainTransactionViewController: WCMainTransactionViewController,
-         didRejected request: WalletConnectRequest
-     ) {
-         resetCurrentWCTransaction()
-     }
-
     private func resetCurrentWCTransaction() {
         currentWCTransactionRequest = nil
-        wcMainTransactionViewController = nil
-    }
-}
-
-extension RootViewController: WCMainTransactionScreenDelegate {
-    func wcMainTransactionScreen(
-        _ wcMainTransactionScreen: WCMainTransactionScreen,
-        didRejected request: WalletConnectRequest
-    ) {
-        resetCurrentWCTransaction()
-    }
-
-    func wcMainTransactionScreen(
-        _ wcMainTransactionScreen: WCMainTransactionScreen,
-        didSigned request: WalletConnectRequest,
-        in session: WCSession?
-    ) {
-        resetCurrentWCTransaction()
-
-        guard let wcSession = session else {
-            return
-        }
-
-        presentWCTransactionSuccessMessage(for: wcSession)
+        wcRequestScreen = nil
     }
 }
 
@@ -326,7 +302,4 @@ extension WalletConnectRequest {
 
         return false
     }
-}
-
-extension RootViewController {
 }

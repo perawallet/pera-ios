@@ -43,9 +43,6 @@ final class Account: ALGEntityModel {
     var appsTotalExtraPages: Int?
     var appsTotalSchema: ApplicationStateSchema?
     var createdApps: [AlgorandApplication]?
-    
-    var assetDetails: [AssetDetail] = []
-    
     var name: String?
     var type: AccountType = .standard
     var ledgerDetail: LedgerDetail?
@@ -54,7 +51,7 @@ final class Account: ALGEntityModel {
     var preferredOrder: Int
     var accountImage: String?
     
-    private(set) var compoundAssets: [CompoundAsset] = []
+    var compoundAssets: [CompoundAsset] = []
     private(set) var compoundAssetsIndexer: CompoundAssetIndexer = [:]
 
     init(

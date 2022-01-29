@@ -36,8 +36,8 @@ enum AssetPreviewModelAdapter {
         return AssetPreviewModel(
             image: img("icon-algo-circle-green"),
             secondaryImage: img("icon-verified-shield"),
-            assetPrimaryTitle: "asset-algos-title".localized,
-            assetSecondaryTitle: "Algorand",
+            assetPrimaryTitle: "Algo",
+            assetSecondaryTitle: "ALGO",
             assetPrimaryValue: algoAssetViewModel.amount,
             assetSecondaryValue: algoAssetViewModel.currencyAmount
         )

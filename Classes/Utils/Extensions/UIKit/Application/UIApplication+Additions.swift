@@ -91,10 +91,6 @@ extension UIApplication {
         return rootViewController.appConfiguration
     }
     
-    var accountManager: AccountManager? {
-        return appDelegate?.accountManager
-    }
-    
     func rootViewController() -> RootViewController? {
         return window?.rootViewController as? RootViewController
     }

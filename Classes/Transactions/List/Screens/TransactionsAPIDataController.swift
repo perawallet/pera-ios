@@ -355,7 +355,11 @@ extension TransactionsAPIDataController {
             transactionsWithRewards.append(transaction)
             if let rewards = transaction.getRewards(for: draft.accountHandle.value.address),
                rewards > 0 {
-                let reward = Reward(amount: UInt64(rewards), date: transaction.date)
+                let reward = Reward(
+                    transactionID: transaction.id,
+                    amount: UInt64(rewards),
+                    date: transaction.date
+                )
                 transactionsWithRewards.append(reward)
             }
         }

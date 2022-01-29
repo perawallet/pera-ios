@@ -89,7 +89,7 @@ extension Account {
     }
     
     func hasDifferentAssets(than account: Account) -> Bool {
-        return assets != account.assets || !assetDetails.containsSameElements(as: account.assetDetails)
+        return assets != account.assets || !compoundAssets.map { $0.detail }.containsSameElements(as: account.compoundAssets.map { $0.detail })
     }
 
     func hasDifferentApps(than account: Account) -> Bool {
@@ -121,15 +121,15 @@ extension Account {
     }
 
     @discardableResult
-    func removeAsset(_ id: Int64?) -> [AssetDetail] {
-        return assetDetails.removeAll { assetDetail  in
-            assetDetail.id == id
+    func removeAsset(_ id: Int64?) -> [CompoundAsset] {
+        return compoundAssets.removeAll { compoundAsset  in
+            compoundAsset.id == id
         }
     }
     
     func containsAsset(_ id: Int64) -> Bool {
-        return assetDetails.contains { assetDetail -> Bool in
-            assetDetail.id == id
+        return compoundAssets.contains { compoundAsset -> Bool in
+            compoundAsset.id == id
         }
     }
 
@@ -218,7 +218,6 @@ extension Account {
         participation = account.participation
         createdAssets = account.createdAssets
         assets = account.assets
-        assetDetails = account.assetDetails
         type = account.type
         ledgerDetail = account.ledgerDetail
         amountWithoutRewards = account.amountWithoutRewards

@@ -43,7 +43,8 @@ extension MaximumBalanceWarningViewModel {
     }
 
     private func calculateMininmumAmount(for account: Account) -> UInt64 {
-        let params = UIApplication.shared.accountManager?.params
+        /// <todo> get transaction params from block
+        let params: TransactionParams? = nil
         let feeCalculator = TransactionFeeCalculator(transactionDraft: nil, transactionData: nil, params: params)
         let calculatedFee = params?.getProjectedTransactionFee() ?? Transaction.Constant.minimumFee
         let minimumAmountForAccount = feeCalculator.calculateMinimumAmount(

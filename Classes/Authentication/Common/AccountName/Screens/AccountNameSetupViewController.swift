@@ -112,7 +112,6 @@ extension AccountNameSetupViewController {
         )
         session?.savePrivate(tempPrivateKey, for: account.address)
         session?.removePrivateData(for: "temp")
-        session?.addAccount(Account(address: account.address, type: account.type, name: account.name))
         
         if let authenticatedUser = session?.authenticatedUser {
             authenticatedUser.addAccount(account)

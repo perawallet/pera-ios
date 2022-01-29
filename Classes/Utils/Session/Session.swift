@@ -160,17 +160,9 @@ class Session: Storable {
     
     // isExpired is true when login needed. It will fault after 5 mins entering background
     var isValid = false
-    
-    var verifiedAssets: [VerifiedAsset]?
-    
-    var assetDetails: [Int64: AssetDetail] = [:]
 
-    /// <todo>
-    /// Will be changed with assetDetails after the transition to the new api is completed.
     var assetInformations: [AssetID: AssetInformation] = [:]
-    
-    var accounts = [Account]()
-    
+
     init() {
         removeOldTermsAndServicesKeysFromDefaults()
     }
@@ -237,120 +229,14 @@ extension Session {
         }
         accountInformation.updateName(name)
         authenticatedUser?.updateAccount(accountInformation)
-        
-        guard let account = account(from: accountAddress),
-            let index = index(of: account) else {
-            return
-        }
-        
-        account.name = name
-        accounts[index] = account
     }
 }
 
 extension Session {
-    func account(from accountInformation: AccountInformation) -> Account? {
-        return accounts.first { account -> Bool in
-            account.address == accountInformation.address
-        }
-    }
-    
-    func account(from address: String) -> Account? {
-        return accounts.first { account -> Bool in
-            account.address == address
-        }
-    }
-    
     func accountInformation(from address: String) -> AccountInformation? {
         return applicationConfiguration?.authenticatedUser()?.accounts.first { account -> Bool in
             account.address == address
         }
-    }
-    
-    func index(of account: Account) -> Int? {
-        guard let index = accounts.firstIndex(of: account) else {
-            return nil
-        }
-        return index
-    }
-    
-    func addAccount(_ account: Account) {
-        guard let index = index(of: account) else {
-            accounts.append(account)
-            NotificationCenter.default.post(name: .AccountUpdate, object: self, userInfo: ["account": account])
-            return
-        }
-        
-        accounts[index].update(with: account)
-        NotificationCenter.default.post(name: .AccountUpdate, object: self, userInfo: ["account": accounts[index]])
-    }
-    
-    func updateAccount(_ account: Account) {
-        guard let index = index(of: account) else {
-            return
-        }
-        
-        accounts[index].update(with: account)
-        NotificationCenter.default.post(name: .AccountUpdate, object: self, userInfo: ["account": accounts[index]])
-    }
-    
-    func removeAccount(_ account: Account) {
-        guard let index = index(of: account) else {
-            return
-        }
-        
-        accounts.remove(at: index)
-        NotificationCenter.default.post(name: .AccountUpdate, object: self)
-    }
-    
-    func canSignTransaction(for selectedAccount: inout Account) -> Bool {
-        /// Check whether account is a watch account
-        if selectedAccount.isWatchAccount() {
-           return false
-        }
-
-        /// Check whether auth address exists for the selected account.
-        if let authAddress = selectedAccount.authAddress {
-            if selectedAccount.rekeyDetail?[authAddress] != nil {
-                return true
-            } else {
-                if let authAccount = accounts.first(where: { account -> Bool in
-                    authAddress == account.address
-                }),
-                let ledgerDetail = authAccount.ledgerDetail {
-                    selectedAccount.addRekeyDetail(ledgerDetail, for: authAddress)
-                    return true
-                }
-            }
-
-            AppDelegate.shared?.appConfiguration.bannerController.presentErrorBanner(
-                title: "title-error".localized, message: "ledger-rekey-error-add-auth".localized(params: authAddress.shortAddressDisplay())
-            )
-            return false
-        }
-
-        /// Check whether ledger details of the selected ledger account exists.
-        if selectedAccount.isLedger() {
-            if selectedAccount.ledgerDetail == nil {
-                AppDelegate.shared?.appConfiguration.bannerController.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "ledger-rekey-error-not-found".localized
-                )
-                return false
-            }
-            return true
-        }
-        
-        /// Check whether private key of the selected account exists.
-        if privateData(for: selectedAccount.address) == nil {
-            AppDelegate.shared?.appConfiguration.bannerController.presentErrorBanner(
-                title: "title-error".localized,
-                message: "ledger-rekey-error-not-found".localized
-            )
-            return false
-        }
-        
-        return true
     }
 
     func createUser(with accounts: [AccountInformation] = []) {
@@ -397,7 +283,6 @@ extension Session {
 extension Session {
     func reset(isContactIncluded: Bool) {
         authenticatedUser = nil
-        accounts.removeAll()
         applicationConfiguration = nil
         ApplicationConfiguration.clear(entity: ApplicationConfiguration.entityName)
         
