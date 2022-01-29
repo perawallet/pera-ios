@@ -21,7 +21,7 @@ import MacaroonUIKit
 struct BottomWarningViewConfigurator {
     private(set) var image: UIImage
     private(set) var title: EditText
-    private(set) var description: EditText
+    private(set) var description: EditText?
     private(set) var primaryActionButtonTitle: String?
     private(set) var secondaryActionButtonTitle: String
     private(set) var primaryAction: (() -> Void)?
@@ -29,8 +29,8 @@ struct BottomWarningViewConfigurator {
 
     init(
         image: UIImage,
-        title: String ,
-        description: String ,
+        title: String,
+        description: String? = nil,
         primaryActionButtonTitle: String? = nil,
         secondaryActionButtonTitle: String,
         primaryAction: (() -> Void)? = nil,
@@ -65,7 +65,11 @@ extension BottomWarningViewConfigurator {
         )
     }
 
-    private static func getDescription(_ text: String) -> EditText {
+    private static func getDescription(_ text: String?) -> EditText? {
+        guard let text = text else {
+            return nil
+        }
+
         let font = Fonts.DMSans.regular.make(15)
         let lineHeightMultiplier = 1.23
 

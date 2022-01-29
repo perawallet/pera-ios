@@ -100,6 +100,14 @@ final class AccountSelectScreen: BaseViewController {
     }
 
     private func routePreviewScreen() {
+        if isClosingToSameAccount {
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "send-transaction-max-same-account-error".localized
+            )
+            return
+        }
+
         switch draft.transactionMode {
         case .algo:
             routeForAlgoTransaction()
@@ -586,5 +594,19 @@ extension AccountSelectScreen: QRScannerViewControllerDelegate {
 extension AccountSelectScreen: AccountSelectScreenDataSourceDelegate {
     func accountSelectScreenDataSourceDidLoad(_ dataSource: AccountSelectScreenDataSource) {
         accountView.listView.reloadData()
+    }
+}
+
+extension AccountSelectScreen {
+    var isClosingToSameAccount: Bool {
+        if let receiverAddress = draft.toAccount {
+            return draft.isMaxTransaction && receiverAddress == draft.from.address
+        }
+
+        if let contactAddress = draft.toContact?.address {
+            return draft.isMaxTransaction && contactAddress == draft.from.address
+        }
+
+        return false
     }
 }

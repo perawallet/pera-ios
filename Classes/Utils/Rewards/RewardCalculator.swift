@@ -36,13 +36,8 @@ class RewardCalculator {
         self.api = api
         self.account = account
 
-        // Listen waiting for next block from the account manager to get the current round
-        if let accountManager = UIApplication.shared.accountManager {
-            self.currentRound = accountManager.currentRound ?? 0
-            accountManager.delegate = self
-        } else {
-            currentRound = 0
-        }
+        /// <todo> Set current round from shared data controller
+        currentRound = 0
     }
 
     func updateAccount(_ account: Account) {
@@ -123,17 +118,7 @@ extension RewardCalculator {
     }
 }
 
-extension RewardCalculator: AccountManagerDelegate {
-    func accountManager(_ accountManager: AccountManager, didWaitForNext round: UInt64?) {
-        guard let currentRound = round else {
-            return
-        }
-
-        self.currentRound = currentRound
-        // After each new block, get the required calculation values again and calculate pending rewards
-        calculatePendingRewards()
-    }
-}
+/// <todo> Get current round from shared data controller
 
 protocol RewardCalculatorDelegate: AnyObject {
     func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Decimal)

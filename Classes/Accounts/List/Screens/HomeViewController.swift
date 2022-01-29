@@ -35,7 +35,7 @@ final class HomeViewController:
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = HomeListLayout.build()
         let collectionView =
-            UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
+        UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
@@ -47,6 +47,10 @@ final class HomeViewController:
     private lazy var listDataSource = HomeListDataSource(listView)
     
     private let dataController: HomeDataController
+
+    /// <todo>: Refactor
+    /// This is needed for ChoosePasswordViewControllerDelegate's method.
+    private var selectedAccountHandle: AccountHandle? = nil
     
     init(
         dataController: HomeDataController,
@@ -198,7 +202,7 @@ extension HomeViewController {
             let eventHandler: PortfolioCalculationInfoViewController.EventHandler = {
                 [weak self] event in
                 guard let self = self else { return }
-            
+
                 switch event {
                 case .close:
                     self.dismiss(animated: true)
@@ -268,8 +272,8 @@ extension HomeViewController {
     private func presentPasscodeFlowIfNeeded() {
         guard let session = session,
               !session.hasPassword() else {
-            return
-        }
+                  return
+              }
 
         var passcodeSettingDisplayStore = PasscodeSettingDisplayStore()
 
@@ -345,8 +349,7 @@ extension HomeViewController: WalletConnectorDelegate {
         shouldStart session: WalletConnectSession,
         then completion: @escaping WalletConnectSessionConnectionCompletionHandler
     ) {
-        guard let accounts = self.session?.accounts,
-              accounts.contains(where: { $0.type != .watch }) else {
+        if !sharedDataController.accountCollection.sorted().contains(where: { $0.value.type != .watch }) {
                   asyncMain { [weak self] in
                       guard let self = self else {
                           return
@@ -357,8 +360,8 @@ extension HomeViewController: WalletConnectorDelegate {
                         message: "wallet-connect-session-error-no-account".localized
                       )
                   }
-            return
-        }
+                  return
+              }
 
         asyncMain { [weak self] in
             guard let self = self else {
@@ -388,8 +391,17 @@ extension HomeViewController: WCConnectionApprovalViewControllerDelegate {
 }
 
 extension HomeViewController {
-    private func presentOptions(for account: Account) {
-       // modalTransition.perform(.options(account: account, delegate: self))
+    private func presentOptions(for accountHandle: AccountHandle) {
+        modalTransition.perform(
+            .invalidAccount(
+                account: accountHandle,
+                uiInteractionsHandler: linkInvalidAccountOptionsUIInteractions(
+                    accountHandle
+                )
+            )
+            ,
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
@@ -400,35 +412,23 @@ extension HomeViewController: QRScannerViewControllerDelegate {
             open(.addContact(address: qrText.address, name: qrText.label), by: .push)
         case .algosRequest:
             guard let address = qrText.address,
-                let amount = qrText.amount else {
-                return
-            }
+                  let amount = qrText.amount else {
+                      return
+                  }
 
-            open(
-                .sendAlgosTransactionPreview(
-                    account: nil,
-                    receiver: .address(address: address, amount: "\(amount)"),
-                    isSenderEditable: true,
-                    qrText: qrText
-                ),
-                by: .customPresent(
-                    presentationStyle: .fullScreen,
-                    transitionStyle: nil,
-                    transitioningDelegate: nil
-                )
-            )
+            /// <todo> open send screen
         case .assetRequest:
             guard let address = qrText.address,
-                let amount = qrText.amount,
-                let assetId = qrText.asset else {
-                return
-            }
+                  let amount = qrText.amount,
+                  let assetId = qrText.asset else {
+                      return
+                  }
 
-            var asset: AssetDetail?
+            var asset: AssetInformation?
 
-            for account in session!.accounts {
-                for assetDetail in account.assetDetails where assetDetail.id == assetId {
-                    asset = assetDetail
+            for accountHandle in sharedDataController.accountCollection.sorted() {
+                for compoundAsset in accountHandle.value.compoundAssets where compoundAsset.id == assetId {
+                    asset = compoundAsset.detail
                     break
                 }
             }
@@ -451,22 +451,7 @@ extension HomeViewController: QRScannerViewControllerDelegate {
                 return
             }
 
-            open(
-                .sendAssetTransactionPreview(
-                    account: nil,
-                    receiver: .address(
-                        address: address,
-                        amount: amount
-                            .assetAmount(fromFraction: assetDetail.fractionDecimals)
-                            .toFractionStringForLabel(fraction: assetDetail.fractionDecimals)
-                    ),
-                    assetDetail: assetDetail,
-                    isSenderEditable: false,
-                    isMaxTransaction: false,
-                    qrText: qrText
-                ),
-                by: .push
-            )
+            /// <todo> open send screen
         case .mnemonic:
             break
         }
@@ -584,6 +569,8 @@ extension HomeViewController {
                 guard let account = dataController[cellItem.address] else {
                     return
                 }
+
+                self.selectedAccountHandle = account
                 
                 if account.isReady {
                     open(
@@ -591,16 +578,120 @@ extension HomeViewController {
                         by: .push
                     )
                 } else {
-                    modalTransition.perform(
-                        .invalidAccount(account: account),
-                        by: .presentWithoutNavigationController
-                    )
+                    presentOptions(for: account)
                 }
             default:
                 break
             }
         default: break
         }
+    }
+}
+
+extension HomeViewController: ChoosePasswordViewControllerDelegate {
+    func linkInvalidAccountOptionsUIInteractions(_ accountHandle: AccountHandle) -> InvalidAccountOptionsViewController.InvalidAccountOptionsUIInteractions {
+        var uiInteractions = InvalidAccountOptionsViewController.InvalidAccountOptionsUIInteractions()
+
+        uiInteractions.didTapShowQRCode = {
+            [weak self] in
+
+            guard let self = self else {
+                return
+            }
+
+            let draft = QRCreationDraft(
+                address: accountHandle.value.address,
+                mode: .address,
+                title: accountHandle.value.name
+            )
+            self.open(
+                .qrGenerator(
+                    title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay(),
+                    draft: draft,
+                    isTrackable: true
+                ),
+                by: .present
+            )
+        }
+
+        uiInteractions.didTapViewPassphrase = {
+            [weak self] in
+
+            guard let self = self else {
+                return
+            }
+
+            guard let session = self.session else {
+                return
+            }
+
+            if !session.hasPassword() {
+                self.presentPassphraseView(accountHandle)
+                return
+            }
+
+            let localAuthenticator = LocalAuthenticator()
+
+            if localAuthenticator.localAuthenticationStatus != .allowed {
+                let controller = self.open(
+                    .choosePassword(
+                        mode: .confirm(flow: .viewPassphrase),
+                        flow: nil,
+                        route: nil
+                    ),
+                    by: .present
+                ) as? ChoosePasswordViewController
+                controller?.delegate = self
+                return
+            }
+
+            localAuthenticator.authenticate {
+                [weak self] error in
+
+                guard let self = self,
+                      error == nil else {
+                          return
+                      }
+
+                self.presentPassphraseView(accountHandle)
+            }
+        }
+
+        uiInteractions.didTapCopyAddress = {
+            [weak self] in
+
+            guard let self = self else {
+                return
+            }
+
+            self.log(ReceiveCopyEvent(address: accountHandle.value.address))
+            UIPasteboard.general.string = accountHandle.value.address
+            self.bannerController?.presentInfoBanner("qr-creation-copied".localized)
+        }
+
+        return uiInteractions
+    }
+
+    func choosePasswordViewController(
+        _ choosePasswordViewController: ChoosePasswordViewController,
+        didConfirmPassword isConfirmed: Bool
+    ) {
+        choosePasswordViewController.dismissScreen()
+        
+        guard let selectedAccountHandle = selectedAccountHandle else {
+            return
+        }
+
+        if isConfirmed {
+            presentPassphraseView(selectedAccountHandle)
+        }
+    }
+
+    private func presentPassphraseView(_ accountHandle: AccountHandle) {
+        modalTransition.perform(
+            .passphraseDisplay(address: accountHandle.value.address),
+            by: .present
+        )
     }
 }
 

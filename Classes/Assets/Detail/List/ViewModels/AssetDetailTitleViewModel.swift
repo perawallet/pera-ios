@@ -32,16 +32,22 @@ final class AssetDetailTitleViewModel: ViewModel {
 
 extension AssetDetailTitleViewModel {
     private func bindImage(_ assetDetail: AssetInformation?) {
-        guard assetDetail == nil else {
-            assetAbbreviationForImage = TextFormatter.assetShortName.format(assetDetail?.name)
-            return
+        if let assetDetail = assetDetail {
+            if let assetName = assetDetail.name,
+               !assetName.isEmptyOrBlank {
+                assetAbbreviationForImage = TextFormatter.assetShortName.format(assetName)
+            } else {
+                assetAbbreviationForImage = TextFormatter.assetShortName.format("title-unknown".localized)
+            }
+        } else {
+            image = "icon-algo-circle-green".uiImage
         }
-        image = "icon-algo-circle-green".uiImage
     }
 
     private func bindTitle(_ assetDetail: AssetInformation?) {
         if let assetDetail = assetDetail {
-            if let assetName = assetDetail.name {
+            if let assetName = assetDetail.name,
+               !assetName.isEmptyOrBlank {
                 title = assetName
             } else {
                 title = "title-unknown".localized

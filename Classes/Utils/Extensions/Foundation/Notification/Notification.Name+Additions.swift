@@ -26,10 +26,6 @@ extension Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.application.WillEnterForeground")
     }
 
-    static var AccountUpdate: Notification.Name {
-        return .init(rawValue: "com.algorand.algorand.notification.account.update")
-    }
-    
     static var ContactAddition: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.contact.addition")
     }

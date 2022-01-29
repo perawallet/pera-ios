@@ -30,7 +30,7 @@ final class ContactDetailViewController: BaseScrollViewController {
     
     private let contact: Contact
     private var contactAccount: Account?
-    private var selectedAsset: AssetDetail?
+    private var selectedAsset: AssetInformation?
     private var assetPreviews: [AssetPreviewModel] = []
 
     init(contact: Contact, configuration: ViewControllerConfiguration) {
@@ -133,7 +133,7 @@ extension ContactDetailViewController {
                                     let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset, currency: currency))
                                     self?.assetPreviews.append(assetPreviewModel)
 
-                                    if assets.count == account.assetDetails.count + failedAssetFetchCount {
+                                    if assets.count == account.compoundAssets.count + failedAssetFetchCount {
                                         self?.loadingController?.stopLoading()
                                         self?.contactAccount = account
                                         self?.contactDetailView.assetsCollectionView.reloadData()
@@ -205,14 +205,14 @@ extension ContactDetailViewController: AssetPreviewActionCellDelegate {
 
         accountListModalTransition.perform(
             .accountList(
-                mode: .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.assetDetails[itemIndex.item - 1]),
+                mode: .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.compoundAssets[itemIndex.item - 1].detail),
                 delegate: self
             ),
             by: .presentWithoutNavigationController
         )
 
         if itemIndex.item != 0 {
-            selectedAsset = contactAccount.assetDetails[itemIndex.item - 1]
+            selectedAsset = contactAccount.compoundAssets[itemIndex.item - 1].detail
         }
     }
 }
@@ -262,18 +262,9 @@ extension ContactDetailViewController: AccountListViewControllerDelegate {
         
         if let assetDetail = selectedAsset {
             selectedAsset = nil
-            open(
-                .sendAssetTransactionPreview(
-                    account: account.value,
-                    receiver: .contact(contact),
-                    assetDetail: assetDetail,
-                    isSenderEditable: false,
-                    isMaxTransaction: false
-                ),
-                by: .push
-            )
+            /// <todo> open send asset
         } else {
-            open(.sendAlgosTransactionPreview(account: account.value, receiver: .contact(contact), isSenderEditable: false), by: .push)
+            /// <todo> open send asset
         }
     }
 

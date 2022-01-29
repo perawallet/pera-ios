@@ -28,9 +28,9 @@ final class SecuritySettingsViewController: BaseViewController {
     
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-        navigationItem.title = "security-settings-title".localized
+        title = "security-settings-title".localized
     }
-    
+
     override func linkInteractors() {
         securitySettingsView.collectionView.delegate = self
         securitySettingsView.collectionView.dataSource = self
@@ -42,6 +42,16 @@ final class SecuritySettingsViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        checkPINCodeActivation()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        guard !isViewFirstLoaded else {
+            return
+        }
+
         checkPINCodeActivation()
     }
 }
@@ -60,12 +70,13 @@ extension SecuritySettingsViewController {
 
 extension SecuritySettingsViewController {
     private func checkPINCodeActivation() {
-        let isActive = session?.hasPassword() ?? false
-        if isActive {
+        let hasPassword = session?.hasPassword() ?? false
+
+        if hasPassword {
             createSettingsWithPreferences()
-            return
+        } else {
+            createSettingsWithoutPreferences()
         }
-        createSettingsWithoutPreferences()
     }
     
     private func createSettingsWithPreferences() {
@@ -103,8 +114,8 @@ extension SecuritySettingsViewController: UICollectionViewDelegateFlowLayout {
         
         if setting == .pinCodeChange {
             open(
-                .choosePassword(mode: .resetPassword, flow: nil, route: nil),
-                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                .choosePassword(mode: .verifyOld, flow: nil, route: nil),
+                by: .push
             )
         }
     }
@@ -125,12 +136,8 @@ extension SecuritySettingsViewController: UICollectionViewDataSource {
             case .pinCodeActivation:
                 let cell = collectionView.dequeue(SettingsToggleCell.self, at: indexPath)
                 cell.delegate = self
-                let isActive = session?.hasPassword() ?? false
-                if isActive {
-                    cell.bindData(SettingsToggleViewModel(setting: setting, isOn: true))
-                    return cell
-                }
-                cell.bindData(SettingsToggleViewModel(setting: setting, isOn: false))
+                let hasPassword = session?.hasPassword() ?? false
+                cell.bindData(SettingsToggleViewModel(setting: setting, isOn: hasPassword))
                 return cell
             case .pinCodeChange:
                 let cell = collectionView.dequeue(SettingsDetailCell.self, at: indexPath)
@@ -173,19 +180,18 @@ extension SecuritySettingsViewController: SettingsToggleCellDelegate {
         
         switch setting {
         case .pinCodeActivation:
-            if value {
-                open(
-                    .choosePassword(mode: .resetPassword, flow: nil, route: nil),
-                    by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-                )
-                return
-            }
-            
-            open(.choosePassword(mode: .deletePassword, flow: nil, route: nil), by: .present)
-            return
+            let mode: ChoosePasswordViewController.Mode = value ? .resetPassword(flow: .initial) : .deletePassword
+            open(
+                .choosePassword(mode: mode, flow: nil, route: nil),
+                by: .push
+            )
         case .localAuthentication:
             if !value {
-                localAuthenticator.localAuthenticationStatus = .notAllowed
+                let controller = open(
+                    .choosePassword(mode: .confirm(flow: .settings), flow: nil, route: nil),
+                    by: .push
+                ) as? ChoosePasswordViewController
+                controller?.delegate = self
                 return
             }
             
@@ -198,15 +204,35 @@ extension SecuritySettingsViewController: SettingsToggleCellDelegate {
                     
                     self.localAuthenticator.localAuthenticationStatus = .allowed
                 }
-                return
+            } else {
+                presentDisabledLocalAuthenticationAlert()
             }
-            
-            presentDisabledLocalAuthenticationAlert()
+
         default:
             return
         }
-        
+    }
+}
 
+extension SecuritySettingsViewController: ChoosePasswordViewControllerDelegate {
+    func choosePasswordViewController(
+        _ choosePasswordViewController: ChoosePasswordViewController,
+        didConfirmPassword isConfirmed: Bool
+    ) {
+        choosePasswordViewController.popScreen()
+
+        let indexPath = IndexPath(item: 1, section: 1)
+        guard let cell =
+                securitySettingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
+                    return
+                }
+
+        if isConfirmed {
+            localAuthenticator.localAuthenticationStatus = .notAllowed
+            cell.contextView.setToggleOn(false, animated: true)
+        } else {
+            cell.contextView.setToggleOn(true, animated: true)
+        }
     }
 }
 
@@ -222,7 +248,11 @@ extension SecuritySettingsViewController {
             UIApplication.shared.openAppSettings()
         }
         
-        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel) { _ in
+        let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel) { [weak self] _ in
+            guard let self = self else {
+                return
+            }
+
             let indexPath = IndexPath(item: 1, section: 0)
             guard let cell = self.securitySettingsView.collectionView.cellForItem(at: indexPath) as? SettingsToggleCell else {
                 return

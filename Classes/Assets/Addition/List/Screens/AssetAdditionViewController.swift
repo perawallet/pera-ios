@@ -204,15 +204,16 @@ extension AssetAdditionViewController: SearchInputViewDelegate {
     }
 }
 
-extension AssetAdditionViewController: AssetActionConfirmationViewControllerDelegate {
+extension AssetAdditionViewController:
+    AssetActionConfirmationViewControllerDelegate,
+    TransactionSignChecking {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmedActionFor assetDetail: AssetInformation
     ) {
-        guard let session = session,
-              session.canSignTransaction(for: &account) else {
-                  return
-              }
+        if !canSignTransaction(for: &account) {
+            return
+        }
         
         let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: assetDetail.id)
         transactionController.setTransactionDraft(assetTransactionDraft)

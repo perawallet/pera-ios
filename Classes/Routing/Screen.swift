@@ -39,27 +39,6 @@ indirect enum Screen {
     case addContact(address: String? = nil, name: String? = nil)
     case editContact(contact: Contact)
     case contactDetail(contact: Contact)
-    case sendAlgosTransactionPreview(account: Account?, receiver: AssetReceiverState, isSenderEditable: Bool, qrText: QRText? = nil)
-    case sendAssetTransactionPreview(
-        account: Account?,
-        receiver: AssetReceiverState,
-        assetDetail: AssetDetail,
-        isSenderEditable: Bool,
-        isMaxTransaction: Bool,
-        qrText: QRText? = nil
-    )
-    case sendAlgosTransaction(
-        algosTransactionSendDraft: AlgosTransactionSendDraft,
-        transactionController: TransactionController,
-        receiver: AssetReceiverState,
-        isSenderEditable: Bool
-    )
-    case sendAssetTransaction(
-        assetTransactionSendDraft: AssetTransactionSendDraft,
-        transactionController: TransactionController,
-        receiver: AssetReceiverState,
-        isSenderEditable: Bool
-    )
     case nodeSettings
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetInformation?)
     case addAsset(account: Account)
@@ -70,7 +49,6 @@ indirect enum Screen {
     case ledgerTutorial(flow: AccountSetupFlow)
     case ledgerDeviceList(flow: AccountSetupFlow)
     case ledgerApproval(mode: LedgerApprovalViewController.Mode, deviceName: String)
-    case selectAsset(transactionAction: TransactionAction, filterOption: OldSelectAssetViewController.FilterOption = .none)
     case passphraseDisplay(address: String)
     case assetDetailNotification(address: String, assetId: Int64?)
     case assetActionConfirmationNotification(address: String, assetId: Int64?)
@@ -90,7 +68,6 @@ indirect enum Screen {
     case notificationFilter(flow: NotificationFilterViewController.Flow)
     case bottomWarning(configurator: BottomWarningViewConfigurator)
     case warningAlert(warningAlert: WarningAlert)
-    case actionableWarningAlert(warningAlert: WarningAlert, delegate: ActionableWarningAlertViewControllerDelegate)
     case tutorial(flow: AccountSetupFlow, tutorial: Tutorial)
     case tutorialSteps(step: Troubleshoot.Step)
     case transactionTutorial(isInitialDisplay: Bool, delegate: TransactionTutorialViewControllerDelegate)
@@ -100,11 +77,6 @@ indirect enum Screen {
     case walletConnectSessionList
     case walletConnectSessionShortList
     case wcTransactionFullDappDetail(configurator: WCTransactionFullDappDetailConfigurator)
-    case wcMainTransaction(
-            transactions: [WCTransaction],
-            transactionRequest: WalletConnectRequest,
-            transactionOption: WCTransactionOption?
-         )
     case wcAlgosTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case wcAssetTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
     case wcAssetAdditionTransaction(transaction: WCTransaction, transactionRequest: WalletConnectRequest)
@@ -122,7 +94,10 @@ indirect enum Screen {
     case sendTransaction(draft: SendTransactionDraft)
     case editNote(note: String?, delegate: EditNoteScreenDelegate?)
     case portfolioCalculationInfo(result: PortfolioCalculator.Result, eventHandler: PortfolioCalculationInfoViewController.EventHandler)
-    case invalidAccount(account: AccountHandle)
+    case invalidAccount(
+        account: AccountHandle,
+        uiInteractionsHandler: InvalidAccountOptionsViewController.InvalidAccountOptionsUIInteractions
+    )
     case transactionResult
     case transactionAccountSelect(draft: SendTransactionDraft)
     case sendTransactionPreview(draft: TransactionSendDraft?, transactionController: TransactionController)

@@ -22,8 +22,8 @@ import MacaroonUIKit
 final class BottomWarningViewController: BaseScrollViewController {
     private let viewConfigurator: BottomWarningViewConfigurator
 
-    init(_ viewModel: BottomWarningViewConfigurator, configuration: ViewControllerConfiguration) {
-        self.viewConfigurator = viewModel
+    init(_ viewConfigurator: BottomWarningViewConfigurator, configuration: ViewControllerConfiguration) {
+        self.viewConfigurator = viewConfigurator
         super.init(configuration: configuration)
     }
 
@@ -61,16 +61,15 @@ extension BottomWarningViewController: BottomSheetPresentable {
 }
 
 extension BottomWarningViewController: BottomWarningViewDelegate {
-    // <todo>
-    // For both delegate methods, dismiss screen should be called before if primaryAction has routing job.
-
     func bottomWarningViewDidTapPrimaryActionButton(_ bottomWarningView: BottomWarningView) {
-        viewConfigurator.primaryAction?()
-        dismissScreen()
+        closeScreen(by: .dismiss, animated: true) { [weak self] in
+            self?.viewConfigurator.primaryAction?()
+        }
     }
 
     func bottomWarningViewDidTapSecondaryActionButton(_ bottomWarningView: BottomWarningView) {
-        viewConfigurator.secondaryAction?()
-        dismissScreen()
+        closeScreen(by: .dismiss, animated: true) { [weak self] in
+            self?.viewConfigurator.secondaryAction?()
+        }
     }
 }

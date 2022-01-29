@@ -28,6 +28,11 @@ final class EditAccountViewController: BaseViewController {
         self.account = account
         super.init(configuration: configuration)
     }
+
+    override func configureNavigationBarAppearance() {
+        super.configureNavigationBarAppearance()
+        addBarButtons()
+    }
     
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -54,9 +59,28 @@ final class EditAccountViewController: BaseViewController {
         super.viewDidAppear(animated)
         editAccountView.beginEditing()
     }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        editAccountView.endEditing()
+    }
 }
 
 extension EditAccountViewController {
+    private func addBarButtons() {
+        let doneBarButtonItem = ALGBarButtonItem(kind: .done) {
+            [weak self] in
+
+            guard let self = self else {
+                return
+            }
+
+            self.didTapDoneButton()
+        }
+
+        rightBarButtonItems = [doneBarButtonItem]
+    }
+
     private func didTapDoneButton() {
         guard let name = editAccountView.accountNameInputView.text else {
             displaySimpleAlertWith(
@@ -76,6 +100,4 @@ extension EditAccountViewController: EditAccountViewDelegate {
     func editAccountViewDidTapDoneButton(_ editAccountView: EditAccountView) {
         didTapDoneButton()
     }
-
-    func editAccountViewDidChangeValue(_ editAccountView: EditAccountView) {}
 }

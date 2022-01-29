@@ -82,7 +82,7 @@ extension ManageAssetsViewController {
 
 extension ManageAssetsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return account.assetDetails.count
+        return account.compoundAssets.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -157,15 +157,16 @@ extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
     }
 }
 
-extension ManageAssetsViewController: AssetActionConfirmationViewControllerDelegate {
+extension ManageAssetsViewController:
+    AssetActionConfirmationViewControllerDelegate,
+    TransactionSignChecking {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmedActionFor assetDetail: AssetInformation
     ) {
-        guard let session = session,
-              session.canSignTransaction(for: &account) else {
-                  return
-              }
+        if !canSignTransaction(for: &account) {
+            return
+        }
         
         if let assetAmount = account.amount(for: assetDetail),
            assetAmount != 0 {

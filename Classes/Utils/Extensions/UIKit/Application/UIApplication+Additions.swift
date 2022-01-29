@@ -91,10 +91,6 @@ extension UIApplication {
         return rootViewController.appConfiguration
     }
     
-    var accountManager: AccountManager? {
-        return appDelegate?.accountManager
-    }
-    
     func rootViewController() -> RootViewController? {
         return window?.rootViewController as? RootViewController
     }
@@ -129,15 +125,6 @@ extension UIApplication {
         }
         
         UIApplication.shared.open(settingsURL, options: [:])
-    }
-    
-    var deviceInterfaceStyle: UserInterfaceStyle {
-        switch UIScreen.main.traitCollection.userInterfaceStyle {
-        case .dark:
-            return .dark
-        default:
-            return .light
-        }
     }
     
     var isDarkModeDisplay: Bool {

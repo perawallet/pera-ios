@@ -22,11 +22,23 @@ import UIKit
 
 struct EditNoteViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
+    let doneButton: ButtonStyle
+    let doneButtonContentEdgeInsets: LayoutPaddings
+    let doneButtonCorner: Corner
+
     let verticalPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
+        self.doneButton = [
+            .title("title-done".localized),
+            .titleColor([ .normal(AppColors.Components.Button.Primary.text) ]),
+            .font(Fonts.DMSans.medium.make(15)),
+            .backgroundColor(AppColors.Components.Button.Primary.background)
+        ]
+        self.doneButtonContentEdgeInsets = (14, 0, 14, 0)
+        self.doneButtonCorner = Corner(radius: 4)
         self.verticalPadding = 16
         self.horizontalPadding = 24
     }

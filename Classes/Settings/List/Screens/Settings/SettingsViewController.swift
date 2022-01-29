@@ -29,7 +29,7 @@ final class SettingsViewController: BaseViewController {
     
     private lazy var theme = Theme()
     private lazy var settingsView = SettingsView()
-    
+
     private lazy var dataSource = SettingsDataSource(session: session)
 
     override var prefersLargeTitle: Bool {
@@ -74,7 +74,7 @@ extension SettingsViewController {
 extension SettingsViewController {
     private func addSettingsView() {
         view.addSubview(settingsView)
-        
+
         settingsView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview()
             $0.top.safeEqualToTop(of: self)
@@ -105,7 +105,7 @@ extension SettingsViewController: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForFooterInSection section: Int
     ) -> CGSize {
-        if section == dataSource.sections.count - 1 {
+        if dataSource.sections[section] == .support {
             return CGSize(theme.footerSize)
         }
         return .zero
@@ -132,7 +132,7 @@ extension SettingsViewController {
         }
     }
     
-    func didSelectItemFromAccountSettings(_ setting: AccountSettings) {
+    private func didSelectItemFromAccountSettings(_ setting: AccountSettings) {
         switch setting {
         case .security:
             open(.securitySettings, by: .push)
@@ -143,7 +143,7 @@ extension SettingsViewController {
         }
     }
     
-    func didSelectItemFromAppPreferenceSettings(_ setting: AppPreferenceSettings) {
+    private func didSelectItemFromAppPreferenceSettings(_ setting: AppPreferenceSettings?) {
         switch setting {
         case .language:
             displayProceedAlertWith(
@@ -161,28 +161,18 @@ extension SettingsViewController {
         }
     }
     
-    func didSelectItemFromSupportSettings(_ setting: SupportSettings) {
+    private func didSelectItemFromSupportSettings(_ setting: SupportSettings) {
         switch setting {
         case .feedback:
-            if let url = AlgorandWeb.support.link {
-                open(url)
-            }
+            open(AlgorandWeb.support.link)
         case .appReview:
             bottomModalTransition.perform(
                 .walletRating, by: .presentWithoutNavigationController
             )
         case .termsAndServices:
-            guard let url = AlgorandWeb.termsAndServices.link else {
-                return
-            }
-            
-            open(url)
+            open(AlgorandWeb.termsAndServices.link)
         case .privacyPolicy:
-            guard let url = AlgorandWeb.privacyPolicy.link else {
-                return
-            }
-            
-            open(url)
+            open(AlgorandWeb.privacyPolicy.link)
         case .developer:
             open(.developerSettings, by: .push)
         }
@@ -246,10 +236,12 @@ extension SettingsViewController: SettingsDataSourceDelegate {
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()
 
-        asyncMain(afterDuration: 1.5) { [weak self] in
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.stopLoadingAfter(seconds: 1.5, on: .main) { [weak self] in
             guard let self = self else {
                 return
             }
+
             self.presentLogoutSuccessScreen()
         }
     }
@@ -258,8 +250,6 @@ extension SettingsViewController: SettingsDataSourceDelegate {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-approval-check".uiImage,
             title: "settings-logout-success-message".localized,
-            description: "",
-            primaryActionButtonTitle: nil,
             secondaryActionButtonTitle: "title-close".localized
         )
 

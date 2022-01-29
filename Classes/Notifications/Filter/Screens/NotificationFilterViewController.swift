@@ -169,7 +169,6 @@ extension NotificationFilterViewController {
 
         localAccount.receivesNotification = account.value.receivesNotification
         api?.session.authenticatedUser?.updateAccount(localAccount)
-        api?.session.updateAccount(account.value)
     }
 
     private func revertFilterSwitch(for account: AccountHandle) {
