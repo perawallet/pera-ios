@@ -599,7 +599,7 @@ extension AccountSelectScreen: AccountSelectScreenDataSourceDelegate {
 
 extension AccountSelectScreen {
     var isClosingToSameAccount: Bool {
-        if let receiverAddress = draft.toAccount {
+        if let receiverAddress = draft.toAccount?.address {
             return draft.isMaxTransaction && receiverAddress == draft.from.address
         }
 
