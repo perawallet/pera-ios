@@ -13,17 +13,18 @@
 // limitations under the License.
 
 //
-//  TransactionAmountView.swift
+//   VerticalTransactionAmountView.swift
 
+import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class TransactionAmountView: View {
+final class VerticalTransactionAmountView: View {
     private lazy var amountStackView = UIStackView()
-    private lazy var signLabel = Label()
     private lazy var amountLabel = Label()
+    private lazy var usdLabel = Label()
 
-    func customize(_ theme: TransactionAmountViewTheme) {
+    func customize(_ theme: VerticalTransactionAmountViewTheme) {
         addAmountStackView(theme)
     }
 
@@ -32,43 +33,35 @@ final class TransactionAmountView: View {
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
-extension TransactionAmountView {
-    private func addAmountStackView(_ theme: TransactionAmountViewTheme) {
+extension VerticalTransactionAmountView {
+    private func addAmountStackView(_ theme: VerticalTransactionAmountViewTheme) {
         addSubview(amountStackView)
         amountStackView.distribution = .equalSpacing
-        amountStackView.alignment = .center
+        amountStackView.alignment = .leading
+        amountStackView.axis = .vertical
 
         amountStackView.fitToIntrinsicSize()
-        signLabel.fitToIntrinsicSize()
         amountLabel.fitToIntrinsicSize()
-        
+        usdLabel.fitToIntrinsicSize()
+
         amountStackView.pinToSuperview()
 
-        signLabel.customizeAppearance(theme.signLabel)
-        amountStackView.addArrangedSubview(signLabel)
         amountLabel.customizeAppearance(theme.amountLabel)
         amountStackView.addArrangedSubview(amountLabel)
+
+        usdLabel.customizeAppearance(theme.usdLabel)
+        amountStackView.addArrangedSubview(usdLabel)
     }
 }
 
-extension TransactionAmountView: ViewModelBindable {
-    func bindData(_ viewModel: TransactionAmountViewModel?) {
-        signLabel.editText = viewModel?.signLabelText
-        signLabel.textColor = viewModel?.signLabelColor?.uiColor
+extension VerticalTransactionAmountView: ViewModelBindable {
+    func bindData(_ viewModel: TransactionCurrencyAmountViewModel?) {
+        usdLabel.editText = viewModel?.currencyLabelText
         amountLabel.editText = viewModel?.amountLabelText
-        amountLabel.textColor = viewModel?.amountLabelColor?.uiColor
     }
 
     func prepareForReuse() {
-        signLabel.text = nil
+        usdLabel.text = nil
         amountLabel.text = nil
-    }
-}
-
-extension TransactionAmountView {
-    enum Mode: Hashable {
-        case normal(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil, assetSymbol: String? = nil, currency: String? = nil)
-        case positive(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil, assetSymbol: String? = nil, currencyValue: String? = nil)
-        case negative(amount: Decimal, isAlgos: Bool = true, fraction: Int? = nil, assetSymbol: String? = nil, currency: String? = nil)
     }
 }

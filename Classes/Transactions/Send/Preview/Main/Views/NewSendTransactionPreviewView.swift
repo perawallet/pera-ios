@@ -22,11 +22,11 @@ import MacaroonUIKit
 
 final class NewSendTransactionPreviewView: View {
     private lazy var verticalStackView = UIStackView()
-    private(set) lazy var amountView = TransactionAmountInformationView()
+    private(set) lazy var amountView = TransactionMultipleAmountInformationView()
     private(set) lazy var userView = TitledTransactionAccountNameView()
     private(set) lazy var opponentView = TitledTransactionAccountNameView()
     private(set) lazy var feeView = TransactionAmountInformationView()
-    private(set) lazy var balanceView = TransactionAmountInformationView()
+    private(set) lazy var balanceView = TransactionMultipleAmountInformationView()
     private(set) lazy var noteView = TransactionTextInformationView()
 
     private lazy var theme = TransactionDetailViewTheme()
@@ -75,9 +75,9 @@ extension NewSendTransactionPreviewView {
     }
 
     private func addAmountView(_ theme: TransactionDetailViewTheme) {
-        amountView.customize(TransactionAmountInformationViewTheme(transactionAmountViewTheme: TransactionAmountViewBiggerTheme()))
+        amountView.customize(theme.bigMultipleAmountInformationViewTheme)
         amountView.bindData(
-            TransactionAmountInformationViewModel(
+            TransactionCurrencyAmountInformationViewModel(
                 title: "transaction-detail-amount".localized
             )
         )
@@ -113,9 +113,9 @@ extension NewSendTransactionPreviewView {
     }
 
     private func addBalanceView(_ theme: TransactionDetailViewTheme) {
-        balanceView.customize(theme.commonTransactionAmountInformationViewTheme)
+        balanceView.customize(theme.smallMultipleAmountInformationViewTheme)
         balanceView.bindData(
-            TransactionAmountInformationViewModel(
+            TransactionCurrencyAmountInformationViewModel(
                 title: "title-account-balance".localized
             )
         )
@@ -139,8 +139,8 @@ extension NewSendTransactionPreviewView: ViewModelBindable {
     func bindData(_ viewModel: SendTransactionPreviewViewModel?) {
         if let amountViewMode = viewModel?.amountViewMode {
             amountView.bindData(
-                TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(amountViewMode)
+                TransactionCurrencyAmountInformationViewModel(
+                    transactionViewModel: TransactionCurrencyAmountViewModel(amountViewMode)
                 )
             )
 
@@ -165,8 +165,8 @@ extension NewSendTransactionPreviewView: ViewModelBindable {
 
         if let balanceViewMode = viewModel?.balanceViewMode {
             balanceView.bindData(
-                TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(balanceViewMode)
+                TransactionCurrencyAmountInformationViewModel(
+                    transactionViewModel: TransactionCurrencyAmountViewModel(balanceViewMode)
                 )
             )
 

@@ -30,6 +30,8 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
     let commonTransactionAmountInformationViewTheme: TransactionAmountInformationViewTheme
     let transactionStatusInformationViewTheme: TransactionStatusInformationViewTheme
     let transactionContactInformationViewTheme: TransactionContactInformationViewTheme
+    let smallMultipleAmountInformationViewTheme: TransactionMultipleAmountInformationViewTheme
+    let bigMultipleAmountInformationViewTheme: TransactionMultipleAmountInformationViewTheme
 
     let buttonEdgeInsets: LayoutPaddings
     let openInGoalSeekerButtonLeadingPadding: LayoutMetric
@@ -71,5 +73,10 @@ struct TransactionDetailViewTheme: LayoutSheet, StyleSheet {
         self.verticalStackViewTopPadding = 72
         self.bottomPaddingForSeparator = 65
         self.bottomInset = 24
+        self.smallMultipleAmountInformationViewTheme = TransactionMultipleAmountInformationViewTheme(family)
+        self.bigMultipleAmountInformationViewTheme = TransactionMultipleAmountInformationViewTheme(
+            family,
+            transactionAmountViewTheme: VerticalTransactionAmountViewBiggerTheme(family)
+        )
     }
 }

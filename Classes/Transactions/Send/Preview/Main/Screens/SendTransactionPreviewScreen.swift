@@ -57,7 +57,7 @@ final class SendTransactionPreviewScreen: BaseViewController {
       }
 
       transactionDetailView.bindData(
-         SendTransactionPreviewViewModel(transactionDraft)
+         SendTransactionPreviewViewModel(transactionDraft, currency: sharedDataController.currency.value)
       )
    }
 
