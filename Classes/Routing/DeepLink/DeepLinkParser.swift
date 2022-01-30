@@ -18,11 +18,14 @@
 import UIKit
 
 struct DeepLinkParser {
+    private var url: URL!
     
-    private let url: URL
+    private let sharedDataController: SharedDataController
     
-    init(url: URL) {
-        self.url = url
+    init(
+        sharedDataController: SharedDataController
+    ) {
+        self.sharedDataController = sharedDataController
     }
 
     var wcSessionRequestText: String? {
@@ -96,6 +99,29 @@ struct DeepLinkParser {
         case .mnemonic:
             return nil
         }
+        
+        return nil
+    }
+}
+
+extension DeepLinkParser {
+    func discover(
+        remoteNotification userInfo: Deeplink.UserInfo
+    ) -> Screen? {
+        let aps = userInfo["aps"] as? [String: Any]
+        
+        guard let apsData = try? JSONSerialization.data(
+            withJSONObject: aps,
+            options: .prettyPrinted
+        ) else {
+            return nil
+        }
+
+        let notification = try? JSONDecoder().decode(
+            AlgorandNotification.self,
+            from: apsData
+        )
+        
         
         return nil
     }

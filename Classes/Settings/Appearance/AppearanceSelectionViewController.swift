@@ -68,7 +68,7 @@ extension AppearanceSelectionViewController: UICollectionViewDelegateFlowLayout 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let appearance = UserInterfaceStyle.allCases[safe: indexPath.item] {
             api?.session.userInterfaceStyle = appearance
-            UIApplication.shared.rootViewController()?.changeUserInterfaceStyle(to: appearance)
+            UserInterfaceStyleController.setNeedsUserInterfaceStyleUpdate(appearance)
             appearanceSelectionView.reloadData()
         }
     }

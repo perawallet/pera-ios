@@ -20,52 +20,81 @@ import MagpieCore
 import MacaroonUtils
 
 final class NotificationDetail: ALGAPIModel {
-    let senderAddress: String?
-    let receiverAddress: String?
-    private let amount: UInt64?
-    private let amountStr: String?
+    let type: NotificationType
+    let address: String?
     let asset: NotificationAsset?
-    let notificationType: NotificationType?
-
+    let amount: UInt64
+    
     init() {
-        self.senderAddress = nil
-        self.receiverAddress = nil
-        self.amount = nil
-        self.amountStr = nil
+        self.type = .broadcast
+        self.address = nil
         self.asset = nil
-        self.notificationType = nil
+        self.amount = 0
     }
-}
-
-extension NotificationDetail {
-    func getAmountValue() -> UInt64 {
-        if let amount = amount {
-            return amount
+    
+    init(
+        from decoder: Decoder
+    ) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let type =
+            try container.decodeIfPresent(NotificationType.self, forKey: .notificationType) ??
+            .broadcast
+        
+        let address: String?
+        if type.isSent {
+            address = try container.decodeIfPresent(String.self, forKey: .senderAddress)
+        } else if type.isReceived {
+            address = try container.decodeIfPresent(String.self, forKey: .receiverAddress)
+        } else {
+            address = nil
         }
-
-        if let amountStr = amountStr,
-            let amount = UInt64(amountStr) {
-            return amount
+        
+        let amount: UInt64
+        if let anAmount = try container.decodeIfPresent(UInt64.self, forKey: .amount) {
+            amount = anAmount
+        } else if let amountString = try container.decodeIfPresent(String.self, forKey: .amountStr),
+                  let anAmount = UInt64(amountString) {
+            amount = anAmount
+        } else {
+            amount = 0
         }
-
-        return 0
+        
+        self.type = type
+        self.address = address
+        self.asset = try container.decodeIfPresent(NotificationAsset.self, forKey: .asset)
+        self.amount = amount
     }
-}
-
-extension NotificationDetail {
+    
+    func encode(
+        to encoder: Encoder
+    ) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(type, forKey: .notificationType)
+        try container.encodeIfPresent(asset, forKey: .asset)
+        try container.encode(amount, forKey: .amount)
+        
+        if type.isSent {
+            try container.encodeIfPresent(address, forKey: .senderAddress)
+        } else if type.isReceived {
+            try container.encodeIfPresent(address, forKey: .receiverAddress)
+        }
+    }
+    
     private enum CodingKeys:
         String,
         CodingKey {
+        case notificationType
         case senderAddress = "sender_public_key"
         case receiverAddress = "receiver_public_key"
+        case asset
         case amount
         case amountStr = "amount_str"
-        case asset
-        case notificationType
     }
 }
 
-enum NotificationType: String, ALGAPIModel {
+enum NotificationType:
+    String,
+    JSONModel {
     case transactionSent = "transaction-sent"
     case transactionReceived = "transaction-received"
     case transactionFailed = "transaction-failed"
@@ -75,8 +104,29 @@ enum NotificationType: String, ALGAPIModel {
     case assetSupportRequest = "asset-support-request"
     case assetSupportSuccess = "asset-support-success"
     case broadcast = "broadcast"
+    
+    var isSent: Bool {
+        switch self {
+        case .transactionSent,
+             .assetTransactionSent:
+            return true
+        default:
+            return false
+        }
+    }
+    var isReceived: Bool {
+        switch self {
+        case .transactionReceived,
+             .assetTransactionReceived,
+             .assetSupportRequest,
+             .assetSupportSuccess:
+            return true
+        default:
+            return false
+        }
+    }
 
     init() {
-        self = .transactionSent
+        self = .broadcast
     }
 }

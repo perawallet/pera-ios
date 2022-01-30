@@ -41,8 +41,8 @@ extension ALGAPI {
             .base(.mobile)
             .path(.currencyDetail, args: currencyId)
             .method(.get)
-            .completionHandler(handler)
             .ignoreResponseWhenEndpointCancelled(false)
+            .completionHandler(handler)
             .responseDispatcher(queue)
             .execute()
     }

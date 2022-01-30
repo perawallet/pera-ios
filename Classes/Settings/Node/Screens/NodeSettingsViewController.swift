@@ -123,7 +123,7 @@ extension NodeSettingsViewController {
         lastActiveNetwork = selectedNode.network
         
         DispatchQueue.main.async {
-            UIApplication.shared.rootViewController()?.setNetwork(to: selectedNode.network)
+//            UIApplication.shared.rootViewController()?.setNetwork(to: selectedNode.network)
             UIApplication.shared.rootViewController()?.addBanner()
         }
         

@@ -419,9 +419,10 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
     private func launchHome() {
         switch self.accountSetupFlow {
         case .initializeAccount:
-            dismiss(animated: false) {
-                UIApplication.shared.rootViewController()?.setupTabBarController()
-            }
+            launchMain()
+//            dismiss(animated: false) {
+//                UIApplication.shared.rootViewController()?.setupTabBarController()
+//            }
         case .addNewAccount:
             closeScreen(by: .dismiss, animated: false)
         case .none:

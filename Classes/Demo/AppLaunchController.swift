@@ -13,32 +13,34 @@
 // limitations under the License.
 
 //
-//  AlgorandNotification.swift
+//   AppLaunchController.swift
 
 import Foundation
-import MacaroonUtils
+import MacaroonApplication
+import MacaroonUIKit
+import SwiftDate
+import UIKit
 
-final class AlgorandNotification: JSONModel {
-    let badge: Int?
-    let alert: String?
-    let details: NotificationDetail?
-    let sound: String?
+protocol AppLaunchController: AnyObject {
+    func launch(
+        deeplink: Deeplink?
+    )
+    func becomeActive()
+    func resignActive()
 
-    init() {
-        self.badge = nil
-        self.alert = nil
-        self.details = nil
-        self.sound = nil
-    }
+    func launchOnboarding()
+    func launchMain()
+    func launchMainAfterAuthorization(
+        presented viewController: UIViewController
+    )
+    
+    func receive(
+        deeplink: Deeplink
+    )
 }
 
-extension AlgorandNotification {
-    private enum CodingKeys:
-        String,
-        CodingKey {
-        case badge
-        case alert
-        case details = "custom"
-        case sound
+extension AppLaunchController {
+    var inactiveSessionExpirationDuration: DateComponents {
+        return 60.seconds
     }
 }

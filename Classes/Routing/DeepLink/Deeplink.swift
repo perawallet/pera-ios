@@ -13,32 +13,13 @@
 // limitations under the License.
 
 //
-//  AlgorandNotification.swift
+//   Deeplink.swift
 
 import Foundation
-import MacaroonUtils
 
-final class AlgorandNotification: JSONModel {
-    let badge: Int?
-    let alert: String?
-    let details: NotificationDetail?
-    let sound: String?
-
-    init() {
-        self.badge = nil
-        self.alert = nil
-        self.details = nil
-        self.sound = nil
-    }
-}
-
-extension AlgorandNotification {
-    private enum CodingKeys:
-        String,
-        CodingKey {
-        case badge
-        case alert
-        case details = "custom"
-        case sound
-    }
+enum Deeplink {
+    typealias UserInfo = [AnyHashable: Any]
+    
+    case remoteNotification(UserInfo)
+    case url(URL)
 }

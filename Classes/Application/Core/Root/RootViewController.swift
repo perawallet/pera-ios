@@ -15,27 +15,24 @@
 //
 //  RootViewController.swift
 
-import UIKit
+import Foundation
+import MacaroonTabBarController
+import MacaroonUIKit
 import MacaroonUtils
+import UIKit
 
 class RootViewController: UIViewController {
-    
-    private var shouldHideTestNetBanner: Bool {
-        return tabBarViewController.parent == nil
-    }
-    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return statusBarStyleForNetwork(isTestNet: appConfiguration.api.isTestNet)
+    }
+    
+    var areTabsVisible: Bool {
+        return !mainContainer.items.isEmpty
     }
     
     private lazy var pushNotificationController = PushNotificationController(
         api: appConfiguration.api,
         bannerController: appConfiguration.bannerController
-    )
-
-    private lazy var accountOrdering = AccountOrdering(
-        sharedDataController: appConfiguration.sharedDataController,
-        session: appConfiguration.session
     )
     
     lazy var statusBarView: UIView = {
@@ -48,25 +45,21 @@ class RootViewController: UIViewController {
 
     let appConfiguration: AppConfiguration
     
-    private var router: Router?
-
-    private let onceWhenViewDidAppear = Once()
+    private lazy var mainContainer = TabBarController()
 
     private(set) var isDisplayingGovernanceBanner = true
-
-    private lazy var deepLinkRouter = DeepLinkRouter(rootViewController: self, appConfiguration: appConfiguration)
-
-    private lazy var bottomSheetTransition = BottomSheetTransition(presentingViewController: self)
-    private(set) lazy var tabBarViewController = TabBarController(configuration: appConfiguration.all())
 
     private var currentWCTransactionRequest: WalletConnectRequest?
 
     private var wcRequestScreen: WCMainTransactionScreen?
     
-    init(appConfiguration: AppConfiguration) {
+    private let onceWhenViewDidAppear = Once()
+    
+    init(
+        appConfiguration: AppConfiguration
+    ) {
         self.appConfiguration = appConfiguration
         super.init(nibName: nil, bundle: nil)
-        self.router = Router(rootViewController: self)
     }
     
     @available(*, unavailable)
@@ -76,74 +69,61 @@ class RootViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Colors.Background.primary
-
-        initializeNetwork()
-        accountOrdering.setInitialWalletOrder()
+        build()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         onceWhenViewDidAppear.execute {
-            changeUserInterfaceStyle(to: appConfiguration.api.session.userInterfaceStyle)
             addBanner()
-            deepLinkRouter.initializeFlow()
         }
     }
 }
 
 extension RootViewController {
-    @discardableResult
-    func route<T: UIViewController>(
-        to screen: Screen,
-        from viewController: UIViewController,
-        by style: Screen.Transition.Open,
-        animated: Bool = true,
-        then completion: EmptyHandler? = nil
-    ) -> T? {
-        return router?.route(to: screen, from: viewController, by: style, animated: animated, then: completion)
-    }
-}
+    func launchTabs() {
+        let configuration = appConfiguration.all()
 
-extension RootViewController {
-    func setupTabBarController(withInitial screen: Screen? = nil) {
-        defer {
-            appConfiguration.sharedDataController.startPolling()
-        }
+        let homeViewController = HomeViewController(
+            dataController: HomeAPIDataController(appConfiguration.sharedDataController),
+            configuration: configuration
+        )
+        let homeTab = HomeTabBarItem(NavigationController(rootViewController: homeViewController))
         
-        if tabBarViewController.parent != nil {
-            return
-        }
-
-        addChild(tabBarViewController)
-        view.addSubview(tabBarViewController.view)
-
-        tabBarViewController.view.snp.makeConstraints { maker in
-            maker.edges.equalToSuperview()
-        }
-
-        tabBarViewController.route = screen
-        tabBarViewController.routeForDeeplink()
-        tabBarViewController.didMove(toParent: self)
+        let algoStatisticsViewController =
+            AlgoStatisticsViewController(configuration: configuration)
+        let algoStatisticsTab = AlgoStatisticsTabBarItem(
+            NavigationController(rootViewController: algoStatisticsViewController)
+        )
+        
+        let contactsViewController = ContactsViewController(configuration: configuration)
+        let contactsTab =
+            ContactsTabBarItem(NavigationController(rootViewController: contactsViewController))
+        
+        let settingsViewController = SettingsViewController(configuration: configuration)
+        let settingsTab =
+            SettingsTabBarItem(NavigationController(rootViewController: settingsViewController))
+        
+        mainContainer.items = [
+            homeTab,
+            algoStatisticsTab,
+            FixedSpaceTabBarItem(width: .noMetric),
+            contactsTab,
+            settingsTab
+        ]
+    }
+    
+    func terminateTabs() {
+        mainContainer.items = []
     }
 }
 
 extension RootViewController {
-    func handleDeepLinkRouting(for screen: Screen) -> Bool {
-        return deepLinkRouter.handleDeepLinkRouting(for: screen)
-    }
-
-    func openAsset(from notification: NotificationDetail, for account: String) {
-        deepLinkRouter.openAsset(from: notification, for: account)
-    }
-
     func hideGovernanceBanner() {
         isDisplayingGovernanceBanner = false
     }
 }
-
-extension RootViewController: AlgorandNetworkUpdatable { }
 
 extension RootViewController: BannerDisplayable {
     var shouldDisplayBanner: Bool {
@@ -201,16 +181,10 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         )
 
         currentWCTransactionRequest = request
+        
+        let visibleScreen = findVisibleScreen()
 
-        let presentingController: UIViewController?
-        if let controller = topMostController,
-           controller.isModal {
-            presentingController = controller
-        } else {
-            presentingController = self
-        }
-
-        wcRequestScreen = presentingController?.open(
+        wcRequestScreen = visibleScreen.open(
              .wcMainTransactionScreen(
                  transactions: transactions,
                  transactionRequest: request,
@@ -271,15 +245,40 @@ extension RootViewController: WCMainTransactionScreenDelegate {
     }
 }
 
-extension RootViewController: UserInterfaceChangable { }
-
 extension RootViewController {
     func deleteAllData() {
         appConfiguration.sharedDataController.reset()
-        appConfiguration.session.reset(isContactIncluded: true)
+        appConfiguration.session.reset(includingContacts: true)
         appConfiguration.walletConnector.resetAllSessions()
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()
+    }
+}
+
+extension RootViewController {
+    private func build() {
+        addBackground()
+        addMain()
+    }
+    
+    private func addBackground() {
+        view.backgroundColor = Colors.Background.primary
+    }
+    
+    private func addMain() {
+        addContent(mainContainer) {
+            contentView in
+            view.addSubview(contentView)
+            contentView.snp.makeConstraints {
+                $0.top == 0
+                $0.leading == 0
+                $0.bottom == 0
+                $0.trailing == 0
+            }
+        }
+        
+//        tabBarViewController.route = screen
+//        tabBarViewController.routeForDeeplink()
     }
 }
 

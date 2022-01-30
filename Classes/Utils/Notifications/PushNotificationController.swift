@@ -128,25 +128,43 @@ extension PushNotificationController {
 // MARK: Foreground
 
 extension PushNotificationController {
-    func show(with notificationDetail: NotificationDetail, then handler: EmptyHandler? = nil) {
-        guard let notificationType = notificationDetail.notificationType else {
+    func present(
+        notification: AlgorandNotification,
+        action handler: EmptyHandler? = nil
+    ) {
+        guard let notificationDetail = notification.details else {
+            present(idleNotification: notification)
             return
         }
         
-        switch notificationType {
-        case .transactionSent,
-             .assetTransactionSent:
-            displaySentNotification(with: notificationDetail, then: handler)
-        case .transactionReceived,
-             .assetTransactionReceived:
-            displayReceivedNotification(with: notificationDetail, then: handler)
-        case .transactionFailed,
-             .assetTransactionFailed:
-            displaySentNotification(with: notificationDetail, isFailed: true, then: handler)
-        case .assetSupportSuccess:
-            displayAssetSupportSuccessNotification(with: notificationDetail)
-        default:
-            break
+        switch notificationDetail.notificationType {
+            switch notificationType {
+            case .transactionSent,
+                 .assetTransactionSent:
+                displaySentNotification(with: notificationDetail, then: handler)
+            case .transactionReceived,
+                 .assetTransactionReceived:
+                displayReceivedNotification(with: notificationDetail, then: handler)
+            case .transactionFailed,
+                 .assetTransactionFailed:
+                displaySentNotification(with: notificationDetail, isFailed: true, then: handler)
+            case .assetSupportSuccess:
+                displayAssetSupportSuccessNotification(with: notificationDetail)
+            default:
+                break
+        }
+        
+        guard let notificationType = notificationDetail.notificationType else {
+            return
+        }
+        }
+    }
+    
+    private func present(
+        idleNotification notification: AlgorandNotification
+    ) {
+        if let alert = notification.alert {
+            bannerController?.presentInfoBanner(alert)
         }
     }
     

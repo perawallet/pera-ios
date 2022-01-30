@@ -13,32 +13,23 @@
 // limitations under the License.
 
 //
-//  AlgorandNotification.swift
+//   AppLaunchUIHandler.swift
 
 import Foundation
-import MacaroonUtils
+import UIKit
 
-final class AlgorandNotification: JSONModel {
-    let badge: Int?
-    let alert: String?
-    let details: NotificationDetail?
-    let sound: String?
-
-    init() {
-        self.badge = nil
-        self.alert = nil
-        self.details = nil
-        self.sound = nil
-    }
+protocol AppLaunchUIHandler: AnyObject {
+    func launchUI(
+        _ state: AppLaunchUIState
+    )
 }
 
-extension AlgorandNotification {
-    private enum CodingKeys:
-        String,
-        CodingKey {
-        case badge
-        case alert
-        case details = "custom"
-        case sound
-    }
+enum AppLaunchUIState {
+    case authorization /// pin
+    case onboarding
+    case main
+    case mainAfterAuthorization(
+        presented: UIViewController,
+        completion: () -> Void
+    )
 }

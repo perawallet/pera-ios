@@ -15,16 +15,75 @@
 //
 //  Router.swift
 
+import Foundation
+import MacaroonUIKit
 import UIKit
 
 class Router {
+    unowned let rootViewController: RootViewController
 
-    private weak var rootViewController: RootViewController?
+    private unowned let appConfiguration: AppConfiguration
     
-    init(rootViewController: RootViewController) {
+    init(
+        rootViewController: RootViewController,
+        appConfiguration: AppConfiguration
+    ) {
         self.rootViewController = rootViewController
+        self.appConfiguration = appConfiguration
     }
     
+    func launchAuthorization() {
+        let isAnimated = rootViewController.areTabsVisible
+        
+        route(
+            to: .choosePassword(mode: .login, flow: nil, route: nil),
+            from: findVisibleScreen(over: rootViewController),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            ),
+            animated: isAnimated
+        )
+    }
+    
+    func launchOnboarding() {
+        let isAnimated =
+            rootViewController.presentingViewController != nil ||
+            rootViewController.areTabsVisible
+        
+        route(
+            to: .welcome(flow: .initializeAccount(mode: .none)),
+            from: findVisibleScreen(over: rootViewController),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            ),
+            animated: isAnimated
+        ) { [weak self] in
+            guard let self = self else { return }
+            self.rootViewController.terminateTabs()
+        }
+    }
+    
+    func launchMain() {
+        rootViewController.launchTabs()
+        rootViewController.dismissIfNeeded()
+    }
+    
+    func launcMainAfterAuthorization(
+        presented viewController: UIViewController,
+        completion: @escaping () -> Void
+    ) {
+        if !rootViewController.areTabsVisible {
+            rootViewController.launchTabs()
+        }
+        
+        viewController.dismissScreen(completion: completion)
+    }
+    
+    @discardableResult
     func route<T: UIViewController>(
         to screen: Screen,
         from sourceViewController: UIViewController,
@@ -71,7 +130,7 @@ class Router {
             
             navigationController.modalPresentationStyle = .fullScreen
             
-            rootViewController?.present(navigationController, animated: false, completion: completion)
+            rootViewController.present(navigationController, animated: false, completion: completion)
         case .present,
                 .customPresent:
             let navigationController: NavigationController
@@ -169,20 +228,9 @@ class Router {
     
     // swiftlint:disable function_body_length
     private func buildViewController<T: UIViewController>(for screen: Screen) -> T? {
-        guard let rootViewController = UIApplication.shared.rootViewController() else {
-            return nil
-        }
-        
+        let configuration = appConfiguration.all()
+
         let viewController: UIViewController
-        
-        let configuration = ViewControllerConfiguration(
-            api: rootViewController.appConfiguration.api,
-            session: rootViewController.appConfiguration.session,
-            sharedDataController: rootViewController.appConfiguration.sharedDataController,
-            walletConnector: rootViewController.appConfiguration.walletConnector,
-            loadingControlller: rootViewController.appConfiguration.loadingController,
-            bannerController: rootViewController.appConfiguration.bannerController
-        )
         
         switch screen {
         case let .welcome(flow):
@@ -474,4 +522,70 @@ class Router {
         return viewController as? T
     }
     // swiftlint:enable function_body_length
+}
+
+extension Router {
+    func findVisibleScreen(
+        over screen: UIViewController? = nil
+    ) -> UIViewController {
+        let topmostPresentedScreen =
+            findVisibleScreen(
+                presentedBy: screen ?? rootViewController
+            )
+
+        return findVisibleScreen(
+            in: topmostPresentedScreen
+        )
+    }
+
+    func findVisibleScreen(
+        presentedBy screen: UIViewController
+    ) -> UIViewController {
+        var topmostPresentedScreen = screen
+
+        while let nextPresentedScreen = topmostPresentedScreen.presentedViewController {
+            topmostPresentedScreen = nextPresentedScreen
+        }
+        return topmostPresentedScreen
+    }
+
+    func findVisibleScreen(
+        in screen: UIViewController
+    ) -> UIViewController {
+        switch screen {
+        case let navigationContainer as UINavigationController:
+            return findVisibleScreen(
+                in: navigationContainer
+            )
+        case let tabbedContainer as TabbedContainer:
+            return findVisibleScreen(
+                in: tabbedContainer
+            )
+        default:
+            return screen
+        }
+    }
+
+    func findVisibleScreen(
+        in navigationContainer: UINavigationController
+    ) -> UIViewController {
+        return navigationContainer.viewControllers.last ?? navigationContainer
+    }
+
+    func findVisibleScreen(
+        in tabbedContainer: TabbedContainer
+    ) -> UIViewController {
+        guard let selectedScreen = tabbedContainer.selectedScreen else {
+            return tabbedContainer
+        }
+
+        switch selectedScreen {
+        case let navigationContainer as UINavigationController:
+            return findVisibleScreen(
+                in: navigationContainer
+            )
+        default:
+            return selectedScreen
+        }
+    }
 }

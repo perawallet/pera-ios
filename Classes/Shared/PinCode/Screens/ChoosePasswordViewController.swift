@@ -127,11 +127,10 @@ extension ChoosePasswordViewController {
         setupRouteFromNotification()
 
         DispatchQueue.main.async {
-            UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
-        }
-
-        dismiss(animated: false) {
-            UIApplication.shared.rootViewController()?.setupTabBarController()
+            [weak self] in
+            guard let self = self else { return }
+            self.launchMainAfterAuthorization(presented: self)
+//            UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
         }
     }
     
@@ -345,7 +344,7 @@ extension ChoosePasswordViewController {
 extension ChoosePasswordViewController: PinLimitViewControllerDelegate {
     func pinLimitViewControllerDidResetAllData(_ pinLimitViewController: PinLimitViewController) {
         UIApplication.shared.rootViewController()?.deleteAllData()
-        open(.welcome(flow: .initializeAccount(mode: .none)), by: .launch, animated: false)
+        launchOnboarding()
     }
 }
 

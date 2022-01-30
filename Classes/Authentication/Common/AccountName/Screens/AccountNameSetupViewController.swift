@@ -120,9 +120,10 @@ extension AccountNameSetupViewController {
             let user = User(accounts: [account])
             session?.authenticatedUser = user
             
-            dismiss(animated: false) {
-                UIApplication.shared.rootViewController()?.setupTabBarController()
-            }
+            launchMain()
+//            dismiss(animated: false) {
+//                UIApplication.shared.rootViewController()?.setupTabBarController()
+//            }
         }
     }
 }

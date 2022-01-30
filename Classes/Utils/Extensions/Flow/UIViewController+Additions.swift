@@ -19,22 +19,6 @@ import UIKit
 import SafariServices
 
 extension UIViewController {
-    var topMostController: UIViewController? {
-        if let controller = self as? UINavigationController {
-            return controller.topViewController?.topMostController
-        }
-        if let controller = self as? UISplitViewController {
-            return controller.viewControllers.last?.topMostController
-        }
-        if let controller = self as? TabBarController {
-            return controller.selectedScreen?.topMostController
-        }
-        if let controller = presentedViewController {
-            return controller.topMostController
-        }
-        return self
-    }
-    
     func displaySimpleAlertWith(title: String) {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "title-ok".localized, style: .default, handler: nil)

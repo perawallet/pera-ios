@@ -1,0 +1,297 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//
+//   ALGAppLaunchController.swift
+
+import Foundation
+import MacaroonApplication
+import MacaroonUtils
+import SwiftDate
+import UIKit
+
+final class ALGAppLaunchController:
+    AppLaunchController,
+    SharedDataControllerObserver {
+    var isFirstLaunch: Bool {
+        return lastActiveDate == nil
+    }
+    
+    unowned let uiHandler: AppLaunchUIHandler
+
+    private var lastActiveDate: Date?
+    
+    @Atomic(identifier: "appLaunchController.deeplink")
+    private var pendingDeeplink: Deeplink? = nil
+    
+    private let session: Session
+    private let api: ALGAPI
+    private let sharedDataController: SharedDataController
+    
+    init(
+        session: Session,
+        api: ALGAPI,
+        sharedDataController: SharedDataController,
+        uiHandler: AppLaunchUIHandler
+    ) {
+        self.session = session
+        self.api = api
+        self.sharedDataController = sharedDataController
+        self.uiHandler = uiHandler
+        
+        sharedDataController.add(self)
+    }
+    
+    deinit {
+        sharedDataController.remove(self)
+    }
+    
+    func launch(
+        deeplink: Deeplink?
+    ) {
+        prepareForLaunch()
+        
+        if !session.hasAuthentication() {
+            /// <note>
+            /// App is deleted, but the keychain has the private keys.
+            session.reset(includingContacts: false)
+            uiHandler.launchUI(.onboarding)
+
+            return
+        }
+        
+        if let deeplink = deeplink {
+            suspend(deeplink: deeplink)
+        }
+        
+        if !session.hasPassword() {
+            launchMain()
+            return
+        }
+        
+        uiHandler.launchUI(.authorization)
+    }
+    
+    func launchOnboarding() {
+        cancelPendingDeeplink()
+        uiHandler.launchUI(.onboarding)
+    }
+    
+    func launchMain() {
+        uiHandler.launchUI(.main)
+        sharedDataController.startPolling()
+    }
+    
+    func launchMainAfterAuthorization(
+        presented viewController: UIViewController
+    ) {
+        let completion: () -> Void = {
+            [weak self] in
+            guard let self = self else { return }
+            
+            /// <note>
+            /// If the main is launched for the first time, let's wait for the accounts before
+            /// doing anything with the pending deeplink.
+            if self.isFirstLaunch {
+                return
+            }
+
+            self.resumePendingDeeplink()
+        }
+        uiHandler.launchUI(
+            .mainAfterAuthorization(presented: viewController, completion: completion)
+        )
+        
+        sharedDataController.startPolling()
+    }
+    
+    /// <warning>
+    /// System alerts, like permissions, causes the application to become inactive. Therefore, when
+    /// they are dismissed, the application becomes active and this method will be called. Think
+    /// twice when the `inactiveSessionExpirationDuration` is reduced.
+    func becomeActive() {
+        defer {
+            lastActiveDate = nil
+        }
+        
+        if isFirstLaunch {
+            return
+        }
+        
+        if !session.hasAuthentication() {
+            cancelPendingDeeplink()
+            return
+        }
+
+        if !session.hasPassword() {
+            resumePendingDeeplink()
+            sharedDataController.startPolling()
+
+            return
+        }
+        
+        if !hasSessionExpired() {
+            resumePendingDeeplink()
+            sharedDataController.startPolling()
+
+            return
+        }
+        
+        uiHandler.launchUI(.authorization)
+    }
+    
+    func resignActive() {
+        sharedDataController.stopPolling()
+        lastActiveDate = Date()
+    }
+    
+    func receive(
+        deeplink: Deeplink
+    ) {
+        switch UIApplication.shared.applicationState {
+        case .active: resume(deeplink: deeplink)
+        default: suspend(deeplink: deeplink)
+        }
+    }
+}
+
+extension ALGAppLaunchController {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        switch event {
+        case .didFinishRunning: resumePendingDeeplink()
+        default: break
+        }
+    }
+}
+
+extension ALGAppLaunchController {
+    private func prepareForLaunch() {
+        /// <todo>
+        /// Authenticated user is decoded everytime its getter is called.
+        let authenticatedUser = session.authenticatedUser
+        
+        setupPreferredNetwork(authenticatedUser)
+        setupAccountsPreordering(authenticatedUser)
+    }
+}
+
+extension ALGAppLaunchController {
+    private func setupPreferredNetwork(
+        _ authenticatedUser: User?
+    ) {
+        if let preferredNetwork = authenticatedUser?.preferredAlgorandNetwork() {
+            setup(network: preferredNetwork)
+        } else {
+            setupTargetNetwork()
+        }
+    }
+    
+    private func setupTargetNetwork() {
+        let network: ALGAPI.Network = Environment.current.isTestNet ? .testnet : .mainnet
+        setup(network: network)
+    }
+    
+    private func setup(
+        network: ALGAPI.Network
+    ) {
+        api.cancelEndpoints()
+        api.setupNetworkBase(network)
+    }
+}
+
+extension ALGAppLaunchController {
+    /// <todo>
+    /// Another way? It will be called everytime the application is launched.
+    private func setupAccountsPreordering(
+        _ authenticatedUser: User?
+    ) {
+        var index = 0
+
+        var watchIndex = 0
+        let watchOffset = 100000
+        
+        
+        authenticatedUser?.accounts.forEach { account in
+            if account.type == .watch {
+                if !account.isOrderred {
+                    account.preferredOrder = watchOffset + watchIndex
+                }
+                
+                watchIndex += 1
+            } else {
+                if !account.isOrderred {
+                    account.preferredOrder = index
+                }
+                
+                index += 1
+            }
+        }
+    }
+}
+
+extension ALGAppLaunchController {
+    private func hasSessionExpired() -> Bool {
+        guard let lastActiveDate = lastActiveDate else {
+            return false
+        }
+        
+        let expireDate = lastActiveDate + inactiveSessionExpirationDuration
+        return Date.now().isAfterDate(
+            expireDate,
+            granularity: .second
+        )
+    }
+}
+
+extension ALGAppLaunchController {
+    private func resume(
+        deeplink: Deeplink
+    ) {
+        switch deeplink {
+        case .remoteNotification(let userInfo): resume(remoteNotification: userInfo)
+        case .url(let url): resume(url: url)
+        }
+    }
+    
+    private func resume(
+        remoteNotification userInfo: Deeplink.UserInfo
+    ) {
+        
+    }
+    
+    private func resume(
+        url: URL
+    ) {
+        
+    }
+    
+    private func suspend(
+        deeplink: Deeplink
+    ) {
+        $pendingDeeplink.modify { $0 = deeplink }
+    }
+    
+    private func resumePendingDeeplink() {
+        if let pendingDeeplink = pendingDeeplink {
+            resume(deeplink: pendingDeeplink)
+        }
+    }
+    
+    private func cancelPendingDeeplink() {
+        $pendingDeeplink.modify { $0 = nil }
+    }
+}
