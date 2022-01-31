@@ -129,5 +129,6 @@ extension WCSingleTransactionRequestBottomView {
         warningLabel.text = viewModel?.warningMessage
         warningIcon.isHidden = viewModel?.warningMessage.isNilOrEmpty ?? true
         assetIcon.image = viewModel?.assetIcon
+        assetAmountLabel.text = viewModel?.balance
     }
 }
