@@ -143,8 +143,6 @@ extension NewSendTransactionPreviewView: ViewModelBindable {
                     transactionViewModel: TransactionCurrencyAmountViewModel(amountViewMode)
                 )
             )
-
-            /// <todo> Add currency conversion for amount
         }
 
         userView.bindData(
@@ -169,8 +167,6 @@ extension NewSendTransactionPreviewView: ViewModelBindable {
                     transactionViewModel: TransactionCurrencyAmountViewModel(balanceViewMode)
                 )
             )
-
-            /// <todo> Add currency conversion for balance
         }
 
         noteView.bindData(

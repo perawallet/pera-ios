@@ -20,7 +20,7 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class SendTransactionPreviewViewModel {
+final class SendTransactionPreviewViewModel: ViewModel {
     private(set) var amountViewMode: TransactionAmountView.Mode?
     private(set) var userView: TitledTransactionAccountNameViewModel?
     private(set) var opponentView: TitledTransactionAccountNameViewModel?
