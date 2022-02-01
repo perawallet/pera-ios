@@ -170,8 +170,8 @@ extension ManageAssetsViewController:
         
         if let assetAmount = account.amount(for: assetDetail),
            assetAmount != 0 {
-            /// <todo> Implement forced max transaction
-            let draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(assetDetail))
+            var draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(assetDetail))
+            draft.amount = assetAmount
             open(
                 .sendTransaction(draft: draft),
                 by: .push
@@ -183,16 +183,16 @@ extension ManageAssetsViewController:
     }
     
     private func removeAssetFromAccount(_ assetDetail: AssetInformation) {
-        guard let creator = assetDetail.creator?.address else {
+        guard let creator = assetDetail.creator else {
             return
         }
 
         let assetTransactionDraft = AssetTransactionSendDraft(
             from: account,
-            toAccount: creator,
+            toAccount: Account(address: creator.address, type: .standard),
             amount: 0,
             assetIndex: assetDetail.id,
-            assetCreator: creator
+            assetCreator: creator.address
         )
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)

@@ -32,6 +32,11 @@ final class AuthAccountNameViewModel: PairedViewModel {
 
 extension AuthAccountNameViewModel {
     private func bindAddress(_ account: Account) {
+        guard account.name == nil else {
+            address = account.name
+            return
+        }
+        
         address = account.authAddress.unwrap(or: account.address).shortAddressDisplay()
     }
 

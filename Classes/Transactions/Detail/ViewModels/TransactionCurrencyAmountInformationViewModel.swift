@@ -13,27 +13,24 @@
 // limitations under the License.
 
 //
-//  RekeyTransactionSendDraft.swift
+//   TransactionCurrencyAmountInformationViewModel.swift
 
 import Foundation
+import MacaroonUIKit
 
-struct RekeyTransactionSendDraft: TransactionSendDraft {
-    var from: Account
-    var toAccount: Account?
-    var amount: Decimal?
-    var fee: UInt64?
-    var isMaxTransaction = false
-    var identifier: String?
-    var note: String?
+final class TransactionCurrencyAmountInformationViewModel: ViewModel {
+    private(set) var title: String?
+    private(set) var transactionViewModel: TransactionCurrencyAmountViewModel?
 
-    var toContact: Contact?
-    
-    init(account: Account, rekeyedTo: String) {
-        self.from = account
-        toAccount = Account(address: rekeyedTo, type: .rekeyed)
-        amount = nil
-        fee = nil
-        isMaxTransaction = false
-        identifier = nil
+    init(transactionViewModel: TransactionCurrencyAmountViewModel) {
+        self.transactionViewModel = transactionViewModel
+    }
+
+    init(title: String?) {
+        self.title = title
+    }
+
+    func setTitle(_ title: String?) {
+        self.title = title
     }
 }

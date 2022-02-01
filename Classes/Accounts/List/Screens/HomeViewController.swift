@@ -51,6 +51,7 @@ final class HomeViewController:
     /// <todo>: Refactor
     /// This is needed for ChoosePasswordViewControllerDelegate's method.
     private var selectedAccountHandle: AccountHandle? = nil
+    private var sendTransactionDraft: SendTransactionDraft?
     
     init(
         dataController: HomeDataController,
@@ -416,7 +417,20 @@ extension HomeViewController: QRScannerViewControllerDelegate {
                       return
                   }
 
-            /// <todo> open send screen
+            let toAccount = Account(address: address, type: .standard)
+
+            var draft = SendTransactionDraft(from: toAccount, transactionMode: .algo)
+            draft.amount = amount.toAlgos
+
+            self.sendTransactionDraft = draft
+
+            let controller = open(
+                .accountSelection(transactionAction: .send),
+                by: .present
+            )
+            (controller as? SelectAccountViewController)?.delegate = self
+
+            return
         case .assetRequest:
             guard let address = qrText.address,
                   let amount = qrText.amount,
@@ -451,7 +465,21 @@ extension HomeViewController: QRScannerViewControllerDelegate {
                 return
             }
 
-            /// <todo> open send screen
+
+
+            let toAccount = Account(address: address, type: .standard)
+            var draft = SendTransactionDraft(from: toAccount, transactionMode: .assetDetail(assetDetail))
+            draft.amount = Decimal(amount)
+
+            self.sendTransactionDraft = draft
+
+            let controller = open(
+                .accountSelection(transactionAction: .send),
+                by: .present
+            )
+            (controller as? SelectAccountViewController)?.delegate = self
+
+            return
         case .mnemonic:
             break
         }
@@ -585,6 +613,27 @@ extension HomeViewController {
             }
         default: break
         }
+    }
+}
+
+extension HomeViewController: SelectAccountViewControllerDelegate {
+    func selectAccountViewController(
+        _ selectAccountViewController: SelectAccountViewController,
+        didSelect account: Account,
+        for transactionAction: TransactionAction
+    ) {
+        guard transactionAction == .send, let draft = sendTransactionDraft else {
+            return
+        }
+
+        let transactionDraft = SendTransactionDraft(
+            from: account,
+            toAccount: draft.from,
+            amount: draft.amount,
+            transactionMode: draft.transactionMode
+        )
+
+        selectAccountViewController.open(.sendTransaction(draft: transactionDraft), by: .push)
     }
 }
 

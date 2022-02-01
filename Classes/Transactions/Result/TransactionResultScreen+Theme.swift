@@ -22,14 +22,21 @@ import MacaroonUIKit
 extension TransactionResultScreen {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
+        let successIcon: ImageStyle
         let titleLabel: TextStyle
         let subtitleLabel: TextStyle
+        let successIconSize: LayoutSize
+        let successIconCenterYInset: LayoutMetric
         let subtitleTopOffset: LayoutMetric
+        let titleTopOffset: LayoutMetric
         let titleLeadingInset: LayoutMetric
         let subtitleLeadingInset: LayoutMetric
 
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
+            successIcon = [
+                .image("icon-approval-check")
+            ]
             titleLabel = [
                 .textColor(AppColors.Components.Text.main),
                 .font(Fonts.DMSans.medium.make(19)),
@@ -42,6 +49,9 @@ extension TransactionResultScreen {
                 .textAlignment(.center),
                 .textOverflow(SingleLineFittingText())
             ]
+            successIconSize = (48, 48)
+            successIconCenterYInset = -60
+            titleTopOffset = 36
             subtitleTopOffset = 12
             titleLeadingInset = 24
             subtitleLeadingInset = 24

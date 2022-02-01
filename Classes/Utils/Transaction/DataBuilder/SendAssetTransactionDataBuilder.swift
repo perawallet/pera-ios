@@ -27,20 +27,32 @@ class SendAssetTransactionDataBuilder: TransactionDataBuilder {
         guard let params = params,
               let assetTransactionDraft = draft as? AssetTransactionSendDraft,
               let assetIndex = assetTransactionDraft.assetIndex,
-              let amountDecimalValue = assetTransactionDraft.amount,
-              let toAddress = assetTransactionDraft.toAccount else {
+              let amountDecimalValue = assetTransactionDraft.amount else {
             delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
             return nil
         }
 
-        if !isValidAddress(toAddress.trimmed) {
+
+        let address: String
+
+        if let account = assetTransactionDraft.toAccount {
+            address = account.address.trimmed
+        } else if let contact = assetTransactionDraft.toContact, let contactAddress = contact.address {
+            address = contactAddress.trimmed
+        } else {
+            delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
+            return nil
+        }
+
+        if !isValidAddress(address) {
+            delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.invalidAddress(address: address)))
             return nil
         }
 
         var transactionError: NSError?
         let draft = AssetTransactionDraft(
             from: assetTransactionDraft.from,
-            toAccount: toAddress.trimmed,
+            toAccount: address,
             transactionParams: params,
             amount: amountDecimalValue.toFraction(of: assetTransactionDraft.assetDecimalFraction),
             assetIndex: assetIndex,

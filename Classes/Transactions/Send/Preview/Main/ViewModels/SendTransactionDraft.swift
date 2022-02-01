@@ -20,7 +20,7 @@ import Foundation
 
 struct SendTransactionDraft: TransactionSendDraft {
     var from: Account
-    var toAccount: String?
+    var toAccount: Account?
     var amount: Decimal?
     var fee: UInt64?
     var isMaxTransaction: Bool {

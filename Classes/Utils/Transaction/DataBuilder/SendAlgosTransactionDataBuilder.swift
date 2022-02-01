@@ -34,8 +34,15 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
 
     private func composeAlgosTransactionData() -> Data? {
         guard let params = params,
-              let algosTransactionDraft = draft as? AlgosTransactionSendDraft,
-              let toAddress = algosTransactionDraft.toAccount else {
+              let algosTransactionDraft = draft as? AlgosTransactionSendDraft else {
+            delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
+            return nil
+        }
+
+        let toAccount = algosTransactionDraft.toAccount
+        let toContact = algosTransactionDraft.toContact
+
+        guard let address = toAccount?.address ?? toContact?.address else {
             delegate?.transactionDataBuilder(self, didFailedComposing: .inapp(TransactionError.other))
             return nil
         }
@@ -45,13 +52,13 @@ class SendAlgosTransactionDataBuilder: TransactionDataBuilder {
         self.calculatedTransactionAmount = transactionAmount
         updateMaximumTransactionStateIfNeeded(&isMaxTransaction)
 
-        if !isValidAddress(toAddress.trimmed) || transactionAmount.isBelowZero {
+        if !isValidAddress(address.trimmed) || transactionAmount.isBelowZero {
             return nil
         }
 
         let draft = AlgosTransactionDraft(
             from: algosTransactionDraft.from,
-            toAccount: toAddress.trimmed,
+            toAccount: address,
             transactionParams: params,
             amount: transactionAmount,
             isMaxTransaction: isMaxTransaction,

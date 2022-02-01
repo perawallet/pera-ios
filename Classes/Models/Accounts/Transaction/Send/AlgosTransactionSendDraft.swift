@@ -19,7 +19,7 @@ import Foundation
 
 struct AlgosTransactionSendDraft: TransactionSendDraft {
     var from: Account
-    var toAccount: String?
+    var toAccount: Account?
     var amount: Decimal?
     var fee: UInt64?
     var isMaxTransaction = false

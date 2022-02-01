@@ -63,6 +63,17 @@ final class SendTransactionScreen: BaseViewController {
     init(draft: SendTransactionDraft, configuration: ViewControllerConfiguration) {
         self.draft = draft
         super.init(configuration: configuration)
+
+        guard let amount = draft.amount else {
+            return
+        }
+
+        switch draft.transactionMode {
+        case .algo:
+            self.amount = amount.toNumberStringWithSeparatorForLabel ?? "0"
+        case .assetDetail(let assetDetail):
+            self.amount = amount.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals) ?? "0"
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -339,6 +350,14 @@ extension SendTransactionScreen: TransactionSignChecking {
             self.presentParticipationKeyWarningForMaxTransaction()
         case .maxAlgo:
             self.displayMaxTransactionWarning()
+        case .requiredMinAlgo:
+            let minimumAmount = calculateMininmumAmount(for: draft.from)
+
+            bannerController?.presentErrorBanner(
+                title: "asset-min-transaction-error-title".localized,
+                message: "send-algos-minimum-amount-custom-error".localized(params: minimumAmount.toAlgos.toAlgosStringForLabel ?? ""
+                )
+            )
         }
     }
 
@@ -434,6 +453,10 @@ extension SendTransactionScreen: NumpadViewDelegate {
             return .minimumAmountAlgoError
         }
 
+        if Int(draft.from.amount) - Int(decimalAmount.toMicroAlgos) - Int(minimumFee) < calculateMininmumAmount(for: draft.from) {
+            return .requiredMinAlgo
+        }
+
         if isMaxTransaction {
             if draft.from.doesAccountHasParticipationKey() {
                 return .algoParticipationKeyWarning
@@ -501,6 +524,20 @@ extension SendTransactionScreen: NumpadViewDelegate {
             by: .presentWithoutNavigationController
         )
     }
+
+    private func calculateMininmumAmount(for account: Account) -> UInt64 {
+        /// <todo> get transaction params from block
+        let params: TransactionParams? = nil
+        let feeCalculator = TransactionFeeCalculator(transactionDraft: nil, transactionData: nil, params: params)
+        let calculatedFee = params?.getProjectedTransactionFee() ?? Transaction.Constant.minimumFee
+        let minimumAmountForAccount = feeCalculator.calculateMinimumAmount(
+            for: account,
+               with: .algosTransaction,
+               calculatedFee: calculatedFee,
+               isAfterTransaction: true
+        ) - calculatedFee
+        return minimumAmountForAccount
+    }
 }
 
 extension SendTransactionScreen: EditNoteScreenDelegate {
@@ -523,5 +560,6 @@ extension SendTransactionScreen {
         case valid
         case algoParticipationKeyWarning
         case maxAlgo
+        case requiredMinAlgo
     }
 }

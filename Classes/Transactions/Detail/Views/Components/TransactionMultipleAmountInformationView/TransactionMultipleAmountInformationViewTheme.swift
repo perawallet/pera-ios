@@ -13,17 +13,18 @@
 // limitations under the License.
 
 //
-//   TransactionAmountInformationViewTheme.swift
+//   TransactionMultipleAmountInformationViewTheme.swift
 
+import Foundation
 import MacaroonUIKit
 
-struct TransactionAmountInformationViewTheme: LayoutSheet, StyleSheet {
+struct TransactionMultipleAmountInformationViewTheme: LayoutSheet, StyleSheet {
     let title: TextStyle
 
     let amountLeadingPadding: LayoutMetric
-    let transactionAmountViewTheme: TransactionAmountViewTheme
+    let verticalTransactionAmountViewTheme: VerticalTransactionAmountViewTheme
 
-    init(_ family: LayoutFamily = LayoutFamily.getCurrentLayoutFamily(), transactionAmountViewTheme: TransactionAmountViewTheme) {
+    init(_ family: LayoutFamily = LayoutFamily.getCurrentLayoutFamily(), transactionAmountViewTheme: VerticalTransactionAmountViewTheme) {
         self.title = [
             .textAlignment(.left),
             .textOverflow(FittingText()),
@@ -31,10 +32,13 @@ struct TransactionAmountInformationViewTheme: LayoutSheet, StyleSheet {
             .font(Fonts.DMSans.regular.make(15))
         ]
         self.amountLeadingPadding = 137
-        self.transactionAmountViewTheme = transactionAmountViewTheme
+        self.verticalTransactionAmountViewTheme = transactionAmountViewTheme
     }
 
     init(_ family: LayoutFamily) {
-        self.init(family, transactionAmountViewTheme: TransactionAmountViewSmallerTheme())
+        self.init(
+            family,
+            transactionAmountViewTheme: VerticalTransactionAmountViewSmallerTheme(family)
+        )
     }
 }

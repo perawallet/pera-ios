@@ -174,7 +174,7 @@ class WCAssetAdditionTransactionViewModel {
     }
 
     private func setNoteInformationViewModel(from transaction: WCTransaction) {
-        guard let note = transaction.transactionDetail?.noteRepresentation() else {
+        guard let note = transaction.transactionDetail?.noteRepresentation(), !note.isEmptyOrBlank else {
             return
         }
 

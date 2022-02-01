@@ -24,13 +24,26 @@ final class WCSingleTransactionRequestBottomViewModel {
     private(set) var networkFee: String?
     private(set) var warningMessage: String?
     private(set) var assetIcon: UIImage?
+    private(set) var balance: String?
 
-    init(transaction: WCTransaction, account: Account?) {
+    init(transaction: WCTransaction, account: Account?, assetInformation: AssetInformation?) {
         let fee = transaction.transactionDetail?.fee ?? 0
         let warningCount = transaction.transactionDetail?.warningCount ?? 0
         networkFee = "\(fee.toAlgos.toAlgosStringForLabel ?? "") ALGO"
         senderAddress = transaction.signerAccount?.name ?? transaction.signerAccount?.address
         warningMessage = warningCount > 0 ? "node-settings-warning-title".localized: nil
         assetIcon = account?.image ?? account?.accountTypeImage()
+
+        if let assetInformation = assetInformation,
+            let amount = account?.amount(for: assetInformation)?.toFractionStringForLabel(fraction: assetInformation.decimals) {
+            balance = "\(amount) \(assetInformation.unitNameRepresentation)"
+        } else {
+            guard transaction.transactionDetail?.currentAssetId == nil,
+                  let amount = account?.amount.toAlgos.toAlgosStringForLabel else {
+                      return
+            }
+
+            balance = "\(amount) ALGO"
+        }
     }
 }

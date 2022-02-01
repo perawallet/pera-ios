@@ -22,11 +22,11 @@ import MacaroonUIKit
 
 final class NewSendTransactionPreviewView: View {
     private lazy var verticalStackView = UIStackView()
-    private(set) lazy var amountView = TransactionAmountInformationView()
-    private(set) lazy var userView = TransactionTextInformationView()
-    private(set) lazy var opponentView = TransactionTextInformationView()
+    private(set) lazy var amountView = TransactionMultipleAmountInformationView()
+    private(set) lazy var userView = TitledTransactionAccountNameView()
+    private(set) lazy var opponentView = TitledTransactionAccountNameView()
     private(set) lazy var feeView = TransactionAmountInformationView()
-    private(set) lazy var balanceView = TransactionAmountInformationView()
+    private(set) lazy var balanceView = TransactionMultipleAmountInformationView()
     private(set) lazy var noteView = TransactionTextInformationView()
 
     private lazy var theme = TransactionDetailViewTheme()
@@ -75,9 +75,9 @@ extension NewSendTransactionPreviewView {
     }
 
     private func addAmountView(_ theme: TransactionDetailViewTheme) {
-        amountView.customize(TransactionAmountInformationViewTheme(transactionAmountViewTheme: TransactionAmountViewBiggerTheme()))
+        amountView.customize(theme.bigMultipleAmountInformationViewTheme)
         amountView.bindData(
-            TransactionAmountInformationViewModel(
+            TransactionCurrencyAmountInformationViewModel(
                 title: "transaction-detail-amount".localized
             )
         )
@@ -87,12 +87,7 @@ extension NewSendTransactionPreviewView {
     }
 
     private func addUserView(_ theme: TransactionDetailViewTheme) {
-        userView.customize(theme.transactionTextInformationViewCommonTheme)
-        userView.bindData(
-            TransactionTextInformationViewModel(
-                title: "title-account".localized
-            )
-        )
+        userView.customize(theme.transactionAccountInformationViewCommonTheme)
 
         verticalStackView.addArrangedSubview(userView)
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: amountView)
@@ -100,13 +95,7 @@ extension NewSendTransactionPreviewView {
     }
 
     private func addOpponentView(_ theme: TransactionDetailViewTheme) {
-        opponentView.customize(theme.transactionTextInformationViewCommonTheme)
-        opponentView.bindData(
-            TransactionTextInformationViewModel(
-                title: "transaction-detail-to".localized
-            )
-        )
-
+        opponentView.customize(theme.transactionAccountInformationViewCommonTheme)
         verticalStackView.addArrangedSubview(opponentView)
     }
 
@@ -124,10 +113,10 @@ extension NewSendTransactionPreviewView {
     }
 
     private func addBalanceView(_ theme: TransactionDetailViewTheme) {
-        balanceView.customize(theme.commonTransactionAmountInformationViewTheme)
+        balanceView.customize(theme.smallMultipleAmountInformationViewTheme)
         balanceView.bindData(
-            TransactionAmountInformationViewModel(
-                title: "title-account-balance".localized
+            TransactionCurrencyAmountInformationViewModel(
+                title: "send-transaction-preview-current-balance".localized
             )
         )
 
@@ -150,20 +139,18 @@ extension NewSendTransactionPreviewView: ViewModelBindable {
     func bindData(_ viewModel: SendTransactionPreviewViewModel?) {
         if let amountViewMode = viewModel?.amountViewMode {
             amountView.bindData(
-                TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(amountViewMode)
+                TransactionCurrencyAmountInformationViewModel(
+                    transactionViewModel: TransactionCurrencyAmountViewModel(amountViewMode)
                 )
             )
-
-            /// <todo> Add currency conversion for amount
         }
 
         userView.bindData(
-            TransactionTextInformationViewModel(detail: viewModel?.userViewDetail)
+            viewModel?.userView
         )
 
         opponentView.bindData(
-            TransactionTextInformationViewModel(detail: viewModel?.opponentViewAddress)
+            viewModel?.opponentView
         )
 
         if let feeViewMode = viewModel?.feeViewMode {
@@ -176,12 +163,10 @@ extension NewSendTransactionPreviewView: ViewModelBindable {
 
         if let balanceViewMode = viewModel?.balanceViewMode {
             balanceView.bindData(
-                TransactionAmountInformationViewModel(
-                    transactionViewModel: TransactionAmountViewModel(balanceViewMode)
+                TransactionCurrencyAmountInformationViewModel(
+                    transactionViewModel: TransactionCurrencyAmountViewModel(balanceViewMode)
                 )
             )
-
-            /// <todo> Add currency conversion for balance
         }
 
         noteView.bindData(

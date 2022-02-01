@@ -34,7 +34,7 @@ class RekeyTransactionDataBuilder: TransactionDataBuilder {
         var transactionError: NSError?
         let rekeyTransactionDraft = RekeyTransactionDraft(
             from: rekeyTransactionSendDraft.from,
-            rekeyedAccount: rekeyedAccount,
+            rekeyedAccount: rekeyedAccount.address,
             transactionParams: params
         )
 

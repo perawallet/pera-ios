@@ -49,10 +49,19 @@ final class WCSingleTransactionRequestScreen:
             account = nil
         }
 
+        let assetInformation: AssetInformation?
+
+        if let assetId = transaction.transactionDetail?.currentAssetId, let asset = sharedDataController.assetDetailCollection[assetId] {
+            assetInformation = asset
+        } else {
+            assetInformation = nil
+        }
+
         return WCSingleTransactionRequestViewModel(
             transaction: transaction,
             account: account,
-            currency: sharedDataController.currency.value
+            currency: sharedDataController.currency.value,
+            assetInformation: assetInformation
         )
     }()
 

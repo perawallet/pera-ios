@@ -129,7 +129,7 @@ final class AccountSelectScreen: BaseViewController {
             if let contact = draft.toContact {
                 receiverAddress = contact.address
             } else {
-                receiverAddress = draft.toAccount
+                receiverAddress = draft.toAccount?.address
             }
 
             guard var receiverAddress = receiverAddress else {
@@ -196,7 +196,7 @@ final class AccountSelectScreen: BaseViewController {
     private func routeForAssetTransaction() {
         if let contact = draft.toContact, let contactAddress = contact.address {
             checkIfAddressIsValidForTransaction(contactAddress)
-        } else if let address = draft.toAccount {
+        } else if let address = draft.toAccount?.address {
             checkIfAddressIsValidForTransaction(address)
         }
     }
@@ -307,11 +307,9 @@ final class AccountSelectScreen: BaseViewController {
 
 
     private func composeAlgosTransactionData() {
-        let toAccountAddress = draft.toContact?.address ?? draft.toAccount
-
         var transactionDraft = AlgosTransactionSendDraft(
             from: draft.from,
-            toAccount: toAccountAddress,
+            toAccount: draft.toAccount,
             amount: draft.amount,
             fee: nil,
             isMaxTransaction: draft.isMaxTransaction,
@@ -320,6 +318,7 @@ final class AccountSelectScreen: BaseViewController {
         )
         transactionDraft.toContact = draft.toContact
 
+        transactionController.delegate = self
         transactionController.setTransactionDraft(transactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .algosTransaction)
 
@@ -334,11 +333,9 @@ final class AccountSelectScreen: BaseViewController {
             return
         }
 
-        let toAccountAddress = draft.toContact?.address ?? draft.toAccount
-
         var transactionDraft = AssetTransactionSendDraft(
             from: draft.from,
-            toAccount: toAccountAddress,
+            toAccount: draft.toAccount,
             amount: draft.amount,
             assetIndex: assetDetail.id,
             assetDecimalFraction: assetDetail.decimals,
@@ -348,6 +345,7 @@ final class AccountSelectScreen: BaseViewController {
         transactionDraft.toContact = draft.toContact
         transactionDraft.assetDetail = assetDetail
 
+        transactionController.delegate = self
         transactionController.setTransactionDraft(transactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
 
@@ -395,6 +393,10 @@ extension AccountSelectScreen: TransactionControllerDelegate {
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
         loadingController?.stopLoading()
+
+        guard let draft = draft else {
+            return
+        }
 
         open(
             .sendTransactionPreview(draft: draft, transactionController: transactionController),
@@ -469,7 +471,7 @@ extension AccountSelectScreen {
                   return
         }
 
-        draft.toAccount = address
+        draft.toAccount = Account(address: address, type: .standard)
         draft.toContact = nil
 
         routePreviewScreen()
@@ -492,7 +494,7 @@ extension AccountSelectScreen: UICollectionViewDelegateFlowLayout {
             draft.toContact = contact
             draft.toAccount = nil
         } else if let account = dataSource.item(at: indexPath) as? AccountHandle {
-            draft.toAccount = account.value.address
+            draft.toAccount = account.value
             draft.toContact = nil
         } else {
             return
@@ -601,7 +603,7 @@ extension AccountSelectScreen: AccountSelectScreenDataSourceDelegate {
 
 extension AccountSelectScreen {
     var isClosingToSameAccount: Bool {
-        if let receiverAddress = draft.toAccount {
+        if let receiverAddress = draft.toAccount?.address {
             return draft.isMaxTransaction && receiverAddress == draft.from.address
         }
 

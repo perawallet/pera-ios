@@ -13,27 +13,12 @@
 // limitations under the License.
 
 //
-//  RekeyTransactionSendDraft.swift
+//   VerticalTransactionAmountViewTheme.swift
 
 import Foundation
+import MacaroonUIKit
 
-struct RekeyTransactionSendDraft: TransactionSendDraft {
-    var from: Account
-    var toAccount: Account?
-    var amount: Decimal?
-    var fee: UInt64?
-    var isMaxTransaction = false
-    var identifier: String?
-    var note: String?
-
-    var toContact: Contact?
-    
-    init(account: Account, rekeyedTo: String) {
-        self.from = account
-        toAccount = Account(address: rekeyedTo, type: .rekeyed)
-        amount = nil
-        fee = nil
-        isMaxTransaction = false
-        identifier = nil
-    }
+protocol VerticalTransactionAmountViewTheme: LayoutSheet, StyleSheet {
+    var amountLabel: TextStyle { get }
+    var usdLabel: TextStyle { get }
 }

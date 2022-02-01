@@ -20,53 +20,78 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class SendTransactionPreviewViewModel: PairedViewModel {
+final class SendTransactionPreviewViewModel: ViewModel {
     private(set) var amountViewMode: TransactionAmountView.Mode?
-    private(set) var userViewDetail: String?
-    private(set) var opponentViewAddress: String?
+    private(set) var userView: TitledTransactionAccountNameViewModel?
+    private(set) var opponentView: TitledTransactionAccountNameViewModel?
     private(set) var feeViewMode: TransactionAmountView.Mode?
     private(set) var balanceViewMode: TransactionAmountView.Mode?
     private(set) var noteViewDetail: String?
 
-    init(_ model: TransactionSendDraft) {
+    init(_ model: TransactionSendDraft, currency: Currency?) {
         if let algoTransactionSendDraft = model as? AlgosTransactionSendDraft {
-            bindAlgoTransactionPreview(algoTransactionSendDraft)
+            bindAlgoTransactionPreview(algoTransactionSendDraft, with: currency)
         } else if let assetTransactionSendDraft = model as? AssetTransactionSendDraft {
-            bindAssetTransactionPreview(assetTransactionSendDraft)
+            bindAssetTransactionPreview(assetTransactionSendDraft, with: currency)
         }
     }
 
-    private func bindAlgoTransactionPreview(_ draft: AlgosTransactionSendDraft) {
+    private func bindAlgoTransactionPreview(_ draft: AlgosTransactionSendDraft, with currency: Currency?) {
         guard let amount = draft.amount else {
             return
         }
 
-        amountViewMode = .normal(amount: amount, isAlgos: true, fraction: algosFraction)
+        guard let currency = currency,
+              let currencyPriceValue = currency.priceValue else {
+            return
+        }
+
+        let currencyValue = amount * currencyPriceValue
+        let currencyString = currencyValue.toCurrencyStringForLabel(with: currency.id)
+
+        amountViewMode = .normal(amount: amount, isAlgos: true, fraction: algosFraction, currency: currencyString)
 
         setUserView(for: draft)
         setOpponentView(for: draft)
         setFee(for: draft)
 
-        let balance = draft.from.amount.toAlgos - amount - (draft.fee?.toAlgos ?? 0)
+        let balance = draft.from.amount.toAlgos
 
-        balanceViewMode = .normal(amount: balance, isAlgos: true, fraction: algosFraction)
+        let balanceCurrencyValue = balance * currencyPriceValue
+        let balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.id)
+
+        balanceViewMode = .normal(amount: balance, isAlgos: true, fraction: algosFraction, currency: balanceCurrencyString)
 
         setNote(for: draft)
     }
 
-    private func bindAssetTransactionPreview(_ draft: AssetTransactionSendDraft) {
+    private func bindAssetTransactionPreview(_ draft: AssetTransactionSendDraft, with currency: Currency?) {
         guard let amount = draft.amount, let assetDetail = draft.assetDetail else {
             return
         }
 
-        amountViewMode = .normal(amount: amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name)
+        guard let assetUSDValue = assetDetail.usdValue,
+              let currency = currency,
+              let currencyUSDValue = currency.usdValue else {
+            return
+        }
+
+        let currencyValue = assetUSDValue * amount * currencyUSDValue
+        let currencyString = currencyValue.toCurrencyStringForLabel(with: currency.id)
+        
+        amountViewMode = .normal(amount: amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name, currency: currencyString)
 
         setUserView(for: draft)
         setOpponentView(for: draft)
         setFee(for: draft)
 
         if let balance = draft.from.amount(for: assetDetail) {
-            balanceViewMode = .normal(amount: balance - amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name)
+
+
+            let balanceCurrencyValue = assetUSDValue * balance * currencyUSDValue
+            let balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.id)
+
+            balanceViewMode = .normal(amount: balance, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name, currency: balanceCurrencyString)
         }
 
         setNote(for: draft)
@@ -75,17 +100,35 @@ final class SendTransactionPreviewViewModel: PairedViewModel {
     private func setUserView(
         for draft: TransactionSendDraft
     ) {
-        userViewDetail = draft.from.name ?? draft.from.address
+        userView = TitledTransactionAccountNameViewModel(
+            title: "title-account".localized,
+            account: draft.from,
+            hasImage: true
+        )
     }
 
 
     private func setOpponentView(
         for draft: TransactionSendDraft
     ) {
+        let title = "transaction-detail-to".localized
+
         if let contact = draft.toContact {
-            opponentViewAddress = contact.name ?? contact.address
+            opponentView = TitledTransactionAccountNameViewModel(
+                title: title,
+                contact: contact,
+                hasImage: true
+            )
         } else {
-            opponentViewAddress = draft.toAccount
+            guard let toAccount = draft.toAccount else {
+                return
+            }
+
+            opponentView = TitledTransactionAccountNameViewModel(
+                title: title,
+                account: toAccount,
+                hasImage: toAccount.isCreated
+            )
         }
     }
 

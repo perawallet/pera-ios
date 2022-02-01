@@ -85,4 +85,11 @@ extension Currency: Equatable {
     }
 }
 
+extension Currency: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id.hashValue)
+    }
+}
+
+
 final class CurrencyList: ListEntityModel<Currency> {}

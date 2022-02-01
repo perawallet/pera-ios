@@ -22,6 +22,7 @@ import MacaroonUIKit
 
 final class TransactionResultScreen: BaseViewController {
     private lazy var theme = Theme()
+    private lazy var successIcon = UIImageView()
     private lazy var titleLabel = UILabel()
     private lazy var subtitleLabel = UILabel()
 
@@ -35,6 +36,7 @@ final class TransactionResultScreen: BaseViewController {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         titleLabel.customizeAppearance(theme.titleLabel)
         subtitleLabel.customizeAppearance(theme.subtitleLabel)
+        successIcon.customizeAppearance(theme.successIcon)
 
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
@@ -42,6 +44,7 @@ final class TransactionResultScreen: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
 
+        addSuccessIcon()
         addTitleLabel()
         addSubtitleLabel()
     }
@@ -57,7 +60,7 @@ final class TransactionResultScreen: BaseViewController {
         super.viewDidAppear(animated)
 
         // Close screen after 2 seconds
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {
                 return
             }
@@ -68,11 +71,20 @@ final class TransactionResultScreen: BaseViewController {
 }
 
 extension TransactionResultScreen {
+    private func addSuccessIcon() {
+        view.addSubview(successIcon)
+        successIcon.snp.makeConstraints {
+            $0.fitToSize(theme.successIconSize)
+            $0.centerX.equalToSuperview()
+            $0.centerY.equalToSuperview().offset(theme.successIconCenterYInset)
+        }
+    }
+
     private func addTitleLabel() {
         view.addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.titleLeadingInset)
-            $0.centerY.equalToSuperview()
+            $0.top.equalTo(successIcon.snp.bottom).offset(theme.titleTopOffset)
         }
     }
 

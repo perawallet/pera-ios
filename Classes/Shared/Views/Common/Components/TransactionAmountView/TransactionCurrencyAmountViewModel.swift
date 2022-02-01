@@ -13,18 +13,18 @@
 // limitations under the License.
 
 //
-//   TransactionAmountViewModel.swift
+//   TransactionCurrencyAmountViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct TransactionAmountViewModel:
+struct TransactionCurrencyAmountViewModel:
     PairedViewModel,
     Hashable {
-    private(set) var signLabelText: EditText?
-    private(set) var signLabelColor: UIColor?
     private(set) var amountLabelText: EditText?
     private(set) var amountLabelColor: UIColor?
+    private(set) var currencyLabelText: EditText?
 
     init(
         _ mode: TransactionAmountView.Mode
@@ -33,25 +33,17 @@ struct TransactionAmountViewModel:
     }
 }
 
-extension TransactionAmountViewModel {
+extension TransactionCurrencyAmountViewModel {
     private mutating func bindMode(
         _ mode: TransactionAmountView.Mode
     ) {
         switch mode {
-        case let .normal(amount, isAlgos, assetFraction, assetSymbol, _):
-            signLabelText = nil
-            bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol)
-            amountLabelColor = AppColors.Components.Text.main.uiColor
-        case let .positive(amount, isAlgos, assetFraction, assetSymbol, _):
-            signLabelText = "+"
-            signLabelColor = AppColors.Shared.Helpers.positive.uiColor
-            bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol)
-            amountLabelColor = AppColors.Shared.Helpers.positive.uiColor
-        case let .negative(amount, isAlgos, assetFraction, assetSymbol, _):
-            signLabelText = "-"
-            signLabelColor = AppColors.Shared.Helpers.negative.uiColor
-            bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol)
-            amountLabelColor = AppColors.Shared.Helpers.negative.uiColor
+        case let .normal(amount, isAlgos, assetFraction, assetSymbol, currency):
+            bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol, currency: currency)
+        case let .positive(amount, isAlgos, assetFraction, assetSymbol, currency):
+            bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol, currency: currency)
+        case let .negative(amount, isAlgos, assetFraction, assetSymbol, currency):
+            bindAmount(amount, with: assetFraction, isAlgos: isAlgos, assetSymbol: assetSymbol, currency: currency)
         }
     }
 
@@ -59,7 +51,8 @@ extension TransactionAmountViewModel {
         _ amount: Decimal,
         with assetFraction: Int?,
         isAlgos: Bool,
-        assetSymbol: String? = nil
+        assetSymbol: String? = nil,
+        currency: String? = nil
     ) {
         if let fraction = assetFraction {
             amountLabelText = .string(amount.toFractionStringForLabel(fraction: fraction))
@@ -74,5 +67,7 @@ extension TransactionAmountViewModel {
                 amountLabelText = .string("\(amountLabelText?.string ?? "") \(assetSymbol)")
             }
         }
+        amountLabelColor = AppColors.Components.Text.main.uiColor
+        currencyLabelText = .string(currency)
     }
 }

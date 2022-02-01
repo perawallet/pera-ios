@@ -19,7 +19,7 @@ import Foundation
 
 protocol TransactionSendDraft {
     var from: Account { get set }
-    var toAccount: String? { get set }
+    var toAccount: Account? { get set }
     var amount: Decimal? { get set }
     var fee: UInt64? { get set }
     var isMaxTransaction: Bool { get set }
