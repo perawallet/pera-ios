@@ -24,11 +24,11 @@ final class SendTransactionPreviewScreen: BaseViewController {
    private lazy var nextButton = Button()
    private lazy var theme = Theme()
 
-   private let draft: TransactionSendDraft?
+   private let draft: TransactionSendDraft
    private let transactionController: TransactionController
 
    init(
-      draft: TransactionSendDraft?,
+      draft: TransactionSendDraft,
       transactionController: TransactionController,
       configuration: ViewControllerConfiguration
    ) {
@@ -52,12 +52,8 @@ final class SendTransactionPreviewScreen: BaseViewController {
    override func bindData() {
       super.bindData()
 
-      guard let transactionDraft = draft else {
-         return
-      }
-
       transactionDetailView.bindData(
-         SendTransactionPreviewViewModel(transactionDraft, currency: sharedDataController.currency.value)
+         SendTransactionPreviewViewModel(draft, currency: sharedDataController.currency.value)
       )
    }
 
@@ -106,6 +102,30 @@ extension SendTransactionPreviewScreen: TransactionControllerDelegate {
    ) {
       loadingController?.stopLoading()
       open(.transactionResult, by: .push)
+
+      if let algoDraft = draft as? AlgosTransactionSendDraft, let amount = algoDraft.amount {
+         log(
+            TransactionEvent(
+               accountType: draft.from.type,
+               assetId: nil,
+               isMaxTransaction: draft.isMaxTransaction,
+               amount: amount.toMicroAlgos,
+               transactionId: id.identifier
+            )
+         )
+      } else if let assetDraft = draft as? AssetTransactionSendDraft,
+                  let assetId = assetDraft.assetIndex,
+                  let amount = assetDraft.amount {
+         log(
+            TransactionEvent(
+               accountType: draft.from.type,
+               assetId: String(assetId),
+               isMaxTransaction: draft.isMaxTransaction,
+               amount: amount.toFraction(of: assetDraft.assetDecimalFraction),
+               transactionId: id.identifier
+            )
+         )
+      }
    }
    
    func transactionController(

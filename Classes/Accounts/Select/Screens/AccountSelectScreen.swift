@@ -394,6 +394,10 @@ extension AccountSelectScreen: TransactionControllerDelegate {
     ) {
         loadingController?.stopLoading()
 
+        guard let draft = draft else {
+            return
+        }
+
         open(
             .sendTransactionPreview(draft: draft, transactionController: transactionController),
             by: .push
