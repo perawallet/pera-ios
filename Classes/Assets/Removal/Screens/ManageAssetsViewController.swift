@@ -170,8 +170,8 @@ extension ManageAssetsViewController:
         
         if let assetAmount = account.amount(for: assetDetail),
            assetAmount != 0 {
-            /// <todo> Implement forced max transaction
-            let draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(assetDetail))
+            var draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(assetDetail))
+            draft.amount = assetAmount
             open(
                 .sendTransaction(draft: draft),
                 by: .push

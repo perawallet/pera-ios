@@ -259,13 +259,28 @@ extension ContactDetailViewController: EditContactViewControllerDelegate {
 extension ContactDetailViewController: AccountListViewControllerDelegate {
     func accountListViewController(_ viewController: AccountListViewController, didSelectAccount account: AccountHandle) {
         viewController.dismissScreen()
+
+        var transactionDraft: SendTransactionDraft
         
         if let assetDetail = selectedAsset {
-            selectedAsset = nil
-            /// <todo> open send asset
+            transactionDraft = SendTransactionDraft(
+                from: account.value,
+                transactionMode: .assetDetail(assetDetail)
+            )
         } else {
-            /// <todo> open send asset
+            transactionDraft = SendTransactionDraft(
+                from: account.value,
+                transactionMode: .algo
+            )
         }
+
+        transactionDraft.toContact = contact
+
+        let controller = open(.sendTransaction(draft: transactionDraft), by: .present) as? SendTransactionScreen
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            controller?.closeScreen(by: .dismiss, animated: true)
+        }
+        controller?.leftBarButtonItems = [closeBarButtonItem]
     }
 
     func accountListViewControllerDidCancelScreen(_ viewController: AccountListViewController) {

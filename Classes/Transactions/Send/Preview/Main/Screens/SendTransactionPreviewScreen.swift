@@ -100,12 +100,18 @@ extension SendTransactionPreviewScreen {
 }
 
 extension SendTransactionPreviewScreen: TransactionControllerDelegate {
-   func transactionController(_ transactionController: TransactionController, didCompletedTransaction id: TransactionID) {
+   func transactionController(
+      _ transactionController: TransactionController,
+      didCompletedTransaction id: TransactionID
+   ) {
       loadingController?.stopLoading()
       open(.transactionResult, by: .push)
    }
    
-   func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
+   func transactionController(
+      _ transactionController: TransactionController,
+      didFailedTransaction error: HIPTransactionError
+   ) {
       loadingController?.stopLoading()
       switch error {
       case let .network(apiError):
