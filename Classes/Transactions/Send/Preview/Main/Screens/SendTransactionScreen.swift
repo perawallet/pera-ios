@@ -43,6 +43,11 @@ final class SendTransactionScreen: BaseViewController {
     private var amount: String = "0"
     private var note: String? {
         didSet {
+            if draft.lockedNote != nil {
+                noteButton.setTitle("send-transaction-show-note-title".localized, for: .normal)
+                return
+            }
+
             if !note.isNilOrEmpty {
                 noteButton.setTitle("send-transaction-edit-note-title".localized, for: .normal)
             } else {
@@ -117,6 +122,8 @@ final class SendTransactionScreen: BaseViewController {
 
         bindAssetPreview()
         bindAmount()
+
+        self.note = draft.lockedNote
     }
 
     override func linkInteractors() {
@@ -375,8 +382,10 @@ extension SendTransactionScreen: TransactionSignChecking {
 
     @objc
     private func didTapNote() {
+        let isLocked = draft.lockedNote != nil
+        let editNote = draft.lockedNote ?? draft.note
         modalTransition.perform(
-            .editNote(note: note, delegate: self),
+            .editNote(note: editNote, isLocked: isLocked, delegate: self),
             by: .present
         )
     }

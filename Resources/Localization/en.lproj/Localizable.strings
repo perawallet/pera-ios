@@ -862,6 +862,7 @@
 "send-transaction-title" = "Send %@";
 "send-transaction-add-note-title" = "+ Add Note";
 "send-transaction-edit-note-title" = "Edit Note";
+"send-transaction-show-note-title" = "Show Note";
 "send-transaction-max-button-title" = "MAX";
 
 // MARK: EditNote
