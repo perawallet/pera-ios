@@ -21,13 +21,15 @@ import MacaroonUtils
 
 final class NotificationDetail: ALGAPIModel {
     let type: NotificationType
-    let address: String?
+    let senderAddress: String?
+    let receiverAddress: String?
     let asset: NotificationAsset?
     let amount: UInt64
     
     init() {
         self.type = .broadcast
-        self.address = nil
+        self.senderAddress = nil
+        self.receiverAddress = nil
         self.asset = nil
         self.amount = 0
     }
@@ -36,18 +38,8 @@ final class NotificationDetail: ALGAPIModel {
         from decoder: Decoder
     ) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let type =
-            try container.decodeIfPresent(NotificationType.self, forKey: .notificationType) ??
-            .broadcast
         
-        let address: String?
-        if type.isSent {
-            address = try container.decodeIfPresent(String.self, forKey: .senderAddress)
-        } else if type.isReceived {
-            address = try container.decodeIfPresent(String.self, forKey: .receiverAddress)
-        } else {
-            address = nil
-        }
+        let type = try container.decodeIfPresent(NotificationType.self, forKey: .notificationType)
         
         let amount: UInt64
         if let anAmount = try container.decodeIfPresent(UInt64.self, forKey: .amount) {
@@ -59,8 +51,9 @@ final class NotificationDetail: ALGAPIModel {
             amount = 0
         }
         
-        self.type = type
-        self.address = address
+        self.type = type ?? .broadcast
+        self.senderAddress = try container.decodeIfPresent(String.self, forKey: .senderAddress)
+        self.receiverAddress = try container.decodeIfPresent(String.self, forKey: .receiverAddress)
         self.asset = try container.decodeIfPresent(NotificationAsset.self, forKey: .asset)
         self.amount = amount
     }
@@ -70,14 +63,10 @@ final class NotificationDetail: ALGAPIModel {
     ) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(type, forKey: .notificationType)
+        try container.encodeIfPresent(senderAddress, forKey: .senderAddress)
+        try container.encodeIfPresent(receiverAddress, forKey: .receiverAddress)
         try container.encodeIfPresent(asset, forKey: .asset)
         try container.encode(amount, forKey: .amount)
-        
-        if type.isSent {
-            try container.encodeIfPresent(address, forKey: .senderAddress)
-        } else if type.isReceived {
-            try container.encodeIfPresent(address, forKey: .receiverAddress)
-        }
     }
     
     private enum CodingKeys:
@@ -104,27 +93,6 @@ enum NotificationType:
     case assetSupportRequest = "asset-support-request"
     case assetSupportSuccess = "asset-support-success"
     case broadcast = "broadcast"
-    
-    var isSent: Bool {
-        switch self {
-        case .transactionSent,
-             .assetTransactionSent:
-            return true
-        default:
-            return false
-        }
-    }
-    var isReceived: Bool {
-        switch self {
-        case .transactionReceived,
-             .assetTransactionReceived,
-             .assetSupportRequest,
-             .assetSupportSuccess:
-            return true
-        default:
-            return false
-        }
-    }
 
     init() {
         self = .broadcast

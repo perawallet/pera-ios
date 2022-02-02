@@ -80,7 +80,8 @@ class AppDelegate:
     
     private lazy var rootViewController = RootViewController(appConfiguration: appConfiguration)
 
-    private lazy var pushNotificationController = PushNotificationController(api: api, bannerController: bannerController)
+    private lazy var pushNotificationController =
+        PushNotificationController(session: session, api: api, bannerController: bannerController)
 
     private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
 
@@ -150,7 +151,8 @@ class AppDelegate:
             object: self,
             userInfo: nil
         )
-        displayInAppPushNotification(from: userInfo)
+        
+        appLaunchController.receive(deeplink: .remoteNotification(userInfo))
     }
     
     func application(
@@ -291,7 +293,7 @@ extension AppDelegate {
             return
         }
 
-        handleNotificationActions(for: accountId, with: algorandNotification.details)
+        handleNotificationActions(for: accountId, with: algorandNotification.detail)
     }
 
     private func parseAlgorandNotification(from userInfo: [AnyHashable: Any]) -> AlgorandNotification? {
@@ -306,7 +308,7 @@ extension AppDelegate {
     }
 
     private func getNotificationAccountId(from algorandNotification: AlgorandNotification) -> String? {
-        guard let accountId = algorandNotification.getAccountId() else {
+        guard let accountId = algorandNotification.accountAddress else {
             if let message = algorandNotification.alert {
                 bannerController.presentInfoBanner(message)
             }
@@ -321,20 +323,18 @@ extension AppDelegate {
             return
         }
         
-        if UIApplication.shared.applicationState == .active {
-            if let notificationtype = notificationDetail.notificationType {
-                if notificationtype == .assetSupportRequest {
-                    deepLinkRouter.openAsset(from: notificationDetail, for: accountId)
-                    return
-                }
-            }
-
-            pushNotificationController.show(with: notificationDetail) {
-                self.deepLinkRouter.openAsset(from: notificationDetail, for: accountId)
-            }
-        } else {
-            deepLinkRouter.openAsset(from: notificationDetail, for: accountId)
-        }
+//        if UIApplication.shared.applicationState == .active {
+//            if notificationDetail.type == .assetSupportRequest {
+//                deepLinkRouter.openAsset(from: notificationDetail, for: accountId)
+//                return
+//            }
+//
+//            pushNotificationController.show(with: notificationDetail) {
+//                self.deepLinkRouter.openAsset(from: notificationDetail, for: accountId)
+//            }
+//        } else {
+//            deepLinkRouter.openAsset(from: notificationDetail, for: accountId)
+//        }
     }
 
     private func shouldHandleDeepLinkRouting(from url: URL) -> Bool {

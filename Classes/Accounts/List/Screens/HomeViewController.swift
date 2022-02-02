@@ -24,7 +24,8 @@ final class HomeViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
-    private lazy var pushNotificationController = PushNotificationController(api: api!, bannerController: bannerController)
+    private lazy var pushNotificationController =
+        PushNotificationController(session: session!, api: api!, bannerController: bannerController)
     
     private let onceWhenViewDidAppear = Once()
 
@@ -45,7 +46,7 @@ final class HomeViewController:
 
     private lazy var listLayout = HomeListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = HomeListDataSource(listView)
-    
+
     private let dataController: HomeDataController
 
     /// <todo>: Refactor

@@ -19,15 +19,32 @@ import Foundation
 import MacaroonUtils
 
 final class AlgorandNotification: JSONModel {
+    var accountAddress: String? {
+        return detail.unwrap {
+            switch $0.type {
+            case .transactionSent,
+                 .assetTransactionSent:
+                return $0.senderAddress
+            case .transactionReceived,
+                 .assetTransactionReceived,
+                 .assetSupportRequest,
+                 .assetSupportSuccess:
+                return $0.receiverAddress
+            default:
+                return nil
+            }
+        }
+    }
+    
     let badge: Int?
     let alert: String?
-    let details: NotificationDetail?
+    let detail: NotificationDetail?
     let sound: String?
 
     init() {
         self.badge = nil
         self.alert = nil
-        self.details = nil
+        self.detail = nil
         self.sound = nil
     }
 }
@@ -38,7 +55,7 @@ extension AlgorandNotification {
         CodingKey {
         case badge
         case alert
-        case details = "custom"
+        case detail = "custom"
         case sound
     }
 }

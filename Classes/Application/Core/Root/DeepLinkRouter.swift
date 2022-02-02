@@ -120,23 +120,24 @@ extension DeepLinkRouter {
             return
         }
 
-        if let notificationtype = notification.notificationType,
-           let assetId = notification.asset?.id,
-           notificationtype == .assetSupportRequest {
-            openAssetSupportRequest(for: account, with: assetId)
-            return
-        } else {
-            openAssetDetail(for: account, with: getAssetDetail(from: notification, for: account))
-        }
+//        if let notificationtype = notification.notificationType,
+//           let assetId = notification.asset?.id,
+//           notificationtype == .assetSupportRequest {
+//            openAssetSupportRequest(for: account, with: assetId)
+//            return
+//        } else {
+//            openAssetDetail(for: account, with: getAssetDetail(from: notification, for: account))
+//        }
     }
 
     private func getRoute(from notification: NotificationDetail, for address: String) -> Screen {
-        if let notificationtype = notification.notificationType,
-            notificationtype == .assetSupportRequest {
-            return .assetActionConfirmationNotification(address: address, assetId: notification.asset?.id)
-        } else {
-            return .assetDetailNotification(address: address, assetId: notification.asset?.id)
-        }
+//        if let notificationtype = notification.notificationType,
+//            notificationtype == .assetSupportRequest {
+//            return .assetActionConfirmationNotification(address: address, assetId: notification.asset?.id)
+//        } else {
+//            return .assetDetailNotification(address: address, assetId: notification.asset?.id)
+//        }
+        return .passphraseVerify /// Fix build
     }
 
     private func openAssetSupportRequest(for account: Account, with assetId: Int64) {

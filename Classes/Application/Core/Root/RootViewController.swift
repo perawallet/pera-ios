@@ -31,6 +31,7 @@ class RootViewController: UIViewController {
     }
     
     private lazy var pushNotificationController = PushNotificationController(
+        session: appConfiguration.session,
         api: appConfiguration.api,
         bannerController: appConfiguration.bannerController
     )

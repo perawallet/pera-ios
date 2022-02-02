@@ -30,12 +30,8 @@ final class NodeSettingsViewController: BaseViewController {
         return api.network
     }()
     
-    private lazy var pushNotificationController: PushNotificationController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return PushNotificationController(api: api, bannerController: bannerController)
-    }()
+    private lazy var pushNotificationController =
+        PushNotificationController(session: session!, api: api!, bannerController: bannerController)
     
     override func linkInteractors() {
         nodeSettingsView.linkInteractors()

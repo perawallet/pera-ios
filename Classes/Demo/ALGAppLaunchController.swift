@@ -38,6 +38,7 @@ final class ALGAppLaunchController:
     private let session: Session
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
+    private let deeplinkParser: DeepLinkParser
     
     init(
         session: Session,
@@ -48,6 +49,7 @@ final class ALGAppLaunchController:
         self.session = session
         self.api = api
         self.sharedDataController = sharedDataController
+        self.deeplinkParser = DeepLinkParser(sharedDataController: sharedDataController)
         self.uiHandler = uiHandler
         
         sharedDataController.add(self)
@@ -270,7 +272,7 @@ extension ALGAppLaunchController {
     private func resume(
         remoteNotification userInfo: Deeplink.UserInfo
     ) {
-        
+        let deeplinkResult = deeplinkParser.discover(remoteNotification: userInfo)
     }
     
     private func resume(
