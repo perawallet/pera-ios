@@ -20,20 +20,6 @@ import MagpieCore
 
 extension ALGAPI {
     @discardableResult
-    func getAssetDetails(
-        _ draft: AssetFetchQuery,
-        onCompleted handler: @escaping (Response.ModelResult<AssetInformationList>) -> Void
-    ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
-            .base(.mobile)
-            .path(.assets)
-            .method(.get)
-            .query(draft)
-            .completionHandler(handler)
-            .execute()
-    }
-
-    @discardableResult
     func searchAssets(
         _ draft: AssetSearchQuery,
         onCompleted handler: @escaping (Response.ModelResult<AssetInformationList>) -> Void
@@ -47,8 +33,6 @@ extension ALGAPI {
             .execute()
     }
 
-    /// <todo>
-    /// Will be changed with getAssetDetails after the transition to the new api is completed.
     @discardableResult
     func fetchAssetDetails(
         _ draft: AssetFetchQuery,
