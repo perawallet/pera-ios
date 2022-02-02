@@ -66,7 +66,7 @@ extension AssetDetailInfoViewModel {
 
         let currencyValue = assetUSDValue * assetAmount * currencyUSDValue
         if currencyValue > 0 {
-            secondaryValue = currencyValue.toCurrencyStringForLabel(with: currency.id)
+            secondaryValue = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
         }
     }
 

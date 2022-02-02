@@ -144,14 +144,14 @@ class WCGroupTransactionItemViewModel {
 
             let currencyValue = assetUSDValue * amount.assetAmount(fromFraction: assetInformation.decimals) * currencyUsdValue
             if currencyValue > 0 {
-                usdValue = currencyValue.toCurrencyStringForLabel(with: currency.id)
+                usdValue = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
             }
 
             return
         }
 
         let totalAmount = amount.toAlgos * currencyPriceValue
-        usdValue = totalAmount.toCurrencyStringForLabel(with: currency.id)
+        usdValue = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
     }
 
     private func setAccountInformationViewModel(from account: Account?, with assetInformation: AssetInformation?) {

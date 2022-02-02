@@ -87,7 +87,7 @@ extension PortfolioValueViewModel {
                 value = "N/A"
             case let .value(amount):
                 if let currency = currency {
-                    value = .string(amount.toCurrencyStringForLabel(with: currency.id))
+                    value = .string(amount.toCurrencyStringForLabel(with: currency.symbol))
                 }
                 value = "N/A"
             }
@@ -97,7 +97,7 @@ extension PortfolioValueViewModel {
                 value = "N/A"
             case let .value(amount):
                 if let currency = currency {
-                    value = .string(amount.toCurrencyStringForLabel(with: currency.id))
+                    value = .string(amount.toCurrencyStringForLabel(with: currency.symbol))
                 }
                 value = "N/A"
             }

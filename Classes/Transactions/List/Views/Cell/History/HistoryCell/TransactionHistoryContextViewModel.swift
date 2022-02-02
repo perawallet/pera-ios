@@ -383,7 +383,7 @@ extension TransactionHistoryContextViewModel {
         }
 
         let totalAmount = amount * currencyPriceValue
-        return totalAmount.toCurrencyStringForLabel(with: currency.id)
+        return totalAmount.toCurrencyStringForLabel(with: currency.symbol)
     }
 
     private func getAssetCurrencyValue(
@@ -400,7 +400,7 @@ extension TransactionHistoryContextViewModel {
 
         let currencyValue = assetUSDValue * amount * currencyUSDValue
         if currencyValue > 0 {
-            return currencyValue.toCurrencyStringForLabel(with: currency.id)
+            return currencyValue.toCurrencyStringForLabel(with: currency.symbol)
         }
 
         return nil

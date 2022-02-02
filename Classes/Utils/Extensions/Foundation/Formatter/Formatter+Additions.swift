@@ -87,9 +87,12 @@ extension Formatter {
         return formatter
     }()
 
-    static func currencyFormatter(with symbol: String) -> NumberFormatter {
+    static func currencyFormatter(with symbol: String?) -> NumberFormatter {
         let formatter = NumberFormatter()
-        formatter.locale = Locale.locale(from: symbol)
+        if let symbol = symbol {
+            formatter.locale = Locale.locale(from: symbol)
+        }
+        formatter.currencySymbol = symbol ?? ""
         formatter.numberStyle = .currency
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2

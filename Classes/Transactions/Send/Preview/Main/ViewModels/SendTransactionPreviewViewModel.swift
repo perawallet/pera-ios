@@ -47,7 +47,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
         }
 
         let currencyValue = amount * currencyPriceValue
-        let currencyString = currencyValue.toCurrencyStringForLabel(with: currency.id)
+        let currencyString = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
 
         amountViewMode = .normal(amount: amount, isAlgos: true, fraction: algosFraction, currency: currencyString)
 
@@ -58,7 +58,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
         let balance = draft.from.amount.toAlgos
 
         let balanceCurrencyValue = balance * currencyPriceValue
-        let balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.id)
+        let balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
 
         balanceViewMode = .normal(amount: balance, isAlgos: true, fraction: algosFraction, currency: balanceCurrencyString)
 
@@ -77,7 +77,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
         }
 
         let currencyValue = assetUSDValue * amount * currencyUSDValue
-        let currencyString = currencyValue.toCurrencyStringForLabel(with: currency.id)
+        let currencyString = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
         
         amountViewMode = .normal(amount: amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name, currency: currencyString)
 
@@ -89,7 +89,7 @@ final class SendTransactionPreviewViewModel: ViewModel {
 
 
             let balanceCurrencyValue = assetUSDValue * balance * currencyUSDValue
-            let balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.id)
+            let balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
 
             balanceViewMode = .normal(amount: balance, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name, currency: balanceCurrencyString)
         }

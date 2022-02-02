@@ -47,7 +47,7 @@ extension AlgosDetailInfoViewModel {
         }
 
         let totalAmount = account.amount.toAlgos * currencyPriceValue
-        secondaryValue = totalAmount.toCurrencyStringForLabel(with: currency.id)
+        secondaryValue = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
     }
 
     private mutating func bindRewardsInfoViewModel(from account: Account) {

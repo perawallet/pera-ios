@@ -56,7 +56,7 @@ extension AssetViewModel {
 
         let currencyValue = assetUSDValue * asset.amount.assetAmount(fromFraction: assetDetail.decimals) * currencyUSDValue
         if currencyValue > 0 {
-            currencyAmount = currencyValue.toCurrencyStringForLabel(with: currency.id)
+            currencyAmount = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
         }
     }
 }
