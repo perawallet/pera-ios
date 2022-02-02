@@ -49,6 +49,7 @@ struct SendTransactionDraft: TransactionSendDraft {
     }
     var toContact: Contact?
     var note: String?
+    var lockedNote: String?
 
     var assetDetail: AssetInformation? {
         switch transactionMode {

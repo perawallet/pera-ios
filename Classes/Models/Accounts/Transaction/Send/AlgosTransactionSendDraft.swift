@@ -25,6 +25,7 @@ struct AlgosTransactionSendDraft: TransactionSendDraft {
     var isMaxTransaction = false
     var identifier: String?
     var note: String?
+    var lockedNote: String?
 
     var toContact: Contact?
 }

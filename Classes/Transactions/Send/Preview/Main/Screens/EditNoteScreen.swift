@@ -28,9 +28,11 @@ final class EditNoteScreen: BaseViewController {
     private lazy var editNoteView = EditNoteView()
 
     private var note: String?
+    private let isLocked: Bool
 
-    init(note: String?, configuration: ViewControllerConfiguration) {
+    init(note: String?, isLocked: Bool, configuration: ViewControllerConfiguration) {
         self.note = note
+        self.isLocked = isLocked
         super.init(configuration: configuration)
     }
 
@@ -44,6 +46,7 @@ final class EditNoteScreen: BaseViewController {
 
     override func prepareLayout() {
         editNoteView.customize(theme.editNoteViewTheme)
+
         view.addSubview(editNoteView)
         editNoteView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -52,6 +55,13 @@ final class EditNoteScreen: BaseViewController {
 
     override func bindData() {
         editNoteView.bindData(note)
+
+        if isLocked {
+            title = "send-transaction-show-note-title".localized
+
+            editNoteView.noteInputView.isUserInteractionEnabled = false
+            return
+        }
 
         if note.isNilOrEmpty {
             title = "edit-note-title".localized
@@ -62,6 +72,11 @@ final class EditNoteScreen: BaseViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
+        guard !isLocked else {
+            return
+        }
+
         editNoteView.beginEditing()
     }
 

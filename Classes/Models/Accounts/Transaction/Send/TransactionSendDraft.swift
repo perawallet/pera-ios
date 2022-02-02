@@ -25,5 +25,6 @@ protocol TransactionSendDraft {
     var isMaxTransaction: Bool { get set }
     var identifier: String? { get set }
     var note: String? { get set }
+    var lockedNote: String? { get set }
     var toContact: Contact? { get set }
 }

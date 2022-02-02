@@ -30,6 +30,7 @@ struct AssetTransactionSendDraft: TransactionSendDraft {
     var assetDecimalFraction = 0
     var isVerifiedAsset = false
     var note: String?
+    var lockedNote: String?
 
     var toContact: Contact?
     var assetDetail: AssetInformation?

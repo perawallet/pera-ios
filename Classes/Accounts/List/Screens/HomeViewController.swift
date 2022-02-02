@@ -420,6 +420,8 @@ extension HomeViewController: QRScannerViewControllerDelegate {
             let toAccount = Account(address: address, type: .standard)
 
             var draft = SendTransactionDraft(from: toAccount, transactionMode: .algo)
+            draft.note = qrText.lockedNote
+            draft.lockedNote = qrText.lockedNote
             draft.amount = amount.toAlgos
 
             self.sendTransactionDraft = draft
@@ -465,11 +467,11 @@ extension HomeViewController: QRScannerViewControllerDelegate {
                 return
             }
 
-
-
             let toAccount = Account(address: address, type: .standard)
             var draft = SendTransactionDraft(from: toAccount, transactionMode: .assetDetail(assetDetail))
             draft.amount = Decimal(amount)
+            draft.note = qrText.lockedNote
+            draft.lockedNote = qrText.lockedNote
 
             self.sendTransactionDraft = draft
 
@@ -626,12 +628,14 @@ extension HomeViewController: SelectAccountViewControllerDelegate {
             return
         }
 
-        let transactionDraft = SendTransactionDraft(
+        var transactionDraft = SendTransactionDraft(
             from: account,
             toAccount: draft.from,
             amount: draft.amount,
             transactionMode: draft.transactionMode
         )
+        transactionDraft.note = draft.lockedNote
+        transactionDraft.lockedNote = draft.lockedNote
 
         selectAccountViewController.open(.sendTransaction(draft: transactionDraft), by: .push)
     }

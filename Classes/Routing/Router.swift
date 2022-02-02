@@ -425,8 +425,8 @@ class Router {
             viewController = SelectAssetViewController(account: account, configuration: configuration)
         case .sendTransaction(let draft):
             viewController = SendTransactionScreen(draft: draft, configuration: configuration)
-        case .editNote(let note, let delegate):
-            let editNoteScreen = EditNoteScreen(note: note, configuration: configuration)
+        case .editNote(let note, let isLocked, let delegate):
+            let editNoteScreen = EditNoteScreen(note: note, isLocked: isLocked, configuration: configuration)
             editNoteScreen.delegate = delegate
             viewController = editNoteScreen
         case .portfolioCalculationInfo(let result, let eventHandler):
