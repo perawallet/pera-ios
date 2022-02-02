@@ -23,6 +23,7 @@ protocol SharedDataController: AnyObject {
     var assetDetailCollection: AssetDetailCollection { get set }
     var accountCollection: AccountCollection { get }
     var currency: CurrencyHandle { get }
+    var lastRound: BlockRound? { get }
     
     func startPolling()
     func stopPolling()

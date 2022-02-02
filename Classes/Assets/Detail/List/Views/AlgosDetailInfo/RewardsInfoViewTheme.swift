@@ -21,11 +21,9 @@ import UIKit
 
 struct RewardsInfoViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
-    let rewardsRateTitleLabel: TextStyle
-    let rewardsRateValueLabel: TextStyle
+    let rewardImage: ImageStyle
     let rewardsLabel: TextStyle
     let rewardsValueLabel: TextStyle
-    let separator: Separator
     let infoButton: ButtonStyle
 
     let containerCorner: Corner
@@ -34,33 +32,20 @@ struct RewardsInfoViewTheme: StyleSheet, LayoutSheet {
     let containerSecondShadow: MacaroonUIKit.Shadow
     let containerThirdShadow: MacaroonUIKit.Shadow
 
-    let separatorTopPadding: LayoutMetric
-    let verticalSeparatorVericalPadding: LayoutMetric
-    let rewardsRateTitleLabelTopPadding: LayoutMetric
+    let imageVerticalInset: LayoutMetric
+    let imageHorizontalInset: LayoutMetric
     let horizontalPadding: LayoutMetric
-    let rewardsRateValueLabelTopPadding: LayoutMetric
-    let descriptionLabelTopPadding: LayoutMetric
+    let rewardsValueLabelTopPadding: LayoutMetric
     let minimumHorizontalInset: LayoutMetric
     let bottomPadding: LayoutMetric
-    let verticalSeparatorLeadingPadding: LayoutMetric
     let rewardsLabelLeadingPadding: LayoutMetric
     let infoButtonSize: LayoutSize
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
-        self.separator = Separator(color: AppColors.SendTransaction.Shadow.first.uiColor, size: 1)
-        self.rewardsRateTitleLabel = [
-            .text("rewards-rate".localized),
-            .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.gray),
-            .font(Fonts.DMSans.regular.make(13)),
-        ]
-        self.rewardsRateValueLabel = [
-            .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Shared.Helpers.positive),
-            .font(Fonts.DMMono.regular.make(13)),
+        self.rewardImage = [
+            .image("icon-reward-info"),
+            .contentMode(.center)
         ]
         self.rewardsLabel = [
             .text("rewards-title".localized),
@@ -110,16 +95,13 @@ struct RewardsInfoViewTheme: StyleSheet, LayoutSheet {
             corners: .allCorners
         )
 
-        self.separatorTopPadding = -68
+        self.imageVerticalInset = 16
+        self.imageHorizontalInset = 20
         self.horizontalPadding = 16
-        self.rewardsRateValueLabelTopPadding = 4
-        self.rewardsRateTitleLabelTopPadding = 14
-        self.descriptionLabelTopPadding = 65
+        self.rewardsValueLabelTopPadding = 4
         self.minimumHorizontalInset = 4
         self.bottomPadding = 14
-        self.verticalSeparatorLeadingPadding = 26
-        self.rewardsLabelLeadingPadding = 47
+        self.rewardsLabelLeadingPadding = 16
         self.infoButtonSize = (40, 40)
-        self.verticalSeparatorVericalPadding = 1
     }
 }

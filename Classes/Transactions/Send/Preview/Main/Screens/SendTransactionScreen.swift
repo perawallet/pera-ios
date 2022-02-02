@@ -38,7 +38,8 @@ final class SendTransactionScreen: BaseViewController {
 
     private let theme = Theme()
     private var draft: SendTransactionDraft
-    
+
+    private var transactionParams: TransactionParams?
 
     private var amount: String = "0"
     private var note: String? {
@@ -79,6 +80,11 @@ final class SendTransactionScreen: BaseViewController {
         case .assetDetail(let assetDetail):
             self.amount = amount.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals) ?? "0"
         }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        getTransactionParams()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -510,8 +516,27 @@ extension SendTransactionScreen: NumpadViewDelegate {
         present(alertController, animated: true, completion: nil)
     }
 
+    private func getTransactionParams() {
+        api?.getTransactionParams { [weak self] response in
+            guard let self = self else {
+                return
+            }
+
+            switch response {
+            case let .success(params):
+                self.transactionParams = params
+            case .failure:
+                break
+            }
+        }
+    }
+
     private func displayMaxTransactionWarning() {
-        let viewModel = MaximumBalanceWarningViewModel(account: draft.from)
+        guard let transactionParams = transactionParams else {
+            return
+        }
+
+        let viewModel = MaximumBalanceWarningViewModel(draft.from, transactionParams)
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
             title: "min-balance-title".localized,
@@ -535,10 +560,8 @@ extension SendTransactionScreen: NumpadViewDelegate {
     }
 
     private func calculateMininmumAmount(for account: Account) -> UInt64 {
-        /// <todo> get transaction params from block
-        let params: TransactionParams? = nil
-        let feeCalculator = TransactionFeeCalculator(transactionDraft: nil, transactionData: nil, params: params)
-        let calculatedFee = params?.getProjectedTransactionFee() ?? Transaction.Constant.minimumFee
+        let feeCalculator = TransactionFeeCalculator(transactionDraft: nil, transactionData: nil, params: transactionParams)
+        let calculatedFee = transactionParams?.getProjectedTransactionFee() ?? Transaction.Constant.minimumFee
         let minimumAmountForAccount = feeCalculator.calculateMinimumAmount(
             for: account,
                with: .algosTransaction,

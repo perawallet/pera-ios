@@ -21,9 +21,7 @@ import MacaroonUIKit
 final class RewardsInfoView: View, TripleShadowDrawable {
     weak var delegate: RewardsInfoViewDelegate?
 
-    private lazy var rewardsRateTitleLabel = UILabel()
-    private lazy var rewardsRateValueLabel = UILabel()
-    private lazy var verticalSeparator = UIView()
+    private lazy var rewardImageView = UIImageView()
     private lazy var rewardsLabel = UILabel()
     private lazy var rewardsValueLabel = UILabel()
     private lazy var infoButton = UIButton()
@@ -45,8 +43,7 @@ final class RewardsInfoView: View, TripleShadowDrawable {
         draw(secondShadow: theme.containerSecondShadow)
         draw(thirdShadow: theme.containerThirdShadow)
 
-        addRewardsRateTitleLabel(theme)
-        addRewardsRateValueLabel(theme)
+        addRewardImageView(theme)
         addInfoButton(theme)
         addRewardsLabel(theme)
         addRewardsValueLabel(theme)
@@ -65,37 +62,14 @@ extension RewardsInfoView {
 }
 
 extension RewardsInfoView {
-    private func addRewardsRateTitleLabel(_ theme: RewardsInfoViewTheme) {
-        rewardsRateTitleLabel.customizeAppearance(theme.rewardsRateTitleLabel)
+    private func addRewardImageView(_ theme: RewardsInfoViewTheme) {
+        rewardImageView.customizeAppearance(theme.rewardImage)
 
-        addSubview(rewardsRateTitleLabel)
-        rewardsRateTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.rewardsRateTitleLabelTopPadding)
-            $0.leading.equalToSuperview().inset(theme.horizontalPadding)
-        }
-
-        addVerticalSeparator(theme)
-    }
-
-    private func addRewardsRateValueLabel(_ theme: RewardsInfoViewTheme) {
-        rewardsRateValueLabel.customizeAppearance(theme.rewardsRateValueLabel)
-
-        addSubview(rewardsRateValueLabel)
-        rewardsRateValueLabel.snp.makeConstraints {
-            $0.top.equalTo(rewardsRateTitleLabel.snp.bottom).offset(theme.rewardsRateValueLabelTopPadding)
-            $0.leading.equalTo(rewardsRateTitleLabel)
-            $0.bottom.equalToSuperview().inset(theme.bottomPadding)
-        }
-    }
-
-    private func addVerticalSeparator(_ theme: RewardsInfoViewTheme) {
-        verticalSeparator.backgroundColor = theme.separator.color.uiColor
-
-        addSubview(verticalSeparator)
-        verticalSeparator.snp.makeConstraints {
-            $0.fitToWidth(theme.separator.size)
-            $0.top.bottom.equalToSuperview().inset(theme.verticalSeparatorVericalPadding)
-            $0.leading.equalTo(rewardsRateTitleLabel.snp.trailing).offset(theme.verticalSeparatorLeadingPadding)
+        addSubview(rewardImageView)
+        rewardImageView.snp.makeConstraints {
+            $0.fitToSize(theme.infoButtonSize)
+            $0.leading.equalToSuperview().inset(theme.imageHorizontalInset)
+            $0.top.bottom.equalToSuperview().inset(theme.imageVerticalInset)
         }
     }
 
@@ -115,8 +89,8 @@ extension RewardsInfoView {
 
         addSubview(rewardsLabel)
         rewardsLabel.snp.makeConstraints {
-            $0.centerY.equalTo(rewardsRateTitleLabel)
-            $0.leading.equalTo(rewardsRateTitleLabel.snp.trailing).offset(theme.rewardsLabelLeadingPadding)
+            $0.top.equalToSuperview().inset(theme.bottomPadding)
+            $0.leading.equalTo(rewardImageView.snp.trailing).offset(theme.rewardsLabelLeadingPadding)
             $0.trailing.lessThanOrEqualTo(infoButton.snp.leading).offset(theme.minimumHorizontalInset)
         }
     }
@@ -126,7 +100,7 @@ extension RewardsInfoView {
 
         addSubview(rewardsValueLabel)
         rewardsValueLabel.snp.makeConstraints {
-            $0.top.equalTo(rewardsLabel.snp.bottom).offset(theme.rewardsRateValueLabelTopPadding)
+            $0.top.equalTo(rewardsLabel.snp.bottom).offset(theme.rewardsValueLabelTopPadding)
             $0.leading.equalTo(rewardsLabel)
             $0.trailing.lessThanOrEqualTo(infoButton.snp.leading).offset(theme.minimumHorizontalInset)
             $0.bottom.equalToSuperview().inset(theme.bottomPadding)
@@ -136,7 +110,6 @@ extension RewardsInfoView {
 
 extension RewardsInfoView: ViewModelBindable {
     func bindData(_ viewModel: RewardDetailViewModel?) {
-        rewardsRateValueLabel.text = viewModel?.rate
         rewardsValueLabel.text = viewModel?.amount
     }
 }

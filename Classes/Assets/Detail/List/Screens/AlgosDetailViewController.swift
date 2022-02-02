@@ -20,7 +20,7 @@ import UIKit
 
 final class AlgosDetailViewController: TransactionsViewController {
     override var name: AnalyticsScreenName? {
-        return .assetDetail // <todo>: Separating can be better.
+        return .assetDetail
     }
 
     var route: Screen?

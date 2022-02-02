@@ -21,7 +21,7 @@ import MagpieCore
 import MagpieHipo
 
 enum BlockEvent {
-    case willStart
+    case willStart(BlockRound?)
     case willFetchCurrency
     case didFetchCurrency(Currency)
     case didFailToFetchCurrency(HIPNetworkError<NoAPIModel>)
@@ -31,5 +31,5 @@ enum BlockEvent {
     case willFetchAssetDetails(Account)
     case didFetchAssetDetails(account: Account, assetDetails: [AssetID: AssetInformation])
     case didFailToFetchAssetDetails(account: Account, error: HIPNetworkError<NoAPIModel>)
-    case didFinish
+    case didFinish(BlockRound?)
 }

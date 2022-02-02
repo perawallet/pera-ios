@@ -56,7 +56,7 @@ extension ALGBlockProcessor {
 
     func start() {
         blockCycle.notify(queue: blockCycleNotificationQueue) {
-            [weak self] in
+            [weak self] round in
             guard let self = self else { return }
             
             if !self.canProceedOnBlock() {
@@ -64,7 +64,7 @@ extension ALGBlockProcessor {
             }
             
             let newBlockRequest = self.blockRequest()
-            self.proceed(with: newBlockRequest)
+            self.proceed(with: newBlockRequest, for: round)
         }
         blockCycle.startListening()
     }
@@ -86,9 +86,10 @@ extension ALGBlockProcessor {
     }
     
     private func proceed(
-        with newBlockRequest: ALGBlockRequest
+        with newBlockRequest: ALGBlockRequest,
+        for round: BlockRound?
     ) {        
-        publish(blockEvent: .willStart)
+        publish(blockEvent: .willStart(round))
         
         var currencyFetchOperation: Operation?
 
@@ -202,7 +203,7 @@ extension ALGBlockProcessor {
         
         queue.addBarrier { [weak self] in
             guard let self = self else { return }
-            self.publish(blockEvent: .didFinish)
+            self.publish(blockEvent: .didFinish(round))
         }
     }
 }

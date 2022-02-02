@@ -28,7 +28,7 @@ final class RewardDetailViewController: BaseViewController {
             fatalError("Api must be set before accessing reward calculator.")
         }
 
-        return RewardCalculator(api: api, account: account)
+        return RewardCalculator(api: api, account: account, sharedDataController: sharedDataController)
     }()
 
     private let account: Account
