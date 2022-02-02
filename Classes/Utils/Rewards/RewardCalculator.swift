@@ -17,7 +17,7 @@
 
 import UIKit
 
-class RewardCalculator {
+final class RewardCalculator {
 
     weak var delegate: RewardCalculatorDelegate?
 
@@ -28,16 +28,23 @@ class RewardCalculator {
     private var rewardRate: UInt64?
     private var rewardResidue: UInt64?
 
-    private var currentRound: UInt64
+    private var currentRound: BlockRound
+    private let sharedDataController: SharedDataController
 
     private let rewardsDispatchGroup = DispatchGroup()
 
-    init(api: ALGAPI, account: Account) {
+    init(api: ALGAPI, account: Account, sharedDataController: SharedDataController) {
         self.api = api
         self.account = account
+        self.sharedDataController = sharedDataController
 
-        /// <todo> Set current round from shared data controller
-        currentRound = 0
+        if let lastRound = sharedDataController.lastRound {
+            currentRound = lastRound
+        } else {
+            currentRound = 0
+        }
+
+        sharedDataController.add(self)
     }
 
     func updateAccount(_ account: Account) {
@@ -92,6 +99,26 @@ extension RewardCalculator {
     }
 }
 
+extension RewardCalculator: SharedDataControllerObserver {
+    func sharedDataController(
+        _ sharedDataController: SharedDataController,
+        didPublish event: SharedDataControllerEvent
+    ) {
+        switch event {
+        case .didFinishRunning:
+            guard let currentRound = sharedDataController.lastRound else {
+                return
+            }
+
+            self.currentRound = currentRound
+            // After each new block, get the required calculation values again and calculate pending rewards
+            calculatePendingRewards()
+        default:
+            break
+        }
+    }
+}
+
 extension RewardCalculator {
     private func calculateAndUpdatePendingRewards() {
         rewardsDispatchGroup.notify(queue: .main) { [weak self] in
@@ -117,8 +144,6 @@ extension RewardCalculator {
         return account.amountWithoutRewards.toAlgos * (Decimal(rewardResidue + rewardRate)) / totalSupply.toAlgos
     }
 }
-
-/// <todo> Get current round from shared data controller
 
 protocol RewardCalculatorDelegate: AnyObject {
     func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Decimal)

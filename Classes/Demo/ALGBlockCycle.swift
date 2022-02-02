@@ -22,8 +22,6 @@ import MagpieCore
 import MagpieHipo
 
 final class ALGBlockCycle: BlockCycle {
-    private typealias BlockRound = UInt64
-    
     private var lastRound: BlockRound?
     private var notificationQueue: DispatchQueue?
     private var notificationHandler: NotificationHandler?
@@ -165,7 +163,9 @@ extension ALGBlockCycle {
     private func sendNotification() {
         notificationQueue?.async { [weak self] in
             guard let self = self else { return }
-            self.notificationHandler?()
+            self.notificationHandler?(self.lastRound)
         }
     }
 }
+
+typealias BlockRound = UInt64

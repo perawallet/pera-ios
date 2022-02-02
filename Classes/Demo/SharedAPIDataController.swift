@@ -30,7 +30,8 @@ final class SharedAPIDataController:
 
     private(set) var accountCollection: AccountCollection = []
     private(set) var currency: CurrencyHandle = .idle
-    
+    private(set) var lastRound: BlockRound?
+
     private lazy var blockProcessor = createBlockProcessor()
     private lazy var blockProcessorEventQueue =
         DispatchQueue(label: "com.algorand.queue.blockProcessor.events")
@@ -136,8 +137,8 @@ extension SharedAPIDataController {
             guard let self = self else { return }
             
             switch event {
-            case .willStart:
-                self.blockProcessorWillStart()
+            case .willStart(let round):
+                self.blockProcessorWillStart(round)
             case .willFetchCurrency:
                 self.blockProcessorWillFetchCurrency()
             case .didFetchCurrency(let currency):
@@ -165,16 +166,19 @@ extension SharedAPIDataController {
                     error,
                     for: account
                 )
-            case .didFinish:
-                self.blockProcessorDidFinish()
+            case .didFinish(let round):
+                self.blockProcessorDidFinish(round)
             }
         }
         
         return processor
     }
     
-    private func blockProcessorWillStart() {
+    private func blockProcessorWillStart(
+        _ round: BlockRound?
+    ) {
         $status.modify { $0 = .running }
+        lastRound = round
         publishEventForCurrentStatus()
     }
     
@@ -308,10 +312,12 @@ extension SharedAPIDataController {
         publish(.didUpdateAccountCollection(updatedAccount))
     }
     
-    private func blockProcessorDidFinish() {
+    private func blockProcessorDidFinish(
+        _ round: BlockRound?
+    ) {
         isFirstPollingRoundCompleted = true
         $status.modify { $0 = .completed }
-        
+        lastRound = round
         publishEventForCurrentStatus()
     }
 }
