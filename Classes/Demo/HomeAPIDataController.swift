@@ -134,9 +134,6 @@ extension HomeAPIDataController {
                 toSection: .portfolio
             )
             
-            /// <todo>
-            /// Add announcement section
-            
             if !accounts.isEmpty {
                 let headerItem: HomeAccountItem =
                     .header(HomeAccountSectionHeaderViewModel(.standard))

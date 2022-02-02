@@ -80,7 +80,6 @@ extension RekeyConfirmationViewModel {
     }
 
     private func bindFeeValue() {
-        /// <todo> This calculation will be updated when its details are clear.
         let fee = max(UInt64(minimumFee), 0)
         feeValue = "ledger-rekey-total-fee".localized(params: "\(fee.toAlgos)")
     }
