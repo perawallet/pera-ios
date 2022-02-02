@@ -35,7 +35,15 @@ extension AssetCachable where Self: BaseViewController {
         } else {
 
             /// <todo> Change for asset details ot information
-            api.getAssetDetails(AssetFetchQuery(ids: [id])) { assetResponse in
+            api.fetchAssetDetails(
+                AssetFetchQuery(ids: [id]),
+                queue: .main,
+                ignoreResponseOnCancelled: false
+            ) { [weak self] assetResponse in
+                guard let self = self else {
+                    return
+                }
+                
                 switch assetResponse {
                 case .success(let assetDetailResponse):
                     guard let assetInformation = assetDetailResponse.results.first else {

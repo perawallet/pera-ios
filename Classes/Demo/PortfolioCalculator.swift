@@ -73,7 +73,7 @@ extension PortfolioCalculator {
 
 struct PortfolioValue {
     var formattedAmount: String {
-        return amount.toCurrencyStringForLabel(with: currency.id) ?? "N/A"
+        return amount.toCurrencyStringForLabel(with: currency.symbol) ?? "N/A"
     }
     
     let amount: Decimal

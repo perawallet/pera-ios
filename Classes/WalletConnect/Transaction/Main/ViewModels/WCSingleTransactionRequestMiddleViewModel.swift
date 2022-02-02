@@ -151,13 +151,13 @@ final class WCSingleTransactionRequestMiddleViewModel {
 
             let currencyValue = assetUSDValue * amount.assetAmount(fromFraction: assetInformation.decimals) * currencyUsdValue
             if currencyValue > 0 {
-                subtitle = currencyValue.toCurrencyStringForLabel(with: currency.id)
+                subtitle = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
             }
 
             return
         }
 
         let totalAmount = amount.toAlgos * currencyPriceValue
-        subtitle = totalAmount.toCurrencyStringForLabel(with: currency.id)
+        subtitle = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
     }
 }

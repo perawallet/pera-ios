@@ -582,7 +582,6 @@
 		2B0F625524EC129D00DA22A6 /* URL+Link.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B5C58E023AC364700B907E3 /* URL+Link.swift */; };
 		2B0F625624EC129D00DA22A6 /* PendingTransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7ABF6D2332DCDB0050B64B /* PendingTransactionCell.swift */; };
 		2B0F625724EC129D00DA22A6 /* ALGAPI+Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8A72240DFFC00A6FF9E /* ALGAPI+Account.swift */; };
-		2B0F625924EC129D00DA22A6 /* AssetRemovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9F92389F5F900491149 /* AssetRemovalViewModel.swift */; };
 		2B0F625A24EC129D00DA22A6 /* ContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B82B1C72253A4F000A8909F /* ContactCell.swift */; };
 		2B0F625B24EC129D00DA22A6 /* CSVExportable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9F064424B60ECF006880F0 /* CSVExportable.swift */; };
 		2B0F625D24EC129D00DA22A6 /* AlgorandError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD5477923192E15007179FE /* AlgorandError.swift */; };
@@ -850,7 +849,6 @@
 		2B2AACE1250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACDF250BA63D00B8C5C5 /* GeneralSettings.swift */; };
 		2B2AACE2250BA63D00B8C5C5 /* GeneralSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2AACDF250BA63D00B8C5C5 /* GeneralSettings.swift */; };
 		2B2EE87925B6E8B8006A53C5 /* AssetAdditionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE87825B6E8B8006A53C5 /* AssetAdditionViewModelTests.swift */; };
-		2B2EE88325B6E8CE006A53C5 /* AssetRemovalViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE88225B6E8CE006A53C5 /* AssetRemovalViewModelTests.swift */; };
 		2B2EE88A25B6E936006A53C5 /* AssetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE88925B6E936006A53C5 /* AssetViewModelTests.swift */; };
 		2B2EE89425B6E944006A53C5 /* AlgoAssetViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE89325B6E944006A53C5 /* AlgoAssetViewModelTests.swift */; };
 		2B2EE8B125B6F0D6006A53C5 /* RekeyConfirmationViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B2EE8B025B6F0D6006A53C5 /* RekeyConfirmationViewModelTests.swift */; };
@@ -976,8 +974,6 @@
 		2B46262E23758CF4000AE73C /* AssetDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46262C23758CF4000AE73C /* AssetDetail.swift */; };
 		2B4BD9ED2389CBC000491149 /* AssetNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9EC2389CBC000491149 /* AssetNameView.swift */; };
 		2B4BD9EE2389CBC000491149 /* AssetNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9EC2389CBC000491149 /* AssetNameView.swift */; };
-		2B4BD9FA2389F5F900491149 /* AssetRemovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9F92389F5F900491149 /* AssetRemovalViewModel.swift */; };
-		2B4BD9FB2389F5F900491149 /* AssetRemovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9F92389F5F900491149 /* AssetRemovalViewModel.swift */; };
 		2B4BD9FD238AD7F400491149 /* ALGAPI+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9FC238AD7F400491149 /* ALGAPI+Assets.swift */; };
 		2B4BD9FE238AD7F400491149 /* ALGAPI+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9FC238AD7F400491149 /* ALGAPI+Assets.swift */; };
 		2B4BDA01238AE66E00491149 /* AssetAdditionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BDA00238AE66E00491149 /* AssetAdditionViewModel.swift */; };
@@ -4001,7 +3997,6 @@
 		2B2AACDB250BA4C200B8C5C5 /* DeveloperSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeveloperSettings.swift; sourceTree = "<group>"; };
 		2B2AACDF250BA63D00B8C5C5 /* GeneralSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettings.swift; sourceTree = "<group>"; };
 		2B2EE87825B6E8B8006A53C5 /* AssetAdditionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAdditionViewModelTests.swift; sourceTree = "<group>"; };
-		2B2EE88225B6E8CE006A53C5 /* AssetRemovalViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRemovalViewModelTests.swift; sourceTree = "<group>"; };
 		2B2EE88925B6E936006A53C5 /* AssetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetViewModelTests.swift; sourceTree = "<group>"; };
 		2B2EE89325B6E944006A53C5 /* AlgoAssetViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoAssetViewModelTests.swift; sourceTree = "<group>"; };
 		2B2EE8B025B6F0D6006A53C5 /* RekeyConfirmationViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationViewModelTests.swift; sourceTree = "<group>"; };
@@ -4061,7 +4056,6 @@
 		2B46262923758CC9000AE73C /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		2B46262C23758CF4000AE73C /* AssetDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetail.swift; sourceTree = "<group>"; };
 		2B4BD9EC2389CBC000491149 /* AssetNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetNameView.swift; sourceTree = "<group>"; };
-		2B4BD9F92389F5F900491149 /* AssetRemovalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetRemovalViewModel.swift; sourceTree = "<group>"; };
 		2B4BD9FC238AD7F400491149 /* ALGAPI+Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Assets.swift"; sourceTree = "<group>"; };
 		2B4BDA00238AE66E00491149 /* AssetAdditionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAdditionViewModel.swift; sourceTree = "<group>"; };
 		2B4BDA0A238C9EDF00491149 /* AssetAlertDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAlertDraft.swift; sourceTree = "<group>"; };
@@ -5854,14 +5848,6 @@
 			path = Addition;
 			sourceTree = "<group>";
 		};
-		2B2EE87725B6E88B006A53C5 /* Removal */ = {
-			isa = PBXGroup;
-			children = (
-				2B2EE88225B6E8CE006A53C5 /* AssetRemovalViewModelTests.swift */,
-			);
-			path = Removal;
-			sourceTree = "<group>";
-		};
 		2B2EE88825B6E929006A53C5 /* List */ = {
 			isa = PBXGroup;
 			children = (
@@ -6098,7 +6084,6 @@
 			isa = PBXGroup;
 			children = (
 				2BA713392748573A00B8A907 /* Screens */,
-				2BA713382748573500B8A907 /* ViewModels */,
 				2BA713372748573100B8A907 /* Views */,
 			);
 			path = Removal;
@@ -7547,7 +7532,6 @@
 			children = (
 				2B2EE87625B6E885006A53C5 /* Addition */,
 				2B95408F25A783160098805B /* Detail */,
-				2B2EE87725B6E88B006A53C5 /* Removal */,
 			);
 			path = Assets;
 			sourceTree = "<group>";
@@ -8407,14 +8391,6 @@
 				D419005A273FBA0E00F7829D /* ManageAssetsViewTheme.swift */,
 			);
 			path = Views;
-			sourceTree = "<group>";
-		};
-		2BA713382748573500B8A907 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				2B4BD9F92389F5F900491149 /* AssetRemovalViewModel.swift */,
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		2BA713392748573A00B8A907 /* Screens */ = {
@@ -13638,7 +13614,6 @@
 				D48281BA279FF71F004412D5 /* PinLimitViewTheme.swift in Sources */,
 				2BF811DA25E6443600D6B406 /* LedgerTutorialInstructionViewModel.swift in Sources */,
 				D4F068B726EF46D700C26F43 /* TutorialNumberViewTheme.swift in Sources */,
-				2B4BD9FB2389F5F900491149 /* AssetRemovalViewModel.swift in Sources */,
 				2B28DB5E276B29A8005C5986 /* DeveloperSettingsViewController+Theme.swift in Sources */,
 				2BD5477B23192E15007179FE /* AlgorandError.swift in Sources */,
 				2B432A53237C56F0009191BF /* BaseSupplementaryView.swift in Sources */,
@@ -14848,7 +14823,6 @@
 				2BD063FA25CED2E3008BD15E /* UIViewController+Layout.swift in Sources */,
 				2BD5A68C2632FA850048FA5E /* AlgosValueResponse.swift in Sources */,
 				D41F93462722F5A300E9F2E7 /* RekeyInstructionsViewTheme.swift in Sources */,
-				2B0F625924EC129D00DA22A6 /* AssetRemovalViewModel.swift in Sources */,
 				2BE4D0832593864D005F5764 /* AnalyticsLog.swift in Sources */,
 				2B0F625A24EC129D00DA22A6 /* ContactCell.swift in Sources */,
 				2B0F625B24EC129D00DA22A6 /* CSVExportable.swift in Sources */,
@@ -16020,7 +15994,6 @@
 				2BF811D825E6443600D6B406 /* LedgerTutorialInstructionViewModel.swift in Sources */,
 				D4F068B526EF46D700C26F43 /* TutorialNumberViewTheme.swift in Sources */,
 				17B7D8A82240DFFC00A6FF9E /* ALGAPI+Account.swift in Sources */,
-				2B4BD9FA2389F5F900491149 /* AssetRemovalViewModel.swift in Sources */,
 				F09608722795E36B00CFBB90 /* SingleLineIconTitleViewTheme.swift in Sources */,
 				2B461B7626CAFF970079BF29 /* WCAccountInformationNameView.swift in Sources */,
 				2BD063E425CEC8B6008BD15E /* BottomWarningViewController.swift in Sources */,
@@ -16570,7 +16543,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B2EE88325B6E8CE006A53C5 /* AssetRemovalViewModelTests.swift in Sources */,
 				2B95418625AE62F80098805B /* AccountInformationTests.swift in Sources */,
 				2B2EE8C225B6F639006A53C5 /* LedgerAccountDetailViewModelTests.swift in Sources */,
 				2B95419525AE632B0098805B /* QRTextTests.swift in Sources */,

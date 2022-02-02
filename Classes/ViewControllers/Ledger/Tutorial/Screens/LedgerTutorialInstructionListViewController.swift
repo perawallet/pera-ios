@@ -79,7 +79,7 @@ extension LedgerTutorialInstructionListViewController: LedgerTutorialViewDelegat
     func ledgerTutorialInstructionListView(_ ledgerTutorialView: LedgerTutorialInstructionListView, didTap section: LedgerTutorialSection) {
         switch section {
         case .ledgerBluetoothConnection:
-            open(.tutorialSteps(step: .bluetoothConnection), by: .push)
+            open(.tutorialSteps(step: .bluetooth), by: .push)
         case .installApp:
             open(.tutorialSteps(step: .installApp), by: .push)
         case .openApp:

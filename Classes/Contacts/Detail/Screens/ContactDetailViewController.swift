@@ -103,10 +103,14 @@ extension ContactDetailViewController {
         let currency = sharedDataController.currency.value
 
         api?.fetchAccount(AccountFetchDraft(publicKey: address), queue: .main) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+
             switch response {
             case let .success(accountWrapper):
                 if !accountWrapper.account.isSameAccount(with: address) {
-                    self?.loadingController?.stopLoading()
+                    self.loadingController?.stopLoading()
                     UIApplication.shared.firebaseAnalytics?.record(
                         MismatchAccountErrorLog(requestedAddress: address, receivedAddress: accountWrapper.account.address)
                     )
@@ -115,52 +119,69 @@ extension ContactDetailViewController {
 
                 accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
                 let account = accountWrapper.account
-                self?.contactAccount = account
+                self.contactAccount = account
                 let assetPreviewModel = AssetPreviewModelAdapter.adapt((account, currency))
-                self?.assetPreviews.append(assetPreviewModel)
+                self.assetPreviews.append(assetPreviewModel)
                 
                 if account.isThereAnyDifferentAsset {
                     if let assets = account.assets {
-                        var failedAssetFetchCount = 0
-                        for asset in assets {
-                            self?.api?.getAssetDetails(AssetFetchQuery(ids: [asset.id])) { assetResponse in
-                                switch assetResponse {
-                                case let .success(assetDetailResponse):
-                                    let assetDetail = assetDetailResponse.results[0]
-                                    let compoundAsset = CompoundAsset(asset, assetDetail)
-                                    account.append(compoundAsset)
-                                    
-                                    let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset, currency: currency))
-                                    self?.assetPreviews.append(assetPreviewModel)
+                        var assetsToBeFetched: [AssetID] = []
 
-                                    if assets.count == account.compoundAssets.count + failedAssetFetchCount {
-                                        self?.loadingController?.stopLoading()
-                                        self?.contactAccount = account
-                                        self?.contactDetailView.assetsCollectionView.reloadData()
-                                    }
-                                case .failure:
-                                    self?.loadingController?.stopLoading()
-                                    failedAssetFetchCount += 1
+                        for asset in assets {
+                            if self.sharedDataController.assetDetailCollection[asset.id] == nil {
+                                assetsToBeFetched.append(asset.id)
+                            }
+                        }
+
+                        self.api?.fetchAssetDetails(
+                            AssetFetchQuery(ids: assetsToBeFetched),
+                            queue: .main,
+                            ignoreResponseOnCancelled: false
+                        ) { [weak self] assetResponse in
+                            guard let self = self else {
+                                return
+                            }
+
+                            switch assetResponse {
+                            case let .success(assetDetailResponse):
+                                assetDetailResponse.results.forEach {
+                                    self.sharedDataController.assetDetailCollection[$0.id] = $0
                                 }
+
+                                for asset in assets {
+                                    if let assetDetail = self.sharedDataController.assetDetailCollection[asset.id] {
+                                        let compoundAsset = CompoundAsset(asset, assetDetail)
+                                        account.append(compoundAsset)
+
+                                        let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset, currency: currency))
+                                        self.assetPreviews.append(assetPreviewModel)
+                                    }
+                                }
+
+                                self.loadingController?.stopLoading()
+                                self.contactAccount = account
+                                self.contactDetailView.assetsCollectionView.reloadData()
+                            case .failure:
+                                self.loadingController?.stopLoading()
                             }
                         }
                     } else {
-                        self?.loadingController?.stopLoading()
+                        self.loadingController?.stopLoading()
                     }
                 } else {
-                    self?.loadingController?.stopLoading()
+                    self.loadingController?.stopLoading()
                 }
             case let .failure(error, _):
                 if error.isHttpNotFound {
-                    self?.contactAccount = Account(address: address, type: .standard)
-                    self?.loadingController?.stopLoading()
+                    self.contactAccount = Account(address: address, type: .standard)
+                    self.loadingController?.stopLoading()
 
-                    guard let account = self?.contactAccount else { return }
+                    guard let account = self.contactAccount else { return }
                     let assetPreviewModel = AssetPreviewModelAdapter.adapt((account, currency))
-                    self?.assetPreviews.append(assetPreviewModel)
+                    self.assetPreviews.append(assetPreviewModel)
                 } else {
-                    self?.contactAccount = nil
-                    self?.loadingController?.stopLoading()
+                    self.contactAccount = nil
+                    self.loadingController?.stopLoading()
                 }
             }
         }

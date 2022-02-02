@@ -66,7 +66,7 @@ extension Decimal {
         return Formatter.currencyFormatter.string(from: NSDecimalNumber(decimal: self))
     }
 
-    func toCurrencyStringForLabel(with symbol: String) -> String? {
+    func toCurrencyStringForLabel(with symbol: String?) -> String? {
         return Formatter.currencyFormatter(with: symbol).string(from: NSDecimalNumber(decimal: self))
     }
 
@@ -112,7 +112,7 @@ extension Double {
         return Formatter.currencyFormatter.string(from: NSNumber(value: self))
     }
 
-    func toCurrencyStringForLabel(with symbol: String) -> String? {
+    func toCurrencyStringForLabel(with symbol: String?) -> String? {
         return Formatter.currencyFormatter(with: symbol).string(from: NSNumber(value: self))
     }
 

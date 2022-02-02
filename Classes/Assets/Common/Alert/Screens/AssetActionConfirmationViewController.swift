@@ -73,12 +73,22 @@ extension AssetActionConfirmationViewController {
             } else {
                 loadingController?.startLoadingWithMessage("title-loading".localized)
 
-                api?.getAssetDetails(AssetFetchQuery(ids: [assetAlertDraft.assetIndex])) { [weak self] response in
+                api?.fetchAssetDetails(
+                    AssetFetchQuery(ids: [assetAlertDraft.assetIndex]),
+                    queue: .main,
+                    ignoreResponseOnCancelled: false
+                ) { [weak self] response in
+                    guard let self = self else {
+                        return
+                    }
+
                     switch response {
                     case let .success(assetResponse):
-                        self?.handleAssetDetailSetup(with: assetResponse.results[0])
+                        if let result = assetResponse.results[safe: 0] {
+                            self.handleAssetDetailSetup(with: result)
+                        }
                     case .failure:
-                        self?.loadingController?.stopLoading()
+                        self.loadingController?.stopLoading()
                     }
                 }
             }

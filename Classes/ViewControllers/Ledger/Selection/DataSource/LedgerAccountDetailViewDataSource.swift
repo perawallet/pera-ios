@@ -46,38 +46,43 @@ final class LedgerAccountDetailViewDataSource: NSObject {
 
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
-        for (index, asset) in assets.enumerated() {
-            if let assetDetail = sharedDataController.assetDetailCollection[asset.id] {
-                let compoundAsset = CompoundAsset(asset, assetDetail)
-                account.append(compoundAsset)
+        var assetsToBeFetched: [AssetID] = []
 
-                if index == assets.count - 1 {
-                    loadingController?.stopLoading()
-                    delegate?.ledgerAccountDetailViewDataSource(self, didReturn: account)
-                }
-            } else {
-                api.getAssetDetails(AssetFetchQuery(ids: [asset.id])) { assetResponse in
-                    switch assetResponse {
-                    case .success(let assetDetailResponse):
-                        self.composeAssetDetail(assetDetailResponse.results[0], of: account, with: asset)
-                    case .failure:
-                        account.removeAsset(asset.id)
-                    }
-
-                    if index == assets.count - 1 {
-                        self.loadingController?.stopLoading()
-                        self.delegate?.ledgerAccountDetailViewDataSource(self, didReturn: account)
-                    }
-                }
+        for asset in assets {
+            if self.sharedDataController.assetDetailCollection[asset.id] == nil {
+                assetsToBeFetched.append(asset.id)
             }
         }
-    }
 
-    private func composeAssetDetail(_ assetDetail: AssetInformation, of account: Account, with asset: Asset) {
-        let compoundAsset = CompoundAsset(asset, assetDetail)
-        account.append(compoundAsset)
-        
-        sharedDataController.assetDetailCollection[asset.id] = assetDetail
+        api.fetchAssetDetails(
+            AssetFetchQuery(ids: assetsToBeFetched),
+            queue: .main,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] assetResponse in
+            guard let self = self else {
+                return
+            }
+
+            self.loadingController?.stopLoading()
+
+            switch assetResponse {
+            case let .success(assetDetailResponse):
+                assetDetailResponse.results.forEach {
+                    self.sharedDataController.assetDetailCollection[$0.id] = $0
+                }
+
+                for asset in assets {
+                    if let assetDetail = self.sharedDataController.assetDetailCollection[asset.id] {
+                        let compoundAsset = CompoundAsset(asset, assetDetail)
+                        account.append(compoundAsset)
+                    }
+                }
+
+                self.delegate?.ledgerAccountDetailViewDataSource(self, didReturn: account)
+            case .failure:
+                break
+            }
+        }
     }
 }
 
