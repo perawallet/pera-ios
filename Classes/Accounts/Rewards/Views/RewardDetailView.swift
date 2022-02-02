@@ -21,8 +21,6 @@ import MacaroonUIKit
 final class RewardDetailView: View {
     weak var delegate: RewardDetailViewDelegate?
 
-    private lazy var rewardsRateTitleLabel = UILabel()
-    private lazy var rewardsRateValueLabel = UILabel()
     private lazy var rewardsLabel = UILabel()
     private lazy var algoImageView = UIImageView()
     private lazy var rewardsValueLabel = UILabel()
@@ -38,8 +36,6 @@ final class RewardDetailView: View {
     func customize(_ theme: RewardDetailViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-        addRewardsRateTitleLabel(theme)
-        addRewardsRateValueLabel(theme)
         addRewardsLabel(theme)
         addAlgoImageView(theme)
         addAssetIDInfoButton(theme)
@@ -60,33 +56,12 @@ extension RewardDetailView {
 }
 
 extension RewardDetailView {
-    private func addRewardsRateTitleLabel(_ theme: RewardDetailViewTheme) {
-        rewardsRateTitleLabel.customizeAppearance(theme.rewardsRateTitleLabel)
-
-        addSubview(rewardsRateTitleLabel)
-        rewardsRateTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().inset(theme.rewardsRateTitleLabelTopPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-        }
-    }
-
-    private func addRewardsRateValueLabel(_ theme: RewardDetailViewTheme) {
-        rewardsRateValueLabel.customizeAppearance(theme.rewardsValueLabel)
-
-        addSubview(rewardsRateValueLabel)
-        rewardsRateValueLabel.snp.makeConstraints {
-            $0.top.equalTo(rewardsRateTitleLabel.snp.bottom).offset(theme.rewardsRateValueLabelTopPadding)
-            $0.leading.equalTo(rewardsRateTitleLabel)
-            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
-        }
-    }
-
     private func addRewardsLabel(_ theme: RewardDetailViewTheme) {
         rewardsLabel.customizeAppearance(theme.rewardsLabel)
 
         addSubview(rewardsLabel)
         rewardsLabel.snp.makeConstraints {
-            $0.top.equalTo(rewardsRateValueLabel.snp.bottom).offset(theme.rewardsRateTitleLabelTopPadding)
+            $0.top.equalToSuperview().inset(theme.rewardsRateTitleLabelTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
@@ -148,7 +123,6 @@ extension RewardDetailView {
 
 extension RewardDetailView {
     func bindData(_ viewModel: RewardDetailViewModel?) {
-        rewardsRateValueLabel.text = viewModel?.rate
         rewardsValueLabel.text = viewModel?.amount
     }
 

@@ -21,27 +21,14 @@ import MacaroonUIKit
 struct RewardDetailViewModel:
     PairedViewModel,
     Hashable {
-    private(set) var rate: String?
     private(set) var amount: String?
 
     init(_ account: Account) {
-        bindRate(from: account)
         bindAmount(from: account)
     }
-
-    /**
-     * <src>: https://www.purestake.com/blog/algorand-rewards-distribution-explained/
-     * The current daily rewards percentage return based on the assumption of 1 microAlgo every 3 minutes is:
-     * (10^-6 * 60 * 24 * 365) / 3 * 100% = Yearly Rewards Rate = 17.52%
-     */
-    private let yearlyRewardsRate = 17.52
 }
 
 extension RewardDetailViewModel {
-    private mutating func bindRate(from account: Account) {
-        rate = (yearlyRewardsRate / 100.0).toPercentage
-    }
-
     private mutating func bindAmount(from account: Account) {
         amount = account.pendingRewards.toAlgos.toExactFractionLabel(fraction: 6)?.appending(" ALGO")
     }

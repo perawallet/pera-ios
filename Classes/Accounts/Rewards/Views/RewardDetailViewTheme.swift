@@ -21,8 +21,6 @@ import UIKit
 
 struct RewardDetailViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
-    let rewardsRateTitleLabel: TextStyle
-    let rewardsRateValueLabel: TextStyle
     let rewardsLabel: TextStyle
     let algoImageView: ImageStyle
     let rewardsValueLabel: TextStyle
@@ -32,9 +30,8 @@ struct RewardDetailViewTheme: StyleSheet, LayoutSheet {
     let separator: Separator
 
     let separatorTopPadding: LayoutMetric
-    let rewardsRateTitleLabelTopPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
-    let rewardsRateValueLabelTopPadding: LayoutMetric
+    let rewardsRateTitleLabelTopPadding: LayoutMetric
     let algoImageViewTopPadding: LayoutMetric
     let rewardsLabelLeadingPadding: LayoutMetric
     let algoImageViewSize: LayoutSize
@@ -45,19 +42,6 @@ struct RewardDetailViewTheme: StyleSheet, LayoutSheet {
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
-        self.rewardsRateTitleLabel = [
-            .text("rewards-rate".localized),
-            .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.gray),
-            .font(Fonts.DMSans.regular.make(13)),
-        ]
-        self.rewardsRateValueLabel = [
-            .textAlignment(.left),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMMono.regular.make(19)),
-        ]
         self.rewardsLabel = [
             .text("rewards-title".localized),
             .textAlignment(.left),
@@ -94,9 +78,8 @@ struct RewardDetailViewTheme: StyleSheet, LayoutSheet {
 
         self.separatorTopPadding = -68
         self.horizontalPadding = 24
-        self.rewardsRateValueLabelTopPadding = 8
-        self.rewardsLabelLeadingPadding = 12
         self.rewardsRateTitleLabelTopPadding = 28
+        self.rewardsLabelLeadingPadding = 12
         self.algoImageViewTopPadding = 10
         self.algoImageViewSize = (24, 24)
         self.descriptionLabelTopPadding = 65
