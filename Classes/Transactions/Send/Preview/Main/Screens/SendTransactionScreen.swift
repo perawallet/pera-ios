@@ -202,11 +202,11 @@ extension SendTransactionScreen {
 
                 let currencyValue = assetUSDValue * amount * currencyUsdValue
 
-                usdValueLabel.text = currencyValue.toCurrencyStringForLabel(with: currency.id)
+                usdValueLabel.text = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
 
             case .algo:
                 let usdValue = currencyPriceValue * amount
-                usdValueLabel.text = usdValue.toCurrencyStringForLabel(with: currency.id)
+                usdValueLabel.text = usdValue.toCurrencyStringForLabel(with: currency.symbol)
             }
         } else {
             usdValueLabel.text = nil

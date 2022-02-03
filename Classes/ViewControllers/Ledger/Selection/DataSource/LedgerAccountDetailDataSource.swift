@@ -146,40 +146,43 @@ extension LedgerAccountDetailDataSource {
 
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
-        assets.forEach { asset in
-            if let assetDetail = sharedDataController.assetDetailCollection[asset.id] {
-                let compoundAsset = CompoundAsset(asset, assetDetail)
-                account.append(compoundAsset)
+        var assetsToBeFetched: [AssetID] = []
 
-                let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset, currency: currency))
-                assetPreviews.append(assetPreviewModel)
-            } else {
-                api.getAssetDetails(AssetFetchQuery(ids: [asset.id])) { [weak self] assetResponse in
-                    switch assetResponse {
-                    case .success(let assetDetailResponse):
-                        self?.composeAssetDetail(assetDetailResponse.results[0], of: account, with: asset)
-                    case .failure:
-                        account.removeAsset(asset.id)
-                    }
-                }
+        for asset in assets {
+            if self.sharedDataController.assetDetailCollection[asset.id] == nil {
+                assetsToBeFetched.append(asset.id)
             }
         }
-        loadingController?.stopLoading()
-    }
 
-    private func composeAssetDetail(_ assetDetail: AssetInformation, of account: Account, with asset: Asset) {
-        let compoundAsset = CompoundAsset(asset, assetDetail)
-        account.append(compoundAsset)
+        api.fetchAssetDetails(
+            AssetFetchQuery(ids: assetsToBeFetched),
+            queue: .main,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] assetResponse in
+            guard let self = self else {
+                return
+            }
 
-        sharedDataController.assetDetailCollection[asset.id] = assetDetail
+            self.loadingController?.stopLoading()
 
-        let assetPreviewModel = AssetPreviewModelAdapter.adapt(
-            (
-                assetDetail: assetDetail,
-                asset: asset,
-                currency: sharedDataController.currency.value
-            )
-        )
-        assetPreviews.append(assetPreviewModel)
+            switch assetResponse {
+            case let .success(assetDetailResponse):
+                assetDetailResponse.results.forEach {
+                    self.sharedDataController.assetDetailCollection[$0.id] = $0
+                }
+
+                for asset in assets {
+                    if let assetDetail = self.sharedDataController.assetDetailCollection[asset.id] {
+                        let compoundAsset = CompoundAsset(asset, assetDetail)
+                        account.append(compoundAsset)
+
+                        let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset, currency: currency))
+                        self.assetPreviews.append(assetPreviewModel)
+                    }
+                }
+            case .failure:
+                break
+            }
+        }
     }
 }

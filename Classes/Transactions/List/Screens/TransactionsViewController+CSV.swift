@@ -74,7 +74,8 @@ extension TransactionsViewController: CSVExportable {
             "transaction-detail-round".localized,
             "transaction-detail-date".localized,
             "title-id".localized,
-            "transaction-detail-note".localized
+            "transaction-detail-note".localized,
+            "title-asset-id".localized
         ]
         let config = CSVConfig(fileName: formCSVFileName(), keys: NSOrderedSet(array: keys))
 
@@ -92,11 +93,21 @@ extension TransactionsViewController: CSVExportable {
     }
 
     private func formCSVFileName() -> String {
-        var assetId = "algos"
-        if let assetDetailId = compoundAsset?.id {
-            assetId = "\(assetDetailId)"
+        var fileName = ""
+
+        switch draft.type {
+        case .all:
+            fileName = "\(accountHandle.value.name ?? "")_transactions"
+        case .asset:
+            guard let id = compoundAsset?.id else {
+                return ""
+            }
+
+            fileName = "\(accountHandle.value.name ?? "")_\(id)"
+        case .algos:
+            fileName = "\(accountHandle.value.name ?? "")_algos"
         }
-        var fileName = "\(accountHandle.value.name ?? "")_\(assetId)"
+
         let dates = dataController.getTransactionFilterDates()
         if let fromDate = dates.from,
            let toDate = dates.to {
@@ -112,7 +123,7 @@ extension TransactionsViewController: CSVExportable {
     private func createCSVData(from transactions: [Transaction]) -> [[String: Any]] {
         var csvData = [[String: Any]]()
         for transaction in transactions {
-            let transactionData: [String: Any] = [
+            var transactionData: [String: Any] = [
                 "transaction-detail-amount".localized: getFormattedAmount(transaction.getAmount()),
                 "transaction-detail-reward".localized: transaction.getRewards(for: accountHandle.value.address)?.toAlgos ?? " ",
                 "transaction-detail-close-amount".localized: getFormattedAmount(transaction.getCloseAmount()),
@@ -125,6 +136,11 @@ extension TransactionsViewController: CSVExportable {
                 "title-id".localized: transaction.id ?? " ",
                 "transaction-detail-note".localized: transaction.noteRepresentation() ?? " "
             ]
+
+            if let assetID = transaction.assetTransfer?.assetId {
+                transactionData["title-asset-id"] = "\(assetID)"
+            }
+
             csvData.append(transactionData)
         }
         return csvData

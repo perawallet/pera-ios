@@ -40,6 +40,6 @@ extension AlgoAssetViewModel {
         }
 
         let totalAmount = account.amount.toAlgos * currencyPriceValue
-        currencyAmount = totalAmount.toCurrencyStringForLabel(with: currency.id)
+        currencyAmount = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
     }
 }
