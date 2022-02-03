@@ -107,6 +107,8 @@ extension ContactDetailViewController {
             queue: .main,
             ignoreResponseOnCancelled: true
         ) { [weak self] response in
+            guard let self = self else { return }
+
             switch response {
             case let .success(accountWrapper):
                 if !accountWrapper.account.isSameAccount(with: address) {
