@@ -55,10 +55,6 @@ final class CurrencyFetchOperation: MacaroonUtils.AsyncOperation {
                 
                 self.ongoingEndpoint = nil
                 
-                if self.finishIfCancelled() {
-                    return
-                }
-                
                 switch result {
                 case .success(let currency):
                     let output = Output(currency: currency)
@@ -70,6 +66,17 @@ final class CurrencyFetchOperation: MacaroonUtils.AsyncOperation {
                 
                 self.finish()
             }
+    }
+
+    override func finishIfCancelled() -> Bool {
+        if !isCancelled {
+            return false
+        }
+
+        completionHandler?(.failure(.connection(.init(reason: .cancelled))))
+        finish()
+
+        return true
     }
     
     override func cancel() {

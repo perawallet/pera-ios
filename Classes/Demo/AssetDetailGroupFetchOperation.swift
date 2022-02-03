@@ -32,20 +32,27 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
     private var ongoingEndpoints: [Int: EndpointOperatable] = [:]
 
     private let api: ALGAPI
-    private let completionQueue =
-        DispatchQueue(label: "com.algorand.queue.operation.assetGroupFetch", qos: .userInitiated)
+    private let completionQueue: DispatchQueue
+
     private let apiQueryLimit = 100
     
     init(
         input: Input,
         api: ALGAPI
     ) {
+        let address = input.account.unwrap(\.address) ?? ""
+
         self.input = input
         self.api = api
+        self.completionQueue =
+            DispatchQueue(
+                label: "com.algorand.queue.operation.assetGroupFetch.\(address)",
+                qos: .userInitiated
+            )
     }
     
     override func main() {
-        if self.finishIfCancelled() {
+        if finishIfCancelled() {
             return
         }
         
@@ -88,8 +95,6 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
             
             let endpoint =
                 fetchAssetDetails(subNewAssets) { [weak self] result in
-                    dispatchGroup.leave()
-                
                     guard let self = self else {return }
                 
                     self.ongoingEndpoints[order] = nil
@@ -100,14 +105,18 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                             newAssetDetails[$0.id] = $0
                         }
                     case .failure(let subError):
-                        if subError.isCancelled {
-                            return
+                        switch error {
+                        case .none:
+                            error = subError
+                        case .some where !subError.isCancelled:
+                            error = subError
+                        default: break
                         }
-
-                        error = subError
 
                         self.cancelOngoingEndpoints()
                     }
+
+                    dispatchGroup.leave()
                 }
             ongoingEndpoints[order] = endpoint
         }
@@ -115,14 +124,14 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
         dispatchGroup.notify(queue: completionQueue) { [weak self] in
             guard let self = self else { return }
             
-            if self.finishIfCancelled() {
-                return
-            }
-            
             if let error = error {
                 account.removeAllCompoundAssets()
                 self.result = .failure(error)
             } else {
+                if self.finishIfCancelled() {
+                    return
+                }
+
                 var newCompoundAssets: [CompoundAsset] = []
                 var newCompoundAssetsIndexer: Account.CompoundAssetIndexer = [:]
                 
@@ -146,6 +155,17 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
             
             self.finish()
         }
+    }
+
+    override func finishIfCancelled() -> Bool {
+        if !isCancelled {
+            return false
+        }
+
+        result = .failure(.connection(.init(reason: .cancelled)))
+        finish()
+
+        return true
     }
     
     override func cancel() {

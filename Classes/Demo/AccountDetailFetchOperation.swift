@@ -32,15 +32,21 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
     private var ongoingEndpoint: EndpointOperatable?
 
     private let api: ALGAPI
-    private let completionQueue =
-        DispatchQueue(label: "com.algorand.queue.operation.accountFetch", qos: .userInitiated)
+    private let completionQueue: DispatchQueue
     
     init(
         input: Input,
         api: ALGAPI
     ) {
+        let address = input.localAccount.address
+
         self.input = input
         self.api = api
+        self.completionQueue =
+            DispatchQueue(
+                label: "com.algorand.queue.operation.accountFetch.\(address)",
+                qos: .userInitiated
+            )
     }
     
     override func main() {
@@ -53,15 +59,12 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
         ongoingEndpoint =
             api.fetchAccount(
                 draft,
-                queue: completionQueue
+                queue: completionQueue,
+                ignoreResponseOnCancelled: false
             ) { [weak self] result in
                 guard let self = self else { return }
             
                 self.ongoingEndpoint = nil
-                
-                if self.finishIfCancelled() {
-                    return
-                }
                 
                 switch result {
                 case .success(let response):
@@ -83,6 +86,17 @@ final class AccountDetailFetchOperation: MacaroonUtils.AsyncOperation {
                 
                 self.finish()
             }
+    }
+
+    override func finishIfCancelled() -> Bool {
+        if !isCancelled {
+            return false
+        }
+
+        result = .failure(.connection(.init(reason: .cancelled)))
+        finish()
+
+        return true
     }
     
     override func cancel() {

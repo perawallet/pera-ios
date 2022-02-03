@@ -151,7 +151,11 @@ final class AccountSelectScreen: BaseViewController {
             let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
 
             loadingController?.startLoadingWithMessage("title-loading".localized)
-            api?.fetchAccount(receiverFetchDraft, queue: .main) { [weak self] accountResponse in
+            api?.fetchAccount(
+                receiverFetchDraft,
+                queue: .main,
+                ignoreResponseOnCancelled: true
+            ) { [weak self] accountResponse in
                 guard let self = self else { return }
                 if !selectedAccount.requiresLedgerConnection() {
                     self.loadingController?.stopLoading()
@@ -215,7 +219,11 @@ final class AccountSelectScreen: BaseViewController {
         }
 
         loadingController?.startLoadingWithMessage("title-loading".localized)
-        api?.fetchAccount(AccountFetchDraft(publicKey: address), queue: .main) { [weak self] fetchAccountResponse in
+        api?.fetchAccount(
+            AccountFetchDraft(publicKey: address),
+            queue: .main,
+            ignoreResponseOnCancelled: true
+        ) { [weak self] fetchAccountResponse in
             guard let self = self else { return }
             if !self.draft.from.requiresLedgerConnection() {
                 self.loadingController?.stopLoading()

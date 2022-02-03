@@ -602,7 +602,7 @@ extension HomeViewController {
 
                 self.selectedAccountHandle = account
                 
-                if account.isReady {
+                if account.isAvailable {
                     open(
                         .accountDetail(accountHandle: account),
                         by: .push

@@ -67,11 +67,11 @@ extension SharedAPIDataController {
         if !status.isActive {
             return
         }
-        
-        blockProcessor.stop()
 
         $status.modify { $0 = .suspended }
         
+        blockProcessor.stop()
+
         publishEventForCurrentStatus()
     }
     
@@ -177,20 +177,13 @@ extension SharedAPIDataController {
     private func blockProcessorWillStart(
         _ round: BlockRound?
     ) {
-        $status.modify { $0 = .running }
         lastRound = round
+
+        $status.modify { $0 = .running }
         publishEventForCurrentStatus()
     }
     
-    private func blockProcessorWillFetchCurrency() {
-        if let currencyValue = currency.value {
-            currency = .refreshing(currencyValue)
-        } else {
-            currency = .loading
-        }
-        
-        publish(.didUpdateCurrency)
-    }
+    private func blockProcessorWillFetchCurrency() {}
     
     private func blockProcessorDidFetchCurrency(
         _ currencyValue: Currency
@@ -213,24 +206,21 @@ extension SharedAPIDataController {
         _ localAccount: AccountInformation
     ) {
         let address = localAccount.address
-        let updatedAccount: AccountHandle
 
-        if let cachedAccount = accountCollection[address],
-           cachedAccount.canRefresh() {
-            updatedAccount = AccountHandle(account: cachedAccount.value, status: .refreshing)
-        } else {
-            updatedAccount = AccountHandle(localAccount: localAccount, status: .loading)
+        if accountCollection[address] != nil {
+            return
         }
-        
-        accountCollection[address] = updatedAccount
 
-        publish(.didUpdateAccountCollection(updatedAccount))
+        let newAccount = AccountHandle(localAccount: localAccount, status: .idle)
+        accountCollection[address] = newAccount
+
+        publish(.didUpdateAccountCollection(newAccount))
     }
     
     private func blockProcessorDidFetchAccount(
         _ account: Account
     ) {
-        let updatedAccount = AccountHandle(account: account, status: .upToDate)
+        let updatedAccount = AccountHandle(account: account, status: .inProgress)
         accountCollection[account.address] = updatedAccount
 
         publish(.didUpdateAccountCollection(updatedAccount))
@@ -241,11 +231,10 @@ extension SharedAPIDataController {
         _ error: HIPNetworkError<NoAPIModel>
     ) {
         let address = localAccount.address
+
         let updatedAccount: AccountHandle
-        
-        if let cachedAccount = accountCollection[address],
-           cachedAccount.status == .refreshing {
-            updatedAccount = AccountHandle(account: cachedAccount.value, status: .expired(error))
+        if let cachedAccount = accountCollection[address] {
+            updatedAccount = AccountHandle(account: cachedAccount.value, status: .failed(error))
         } else {
             updatedAccount = AccountHandle(localAccount: localAccount, status: .failed(error))
         }
@@ -258,17 +247,8 @@ extension SharedAPIDataController {
     private func blockProcessorWillFetchAssetDetails(
         for account: Account
     ) {
-        let address = account.address
-        let updatedAccount: AccountHandle
-        
-        if let cachedAccount = accountCollection[address],
-           cachedAccount.canRefreshAssetDetails() {
-            updatedAccount = AccountHandle(account: account, status: .refreshingAssetDetails)
-        } else {
-            updatedAccount = AccountHandle(account: account, status: .loadingAssetDetails)
-        }
-        
-        accountCollection[address] = updatedAccount
+        let updatedAccount = AccountHandle(account: account, status: .inProgress)
+        accountCollection[account.address] = updatedAccount
         
         publish(.didUpdateAccountCollection(updatedAccount))
     }
@@ -297,17 +277,8 @@ extension SharedAPIDataController {
         _ error: HIPNetworkError<NoAPIModel>,
         for account: Account
     ) {
-        let address = account.address
-        let updatedAccount: AccountHandle
-        
-        if let cachedAccount = accountCollection[address],
-           cachedAccount.status == .refreshingAssetDetails {
-            updatedAccount = AccountHandle(account: account, status: .expiredAssetDetails(error))
-        } else {
-            updatedAccount = AccountHandle(account: account, status: .failedAssetDetails(error))
-        }
-        
-        accountCollection[address] = updatedAccount
+        let updatedAccount = AccountHandle(account: account, status: .failed(error))
+        accountCollection[account.address] = updatedAccount
         
         publish(.didUpdateAccountCollection(updatedAccount))
     }
@@ -315,9 +286,14 @@ extension SharedAPIDataController {
     private func blockProcessorDidFinish(
         _ round: BlockRound?
     ) {
-        isFirstPollingRoundCompleted = true
-        $status.modify { $0 = .completed }
         lastRound = round
+        isFirstPollingRoundCompleted = true
+
+        if status != .running {
+            return
+        }
+
+        $status.modify { $0 = .completed }
         publishEventForCurrentStatus()
     }
 }

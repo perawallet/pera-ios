@@ -32,7 +32,7 @@ struct ALGPortfolioCalculator: PortfolioCalculator {
         
         var totalMicroAlgos: UInt64 = 0
         for account in accounts {
-            if !account.isUpToDate {
+            if !canCalculateCoinsValue(account) {
                 return .failure(.failedAccounts)
             }
             
@@ -57,7 +57,7 @@ struct ALGPortfolioCalculator: PortfolioCalculator {
         
         var totalAmount: Decimal = 0
         for account in accounts {
-            if !account.isReady {
+            if !canCalculateAssetsValue(account) {
                 return .failure(.failedAccounts)
             }
             
@@ -74,5 +74,30 @@ struct ALGPortfolioCalculator: PortfolioCalculator {
         
         let assetsValue = PortfolioValue(amount: totalAmount, currency: currencyValue)
         return .success(assetsValue)
+    }
+}
+
+extension ALGPortfolioCalculator {
+    private func canCalculateCoinsValue(
+        _ account: AccountHandle
+    ) -> Bool {
+        switch account.status {
+        case .inProgress,
+             .ready:
+            return true
+        default:
+            return false
+        }
+    }
+
+    private func canCalculateAssetsValue(
+        _ account: AccountHandle
+    ) -> Bool {
+        switch account.status {
+        case .ready:
+            return true
+        default:
+            return false
+        }
     }
 }

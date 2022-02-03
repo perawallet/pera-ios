@@ -23,13 +23,14 @@ extension ALGAPI {
     func fetchAccount(
         _ draft: AccountFetchDraft,
         queue: DispatchQueue,
+        ignoreResponseOnCancelled: Bool,
         onCompleted handler: @escaping (Response.ModelResult<AccountResponse>) -> Void
     ) -> EndpointOperatable {
-        enableLogsInConsole()
         return EndpointBuilder(api: self)
             .base(.indexer(network))
             .path(.accountDetail, args: draft.publicKey)
             .method(.get)
+            .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)
             .responseDispatcher(queue)
             .execute()

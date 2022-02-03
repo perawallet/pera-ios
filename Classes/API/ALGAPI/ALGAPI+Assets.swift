@@ -61,7 +61,7 @@ extension ALGAPI {
             .path(.assets)
             .method(.get)
             .query(draft)
-            .ignoreResponseWhenEndpointCancelled(ignoresResponseOnCancelled)
+            .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)
             .responseDispatcher(queue)
             .execute()

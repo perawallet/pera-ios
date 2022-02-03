@@ -102,7 +102,11 @@ extension ContactDetailViewController {
         loadingController?.startLoadingWithMessage("title-loading".localized)
         let currency = sharedDataController.currency.value
 
-        api?.fetchAccount(AccountFetchDraft(publicKey: address), queue: .main) { [weak self] response in
+        api?.fetchAccount(
+            AccountFetchDraft(publicKey: address),
+            queue: .main,
+            ignoreResponseOnCancelled: true
+        ) { [weak self] response in
             switch response {
             case let .success(accountWrapper):
                 if !accountWrapper.account.isSameAccount(with: address) {

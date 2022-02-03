@@ -24,8 +24,6 @@ enum CurrencyHandle {
     typealias Error = HIPNetworkError<NoAPIModel>
     
     case idle
-    case loading
-    case refreshing(Currency)
     case ready(currency: Currency, lastUpdateDate: Date)
     case failed(Error)
 }
@@ -36,7 +34,6 @@ extension CurrencyHandle {
     }
     var value: Currency? {
         switch self {
-        case .refreshing(let currency): return currency
         case .ready(let currency, _): return currency
         default: return nil
         }
@@ -46,8 +43,6 @@ extension CurrencyHandle {
 extension CurrencyHandle {
     var isExpired: Bool {
         switch self {
-        case .refreshing:
-            return false
         case .ready(_, let lastUpdateDate):
             let expireDate = lastUpdateDate + validDuration
             return Date.now().isAfterDate(

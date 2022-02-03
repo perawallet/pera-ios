@@ -42,7 +42,7 @@ extension ALGBlockOperationQueue {
         underlyingOperationsGroupedByAccountAddress[address] = operations
         underlyingQueue.addOperations(
             operations,
-            waitUntilFinished: true
+            waitUntilFinished: false
         )
     }
     

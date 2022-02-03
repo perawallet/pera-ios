@@ -21,20 +21,7 @@ import MagpieCore
 import MagpieHipo
 
 struct AccountHandle {
-    var isUpToDate: Bool {
-        switch status {
-        case .upToDate,
-             .loadingAssetDetails,
-             .refreshingAssetDetails,
-             .failedAssetDetails,
-             .expiredAssetDetails,
-             .ready:
-            return true
-        default:
-            return false
-        }
-    }
-    var isReady: Bool {
+    var isAvailable: Bool {
         return status == .ready
     }
     
@@ -61,51 +48,10 @@ struct AccountHandle {
 }
 
 extension AccountHandle {
-    func canRefresh() -> Bool {
-        switch status {
-        case .refreshing,
-             .expired,
-             .upToDate,
-             .loadingAssetDetails,
-             .refreshingAssetDetails,
-             .failedAssetDetails,
-             .expiredAssetDetails,
-             .ready:
-            return true
-        default:
-            return false
-        }
-    }
-    
-    func canRefreshAssetDetails() -> Bool {
-        switch status {
-        case .refreshingAssetDetails,
-             .expiredAssetDetails,
-             .ready:
-            return true
-        default:
-            return false
-        }
-    }
-}
-
-extension AccountHandle {
     enum Status: Hashable {
-        case idle
-
-        case loading
-        case refreshing
-        case failed(HIPNetworkError<NoAPIModel>)
-        case expired(HIPNetworkError<NoAPIModel>) /// Update is failed
-        case upToDate /// Account is fetched
-
-        /// <warning>
-        /// For below status for the asset details, the account must be `upToDate`.
-        case loadingAssetDetails
-        case refreshingAssetDetails
-        case failedAssetDetails(HIPNetworkError<NoAPIModel>)
-        case expiredAssetDetails(HIPNetworkError<NoAPIModel>) /// Update is failed
-
-        case ready /// Account and its asset details are fetched
+        case idle /// Local account.
+        case inProgress /// Account is ready but not assets yet.
+        case failed(HIPNetworkError<NoAPIModel>) /// Account or assets aren't ready.
+        case ready /// Account and assets are ready.
     }
 }
