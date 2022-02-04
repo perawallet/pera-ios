@@ -70,6 +70,7 @@ final class TransactionsAPIDataController:
 extension TransactionsAPIDataController {
     func load() {
         sharedDataController.add(self)
+        deliverLoadingSnapshot()
     }
 
     func clear() {

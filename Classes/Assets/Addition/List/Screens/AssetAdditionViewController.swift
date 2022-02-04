@@ -26,12 +26,6 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
 
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
     private var account: Account
-    
-    private var assetResults = [AssetInformation]()
-    private var nextCursor: String?
-    private var hasNext: Bool {
-        return nextCursor != nil
-    }
 
     private let paginationRequestOffset = 3
     private var assetSearchFilter: AssetSearchFilter = .verified
@@ -47,8 +41,17 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
 
     private lazy var assetSearchInput = SearchInputView()
     
-    private lazy var verifiedAssetsScreen = AssetListViewController(configuration: configuration)
-    private lazy var allAssetsScreen = AssetListViewController(configuration: configuration)
+    private lazy var verifiedAssetsScreen = AssetListViewController(
+        filter: .verified,
+        configuration: configuration
+    )
+    
+    private lazy var allAssetsScreen = AssetListViewController(
+        filter: .all,
+        configuration: configuration
+    )
+
+    private var currentAsset: AssetInformation?
 
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
@@ -87,11 +90,13 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
     }
 
     override func itemDidSelect(_ index: Int) {
-        assetSearchFilter = index == 0 ? .verified : .all
-        resetPagination()
-
         let query = assetSearchInput.text
-        fetchAssets(query: query, isPaginated: false)
+
+        if index == 0 {
+            verifiedAssetsScreen.fetchAssets(for: query)
+        } else {
+            allAssetsScreen.fetchAssets(for: query)
+        }
     }
 
     override func linkInteractors() {
@@ -105,7 +110,6 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchAssets(query: nil, isPaginated: false)
 
         items = [
             VerifiedAssetsPageBarItem(screen: verifiedAssetsScreen),
@@ -135,68 +139,16 @@ extension AssetAdditionViewController {
     }
 }
 
-extension AssetAdditionViewController {
-    private func resetPagination() {
-        nextCursor = nil
-    }
-}
-
-extension AssetAdditionViewController: AssetListViewControllerDelegate {
-    func assetListViewController(_ assetListViewController: AssetListViewController, willDisplayItemAt indexPath: IndexPath) {
-        if indexPath.item == assetResults.count - paginationRequestOffset && hasNext {
-            guard let query = assetSearchInput.text else {
-                return
-            }
-            fetchAssets(query: query.isEmpty ? nil : query, isPaginated: true)
-        }
-    }
-}
-
-extension AssetAdditionViewController {
-    private func fetchAssets(query: String?, isPaginated: Bool) {
-        let searchDraft = AssetSearchQuery(status: assetSearchFilter, query: query, cursor: nextCursor)
-        api?.searchAssets(searchDraft) { [weak self] response in
-            switch response {
-            case let .success(searchResults):
-                guard let self = self else {
-                    return
-                }
-
-                if isPaginated {
-                    self.assetResults.append(contentsOf: searchResults.results)
-                } else {
-                    self.assetResults = searchResults.results
-                }
-
-                self.nextCursor = searchResults.nextCursor
-                self.render(for: self.assetSearchFilter, with: self.assetResults)
-            case .failure:
-                guard let self = self else {
-                    return
-                }
-                self.render(for: self.assetSearchFilter, with: self.assetResults)
-            }
-        }
-    }
-}
-
-extension AssetAdditionViewController {
-    func render(for filter: AssetSearchFilter, with assets: [AssetInformation]) {
-        switch filter {
-        case .all:
-            allAssetsScreen.assetResults = assets
-        case .verified:
-            verifiedAssetsScreen.assetResults = assets
-        default:
-            break
-        }
-    }
-}
-
 extension AssetAdditionViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
-        resetPagination()
-        fetchAssets(query: view.text, isPaginated: false)
+        let index = self.selectedIndex ?? 0
+        let query = view.text
+
+        if index == 0 {
+            verifiedAssetsScreen.fetchAssets(for: query)
+        } else {
+            allAssetsScreen.fetchAssets(for: query)
+        }
     }
 
     func searchInputViewDidReturn(_ view: SearchInputView) {
@@ -225,20 +177,22 @@ extension AssetAdditionViewController:
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
         }
+
+        currentAsset = assetDetail
     }
+}
 
-    func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItemAt indexPath: IndexPath) {
-        let assetResult = assetResults[indexPath.item]
-
-        if account.containsAsset(assetResult.id) {
+extension AssetAdditionViewController: AssetListViewControllerDelegate {
+    func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItem item: AssetInformation) {
+        if account.containsAsset(item.id) {
             displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
             return
         }
 
         let assetAlertDraft = AssetAlertDraft(
             account: account,
-            assetIndex: assetResult.id,
-            assetDetail: assetResult,
+            assetIndex: item.id,
+            assetDetail: item,
             title: "asset-add-confirmation-title".localized,
             detail: "asset-add-warning".localized,
             actionTitle: "title-approve".localized,
@@ -256,6 +210,7 @@ extension AssetAdditionViewController:
 extension AssetAdditionViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
         loadingController?.stopLoading()
+        currentAsset = nil
         
         switch error {
         case let .inapp(transactionError):
@@ -267,6 +222,8 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
 
     func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
         loadingController?.stopLoading()
+        currentAsset = nil
+
         switch error {
         case let .network(apiError):
             bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
@@ -275,18 +232,17 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         }
     }
     
-    func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
         guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
-              let assetSearchResult = assetResults.first(where: { item -> Bool in
-                  guard let assetIndex = assetTransactionDraft.assetIndex else {
-                      return false
-                  }
-                  return item.id == assetIndex
-              }) else {
+              let assetDetail = currentAsset else {
                   return
               }
-        
-        delegate?.assetAdditionViewController(self, didAdd: assetSearchResult, to: account)
+
+
+        delegate?.assetAdditionViewController(self, didAdd: assetDetail, to: account)
         popScreen()
     }
 

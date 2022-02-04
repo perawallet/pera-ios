@@ -15,6 +15,7 @@
 //
 //   AssetListDataSource.swift
 
+import Foundation
 import MacaroonUIKit
 import UIKit
 
@@ -33,3 +34,26 @@ extension AssetListViewDataSource: UICollectionViewDataSource {
         return cell
     }
 }
+
+final class NewAssetListDataSource: UICollectionViewDiffableDataSource<AssetListViewSection, AssetListViewItem> {
+    init(
+        _ collectionView: UICollectionView
+    ) {
+        super.init(collectionView: collectionView) {
+            collectionView, indexPath, itemIdentifier in
+
+            switch itemIdentifier {
+            case let .asset(item):
+                let cell = collectionView.dequeue(AssetPreviewAdditionCell.self, at: indexPath)
+                cell.bindData(item)
+                return cell
+            case .loading:
+                return collectionView.dequeue(LoadingCell.self, at: indexPath)
+            }
+        }
+
+        collectionView.register(LoadingCell.self)
+        collectionView.register(AssetPreviewCell.self)
+    }
+}
+
