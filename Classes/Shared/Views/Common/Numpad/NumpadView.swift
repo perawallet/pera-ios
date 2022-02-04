@@ -139,13 +139,17 @@ extension NumpadView {
     ) {
         if recognizer.state == .began {
             recognizer.cancelsTouchesInView = false
+
+            toggleAllButtonsInteraction(isEnabled: false)
             scheduleTimer()
             return
         }
 
         if recognizer.state == .ended {
             recognizer.cancelsTouchesInView = true
+
             resetTimer()
+            toggleAllButtonsInteraction(isEnabled: true)
         }
     }
 
@@ -173,6 +177,17 @@ extension NumpadView {
             timer.invalidate()
             self.timer = nil
             timerFireCount = 0
+        }
+    }
+
+    private func toggleAllButtonsInteraction(isEnabled: Bool) {
+        [
+            numberOneButton, numberTwoButton, numberThreeButton,
+            numberFourButton, numberFiveButton, numberSixButton,
+            numberSevenButton, numberEightButton, numberNineButton,
+            zeroButton
+        ].forEach {
+            $0.isEnabled = isEnabled
         }
     }
 }
