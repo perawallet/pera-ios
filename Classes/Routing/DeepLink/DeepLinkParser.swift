@@ -17,7 +17,7 @@
 
 import UIKit
 
-struct DeepLinkParser {
+final class DeepLinkParser {
     private var url: URL!
     
     private let sharedDataController: SharedDataController
@@ -106,22 +106,8 @@ struct DeepLinkParser {
 
 extension DeepLinkParser {
     func discover(
-        remoteNotification userInfo: Deeplink.UserInfo
+        _ notification: AlgorandNotification
     ) -> Result<Screen, Error>? {
-        guard
-            let aps = userInfo["aps"],
-            let apsData = try? JSONSerialization.data(
-                withJSONObject: aps,
-                options: .prettyPrinted
-            ),
-            let notification = try? JSONDecoder().decode(
-                AlgorandNotification.self,
-                from: apsData
-            )
-        else {
-            return nil
-        }
-        
         switch notification.detail?.type {
         case .transactionSent,
              .transactionReceived:
@@ -146,9 +132,9 @@ extension DeepLinkParser {
         
         guard
             let account = sharedDataController.accountCollection[accountAddress],
-            account.isUpToDate
+            account.isAvailable
         else {
-            return .failure(.waitingForAccountToBeReady)
+            return .failure(.waitingForAccountToBeAvailable)
         }
         
         let draft = AlgoTransactionListing(accountHandle: account)
@@ -167,13 +153,13 @@ extension DeepLinkParser {
         
         guard
             let account = sharedDataController.accountCollection[accountAddress],
-            account.isReady
+            account.isAvailable
         else {
-            return .failure(.waitingForAccountToBeReady)
+            return .failure(.waitingForAccountToBeAvailable)
         }
         
         guard let asset = account.value[assetId] else {
-            return .failure(.waitingForAssetToBeReady)
+            return .failure(.waitingForAssetToBeAvailable)
         }
         
         let draft = AssetTransactionListing(accountHandle: account, compoundAsset: asset)
@@ -192,9 +178,9 @@ extension DeepLinkParser {
         
         guard
             let account = sharedDataController.accountCollection[accountAddress],
-            account.isUpToDate
+            account.isAvailable
         else {
-            return .failure(.waitingForAccountToBeReady)
+            return .failure(.waitingForAccountToBeAvailable)
         }
         
         let accountName = account.value.name.someString
@@ -213,7 +199,7 @@ extension DeepLinkParser {
 
 extension DeepLinkParser {
     enum Error: Swift.Error {
-        case waitingForAccountToBeReady
-        case waitingForAssetToBeReady
+        case waitingForAccountToBeAvailable
+        case waitingForAssetToBeAvailable
     }
 }

@@ -74,8 +74,8 @@ extension DeepLinkRouter {
         switch screen {
         case .addContact,
              .sendTransaction,
-             .assetActionConfirmation,
-             .sendAssetTransactionPreview:
+             .assetActionConfirmation:
+//             .sendAssetTransactionPreview:
 //            rootViewController.tabBarViewController.route = screen
 //            rootViewController.tabBarViewController.routeForDeeplink()
             return true

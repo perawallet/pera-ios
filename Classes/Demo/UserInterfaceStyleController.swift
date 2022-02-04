@@ -30,7 +30,7 @@ final class UserInterfaceStyleController {
         case .system:
             let systemUserInterfaceStyle: UIUserInterfaceStyle
             
-            switch application.deviceInterfaceStyle {
+            switch UIScreen.main.traitCollection.userInterfaceStyle {
             case .light: systemUserInterfaceStyle = .light
             default: systemUserInterfaceStyle = .dark
             }

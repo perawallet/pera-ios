@@ -17,6 +17,7 @@
 
 
 import Foundation
+import MacaroonUtils
 
 final class ALGBlockOperationQueue {
     var isAvailable: Bool {
@@ -24,7 +25,8 @@ final class ALGBlockOperationQueue {
     }
     
     private lazy var underlyingQueue = createUnderlyingQueue()
-    
+
+    @Atomic(identifier: "blockOperationQueue.underlyingOperations")
     private var underlyingOperationsGroupedByAccountAddress: [String: [Operation]] = [:]
 }
 
@@ -39,7 +41,7 @@ extension ALGBlockOperationQueue {
         _ operations: [Operation],
         forAccountAddress address: String
     ) {
-        underlyingOperationsGroupedByAccountAddress[address] = operations
+        $underlyingOperationsGroupedByAccountAddress.modify { $0[address] = operations }
         underlyingQueue.addOperations(
             operations,
             waitUntilFinished: false
@@ -49,7 +51,7 @@ extension ALGBlockOperationQueue {
     func dequeueOperations(
         forAccountAddress address: String
     ) {
-        underlyingOperationsGroupedByAccountAddress[address] = nil
+        $underlyingOperationsGroupedByAccountAddress.modify { $0[address] = nil }
     }
 }
 
@@ -63,7 +65,7 @@ extension ALGBlockOperationQueue {
 
 extension ALGBlockOperationQueue {
     func cancelAllOperations() {
-        underlyingOperationsGroupedByAccountAddress = [:]
+        $underlyingOperationsGroupedByAccountAddress.modify { $0 = [:] }
         underlyingQueue.cancelAllOperations()
     }
 }

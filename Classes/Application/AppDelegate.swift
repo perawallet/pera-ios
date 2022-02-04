@@ -152,7 +152,12 @@ class AppDelegate:
             userInfo: nil
         )
         
-        appLaunchController.receive(deeplink: .remoteNotification(userInfo))
+        appLaunchController.receive(
+            deeplink: .remoteNotification(
+                userInfo,
+                waitForUserConfirmation: UIApplication.shared.isActive
+            )
+        )
     }
     
     func application(

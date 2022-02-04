@@ -19,7 +19,27 @@ import Foundation
 
 enum Deeplink {
     typealias UserInfo = [AnyHashable: Any]
-    
-    case remoteNotification(UserInfo)
+
+    /// <note>
+    /// `waitForUserConfirmation`
+    /// true => Show message and wait for the user to confirm before taking any action.
+    /// false => Take the action immediately.
+    case remoteNotification(UserInfo, waitForUserConfirmation: Bool)
     case url(URL)
+}
+
+extension Deeplink {
+    static func decode(
+        _ userInfo: UserInfo
+    ) -> AlgorandNotification? {
+        guard let aps = userInfo["aps"] else {
+            return nil
+        }
+
+        guard let apsData = try? JSONSerialization.data(withJSONObject: aps) else {
+            return nil
+        }
+
+        return try? AlgorandNotification.decoded(apsData)
+    }
 }

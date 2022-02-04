@@ -77,10 +77,10 @@ extension TabBarController {
             case .addContact:
                 selectedIndex = items.index(of: .contacts)
                 visibleScreen.open(route, by: .push)
-            case .sendAlgosTransactionPreview,
-                 .sendAssetTransactionPreview:
-                selectedIndex = items.index(of: .home)
-                visibleScreen.open(route, by: .push)
+//            case .sendAlgosTransactionPreview,
+//                 .sendAssetTransactionPreview:
+//                selectedIndex = items.index(of: .home)
+//                visibleScreen.open(route, by: .push)
             case .assetDetail:
                 visibleScreen.open(route, by: .push)
             case let .assetActionConfirmation(draft):

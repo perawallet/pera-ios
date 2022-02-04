@@ -232,12 +232,12 @@ extension RootViewController: WCMainTransactionScreenDelegate {
             secondaryActionButtonTitle: "title-close".localized
         )
 
-        asyncMain(afterDuration: 0.3) { [weak self] in
-            self?.bottomSheetTransition.perform(
-                .bottomWarning(configurator: configurator),
-                by: .presentWithoutNavigationController
-            )
-        }
+//        asyncMain(afterDuration: 0.3) { [weak self] in
+//            self?.bottomSheetTransition.perform(
+//                .bottomWarning(configurator: configurator),
+//                by: .presentWithoutNavigationController
+//            )
+//        }
     }
 
     private func resetCurrentWCTransaction() {

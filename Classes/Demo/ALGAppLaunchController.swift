@@ -161,9 +161,10 @@ final class ALGAppLaunchController:
     func receive(
         deeplink: Deeplink
     ) {
-        switch UIApplication.shared.applicationState {
-        case .active: resume(deeplink: deeplink)
-        default: suspend(deeplink: deeplink)
+        if UIApplication.shared.isActive {
+            resumeIfPossible(deeplink: deeplink)
+        } else {
+            suspend(deeplink: deeplink)
         }
     }
 }
@@ -226,7 +227,6 @@ extension ALGAppLaunchController {
         var watchIndex = 0
         let watchOffset = 100000
         
-        
         authenticatedUser?.accounts.forEach { account in
             if account.type == .watch {
                 if !account.isOrderred {
@@ -260,22 +260,43 @@ extension ALGAppLaunchController {
 }
 
 extension ALGAppLaunchController {
-    private func resume(
+    private func resumeIfPossible(
         deeplink: Deeplink
     ) {
         switch deeplink {
-        case .remoteNotification(let userInfo): resume(remoteNotification: userInfo)
-        case .url(let url): resume(url: url)
+        case .remoteNotification(let userInfo, let waitForUserConfirmation):
+            resumeIfPossible(
+                remoteNotification: userInfo,
+                waitForUserConfirmation: waitForUserConfirmation
+            )
+        case .url(let url):
+            resumeIfPossible(url: url)
         }
     }
     
-    private func resume(
-        remoteNotification userInfo: Deeplink.UserInfo
+    private func resumeIfPossible(
+        remoteNotification userInfo: Deeplink.UserInfo,
+        waitForUserConfirmation: Bool
     ) {
-        let deeplinkResult = deeplinkParser.discover(remoteNotification: userInfo)
+        guard let notification = Deeplink.decode(userInfo) else {
+            return
+        }
+
+        let deeplinkResult = deeplinkParser.discover(notification)
+
+        switch deeplinkResult {
+        case .none:
+            break
+        case .success(let screen):
+            break
+        case .failure(let error):
+            break
+        }
     }
+
+    private func launch
     
-    private func resume(
+    private func resumeIfPossible(
         url: URL
     ) {
         
@@ -289,7 +310,7 @@ extension ALGAppLaunchController {
     
     private func resumePendingDeeplink() {
         if let pendingDeeplink = pendingDeeplink {
-            resume(deeplink: pendingDeeplink)
+            resumeIfPossible(deeplink: pendingDeeplink)
         }
     }
     
