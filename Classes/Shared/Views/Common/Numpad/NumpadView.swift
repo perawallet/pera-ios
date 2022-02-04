@@ -138,11 +138,13 @@ extension NumpadView {
         _ recognizer: UILongPressGestureRecognizer
     ) {
         if recognizer.state == .began {
+            recognizer.cancelsTouchesInView = false
             scheduleTimer()
             return
         }
 
         if recognizer.state == .ended {
+            recognizer.cancelsTouchesInView = true
             resetTimer()
         }
     }
