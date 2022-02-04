@@ -49,8 +49,6 @@ final class AssetListViewAPIDataController:
 
 extension AssetListViewAPIDataController {
     func load(isPaginated: Bool = false) {
-        print("load(isPaginated: \(isPaginated)")
-
         if !isPaginated {
             deliverLoadingSnapshot()
         }
@@ -69,8 +67,6 @@ extension AssetListViewAPIDataController {
     }
 
     func loadNextPageIfNeeded(for indexPath: IndexPath) {
-        print("loadNextPageIfNeeded(for indexPath: \(indexPath)")
-
         guard indexPath.item == assets.count - 3, hasNext else {
             return
         }

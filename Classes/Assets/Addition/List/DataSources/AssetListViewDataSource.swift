@@ -48,11 +48,11 @@ final class NewAssetListDataSource: UICollectionViewDiffableDataSource<AssetList
                 cell.bindData(item)
                 return cell
             case .loading:
-                return collectionView.dequeue(LoadingCell.self, at: indexPath)
+                return collectionView.dequeue(AssetPreviewLoadingCell.self, at: indexPath)
             }
         }
 
-        collectionView.register(LoadingCell.self)
+        collectionView.register(AssetPreviewLoadingCell.self)
         collectionView.register(AssetPreviewCell.self)
     }
 }
