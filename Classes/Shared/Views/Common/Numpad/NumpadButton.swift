@@ -65,3 +65,28 @@ final class NumpadButton: UIButton, ViewComposable {
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
+
+extension NumpadButton {
+    enum NumpadKey: Equatable {
+        case spacing
+        case number(String)
+        case delete
+        case decimalSeparator
+
+        static func == (lhs: NumpadKey, rhs: NumpadKey) -> Bool {
+            switch (lhs, rhs) {
+            case (.spacing, .spacing):
+                return true
+            case (.delete, .delete):
+                return true
+            case (.decimalSeparator, .decimalSeparator):
+                return true
+            case (.number(let lNumber), .number(let rNumber)):
+                return lNumber == rNumber
+            default:
+                return false
+            }
+
+        }
+    }
+}
