@@ -58,7 +58,8 @@ final class DeepLinkParser {
         
         switch qrText.mode {
         case .address:
-            return .addContact(address: accountAddress, name: qrText.label)
+//            return .addContact(address: accountAddress, name: qrText.label)
+            return nil
         case .algosRequest:
             if let amount = qrText.amount {
                 /// <todo> open send screen
@@ -89,7 +90,8 @@ final class DeepLinkParser {
                     cancelTitle: "title-cancel".localized
                 )
                 
-                return .assetActionConfirmation(assetAlertDraft: assetAlertDraft)
+//                return .assetActionConfirmation(draft: assetAlertDraft)
+                return nil
             }
                 
             if let amount = qrText.amount {
@@ -107,7 +109,7 @@ final class DeepLinkParser {
 extension DeepLinkParser {
     func discover(
         _ notification: AlgorandNotification
-    ) -> Result<Screen, Error>? {
+    ) -> Result? {
         switch notification.detail?.type {
         case .transactionSent,
              .transactionReceived:
@@ -125,7 +127,7 @@ extension DeepLinkParser {
     
     private func makeTransactionDetailScreen(
         from notification: AlgorandNotification
-    ) -> Result<Screen, Error>? {
+    ) -> Result? {
         guard let accountAddress = notification.accountAddress else {
             return nil
         }
@@ -143,7 +145,7 @@ extension DeepLinkParser {
     
     private func makeAssetTransactionDetailScreen(
         from notification: AlgorandNotification
-    ) -> Result<Screen, Error>? {
+    ) -> Result? {
         guard
             let accountAddress = notification.accountAddress,
             let assetId = notification.detail?.asset?.id
@@ -168,7 +170,7 @@ extension DeepLinkParser {
     
     private func makeAssetTransactionRequestScreen(
         from notification: AlgorandNotification
-    ) -> Result<Screen, Error>? {
+    ) -> Result? {
         guard
             let accountAddress = notification.accountAddress,
             let assetId = notification.detail?.asset?.id
@@ -193,11 +195,19 @@ extension DeepLinkParser {
             actionTitle: "title-approve".localized,
             cancelTitle: "title-cancel".localized
         )
-        return .success(.assetActionConfirmation(assetAlertDraft: draft))
+        return .success(.assetActionConfirmation(draft: draft))
     }
 }
 
 extension DeepLinkParser {
+    typealias Result = Swift.Result<Screen, Error>
+    
+    enum Screen {
+        case algosDetail(draft: TransactionListing)
+        case assetDetail(draft: TransactionListing)
+        case assetActionConfirmation(draft: AssetAlertDraft)
+    }
+    
     enum Error: Swift.Error {
         case waitingForAccountToBeAvailable
         case waitingForAssetToBeAvailable

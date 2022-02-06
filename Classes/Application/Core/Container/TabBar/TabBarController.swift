@@ -22,16 +22,22 @@ import UIKit
 
 final class TabBarController: TabBarContainer {
     var route: Screen?
+    
+    var selectedTab: TabBarItemID? {
+        get {
+            let item = items[safe: selectedIndex]
+            return item.unwrap { TabBarItemID(rawValue: $0.id) }
+        }
+        set {
+            selectedIndex = newValue.unwrap { items.index(of: $0) }
+        }
+    }
 
     private lazy var toggleTransactionOptionsActionView = Button()
     private lazy var transactionOptionsView = createTransactionOptions()
     
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
-    
-    /// <todo>
-    /// ???
-    private var assetAlertDraft: AssetAlertDraft?
     
     override func addTabBar() {
         super.addTabBar()
@@ -53,7 +59,6 @@ final class TabBarController: TabBarContainer {
         
         navigationController?.setNavigationBarHidden(true, animated: true)
         UIApplication.shared.appConfiguration?.session.isValid = true
-        routeForDeeplink()
     }
     
     override func updateLayoutWhenItemsDidChange() {
@@ -81,18 +86,6 @@ extension TabBarController {
 //                 .sendAssetTransactionPreview:
 //                selectedIndex = items.index(of: .home)
 //                visibleScreen.open(route, by: .push)
-            case .assetDetail:
-                visibleScreen.open(route, by: .push)
-            case let .assetActionConfirmation(draft):
-                selectedIndex = items.index(of: .home)
-                let bottomSheetTransition = BottomSheetTransition(presentingViewController: visibleScreen)
-                let controller = bottomSheetTransition.perform(
-                    route,
-                    by: .presentWithoutNavigationController
-                ) as? AssetActionConfirmationViewController
-                controller?.delegate = self
-
-                assetAlertDraft = draft
             default:
                 break
             }
@@ -299,27 +292,6 @@ extension TabBarController: SelectAccountViewControllerDelegate {
                 )
             }
         }
-    }
-}
-
-extension TabBarController: AssetActionConfirmationViewControllerDelegate {
-    func assetActionConfirmationViewController(
-        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetInformation
-    ) {
-        guard let account = assetAlertDraft?.account,
-            let assetId = assetAlertDraft?.assetIndex,
-            let api = AppDelegate.shared?.appConfiguration.api,
-            let bannerController = AppDelegate.shared?.appConfiguration.bannerController else {
-                return
-        }
-        
-        let transactionController = TransactionController(api: api, bannerController: bannerController)
-        
-        let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: Int64(assetId))
-        transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
-        assetAlertDraft = nil
     }
 }
 

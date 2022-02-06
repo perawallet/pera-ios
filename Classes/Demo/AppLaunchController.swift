@@ -23,7 +23,7 @@ import UIKit
 
 protocol AppLaunchController: AnyObject {
     func launch(
-        deeplink: Deeplink?
+        deeplinkWithSource src: DeeplinkSource?
     )
     func becomeActive()
     func resignActive()
@@ -35,7 +35,7 @@ protocol AppLaunchController: AnyObject {
     )
     
     func receive(
-        deeplink: Deeplink
+        deeplinkWithSource src: DeeplinkSource
     )
 }
 

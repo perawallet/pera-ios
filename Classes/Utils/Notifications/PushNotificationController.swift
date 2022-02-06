@@ -142,7 +142,7 @@ extension PushNotificationController {
             present(idleNotification: notification)
             return
         }
-        
+
         switch notificationDetail.type {
         case .transactionSent,
              .assetTransactionSent:

@@ -3742,9 +3742,9 @@
 		F0B5B0D727A1CF8600BC3E2D /* UserInterfaceStyleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5B0D627A1CF8600BC3E2D /* UserInterfaceStyleController.swift */; };
 		F0B5B0D827A1CF8600BC3E2D /* UserInterfaceStyleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5B0D627A1CF8600BC3E2D /* UserInterfaceStyleController.swift */; };
 		F0B5B0D927A1CF8600BC3E2D /* UserInterfaceStyleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5B0D627A1CF8600BC3E2D /* UserInterfaceStyleController.swift */; };
-		F0B5B0DB27A21CC700BC3E2D /* Deeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5B0DA27A21CC700BC3E2D /* Deeplink.swift */; };
-		F0B5B0DC27A21CC700BC3E2D /* Deeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5B0DA27A21CC700BC3E2D /* Deeplink.swift */; };
-		F0B5B0DD27A21CC700BC3E2D /* Deeplink.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5B0DA27A21CC700BC3E2D /* Deeplink.swift */; };
+		F0B5B0DB27A21CC700BC3E2D /* DeeplinkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5B0DA27A21CC700BC3E2D /* DeeplinkSource.swift */; };
+		F0B5B0DC27A21CC700BC3E2D /* DeeplinkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5B0DA27A21CC700BC3E2D /* DeeplinkSource.swift */; };
+		F0B5B0DD27A21CC700BC3E2D /* DeeplinkSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5B0DA27A21CC700BC3E2D /* DeeplinkSource.swift */; };
 		F0C64B1F277355C000E5A6D2 /* AssetDetailCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C64B1E277355C000E5A6D2 /* AssetDetailCollection.swift */; };
 		F0C64B20277355C000E5A6D2 /* AssetDetailCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C64B1E277355C000E5A6D2 /* AssetDetailCollection.swift */; };
 		F0C64B21277355C000E5A6D2 /* AssetDetailCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0C64B1E277355C000E5A6D2 /* AssetDetailCollection.swift */; };
@@ -5109,7 +5109,7 @@
 		F0B5B0CE27A1CBCA00BC3E2D /* AppLaunchUIHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLaunchUIHandler.swift; sourceTree = "<group>"; };
 		F0B5B0D227A1CBE100BC3E2D /* ALGAppLaunchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAppLaunchController.swift; sourceTree = "<group>"; };
 		F0B5B0D627A1CF8600BC3E2D /* UserInterfaceStyleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInterfaceStyleController.swift; sourceTree = "<group>"; };
-		F0B5B0DA27A21CC700BC3E2D /* Deeplink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Deeplink.swift; sourceTree = "<group>"; };
+		F0B5B0DA27A21CC700BC3E2D /* DeeplinkSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinkSource.swift; sourceTree = "<group>"; };
 		F0C64B1E277355C000E5A6D2 /* AssetDetailCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailCollection.swift; sourceTree = "<group>"; };
 		F0DB414427935FC400EA437D /* AccounPortfolio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccounPortfolio.swift; sourceTree = "<group>"; };
 		F0DB414827936DF000EA437D /* AccountPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPreviewCell.swift; sourceTree = "<group>"; };
@@ -6268,7 +6268,7 @@
 		2B4DF40A236C5F5800FF9551 /* DeepLink */ = {
 			isa = PBXGroup;
 			children = (
-				F0B5B0DA27A21CC700BC3E2D /* Deeplink.swift */,
+				F0B5B0DA27A21CC700BC3E2D /* DeeplinkSource.swift */,
 				2BDDCA472268A3630081CED2 /* DeepLinkParser.swift */,
 			);
 			path = DeepLink;
@@ -13671,7 +13671,7 @@
 				D4D656DB277CB959007C32F0 /* TransactionTextInformationViewModel.swift in Sources */,
 				D4D656E7277CC5A7007C32F0 /* TransactionStatusInformationViewModel.swift in Sources */,
 				2B01E2C624EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift in Sources */,
-				F0B5B0DD27A21CC700BC3E2D /* Deeplink.swift in Sources */,
+				F0B5B0DD27A21CC700BC3E2D /* DeeplinkSource.swift in Sources */,
 				D4312D6D27351CDA00ABDA1E /* EditContactViewModel.swift in Sources */,
 				F08709342791A8ED00BEE5C2 /* HomePortfolioCell.swift in Sources */,
 				2B68A24426A872540076BD82 /* WCTransactionSigner.swift in Sources */,
@@ -14862,7 +14862,7 @@
 				2BE4D055259371CC005F5764 /* DisplayAssetDetailEvent.swift in Sources */,
 				2BA4B3FF267819F50041586B /* WCSessionListViewController.swift in Sources */,
 				2B835B6C27A424E90091E9F6 /* WCAppCallTransactionViewController.swift in Sources */,
-				F0B5B0DC27A21CC700BC3E2D /* Deeplink.swift in Sources */,
+				F0B5B0DC27A21CC700BC3E2D /* DeeplinkSource.swift in Sources */,
 				2BB350DB2589892300A03BAC /* LedgerAccountDetailViewModel.swift in Sources */,
 				2B343D04259D178C001EA8C8 /* AccountNameSwitchCell.swift in Sources */,
 				2B0F626924EC129D00DA22A6 /* ALGAPI+Transaction.swift in Sources */,
@@ -16052,7 +16052,7 @@
 				F08709322791A8ED00BEE5C2 /* HomePortfolioCell.swift in Sources */,
 				2B0E00C227881DF900D6B2E2 /* SecuritySettingsViewController+Theme.swift in Sources */,
 				2B835B6B27A424E90091E9F6 /* WCAppCallTransactionViewController.swift in Sources */,
-				F0B5B0DB27A21CC700BC3E2D /* Deeplink.swift in Sources */,
+				F0B5B0DB27A21CC700BC3E2D /* DeeplinkSource.swift in Sources */,
 				D4092B9A276B48360009722D /* WCSessionShortListViewController.swift in Sources */,
 				173DA1E92255F7B500378A82 /* ALGAPI+Transaction.swift in Sources */,
 				2B9EEAD6264D33B1007A112D /* ALGAPI+Block.swift in Sources */,

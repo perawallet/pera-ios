@@ -153,7 +153,7 @@ class AppDelegate:
         )
         
         appLaunchController.receive(
-            deeplink: .remoteNotification(
+            deeplinkWithSource: .remoteNotification(
                 userInfo,
                 waitForUserConfirmation: UIApplication.shared.isActive
             )
@@ -185,6 +185,18 @@ extension AppDelegate {
                 presented: presentedViewController,
                 completion: completion
             )
+        case .remoteNotification(let notification, let screen):
+            guard let someScreen = screen else {
+                pushNotificationController.present(notification: notification)
+                return
+            }
+            
+            pushNotificationController.present(notification: notification) {
+                [unowned self] in
+                self.router.launch(deeplink: someScreen)
+            }
+        case .deeplink(let screen):
+            router.launch(deeplink: screen)
         }
     }
 }
@@ -232,7 +244,14 @@ extension AppDelegate {
     func launch(
         with options: [UIApplication.LaunchOptionsKey: Any]?
     ) {
-        appLaunchController.launch(deeplink: nil)
+        let src: DeeplinkSource?
+        
+        if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
+            src = .remoteNotification(userInfo, waitForUserConfirmation: false)
+        } else {
+            src = nil
+        }
+        appLaunchController.launch(deeplinkWithSource: src)
     }
     
     func launchOnboarding() {
@@ -290,56 +309,6 @@ extension AppDelegate {
     private func authorizeNotifications(for deviceToken: Data) {
         let pushToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         pushNotificationController.authorizeDevice(with: pushToken)
-    }
-
-    private func displayInAppPushNotification(from userInfo: [AnyHashable: Any]) {
-        guard let algorandNotification = parseAlgorandNotification(from: userInfo),
-              let accountId = getNotificationAccountId(from: algorandNotification) else {
-            return
-        }
-
-        handleNotificationActions(for: accountId, with: algorandNotification.detail)
-    }
-
-    private func parseAlgorandNotification(from userInfo: [AnyHashable: Any]) -> AlgorandNotification? {
-        guard let userInfo = userInfo as? [String: Any],
-            let userInfoDictionary = userInfo["aps"] as? [String: Any],
-            let remoteNotificationData = try? JSONSerialization.data(withJSONObject: userInfoDictionary, options: .prettyPrinted),
-            let algorandNotification = try? JSONDecoder().decode(AlgorandNotification.self, from: remoteNotificationData) else {
-                return nil
-        }
-
-        return algorandNotification
-    }
-
-    private func getNotificationAccountId(from algorandNotification: AlgorandNotification) -> String? {
-        guard let accountId = algorandNotification.accountAddress else {
-            if let message = algorandNotification.alert {
-                bannerController.presentInfoBanner(message)
-            }
-            return nil
-        }
-
-        return accountId
-    }
-
-    private func handleNotificationActions(for accountId: String, with notificationDetail: NotificationDetail?) {
-        guard let notificationDetail = notificationDetail else {
-            return
-        }
-        
-//        if UIApplication.shared.applicationState == .active {
-//            if notificationDetail.type == .assetSupportRequest {
-//                deepLinkRouter.openAsset(from: notificationDetail, for: accountId)
-//                return
-//            }
-//
-//            pushNotificationController.show(with: notificationDetail) {
-//                self.deepLinkRouter.openAsset(from: notificationDetail, for: accountId)
-//            }
-//        } else {
-//            deepLinkRouter.openAsset(from: notificationDetail, for: accountId)
-//        }
     }
 
     private func shouldHandleDeepLinkRouting(from url: URL) -> Bool {

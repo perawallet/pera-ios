@@ -462,7 +462,7 @@ extension HomeViewController: QRScannerViewControllerDelegate {
                 )
 
                 modalTransition.perform(
-                    .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
+                    .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: nil),
                     by: .presentWithoutNavigationController
                 )
                 return
@@ -690,8 +690,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
                 let controller = self.open(
                     .choosePassword(
                         mode: .confirm(flow: .viewPassphrase),
-                        flow: nil,
-                        route: nil
+                        flow: nil
                     ),
                     by: .present
                 ) as? ChoosePasswordViewController

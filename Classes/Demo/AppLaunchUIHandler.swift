@@ -32,4 +32,9 @@ enum AppLaunchUIState {
         presented: UIViewController,
         completion: () -> Void
     )
+    case remoteNotification(
+        AlgorandNotification,
+        DeepLinkParser.Screen? = nil
+    )
+    case deeplink(DeepLinkParser.Screen)
 }

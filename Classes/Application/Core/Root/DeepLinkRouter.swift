@@ -38,7 +38,7 @@ class DeepLinkRouter {
     @discardableResult
     private func openLoginScreen(with route: Screen? = nil) -> UIViewController? {
         return rootViewController.open(
-           .choosePassword(mode: .login, flow: nil, route: route),
+           .choosePassword(mode: .login, flow: nil),
            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
        )
     }

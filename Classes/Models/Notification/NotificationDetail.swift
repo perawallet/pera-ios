@@ -72,7 +72,7 @@ final class NotificationDetail: ALGAPIModel {
     private enum CodingKeys:
         String,
         CodingKey {
-        case notificationType
+        case notificationType = "notification_type"
         case senderAddress = "sender_public_key"
         case receiverAddress = "receiver_public_key"
         case asset

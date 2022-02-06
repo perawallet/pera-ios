@@ -115,6 +115,12 @@ extension RootViewController {
         ]
     }
     
+    func launch(
+        tab: TabBarItemID
+    ) {
+        mainContainer.selectedTab = tab
+    }
+    
     func terminateTabs() {
         mainContainer.items = []
     }
@@ -277,9 +283,6 @@ extension RootViewController {
                 $0.trailing == 0
             }
         }
-        
-//        tabBarViewController.route = screen
-//        tabBarViewController.routeForDeeplink()
     }
 }
 

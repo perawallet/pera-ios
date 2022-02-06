@@ -19,8 +19,10 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-class Router {
+class Router: AssetActionConfirmationViewControllerDelegate {
     unowned let rootViewController: RootViewController
+    
+    private var assetActionConfirmationTransition: BottomSheetTransition?
 
     private unowned let appConfiguration: AppConfiguration
     
@@ -36,7 +38,7 @@ class Router {
         let isAnimated = rootViewController.areTabsVisible
         
         route(
-            to: .choosePassword(mode: .login, flow: nil, route: nil),
+            to: .choosePassword(mode: .login, flow: nil),
             from: findVisibleScreen(over: rootViewController),
             by: .customPresent(
                 presentationStyle: .fullScreen,
@@ -81,6 +83,47 @@ class Router {
         }
         
         viewController.dismissScreen(completion: completion)
+    }
+    
+    func launch(
+        deeplink screen: DeepLinkParser.Screen
+    ) {
+        switch screen {
+        case .algosDetail(let draft):
+            if rootViewController.presentedViewController == nil {
+                rootViewController.launch(tab: .home)
+            }
+
+            route(
+                to: .algosDetail(draft: draft),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+        case .assetDetail(let draft):
+            if rootViewController.presentedViewController == nil {
+                rootViewController.launch(tab: .home)
+            }
+            
+            route(
+                to: .assetDetail(draft: draft),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+        case .assetActionConfirmation(let draft):
+            if rootViewController.presentedViewController == nil {
+                rootViewController.launch(tab: .home)
+            }
+            
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+            transition.perform(
+                .assetActionConfirmation(assetAlertDraft: draft, delegate: self),
+                by: .presentWithoutNavigationController
+            )
+            
+            assetActionConfirmationTransition = transition
+        }
     }
     
     @discardableResult
@@ -237,11 +280,10 @@ class Router {
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
         case let .addAccount(flow):
             viewController = AddAccountViewController(flow: flow, configuration: configuration)
-        case let .choosePassword(mode, flow, route):
+        case let .choosePassword(mode, flow):
             viewController = ChoosePasswordViewController(
                 mode: mode,
                 accountSetupFlow: flow,
-                route: route,
                 configuration: configuration
             )
         case let .passphraseView(address):
@@ -300,8 +342,10 @@ class Router {
             viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(account):
             viewController = ManageAssetsViewController(account: account, configuration: configuration)
-        case let .assetActionConfirmation(assetAlertDraft):
-            viewController = AssetActionConfirmationViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
+        case let .assetActionConfirmation(assetAlertDraft, delegate):
+            let aViewController = AssetActionConfirmationViewController(draft: assetAlertDraft, configuration: configuration)
+            aViewController.delegate = delegate
+            viewController = aViewController
         case let .rewardDetail(account):
             viewController = RewardDetailViewController(account: account, configuration: configuration)
         case .verifiedAssetInformation:
@@ -587,5 +631,28 @@ extension Router {
         default:
             return selectedScreen
         }
+    }
+}
+
+extension Router {
+    func assetActionConfirmationViewController(
+        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
+        didConfirmedActionFor assetDetail: AssetInformation
+    ) {
+        let draft = assetActionConfirmationViewController.draft
+        
+        guard let account = draft.account else {
+            return
+        }
+        
+        let assetTransactionDraft =
+            AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetIndex))
+        let transactionController = TransactionController(
+            api: appConfiguration.api,
+            bannerController: appConfiguration.bannerController
+        )
+
+        transactionController.setTransactionDraft(assetTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
     }
 }

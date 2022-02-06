@@ -24,7 +24,6 @@ final class ChoosePasswordViewController: BaseViewController {
     private let viewModel: ChoosePasswordViewModel
     private let accountSetupFlow: AccountSetupFlow?
     private let mode: Mode
-    private var route: Screen?
 
     private lazy var choosePasswordView = ChoosePasswordView()
     private lazy var theme = Theme()
@@ -35,10 +34,9 @@ final class ChoosePasswordViewController: BaseViewController {
 
     weak var delegate: ChoosePasswordViewControllerDelegate?
     
-    init(mode: Mode, accountSetupFlow: AccountSetupFlow?, route: Screen?, configuration: ViewControllerConfiguration) {
+    init(mode: Mode, accountSetupFlow: AccountSetupFlow?, configuration: ViewControllerConfiguration) {
         self.mode = mode
         self.accountSetupFlow = accountSetupFlow
-        self.route = route
         self.viewModel = ChoosePasswordViewModel(mode)
         super.init(configuration: configuration)
     }
@@ -124,60 +122,10 @@ extension ChoosePasswordViewController {
     }
     
     private func launchHome() {
-        setupRouteFromNotification()
-
         DispatchQueue.main.async {
             [weak self] in
             guard let self = self else { return }
             self.launchMainAfterAuthorization(presented: self)
-//            UIApplication.shared.rootViewController()?.tabBarViewController.route = self.route
-        }
-    }
-    
-    private func setupRouteFromNotification() {
-        guard let navigationRoute = route else {
-            return
-        }
-        
-        switch navigationRoute {
-        case let .assetDetailNotification(address, assetId):
-            guard let account = sharedDataController.accountCollection[address]?.value else {
-                return
-            }
-            
-            let compoundAsset = assetId.unwrap { account[$0] }
-
-            guard let accountHandle = sharedDataController.accountCollection[account.address] else {
-                return
-            }
-
-            if let compoundAsset = compoundAsset {
-                route = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, compoundAsset: compoundAsset))
-            } else {
-                route = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
-            }
-        case let .assetActionConfirmationNotification(address, assetId):
-            guard let account = sharedDataController.accountCollection[address]?.value,
-                  let assetId = assetId else {
-                      return
-                  }
-            
-            let draft = AssetAlertDraft(
-                account: account,
-                assetIndex: assetId,
-                assetDetail: nil,
-                title: "asset-support-add-title".localized,
-                detail: String(
-                    format: "asset-support-add-message".localized,
-                    "\(account.name ?? "")"
-                ),
-                actionTitle: "title-approve".localized,
-                cancelTitle: "title-cancel".localized
-            )
-            
-            route = .assetActionConfirmation(assetAlertDraft: draft)
-        default:
-            break
         }
     }
     
@@ -229,14 +177,14 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
 extension ChoosePasswordViewController {
     private func openVerifyPassword(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-            open(.choosePassword(mode: .verify(password: password), flow: accountSetupFlow, route: nil), by: .push)
+            open(.choosePassword(mode: .verify(password: password), flow: accountSetupFlow), by: .push)
         }
     }
 
     private func openResetPassword(with value: NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if session?.isPasswordMatching(with: password) ?? false {
-                open(.choosePassword(mode: .resetPassword(flow: .fromVerifyOld), flow: nil, route: nil), by: .push)
+                open(.choosePassword(mode: .resetPassword(flow: .fromVerifyOld), flow: nil), by: .push)
             } else {
                 handleInvalidPassword()
             }
@@ -283,7 +231,7 @@ extension ChoosePasswordViewController {
     
     private func openResetVerify(with value: NumpadKey, flow: Mode.ResetFlow) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
-            open(.choosePassword(mode: .resetVerify(password: password, flow: flow), flow: nil, route: nil), by: .push)
+            open(.choosePassword(mode: .resetVerify(password: password, flow: flow), flow: nil), by: .push)
         }
     }
     

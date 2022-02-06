@@ -32,8 +32,8 @@ final class ALGAppLaunchController:
 
     private var lastActiveDate: Date?
     
-    @Atomic(identifier: "appLaunchController.deeplink")
-    private var pendingDeeplink: Deeplink? = nil
+    @Atomic(identifier: "appLaunchController.deeplinkSource")
+    private var pendingDeeplinkSource: DeeplinkSource? = nil
     
     private let session: Session
     private let api: ALGAPI
@@ -60,7 +60,7 @@ final class ALGAppLaunchController:
     }
     
     func launch(
-        deeplink: Deeplink?
+        deeplinkWithSource src: DeeplinkSource?
     ) {
         prepareForLaunch()
         
@@ -73,8 +73,8 @@ final class ALGAppLaunchController:
             return
         }
         
-        if let deeplink = deeplink {
-            suspend(deeplink: deeplink)
+        if let deeplinkSource = src {
+            suspend(deeplinkWithSource: deeplinkSource)
         }
         
         if !session.hasPassword() {
@@ -159,12 +159,12 @@ final class ALGAppLaunchController:
     }
     
     func receive(
-        deeplink: Deeplink
+        deeplinkWithSource src: DeeplinkSource
     ) {
         if UIApplication.shared.isActive {
-            resumeIfPossible(deeplink: deeplink)
+            resumeOrSuspend(deeplinkWithSource: src)
         } else {
-            suspend(deeplink: deeplink)
+            suspend(deeplinkWithSource: src)
         }
     }
 }
@@ -260,61 +260,85 @@ extension ALGAppLaunchController {
 }
 
 extension ALGAppLaunchController {
-    private func resumeIfPossible(
-        deeplink: Deeplink
+    private typealias DeeplinkResult = Result<AppLaunchUIState, DeepLinkParser.Error>?
+    
+    private func resumeOrSuspend(
+        deeplinkWithSource src: DeeplinkSource
     ) {
-        switch deeplink {
+        let result: DeeplinkResult
+        
+        switch src {
         case .remoteNotification(let userInfo, let waitForUserConfirmation):
-            resumeIfPossible(
-                remoteNotification: userInfo,
+            result = determineUIStateIfPossible(
+                forRemoteNotificationWithUserInfo: userInfo,
                 waitForUserConfirmation: waitForUserConfirmation
             )
         case .url(let url):
-            resumeIfPossible(url: url)
+            result = determineUIStateIfPossible(forURL: url)
         }
-    }
-    
-    private func resumeIfPossible(
-        remoteNotification userInfo: Deeplink.UserInfo,
-        waitForUserConfirmation: Bool
-    ) {
-        guard let notification = Deeplink.decode(userInfo) else {
-            return
-        }
-
-        let deeplinkResult = deeplinkParser.discover(notification)
-
-        switch deeplinkResult {
+        
+        switch result {
         case .none:
             break
-        case .success(let screen):
-            break
-        case .failure(let error):
-            break
+        case .success(let uiState):
+            uiHandler.launchUI(uiState)
+            completePendingDeeplink()
+        case .failure:
+            suspend(deeplinkWithSource: src)
         }
     }
-
-    private func launch
     
-    private func resumeIfPossible(
-        url: URL
-    ) {
+    private func determineUIStateIfPossible(
+        forRemoteNotificationWithUserInfo userInfo: DeeplinkSource.UserInfo,
+        waitForUserConfirmation: Bool
+    ) -> DeeplinkResult {
+        guard let notification = DeeplinkSource.decode(userInfo) else {
+            return nil
+        }
         
+        let parserResult = deeplinkParser.discover(notification)
+
+        switch parserResult {
+        case .none:
+            return .success(.remoteNotification(notification))
+        case .success(let screen):
+            if notification.detail?.type == .assetSupportRequest {
+                return .success(.deeplink(screen))
+            }
+
+            return .success(
+                waitForUserConfirmation
+                    ? .remoteNotification(notification, screen)
+                    : .deeplink(screen)
+            )
+        case .failure(let error):
+            return .failure(error)
+        }
+    }
+    
+    private func determineUIStateIfPossible(
+        forURL url: URL
+    ) -> DeeplinkResult {
+        return nil
     }
     
     private func suspend(
-        deeplink: Deeplink
+        deeplinkWithSource src: DeeplinkSource
     ) {
-        $pendingDeeplink.modify { $0 = deeplink }
+        $pendingDeeplinkSource.modify { $0 = src }
     }
     
     private func resumePendingDeeplink() {
-        if let pendingDeeplink = pendingDeeplink {
-            resumeIfPossible(deeplink: pendingDeeplink)
+        if let pendingDeeplinkSource = pendingDeeplinkSource {
+            resumeOrSuspend(deeplinkWithSource: pendingDeeplinkSource)
         }
     }
     
+    private func completePendingDeeplink() {
+        $pendingDeeplinkSource.modify { $0 = nil }
+    }
+    
     private func cancelPendingDeeplink() {
-        $pendingDeeplink.modify { $0 = nil }
+        $pendingDeeplinkSource.modify { $0 = nil }
     }
 }

@@ -13,11 +13,11 @@
 // limitations under the License.
 
 //
-//   Deeplink.swift
+//   DeeplinkSource.swift
 
 import Foundation
 
-enum Deeplink {
+enum DeeplinkSource {
     typealias UserInfo = [AnyHashable: Any]
 
     /// <note>
@@ -28,7 +28,7 @@ enum Deeplink {
     case url(URL)
 }
 
-extension Deeplink {
+extension DeeplinkSource {
     static func decode(
         _ userInfo: UserInfo
     ) -> AlgorandNotification? {
