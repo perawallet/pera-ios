@@ -284,7 +284,7 @@ extension TransactionHistoryContextViewModel {
         }
 
         if let transaction = transactionDependency.transaction as? PendingTransaction {
-            if let assetDetail = transactionDependency.compoundAsset?.detail {
+            if let assetDetail = transactionDependency.assetDetail {
                 if transaction.receiver == transaction.sender {
                     transactionAmountViewModel = TransactionAmountViewModel(
                         .normal(
@@ -357,11 +357,11 @@ extension TransactionHistoryContextViewModel {
         }
 
         if let transaction = transactionDependency.transaction as? PendingTransaction {
-            if let compoundAsset = transactionDependency.compoundAsset {
+            if let assetDetail = transactionDependency.assetDetail {
                 bindSecondaryAmount(
                     getAssetCurrencyValue(
                         from: transactionDependency,
-                        and: transaction.amount.assetAmount(fromFraction: compoundAsset.detail.decimals)
+                        and: transaction.amount.assetAmount(fromFraction: assetDetail.decimals)
                     )
                 )
             } else {
@@ -391,7 +391,7 @@ extension TransactionHistoryContextViewModel {
         and amount: Decimal?
     ) -> String? {
         guard let amount = amount,
-              let assetDetail = transactionDependency.compoundAsset?.detail,
+              let assetDetail = transactionDependency.assetDetail,
               let assetUSDValue = assetDetail.usdValue,
               let currency = transactionDependency.currency,
               let currencyUSDValue = currency.usdValue else {
