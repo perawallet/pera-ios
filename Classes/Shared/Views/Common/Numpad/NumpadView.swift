@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonUtils
 import Foundation
 
 final class NumpadView: View {
@@ -50,14 +51,14 @@ final class NumpadView: View {
         }
     }
 
-    private var timer: Timer?
-    private let timerInterval: TimeInterval = 0.01
-    private var timerFireCount = 0
+    private var deleteButtonRepeater: Repeater?
+    private let deleteButtonRepeaterInterval: TimeInterval = 0.01
+    private var deleteButtonRepeaterFireCount = 0
 
-    private var timerFireCountModulo: Int {
-        if timerFireCount > 200 {
+    private var deleteButtonRepeaterFireCountModulo: Int {
+        if deleteButtonRepeaterFireCount > 200 {
             return 1
-        } else if timerFireCount > 100 {
+        } else if deleteButtonRepeaterFireCount > 100 {
             return 2
         } else {
             return 10
@@ -73,7 +74,7 @@ final class NumpadView: View {
     }
 
     deinit {
-        resetTimer()
+        resetDeleteButtonRepeater()
     }
 
     func customize(_ theme: NumpadViewTheme) {
@@ -125,7 +126,7 @@ final class NumpadView: View {
 }
 
 /// <note>
-/// Timer for continuously deleting.
+/// Repeater for continuously deleting.
 extension NumpadView {
     @objc
     private func continuouslyDelete(
@@ -141,43 +142,40 @@ extension NumpadView {
             recognizer.cancelsTouchesInView = false
 
             toggleAllButtonsInteraction(isEnabled: false)
-            scheduleTimer()
+            scheduleDeleteButtonRepeater()
             return
         }
 
         if recognizer.state == .ended {
             recognizer.cancelsTouchesInView = true
 
-            resetTimer()
             toggleAllButtonsInteraction(isEnabled: true)
+            resetDeleteButtonRepeater()
         }
     }
 
-    @objc
-    func handleTimerFire(
-        timer: Timer
-    ) {
-        timerFireCount += 1
+    private func handleDeleteButtonRepeaterFire() {
+        deleteButtonRepeaterFireCount += 1
 
-        if timerFireCount % timerFireCountModulo == 0 {
+        if deleteButtonRepeaterFireCount % deleteButtonRepeaterFireCountModulo == 0 {
             didSelect(sender: deleteButton)
         }
     }
 
-    private func scheduleTimer() {
-        timer = Timer.scheduledTimer(timeInterval: timerInterval,
-                                     target: self,
-                                     selector: #selector(handleTimerFire),
-                                     userInfo: nil,
-                                     repeats: true)
+    private func scheduleDeleteButtonRepeater() {
+        deleteButtonRepeater = Repeater(intervalInSeconds: deleteButtonRepeaterInterval) { [weak self] in
+            asyncMain { [weak self] in
+                self?.handleDeleteButtonRepeaterFire()
+            }
+        }
+
+        deleteButtonRepeater?.resume(immediately: false)
     }
 
-    private func resetTimer() {
-        if let timer = timer {
-            timer.invalidate()
-            self.timer = nil
-            timerFireCount = 0
-        }
+    private func resetDeleteButtonRepeater() {
+        deleteButtonRepeater?.invalidate()
+        deleteButtonRepeater = nil
+        deleteButtonRepeaterFireCount = 0
     }
 
     private func toggleAllButtonsInteraction(isEnabled: Bool) {
