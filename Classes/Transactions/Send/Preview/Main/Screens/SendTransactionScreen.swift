@@ -106,6 +106,10 @@ final class SendTransactionScreen: BaseViewController {
         case .algo:
             title = "send-transaction-title".localized("asset-algos-title".localized)
         }
+
+        if draft.fractionCount <= 0 {
+            numpadView.leftButtonIsHidden = true
+        }
     }
 
     override func configureNavigationBarAppearance() {

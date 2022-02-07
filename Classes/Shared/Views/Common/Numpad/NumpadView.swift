@@ -43,6 +43,12 @@ final class NumpadView: View {
     private lazy var zeroButton = NumpadButton(numpadKey: .number("0"))
     private lazy var deleteButton = NumpadButton(numpadKey: .delete)
 
+    var leftButtonIsHidden: Bool = false {
+        didSet {
+            leftButton.alpha = leftButtonIsHidden ? 0 : 1
+        }
+    }
+
     var deleteButtonIsHidden: Bool = true {
         didSet {
             guard deleteButtonIsHidden != oldValue else { return }
@@ -121,6 +127,7 @@ final class NumpadView: View {
             self.leftButton = NumpadButton(numpadKey: .decimalSeparator)
         case .passcode:
             self.leftButton = NumpadButton(numpadKey: .spacing)
+            self.leftButton.alpha = 0
         }
     }
 }
