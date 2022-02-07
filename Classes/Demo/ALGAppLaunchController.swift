@@ -234,27 +234,15 @@ extension ALGAppLaunchController {
     /// Another way? It will be called everytime the application is launched.
     private func setupAccountsPreordering(
         _ authenticatedUser: User?
-    ) {
-        var index = 0
-
-        var watchIndex = 0
-        let watchOffset = 100000
-        
-        authenticatedUser?.accounts.forEach { account in
-            if account.type == .watch {
+    ) {        
+        authenticatedUser?.accounts
+            .enumerated()
+            .forEach { index, account in
                 if !account.isOrderred {
-                    account.preferredOrder = watchOffset + watchIndex
+                    let initialOffset = account.type == .watch ? 100000 : 0
+                    account.preferredOrder = initialOffset + index
                 }
-                
-                watchIndex += 1
-            } else {
-                if !account.isOrderred {
-                    account.preferredOrder = index
-                }
-                
-                index += 1
             }
-        }
     }
 }
 
