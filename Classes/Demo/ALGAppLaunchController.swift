@@ -68,7 +68,7 @@ final class ALGAppLaunchController:
             /// <note>
             /// App is deleted, but the keychain has the private keys.
             session.reset(includingContacts: false)
-            uiHandler.launchUI(.onboarding)
+            firstLaunchUI(.onboarding)
 
             return
         }
@@ -82,7 +82,7 @@ final class ALGAppLaunchController:
             return
         }
         
-        uiHandler.launchUI(.authorization)
+        firstLaunchUI(.authorization)
     }
     
     func launchOnboarding() {
@@ -189,6 +189,19 @@ extension ALGAppLaunchController {
         
         setupPreferredNetwork(authenticatedUser)
         setupAccountsPreordering(authenticatedUser)
+    }
+    
+    private func firstLaunchUI(
+        _ state: AppLaunchUIState
+    ) {
+        /// <note>
+        /// Delay for the root to finish its transition to window.
+        asyncMain(
+            self,
+            afterDuration: 0.5
+        ) { strongSelf in
+            strongSelf.uiHandler.launchUI(state)
+        }
     }
 }
 

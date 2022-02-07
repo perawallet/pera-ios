@@ -47,12 +47,14 @@ final class HomeViewController:
     private lazy var listLayout = HomeListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = HomeListDataSource(listView)
 
-    private let dataController: HomeDataController
-
     /// <todo>: Refactor
     /// This is needed for ChoosePasswordViewControllerDelegate's method.
     private var selectedAccountHandle: AccountHandle? = nil
     private var sendTransactionDraft: SendTransactionDraft?
+    
+    private var isViewFirstAppeared = true
+    
+    private let dataController: HomeDataController
     
     init(
         dataController: HomeDataController,
@@ -85,15 +87,20 @@ final class HomeViewController:
         pushNotificationController.sendDeviceDetails()
 
         requestAppReview()
-        presentPasscodeFlowIfNeeded()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         reconnectToOldWCSessions()
         
         let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
         loadingCell?.startAnimating()
+        
+        if isViewFirstAppeared {
+            presentPasscodeFlowIfNeeded()
+            isViewFirstAppeared = false
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
