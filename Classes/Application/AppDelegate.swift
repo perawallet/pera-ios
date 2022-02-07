@@ -162,13 +162,13 @@ class AppDelegate:
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-        guard let host = url.host else {
+        guard let scheme = url.scheme else {
             return false
         }
         
         /// <todo>
         /// Schemes should be controlled from a single point.
-        switch host {
+        switch scheme {
         case "algorand":
             appLaunchController.receive(deeplinkWithSource: .url(url))
             return true
