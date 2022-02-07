@@ -41,7 +41,7 @@ struct AccountOrdering {
     func setInitialWalletOrder() {
         /// <todo> This will be removed after new routing structure
         if let accounts = session.authenticatedUser?.accounts {
-            if accounts.contains(where: { $0.preferredOrder != -1 }) {
+            if !accounts.contains(where: { $0.preferredOrder == -1 }) {
                 return
             }
 

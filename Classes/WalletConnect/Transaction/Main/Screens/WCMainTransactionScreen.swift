@@ -472,7 +472,12 @@ extension WCMainTransactionScreen: WCTransactionValidator {
 extension WCMainTransactionScreen: AssetCachable {
     private func getAssetDetailsIfNeeded() {
         let assetTransactions = transactions.filter {
-            $0.transactionDetail?.type == .assetTransfer || $0.transactionDetail?.type == .assetConfig
+            if let transactionDetail = $0.transactionDetail {
+                return (!transactionDetail.isAssetCreationTransaction) &&
+                    (transactionDetail.type == .assetTransfer || transactionDetail.type == .assetConfig)
+            }
+
+            return false
         }
 
         guard !assetTransactions.isEmpty else {
