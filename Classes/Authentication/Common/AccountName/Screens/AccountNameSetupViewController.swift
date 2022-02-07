@@ -121,9 +121,6 @@ extension AccountNameSetupViewController {
             session?.authenticatedUser = user
             
             launchMain()
-//            dismiss(animated: false) {
-//                UIApplication.shared.rootViewController()?.setupTabBarController()
-//            }
         }
     }
 }

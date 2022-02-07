@@ -202,9 +202,6 @@ extension LedgerAccountVerificationViewController {
         switch self.accountSetupFlow {
         case .initializeAccount:
             launchMain()
-//            closeScreen(by: .dismiss, animated: false) {
-//                UIApplication.shared.rootViewController()?.setupTabBarController()
-//            }
         case .addNewAccount:
             closeScreen(by: .dismiss, animated: true)
         case .none:

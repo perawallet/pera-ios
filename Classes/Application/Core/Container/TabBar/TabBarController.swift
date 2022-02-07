@@ -73,27 +73,6 @@ final class TabBarController: TabBarContainer {
 }
 
 extension TabBarController {
-    func routeForDeeplink() {
-        if let route = route {
-            let visibleScreen = findVisibleScreen()
-            
-            self.route = nil
-            switch route {
-            case .addContact:
-                selectedIndex = items.index(of: .contacts)
-                visibleScreen.open(route, by: .push)
-//            case .sendAlgosTransactionPreview,
-//                 .sendAssetTransactionPreview:
-//                selectedIndex = items.index(of: .home)
-//                visibleScreen.open(route, by: .push)
-            default:
-                break
-            }
-        }
-    }
-}
-
-extension TabBarController {
     private func build() {
         addBackground()
         
