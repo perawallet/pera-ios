@@ -47,14 +47,14 @@ class RootViewController: UIViewController {
     let appConfiguration: AppConfiguration
     
     private lazy var mainContainer = TabBarController()
-    
-    private lazy var bottomSheetTransition = BottomSheetTransition(presentingViewController: self)
 
     private(set) var isDisplayingGovernanceBanner = true
 
     private var currentWCTransactionRequest: WalletConnectRequest?
 
     private var wcRequestScreen: WCMainTransactionScreen?
+    
+    private var wcTransactionSuccessTransition: BottomSheetTransition?
     
     private let onceWhenViewDidAppear = Once()
     
@@ -232,19 +232,26 @@ extension RootViewController: WCMainTransactionScreenDelegate {
     private func presentWCTransactionSuccessMessage(for session: WCSession) {
         let dappName = session.peerMeta.name
 
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-approval-check".uiImage,
-            title: "wc-transaction-request-signed-warning-title".localized,
-            description: "wc-transaction-request-signed-warning-message".localized(dappName, dappName),
-            primaryActionButtonTitle: nil,
-            secondaryActionButtonTitle: "title-close".localized
-        )
+        asyncMain(afterDuration: 0.3) {
+            [weak self] in
+            guard let self = self else { return }
 
-        asyncMain(afterDuration: 0.3) { [weak self] in
-            self?.bottomSheetTransition.perform(
+            let visibleScreen = self.findVisibleScreen()
+            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+            let configurator = BottomWarningViewConfigurator(
+                image: "icon-approval-check".uiImage,
+                title: "wc-transaction-request-signed-warning-title".localized,
+                description: "wc-transaction-request-signed-warning-message".localized(dappName, dappName),
+                primaryActionButtonTitle: nil,
+                secondaryActionButtonTitle: "title-close".localized
+            )
+            
+            transition.perform(
                 .bottomWarning(configurator: configurator),
                 by: .presentWithoutNavigationController
             )
+            
+            self.wcTransactionSuccessTransition = transition
         }
     }
 
