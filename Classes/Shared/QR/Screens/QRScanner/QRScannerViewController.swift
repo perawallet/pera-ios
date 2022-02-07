@@ -300,10 +300,17 @@ extension QRScannerViewController: WalletConnectorDelegate {
         let accounts = self.sharedDataController.accountCollection.sorted()
 
         guard accounts.contains(where: { $0.value.type != .watch }) else {
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "wallet-connect-session-error-no-account".localized
-            )
+            asyncMain { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-session-error-no-account".localized
+                )
+            }
+
             return
         }
         dAppName = session.dAppInfo.peerMeta.name
