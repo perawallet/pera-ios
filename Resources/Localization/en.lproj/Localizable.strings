@@ -531,6 +531,7 @@
 "transaction-download-from" = "From: Address";
 "transaction-download-to" = "To: Address";
 "transaction-download-close-to" = "Close To: Address";
+"csv-loading-message" = "We are fetching your data. Please wait until your CSV is ready.";
 
 // MARK: Pin Limit
 "pin-limit-title" = "Algorand app is locked";
@@ -579,7 +580,7 @@
 "ledger-pairing-first-warning-message-first-instruction" = "Open your Ledger device.";
 "ledger-pairing-first-warning-message-second-instruction" = "Close the Algorand app on the Ledger device.";
 "ledger-pairing-first-warning-message-third-instruction" = "On the Ledger homescreen, confirm pairing.";
-"ledger-pairing-first-warning-message-fourth-instruction" = "Once pairing is confirmed, open the Algorand Ledger app.";
+"ledger-pairing-first-warning-message-fourth-instruction" = "Once pairing is confirmed on both Ledger and this device, open the Algorand Ledger app.";
 
 // MARK: Watch Account
 "title-watch-account" = "Watch Account";

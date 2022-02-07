@@ -52,7 +52,6 @@ final class LedgerDeviceListViewController: BaseViewController {
         super.viewWillAppear(animated)
         ledgerDeviceListView.startAnimatingImageView()
         ledgerDeviceListView.startAnimatingIndicatorView()
-        startTimer()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -111,6 +110,8 @@ extension LedgerDeviceListViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        startTimer()
+        
         selectedDevice = ledgerDevices[indexPath.item]
 
         let oneTimeDisplayStorage = OneTimeDisplayStorage()

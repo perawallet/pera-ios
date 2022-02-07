@@ -95,6 +95,7 @@ extension LedgerAccountFetchOperation {
     private func fetchAccount(_ address: String) {
         api.fetchAccount(
             AccountFetchDraft(publicKey: address),
+            includesClosedAccounts: true,
             queue: .main,
             ignoreResponseOnCancelled: true
         ) { response in

@@ -39,7 +39,13 @@ final class LedgerAccountDetailViewController: BaseScrollViewController {
     init(account: Account, ledgerIndex: Int?, rekeyedAccounts: [Account]?, configuration: ViewControllerConfiguration) {
         self.account = account
         self.ledgerIndex = ledgerIndex
-        self.rekeyedAccounts = rekeyedAccounts
+
+        if account.isRekeyed() {
+            self.rekeyedAccounts = [Account(address: account.authAddress.unwrap(or: ""), type: .ledger)]
+        } else {
+            self.rekeyedAccounts = rekeyedAccounts
+        }
+
         super.init(configuration: configuration)
     }
     
