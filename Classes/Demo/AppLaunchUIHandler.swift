@@ -37,4 +37,5 @@ enum AppLaunchUIState {
         DeepLinkParser.Screen? = nil
     )
     case deeplink(DeepLinkParser.Screen)
+    case walletConnectSessionRequest(String)
 }

@@ -275,6 +275,8 @@ extension ALGAppLaunchController {
             )
         case .url(let url):
             result = determineUIStateIfPossible(forURL: url)
+        case .walletConnectSessionRequest(let url):
+            result = determineUIStateIfPossible(forWalletConnectSessionRequest: url)
         }
         
         switch result {
@@ -296,7 +298,7 @@ extension ALGAppLaunchController {
             return nil
         }
         
-        let parserResult = deeplinkParser.discover(notification)
+        let parserResult = deeplinkParser.discover(notification: notification)
 
         switch parserResult {
         case .none:
@@ -319,7 +321,25 @@ extension ALGAppLaunchController {
     private func determineUIStateIfPossible(
         forURL url: URL
     ) -> DeeplinkResult {
-        return nil
+        let parserResult = deeplinkParser.discover(url: url)
+        
+        switch parserResult {
+        case .none: return nil
+        case .success(let screen): return .success(.deeplink(screen))
+        case .failure(let error): return .failure(error)
+        }
+    }
+    
+    private func determineUIStateIfPossible(
+        forWalletConnectSessionRequest request: URL
+    ) -> DeeplinkResult {
+        let parserResult = deeplinkParser.discover(walletConnectSessionRequest: request)
+        
+        switch parserResult {
+        case .none: return nil
+        case .success(let key): return .success(.walletConnectSessionRequest(key))
+        case .failure(let error): return .failure(error)
+        }
     }
     
     private func suspend(

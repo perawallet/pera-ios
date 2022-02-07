@@ -15,13 +15,14 @@
 //
 //  AppDelegate.swift
 
-import Foundation
-import UIKit
 import CoreData
 import Firebase
-import SwiftDate
-import UserNotifications
 import FirebaseCrashlytics
+import Foundation
+import MacaroonUtils
+import SwiftDate
+import UIKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate:
@@ -55,15 +56,6 @@ class AppDelegate:
 
     var window: UIWindow?
     
-    private lazy var appLaunchController = createAppLaunchController()
-
-    private lazy var session = Session()
-    private lazy var api = ALGAPI(session: session)
-    private lazy var sharedDataController = SharedAPIDataController(session: session, api: api)
-    private lazy var walletConnector = WalletConnector()
-    private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
-    private lazy var bannerController = BannerController(window: window!)
-
     private(set) lazy var appConfiguration = AppConfiguration(
         api: api,
         session: session,
@@ -73,19 +65,24 @@ class AppDelegate:
         bannerController: bannerController
     )
     
+    private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
+    
+    private lazy var appLaunchController = createAppLaunchController()
+
+    private lazy var session = Session()
+    private lazy var api = ALGAPI(session: session)
+    private lazy var sharedDataController = SharedAPIDataController(session: session, api: api)
+    private lazy var walletConnector = WalletConnector()
+    private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
+    private lazy var bannerController = BannerController(window: window!)
+    
     private lazy var router =
         Router(rootViewController: rootViewController, appConfiguration: appConfiguration)
-    private lazy var deepLinkRouter =
-        DeepLinkRouter(router: router, appConfiguration: appConfiguration)
     
     private lazy var rootViewController = RootViewController(appConfiguration: appConfiguration)
 
     private lazy var pushNotificationController =
         PushNotificationController(session: session, api: api, bannerController: bannerController)
-
-    private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
-
-    private(set) var incomingWCSessionRequest: String?
     
     private lazy var containerBlurView = UIVisualEffectView()
     
@@ -165,7 +162,22 @@ class AppDelegate:
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
-        return shouldHandleDeepLinkRouting(from: url)
+        guard let host = url.host else {
+            return false
+        }
+        
+        /// <todo>
+        /// Schemes should be controlled from a single point.
+        switch host {
+        case "algorand":
+            appLaunchController.receive(deeplinkWithSource: .url(url))
+            return true
+        case "algorand-wc":
+            appLaunchController.receive(deeplinkWithSource: .walletConnectSessionRequest(url))
+            return true
+        default:
+            return false
+        }
     }
 }
 
@@ -197,6 +209,14 @@ extension AppDelegate {
             }
         case .deeplink(let screen):
             router.launch(deeplink: screen)
+        case .walletConnectSessionRequest(let key):
+            NotificationCenter.default.post(
+                name: WalletConnector.didReceiveSessionRequestNotification,
+                object: nil,
+                userInfo: [
+                    WalletConnector.sessionRequestUserInfoKey: key
+                ]
+            )
         }
     }
 }
@@ -248,6 +268,8 @@ extension AppDelegate {
         
         if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
             src = .remoteNotification(userInfo, waitForUserConfirmation: false)
+        } else if let url = options?[.url] as? URL {
+            src = .url(url)
         } else {
             src = nil
         }
@@ -309,31 +331,6 @@ extension AppDelegate {
     private func authorizeNotifications(for deviceToken: Data) {
         let pushToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         pushNotificationController.authorizeDevice(with: pushToken)
-    }
-
-    private func shouldHandleDeepLinkRouting(from url: URL) -> Bool {
-//        let parser = DeepLinkParser(url: url)
-//
-//        if let sessionRequest = parser.wcSessionRequestText {
-//            if let user = appConfiguration.session.authenticatedUser,
-//               !user.accounts.isEmpty {
-//                incomingWCSessionRequest = sessionRequest
-//                return true
-//            }
-//
-//            return false
-//        }
-//
-//        guard let screen = parser.expectedScreen else {
-//                return false
-//        }
-//
-//        return deepLinkRouter.handleDeepLinkRouting(for: screen)
-        return true
-    }
-
-    func resetWCSessionRequest() {
-        incomingWCSessionRequest = nil
     }
 }
 

@@ -91,7 +91,6 @@ final class HomeViewController:
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         reconnectToOldWCSessions()
-        connectToWCSessionRequestFromDeeplink()
         
         let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
         loadingCell?.startAnimating()
@@ -116,17 +115,6 @@ final class HomeViewController:
     override func linkInteractors() {
         super.linkInteractors()
         listView.delegate = self
-    }
-
-    override func setListeners() {
-        super.setListeners()
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didBecomeActive),
-            name: UIApplication.didBecomeActiveNotification,
-            object: nil
-        )
     }
 }
 
@@ -300,13 +288,6 @@ extension HomeViewController {
 }
 
 extension HomeViewController {
-    @objc
-    private func didBecomeActive() {
-        connectToWCSessionRequestFromDeeplink()
-    }
-}
-
-extension HomeViewController {
     private func configureWalletConnectIfNeeded() {
         onceWhenViewDidAppear.execute { [weak self] in
             guard let self = self else {
@@ -319,7 +300,6 @@ extension HomeViewController {
 
     private func completeWalletConnectConfiguration() {
         reconnectToOldWCSessions()
-        connectToWCSessionRequestFromDeeplink()
         registerWCRequests()
     }
 
@@ -333,62 +313,6 @@ extension HomeViewController {
             wcRequestHandler.delegate = rootViewController
         }
         walletConnector.register(for: wcRequestHandler)
-    }
-
-    private func connectToWCSessionRequestFromDeeplink() {
-        if let appDelegate = UIApplication.shared.appDelegate,
-           let incominWCSession = appDelegate.incomingWCSessionRequest {
-            walletConnector.delegate = self
-            walletConnector.connect(to: incominWCSession)
-            appDelegate.resetWCSessionRequest()
-        }
-    }
-}
-
-extension HomeViewController: WalletConnectorDelegate {
-    func walletConnector(
-        _ walletConnector: WalletConnector,
-        shouldStart session: WalletConnectSession,
-        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
-    ) {
-        if !sharedDataController.accountCollection.sorted().contains(where: { $0.value.type != .watch }) {
-                  asyncMain { [weak self] in
-                      guard let self = self else {
-                          return
-                      }
-
-                      self.bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "wallet-connect-session-error-no-account".localized
-                      )
-                  }
-                  return
-              }
-
-        asyncMain { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.modalTransition.perform(
-                .wcConnectionApproval(walletConnectSession: session, delegate: self, completion: completion),
-                by: .present
-            )
-        }
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didConnectTo session: WCSession) {
-        walletConnector.saveConnectedWCSession(session)
-    }
-}
-
-extension HomeViewController: WCConnectionApprovalViewControllerDelegate {
-    func wcConnectionApprovalViewControllerDidApproveConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
-        wcConnectionApprovalViewController.dismissScreen()
-    }
-
-    func wcConnectionApprovalViewControllerDidRejectConnection(_ wcConnectionApprovalViewController: WCConnectionApprovalViewController) {
-        wcConnectionApprovalViewController.dismissScreen()
     }
 }
 

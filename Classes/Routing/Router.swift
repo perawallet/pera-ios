@@ -17,12 +17,21 @@
 
 import Foundation
 import MacaroonUIKit
+import MacaroonUtils
 import UIKit
 
-class Router: AssetActionConfirmationViewControllerDelegate {
+class Router:
+    AssetActionConfirmationViewControllerDelegate,
+    WalletConnectorDelegate,
+    WCConnectionApprovalViewControllerDelegate,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+    
     unowned let rootViewController: RootViewController
     
-    private var assetActionConfirmationTransition: BottomSheetTransition?
+    /// <todo>
+    /// How to dealloc finished transitions?
+    private var ongoingTransitions: [BottomSheetTransition] = []
 
     private unowned let appConfiguration: AppConfiguration
     
@@ -32,6 +41,12 @@ class Router: AssetActionConfirmationViewControllerDelegate {
     ) {
         self.rootViewController = rootViewController
         self.appConfiguration = appConfiguration
+        
+        observeNotifications()
+    }
+    
+    deinit {
+        unobserveNotifications()
     }
     
     func launchAuthorization() {
@@ -88,31 +103,33 @@ class Router: AssetActionConfirmationViewControllerDelegate {
     func launch(
         deeplink screen: DeepLinkParser.Screen
     ) {
-        switch screen {
-        case .algosDetail(let draft):
+        func launch(
+            tab: TabBarItemID
+        ) {
             if rootViewController.presentedViewController == nil {
-                rootViewController.launch(tab: .home)
+                rootViewController.launch(tab: tab)
             }
+        }
+        
+        switch screen {
+        case .addContact(let address, let name):
+            launch(tab: .contacts)
+            
+            route(
+                to: .addContact(address: address, name: name),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+        case .algosDetail(let draft):
+            launch(tab: .home)
 
             route(
                 to: .algosDetail(draft: draft),
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
-        case .assetDetail(let draft):
-            if rootViewController.presentedViewController == nil {
-                rootViewController.launch(tab: .home)
-            }
-            
-            route(
-                to: .assetDetail(draft: draft),
-                from: findVisibleScreen(over: rootViewController),
-                by: .present
-            )
         case .assetActionConfirmation(let draft):
-            if rootViewController.presentedViewController == nil {
-                rootViewController.launch(tab: .home)
-            }
+            launch(tab: .home)
             
             let visibleScreen = findVisibleScreen(over: rootViewController)
             let transition = BottomSheetTransition(presentingViewController: visibleScreen)
@@ -122,7 +139,15 @@ class Router: AssetActionConfirmationViewControllerDelegate {
                 by: .presentWithoutNavigationController
             )
             
-            assetActionConfirmationTransition = transition
+            ongoingTransitions.append(transition)
+        case .assetDetail(let draft):
+            launch(tab: .home)
+            
+            route(
+                to: .assetDetail(draft: draft),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
         }
     }
     
@@ -654,5 +679,90 @@ extension Router {
 
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+    }
+}
+
+extension Router {
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        shouldStart session: WalletConnectSession,
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
+    ) {
+        let sharedDataController = appConfiguration.sharedDataController
+        let bannerController = appConfiguration.bannerController
+        
+        let hasNonWatchAccount = sharedDataController.accountCollection.contains {
+            $0.value.type != .watch
+        }
+        
+        if !hasNonWatchAccount {
+            asyncMain { [weak bannerController] in
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-session-error-no-account".localized
+                )
+            }
+            return
+        }
+
+        asyncMain { [weak self] in
+            guard let self = self else { return }
+            
+            let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
+            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+            transition.perform(
+                .wcConnectionApproval(
+                    walletConnectSession: session,
+                    delegate: self,
+                    completion: completion
+                ),
+                by: .present
+            )
+            
+            self.ongoingTransitions.append(transition)
+        }
+    }
+
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didConnectTo session: WCSession
+    ) {
+        walletConnector.saveConnectedWCSession(session)
+    }
+}
+
+extension Router {
+    func wcConnectionApprovalViewControllerDidApproveConnection(
+        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController
+    ) {
+        wcConnectionApprovalViewController.dismissScreen()
+    }
+
+    func wcConnectionApprovalViewControllerDidRejectConnection(
+        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController
+    ) {
+        wcConnectionApprovalViewController.dismissScreen()
+    }
+}
+
+extension Router {
+    private func observeNotifications() {
+        observe(notification: WalletConnector.didReceiveSessionRequestNotification) {
+            [weak self] notification in
+            guard let self = self else { return }
+            
+            let userInfoKey = WalletConnector.sessionRequestUserInfoKey
+            let maybeSessionKey = notification.userInfo?[userInfoKey] as? String
+
+            guard let sessionKey = maybeSessionKey else {
+                return
+            }
+            
+            let walletConnector = self.appConfiguration.walletConnector
+            
+            walletConnector.delegate = self
+            walletConnector.connect(to: sessionKey)
+        }
     }
 }

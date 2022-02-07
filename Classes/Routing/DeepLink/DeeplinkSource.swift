@@ -26,6 +26,7 @@ enum DeeplinkSource {
     /// false => Take the action immediately.
     case remoteNotification(UserInfo, waitForUserConfirmation: Bool)
     case url(URL)
+    case walletConnectSessionRequest(URL)
 }
 
 extension DeeplinkSource {
