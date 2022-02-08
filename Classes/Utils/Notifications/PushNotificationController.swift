@@ -220,7 +220,7 @@ extension PushNotificationController {
                     .toFractionStringForLabel(fraction: fractionDecimals).someString
                 transactionAmountText = "\(amountText) \(assetName) (\(assetCode))"
             } else {
-                transactionAmountText = "\(amount.toAlgos.toAlgosStringForLabel.someString) Algos"
+                transactionAmountText = "\(amount.toAlgos.toAlgosStringForLabel.someString) Algo"
             }
             
             let format = failure
@@ -280,7 +280,7 @@ extension PushNotificationController {
                     .toFractionStringForLabel(fraction: fractionDecimals).someString
                 transactionAmountText = "\(amountText) \(assetName) (\(assetCode))"
             } else {
-                transactionAmountText = "\(amount.toAlgos.toAlgosStringForLabel.someString) Algos"
+                transactionAmountText = "\(amount.toAlgos.toAlgosStringForLabel.someString) Algo"
             }
             
             let message = String(
