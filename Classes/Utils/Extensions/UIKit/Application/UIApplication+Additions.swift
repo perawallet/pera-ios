@@ -103,22 +103,6 @@ extension UIApplication {
         return window?.safeAreaInsets.top ?? 0
     }
     
-    @discardableResult
-    func route<T: UIViewController>(
-        to screen: Screen,
-        from viewController: UIViewController,
-        by style: Screen.Transition.Open,
-        animated: Bool = true,
-        then completion: EmptyHandler? = nil
-    ) -> T? {
-        
-        guard let rootViewController = rootViewController() else {
-            return nil
-        }
-        
-        return rootViewController.route(to: screen, from: viewController, by: style, animated: animated, then: completion)
-    }
-    
     func openAppSettings() {
         guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
             return

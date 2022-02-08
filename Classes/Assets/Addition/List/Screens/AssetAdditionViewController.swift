@@ -199,11 +199,10 @@ extension AssetAdditionViewController: AssetListViewControllerDelegate {
             cancelTitle: "title-cancel".localized
         )
 
-        let controller = assetActionConfirmationTransition.perform(
-            .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
+        assetActionConfirmationTransition.perform(
+            .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
             by: .presentWithoutNavigationController
-        ) as? AssetActionConfirmationViewController
-        controller?.delegate = self
+        )
     }
 }
 

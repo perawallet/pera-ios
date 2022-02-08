@@ -37,22 +37,4 @@ struct AccountOrdering {
             session.authenticatedUser?.updateLocalAccount(account.value)
         }
     }
-
-    func setInitialWalletOrder() {
-        /// <todo> This will be removed after new routing structure
-        if let accounts = session.authenticatedUser?.accounts {
-            if accounts.contains(where: { $0.preferredOrder != -1 }) {
-                return
-            }
-
-            for (index, account) in accounts.enumerated() {
-                if account.type == .watch {
-                    account.preferredOrder = index + watchAccountOrderOffset
-                    continue
-                }
-
-                account.preferredOrder = index
-            }
-        }
-    }
 }

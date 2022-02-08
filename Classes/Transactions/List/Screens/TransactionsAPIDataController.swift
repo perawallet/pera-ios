@@ -171,8 +171,54 @@ extension TransactionsAPIDataController {
             case let .success(transactionResults):
                 self.nextToken = self.nextToken == nil ? transactionResults.nextToken : self.nextToken
                 transactionResults.transactions.forEach { $0.status = .completed }
-                self.groupTransactionsByType(transactionResults.transactions, isPaginated: false)
-                self.deliverContentSnapshot()
+
+                self.fetchAssets(from: transactionResults.transactions) {
+                    self.groupTransactionsByType(transactionResults.transactions, isPaginated: false)
+                    self.deliverContentSnapshot()
+                }
+            }
+        }
+    }
+
+    private func fetchAssets(
+        from transactions: [Transaction],
+        completion handler: @escaping EmptyHandler
+    ) {
+        var assetsToBeFetched: [AssetID] = []
+
+        let assets = transactions.compactMap {
+            $0.assetTransfer?.assetId
+        }
+
+        for asset in assets {
+            if sharedDataController.assetDetailCollection[asset] == nil {
+                assetsToBeFetched.append(asset)
+            }
+        }
+
+        if assetsToBeFetched.isEmpty {
+            handler()
+            return
+        }
+
+        api.fetchAssetDetails(
+            AssetFetchQuery(ids: assetsToBeFetched),
+            queue: .main,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] assetResponse in
+            guard let self = self else {
+                return
+            }
+
+            switch assetResponse {
+            case let .success(assetDetailResponse):
+                assetDetailResponse.results.forEach {
+                    self.sharedDataController.assetDetailCollection[$0.id] = $0
+                }
+
+                handler()
+            case .failure:
+                handler()
             }
         }
     }
@@ -197,8 +243,11 @@ extension TransactionsAPIDataController {
             case let .success(transactionResults):
                 self.nextToken = transactionResults.nextToken
                 transactionResults.transactions.forEach { $0.status = .completed }
-                self.groupTransactionsByType(transactionResults.transactions, isPaginated: true)
-                self.deliverContentSnapshot()
+
+                self.fetchAssets(from: transactionResults.transactions) {
+                    self.groupTransactionsByType(transactionResults.transactions, isPaginated: true)
+                    self.deliverContentSnapshot()
+                }
             }
         }
     }
@@ -534,13 +583,20 @@ extension TransactionsAPIDataController {
         with transaction: Transaction,
         for address: String?
     ) -> TransactionHistoryContextViewModel {
+        var assetDetail: AssetInformation?
+        if let assetID = transaction.assetTransfer?.assetId,
+           let asset = sharedDataController.assetDetailCollection[assetID] {
+            assetDetail = asset
+        }
+
         if let contact = contacts.first(where: { contact in
             contact.address == address
         }) {
             transaction.contact = contact
+
             let config = TransactionViewModelDependencies(
                 account: draft.accountHandle.value,
-                compoundAsset: draft.compoundAsset,
+                assetDetail: assetDetail,
                 transaction: transaction,
                 contact: contact,
                 currency: sharedDataController.currency.value,
@@ -552,7 +608,7 @@ extension TransactionsAPIDataController {
 
         let config = TransactionViewModelDependencies(
             account: draft.accountHandle.value,
-            compoundAsset: draft.compoundAsset,
+            assetDetail: assetDetail,
             transaction: transaction,
             currency: sharedDataController.currency.value,
             localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }
@@ -571,7 +627,7 @@ extension TransactionsAPIDataController {
             transaction.contact = contact
             let config = TransactionViewModelDependencies(
                 account: draft.accountHandle.value,
-                compoundAsset: draft.compoundAsset,
+                assetDetail: draft.compoundAsset?.detail,
                 transaction: transaction,
                 contact: contact,
                 currency: sharedDataController.currency.value,
@@ -583,7 +639,7 @@ extension TransactionsAPIDataController {
 
         let config = TransactionViewModelDependencies(
             account: draft.accountHandle.value,
-            compoundAsset: draft.compoundAsset,
+            assetDetail: draft.compoundAsset?.detail,
             transaction: transaction,
             currency: sharedDataController.currency.value,
             localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }

@@ -13,15 +13,29 @@
 // limitations under the License.
 
 //
-//  TransactionViewModelDependencies.swift
+//   AppLaunchUIHandler.swift
 
 import Foundation
+import UIKit
 
-struct TransactionViewModelDependencies {
-    let account: Account
-    let assetDetail: AssetInformation?
-    let transaction: TransactionItem
-    var contact: Contact?
-    let currency: Currency?
-    let localAccounts: [Account]
+protocol AppLaunchUIHandler: AnyObject {
+    func launchUI(
+        _ state: AppLaunchUIState
+    )
+}
+
+enum AppLaunchUIState {
+    case authorization /// pin
+    case onboarding
+    case main
+    case mainAfterAuthorization(
+        presented: UIViewController,
+        completion: () -> Void
+    )
+    case remoteNotification(
+        AlgorandNotification,
+        DeepLinkParser.Screen? = nil
+    )
+    case deeplink(DeepLinkParser.Screen)
+    case walletConnectSessionRequest(String)
 }

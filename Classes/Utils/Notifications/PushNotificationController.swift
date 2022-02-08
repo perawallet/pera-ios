@@ -30,10 +30,16 @@ class PushNotificationController: NSObject {
         }
     }
     
-    private var api: ALGAPI
+    private let session: Session
+    private let api: ALGAPI
     private let bannerController: BannerController?
     
-    init(api: ALGAPI, bannerController: BannerController?) {
+    init(
+        session: Session,
+        api: ALGAPI,
+        bannerController: BannerController?
+    ) {
+        self.session = session
         self.api = api
         self.bannerController = bannerController
     }
@@ -64,7 +70,7 @@ extension PushNotificationController {
     }
     
     func sendDeviceDetails(completion handler: BoolHandler? = nil) {
-        guard let user = api.session.applicationConfiguration?.authenticatedUser() else {
+        guard let user = session.applicationConfiguration?.authenticatedUser() else {
             return
         }
         
@@ -80,7 +86,7 @@ extension PushNotificationController {
         api.updateDevice(draft) { response in
             switch response {
             case let .success(device):
-                self.api.session.authenticatedUser?.setDeviceId(device.id)
+                self.session.authenticatedUser?.setDeviceId(device.id)
                 handler?(true)
             case let .failure(_, algorandError):
                 if let errorType = algorandError?.type,
@@ -98,7 +104,7 @@ extension PushNotificationController {
         api.registerDevice(draft) { response in
             switch response {
             case let .success(device):
-                self.api.session.authenticatedUser?.setDeviceId(device.id)
+                self.session.authenticatedUser?.setDeviceId(device.id)
                 handler?(true)
             case let .failure(_, algorandError):
                 if let errorType = algorandError?.type,
@@ -128,211 +134,203 @@ extension PushNotificationController {
 // MARK: Foreground
 
 extension PushNotificationController {
-    func show(with notificationDetail: NotificationDetail, then handler: EmptyHandler? = nil) {
-        guard let notificationType = notificationDetail.notificationType else {
+    func present(
+        notification: AlgorandNotification,
+        action handler: EmptyHandler? = nil
+    ) {
+        guard let notificationDetail = notification.detail else {
+            present(idleNotification: notification)
             return
         }
-        
-        switch notificationType {
+
+        switch notificationDetail.type {
         case .transactionSent,
              .assetTransactionSent:
-            displaySentNotification(with: notificationDetail, then: handler)
+            present(
+                notificationForSentTransactionsWith: notificationDetail,
+                failure: false,
+                action: handler
+            )
         case .transactionReceived,
              .assetTransactionReceived:
-            displayReceivedNotification(with: notificationDetail, then: handler)
+            present(
+                notificationForReceivedTransactionWith: notificationDetail,
+                action: handler
+            )
         case .transactionFailed,
              .assetTransactionFailed:
-            displaySentNotification(with: notificationDetail, isFailed: true, then: handler)
+            present(
+                notificationForSentTransactionsWith: notificationDetail,
+                failure: true,
+                action: handler
+            )
         case .assetSupportSuccess:
-            displayAssetSupportSuccessNotification(with: notificationDetail)
+            present(notificationForSupportedAssetWith: notificationDetail)
         default:
-            break
+            present(idleNotification: notification)
         }
     }
     
-    private func displaySentNotification(
-        with notificationDetail: NotificationDetail,
-        isFailed: Bool = false,
-        then handler: EmptyHandler? = nil
+    private func present(
+        idleNotification notification: AlgorandNotification
     ) {
-        guard let receiverAddress = notificationDetail.receiverAddress,
-            let senderAddress = notificationDetail.senderAddress else {
-                return
-        }
-
-        let amount = notificationDetail.getAmountValue()
-        let isAssetTransaction = notificationDetail.asset != nil
-        
-        let receiverName = api.session.authenticatedUser?.account(address: receiverAddress)?.name ?? receiverAddress
-        
-        if let senderAccount = api.session.authenticatedUser?.account(address: senderAddress) {
-            Contact.fetchAll(entity: Contact.entityName, with: NSPredicate(format: "address = %@", receiverAddress)) { response in
-                switch response {
-                case let .results(objects: objects):
-                    guard let results = objects as? [Contact] else {
-                        return
-                    }
-                    
-                    var message: String
-                    
-                    if isAssetTransaction {
-                        let name = notificationDetail.asset?.name ?? ""
-                        let code = notificationDetail.asset?.code ?? ""
-                        let fractionDecimals = notificationDetail.asset?.fractionDecimals ?? 0
-                        let amountText = amount
-                            .assetAmount(fromFraction: fractionDecimals)
-                            .toFractionStringForLabel(fraction: fractionDecimals) ?? ""
-                        message = String(
-                            format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
-                            "\(amountText) \(name) (\(code))",
-                            senderAccount.name,
-                            results.first?.name ?? receiverName
-                        )
-                    } else {
-                        message = String(
-                            format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
-                            "\(amount.toAlgos.toAlgosStringForLabel ?? "") Algos",
-                            senderAccount.name,
-                            results.first?.name ?? receiverName
-                        )
-                    }
-                    self.bannerController?.presentInfoBanner(message, handler)
-                default:
-                    var message: String
-                    
-                    if isAssetTransaction {
-                        let name = notificationDetail.asset?.name ?? ""
-                        let code = notificationDetail.asset?.code ?? ""
-                        let fractionDecimals = notificationDetail.asset?.fractionDecimals ?? 0
-                        let amountText = amount
-                            .assetAmount(fromFraction: fractionDecimals)
-                            .toFractionStringForLabel(fraction: fractionDecimals) ?? ""
-                        message = String(
-                            format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
-                            "\(amountText) \(name) (\(code))",
-                            senderAccount.name,
-                            receiverName
-                        )
-                    } else {
-                        message = String(
-                            format: isFailed ? "notification-sent-failed".localized : "notification-sent-success".localized,
-                            "\(amount.toAlgos.toAlgosStringForLabel ?? "") Algos",
-                            senderAccount.name,
-                            receiverName
-                        )
-                    }
-                    self.bannerController?.presentInfoBanner(message, handler)
-                }
-            }
+        if let alert = notification.alert {
+            bannerController?.presentInfoBanner(alert)
         }
     }
     
-    private func displayReceivedNotification(with notificationDetail: NotificationDetail, then handler: EmptyHandler? = nil) {
-        guard let receiverAddress = notificationDetail.receiverAddress,
-            let senderAddress = notificationDetail.senderAddress else {
-                return
-        }
-
-        let amount = notificationDetail.getAmountValue()
-        let isAssetTransaction = notificationDetail.asset != nil
-        
-        let senderName = api.session.authenticatedUser?.account(address: senderAddress)?.name ?? senderAddress
-        
-        if let receiverAccount = api.session.authenticatedUser?.account(address: receiverAddress) {
-            Contact.fetchAll(entity: Contact.entityName, with: NSPredicate(format: "address = %@", senderAddress)) { response in
-                switch response {
-                case let .results(objects: objects):
-                    guard let results = objects as? [Contact] else {
-                        return
-                    }
-                    
-                    var message: String
-                    
-                    if isAssetTransaction {
-                        let name = notificationDetail.asset?.name ?? ""
-                        let code = notificationDetail.asset?.code ?? ""
-                        let fractionDecimals = notificationDetail.asset?.fractionDecimals ?? 0
-                        let amountText = amount
-                            .assetAmount(fromFraction: fractionDecimals)
-                            .toFractionStringForLabel(fraction: fractionDecimals) ?? ""
-                        message = String(
-                            format: "notification-received".localized,
-                            "\(amountText) \(name) (\(code))",
-                            receiverAccount.name,
-                            results.first?.name ?? senderName
-                        )
-                    } else {
-                        message = String(
-                            format: "notification-received".localized,
-                            "\(amount.toAlgos.toAlgosStringForLabel ?? "") Algos",
-                            receiverAccount.name,
-                            results.first?.name ?? senderName
-                        )
-                    }
-                    self.bannerController?.presentInfoBanner(message, handler)
-                default:
-                    var message: String
-                    
-                    if isAssetTransaction {
-                        let name = notificationDetail.asset?.name ?? ""
-                        let code = notificationDetail.asset?.code ?? ""
-                        let fractionDecimals = notificationDetail.asset?.fractionDecimals ?? 0
-                        let amountText = amount
-                            .assetAmount(fromFraction: fractionDecimals)
-                            .toFractionStringForLabel(fraction: fractionDecimals) ?? ""
-                        message = String(
-                            format: "notification-received".localized,
-                            "\(amountText) \(name) (\(code))",
-                            receiverAccount.name,
-                            senderName
-                        )
-                    } else {
-                        message = String(
-                            format: "notification-received".localized,
-                            "\(amount.toAlgos.toAlgosStringForLabel ?? "") Algos",
-                            receiverAccount.name,
-                            senderName
-                        )
-                    }
-                    self.bannerController?.presentInfoBanner(message, handler)
-                }
-            }
-        }
-    }
-    
-    private func displayAssetSupportSuccessNotification(with notificationDetail: NotificationDetail) {
-        guard let senderAddress = notificationDetail.senderAddress,
-            let asset = notificationDetail.asset else {
+    private func present(
+        notificationForSentTransactionsWith detail: NotificationDetail,
+        failure: Bool = false,
+        action handler: EmptyHandler? = nil
+    ) {
+        guard
+            let authenticatedUser = session.authenticatedUser,
+            let receiverAddress = detail.receiverAddress,
+            let senderAddress = detail.senderAddress,
+            let senderName = authenticatedUser.account(address: senderAddress)?.name
+        else {
             return
         }
         
-        Contact.fetchAll(entity: Contact.entityName, with: NSPredicate(format: "address = %@", senderAddress)) { response in
-            switch response {
-            case let .results(objects: objects):
-                guard let results = objects as? [Contact] else {
-                    return
-                }
-                
-                let name = asset.name ?? ""
-                let code = asset.code ?? ""
-                let message = String(
-                    format: "notification-support-success".localized(
-                        params: results.first?.name ?? senderAddress,
-                        "\(name) (\(code))"
-                    )
-                )
-                self.bannerController?.presentInfoBanner(message)
-            default:
-                let name = asset.name ?? ""
-                let code = asset.code ?? ""
-                let message = String(
-                    format: "notification-support-success".localized(
-                        params: senderAddress,
-                        "\(name) (\(code))"
-                    )
-                )
-                self.bannerController?.presentInfoBanner(message)
+        Contact.fetchAll(
+            entity: Contact.entityName,
+            with: NSPredicate(format: "address = %@", receiverAddress)
+        ) { [weak self] response in
+            guard let self = self else { return }
+            
+            let receiverAccount = authenticatedUser.account(address: receiverAddress)
+            let defaultReceiverName = receiverAccount?.name ?? receiverAddress
+            let amount = detail.amount
+            
+            let receiverName: String
+            if case .results(let objects) = response {
+                receiverName = (objects as? [Contact])?.first?.name ?? defaultReceiverName
+            } else {
+                receiverName = defaultReceiverName
             }
+            
+            let transactionAmountText: String
+            if let asset = detail.asset {
+                let assetName = asset.name.someString
+                let assetCode = asset.code.someString
+                let fractionDecimals = asset.fractionDecimals.someInt
+                let amountText = amount
+                    .assetAmount(fromFraction: fractionDecimals)
+                    .toFractionStringForLabel(fraction: fractionDecimals).someString
+                transactionAmountText = "\(amountText) \(assetName) (\(assetCode))"
+            } else {
+                transactionAmountText = "\(amount.toAlgos.toAlgosStringForLabel.someString) Algos"
+            }
+            
+            let format = failure
+                ? "notification-sent-failed".localized
+                : "notification-sent-success".localized
+            let message = String(
+                format: format,
+                transactionAmountText,
+                senderName,
+                receiverName
+            )
+            
+            self.bannerController?.presentInfoBanner(
+                message,
+                handler
+            )
+        }
+    }
+    
+    private func present(
+        notificationForReceivedTransactionWith detail: NotificationDetail,
+        action handler: EmptyHandler? = nil
+    ) {
+        guard
+            let authenticatedUser = session.authenticatedUser,
+            let senderAddress = detail.senderAddress,
+            let receiverAddress = detail.receiverAddress,
+            let receiverName = authenticatedUser.account(address: receiverAddress)?.name
+        else {
+            return
+        }
+        
+        Contact.fetchAll(
+            entity: Contact.entityName,
+            with: NSPredicate(format: "address = %@", senderAddress)
+        ) { [weak self] response in
+            guard let self = self else { return }
+            
+            let senderAccount = authenticatedUser.account(address: senderAddress)
+            let defaultSenderName = senderAccount?.name ?? senderAddress
+            let amount = detail.amount
+            
+            let senderName: String
+            if case .results(let objects) = response {
+                senderName = (objects as? [Contact])?.first?.name ?? defaultSenderName
+            } else {
+                senderName = defaultSenderName
+            }
+
+            let transactionAmountText: String
+            if let asset = detail.asset {
+                let assetName = asset.name.someString
+                let assetCode = asset.code.someString
+                let fractionDecimals = asset.fractionDecimals.someInt
+                let amountText = amount
+                    .assetAmount(fromFraction: fractionDecimals)
+                    .toFractionStringForLabel(fraction: fractionDecimals).someString
+                transactionAmountText = "\(amountText) \(assetName) (\(assetCode))"
+            } else {
+                transactionAmountText = "\(amount.toAlgos.toAlgosStringForLabel.someString) Algos"
+            }
+            
+            let message = String(
+                format: "notification-received".localized,
+                transactionAmountText,
+                receiverName,
+                senderName
+            )
+
+            self.bannerController?.presentInfoBanner(
+                message,
+                handler
+            )
+        }
+    }
+    
+    private func present(
+        notificationForSupportedAssetWith detail: NotificationDetail
+    ) {
+        guard
+            let senderAddress = detail.senderAddress,
+            let asset = detail.asset
+        else {
+            return
+        }
+        
+        Contact.fetchAll(
+            entity: Contact.entityName,
+            with: NSPredicate(format: "address = %@", senderAddress)
+        ) { [weak self] response in
+            guard let self = self else { return }
+            
+            let assetName = asset.name.someString
+            let assetCode = asset.code.someString
+            
+            let senderName: String
+            if case .results(let objects) = response {
+                senderName = (objects as? [Contact])?.first?.name ?? senderAddress
+            } else {
+                senderName = senderAddress
+            }
+            
+            let message = String(
+                format: "notification-support-success".localized(
+                    params: senderName,
+                    "\(assetName) (\(assetCode))"
+                )
+            )
+
+            self.bannerController?.presentInfoBanner(message)
         }
     }
 }

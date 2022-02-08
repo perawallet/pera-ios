@@ -169,6 +169,12 @@ class Session: Storable {
 }
 
 extension Session {
+    func hasAuthentication() -> Bool {
+        return authenticatedUser != nil
+    }
+}
+
+extension Session {
     enum RewardPreference: String {
         case allowed = "allowed"
         case disabled = "disabled"
@@ -281,19 +287,27 @@ extension Session {
 }
 
 extension Session {
-    func reset(isContactIncluded: Bool) {
+    func reset(
+        includingContacts: Bool
+    ) {
         authenticatedUser = nil
         applicationConfiguration = nil
+
         ApplicationConfiguration.clear(entity: ApplicationConfiguration.entityName)
         
-        if isContactIncluded {
+        if includingContacts {
             Contact.clear(entity: Contact.entityName)
         }
         
         Node.clear(entity: Node.entityName)
-        try? privateStorage.removeAll()
-        self.clear(.defaults)
-        self.clear(.keychain)
+
+        /// <todo>
+        /// Why does it more than one keychain?
+        privateStorage.clear()
+        
+        clear(.defaults)
+        clear(.keychain)
+
         self.isValid = false
     }
 }

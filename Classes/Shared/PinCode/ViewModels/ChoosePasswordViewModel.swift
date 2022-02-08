@@ -18,6 +18,8 @@
 import UIKit
 import MacaroonUIKit
 
+/// <todo>
+/// Refactor
 final class ChoosePasswordViewModel: PairedViewModel {
     private var password: String = .empty
     
@@ -66,7 +68,7 @@ extension ChoosePasswordViewModel {
 
     func configureSelection(
         in choosePasswordView: ChoosePasswordView,
-        for value: NumpadKey,
+        for value: NumpadButton.NumpadKey,
         then handler: (String) -> Void
     ) {
         switch value {
@@ -91,10 +93,11 @@ extension ChoosePasswordViewModel {
             return
         }
 
+        choosePasswordView.toggleDeleteButtonVisibility(for: password.isEmpty)
         update(in: choosePasswordView, for: value)
     }
 
-    private func update(in choosePasswordView: ChoosePasswordView, for value: NumpadKey) {
+    private func update(in choosePasswordView: ChoosePasswordView, for value: NumpadButton.NumpadKey) {
         switch value {
         case .number:
             let passwordInputCircleView =
@@ -126,16 +129,7 @@ extension ChoosePasswordViewModel {
         }
     }
 
-    func reset(_ choosePasswordView: ChoosePasswordView) {
-        resetPassword()
-        choosePasswordView.changeStateTo(.empty)
-    }
-
-    func displayWrongPasswordState(_ choosePasswordView: ChoosePasswordView) {
-        choosePasswordView.changeStateTo(.error)
-    }
-
-    private func resetPassword() {
+    func reset() {
         password = .empty
     }
 }

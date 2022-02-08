@@ -106,6 +106,10 @@ final class SendTransactionScreen: BaseViewController {
         case .algo:
             title = "send-transaction-title".localized("asset-algos-title".localized)
         }
+
+        if draft.fractionCount <= 0 {
+            numpadView.leftButtonIsHidden = true
+        }
     }
 
     override func configureNavigationBarAppearance() {
@@ -376,6 +380,8 @@ extension SendTransactionScreen: TransactionSignChecking {
 
     @objc
     private func didTapMax() {
+        numpadView.deleteButtonIsHidden = false
+
         switch draft.transactionMode {
         case .algo:
             self.amount = draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
@@ -398,8 +404,8 @@ extension SendTransactionScreen: TransactionSignChecking {
 }
 
 extension SendTransactionScreen: NumpadViewDelegate {
-    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey) {
-        var newValue = self.amount
+    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadButton.NumpadKey) {
+        var newValue = amount
 
         let hasDraftFraction = draft.fractionCount > 0
 
@@ -409,10 +415,9 @@ extension SendTransactionScreen: NumpadViewDelegate {
             return
         }
 
-
         switch value {
         case .number(let numberValue):
-            if self.amount == "0" {
+            if amount == "0" {
                 newValue = numberValue
             } else {
                 newValue.append(contentsOf: numberValue)
@@ -420,14 +425,13 @@ extension SendTransactionScreen: NumpadViewDelegate {
         case .spacing:
             return
         case .delete:
-            if self.amount.count == 1 {
+            if amount.count == 1 {
                 newValue = "0"
-            } else if self.amount == "0" {
+            } else if amount == "0" {
                 return
             } else {
                 newValue.removeLast(1)
             }
-
         case .decimalSeparator:
             guard hasDraftFraction else {
                 return
@@ -435,13 +439,14 @@ extension SendTransactionScreen: NumpadViewDelegate {
 
             let decimalSeparator = Locale.preferred().decimalSeparator?.first ?? "."
 
-            if self.amount.contains(decimalSeparator) {
+            if amount.contains(decimalSeparator) {
                 return
             }
             newValue.append(decimalSeparator)
         }
 
-        self.amount = newValue
+        amount = newValue
+        numpadView.deleteButtonIsHidden = amount == "0"
         bindAmount()
     }
 

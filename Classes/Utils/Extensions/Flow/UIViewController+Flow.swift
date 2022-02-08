@@ -15,10 +15,26 @@
 //
 //  UIViewController+Flow.swift
 
+import Foundation
 import UIKit
 
 extension UIViewController {
+    func launchOnboarding() {
+        AppDelegate.shared?.launchOnboarding()
+    }
     
+    func launchMain() {
+        AppDelegate.shared?.launchMain()
+    }
+    
+    func launchMainAfterAuthorization(
+        presented viewController: UIViewController
+    ) {
+        AppDelegate.shared?.launchMainAfterAuthorization(presented: viewController)
+    }
+}
+
+extension UIViewController {
     @discardableResult
     func open<T: UIViewController>(
         _ screen: Screen,
@@ -26,28 +42,71 @@ extension UIViewController {
         animated: Bool = true,
         then completion: EmptyHandler? = nil
     ) -> T? {
-        
-        let viewController = UIApplication.shared.route(to: screen, from: self, by: style, animated: animated, then: completion)
-        
-        return viewController as? T
+        return AppDelegate.shared?.route(
+            to: screen,
+            from: self,
+            by: style,
+            animated: animated,
+            then: completion
+        ) as? T
     }
 
-    func closeScreen(by style: Screen.Transition.Close, animated: Bool = true, onCompletion completion: EmptyHandler? = nil) {
+    func closeScreen(
+        by style: Screen.Transition.Close,
+        animated: Bool = true,
+        onCompletion completion: EmptyHandler? = nil
+    ) {
         switch style {
         case .pop:
             navigationController?.popViewController(animated: animated)
         case .dismiss:
-            presentingViewController?.dismiss(animated: animated, completion: {
-                completion?()
-            })
+            presentingViewController?.dismiss(
+                animated: animated,
+                completion: completion
+            )
         }
     }
     
-    func dismissScreen() {
-        closeScreen(by: .dismiss)
+    func dismissScreen(
+        animated: Bool = true,
+        completion: EmptyHandler? = nil
+    ) {
+        closeScreen(
+            by: .dismiss,
+            animated: animated,
+            onCompletion: completion
+        )
     }
     
-    func popScreen() {
-        closeScreen(by: .pop)
+    func popScreen(
+        animated: Bool = true
+    ) {
+        closeScreen(
+            by: .pop,
+            animated: animated
+        )
+    }
+}
+
+extension UIViewController {
+    func dismissIfNeeded(
+        animated: Bool = true,
+        completion: (() -> Void)? = nil
+    ) {
+        if presentedViewController == nil {
+            completion?()
+            return
+        }
+        
+        dismiss(
+            animated: animated,
+            completion: completion
+        )
+    }
+}
+
+extension UIViewController {
+    func findVisibleScreen() -> UIViewController {
+        return AppDelegate.shared!.findVisibleScreen()
     }
 }

@@ -20,7 +20,7 @@ import MacaroonUIKit
 
 extension TransactionsViewController: CSVExportable {
     func fetchAllTransactionsForCSV() {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        loadingController?.startLoadingWithMessage("csv-loading-message".localized)
 
         fetchAllTransactions(
             between: dataController.getTransactionFilterDates(),
@@ -75,6 +75,7 @@ extension TransactionsViewController: CSVExportable {
             "transaction-detail-date".localized,
             "title-id".localized,
             "transaction-detail-note".localized,
+            "wallet-connect-asset-name-title".localized,
             "title-asset-id".localized
         ]
         let config = CSVConfig(fileName: formCSVFileName(), keys: NSOrderedSet(array: keys))
@@ -124,9 +125,9 @@ extension TransactionsViewController: CSVExportable {
         var csvData = [[String: Any]]()
         for transaction in transactions {
             var transactionData: [String: Any] = [
-                "transaction-detail-amount".localized: getFormattedAmount(transaction.getAmount()),
+                "transaction-detail-amount".localized: getFormattedAmount(transaction.getAmount(), for: transaction),
                 "transaction-detail-reward".localized: transaction.getRewards(for: accountHandle.value.address)?.toAlgos ?? " ",
-                "transaction-detail-close-amount".localized: getFormattedAmount(transaction.getCloseAmount()),
+                "transaction-detail-close-amount".localized: getFormattedAmount(transaction.getCloseAmount(), for: transaction),
                 "transaction-download-close-to".localized: transaction.getCloseAddress() ?? " ",
                 "transaction-download-to".localized: transaction.getReceiver() ?? " ",
                 "transaction-download-from".localized: transaction.sender ?? " ",
@@ -138,7 +139,11 @@ extension TransactionsViewController: CSVExportable {
             ]
 
             if let assetID = transaction.assetTransfer?.assetId {
-                transactionData["title-asset-id"] = "\(assetID)"
+                if let name = sharedDataController.assetDetailCollection[assetID]?.name {
+                    transactionData["wallet-connect-asset-name-title".localized] = name
+                }
+
+                transactionData["title-asset-id".localized] = "\(assetID)"
             }
 
             csvData.append(transactionData)
@@ -146,11 +151,24 @@ extension TransactionsViewController: CSVExportable {
         return csvData
     }
 
-    private func getFormattedAmount(_ amount: UInt64?) -> String {
-        if let assetDetail = compoundAsset?.detail {
-            return amount?.toFractionStringForLabel(fraction: assetDetail.decimals) ?? " "
-        } else {
+    private func getFormattedAmount(_ amount: UInt64?, for transaction: Transaction) -> String {
+        switch draft.type {
+        case .algos:
             return amount?.toAlgos.toAlgosStringForLabel ?? " "
+        case .asset:
+            guard let assetDetail = compoundAsset?.detail else {
+                return amount?.toFractionStringForLabel(fraction: 0) ?? " "
+            }
+
+            return amount?.toFractionStringForLabel(fraction: assetDetail.decimals) ?? " "
+        case .all:
+            if let assetID = transaction.assetTransfer?.assetId {
+                if let decimal = sharedDataController.assetDetailCollection[assetID]?.decimals {
+                    return amount?.toFractionStringForLabel(fraction: decimal) ?? " "
+                }
+            }
+
+            return amount?.toFractionStringForLabel(fraction: 0) ?? " "
         }
     }
 }

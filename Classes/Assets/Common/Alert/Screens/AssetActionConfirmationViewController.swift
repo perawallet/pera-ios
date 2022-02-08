@@ -21,14 +21,14 @@ import MacaroonUIKit
 
 final class AssetActionConfirmationViewController: BaseViewController {
     weak var delegate: AssetActionConfirmationViewControllerDelegate?
+    
+    private(set) var draft: AssetAlertDraft
 
     private lazy var theme = Theme()
     private lazy var assetActionConfirmationView = AssetActionConfirmationView()
     
-    private var assetAlertDraft: AssetAlertDraft
-    
-    init(assetAlertDraft: AssetAlertDraft, configuration: ViewControllerConfiguration) {
-        self.assetAlertDraft = assetAlertDraft
+    init(draft: AssetAlertDraft, configuration: ViewControllerConfiguration) {
+        self.draft = draft
         super.init(configuration: configuration)
     }
     
@@ -55,7 +55,7 @@ final class AssetActionConfirmationViewController: BaseViewController {
     }
 
     override func bindData() {
-        assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(assetAlertDraft))
+        assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(draft))
     }
 }
 
@@ -67,14 +67,14 @@ extension AssetActionConfirmationViewController: BottomSheetPresentable {
 
 extension AssetActionConfirmationViewController {
     private func fetchAssetDetailIfNeeded() {
-        if !assetAlertDraft.isValid() {
-            if let assetDetail = session?.assetInformations[assetAlertDraft.assetIndex] {
+        if !draft.isValid() {
+            if let assetDetail = session?.assetInformations[draft.assetIndex] {
                 handleAssetDetailSetup(with: assetDetail)
             } else {
                 loadingController?.startLoadingWithMessage("title-loading".localized)
 
                 api?.fetchAssetDetails(
-                    AssetFetchQuery(ids: [assetAlertDraft.assetIndex]),
+                    AssetFetchQuery(ids: [draft.assetIndex]),
                     queue: .main,
                     ignoreResponseOnCancelled: false
                 ) { [weak self] response in
@@ -97,14 +97,14 @@ extension AssetActionConfirmationViewController {
     
     private func handleAssetDetailSetup(with asset: AssetInformation) {
         self.loadingController?.stopLoading()
-        assetAlertDraft.assetDetail = asset
-        assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(assetAlertDraft))
+        draft.assetDetail = asset
+        assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(draft))
     }
 }
 
 extension AssetActionConfirmationViewController: AssetActionConfirmationViewDelegate {
     func assetActionConfirmationViewDidTapActionButton(_ assetActionConfirmationView: AssetActionConfirmationView) {
-        if let assetDetail = assetAlertDraft.assetDetail {
+        if let assetDetail = draft.assetDetail {
             delegate?.assetActionConfirmationViewController(self, didConfirmedActionFor: assetDetail)
         }
         dismissScreen()

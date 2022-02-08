@@ -31,6 +31,10 @@ final class SharedAPIDataController:
     private(set) var accountCollection: AccountCollection = []
     private(set) var currency: CurrencyHandle = .idle
     private(set) var lastRound: BlockRound?
+    
+    var isAvailable: Bool {
+        return isFirstPollingRoundCompleted
+    }
 
     private lazy var blockProcessor = createBlockProcessor()
     private lazy var blockProcessorEventQueue =
@@ -38,6 +42,7 @@ final class SharedAPIDataController:
     
     @Atomic(identifier: "sharedAPIDataController.status")
     private var status: Status = .idle
+    @Atomic(identifier: "sharedAPIDataController.isFirstPollingRoundCompleted")
     private var isFirstPollingRoundCompleted = false
     
     private let session: Session
@@ -287,7 +292,8 @@ extension SharedAPIDataController {
         _ round: BlockRound?
     ) {
         lastRound = round
-        isFirstPollingRoundCompleted = true
+        
+        $isFirstPollingRoundCompleted.modify { $0 = true }
 
         if status != .running {
             return

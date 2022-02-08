@@ -22,6 +22,7 @@ extension ALGAPI {
     @discardableResult
     func fetchAccount(
         _ draft: AccountFetchDraft,
+        includesClosedAccounts: Bool = false,
         queue: DispatchQueue,
         ignoreResponseOnCancelled: Bool,
         onCompleted handler: @escaping (Response.ModelResult<AccountResponse>) -> Void
@@ -29,6 +30,7 @@ extension ALGAPI {
         return EndpointBuilder(api: self)
             .base(.indexer(network))
             .path(.accountDetail, args: draft.publicKey)
+            .query(AccountQuery(includesAll: includesClosedAccounts))
             .method(.get)
             .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)

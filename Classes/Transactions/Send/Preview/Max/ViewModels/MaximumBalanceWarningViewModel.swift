@@ -56,7 +56,7 @@ extension MaximumBalanceWarningViewModel {
         and params: TransactionParams
     ) -> UInt64 {
         let feeCalculator = TransactionFeeCalculator(transactionDraft: nil, transactionData: nil, params: params)
-        let calculatedFee = params.getProjectedTransactionFee() ?? Transaction.Constant.minimumFee
+        let calculatedFee = params.getProjectedTransactionFee()
         let minimumAmountForAccount = feeCalculator.calculateMinimumAmount(
             for: account,
                with: .algosTransaction,

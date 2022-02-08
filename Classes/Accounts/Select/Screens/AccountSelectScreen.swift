@@ -287,7 +287,7 @@ final class AccountSelectScreen: BaseViewController {
         }
 
         modalTransition.perform(
-            .assetActionConfirmation(assetAlertDraft: assetAlertDraft),
+            .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: nil),
             by: .presentWithoutNavigationController
         )
     }

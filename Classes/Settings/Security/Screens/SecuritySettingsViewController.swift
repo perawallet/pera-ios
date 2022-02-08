@@ -114,7 +114,7 @@ extension SecuritySettingsViewController: UICollectionViewDelegateFlowLayout {
         
         if setting == .pinCodeChange {
             open(
-                .choosePassword(mode: .verifyOld, flow: nil, route: nil),
+                .choosePassword(mode: .verifyOld, flow: nil),
                 by: .push
             )
         }
@@ -182,13 +182,13 @@ extension SecuritySettingsViewController: SettingsToggleCellDelegate {
         case .pinCodeActivation:
             let mode: ChoosePasswordViewController.Mode = value ? .resetPassword(flow: .initial) : .deletePassword
             open(
-                .choosePassword(mode: mode, flow: nil, route: nil),
+                .choosePassword(mode: mode, flow: nil),
                 by: .push
             )
         case .localAuthentication:
             if !value {
                 let controller = open(
-                    .choosePassword(mode: .confirm(flow: .settings), flow: nil, route: nil),
+                    .choosePassword(mode: .confirm(flow: .settings), flow: nil),
                     by: .push
                 ) as? ChoosePasswordViewController
                 controller?.delegate = self

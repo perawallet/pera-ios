@@ -20,12 +20,8 @@ import UIKit
 final class SettingsViewController: BaseViewController {
     private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
     
-    private lazy var pushNotificationController: PushNotificationController = {
-        guard let api = api else {
-            fatalError("API should be set.")
-        }
-        return PushNotificationController(api: api, bannerController: bannerController)
-    }()
+    private lazy var pushNotificationController =
+        PushNotificationController(session: session!, api: api!, bannerController: bannerController)
     
     private lazy var theme = Theme()
     private lazy var settingsView = SettingsView()
@@ -231,7 +227,7 @@ extension SettingsViewController: SettingsDataSourceDelegate {
     
     private func logout() {
         sharedDataController.reset()
-        session?.reset(isContactIncluded: true)
+        session?.reset(includingContacts: true)
         walletConnector.resetAllSessions()
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
         pushNotificationController.revokeDevice()

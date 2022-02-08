@@ -25,7 +25,13 @@ protocol WCSingleTransactionViewControllerAssetManagable: WCSingleTransactionVie
 
 extension WCSingleTransactionViewControllerAssetManagable where Self: WCSingleTransactionViewController {
     func setCachedAsset(then completion: @escaping EmptyHandler) {
-        guard let assetId = transaction.transactionDetail?.assetId ?? transaction.transactionDetail?.assetIdBeingConfigured else {
+        guard let transactionDetail = transaction.transactionDetail,
+              !transactionDetail.isAssetCreationTransaction else {
+                  completion()
+            return
+        }
+
+        guard let assetId = transactionDetail.assetId ?? transactionDetail.assetIdBeingConfigured else {
             walletConnector.rejectTransactionRequest(transactionRequest, with: .invalidInput(.asset))
             completion()
             return

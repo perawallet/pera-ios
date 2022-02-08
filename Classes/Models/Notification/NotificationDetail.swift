@@ -20,52 +20,70 @@ import MagpieCore
 import MacaroonUtils
 
 final class NotificationDetail: ALGAPIModel {
+    let type: NotificationType
     let senderAddress: String?
     let receiverAddress: String?
-    private let amount: UInt64?
-    private let amountStr: String?
     let asset: NotificationAsset?
-    let notificationType: NotificationType?
-
+    let amount: UInt64
+    
     init() {
+        self.type = .broadcast
         self.senderAddress = nil
         self.receiverAddress = nil
-        self.amount = nil
-        self.amountStr = nil
         self.asset = nil
-        self.notificationType = nil
+        self.amount = 0
     }
-}
-
-extension NotificationDetail {
-    func getAmountValue() -> UInt64 {
-        if let amount = amount {
-            return amount
+    
+    init(
+        from decoder: Decoder
+    ) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let type = try container.decodeIfPresent(NotificationType.self, forKey: .notificationType)
+        
+        let amount: UInt64
+        if let anAmount = try container.decodeIfPresent(UInt64.self, forKey: .amount) {
+            amount = anAmount
+        } else if let amountString = try container.decodeIfPresent(String.self, forKey: .amountStr),
+                  let anAmount = UInt64(amountString) {
+            amount = anAmount
+        } else {
+            amount = 0
         }
-
-        if let amountStr = amountStr,
-            let amount = UInt64(amountStr) {
-            return amount
-        }
-
-        return 0
+        
+        self.type = type ?? .broadcast
+        self.senderAddress = try container.decodeIfPresent(String.self, forKey: .senderAddress)
+        self.receiverAddress = try container.decodeIfPresent(String.self, forKey: .receiverAddress)
+        self.asset = try container.decodeIfPresent(NotificationAsset.self, forKey: .asset)
+        self.amount = amount
     }
-}
-
-extension NotificationDetail {
+    
+    func encode(
+        to encoder: Encoder
+    ) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(type, forKey: .notificationType)
+        try container.encodeIfPresent(senderAddress, forKey: .senderAddress)
+        try container.encodeIfPresent(receiverAddress, forKey: .receiverAddress)
+        try container.encodeIfPresent(asset, forKey: .asset)
+        try container.encode(amount, forKey: .amount)
+    }
+    
     private enum CodingKeys:
         String,
         CodingKey {
+        case notificationType = "notification_type"
         case senderAddress = "sender_public_key"
         case receiverAddress = "receiver_public_key"
+        case asset
         case amount
         case amountStr = "amount_str"
-        case asset
-        case notificationType
     }
 }
 
-enum NotificationType: String, ALGAPIModel {
+enum NotificationType:
+    String,
+    JSONModel {
     case transactionSent = "transaction-sent"
     case transactionReceived = "transaction-received"
     case transactionFailed = "transaction-failed"
@@ -77,6 +95,6 @@ enum NotificationType: String, ALGAPIModel {
     case broadcast = "broadcast"
 
     init() {
-        self = .transactionSent
+        self = .broadcast
     }
 }

@@ -75,7 +75,7 @@ extension PasswordInputView {
         let offsetChange = 10.0
 
         var totalDuration: Double {
-            Double(repeatCount) * duration
+            Double(repeatCount) * duration * 2
         }
     }
 

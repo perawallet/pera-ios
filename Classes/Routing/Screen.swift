@@ -20,7 +20,7 @@ import UIKit
 indirect enum Screen {
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
-    case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?, route: Screen?)
+    case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?)
     case passphraseView(address: String)
     case passphraseVerify
     case accountNameSetup
@@ -43,7 +43,7 @@ indirect enum Screen {
     case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetInformation?)
     case addAsset(account: Account)
     case removeAsset(account: Account)
-    case assetActionConfirmation(assetAlertDraft: AssetAlertDraft)
+    case assetActionConfirmation(assetAlertDraft: AssetAlertDraft, delegate: AssetActionConfirmationViewControllerDelegate?)
     case rewardDetail(account: Account)
     case verifiedAssetInformation
     case ledgerTutorial(flow: AccountSetupFlow)

@@ -76,21 +76,31 @@ extension ChoosePasswordView {
 }
 
 extension ChoosePasswordView {
-    func shake(then handler: @autoclosure @escaping EmptyHandler) {
+    func shake(
+        then handler: @escaping EmptyHandler
+    ) {
         passwordInputView.shake(then: handler)
     }
 
-    func changeStateTo(_ state: PasswordInputCircleView.State) {
+    func changeStateTo(
+        _ state: PasswordInputCircleView.State
+    ) {
         passwordInputView.changeStateTo(state)
+    }
+
+    func toggleDeleteButtonVisibility(
+        for isHidden: Bool
+    ) {
+        numpadView.deleteButtonIsHidden = isHidden
     }
 }
 
 extension ChoosePasswordView: NumpadViewDelegate {
-    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey) {
+    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadButton.NumpadKey) {
         delegate?.choosePasswordView(self, didSelect: value)
     }
 }
 
 protocol ChoosePasswordViewDelegate: AnyObject {
-    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadKey)
+    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadButton.NumpadKey)
 }
