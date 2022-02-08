@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonUtils
 import Foundation
 
 final class NumpadView: View {
@@ -42,12 +43,44 @@ final class NumpadView: View {
     private lazy var zeroButton = NumpadButton(numpadKey: .number("0"))
     private lazy var deleteButton = NumpadButton(numpadKey: .delete)
 
+    var leftButtonIsHidden: Bool = false {
+        didSet {
+            leftButton.alpha = leftButtonIsHidden ? 0 : 1
+        }
+    }
+
+    var deleteButtonIsHidden: Bool = true {
+        didSet {
+            guard deleteButtonIsHidden != oldValue else { return }
+
+            toggleDeleteButtonVisibility(for: deleteButtonIsHidden)
+        }
+    }
+
+    private var deleteButtonRepeater: Repeater?
+    private let deleteButtonRepeaterInterval: TimeInterval = 0.01
+    private var deleteButtonRepeaterFireCount = 0
+
+    private var deleteButtonRepeaterFireCountModulo: Int {
+        if deleteButtonRepeaterFireCount > 200 {
+            return 1
+        } else if deleteButtonRepeaterFireCount > 100 {
+            return 2
+        } else {
+            return 10
+        }
+    }
+
     private let mode: Mode
 
     init(mode: Mode = .passcode) {
         self.mode = mode
         super.init(frame: .zero)
         customizeButtonsForMode()
+    }
+
+    deinit {
+        resetDeleteButtonRepeater()
     }
 
     func customize(_ theme: NumpadViewTheme) {
@@ -70,12 +103,19 @@ final class NumpadView: View {
             numberSevenButton, numberEightButton, numberNineButton,
             zeroButton, deleteButton
         ].forEach {
-            $0.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
+            $0.addTarget(self, action: #selector(didSelect), for: .touchUpInside)
         }
+
+        let longPressDelete = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(continuouslyDelete)
+        )
+        longPressDelete.minimumPressDuration = 0.25
+        deleteButton.addGestureRecognizer(longPressDelete)
 
         switch mode {
         case .decimal:
-            leftButton.addTarget(self, action: #selector(notifyDelegateToAddNumpadValue), for: .touchUpInside)
+            leftButton.addTarget(self, action: #selector(didSelect), for: .touchUpInside)
         default:
             return
         }
@@ -87,13 +127,79 @@ final class NumpadView: View {
             self.leftButton = NumpadButton(numpadKey: .decimalSeparator)
         case .passcode:
             self.leftButton = NumpadButton(numpadKey: .spacing)
+            self.leftButton.alpha = 0
+        }
+    }
+}
+
+/// <note>
+/// Repeater for continuously deleting.
+extension NumpadView {
+    @objc
+    private func continuouslyDelete(
+        recognizer: UILongPressGestureRecognizer
+    ) {
+        handleGesture(recognizer)
+    }
+
+    private func handleGesture(
+        _ recognizer: UILongPressGestureRecognizer
+    ) {
+        if recognizer.state == .began {
+            recognizer.cancelsTouchesInView = false
+
+            toggleAllButtonsInteraction(isEnabled: false)
+            scheduleDeleteButtonRepeater()
+            return
+        }
+
+        if recognizer.state == .ended {
+            recognizer.cancelsTouchesInView = true
+
+            toggleAllButtonsInteraction(isEnabled: true)
+            resetDeleteButtonRepeater()
+        }
+    }
+
+    private func handleDeleteButtonRepeaterFire() {
+        deleteButtonRepeaterFireCount += 1
+
+        if deleteButtonRepeaterFireCount % deleteButtonRepeaterFireCountModulo == 0 {
+            didSelect(sender: deleteButton)
+        }
+    }
+
+    private func scheduleDeleteButtonRepeater() {
+        deleteButtonRepeater = Repeater(intervalInSeconds: deleteButtonRepeaterInterval) { [weak self] in
+            asyncMain { [weak self] in
+                self?.handleDeleteButtonRepeaterFire()
+            }
+        }
+
+        deleteButtonRepeater?.resume(immediately: false)
+    }
+
+    private func resetDeleteButtonRepeater() {
+        deleteButtonRepeater?.invalidate()
+        deleteButtonRepeater = nil
+        deleteButtonRepeaterFireCount = 0
+    }
+
+    private func toggleAllButtonsInteraction(isEnabled: Bool) {
+        [
+            numberOneButton, numberTwoButton, numberThreeButton,
+            numberFourButton, numberFiveButton, numberSixButton,
+            numberSevenButton, numberEightButton, numberNineButton,
+            zeroButton
+        ].forEach {
+            $0.isEnabled = isEnabled
         }
     }
 }
 
 extension NumpadView {
     @objc
-    private func notifyDelegateToAddNumpadValue(sender: NumpadButton) {
+    private func didSelect(sender: NumpadButton) {
         delegate?.numpadView(self, didSelect: sender.numpadKey)
     }
 }
@@ -158,6 +264,18 @@ extension NumpadView {
         fourthRowStackView.addArrangedSubview(leftButton)
         fourthRowStackView.addArrangedSubview(zeroButton)
         fourthRowStackView.addArrangedSubview(deleteButton)
+
+        deleteButton.alpha = 0
+    }
+}
+
+extension NumpadView {
+    private func toggleDeleteButtonVisibility(
+        for isHidden: Bool
+    ) {
+        UIView.animate(withDuration: 0.3) {
+            self.deleteButton.alpha = isHidden ? 0 : 1
+        }
     }
 }
 
@@ -170,30 +288,7 @@ extension NumpadView {
 }
 
 protocol NumpadViewDelegate: AnyObject {
-    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadKey)
-}
-
-enum NumpadKey: Equatable {
-    case spacing
-    case number(String)
-    case delete
-    case decimalSeparator
-
-    static func == (lhs: NumpadKey, rhs: NumpadKey) -> Bool {
-        switch (lhs, rhs) {
-        case (.spacing, .spacing):
-            return true
-        case (.delete, .delete):
-            return true
-        case (.decimalSeparator, .decimalSeparator):
-            return true
-        case (.number(let lNumber), .number(let rNumber)):
-            return lNumber == rNumber
-        default:
-            return false
-        }
-
-    }
+    func numpadView(_ numpadView: NumpadView, didSelect value: NumpadButton.NumpadKey)
 }
 
 extension NumpadView {

@@ -152,7 +152,7 @@ extension ChoosePasswordViewController {
 }
 
 extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
-    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadKey) {
+    func choosePasswordView(_ choosePasswordView: ChoosePasswordView, didSelect value: NumpadButton.NumpadKey) {
         switch mode {
         case .setup:
             openVerifyPassword(with: value)
@@ -175,13 +175,13 @@ extension ChoosePasswordViewController: ChoosePasswordViewDelegate {
 }
 
 extension ChoosePasswordViewController {
-    private func openVerifyPassword(with value: NumpadKey) {
+    private func openVerifyPassword(with value: NumpadButton.NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             open(.choosePassword(mode: .verify(password: password), flow: accountSetupFlow), by: .push)
         }
     }
 
-    private func openResetPassword(with value: NumpadKey) {
+    private func openResetPassword(with value: NumpadButton.NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if session?.isPasswordMatching(with: password) ?? false {
                 open(.choosePassword(mode: .resetPassword(flow: .fromVerifyOld), flow: nil), by: .push)
@@ -191,7 +191,7 @@ extension ChoosePasswordViewController {
         }
     }
     
-    private func verifyPassword(with value: NumpadKey, and previousPassword: String) {
+    private func verifyPassword(with value: NumpadButton.NumpadKey, and previousPassword: String) {
         guard let flow = accountSetupFlow else {
             return
         }
@@ -206,7 +206,7 @@ extension ChoosePasswordViewController {
         }
     }
 
-    private func login(with value: NumpadKey) {
+    private func login(with value: NumpadButton.NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if session?.isPasswordMatching(with: password) ?? false {
                 choosePasswordView.numpadView.isUserInteractionEnabled = false
@@ -229,13 +229,13 @@ extension ChoosePasswordViewController {
         }
     }
     
-    private func openResetVerify(with value: NumpadKey, flow: Mode.ResetFlow) {
+    private func openResetVerify(with value: NumpadButton.NumpadKey, flow: Mode.ResetFlow) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             open(.choosePassword(mode: .resetVerify(password: password, flow: flow), flow: nil), by: .push)
         }
     }
     
-    private func verifyResettedPassword(with value: NumpadKey, and previousPassword: String, flow: Mode.ResetFlow) {
+    private func verifyResettedPassword(with value: NumpadButton.NumpadKey, and previousPassword: String, flow: Mode.ResetFlow) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if password != previousPassword {
                 handleInvalidPassword()
@@ -262,7 +262,7 @@ extension ChoosePasswordViewController {
         }
     }
 
-    private func confirmPassword(with value: NumpadKey) {
+    private func confirmPassword(with value: NumpadButton.NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if session?.isPasswordMatching(with: password) ?? false {
                 delegate?.choosePasswordViewController(self, didConfirmPassword: true)
@@ -272,7 +272,7 @@ extension ChoosePasswordViewController {
         }
     }
     
-    private func deletePassword(with value: NumpadKey) {
+    private func deletePassword(with value: NumpadButton.NumpadKey) {
         viewModel.configureSelection(in: choosePasswordView, for: value) { password in
             if session?.isPasswordMatching(with: password) ?? false {
                 session?.deletePassword()
@@ -284,8 +284,12 @@ extension ChoosePasswordViewController {
     }
 
     private func handleInvalidPassword() {
-        viewModel.displayWrongPasswordState(choosePasswordView)
-        choosePasswordView.shake(then: self.viewModel.reset(self.choosePasswordView))
+        choosePasswordView.changeStateTo(.error)
+        choosePasswordView.shake {
+            self.viewModel.reset()
+            self.choosePasswordView.changeStateTo(.empty)
+            self.choosePasswordView.toggleDeleteButtonVisibility(for: true)
+        }
     }
 }
 
