@@ -82,16 +82,16 @@ extension EditAccountViewController {
     }
 
     private func didTapDoneButton() {
-        guard let name = editAccountView.accountNameInputView.text else {
-            displaySimpleAlertWith(
-                title: "title-error".localized,
-                message: "account-name-setup-empty-error-message".localized
-            )
-            return
+        let accountName: String
+        if let name = editAccountView.accountNameInputView.text,
+           !name.isEmpty {
+            accountName = name
+        } else {
+            accountName = account.address.shortAddressDisplay()
         }
 
-        account.name = name
-        session?.updateName(name, for: account.address)
+        account.name = accountName
+        session?.updateName(accountName, for: account.address)
         dismissScreen()
     }
 }

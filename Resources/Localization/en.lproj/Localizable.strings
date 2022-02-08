@@ -168,7 +168,7 @@
 "accounts-tranaction-empty-text" = "No Transactions Yet";
 "accounts-tranaction-empty-detail" = "No transactions have been made with this asset.";
 "tranaction-empty-text" = "No Transactions Found";
-"accounts-algos-available-title" = "Algos";
+"accounts-algos-available-title" = "Algo";
 "accounts-dollar-value-title" = "Dollar Value";
 "accounts-transaction-history-title" = "Transaction History";
 "accounts-add-account" = "+ ADD ACCOUNT";
@@ -182,7 +182,7 @@
 "asset-title" = "Asset";
 "asset-not-found-title" = "No asset found";
 "asset-not-found-detail" = "Try different asset name or asset id";
-"asset-algos-title" = "Algos";
+"asset-algos-title" = "Algo";
 "asset-remove-title" = "Manage Assets";
 "asset-remove-subtitle" = "To remove an asset, you must first transfer that asset’s balance to another account";
 "asset-search-placeholder" = "Search Assets ID or Name";
@@ -216,7 +216,7 @@
 "asset-detail-id-title" = "ID %@";
 
 // MARK: Algos Send
-"send-algos-title" = "Send Algos";
+"send-algos-title" = "Send Algo";
 "send-algos-select" = "Select Account";
 "send-sending-algos-select" = "Select Sending Account";
 "send-receiving-algos-select" = "Select Receiving Account";
@@ -230,10 +230,10 @@
 "send-algos-alert-incomplete-title" = "Incomplete Transaction";
 "send-algos-alert-message-address" = "Please enter a destination address.";
 "send-algos-alert-message" = "Please fill the fields.";
-"send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.1 algos.";
-"send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 algos.";
-"send-algos-minimum-amount-custom-error" = "The transaction cannot be completed because the amount will put your account below minimum required balance of %@ Algos.";
-"send-algos-amount-error" = "Transaction amount cannot be more than your available algos";
+"send-algos-minimum-amount-error-new-account" = "You're trying to send money to a new account. The amount must be at least 0.1 Algo.";
+"send-algos-minimum-amount-error" = "Transaction amount results in a balance below the minimum account balance of 0.1 Algo.";
+"send-algos-minimum-amount-custom-error" = "The transaction cannot be completed because the amount will put your account below minimum required balance of %@ Algo.";
+"send-algos-amount-error" = "Transaction amount cannot be more than your available algo";
 "send-asset-amount-error" = "Transaction amount cannot be more than your available amount.";
 "send-algos-contact-not-found" = "Contact not found";
 "send-algos-address-not-selected" = "Address not selected";
@@ -251,7 +251,7 @@
 "send-trasaction-address-placeholder" = "Paste #";
 
 // MARK: Algos Request
-"request-algos-title" = "Request Algos";
+"request-algos-title" = "Request Algo";
 "request-title" = "Request";
 
 // MARK: Options
@@ -557,7 +557,7 @@
 "ledger-rekey-ledger-passphrase" = "Passphrase";
 "ledger-rekey-ledger-new" = "New Ledger";
 "ledger-rekey-finalize" = "Finalize Rekeying";
-"ledger-rekey-total-fee" = "Total Rekeying fee of %@ Algos";
+"ledger-rekey-total-fee" = "Total Rekeying fee of %@ Algo";
 "ledger-rekey-more-assets" = "+%@ more assets";
 "ledger-rekey-success-title" = "Account successfully\nrekeyed";
 "ledger-rekey-success-message" = "The account \"%@\" has been successfully rekeyed";
@@ -723,7 +723,7 @@
 "wallet-connect-transaction-warning-rekey-title" = "Rekey To";
 "wallet-connect-transaction-warning-close-asset-title" = "Close Asset To";
 "wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To";
-"wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.001 Algos.";
+"wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.001 Algo.";
 "wallet-connect-transaction-warning-initial" = "The following transaction requests are from external applications that the Algorand Wallet does not control. Please ensure you review these transactions carefully before signing as transactions are irreversible.";
 "wallet-connect-transaction-warning-future" = "This transaction will be submitted in the future. ";
 "wallet-connect-transaction-warning-confirmation" = "Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";

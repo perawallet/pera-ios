@@ -53,12 +53,12 @@ final class WelcomeView: View {
 extension WelcomeView {
     @objc
     private func notifyDelegateToAddAccount() {
-        delegate?.welcomeView(self, didSelect: .add(type: .none))
+        delegate?.welcomeViewDidSelectAdd(self)
     }
 
     @objc
     private func notifyDelegateToRecoverAccount() {
-        delegate?.welcomeView(self, didSelect: .recover)
+        delegate?.welcomeViewDidSelectRecover(self)
     }
 }
 
@@ -133,6 +133,7 @@ extension WelcomeView {
 }
 
 protocol WelcomeViewDelegate: AnyObject {
-    func welcomeView(_ welcomeView: WelcomeView, didSelect mode: AccountSetupMode)
+    func welcomeViewDidSelectAdd(_ welcomeView: WelcomeView)
+    func welcomeViewDidSelectRecover(_ welcomeView: WelcomeView)
     func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL)
 }

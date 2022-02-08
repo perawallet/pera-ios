@@ -315,8 +315,8 @@ class Router:
             viewController = PassphraseBackUpViewController(address: address, configuration: configuration)
         case .passphraseVerify:
             viewController = PassphraseVerifyViewController(configuration: configuration)
-        case .accountNameSetup:
-            viewController = AccountNameSetupViewController(configuration: configuration)
+        case let .accountNameSetup(mode, accountAddress):
+            viewController = AccountNameSetupViewController(mode: mode, accountAddress: accountAddress, configuration: configuration)
         case let .accountRecover(flow):
             viewController = AccountRecoverViewController(accountSetupFlow: flow, configuration: configuration)
         case let .qrScanner(canReadWCSession):

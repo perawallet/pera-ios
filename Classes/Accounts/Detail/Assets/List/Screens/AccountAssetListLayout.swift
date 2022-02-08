@@ -96,6 +96,10 @@ extension AccountAssetListLayout: UICollectionViewDelegateFlowLayout {
         case .portfolio:
             return .zero
         case .assets:
+            if accountHandle.value.isWatchAccount() {
+                return .zero
+            }
+
             return CGSize(theme.listFooterSize)
         }
     }

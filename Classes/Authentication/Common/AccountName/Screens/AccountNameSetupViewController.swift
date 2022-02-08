@@ -21,13 +21,21 @@ import MacaroonUIKit
 final class AccountNameSetupViewController: BaseScrollViewController {
     private lazy var accountNameSetupView = AccountNameSetupView()
     private lazy var theme = Theme()
-
-    private lazy var accountOrdering = AccountOrdering(
-        sharedDataController: sharedDataController,
-        session: session!
-    )
     
     private var keyboardController = KeyboardController()
+
+    private let mode: AccountSetupMode
+    private let accountAddress: PublicKey
+
+    init(
+        mode: AccountSetupMode,
+        accountAddress: PublicKey,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.mode = mode
+        self.accountAddress = accountAddress
+        super.init(configuration: configuration)
+    }
     
     override func setListeners() {
         super.setListeners()
@@ -49,7 +57,7 @@ final class AccountNameSetupViewController: BaseScrollViewController {
 
     override func bindData() {
         super.bindData()
-        accountNameSetupView.bindData(session?.address(for: "temp")?.shortAddressDisplay())
+        accountNameSetupView.bindData(accountAddress.shortAddressDisplay())
     }
 
     override func configureAppearance() {
@@ -90,38 +98,38 @@ extension AccountNameSetupViewController: AccountNameSetupViewDelegate {
 
 extension AccountNameSetupViewController {
     private func setupAccountName() {
-        // <note>
-        // We disable button to prevent double tap.
-        accountNameSetupView.nextButton.isEnabled = false
-
-        guard let tempPrivateKey = session?.privateData(for: "temp"),
-            let address = session?.address(for: "temp") else {
-                accountNameSetupView.nextButton.isEnabled = true
-                return
-        }
-
-        log(RegistrationEvent(type: .create))
-
-        let nameInput = accountNameSetupView.accountNameInputView.text.unwrap(or: "")
-        let accountName = nameInput.isEmptyOrBlank ? address.shortAddressDisplay() : nameInput
-        let account = AccountInformation(
-            address: address,
-            name: accountName,
-            type: .standard,
-            preferredOrder: accountOrdering.getNewAccountIndex(for: .standard)
-        )
-        session?.savePrivate(tempPrivateKey, for: account.address)
-        session?.removePrivateData(for: "temp")
-        
-        if let authenticatedUser = session?.authenticatedUser {
-            authenticatedUser.addAccount(account)
-            closeScreen(by: .dismiss, animated: false)
+        let accountName: String
+        if let nameInput = accountNameSetupView.accountNameInputView.text,
+           !nameInput.isEmpty {
+            accountName = nameInput
         } else {
-            let user = User(accounts: [account])
-            session?.authenticatedUser = user
-            
-            launchMain()
+            accountName = accountAddress.shortAddressDisplay()
         }
+
+        session?.updateName(accountName, for: accountAddress)
+
+        switch mode {
+        case let .add(type):
+            switch type {
+            case .create:
+                launchMain()
+            case .watch:
+                openAccountVerifiedTutorial()
+            default:
+                break
+            }
+        case .recover:
+            openAccountVerifiedTutorial()
+        default:
+            break
+        }
+    }
+
+    private func openAccountVerifiedTutorial() {
+        open(
+            .tutorial(flow: .none, tutorial: .accountVerified),
+            by: .push
+        )
     }
 }
 
