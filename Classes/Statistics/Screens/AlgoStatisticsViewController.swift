@@ -34,14 +34,14 @@ final class AlgoStatisticsViewController: BaseScrollViewController {
     private var chartEntries: [AlgosUSDValue]?
     private var selectedTimeInterval: AlgosUSDValueInterval = .daily
 
-    private var currency: Currency?
+    private var currency: Currency? {
+        return sharedDataController.currency.value
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         loadingController?.startLoadingWithMessage("title-loading".localized)
-        fetchCurrency { [weak self] in
-            self?.getChartData()
-        }
+        getChartData()
     }
 
     override func customizeTabBarAppearence() {
@@ -80,16 +80,7 @@ extension AlgoStatisticsViewController: BottomSheetPresentable {
     }
 }
 
-extension AlgoStatisticsViewController {
-    private func fetchCurrency(then completion: @escaping () -> Void) {
-        algoStatisticsDataController.getCurrency { [weak self] currency in
-            if let currency = currency {
-                self?.currency = currency
-                completion()
-            }
-        }
-    }
-    
+extension AlgoStatisticsViewController {    
     private func getChartData(for interval: AlgosUSDValueInterval = .daily) {
         algoStatisticsDataController.getChartData(for: interval)
     }
