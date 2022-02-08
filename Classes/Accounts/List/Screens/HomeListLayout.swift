@@ -59,7 +59,9 @@ extension HomeListLayout {
         
         switch section {
         case .empty:
-            return .zero
+            insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 72
+            insets.bottom = 40
+            return insets
         case .portfolio:
             insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 72
             insets.bottom = 40
