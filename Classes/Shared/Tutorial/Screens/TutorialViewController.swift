@@ -141,7 +141,7 @@ extension TutorialViewController: TutorialViewDelegate {
         case .recover:
             open(.accountRecover(flow: flow), by: .push)
         case .passcode:
-            open(.choosePassword(mode: .setup, flow: flow, route: nil), by: .push)
+            open(.choosePassword(mode: .setup, flow: flow), by: .push)
         case .localAuthentication:
             askLocalAuthentication()
         case .biometricAuthenticationEnabled:

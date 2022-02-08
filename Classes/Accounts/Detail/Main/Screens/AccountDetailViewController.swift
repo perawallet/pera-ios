@@ -121,7 +121,7 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
 
         if localAuthenticator.localAuthenticationStatus != .allowed {
             let controller = open(
-                .choosePassword(mode: .confirm(flow: .viewPassphrase), flow: nil, route: nil),
+                .choosePassword(mode: .confirm(flow: .viewPassphrase), flow: nil),
                 by: .present
             ) as? ChoosePasswordViewController
             controller?.delegate = self

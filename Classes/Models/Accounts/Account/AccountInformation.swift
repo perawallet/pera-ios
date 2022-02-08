@@ -31,6 +31,12 @@ final class AccountInformation: Codable {
     var preferredOrder: Int
     var accountImage: String?
     
+    var isOrderred: Bool {
+        return preferredOrder != Self.invalidOrder
+    }
+    
+    static let invalidOrder = -1
+    
     init(
         address: String,
         name: String,
@@ -38,7 +44,7 @@ final class AccountInformation: Codable {
         ledgerDetail: LedgerDetail? = nil,
         rekeyDetail: RekeyDetail? = nil,
         receivesNotification: Bool = true,
-        preferredOrder: Int = -1,
+        preferredOrder: Int? = nil,
         accountImage: String? = nil
     ) {
         self.address = address
@@ -47,7 +53,7 @@ final class AccountInformation: Codable {
         self.ledgerDetail = ledgerDetail
         self.receivesNotification = receivesNotification
         self.rekeyDetail = rekeyDetail
-        self.preferredOrder = preferredOrder
+        self.preferredOrder = preferredOrder ?? Self.invalidOrder
         self.accountImage = accountImage ?? AccountImageType.getRandomImage(for: type).rawValue
     }
     
@@ -59,7 +65,7 @@ final class AccountInformation: Codable {
         ledgerDetail = try container.decodeIfPresent(LedgerDetail.self, forKey: .ledgerDetail)
         receivesNotification = try container.decodeIfPresent(Bool.self, forKey: .receivesNotification) ?? true
         rekeyDetail = try container.decodeIfPresent(RekeyDetail.self, forKey: .rekeyDetail)
-        preferredOrder = try container.decodeIfPresent(Int.self, forKey: .preferredOrder) ?? -1
+        preferredOrder = try container.decodeIfPresent(Int.self, forKey: .preferredOrder) ?? Self.invalidOrder
         accountImage = try container.decodeIfPresent(String.self, forKey: .accountImage) ?? AccountImageType.getRandomImage(for: type).rawValue
     }
 }

@@ -69,13 +69,8 @@ extension AddAccountViewController {
 
     private func addSkipBarButtonItem() {
         let skipBarButtonItem = ALGBarButtonItem(kind: .skip) { [unowned self] in
-            session?.createUser()
-
-            DispatchQueue.main.async {
-                self.dismiss(animated: false) {
-                    UIApplication.shared.rootViewController()?.setupTabBarController()
-                }
-            }
+            self.session?.createUser()
+            self.launchMain()
         }
 
         rightBarButtonItems = [skipBarButtonItem]

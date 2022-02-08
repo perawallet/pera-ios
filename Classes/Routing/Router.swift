@@ -15,16 +15,143 @@
 //
 //  Router.swift
 
+import Foundation
+import MacaroonUIKit
+import MacaroonUtils
 import UIKit
 
-class Router {
-
-    private weak var rootViewController: RootViewController?
+class Router:
+    AssetActionConfirmationViewControllerDelegate,
+    WalletConnectorDelegate,
+    WCConnectionApprovalViewControllerDelegate,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
     
-    init(rootViewController: RootViewController) {
+    unowned let rootViewController: RootViewController
+    
+    /// <todo>
+    /// How to dealloc finished transitions?
+    private var ongoingTransitions: [BottomSheetTransition] = []
+
+    private unowned let appConfiguration: AppConfiguration
+    
+    init(
+        rootViewController: RootViewController,
+        appConfiguration: AppConfiguration
+    ) {
         self.rootViewController = rootViewController
+        self.appConfiguration = appConfiguration
+        
+        observeNotifications()
     }
     
+    deinit {
+        unobserveNotifications()
+    }
+    
+    func launchAuthorization() {
+        let isAnimated = rootViewController.areTabsVisible
+        
+        route(
+            to: .choosePassword(mode: .login, flow: nil),
+            from: findVisibleScreen(over: rootViewController),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            ),
+            animated: isAnimated
+        )
+    }
+    
+    func launchOnboarding() {
+        let isAnimated =
+            rootViewController.presentingViewController != nil ||
+            rootViewController.areTabsVisible
+        
+        route(
+            to: .welcome(flow: .initializeAccount(mode: .none)),
+            from: findVisibleScreen(over: rootViewController),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            ),
+            animated: isAnimated
+        ) { [weak self] in
+            guard let self = self else { return }
+            self.rootViewController.terminateTabs()
+        }
+    }
+    
+    func launchMain() {
+        rootViewController.launchTabs()
+        rootViewController.dismissIfNeeded()
+    }
+    
+    func launcMainAfterAuthorization(
+        presented viewController: UIViewController,
+        completion: @escaping () -> Void
+    ) {
+        if !rootViewController.areTabsVisible {
+            rootViewController.launchTabs()
+        }
+        
+        viewController.dismissScreen(completion: completion)
+    }
+    
+    func launch(
+        deeplink screen: DeepLinkParser.Screen
+    ) {
+        func launch(
+            tab: TabBarItemID
+        ) {
+            if rootViewController.presentedViewController == nil {
+                rootViewController.launch(tab: tab)
+            }
+        }
+        
+        switch screen {
+        case .addContact(let address, let name):
+            launch(tab: .contacts)
+            
+            route(
+                to: .addContact(address: address, name: name),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+        case .algosDetail(let draft):
+            launch(tab: .home)
+
+            route(
+                to: .algosDetail(draft: draft),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+        case .assetActionConfirmation(let draft):
+            launch(tab: .home)
+            
+            let visibleScreen = findVisibleScreen(over: rootViewController)
+            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+            transition.perform(
+                .assetActionConfirmation(assetAlertDraft: draft, delegate: self),
+                by: .presentWithoutNavigationController
+            )
+            
+            ongoingTransitions.append(transition)
+        case .assetDetail(let draft):
+            launch(tab: .home)
+            
+            route(
+                to: .assetDetail(draft: draft),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+        }
+    }
+    
+    @discardableResult
     func route<T: UIViewController>(
         to screen: Screen,
         from sourceViewController: UIViewController,
@@ -71,7 +198,7 @@ class Router {
             
             navigationController.modalPresentationStyle = .fullScreen
             
-            rootViewController?.present(navigationController, animated: false, completion: completion)
+            rootViewController.present(navigationController, animated: false, completion: completion)
         case .present,
                 .customPresent:
             let navigationController: NavigationController
@@ -169,31 +296,19 @@ class Router {
     
     // swiftlint:disable function_body_length
     private func buildViewController<T: UIViewController>(for screen: Screen) -> T? {
-        guard let rootViewController = UIApplication.shared.rootViewController() else {
-            return nil
-        }
-        
+        let configuration = appConfiguration.all()
+
         let viewController: UIViewController
-        
-        let configuration = ViewControllerConfiguration(
-            api: rootViewController.appConfiguration.api,
-            session: rootViewController.appConfiguration.session,
-            sharedDataController: rootViewController.appConfiguration.sharedDataController,
-            walletConnector: rootViewController.appConfiguration.walletConnector,
-            loadingControlller: rootViewController.appConfiguration.loadingController,
-            bannerController: rootViewController.appConfiguration.bannerController
-        )
         
         switch screen {
         case let .welcome(flow):
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
         case let .addAccount(flow):
             viewController = AddAccountViewController(flow: flow, configuration: configuration)
-        case let .choosePassword(mode, flow, route):
+        case let .choosePassword(mode, flow):
             viewController = ChoosePasswordViewController(
                 mode: mode,
                 accountSetupFlow: flow,
-                route: route,
                 configuration: configuration
             )
         case let .passphraseView(address):
@@ -252,8 +367,10 @@ class Router {
             viewController = NotificationsViewController(configuration: configuration)
         case let .removeAsset(account):
             viewController = ManageAssetsViewController(account: account, configuration: configuration)
-        case let .assetActionConfirmation(assetAlertDraft):
-            viewController = AssetActionConfirmationViewController(assetAlertDraft: assetAlertDraft, configuration: configuration)
+        case let .assetActionConfirmation(assetAlertDraft, delegate):
+            let aViewController = AssetActionConfirmationViewController(draft: assetAlertDraft, configuration: configuration)
+            aViewController.delegate = delegate
+            viewController = aViewController
         case let .rewardDetail(account):
             viewController = RewardDetailViewController(account: account, configuration: configuration)
         case .verifiedAssetInformation:
@@ -474,4 +591,178 @@ class Router {
         return viewController as? T
     }
     // swiftlint:enable function_body_length
+}
+
+extension Router {
+    func findVisibleScreen(
+        over screen: UIViewController? = nil
+    ) -> UIViewController {
+        let topmostPresentedScreen =
+            findVisibleScreen(
+                presentedBy: screen ?? rootViewController
+            )
+
+        return findVisibleScreen(
+            in: topmostPresentedScreen
+        )
+    }
+
+    func findVisibleScreen(
+        presentedBy screen: UIViewController
+    ) -> UIViewController {
+        var topmostPresentedScreen = screen
+
+        while let nextPresentedScreen = topmostPresentedScreen.presentedViewController {
+            topmostPresentedScreen = nextPresentedScreen
+        }
+        return topmostPresentedScreen
+    }
+
+    func findVisibleScreen(
+        in screen: UIViewController
+    ) -> UIViewController {
+        switch screen {
+        case let navigationContainer as UINavigationController:
+            return findVisibleScreen(
+                in: navigationContainer
+            )
+        case let tabbedContainer as TabbedContainer:
+            return findVisibleScreen(
+                in: tabbedContainer
+            )
+        default:
+            return screen
+        }
+    }
+
+    func findVisibleScreen(
+        in navigationContainer: UINavigationController
+    ) -> UIViewController {
+        return navigationContainer.viewControllers.last ?? navigationContainer
+    }
+
+    func findVisibleScreen(
+        in tabbedContainer: TabbedContainer
+    ) -> UIViewController {
+        guard let selectedScreen = tabbedContainer.selectedScreen else {
+            return tabbedContainer
+        }
+
+        switch selectedScreen {
+        case let navigationContainer as UINavigationController:
+            return findVisibleScreen(
+                in: navigationContainer
+            )
+        default:
+            return selectedScreen
+        }
+    }
+}
+
+extension Router {
+    func assetActionConfirmationViewController(
+        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
+        didConfirmedActionFor assetDetail: AssetInformation
+    ) {
+        let draft = assetActionConfirmationViewController.draft
+        
+        guard let account = draft.account else {
+            return
+        }
+        
+        let assetTransactionDraft =
+            AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetIndex))
+        let transactionController = TransactionController(
+            api: appConfiguration.api,
+            bannerController: appConfiguration.bannerController
+        )
+
+        transactionController.setTransactionDraft(assetTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+    }
+}
+
+extension Router {
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        shouldStart session: WalletConnectSession,
+        then completion: @escaping WalletConnectSessionConnectionCompletionHandler
+    ) {
+        let sharedDataController = appConfiguration.sharedDataController
+        let bannerController = appConfiguration.bannerController
+        
+        let hasNonWatchAccount = sharedDataController.accountCollection.contains {
+            $0.value.type != .watch
+        }
+        
+        if !hasNonWatchAccount {
+            asyncMain { [weak bannerController] in
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "wallet-connect-session-error-no-account".localized
+                )
+            }
+            return
+        }
+
+        asyncMain { [weak self] in
+            guard let self = self else { return }
+            
+            let visibleScreen = self.findVisibleScreen(over: self.rootViewController)
+            let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+
+            transition.perform(
+                .wcConnectionApproval(
+                    walletConnectSession: session,
+                    delegate: self,
+                    completion: completion
+                ),
+                by: .present
+            )
+            
+            self.ongoingTransitions.append(transition)
+        }
+    }
+
+    func walletConnector(
+        _ walletConnector: WalletConnector,
+        didConnectTo session: WCSession
+    ) {
+        walletConnector.saveConnectedWCSession(session)
+    }
+}
+
+extension Router {
+    func wcConnectionApprovalViewControllerDidApproveConnection(
+        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController
+    ) {
+        wcConnectionApprovalViewController.dismissScreen()
+    }
+
+    func wcConnectionApprovalViewControllerDidRejectConnection(
+        _ wcConnectionApprovalViewController: WCConnectionApprovalViewController
+    ) {
+        wcConnectionApprovalViewController.dismissScreen()
+    }
+}
+
+extension Router {
+    private func observeNotifications() {
+        observe(notification: WalletConnector.didReceiveSessionRequestNotification) {
+            [weak self] notification in
+            guard let self = self else { return }
+            
+            let userInfoKey = WalletConnector.sessionRequestUserInfoKey
+            let maybeSessionKey = notification.userInfo?[userInfoKey] as? String
+
+            guard let sessionKey = maybeSessionKey else {
+                return
+            }
+            
+            let walletConnector = self.appConfiguration.walletConnector
+            
+            walletConnector.delegate = self
+            walletConnector.connect(to: sessionKey)
+        }
+    }
 }

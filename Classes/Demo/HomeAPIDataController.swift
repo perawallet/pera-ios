@@ -37,6 +37,8 @@ final class HomeAPIDataController:
         sharedDataController.remove(self)
     }
     
+    /// <todo>
+    /// The account should return from the list in the data source, not shared data controller.
     subscript (address: String?) -> AccountHandle? {
         return address.unwrap {
             sharedDataController.accountCollection[$0]

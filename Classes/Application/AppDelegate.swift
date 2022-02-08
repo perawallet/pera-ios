@@ -15,95 +15,24 @@
 //
 //  AppDelegate.swift
 
-import Foundation
-import UIKit
 import CoreData
 import Firebase
-import SwiftDate
-import UserNotifications
 import FirebaseCrashlytics
+import Foundation
+import MacaroonUtils
+import SwiftDate
+import UIKit
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate:
+    UIResponder,
+    UIApplicationDelegate,
+    AppLaunchUIHandler {
     static var shared: AppDelegate? {
         return UIApplication.shared.delegate as? AppDelegate
     }
-
-    var window: UIWindow?
-
-    private lazy var session = Session()
-    private lazy var api = ALGAPI(session: session)
-    private lazy var sharedDataController = SharedAPIDataController(session: session, api: api)
-    private lazy var walletConnector = WalletConnector()
-    private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window ?? UIWindow())
-    private lazy var bannerController = BannerController(window: window ?? UIWindow())
-
-    private(set) lazy var appConfiguration = AppConfiguration(
-        api: api,
-        session: session,
-        sharedDataController: sharedDataController,
-        walletConnector: walletConnector,
-        loadingController: loadingController,
-        bannerController: bannerController
-    )
-
-    private lazy var pushNotificationController = PushNotificationController(api: api, bannerController: bannerController)
-
-    private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
     
-    private var rootViewController: RootViewController?
-
-    private var lastActiveDate: Date?
-
-    private(set) var incomingWCSessionRequest: String?
-    
-    private lazy var containerBlurView = UIVisualEffectView()
-    
-    func application(
-        _ application: UIApplication,
-        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
-    ) -> Bool {
-        setupFirebase()
-        SwiftDate.setupDateRegion()
-        setupWindow()
-
-        return true
-    }
-
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        authorizeNotifications(for: deviceToken)
-    }
-    
-    func application(
-        _ application: UIApplication,
-        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
-        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
-    ) {
-        displayInAppPushNotification(from: userInfo)
-    }
-    
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        NotificationCenter.default.post(name: .ApplicationWillEnterForeground, object: self, userInfo: nil)
-    }
-    
-    func applicationWillResignActive(_ application: UIApplication) {
-        decideToInvalidateSessionInBackground()
-        showBlurOnWindow()
-    }
-    
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        updateForegroundActions()
-        removeBlurOnWindow()
-    }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        saveContext()
-    }
-    
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {
-        return shouldHandleDeepLinkRouting(from: url)
-    }
-
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "algorand")
         container.loadPersistentStores { storeDescription, error in
@@ -124,82 +53,266 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return container
     }()
-}
 
-extension AppDelegate {
-    private func setupFirebase() {
-        firebaseAnalytics.initialize()
-    }
+    var window: UIWindow?
+    
+    private(set) lazy var appConfiguration = AppConfiguration(
+        api: api,
+        session: session,
+        sharedDataController: sharedDataController,
+        walletConnector: walletConnector,
+        loadingController: loadingController,
+        bannerController: bannerController
+    )
+    
+    private(set) lazy var firebaseAnalytics = FirebaseAnalytics()
+    
+    private lazy var appLaunchController = createAppLaunchController()
 
-    private func setupWindow() {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        rootViewController = RootViewController(appConfiguration: appConfiguration)
-        window?.rootViewController = rootViewController
-        window?.backgroundColor = .clear
-        window?.makeKeyAndVisible()
-    }
-}
+    private lazy var session = Session()
+    private lazy var api = ALGAPI(session: session)
+    private lazy var sharedDataController = SharedAPIDataController(session: session, api: api)
+    private lazy var walletConnector = WalletConnector()
+    private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
+    private lazy var bannerController = BannerController(window: window!)
+    
+    private lazy var router =
+        Router(rootViewController: rootViewController, appConfiguration: appConfiguration)
+    
+    private lazy var rootViewController = RootViewController(appConfiguration: appConfiguration)
 
-extension AppDelegate {
-    private func updateForegroundActions() {
-        updateUserInterfaceStyleIfNeeded()
-        validateUserSessionIfNeeded()
-    }
+    private lazy var pushNotificationController =
+        PushNotificationController(session: session, api: api, bannerController: bannerController)
+    
+    private lazy var containerBlurView = UIVisualEffectView()
+    
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
+        setupWindow()
+        setupAppLibs()
 
-    private func validateUserSessionIfNeeded() {
-        defer {
-            lastActiveDate = nil
-        }
-        
-        if !appConfiguration.session.isValid {
-            return
-        }
-        
-        /// <note>
-        /// The application has not becommen inactive yet.
-        guard let lastActiveDate = lastActiveDate else {
-            return
-        }
-        
-        if !appConfiguration.session.hasPassword() {
-            sharedDataController.startPolling()
-            return
-        }
-        
-        let expireDate = lastActiveDate + Constants.sessionInvalidateTime.seconds
-        let isPasscodeExpired = Date.now().isAfterDate(
-            expireDate,
-            granularity: .second
-        )
-        
-        if !isPasscodeExpired {
-            sharedDataController.startPolling()
-            return
-        }
-        
-        appConfiguration.session.isValid = false
-        openPasswordEntryScreen()
-    }
+        launch(with: launchOptions)
 
-    private func openPasswordEntryScreen() {
-        guard let rootViewController = rootViewController,
-              let topViewController = rootViewController.tabBarViewController.topMostController,
-              appConfiguration.session.hasPassword() else {
-            return
-        }
-
-        rootViewController.route(
-            to: .choosePassword(mode: .login, flow: nil, route: nil),
-            from: topViewController,
-            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-        )
-    }
-
-    private func decideToInvalidateSessionInBackground() {
-        sharedDataController.stopPolling()
-        lastActiveDate = Date()
+        return true
     }
     
+    func applicationWillEnterForeground(
+        _ application: UIApplication
+    ) {
+        NotificationCenter.default.post(
+            name: .ApplicationWillEnterForeground,
+            object: self,
+            userInfo: nil
+        )
+    }
+    
+    func applicationDidBecomeActive(
+        _ application: UIApplication
+    ) {
+        setNeedsUserInterfaceStyleUpdateIfNeeded()
+        removeBlurOnWindow()
+        
+        appLaunchController.becomeActive()
+    }
+    
+    func applicationWillResignActive(
+        _ application: UIApplication
+    ) {
+        appLaunchController.resignActive()
+
+        showBlurOnWindow()
+    }
+
+    func applicationWillTerminate(
+        _ application: UIApplication
+    ) {
+        saveContext()
+    }
+
+    func application(
+        _ application: UIApplication,
+        didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data
+    ) {
+        authorizeNotifications(for: deviceToken)
+    }
+    
+    func application(
+        _ application: UIApplication,
+        didReceiveRemoteNotification userInfo: [AnyHashable: Any],
+        fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void
+    ) {
+        NotificationCenter.default.post(
+            name: .NotificationDidReceived,
+            object: self,
+            userInfo: nil
+        )
+        
+        appLaunchController.receive(
+            deeplinkWithSource: .remoteNotification(
+                userInfo,
+                waitForUserConfirmation: UIApplication.shared.isActive
+            )
+        )
+    }
+    
+    func application(
+        _ app: UIApplication,
+        open url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+    ) -> Bool {
+        guard let scheme = url.scheme else {
+            return false
+        }
+        
+        /// <todo>
+        /// Schemes should be controlled from a single point.
+        switch scheme {
+        case "algorand":
+            appLaunchController.receive(deeplinkWithSource: .url(url))
+            return true
+        case "algorand-wc":
+            appLaunchController.receive(deeplinkWithSource: .walletConnectSessionRequest(url))
+            return true
+        default:
+            return false
+        }
+    }
+}
+
+extension AppDelegate {
+    func launchUI(
+        _ state: AppLaunchUIState
+    ) {
+        switch state {
+        case .authorization:
+            router.launchAuthorization()
+        case .onboarding:
+            router.launchOnboarding()
+        case .main:
+            router.launchMain()
+        case .mainAfterAuthorization(let presentedViewController, let completion):
+            router.launcMainAfterAuthorization(
+                presented: presentedViewController,
+                completion: completion
+            )
+        case .remoteNotification(let notification, let screen):
+            guard let someScreen = screen else {
+                pushNotificationController.present(notification: notification)
+                return
+            }
+            
+            pushNotificationController.present(notification: notification) {
+                [unowned self] in
+                self.router.launch(deeplink: someScreen)
+            }
+        case .deeplink(let screen):
+            router.launch(deeplink: screen)
+        case .walletConnectSessionRequest(let key):
+            NotificationCenter.default.post(
+                name: WalletConnector.didReceiveSessionRequestNotification,
+                object: nil,
+                userInfo: [
+                    WalletConnector.sessionRequestUserInfoKey: key
+                ]
+            )
+        }
+    }
+}
+
+extension AppDelegate {
+    private func setupWindow() {
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.backgroundColor = .clear
+        window?.rootViewController = rootViewController
+        window?.makeKeyAndVisible()
+    }
+    
+    private func setupAppLibs() {
+        /// <mark>
+        /// Firebase
+        firebaseAnalytics.initialize()
+        
+        /// <mark>
+        /// SwiftDate
+        SwiftDate.defaultRegion = Region(
+            calendar: Calendar.autoupdatingCurrent,
+            zone: TimeZone.autoupdatingCurrent,
+            locale: Locales.autoUpdating
+        )
+    }
+}
+
+extension AppDelegate {
+    private func setNeedsUserInterfaceStyleUpdateIfNeeded() {
+        /// <note>
+        /// `traitCollectionDidChange` is not called when the user interface style is changed from
+        /// the device settings while the app is launched. It takes a minor delay to receive correct
+        /// system interface value from `traitCollection`.
+        if session.userInterfaceStyle != .system {
+            return
+        }
+        
+        asyncMain(afterDuration: 1) {
+            UserInterfaceStyleController.setNeedsUserInterfaceStyleUpdate(.system)
+        }
+    }
+}
+
+extension AppDelegate {
+    func launch(
+        with options: [UIApplication.LaunchOptionsKey: Any]?
+    ) {
+        let src: DeeplinkSource?
+        
+        if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
+            src = .remoteNotification(userInfo, waitForUserConfirmation: false)
+        } else if let url = options?[.url] as? URL {
+            src = .url(url)
+        } else {
+            src = nil
+        }
+        appLaunchController.launch(deeplinkWithSource: src)
+    }
+    
+    func launchOnboarding() {
+        appLaunchController.launchOnboarding()
+    }
+    
+    func launchMain() {
+        appLaunchController.launchMain()
+    }
+    
+    func launchMainAfterAuthorization(
+        presented viewController: UIViewController
+    ) {
+        appLaunchController.launchMainAfterAuthorization(presented: viewController)
+    }
+    
+    @discardableResult
+    func route<T: UIViewController>(
+        to screen: Screen,
+        from viewController: UIViewController,
+        by style: Screen.Transition.Open,
+        animated: Bool = true,
+        then completion: EmptyHandler? = nil
+    ) -> T? {
+        return router.route(
+            to: screen,
+            from: viewController,
+            by: style,
+            animated: animated,
+            then: completion
+        )
+    }
+    
+    func findVisibleScreen() -> UIViewController {
+        return router.findVisibleScreen()
+    }
+}
+
+extension AppDelegate {
     private func showBlurOnWindow() {
         containerBlurView.effect = nil
         UIView.animate(withDuration: 3.0) {
@@ -219,85 +332,6 @@ extension AppDelegate {
         let pushToken = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         pushNotificationController.authorizeDevice(with: pushToken)
     }
-
-    private func displayInAppPushNotification(from userInfo: [AnyHashable: Any]) {
-        guard let algorandNotification = parseAlgorandNotification(from: userInfo),
-              let accountId = getNotificationAccountId(from: algorandNotification) else {
-            return
-        }
-
-        handleNotificationActions(for: accountId, with: algorandNotification.details)
-    }
-
-    private func parseAlgorandNotification(from userInfo: [AnyHashable: Any]) -> AlgorandNotification? {
-        guard let userInfo = userInfo as? [String: Any],
-            let userInfoDictionary = userInfo["aps"] as? [String: Any],
-            let remoteNotificationData = try? JSONSerialization.data(withJSONObject: userInfoDictionary, options: .prettyPrinted),
-            let algorandNotification = try? JSONDecoder().decode(AlgorandNotification.self, from: remoteNotificationData) else {
-                return nil
-        }
-
-        return algorandNotification
-    }
-
-    private func getNotificationAccountId(from algorandNotification: AlgorandNotification) -> String? {
-        guard let accountId = algorandNotification.getAccountId() else {
-            if let message = algorandNotification.alert {
-                bannerController.presentInfoBanner(message)
-            }
-            return nil
-        }
-
-        return accountId
-    }
-
-    private func handleNotificationActions(for accountId: String, with notificationDetail: NotificationDetail?) {
-        if UIApplication.shared.applicationState == .active,
-           let notificationDetail = notificationDetail {
-
-            NotificationCenter.default.post(name: .NotificationDidReceived, object: self, userInfo: nil)
-
-            if let notificationtype = notificationDetail.notificationType {
-                if notificationtype == .assetSupportRequest {
-                    rootViewController?.openAsset(from: notificationDetail, for: accountId)
-                    return
-                }
-            }
-
-            pushNotificationController.show(with: notificationDetail) {
-                self.rootViewController?.openAsset(from: notificationDetail, for: accountId)
-            }
-        } else {
-            if let notificationDetail = notificationDetail {
-                rootViewController?.openAsset(from: notificationDetail, for: accountId)
-            }
-        }
-    }
-
-    private func shouldHandleDeepLinkRouting(from url: URL) -> Bool {
-        let parser = DeepLinkParser(url: url)
-
-        if let sessionRequest = parser.wcSessionRequestText {
-            if let user = appConfiguration.session.authenticatedUser,
-               !user.accounts.isEmpty {
-                incomingWCSessionRequest = sessionRequest
-                return true
-            }
-            
-            return false
-        }
-
-        guard let screen = parser.expectedScreen,
-            let rootViewController = rootViewController else {
-                return false
-        }
-
-        return rootViewController.handleDeepLinkRouting(for: screen)
-    }
-
-    func resetWCSessionRequest() {
-        incomingWCSessionRequest = nil
-    }
 }
 
 extension AppDelegate {
@@ -315,16 +349,13 @@ extension AppDelegate {
 }
 
 extension AppDelegate {
-    private func updateUserInterfaceStyleIfNeeded() {
-        /// <note> Will update the appearance style if it's set to system since it might be changed from device settings.
-        /// Since user interface style is overriden, traitCollectionDidChange is not triggered
-        /// when the user interface is changed from the device settings while app is open.
-        /// Needs a minor delay to receive correct system interface value from traitCollection to override the current one.
-        if appConfiguration.session.userInterfaceStyle == .system {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.rootViewController?.changeUserInterfaceStyle(to: .system)
-            }
-        }
+    private func createAppLaunchController() -> AppLaunchController {
+        return ALGAppLaunchController(
+            session: session,
+            api: api,
+            sharedDataController: sharedDataController,
+            uiHandler: self
+        )
     }
 }
 

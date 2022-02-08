@@ -16,6 +16,15 @@ import UIKit
 import WalletConnectSwift
 
 class WalletConnector {
+    static var didReceiveSessionRequestNotification: Notification.Name {
+        return .init(
+            rawValue: "com.algorand.algorand.notification.walletConnector.didReceiveSessionRequest"
+        )
+    }
+    
+    static var sessionRequestUserInfoKey: String {
+        return "walletConnector.userInfoKey.sessionRequest"
+    }
 
     private let walletConnectBridge = WalletConnectBridge()
 

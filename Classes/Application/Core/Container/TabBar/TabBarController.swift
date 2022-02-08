@@ -22,37 +22,22 @@ import UIKit
 
 final class TabBarController: TabBarContainer {
     var route: Screen?
-
-    private lazy var homeViewController =
-        HomeViewController(
-            dataController: HomeAPIDataController(configuration.sharedDataController),
-            configuration: configuration
-        )
-    private lazy var contactsViewController =
-        ContactsViewController(configuration: configuration)
-    private lazy var algoStatisticsViewController =
-        AlgoStatisticsViewController(configuration: configuration)
-    private lazy var settingsViewController =
-        SettingsViewController(configuration: configuration)
+    
+    var selectedTab: TabBarItemID? {
+        get {
+            let item = items[safe: selectedIndex]
+            return item.unwrap { TabBarItemID(rawValue: $0.id) }
+        }
+        set {
+            selectedIndex = newValue.unwrap { items.index(of: $0) }
+        }
+    }
 
     private lazy var toggleTransactionOptionsActionView = Button()
     private lazy var transactionOptionsView = createTransactionOptions()
     
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
-    
-    /// <todo>
-    /// ???
-    private var assetAlertDraft: AssetAlertDraft?
-    
-    private let configuration: ViewControllerConfiguration
-
-    init(
-        configuration: ViewControllerConfiguration
-    ) {
-        self.configuration = configuration
-        super.init()
-    }
     
     override func addTabBar() {
         super.addTabBar()
@@ -66,18 +51,7 @@ final class TabBarController: TabBarContainer {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         build()
-        
-        items = [
-            HomeTabBarItem(NavigationController(rootViewController: homeViewController)),
-            AlgoStatisticsTabBarItem(NavigationController(rootViewController: algoStatisticsViewController)),
-            FixedSpaceTabBarItem(width: .noMetric),
-            ContactsTabBarItem(NavigationController(rootViewController: contactsViewController)),
-            SettingsTabBarItem(NavigationController(rootViewController: settingsViewController))
-        ]
-        
-        setListeners()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -85,38 +59,15 @@ final class TabBarController: TabBarContainer {
         
         navigationController?.setNavigationBarHidden(true, animated: true)
         UIApplication.shared.appConfiguration?.session.isValid = true
-        routeForDeeplink()
     }
-}
-
-extension TabBarController {
-    func routeForDeeplink() {
-        if let route = route {
-            self.route = nil
-            switch route {
-            case .addContact:
-                selectedIndex = items.index(of: .contacts)
-                topMostController?.open(route, by: .push)
-            case .sendTransaction:
-                selectedIndex = items.index(of: .home)
-                topMostController?.open(route, by: .push)
-            case .assetDetail:
-                topMostController?.open(route, by: .push)
-            case let .assetActionConfirmation(draft):
-                selectedIndex = items.index(of: .home)
-                if let presentingViewController = topMostController {
-                    let bottomSheetTransition = BottomSheetTransition(presentingViewController: presentingViewController)
-                    let controller = bottomSheetTransition.perform(
-                        route,
-                        by: .presentWithoutNavigationController
-                    ) as? AssetActionConfirmationViewController
-                    controller?.delegate = self
-                }
-
-                assetAlertDraft = draft
-            default:
-                break
-            }
+    
+    override func updateLayoutWhenItemsDidChange() {
+        super.updateLayoutWhenItemsDidChange()
+        
+        if items.isEmpty {
+            removeShowTransactionOptionsAction()
+        } else {
+            addShowTransactionOptionsAction()
         }
     }
 }
@@ -124,7 +75,10 @@ extension TabBarController {
 extension TabBarController {
     private func build() {
         addBackground()
-        addShowTransactionOptionsAction()
+        
+        if !items.isEmpty {
+            addShowTransactionOptionsAction()
+        }
     }
     
     private func addBackground() {
@@ -155,6 +109,10 @@ extension TabBarController {
         toggleTransactionOptionsActionView.addTouch(
             target: self,
             action: #selector(toggleTransactionOptions))
+    }
+    
+    private func removeShowTransactionOptionsAction() {
+        toggleTransactionOptionsActionView.removeFromSuperview()
     }
     
     private func createTransactionOptions() -> TransactionOptionsView {
@@ -313,27 +271,6 @@ extension TabBarController: SelectAccountViewControllerDelegate {
                 )
             }
         }
-    }
-}
-
-extension TabBarController: AssetActionConfirmationViewControllerDelegate {
-    func assetActionConfirmationViewController(
-        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetInformation
-    ) {
-        guard let account = assetAlertDraft?.account,
-            let assetId = assetAlertDraft?.assetIndex,
-            let api = AppDelegate.shared?.appConfiguration.api,
-            let bannerController = AppDelegate.shared?.appConfiguration.bannerController else {
-                return
-        }
-        
-        let transactionController = TransactionController(api: api, bannerController: bannerController)
-        
-        let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: Int64(assetId))
-        transactionController.setTransactionDraft(assetTransactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
-        assetAlertDraft = nil
     }
 }
 
