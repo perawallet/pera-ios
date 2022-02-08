@@ -122,7 +122,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
         view.endEditing(true)
         let account = createAccount(from: address, with: address.shortAddressDisplay())
         log(RegistrationEvent(type: .watch))
-        openSuccessModal(for: account)
+        open(.accountNameSetup(mode: .add(type: .watch), accountAddress: account.address), by: .push)
     }
     
     private func createAccount(from address: String, with name: String) -> AccountInformation {
@@ -147,27 +147,6 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
         
         session?.authenticatedUser = user
         return account
-    }
-    
-    private func openSuccessModal(for account: AccountInformation) {
-        let controller = open(
-            .tutorial(flow: .none, tutorial: .accountVerified),
-            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-        ) as? TutorialViewController
-        controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
-            self.launchHome()
-        }
-    }
-
-    private func launchHome() {
-        switch self.accountSetupFlow {
-        case .initializeAccount:
-            launchMain()
-        case .addNewAccount:
-            closeScreen(by: .dismiss, animated: false)
-        case .none:
-            break
-        }
     }
 }
 

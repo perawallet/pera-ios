@@ -396,7 +396,7 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
         didRecover account: AccountInformation
     ) {
         log(RegistrationEvent(type: .recover))
-        openSuccessfulRecoverModal(for: account)
+        open(.accountNameSetup(mode: .recover, accountAddress: account.address), by: .push)
     }
 
     func accountRecoverDataController(
@@ -404,27 +404,6 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
         didFailRecoveringWith error: AccountRecoverDataController.RecoverError
     ) {
         displayRecoverError(error)
-    }
-
-    private func openSuccessfulRecoverModal(for recoveredAccount: AccountInformation) {
-        let controller = open(
-            .tutorial(flow: .none, tutorial: .accountVerified),
-            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-        ) as? TutorialViewController
-        controller?.uiHandlers.didTapButtonPrimaryActionButton = { _ in
-            self.launchHome()
-        }
-    }
-
-    private func launchHome() {
-        switch self.accountSetupFlow {
-        case .initializeAccount:
-            launchMain()
-        case .addNewAccount:
-            closeScreen(by: .dismiss, animated: false)
-        case .none:
-            break
-        }
     }
 
     private func displayRecoverError(_ error: AccountRecoverDataController.RecoverError) {
