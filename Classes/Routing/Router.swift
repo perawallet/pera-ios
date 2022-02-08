@@ -50,7 +50,9 @@ class Router:
     }
     
     func launchAuthorization() {
-        let isAnimated = rootViewController.areTabsVisible
+        if findVisibleScreen(over: rootViewController) is ChoosePasswordViewController {
+            return
+        }
         
         route(
             to: .choosePassword(mode: .login, flow: nil),
@@ -60,7 +62,7 @@ class Router:
                 transitionStyle: nil,
                 transitioningDelegate: nil
             ),
-            animated: isAnimated
+            animated: true
         )
     }
     

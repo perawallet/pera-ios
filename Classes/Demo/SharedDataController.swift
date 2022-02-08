@@ -32,8 +32,7 @@ protocol SharedDataController: AnyObject {
     
     func startPolling()
     func stopPolling()
-    func reset() /// stop polling -> delete data -> start polling
-    func cancel() /// stop polling -> delete data
+    func resetPolling()
     
     func add(
         _ observer: SharedDataControllerObserver
@@ -56,10 +55,8 @@ protocol SharedDataControllerObserver: AnyObject {
 }
 
 enum SharedDataControllerEvent {
+    case didBecomeIdle
     case didStartRunning(first: Bool)
-    case didUpdateAccountCollection(AccountHandle)
-    case didUpdateAssetDetailCollection
     case didUpdateCurrency
     case didFinishRunning
-    case didBecomeIdle
 }

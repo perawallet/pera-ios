@@ -19,6 +19,7 @@ import CoreData
 import Firebase
 import FirebaseCrashlytics
 import Foundation
+import MacaroonUIKit
 import MacaroonUtils
 import SwiftDate
 import UIKit
@@ -28,7 +29,8 @@ import UserNotifications
 class AppDelegate:
     UIResponder,
     UIApplicationDelegate,
-    AppLaunchUIHandler {
+    AppLaunchUIHandler ,
+    NotificationObserver {
     static var shared: AppDelegate? {
         return UIApplication.shared.delegate as? AppDelegate
     }
@@ -55,6 +57,8 @@ class AppDelegate:
     }()
 
     var window: UIWindow?
+    
+    var notificationObservations: [NSObjectProtocol] = []
     
     private(set) lazy var appConfiguration = AppConfiguration(
         api: api,
@@ -84,6 +88,7 @@ class AppDelegate:
     private lazy var pushNotificationController =
         PushNotificationController(session: session, api: api, bannerController: bannerController)
     
+    private lazy var networkBannerView = UIView()
     private lazy var containerBlurView = UIVisualEffectView()
     
     func application(
@@ -91,6 +96,7 @@ class AppDelegate:
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         setupWindow()
+        setupNetworkBanner()
         setupAppLibs()
 
         launch(with: launchOptions)
@@ -112,6 +118,8 @@ class AppDelegate:
         _ application: UIApplication
     ) {
         setNeedsUserInterfaceStyleUpdateIfNeeded()
+        setNeedsNetworkBannerUpdateIfNeeded()
+
         removeBlurOnWindow()
         
         appLaunchController.becomeActive()
@@ -178,6 +186,58 @@ class AppDelegate:
         default:
             return false
         }
+    }
+}
+
+extension AppDelegate {
+    func launch(
+        with options: [UIApplication.LaunchOptionsKey: Any]?
+    ) {
+        let src: DeeplinkSource?
+        
+        if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
+            src = .remoteNotification(userInfo, waitForUserConfirmation: false)
+        } else if let url = options?[.url] as? URL {
+            src = .url(url)
+        } else {
+            src = nil
+        }
+        appLaunchController.launch(deeplinkWithSource: src)
+    }
+    
+    func launchOnboarding() {
+        appLaunchController.launchOnboarding()
+    }
+    
+    func launchMain() {
+        appLaunchController.launchMain()
+    }
+    
+    func launchMainAfterAuthorization(
+        presented viewController: UIViewController
+    ) {
+        appLaunchController.launchMainAfterAuthorization(presented: viewController)
+    }
+    
+    @discardableResult
+    func route<T: UIViewController>(
+        to screen: Screen,
+        from viewController: UIViewController,
+        by style: Screen.Transition.Open,
+        animated: Bool = true,
+        then completion: EmptyHandler? = nil
+    ) -> T? {
+        return router.route(
+            to: screen,
+            from: viewController,
+            by: style,
+            animated: animated,
+            then: completion
+        )
+    }
+    
+    func findVisibleScreen() -> UIViewController {
+        return router.findVisibleScreen()
     }
 }
 
@@ -261,54 +321,38 @@ extension AppDelegate {
 }
 
 extension AppDelegate {
-    func launch(
-        with options: [UIApplication.LaunchOptionsKey: Any]?
-    ) {
-        let src: DeeplinkSource?
+    private func setupNetworkBanner() {
+        networkBannerView.layer.zPosition = 1
         
-        if let userInfo = options?[.remoteNotification] as? DeeplinkSource.UserInfo {
-            src = .remoteNotification(userInfo, waitForUserConfirmation: false)
-        } else if let url = options?[.url] as? URL {
-            src = .url(url)
-        } else {
-            src = nil
+        window?.addSubview(networkBannerView)
+        networkBannerView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing == 0
+            
+            $0.fitToHeight(0)
         }
-        appLaunchController.launch(deeplinkWithSource: src)
+        
+        observe(notification: NodeSettingsViewController.didChangeNetwork) {
+            [unowned self] _ in
+            self.setNeedsNetworkBannerUpdateIfNeeded()
+        }
     }
     
-    func launchOnboarding() {
-        appLaunchController.launchOnboarding()
-    }
-    
-    func launchMain() {
-        appLaunchController.launchMain()
-    }
-    
-    func launchMainAfterAuthorization(
-        presented viewController: UIViewController
-    ) {
-        appLaunchController.launchMainAfterAuthorization(presented: viewController)
-    }
-    
-    @discardableResult
-    func route<T: UIViewController>(
-        to screen: Screen,
-        from viewController: UIViewController,
-        by style: Screen.Transition.Open,
-        animated: Bool = true,
-        then completion: EmptyHandler? = nil
-    ) -> T? {
-        return router.route(
-            to: screen,
-            from: viewController,
-            by: style,
-            animated: animated,
-            then: completion
-        )
-    }
-    
-    func findVisibleScreen() -> UIViewController {
-        return router.findVisibleScreen()
+    private func setNeedsNetworkBannerUpdateIfNeeded() {
+        let statusBarManager = window?.windowScene?.statusBarManager
+        let height = statusBarManager?.statusBarFrame.height ?? 0
+        
+        networkBannerView.snp.updateConstraints {
+            $0.fitToHeight(height)
+        }
+        
+        switch api.network {
+        case .mainnet: networkBannerView.backgroundColor = .clear
+        case .testnet: networkBannerView.backgroundColor = Colors.General.testNetBanner
+        }
+
+        rootViewController.setNeedsStatusBarAppearanceUpdate()
     }
 }
 

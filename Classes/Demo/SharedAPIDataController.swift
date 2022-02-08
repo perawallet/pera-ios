@@ -30,6 +30,7 @@ final class SharedAPIDataController:
 
     private(set) var accountCollection: AccountCollection = []
     private(set) var currency: CurrencyHandle = .idle
+
     private(set) var lastRound: BlockRound?
     
     var isAvailable: Bool {
@@ -39,6 +40,8 @@ final class SharedAPIDataController:
     private lazy var blockProcessor = createBlockProcessor()
     private lazy var blockProcessorEventQueue =
         DispatchQueue(label: "com.algorand.queue.blockProcessor.events")
+    
+    private var nextAccountCollection: AccountCollection = []
     
     @Atomic(identifier: "sharedAPIDataController.status")
     private var status: Status = .idle
@@ -59,47 +62,23 @@ final class SharedAPIDataController:
 
 extension SharedAPIDataController {
     func startPolling() {
-        if status.isActive {
-            return
-        }
-        
         $status.modify { $0 = .running }
-
         blockProcessor.start()
     }
     
     func stopPolling() {
-        if !status.isActive {
-            return
-        }
-
         $status.modify { $0 = .suspended }
-        
         blockProcessor.stop()
-
-        publishEventForCurrentStatus()
     }
     
-    func reset() {
-        stopPolling()
-        deleteData()
-        
-        $status.modify { $0 = .completed }
-        
-        publishEventForCurrentStatus()
-        
-        $status.modify { $0 = .idle }
-        
-        startPolling()
-    }
-    
-    func cancel() {
+    func resetPolling() {
+        $status.modify { $0 = .suspended }
         blockProcessor.cancel()
+        
         deleteData()
-        
-        $status.modify { $0 = .idle }
-        
-        publishEventForCurrentStatus()
+        blockDidReset()
+
+        startPolling()
     }
 }
 
@@ -118,6 +97,7 @@ extension SharedAPIDataController {
     private func deleteData() {
         currency = .idle
         accountCollection = []
+        nextAccountCollection = []
         assetDetailCollection = []
     }
 }
@@ -128,8 +108,8 @@ extension SharedAPIDataController {
             var request = ALGBlockRequest()
             request.localAccounts = self.session.authenticatedUser?.accounts ?? []
             /// <warning>
-            request.cachedAccounts = AccountCollection(self.accountCollection)
-            request.cachedAssetDetails = AssetDetailCollection(self.assetDetailCollection)
+            request.cachedAccounts = self.accountCollection
+            request.cachedAssetDetails = self.assetDetailCollection
             request.localCurrencyId = self.session.preferredCurrency
             request.cachedCurrency = self.currency
             return request
@@ -143,7 +123,7 @@ extension SharedAPIDataController {
             
             switch event {
             case .willStart(let round):
-                self.blockProcessorWillStart(round)
+                self.blockProcessorWillStart(for: round)
             case .willFetchCurrency:
                 self.blockProcessorWillFetchCurrency()
             case .didFetchCurrency(let currency):
@@ -172,7 +152,7 @@ extension SharedAPIDataController {
                     for: account
                 )
             case .didFinish(let round):
-                self.blockProcessorDidFinish(round)
+                self.blockProcessorDidFinish(for: round)
             }
         }
         
@@ -180,12 +160,14 @@ extension SharedAPIDataController {
     }
     
     private func blockProcessorWillStart(
-        _ round: BlockRound?
+        for round: BlockRound?
     ) {
         lastRound = round
+        nextAccountCollection = []
 
         $status.modify { $0 = .running }
-        publishEventForCurrentStatus()
+        
+        publish(.didStartRunning(first: !isFirstPollingRoundCompleted))
     }
     
     private func blockProcessorWillFetchCurrency() {}
@@ -212,23 +194,19 @@ extension SharedAPIDataController {
     ) {
         let address = localAccount.address
 
-        if accountCollection[address] != nil {
+        if nextAccountCollection[address] != nil {
             return
         }
 
         let newAccount = AccountHandle(localAccount: localAccount, status: .idle)
-        accountCollection[address] = newAccount
-
-        publish(.didUpdateAccountCollection(newAccount))
+        nextAccountCollection[address] = newAccount
     }
     
     private func blockProcessorDidFetchAccount(
         _ account: Account
     ) {
         let updatedAccount = AccountHandle(account: account, status: .inProgress)
-        accountCollection[account.address] = updatedAccount
-
-        publish(.didUpdateAccountCollection(updatedAccount))
+        nextAccountCollection[account.address] = updatedAccount
     }
     
     private func blockProcessorDidFailToFetchAccount(
@@ -238,24 +216,20 @@ extension SharedAPIDataController {
         let address = localAccount.address
 
         let updatedAccount: AccountHandle
-        if let cachedAccount = accountCollection[address] {
+        if let cachedAccount = nextAccountCollection[address] {
             updatedAccount = AccountHandle(account: cachedAccount.value, status: .failed(error))
         } else {
             updatedAccount = AccountHandle(localAccount: localAccount, status: .failed(error))
         }
         
-        accountCollection[address] = updatedAccount
-        
-        publish(.didUpdateAccountCollection(updatedAccount))
+        nextAccountCollection[address] = updatedAccount
     }
     
     private func blockProcessorWillFetchAssetDetails(
         for account: Account
     ) {
         let updatedAccount = AccountHandle(account: account, status: .inProgress)
-        accountCollection[account.address] = updatedAccount
-        
-        publish(.didUpdateAccountCollection(updatedAccount))
+        nextAccountCollection[account.address] = updatedAccount
     }
     
     private func blockProcessorDidFetchAssetDetails(
@@ -263,9 +237,7 @@ extension SharedAPIDataController {
         for account: Account
     ) {
         let updatedAccount = AccountHandle(account: account, status: .ready)
-        accountCollection[account.address] = updatedAccount
-        
-        publish(.didUpdateAccountCollection(updatedAccount))
+        nextAccountCollection[account.address] = updatedAccount
         
         if assetDetails.isEmpty {
             return
@@ -274,8 +246,6 @@ extension SharedAPIDataController {
         assetDetails.forEach {
             assetDetailCollection[$0.key] = $0.value
         }
-        
-        publish(.didUpdateAssetDetailCollection)
     }
     
     private func blockProcessorDidFailToFetchAssetDetails(
@@ -283,15 +253,15 @@ extension SharedAPIDataController {
         for account: Account
     ) {
         let updatedAccount = AccountHandle(account: account, status: .failed(error))
-        accountCollection[account.address] = updatedAccount
-        
-        publish(.didUpdateAccountCollection(updatedAccount))
+        nextAccountCollection[account.address] = updatedAccount
     }
     
     private func blockProcessorDidFinish(
-        _ round: BlockRound?
+        for round: BlockRound?
     ) {
         lastRound = round
+        accountCollection = nextAccountCollection
+        nextAccountCollection = []
         
         $isFirstPollingRoundCompleted.modify { $0 = true }
 
@@ -300,7 +270,17 @@ extension SharedAPIDataController {
         }
 
         $status.modify { $0 = .completed }
-        publishEventForCurrentStatus()
+        
+        publish(.didFinishRunning)
+    }
+    
+    private func blockDidReset() {
+        lastRound = nil
+        
+        $isFirstPollingRoundCompleted.modify { $0 = false }
+        $status.modify { $0 = .idle }
+        
+        publish(.didBecomeIdle)
     }
 }
 
@@ -349,14 +329,5 @@ extension SharedAPIDataController {
         case running
         case suspended
         case completed /// Waiting for the next polling cycle to be running
-        
-        var isActive: Bool {
-            switch self {
-            case .idle: return false
-            case .running: return true
-            case .suspended: return false
-            case .completed: return true
-            }
-        }
     }
 }
