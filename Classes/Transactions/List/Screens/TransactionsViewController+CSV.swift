@@ -20,7 +20,7 @@ import MacaroonUIKit
 
 extension TransactionsViewController: CSVExportable {
     func fetchAllTransactionsForCSV() {
-        loadingController?.startLoadingWithMessage("csv-loading-message".localized)
+        loadingController?.startLoadingWithMessage("title-loading".localized)
 
         fetchAllTransactions(
             between: dataController.getTransactionFilterDates(),
@@ -144,6 +144,8 @@ extension TransactionsViewController: CSVExportable {
                 }
 
                 transactionData["title-asset-id".localized] = "\(assetID)"
+            } else {
+                transactionData["wallet-connect-asset-name-title".localized] = "Algo"
             }
 
             csvData.append(transactionData)
@@ -157,18 +159,18 @@ extension TransactionsViewController: CSVExportable {
             return amount?.toAlgos.toAlgosStringForLabel ?? " "
         case .asset:
             guard let assetDetail = compoundAsset?.detail else {
-                return amount?.toFractionStringForLabel(fraction: 0) ?? " "
+                return amount?.assetAmount(fromFraction: 0).toFractionStringForLabel(fraction: 0) ?? " "
             }
 
-            return amount?.toFractionStringForLabel(fraction: assetDetail.decimals) ?? " "
+            return amount?.assetAmount(fromFraction: assetDetail.decimals).toFractionStringForLabel(fraction: assetDetail.decimals) ?? " "
         case .all:
             if let assetID = transaction.assetTransfer?.assetId {
                 if let decimal = sharedDataController.assetDetailCollection[assetID]?.decimals {
-                    return amount?.toFractionStringForLabel(fraction: decimal) ?? " "
+                    return amount?.assetAmount(fromFraction: decimal).toFractionStringForLabel(fraction: decimal) ?? " "
                 }
             }
 
-            return amount?.toFractionStringForLabel(fraction: 0) ?? " "
+            return amount?.toAlgos.toAlgosStringForLabel ?? " "
         }
     }
 }
