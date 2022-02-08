@@ -53,7 +53,7 @@ final class LedgerDeviceListViewController: BaseViewController {
         ledgerDeviceListView.startAnimatingImageView()
         ledgerDeviceListView.startAnimatingIndicatorView()
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         ledgerAccountFetchOperation.reset()
@@ -67,6 +67,17 @@ final class LedgerDeviceListViewController: BaseViewController {
         ledgerAccountFetchOperation.delegate = self
         ledgerDeviceListView.devicesCollectionView.delegate = self
         ledgerDeviceListView.devicesCollectionView.dataSource = self
+    }
+
+    override func setListeners() {
+        super.setListeners()
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(startScanFromBackground),
+            name: UIApplication.didBecomeActiveNotification,
+            object: nil
+        )
     }
 
     override func configureAppearance() {
@@ -190,6 +201,14 @@ extension LedgerDeviceListViewController {
     private func stopTimer() {
         timer?.invalidate()
         timer = nil
+    }
+}
+
+extension LedgerDeviceListViewController {
+    @objc
+    private func startScanFromBackground() {
+        ledgerDeviceListView.startAnimatingImageView()
+        ledgerAccountFetchOperation.startScan()
     }
 }
 
