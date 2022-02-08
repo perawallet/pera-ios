@@ -28,6 +28,7 @@ final class AlgoStatisticsViewController: BaseScrollViewController {
 
     private lazy var theme = Theme()
     private lazy var algoStatisticsView = AlgoStatisticsView()
+    private lazy var loadingView = AlgoStatisticsLoadingView()
 
     private lazy var algoStatisticsDataController = AlgoStatisticsDataController(api: api)
 
@@ -38,7 +39,8 @@ final class AlgoStatisticsViewController: BaseScrollViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadingController?.startLoadingWithMessage("title-loading".localized)
+        algoStatisticsView.isHidden = true
+
         fetchCurrency { [weak self] in
             self?.getChartData()
         }
@@ -55,6 +57,7 @@ final class AlgoStatisticsViewController: BaseScrollViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
+        addLoadingView()
         addAlgoStatisticsView()
     }
 
@@ -66,6 +69,15 @@ final class AlgoStatisticsViewController: BaseScrollViewController {
 }
 
 extension AlgoStatisticsViewController {
+    private func addLoadingView() {
+        loadingView.customize(AlgoStatisticsLoadingViewTheme())
+
+        contentView.addSubview(loadingView)
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+
     private func addAlgoStatisticsView() {
         contentView.addSubview(algoStatisticsView)
         algoStatisticsView.snp.makeConstraints {
@@ -143,13 +155,11 @@ extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
 
 extension AlgoStatisticsViewController: AlgoStatisticsDataControllerDelegate {
     func algoStatisticsDataController(_ dataController: AlgoStatisticsDataController, didFetch values: [AlgosUSDValue]) {
-        loadingController?.stopLoading()
         chartEntries = values
         bindView(with: values)
     }
 
     func algoStatisticsDataControllerDidFailToFetch(_ dataController: AlgoStatisticsDataController) {
-        loadingController?.stopLoading()
         chartEntries = nil
     }
 
@@ -157,6 +167,9 @@ extension AlgoStatisticsViewController: AlgoStatisticsDataControllerDelegate {
         guard let currency = currency else {
             return
         }
+
+        algoStatisticsView.isHidden = false
+        loadingView.isHidden = true
 
         let priceChange = AlgoUSDPriceChange(firstPrice: values.first, lastPrice: values.last, selectedPrice: nil, currency: currency)
         algoStatisticsView.bind(
