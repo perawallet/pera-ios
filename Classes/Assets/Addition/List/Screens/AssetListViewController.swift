@@ -23,7 +23,7 @@ final class AssetListViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var assetListView = AssetListView()
 
-    private lazy var dataSource = NewAssetListDataSource(assetListView.collectionView)
+    private lazy var dataSource = AssetListViewDataSource(assetListView.collectionView)
     private lazy var dataController = AssetListViewAPIDataController(self.api!, filter: filter)
     private lazy var listLayout = AssetListViewLayout(listDataSource: dataSource)
 

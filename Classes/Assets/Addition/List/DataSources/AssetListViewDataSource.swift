@@ -13,29 +13,13 @@
 // limitations under the License.
 
 //
-//   AssetListDataSource.swift
+//   AssetListViewDataSource.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AssetListViewDataSource: NSObject {
-    var assetResults: [AssetInformation] = []
-}
-
-extension AssetListViewDataSource: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        assetResults.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(AssetPreviewAdditionCell.self, at: indexPath)
-        cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(assetResults[indexPath.item])))
-        return cell
-    }
-}
-
-final class NewAssetListDataSource: UICollectionViewDiffableDataSource<AssetListViewSection, AssetListViewItem> {
+final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetListViewSection, AssetListViewItem> {
     init(
         _ collectionView: UICollectionView
     ) {

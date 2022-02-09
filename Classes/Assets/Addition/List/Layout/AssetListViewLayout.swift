@@ -24,10 +24,10 @@ final class AssetListViewLayout: NSObject {
     private lazy var theme = AssetListViewController.Theme()
     lazy var handlers = Handlers()
 
-    private let listDataSource: NewAssetListDataSource
+    private let listDataSource: AssetListViewDataSource
 
     init(
-        listDataSource: NewAssetListDataSource
+        listDataSource: AssetListViewDataSource
     ) {
         self.listDataSource = listDataSource
 
