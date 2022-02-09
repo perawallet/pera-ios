@@ -42,6 +42,7 @@ final class SendTransactionScreen: BaseViewController {
     private var transactionParams: TransactionParams?
 
     private var amount: String = "0"
+    private var isAmountResetted: Bool = true
     private var note: String? {
         didSet {
             if draft.lockedNote != nil {
@@ -185,7 +186,7 @@ extension SendTransactionScreen {
         } else {
             showingValue = amountValue.decimalAmount?.toNumberStringWithSeparatorForLabel ?? amountValue
 
-            if self.amount.decimal.number.intValue == 0 {
+            if self.amount.decimal.number.intValue == 0 && isAmountResetted {
                 if let string = self.amount.decimal.toFractionStringForLabel(fraction: 2) {
                     showingValue = string
                 }
@@ -431,6 +432,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
         switch value {
         case .number(let numberValue):
             if amount == "0" {
+                isAmountResetted = false
                 newValue = numberValue
             } else {
                 newValue.append(contentsOf: numberValue)
@@ -439,6 +441,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
             return
         case .delete:
             if amount.count == 1 {
+                isAmountResetted = true
                 newValue = "0"
             } else if amount == "0" {
                 return
@@ -459,7 +462,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
         }
 
         amount = newValue
-        numpadView.deleteButtonIsHidden = amount == "0"
+        numpadView.deleteButtonIsHidden = amount == "0" && isAmountResetted
         bindAmount()
     }
 
