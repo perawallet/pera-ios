@@ -68,7 +68,7 @@ class Router:
     
     func launchOnboarding() {
         let isAnimated =
-            rootViewController.presentingViewController != nil ||
+            rootViewController.presentedViewController != nil ||
             rootViewController.areTabsVisible
         
         route(

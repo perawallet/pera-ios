@@ -162,10 +162,10 @@ extension SharedAPIDataController {
     private func blockProcessorWillStart(
         for round: BlockRound?
     ) {
+        $status.modify { $0 = .running }
+        
         lastRound = round
         nextAccountCollection = []
-
-        $status.modify { $0 = .running }
         
         publish(.didStartRunning(first: !isFirstPollingRoundCompleted))
     }
