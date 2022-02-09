@@ -47,6 +47,7 @@ extension AppColors.Shared {
         case negative = "Shared/Helpers/negative"
         case negativeLighter = "Shared/Helpers/negativeLighter"
         case positive = "Shared/Helpers/positive"
+        case success = "Shared/Helpers/success"
     }
 }
 
@@ -65,6 +66,7 @@ extension AppColors.Components {
             case disabledBackground = "Components/Button/Primary/disabledBackground"
             case text = "Components/Button/Primary/text"
             case disabledText = "Components/Button/Primary/disabledText"
+            case focus = "Components/Button/Primary/focus"
         }
 
         enum Secondary: String, Color {
@@ -81,6 +83,11 @@ extension AppColors.Components {
         enum TransactionShadow: String, Color {
             case background = "Components/Button/Shadow/background"
             case text = "Components/Button/Shadow/text"
+        }
+
+        enum Switch: String, Color {
+            case background = "Components/Button/Shadow/background"
+            case backgroundOff = "Components/Button/Shadow/background-off"
         }
     }
 }
