@@ -371,11 +371,10 @@ extension HomeViewController: QRScannerViewControllerDelegate {
 
             self.sendTransactionDraft = draft
 
-            let controller = open(
-                .accountSelection(transactionAction: .send),
+            open(
+                .accountSelection(transactionAction: .send, delegate: self),
                 by: .present
             )
-            (controller as? SelectAccountViewController)?.delegate = self
 
             return
         case .assetRequest:
@@ -420,11 +419,10 @@ extension HomeViewController: QRScannerViewControllerDelegate {
 
             self.sendTransactionDraft = draft
 
-            let controller = open(
-                .accountSelection(transactionAction: .send),
+            open(
+                .accountSelection(transactionAction: .send, delegate: self),
                 by: .present
             )
-            (controller as? SelectAccountViewController)?.delegate = self
 
             return
         case .mnemonic:

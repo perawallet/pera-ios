@@ -32,6 +32,7 @@ class Router:
     /// <todo>
     /// How to dealloc finished transitions?
     private var ongoingTransitions: [BottomSheetTransition] = []
+    private var qrSendDraft: QRSendTransactionDraft?
 
     private unowned let appConfiguration: AppConfiguration
     
@@ -143,6 +144,17 @@ class Router:
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
+
+        case .sendTransaction(let draft):
+            launch(tab: .home)
+
+            qrSendDraft = draft
+            route(
+                to: .accountSelection(transactionAction: .send, delegate: self),
+                from: findVisibleScreen(over: rootViewController),
+                by: .present
+            )
+
         }
     }
     
@@ -536,8 +548,13 @@ class Router:
             let aViewController = OrderAccountListViewController(accountType: accountType, configuration: configuration)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .accountSelection(transactionAction):
-            viewController = SelectAccountViewController(transactionAction: transactionAction, configuration: configuration)
+        case let .accountSelection(transactionAction, delegate):
+            let selectAccountViewController = SelectAccountViewController(
+                transactionAction: transactionAction,
+                configuration: configuration
+            )
+            selectAccountViewController.delegate = delegate
+            viewController = selectAccountViewController
         case .assetSelection(let account):
             viewController = SelectAssetViewController(account: account, configuration: configuration)
         case .sendTransaction(let draft):
@@ -768,5 +785,30 @@ extension Router {
             walletConnector.delegate = self
             walletConnector.connect(to: sessionKey)
         }
+    }
+}
+
+extension Router: SelectAccountViewControllerDelegate {
+    func selectAccountViewController(
+        _ selectAccountViewController: SelectAccountViewController,
+        didSelect account: Account,
+        for transactionAction: TransactionAction
+    ) {
+        guard let qrDraft = self.qrSendDraft else {
+            return
+        }
+
+        let draft = SendTransactionDraft(
+            from: account,
+            toAccount: Account(address: qrDraft.toAccount, type: .standard),
+            amount: qrDraft.amount,
+            transactionMode: qrDraft.transactionMode,
+            note: qrDraft.lockedNote,
+            lockedNote: qrDraft.lockedNote
+        )
+
+        selectAccountViewController.open(.sendTransaction(draft: draft), by: .push)
+
+        self.qrSendDraft = nil
     }
 }

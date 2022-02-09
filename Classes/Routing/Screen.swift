@@ -89,7 +89,10 @@ indirect enum Screen {
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case accountListOptions(accountType: AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
     case orderAccountList(accountType: AccountType, eventHandler: OrderAccountListViewController.EventHandler)
-    case accountSelection(transactionAction: TransactionAction)
+    case accountSelection(
+        transactionAction: TransactionAction,
+        delegate: SelectAccountViewControllerDelegate?
+    )
     case assetSelection(account: Account)
     case sendTransaction(draft: SendTransactionDraft)
     case editNote(note: String?, isLocked: Bool, delegate: EditNoteScreenDelegate?)

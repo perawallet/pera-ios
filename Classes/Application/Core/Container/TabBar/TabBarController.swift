@@ -234,11 +234,10 @@ extension TabBarController {
     ) {
         toggleTransactionOptions()
         
-        let controller = open(
-            .accountSelection(transactionAction: action),
+        open(
+            .accountSelection(transactionAction: action, delegate: self),
             by: .present
         )
-        (controller as? SelectAccountViewController)?.delegate = self
         
         switch action {
         case .send: log(SendTabEvent())

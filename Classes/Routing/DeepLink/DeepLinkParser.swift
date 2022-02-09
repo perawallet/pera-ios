@@ -168,31 +168,45 @@ extension DeepLinkParser {
         _ qr: QRText,
         for url: URL
     ) -> Result? {
-        /// <todo>
-        /// Return send transaction screen
-        return nil
+        guard let amount = qr.amount else {
+            return nil
+        }
+
+        guard
+            let accountAddress = extractAccountAddress(from: url),
+            sharedDataController.isAvailable
+        else {
+            return .failure(.waitingForAssetsToBeAvailable)
+        }
+
+        let qrDraft = QRSendTransactionDraft(
+            toAccount: accountAddress,
+            amount: amount.toAlgos,
+            lockedNote: qr.lockedNote,
+            transactionMode: .algo
+        )
+
+        return .success(.sendTransaction(draft: qrDraft))
     }
     
     private func makeAssetTransactionRequestScreen(
         _ qr: QRText,
         for url: URL
     ) -> Result? {
-        guard let assetId = qr.asset else {
+        guard let assetId = qr.asset, let amount = qr.amount else {
             return nil
         }
-        
-        /// <warning>
-        /// Waiting for account & assets to be available before proceeding to any action.
+
         guard
             let accountAddress = extractAccountAddress(from: url),
-            let account = sharedDataController.accountCollection[accountAddress],
-            account.isAvailable,
             sharedDataController.isAvailable
         else {
             return .failure(.waitingForAssetsToBeAvailable)
         }
-        
-        guard let _ = sharedDataController.assetDetailCollection[assetId] else {
+
+        guard
+            let assetInformation = sharedDataController.assetDetailCollection[assetId]
+        else {
             let draft = AssetAlertDraft(
                 account: nil,
                 assetIndex: assetId,
@@ -204,10 +218,14 @@ extension DeepLinkParser {
             )
             return .success(.assetActionConfirmation(draft: draft))
         }
-        
-        /// <todo>
-        /// Return send transaction screen
-        return nil
+
+        let qrDraft = QRSendTransactionDraft(
+            toAccount: accountAddress,
+            amount: Decimal(amount),
+            lockedNote: qr.lockedNote,
+            transactionMode: .assetDetail(assetInformation)
+        )
+        return .success(.sendTransaction(draft: qrDraft))
     }
     
     private func extractAccountAddress(
@@ -245,10 +263,18 @@ extension DeepLinkParser {
         case algosDetail(draft: TransactionListing)
         case assetActionConfirmation(draft: AssetAlertDraft)
         case assetDetail(draft: TransactionListing)
+        case sendTransaction(draft: QRSendTransactionDraft)
     }
     
     enum Error: Swift.Error {
         case waitingForAccountsToBeAvailable
         case waitingForAssetsToBeAvailable
     }
+}
+
+struct QRSendTransactionDraft {
+    let toAccount: String
+    let amount: Decimal?
+    let lockedNote: String?
+    let transactionMode: TransactionMode
 }
