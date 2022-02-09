@@ -16,18 +16,22 @@
 //   API+Algos.swift
 
 import MagpieCore
+import Foundation
 
 extension ALGAPI {
     @discardableResult
     func fetchAlgosUSDValue(
         _ draft: AlgosUSDValueQuery,
+        queue: DispatchQueue,
         onCompleted handler: @escaping (Response.ModelResult<AlgosValueResponse>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.algoExplorer)
             .path(.algoUSDHistory)
             .method(.get)
+            .ignoreResponseWhenEndpointCancelled(false)
             .completionHandler(handler)
+            .responseDispatcher(queue)
             .query(draft)
             .execute()
     }

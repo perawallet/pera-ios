@@ -126,6 +126,10 @@ extension AlgoStatisticsView {
     func bind(_ viewModel: AlgoStatisticsHeaderViewModel) {
         algoStatisticsHeaderView.bindData(viewModel)
     }
+
+    func clearLineChart() {
+        lineChartView.clear()
+    }
 }
 
 protocol AlgoStatisticsViewDelegate: AnyObject {

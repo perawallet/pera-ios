@@ -150,6 +150,10 @@ extension AlgorandChartView {
             lineChartView.data = data
         }
     }
+
+    func clear() {
+        lineChartView.clear()
+    }
 }
 
 protocol AlgorandChartViewDelegate: AnyObject {

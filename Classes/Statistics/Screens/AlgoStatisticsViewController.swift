@@ -18,6 +18,7 @@
 import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
+import MacaroonUtils
 
 final class AlgoStatisticsViewController: BaseScrollViewController {
     override var prefersLargeTitle: Bool {
@@ -32,6 +33,8 @@ final class AlgoStatisticsViewController: BaseScrollViewController {
 
     private lazy var algoStatisticsDataController = AlgoStatisticsDataController(api: api)
 
+    private var cachedAlgoStatisticsViewModels: [AlgosUSDValueInterval: AlgoStatisticsViewModel] = [:]
+
     private var chartEntries: [AlgosUSDValue]?
     private var selectedTimeInterval: AlgosUSDValueInterval = .daily
 
@@ -42,7 +45,15 @@ final class AlgoStatisticsViewController: BaseScrollViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         algoStatisticsView.isHidden = true
-        getChartData()
+        getChartData(for: .daily)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if !isViewFirstLoaded {
+            getChartData(for: selectedTimeInterval)
+        }
     }
 
     override func customizeTabBarAppearence() {
@@ -92,13 +103,27 @@ extension AlgoStatisticsViewController: BottomSheetPresentable {
 }
 
 extension AlgoStatisticsViewController {    
-    private func getChartData(for interval: AlgosUSDValueInterval = .daily) {
+    private func getChartData(for interval: AlgosUSDValueInterval) {
+        algoStatisticsDataController.cancel()
+
+        algoStatisticsView.clearLineChart()
+
+        if let cachedStatisticsViewModel = cachedAlgoStatisticsViewModels[interval] {
+            chartEntries = cachedStatisticsViewModel.values
+            bindView(with: cachedStatisticsViewModel)
+            return
+        }
+
         algoStatisticsDataController.getChartData(for: interval)
     }
 }
 
 extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
     func algoStatisticsView(_ view: AlgoStatisticsView, didSelect timeInterval: AlgosUSDValueInterval) {
+        guard selectedTimeInterval != timeInterval else {
+            return
+        }
+
         selectedTimeInterval = timeInterval
         getChartData(for: timeInterval)
     }
@@ -133,6 +158,7 @@ extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
             selectedPrice: selectedPrice,
             currency: currency
         )
+
         algoStatisticsView.bind(
             AlgoStatisticsHeaderViewModel(
                 priceChange: priceChange,
@@ -144,31 +170,69 @@ extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
 }
 
 extension AlgoStatisticsViewController: AlgoStatisticsDataControllerDelegate {
-    func algoStatisticsDataController(_ dataController: AlgoStatisticsDataController, didFetch values: [AlgosUSDValue]) {
+    func algoStatisticsDataController(
+        _ dataController: AlgoStatisticsDataController,
+        didFetch values: [AlgosUSDValue]
+    ) {
         chartEntries = values
-        bindView(with: values)
+
+        createAlgoStatisticViewModel(for: values) { [weak self] algoStatisticViewModel in
+            self?.bindView(with: algoStatisticViewModel)
+        }
     }
 
     func algoStatisticsDataControllerDidFailToFetch(_ dataController: AlgoStatisticsDataController) {
         chartEntries = nil
     }
+}
 
-    private func bindView(with values: [AlgosUSDValue]) {
+extension AlgoStatisticsViewController {
+    private func bindView(with algoStatisticViewModel: AlgoStatisticsViewModel) {
+        algoStatisticsView.isHidden = false
+        loadingView.isHidden = true
+
+        algoStatisticsView.bind(algoStatisticViewModel)
+    }
+}
+
+extension AlgoStatisticsViewController {
+    func createAlgoStatisticViewModel(
+        for values: [AlgosUSDValue],
+        then handler: @escaping (AlgoStatisticsViewModel) -> Void
+    ) {
         guard let currency = currency else {
             return
         }
 
-        algoStatisticsView.isHidden = false
-        loadingView.isHidden = true
-
-        let priceChange = AlgoUSDPriceChange(firstPrice: values.first, lastPrice: values.last, selectedPrice: nil, currency: currency)
-        algoStatisticsView.bind(
-            AlgoStatisticsViewModel(
-                values: values,
-                priceChange: priceChange,
-                timeInterval: selectedTimeInterval,
-                currency: currency
-            )
+        let priceChange = AlgoUSDPriceChange(
+            firstPrice: values.first,
+            lastPrice: values.last,
+            selectedPrice: nil,
+            currency: currency
         )
+
+        let algoStatisticViewModel = AlgoStatisticsViewModel(
+            values: values,
+            priceChange: priceChange,
+            timeInterval: self.selectedTimeInterval,
+            currency: currency
+        )
+
+        asyncMain {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.cacheAlgoStatisticsViewModel(algoStatisticViewModel, for: self.selectedTimeInterval)
+            handler(algoStatisticViewModel)
+        }
+    }
+
+    private func cacheAlgoStatisticsViewModel(
+        _ algoStatisticViewModel: AlgoStatisticsViewModel,
+        for timeInterval: AlgosUSDValueInterval
+    ) {
+        cachedAlgoStatisticsViewModels[timeInterval] = algoStatisticViewModel
     }
 }

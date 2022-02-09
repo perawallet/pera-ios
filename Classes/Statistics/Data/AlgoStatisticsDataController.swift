@@ -16,6 +16,7 @@
 //   AlgoStatisticsDataController.swift
 
 import UIKit
+import MagpieCore
 
 final class AlgoStatisticsDataController {
     weak var delegate: AlgoStatisticsDataControllerDelegate?
@@ -24,6 +25,9 @@ final class AlgoStatisticsDataController {
 
     private var values: [AlgosUSDValue] = []
     private var lastFiveMinutesValues: AlgosUSDValue?
+
+    private var ongoingEndpointForIntervalValues: EndpointOperatable?
+    private var ongoingEndpointForIntervalLastFiveMinutesValues: EndpointOperatable?
 
     private let api: ALGAPI?
 
@@ -42,7 +46,7 @@ extension AlgoStatisticsDataController {
                 return
             }
 
-            self.addLastFiveMinutesToValuesIfNeeded()
+            self.addLastFiveMinutesToValuesIfNeeded(for: interval)
             self.delegate?.algoStatisticsDataController(self, didFetch: self.values)
         }
     }
@@ -50,7 +54,11 @@ extension AlgoStatisticsDataController {
     private func fetchData(for interval: AlgosUSDValueInterval) {
         chartDispatchGroup.enter()
 
-        api?.fetchAlgosUSDValue(AlgosUSDValueQuery(valueInterval: interval)) { [weak self] response in
+        ongoingEndpointForIntervalValues = api?.fetchAlgosUSDValue(
+            AlgosUSDValueQuery(valueInterval: interval),
+            queue: .global(qos: .background)
+        ) {
+            [weak self] response in
             guard let self = self else {
                 return
             }
@@ -66,11 +74,16 @@ extension AlgoStatisticsDataController {
         }
     }
 
-    // Fetch last five minute data to display the latest value on the chart.
+    /// <note>
+    /// Fetch last five minute data to display the latest value on the chart.
     private func fetchDataForLastFiveMinutes() {
         chartDispatchGroup.enter()
 
-        api?.fetchAlgosUSDValue(AlgosUSDValueQuery(valueInterval: .hourly)) { [weak self] response in
+        ongoingEndpointForIntervalLastFiveMinutesValues = api?.fetchAlgosUSDValue(
+            AlgosUSDValueQuery(valueInterval: .hourly),
+            queue: .global(qos: .background)
+        ) {
+            [weak self] response in
             guard let self = self else {
                 return
             }
@@ -86,13 +99,23 @@ extension AlgoStatisticsDataController {
         }
     }
 
-    private func addLastFiveMinutesToValuesIfNeeded() {
+    private func addLastFiveMinutesToValuesIfNeeded(for interval: AlgosUSDValueInterval) {
         if let lastFiveMinutesValues = lastFiveMinutesValues {
             let hasSameInterval = values.last?.timestamp == lastFiveMinutesValues.timestamp
             if !hasSameInterval {
                 values.append(lastFiveMinutesValues)
             }
         }
+    }
+}
+
+extension AlgoStatisticsDataController {
+    func cancel() {
+        ongoingEndpointForIntervalValues?.cancel()
+        ongoingEndpointForIntervalValues = nil
+
+        ongoingEndpointForIntervalLastFiveMinutesValues?.cancel()
+        ongoingEndpointForIntervalLastFiveMinutesValues = nil
     }
 }
 

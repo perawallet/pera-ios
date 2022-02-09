@@ -22,6 +22,7 @@ final class AlgoStatisticsViewModel: ViewModel {
     private(set) var headerViewModel: AlgoStatisticsHeaderViewModel?
     private(set) var chartViewModel: AlgosUSDChartViewModel?
     private(set) var footerViewModel: AlgoStatisticsFooterViewModel?
+    private(set) var values: [AlgosUSDValue]
 
     init(
         values: [AlgosUSDValue],
@@ -29,6 +30,8 @@ final class AlgoStatisticsViewModel: ViewModel {
         timeInterval: AlgosUSDValueInterval,
         currency: Currency
     ) {
+        self.values = values
+
         bindHeaderViewModel(from: priceChange, and: timeInterval, and: currency)
         bindChartViewModel(from: values, and: priceChange, and: currency)
         bindFooterViewModel(from: priceChange, and: timeInterval, and: currency)
