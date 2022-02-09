@@ -83,7 +83,7 @@ extension HomeLoadingView {
         addSubview(portfolioLabel)
         portfolioLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(theme.portfolioMargin.top)
-            make.leading.equalToSuperview().inset(theme.portfolioMargin.leading)
+            make.leading.equalToSuperview()
         }
 
         portfoliloLoading.draw(corner: theme.loadingCorner)
@@ -101,8 +101,8 @@ extension HomeLoadingView {
         addSubview(holdingsContainer)
         holdingsContainer.snp.makeConstraints {
             $0.top.equalTo(portfolioLabel.snp.bottom).offset(theme.holdingsContainerMargin.top)
-            $0.leading.equalToSuperview().inset(theme.holdingsContainerMargin.leading)
-            $0.trailing.equalToSuperview().inset(theme.holdingsContainerMargin.trailing)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
             $0.height.equalTo(theme.holdingsContainerHeight)
         }
 
@@ -179,8 +179,8 @@ extension HomeLoadingView {
         addSubview(accountsLabel)
         accountsLabel.snp.makeConstraints {
             $0.top.equalTo(holdingsContainer.snp.bottom).offset(theme.accountsLabelMargin.top)
-            $0.leading.equalToSuperview().inset(theme.accountsLabelMargin.leading)
-            $0.trailing.equalToSuperview().inset(theme.accountsLabelMargin.trailing)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
         }
 
         firstAccountPreviewLoading.customize(AssetPreviewLoadingViewCommonTheme())
@@ -189,16 +189,16 @@ extension HomeLoadingView {
         addSubview(firstAccountPreviewLoading)
         firstAccountPreviewLoading.snp.makeConstraints {
             $0.top.equalTo(accountsLabel.snp.bottom).offset(theme.accountLoadingMargin.top)
-            $0.leading.equalToSuperview().inset(theme.accountLoadingMargin.leading)
-            $0.trailing.equalToSuperview().inset(theme.accountLoadingMargin.trailing)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
             $0.height.equalTo(theme.accountLoadingHeight)
         }
         
         addSubview(secondAccountPreviewLoading)
         secondAccountPreviewLoading.snp.makeConstraints {
             $0.top.equalTo(firstAccountPreviewLoading.snp.bottom)
-            $0.leading.equalToSuperview().inset(theme.accountLoadingMargin.leading)
-            $0.trailing.equalToSuperview().inset(theme.accountLoadingMargin.trailing)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
             $0.height.equalTo(theme.accountLoadingHeight)
         }
     }

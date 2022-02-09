@@ -107,6 +107,8 @@ class AppDelegate:
     func applicationWillEnterForeground(
         _ application: UIApplication
     ) {
+        removeBlurOnWindow()
+        
         NotificationCenter.default.post(
             name: .ApplicationWillEnterForeground,
             object: self,
@@ -119,8 +121,6 @@ class AppDelegate:
     ) {
         setNeedsUserInterfaceStyleUpdateIfNeeded()
         setNeedsNetworkBannerUpdateIfNeeded()
-
-        removeBlurOnWindow()
         
         appLaunchController.becomeActive()
     }
@@ -129,7 +129,11 @@ class AppDelegate:
         _ application: UIApplication
     ) {
         appLaunchController.resignActive()
-
+    }
+    
+    func applicationDidEnterBackground(
+        _ application: UIApplication
+    ) {
         showBlurOnWindow()
     }
 
