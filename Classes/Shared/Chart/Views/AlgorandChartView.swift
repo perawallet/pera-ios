@@ -52,7 +52,7 @@ final class AlgorandChartView: BaseView {
         return lineChartView
     }()
 
-    private lazy var statsImageView = ImageView()
+    private lazy var lineChartLoadingImageView = ImageView()
 
     private let chartCustomizer: AlgorandChartViewCustomizable
 
@@ -91,11 +91,11 @@ extension AlgorandChartView {
     }
 
     private func addLineChartLoadingImageView() {
-        statsImageView.image = "chart-loading-bg".uiImage
-        statsImageView.contentMode = .scaleAspectFit
+        lineChartLoadingImageView.image = "chart-loading-bg".uiImage
+        lineChartLoadingImageView.contentMode = .scaleAspectFit
 
-        addSubview(statsImageView)
-        statsImageView.snp.makeConstraints {
+        addSubview(lineChartLoadingImageView)
+        lineChartLoadingImageView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
@@ -104,12 +104,12 @@ extension AlgorandChartView {
 extension AlgorandChartView {
     func startLoading() {
         lineChartView.isHidden = true
-        statsImageView.isHidden = false
+        lineChartLoadingImageView.isHidden = false
     }
 
     func stopLoading() {
         lineChartView.isHidden = false
-        statsImageView.isHidden = true
+        lineChartLoadingImageView.isHidden = true
     }
 }
 
