@@ -243,8 +243,21 @@ extension HomeViewController {
                             )
                         )
                     case .arrangeAccounts(let accountType):
+                        let eventHandler: OrderAccountListViewController.EventHandler = {
+                            [weak self] event in
+                            guard let self = self else { return }
+                            
+                            self.dismiss(animated: true) {
+                                [weak self] in
+                                guard let self = self else { return }
+                                
+                                switch event {
+                                case .didReorder: self.dataController.reload()
+                                }
+                            }
+                        }
                         self.open(
-                            .orderAccountList(accountType: accountType),
+                            .orderAccountList(accountType: accountType, eventHandler: eventHandler),
                             by: .present
                         )
                     }

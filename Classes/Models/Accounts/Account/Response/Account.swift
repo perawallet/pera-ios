@@ -78,7 +78,7 @@ final class Account: ALGEntityModel {
         appsTotalSchema = apiModel.appsTotalSchema
         createdApps = apiModel.createdApps
         receivesNotification = true
-        preferredOrder = -1
+        preferredOrder = AccountInformation.invalidOrder
         accountImage = AccountImageType.getRandomImage(for: type).rawValue
     }
 

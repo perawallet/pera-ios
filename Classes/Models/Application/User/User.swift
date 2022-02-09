@@ -92,7 +92,7 @@ extension User {
         syncronize()
     }
 
-    private func syncronize() {
+    func syncronize() {
         guard UIApplication.shared.appConfiguration?.session.authenticatedUser != nil else {
             return
         }

@@ -21,9 +21,11 @@ final class NavigationController: UINavigationController {
     override var childForStatusBarHidden: UIViewController? {
         return topViewController
     }
-    
     override var childForStatusBarStyle: UIViewController? {
         return topViewController
+    }
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return topViewController?.preferredStatusBarUpdateAnimation ?? .none
     }
 
     override func viewDidLoad() {

@@ -30,6 +30,10 @@ protocol SharedDataController: AnyObject {
     /// Returns true if the shared data is ready to use.
     var isAvailable: Bool { get }
     
+    /// <note>
+    /// Returns true if there is any local account.
+    var isPollingAvailable: Bool { get }
+    
     func startPolling()
     func stopPolling()
     func resetPolling()

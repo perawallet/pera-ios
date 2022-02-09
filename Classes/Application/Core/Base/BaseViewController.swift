@@ -61,7 +61,7 @@ class BaseViewController:
         return isStatusBarHidden
     }
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return preferredStatusBarStyle(for: api?.network ?? .mainnet)
+        return determinePreferredStatusBarStyle(for: api?.network ?? .mainnet)
     }
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return isStatusBarHidden ? .fade : .none

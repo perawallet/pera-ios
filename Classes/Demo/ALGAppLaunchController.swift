@@ -242,6 +242,7 @@ extension ALGAppLaunchController {
                     account.preferredOrder = initialOffset + index
                 }
             }
+        authenticatedUser?.syncronize()
     }
 }
 

@@ -60,7 +60,6 @@ extension HomeListLayout {
         switch section {
         case .empty:
             insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 72
-            insets.bottom = 40
             return insets
         case .portfolio:
             insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 72
@@ -93,7 +92,8 @@ extension HomeListLayout {
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForEmptyItem: item
+                sizeForEmptyItem: item,
+                atSection: indexPath.section
             )
         case .portfolio(let item):
             return listView(
@@ -117,10 +117,19 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForEmptyItem item: HomeEmptyItem
+        sizeForEmptyItem item: HomeEmptyItem,
+        atSection section: Int
     ) -> CGSize {
-        let width = listView.bounds.width
-        let height = listView.bounds.height - listView.adjustedContentInset.bottom
+        let width = calculateContentWidth(for: listView)
+        let sectionInset = collectionView(
+            listView,
+            layout: listViewLayout,
+            insetForSectionAt: section
+        )
+        let height =
+            listView.bounds.height -
+            sectionInset.vertical -
+            listView.adjustedContentInset.bottom
         return CGSize((width, height))
     }
     

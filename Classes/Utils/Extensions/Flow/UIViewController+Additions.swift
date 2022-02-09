@@ -120,7 +120,7 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    func preferredStatusBarStyle(
+    func determinePreferredStatusBarStyle(
         for network: ALGAPI.Network
     ) -> UIStatusBarStyle {
         switch network {

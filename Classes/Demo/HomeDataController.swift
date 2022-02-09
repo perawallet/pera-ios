@@ -26,6 +26,7 @@ protocol HomeDataController: AnyObject {
     subscript (address: String?) -> AccountHandle? { get }
     
     func load()
+    func reload()
 }
 
 enum HomeSection:
@@ -57,4 +58,10 @@ enum HomeAccountItem: Hashable {
 
 enum HomeDataControllerEvent {
     case didUpdate(HomeDataController.Snapshot)
+    
+    var snapshot: HomeDataController.Snapshot {
+        switch self {
+        case .didUpdate(let snapshot): return snapshot
+        }
+    }
 }
