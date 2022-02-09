@@ -52,16 +52,27 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
             return CGSize(theme.transactionHistoryCellSize)
         case .title:
             return CGSize(theme.transactionHistoryTitleCellSize)
-        case .empty:
-            let width = collectionView.bounds.width
-            var height = collectionView.bounds.height -
-            collectionView.adjustedContentInset.bottom -
-            collectionView.contentInset.top -
-            theme.transactionHistoryTitleCellSize.h
-            if draft.type != .all {
-                height -= draft.type == .algos ? theme.algosInfoSize.h : theme.assetInfoSize.h
+        case .empty(let emptyState):
+            switch emptyState {
+            case .algoTransactionHistoryLoading:
+                let cellHeight = AlgoTransactionHistoryLoadingCell.height(
+                    for: AlgoTransactionHistoryLoadingViewCommonTheme()
+                )
+                return CGSize(width: collectionView.bounds.width - 48, height: cellHeight)
+            case .transactionHistoryLoading:
+                return CGSize(width: collectionView.bounds.width - 48, height: 500)
+            default:
+                let width = collectionView.bounds.width
+                var height = collectionView.bounds.height -
+                collectionView.adjustedContentInset.bottom -
+                collectionView.contentInset.top -
+                theme.transactionHistoryTitleCellSize.h
+                if draft.type != .all {
+                    height -= draft.type == .algos ? theme.algosInfoSize.h : theme.assetInfoSize.h
+                }
+                return CGSize((width, height))
             }
-            return CGSize((width, height))
+
         case .nextList:
             return CGSize((collectionView.bounds.width, 100))
         }

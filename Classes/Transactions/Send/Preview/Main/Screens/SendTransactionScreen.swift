@@ -58,7 +58,7 @@ final class SendTransactionScreen: BaseViewController {
     }
 
     private var isMaxTransaction: Bool {
-        guard let decimalAmount = amount.decimalAmountWithSeparator else {
+        guard let decimalAmount = amount.decimalAmount else {
             return false
         }
         return draft.from.amount == decimalAmount.toMicroAlgos
@@ -175,15 +175,15 @@ extension SendTransactionScreen {
             switch draft.transactionMode {
             case .algo:
                 showingValue = (amountValue.replacingOccurrences(of: decimalStrings, with: "")
-                    .decimalAmountWithSeparator?.toNumberStringWithSeparatorForLabel ?? amountValue)
+                    .decimalAmount?.toNumberStringWithSeparatorForLabel ?? amountValue)
                     .appending(decimalStrings)
             case .assetDetail(let assetDetail):
                 showingValue = (amountValue.replacingOccurrences(of: decimalStrings, with: "")
-                    .decimalAmountWithSeparator?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals) ?? amountValue)
+                    .decimalAmount?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals) ?? amountValue)
                     .appending(decimalStrings)
             }
         } else {
-            showingValue = amountValue.decimalAmountWithSeparator?.toNumberStringWithSeparatorForLabel ?? amountValue
+            showingValue = amountValue.decimalAmount?.toNumberStringWithSeparatorForLabel ?? amountValue
 
             if self.amount.decimal.number.intValue == 0 {
                 if let string = self.amount.decimal.toFractionStringForLabel(fraction: 2) {
@@ -195,7 +195,7 @@ extension SendTransactionScreen {
 
         if let currency = sharedDataController.currency.value,
            let currencyPriceValue = currency.priceValue,
-           let amount = amountValue.decimalAmountWithSeparator {
+           let amount = amountValue.decimalAmount {
 
             switch draft.transactionMode {
             case let .assetDetail(assetInformation):
@@ -348,34 +348,47 @@ extension SendTransactionScreen: TransactionSignChecking {
 
         let validation = validate(value: amount)
 
+        let errorTitle: String
+        let errorMessage: String
+
         switch validation {
         case .otherAlgo:
-            self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-minimum-amount-error".localized)
+            errorTitle = "title-error".localized
+            errorMessage = "send-algos-minimum-amount-error".localized
         case .minimumAmountAlgoError:
-            self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-minimum-amount-error".localized)
+            errorTitle = "title-error".localized
+            errorMessage = "send-algos-minimum-amount-error".localized
         case .maximumAmountAlgoError:
-            self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-amount-error".localized)
+            errorTitle = "title-error".localized
+            errorMessage = "send-algos-amount-error".localized
         case .minimumAmountAssetError:
-            self.displaySimpleAlertWith(title: "title-error".localized, message: "send-asset-amount-error".localized)
+            errorTitle = "title-error".localized
+            errorMessage = "send-asset-amount-error".localized
         case .otherAsset:
-            self.displaySimpleAlertWith(title: "title-error".localized, message: "send-asset-amount-error".localized)
+            errorTitle = "title-error".localized
+            errorMessage = "send-asset-amount-error".localized
         case .valid:
             draft.amount = amount.decimalAmount
             open(.transactionAccountSelect(draft: self.draft), by: .push)
             return
         case .algoParticipationKeyWarning:
             self.presentParticipationKeyWarningForMaxTransaction()
+            return
         case .maxAlgo:
             self.displayMaxTransactionWarning()
+            return
         case .requiredMinAlgo:
             let minimumAmount = calculateMininmumAmount(for: draft.from)
 
-            bannerController?.presentErrorBanner(
-                title: "asset-min-transaction-error-title".localized,
-                message: "send-algos-minimum-amount-custom-error".localized(params: minimumAmount.toAlgos.toAlgosStringForLabel ?? ""
-                )
+            errorTitle = "asset-min-transaction-error-title"
+            errorMessage = "send-algos-minimum-amount-custom-error".localized(params: minimumAmount.toAlgos.toAlgosStringForLabel ?? ""
             )
         }
+
+        bannerController?.presentErrorBanner(
+            title: errorTitle,
+            message: errorMessage
+        )
     }
 
     @objc
@@ -461,7 +474,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
     }
 
     private func validateAlgo(for value: String) -> TransactionValidation {
-        guard let decimalAmount = value.decimalAmountWithSeparator else {
+        guard let decimalAmount = value.decimalAmount else {
             return .otherAlgo
         }
 
@@ -491,7 +504,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
 
     private func validateAsset(for value: String, on assetDetail: AssetInformation) -> TransactionValidation {
         guard let assetAmount = draft.from.amount(for: assetDetail),
-              let decimalAmount = value.decimalAmountWithSeparator else {
+              let decimalAmount = value.decimalAmount else {
                   return .otherAsset
         }
 

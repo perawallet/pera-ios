@@ -70,6 +70,7 @@ final class TransactionsAPIDataController:
 extension TransactionsAPIDataController {
     func load() {
         sharedDataController.add(self)
+        deliverLoadingSnapshot()
     }
 
     func clear() {
@@ -429,13 +430,29 @@ extension TransactionsAPIDataController {
 
 extension TransactionsAPIDataController {
     private func deliverLoadingSnapshot() {
-        deliverSnapshot {
+        deliverSnapshot { [weak self] in
+            guard let self = self else {
+                return Snapshot()
+            }
+
             var snapshot = Snapshot()
             snapshot.appendSections([.empty])
-            snapshot.appendItems(
-                [.empty(.loading)],
-                toSection: .empty
-            )
+
+            if self.draft is AccountTransactionListing {
+                snapshot.appendItems(
+                    [.empty(.transactionHistoryLoading)],
+                    toSection: .empty
+                )
+            } else {
+                snapshot.appendItems(
+                    [
+                        .empty(.algoTransactionHistoryLoading),
+                        .empty(.transactionHistoryLoading)
+                    ],
+                    toSection: .empty
+                )
+            }
+
             return snapshot
         }
     }

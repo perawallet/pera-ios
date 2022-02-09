@@ -27,11 +27,6 @@ extension String {
         return Decimal(string: without(locale.groupingSeparator ?? ","), locale: locale)
     }
 
-    var decimalAmountWithSeparator: Decimal? {
-        let locale = Locale.preferred()
-        return Decimal(string: self, locale: locale)
-    }
-
     var fractionCount: Int {
         guard let decimalString = self.decimalStrings() else {
             return 0

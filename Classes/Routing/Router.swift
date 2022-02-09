@@ -543,7 +543,9 @@ class Router:
         case .assetSelection(let account):
             viewController = SelectAssetViewController(account: account, configuration: configuration)
         case .sendTransaction(let draft):
-            viewController = SendTransactionScreen(draft: draft, configuration: configuration)
+            let sendScreen = SendTransactionScreen(draft: draft, configuration: configuration)
+            sendScreen.isModalInPresentation = true
+            viewController = sendScreen
         case .editNote(let note, let isLocked, let delegate):
             let editNoteScreen = EditNoteScreen(note: note, isLocked: isLocked, configuration: configuration)
             editNoteScreen.delegate = delegate
@@ -557,7 +559,9 @@ class Router:
             aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case .transactionResult:
-            viewController = TransactionResultScreen(configuration: configuration)
+            let resultScreen = TransactionResultScreen(configuration: configuration)
+            resultScreen.isModalInPresentation = false
+            viewController = resultScreen
         case .transactionAccountSelect(let draft):
             viewController = AccountSelectScreen(draft: draft, configuration: configuration)
         case .sendTransactionPreview(let draft, let transactionController):

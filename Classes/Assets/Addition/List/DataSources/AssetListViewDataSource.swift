@@ -13,23 +13,36 @@
 // limitations under the License.
 
 //
-//   AssetListDataSource.swift
+//   AssetListViewDataSource.swift
 
+import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AssetListViewDataSource: NSObject {
-    var assetResults: [AssetInformation] = []
+final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetListViewSection, AssetListViewItem> {
+    init(
+        _ collectionView: UICollectionView
+    ) {
+        super.init(collectionView: collectionView) {
+            collectionView, indexPath, itemIdentifier in
+
+            switch itemIdentifier {
+            case let .asset(item):
+                let cell = collectionView.dequeue(AssetPreviewAdditionCell.self, at: indexPath)
+                cell.bindData(item)
+                return cell
+            case .loading:
+                return collectionView.dequeue(AssetPreviewLoadingCell.self, at: indexPath)
+            case .noContent:
+                let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
+                cell.bindData(AssetAdditionNoContentViewModel())
+                return cell
+            }
+        }
+
+        collectionView.register(AssetPreviewLoadingCell.self)
+        collectionView.register(AssetPreviewCell.self)
+        collectionView.register(NoContentCell.self)
+    }
 }
 
-extension AssetListViewDataSource: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        assetResults.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(AssetPreviewAdditionCell.self, at: indexPath)
-        cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(assetResults[indexPath.item])))
-        return cell
-    }
-}

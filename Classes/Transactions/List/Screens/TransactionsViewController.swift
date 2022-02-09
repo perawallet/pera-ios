@@ -89,6 +89,13 @@ class TransactionsViewController: BaseViewController {
         dataController.loadContacts()
         dataController.loadTransactions()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let loadingCell = listView.visibleCells.first { $0 is LoadingCell } as? LoadingCell
+        loadingCell?.startAnimating()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -197,6 +204,15 @@ extension TransactionsViewController {
             case .filter:
                 let filterCell = cell as! TransactionHistoryFilterCell
                 filterCell.delegate = self
+            case .empty(let emptyState):
+                switch emptyState {
+                case .loading:
+                    let loadingCell = cell as! LoadingCell
+                    loadingCell.startAnimating()
+                default:
+                    break
+                }
+
             default:
                 break
             }

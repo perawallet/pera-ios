@@ -61,7 +61,11 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
                     let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
                     cell.bindData(TransactionHistoryNoContentViewModel())
                     return cell
-                case .loading:
+                case .transactionHistoryLoading:
+                    return collectionView.dequeue(TransactionHistoryLoadingCell.self, at: indexPath)
+                case .algoTransactionHistoryLoading:
+                    return collectionView.dequeue(AlgoTransactionHistoryLoadingCell.self, at: indexPath)
+                default:
                     return collectionView.dequeue(LoadingCell.self, at: indexPath)
                 }
             case .nextList:
@@ -77,7 +81,9 @@ final class TransactionsDataSource: UICollectionViewDiffableDataSource<Transacti
             AlgosDetailInfoViewCell.self,
             AssetDetailInfoViewCell.self,
             NoContentCell.self,
-            LoadingCell.self
+            LoadingCell.self,
+            TransactionHistoryLoadingCell.self,
+            AlgoTransactionHistoryLoadingCell.self
         ].forEach {
             collectionView.register($0)
         }

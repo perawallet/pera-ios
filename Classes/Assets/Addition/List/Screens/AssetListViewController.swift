@@ -22,15 +22,16 @@ final class AssetListViewController: BaseViewController {
 
     private lazy var theme = Theme()
     private lazy var assetListView = AssetListView()
-    private lazy var assetListViewLayoutBuilder = AssetListViewLayoutBuilder(theme: theme)
-    private lazy var assetListViewDataSource = AssetListViewDataSource()
 
-    var assetResults = [AssetInformation]() {
-        didSet {
-            assetListViewDataSource.assetResults = assetResults
-            assetListView.updateContentStateView(assetResults.isEmpty)
-            assetListView.collectionView.reloadData()
-        }
+    private lazy var dataSource = AssetListViewDataSource(assetListView.collectionView)
+    private lazy var dataController = AssetListViewAPIDataController(self.api!, filter: filter)
+    private lazy var listLayout = AssetListViewLayout(listDataSource: dataSource)
+
+    private let filter: AssetSearchFilter
+
+    init(filter: AssetSearchFilter, configuration: ViewControllerConfiguration) {
+        self.filter = filter
+        super.init(configuration: configuration)
     }
 
     override func prepareLayout() {
@@ -44,23 +45,53 @@ final class AssetListViewController: BaseViewController {
 
     override func linkInteractors() {
         super.linkInteractors()
-        assetListView.collectionView.delegate = assetListViewLayoutBuilder
-        assetListView.collectionView.dataSource = assetListViewDataSource
-        assetListViewLayoutBuilder.delegate = self
-    }
-}
 
-extension AssetListViewController: AssetListViewLayoutBuilderDelegate {
-    func assetListViewLayoutBuilder(_ assetListViewLayoutBuilder: AssetListViewLayoutBuilder, willDisplayItemAt indexPath: IndexPath) {
-        delegate?.assetListViewController(self, willDisplayItemAt: indexPath)
+        assetListView.collectionView.delegate = listLayout
+        assetListView.collectionView.dataSource = dataSource
     }
 
-    func assetListViewLayoutBuilder(_ assetListViewLayoutBuilder: AssetListViewLayoutBuilder, didSelectItemAt indexPath: IndexPath) {
-        delegate?.assetListViewController(self, didSelectItemAt: indexPath)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdate(let snapshot):
+                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            }
+        }
+
+        dataController.load()
+    }
+
+    override func setListeners() {
+        super.setListeners()
+
+        listLayout.handlers.willDisplay = { [weak self] cell, indexPath in
+            guard let self = self else {
+                return
+            }
+
+            self.dataController.loadNextPageIfNeeded(for: indexPath)
+        }
+
+        listLayout.handlers.didSelectAssetAt = { [weak self] indexPath in
+            guard let self = self,
+                  let item = self.dataController.assets[safe: indexPath.item] else {
+                return
+            }
+
+            self.delegate?.assetListViewController(self, didSelectItem: item)
+        }
+    }
+
+    func fetchAssets(for query: String?) {
+        dataController.search(for: query)
     }
 }
 
 protocol AssetListViewControllerDelegate: AnyObject {
-    func assetListViewController(_ assetListViewController: AssetListViewController, willDisplayItemAt indexPath: IndexPath)
-    func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItemAt indexPath: IndexPath)
+    func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItem item: AssetInformation)
 }
