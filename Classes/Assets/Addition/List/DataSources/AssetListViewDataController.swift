@@ -32,11 +32,13 @@ enum AssetListViewSection:
     Int,
     Hashable {
     case assets
+    case empty
 }
 
 enum AssetListViewItem: Hashable {
     case asset(AssetPreviewViewModel)
     case loading(String)
+    case noContent
 }
 
 enum AssetListViewDataControllerEvent {

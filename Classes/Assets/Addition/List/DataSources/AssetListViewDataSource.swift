@@ -33,11 +33,16 @@ final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetLis
                 return cell
             case .loading:
                 return collectionView.dequeue(AssetPreviewLoadingCell.self, at: indexPath)
+            case .noContent:
+                let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
+                cell.bindData(AssetAdditionNoContentViewModel())
+                return cell
             }
         }
 
         collectionView.register(AssetPreviewLoadingCell.self)
         collectionView.register(AssetPreviewCell.self)
+        collectionView.register(NoContentCell.self)
     }
 }
 

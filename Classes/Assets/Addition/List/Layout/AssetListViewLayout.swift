@@ -50,6 +50,11 @@ extension AssetListViewLayout: UICollectionViewDelegateFlowLayout {
             return CGSize(theme.cellSize)
         case .asset:
             return CGSize(theme.cellSize)
+        case .noContent:
+            let width = collectionView.bounds.width
+            let height = collectionView.bounds.height - collectionView.adjustedContentInset.bottom
+            return CGSize((width, height))
+            
         }
     }
 

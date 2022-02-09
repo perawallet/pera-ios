@@ -111,6 +111,11 @@ extension AssetListViewAPIDataController {
     }
 
     private func deliverContentSnapshot() {
+        guard !self.assets.isEmpty else {
+            deliverNoContentSnapshot()
+            return
+        }
+
         deliverSnapshot {
             [weak self] in
             guard let self = self else {
@@ -131,6 +136,18 @@ extension AssetListViewAPIDataController {
                 toSection: .assets
             )
 
+            return snapshot
+        }
+    }
+
+    private func deliverNoContentSnapshot() {
+        deliverSnapshot {
+            var snapshot = Snapshot()
+            snapshot.appendSections([.empty])
+            snapshot.appendItems(
+                [.noContent],
+                toSection: .empty
+            )
             return snapshot
         }
     }
