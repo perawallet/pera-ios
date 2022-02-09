@@ -57,11 +57,11 @@ final class AccountSelectScreen: BaseViewController {
         accountView.searchInputView.delegate = self
         accountView.listView.delegate = self
         accountView.listView.dataSource = dataSource
-        accountView.clipboardView.copyButton.addTarget(
-            self,
-            action: #selector(didTapCopy),
-            for: .touchUpInside
+
+        accountView.clipboardView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(didTapCopy))
         )
+
         accountView.nextButton.addTarget(
             self,
             action: #selector(didTapNext),
