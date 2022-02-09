@@ -95,7 +95,6 @@ extension SharedAPIDataController {
 
 extension SharedAPIDataController {
     private func deleteData() {
-        currency = .idle
         accountCollection = []
         nextAccountCollection = []
         assetDetailCollection = []
