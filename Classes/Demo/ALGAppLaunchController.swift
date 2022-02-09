@@ -224,7 +224,6 @@ extension ALGAppLaunchController {
     private func setup(
         network: ALGAPI.Network
     ) {
-        api.cancelEndpoints()
         api.setupNetworkBase(network)
     }
 }

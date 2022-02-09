@@ -75,7 +75,7 @@ extension ALGBlockProcessor {
     }
     
     func cancel() {
-        blockCycle.cancel()
+        blockCycle.cancelListening()
         queue.cancelAllOperations()
     }
 }

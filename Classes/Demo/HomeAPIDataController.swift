@@ -36,9 +36,7 @@ final class HomeAPIDataController:
     deinit {
         sharedDataController.remove(self)
     }
-    
-    /// <todo>
-    /// The account should return from the list in the data source, not shared data controller.
+
     subscript (address: String?) -> AccountHandle? {
         return address.unwrap {
             sharedDataController.accountCollection[$0]
@@ -58,6 +56,8 @@ extension HomeAPIDataController {
         didPublish event: SharedDataControllerEvent
     ) {
         switch event {
+        case .didBecomeIdle:
+            deliverLoadingSnapshot()
         case .didStartRunning(let first):
             if first ||
                lastSnapshot == nil {
@@ -65,8 +65,6 @@ extension HomeAPIDataController {
             }
         case .didFinishRunning:
             deliverContentSnapshot()
-        case .didBecomeIdle:
-            deliverLoadingSnapshot()
         default:
             break
         }

@@ -226,7 +226,7 @@ extension SettingsViewController: SettingsDataSourceDelegate {
     }
     
     private func logout() {
-        sharedDataController.reset()
+        sharedDataController.resetPolling()
         session?.reset(includingContacts: true)
         walletConnector.resetAllSessions()
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)

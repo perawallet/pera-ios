@@ -15,9 +15,18 @@
 //
 //  NodeSettingsViewController.swift
 
+import Foundation
+import MacaroonUtils
 import UIKit
 
 final class NodeSettingsViewController: BaseViewController {
+    static var willChangeNetwork: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.network.willChange")
+    }
+    static var didChangeNetwork: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.network.didChange")
+    }
+    
     private lazy var theme = Theme()
     private lazy var nodeSettingsView = SingleSelectionListView()
     
@@ -92,41 +101,60 @@ extension NodeSettingsViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension NodeSettingsViewController {
+    /// <todo>
+    /// The flow here is too complicated to understand. It should be refactored later.
     private func changeNode(at indexPath: IndexPath) {
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-        
-        sharedDataController.cancel()
-        
         let selectedNode = nodes[indexPath.item]
+        let selectedNetwork = selectedNode.network
+        
+        willChangeNetwork(selectedNetwork)
         
         if pushNotificationController.token == nil {
-            switchNetwork(for: selectedNode)
+            session?.authenticatedUser?.setDefaultNode(selectedNode)
+            didChangeNetwork(selectedNetwork)
         } else {
-            pushNotificationController.sendDeviceDetails { isCompleted in
+            loadingController?.startLoadingWithMessage("title-loading".localized)
+            
+            pushNotificationController.sendDeviceDetails {
+                [weak self] isCompleted in
+                guard let self = self else { return }
+
                 if isCompleted {
-                    self.switchNetwork(for: selectedNode)
+                    self.session?.authenticatedUser?.setDefaultNode(selectedNode)
+                    self.didChangeNetwork(selectedNetwork)
                 } else {
-                    self.loadingController?.stopLoadingAfter(seconds: 1, on: .main) {
-                        self.nodeSettingsView.reloadData()
-                    }
+                    self.didChangeNetwork(self.lastActiveNetwork)
                 }
+                
+                self.loadingController?.stopLoading()
             }
         }
     }
     
-    private func switchNetwork(for selectedNode: AlgorandNode) {
-        session?.authenticatedUser?.setDefaultNode(selectedNode)
-        lastActiveNetwork = selectedNode.network
+    private func willChangeNetwork(
+        _ network: ALGAPI.Network
+    ) {
+        sharedDataController.stopPolling()
+        api?.setupNetworkBase(network)
         
-        DispatchQueue.main.async {
-//            UIApplication.shared.rootViewController()?.setNetwork(to: selectedNode.network)
-            UIApplication.shared.rootViewController()?.addBanner()
-        }
+        NotificationCenter.default.post(
+            name: Self.willChangeNetwork,
+            object: self
+        )
+    }
+    
+    private func didChangeNetwork(
+        _ network: ALGAPI.Network
+    ) {
+        lastActiveNetwork = network
+        nodeSettingsView.reloadData()
         
-        self.loadingController?.stopLoadingAfter(seconds: 2, on: .main) {
-            self.sharedDataController.startPolling()
-            self.nodeSettingsView.reloadData()
-        }
+        sharedDataController.resetPolling()
+        
+        NotificationCenter.default.post(
+            name: Self.didChangeNetwork,
+            object: self
+        )
     }
 }
 

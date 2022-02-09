@@ -22,42 +22,39 @@ import MacaroonUtils
 import UIKit
 
 class RootViewController: UIViewController {
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return statusBarStyleForNetwork(isTestNet: appConfiguration.api.isTestNet)
-    }
-    
     var areTabsVisible: Bool {
         return !mainContainer.items.isEmpty
     }
+    
+    private(set) var isDisplayingGovernanceBanner = true
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return preferredStatusBarStyle(for: appConfiguration.api.network)
+    }
+    override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
+        return areTabsVisible ? mainContainer.preferredStatusBarUpdateAnimation : .fade
+    }
+    override var childForStatusBarStyle: UIViewController? {
+        return areTabsVisible ? mainContainer : nil
+    }
+    override var childForStatusBarHidden: UIViewController? {
+        return areTabsVisible ? mainContainer : nil
+    }
+    
+    private lazy var mainContainer = TabBarController()
     
     private lazy var pushNotificationController = PushNotificationController(
         session: appConfiguration.session,
         api: appConfiguration.api,
         bannerController: appConfiguration.bannerController
     )
-    
-    lazy var statusBarView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.layer.zPosition = 1.0
-        view.backgroundColor = Colors.General.testNetBanner
-        return view
-    }()
-
-    let appConfiguration: AppConfiguration
-    
-    private lazy var mainContainer = TabBarController()
-
-    private(set) var isDisplayingGovernanceBanner = true
 
     private var currentWCTransactionRequest: WalletConnectRequest?
-
     private var wcRequestScreen: WCMainTransactionScreen?
-    
     private var wcTransactionSuccessTransition: BottomSheetTransition?
     
-    private let onceWhenViewDidAppear = Once()
-    
+    let appConfiguration: AppConfiguration
+
     init(
         appConfiguration: AppConfiguration
     ) {
@@ -73,14 +70,6 @@ class RootViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         build()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        onceWhenViewDidAppear.execute {
-            addBanner()
-        }
     }
 }
 
@@ -131,12 +120,6 @@ extension RootViewController {
 extension RootViewController {
     func hideGovernanceBanner() {
         isDisplayingGovernanceBanner = false
-    }
-}
-
-extension RootViewController: BannerDisplayable {
-    var shouldDisplayBanner: Bool {
-        return appConfiguration.api.isTestNet
     }
 }
 
@@ -263,7 +246,7 @@ extension RootViewController: WCMainTransactionScreenDelegate {
 
 extension RootViewController {
     func deleteAllData() {
-        appConfiguration.sharedDataController.reset()
+        appConfiguration.sharedDataController.resetPolling()
         appConfiguration.session.reset(includingContacts: true)
         appConfiguration.walletConnector.resetAllSessions()
         NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
