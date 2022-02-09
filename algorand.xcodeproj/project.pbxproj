@@ -13172,7 +13172,6 @@
 				2BAD925025B5AAF600DE56D5 /* AccountHeaderSupplementaryViewModel.swift in Sources */,
 				D47C4AAF2791BD310012D7A6 /* NotificationsNoContentViewModel.swift in Sources */,
 				2B101AF627012762004D2E47 /* GovernanceComingSoonCell.swift in Sources */,
-				2B95412225AC95B30098805B /* BannerDisplayable.swift in Sources */,
 				95AF1C7827B13084001AB131 /* TransactionHistoryLoadingView.swift in Sources */,
 				2B79A14823167BFC00766021 /* RewardDetailView.swift in Sources */,
 				2B698249278C90CC008EC669 /* PendingAssetPreviewViewTheme.swift in Sources */,
