@@ -170,7 +170,7 @@ extension NotificationsViewModel {
             let assetDisplayName = isUnknown ? "title-unknown".localized : "\(asset.name ?? "") (\(asset.code ?? ""))"
             return assetDisplayName
         }
-        return "Algos"
+        return "Algo"
     }
     
     private func getAttributedMessage(_ message: String, for parameters: String...) -> NSAttributedString {

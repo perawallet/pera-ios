@@ -96,23 +96,6 @@ extension AlgoStatisticsDataController {
     }
 }
 
-extension AlgoStatisticsDataController {
-    func getCurrency(_ completion: @escaping (Currency?) -> Void) {
-        guard let api = api else {
-            fatalError("API must be set")
-        }
-
-        api.getCurrencyValue(api.session.preferredCurrency, queue: .main) { response in
-            switch response {
-            case let .success(result):
-                completion(result)
-            case .failure:
-                completion(nil)
-            }
-        }
-    }
-}
-
 protocol AlgoStatisticsDataControllerDelegate: AnyObject {
     func algoStatisticsDataController(_ dataController: AlgoStatisticsDataController, didFetch values: [AlgosUSDValue])
     func algoStatisticsDataControllerDidFailToFetch(_ dataController: AlgoStatisticsDataController)

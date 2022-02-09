@@ -88,15 +88,12 @@ extension WelcomeViewController {
 }
 
 extension WelcomeViewController: WelcomeViewDelegate {
-    func welcomeView(_ welcomeView: WelcomeView, didSelect mode: AccountSetupMode) {
-        switch mode {
-        case .add:
-            open(.addAccount(flow: flow), by: .push)
-        case .recover:
-            open(.tutorial(flow: flow, tutorial: .recover), by: .push)
-        default:
-            break
-        }
+    func welcomeViewDidSelectAdd(_ welcomeView: WelcomeView) {
+        open(.addAccount(flow: flow), by: .push)
+    }
+
+    func welcomeViewDidSelectRecover(_ welcomeView: WelcomeView) {
+        open(.tutorial(flow: flow, tutorial: .recover), by: .push)
     }
 
     func welcomeView(_ welcomeView: WelcomeView, didOpen url: URL) {

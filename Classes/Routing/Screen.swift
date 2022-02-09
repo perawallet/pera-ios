@@ -23,7 +23,7 @@ indirect enum Screen {
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?)
     case passphraseView(address: String)
     case passphraseVerify
-    case accountNameSetup
+    case accountNameSetup(mode: AccountSetupMode, accountAddress: PublicKey)
     case accountRecover(flow: AccountSetupFlow)
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)

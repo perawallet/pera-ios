@@ -22,6 +22,16 @@ final class TutorialViewController: BaseScrollViewController {
         return tutorial == .localAuthentication
     }
 
+    override var shouldShowNavigationBar: Bool {
+        switch tutorial {
+        case .accountVerified,
+                .passphraseVerified:
+            return false
+        default:
+            return true
+        }
+    }
+
     lazy var uiHandlers = TutorialViewControllerUIHandlers()
 
     private lazy var tutorialView = TutorialView()
@@ -146,10 +156,10 @@ extension TutorialViewController: TutorialViewDelegate {
             askLocalAuthentication()
         case .biometricAuthenticationEnabled:
             dismissScreen()
-        case .passphraseVerified:
-            open(.accountNameSetup, by: .push)
+        case let .passphraseVerified(account):
+            open(.accountNameSetup(mode: .add(type: .create), accountAddress: account.address), by: .push)
         case .accountVerified:
-            uiHandlers.didTapButtonPrimaryActionButton?(self)
+            launchMain()
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case .ledger:
@@ -175,8 +185,13 @@ extension TutorialViewController: TutorialViewDelegate {
 
 extension TutorialViewController {
     private func setPopGestureEnabledInLocalAuthenticationTutorial(_ isEnabled: Bool) {
-        if tutorial == .localAuthentication {
+        switch tutorial {
+        case .localAuthentication,
+                .accountVerified,
+                .passphraseVerified:
             navigationController?.interactivePopGestureRecognizer?.isEnabled = isEnabled
+        default:
+            break
         }
     }
 
@@ -234,7 +249,7 @@ enum Tutorial: Equatable {
     case passcode
     case localAuthentication
     case biometricAuthenticationEnabled
-    case passphraseVerified
+    case passphraseVerified(account: AccountInformation)
     case accountVerified
     case ledger
     case ledgerSuccessfullyConnected

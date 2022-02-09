@@ -26,6 +26,11 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
         return PassphraseVerifyLayoutBuilder(dataSource: dataSource, theme: theme)
     }()
 
+    private lazy var accountOrdering = AccountOrdering(
+        sharedDataController: sharedDataController,
+        session: session!
+    )
+
     private lazy var dataSource: PassphraseVerifyDataSource = {
         if let privateKey = session?.privateData(for: "temp") {
             return PassphraseVerifyDataSource(privateKey: privateKey)
@@ -80,13 +85,40 @@ extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
             return
         }
 
-        openValidatedBottomInformation()
-    }
+        guard let account = createAccount() else {
+            return
+        }
 
-    private func openValidatedBottomInformation() {
         open(
-            .tutorial(flow: .none, tutorial: .passphraseVerified),
+            .tutorial(flow: .none, tutorial: .passphraseVerified(account: account)),
             by: .push
         )
+    }
+
+    private func createAccount() -> AccountInformation? {
+        guard let tempPrivateKey = session?.privateData(for: "temp"),
+            let address = session?.address(for: "temp") else {
+                return nil
+        }
+
+        log(RegistrationEvent(type: .create))
+
+        let account = AccountInformation(
+            address: address,
+            name: address.shortAddressDisplay(),
+            type: .standard,
+            preferredOrder: accountOrdering.getNewAccountIndex(for: .standard)
+        )
+        session?.savePrivate(tempPrivateKey, for: account.address)
+        session?.removePrivateData(for: "temp")
+
+        if let authenticatedUser = session?.authenticatedUser {
+            authenticatedUser.addAccount(account)
+        } else {
+            let user = User(accounts: [account])
+            session?.authenticatedUser = user
+        }
+
+        return account
     }
 }
