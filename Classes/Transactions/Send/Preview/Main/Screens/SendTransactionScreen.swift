@@ -58,7 +58,7 @@ final class SendTransactionScreen: BaseViewController {
     }
 
     private var isMaxTransaction: Bool {
-        guard let decimalAmount = amount.decimalAmountWithSeparator else {
+        guard let decimalAmount = amount.decimalAmount else {
             return false
         }
         return draft.from.amount == decimalAmount.toMicroAlgos
@@ -175,15 +175,15 @@ extension SendTransactionScreen {
             switch draft.transactionMode {
             case .algo:
                 showingValue = (amountValue.replacingOccurrences(of: decimalStrings, with: "")
-                    .decimalAmountWithSeparator?.toNumberStringWithSeparatorForLabel ?? amountValue)
+                    .decimalAmount?.toNumberStringWithSeparatorForLabel ?? amountValue)
                     .appending(decimalStrings)
             case .assetDetail(let assetDetail):
                 showingValue = (amountValue.replacingOccurrences(of: decimalStrings, with: "")
-                    .decimalAmountWithSeparator?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals) ?? amountValue)
+                    .decimalAmount?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals) ?? amountValue)
                     .appending(decimalStrings)
             }
         } else {
-            showingValue = amountValue.decimalAmountWithSeparator?.toNumberStringWithSeparatorForLabel ?? amountValue
+            showingValue = amountValue.decimalAmount?.toNumberStringWithSeparatorForLabel ?? amountValue
 
             if self.amount.decimal.number.intValue == 0 {
                 if let string = self.amount.decimal.toFractionStringForLabel(fraction: 2) {
@@ -195,7 +195,7 @@ extension SendTransactionScreen {
 
         if let currency = sharedDataController.currency.value,
            let currencyPriceValue = currency.priceValue,
-           let amount = amountValue.decimalAmountWithSeparator {
+           let amount = amountValue.decimalAmount {
 
             switch draft.transactionMode {
             case let .assetDetail(assetInformation):
@@ -461,7 +461,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
     }
 
     private func validateAlgo(for value: String) -> TransactionValidation {
-        guard let decimalAmount = value.decimalAmountWithSeparator else {
+        guard let decimalAmount = value.decimalAmount else {
             return .otherAlgo
         }
 
@@ -491,7 +491,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
 
     private func validateAsset(for value: String, on assetDetail: AssetInformation) -> TransactionValidation {
         guard let assetAmount = draft.from.amount(for: assetDetail),
-              let decimalAmount = value.decimalAmountWithSeparator else {
+              let decimalAmount = value.decimalAmount else {
                   return .otherAsset
         }
 
