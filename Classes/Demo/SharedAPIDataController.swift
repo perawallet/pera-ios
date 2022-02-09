@@ -36,6 +36,9 @@ final class SharedAPIDataController:
     var isAvailable: Bool {
         return isFirstPollingRoundCompleted
     }
+    var isPollingAvailable: Bool {
+        return session.authenticatedUser.unwrap { !$0.accounts.isEmpty } ?? false
+    }
 
     private lazy var blockProcessor = createBlockProcessor()
     private lazy var blockProcessorEventQueue =
@@ -192,13 +195,15 @@ extension SharedAPIDataController {
         _ localAccount: AccountInformation
     ) {
         let address = localAccount.address
-
-        if nextAccountCollection[address] != nil {
-            return
+        
+        let account: Account
+        if let cachedAccount = accountCollection[address] {
+            account = cachedAccount.value
+        } else {
+            account = Account(localAccount: localAccount)
         }
 
-        let newAccount = AccountHandle(localAccount: localAccount, status: .idle)
-        nextAccountCollection[address] = newAccount
+        nextAccountCollection[address] = AccountHandle(account: account, status: .idle)
     }
     
     private func blockProcessorDidFetchAccount(
@@ -214,14 +219,14 @@ extension SharedAPIDataController {
     ) {
         let address = localAccount.address
 
-        let updatedAccount: AccountHandle
-        if let cachedAccount = nextAccountCollection[address] {
-            updatedAccount = AccountHandle(account: cachedAccount.value, status: .failed(error))
+        let account: Account
+        if let cachedAccount = accountCollection[address] {
+            account = cachedAccount.value
         } else {
-            updatedAccount = AccountHandle(localAccount: localAccount, status: .failed(error))
+            account = Account(localAccount: localAccount)
         }
         
-        nextAccountCollection[address] = updatedAccount
+        nextAccountCollection[address] = AccountHandle(account: account, status: .failed(error))
     }
     
     private func blockProcessorWillFetchAssetDetails(

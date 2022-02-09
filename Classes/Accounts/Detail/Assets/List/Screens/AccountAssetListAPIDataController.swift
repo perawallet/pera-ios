@@ -61,7 +61,7 @@ extension AccountAssetListAPIDataController {
         switch event {
         case let .didStartRunning(first):
             if first ||
-                lastSnapshot == nil {
+               lastSnapshot == nil {
                 deliverContentSnapshot()
             }
         case .didFinishRunning:

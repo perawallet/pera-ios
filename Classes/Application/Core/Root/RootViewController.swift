@@ -29,7 +29,7 @@ class RootViewController: UIViewController {
     private(set) var isDisplayingGovernanceBanner = true
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        return preferredStatusBarStyle(for: appConfiguration.api.network)
+        return determinePreferredStatusBarStyle(for: appConfiguration.api.network)
     }
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return areTabsVisible ? mainContainer.preferredStatusBarUpdateAnimation : .fade
@@ -74,7 +74,11 @@ class RootViewController: UIViewController {
 }
 
 extension RootViewController {
-    func launchTabs() {
+    func launchTabsIfNeeded() {
+        if areTabsVisible {
+            return
+        }
+        
         let configuration = appConfiguration.all()
 
         let homeViewController = HomeViewController(

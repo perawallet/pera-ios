@@ -57,11 +57,11 @@ extension HomeAPIDataController {
     ) {
         switch event {
         case .didBecomeIdle:
-            deliverLoadingSnapshot()
-        case .didStartRunning(let first):
-            if first ||
+            deliverInitialSnapshot()
+        case .didStartRunning(let isFirst):
+            if isFirst ||
                lastSnapshot == nil {
-                deliverLoadingSnapshot()
+                deliverInitialSnapshot()
             }
         case .didFinishRunning:
             deliverContentSnapshot()
@@ -72,6 +72,14 @@ extension HomeAPIDataController {
 }
 
 extension HomeAPIDataController {
+    private func deliverInitialSnapshot() {
+        if sharedDataController.isPollingAvailable {
+            deliverLoadingSnapshot()
+        } else {
+            deliverNoContentSnapshot()
+        }
+    }
+    
     private func deliverLoadingSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()
@@ -186,11 +194,7 @@ extension HomeAPIDataController {
         snapshotQueue.async {
             [weak self] in
             guard let self = self else { return }
-            
-            let newSnapshot = snapshot()
-            
-            self.lastSnapshot = newSnapshot
-            self.publish(.didUpdate(newSnapshot))
+            self.publish(.didUpdate(snapshot()))
         }
     }
 }
@@ -203,6 +207,7 @@ extension HomeAPIDataController {
             [weak self] in
             guard let self = self else { return }
             
+            self.lastSnapshot = event.snapshot
             self.eventHandler?(event)
         }
     }

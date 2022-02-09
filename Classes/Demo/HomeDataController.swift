@@ -57,4 +57,10 @@ enum HomeAccountItem: Hashable {
 
 enum HomeDataControllerEvent {
     case didUpdate(HomeDataController.Snapshot)
+    
+    var snapshot: HomeDataController.Snapshot {
+        switch self {
+        case .didUpdate(let snapshot): return snapshot
+        }
+    }
 }

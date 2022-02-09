@@ -67,10 +67,6 @@ class Router:
     }
     
     func launchOnboarding() {
-        let isAnimated =
-            rootViewController.presentedViewController != nil ||
-            rootViewController.areTabsVisible
-        
         route(
             to: .welcome(flow: .initializeAccount(mode: .none)),
             from: findVisibleScreen(over: rootViewController),
@@ -79,7 +75,7 @@ class Router:
                 transitionStyle: nil,
                 transitioningDelegate: nil
             ),
-            animated: isAnimated
+            animated: true
         ) { [weak self] in
             guard let self = self else { return }
             self.rootViewController.terminateTabs()
@@ -87,7 +83,7 @@ class Router:
     }
     
     func launchMain() {
-        rootViewController.launchTabs()
+        rootViewController.launchTabsIfNeeded()
         rootViewController.dismissIfNeeded()
     }
     
@@ -95,10 +91,7 @@ class Router:
         presented viewController: UIViewController,
         completion: @escaping () -> Void
     ) {
-        if !rootViewController.areTabsVisible {
-            rootViewController.launchTabs()
-        }
-        
+        rootViewController.launchTabsIfNeeded()
         viewController.dismissScreen(completion: completion)
     }
     
@@ -202,7 +195,7 @@ class Router:
             
             rootViewController.present(navigationController, animated: false, completion: completion)
         case .present,
-                .customPresent:
+            .customPresent:
             let navigationController: NavigationController
             
             if let navController = viewController as? NavigationController {
@@ -230,9 +223,10 @@ class Router:
                 if let aTransitionStyle = transitionStyle {
                     navigationController.modalTransitionStyle = aTransitionStyle
                 }
-                navigationController.modalPresentationCapturesStatusBarAppearance = true
                 navigationController.transitioningDelegate = transitioningDelegate
             }
+            
+            navigationController.modalPresentationCapturesStatusBarAppearance = true
             
             sourceViewController.present(navigationController, animated: animated, completion: completion)
         case .presentWithoutNavigationController:
@@ -243,6 +237,8 @@ class Router:
                 presentedViewController.hidesStatusBarWhenPresented = true
                 presentedViewController.isStatusBarHidden = true
             }
+            
+            viewController.modalPresentationCapturesStatusBarAppearance = true
             
             sourceViewController.present(viewController, animated: animated, completion: completion)
             
