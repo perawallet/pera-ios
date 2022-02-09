@@ -98,12 +98,16 @@ extension AlgoStatisticsViewController {
         algoStatisticsDataController.cancel()
 
         algoStatisticsView.clearLineChart()
+        algoStatisticsView.startLoading()
 
         if let cachedStatisticsViewModel = cachedAlgoStatisticsViewModels[interval] {
+            algoStatisticsView.stopLoading()
+
             chartEntries = cachedStatisticsViewModel.values
             bindView(with: cachedStatisticsViewModel)
             return
         }
+
 
         algoStatisticsDataController.getChartData(for: interval)
     }
@@ -190,8 +194,14 @@ extension AlgoStatisticsViewController: AlgoStatisticsDataControllerDelegate {
             values: values,
             timeInterval: selectedTimeInterval,
             currency: currency
-        ) { [weak self] algoStatisticViewModel in
-            self?.bindView(with: algoStatisticViewModel)
+        ) {
+            [weak self] algoStatisticViewModel in
+            guard let self = self else {
+                return
+            }
+
+            self.algoStatisticsView.stopLoading()
+            self.bindView(with: algoStatisticViewModel)
         }
     }
 

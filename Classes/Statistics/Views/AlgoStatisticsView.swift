@@ -40,7 +40,6 @@ final class AlgoStatisticsView: View {
         addAlgoStatisticsHeaderView(theme)
         addLineChartView(theme)
         addChartTimeFrameSelectionView(theme)
-        addAlgoStatisticsFooterView(theme)
     }
 
     func prepareLayout(_ layoutSheet: AlgoStatisticsViewTheme) {}
@@ -97,7 +96,6 @@ extension AlgoStatisticsView: ChartTimeFrameSelectionViewDelegate {
     }
 }
 
-
 extension AlgoStatisticsView: AlgorandChartViewDelegate {
     func algorandChartView(_ algorandChartView: AlgorandChartView, didSelectItemAt index: Int) {
         delegate?.algoStatisticsView(self, didSelectItemAt: index)
@@ -117,18 +115,26 @@ extension AlgoStatisticsView {
         if let chartViewModel = viewModel.chartViewModel {
             lineChartView.bind(chartViewModel)
         }
-
-        if let footerViewModel = viewModel.footerViewModel {
-            algoStatisticsFooterView.bindData(footerViewModel)
-        }
     }
 
     func bind(_ viewModel: AlgoStatisticsHeaderViewModel) {
         algoStatisticsHeaderView.bindData(viewModel)
     }
+}
 
+extension AlgoStatisticsView {
     func clearLineChart() {
         lineChartView.clear()
+    }
+    
+    func startLoading() {
+        algoStatisticsHeaderView.startLoading()
+        lineChartView.startLoading()
+    }
+
+    func stopLoading() {
+        algoStatisticsHeaderView.stopLoading()
+        lineChartView.stopLoading()
     }
 }
 

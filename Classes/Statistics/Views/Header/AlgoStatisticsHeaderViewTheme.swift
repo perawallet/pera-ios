@@ -24,6 +24,10 @@ struct AlgoStatisticsHeaderViewTheme: StyleSheet, LayoutSheet {
     let amountLabel: TextStyle
     let dateLabel: TextStyle
     let valueChangeViewTheme: AlgoStatisticsValueChangeViewTheme
+
+    let loadingCorner: Corner
+    let valueChangeLoadingViewTopPadding: LayoutMetric
+    let valueChangeLoadingViewSize: LayoutSize
     
     let topPadding: LayoutMetric
 
@@ -42,6 +46,10 @@ struct AlgoStatisticsHeaderViewTheme: StyleSheet, LayoutSheet {
             .textOverflow(SingleLineFittingText())
         ]
         self.valueChangeViewTheme = AlgoStatisticsValueChangeViewTheme()
+
+        self.loadingCorner = Corner(radius: 4)
+        self.valueChangeLoadingViewTopPadding = 12
+        self.valueChangeLoadingViewSize = (59, 20)
 
         self.topPadding = 10
     }

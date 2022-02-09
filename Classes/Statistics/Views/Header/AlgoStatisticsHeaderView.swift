@@ -20,9 +20,13 @@ import MacaroonUIKit
 
 final class AlgoStatisticsHeaderView: View {
     private lazy var amountLabel = UILabel()
-    private lazy var informationStackView = UIStackView()
     private lazy var valueChangeView = AlgoStatisticsValueChangeView()
     private lazy var dateLabel = UILabel()
+
+    private lazy var valueChangeLoadingView = GradientView(
+        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
+        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
+    )
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -36,6 +40,8 @@ final class AlgoStatisticsHeaderView: View {
         addAmountLabel(theme)
         addValueChangeView(theme)
         addDateLabel(theme)
+
+        addLoadingViews(theme)
     }
 
     func prepareLayout(_ layoutSheet: AlgoStatisticsHeaderViewTheme) {}
@@ -71,6 +77,37 @@ extension AlgoStatisticsHeaderView {
             $0.leading.bottom.trailing.equalToSuperview()
             $0.top.equalTo(amountLabel.snp.bottom).offset(theme.topPadding)
         }
+    }
+}
+
+/// <mark>
+/// Loading
+extension AlgoStatisticsHeaderView {
+    private func addLoadingViews(_ theme: AlgoStatisticsHeaderViewTheme) {
+        addValueChangeLoadingView(theme)
+    }
+
+    private func addValueChangeLoadingView(_ theme: AlgoStatisticsHeaderViewTheme) {
+        valueChangeLoadingView.draw(corner: theme.loadingCorner)
+
+        addSubview(valueChangeLoadingView)
+        valueChangeLoadingView.snp.makeConstraints {
+            $0.top.equalTo(amountLabel.snp.bottom).offset(theme.valueChangeLoadingViewTopPadding)
+            $0.leading.equalToSuperview()
+            $0.fitToSize(theme.valueChangeLoadingViewSize)
+        }
+    }
+}
+
+extension AlgoStatisticsHeaderView {
+    func startLoading() {
+        valueChangeLoadingView.isHidden = false
+        valueChangeView.isHidden = true
+    }
+
+    func stopLoading() {
+        valueChangeLoadingView.isHidden = true
+        valueChangeView.isHidden = false
     }
 }
 

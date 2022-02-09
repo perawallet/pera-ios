@@ -33,11 +33,6 @@ final class AlgoStatisticsLoadingView:
         gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
     )
 
-    private lazy var priceSecondarySubview = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
     private lazy var statsImageView = ImageView()
 
     private lazy var controlView = GradientView(
@@ -62,11 +57,8 @@ final class AlgoStatisticsLoadingView:
     ) {
         addPriceView(theme)
         addPriceSubview(theme)
-        addPriceSecondarySubview(theme)
         addStatsView(theme)
         addControlView(theme)
-        addHeaderView(theme)
-        addItems(theme)
     }
 
     func customizeAppearance(
@@ -111,26 +103,12 @@ extension AlgoStatisticsLoadingView {
         }
     }
 
-    private func addPriceSecondarySubview(_ theme: AlgoStatisticsLoadingViewTheme) {
-        priceSecondarySubview.draw(corner: theme.loadingCorner)
-
-        addSubview(priceSecondarySubview)
-        priceSecondarySubview.snp.makeConstraints {
-            $0.top.equalTo(priceView.snp.bottom).offset(theme.priceSecondarySubviewMargin.top)
-            $0.leading.equalTo(priceSubview.snp.trailing).offset(theme.priceSecondarySubviewMargin.leading)
-            $0.size.equalTo(
-                CGSize(width: theme.priceSecondarySubviewSize.w,
-                       height: theme.priceSecondarySubviewSize.h)
-            )
-        }
-    }
-
     private func addStatsView(_ theme: AlgoStatisticsLoadingViewTheme) {
         statsImageView.customizeAppearance(theme.statsImage)
 
         addSubview(statsImageView)
         statsImageView.snp.makeConstraints {
-            $0.top.equalTo(priceSecondarySubview.snp.bottom).offset(theme.statsMargin.top)
+            $0.top.equalTo(priceSubview.snp.bottom).offset(theme.statsMargin.top)
             $0.leading.equalToSuperview().inset(theme.statsMargin.leading)
             $0.trailing.equalToSuperview().inset(theme.statsMargin.trailing)
             $0.height.equalTo(

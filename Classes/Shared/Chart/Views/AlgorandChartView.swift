@@ -18,9 +18,11 @@
 import Charts
 import UIKit
 import Foundation
+import MacaroonUIKit
 
-class AlgorandChartView: BaseView {
-
+/// <todo>
+/// Refactor
+final class AlgorandChartView: BaseView {
     weak var delegate: AlgorandChartViewDelegate?
 
     private lazy var lineChartView: AlgorandLineChartView = {
@@ -50,6 +52,8 @@ class AlgorandChartView: BaseView {
         return lineChartView
     }()
 
+    private lazy var statsImageView = ImageView()
+
     private let chartCustomizer: AlgorandChartViewCustomizable
 
     init(chartCustomizer: AlgorandChartViewCustomizable) {
@@ -63,7 +67,8 @@ class AlgorandChartView: BaseView {
     }
 
     override func prepareLayout() {
-        prepareWholeScreenLayoutFor(lineChartView)
+        addLineChartView()
+        addLineChartLoadingImageView()
     }
 
     override func linkInteractors() {
@@ -74,6 +79,37 @@ class AlgorandChartView: BaseView {
 
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleHighlightingChart(_:)))
         lineChartView.addGestureRecognizer(panGestureRecognizer)
+    }
+}
+
+extension AlgorandChartView {
+    private func addLineChartView() {
+        addSubview(lineChartView)
+        lineChartView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+
+    private func addLineChartLoadingImageView() {
+        statsImageView.image = "chart-loading-bg".uiImage
+        statsImageView.contentMode = .scaleAspectFit
+
+        addSubview(statsImageView)
+        statsImageView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+}
+
+extension AlgorandChartView {
+    func startLoading() {
+        lineChartView.isHidden = true
+        statsImageView.isHidden = false
+    }
+
+    func stopLoading() {
+        lineChartView.isHidden = false
+        statsImageView.isHidden = true
     }
 }
 
