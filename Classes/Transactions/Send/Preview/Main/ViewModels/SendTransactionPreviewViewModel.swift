@@ -41,13 +41,15 @@ final class SendTransactionPreviewViewModel: ViewModel {
             return
         }
 
-        guard let currency = currency,
-              let currencyPriceValue = currency.priceValue else {
-            return
-        }
+        let currencyString: String?
 
-        let currencyValue = amount * currencyPriceValue
-        let currencyString = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
+        if let currency = currency,
+              let currencyPriceValue = currency.priceValue {
+            let currencyValue = amount * currencyPriceValue
+            currencyString = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
+        } else {
+            currencyString = nil
+        }
 
         amountViewMode = .normal(amount: amount, isAlgos: true, fraction: algosFraction, currency: currencyString)
 
@@ -56,9 +58,15 @@ final class SendTransactionPreviewViewModel: ViewModel {
         setFee(for: draft)
 
         let balance = draft.from.amount.toAlgos
+        let balanceCurrencyString: String?
 
-        let balanceCurrencyValue = balance * currencyPriceValue
-        let balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
+        if let currency = currency,
+              let currencyPriceValue = currency.priceValue {
+            let balanceCurrencyValue = balance * currencyPriceValue
+            balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
+        } else {
+            balanceCurrencyString = nil
+        }
 
         balanceViewMode = .normal(amount: balance, isAlgos: true, fraction: algosFraction, currency: balanceCurrencyString)
 
@@ -70,14 +78,16 @@ final class SendTransactionPreviewViewModel: ViewModel {
             return
         }
 
-        guard let assetUSDValue = assetDetail.usdValue,
-              let currency = currency,
-              let currencyUSDValue = currency.usdValue else {
-            return
-        }
+        let currencyString: String?
 
-        let currencyValue = assetUSDValue * amount * currencyUSDValue
-        let currencyString = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
+        if let assetUSDValue = assetDetail.usdValue,
+           let currency = currency,
+           let currencyUSDValue = currency.usdValue {
+            let currencyValue = assetUSDValue * amount * currencyUSDValue
+            currencyString = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
+        } else {
+            currencyString = nil
+        }
         
         amountViewMode = .normal(amount: amount, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name, currency: currencyString)
 
@@ -86,10 +96,16 @@ final class SendTransactionPreviewViewModel: ViewModel {
         setFee(for: draft)
 
         if let balance = draft.from.amount(for: assetDetail) {
+            let balanceCurrencyString: String?
 
-
-            let balanceCurrencyValue = assetUSDValue * balance * currencyUSDValue
-            let balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
+            if let assetUSDValue = assetDetail.usdValue,
+               let currency = currency,
+               let currencyUSDValue = currency.usdValue {
+                let balanceCurrencyValue = assetUSDValue * balance * currencyUSDValue
+                balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
+            } else {
+                balanceCurrencyString = nil
+            }
 
             balanceViewMode = .normal(amount: balance, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name, currency: balanceCurrencyString)
         }
