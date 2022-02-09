@@ -26,6 +26,7 @@ protocol HomeDataController: AnyObject {
     subscript (address: String?) -> AccountHandle? { get }
     
     func load()
+    func reload()
 }
 
 enum HomeSection:

@@ -20,6 +20,10 @@ import MacaroonUtils
 import UIKit
 
 final class OrderAccountListViewController: BaseViewController {
+    typealias EventHandler = (Event) -> Void
+    
+    var eventHandler: EventHandler?
+    
     private lazy var theme = Theme()
     private lazy var listView = UITableView()
     private let accountType: AccountType
@@ -82,19 +86,14 @@ extension OrderAccountListViewController {
 
     private func setBarButtons() {
         let doneBarButtonItem = ALGBarButtonItem(kind: .doneGreen) { [weak self] in
-            guard let self = self else {
-                return
-            }
+            guard let self = self else { return }
 
             self.reorderAccounts()
-            self.dismissScreen()
+            self.eventHandler?(.didReorder)
         }
 
         let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            guard let self = self else {
-                return
-            }
-
+            guard let self = self else { return }
             self.dismissScreen()
         }
 
@@ -159,5 +158,11 @@ extension OrderAccountListViewController: UITableViewDataSource {
         let movedObject = accounts[sourceIndexPath.row]
         accounts.remove(at: sourceIndexPath.row)
         accounts.insert(movedObject, at: destinationIndexPath.row)
+    }
+}
+
+extension OrderAccountListViewController {
+    enum Event {
+        case didReorder
     }
 }

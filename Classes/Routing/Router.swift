@@ -532,8 +532,10 @@ class Router:
             let aViewController = AccountListOptionsViewController(accountType: accountType, configuration: configuration)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .orderAccountList(accountType):
-            viewController = OrderAccountListViewController(accountType: accountType, configuration: configuration)
+        case let .orderAccountList(accountType, eventHandler):
+            let aViewController = OrderAccountListViewController(accountType: accountType, configuration: configuration)
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .accountSelection(transactionAction):
             viewController = SelectAccountViewController(transactionAction: transactionAction, configuration: configuration)
         case .assetSelection(let account):

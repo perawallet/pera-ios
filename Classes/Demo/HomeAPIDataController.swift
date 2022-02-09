@@ -48,6 +48,10 @@ extension HomeAPIDataController {
     func load() {
         sharedDataController.add(self)
     }
+    
+    func reload() {
+        deliverContentSnapshot()
+    }
 }
 
 extension HomeAPIDataController {
