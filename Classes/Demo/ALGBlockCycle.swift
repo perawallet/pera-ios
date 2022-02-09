@@ -56,8 +56,6 @@ extension ALGBlockCycle {
     }
 
     func stopListening() {
-        notificationHandler = nil
-        
         ongoingEndpointToFetchTransactionParams?.cancel()
         ongoingEndpointToFetchTransactionParams = nil
 
@@ -65,7 +63,7 @@ extension ALGBlockCycle {
         ongoingEndpointToWaitForNextBlock = nil
     }
     
-    func cancel() {
+    func cancelListening() {
         stopListening()
         lastRound = nil
     }
@@ -116,6 +114,7 @@ extension ALGBlockCycle {
     private func fetchTransactionParams(
         onCompletion handler: @escaping FetchTransactionParamsCompletionHandler
     ) {
+        ongoingEndpointToFetchTransactionParams?.cancel()
         ongoingEndpointToFetchTransactionParams =
             api.getTransactionParams { [weak self] result in
                 guard let self = self else { return }
@@ -142,6 +141,7 @@ extension ALGBlockCycle {
     ) {
         let draft = WaitRoundDraft(round: round)
         
+        ongoingEndpointToWaitForNextBlock?.cancel()
         ongoingEndpointToWaitForNextBlock =
             api.waitRound(draft) { [weak self] result in
                 guard let self = self else { return }

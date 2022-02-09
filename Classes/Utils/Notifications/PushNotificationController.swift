@@ -70,7 +70,7 @@ extension PushNotificationController {
     }
     
     func sendDeviceDetails(completion handler: BoolHandler? = nil) {
-        guard let user = session.applicationConfiguration?.authenticatedUser() else {
+        guard let user = session.authenticatedUser else {
             return
         }
         

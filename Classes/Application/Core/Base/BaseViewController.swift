@@ -57,11 +57,11 @@ class BaseViewController:
         return nil
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return statusBarStyleForNetwork(isTestNet: api?.isTestNet ?? false )
-    }
     override var prefersStatusBarHidden: Bool {
         return isStatusBarHidden
+    }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return preferredStatusBarStyle(for: api?.network ?? .mainnet)
     }
     override var preferredStatusBarUpdateAnimation: UIStatusBarAnimation {
         return isStatusBarHidden ? .fade : .none

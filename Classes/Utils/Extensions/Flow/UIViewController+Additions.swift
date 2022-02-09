@@ -114,31 +114,20 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    var isDarkModeDisplay: Bool {
-        if #available(iOS 12.0, *) {
-            return traitCollection.userInterfaceStyle == .dark
-        }
-        
-        return false
+    var isDarkMode: Bool {
+        return traitCollection.userInterfaceStyle == .dark
     }
 }
 
 extension UIViewController {
-    func statusBarStyleForNetwork(isTestNet: Bool) -> UIStatusBarStyle {
-        if isTestNet {
-                return .darkContent
-        }
-
-        if isDarkModeDisplay {
-            return .lightContent
-        } else {
-            return .default
+    func preferredStatusBarStyle(
+        for network: ALGAPI.Network
+    ) -> UIStatusBarStyle {
+        switch network {
+        case .mainnet:
+            return isDarkMode ? .lightContent : .default
+        case .testnet:
+            return .darkContent
         }
     }
-
-    var isModal: Bool {
-        return presentingViewController != nil ||
-            navigationController?.presentingViewController?.presentedViewController == navigationController ||
-            tabBarController?.presentingViewController is UITabBarController
-     }
 }
