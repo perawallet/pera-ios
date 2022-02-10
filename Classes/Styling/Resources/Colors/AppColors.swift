@@ -84,11 +84,11 @@ extension AppColors.Components {
             case background = "Components/Button/Shadow/background"
             case text = "Components/Button/Shadow/text"
         }
+    }
 
-        enum Switch: String, Color {
-            case background = "Components/Button/Shadow/background"
-            case backgroundOff = "Components/Button/Shadow/background-off"
-        }
+    enum Switch: String, Color {
+        case background = "Components/Switch/background"
+        case backgroundOff = "Components/Switch/background-off"
     }
 }
 

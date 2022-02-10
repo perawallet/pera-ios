@@ -235,11 +235,9 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
-              let assetDetail = currentAsset else {
-                  return
-              }
-
+        guard let assetDetail = currentAsset else {
+            return
+        }
 
         delegate?.assetAdditionViewController(self, didAdd: assetDetail, to: account)
         popScreen()

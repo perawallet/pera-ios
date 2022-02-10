@@ -47,8 +47,8 @@ extension Toggle {
 
         init(_ family: LayoutFamily) {
             cornerRadius = 16
-            backgroundColor = AppColors.Shared.Layer.grayLighter
-            onTintColor = AppColors.Shared.Global.turquoise600
+            backgroundColor = AppColors.Components.Switch.backgroundOff
+            onTintColor = AppColors.Components.Switch.background
         }
     }
 }
