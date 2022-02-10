@@ -52,9 +52,9 @@
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "Add New Account";
-"account-type-selection-add-detail" = "Create a new Algorand account, pair a Ledger device or add a watch account.";
+"account-type-selection-add-detail" = "I want a new account with a new address and recovery passphrase.";
 "account-type-selection-create" = "Create New Account";
-"account-type-selection-create-detail" = "I want to create a new Algorand Account.";
+"account-type-selection-create-detail" = "Create a new Algorand account, pair a Ledger device or add a watch account.";
 "account-type-selection-watch-detail" = "I want to monitor an account that's\nheld in cold storage.";
 "account-type-selection-recover" = "Recover With Passphrase";
 "account-type-selection-recover-detail" = "I want to recover an Algorand account using my 25-word passphrase.";
