@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2019 Algorand, Inc.
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,8 +19,9 @@ import Foundation
 import MacaroonUIKit
 import SnapKit
 import UIKit
+import MacaroonForm
 
-class FloatingTextInputFieldView: View, UITextFieldDelegate {
+class FloatingTextInputFieldView: View, FormTextInputFieldView, UITextFieldDelegate {
     weak var delegate: FloatingTextInputFieldViewDelegate?
     weak var editingDelegate: FormInputFieldViewEditingDelegate?
 
@@ -50,8 +51,8 @@ class FloatingTextInputFieldView: View, UITextFieldDelegate {
         set { textInputView.rightAccessory = newValue }
     }
 
-    var formatter: TextInputFormatter?
-    var maskFormatter: TextInputFormatter?
+    var formatter: MacaroonForm.TextInputFormatter?
+    var maskFormatter: MacaroonForm.TextInputFormatter?
     var validator: Validator?
 
     var isEnabled = true
@@ -67,7 +68,7 @@ class FloatingTextInputFieldView: View, UITextFieldDelegate {
         )
     }
 
-    var inputType: FormInputType {
+    var inputType: FormInputType  {
         return .keyboard
     }
     var isEditing: Bool {
@@ -760,42 +761,6 @@ extension Optional where Wrapped == String {
     }
 }
 
-public enum FormInputFieldState {
-    case none
-    case focus
-    case invalid(ValidationError)
-    case incorrect(EditText?)
-}
-
-public enum FormInputType {
-    case none
-    case keyboard
-    /// <note>
-    /// The selection input types displayed inside the form, i.e. checkbox.
-    case inSelection
-    /// <note>
-    /// The selection input types displayed outside the form, i.e. picker.
-    case outSelection
-}
-
-extension FormInputType {
-    public var isExternal: Bool {
-        switch self {
-        case .keyboard,
-             .outSelection:
-            return true
-        default:
-            return false
-        }
-    }
-}
-
-protocol FormInputFieldViewEditingDelegate: AnyObject {
-    func formInputFieldViewDidBeginEditing(_ view: FloatingTextInputFieldView)
-    func formInputFieldViewDidEdit(_ view: FloatingTextInputFieldView)
-    func formInputFieldViewDidEndEditing(_ view: FloatingTextInputFieldView)
-}
-
 public typealias TextInputFormattedOutput = (text: String, caretOffset: Int)
 
 public protocol TextPatternInputFormatter: TextInputFormatter {
@@ -834,7 +799,7 @@ extension TextInputFormatter {
 
 extension TextInputFormatter {
      func format(
-        _ inputFieldView: FloatingTextInputFieldView,
+        _ inputFieldView: FormTextInputFieldView,
         changingCharactersIn range: NSRange,
         replacementString string: String
     ) -> TextInputFormattedOutput {

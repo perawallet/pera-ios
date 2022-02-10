@@ -1,0 +1,240 @@
+// Copyright 2019 Algorand, Inc.
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//
+//   MultilineTextInputFieldView.swift
+
+import Foundation
+import MacaroonUIKit
+import UIKit
+import SnapKit
+import MacaroonForm
+
+class MultilineTextInputFieldView: View, FormTextInputFieldView, UITextViewDelegate {
+    weak var editingDelegate: FormInputFieldViewEditingDelegate?
+    
+    var inputState: FormInputFieldState = .none {
+        didSet { inputStateDidChange() }
+    }
+    
+    var text: String? {
+        get {
+            textInputView.text
+        }
+        set {
+            textInputView.text = newValue
+            textViewDidChange(textInputView)
+        }
+    }
+    
+    var formatter: MacaroonForm.TextInputFormatter?
+    var validator: Validator?
+    
+    var inputType: FormInputType {
+        return .keyboard
+    }
+    
+    private lazy var placeholderView = Label()
+    private lazy var textInputView = UITextView()
+    private lazy var focusIndicatorView = UIImageView()
+    private lazy var assistiveView = FormInputFieldAssistiveView()
+    
+    private var theme: MultilineTextInputFieldViewTheme?
+        
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setListeners()
+        linkInteractors()
+    }
+    
+    func customize(_ theme: MultilineTextInputFieldViewTheme) {
+        self.theme = theme
+        
+        customizeTextInput(theme)
+        customizePlaceholder(theme)
+        customizeFocusIndicator(theme)
+        customizeAssistive(theme)
+        
+        addPlaceholder(theme)
+        addTextInput(theme)
+        addFocusIndicator(theme)
+        addAssistive(theme)
+    }
+    
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    
+    func prepareLayout(_ layoutSheet: NoStyleSheet) {}
+    
+    func setListeners() {
+        textInputView.delegate = self
+    }
+    
+    func linkInteractors() {
+        focusIndicatorView.isUserInteractionEnabled = false
+    }
+    
+    /// <mark>
+    /// UITextFieldDelegate
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        updateFocusIndicatorLayoutOnEditing()
+        
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.1,
+            delay: 0.0,
+            options: .curveEaseOut,
+            animations: {
+                [unowned self] in
+                
+                self.layoutIfNeeded()
+            },
+            completion: nil
+        )
+        
+        editingDelegate?.formInputFieldViewDidBeginEditing(self)
+    }
+    
+    func textViewDidChange(_ textView: UITextView) {
+        editingDelegate?.formInputFieldViewDidEdit(self)
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            updateFocusIndicatorLayoutOnEnd()
+            
+            UIViewPropertyAnimator.runningPropertyAnimator(
+                withDuration: 0.1,
+                delay: 0.0,
+                options: .curveEaseOut,
+                animations: {
+                    [unowned self] in
+                    
+                    self.layoutIfNeeded()
+                },
+                completion: nil
+            )
+        }
+        
+        editingDelegate?.formInputFieldViewDidEndEditing(self)
+    }
+}
+
+extension MultilineTextInputFieldView {
+    func beginEditing() {
+        textInputView.becomeFirstResponder()
+    }
+    
+    func endEditing() {
+        textInputView.resignFirstResponder()
+    }
+}
+
+extension MultilineTextInputFieldView {
+    private func inputStateDidChange() {
+        switch inputState {
+        case .none, .focus:
+            updateFocusIndicatorAppearanceOnSuccess()
+            assistiveView.editError = nil
+        case .invalid(let validationError):
+            updateFocusIndicatorAppearanceOnFailure()
+            assistiveView.editError = validator?.getMessage(for: validationError)
+        case .incorrect(let error):
+            updateFocusIndicatorAppearanceOnFailure()
+            assistiveView.editError = error
+        }
+    }
+}
+
+extension MultilineTextInputFieldView {
+    private func customizeTextInput(_ styleSheet: MultilineTextInputFieldViewTheme) {
+        textInputView.isScrollEnabled = false
+        textInputView.textContainerInset = .zero
+        textInputView.textContainer.lineFragmentPadding = 0.0
+        textInputView.backgroundColor = .clear
+        textInputView.customizeAppearance(styleSheet.textInput)
+    }
+    
+    private func customizePlaceholder(_ styleSheet: MultilineTextInputFieldViewTheme) {
+        placeholderView.customizeAppearance(styleSheet.placeholder)
+    }
+    
+    private func customizeFocusIndicator(_ styleSheet: MultilineTextInputFieldViewTheme) {
+        focusIndicatorView.customizeAppearance(styleSheet.focusIndicator)
+    }
+    
+    private func updateFocusIndicatorAppearanceOnSuccess() {
+        if let style = theme?.focusIndicator {
+            focusIndicatorView.customizeAppearance(style)
+        }
+    }
+    
+    private func updateFocusIndicatorAppearanceOnFailure() {
+        if let style = theme?.errorFocusIndicator {
+            focusIndicatorView.customizeAppearance(style)
+        }
+    }
+    
+    private func customizeAssistive(_ styleSheet: MultilineTextInputFieldViewTheme) {
+        assistiveView.customize(styleSheet.assistiveView)
+    }
+}
+
+extension MultilineTextInputFieldView {
+    private func addTextInput(_ layoutSheet: MultilineTextInputFieldViewTheme) {
+        addSubview(textInputView)
+        textInputView.setContentHuggingPriority(.required, for: .vertical)
+        textInputView.setContentCompressionResistancePriority(.required, for: .vertical)
+        textInputView.snp.makeConstraints {
+            $0.top == placeholderView.snp.bottom + 5
+            $0.setHorizontalPaddings()
+        }
+    }
+    
+    private func addPlaceholder(_ layoutSheet: MultilineTextInputFieldViewTheme) {
+        insertSubview(placeholderView, belowSubview: textInputView)
+        placeholderView.fitToIntrinsicSize()
+        placeholderView.snp.makeConstraints {
+            $0.setPaddings((0, 0, .noMetric, .noMetric))
+        }
+    }
+    
+    private func addFocusIndicator(_ layoutSheet: MultilineTextInputFieldViewTheme) {
+        addSubview(focusIndicatorView)
+        focusIndicatorView.snp.makeConstraints {
+            $0.bottom == textInputView.snp.bottom + 5
+            $0.fitToHeight(1)
+            $0.setHorizontalPaddings()
+        }
+    }
+    
+    private func updateFocusIndicatorLayoutOnEditing() {
+        focusIndicatorView.snp.updateConstraints {
+            $0.fitToHeight(2)
+        }
+    }
+
+    private func updateFocusIndicatorLayoutOnEnd() {
+        focusIndicatorView.snp.updateConstraints {
+            $0.fitToHeight(1)
+        }
+    }
+    
+    private func addAssistive(_ layoutSheet: MultilineTextInputFieldViewTheme) {
+        addSubview(assistiveView)
+        assistiveView.snp.makeConstraints {
+            $0.top == textInputView.snp.bottom
+            $0.setPaddings((.noMetric, 0, 0, 0))
+        }
+    }
+}

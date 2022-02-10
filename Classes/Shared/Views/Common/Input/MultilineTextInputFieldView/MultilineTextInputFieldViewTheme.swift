@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2019 Algorand, Inc.
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,34 +13,15 @@
 // limitations under the License.
 
 //
-//   Validator.swift
+//   MultilineTextInputFieldViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 
-protocol Validator {
-    func validate(_ inputFieldView: FloatingTextInputFieldView) -> Validation
-    func getMessage(for error: ValidationError) -> EditText?
-}
-
-public protocol ValidationError {}
-
-public enum Validation {
-    case success
-    case failure(ValidationError)
-}
-
-extension Validation {
-    public var isSuccess: Bool {
-        switch self {
-        case .success:
-            return true
-        case .failure:
-            return false
-        }
-    }
-
-    public var isFailure: Bool {
-        return !self.isSuccess
-    }
+protocol MultilineTextInputFieldViewTheme: StyleSheet, LayoutSheet {
+    var textInput: TextInputStyle { get }
+    var placeholder: TextStyle { get }
+    var focusIndicator: ViewStyle { get }
+    var errorFocusIndicator: ViewStyle { get }
+    var assistiveView: FormInputFieldAssistiveViewTheme { get }
 }
