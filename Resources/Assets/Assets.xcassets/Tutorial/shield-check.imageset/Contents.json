@@ -3,6 +3,16 @@
     {
       "filename" : "shield-check.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "shield-check-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
