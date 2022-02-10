@@ -105,13 +105,7 @@ extension EditContactView {
     private func addQrButton(_ theme: EditContactViewTheme) {
         qrButton.customizeAppearance(theme.qrButton)
 
-        /// <todo>
-        /// This should be in the text input's right accessory
-        addressInputView.addSubview(qrButton)
-        qrButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview()
-        }
+        addressInputView.addRightAccessoryItem(qrButton)
     }
 
     private func addDeleteContactButton(_ theme: EditContactViewTheme) {
@@ -158,25 +152,22 @@ extension EditContactView {
     func createAddressTextInput(
         placeholder: String,
         floatingPlaceholder: String?
-    ) -> FloatingTextInputFieldView {
-        /// <todo>
-        /// Multi line is not supported.
-        let view = FloatingTextInputFieldView()
+    ) -> MultilineTextInputFieldView {
+        let view = MultilineTextInputFieldView()
         let textInputBaseStyle: TextInputStyle = [
             .font(Fonts.DMSans.regular.make(15)),
             .tintColor(AppColors.Components.Text.main),
             .textColor(AppColors.Components.Text.main),
             .returnKeyType(.done)
         ]
-
+        
         let theme =
-            FloatingTextInputFieldViewCommonTheme(
+            MultilineTextInputFieldViewCommonTheme(
                 textInput: textInputBaseStyle,
                 placeholder: placeholder,
                 floatingPlaceholder: floatingPlaceholder
             )
         view.customize(theme)
-        view.delegate = self
         view.snp.makeConstraints {
             $0.greaterThanHeight(48)
         }

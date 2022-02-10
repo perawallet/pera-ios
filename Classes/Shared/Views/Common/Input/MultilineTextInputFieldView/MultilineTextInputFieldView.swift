@@ -34,7 +34,7 @@ class MultilineTextInputFieldView: View, FormTextInputFieldView, UITextViewDeleg
         }
         set {
             textInputView.text = newValue
-            textViewDidChange(textInputView)
+            textViewDidEdit(textInputView)
         }
     }
     
@@ -50,6 +50,9 @@ class MultilineTextInputFieldView: View, FormTextInputFieldView, UITextViewDeleg
     private lazy var focusIndicatorView = UIImageView()
     private lazy var assistiveView = FormInputFieldAssistiveView()
     
+    private var placeholderTopConstraint: Constraint?
+    private var floatingPlaceholderTopConstraint: Constraint?
+    
     private var theme: MultilineTextInputFieldViewTheme?
         
     override init(frame: CGRect) {
@@ -62,15 +65,19 @@ class MultilineTextInputFieldView: View, FormTextInputFieldView, UITextViewDeleg
     func customize(_ theme: MultilineTextInputFieldViewTheme) {
         self.theme = theme
         
-        customizeTextInput(theme)
-        customizePlaceholder(theme)
-        customizeFocusIndicator(theme)
-        customizeAssistive(theme)
+        customizeTextInputAppearance(theme)
+        customizePlaceholderAppearance(theme)
+        customizeFocusIndicatorAppearance(theme)
+        customizeAssistiveAppearance(theme)
+        
+        recustomizeAppearanceWhenStyleSheetDidChange()
         
         addPlaceholder(theme)
         addTextInput(theme)
         addFocusIndicator(theme)
         addAssistive(theme)
+        
+        updateLayoutWhenLayoutSheetDidChange()
     }
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -89,6 +96,8 @@ class MultilineTextInputFieldView: View, FormTextInputFieldView, UITextViewDeleg
     /// UITextFieldDelegate
     func textViewDidBeginEditing(_ textView: UITextView) {
         updateFocusIndicatorLayoutOnEditing()
+        updatePlaceholderLayoutOnEditing()
+        recustomizePlaceholderOnEditing()
         
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 0.1,
@@ -109,9 +118,19 @@ class MultilineTextInputFieldView: View, FormTextInputFieldView, UITextViewDeleg
         editingDelegate?.formInputFieldViewDidEdit(self)
     }
     
+    func textViewDidEdit(_ textView: UITextView) {
+        if !textView.text.isEmpty {
+            updateFocusIndicatorLayoutOnEditing()
+            updatePlaceholderLayoutOnEditing()
+            recustomizePlaceholderOnEditing()
+        }
+    }
+    
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             updateFocusIndicatorLayoutOnEnd()
+            updatePlaceholderLayoutOnClear()
+            recustomizePlaceholderOnClear()
             
             UIViewPropertyAnimator.runningPropertyAnimator(
                 withDuration: 0.1,
@@ -157,7 +176,13 @@ extension MultilineTextInputFieldView {
 }
 
 extension MultilineTextInputFieldView {
-    private func customizeTextInput(_ styleSheet: MultilineTextInputFieldViewTheme) {
+    private func recustomizeAppearanceWhenStyleSheetDidChange() {
+        textInputView.text.isNilOrEmpty
+            ? recustomizePlaceholderOnClear()
+            : recustomizePlaceholderOnEditing()
+    }
+    
+    private func customizeTextInputAppearance(_ styleSheet: MultilineTextInputFieldViewTheme) {
         textInputView.isScrollEnabled = false
         textInputView.textContainerInset = .zero
         textInputView.textContainer.lineFragmentPadding = 0.0
@@ -165,11 +190,27 @@ extension MultilineTextInputFieldView {
         textInputView.customizeAppearance(styleSheet.textInput)
     }
     
-    private func customizePlaceholder(_ styleSheet: MultilineTextInputFieldViewTheme) {
+    private func customizePlaceholderAppearance(_ styleSheet: MultilineTextInputFieldViewTheme) {
         placeholderView.customizeAppearance(styleSheet.placeholder)
     }
     
-    private func customizeFocusIndicator(_ styleSheet: MultilineTextInputFieldViewTheme) {
+    private func recustomizePlaceholderOnEditing() {
+        guard let theme = theme else {
+            return
+        }
+        
+        placeholderView.customizeAppearance(theme.floatingPlaceholder)
+    }
+    
+    private func recustomizePlaceholderOnClear() {
+        guard let theme = theme else {
+            return
+        }
+        
+        placeholderView.customizeAppearance(theme.placeholder)
+    }
+    
+    private func customizeFocusIndicatorAppearance(_ styleSheet: MultilineTextInputFieldViewTheme) {
         focusIndicatorView.customizeAppearance(styleSheet.focusIndicator)
     }
     
@@ -185,28 +226,54 @@ extension MultilineTextInputFieldView {
         }
     }
     
-    private func customizeAssistive(_ styleSheet: MultilineTextInputFieldViewTheme) {
-        assistiveView.customize(styleSheet.assistiveView)
+    private func customizeAssistiveAppearance(_ styleSheet: MultilineTextInputFieldViewTheme) {
+        assistiveView.customize(styleSheet.assistive)
     }
 }
 
 extension MultilineTextInputFieldView {
+    private func updateLayoutWhenLayoutSheetDidChange() {
+        if textInputView.text.isNilOrEmpty {
+            updatePlaceholderLayoutOnClear()
+        } else {
+            updatePlaceholderLayoutOnEditing()
+        }
+    }
+    
     private func addTextInput(_ layoutSheet: MultilineTextInputFieldViewTheme) {
         addSubview(textInputView)
         textInputView.setContentHuggingPriority(.required, for: .vertical)
         textInputView.setContentCompressionResistancePriority(.required, for: .vertical)
         textInputView.snp.makeConstraints {
-            $0.top == placeholderView.snp.bottom + 5
+            $0.top == layoutSheet.topInset
             $0.setHorizontalPaddings()
         }
     }
     
     private func addPlaceholder(_ layoutSheet: MultilineTextInputFieldViewTheme) {
-        insertSubview(placeholderView, belowSubview: textInputView)
+        addSubview(placeholderView)
         placeholderView.fitToIntrinsicSize()
         placeholderView.snp.makeConstraints {
-            $0.setPaddings((0, 0, .noMetric, .noMetric))
+            $0.leading.equalToSuperview()
         }
+        
+        floatingPlaceholderTopConstraint = placeholderView.snp.prepareConstraints {
+            $0.top == 0
+        }.first
+        
+        placeholderTopConstraint = placeholderView.snp.prepareConstraints {
+            $0.centerY.equalToSuperview()
+        }.first
+    }
+    
+    private func updatePlaceholderLayoutOnEditing() {
+        placeholderTopConstraint?.deactivate()
+        floatingPlaceholderTopConstraint?.activate()
+    }
+    
+    private func updatePlaceholderLayoutOnClear() {
+        placeholderTopConstraint?.activate()
+        floatingPlaceholderTopConstraint?.deactivate()
     }
     
     private func addFocusIndicator(_ layoutSheet: MultilineTextInputFieldViewTheme) {
@@ -235,6 +302,17 @@ extension MultilineTextInputFieldView {
         assistiveView.snp.makeConstraints {
             $0.top == textInputView.snp.bottom
             $0.setPaddings((.noMetric, 0, 0, 0))
+        }
+    }
+}
+
+extension MultilineTextInputFieldView {
+    func addRightAccessoryItem(_ accessoryView: UIView) {
+        textInputView.textContainerInset = UIEdgeInsets((0, 0, 0, 65))
+        addSubview(accessoryView)
+        accessoryView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.trailing == 0
         }
     }
 }

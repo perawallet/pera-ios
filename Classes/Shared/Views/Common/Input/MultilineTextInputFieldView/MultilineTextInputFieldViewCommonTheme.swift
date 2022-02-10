@@ -21,13 +21,16 @@ import MacaroonUIKit
 struct MultilineTextInputFieldViewCommonTheme: MultilineTextInputFieldViewTheme {
     let textInput: TextInputStyle
     let placeholder: TextStyle
+    let floatingPlaceholder: TextStyle
+    let topInset: LayoutMetric
     let focusIndicator: ViewStyle
     let errorFocusIndicator: ViewStyle
-    let assistiveView: FormInputFieldAssistiveViewTheme
+    let assistive: FormInputFieldAssistiveViewTheme
     
     init(
         textInput: TextInputStyle,
         placeholder: String,
+        floatingPlaceholder: String? = nil,
         _ family: LayoutFamily = .current
     ) {
         self.textInput = textInput
@@ -35,15 +38,20 @@ struct MultilineTextInputFieldViewCommonTheme: MultilineTextInputFieldViewTheme 
             .font(Fonts.DMSans.regular.make(15, .body)),
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.grayLighter),
-            .text(placeholder.body(hasMultilines: false))
+            .text(placeholder)
         ]
+        self.floatingPlaceholder = [
+            .textColor(AppColors.Components.Text.grayLighter),
+            .text((floatingPlaceholder ?? placeholder).body(hasMultilines: false))
+        ]
+        self.topInset = 24.0
         self.focusIndicator = [
             .backgroundColor(AppColors.Components.Text.main)
         ]
         self.errorFocusIndicator = [
             .backgroundColor(AppColors.Shared.Helpers.negative)
         ]
-        self.assistiveView = FormInputFieldAssistiveViewCommonTheme()
+        self.assistive = FormInputFieldAssistiveViewCommonTheme()
     }
     
     init(_ family: LayoutFamily) {

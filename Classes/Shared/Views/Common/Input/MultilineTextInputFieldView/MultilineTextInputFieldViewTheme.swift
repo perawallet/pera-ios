@@ -21,7 +21,9 @@ import MacaroonUIKit
 protocol MultilineTextInputFieldViewTheme: StyleSheet, LayoutSheet {
     var textInput: TextInputStyle { get }
     var placeholder: TextStyle { get }
+    var floatingPlaceholder: TextStyle { get }
+    var topInset: LayoutMetric { get }
     var focusIndicator: ViewStyle { get }
     var errorFocusIndicator: ViewStyle { get }
-    var assistiveView: FormInputFieldAssistiveViewTheme { get }
+    var assistive: FormInputFieldAssistiveViewTheme { get }
 }

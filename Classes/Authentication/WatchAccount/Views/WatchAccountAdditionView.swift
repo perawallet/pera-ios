@@ -51,10 +51,6 @@ final class WatchAccountAdditionView: View {
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
     
-    func linkInteractors() {
-        addressInputView.delegate = self
-    }
-    
     func setListeners() {
         createWatchAccountButton.addTarget(self, action: #selector(notifyDelegateToOpenNextScreen), for: .touchUpInside)
         qrButton.addTarget(self, action: #selector(notifyDelegateToOpenQrScanner), for: .touchUpInside)
@@ -114,14 +110,8 @@ extension WatchAccountAdditionView {
 
     private func addQrButton(_ theme: WatchAccountAdditionViewTheme) {
         qrButton.customizeAppearance(theme.qr)
-
-        /// <todo>
-        /// This should be in the text input's right accessory
+        
         addressInputView.addSubview(qrButton)
-        qrButton.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview()
-        }
     }
 
     private func addPasteButton(_ theme: WatchAccountAdditionViewTheme) {
@@ -155,19 +145,17 @@ extension WatchAccountAdditionView {
     func createAccountAddressTextInput(
         placeholder: String,
         floatingPlaceholder: String?
-    ) -> FloatingTextInputFieldView {
-        /// <todo>
-        /// Multi line is not supported.
-        let view = FloatingTextInputFieldView()
+    ) -> MultilineTextInputFieldView {
+        let view = MultilineTextInputFieldView()
         let textInputBaseStyle: TextInputStyle = [
             .font(Fonts.DMSans.regular.make(15, .body)),
             .tintColor(AppColors.Components.Text.main),
             .textColor(AppColors.Components.Text.main),
             .returnKeyType(.done)
         ]
-
+        
         let theme =
-            FloatingTextInputFieldViewCommonTheme(
+            MultilineTextInputFieldViewCommonTheme(
                 textInput: textInputBaseStyle,
                 placeholder: placeholder,
                 floatingPlaceholder: floatingPlaceholder
@@ -195,13 +183,6 @@ extension WatchAccountAdditionView {
 extension WatchAccountAdditionView {
     func beginEditing() {
         addressInputView.beginEditing()
-    }
-}
-
-extension WatchAccountAdditionView: FloatingTextInputFieldViewDelegate {
-    func floatingTextInputFieldViewShouldReturn(_ view: FloatingTextInputFieldView) -> Bool {
-        delegate?.watchAccountAdditionViewDidAddAccount(self)
-        return true
     }
 }
 
