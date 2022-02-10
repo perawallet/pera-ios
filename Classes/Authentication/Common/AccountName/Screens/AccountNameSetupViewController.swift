@@ -157,7 +157,7 @@ extension AccountNameSetupViewController {
 
             passcodeSettingDisplayStore.disableAskingPasscode()
 
-            if case .initializeAccount(mode: .add(type: .watch)) = self.flow {
+            if case .add(type: .watch) = self.mode {
                 self.openAccountVerifiedTutorial()
                 return
             }
@@ -170,7 +170,7 @@ extension AccountNameSetupViewController {
                 return
             }
 
-            if case .initializeAccount(mode: .add(type: .watch)) = self.flow {
+            if case .add(type: .watch) = self.mode {
                 self.openAccountVerifiedTutorial()
                 return
             }
