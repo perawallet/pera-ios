@@ -60,12 +60,12 @@
 "account-type-selection-recover-detail" = "I already have an account.";
 "account-type-selection-ledger" = "Pair Ledger Device";
 "account-type-selection-ledger-detail" = "I want to create an account that is\nbacked by my Ledger hardware wallet.";
-"account-welcome-wallet-title" = "Welcome to the\nAlgorand Wallet";
+"account-welcome-wallet-title" = "Welcome to the\nPera Wallet";
 
 // MARK: Introduction
 
 "introduction-add-account-text" = "Add New Account";
-"introduction-title-terms-and-services" = "By creating an account, you agree to Algorand’s<br><a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Conditions</a> and <a href=\"https://www.algorand.com/wallet-privacy-policy\">Privacy Policy</a>";
+"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"https://perawallet.app/terms-and-services/\">Terms and Conditions</a> and <a href=\"https://www.perawallet.app/privacy-policy/\">Privacy Policy</a>";
 
 // MARK: Password Setting
 "password-set-subtitle" = "Choose your\n6-digit PIN";
@@ -122,7 +122,7 @@
 "account-details-title" = "Name your account";
 "account-name-setup-explanation" = "Account Name";
 "account-name-setup-placeholder" = "Account Name";
-"account-name-setup-description" = "Name your account to easily identify it while using the Algorand Wallet. These names are stored locally, and can only be seen by you.";
+"account-name-setup-description" = "Name your account to easily identify it while using the Pera Wallet. These names are stored locally, and can only be seen by you.";
 "account-name-setup-finish" = "Finish Account Creation";
 
 // MARK: Recover From Seed
@@ -131,8 +131,8 @@
 "recover-from-seed-name-placeholder" = "Example name";
 "recover-from-seed-passphrase-title" = "Passphrase";
 "pass-pharase-enter-placeholder" = "Enter Passphrase or Scan QR";
-"recover-from-seed-verify-pop-up-explanation" = "Welcome to Algorand!\nYour account is ready to use.";
-"recover-from-seed-verify-pop-up-title" = "Account is Verified";
+"recover-from-seed-verify-pop-up-explanation" = "Welcome to Pera!\nYour account is ready to use.";
+"recover-from-seed-verify-pop-up-title" = "Account is verified!";
 "recover-from-seed-verify-exist-error" = "This account already exists";
 "recover-title" = "Recover";
 "recover-fill-all-error" = "Please fill all passphrase";
@@ -320,10 +320,10 @@
 "settings-developer" = "Developer Settings";
 "settings-currency" = "Currency";
 "settings-developer-dispenser" = "Algorand Dispenser";
-"settings-rate-title" = "Rate Algorand Wallet";
+"settings-rate-title" = "Rate Pera Wallet";
 "settings-rate-modal-title" = "Rate your experience";
 "settings-rate-modal-description" = "Tell us how was your experience?";
-"settings-app-version" = "Algorand Wallet Version %@";
+"settings-app-version" = "Pera Wallet Version %@";
 "settings-language-change-title" = "Set App Language";
 "settings-language-change-detail" = "Due to updates to your phone, there are different steps to change your language.\n\n1. Proceed to the next screen.\n2. Tap Language to select the language you want.\n\nIf no language setting is available, go to your general iPhone language settings to first set a preferred language.";
 "settings-support-title" = "Send Feedback";
@@ -432,7 +432,7 @@
 // MARK: Verified Asset Information
 "verified-assets-title" = "Verified Assets";
 "verified-asset-information-title" = "What does asset verification mean?";
-"verified-asset-information-text" = "For certain assets in which Algorand Inc. has a relationship with the asset’s issuer, we mark those assets as “Verified” (which is denoted by a blue checkmark symbol).\n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit www.algorandwallet.com/support";
+"verified-asset-information-text" = "Assets that go through our verification process are known projects that have their website and public information verified against this specific ASA. Verification status is not an endorsement of the asset. Pera Wallet does not have any relationship with verified ASA owners. This badge is for informational purposes only. \n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit www.algorandwallet.com/support";
 "verified-asset-double-check" = "always double check";
 "verified-asset-information-visit-site" = "visit www.algorandwallet.com/support";
 
@@ -492,10 +492,10 @@
 "ble-error-fail-fetch-account-address" = "We were unable to receive the public key of your ledger device. Please try again.";
 "ble-error-fail-sign-transaction" = "The paired ledger device has cancelled the transaction request.";
 "ble-error-fail-ble-connection-power" = "Bluetooth must be enabled on your device in order to search for nearby Ledger devices.";
-"ble-error-fail-ble-connection-unsupported" = "The device you are trying to connect to is not supported with the Algorand Wallet.";
+"ble-error-fail-ble-connection-unsupported" = "The device you are trying to connect to is not supported with the Pera Wallet.";
 "ble-error-fail-ble-connection-unauthorized" = "Bluetooth permission needs to be granted in order to search nearby Ledgers.";
 "ble-error-fail-ble-connection-resetting" = "Failed BLE connection for Resetting";
-"ble-error-fail-ble-connection-repairing" = "If you’re having Ledger Nano X connection issues, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.";
+"ble-error-fail-ble-connection-repairing" = "If you’re having Ledger Nano X connection issues, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions.";
 "ble-error-fail-ble-connection-open-support" = "Open Ledger Support";
 
 // MARK: Ledger Approval
@@ -534,7 +534,7 @@
 "csv-loading-message" = "We are fetching your data. Please wait until your CSV is ready.";
 
 // MARK: Pin Limit
-"pin-limit-title" = "Algorand app is locked";
+"pin-limit-title" = "Pera app is locked";
 "pin-limit-try-again" = "Try again in";
 "pin-limit-too-many" = "Too many PIN attempts";
 "pin-limit-reset-all" = "Reset All Data";
@@ -565,7 +565,7 @@
 // MARK: Ledger Account Selection
 "ledger-account-selection-title-singular" = "%d Account Found";
 "ledger-account-selection-title-plural" = "%d Accounts Found";
-"ledger-account-selection-detail" = "This ledger device can sign transactions for the following accounts. Select the accounts to add to your Algorand Wallet.";
+"ledger-account-selection-detail" = "This ledger device can sign transactions for the following accounts. Select the accounts to add to your Pera Wallet.";
 "ledger-account-selection-detail-rekey" = "Choose the account you want to use for signing this account.";
 "ledger-account-selection-verify" = "Verify Selected Account";
 "ledger-account-selection-verify-plural" = "Verify Selected Accounts";
@@ -574,7 +574,7 @@
 "ledger-transaction-account-match-error" = "It appears this Ledger device has been reset and the account on the device no longer matches this account. Please pair the Ledger again from the homepage.";
 
 "ledger-pairing-issue-error-title" = "Having Ledger Nano X connection issues?";
-"ledger-pairing-issue-error-message" = "Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Algorand Wallet instructions.";
+"ledger-pairing-issue-error-message" = "Make sure the device is unlocked, nearby and has bluetooth enabled. If problems persist, please remove the device from your phone’s bluetooth settings, remove the ledger account, and then re-pair your Ledger following the Pera Wallet instructions.";
 "ledger-pairing-first-warning-title" = "Pairing Ledger with Your Device";
 "ledger-pairing-first-warning-description" = "Is your Ledger paired with this device?\nIf not, please follow these steps:";
 "ledger-pairing-first-warning-message-first-instruction" = "Open your Ledger device.";
@@ -618,29 +618,29 @@
 "screenshot-title" = "Screenshot Detected";
 "screenshot-description" = "Do not backup your recovery passphrase by taking a screenshot. Having an image containing your passphrase is a security risk.";
 
-"tutorial-title-back-up" = "Back up your account using a recovery passphrase";
+"tutorial-title-back-up" = "Create a passphrase backup for your account";
 "tutorial-title-recover" = "Recover an Algorand Account";
 "tutorial-title-write" = "Prepare to write\ndown your recovery passphrase";
 "tutorial-title-passcode" = "Increase your security with a PIN";
 "tutorial-title-ledger-connected" = "Ledger successfully connected";
 
-"tutorial-description-back-up" = "Without your recovery passphrase, if you lose your device or delete the app, you will permanently lose access to your Algorand account.";
+"tutorial-description-back-up" = "Creating a passphrase backup will allow you to recover your account. Without the passphrase, if you lose your device, remove the account or delete the app, you can permanently lose access to your Pera Wallet!";
 "tutorial-description-recover" = "In the following steps, you'll enter your 25-word recovery passphrase to recover an Algorand account. Have your recovery phrase handy before you begin.";
 "tutorial-description-write" = "The only way to recover an Algorand account is with this recovery passphrase.";
 "tutorial-description-write-warning" = "Do not share this passphrase with anyone, as it grants full access to your account.";
 "tutorial-description-watch" =  "Monitor activity of an account without needing a recovery passphrase. This is useful for monitoring assets that are kept in cold storage.";
 "tutorial-description-warning-title" = "Warning:";
 "tutorial-description-watch-warning" = "If you do not have the corresponding recovery passphrase, do not send assets to this account.";
-"tutorial-description-passcode" = "This 6-digit PIN will be required to use the Algorand Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
+"tutorial-description-passcode" = "This 6-digit PIN will be required to use the Pera Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-ledger" = "Please make sure your Ledger is unlocked with Bluetooth enabled";
-"tutorial-description-ledger-connected" = "Welcome to Algorand! Your account is\nready to use";
+"tutorial-description-ledger-connected" = "Welcome to Pera! Your account is\nready to use";
 
 "tutorial-main-title-back-up" = "I Understand";
 "tutorial-main-title-recover" = "Recover an Algorand Account";
 "tutorial-main-title-write" = "I'm Ready to Begin";
 "tutorial-main-title-passcode" = "Set PIN Code";
-"tutorial-main-title-ledger-connected" = "Start Using Algorand";
+"tutorial-main-title-ledger-connected" = "Start Using Pera";
 
 "tutorial-action-title-passcode" = "Not now";
 "tutorial-action-title-ledger" = "How does it work?";
@@ -724,7 +724,7 @@
 "wallet-connect-transaction-warning-close-asset-title" = "Close Asset To";
 "wallet-connect-transaction-warning-close-algos-title" = "Close Remainder To";
 "wallet-connect-transaction-warning-high-fee" = "This transaction fee is higher than the usual fee of 0.001 Algo.";
-"wallet-connect-transaction-warning-initial" = "The following transaction requests are from external applications that the Algorand Wallet does not control. Please ensure you review these transactions carefully before signing as transactions are irreversible.";
+"wallet-connect-transaction-warning-initial" = "The following transaction requests are from external applications that the Pera Wallet does not control. Please ensure you review these transactions carefully before signing as transactions are irreversible.";
 "wallet-connect-transaction-warning-future" = "This transaction will be submitted in the future. ";
 "wallet-connect-transaction-warning-confirmation" = "Once confirmed, the connected application can send these transactions out at their discretion. Please make sure you review the transactions carefully as this process is irreversible.";
 
@@ -858,7 +858,7 @@
 
 // MARK: NFTs
 "nft-list-empty-title" = "NFTs - Coming Soon!";
-"nft-list-empty-detail" = "You will be able to view your NFT collections\nin the Algorand Wallet soon.\n\n\nOur team is working hard to make this feature available. Stay tuned!";
+"nft-list-empty-detail" = "You will be able to view your NFT collections\nin the Pera Wallet soon.\n\n\nOur team is working hard to make this feature available. Stay tuned!";
 
 // MARK: SendTransaction
 "send-transaction-title" = "Send %@";
@@ -900,3 +900,9 @@
 // MARK: PortfolioDescription
 "portfolio-calculation-title" = "How we calculate portfolio value";
 "portfolio-calculation-description" = "The total portfolio value is calculated by adding up all assets and Algo available in your accounts. If you hold multiple wallets, the Total Portfolio value is a sum of all accounts.\n\nAsset prices are estimated based on daily values fetched from Tinyman. Please note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.\n\nWatch accounts are not considered a part of your portfolio and are not included in the Total Portfolio calculation.";
+
+// MARK: PeraAnnouncement
+"pera-announcement-title" = "It's Official!";
+"pera-announcement-subtitle" = "Algorand Wallet is now Pera Wallet.";
+"pera-announcement-description" = "We are very excited to announce that Algorand Wallet is now called Pera Wallet. This is much more than a new name and logo. We are relaunching the most popular wallet in the Algorand ecosystem with a renewed focus on our roadmap, partner integrations, and community.\n\nDon't worry, Pera Wallet is built and maintained by the same team and all the features you know and love are still here as usual – With many more to come in the upcoming months.\n\nTo read more about the relaunch and our roadmap, head over to the Pera Wallet blog";
+"pera-announcement-description-blog" = "Pera Wallet blog";

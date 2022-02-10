@@ -410,7 +410,7 @@
 "introduction-title-add-text" = "Yeni Hesap Ekle";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "Hesap oluşturarak Algorand’ın <a href=\"https://www.algorand.com/wallet-disclaimer\">Hüküm ve Koşulları</a> ile <a href=\"https://www.algorand.com/wallet-privacy-policy\">Gizlilik Politikasını</a> kabul ediyorsunuz.";
+"introduction-title-terms-and-services" = "Hesap oluşturarak Algorand’ın <a href=\"https://perawallet.app/terms-and-services/\">Hüküm ve Koşulları</a> ile <a href=\"https://www.perawallet.app/privacy-policy/\">Gizlilik Politikasını</a> kabul ediyorsunuz.";
 
 /* MARK: Introduction */
 "introduction-title-text" = "Tüm varlıkları tek uygulamadan yönetin";
