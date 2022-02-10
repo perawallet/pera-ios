@@ -17,6 +17,7 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonForm
 
 final class AccountNameSetupView: View {
     weak var delegate: AccountNameSetupViewDelegate?
@@ -148,15 +149,15 @@ extension AccountNameSetupView: FloatingTextInputFieldViewDelegate {
 }
 
 extension AccountNameSetupView: FormInputFieldViewEditingDelegate {
-    func formInputFieldViewDidBeginEditing(_ view: FloatingTextInputFieldView) {
+    func formInputFieldViewDidBeginEditing(_ view: FormInputFieldView) {
         delegate?.accountNameSetupViewDidChangeValue(self)
     }
-
-    func formInputFieldViewDidEdit(_ view: FloatingTextInputFieldView) {
+    
+    func formInputFieldViewDidEdit(_ view: FormInputFieldView) {
         delegate?.accountNameSetupViewDidChangeValue(self)
     }
-
-    func formInputFieldViewDidEndEditing(_ view: FloatingTextInputFieldView) {}
+    
+    func formInputFieldViewDidEndEditing(_ view: FormInputFieldView) {}
 }
 
 protocol AccountNameSetupViewDelegate: AnyObject {

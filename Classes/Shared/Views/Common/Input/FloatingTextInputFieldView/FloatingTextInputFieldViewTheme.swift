@@ -26,6 +26,7 @@ protocol FloatingTextInputFieldViewTheme: StyleSheet, LayoutSheet {
     var placeholder: TextStyle { get }
     var floatingPlaceholder: TextStyle { get }
     var focusIndicator: ViewStyle { get }
+    var focusIndicatorActive: ViewStyle { get }
     var errorFocusIndicator: ViewStyle { get }
     var assistive: FormInputFieldAssistiveViewTheme { get }
 }

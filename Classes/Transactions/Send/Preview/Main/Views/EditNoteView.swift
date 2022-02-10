@@ -15,7 +15,6 @@
 //
 //   EditNoteView.swift
 
-
 import Foundation
 import UIKit
 import MacaroonUIKit
@@ -28,14 +27,7 @@ final class EditNoteView: View {
         floatingPlaceholder: "edit-note-note-explanation".localized
     )
 
-    private lazy var doneButton = MacaroonUIKit.Button()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        setListeners()
-        linkInteractors()
-    }
+    private(set) lazy var doneButton = MacaroonUIKit.Button()
 
     func customize(_ theme: EditNoteViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -47,10 +39,6 @@ final class EditNoteView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
-
-    func linkInteractors() {
-        noteInputView.delegate = self
-    }
 }
 
 extension EditNoteView {
@@ -82,26 +70,25 @@ extension EditNoteView {
     func createNoteTextInput(
         placeholder: String,
         floatingPlaceholder: String?
-    ) -> FloatingTextInputFieldView {
-        let view = FloatingTextInputFieldView()
+    ) -> MultilineTextInputFieldView {
+        let view = MultilineTextInputFieldView()
         let textInputBaseStyle: TextInputStyle = [
             .font(Fonts.DMSans.regular.make(15, .body)),
             .tintColor(AppColors.Components.Text.main),
             .textColor(AppColors.Components.Text.main),
             .clearButtonMode(.whileEditing),
-            .returnKeyType(.done),
-            .autocapitalizationType(.words),
+            .returnKeyType(.done)
         ]
-
+        
         let theme =
-            FloatingTextInputFieldViewCommonTheme(
+            MultilineTextInputFieldViewCommonTheme(
                 textInput: textInputBaseStyle,
                 placeholder: placeholder,
                 floatingPlaceholder: floatingPlaceholder
             )
         view.customize(theme)
         view.snp.makeConstraints {
-            $0.greaterThanHeight(theme.textInputMinHeight)
+            $0.greaterThanHeight(48)
         }
         return view
     }
@@ -120,18 +107,6 @@ extension EditNoteView {
 
     func endEditing() {
         noteInputView.endEditing()
-    }
-}
-
-extension EditNoteView: FloatingTextInputFieldViewDelegate {
-    func floatingTextInputFieldViewShouldReturn(_ view: FloatingTextInputFieldView) -> Bool {
-        guard let delegate = delegate else {
-            return true
-        }
-        
-        view.endEditing()
-        delegate.editEditNoteViewDidTapDoneButton(self)
-        return false
     }
 }
 

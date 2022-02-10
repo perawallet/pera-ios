@@ -19,8 +19,9 @@ import Foundation
 import MacaroonUIKit
 import SnapKit
 import UIKit
+import MacaroonForm
 
-class FloatingTextInputFieldView: View, UITextFieldDelegate {
+class FloatingTextInputFieldView: View, FormTextInputFieldView, UITextFieldDelegate {
     weak var delegate: FloatingTextInputFieldViewDelegate?
     weak var editingDelegate: FormInputFieldViewEditingDelegate?
 
@@ -50,8 +51,8 @@ class FloatingTextInputFieldView: View, UITextFieldDelegate {
         set { textInputView.rightAccessory = newValue }
     }
 
-    var formatter: TextInputFormatter?
-    var maskFormatter: TextInputFormatter?
+    var formatter: MacaroonForm.TextInputFormatter?
+    var maskFormatter: MacaroonForm.TextInputFormatter?
     var validator: Validator?
 
     var isEnabled = true
@@ -67,7 +68,7 @@ class FloatingTextInputFieldView: View, UITextFieldDelegate {
         )
     }
 
-    var inputType: FormInputType {
+    var inputType: FormInputType  {
         return .keyboard
     }
     var isEditing: Bool {
@@ -319,11 +320,13 @@ extension FloatingTextInputFieldView {
     ) {
         if !animated {
             recustomizePlaceholderAppearanceOnEditing()
+            recustomizeFocusIndicatorOnEdit()
             updateLayoutOnEditing()
 
             return
         }
 
+        recustomizeFocusIndicatorOnEdit()
         recustomizePlaceholderAppearanceOnEditing()
         /// <note>
         /// Update the placeholder view size immediately after the font change to prevent the
@@ -350,11 +353,13 @@ extension FloatingTextInputFieldView {
     ) {
         if !animated {
             recustomizePlaceholderAppearanceOnClear()
+            recustomizeFocusIndicatorOnClear()
             updateLayoutOnClear()
 
             return
         }
 
+        recustomizeFocusIndicatorOnClear()
         recustomizePlaceholderAppearanceOnClear()
         /// <note>
         /// Update the placeholder view size immediately after the font change to prevent the
@@ -425,6 +430,20 @@ extension FloatingTextInputFieldView {
         focusIndicatorView.customizeAppearance(
             styleSheet.focusIndicator
         )
+    }
+    
+    private func recustomizeFocusIndicatorOnEdit() {
+        if let style = theme?.focusIndicatorActive {
+            focusIndicatorView.customizeAppearance(style)
+        }
+    }
+    
+    private func recustomizeFocusIndicatorOnClear() {
+        guard let theme = theme else {
+            return
+        }
+        
+        focusIndicatorView.customizeAppearance(theme.focusIndicator)
     }
 
     private func updateFocusIndicatorAppearanceOnSuccess() {
@@ -583,7 +602,6 @@ extension FloatingTextInputFieldView {
         )
         focusIndicatorView.snp.makeConstraints {
             $0.bottom == textInputView.snp.bottom
-
             $0.fitToHeight(1)
             $0.setHorizontalPaddings()
         }
@@ -591,7 +609,7 @@ extension FloatingTextInputFieldView {
 
     private func updateFocusIndicatorLayoutOnEditing() {
         focusIndicatorView.snp.updateConstraints {
-            $0.fitToHeight(2)
+            $0.fitToHeight(1.5)
         }
     }
 
@@ -760,42 +778,6 @@ extension Optional where Wrapped == String {
     }
 }
 
-public enum FormInputFieldState {
-    case none
-    case focus
-    case invalid(ValidationError)
-    case incorrect(EditText?)
-}
-
-public enum FormInputType {
-    case none
-    case keyboard
-    /// <note>
-    /// The selection input types displayed inside the form, i.e. checkbox.
-    case inSelection
-    /// <note>
-    /// The selection input types displayed outside the form, i.e. picker.
-    case outSelection
-}
-
-extension FormInputType {
-    public var isExternal: Bool {
-        switch self {
-        case .keyboard,
-             .outSelection:
-            return true
-        default:
-            return false
-        }
-    }
-}
-
-protocol FormInputFieldViewEditingDelegate: AnyObject {
-    func formInputFieldViewDidBeginEditing(_ view: FloatingTextInputFieldView)
-    func formInputFieldViewDidEdit(_ view: FloatingTextInputFieldView)
-    func formInputFieldViewDidEndEditing(_ view: FloatingTextInputFieldView)
-}
-
 public typealias TextInputFormattedOutput = (text: String, caretOffset: Int)
 
 public protocol TextPatternInputFormatter: TextInputFormatter {
@@ -834,7 +816,7 @@ extension TextInputFormatter {
 
 extension TextInputFormatter {
      func format(
-        _ inputFieldView: FloatingTextInputFieldView,
+        _ inputFieldView: FormTextInputFieldView,
         changingCharactersIn range: NSRange,
         replacementString string: String
     ) -> TextInputFormattedOutput {

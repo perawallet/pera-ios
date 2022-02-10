@@ -13,23 +13,21 @@
 // limitations under the License.
 
 //
-//   FloatingTextInputFieldViewCommonTheme.swift
+//   MultilineTextInputFieldViewCommonTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
+struct MultilineTextInputFieldViewCommonTheme: MultilineTextInputFieldViewTheme {
     let textInput: TextInputStyle
-    let textInputMinHeight: LayoutMetric
-    let textInputMask: TextInputStyle
     let placeholder: TextStyle
     let floatingPlaceholder: TextStyle
+    let topInset: LayoutMetric
     let focusIndicator: ViewStyle
     let focusIndicatorActive: ViewStyle
     let errorFocusIndicator: ViewStyle
     let assistive: FormInputFieldAssistiveViewTheme
-
+    
     init(
         textInput: TextInputStyle,
         placeholder: String,
@@ -37,8 +35,6 @@ struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
         _ family: LayoutFamily = .current
     ) {
         self.textInput = textInput
-        self.textInputMinHeight = 48
-        self.textInputMask = []
         self.placeholder = [
             .font(Fonts.DMSans.regular.make(15, .body)),
             .textOverflow(SingleLineFittingText()),
@@ -47,10 +43,9 @@ struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
         ]
         self.floatingPlaceholder = [
             .textColor(AppColors.Components.Text.grayLighter),
-            .text(
-                (floatingPlaceholder ?? placeholder).body(hasMultilines: false)
-            )
+            .text((floatingPlaceholder ?? placeholder).body(hasMultilines: false))
         ]
+        self.topInset = 24.0
         self.focusIndicator = [
             .backgroundColor(AppColors.Components.TextField.indicatorDeactive)
         ]
@@ -62,36 +57,12 @@ struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
         ]
         self.assistive = FormInputFieldAssistiveViewCommonTheme()
     }
-
-    init(
-        _ family: LayoutFamily
-    ) {
+    
+    init(_ family: LayoutFamily) {
         self.init(
             textInput: [],
             placeholder: "",
             family
-        )
-    }
-}
-
-extension String {
-    func body(
-        alignment: NSTextAlignment = .left,
-        lineBreakMode: NSLineBreakMode = .byWordWrapping,
-        hasMultilines: Bool = true
-    ) -> NSAttributedString {
-        return attributed(
-            [
-                .font(Fonts.DMSans.regular.make(13, .body).uiFont),
-                .letterSpacing(0.4),
-                .paragraph(
-                    [
-                        .alignment(alignment),
-                        .lineBreakMode(lineBreakMode),
-                        .lineHeightMultiple(hasMultilines ? 0.67 : 0)
-                    ]
-                )
-            ]
         )
     }
 }

@@ -15,7 +15,6 @@
 //
 //   EditNoteScreen.swift
 
-
 import Foundation
 import UIKit
 import MacaroonUIKit
@@ -42,6 +41,14 @@ final class EditNoteScreen: BaseViewController {
     }
     override func setListeners() {
         editNoteView.delegate = self
+    }
+    
+    override func linkInteractors() {
+        editNoteView.doneButton.addTarget(
+            self,
+            action: #selector(didTapDoneButton),
+            for: .touchUpInside
+        )
     }
 
     override func prepareLayout() {
@@ -107,6 +114,7 @@ final class EditNoteScreen: BaseViewController {
 }
 
 extension EditNoteScreen {
+    @objc
     private func didTapDoneButton() {
         delegate?.editNoteScreen(self, didUpdateNote: editNoteView.noteInputView.text)
         dismissScreen()

@@ -102,6 +102,8 @@ extension AppColors.Components {
 extension AppColors.Components {
     enum TextField: String, Color {
         case defaultBackground = "Components/TextField/defaultBackground"
+        case indicatorActive = "Components/TextField/indicatorActive"
+        case indicatorDeactive = "Components/TextField/indicatorDeactive"
     }
 }
 
