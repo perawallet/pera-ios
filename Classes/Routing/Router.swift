@@ -550,6 +550,7 @@ class Router:
             viewController = aViewController
         case let .accountSelection(transactionAction, delegate):
             let selectAccountViewController = SelectAccountViewController(
+                dataController: SelectAccountAPIDataController(configuration.sharedDataController),
                 transactionAction: transactionAction,
                 configuration: configuration
             )
