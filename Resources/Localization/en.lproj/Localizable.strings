@@ -52,12 +52,12 @@
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "Add New Account";
-"account-type-selection-add-detail" = "I want a new account with a new address and recovery passphrase.";
+"account-type-selection-add-detail" = "Create a new Algorand account, pair a Ledger device or add a watch account.";
 "account-type-selection-create" = "Create New Account";
 "account-type-selection-create-detail" = "I want to create a new Algorand Account.";
 "account-type-selection-watch-detail" = "I want to monitor an account that's\nheld in cold storage.";
 "account-type-selection-recover" = "Recover With Passphrase";
-"account-type-selection-recover-detail" = "I already have an account.";
+"account-type-selection-recover-detail" = "I want to recover an Algorand account using my 25-word passphrase.";
 "account-type-selection-ledger" = "Pair Ledger Device";
 "account-type-selection-ledger-detail" = "I want to create an account that is\nbacked by my Ledger hardware wallet.";
 "account-welcome-wallet-title" = "Welcome to the\nPera Wallet";
@@ -432,9 +432,9 @@
 // MARK: Verified Asset Information
 "verified-assets-title" = "Verified Assets";
 "verified-asset-information-title" = "What does asset verification mean?";
-"verified-asset-information-text" = "Assets that go through our verification process are known projects that have their website and public information verified against this specific ASA. Verification status is not an endorsement of the asset. Pera Wallet does not have any relationship with verified ASA owners. This badge is for informational purposes only. \n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit www.algorandwallet.com/support";
+"verified-asset-information-text" = "Assets that go through our verification process are known projects that have their website and public information verified against this specific ASA. Verification status is not an endorsement of the asset. Pera Wallet does not have any relationship with verified ASA owners. This badge is for informational purposes only. \n\nThis helps to serve as a secondary defense against mistakenly transacting with an unintended asset.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit www.perawallet.app/support/";
 "verified-asset-double-check" = "always double check";
-"verified-asset-information-visit-site" = "visit www.algorandwallet.com/support";
+"verified-asset-information-visit-site" = "visit www.perawallet.app/support/";
 
 // MARK: Ledger Tutorial
 "ledger-pair-title" = "Create Ledger Account";
