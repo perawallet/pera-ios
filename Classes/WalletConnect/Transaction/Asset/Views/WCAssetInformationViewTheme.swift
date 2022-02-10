@@ -22,8 +22,6 @@ struct WCAssetInformationViewTheme: LayoutSheet, StyleSheet {
     let title: TextStyle
     let verifiedIcon: ImageStyle
     let asset: TextStyle
-    let dotImage: ImageStyle
-    let assetID: TextStyle
 
     var detailLabelLeadingPadding: LayoutMetric {
         return 137
@@ -46,17 +44,8 @@ struct WCAssetInformationViewTheme: LayoutSheet, StyleSheet {
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15))
         ]
-        self.assetID = [
-            .textAlignment(.left),
-            .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.regular.make(15))
-        ]
         self.verifiedIcon = [
             .image("icon-shield-small")
-        ]
-        self.dotImage = [
-            .image("img-round-separator")
         ]
     }
 }

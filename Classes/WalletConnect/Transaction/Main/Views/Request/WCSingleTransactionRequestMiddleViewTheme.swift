@@ -33,6 +33,7 @@ struct WCSingleTransactionRequestMiddleViewTheme: LayoutSheet, StyleSheet {
             .image("icon-shield-small")
         ]
         titleLabel = [
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(36))
         ]

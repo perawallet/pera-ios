@@ -23,8 +23,6 @@ final class WCAssetInformationView: View {
     private lazy var detailStackView = HStackView()
     private lazy var verifiedIcon = UIImageView()
     private lazy var assetLabel = UILabel()
-    private lazy var dotImage = UIImageView(image: img("img-round-separator"))
-    private lazy var assetIDLabel = UILabel()
 
     func customize(_ theme: WCAssetInformationViewTheme) {
         addTitleLabel(theme)
@@ -58,13 +56,9 @@ extension WCAssetInformationView {
 
         verifiedIcon.customizeAppearance(theme.verifiedIcon)
         assetLabel.customizeAppearance(theme.asset)
-        assetIDLabel.customizeAppearance(theme.assetID)
 
         detailStackView.addArrangedSubview(verifiedIcon)
         detailStackView.addArrangedSubview(assetLabel)
-        detailStackView.addArrangedSubview(assetIDLabel)
-
-
     }
 }
 
@@ -79,25 +73,18 @@ extension WCAssetInformationView: ViewModelBindable {
         }
 
         if let asset = viewModel.asset {
-            assetLabel.text = asset
+            if let assetId = viewModel.assetId {
+                assetLabel.text = "\(asset) \(assetId)"
+            } else {
+                assetLabel.text = asset
+            }
         }
 
-        if let assetId = viewModel.assetId {
-            assetIDLabel.text = assetId
-        }
 
         if viewModel.isVerified {
             verifiedIcon.showViewInStack()
         } else {
             verifiedIcon.hideViewInStack()
-        }
-
-        if viewModel.isAlgo {
-            dotImage.hideViewInStack()
-            assetIDLabel.hideViewInStack()
-        } else {
-            dotImage.showViewInStack()
-            assetIDLabel.showViewInStack()
         }
     }
 }
