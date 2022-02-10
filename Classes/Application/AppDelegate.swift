@@ -310,17 +310,11 @@ extension AppDelegate {
 
 extension AppDelegate {
     private func setNeedsUserInterfaceStyleUpdateIfNeeded() {
-        /// <note>
-        /// `traitCollectionDidChange` is not called when the user interface style is changed from
-        /// the device settings while the app is launched. It takes a minor delay to receive correct
-        /// system interface value from `traitCollection`.
-        if session.userInterfaceStyle != .system {
+        if session.userInterfaceStyle == .system {
             return
         }
-        
-        asyncMain(afterDuration: 1) {
-            UserInterfaceStyleController.setNeedsUserInterfaceStyleUpdate(.system)
-        }
+
+        UserInterfaceStyleController.setNeedsUserInterfaceStyleUpdate(session.userInterfaceStyle)
     }
 }
 

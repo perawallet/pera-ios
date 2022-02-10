@@ -28,14 +28,7 @@ final class UserInterfaceStyleController {
         
         switch userInterfaceStyle {
         case .system:
-            let systemUserInterfaceStyle: UIUserInterfaceStyle
-            
-            switch UIScreen.main.traitCollection.userInterfaceStyle {
-            case .light: systemUserInterfaceStyle = .light
-            default: systemUserInterfaceStyle = .dark
-            }
-
-            window?.overrideUserInterfaceStyle = systemUserInterfaceStyle
+            window?.overrideUserInterfaceStyle = .unspecified
         case .dark:
             window?.overrideUserInterfaceStyle = .dark
         case .light:
