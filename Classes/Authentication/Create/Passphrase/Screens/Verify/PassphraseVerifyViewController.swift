@@ -38,6 +38,16 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
         fatalError("Private key should be set.")
     }()
 
+    private let flow: AccountSetupFlow
+
+    init(
+        flow: AccountSetupFlow,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.flow = flow
+        super.init(configuration: configuration)
+    }
+
     override func configureAppearance() {
         super.configureAppearance()
         customizeBackground()
@@ -90,7 +100,7 @@ extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
         }
 
         open(
-            .tutorial(flow: .none, tutorial: .passphraseVerified(account: account)),
+            .tutorial(flow: flow, tutorial: .passphraseVerified(account: account)),
             by: .push
         )
     }

@@ -21,9 +21,9 @@ indirect enum Screen {
     case welcome(flow: AccountSetupFlow)
     case addAccount(flow: AccountSetupFlow)
     case choosePassword(mode: ChoosePasswordViewController.Mode, flow: AccountSetupFlow?)
-    case passphraseView(address: String)
-    case passphraseVerify
-    case accountNameSetup(mode: AccountSetupMode, accountAddress: PublicKey)
+    case passphraseView(flow: AccountSetupFlow, address: String)
+    case passphraseVerify(flow: AccountSetupFlow)
+    case accountNameSetup(flow: AccountSetupFlow,  mode: AccountSetupMode, accountAddress: PublicKey)
     case accountRecover(flow: AccountSetupFlow)
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)

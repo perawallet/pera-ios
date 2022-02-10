@@ -27,8 +27,15 @@ final class PassphraseBackUpViewController: BaseScrollViewController {
     private lazy var theme = Theme()
 
     private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
-    
-    init(address: String, configuration: ViewControllerConfiguration) {
+
+    private let flow: AccountSetupFlow
+
+    init(
+        flow: AccountSetupFlow,
+        address: String,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.flow = flow
         self.address = address
         super.init(configuration: configuration)
 
@@ -123,7 +130,7 @@ extension PassphraseBackUpViewController: UICollectionViewDelegateFlowLayout {
 
 extension PassphraseBackUpViewController: PassphraseBackUpViewDelegate {
     func passphraseBackUpViewDidTapActionButton(_ passphraseView: PassphraseBackUpView) {
-        open(.passphraseVerify, by: .push)
+        open(.passphraseVerify(flow: flow), by: .push)
     }
 }
 

@@ -396,7 +396,7 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
         didRecover account: AccountInformation
     ) {
         log(RegistrationEvent(type: .recover))
-        open(.accountNameSetup(mode: .recover, accountAddress: account.address), by: .push)
+        open(.accountNameSetup(flow: accountSetupFlow, mode: .recover, accountAddress: account.address), by: .push)
     }
 
     func accountRecoverDataController(
