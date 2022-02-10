@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ extension AppColors.Shared {
         case negative = "Shared/Helpers/negative"
         case negativeLighter = "Shared/Helpers/negativeLighter"
         case positive = "Shared/Helpers/positive"
+        case success = "Shared/Helpers/success"
     }
 }
 
@@ -65,6 +66,7 @@ extension AppColors.Components {
             case disabledBackground = "Components/Button/Primary/disabledBackground"
             case text = "Components/Button/Primary/text"
             case disabledText = "Components/Button/Primary/disabledText"
+            case focus = "Components/Button/Primary/focus"
         }
 
         enum Secondary: String, Color {
@@ -82,6 +84,11 @@ extension AppColors.Components {
             case background = "Components/Button/Shadow/background"
             case text = "Components/Button/Shadow/text"
         }
+    }
+
+    enum Switch: String, Color {
+        case background = "Components/Switch/background"
+        case backgroundOff = "Components/Switch/background-off"
     }
 }
 

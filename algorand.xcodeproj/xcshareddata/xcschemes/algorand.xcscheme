@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2B8BE4CD22391C38005D8565"
-               BuildableName = "algorand.app"
-               BlueprintName = "algorand"
+               BuildableName = "pera.app"
+               BlueprintName = "pera"
                ReferencedContainer = "container:algorand.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -31,8 +31,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2B8BE4CD22391C38005D8565"
-            BuildableName = "algorand.app"
-            BlueprintName = "algorand"
+            BuildableName = "pera.app"
+            BlueprintName = "pera"
             ReferencedContainer = "container:algorand.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -54,8 +54,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2B8BE4CD22391C38005D8565"
-            BuildableName = "algorand.app"
-            BlueprintName = "algorand"
+            BuildableName = "pera.app"
+            BlueprintName = "pera"
             ReferencedContainer = "container:algorand.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -71,8 +71,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2B8BE4CD22391C38005D8565"
-            BuildableName = "algorand.app"
-            BlueprintName = "algorand"
+            BuildableName = "pera.app"
+            BlueprintName = "pera"
             ReferencedContainer = "container:algorand.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

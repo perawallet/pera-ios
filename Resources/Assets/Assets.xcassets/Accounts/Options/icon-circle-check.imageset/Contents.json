@@ -3,6 +3,16 @@
     {
       "filename" : "icon-circle-check.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-circle-check-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

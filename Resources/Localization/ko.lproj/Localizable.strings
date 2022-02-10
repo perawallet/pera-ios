@@ -410,7 +410,7 @@
 "introduction-title-add-text" = "새 계정 추가";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "계정을 만드시면 알고랜드의 <a href=\"https://www.algorand.com/wallet-disclaimer\">이용약관</a>과 <a href=\"https://www.algorand.com/wallet-privacy-policy\">개인정보 보호 정책</a>에 동의하신 것으로 간주합니다";
+"introduction-title-terms-and-services" = "계정을 만드시면 알고랜드의 <a href=\"https://perawallet.app/terms-and-services/\">이용약관</a>과 <a href=\"https://perawallet.app/privacy-policy/\">개인정보 보호 정책</a>에 동의하신 것으로 간주합니다";
 
 /* MARK: Introduction */
 "introduction-title-text" = "모든 자산을\n한 앱에서 관리하세요";

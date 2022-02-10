@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,18 +23,18 @@ extension WalletConnectSession {
     func getClientMeta() -> ClientMeta {
         // No need for localization since it won't be translated and sent to the Dapp.
         return ClientMeta(
-            name: "Algorand Wallet",
-            description: "Algorand’s official wallet, built by the team that brought you the Algorand Blockchain.",
+            name: "Pera Wallet",
+            description: "Pera Wallet: Simply the best Algorand wallet.",
             icons: getIconURLs(),
-            url: URL(string: "https://algorandwallet.com") ?? dAppInfo.peerMeta.url
+            url: URL(string: "https://perawallet.app/") ?? dAppInfo.peerMeta.url
         )
     }
 
     private func getIconURLs() -> [URL] {
         let icons = [
-            "https://algorand-app.s3.amazonaws.com/app-icons/Algorand-WalletConnect-128.png",
-            "https://algorand-app.s3.amazonaws.com/app-icons/Algorand-WalletConnect-192.png",
-            "https://algorand-app.s3.amazonaws.com/app-icons/Algorand-WalletConnect-512.png"
+            "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-128.png",
+            "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-192.png",
+            "https://algorand-app.s3.amazonaws.com/app-icons/Pera-walletconnect-512.png"
         ]
 
         return icons.compactMap { URL(string: $0) }

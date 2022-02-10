@@ -1,17 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "icon-black-algorand.pdf",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "icon-logo-dark.pdf",
+      "filename" : "icon-logo.pdf",
       "idiom" : "universal"
     }
   ],

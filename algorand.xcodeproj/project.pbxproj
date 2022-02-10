@@ -3944,7 +3944,7 @@
 		17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountFetchDraft.swift; sourceTree = "<group>"; };
 		17B7D8AD2240F25000A6FF9E /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+Additions.swift"; sourceTree = "<group>"; };
-		17BD4F252292F1260003E49A /* algorand-staging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "algorand-staging.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		17BD4F252292F1260003E49A /* pera-staging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pera-staging.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyViewController.swift; sourceTree = "<group>"; };
 		17BEC45F2248C81E00AAF370 /* PassphraseVerifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyView.swift; sourceTree = "<group>"; };
 		17BEC4652248D39900AAF370 /* PassphraseMnemonicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseMnemonicCell.swift; sourceTree = "<group>"; };
@@ -4020,7 +4020,7 @@
 		2B0F5F3424E4084400DA22A6 /* RekeyTransactionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransactionDraft.swift; sourceTree = "<group>"; };
 		2B0F5F3D24E5F29B00DA22A6 /* RekeyTransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransactionSendDraft.swift; sourceTree = "<group>"; };
 		2B0F5F5A24EAECB700DA22A6 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crypto.framework; path = ../../Desktop/Algorand/SDK/Crypto.framework; sourceTree = "<group>"; };
-		2B0F634E24EC129D00DA22A6 /* algorand-prod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "algorand-prod.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B0F634E24EC129D00DA22A6 /* pera-prod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pera-prod.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B0F634F24EC129D00DA22A6 /* Info-Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Prod.plist"; sourceTree = "<group>"; };
 		2B0F635124ED0CCF00DA22A6 /* RekeyedAccountsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountsResponse.swift; sourceTree = "<group>"; };
 		2B0F635524ED0CFC00DA22A6 /* RekeyedAccountQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountQuery.swift; sourceTree = "<group>"; };
@@ -4344,7 +4344,7 @@
 		2B8954CA224430DC00D6D068 /* AccountRecoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverView.swift; sourceTree = "<group>"; };
 		2B8954CD2244323700D6D068 /* AccountRecoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverViewController.swift; sourceTree = "<group>"; };
 		2B8AD0492244F82600939ECE /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
-		2B8BE4CE22391C38005D8565 /* algorand.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = algorand.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B8BE4CE22391C38005D8565 /* pera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = pera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B8BE4D122391C38005D8565 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2B8BE4D322391C38005D8565 /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		2B8BE4DB22391C3B005D8565 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -4369,7 +4369,7 @@
 		2B8F52CB265EB32E00A8CD7E /* ja-JP */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ja-JP"; path = "ja-JP.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		2B8F52CC265EB32E00A8CD7E /* ja-JP */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "ja-JP"; path = "ja-JP.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		2B8FC6FF2670CF7F008D9845 /* WalletConnectBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectBridge.swift; sourceTree = "<group>"; };
-		2B95407725A75FB20098805B /* algorand-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "algorand-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B95407725A75FB20098805B /* pera-tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "pera-tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B95407925A75FB20098805B /* DBDecodeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBDecodeTests.swift; sourceTree = "<group>"; };
 		2B95407B25A75FB20098805B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B95409125A783340098805B /* AssetDetailCardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailCardViewModelTests.swift; sourceTree = "<group>"; };
@@ -7325,10 +7325,10 @@
 		2B8BE4CF22391C38005D8565 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				2B8BE4CE22391C38005D8565 /* algorand.app */,
-				17BD4F252292F1260003E49A /* algorand-staging.app */,
-				2B0F634E24EC129D00DA22A6 /* algorand-prod.app */,
-				2B95407725A75FB20098805B /* algorand-tests.xctest */,
+				2B8BE4CE22391C38005D8565 /* pera.app */,
+				17BD4F252292F1260003E49A /* pera-staging.app */,
+				2B0F634E24EC129D00DA22A6 /* pera-prod.app */,
+				2B95407725A75FB20098805B /* pera-tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -12651,9 +12651,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		17BD4DEE2292F1260003E49A /* algorand-staging */ = {
+		17BD4DEE2292F1260003E49A /* pera-staging */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 17BD4F212292F1260003E49A /* Build configuration list for PBXNativeTarget "algorand-staging" */;
+			buildConfigurationList = 17BD4F212292F1260003E49A /* Build configuration list for PBXNativeTarget "pera-staging" */;
 			buildPhases = (
 				17BD4DF02292F1260003E49A /* Sources */,
 				17BD4F072292F1260003E49A /* Frameworks */,
@@ -12664,7 +12664,7 @@
 			);
 			dependencies = (
 			);
-			name = "algorand-staging";
+			name = "pera-staging";
 			packageProductDependencies = (
 				2B187DD126E54C6D005BEDFD /* MagpieAlamofire */,
 				2B187DD326E54C6D005BEDFD /* MagpieCore */,
@@ -12691,12 +12691,12 @@
 				2B9A3E7426E607D800B050ED /* MacaroonVendors */,
 			);
 			productName = algorand;
-			productReference = 17BD4F252292F1260003E49A /* algorand-staging.app */;
+			productReference = 17BD4F252292F1260003E49A /* pera-staging.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2B0F615A24EC129D00DA22A6 /* algorand-prod */ = {
+		2B0F615A24EC129D00DA22A6 /* pera-prod */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2B0F634A24EC129D00DA22A6 /* Build configuration list for PBXNativeTarget "algorand-prod" */;
+			buildConfigurationList = 2B0F634A24EC129D00DA22A6 /* Build configuration list for PBXNativeTarget "pera-prod" */;
 			buildPhases = (
 				2B0F615C24EC129D00DA22A6 /* Sources */,
 				2B0F632824EC129D00DA22A6 /* Frameworks */,
@@ -12707,7 +12707,7 @@
 			);
 			dependencies = (
 			);
-			name = "algorand-prod";
+			name = "pera-prod";
 			packageProductDependencies = (
 				2B187DBB26E54C4F005BEDFD /* MagpieAlamofire */,
 				2B187DBD26E54C4F005BEDFD /* MagpieCore */,
@@ -12734,12 +12734,12 @@
 				2B9A3E5C26E607BD00B050ED /* MacaroonVendors */,
 			);
 			productName = algorand;
-			productReference = 2B0F634E24EC129D00DA22A6 /* algorand-prod.app */;
+			productReference = 2B0F634E24EC129D00DA22A6 /* pera-prod.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2B8BE4CD22391C38005D8565 /* algorand */ = {
+		2B8BE4CD22391C38005D8565 /* pera */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2B8BE4E022391C3B005D8565 /* Build configuration list for PBXNativeTarget "algorand" */;
+			buildConfigurationList = 2B8BE4E022391C3B005D8565 /* Build configuration list for PBXNativeTarget "pera" */;
 			buildPhases = (
 				2B8BE4CA22391C38005D8565 /* Sources */,
 				2B8BE4CB22391C38005D8565 /* Frameworks */,
@@ -12750,7 +12750,7 @@
 			);
 			dependencies = (
 			);
-			name = algorand;
+			name = pera;
 			packageProductDependencies = (
 				2B187D9826E546CE005BEDFD /* MagpieAlamofire */,
 				2B187D9A26E546CE005BEDFD /* MagpieCore */,
@@ -12777,12 +12777,12 @@
 				2B9A3E4426E6077000B050ED /* MacaroonVendors */,
 			);
 			productName = algorand;
-			productReference = 2B8BE4CE22391C38005D8565 /* algorand.app */;
+			productReference = 2B8BE4CE22391C38005D8565 /* pera.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2B95407625A75FB20098805B /* algorand-tests */ = {
+		2B95407625A75FB20098805B /* pera-tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2B95408125A75FB20098805B /* Build configuration list for PBXNativeTarget "algorand-tests" */;
+			buildConfigurationList = 2B95408125A75FB20098805B /* Build configuration list for PBXNativeTarget "pera-tests" */;
 			buildPhases = (
 				2B95407325A75FB20098805B /* Sources */,
 				2B95407425A75FB20098805B /* Frameworks */,
@@ -12793,9 +12793,9 @@
 			dependencies = (
 				2B95407D25A75FB20098805B /* PBXTargetDependency */,
 			);
-			name = "algorand-tests";
+			name = "pera-tests";
 			productName = "algorand-tests";
-			productReference = 2B95407725A75FB20098805B /* algorand-tests.xctest */;
+			productReference = 2B95407725A75FB20098805B /* pera-tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -12862,10 +12862,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2B8BE4CD22391C38005D8565 /* algorand */,
-				2B0F615A24EC129D00DA22A6 /* algorand-prod */,
-				17BD4DEE2292F1260003E49A /* algorand-staging */,
-				2B95407625A75FB20098805B /* algorand-tests */,
+				2B8BE4CD22391C38005D8565 /* pera */,
+				2B0F615A24EC129D00DA22A6 /* pera-prod */,
+				17BD4DEE2292F1260003E49A /* pera-staging */,
+				2B95407625A75FB20098805B /* pera-tests */,
 			);
 		};
 /* End PBXProject section */
@@ -16795,7 +16795,7 @@
 /* Begin PBXTargetDependency section */
 		2B95407D25A75FB20098805B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 17BD4DEE2292F1260003E49A /* algorand-staging */;
+			target = 17BD4DEE2292F1260003E49A /* pera-staging */;
 			targetProxy = 2B95407C25A75FB20098805B /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -17367,7 +17367,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		17BD4F212292F1260003E49A /* Build configuration list for PBXNativeTarget "algorand-staging" */ = {
+		17BD4F212292F1260003E49A /* Build configuration list for PBXNativeTarget "pera-staging" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				17BD4F222292F1260003E49A /* Debug */,
@@ -17377,7 +17377,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2B0F634A24EC129D00DA22A6 /* Build configuration list for PBXNativeTarget "algorand-prod" */ = {
+		2B0F634A24EC129D00DA22A6 /* Build configuration list for PBXNativeTarget "pera-prod" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2B0F634B24EC129D00DA22A6 /* Debug */,
@@ -17397,7 +17397,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2B8BE4E022391C3B005D8565 /* Build configuration list for PBXNativeTarget "algorand" */ = {
+		2B8BE4E022391C3B005D8565 /* Build configuration list for PBXNativeTarget "pera" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2B8BE4E122391C3B005D8565 /* Debug */,
@@ -17407,7 +17407,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2B95408125A75FB20098805B /* Build configuration list for PBXNativeTarget "algorand-tests" */ = {
+		2B95408125A75FB20098805B /* Build configuration list for PBXNativeTarget "pera-tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2B95407E25A75FB20098805B /* Debug */,

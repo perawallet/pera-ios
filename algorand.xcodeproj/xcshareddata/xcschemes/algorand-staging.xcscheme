@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "17BD4DEE2292F1260003E49A"
-               BuildableName = "algorand-staging.app"
-               BlueprintName = "algorand-staging"
+               BuildableName = "pera-staging.app"
+               BlueprintName = "pera-staging"
                ReferencedContainer = "container:algorand.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -31,8 +31,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "17BD4DEE2292F1260003E49A"
-            BuildableName = "algorand-staging.app"
-            BlueprintName = "algorand-staging"
+            BuildableName = "pera-staging.app"
+            BlueprintName = "pera-staging"
             ReferencedContainer = "container:algorand.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -42,8 +42,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2B95407625A75FB20098805B"
-               BuildableName = "algorand-tests.xctest"
-               BlueprintName = "algorand-tests"
+               BuildableName = "pera-tests.xctest"
+               BlueprintName = "pera-tests"
                ReferencedContainer = "container:algorand.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -64,8 +64,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "17BD4DEE2292F1260003E49A"
-            BuildableName = "algorand-staging.app"
-            BlueprintName = "algorand-staging"
+            BuildableName = "pera-staging.app"
+            BlueprintName = "pera-staging"
             ReferencedContainer = "container:algorand.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -81,8 +81,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "17BD4DEE2292F1260003E49A"
-            BuildableName = "algorand-staging.app"
-            BlueprintName = "algorand-staging"
+            BuildableName = "pera-staging.app"
+            BlueprintName = "pera-staging"
             ReferencedContainer = "container:algorand.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
