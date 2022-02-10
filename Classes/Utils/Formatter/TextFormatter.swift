@@ -41,7 +41,7 @@ extension TextFormatter {
 extension TextFormatter {
     struct AssetShortNameTextFormatter: TextFormatterProtocol {
         func format(_ string: String?) -> String? {
-            string?.components(separatedBy: .whitespacesAndDashes).map { $0.prefix(1) }.prefix(3).joined()
+            string?.uppercased().components(separatedBy: .whitespacesAndDashes).map { $0.prefix(1) }.prefix(3).joined()
         }
     }
 }
