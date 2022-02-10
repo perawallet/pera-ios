@@ -17,7 +17,7 @@
 
 import MacaroonUIKit
 
-struct HomeNoContentViewModel: NoContentWithActionViewModel {
+struct HomeNoContentViewModel: NoContentWithActionViewModel, NoContentViewModel {
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var body: EditText?

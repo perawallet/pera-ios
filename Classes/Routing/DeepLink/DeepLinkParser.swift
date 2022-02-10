@@ -271,10 +271,3 @@ extension DeepLinkParser {
         case waitingForAssetsToBeAvailable
     }
 }
-
-struct QRSendTransactionDraft {
-    let toAccount: String
-    let amount: Decimal?
-    let lockedNote: String?
-    let transactionMode: TransactionMode
-}

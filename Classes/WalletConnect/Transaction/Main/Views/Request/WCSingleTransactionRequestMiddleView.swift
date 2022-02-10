@@ -54,6 +54,7 @@ extension WCSingleTransactionRequestMiddleView {
         addSubview(verticalStack)
         verticalStack.snp.makeConstraints { make in
             make.center.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
         }
         verticalStack.addArrangedSubview(horizontalStack)
         horizontalStack.snp.makeConstraints { make in

@@ -55,3 +55,6 @@ extension AccountHandle {
         case ready /// Account and assets are ready.
     }
 }
+
+extension AccountHandle: Hashable {
+}

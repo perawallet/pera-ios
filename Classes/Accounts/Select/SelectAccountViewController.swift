@@ -24,10 +24,6 @@ final class SelectAccountViewController: BaseViewController {
 
     private let theme = Theme()
 
-    private lazy var accountListDataSource = SelectAccountViewControllerDataSource(
-        sharedDataController: sharedDataController
-    )
-
     private lazy var listView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = theme.listMinimumLineSpacing
@@ -42,7 +38,17 @@ final class SelectAccountViewController: BaseViewController {
 
     private let transactionAction: TransactionAction
 
-    init(transactionAction: TransactionAction, configuration: ViewControllerConfiguration) {
+    private lazy var listLayout = SelectAccountListLayout(listDataSource: listDataSource)
+    private lazy var listDataSource = SelectAccountDataSource(listView)
+
+    private var dataController: SelectAccountDataController
+
+    init(
+        dataController: SelectAccountDataController,
+        transactionAction: TransactionAction,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.dataController = dataController
         self.transactionAction = transactionAction
         super.init(configuration: configuration)
     }
@@ -62,13 +68,35 @@ final class SelectAccountViewController: BaseViewController {
     }
 
     override func setListeners() {
-        listView.delegate = self
-        listView.dataSource = accountListDataSource
+        listView.dataSource = listDataSource
+        listView.delegate = listLayout
         sharedDataController.add(self)
     }
 
     override func prepareLayout() {
         addListView()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdate(let snapshot):
+                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            }
+        }
+        listLayout.handlers.didSelectAccount = { [weak self] accountHandle in
+            guard let self = self else {
+                return
+            }
+
+            self.delegate?.selectAccountViewController(self, didSelect: accountHandle.value, for: self.transactionAction)
+        }
+        dataController.load()
     }
 }
 
@@ -97,14 +125,6 @@ extension SelectAccountViewController: UICollectionViewDelegate, UICollectionVie
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: theme.listItemHeight)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let account = accountListDataSource.accounts[safe: indexPath.item] else {
-            return
-        }
-
-        delegate?.selectAccountViewController(self, didSelect: account.value, for: transactionAction)
     }
 }
 
