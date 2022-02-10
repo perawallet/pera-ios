@@ -106,7 +106,7 @@ enum AlgorandWeb: String {
     case dispenser = "https://bank.testnet.algorand.network"
     case backUpSupport = "https://perawallet.app/support/passphrase/"
     case recoverSupport = "https://perawallet.app/support/recover-account/"
-    case watchAccountSupport = "https://perawallet.app/support/general/adding-a-watch-account"
+    case watchAccountSupport = "https://perawallet.app/support/watch-accounts/"
     case ledgerSupport = "https://perawallet.app/support/ledger/"
     case transactionSupport = "https://perawallet.app/support/transactions/"
     case rewardsFAQ = "https://algorand.foundation/faq#participation-rewards"
