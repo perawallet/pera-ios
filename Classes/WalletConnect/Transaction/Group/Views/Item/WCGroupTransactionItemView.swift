@@ -45,6 +45,7 @@ class WCGroupTransactionItemView: TripleShadowView {
         let stackView = HStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.alignment = .center
+        stackView.distribution = .equalSpacing
         stackView.spacing = 4.0
         stackView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         return stackView
@@ -54,14 +55,6 @@ class WCGroupTransactionItemView: TripleShadowView {
         UILabel()
             .withTextColor(AppColors.Components.Text.main.uiColor)
             .withLine(.contained)
-            .withAlignment(.left)
-            .withFont(Fonts.DMMono.regular.make(19).uiFont)
-    }()
-
-    private lazy var assetNameLabel: UILabel = {
-        UILabel()
-            .withTextColor(AppColors.Components.Text.main.uiColor)
-            .withLine(.single)
             .withAlignment(.left)
             .withFont(Fonts.DMMono.regular.make(19).uiFont)
     }()
@@ -175,11 +168,14 @@ extension WCGroupTransactionItemView {
         balanceStackView.setContentCompressionResistancePriority(.required, for: .vertical)
         balanceStackView.addArrangedSubview(warningImageView)
         balanceStackView.addArrangedSubview(balanceLabel)
-        balanceStackView.addArrangedSubview(assetNameLabel)
 
+        balanceLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         balanceLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+
         let spacer = UIView()
-        spacer.setContentCompressionResistancePriority(.required, for: .horizontal)
+        let spacerWidthConstraint = spacer.widthAnchor.constraint(equalToConstant: .greatestFiniteMagnitude)
+        spacerWidthConstraint.priority = .defaultLow
+        spacerWidthConstraint.isActive = true
         balanceStackView.addArrangedSubview(spacer)
 
         warningImageView.snp.makeConstraints { make in
@@ -214,10 +210,16 @@ extension WCGroupTransactionItemView {
 
         if viewModel.title != nil {
             balanceLabel.text = viewModel.title
-            assetNameLabel.text = nil
         } else {
-            balanceLabel.text = viewModel.amount
-            assetNameLabel.text = viewModel.assetName
+            if let amount = viewModel.amount {
+                if let assetName = viewModel.assetName {
+                    balanceLabel.text = "\(amount) \(assetName)"
+                } else {
+                    balanceLabel.text = amount
+                }
+            } else {
+                balanceLabel.text = viewModel.assetName
+            }
         }
 
         if let accountInformationViewModel = viewModel.accountInformationViewModel {
