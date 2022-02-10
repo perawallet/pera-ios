@@ -26,6 +26,7 @@ struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
     let placeholder: TextStyle
     let floatingPlaceholder: TextStyle
     let focusIndicator: ViewStyle
+    let focusIndicatorActive: ViewStyle
     let errorFocusIndicator: ViewStyle
     let assistive: FormInputFieldAssistiveViewTheme
 
@@ -51,7 +52,10 @@ struct FloatingTextInputFieldViewCommonTheme: FloatingTextInputFieldViewTheme {
             )
         ]
         self.focusIndicator = [
-            .backgroundColor(AppColors.Components.Text.main)
+            .backgroundColor(AppColors.Components.TextField.indicatorDeactive)
+        ]
+        self.focusIndicatorActive = [
+            .backgroundColor(AppColors.Components.TextField.indicatorActive)
         ]
         self.errorFocusIndicator = [
             .backgroundColor(AppColors.Shared.Helpers.negative)

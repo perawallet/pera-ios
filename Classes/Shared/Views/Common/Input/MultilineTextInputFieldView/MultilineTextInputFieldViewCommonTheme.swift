@@ -24,6 +24,7 @@ struct MultilineTextInputFieldViewCommonTheme: MultilineTextInputFieldViewTheme 
     let floatingPlaceholder: TextStyle
     let topInset: LayoutMetric
     let focusIndicator: ViewStyle
+    let focusIndicatorActive: ViewStyle
     let errorFocusIndicator: ViewStyle
     let assistive: FormInputFieldAssistiveViewTheme
     
@@ -46,7 +47,10 @@ struct MultilineTextInputFieldViewCommonTheme: MultilineTextInputFieldViewTheme 
         ]
         self.topInset = 24.0
         self.focusIndicator = [
-            .backgroundColor(AppColors.Components.Text.main)
+            .backgroundColor(AppColors.Components.TextField.indicatorDeactive)
+        ]
+        self.focusIndicatorActive = [
+            .backgroundColor(AppColors.Components.TextField.indicatorActive)
         ]
         self.errorFocusIndicator = [
             .backgroundColor(AppColors.Shared.Helpers.negative)

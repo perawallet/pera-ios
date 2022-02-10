@@ -320,11 +320,13 @@ extension FloatingTextInputFieldView {
     ) {
         if !animated {
             recustomizePlaceholderAppearanceOnEditing()
+            recustomizeFocusIndicatorOnEdit()
             updateLayoutOnEditing()
 
             return
         }
 
+        recustomizeFocusIndicatorOnEdit()
         recustomizePlaceholderAppearanceOnEditing()
         /// <note>
         /// Update the placeholder view size immediately after the font change to prevent the
@@ -351,11 +353,13 @@ extension FloatingTextInputFieldView {
     ) {
         if !animated {
             recustomizePlaceholderAppearanceOnClear()
+            recustomizeFocusIndicatorOnClear()
             updateLayoutOnClear()
 
             return
         }
 
+        recustomizeFocusIndicatorOnClear()
         recustomizePlaceholderAppearanceOnClear()
         /// <note>
         /// Update the placeholder view size immediately after the font change to prevent the
@@ -426,6 +430,20 @@ extension FloatingTextInputFieldView {
         focusIndicatorView.customizeAppearance(
             styleSheet.focusIndicator
         )
+    }
+    
+    private func recustomizeFocusIndicatorOnEdit() {
+        if let style = theme?.focusIndicatorActive {
+            focusIndicatorView.customizeAppearance(style)
+        }
+    }
+    
+    private func recustomizeFocusIndicatorOnClear() {
+        guard let theme = theme else {
+            return
+        }
+        
+        focusIndicatorView.customizeAppearance(theme.focusIndicator)
     }
 
     private func updateFocusIndicatorAppearanceOnSuccess() {
@@ -584,7 +602,6 @@ extension FloatingTextInputFieldView {
         )
         focusIndicatorView.snp.makeConstraints {
             $0.bottom == textInputView.snp.bottom
-
             $0.fitToHeight(1)
             $0.setHorizontalPaddings()
         }
@@ -592,7 +609,7 @@ extension FloatingTextInputFieldView {
 
     private func updateFocusIndicatorLayoutOnEditing() {
         focusIndicatorView.snp.updateConstraints {
-            $0.fitToHeight(2)
+            $0.fitToHeight(1.5)
         }
     }
 

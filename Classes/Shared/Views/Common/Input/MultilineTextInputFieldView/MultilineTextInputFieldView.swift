@@ -97,6 +97,7 @@ class MultilineTextInputFieldView: View, FormTextInputFieldView, UITextViewDeleg
     func textViewDidBeginEditing(_ textView: UITextView) {
         updateFocusIndicatorLayoutOnEditing()
         updatePlaceholderLayoutOnEditing()
+        recustomizeFocusIndicatorOnEdit()
         recustomizePlaceholderOnEditing()
         
         UIViewPropertyAnimator.runningPropertyAnimator(
@@ -122,6 +123,7 @@ class MultilineTextInputFieldView: View, FormTextInputFieldView, UITextViewDeleg
         if !textView.text.isEmpty {
             updateFocusIndicatorLayoutOnEditing()
             updatePlaceholderLayoutOnEditing()
+            recustomizeFocusIndicatorOnEdit()
             recustomizePlaceholderOnEditing()
         }
     }
@@ -131,6 +133,7 @@ class MultilineTextInputFieldView: View, FormTextInputFieldView, UITextViewDeleg
             updateFocusIndicatorLayoutOnEnd()
             updatePlaceholderLayoutOnClear()
             recustomizePlaceholderOnClear()
+            recustomizeFocusIndicatorOnClear()
             
             UIViewPropertyAnimator.runningPropertyAnimator(
                 withDuration: 0.1,
@@ -214,6 +217,20 @@ extension MultilineTextInputFieldView {
         focusIndicatorView.customizeAppearance(styleSheet.focusIndicator)
     }
     
+    private func recustomizeFocusIndicatorOnEdit() {
+        if let style = theme?.focusIndicatorActive {
+            focusIndicatorView.customizeAppearance(style)
+        }
+    }
+    
+    private func recustomizeFocusIndicatorOnClear() {
+        guard let theme = theme else {
+            return
+        }
+        
+        focusIndicatorView.customizeAppearance(theme.focusIndicator)
+    }
+    
     private func updateFocusIndicatorAppearanceOnSuccess() {
         if let style = theme?.focusIndicator {
             focusIndicatorView.customizeAppearance(style)
@@ -287,7 +304,7 @@ extension MultilineTextInputFieldView {
     
     private func updateFocusIndicatorLayoutOnEditing() {
         focusIndicatorView.snp.updateConstraints {
-            $0.fitToHeight(2)
+            $0.fitToHeight(1.5)
         }
     }
 

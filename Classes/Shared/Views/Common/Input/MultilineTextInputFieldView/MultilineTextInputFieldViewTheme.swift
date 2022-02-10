@@ -24,6 +24,7 @@ protocol MultilineTextInputFieldViewTheme: StyleSheet, LayoutSheet {
     var floatingPlaceholder: TextStyle { get }
     var topInset: LayoutMetric { get }
     var focusIndicator: ViewStyle { get }
+    var focusIndicatorActive: ViewStyle { get }
     var errorFocusIndicator: ViewStyle { get }
     var assistive: FormInputFieldAssistiveViewTheme { get }
 }
