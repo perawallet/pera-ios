@@ -410,7 +410,7 @@
 "introduction-title-add-text" = "Neues Konto hinzufügen";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "Indem Sie ein Konto erstellen, stimmen Sie den <a href=\"https://www.algorand.com/wallet-disclaimer\">Nutzungsbedingungen</a></a> und den <a href=\"https://www.algorand.com/wallet-privacy-policy\">Datenschutzbestimmungen</a> von Algorand zu";
+"introduction-title-terms-and-services" = "Indem Sie ein Konto erstellen, stimmen Sie den <a href=\"https://perawallet.app/terms-and-services/\">Nutzungsbedingungen</a></a> und den <a href=\"https://perawallet.app/privacy-policy/\">Datenschutzbestimmungen</a> von Algorand zu";
 
 /* MARK: Introduction */
 "introduction-title-text" = "Verwalten Sie alle Assets\nüber eine App";

@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -120,10 +120,10 @@ extension TransactionFloatingActionButtonViewController {
         }
 
         var delay = 0.0
-        let animationSpeed = 0.1
+        let animationSpeed = 0.05
 
         [receiveButton, sendButton].forEach { button in
-            UIView.animate(withDuration: 0.4,
+            UIView.animate(withDuration: 0.2,
                            delay: delay,
                            animations: {
                 button.alpha = 1
@@ -161,11 +161,13 @@ extension TransactionFloatingActionButtonViewController {
     @objc
     private func didTapSendButton() {
         delegate?.transactionFloatingActionButtonViewControllerDidSend(self)
+        dismissScreen(animated: false)
     }
 
     @objc
     private func didTapReceiveButton() {
         delegate?.transactionFloatingActionButtonViewControllerDidReceive(self)
+        dismissScreen(animated: false)
     }
 }
 

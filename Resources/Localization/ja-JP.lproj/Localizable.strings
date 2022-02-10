@@ -410,7 +410,7 @@
 "introduction-title-add-text" = "新規アカウントの追加";
 
 /* (No Comment) */
-"introduction-title-terms-and-services" = "アカウントを作成することで、お客様はAlgorandの <a href=\"https://www.algorand.com/wallet-disclaimer\">Terms and Conditions</a> および <a href=\"https://www.algorand.com/wallet-privacy-policy\">Privacy Policy</a>に同意したとみなされます。";
+"introduction-title-terms-and-services" = "アカウントを作成することで、お客様はAlgorandの <a href=\"https://perawallet.app/terms-and-services/\">Terms and Conditions</a> および <a href=\"https://perawallet.app/privacy-policy/\">Privacy Policy</a>に同意したとみなされます。";
 
 /* MARK: Introduction */
 "introduction-title-text" = "1つのアプリから\nすべての資産を管理";

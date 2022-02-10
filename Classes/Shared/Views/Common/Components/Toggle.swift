@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -47,8 +47,8 @@ extension Toggle {
 
         init(_ family: LayoutFamily) {
             cornerRadius = 16
-            backgroundColor = AppColors.Shared.Layer.grayLighter
-            onTintColor = AppColors.Shared.Global.turquoise600
+            backgroundColor = AppColors.Components.Switch.backgroundOff
+            onTintColor = AppColors.Components.Switch.background
         }
     }
 }

@@ -3,6 +3,16 @@
     {
       "filename" : "icon-approval-check.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-approval-check-1.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

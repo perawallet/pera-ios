@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -321,12 +321,12 @@ class Router:
                 accountSetupFlow: flow,
                 configuration: configuration
             )
-        case let .passphraseView(address):
-            viewController = PassphraseBackUpViewController(address: address, configuration: configuration)
-        case .passphraseVerify:
-            viewController = PassphraseVerifyViewController(configuration: configuration)
-        case let .accountNameSetup(mode, accountAddress):
-            viewController = AccountNameSetupViewController(mode: mode, accountAddress: accountAddress, configuration: configuration)
+        case let .passphraseView(flow, address):
+            viewController = PassphraseBackUpViewController(flow: flow, address: address, configuration: configuration)
+        case let .passphraseVerify(flow):
+            viewController = PassphraseVerifyViewController(flow: flow, configuration: configuration)
+        case let .accountNameSetup(flow, mode, accountAddress):
+            viewController = AccountNameSetupViewController(flow: flow, mode: mode, accountAddress: accountAddress, configuration: configuration)
         case let .accountRecover(flow):
             viewController = AccountRecoverViewController(accountSetupFlow: flow, configuration: configuration)
         case let .qrScanner(canReadWCSession):

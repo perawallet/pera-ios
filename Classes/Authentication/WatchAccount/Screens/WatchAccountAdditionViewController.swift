@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -122,7 +122,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
         view.endEditing(true)
         let account = createAccount(from: address, with: address.shortAddressDisplay())
         log(RegistrationEvent(type: .watch))
-        open(.accountNameSetup(mode: .add(type: .watch), accountAddress: account.address), by: .push)
+        open(.accountNameSetup(flow: accountSetupFlow, mode: .add(type: .watch), accountAddress: account.address), by: .push)
     }
     
     private func createAccount(from address: String, with name: String) -> AccountInformation {

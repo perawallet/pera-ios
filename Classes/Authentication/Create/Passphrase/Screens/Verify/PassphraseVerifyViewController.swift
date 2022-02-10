@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,6 +37,16 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
         }
         fatalError("Private key should be set.")
     }()
+
+    private let flow: AccountSetupFlow
+
+    init(
+        flow: AccountSetupFlow,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.flow = flow
+        super.init(configuration: configuration)
+    }
 
     override func configureAppearance() {
         super.configureAppearance()
@@ -90,7 +100,7 @@ extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
         }
 
         open(
-            .tutorial(flow: .none, tutorial: .passphraseVerified(account: account)),
+            .tutorial(flow: flow, tutorial: .passphraseVerified(account: account)),
             by: .push
         )
     }

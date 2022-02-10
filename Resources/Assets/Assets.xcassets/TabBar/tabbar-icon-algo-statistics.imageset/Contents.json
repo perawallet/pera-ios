@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "tabbar-icon-statistics.pdf",
+      "filename" : "tabbar-icon-algo-statistics.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "tabbar-icon-statistics-dark.pdf",
+      "filename" : "tabbar-icon-algo-statistics-1.pdf",
       "idiom" : "universal"
     }
   ],

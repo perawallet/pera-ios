@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -235,11 +235,9 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
-        guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
-              let assetDetail = currentAsset else {
-                  return
-              }
-
+        guard let assetDetail = currentAsset else {
+            return
+        }
 
         delegate?.assetAdditionViewController(self, didAdd: assetDetail, to: account)
         popScreen()

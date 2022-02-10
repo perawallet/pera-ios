@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ extension TextFormatter {
 extension TextFormatter {
     struct AssetShortNameTextFormatter: TextFormatterProtocol {
         func format(_ string: String?) -> String? {
-            string?.components(separatedBy: .whitespacesAndDashes).map { $0.prefix(1) }.prefix(3).joined()
+            string?.uppercased().components(separatedBy: .whitespacesAndDashes).map { $0.prefix(1) }.prefix(3).joined()
         }
     }
 }

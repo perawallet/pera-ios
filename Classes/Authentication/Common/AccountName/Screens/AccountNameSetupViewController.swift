@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,14 +24,17 @@ final class AccountNameSetupViewController: BaseScrollViewController {
     
     private var keyboardController = KeyboardController()
 
+    private let flow: AccountSetupFlow
     private let mode: AccountSetupMode
     private let accountAddress: PublicKey
 
     init(
+        flow: AccountSetupFlow,
         mode: AccountSetupMode,
         accountAddress: PublicKey,
         configuration: ViewControllerConfiguration
     ) {
+        self.flow = flow
         self.mode = mode
         self.accountAddress = accountAddress
         super.init(configuration: configuration)
@@ -108,18 +111,25 @@ extension AccountNameSetupViewController {
 
         session?.updateName(accountName, for: accountAddress)
 
-        switch mode {
-        case let .add(type):
-            switch type {
-            case .create:
-                launchMain()
-            case .watch:
+        switch flow {
+        case .initializeAccount:
+            openPasscode()
+        case .addNewAccount:
+            switch mode {
+            case let .add(type):
+                switch type {
+                case .create:
+                    launchMain()
+                case .watch:
+                    openAccountVerifiedTutorial()
+                default:
+                    break
+                }
+            case .recover:
                 openAccountVerifiedTutorial()
             default:
                 break
             }
-        case .recover:
-            openAccountVerifiedTutorial()
         default:
             break
         }
@@ -130,6 +140,43 @@ extension AccountNameSetupViewController {
             .tutorial(flow: .none, tutorial: .accountVerified),
             by: .push
         )
+    }
+
+    private func openPasscode() {
+        var passcodeSettingDisplayStore = PasscodeSettingDisplayStore()
+
+        let controller = open(
+            .tutorial(flow: flow, tutorial: .passcode),
+            by: .push
+        ) as? TutorialViewController
+
+        controller?.uiHandlers.didTapDontAskAgain = { [weak self] tutorialViewController in
+            guard let self = self else {
+                return
+            }
+
+            passcodeSettingDisplayStore.disableAskingPasscode()
+
+            if case .add(type: .watch) = self.mode {
+                self.openAccountVerifiedTutorial()
+                return
+            }
+
+            self.launchMain()
+        }
+
+        controller?.uiHandlers.didTapSecondaryActionButton = { [weak self] tutorialViewController in
+            guard let self = self else {
+                return
+            }
+
+            if case .add(type: .watch) = self.mode {
+                self.openAccountVerifiedTutorial()
+                return
+            }
+
+            self.launchMain()
+        }
     }
 }
 

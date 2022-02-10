@@ -3,6 +3,16 @@
     {
       "filename" : "icon-selection-check.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "icon-checkbox-single-selected.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {

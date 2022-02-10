@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -100,15 +100,15 @@ class Environment {
 }
 
 enum AlgorandWeb: String {
-    case termsAndServices = "https://www.algorand.com/wallet-disclaimer"
-    case privacyPolicy = "https://www.algorand.com/wallet-privacy-policy"
-    case support = "https://algorandwallet.com/support"
+    case termsAndServices = "https://www.perawallet.app/terms-and-services/"
+    case privacyPolicy = "https://www.perawallet.app/privacy-policy/"
+    case support = "https://perawallet.app/support/"
     case dispenser = "https://bank.testnet.algorand.network"
-    case backUpSupport = "https://algorandwallet.com/support/security/backing-up-your-recovery-passphrase"
-    case recoverSupport = "https://algorandwallet.com/support/getting-started/recover-an-algorand-account"
-    case watchAccountSupport = "https://algorandwallet.com/support/general/adding-a-watch-account"
-    case ledgerSupport = "https://algorandwallet.com/support/security/pairing-your-ledger-nano-x"
-    case transactionSupport = "https://algorandwallet.com/support/transacting"
+    case backUpSupport = "https://perawallet.app/support/passphrase/"
+    case recoverSupport = "https://perawallet.app/support/recover-account/"
+    case watchAccountSupport = "https://perawallet.app/support/watch-accounts/"
+    case ledgerSupport = "https://perawallet.app/support/ledger/"
+    case transactionSupport = "https://perawallet.app/support/transactions/"
     case rewardsFAQ = "https://algorand.foundation/faq#participation-rewards"
     case governence = "https://governance.algorand.foundation/"
 }

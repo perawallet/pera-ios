@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Algorand Wallet</string>
+	<string>Pera Algo</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -61,15 +61,15 @@
 		<true/>
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Algorand will use Bluetooth to communicate with Ledger X.</string>
+	<string>Pera will use Bluetooth to communicate with Ledger X.</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Algorand will use Bluetooth to communicate with Ledger X.</string>
+	<string>Pera will use Bluetooth to communicate with Ledger X.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Algorand will use your camera to scan QR codes.</string>
+	<string>Pera will use your camera to scan QR codes.</string>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Algorand will use Face ID to log you in securely.</string>
+	<string>Pera will use Face ID to log you in securely.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Algorand will save QR codes to your photo library.</string>
+	<string>Pera will save QR codes to your photo library.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>PublicSans-Bold.ttf</string>

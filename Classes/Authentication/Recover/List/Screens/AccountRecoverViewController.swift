@@ -1,4 +1,4 @@
-// Copyright 2019 Algorand, Inc.
+// Copyright 2022 Pera Wallet, LDA
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -396,7 +396,7 @@ extension AccountRecoverViewController: AccountRecoverDataControllerDelegate {
         didRecover account: AccountInformation
     ) {
         log(RegistrationEvent(type: .recover))
-        open(.accountNameSetup(mode: .recover, accountAddress: account.address), by: .push)
+        open(.accountNameSetup(flow: accountSetupFlow, mode: .recover, accountAddress: account.address), by: .push)
     }
 
     func accountRecoverDataController(
