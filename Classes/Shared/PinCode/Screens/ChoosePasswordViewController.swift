@@ -202,7 +202,22 @@ extension ChoosePasswordViewController {
                 return
             }
             configuration.session?.savePassword(password)
-            open(.tutorial(flow: flow, tutorial: .localAuthentication), by: .push)
+            let controller = open(
+                .tutorial(flow: flow, tutorial: .localAuthentication),
+                by: .push
+            ) as? TutorialViewController
+            controller?.uiHandlers.didTapSecondaryActionButton = { tutorialViewController in
+                if case .none = flow {
+                    tutorialViewController.dismissScreen()
+                } else if case .initializeAccount(mode: .add(type: .watch)) = flow {
+                    tutorialViewController.open(
+                        .tutorial(flow: .none, tutorial: .accountVerified),
+                        by: .push
+                    )
+                } else {
+                    tutorialViewController.launchMain()
+                }
+            }
         }
     }
 

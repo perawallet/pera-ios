@@ -19,16 +19,13 @@ import UIKit
 
 final class TutorialViewController: BaseScrollViewController {
     override var hidesCloseBarButtonItem: Bool {
-        return tutorial == .localAuthentication
-    }
-
-    override var shouldShowNavigationBar: Bool {
         switch tutorial {
-        case .accountVerified,
-                .passphraseVerified:
-            return false
-        default:
+        case .passphraseVerified,
+                .localAuthentication,
+                .accountVerified:
             return true
+        default:
+            return false
         }
     }
 
@@ -145,7 +142,7 @@ extension TutorialViewController: TutorialViewDelegate {
         case .backUp:
             open(.tutorial(flow: flow, tutorial: .writePassphrase), by: .push)
         case .writePassphrase:
-            open(.passphraseView(address: "temp"), by: .push)
+            open(.passphraseView(flow: flow, address: "temp"), by: .push)
         case .watchAccount:
             open(.watchAccountAddition(flow: flow), by: .push)
         case .recover:
@@ -155,9 +152,9 @@ extension TutorialViewController: TutorialViewDelegate {
         case .localAuthentication:
             askLocalAuthentication()
         case .biometricAuthenticationEnabled:
-            dismissScreen()
+            uiHandlers.didTapButtonPrimaryActionButton?(self)
         case let .passphraseVerified(account):
-            open(.accountNameSetup(mode: .add(type: .create), accountAddress: account.address), by: .push)
+            open(.accountNameSetup(flow: flow, mode: .add(type: .create), accountAddress: account.address), by: .push)
         case .accountVerified:
             launchMain()
         case .ledgerSuccessfullyConnected:
@@ -172,9 +169,9 @@ extension TutorialViewController: TutorialViewDelegate {
     func tutorialViewDidTapSecondaryActionButton(_ tutorialView: TutorialView) {
         switch tutorial {
         case .passcode:
-            dismissScreen()
+            uiHandlers.didTapSecondaryActionButton?(self)
         case .localAuthentication:
-            dismissScreen()
+            uiHandlers.didTapSecondaryActionButton?(self)
         case .ledger:
             open(.ledgerTutorial(flow: .addNewAccount(mode: .add(type: .pair))), by: .present)
         default:
@@ -229,16 +226,36 @@ extension TutorialViewController {
     }
 
     private func openModalWhenAuthenticationUpdatesCompleted() {
-        open(
-            .tutorial(flow: .none, tutorial: .biometricAuthenticationEnabled),
-            by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-        )
+        let controller = open(
+            .tutorial(
+                flow: flow,
+                tutorial: .biometricAuthenticationEnabled
+            ),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            )
+        ) as? TutorialViewController
+
+        controller?.uiHandlers.didTapButtonPrimaryActionButton = { [weak self] tutorialViewController in
+            guard let self = self else {
+                return
+            }
+
+            if case .none = self.flow {
+                self.dismissScreen()
+            } else {
+                tutorialViewController.launchMain()
+            }
+        }
     }
 }
 
 struct TutorialViewControllerUIHandlers {
     var didTapDontAskAgain: ((TutorialViewController) -> Void)?
     var didTapButtonPrimaryActionButton: ((TutorialViewController) -> Void)?
+    var didTapSecondaryActionButton: ((TutorialViewController) -> Void)?
 }
 
 enum Tutorial: Equatable {
