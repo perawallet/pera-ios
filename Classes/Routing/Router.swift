@@ -607,7 +607,8 @@ class Router:
                 dataSource: dataSource,
                 configuration: configuration
             )
-
+        case .peraIntroduction:
+            viewController = PeraIntroductionViewController(configuration: configuration)
         }
 
         return viewController as? T

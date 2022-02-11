@@ -67,6 +67,7 @@ extension TransactionHistoryContextView {
         subtitleLabel.snp.makeConstraints {
             $0.leading.equalTo(titleLabel.snp.leading)
             $0.top.equalTo(titleLabel.snp.bottom)
+            $0.bottom.equalToSuperview().inset(theme.verticalInset)
         }
 
         subtitleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
