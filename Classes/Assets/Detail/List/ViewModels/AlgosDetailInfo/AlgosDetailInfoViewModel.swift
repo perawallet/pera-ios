@@ -28,30 +28,38 @@ struct AlgosDetailInfoViewModel:
     init(
         _ account: Account,
         _ currency: Currency?,
-        _ rewards: Decimal?
+        _ calculatedRewards: Decimal?
     ) {
-        bindTotalAmount(from: account)
-        bindSecondaryValue(from: account, with: currency)
-        bindRewardsInfoViewModel(from: account, rewards: rewards ?? 0)
+        bindTotalAmount(from: account, calculatedRewards: calculatedRewards ?? 0)
+        bindSecondaryValue(from: account, with: currency, calculatedRewards: calculatedRewards ?? 0)
+        bindRewardsInfoViewModel(from: account, rewards: calculatedRewards ?? 0)
     }
 }
 
 extension AlgosDetailInfoViewModel {
-    private mutating func bindTotalAmount(from account: Account) {
-        totalAmount = account.amount.toAlgos.toAlgosStringForLabel
+    private mutating func bindTotalAmount(from account: Account, calculatedRewards: Decimal) {
+        totalAmount = getTotalAmount(from: account, and: calculatedRewards).toAlgosStringForLabel
     }
 
-    private mutating func bindSecondaryValue(from account: Account, with currency: Currency?) {
+    private mutating func bindSecondaryValue(from account: Account, with currency: Currency?, calculatedRewards: Decimal) {
         guard let currency = currency,
               let currencyPriceValue = currency.priceValue else {
             return
         }
 
-        let totalAmount = account.amount.toAlgos * currencyPriceValue
+        let totalAmount = getTotalAmount(from: account, and: calculatedRewards) * currencyPriceValue
         secondaryValue = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
     }
 
     private mutating func bindRewardsInfoViewModel(from account: Account, rewards: Decimal) {
         rewardsInfoViewModel = RewardCalculationViewModel(account: account, calculatedRewards: rewards)
+    }
+
+    private func getTotalAmount(from account: Account, and calculatedRewards: Decimal) -> Decimal {
+        return account.amountWithoutRewards.toAlgos + getPendingRewards(from: account, and: calculatedRewards)
+    }
+
+    private func getPendingRewards(from account: Account, and calculatedRewards: Decimal) -> Decimal {
+        return account.pendingRewards.toAlgos + calculatedRewards
     }
 }

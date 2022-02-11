@@ -18,7 +18,7 @@
 import UIKit
 import MacaroonUIKit
 
-final class RewardCalculationViewModel: ViewModel, Hashable {
+struct RewardCalculationViewModel: ViewModel, Hashable {
     private let account: Account
     private(set) var rewardAmount: String?
 
@@ -26,18 +26,10 @@ final class RewardCalculationViewModel: ViewModel, Hashable {
         self.account = account
         bindRewardAmount(from: account, and: calculatedRewards)
     }
-
-    static func == (lhs: RewardCalculationViewModel, rhs: RewardCalculationViewModel) -> Bool {
-        return lhs.account == rhs.account && lhs.rewardAmount == rhs.rewardAmount
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(account.address.hashValue)
-    }
 }
 
 extension RewardCalculationViewModel {
-    private func bindRewardAmount(from account: Account, and calculatedRewards: Decimal) {
+    private mutating func bindRewardAmount(from account: Account, and calculatedRewards: Decimal) {
         rewardAmount = (account.pendingRewards.toAlgos + calculatedRewards).toExactFractionLabel(fraction: 6)
     }
 }
