@@ -98,6 +98,7 @@ final class HomeViewController:
         loadingCell?.startAnimating()
         
         if isViewFirstAppeared {
+            presentPeraIntroductionIfNeeded()
             presentPasscodeFlowIfNeeded()
             isViewFirstAppeared = false
         }
@@ -286,6 +287,7 @@ extension HomeViewController {
               }
 
         var passcodeSettingDisplayStore = PasscodeSettingDisplayStore()
+        let peraIntroductionStore = PeraIntroductionStore()
 
         if !passcodeSettingDisplayStore.hasPermissionToAskAgain {
             return
@@ -293,7 +295,8 @@ extension HomeViewController {
 
         passcodeSettingDisplayStore.increaseAppOpenCount()
 
-        if passcodeSettingDisplayStore.shouldAskForPasscode {
+        if !peraIntroductionStore.isFirstPeraLaunch,
+            passcodeSettingDisplayStore.shouldAskForPasscode {
             let controller = open(
                 .tutorial(flow: .none, tutorial: .passcode),
                 by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
@@ -305,6 +308,16 @@ extension HomeViewController {
                 tutorialViewController.dismissScreen()
                 passcodeSettingDisplayStore.disableAskingPasscode()
             }
+        }
+    }
+
+    private func presentPeraIntroductionIfNeeded() {
+        let peraIntroductionStore = PeraIntroductionStore()
+
+        if peraIntroductionStore.isFirstPeraLaunch {
+            peraIntroductionStore.saveFirstLaunchPera()
+
+            open(.peraIntroduction, by: .present)
         }
     }
 }

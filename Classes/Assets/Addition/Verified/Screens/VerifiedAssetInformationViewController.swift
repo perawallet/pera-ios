@@ -56,8 +56,6 @@ extension VerifiedAssetInformationViewController {
 
 extension VerifiedAssetInformationViewController: VerifiedAssetInformationViewDelegate {
     func verifiedAssetInformationViewDidVisitSite(_ verifiedAssetInformationView: VerifiedAssetInformationView) {
-        if let url = AlgorandWeb.support.link {
-            open(url)
-        }
+        open(AlgorandWeb.support.link)
     }
 }
