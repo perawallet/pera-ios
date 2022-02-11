@@ -18,16 +18,18 @@
 import UIKit
 import MacaroonUIKit
 
-final class RewardCalculationViewModel: ViewModel {
+struct RewardCalculationViewModel: ViewModel, Hashable {
+    private let account: Account
     private(set) var rewardAmount: String?
 
     init(account: Account, calculatedRewards: Decimal) {
+        self.account = account
         bindRewardAmount(from: account, and: calculatedRewards)
     }
 }
 
 extension RewardCalculationViewModel {
-    private func bindRewardAmount(from account: Account, and calculatedRewards: Decimal) {
+    private mutating func bindRewardAmount(from account: Account, and calculatedRewards: Decimal) {
         rewardAmount = (account.pendingRewards.toAlgos + calculatedRewards).toExactFractionLabel(fraction: 6)
     }
 }

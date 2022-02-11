@@ -2967,6 +2967,7 @@
 		D43682A62767AFA700299964 /* WCConnectionAccountSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43682A52767AFA700299964 /* WCConnectionAccountSelectionViewTheme.swift */; };
 		D43682A72767AFA700299964 /* WCConnectionAccountSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43682A52767AFA700299964 /* WCConnectionAccountSelectionViewTheme.swift */; };
 		D43682A82767AFA700299964 /* WCConnectionAccountSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43682A52767AFA700299964 /* WCConnectionAccountSelectionViewTheme.swift */; };
+		D437E19F27B6559C003F5259 /* PeraIntroductionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D437E19E27B6559C003F5259 /* PeraIntroductionViewModel.swift */; };
 		D43A0C112790C9FB007430B9 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43A0C102790C9FB007430B9 /* LoadingCell.swift */; };
 		D43A0C122790C9FB007430B9 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43A0C102790C9FB007430B9 /* LoadingCell.swift */; };
 		D43A0C132790C9FB007430B9 /* LoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43A0C102790C9FB007430B9 /* LoadingCell.swift */; };
@@ -3579,6 +3580,11 @@
 		D4CCA1DD27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */; };
 		D4CCA1DE27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */; };
 		D4CCA1DF27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */; };
+		D4D45A2B27B556AF00DBB334 /* PeraIntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D45A2A27B556AF00DBB334 /* PeraIntroductionViewController.swift */; };
+		D4D45A2D27B556BA00DBB334 /* PeraIntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D45A2C27B556BA00DBB334 /* PeraIntroductionView.swift */; };
+		D4D45A2F27B556D500DBB334 /* PeraInroductionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D45A2E27B556D500DBB334 /* PeraInroductionViewTheme.swift */; };
+		D4D45A3027B5C7C700DBB334 /* PeraIntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D45A2C27B556BA00DBB334 /* PeraIntroductionView.swift */; };
+		D4D45A3227B5C7C800DBB334 /* PeraIntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D45A2C27B556BA00DBB334 /* PeraIntroductionView.swift */; };
 		D4D656D9277CB959007C32F0 /* TransactionTextInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D656D8277CB959007C32F0 /* TransactionTextInformationViewModel.swift */; };
 		D4D656DA277CB959007C32F0 /* TransactionTextInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D656D8277CB959007C32F0 /* TransactionTextInformationViewModel.swift */; };
 		D4D656DB277CB959007C32F0 /* TransactionTextInformationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D656D8277CB959007C32F0 /* TransactionTextInformationViewModel.swift */; };
@@ -4927,6 +4933,7 @@
 		D4312D6A27351CDA00ABDA1E /* EditContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditContactViewModel.swift; sourceTree = "<group>"; };
 		D432865626DFDCF6005D84E1 /* TutorialViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialViewTheme.swift; sourceTree = "<group>"; };
 		D43682A52767AFA700299964 /* WCConnectionAccountSelectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCConnectionAccountSelectionViewTheme.swift; sourceTree = "<group>"; };
+		D437E19E27B6559C003F5259 /* PeraIntroductionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraIntroductionViewModel.swift; sourceTree = "<group>"; };
 		D43A0C102790C9FB007430B9 /* LoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCell.swift; sourceTree = "<group>"; };
 		D43A0C142790CA2D007430B9 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		D43A0C182790CA90007430B9 /* LoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewTheme.swift; sourceTree = "<group>"; };
@@ -5131,6 +5138,9 @@
 		D4CCA1D427241DA400DF1B76 /* RekeyConfirmationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationViewTheme.swift; sourceTree = "<group>"; };
 		D4CCA1D827242B3B00DF1B76 /* RekeyTransitionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransitionItemView.swift; sourceTree = "<group>"; };
 		D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransitionItemViewTheme.swift; sourceTree = "<group>"; };
+		D4D45A2A27B556AF00DBB334 /* PeraIntroductionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraIntroductionViewController.swift; sourceTree = "<group>"; };
+		D4D45A2C27B556BA00DBB334 /* PeraIntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraIntroductionView.swift; sourceTree = "<group>"; };
+		D4D45A2E27B556D500DBB334 /* PeraInroductionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraInroductionViewTheme.swift; sourceTree = "<group>"; };
 		D4D656D8277CB959007C32F0 /* TransactionTextInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTextInformationViewModel.swift; sourceTree = "<group>"; };
 		D4D656E0277CBAA3007C32F0 /* TransactionAmountInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionAmountInformationViewModel.swift; sourceTree = "<group>"; };
 		D4D656E4277CC5A7007C32F0 /* TransactionStatusInformationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionStatusInformationViewModel.swift; sourceTree = "<group>"; };
@@ -11280,6 +11290,7 @@
 		2BF7280B2747228E00CCAC30 /* Introduction */ = {
 			isa = PBXGroup;
 			children = (
+				D4D45A2927B555AA00DBB334 /* PeraIntroduction */,
 				2BF7280E274722D900CCAC30 /* Add */,
 				2BD6A06824A50D5B00D2D28D /* PinLimit */,
 				2BF7280D274722BB00CCAC30 /* Welcome */,
@@ -12470,6 +12481,17 @@
 				D4CC46EE26DD17D100AA1BFE /* Fonts */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		D4D45A2927B555AA00DBB334 /* PeraIntroduction */ = {
+			isa = PBXGroup;
+			children = (
+				D4D45A2A27B556AF00DBB334 /* PeraIntroductionViewController.swift */,
+				D4D45A2C27B556BA00DBB334 /* PeraIntroductionView.swift */,
+				D4D45A2E27B556D500DBB334 /* PeraInroductionViewTheme.swift */,
+				D437E19E27B6559C003F5259 /* PeraIntroductionViewModel.swift */,
+			);
+			path = PeraIntroduction;
 			sourceTree = "<group>";
 		};
 		D4D746582779ACDB000545BD /* ViewModels */ = {
@@ -14206,6 +14228,7 @@
 				D41699562790ECC400DE84FA /* TransactionHistoryNoContentViewModel.swift in Sources */,
 				2B80C5592773328800BB071E /* PortfolioValueViewModel.swift in Sources */,
 				17BD4EDF2292F1260003E49A /* ContactDetailViewController.swift in Sources */,
+				D4D45A3227B5C7C800DBB334 /* PeraIntroductionView.swift in Sources */,
 				D4EC4C682777A69F00428A3C /* AlgosDetailInfoViewTheme.swift in Sources */,
 				2BCFD67A2791A35900406A2A /* AccountAssetListDataController.swift in Sources */,
 				2B3A95E7238FF99C00A3DF44 /* TransactionControllerDelegate.swift in Sources */,
@@ -15422,6 +15445,7 @@
 				2B0F62DE24EC129D00DA22A6 /* NotificationView.swift in Sources */,
 				2B7E3051267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */,
 				2B83D04826C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */,
+				D4D45A3027B5C7C700DBB334 /* PeraIntroductionView.swift in Sources */,
 				2BA4B3F1267819840041586B /* WCSessionItemViewModel.swift in Sources */,
 				2BA4B3DD2673F0E60041586B /* WCConnectionApprovalViewModel.swift in Sources */,
 				2BCFD6792791A35900406A2A /* AccountAssetListDataController.swift in Sources */,
@@ -15954,6 +15978,7 @@
 				2BD73A1C2241636C00B66EEF /* PassphraseBackUpView.swift in Sources */,
 				17AA1B0822662BAB000B0BB0 /* String+Number.swift in Sources */,
 				D4194306273540EC0055EC70 /* PageCell.swift in Sources */,
+				D4D45A2D27B556BA00DBB334 /* PeraIntroductionView.swift in Sources */,
 				2B2AACD0250B6BC900B8C5C5 /* SettingsToggleViewModel.swift in Sources */,
 				2BF7190C224ECF30001E8420 /* AddContactView.swift in Sources */,
 				95C9590E278A113A003D0D78 /* WCSingleTransactionRequestBottomViewTheme.swift in Sources */,
@@ -16329,6 +16354,7 @@
 				95D11D092771D4D0001B2C37 /* TitleHeaderViewTheme.swift in Sources */,
 				2BCBAAA7273BF3C900B3A746 /* LedgerPairWarningView.swift in Sources */,
 				958416EB27B3155A005B1627 /* AlgoStatisticsLoadingViewTheme.swift in Sources */,
+				D4D45A2B27B556AF00DBB334 /* PeraIntroductionViewController.swift in Sources */,
 				2B4BD9ED2389CBC000491149 /* AssetNameView.swift in Sources */,
 				D46BB37C277CE66100F50F44 /* ContactDisplayViewModel.swift in Sources */,
 				2B5F6FA52768ECE200C9B780 /* SingleGrayTitleHeaderViewTheme.swift in Sources */,
@@ -16382,6 +16408,7 @@
 				2BD36DD9267E45B700C57728 /* WCTransactionTextInformationViewModel.swift in Sources */,
 				2BF34CC5223A99670052CAD3 /* String+Localization.swift in Sources */,
 				2BB93C1A25BF2434001F1D6C /* TransactionSigner.swift in Sources */,
+				D4D45A2F27B556D500DBB334 /* PeraInroductionViewTheme.swift in Sources */,
 				D446A73D272A8BDD0081D60B /* AssetPreviewActionView.swift in Sources */,
 				2BE937342464AEE200322C1E /* TransactionDetailTitleLabel.swift in Sources */,
 				F087090D2790D97F00BEE5C2 /* HomeNoContentView.swift in Sources */,
@@ -16411,6 +16438,7 @@
 				2B5739F126F3F73F007E0252 /* WCAssetDeletionTransactionView.swift in Sources */,
 				95631BB927608E74002FB831 /* TripleShadowView.swift in Sources */,
 				95189D892779D3F300094107 /* NewSendTransactionPreviewView.swift in Sources */,
+				D437E19F27B6559C003F5259 /* PeraIntroductionViewModel.swift in Sources */,
 				D45E191726E91FA500A32744 /* AccountNameSetupViewController+Theme.swift in Sources */,
 				2BE937302464AEB600322C1E /* LineSeparatorView.swift in Sources */,
 				D44265C027746E3C0094E2CA /* TransactionHistoryHeaderViewTheme.swift in Sources */,

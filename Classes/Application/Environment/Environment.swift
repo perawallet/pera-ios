@@ -111,6 +111,7 @@ enum AlgorandWeb: String {
     case transactionSupport = "https://perawallet.app/support/transactions/"
     case rewardsFAQ = "https://algorand.foundation/faq#participation-rewards"
     case governence = "https://governance.algorand.foundation/"
+    case peraBlogLaunchAnnouncement = "https://perawallet.app/blog/launch-announcement/"
 }
 
 extension AlgorandWeb {
