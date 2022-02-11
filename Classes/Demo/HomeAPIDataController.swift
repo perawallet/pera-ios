@@ -87,10 +87,10 @@ extension HomeAPIDataController {
     private func deliverLoadingSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()
-            snapshot.appendSections([.empty])
+            snapshot.appendSections([.loading])
             snapshot.appendItems(
                 [.empty(.loading)],
-                toSection: .empty
+                toSection: .loading
             )
             return snapshot
         }

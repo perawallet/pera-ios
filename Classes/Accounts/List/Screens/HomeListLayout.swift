@@ -48,7 +48,7 @@ extension HomeListLayout {
     ) -> UIEdgeInsets {
         let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
         
-        guard let section = sectionIdentifiers[safe: section] else {
+        guard let listSection = sectionIdentifiers[safe: section] else {
             return .zero
         }
         
@@ -57,8 +57,10 @@ extension HomeListLayout {
                 (0, sectionHorizontalInsets.leading, 0, sectionHorizontalInsets.trailing)
             )
         
-        switch section {
+        switch listSection {
         case .empty:
+            return insets
+        case .loading:
             insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 72
             return insets
         case .portfolio:
@@ -129,7 +131,8 @@ extension HomeListLayout {
         let height =
             listView.bounds.height -
             sectionInset.vertical -
-            listView.adjustedContentInset.bottom
+            listView.safeAreaTop -
+            listView.safeAreaBottom
         return CGSize((width, height))
     }
     

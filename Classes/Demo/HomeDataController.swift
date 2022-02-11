@@ -33,6 +33,7 @@ enum HomeSection:
     Int,
     Hashable {
     case empty
+    case loading
     case portfolio
     case announcement
     case accounts
