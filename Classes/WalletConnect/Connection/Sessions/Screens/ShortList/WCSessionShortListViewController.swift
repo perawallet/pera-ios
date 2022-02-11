@@ -77,21 +77,7 @@ extension WCSessionShortListViewController: WCSessionShortListDataSourceDelegate
     }
 }
 
-extension WCSessionShortListViewController: WalletConnectorDelegate {
-    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession) {
-        guard !walletConnector.allWalletConnectSessions.isEmpty else {
-            delegate?.wcSessionShortListViewControllerDidClose(self)
-            dismissScreen()
-            return
-        }
-
-        updateScreenAfterDisconnecting(from: session)
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
-        displayDisconnectionError(error)
-    }
-}
+extension WCSessionShortListViewController: WalletConnectorDelegate { }
 
 extension WCSessionShortListViewController {
     private func index(of cell: WCSessionShortListItemCell) -> Int? {
@@ -125,6 +111,13 @@ extension WCSessionShortListViewController {
                 )
             )
             self.dataSource.disconnectFromSession(session)
+            self.updateScreenAfterDisconnecting(from: session)
+
+            if self.walletConnector.allWalletConnectSessions.isEmpty {
+                self.delegate?.wcSessionShortListViewControllerDidClose(self)
+                self.dismissScreen()
+                return
+            }
         }
 
         let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel)
@@ -137,18 +130,6 @@ extension WCSessionShortListViewController {
     private func updateScreenAfterDisconnecting(from session: WCSession) {
         dataSource.updateSessions(walletConnector.allWalletConnectSessions)
         sessionListView.collectionView.reloadData()
-    }
-
-    private func displayDisconnectionError(_ error: WalletConnector.Error) {
-        switch error {
-        case let .failedToDisconnect(session):
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "wallet-connect-session-disconnect-fail-message".localized(session.peerMeta.name)
-            )
-        default:
-            break
-        }
     }
 }
 

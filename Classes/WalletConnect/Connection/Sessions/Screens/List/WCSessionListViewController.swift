@@ -45,7 +45,6 @@ final class WCSessionListViewController: BaseViewController {
         sessionListView.setDataSource(dataSource)
         sessionListView.setDelegate(layoutBuilder)
         dataSource.delegate = self
-        walletConnector.delegate = self
 
         noContentWithActionView.setListeners()
         noContentWithActionView.handlers.didTapActionView = { [weak self] in
@@ -91,21 +90,7 @@ extension WCSessionListViewController: WCSessionListDataSourceDelegate {
     }
 }
 
-extension WCSessionListViewController: WalletConnectorDelegate {
-    func walletConnector(_ walletConnector: WalletConnector, didDisconnectFrom session: WCSession) {
-        updateScreenAfterDisconnecting(from: session)
-    }
-
-    func walletConnector(_ walletConnector: WalletConnector, didFailWith error: WalletConnector.Error) {
-        asyncMain { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.displayDisconnectionError(error)
-        }
-    }
-}
+extension WCSessionListViewController: WalletConnectorDelegate { }
 
 extension WCSessionListViewController {
     private func setListContentState() {
@@ -170,6 +155,7 @@ extension WCSessionListViewController {
                 )
             )
             self.dataSource.disconnectFromSession(session)
+            self.updateScreenAfterDisconnecting(from: session)
         }
 
         let cancelAction = UIAlertAction(title: "title-cancel".localized, style: .cancel)
@@ -183,17 +169,5 @@ extension WCSessionListViewController {
         dataSource.updateSessions(walletConnector.allWalletConnectSessions)
         setListContentState()
         sessionListView.collectionView.reloadData()
-    }
-
-    private func displayDisconnectionError(_ error: WalletConnector.Error) {
-        switch error {
-        case let .failedToDisconnect(session):
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "wallet-connect-session-disconnect-fail-message".localized(session.peerMeta.name)
-            )
-        default:
-            break
-        }
     }
 }
