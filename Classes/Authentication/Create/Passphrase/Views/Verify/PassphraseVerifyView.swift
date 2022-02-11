@@ -73,6 +73,7 @@ extension PassphraseVerifyView {
         titleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.titleTopInset)
             $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
     

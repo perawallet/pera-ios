@@ -60,7 +60,7 @@ final class QRCreationViewController: BaseScrollViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        prepareWholeScreenLayoutFor(qrCreationView)
+        addQRCreationView()
     }
     
     override func bindData() {
@@ -68,6 +68,15 @@ final class QRCreationViewController: BaseScrollViewController {
         
         if draft.isSelectable {
             qrCreationView.bindData(QRAddressLabelViewModel(title: draft.title ?? draft.address.shortAddressDisplay(), address: draft.address))
+        }
+    }
+}
+
+extension QRCreationViewController {
+    private func addQRCreationView() {
+        contentView.addSubview(qrCreationView)
+        qrCreationView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
     }
 }

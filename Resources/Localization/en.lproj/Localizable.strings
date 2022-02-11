@@ -640,7 +640,7 @@
 "tutorial-main-title-recover" = "Recover an Algorand Account";
 "tutorial-main-title-write" = "I'm Ready to Begin";
 "tutorial-main-title-passcode" = "Set PIN Code";
-"tutorial-main-title-ledger-connected" = "Start Using Pera";
+"tutorial-main-title-ledger-connected" = "Start Using Pera Wallet";
 
 "tutorial-action-title-passcode" = "Not now";
 "tutorial-action-title-ledger" = "How does it work?";
