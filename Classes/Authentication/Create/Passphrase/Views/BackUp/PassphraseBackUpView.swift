@@ -57,8 +57,9 @@ extension PassphraseBackUpView {
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
-            $0.leading.equalToSuperview().inset(theme.horizontalInset)
             $0.top.equalToSuperview().inset(theme.topInset)
+            $0.leading.equalToSuperview().inset(theme.horizontalInset)
+            $0.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
 
