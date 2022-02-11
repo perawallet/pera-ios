@@ -67,6 +67,7 @@ extension TransactionHistoryContextView {
         subtitleLabel.snp.makeConstraints {
             $0.leading.equalTo(titleLabel.snp.leading)
             $0.top.equalTo(titleLabel.snp.bottom)
+            $0.bottom.equalToSuperview().inset(theme.verticalInset)
         }
 
         subtitleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -106,7 +107,12 @@ extension TransactionHistoryContextView {
         _ viewModel: TransactionHistoryContextViewModel?
     ) {
         titleLabel.editText = viewModel?.title
-        subtitleLabel.editText = viewModel?.subtitle
+
+        if let subtitle = viewModel?.subtitle {
+            subtitleLabel.editText = subtitle
+        } else {
+            subtitleLabel.isHidden = true
+        }
 
         if let transactionAmountViewModel = viewModel?.transactionAmountViewModel {
             transactionAmountView.bindData(transactionAmountViewModel)
@@ -150,6 +156,7 @@ extension TransactionHistoryContextView {
     func prepareForReuse() {
         titleLabel.text = nil
         subtitleLabel.text = nil
+        subtitleLabel.isHidden = false
         secondaryAmountLabel.text = nil
         transactionAmountView.prepareForReuse()
     }
