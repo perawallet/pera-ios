@@ -109,8 +109,8 @@ extension RewardsInfoView {
 }
 
 extension RewardsInfoView: ViewModelBindable {
-    func bindData(_ viewModel: RewardDetailViewModel?) {
-        rewardsValueLabel.text = viewModel?.amount
+    func bindData(_ viewModel: RewardCalculationViewModel?) {
+        rewardsValueLabel.text = viewModel?.rewardAmount
     }
 }
 

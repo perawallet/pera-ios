@@ -18,11 +18,21 @@
 import UIKit
 import MacaroonUIKit
 
-final class RewardCalculationViewModel: ViewModel {
+final class RewardCalculationViewModel: ViewModel, Hashable {
+    private let account: Account
     private(set) var rewardAmount: String?
 
     init(account: Account, calculatedRewards: Decimal) {
+        self.account = account
         bindRewardAmount(from: account, and: calculatedRewards)
+    }
+
+    static func == (lhs: RewardCalculationViewModel, rhs: RewardCalculationViewModel) -> Bool {
+        return lhs.account == rhs.account && lhs.rewardAmount == rhs.rewardAmount
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(account.address.hashValue)
     }
 }
 

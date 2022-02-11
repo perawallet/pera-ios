@@ -23,15 +23,16 @@ struct AlgosDetailInfoViewModel:
     Hashable {
     private(set) var totalAmount: String?
     private(set) var secondaryValue: String?
-    private(set) var rewardsInfoViewModel: RewardDetailViewModel?
+    private(set) var rewardsInfoViewModel: RewardCalculationViewModel?
 
     init(
         _ account: Account,
-        _ currency: Currency?
+        _ currency: Currency?,
+        _ rewards: Decimal?
     ) {
         bindTotalAmount(from: account)
         bindSecondaryValue(from: account, with: currency)
-        bindRewardsInfoViewModel(from: account)
+        bindRewardsInfoViewModel(from: account, rewards: rewards ?? 0)
     }
 }
 
@@ -50,7 +51,7 @@ extension AlgosDetailInfoViewModel {
         secondaryValue = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
     }
 
-    private mutating func bindRewardsInfoViewModel(from account: Account) {
-        rewardsInfoViewModel = RewardDetailViewModel(account)
+    private mutating func bindRewardsInfoViewModel(from account: Account, rewards: Decimal) {
+        rewardsInfoViewModel = RewardCalculationViewModel(account: account, calculatedRewards: rewards)
     }
 }
