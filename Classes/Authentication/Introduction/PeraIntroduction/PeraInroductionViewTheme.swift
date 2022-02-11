@@ -70,7 +70,7 @@ struct PeraInroductionViewTheme:
         ]
 
         actionButton = [
-            .title("tutorial-main-title-ledger-connected".localized),
+            .title("pera-announcement-action-title".localized),
             .titleColor([ .normal(AppColors.Components.Button.Secondary.text) ]),
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(AppColors.Components.Button.Secondary.background)
