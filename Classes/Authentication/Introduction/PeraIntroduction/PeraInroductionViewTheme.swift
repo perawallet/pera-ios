@@ -79,6 +79,7 @@ struct PeraInroductionViewTheme:
         actionButtonCorner = Corner(radius: 4)
 
         descriptionLabel = [
+            .isInteractable(true),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.main),
             .textOverflow(FittingText())
