@@ -44,6 +44,9 @@ final class PeraIntroductionViewController: BaseViewController {
 
 extension PeraIntroductionViewController {
     private func addPeraIntroductionView() {
+        peraIntroductionView.customize(PeraInroductionViewTheme())
+        peraIntroductionView.bindData(PeraIntroductionViewModel())
+
         view.addSubview(peraIntroductionView)
         peraIntroductionView.snp.makeConstraints {
             $0.edges.equalToSuperview()

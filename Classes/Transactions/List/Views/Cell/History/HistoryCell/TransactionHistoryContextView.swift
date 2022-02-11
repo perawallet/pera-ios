@@ -107,12 +107,7 @@ extension TransactionHistoryContextView {
         _ viewModel: TransactionHistoryContextViewModel?
     ) {
         titleLabel.editText = viewModel?.title
-
-        if let subtitle = viewModel?.subtitle {
-            subtitleLabel.editText = subtitle
-        } else {
-            subtitleLabel.isHidden = true
-        }
+        subtitleLabel.editText = viewModel?.subtitle
 
         if let transactionAmountViewModel = viewModel?.transactionAmountViewModel {
             transactionAmountView.bindData(transactionAmountViewModel)
@@ -156,7 +151,6 @@ extension TransactionHistoryContextView {
     func prepareForReuse() {
         titleLabel.text = nil
         subtitleLabel.text = nil
-        subtitleLabel.isHidden = false
         secondaryAmountLabel.text = nil
         transactionAmountView.prepareForReuse()
     }

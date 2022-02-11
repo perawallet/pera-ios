@@ -20,6 +20,7 @@ import UIKit
 
 final class PeraIntroductionView:
     View,
+    ViewModelBindable,
     UIInteractionObservable,
     UIControlInteractionPublisher {
     weak var delegate: PeraIntroductionViewDelegate? /// <todo> Remove delegate
@@ -36,9 +37,10 @@ final class PeraIntroductionView:
     private lazy var peraLogoImageView = ImageView()
     private lazy var scrollView = UIScrollView()
     private lazy var contentView = UIView()
-    private lazy var firstTitleLabel = Label()
-    private lazy var secondTitleLabel = Label()
+    private lazy var titleLabel = Label()
+    private lazy var subtitleLabel = Label()
     private lazy var descriptionLabel = Label()
+    private lazy var actionButtonContainer = UIView()
     private lazy var actionButton = MacaroonUIKit.Button()
 
     override init(
@@ -46,18 +48,34 @@ final class PeraIntroductionView:
     ) {
         super.init(frame: frame)
 
-        customize(theme)
         linkInteractors()
+    }
+
+    private var isLayoutFinalized = false
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if bounds.isEmpty {
+            return
+        }
+
+        if !isLayoutFinalized {
+            isLayoutFinalized = true
+
+            addLinearGradient()
+        }
     }
 
     func customize(
         _ theme: PeraInroductionViewTheme
     ) {
-        scrollView.delegate = self
-        addScrollView()
+        self.theme = theme
+
+        addScrollView(theme)
         addContentView()
-        addFirstTitleLabel(theme)
-        addSecondTitleLabel(theme)
+        addTitleLabel(theme)
+        addSubtitleLabel(theme)
         addDescriptionLabel(theme)
         addActionButton(theme)
         addTopViewContainer(theme)
@@ -73,8 +91,27 @@ final class PeraIntroductionView:
         _ layoutSheet: NoLayoutSheet
     ) { }
 
+    func bindData(
+        _ viewModel: PeraIntroductionViewModel?
+    ) {
+        peraLogoImageView.image = viewModel?.logoImage?.uiImage
+        titleLabel.editText = viewModel?.title
+        subtitleLabel.editText = viewModel?.subtitle
+        descriptionLabel.editText = viewModel?.description
+    }
+
     func linkInteractors() {
         scrollView.delegate = self
+
+        startPublishing(event: .closeScreen, for: closeButton)
+        startPublishing(event: .closeScreen, for: actionButton)
+
+        descriptionLabel.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(didTapDescriptionLabel)
+            )
+        )
     }
 }
 
@@ -90,8 +127,6 @@ extension PeraIntroductionView {
             $0.leading.equalToSuperview().inset(theme.horizontalPadding)
             $0.fitToSize(theme.closeButtonSize)
         }
-
-        startPublishing(event: .closeScreen, for: closeButton)
     }
 
     private func addTopViewContainer(
@@ -118,11 +153,14 @@ extension PeraIntroductionView {
         }
     }
 
-    private func addScrollView() {
+    private func addScrollView(
+        _ theme: PeraInroductionViewTheme
+    ) {
         scrollView.alwaysBounceVertical = true
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
         scrollView.contentInsetAdjustmentBehavior = .never
+        scrollView.contentInset.top = theme.topContainerMaxHeight
 
         addSubview(scrollView)
         scrollView.snp.makeConstraints {
@@ -134,33 +172,30 @@ extension PeraIntroductionView {
         scrollView.addSubview(contentView)
         contentView.snp.makeConstraints {
             $0.width.equalToSuperview()
-            $0.height.equalToSuperview().inset(safeAreaBottom).priority(.low)
             $0.edges.equalToSuperview()
         }
-
-        scrollView.contentInset.top = theme.topContainerMaxHeight
     }
 
-    private func addFirstTitleLabel(
+    private func addTitleLabel(
         _ theme: PeraInroductionViewTheme
     ) {
-        firstTitleLabel.customizeAppearance(theme.firstTitleLabel)
+        titleLabel.customizeAppearance(theme.titleLabel)
 
-        contentView.addSubview(firstTitleLabel)
-        firstTitleLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(theme.firstTitleLabelTopPadding)
+        contentView.addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(theme.titleLabelTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
 
-    private func addSecondTitleLabel(
+    private func addSubtitleLabel(
         _ theme: PeraInroductionViewTheme
     ) {
-        secondTitleLabel.customizeAppearance(theme.secondTitleLabel)
+        subtitleLabel.customizeAppearance(theme.subtitleLabel)
 
-        contentView.addSubview(secondTitleLabel)
-        secondTitleLabel.snp.makeConstraints {
-            $0.top.equalTo(firstTitleLabel.snp.bottom).offset(theme.secondTitleLabelTopPadding)
+        contentView.addSubview(subtitleLabel)
+        subtitleLabel.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(theme.subtitleLabelTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
@@ -172,50 +207,44 @@ extension PeraIntroductionView {
 
         contentView.addSubview(descriptionLabel)
         descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(secondTitleLabel.snp.bottom).offset(theme.descriptionLabelTopPadding)
+            $0.top.equalTo(subtitleLabel.snp.bottom).offset(theme.descriptionLabelTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.lessThanOrEqualToSuperview().inset(theme.bottomPadding)
         }
-
-        descriptionLabel.addGestureRecognizer(
-            UITapGestureRecognizer(
-                target: self,
-                action: #selector(didTapDescriptionLabel)
-            )
-        )
     }
 
     private func addActionButton(
         _ theme: PeraInroductionViewTheme
     ) {
-        let containerView = UIView()
-        addSubview(containerView)
-        containerView.snp.makeConstraints {
+        addSubview(actionButtonContainer)
+        actionButtonContainer.snp.makeConstraints {
             $0.leading.trailing.bottom.equalToSuperview()
-            $0.fitToHeight(theme.linearGradientHeight)
+            $0.fitToHeight(theme.linearGradientHeight + safeAreaBottom)
         }
 
         actionButton.contentEdgeInsets = UIEdgeInsets(theme.actionButtonContentEdgeInsets)
         actionButton.draw(corner: theme.actionButtonCorner)
         actionButton.customizeAppearance(theme.actionButton)
 
-        containerView.addSubview(actionButton)
+        actionButtonContainer.addSubview(actionButton)
         actionButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomPadding)
         }
+    }
 
-        let layer: CAGradientLayer = CAGradientLayer()
-        layer.frame.size = CGSize(width: UIScreen.main.bounds.width, height: theme.linearGradientHeight)
-        layer.frame.origin = .zero
+    private func addLinearGradient() {
+        let layer = CAGradientLayer()
+        layer.frame = CGRect(
+            origin: .zero,
+            size: CGSize(width: bounds.width, height: theme.linearGradientHeight + safeAreaBottom)
+        )
 
         let color0 = AppColors.Shared.System.background.uiColor.withAlphaComponent(0).cgColor
         let color1 = AppColors.Shared.System.background.uiColor.cgColor
 
         layer.colors = [color0, color1]
-        containerView.layer.insertSublayer(layer, at: 0)
-
-        startPublishing(event: .closeScreen, for: actionButton)
+        actionButtonContainer.layer.insertSublayer(layer, at: 0)
     }
 }
 

@@ -24,8 +24,8 @@ struct PeraInroductionViewTheme:
     let closeButton: ButtonStyle
     let topViewContainer: ViewStyle
     let peraLogoImageView: ImageStyle
-    let firstTitleLabel: TextStyle
-    let secondTitleLabel: TextStyle
+    let titleLabel: TextStyle
+    let subtitleLabel: TextStyle
     let descriptionLabel: TextStyle
     let actionButton: ButtonStyle
     let actionButtonContentEdgeInsets: LayoutPaddings
@@ -37,8 +37,8 @@ struct PeraInroductionViewTheme:
     let peraLogoMaxSize: LayoutSize
     let peraLogoMinSize: LayoutSize
     let topContainerMinHeight: LayoutMetric
-    let firstTitleLabelTopPadding: LayoutMetric
-    let secondTitleLabelTopPadding: LayoutMetric
+    let titleLabelTopPadding: LayoutMetric
+    let subtitleLabelTopPadding: LayoutMetric
     let descriptionLabelTopPadding: LayoutMetric
     let closeButtonSize: LayoutSize
     let closeButtonTopPadding: LayoutMetric
@@ -56,50 +56,15 @@ struct PeraInroductionViewTheme:
             .backgroundColor(AppColors.Shared.Global.yellow400)
         ]
         peraLogoImageView = [
-            .image("icon-logo"),
             .contentMode(.scaleAspectFit)
         ]
 
-        let firstTitleLabelFont = Fonts.DMSans.medium.make(15).uiFont
-        let firstTitleLabelLineHeightMultiplier = 1.23
-        firstTitleLabel = [
-            .text(
-                "pera-announcement-title"
-                    .localized
-                    .attributed(
-                        [
-                            .font(firstTitleLabelFont),
-                            .lineHeightMultiplier(firstTitleLabelLineHeightMultiplier, firstTitleLabelFont),
-                            .paragraph([
-                                .textAlignment(.left),
-                                .lineBreakMode(.byWordWrapping),
-                                .lineHeightMultiple(firstTitleLabelLineHeightMultiplier)
-                            ]),
-                        ]
-                    )
-            ),
+        titleLabel = [
             .textColor(AppColors.Components.Text.main),
             .textOverflow(FittingText())
         ]
 
-        let secondTitleLabelFont = Fonts.DMSans.medium.make(32).uiFont
-        let secondTitleLabelLineHeightMultiplier = 0.96
-        secondTitleLabel = [
-            .text(
-                "pera-announcement-subtitle"
-                    .localized
-                    .attributed(
-                        [
-                            .font(secondTitleLabelFont),
-                            .lineHeightMultiplier(secondTitleLabelLineHeightMultiplier, secondTitleLabelFont),
-                            .paragraph([
-                                .textAlignment(.left),
-                                .lineBreakMode(.byWordWrapping),
-                                .lineHeightMultiple(secondTitleLabelLineHeightMultiplier)
-                            ]),
-                        ]
-                    )
-            ),
+        subtitleLabel = [
             .textColor(AppColors.Components.Text.main),
             .textOverflow(FittingText())
         ]
@@ -113,30 +78,8 @@ struct PeraInroductionViewTheme:
         actionButtonContentEdgeInsets = (14, 0, 14, 0)
         actionButtonCorner = Corner(radius: 4)
 
-        let descriptionLabelFont = Fonts.DMSans.regular.make(15).uiFont
-        let descriptionLabelLineHeightMultiplier = 1.23
         descriptionLabel = [
-            .text(
-                "pera-announcement-description"
-                    .localized
-                    .attributed([
-                        .font(descriptionLabelFont),
-                        .lineHeightMultiplier(descriptionLabelLineHeightMultiplier, descriptionLabelFont),
-                        .paragraph([
-                            .textAlignment(.left),
-                            .lineBreakMode(.byWordWrapping),
-                            .lineHeightMultiple(descriptionLabelLineHeightMultiplier)
-                        ]),
-                    ])
-                    .appendAttributesToRange(
-                        [
-                            .foregroundColor: AppColors.Components.Link.primary.uiColor,
-                            .font: descriptionLabelFont
-                        ],
-                        of: "pera-announcement-description-blog".localized
-                    )
-            ),
-            .font(descriptionLabelFont),
+            .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.main),
             .textOverflow(FittingText())
         ]
@@ -145,14 +88,14 @@ struct PeraInroductionViewTheme:
         bottomPadding = 16
         topContainerMaxHeight = 254
         topContainerMinHeight = 132
-        firstTitleLabelTopPadding = 40
-        secondTitleLabelTopPadding = 12
+        titleLabelTopPadding = 40
+        subtitleLabelTopPadding = 12
         descriptionLabelTopPadding = 20
         peraLogoMaxSize = (148, 64)
         peraLogoMinSize = (112, 48)
         closeButtonSize = (40, 40)
         closeButtonTopPadding = 10
-        let buttonHeight = 52.0
-        linearGradientHeight = bottomPadding + buttonHeight + UIApplication.shared.safeAreaBottom
+        let buttonHeight: LayoutMetric = 52
+        linearGradientHeight = bottomPadding + buttonHeight
     }
 }
