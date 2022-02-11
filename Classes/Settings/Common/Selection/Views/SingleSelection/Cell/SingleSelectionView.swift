@@ -27,8 +27,8 @@ final class SingleSelectionView: View {
     func customize(_ theme: SingleSelectionViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
-        addTitle(theme)
         addSelectionImage(theme)
+        addTitle(theme)
     }
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -43,6 +43,7 @@ extension SingleSelectionView {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.centerY.leading.equalToSuperview()
+            $0.trailing.equalTo(selectionImageView.snp.leading)
         }
     }
     

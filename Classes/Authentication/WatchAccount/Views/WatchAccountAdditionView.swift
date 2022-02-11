@@ -111,7 +111,7 @@ extension WatchAccountAdditionView {
     private func addQrButton(_ theme: WatchAccountAdditionViewTheme) {
         qrButton.customizeAppearance(theme.qr)
         
-        addressInputView.addSubview(qrButton)
+        addressInputView.addRightAccessoryItem(qrButton)
     }
 
     private func addPasteButton(_ theme: WatchAccountAdditionViewTheme) {
