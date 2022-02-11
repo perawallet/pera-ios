@@ -133,7 +133,7 @@ extension TransactionsViewController: CSVExportable {
                 "transaction-download-from".localized: transaction.sender ?? " ",
                 "transaction-detail-fee".localized: transaction.fee?.toAlgos.toAlgosStringForLabel ?? " ",
                 "transaction-detail-round".localized: transaction.lastRound ?? " ",
-                "transaction-detail-date".localized: transaction.date?.toFormat("MMMM dd, yyyy - HH:mm") ?? " ",
+                "transaction-detail-date".localized: transaction.date?.toFormat("MMMM dd, yyyy - HH:mm:ss") ?? " ",
                 "title-id".localized: transaction.id ?? " ",
                 "transaction-detail-note".localized: transaction.noteRepresentation() ?? " "
             ]
