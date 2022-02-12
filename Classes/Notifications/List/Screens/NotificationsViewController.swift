@@ -42,7 +42,31 @@ final class NotificationsViewController: BaseViewController {
             switch event {
             case .didUpdate(let snapshot):
                 self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.notificationsView.endRefreshing()
             }
+        }
+
+        listLayout.handlers.willDisplay = { [weak self] cell, indexPath in
+            guard let self = self else {
+                return
+            }
+
+            self.dataController.loadNextPageIfNeeded(for: indexPath)
+        }
+
+        listLayout.handlers.didSelectNotificationAt = { [weak self] indexPath in
+            guard let self = self else {
+                return
+            }
+
+            guard
+                let notification = self.dataController.notifications[safe: indexPath.item],
+                let notificationDetail = notification.detail
+            else {
+                return
+            }
+
+            self.openAssetDetail(from: notificationDetail)
         }
 
         dataController.load()
@@ -107,80 +131,25 @@ extension NotificationsViewController {
             reloadNotifications()
         }
     }
-}
 
-//extension NotificationsViewController: UICollectionViewDelegateFlowLayout {
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        guard let notification = dataSource.notification(at: indexPath.item),
-//              let notificationDetail = notification.detail else {
-//                  return
-//              }
-//
-//        openAssetDetail(from: notificationDetail)
-//    }
-//
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        if dataSource.shouldSendPaginatedRequest(at: indexPath.item) {
-//            dataSource.loadData(withRefresh: false, isPaginated: true)
-//        }
-//    }
-//
-//    func collectionView(
-//        _ collectionView: UICollectionView,
-//        layout collectionViewLayout: UICollectionViewLayout,
-//        sizeForItemAt indexPath: IndexPath
-//    ) -> CGSize {
-//        return NotificationCell.calculatePreferredSize(dataSource.viewModel(at: indexPath.item), with: NotificationViewTheme())
-//    }
-//
-//    private func openAssetDetail(from notificationDetail: NotificationDetail) {
-//        let accountDetails = dataSource.getUserAccount(from: notificationDetail)
-//        if let account = accountDetails.account {
-//            guard let accountHandle = sharedDataController.accountCollection[account.address] else {
-//                return
-//            }
-//
-//            let screen: Screen
-//            if let compoundAsset = accountDetails.compoundAsset {
-//                screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, compoundAsset: compoundAsset))
-//            } else {
-//                screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
-//            }
-//
-//            open(screen, by: .push)
-//        }
-//    }
-//}
-//
-//extension NotificationsViewController: NotificationsDataSourceDelegate {
-//    func notificationsDataSourceDidFetchNotifications(_ notificationsDataSource: NotificationsDataSource) {
-//        isInitialFetchCompleted = true
-//        notificationsView.endRefreshing()
-//
-//        if !isConnectedToInternet {
-//            notificationsView.setConnectionState()
-//        } else if notificationsDataSource.isEmpty {
-//            notificationsView.setEmptyState()
-//        } else {
-//            notificationsView.setNormalState()
-//        }
-//
-//        notificationsView.reloadData()
-//    }
-//
-//    func notificationsDataSourceDidFailToFetch(_ notificationsDataSource: NotificationsDataSource) {
-//        isInitialFetchCompleted = true
-//        notificationsView.endRefreshing()
-//
-//        if !isConnectedToInternet {
-//            notificationsView.setConnectionState()
-//        } else {
-//            notificationsView.setErrorState()
-//        }
-//
-//        notificationsView.reloadData()
-//    }
-//}
+    private func openAssetDetail(from notificationDetail: NotificationDetail) {
+        let accountDetails = dataController.getUserAccount(from: notificationDetail)
+        if let account = accountDetails.account {
+            guard let accountHandle = sharedDataController.accountCollection[account.address] else {
+                return
+            }
+
+            let screen: Screen
+            if let compoundAsset = accountDetails.compoundAsset {
+                screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, compoundAsset: compoundAsset))
+            } else {
+                screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
+            }
+
+            open(screen, by: .push)
+        }
+    }
+}
 
 extension NotificationsViewController: NotificationsViewDelegate {
     func notificationsViewDidRefreshList(_ notificationsView: NotificationsView) {
@@ -192,6 +161,6 @@ extension NotificationsViewController: NotificationsViewDelegate {
     }
     
     private func reloadNotifications() {
-        dataController.load()
+        dataController.reload()
     }
 }

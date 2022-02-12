@@ -27,7 +27,7 @@ final class NotificationsAPIDataController:
     private let api: ALGAPI
     private let sharedDataController: SharedDataController
     private var contacts = [Contact]()
-    private var notifications = [NotificationMessage]()
+    private(set) var notifications = [NotificationMessage]()
 
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.notificationsDataController")
 
@@ -50,6 +50,13 @@ final class NotificationsAPIDataController:
 }
 
 extension NotificationsAPIDataController {
+    func reload() {
+        self.notifications.removeAll()
+        self.nextCursor = nil
+
+        self.load()
+    }
+
     func load(isPaginated: Bool = false) {
         if !isPaginated {
             deliverLoadingSnapshot()
@@ -84,9 +91,9 @@ extension NotificationsAPIDataController {
                 self.nextCursor = notifications.nextCursor
 
                 if isPaginated {
-                    self.notifications.append(contentsOf: notifications.results)
+                    self.notifications.append(contentsOf: notifications.results.uniqued())
                 } else {
-                    self.notifications = notifications.results
+                    self.notifications = notifications.results.uniqued()
                 }
 
                 self.deliverContentSnapshot()
@@ -253,4 +260,16 @@ extension NotificationsAPIDataController {
             return false
         }
     }
+
+    func getUserAccount(from notificationDetail: NotificationDetail) -> (account: Account?, compoundAsset: CompoundAsset?) {
+            let anAddress = notificationDetail.senderAddress ?? notificationDetail.receiverAddress
+
+            guard let address = anAddress  else {
+                return (nil, nil)
+            }
+
+            let account = sharedDataController.accountCollection[address]?.value
+            let compoundAsset = notificationDetail.asset?.id.unwrap { account?[$0] }
+            return (account: account, compoundAsset: compoundAsset)
+        }
 }

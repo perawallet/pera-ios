@@ -118,3 +118,13 @@ extension NotificationMessageList {
         }
     }
 }
+
+extension NotificationMessage: Hashable {
+    static func == (lhs: NotificationMessage, rhs: NotificationMessage) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}

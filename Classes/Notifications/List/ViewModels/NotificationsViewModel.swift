@@ -18,11 +18,13 @@
 import UIKit
 import SwiftDate
 
-struct NotificationsViewModel: Hashable {
+final class NotificationsViewModel: Hashable {
     private(set) var notificationImage: UIImage?
     private(set) var title: NSAttributedString?
     private(set) var time: String?
     private(set) var isRead: Bool = true
+
+    private let notificationMessage: NotificationMessage
     
     init(
         notification: NotificationMessage,
@@ -31,15 +33,25 @@ struct NotificationsViewModel: Hashable {
         contact: Contact? = nil,
         latestReadTimestamp: TimeInterval? = nil
     ) {
+        self.notificationMessage = notification
+
         bindImage(notification: notification, contact: contact)
         bindTitle(notification: notification, senderAccount: senderAccount, receiverAccount: receiverAccount, contact: contact)
         bindTime(notification: notification)
         bindIsRead(notification: notification, latestReadTimestamp: latestReadTimestamp)
     }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(notificationMessage.id)
+    }
+
+    static func == (lhs: NotificationsViewModel, rhs: NotificationsViewModel) -> Bool {
+        lhs.notificationMessage.id == rhs.notificationMessage.id
+    }
 }
 
 extension NotificationsViewModel {
-    private mutating func bindImage(notification: NotificationMessage, contact: Contact?) {
+    private func bindImage(notification: NotificationMessage, contact: Contact?) {
         if let contact = contact {
             if let imageData = contact.image,
                 let image = UIImage(data: imageData) {
@@ -58,7 +70,7 @@ extension NotificationsViewModel {
         }
     }
 
-    private mutating func bindTitle(notification: NotificationMessage, senderAccount: Account?, receiverAccount: Account?, contact: Contact?) {
+    private func bindTitle(notification: NotificationMessage, senderAccount: Account?, receiverAccount: Account?, contact: Contact?) {
         guard let notificationDetail = notification.detail,
             let notificationType = notification.notificationType else {
             title = NSAttributedString(string: notification.message ?? "")
@@ -95,13 +107,13 @@ extension NotificationsViewModel {
         }
     }
 
-    private mutating func bindTime(notification: NotificationMessage) {
+    private func bindTime(notification: NotificationMessage) {
         if let notificationDate = notification.date {
             time = (Date() - notificationDate).ago.toRelative(style: RelativeFormatter.defaultStyle(), locale: Locales.autoUpdating)
         }
     }
 
-    private mutating func bindIsRead(notification: NotificationMessage, latestReadTimestamp: TimeInterval?) {
+    private func bindIsRead(notification: NotificationMessage, latestReadTimestamp: TimeInterval?) {
         guard let notificationLatestFetchTimestamp = latestReadTimestamp,
             let notificationDate = notification.date else {
             isRead = false
