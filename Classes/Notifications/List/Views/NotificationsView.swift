@@ -23,12 +23,8 @@ final class NotificationsView: View {
 
     private lazy var theme = NotificationsViewTheme()
     private lazy var refreshControl = UIRefreshControl()
-    private lazy var noConnectionView = NoContentView()
-    private lazy var contentStateView = ContentStateView()
-    private lazy var noContentView = NoContentView()
-    private lazy var errorView = NoContentWithActionView()
 
-    private lazy var notificationsCollectionView: UICollectionView = {
+    private(set) lazy var notificationsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = theme.cellSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
@@ -48,15 +44,6 @@ final class NotificationsView: View {
     }
 
     func customize(_ theme: NotificationsViewTheme) {
-        errorView.customize(theme.noContentWithActionViewCommonTheme)
-        errorView.bindData(ListErrorViewModel())
-
-        noContentView.customize(theme.noContentViewCommonTheme)
-        noContentView.bindData(NotificationsNoContentViewModel())
-
-        noConnectionView.customize(theme.noContentViewCommonTheme)
-        noConnectionView.bindData(NoInternetConnectionViewModel())
-
         addNotificationsCollectionView()
     }
 
@@ -65,15 +52,6 @@ final class NotificationsView: View {
     func prepareLayout(_ layoutSheet: LayoutSheet) {}
 
     func linkInteractors() {
-        errorView.setListeners()
-        errorView.handlers.didTapActionView = { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.delegate?.notificationsViewDidTryAgain(self)
-        }
-
         refreshControl.addTarget(self, action: #selector(didRefreshList), for: .valueChanged)
     }
 }
@@ -82,8 +60,7 @@ extension NotificationsView {
     private func addNotificationsCollectionView() {
         addSubview(notificationsCollectionView)
         notificationsCollectionView.pinToSuperview()
-        
-        notificationsCollectionView.backgroundView = contentStateView
+
         notificationsCollectionView.refreshControl = refreshControl
     }
 }
@@ -115,28 +92,6 @@ extension NotificationsView {
     func endRefreshing() {
         if refreshControl.isRefreshing {
             refreshControl.endRefreshing()
-        }
-    }
-    
-    func setEmptyState() {
-        notificationsCollectionView.contentState = .empty(noContentView)
-    }
-    
-    func setErrorState() {
-        notificationsCollectionView.contentState = .error(errorView)
-    }
-
-    func setConnectionState() {
-        notificationsCollectionView.contentState = .error(noConnectionView)
-    }
-    
-    func setNormalState() {
-        notificationsCollectionView.contentState = .none
-    }
-    
-    func setLoadingState() {
-        if !refreshControl.isRefreshing {
-            notificationsCollectionView.contentState = .loading
         }
     }
 }

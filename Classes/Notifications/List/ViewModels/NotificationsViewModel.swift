@@ -18,7 +18,7 @@
 import UIKit
 import SwiftDate
 
-final class NotificationsViewModel {
+struct NotificationsViewModel: Hashable {
     private(set) var notificationImage: UIImage?
     private(set) var title: NSAttributedString?
     private(set) var time: String?
@@ -39,7 +39,7 @@ final class NotificationsViewModel {
 }
 
 extension NotificationsViewModel {
-    private func bindImage(notification: NotificationMessage, contact: Contact?) {
+    private mutating func bindImage(notification: NotificationMessage, contact: Contact?) {
         if let contact = contact {
             if let imageData = contact.image,
                 let image = UIImage(data: imageData) {
@@ -58,7 +58,7 @@ extension NotificationsViewModel {
         }
     }
 
-    private func bindTitle(notification: NotificationMessage, senderAccount: Account?, receiverAccount: Account?, contact: Contact?) {
+    private mutating func bindTitle(notification: NotificationMessage, senderAccount: Account?, receiverAccount: Account?, contact: Contact?) {
         guard let notificationDetail = notification.detail,
             let notificationType = notification.notificationType else {
             title = NSAttributedString(string: notification.message ?? "")
@@ -95,13 +95,13 @@ extension NotificationsViewModel {
         }
     }
 
-    private func bindTime(notification: NotificationMessage) {
+    private mutating func bindTime(notification: NotificationMessage) {
         if let notificationDate = notification.date {
             time = (Date() - notificationDate).ago.toRelative(style: RelativeFormatter.defaultStyle(), locale: Locales.autoUpdating)
         }
     }
 
-    private func bindIsRead(notification: NotificationMessage, latestReadTimestamp: TimeInterval?) {
+    private mutating func bindIsRead(notification: NotificationMessage, latestReadTimestamp: TimeInterval?) {
         guard let notificationLatestFetchTimestamp = latestReadTimestamp,
             let notificationDate = notification.date else {
             isRead = false
