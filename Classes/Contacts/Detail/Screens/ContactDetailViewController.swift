@@ -231,7 +231,7 @@ extension ContactDetailViewController: AssetPreviewActionCellDelegate {
                 mode: .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.compoundAssets[itemIndex.item - 1].detail),
                 delegate: self
             ),
-            by: .presentWithoutNavigationController
+            by: .present
         )
 
         if itemIndex.item != 0 {

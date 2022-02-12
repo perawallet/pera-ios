@@ -59,6 +59,7 @@ extension WalletConnector {
     func disconnectFromSession(_ session: WCSession) {
         do {
             try walletConnectBridge.disconnect(from: session.sessionBridgeValue)
+            removeFromSessions(session)
         } catch {
             delegate?.walletConnector(self, didFailWith: .failedToDisconnect(session: session))
         }

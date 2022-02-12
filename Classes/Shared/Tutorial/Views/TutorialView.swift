@@ -90,6 +90,7 @@ extension TutorialView {
         warningLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(theme.warningTitlePaddings.leading)
             $0.trailing.equalToSuperview().inset(theme.horizontalInset)
+            $0.top.greaterThanOrEqualTo(descriptionLabel.snp.bottom).offset(theme.warningTitlePaddings.bottom)
             $0.bottom.equalTo(primaryActionButton.snp.top).offset(-theme.warningTitlePaddings.bottom)
         }
     }

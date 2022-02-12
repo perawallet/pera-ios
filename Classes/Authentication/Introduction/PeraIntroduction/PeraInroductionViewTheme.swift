@@ -40,6 +40,7 @@ struct PeraInroductionViewTheme:
     let titleLabelTopPadding: LayoutMetric
     let subtitleLabelTopPadding: LayoutMetric
     let descriptionLabelTopPadding: LayoutMetric
+    let descriptionLabelBottomPadding: LayoutMetric
     let closeButtonSize: LayoutSize
     let closeButtonTopPadding: LayoutMetric
     let linearGradientHeight: LayoutMetric
@@ -70,10 +71,10 @@ struct PeraInroductionViewTheme:
         ]
 
         actionButton = [
-            .title("tutorial-main-title-ledger-connected".localized),
+            .title("pera-announcement-action-title".localized),
             .titleColor([ .normal(AppColors.Components.Button.Secondary.text) ]),
             .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
+            .backgroundColor(AppColors.Components.Button.Primary.background)
         ]
         actionButtonContentEdgeInsets = (14, 0, 14, 0)
         actionButtonCorner = Corner(radius: 4)
@@ -92,11 +93,12 @@ struct PeraInroductionViewTheme:
         titleLabelTopPadding = 40
         subtitleLabelTopPadding = 12
         descriptionLabelTopPadding = 20
+        descriptionLabelBottomPadding = 2
         peraLogoMaxSize = (148, 64)
         peraLogoMinSize = (112, 48)
         closeButtonSize = (40, 40)
         closeButtonTopPadding = 10
         let buttonHeight: LayoutMetric = 52
-        linearGradientHeight = bottomPadding + buttonHeight
+        linearGradientHeight = bottomPadding + buttonHeight + 38
     }
 }
