@@ -70,15 +70,23 @@ final class ALGAppLaunchController:
     
     func launch(
         deeplinkWithSource src: DeeplinkSource?
-    ) { 
+    ) {
+        var appLaunchStore = ALGAppLaunchStore()
+        
         if !session.hasAuthentication() {
             /// <note>
             /// App is deleted, but the keychain has the private keys.
+            /// This should be the first operation since it cleans out the application data.
             session.reset(includingContacts: false)
+
+            appLaunchStore.isOnboarding = true
+
             firstLaunchUI(.onboarding)
-            ALGAppLaunchStore().saveFirstOnboardPera()
+
             return
         }
+        
+        appLaunchStore.isOnboarding = false
         
         if let deeplinkSource = src {
             suspend(deeplinkWithSource: deeplinkSource)
@@ -364,14 +372,14 @@ extension ALGAppLaunchController {
 
 struct ALGAppLaunchStore: Storable {
     typealias Object = Any
-
-    private let firstOnboard = "com.algorand.first.onboard"
-
-    var isFirstOnboard: Bool {
-        return userDefaults.bool(forKey: firstOnboard)
+    
+    var isOnboarding: Bool {
+        get { userDefaults.bool(forKey: isOnboardingKey) }
+        set {
+            userDefaults.set(newValue, forKey: isOnboardingKey)
+            userDefaults.synchronize()
+        }
     }
 
-    func saveFirstOnboardPera() {
-        userDefaults.set(true, forKey: firstOnboard)
-    }
+    private let isOnboardingKey = "com.algorand.store.app.isOnboarding"
 }
