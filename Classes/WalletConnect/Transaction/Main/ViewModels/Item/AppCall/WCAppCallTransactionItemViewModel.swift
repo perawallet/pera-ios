@@ -23,13 +23,13 @@ class WCAppCallTransactionItemViewModel {
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
     init(transaction: WCTransaction, account: Account?) {
-        setHasWarning(from: transaction)
+        setHasWarning(from: transaction, and: account)
         setTitle(from: transaction)
         setAccountInformationViewModel(from: account)
     }
 
-    private func setHasWarning(from transaction: WCTransaction) {
-        guard let transactionDetail = transaction.transactionDetail else {
+    private func setHasWarning(from transaction: WCTransaction, and account: Account?) {
+        guard let transactionDetail = transaction.transactionDetail, account != nil else {
             return
         }
 

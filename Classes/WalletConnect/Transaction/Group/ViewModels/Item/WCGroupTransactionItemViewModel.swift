@@ -27,7 +27,7 @@ class WCGroupTransactionItemViewModel {
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
     init(transaction: WCTransaction, account: Account?, assetInformation: AssetInformation?, currency: Currency?) {
-        setHasWarning(from: transaction)
+        setHasWarning(from: transaction, and: account)
         setTitle(from: transaction, and: account)
         setIsAlgos(from: transaction)
         setAmount(from: transaction, and: assetInformation)
@@ -36,8 +36,8 @@ class WCGroupTransactionItemViewModel {
         setAccountInformationViewModel(from: account, with: assetInformation)
     }
 
-    private func setHasWarning(from transaction: WCTransaction) {
-        guard let transactionDetail = transaction.transactionDetail else {
+    private func setHasWarning(from transaction: WCTransaction, and account: Account?) {
+        guard let transactionDetail = transaction.transactionDetail, account != nil else {
             return
         }
 
