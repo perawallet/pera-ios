@@ -19,6 +19,10 @@ import Foundation
 import UIKit
 
 final class AccountDetailViewController: PageContainer {
+    typealias EventHandler = (Event) -> Void
+    
+    var eventHandler: EventHandler?
+    
     private lazy var theme = Theme()
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var assetListScreen = AccountAssetListViewController(accountHandle: accountHandle, configuration: configuration)
@@ -181,14 +185,8 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
     }
 
     private func removeAccount() {
-        guard let user = session?.authenticatedUser,
-              let accountInformation = session?.accountInformation(from: accountHandle.value.address) else {
-            return
-        }
-
-        user.removeAccount(accountInformation)
-        session?.authenticatedUser = user
-        popScreen()
+        sharedDataController.resetPollingAfterRemoving(accountHandle.value)
+        eventHandler?(.didRemove)
     }
 }
 
@@ -256,5 +254,11 @@ extension AccountDetailViewController {
         case assets
         case nfts
         case transactions
+    }
+}
+
+extension AccountDetailViewController {
+    enum Event {
+        case didRemove
     }
 }

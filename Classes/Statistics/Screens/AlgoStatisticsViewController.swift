@@ -131,6 +131,11 @@ final class AlgoStatisticsViewController:
             }
         }
         
+        observe(notification: CurrencySelectionViewController.didChangePreferredCurrency) {
+            [weak self] _ in
+            guard let self = self else { return }
+            self.resetData()
+        }
         observeWhenApplicationDidBecomeActive {
             [weak self] _ in
             guard let self = self else { return }
@@ -225,5 +230,9 @@ extension AlgoStatisticsViewController {
     
     private func reloadData() {
         dataController.reload()
+    }
+    
+    private func resetData() {
+        dataController.reset()
     }
 }

@@ -569,8 +569,18 @@ extension HomeViewController {
                 self.selectedAccountHandle = account
                 
                 if account.isAvailable {
+                    let eventHandler: AccountDetailViewController.EventHandler = {
+                        [weak self] event in
+                        guard let self = self else { return }
+                        
+                        switch event {
+                        case .didRemove:
+                            self.popScreen()
+                            self.dataController.reload()
+                        }
+                    }
                     open(
-                        .accountDetail(accountHandle: account),
+                        .accountDetail(accountHandle: account, eventHandler: eventHandler),
                         by: .push
                     )
                 } else {

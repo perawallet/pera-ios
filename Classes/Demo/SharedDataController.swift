@@ -37,7 +37,10 @@ protocol SharedDataController: AnyObject {
     func startPolling()
     func stopPolling()
     func resetPolling()
-    func resetPollingWithCurrency()
+    func resetPollingAfterRemoving(
+        _ account: Account
+    )
+    func resetPollingAfterPreferredCurrencyWasChanged()
     
     func add(
         _ observer: SharedDataControllerObserver

@@ -32,6 +32,12 @@ extension CurrencyHandle {
     var isAvailable: Bool {
         return value != nil
     }
+    var isFailure: Bool {
+        switch self {
+        case .failed: return true
+        default: return false
+        }
+    }
     var value: Currency? {
         switch self {
         case .ready(let currency, _): return currency
