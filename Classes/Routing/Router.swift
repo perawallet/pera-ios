@@ -455,10 +455,8 @@ class Router:
                 tutorial: tutorial,
                 configuration: configuration
             )
-        case let .transactionTutorial(isInitialDisplay, delegate):
-            let transactionTutorialViewController = TransactionTutorialViewController(isInitialDisplay: isInitialDisplay, configuration: configuration)
-            transactionTutorialViewController.delegate = delegate
-            viewController = transactionTutorialViewController
+        case let .transactionTutorial(isInitialDisplay):
+            viewController = TransactionTutorialViewController(isInitialDisplay: isInitialDisplay, configuration: configuration)
         case let .recoverOptions(delegate):
             let accountRecoverOptionsViewController = AccountRecoverOptionsViewController(configuration: configuration)
             accountRecoverOptionsViewController.delegate = delegate

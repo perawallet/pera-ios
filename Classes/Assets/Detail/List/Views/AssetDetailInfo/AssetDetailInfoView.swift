@@ -87,15 +87,17 @@ extension AssetDetailInfoView {
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
 
-        secondaryValueLabel.addSeparator(theme.separator, padding: theme.topSeparatorTopPadding)
+        balanceLabel.addSeparator(theme.separator, padding: theme.topSeparatorTopPadding)
     }
 
     private func addAssetNameLabel(_ theme: AssetDetailInfoViewTheme) {
+        horizontalStackView.spacing = theme.verifiedImageHorizontalSpacing
+
         addSubview(horizontalStackView)
         horizontalStackView.snp.makeConstraints {
             $0.top.equalTo(balanceLabel.snp.bottom).offset(theme.assetNameLabelTopPadding)
             $0.leading.equalTo(yourBalanceTitleLabel)
-            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalPadding)
         }
 
         assetNameLabel.customizeAppearance(theme.assetNameLabel)

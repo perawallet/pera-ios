@@ -290,7 +290,8 @@ extension EditContactViewController: QRScannerViewControllerDelegate {
 extension EditContactViewController: TouchDetectingScrollViewDelegate {
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
         if editContactView.deleteContactButton.frame.contains(point) ||
-            editContactView.addressInputView.frame.contains(point) {
+            editContactView.addressInputView.frame.contains(point) ||
+            editContactView.nameInputView.frame.contains(point) {
             return
         }
 

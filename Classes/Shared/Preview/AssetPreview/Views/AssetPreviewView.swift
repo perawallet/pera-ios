@@ -55,6 +55,7 @@ extension AssetPreviewView {
     private func addAssetTitleVerticalStackView(_ theme: AssetPreviewViewTheme) {
         addSubview(assetTitleVerticalStackView)
         assetTitleVerticalStackView.axis = .vertical
+        assetTitleVerticalStackView.alignment = .leading
 
         assetTitleVerticalStackView.snp.makeConstraints {
             $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)

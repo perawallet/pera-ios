@@ -35,13 +35,26 @@ final class TransactionFilterView: View {
         return collectionView
     }()
 
+    private lazy var closeButtonContainer = UIView()
     private lazy var closeButton = ViewFactory.Button.makeSecondaryButton("title-close".localized)
+
+    private var isLayoutFinalized = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         customize(theme)
         setListeners()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if !isLayoutFinalized {
+            isLayoutFinalized = true
+
+            addLinearGradient()
+        }
     }
 
     func setListeners() {
@@ -74,11 +87,34 @@ extension TransactionFilterView {
     }
 
     private func addCloseButton(_ theme: TransactionFilterViewTheme) {
-        addSubview(closeButton)
+        addSubview(closeButtonContainer)
+        closeButtonContainer.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.fitToHeight(theme.linearGradientHeight + safeAreaBottom)
+        }
+
+        closeButtonContainer.addSubview(closeButton)
         closeButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomInset)
         }
+    }
+
+    private func addLinearGradient() {
+        let layer = CAGradientLayer()
+        layer.frame = CGRect(
+            origin: .zero,
+            size: CGSize(
+                width: bounds.width,
+                height: theme.linearGradientHeight + safeAreaBottom
+            )
+        )
+
+        let color0 = AppColors.Shared.System.background.uiColor.withAlphaComponent(0).cgColor
+        let color1 = AppColors.Shared.System.background.uiColor.cgColor
+
+        layer.colors = [color0, color1]
+        closeButtonContainer.layer.insertSublayer(layer, at: 0)
     }
 }
 

@@ -130,19 +130,19 @@ extension WCUnsignedRequestView {
         buttonsContainerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(theme.buttonContainerHeight)
-            make.bottom.equalToSuperview().inset(theme.buttonBottomInset)
+            make.bottom.equalToSuperview()
         }
 
         buttonsContainerView.addSubview(cancelButton)
         cancelButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().inset(theme.buttonBottomInset)
             make.leading.equalToSuperview().inset(theme.horizontalPadding)
             make.height.equalTo(theme.buttonHeight)
         }
 
         buttonsContainerView.addSubview(confirmButton)
         confirmButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().inset(theme.buttonBottomInset)
             make.leading.equalTo(cancelButton.snp.trailing).offset(theme.buttonPadding)
             make.trailing.equalToSuperview().inset(theme.horizontalPadding)
             make.height.equalTo(cancelButton)

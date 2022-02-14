@@ -122,7 +122,7 @@ extension EditNoteScreen {
 }
 
 extension EditNoteScreen: EditNoteViewDelegate {
-    func editEditNoteViewDidTapDoneButton(_ editNoteView: EditNoteView) {
+    func editNoteViewDidReturn(_ editNoteView: EditNoteView) {
         didTapDoneButton()
     }
 }

@@ -24,12 +24,12 @@ struct RecoverInputViewTheme: StyleSheet, LayoutSheet {
     let title: TextStyle
     let number: TextStyle
     let inputTextField: TextInputStyle
-    let seperator: ViewStyle
+    let focusIndicator: ViewStyle
 
     let size: LayoutSize
     let defaultInset: LayoutMetric 
     let numberVerticalInset: LayoutMetric
-    let separatorHeight: LayoutMetric
+    let focusIndicatorHeight: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = UIColor.clear
@@ -51,15 +51,17 @@ struct RecoverInputViewTheme: StyleSheet, LayoutSheet {
             .tintColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
             .autocorrectionType(.no),
+            .clearButtonMode(.whileEditing),
             .autocapitalizationType(.none)
         ]
-        self.seperator = [
+        
+        self.focusIndicator = [
             .backgroundColor(AppColors.Shared.Layer.gray)
         ]
 
         self.size = (158, 48)
         self.defaultInset = 8
         self.numberVerticalInset = 12
-        self.separatorHeight = 1
+        self.focusIndicatorHeight = 1
     }
 }

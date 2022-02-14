@@ -13,14 +13,16 @@
 // limitations under the License.
 
 //
-//   NewSendTransactionPreviewView.swift
+//   SendTransactionPreviewView.swift
 
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class NewSendTransactionPreviewView: View {
+final class SendTransactionPreviewView: View {
+    private lazy var theme = SendTransactionPreviewViewTheme()
+
     private lazy var verticalStackView = UIStackView()
     private(set) lazy var amountView = TransactionMultipleAmountInformationView()
     private(set) lazy var userView = TitledTransactionAccountNameView()
@@ -29,15 +31,13 @@ final class NewSendTransactionPreviewView: View {
     private(set) lazy var balanceView = TransactionMultipleAmountInformationView()
     private(set) lazy var noteView = TransactionTextInformationView()
 
-    private lazy var theme = TransactionDetailViewTheme()
-
     init() {
         super.init(frame: .zero)
 
         customize(theme)
     }
 
-    func customize(_ theme: TransactionDetailViewTheme) {
+    func customize(_ theme: SendTransactionPreviewViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         addVerticalStackView(theme)
         addAmountView(theme)
@@ -61,8 +61,8 @@ final class NewSendTransactionPreviewView: View {
     }
 }
 
-extension NewSendTransactionPreviewView {
-    private func addVerticalStackView(_ theme: TransactionDetailViewTheme) {
+extension SendTransactionPreviewView {
+    private func addVerticalStackView(_ theme: SendTransactionPreviewViewTheme) {
         verticalStackView.axis = .vertical
         verticalStackView.spacing = theme.verticalStackViewSpacing
         addSubview(verticalStackView)
@@ -70,11 +70,13 @@ extension NewSendTransactionPreviewView {
         verticalStackView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.verticalStackViewTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.bottom.lessThanOrEqualToSuperview()
+            $0.bottom.lessThanOrEqualToSuperview().inset(
+                safeAreaBottom + theme.bottomInset
+            )
         }
     }
 
-    private func addAmountView(_ theme: TransactionDetailViewTheme) {
+    private func addAmountView(_ theme: SendTransactionPreviewViewTheme) {
         amountView.customize(theme.bigMultipleAmountInformationViewTheme)
         amountView.bindData(
             TransactionCurrencyAmountInformationViewModel(
@@ -86,7 +88,7 @@ extension NewSendTransactionPreviewView {
 
     }
 
-    private func addUserView(_ theme: TransactionDetailViewTheme) {
+    private func addUserView(_ theme: SendTransactionPreviewViewTheme) {
         userView.customize(theme.transactionAccountInformationViewCommonTheme)
 
         verticalStackView.addArrangedSubview(userView)
@@ -94,12 +96,12 @@ extension NewSendTransactionPreviewView {
         amountView.addSeparator(theme.separator, padding: theme.separatorTopPadding)
     }
 
-    private func addOpponentView(_ theme: TransactionDetailViewTheme) {
+    private func addOpponentView(_ theme: SendTransactionPreviewViewTheme) {
         opponentView.customize(theme.transactionAccountInformationViewCommonTheme)
         verticalStackView.addArrangedSubview(opponentView)
     }
 
-    private func addFeeView(_ theme: TransactionDetailViewTheme) {
+    private func addFeeView(_ theme: SendTransactionPreviewViewTheme) {
         feeView.customize(theme.commonTransactionAmountInformationViewTheme)
         feeView.bindData(
             TransactionAmountInformationViewModel(
@@ -112,7 +114,7 @@ extension NewSendTransactionPreviewView {
         verticalStackView.setCustomSpacing(theme.bottomPaddingForSeparator, after: feeView)
     }
 
-    private func addBalanceView(_ theme: TransactionDetailViewTheme) {
+    private func addBalanceView(_ theme: SendTransactionPreviewViewTheme) {
         balanceView.customize(theme.smallMultipleAmountInformationViewTheme)
         balanceView.bindData(
             TransactionCurrencyAmountInformationViewModel(
@@ -123,7 +125,7 @@ extension NewSendTransactionPreviewView {
         verticalStackView.addArrangedSubview(balanceView)
     }
 
-    private func addNoteView(_ theme: TransactionDetailViewTheme) {
+    private func addNoteView(_ theme: SendTransactionPreviewViewTheme) {
         noteView.customize(theme.transactionTextInformationViewCommonTheme)
         noteView.bindData(
             TransactionTextInformationViewModel(
@@ -135,7 +137,7 @@ extension NewSendTransactionPreviewView {
     }
 }
 
-extension NewSendTransactionPreviewView: ViewModelBindable {
+extension SendTransactionPreviewView: ViewModelBindable {
     func bindData(_ viewModel: SendTransactionPreviewViewModel?) {
         if let amountViewMode = viewModel?.amountViewMode {
             amountView.bindData(

@@ -23,7 +23,6 @@ import MagpieHipo
 import Alamofire
 import MacaroonUIKit
 
-
 final class SendTransactionScreen: BaseViewController {
     private(set) lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
@@ -43,6 +42,7 @@ final class SendTransactionScreen: BaseViewController {
 
     private var amount: String = "0"
     private var isAmountResetted: Bool = true
+
     private var note: String? {
         didSet {
             if draft.lockedNote != nil {
@@ -65,7 +65,7 @@ final class SendTransactionScreen: BaseViewController {
         return draft.from.amount == decimalAmount.toMicroAlgos
     }
 
-    private lazy var transactionTutorialStorage = TransactionTutorialStorage()
+    private var isViewFirstAppeared = true
 
     init(draft: SendTransactionDraft, configuration: ViewControllerConfiguration) {
         self.draft = draft
@@ -91,8 +91,9 @@ final class SendTransactionScreen: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if !transactionTutorialStorage.isTransactionTutorialDisplayed() {
-            displayTransactionTutorial(isInitialDisplay: true)
+        if isViewFirstAppeared {
+            presentTransactionTutorialIfNeeded()
+            isViewFirstAppeared = false
         }
     }
 
@@ -146,6 +147,20 @@ final class SendTransactionScreen: BaseViewController {
         maxButton.addTarget(self, action: #selector(didTapMax), for: .touchUpInside)
         nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
         noteButton.addTarget(self, action: #selector(didTapNote), for: .touchUpInside)
+    }
+}
+
+extension SendTransactionScreen {
+    private func presentTransactionTutorialIfNeeded() {
+        let transactionTutorialStorage = TransactionTutorialStorage()
+
+        if transactionTutorialStorage.isTransactionTutorialDisplayed {
+            return
+        }
+
+        transactionTutorialStorage.setTransactionTutorialDisplayed()
+
+        displayTransactionTutorial(isInitialDisplay: true)
     }
 }
 
@@ -231,20 +246,12 @@ extension SendTransactionScreen {
     }
     
     private func displayTransactionTutorial(isInitialDisplay: Bool) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + (isInitialDisplay ? 0.1 : 0)) {
-            self.modalTransition.perform(
-                .transactionTutorial(isInitialDisplay: isInitialDisplay, delegate: self),
-                by: .presentWithoutNavigationController
-            )
-        }
-    }
-}
-
-extension SendTransactionScreen: TransactionTutorialViewControllerDelegate {
-    func transactionTutorialViewControllerDidConfirmTutorial(_ transactionTutorialViewController: TransactionTutorialViewController) {
-        let transactionTutorialStorage = TransactionTutorialStorage()
-        transactionTutorialStorage.setTransactionTutorialDisplayed()
-        transactionTutorialViewController.dismissScreen()
+        modalTransition.perform(
+            .transactionTutorial(
+                isInitialDisplay: isInitialDisplay
+            ),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
@@ -381,7 +388,7 @@ extension SendTransactionScreen: TransactionSignChecking {
         case .requiredMinAlgo:
             let minimumAmount = calculateMininmumAmount(for: draft.from)
 
-            errorTitle = "asset-min-transaction-error-title"
+            errorTitle = "asset-min-transaction-error-title".localized
             errorMessage = "send-algos-minimum-amount-custom-error".localized(params: minimumAmount.toAlgos.toAlgosStringForLabel ?? ""
             )
         }

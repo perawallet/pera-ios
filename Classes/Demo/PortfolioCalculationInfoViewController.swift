@@ -28,6 +28,8 @@ final class PortfolioCalculationInfoViewController:
     var eventHandler: EventHandler?
     
     private lazy var contextView = VStackView()
+
+    private lazy var closeActionViewContainer = UIView()
     private lazy var closeActionView =
         ViewFactory.Button.makeSecondaryButton("title-close".localized)
     
@@ -50,10 +52,18 @@ final class PortfolioCalculationInfoViewController:
         super.viewDidLoad()
         build()
     }
-    
+
+    private var isLayoutFinalized = false
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        updateScrollWhenViewDidLayoutSubviews()
+
+        if !isLayoutFinalized {
+            isLayoutFinalized = true
+
+            updateScrollWhenViewDidLayoutSubviews()
+            addLinearGradient()
+        }
     }
     
     private func build() {
@@ -82,6 +92,7 @@ extension PortfolioCalculationInfoViewController {
             theme.footerVerticalPaddings.top +
             closeActionView.bounds.height +
             theme.footerVerticalPaddings.bottom
+        /// <todo>: This creates a problem when scrolling up and down.
         scrollView.setContentInset(bottom: bottom)
     }
     
@@ -131,7 +142,16 @@ extension PortfolioCalculationInfoViewController {
     }
     
     private func addCloseAction() {
-        view.addSubview(closeActionView)
+        view.addSubview(closeActionViewContainer)
+        closeActionViewContainer.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.fitToHeight(
+                view.safeAreaBottom +
+                theme.linearGradientHeight
+            )
+        }
+
+        closeActionViewContainer.addSubview(closeActionView)
         closeActionView.snp.makeConstraints {
             $0.leading == theme.contentHorizontalPaddings.leading
             $0.bottom == theme.footerVerticalPaddings.bottom + view.safeAreaBottom
@@ -142,6 +162,23 @@ extension PortfolioCalculationInfoViewController {
             target: self,
             action: #selector(close)
         )
+    }
+
+    private func addLinearGradient() {
+        let layer = CAGradientLayer()
+        layer.frame = CGRect(
+            origin: .zero,
+            size: CGSize(
+                width: view.bounds.width,
+                height: view.safeAreaBottom + theme.linearGradientHeight
+            )
+        )
+
+        let color0 = AppColors.Shared.System.background.uiColor.withAlphaComponent(0).cgColor
+        let color1 = AppColors.Shared.System.background.uiColor.cgColor
+
+        layer.colors = [color0, color1]
+        closeActionViewContainer.layer.insertSublayer(layer, at: 0)
     }
 }
 

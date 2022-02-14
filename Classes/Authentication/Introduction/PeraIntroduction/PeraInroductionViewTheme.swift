@@ -99,6 +99,7 @@ struct PeraInroductionViewTheme:
         closeButtonSize = (40, 40)
         closeButtonTopPadding = 10
         let buttonHeight: LayoutMetric = 52
-        linearGradientHeight = bottomPadding + buttonHeight + 38
+        let additionalLinearGradientHeightForButtonTop: LayoutMetric = 4
+        linearGradientHeight = bottomPadding + buttonHeight + additionalLinearGradientHeightForButtonTop
     }
 }

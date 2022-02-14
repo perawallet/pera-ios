@@ -206,10 +206,10 @@ extension AddContactViewController: QRScannerViewControllerDelegate {
 extension AddContactViewController: TouchDetectingScrollViewDelegate {
     func scrollViewDidDetectTouchEvent(scrollView: TouchDetectingScrollView, in point: CGPoint) {
         if addContactView.addContactButton.frame.contains(point) ||
-            addContactView.addressInputView.frame.contains(point) {
+            addContactView.addressInputView.frame.contains(point) ||
+            addContactView.nameInputView.frame.contains(point) {
             return
         }
-        
         contentView.endEditing(true)
     }
 }

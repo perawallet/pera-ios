@@ -61,6 +61,10 @@ class PageContainer: BaseViewController, TabbedContainer, UICollectionViewDataSo
         pagesView.alwaysBounceHorizontal = true
         pagesView.alwaysBounceVertical = false
         pagesView.isPagingEnabled = true
+
+        if let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer {
+            pagesView.panGestureRecognizer.require(toFail: interactivePopGestureRecognizer)
+        }
     }
 
     func addPageBar() {

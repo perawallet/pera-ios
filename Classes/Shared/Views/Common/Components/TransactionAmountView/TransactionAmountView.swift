@@ -19,12 +19,12 @@ import UIKit
 import MacaroonUIKit
 
 final class TransactionAmountView: View {
-    private lazy var amountStackView = UIStackView()
     private lazy var signLabel = Label()
     private lazy var amountLabel = Label()
 
     func customize(_ theme: TransactionAmountViewTheme) {
-        addAmountStackView(theme)
+        addSignLabel(theme)
+        addAmountLabel(theme)
     }
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}
@@ -33,21 +33,27 @@ final class TransactionAmountView: View {
 }
 
 extension TransactionAmountView {
-    private func addAmountStackView(_ theme: TransactionAmountViewTheme) {
-        addSubview(amountStackView)
-        amountStackView.distribution = .equalSpacing
-        amountStackView.alignment = .center
-
-        amountStackView.fitToIntrinsicSize()
-        signLabel.fitToIntrinsicSize()
-        amountLabel.fitToIntrinsicSize()
-        
-        amountStackView.pinToSuperview()
-
+    private func addSignLabel(
+        _ theme: TransactionAmountViewTheme
+    ) {
         signLabel.customizeAppearance(theme.signLabel)
-        amountStackView.addArrangedSubview(signLabel)
+
+        addSubview(signLabel)
+        signLabel.snp.makeConstraints {
+            $0.leading.centerY.equalToSuperview()
+        }
+    }
+
+    private func addAmountLabel(
+        _ theme: TransactionAmountViewTheme
+    ) {
         amountLabel.customizeAppearance(theme.amountLabel)
-        amountStackView.addArrangedSubview(amountLabel)
+
+        addSubview(amountLabel)
+        amountLabel.snp.makeConstraints {
+            $0.leading.equalTo(signLabel.snp.trailing)
+            $0.top.bottom.trailing.equalToSuperview()
+        }
     }
 }
 

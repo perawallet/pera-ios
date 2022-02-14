@@ -209,7 +209,11 @@ extension PeraIntroductionView {
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(subtitleLabel.snp.bottom).offset(theme.descriptionLabelTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.bottom.lessThanOrEqualToSuperview().inset(theme.descriptionLabelBottomPadding + theme.linearGradientHeight + safeAreaBottom)
+            $0.bottom.lessThanOrEqualToSuperview().inset(
+                theme.descriptionLabelBottomPadding +
+                theme.linearGradientHeight +
+                safeAreaBottom
+            )
         }
     }
 

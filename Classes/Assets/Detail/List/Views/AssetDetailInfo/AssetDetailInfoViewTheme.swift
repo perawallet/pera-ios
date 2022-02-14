@@ -39,6 +39,7 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
     let assetNameLabelTopPadding: LayoutMetric
     let bottomPadding: LayoutMetric
     let secondaryValueLabelTopPadding: LayoutMetric
+    let verifiedImageHorizontalSpacing: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -86,5 +87,6 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
         self.bottomSeparatorTopPadding = -67
         self.bottomPadding = 65
         self.secondaryValueLabelTopPadding = 4
+        self.verifiedImageHorizontalSpacing = 8
     }
 }

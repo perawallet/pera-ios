@@ -26,6 +26,7 @@ extension SendTransactionPreviewScreen {
         let nextButtonLeadingInset: LayoutMetric
         let nextButtonHeight: LayoutMetric
         let nextButtonBottomInset: LayoutMetric
+        let linearGradientHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
             self.nextButtonStyle = ButtonPrimaryTheme(family)
@@ -33,6 +34,9 @@ extension SendTransactionPreviewScreen {
             self.nextButtonLeadingInset = 24
             self.nextButtonHeight = 52
             self.nextButtonBottomInset = 16
+            let buttonHeight: LayoutMetric = 52
+            let additionalLinearGradientHeightForButtonTop: LayoutMetric = 4
+            self.linearGradientHeight = nextButtonBottomInset + buttonHeight + additionalLinearGradientHeightForButtonTop
         }
     }
 }

@@ -30,6 +30,7 @@ struct PortfolioCalculationInfoViewControllerTheme:
     var infoTopPadding: LayoutMetric
     var spacingBetweenErrorAndInfo: LayoutMetric
     var footerVerticalPaddings: LayoutVerticalPaddings
+    var linearGradientHeight: LayoutMetric
     
     init(
         _ family: LayoutFamily
@@ -44,5 +45,11 @@ struct PortfolioCalculationInfoViewControllerTheme:
         self.infoTopPadding = 12
         self.spacingBetweenErrorAndInfo = 28
         self.footerVerticalPaddings = (32, 16)
+        let buttonHeight: LayoutMetric = 52
+        let additionalLinearGradientHeightForButtonTop: LayoutMetric = 4
+        self.linearGradientHeight =
+        footerVerticalPaddings.bottom +
+        additionalLinearGradientHeightForButtonTop +
+        buttonHeight
     }
 }
