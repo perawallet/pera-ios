@@ -1,4 +1,4 @@
-// Copyright 2022 Pera Wallet, LDA
+// Copyright 2019 Algorand, Inc.
 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,18 +13,30 @@
 // limitations under the License.
 
 //
-//   AlgosValueResponse.swift
+//   AlgoPriceAttributeViewTheme.swift
 
 import Foundation
-import MagpieCore
-import MacaroonUtils
+import MacaroonUIKit
+import UIKit
 
-final class AlgosValueResponse: ALGAPIModel {
-    let coin: String
-    let history: [AlgosUSDValue]
+struct AlgoPriceAttributeViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var icon: ImageStyle
+    var iconContentEdgeInsets: LayoutOffset
+    var title: TextStyle
+    var loadingCorner: Corner
 
-    init() {
-        self.coin = "ALGO"
-        self.history = []
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.icon = [
+            .contentMode(.left)
+        ]
+        self.iconContentEdgeInsets = (4, 0)
+        self.title = [
+            .textOverflow(SingleLineFittingText())
+        ]
+        self.loadingCorner = 4
     }
 }

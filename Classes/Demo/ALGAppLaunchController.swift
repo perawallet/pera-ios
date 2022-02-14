@@ -59,11 +59,18 @@ final class ALGAppLaunchController:
         sharedDataController.remove(self)
     }
     
+    func prepareForLaunch() {
+        /// <todo>
+        /// Authenticated user is decoded everytime its getter is called.
+        let authenticatedUser = session.authenticatedUser
+        
+        setupPreferredNetwork(authenticatedUser)
+        setupAccountsPreordering(authenticatedUser)
+    }
+    
     func launch(
         deeplinkWithSource src: DeeplinkSource?
-    ) {
-        prepareForLaunch()
-        
+    ) { 
         if !session.hasAuthentication() {
             /// <note>
             /// App is deleted, but the keychain has the private keys.
@@ -182,15 +189,6 @@ extension ALGAppLaunchController {
 }
 
 extension ALGAppLaunchController {
-    private func prepareForLaunch() {
-        /// <todo>
-        /// Authenticated user is decoded everytime its getter is called.
-        let authenticatedUser = session.authenticatedUser
-        
-        setupPreferredNetwork(authenticatedUser)
-        setupAccountsPreordering(authenticatedUser)
-    }
-    
     private func firstLaunchUI(
         _ state: AppLaunchUIState
     ) {

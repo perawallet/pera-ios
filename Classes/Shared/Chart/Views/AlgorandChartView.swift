@@ -18,9 +18,11 @@
 import Charts
 import UIKit
 import Foundation
+import MacaroonUIKit
 
-class AlgorandChartView: BaseView {
-
+/// <todo>
+/// Refactor
+final class AlgorandChartView: BaseView {
     weak var delegate: AlgorandChartViewDelegate?
 
     private lazy var lineChartView: AlgorandLineChartView = {
@@ -50,6 +52,8 @@ class AlgorandChartView: BaseView {
         return lineChartView
     }()
 
+    private lazy var loadingView = ImageView()
+
     private let chartCustomizer: AlgorandChartViewCustomizable
 
     init(chartCustomizer: AlgorandChartViewCustomizable) {
@@ -63,7 +67,8 @@ class AlgorandChartView: BaseView {
     }
 
     override func prepareLayout() {
-        prepareWholeScreenLayoutFor(lineChartView)
+        addLineChartView()
+        addLoadingView()
     }
 
     override func linkInteractors() {
@@ -74,6 +79,25 @@ class AlgorandChartView: BaseView {
 
         let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handleHighlightingChart(_:)))
         lineChartView.addGestureRecognizer(panGestureRecognizer)
+    }
+}
+
+extension AlgorandChartView {
+    private func addLineChartView() {
+        addSubview(lineChartView)
+        lineChartView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+
+    private func addLoadingView() {
+        loadingView.image = "chart-loading-bg".uiImage
+        loadingView.contentMode = .scaleAspectFit
+
+        addSubview(loadingView)
+        loadingView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 }
 
@@ -143,12 +167,19 @@ extension AlgorandChartView: ChartViewDelegate {
 }
 
 extension AlgorandChartView {
-    func bind(_ viewModel: AlgorandChartViewModelConvertible) {
-        lineChartView.clear()
-
-        if let data = viewModel.chartData() {
-            lineChartView.data = data
+    func bind(_ viewModel: AlgorandChartViewModel?) {
+        if let anyData = viewModel?.data {
+            lineChartView.data = anyData
+        } else {
+            lineChartView.clear()
         }
+
+        lineChartView.isHidden = viewModel == nil
+        loadingView.isHidden = viewModel != nil
+    }
+
+    func clear() {
+        lineChartView.clear()
     }
 }
 

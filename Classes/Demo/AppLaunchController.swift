@@ -22,6 +22,7 @@ import SwiftDate
 import UIKit
 
 protocol AppLaunchController: AnyObject {
+    func prepareForLaunch()
     func launch(
         deeplinkWithSource src: DeeplinkSource?
     )

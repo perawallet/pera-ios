@@ -72,7 +72,7 @@ struct PeraInroductionViewTheme:
 
         actionButton = [
             .title("pera-announcement-action-title".localized),
-            .titleColor([ .normal(AppColors.Components.Button.Secondary.text) ]),
+            .titleColor([ .normal(AppColors.Components.Button.Primary.text) ]),
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(AppColors.Components.Button.Primary.background)
         ]

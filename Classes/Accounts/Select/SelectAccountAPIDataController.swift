@@ -61,8 +61,6 @@ extension SelectAccountAPIDataController {
             }
         case .didFinishRunning:
             deliverContentSnapshot()
-        default:
-            break
         }
     }
 }
