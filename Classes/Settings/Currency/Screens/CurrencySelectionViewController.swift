@@ -18,6 +18,10 @@
 import UIKit
 
 final class CurrencySelectionViewController: BaseViewController {
+    static var didChangePreferredCurrency: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.preferredCurrency.didChange")
+    }
+    
     private lazy var theme = Theme()
     private lazy var currencySelectionView = SingleSelectionListView()
     
@@ -84,9 +88,16 @@ extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
         log(CurrencyChangeEvent(currencyId: selectedCurrency.id))
 
         sharedDataController.stopPolling()
+        
         api?.session.preferredCurrency = selectedCurrency.id
-        sharedDataController.resetPollingWithCurrency()
         currencySelectionView.reloadData()
+        
+        sharedDataController.resetPollingAfterPreferredCurrencyWasChanged()
+        
+        NotificationCenter.default.post(
+            name: Self.didChangePreferredCurrency,
+            object: self
+        )
     }
     
     func collectionView(

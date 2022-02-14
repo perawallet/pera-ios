@@ -100,9 +100,8 @@ extension SharedAPIDataController {
         startPolling()
     }
 
-    func resetPollingWithCurrency() {
+    func resetPollingAfterPreferredCurrencyWasChanged() {
         currency = .idle
-
         resetPolling()
     }
 }

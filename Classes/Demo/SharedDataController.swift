@@ -40,7 +40,7 @@ protocol SharedDataController: AnyObject {
     func resetPollingAfterRemoving(
         _ account: Account
     )
-    func resetPollingWithCurrency()
+    func resetPollingAfterPreferredCurrencyWasChanged()
     
     func add(
         _ observer: SharedDataControllerObserver

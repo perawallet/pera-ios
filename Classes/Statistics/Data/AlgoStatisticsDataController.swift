@@ -87,11 +87,21 @@ extension AlgoStatisticsDataController {
         cancelLoadingAlgoPrice()
         
         /// <note>
-        /// Reset state on reloading if the last one is erroneous.
+        /// Reset state on reloading if the last one is unavailable.
         switch algoPriceValues[selectedAlgoPriceTimeFrame] {
+        case .none: eventHandler?(.didUpdateAlgoPrice(nil))
+        case .success: break
         case .failure: eventHandler?(.didUpdateAlgoPrice(nil))
-        default: break
         }
+        
+        loadAlgoPrice()
+    }
+    
+    func reset() {
+        cancelLoadingAlgoPrice()
+        
+        $algoPriceViewModels.modify { $0 = [:] }
+        eventHandler?(.didUpdateAlgoPrice(nil))
         
         loadAlgoPrice()
     }
@@ -158,7 +168,7 @@ extension AlgoStatisticsDataController {
             return
         }
         
-        if !newCurrency.isAvailable &&
+        if newCurrency.isFailure &&
            currency.isAvailable {
            return
         }
