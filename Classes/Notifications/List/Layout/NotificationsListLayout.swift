@@ -45,9 +45,8 @@ extension NotificationsListLayout: UICollectionViewDelegateFlowLayout {
 
         switch itemIdentifier {
         case .loading:
-            let width = collectionView.bounds.width
-            let height = collectionView.bounds.height - collectionView.adjustedContentInset.bottom
-            return CGSize((width, height))
+            let width = collectionView.bounds.width - 48
+            return CGSize((width, 104))
         case .notification(let viewModel):
             return NotificationCell.calculatePreferredSize(viewModel, with: NotificationViewTheme())
         case .noContent:

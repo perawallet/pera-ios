@@ -26,7 +26,7 @@ final class SelectAccountAPIDataController:
     private var lastSnapshot: Snapshot?
 
     private let sharedDataController: SharedDataController
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.assetListViewDataController")
+    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.selectAccountDataController")
 
     init(
         _ sharedDataController: SharedDataController

@@ -34,16 +34,16 @@ final class NotificationsDataSource: UICollectionViewDiffableDataSource<Notifica
                 cell.bindData(item)
                 return cell
             case .loading:
-                return collectionView.dequeue(AssetPreviewLoadingCell.self, at: indexPath)
+                return collectionView.dequeue(NotificationLoadingCell.self, at: indexPath)
             case .noContent:
                 let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
-                cell.bindData(AssetAdditionNoContentViewModel())
+                cell.bindData(NotificationsNoContentViewModel())
                 return cell
             }
         }
 
         collectionView.register(NotificationCell.self)
-        collectionView.register(AssetPreviewLoadingCell.self)
+        collectionView.register(NotificationLoadingCell.self)
         collectionView.register(NoContentCell.self)
     }
 }
