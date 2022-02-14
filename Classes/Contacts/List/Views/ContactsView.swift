@@ -37,7 +37,7 @@ final class ContactsView: View {
         return collectionView
     }()
     
-    private lazy var contentStateView = ContentStateView()
+    private lazy var contentStateView = ContentStateView(bottomInset: -theme.bottomInset)
 
     override init(frame: CGRect) {
         super.init(frame: frame)

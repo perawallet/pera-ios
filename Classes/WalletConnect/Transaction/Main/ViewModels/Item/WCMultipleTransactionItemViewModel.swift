@@ -27,7 +27,10 @@ class WCMultipleTransactionItemViewModel {
     }
 
     private func setHasWarning(from transactions: [WCTransaction]) {
-        hasWarning = transactions.contains { $0.transactionDetail?.hasRekeyOrCloseAddress ?? false }
+        hasWarning = transactions.contains {
+            ($0.transactionDetail?.hasRekeyOrCloseAddress ?? false) &&
+            $0.signerAccount != nil
+        }
     }
 
     private func setDetail(from transactions: [WCTransaction]) {

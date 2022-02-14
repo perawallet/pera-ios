@@ -24,14 +24,14 @@ class WCAssetConfigTransactionItemViewModel {
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
     init(transaction: WCTransaction, account: Account?, assetInformation: AssetInformation?) {
-        setHasWarning(from: transaction)
+        setHasWarning(from: transaction, and: account)
         setTitle(from: transaction, and: account)
         setDetail(from: transaction, and: account, with: assetInformation)
         setAccountInformationViewModel(from: account, with: assetInformation)
     }
 
-    private func setHasWarning(from transaction: WCTransaction) {
-        guard let transactionDetail = transaction.transactionDetail else {
+    private func setHasWarning(from transaction: WCTransaction, and account: Account?) {
+        guard let transactionDetail = transaction.transactionDetail, account != nil else {
             return
         }
 

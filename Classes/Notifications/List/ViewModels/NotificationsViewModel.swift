@@ -18,11 +18,13 @@
 import UIKit
 import SwiftDate
 
-final class NotificationsViewModel {
+final class NotificationsViewModel: Hashable {
     private(set) var notificationImage: UIImage?
     private(set) var title: NSAttributedString?
     private(set) var time: String?
     private(set) var isRead: Bool = true
+
+    private let notificationMessage: NotificationMessage
     
     init(
         notification: NotificationMessage,
@@ -31,10 +33,20 @@ final class NotificationsViewModel {
         contact: Contact? = nil,
         latestReadTimestamp: TimeInterval? = nil
     ) {
+        self.notificationMessage = notification
+
         bindImage(notification: notification, contact: contact)
         bindTitle(notification: notification, senderAccount: senderAccount, receiverAccount: receiverAccount, contact: contact)
         bindTime(notification: notification)
         bindIsRead(notification: notification, latestReadTimestamp: latestReadTimestamp)
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(notificationMessage.id)
+    }
+
+    static func == (lhs: NotificationsViewModel, rhs: NotificationsViewModel) -> Bool {
+        lhs.notificationMessage.id == rhs.notificationMessage.id
     }
 }
 

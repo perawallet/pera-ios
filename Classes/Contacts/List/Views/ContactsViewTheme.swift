@@ -26,6 +26,7 @@ struct ContactsViewTheme: StyleSheet, LayoutSheet {
     let horizontalPadding: LayoutMetric
     let cellSpacing: LayoutMetric
     let contentInset: LayoutPaddings
+    let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -37,5 +38,8 @@ struct ContactsViewTheme: StyleSheet, LayoutSheet {
         self.horizontalPadding = 24
         self.cellSpacing = 0
         self.contentInset = (28, 0, 0, 0)
+
+        let tabBarHeight = 50.0
+        self.bottomInset = 36 + tabBarHeight
     }
 }

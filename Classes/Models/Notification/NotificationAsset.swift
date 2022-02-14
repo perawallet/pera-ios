@@ -43,6 +43,6 @@ extension NotificationAsset {
         case name = "asset_name"
         case code = "unit_name"
         case url
-        case fractionDecimals
+        case fractionDecimals = "fraction_decimals"
     }
 }
