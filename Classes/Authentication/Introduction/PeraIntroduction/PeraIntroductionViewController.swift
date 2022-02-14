@@ -60,16 +60,16 @@ extension PeraIntroductionViewController: PeraIntroductionViewDelegate {
     }
 }
 
-struct PeraIntroductionStore: Storable {
+struct PeraAppLaunchStore: Storable {
     typealias Object = Any
-
-    private let firstPeraLaunch = "com.algorand.first.pera.launch"
-
-    var isFirstPeraLaunch: Bool {
-        return !userDefaults.bool(forKey: firstPeraLaunch)
+    
+    var isOnboarded: Bool {
+        get { userDefaults.bool(forKey: isOnboardedKey) }
+        set {
+            userDefaults.set(newValue, forKey: isOnboardedKey)
+            userDefaults.synchronize()
+        }
     }
 
-    func saveFirstLaunchPera() {
-        userDefaults.set(true, forKey: firstPeraLaunch)
-    }
+    private let isOnboardedKey = "com.algorand.store.peraApp.isOnboarded"
 }

@@ -311,13 +311,20 @@ extension HomeViewController {
     }
 
     private func presentPeraIntroductionIfNeeded() {
-        let peraIntroductionStore = PeraIntroductionStore()
+        var peraAppLaunchStore = PeraAppLaunchStore()
+        
+        let appLaunchStore = ALGAppLaunchStore()
 
-        if !peraIntroductionStore.isFirstPeraLaunch {
+        if appLaunchStore.isOnboarding {
+            peraAppLaunchStore.isOnboarded = true
             return
         }
 
-        peraIntroductionStore.saveFirstLaunchPera()
+        if peraAppLaunchStore.isOnboarded {
+            return
+        }
+        
+        peraAppLaunchStore.isOnboarded = true
 
         open(.peraIntroduction, by: .present)
     }
