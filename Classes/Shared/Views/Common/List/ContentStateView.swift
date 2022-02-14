@@ -45,7 +45,14 @@ class ContentStateView: BaseView {
     private var errorStateView: UIView?
     
     private(set) lazy var loadingIndicator = LoadingIndicator()
-    
+
+    private let bottomInset: CGFloat
+
+    init(bottomInset: CGFloat = 0.0) {
+        self.bottomInset = bottomInset
+        super.init(frame: .zero)
+    }
+
     // MARK: Setup
     
     override func configureAppearance() {
@@ -64,7 +71,9 @@ class ContentStateView: BaseView {
         addSubview(contentView)
         
         contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(safeAreaLayoutGuide.snp.top)
+            make.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(bottomInset)
         }
     }
     
