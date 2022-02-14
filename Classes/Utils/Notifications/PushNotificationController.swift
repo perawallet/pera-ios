@@ -117,17 +117,25 @@ extension PushNotificationController {
         }
     }
     
-    func revokeDevice() {
+    func revokeDevice(
+        completion handler: @escaping BoolHandler
+    ) {
         UIApplication.shared.unregisterForRemoteNotifications()
-        
-        guard let token = token else {
+        if let token = token {
+            self.token = nil
+            let draft = DeviceDeletionDraft(pushToken: token)
+            api.unregisterDevice(draft) { response in
+                switch response {
+                case .success:
+                    handler(true)
+                case .failure:
+                    handler(false)
+                }
+            }
             return
         }
-        
-        self.token = nil
-        
-        let draft = DeviceDeletionDraft(pushToken: token)
-        api.unregisterDevice(draft)
+
+        handler(true)
     }
 }
 

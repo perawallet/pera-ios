@@ -226,19 +226,24 @@ extension SettingsViewController: SettingsDataSourceDelegate {
     }
     
     private func logout() {
-        sharedDataController.resetPolling()
-        session?.reset(includingContacts: true)
-        walletConnector.resetAllSessions()
-        NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
-        pushNotificationController.revokeDevice()
+        guard let rootViewController = UIApplication.shared.rootViewController() else {
+            return
+        }
 
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-        loadingController?.stopLoadingAfter(seconds: 1.5, on: .main) { [weak self] in
+        rootViewController.deleteAllData() { [weak self] isCompleted in
             guard let self = self else {
                 return
             }
 
-            self.presentLogoutSuccessScreen()
+            if isCompleted {
+                self.presentLogoutSuccessScreen()
+                return
+            }
+
+            self.bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "pass-phrase-verify-sdk-error".localized
+            )
         }
     }
 

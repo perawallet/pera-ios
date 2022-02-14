@@ -255,12 +255,31 @@ extension RootViewController: WCMainTransactionScreenDelegate {
 }
 
 extension RootViewController {
-    func deleteAllData() {
-        appConfiguration.sharedDataController.resetPolling()
-        appConfiguration.session.reset(includingContacts: true)
-        appConfiguration.walletConnector.resetAllSessions()
-        NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
-        pushNotificationController.revokeDevice()
+    func deleteAllData(
+        onCompletion handler: @escaping BoolHandler
+    ) {
+        appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
+        pushNotificationController.revokeDevice() { [weak self] isCompleted in
+            guard let self = self else {
+                return
+            }
+
+            if isCompleted {
+                self.appConfiguration.session.reset(includingContacts: true)
+                self.appConfiguration.walletConnector.resetAllSessions()
+                self.appConfiguration.sharedDataController.stopPolling()
+                NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
+            }
+
+            asyncMain(afterDuration: 0.5) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.appConfiguration.loadingController.stopLoading()
+                handler(isCompleted)
+            }
+        }
     }
 }
 

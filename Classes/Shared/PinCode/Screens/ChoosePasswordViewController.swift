@@ -310,8 +310,25 @@ extension ChoosePasswordViewController {
 
 extension ChoosePasswordViewController: PinLimitViewControllerDelegate {
     func pinLimitViewControllerDidResetAllData(_ pinLimitViewController: PinLimitViewController) {
-        UIApplication.shared.rootViewController()?.deleteAllData()
-        launchOnboarding()
+        guard let rootViewContorller = UIApplication.shared.rootViewController() else {
+            return
+        }
+
+        rootViewContorller.deleteAllData { [weak self] isCompleted in
+            guard let self = self else {
+                return
+            }
+
+            if isCompleted {
+                self.launchOnboarding()
+                return
+            }
+
+            self.bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "pass-phrase-verify-sdk-error".localized
+            )
+        }
     }
 }
 

@@ -131,7 +131,7 @@
 "recover-from-seed-name-placeholder" = "Example name";
 "recover-from-seed-passphrase-title" = "Passphrase";
 "pass-pharase-enter-placeholder" = "Enter Passphrase or Scan QR";
-"recover-from-seed-verify-pop-up-explanation" = "Welcome to Pera!\nYour account is ready to use.";
+"recover-from-seed-verify-pop-up-explanation" = "Welcome to Pera Wallet!\nYour account is ready to use.";
 "recover-from-seed-verify-pop-up-title" = "Account is verified!";
 "recover-from-seed-verify-exist-error" = "This account already exists";
 "recover-title" = "Recover";
@@ -635,7 +635,7 @@
 "tutorial-description-passcode" = "This 6-digit PIN will be required to use the Pera Wallet. We highly recommend creating a PIN to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-local" = "Your FaceID or TouchID will be required to use the app. We recommend enabling biometric authentication to help increase wallet security in the event your phone is stolen.";
 "tutorial-description-ledger" = "Please make sure your Ledger is unlocked with Bluetooth enabled";
-"tutorial-description-ledger-connected" = "Welcome to Pera! Your account is\nready to use";
+"tutorial-description-ledger-connected" = "Welcome to Pera Wallet! Your account is\nready to use";
 
 "tutorial-main-title-back-up" = "I Understand";
 "tutorial-main-title-recover" = "Recover an Algorand Account";
