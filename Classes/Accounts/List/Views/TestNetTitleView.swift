@@ -16,67 +16,55 @@
 //  TestNetTitleView.swift
 
 import UIKit
+import MacaroonUIKit
 
-class TestNetTitleView: BaseView {
-    
-    private let layout = Layout<LayoutConstants>()
-    
-    private lazy var titleLabel: UILabel = {
-        UILabel()
-            .withFont(UIFont.font(withWeight: .semiBold(size: 16.0)))
-            .withTextColor(Colors.Text.primary)
-            .withAlignment(.left)
-    }()
-    
-    private lazy var testNetLabel: UILabel = {
-        let label = UILabel()
-            .withFont(UIFont.font(withWeight: .bold(size: 10.0)))
-            .withTextColor(Colors.ButtonText.primary)
-            .withAlignment(.center)
-            .withText("title-testnet".localized)
-        label.backgroundColor = Colors.General.testNetBanner
-        label.layer.cornerRadius = 12.0
-        label.layer.masksToBounds = true
-        return label
-    }()
-    
-    override func prepareLayout() {
-        backgroundColor = AppColors.Shared.System.background.uiColor
-        setupTestNetLabelLayout()
-        setupTitleLabelLayout()
-    }
-}
+final class TestNetTitleView: View {
+    private lazy var titleLabel = Label()
+    private lazy var testNetLabel = Label()
 
-extension TestNetTitleView {
-    private func setupTestNetLabelLayout() {
-        addSubview(testNetLabel)
-        
-        testNetLabel.snp.makeConstraints { make in
-            make.trailing.top.bottom.equalToSuperview()
-            make.size.equalTo(layout.current.testNetLabelSize)
+    var title: String? {
+        didSet {
+            titleLabel.text = title
         }
     }
     
-    private func setupTitleLabelLayout() {
+    func customize(_ theme: TestNetTitleViewTheme) {
+        addTitleLabel(theme)
+        addTestNetLabel(theme)
+    }
+
+    func prepareLayout(
+        _ layoutSheet: LayoutSheet
+    ) {}
+
+    func customizeAppearance(
+        _ styleSheet: ViewStyle
+    ) {}
+}
+
+extension TestNetTitleView {
+    private func addTitleLabel(_ theme: TestNetTitleViewTheme) {
+        titleLabel.customizeAppearance(theme.titleLabel)
+        titleLabel.contentEdgeInsets = (0, 0 , 0, 8)
+
         addSubview(titleLabel)
-        
-        titleLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.trailing.equalTo(testNetLabel.snp.leading).offset(layout.current.titleOffset)
-            make.centerY.equalTo(testNetLabel)
+        titleLabel.snp.makeConstraints {
+            $0.leading == 0
+            $0.centerY == 0
         }
     }
-}
 
-extension TestNetTitleView {
-    func setTitle(_ title: String) {
-        titleLabel.text = title
-    }
-}
+    private func addTestNetLabel(_ theme: TestNetTitleViewTheme) {
+        testNetLabel.customizeAppearance(theme.testNetLabel)
+        testNetLabel.draw(corner: theme.testNetLabelCorner)
 
-extension TestNetTitleView {
-    private struct LayoutConstants: AdaptiveLayoutConstants {
-        let titleOffset: CGFloat = -8.0
-        let testNetLabelSize = CGSize(width: 63.0, height: 24.0)
+        addSubview(testNetLabel)
+        testNetLabel.snp.makeConstraints {
+            $0.leading == titleLabel.snp.trailing
+            $0.trailing == 0
+            $0.top == 0
+            $0.bottom == 0
+            $0.fitToSize(theme.testNetLabelSize)
+        }
     }
 }

@@ -20,11 +20,12 @@ import UIKit
 import Charts
 
 struct AlgoUSDValueChartDataSetCustomizer: AlgorandLineChartDataSetCustomizable {
+    private let algoPriceChangeRate: AlgoPriceChangeRate
 
-    private let valueChangeStatus: ValueChangeStatus
-
-    init(valueChangeStatus: ValueChangeStatus) {
-        self.valueChangeStatus = valueChangeStatus
+    init(
+        algoPriceChangeRate: AlgoPriceChangeRate
+    ) {
+        self.algoPriceChangeRate = algoPriceChangeRate
     }
     
     var mode: LineChartDataSet.Mode {
@@ -32,13 +33,13 @@ struct AlgoUSDValueChartDataSetCustomizer: AlgorandLineChartDataSetCustomizable 
     }
 
     var color: UIColor {
-        switch valueChangeStatus {
+        switch algoPriceChangeRate {
         case .increased:
             return Colors.Chart.Line.increasing
+        case .same:
+            return Colors.Chart.Line.stable
         case .decreased:
             return Colors.Chart.Line.decreasing
-        case .stable:
-            return Colors.Chart.Line.stable
         }
     }
 
@@ -60,13 +61,13 @@ struct AlgoUSDValueChartDataSetCustomizer: AlgorandLineChartDataSetCustomizable 
     }
 
     var highlightColor: UIColor {
-        switch valueChangeStatus {
+        switch algoPriceChangeRate {
         case .increased:
             return Colors.Chart.Line.increasing
+        case .same:
+            return Colors.Chart.Line.stable
         case .decreased:
             return Colors.Chart.Line.decreasing
-        case .stable:
-            return Colors.Chart.Line.stable
         }
     }
 

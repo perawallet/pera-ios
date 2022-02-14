@@ -16,24 +16,16 @@
 //   AccountListViewTheme.swift
 
 import MacaroonUIKit
+import UIKit
 
 struct AccountListViewTheme: LayoutSheet, StyleSheet {
-    let titleLabel: TextStyle
     let backgroundColor: Color
     let cellSpacing: LayoutMetric
-    let verticalPadding: LayoutMetric
-    let accountListBottomInset: LayoutMetric
+    let contentInset: LayoutPaddings
 
     init(_ family: LayoutFamily) {
-        self.titleLabel = [
-            .textAlignment(.center),
-            .textOverflow(FittingText()),
-            .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.medium.make(15))
-        ]
         self.backgroundColor = AppColors.Shared.System.background
         self.cellSpacing = 0
-        self.verticalPadding = 22
-        self.accountListBottomInset = -20.0
+        self.contentInset = (12, 24, 32 + UIApplication.shared.safeAreaBottom, 24)
     }
 }

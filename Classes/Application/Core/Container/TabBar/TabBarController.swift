@@ -132,6 +132,11 @@ extension TabBarController {
             guard let self = self else { return }
             self.navigateToAccountSelection(.receive)
         }
+        aView.observe(event: .close) {
+            [weak self] in
+            guard let self = self else { return }
+            self.toggleTransactionOptions()
+        }
         return aView
     }
     

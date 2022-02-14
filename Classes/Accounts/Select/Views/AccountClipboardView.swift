@@ -30,7 +30,7 @@ final class AccountClipboardView: View, TripleShadowDrawable, ViewModelBindable 
 
     private lazy var titleLabel = UILabel()
     private lazy var addressLabel = UILabel()
-    private(set) lazy var copyButton = UIButton()
+    private lazy var copyIconView = UIImageView()
 
     func customize(_ theme: AccountClipboardViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -42,7 +42,7 @@ final class AccountClipboardView: View, TripleShadowDrawable, ViewModelBindable 
 
         addTitleLabel(theme)
         addAddressLabel(theme)
-        addCopyButton(theme)
+        addCopyIconView(theme)
 
         titleLabel.text = "account-select-clipboard-title".localized
     }
@@ -76,14 +76,14 @@ extension AccountClipboardView {
         }
     }
 
-    private func addCopyButton(_ theme: AccountClipboardViewTheme) {
-        copyButton.customizeAppearance(theme.copyButton)
-        addSubview(copyButton)
-        copyButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(theme.copyButtonTrailingInset)
-            make.bottom.equalToSuperview().inset(theme.copyButtonBottomInset)
-            make.fitToSize(theme.copyButtonSize)
-            make.leading.equalTo(addressLabel.snp.trailing).offset(theme.copyButtonLeadingOffset).priority(.high)
+    private func addCopyIconView(_ theme: AccountClipboardViewTheme) {
+        copyIconView.customizeAppearance(theme.copyIcon)
+        addSubview(copyIconView)
+        copyIconView.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(theme.copyIconTrailingInset)
+            make.bottom.equalToSuperview().inset(theme.copyIconBottomInset)
+            make.fitToSize(theme.copyIconSize)
+            make.leading.equalTo(addressLabel.snp.trailing).offset(theme.copyIconLeadingOffset).priority(.high)
         }
     }
 }

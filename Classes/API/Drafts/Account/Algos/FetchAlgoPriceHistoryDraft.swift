@@ -13,19 +13,23 @@
 // limitations under the License.
 
 //
-//   AlgosUSDValueQuery.swift
+//   FetchAlgoHistoryDraft.swift
 
+import Foundation
 import MagpieCore
 
-struct AlgosUSDValueQuery: ObjectQuery {
-    let valueInterval: AlgosUSDValueInterval
-
+struct FetchAlgoPriceHistoryDraft: ObjectQuery {
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
-        let range = valueInterval.getIntervalRange()
+        
+        let range = timeFrame.range()
         params.append(.init(.since, range.since))
         params.append(.init(.until, range.until))
-        params.append(.init(.interval, valueInterval.getIntervalRepresentation()))
+
+        params.append(.init(.interval, timeFrame.interval.rawValue))
+
         return params
     }
+    
+    let timeFrame: AlgoPriceTimeFrameSelection
 }

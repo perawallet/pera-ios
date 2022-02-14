@@ -25,7 +25,7 @@ final class PassphraseMnemonicView: View {
         }
     }
     
-    private lazy var phraseLabel = UILabel()
+    private lazy var phraseLabel = Label()
 
     func customize(_ theme: PassphraseMnemonicViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
@@ -43,6 +43,7 @@ extension PassphraseMnemonicView {
         phraseLabel.adjustsFontSizeToFitWidth = true
         phraseLabel.minimumScaleFactor = 0.7
         phraseLabel.customizeAppearance(theme.title)
+        phraseLabel.draw(corner: theme.titleCorner)
 
         addSubview(phraseLabel)
         phraseLabel.snp.makeConstraints {

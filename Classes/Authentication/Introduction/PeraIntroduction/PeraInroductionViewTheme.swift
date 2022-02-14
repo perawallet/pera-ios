@@ -72,7 +72,7 @@ struct PeraInroductionViewTheme:
 
         actionButton = [
             .title("pera-announcement-action-title".localized),
-            .titleColor([ .normal(AppColors.Components.Button.Secondary.text) ]),
+            .titleColor([ .normal(AppColors.Components.Button.Primary.text) ]),
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(AppColors.Components.Button.Primary.background)
         ]
@@ -99,6 +99,7 @@ struct PeraInroductionViewTheme:
         closeButtonSize = (40, 40)
         closeButtonTopPadding = 10
         let buttonHeight: LayoutMetric = 52
-        linearGradientHeight = bottomPadding + buttonHeight + 38
+        let additionalLinearGradientHeightForButtonTop: LayoutMetric = 4
+        linearGradientHeight = bottomPadding + buttonHeight + additionalLinearGradientHeightForButtonTop
     }
 }

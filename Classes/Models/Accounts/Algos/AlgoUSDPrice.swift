@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//   AlgosUSDValue.swift
+//   AlgoUSDPrice.swift
 
 import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class AlgosUSDValue: ALGAPIModel {
+final class AlgoUSDPrice: ALGAPIModel {
     let timestamp: Double?
     let open: Double?
     let low: Double?
@@ -37,17 +37,17 @@ final class AlgosUSDValue: ALGAPIModel {
     }
 }
 
-extension AlgosUSDValue {
-    func getCurrencyScaledChartHighValue(with current: AlgosUSDValue, for currency: Currency) -> Double? {
+extension AlgoUSDPrice {
+    func getCurrencyScaledChartHighValue(with current: AlgoUSDPrice, for currency: Currency) -> Double? {
         return getCurrencyScaledChartValue(current.high, with: current, for: currency)
     }
 
-    func getCurrencyScaledChartOpenValue(with current: AlgosUSDValue, for currency: Currency) -> Double? {
+    func getCurrencyScaledChartOpenValue(with current: AlgoUSDPrice, for currency: Currency) -> Double? {
         return getCurrencyScaledChartValue(current.open, with: current, for: currency)
     }
 
     // Scales conversion of current algo-preferredCurrency value with the current algo price to display
-    private func getCurrencyScaledChartValue(_ value: Double?, with current: AlgosUSDValue, for currency: Currency) -> Double? {
+    private func getCurrencyScaledChartValue(_ value: Double?, with current: AlgoUSDPrice, for currency: Currency) -> Double? {
         guard let chartDisplayValue = getChartDisplayValue(with: currency),
               let currentPrice = current.open else {
             return nil

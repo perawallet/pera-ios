@@ -20,8 +20,6 @@ import MacaroonBottomSheet
 import MacaroonUIKit
 
 final class TransactionTutorialViewController: BaseScrollViewController {
-    weak var delegate: TransactionTutorialViewControllerDelegate?
-
     private lazy var transactionTutorialView = TransactionTutorialView()
 
     private let isInitialDisplay: Bool
@@ -66,16 +64,10 @@ extension TransactionTutorialViewController: BottomSheetPresentable {
 
 extension TransactionTutorialViewController: TransactionTutorialViewDelegate {
     func transactionTutorialViewDidConfirmTutorial(_ transactionTutorialView: TransactionTutorialView) {
-        delegate?.transactionTutorialViewControllerDidConfirmTutorial(self)
+        dismissScreen()
     }
 
     func transactionTutorialViewDidOpenMoreInfo(_ transactionTutorialView: TransactionTutorialView) {
         open(AlgorandWeb.transactionSupport.link)
     }
-}
-
-protocol TransactionTutorialViewControllerDelegate: AnyObject {
-    func transactionTutorialViewControllerDidConfirmTutorial(
-        _ transactionTutorialViewController: TransactionTutorialViewController
-    )
 }

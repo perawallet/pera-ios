@@ -23,13 +23,26 @@ extension AccountListViewController {
         let backgroundColor: Color
         let accountListViewTheme: AccountListViewTheme
         let cellSize: LayoutSize
-        let modalHeight: LayoutMetric
 
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
             accountListViewTheme = AccountListViewTheme()
             cellSize = (UIScreen.main.bounds.width - 48, 72)
-            modalHeight = 294
         }
+    }
+}
+
+extension AccountListViewController.Theme {
+    func calculateModalHeightAsBottomSheet(_ viewController: AccountListViewController) -> ModalHeight {
+        return .preferred(
+            calculateHeightAsBottomSheet(viewController)
+        )
+    }
+
+    private func calculateHeightAsBottomSheet(_ viewController: AccountListViewController) -> LayoutMetric {
+        let numberOfItems = viewController.accountListDataSource.accounts.count
+        let listContentInset = viewController.accountListView.accountsCollectionView.contentInset
+        let listHeight = listContentInset.top + (CGFloat(numberOfItems) * cellSize.h) + listContentInset.bottom
+        return listHeight
     }
 }

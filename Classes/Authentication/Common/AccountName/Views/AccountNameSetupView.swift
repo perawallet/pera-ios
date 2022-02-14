@@ -42,7 +42,6 @@ final class AccountNameSetupView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func linkInteractors() {
-        accountNameInputView.editingDelegate = self
         accountNameInputView.delegate = self
     }
     
@@ -147,18 +146,6 @@ extension AccountNameSetupView: FloatingTextInputFieldViewDelegate {
         view.endEditing()
         return true
     }
-}
-
-extension AccountNameSetupView: FormInputFieldViewEditingDelegate {
-    func formInputFieldViewDidBeginEditing(_ view: FormInputFieldView) {
-        delegate?.accountNameSetupViewDidChangeValue(self)
-    }
-    
-    func formInputFieldViewDidEdit(_ view: FormInputFieldView) {
-        delegate?.accountNameSetupViewDidChangeValue(self)
-    }
-    
-    func formInputFieldViewDidEndEditing(_ view: FormInputFieldView) {}
 }
 
 protocol AccountNameSetupViewDelegate: AnyObject {

@@ -34,6 +34,7 @@ struct LedgerAccountSelectionViewTheme: StyleSheet, LayoutSheet {
     let devicesListTopPadding: LayoutMetric
     let bottomInset: LayoutMetric
     let horizontalInset: LayoutMetric
+    let linearGradientHeight: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -65,5 +66,8 @@ struct LedgerAccountSelectionViewTheme: StyleSheet, LayoutSheet {
         self.devicesListTopPadding = 50
         self.bottomInset = 16
         self.horizontalInset = 24
+        let buttonHeight: LayoutMetric = 52
+        let additionalLinearGradientHeightForButtonTop: LayoutMetric = 4
+        self.linearGradientHeight = bottomInset + buttonHeight + additionalLinearGradientHeightForButtonTop
     }
 }

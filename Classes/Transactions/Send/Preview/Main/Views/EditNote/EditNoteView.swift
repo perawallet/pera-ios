@@ -76,16 +76,16 @@ extension EditNoteView {
             .font(Fonts.DMSans.regular.make(15, .body)),
             .tintColor(AppColors.Components.Text.main),
             .textColor(AppColors.Components.Text.main),
-            .clearButtonMode(.whileEditing),
             .returnKeyType(.done)
         ]
-        
+
         let theme =
             MultilineTextInputFieldViewCommonTheme(
                 textInput: textInputBaseStyle,
                 placeholder: placeholder,
                 floatingPlaceholder: floatingPlaceholder
             )
+        view.delegate = self
         view.customize(theme)
         view.snp.makeConstraints {
             $0.greaterThanHeight(48)
@@ -110,6 +110,13 @@ extension EditNoteView {
     }
 }
 
+extension EditNoteView: MultilineTextInputFieldViewDelegate {
+    func multilineTextInputFieldViewDidReturn(_ view: MultilineTextInputFieldView) {
+        view.endEditing()
+        delegate?.editNoteViewDidReturn(self)
+    }
+}
+
 protocol EditNoteViewDelegate: AnyObject {
-    func editEditNoteViewDidTapDoneButton(_ editNoteView: EditNoteView)
+    func editNoteViewDidReturn(_ editNoteView: EditNoteView)
 }

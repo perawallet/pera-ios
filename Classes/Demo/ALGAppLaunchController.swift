@@ -59,19 +59,34 @@ final class ALGAppLaunchController:
         sharedDataController.remove(self)
     }
     
+    func prepareForLaunch() {
+        /// <todo>
+        /// Authenticated user is decoded everytime its getter is called.
+        let authenticatedUser = session.authenticatedUser
+        
+        setupPreferredNetwork(authenticatedUser)
+        setupAccountsPreordering(authenticatedUser)
+    }
+    
     func launch(
         deeplinkWithSource src: DeeplinkSource?
     ) {
-        prepareForLaunch()
+        var appLaunchStore = ALGAppLaunchStore()
         
         if !session.hasAuthentication() {
             /// <note>
             /// App is deleted, but the keychain has the private keys.
+            /// This should be the first operation since it cleans out the application data.
             session.reset(includingContacts: false)
+
+            appLaunchStore.isOnboarding = true
+
             firstLaunchUI(.onboarding)
 
             return
         }
+        
+        appLaunchStore.isOnboarding = false
         
         if let deeplinkSource = src {
             suspend(deeplinkWithSource: deeplinkSource)
@@ -182,15 +197,6 @@ extension ALGAppLaunchController {
 }
 
 extension ALGAppLaunchController {
-    private func prepareForLaunch() {
-        /// <todo>
-        /// Authenticated user is decoded everytime its getter is called.
-        let authenticatedUser = session.authenticatedUser
-        
-        setupPreferredNetwork(authenticatedUser)
-        setupAccountsPreordering(authenticatedUser)
-    }
-    
     private func firstLaunchUI(
         _ state: AppLaunchUIState
     ) {
@@ -362,4 +368,18 @@ extension ALGAppLaunchController {
     private func cancelPendingDeeplink() {
         $pendingDeeplinkSource.modify { $0 = nil }
     }
+}
+
+struct ALGAppLaunchStore: Storable {
+    typealias Object = Any
+    
+    var isOnboarding: Bool {
+        get { userDefaults.bool(forKey: isOnboardingKey) }
+        set {
+            userDefaults.set(newValue, forKey: isOnboardingKey)
+            userDefaults.synchronize()
+        }
+    }
+
+    private let isOnboardingKey = "com.algorand.store.app.isOnboarding"
 }

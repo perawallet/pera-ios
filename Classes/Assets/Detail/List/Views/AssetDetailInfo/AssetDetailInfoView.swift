@@ -24,7 +24,7 @@ final class AssetDetailInfoView: View {
     private lazy var yourBalanceTitleLabel = UILabel()
     private lazy var balanceLabel = UILabel()
     private lazy var secondaryValueLabel = UILabel()
-    private lazy var horizontalStackView = UIStackView()
+    private lazy var assetNameView = UIView()
     private lazy var assetNameLabel = UILabel()
     private lazy var assetIDButton = Button(.imageAtRight(spacing: 8))
     private lazy var verifiedImage = UIImageView()
@@ -87,23 +87,29 @@ extension AssetDetailInfoView {
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
 
-        secondaryValueLabel.addSeparator(theme.separator, padding: theme.topSeparatorTopPadding)
+        balanceLabel.addSeparator(theme.separator, padding: theme.topSeparatorTopPadding)
     }
 
     private func addAssetNameLabel(_ theme: AssetDetailInfoViewTheme) {
-        addSubview(horizontalStackView)
-        horizontalStackView.snp.makeConstraints {
+        addSubview(assetNameView)
+        assetNameView.snp.makeConstraints {
             $0.top.equalTo(balanceLabel.snp.bottom).offset(theme.assetNameLabelTopPadding)
             $0.leading.equalTo(yourBalanceTitleLabel)
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
 
         assetNameLabel.customizeAppearance(theme.assetNameLabel)
-        horizontalStackView.addArrangedSubview(assetNameLabel)
+        assetNameView.addSubview(assetNameLabel)
+        assetNameLabel.snp.makeConstraints {
+            $0.top.leading.bottom.equalToSuperview()
+        }
         verifiedImage.customizeAppearance(theme.verifiedImage)
-        horizontalStackView.addArrangedSubview(verifiedImage)
+        assetNameView.addSubview(verifiedImage)
+        verifiedImage.snp.makeConstraints {
+            $0.leading.equalTo(assetNameLabel.snp.trailing).offset(theme.verifiedImageHorizontalSpacing)
+        }
         
-        horizontalStackView.addSeparator(theme.separator, padding: theme.bottomSeparatorTopPadding)
+        assetNameView.addSeparator(theme.separator, padding: theme.bottomSeparatorTopPadding)
     }
 
     private func addAssetIDButton(_ theme: AssetDetailInfoViewTheme) {
@@ -111,7 +117,7 @@ extension AssetDetailInfoView {
 
         addSubview(assetIDButton)
         assetIDButton.snp.makeConstraints {
-            $0.top.equalTo(assetNameLabel.snp.bottom).offset(theme.assetIDLabelTopPadding)
+            $0.top.equalTo(assetNameView.snp.bottom).offset(theme.assetIDLabelTopPadding)
             $0.leading.equalTo(yourBalanceTitleLabel)
             $0.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalPadding)
             $0.bottom.lessThanOrEqualToSuperview().inset(theme.bottomPadding)

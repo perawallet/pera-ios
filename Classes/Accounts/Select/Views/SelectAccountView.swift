@@ -141,7 +141,7 @@ extension SelectAccountView {
 
         addSubview(nextButton)
         nextButton.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(safeAreaBottom)
+            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomInset)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.height.equalTo(theme.nextButtonHeight)
         }

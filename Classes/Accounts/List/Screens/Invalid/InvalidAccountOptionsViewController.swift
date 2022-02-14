@@ -138,20 +138,23 @@ extension InvalidAccountOptionsViewController {
 extension InvalidAccountOptionsViewController {
     @objc
     private func copyAddress() {
-        dismissScreen()
-        uiInteractions.didTapCopyAddress?()
+        closeScreen(by: .dismiss, animated: true) { [weak self] in
+            self?.uiInteractions.didTapCopyAddress?()
+        }
     }
     
     @objc
     private func viewPassphrase() {
-        dismissScreen()
-        uiInteractions.didTapViewPassphrase?()
+        closeScreen(by: .dismiss, animated: true) { [weak self] in
+            self?.uiInteractions.didTapViewPassphrase?()
+        }
     }
     
     @objc
     private func showQrCode() {
-        dismissScreen()
-        uiInteractions.didTapShowQRCode?()
+        closeScreen(by: .dismiss, animated: true) { [weak self] in
+            self?.uiInteractions.didTapShowQRCode?()
+        }
     }
 }
 

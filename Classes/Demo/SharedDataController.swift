@@ -62,6 +62,5 @@ protocol SharedDataControllerObserver: AnyObject {
 enum SharedDataControllerEvent {
     case didBecomeIdle
     case didStartRunning(first: Bool)
-    case didUpdateCurrency
     case didFinishRunning
 }

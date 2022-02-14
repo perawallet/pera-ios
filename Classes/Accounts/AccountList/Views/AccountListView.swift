@@ -20,7 +20,6 @@ import MacaroonUIKit
 
 final class AccountListView: View {
     private lazy var theme = AccountListViewTheme()
-    private lazy var titleLabel = UILabel()
 
     private(set) lazy var accountsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -28,6 +27,7 @@ final class AccountListView: View {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.contentInset = UIEdgeInsets(theme.contentInset)
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         return collectionView
     }()
@@ -50,19 +50,14 @@ extension AccountListView {
     private func addAccountCollectionView(_ theme: AccountListViewTheme) {
         addSubview(accountsCollectionView)
         accountsCollectionView.snp.makeConstraints {
-            $0.leading.trailing.top.equalToSuperview()
-            $0.bottom.equalTo(safeAreaLayoutGuide.snp.bottom).offset(theme.accountListBottomInset)
+            $0.edges.equalToSuperview()
         }
 
         accountsCollectionView.backgroundView = ContentStateView()
     }
 }
 
-extension AccountListView: ViewModelBindable {
-    func bindData(_ viewModel: AccountListViewModel?) {
-        titleLabel.text = viewModel?.title
-    }
-
+extension AccountListView {
     func updateContentStateView(isEmpty: Bool) {
         accountsCollectionView.contentState = isEmpty ? .empty(searchNoContentView) : .none
     }

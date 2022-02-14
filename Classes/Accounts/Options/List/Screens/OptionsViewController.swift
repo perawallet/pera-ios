@@ -121,15 +121,21 @@ extension OptionsViewController: UICollectionViewDelegateFlowLayout {
             dismissScreen()
             delegate?.optionsViewControllerDidRemoveAsset(self)
         case .viewPassphrase:
-            dismissScreen()
-            delegate?.optionsViewControllerDidViewPassphrase(self)
+            closeScreen(by: .dismiss) { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.delegate?.optionsViewControllerDidViewPassphrase(self)
+            }
         case .rekeyInformation:
             dismissScreen()
             delegate?.optionsViewControllerDidViewRekeyInformation(self)
         case .muteNotifications:
             updateNotificationStatus()
         case .renameAccount:
-            open(.editAccount(account: account), by: .push)
+            let controller = open(.editAccount(account: account), by: .push) as? EditAccountViewController
+            controller?.delegate = self
         case .removeAccount:
             dismissScreen()
             delegate?.optionsViewControllerDidRemoveAccount(self)
@@ -192,6 +198,12 @@ extension OptionsViewController {
     }
 }
 
+extension OptionsViewController: EditAccountViewControllerDelegate {
+    func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
+        delegate?.optionsViewControllerDidRenameAccount(self)
+    }
+}
+
 extension OptionsViewController {
     enum Options: Int, CaseIterable {
         case copyAddress = 0
@@ -231,5 +243,6 @@ protocol OptionsViewControllerDelegate: AnyObject {
     func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController)
+    func optionsViewControllerDidRenameAccount(_ optionsViewController: OptionsViewController)
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController)
 }

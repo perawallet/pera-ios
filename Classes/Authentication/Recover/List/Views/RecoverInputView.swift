@@ -29,7 +29,7 @@ final class RecoverInputView: View {
 
     private lazy var numberLabel = UILabel()
     private lazy var inputTextField = UITextField()
-    private lazy var separatorView = UIView()
+    private lazy var focusIndicatorView = UIView()
 
     var returnKey: ReturnKey = .next {
        didSet {
@@ -55,7 +55,7 @@ final class RecoverInputView: View {
 
         addNumberLabel(theme)
         addInputTextField(theme)
-        addSeparatorView(theme)
+        addFocusIndicatorView(theme)
     }
 
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -102,24 +102,23 @@ extension RecoverInputView {
         addSubview(inputTextField)
         inputTextField.snp.makeConstraints {
            $0.leading.equalTo(numberLabel.snp.trailing).offset(theme.defaultInset)
-           $0.trailing.equalToSuperview().inset(theme.defaultInset)
+           $0.trailing.equalToSuperview()
            $0.centerY.equalTo(numberLabel)
         }
     }
 
-    private func addSeparatorView(_ theme: RecoverInputViewTheme) {
-        separatorView.customizeAppearance(theme.seperator)
+    private func addFocusIndicatorView(_ theme: RecoverInputViewTheme) {
+        focusIndicatorView.customizeAppearance(theme.focusIndicator)
 
-        addSubview(separatorView)
-        separatorView.snp.makeConstraints {
+        addSubview(focusIndicatorView)
+        focusIndicatorView.snp.makeConstraints {
             $0.trailing.equalToSuperview()
             $0.leading.equalTo(numberLabel.snp.trailing).offset(theme.defaultInset)
             $0.bottom.equalTo(numberLabel)
-            $0.height.equalTo(theme.separatorHeight)
+            $0.height.equalTo(theme.focusIndicatorHeight)
         }
     }
 }
-
 extension RecoverInputView {
     var isFilled: Bool {
         return !input.isNilOrEmpty
@@ -186,10 +185,18 @@ extension RecoverInputView: UITextFieldDelegate {
 
 extension RecoverInputView: ViewModelBindable {
     func bindData(_ viewModel: RecoverInputViewModel?) {
-        numberLabel.text = viewModel?.number
-        numberLabel.textColor = viewModel?.numberColor
-        inputTextField.textColor = viewModel?.passphraseColor
-        separatorView.backgroundColor = viewModel?.seperatorColor
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        numberLabel.text = viewModel.number
+        numberLabel.textColor = viewModel.numberColor
+        inputTextField.textColor = viewModel.passphraseColor
+        focusIndicatorView.backgroundColor = viewModel.focusIndicatorColor
+
+        focusIndicatorView.snp.updateConstraints {
+            $0.fitToHeight(viewModel.focusIndicatorHeight.unwrap(or: theme.focusIndicatorHeight))
+        }
     }
 }
 

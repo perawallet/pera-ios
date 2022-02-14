@@ -27,7 +27,8 @@ final class WCConnectionApprovalViewController: BaseViewController {
     }
 
     private var hasMultipleAccounts: Bool {
-        return sharedDataController.accountCollection.count > 1
+        let accounts = sharedDataController.accountCollection.filter { $0.value.type != .watch }
+        return accounts.count > 1
     }
 
     private lazy var connectionApprovalView = WCConnectionApprovalView(hasMultipleAccounts: hasMultipleAccounts)

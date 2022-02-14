@@ -24,6 +24,7 @@ final class LedgerAccountSelectionView: View {
 
     private lazy var theme = LedgerAccountSelectionViewTheme()
     private lazy var errorView = NoContentWithActionView()
+
     private lazy var accountsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = theme.collectionViewMinimumLineSpacing
@@ -36,13 +37,17 @@ final class LedgerAccountSelectionView: View {
         collectionView.register(LedgerAccountCell.self)
         return collectionView
     }()
+
     private lazy var verticalStackView = UIStackView()
     private lazy var imageView = UIImageView()
     private lazy var titleLabel = UILabel()
     private lazy var descriptionLabel = UILabel()
+    private lazy var verifyButtonContainer = UIView()
     private lazy var verifyButton = Button()
     
     private let isMultiSelect: Bool
+
+    private var isLayoutFinalized = false
     
     init(isMultiSelect: Bool) {
         self.isMultiSelect = isMultiSelect
@@ -50,6 +55,16 @@ final class LedgerAccountSelectionView: View {
 
         customize(theme)
         setListeners()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if !isLayoutFinalized {
+            isLayoutFinalized = true
+
+            addLinearGradient(theme)
+        }
     }
 
     private func customize(_ theme: LedgerAccountSelectionViewTheme) {
@@ -131,14 +146,37 @@ extension LedgerAccountSelectionView {
     }
     
     private func addVerifyButton(_ theme: LedgerAccountSelectionViewTheme) {
+        addSubview(verifyButtonContainer)
+        verifyButtonContainer.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.fitToHeight(theme.linearGradientHeight + safeAreaBottom)
+        }
+        
         verifyButton.customize(theme.verifyButtonTheme)
         verifyButton.bindData(ButtonCommonViewModel(title: "ledger-account-selection-verify".localized))
 
-        addSubview(verifyButton)
+        verifyButtonContainer.addSubview(verifyButton)
         verifyButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
             $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomInset)
         }
+    }
+
+    private func addLinearGradient(_ theme: LedgerAccountSelectionViewTheme) {
+        let layer = CAGradientLayer()
+        layer.frame = CGRect(
+            origin: .zero,
+            size: CGSize(
+                width: bounds.width,
+                height: theme.linearGradientHeight + safeAreaBottom
+            )
+        )
+
+        let color0 = AppColors.Shared.System.background.uiColor.withAlphaComponent(0).cgColor
+        let color1 = AppColors.Shared.System.background.uiColor.cgColor
+
+        layer.colors = [color0, color1]
+        verifyButtonContainer.layer.insertSublayer(layer, at: 0)
     }
 }
 

@@ -16,8 +16,13 @@
 //  DeveloperSettingsViewController.swift
 
 import UIKit
+import MacaroonUtils
 
-final class DeveloperSettingsViewController: BaseViewController {
+final class DeveloperSettingsViewController:
+    BaseViewController,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     private lazy var theme = Theme()
     private lazy var developerSettingsView = DeveloperSettingsView()
     
@@ -26,11 +31,7 @@ final class DeveloperSettingsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if let isTestNet = api?.isTestNet,
-            isTestNet {
-            settings.append(.dispenser)
-            developerSettingsView.collectionView.reloadData()
-        }
+        reload()
     }
     
     override func configureAppearance() {
@@ -42,9 +43,29 @@ final class DeveloperSettingsViewController: BaseViewController {
         developerSettingsView.collectionView.delegate = self
         developerSettingsView.collectionView.dataSource = self
     }
+
+    override func setListeners() {
+        observe(notification: NodeSettingsViewController.didChangeNetwork) {
+            [weak self] _ in
+            self?.reload()
+        }
+    }
     
     override func prepareLayout() {
         addDeveloperSettingsView()
+    }
+}
+
+extension DeveloperSettingsViewController {
+    private func reload() {
+        switch api?.network {
+        case .mainnet, .none:
+            settings = [.nodeSettings]
+        case .testnet:
+            settings.append(.dispenser)
+        }
+
+        developerSettingsView.collectionView.reloadData()
     }
 }
 

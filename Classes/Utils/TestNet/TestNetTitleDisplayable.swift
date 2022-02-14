@@ -18,11 +18,11 @@
 import Foundation
 
 protocol TestNetTitleDisplayable {
-    func displayTestNetTitleView(with title: String)
+    func displayTestNetTitleView(with title: String?)
 }
 
 extension TestNetTitleDisplayable where Self: BaseViewController {
-    func displayTestNetTitleView(with title: String) {
+    func displayTestNetTitleView(with title: String? = nil) {
         switch api?.network {
         case .none:
             self.title = title
@@ -30,7 +30,8 @@ extension TestNetTitleDisplayable where Self: BaseViewController {
             self.title = title
         case .testnet:
             let titleView = TestNetTitleView()
-            titleView.setTitle(title)
+            titleView.customize(TestNetTitleViewTheme())
+            titleView.title = title
             navigationItem.titleView = titleView
         }
     }

@@ -95,6 +95,8 @@ class AppDelegate:
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
+        prepareForLaunch()
+        
         setupWindow()
         setupNetworkBanner()
         setupAppLibs()
@@ -194,6 +196,10 @@ class AppDelegate:
 }
 
 extension AppDelegate {
+    func prepareForLaunch() {
+        appLaunchController.prepareForLaunch()
+    }
+    
     func launch(
         with options: [UIApplication.LaunchOptionsKey: Any]?
     ) {

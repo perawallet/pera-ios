@@ -46,7 +46,7 @@ final class VerifiedAssetInformationViewController: BaseViewController {
 
 extension VerifiedAssetInformationViewController {
     private func addBackBarButtonItem() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .back) { [unowned self] in
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [unowned self] in
             self.closeScreen(by: .dismiss, animated: true)
         }
         

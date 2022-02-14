@@ -61,8 +61,6 @@ extension SelectAccountAPIDataController {
             }
         case .didFinishRunning:
             deliverContentSnapshot()
-        default:
-            break
         }
     }
 }
@@ -100,8 +98,6 @@ extension SelectAccountAPIDataController {
 
             var accounts: [AccountHandle] = []
             var accountItems: [SelectAccountListViewItem] = []
-            var watchAccounts: [AccountHandle] = []
-            var watchAccountItems: [SelectAccountListViewItem] = []
 
             let currency = self.sharedDataController.currency
             let calculator = ALGPortfolioCalculator()
@@ -109,7 +105,12 @@ extension SelectAccountAPIDataController {
             self.sharedDataController.accountCollection
                 .sorted()
                 .forEach {
-                    let isNonWatchAccount = $0.value.type != .watch
+                    let isWatchAccount = $0.value.type == .watch
+
+                    if isWatchAccount {
+                        return
+                    }
+
                     let accountPortfolio =
                         AccountPortfolio(account: $0, currency: currency, calculator: calculator)
                     
@@ -120,13 +121,8 @@ extension SelectAccountAPIDataController {
                         $0
                     )
 
-                    if isNonWatchAccount {
-                        accounts.append($0)
-                        accountItems.append(cellItem)
-                    } else {
-                        watchAccounts.append($0)
-                        watchAccountItems.append(cellItem)
-                    }
+                    accounts.append($0)
+                    accountItems.append(cellItem)
                 }
 
             var snapshot = Snapshot()
@@ -136,13 +132,6 @@ extension SelectAccountAPIDataController {
             if !accounts.isEmpty {
                 snapshot.appendItems(
                     accountItems,
-                    toSection: .accounts
-                )
-            }
-
-            if !watchAccounts.isEmpty {
-                snapshot.appendItems(
-                    watchAccountItems,
                     toSection: .accounts
                 )
             }

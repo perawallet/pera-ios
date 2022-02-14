@@ -23,6 +23,7 @@ import MacaroonUIKit
 final class HomeViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
+
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var pushNotificationController =
         PushNotificationController(session: session!, api: api!, bannerController: bannerController)
@@ -310,13 +311,20 @@ extension HomeViewController {
     }
 
     private func presentPeraIntroductionIfNeeded() {
-        let peraIntroductionStore = PeraIntroductionStore()
+        var peraAppLaunchStore = PeraAppLaunchStore()
+        
+        let appLaunchStore = ALGAppLaunchStore()
 
-        if !peraIntroductionStore.isFirstPeraLaunch {
+        if appLaunchStore.isOnboarding {
+            peraAppLaunchStore.isOnboarded = true
             return
         }
 
-        peraIntroductionStore.saveFirstLaunchPera()
+        if peraAppLaunchStore.isOnboarded {
+            return
+        }
+        
+        peraAppLaunchStore.isOnboarded = true
 
         open(.peraIntroduction, by: .present)
     }

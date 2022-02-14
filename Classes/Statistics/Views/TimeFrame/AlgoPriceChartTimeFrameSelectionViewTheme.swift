@@ -19,25 +19,35 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct ChartTimeFrameSelectionViewTheme: StyleSheet, LayoutSheet {
-    let buttonStyle: ButtonStyle
-    let buttonCorner: Corner
-    let selectedButtonBackgroundColor: Color
+struct AlgoPriceChartTimeFrameSelectionViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var option: ButtonStyle
+    var spacingBetweenOptions: LayoutMetric
+    var selection: ViewStyle
+    var selectionCorner: Corner
+    var selectionMaxWidth: LayoutMetric
+    var loadingCorner: Corner
 
-    let stackViewSpacing: LayoutMetric
-
-    init(_ family: LayoutFamily) {
-        self.buttonStyle = [
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.option = [
+            .font(Fonts.DMSans.medium.make(13)),
             .titleColor(
                 [
                     .normal(AppColors.Components.Text.grayLighter),
                     .highlighted(AppColors.Components.Text.main),
                     .selected(AppColors.Components.Text.main),
-                ]),
-            .font(Fonts.DMSans.medium.make(13))
+                ]
+            )
         ]
-        self.buttonCorner = Corner(radius: 4)
-        self.selectedButtonBackgroundColor = AppColors.Shared.Layer.grayLighter
-        self.stackViewSpacing = 16
+        self.spacingBetweenOptions = 16
+        self.selection = [
+            .backgroundColor(AppColors.Shared.Layer.grayLighter)
+        ]
+        self.selectionCorner = 4
+        self.selectionMaxWidth = 52
+        self.loadingCorner = 4
     }
 }

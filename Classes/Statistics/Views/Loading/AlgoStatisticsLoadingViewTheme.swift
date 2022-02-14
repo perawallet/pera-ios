@@ -27,8 +27,6 @@ struct AlgoStatisticsLoadingViewTheme: StyleSheet, LayoutSheet {
 
     let priceSubviewMargin: LayoutMargins
     let priceSubviewSize: LayoutSize
-    let priceSecondarySubviewMargin: LayoutMargins
-    let priceSecondarySubviewSize: LayoutSize
 
     let statsImage: ImageStyle
     let statsMargin: LayoutMargins
@@ -60,17 +58,16 @@ struct AlgoStatisticsLoadingViewTheme: StyleSheet, LayoutSheet {
 
         self.priceSubviewMargin = (12, 24, .noMetric, .noMetric)
         self.priceSubviewSize = (59, 20)
-        self.priceSecondarySubviewMargin = (12, 12, .noMetric, .noMetric)
-        self.priceSecondarySubviewSize = (69, 20)
 
         self.statsImage = [
-            .image("chart-loading-bg")
+            .image("chart-loading-bg"),
+            .contentMode(.scaleAspectFit)
         ]
 
-        self.statsMargin = (80, 0, .noMetric, 0)
-        self.statsHeight = 56
+        self.statsMargin = (15, 0, .noMetric, 0)
+        self.statsHeight = 180
 
-        self.controlViewMargin = (76, 24, .noMetric, 24)
+        self.controlViewMargin = (40, 24, .noMetric, 24)
         self.controlViewHeight = 30
 
         self.headerLoadingMargin = (42, 24, .noMetric, .noMetric)

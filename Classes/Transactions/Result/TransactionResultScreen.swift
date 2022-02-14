@@ -59,7 +59,7 @@ final class TransactionResultScreen: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        // Close screen after 2 seconds
+        // Close screen after 1 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in
             guard let self = self else {
                 return
