@@ -32,6 +32,7 @@ struct SelectAccountViewTheme: StyleSheet, LayoutSheet {
     let clipboardHeight: LayoutMetric
     let clipboardTopInset: LayoutMetric
     let nextButtonHeight: LayoutMetric
+    let bottomInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -48,5 +49,6 @@ struct SelectAccountViewTheme: StyleSheet, LayoutSheet {
         self.clipboardHeight = 96
         self.clipboardTopInset = 24
         self.nextButtonHeight = 50
+        self.bottomInset = 16
     }
 }

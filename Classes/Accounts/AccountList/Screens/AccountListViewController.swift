@@ -23,10 +23,11 @@ final class AccountListViewController: BaseViewController {
     weak var delegate: AccountListViewControllerDelegate?
 
     private lazy var theme = Theme()
-    private lazy var accountListView = AccountListView()
+    private(set) lazy var accountListView = AccountListView()
     
     private lazy var accountListLayoutBuilder = AccountListLayoutBuilder(theme: theme)
-    private lazy var accountListDataSource = AccountListDataSource(sharedDataController: sharedDataController, mode: mode)
+    private(set) lazy var accountListDataSource = AccountListDataSource(sharedDataController: sharedDataController, mode: mode)
+
     private var mode: Mode
     
     init(mode: Mode, configuration: ViewControllerConfiguration) {
@@ -67,7 +68,7 @@ final class AccountListViewController: BaseViewController {
 
 extension AccountListViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight)
+        return theme.calculateModalHeightAsBottomSheet(self)
     }
 }
 

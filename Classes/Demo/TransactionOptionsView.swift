@@ -20,13 +20,75 @@ import MacaroonUIKit
 import SnapKit
 import UIKit
 
+/// <todo>:
+/// Move this to Macaroon
+public final class UIViewTapInteraction: MacaroonUIKit.UIInteraction {
+    private var view: UIView?
+    private var handler: Handler?
+}
+
+extension UIViewTapInteraction {
+    public func link(
+        _ view: UIView
+    ) {
+        view.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(deliverAction)
+            )
+        )
+
+        self.view = view
+    }
+
+    public func unlink() {
+        view?.removeGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(deliverAction)
+            )
+        )
+
+        self.view = nil
+    }
+
+    public func activate(
+        _ handler: @escaping Handler
+    ) {
+        self.handler = handler
+    }
+
+    public func deactivate() {
+        self.handler = nil
+    }
+}
+
+extension UIViewTapInteraction {
+    @objc
+    private func deliverAction() {
+        handler?()
+    }
+}
+
+// <note>: Can it be better to renamte it as InteractionPublisher?
+extension UIControlInteractionPublisher {
+    public func startPublishing(
+        event: Event,
+        for view: UIView
+    ) {
+        let interaction = uiInteractions[event] as? UIViewTapInteraction
+        interaction?.link(view)
+    }
+}
+
 final class TransactionOptionsView:
     View,
     UIInteractionObservable,
     UIControlInteractionPublisher {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .send: UIControlInteraction(),
-        .receive: UIControlInteraction()
+        .receive: UIControlInteraction(),
+        .close: UIViewTapInteraction()
     ]
     
     private lazy var contentView = MacaroonUIKit.BaseView()
@@ -83,6 +145,11 @@ extension TransactionOptionsView {
         backgroundEndStyle = theme.backgroundEnd
         
         updateBackground(for: .start)
+
+        startPublishing(
+            event: .close,
+            for: self
+        )
     }
     
     private func updateBackground(
@@ -203,5 +270,6 @@ extension TransactionOptionsView {
     enum Event {
         case send
         case receive
+        case close
     }
 }

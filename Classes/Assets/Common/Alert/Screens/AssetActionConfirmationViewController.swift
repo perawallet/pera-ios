@@ -104,10 +104,15 @@ extension AssetActionConfirmationViewController {
 
 extension AssetActionConfirmationViewController: AssetActionConfirmationViewDelegate {
     func assetActionConfirmationViewDidTapActionButton(_ assetActionConfirmationView: AssetActionConfirmationView) {
-        if let assetDetail = draft.assetDetail {
-            delegate?.assetActionConfirmationViewController(self, didConfirmedActionFor: assetDetail)
+        closeScreen(by: .dismiss, animated: true) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            if let assetDetail = self.draft.assetDetail {
+                self.delegate?.assetActionConfirmationViewController(self, didConfirmedActionFor: assetDetail)
+            }
         }
-        dismissScreen()
     }
     
     func assetActionConfirmationViewDidTapCancelButton(_ assetActionConfirmationView: AssetActionConfirmationView) {

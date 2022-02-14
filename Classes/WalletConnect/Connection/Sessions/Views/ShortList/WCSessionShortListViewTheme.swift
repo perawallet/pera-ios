@@ -24,6 +24,7 @@ struct WCSessionShortListViewTheme: LayoutSheet, StyleSheet {
     let contentInset: LayoutPaddings
     let horizontalInset: LayoutMetric
     let bottomInset: LayoutMetric
+    let linearGradientHeight: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -31,10 +32,12 @@ struct WCSessionShortListViewTheme: LayoutSheet, StyleSheet {
         self.horizontalInset = 24
         self.bottomInset = 16
 
-        let buttonHeight: LayoutMetric = 48
+        let buttonHeight: LayoutMetric = 52
         let collectionViewBottomInset: LayoutMetric = 32
         let buttonBottomPadding = UIApplication.shared.safeAreaBottom + bottomInset
         let collectionViewContentEdgeInsetBottom = buttonBottomPadding + buttonHeight + collectionViewBottomInset
         self.contentInset = (40, 0, collectionViewContentEdgeInsetBottom, 0)
+        let additionalLinearGradientHeightForButtonTop: LayoutMetric = 4
+        self.linearGradientHeight = buttonBottomPadding + buttonHeight + additionalLinearGradientHeightForButtonTop
     }
 }

@@ -26,7 +26,7 @@ struct TransactionTutorialStorage: Storable {
         save(true, for: transactionTutorialKey, to: .defaults)
     }
 
-    func isTransactionTutorialDisplayed() -> Bool {
+    var isTransactionTutorialDisplayed: Bool {
         return bool(with: transactionTutorialKey, to: .defaults)
     }
 }

@@ -61,7 +61,7 @@ extension WCSingleTransactionRequestMiddleView {
             make.height.equalTo(theme.horizontalStackViewHeight)
         }
 
-        horizontalStack.distribution = .fillProportionally
+        horizontalStack.distribution = .equalSpacing
         horizontalStack.alignment = .center
         horizontalStack.spacing = theme.horizontalStackViewSpacing
         

@@ -38,6 +38,7 @@ final class AssetSearchViewController: BaseViewController {
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.listBackgroundColor.uiColor
         collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
+        collectionView.keyboardDismissMode = .onDrag
         collectionView.register(AssetPreviewCell.self)
         collectionView.register(header: SingleLineTitleActionHeaderView.self)
         return collectionView

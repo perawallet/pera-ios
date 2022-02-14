@@ -22,6 +22,7 @@ import UIKit
 struct PassphraseMnemonicViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
+    let titleCorner: Corner
 
     let nextButtonTheme: ButtonTheme
 
@@ -33,6 +34,7 @@ struct PassphraseMnemonicViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.center),
             .textOverflow(FittingText())
         ]
+        self.titleCorner = Corner(radius: 4)
         self.nextButtonTheme = ButtonPrimaryTheme()
     }
 }

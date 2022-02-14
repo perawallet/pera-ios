@@ -29,15 +29,15 @@ struct AccountClipboardViewTheme: StyleSheet, LayoutSheet {
     let containerThirdShadow: MacaroonUIKit.Shadow
     let titleLabel: TextStyle
     let addressLabel: TextStyle
-    let copyButton: ButtonStyle
+    let copyIcon: ImageStyle
 
     let titleLabelTopInset: LayoutMetric
     let titleLabelLeadingInset: LayoutMetric
     let addressLabelTopOffset: LayoutMetric
-    let copyButtonBottomInset: LayoutMetric
-    let copyButtonTrailingInset: LayoutMetric
-    let copyButtonLeadingOffset: LayoutMetric
-    let copyButtonSize: LayoutSize
+    let copyIconBottomInset: LayoutMetric
+    let copyIconTrailingInset: LayoutMetric
+    let copyIconLeadingOffset: LayoutMetric
+    let copyIconSize: LayoutSize
 
     init(_ family: LayoutFamily) {
         backgroundColor = AppColors.Shared.System.background.uiColor
@@ -86,17 +86,17 @@ struct AccountClipboardViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
-        copyButton = [
-            .icon([.normal("icon-paste")])
+        copyIcon = [
+            .image("icon-paste")
         ]
 
         titleLabelTopInset = 16
         titleLabelLeadingInset = 16
         addressLabelTopOffset = 4
 
-        copyButtonBottomInset = 24
-        copyButtonTrailingInset = 16
-        copyButtonLeadingOffset = 16
-        copyButtonSize = (24, 24)
+        copyIconBottomInset = 24
+        copyIconTrailingInset = 16
+        copyIconLeadingOffset = 16
+        copyIconSize = (24, 24)
     }
 }

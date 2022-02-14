@@ -70,7 +70,7 @@ indirect enum Screen {
     case warningAlert(warningAlert: WarningAlert)
     case tutorial(flow: AccountSetupFlow, tutorial: Tutorial)
     case tutorialSteps(step: Troubleshoot.Step)
-    case transactionTutorial(isInitialDisplay: Bool, delegate: TransactionTutorialViewControllerDelegate)
+    case transactionTutorial(isInitialDisplay: Bool)
     case recoverOptions(delegate: AccountRecoverOptionsViewControllerDelegate)
     case ledgerAccountVerification(flow: AccountSetupFlow, selectedAccounts: [Account])
     case wcConnectionApproval(walletConnectSession: WalletConnectSession, delegate: WCConnectionApprovalViewControllerDelegate, completion: WalletConnectSessionConnectionCompletionHandler)

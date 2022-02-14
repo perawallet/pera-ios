@@ -21,7 +21,8 @@ import UIKit
 import SnapKit
 import MacaroonForm
 
-class MultilineTextInputFieldView: View, FormTextInputFieldView, UITextViewDelegate {
+final class MultilineTextInputFieldView: View, FormTextInputFieldView, UITextViewDelegate {
+    weak var delegate: MultilineTextInputFieldViewDelegate?
     weak var editingDelegate: FormInputFieldViewEditingDelegate?
     
     var inputState: FormInputFieldState = .none {
@@ -149,6 +150,25 @@ class MultilineTextInputFieldView: View, FormTextInputFieldView, UITextViewDeleg
         }
         
         editingDelegate?.formInputFieldViewDidEndEditing(self)
+    }
+
+    func textView(
+        _ textView: UITextView, shouldChangeTextIn
+        range: NSRange, replacementText text: String
+    ) -> Bool {
+        guard let delegate = delegate else {
+            return true
+        }
+
+        if let character = text.first,
+           character.isNewline {
+            delegate.multilineTextInputFieldViewDidReturn(
+                self
+            )
+
+            return false
+        }
+        return true
     }
 }
 
@@ -332,4 +352,8 @@ extension MultilineTextInputFieldView {
             $0.trailing == 0
         }
     }
+}
+
+protocol MultilineTextInputFieldViewDelegate: AnyObject {
+    func multilineTextInputFieldViewDidReturn(_ view: MultilineTextInputFieldView)
 }

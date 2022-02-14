@@ -22,7 +22,11 @@ import MacaroonUIKit
 
 final class HomeViewController:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout,
+    TestNetTitleDisplayable,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var pushNotificationController =
         PushNotificationController(session: session!, api: api!, bannerController: bannerController)
@@ -124,6 +128,17 @@ final class HomeViewController:
         super.linkInteractors()
         listView.delegate = self
     }
+
+    override func configureAppearance() {
+        super.configureAppearance()
+
+        setNeedsNetworkTitleViewUpdateIfNeeded()
+
+        observe(notification: NodeSettingsViewController.didChangeNetwork) {
+            [unowned self] _ in
+            self.setNeedsNetworkTitleViewUpdateIfNeeded()
+        }
+    }
 }
 
 extension HomeViewController {
@@ -165,6 +180,15 @@ extension HomeViewController {
 
         leftBarButtonItems = [notificationBarButtonItem]
         rightBarButtonItems = [addBarButtonItem, qrBarButtonItem]
+    }
+}
+
+extension HomeViewController {
+    private func setNeedsNetworkTitleViewUpdateIfNeeded() {
+        switch api?.network {
+        case .mainnet, .none: navigationItem.titleView = nil
+        case .testnet: displayTestNetTitleView()
+        }
     }
 }
 

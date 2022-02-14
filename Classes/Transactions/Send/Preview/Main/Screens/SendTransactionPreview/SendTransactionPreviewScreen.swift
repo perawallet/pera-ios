@@ -19,13 +19,16 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class SendTransactionPreviewScreen: BaseViewController {
-   private lazy var transactionDetailView = NewSendTransactionPreviewView()
+final class SendTransactionPreviewScreen: BaseScrollViewController {
+   private lazy var transactionDetailView = SendTransactionPreviewView()
+   private lazy var nextButtonContainer = UIView()
    private lazy var nextButton = Button()
    private lazy var theme = Theme()
 
    private let draft: TransactionSendDraft
    private let transactionController: TransactionController
+
+   private var isLayoutFinalized = false
 
    init(
       draft: TransactionSendDraft,
@@ -35,6 +38,16 @@ final class SendTransactionPreviewScreen: BaseViewController {
       self.draft = draft
       self.transactionController = transactionController
       super.init(configuration: configuration)
+   }
+
+   override func viewDidLayoutSubviews() {
+      super.viewDidLayoutSubviews()
+
+      if !isLayoutFinalized {
+         isLayoutFinalized = true
+
+         addLinearGradient()
+      }
    }
 
    override func configureAppearance() {
@@ -75,23 +88,45 @@ extension SendTransactionPreviewScreen {
 
 extension SendTransactionPreviewScreen {
    private func addTransactionDetailView() {
-      view.addSubview(transactionDetailView)
+      contentView.addSubview(transactionDetailView)
       transactionDetailView.snp.makeConstraints {
-         $0.top.leading.trailing.equalToSuperview()
-         $0.bottom.equalTo(nextButton.snp.top).offset(theme.nextButtonTopPadding)
+         $0.edges.equalToSuperview()
       }
    }
 
    private func addNextButton() {
+      view.addSubview(nextButtonContainer)
+      nextButtonContainer.snp.makeConstraints {
+         $0.leading.trailing.bottom.equalToSuperview()
+         $0.fitToHeight(theme.linearGradientHeight + view.safeAreaBottom)
+      }
+
       nextButton.customize(theme.nextButtonStyle)
       nextButton.bindData(ButtonCommonViewModel(title: "title-send".localized))
-      view.addSubview(nextButton)
+      nextButtonContainer.addSubview(nextButton)
       
       nextButton.snp.makeConstraints {
          $0.leading.trailing.equalToSuperview().inset(theme.nextButtonLeadingInset)
-         $0.bottom.safeEqualToBottom(of: self).inset(theme.nextButtonBottomInset)
+         $0.bottom.equalToSuperview().inset(theme.nextButtonBottomInset + view.safeAreaBottom)
          $0.height.equalTo(theme.nextButtonHeight)
       }
+   }
+
+   private func addLinearGradient() {
+       let layer = CAGradientLayer()
+       layer.frame = CGRect(
+           origin: .zero,
+           size: CGSize(
+            width: view.bounds.width,
+            height: theme.linearGradientHeight + view.safeAreaBottom
+           )
+       )
+
+       let color0 = AppColors.Shared.System.background.uiColor.withAlphaComponent(0).cgColor
+       let color1 = AppColors.Shared.System.background.uiColor.cgColor
+
+       layer.colors = [color0, color1]
+       nextButtonContainer.layer.insertSublayer(layer, at: 0)
    }
 }
 

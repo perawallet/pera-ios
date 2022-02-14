@@ -144,6 +144,7 @@ extension AddContactView {
             .font(Fonts.DMSans.regular.make(15)),
             .tintColor(AppColors.Components.Text.main),
             .textColor(AppColors.Components.Text.main),
+            .clearButtonMode(.whileEditing),
             .returnKeyType(.next)
         ]
 
@@ -172,13 +173,14 @@ extension AddContactView {
             .textColor(AppColors.Components.Text.main),
             .returnKeyType(.done)
         ]
-        
+
         let theme =
             MultilineTextInputFieldViewCommonTheme(
                 textInput: textInputBaseStyle,
                 placeholder: placeholder,
                 floatingPlaceholder: floatingPlaceholder
             )
+        view.delegate = self
         view.customize(theme)
         view.snp.makeConstraints {
             $0.greaterThanHeight(48)
@@ -194,6 +196,12 @@ extension AddContactView: FloatingTextInputFieldViewDelegate {
         }
 
         return delegate.addContactViewInputFieldViewShouldReturn(self, inputFieldView: view)
+    }
+}
+
+extension AddContactView: MultilineTextInputFieldViewDelegate {
+    func multilineTextInputFieldViewDidReturn(_ view: MultilineTextInputFieldView) {
+        view.endEditing()
     }
 }
 

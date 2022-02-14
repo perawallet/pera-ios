@@ -153,13 +153,14 @@ extension WatchAccountAdditionView {
             .textColor(AppColors.Components.Text.main),
             .returnKeyType(.done)
         ]
-        
+
         let theme =
             MultilineTextInputFieldViewCommonTheme(
                 textInput: textInputBaseStyle,
                 placeholder: placeholder,
                 floatingPlaceholder: floatingPlaceholder
             )
+        view.delegate = self
         view.customize(theme)
         view.snp.makeConstraints {
             $0.greaterThanHeight(48)
@@ -183,6 +184,13 @@ extension WatchAccountAdditionView {
 extension WatchAccountAdditionView {
     func beginEditing() {
         addressInputView.beginEditing()
+    }
+}
+
+extension WatchAccountAdditionView: MultilineTextInputFieldViewDelegate {
+    func multilineTextInputFieldViewDidReturn(_ view: MultilineTextInputFieldView) {
+        view.endEditing()
+        delegate?.watchAccountAdditionViewDidAddAccount(self)
     }
 }
 

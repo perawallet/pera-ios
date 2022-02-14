@@ -21,13 +21,15 @@ final class RecoverInputViewModel {
     private(set) var number: String?
     private(set) var numberColor: UIColor?
     private(set) var passphraseColor: UIColor?
-    private(set) var seperatorColor: UIColor?
+    private(set) var focusIndicatorColor: UIColor?
+    private(set) var focusIndicatorHeight: CGFloat?
 
     init(state: RecoverInputView.State, index: Int) {
         setNumber(from: index)
         setNumberColor(from: state)
         setPassphraseColor(from: state)
-        setSeparatorColor(from: state)
+        setFocusIndicatorColor(from: state)
+        setFocusIndicatorHeight(from: state)
     }
 
     private func setNumber(from index: Int) {
@@ -58,16 +60,25 @@ final class RecoverInputViewModel {
         }
     }
 
-    private func setSeparatorColor(from state: RecoverInputView.State) {
+    private func setFocusIndicatorColor(from state: RecoverInputView.State) {
         switch state {
         case .wrong,
              .filledWrongly:
-            seperatorColor = AppColors.Shared.Helpers.negative.uiColor
+            focusIndicatorColor = AppColors.Shared.Helpers.negative.uiColor
         case .active:
-            seperatorColor = AppColors.Components.Text.main.uiColor
+            focusIndicatorColor = AppColors.Components.Text.main.uiColor
         case .empty,
              .filled:
-            seperatorColor = AppColors.Shared.Layer.gray.uiColor
+            focusIndicatorColor = AppColors.Shared.Layer.gray.uiColor
+        }
+    }
+
+    private func setFocusIndicatorHeight(from state: RecoverInputView.State) {
+        switch state {
+        case .empty:
+            focusIndicatorHeight = 1
+        default:
+            focusIndicatorHeight = 1.5
         }
     }
 }
