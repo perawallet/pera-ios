@@ -19,6 +19,8 @@ import UIKit
 
 // <todo>: Handle keyboard 
 final class EditAccountViewController: BaseViewController {
+    weak var delegate: EditAccountViewControllerDelegate?
+
     private lazy var theme = Theme()
     private lazy var editAccountView = EditAccountView()
 
@@ -92,7 +94,15 @@ extension EditAccountViewController {
 
         account.name = accountName
         session?.updateName(accountName, for: account.address)
-        dismissScreen()
+
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.delegate?.editAccountViewControllerDidTapDoneButton(self)
+        }
     }
 }
 
@@ -100,4 +110,8 @@ extension EditAccountViewController: EditAccountViewDelegate {
     func editAccountViewDidTapDoneButton(_ editAccountView: EditAccountView) {
         didTapDoneButton()
     }
+}
+
+protocol EditAccountViewControllerDelegate: AnyObject {
+    func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController)
 }
