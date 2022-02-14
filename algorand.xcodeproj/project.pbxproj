@@ -11745,15 +11745,6 @@
 			path = Layout;
 			sourceTree = "<group>";
 		};
-		958416E527B313E1005B1627 /* Loading */ = {
-			isa = PBXGroup;
-			children = (
-				958416E627B313F9005B1627 /* AlgoStatisticsLoadingView.swift */,
-				958416EA27B3155A005B1627 /* AlgoStatisticsLoadingViewTheme.swift */,
-			);
-			path = Loading;
-			sourceTree = "<group>";
-		};
 		958416EE27B3A7B5005B1627 /* Sequence */ = {
 			isa = PBXGroup;
 			children = (
@@ -16029,7 +16020,7 @@
 				F0DB417B2794456400EA437D /* PortfolioCalculationInfoViewControllerTheme.swift in Sources */,
 				2B77474A25FFE97E0083EFFA /* InputSuggestionViewModel.swift in Sources */,
 				95609E2A27B69A50008CE7FA /* NotificationsAPIDataController.swift in Sources */,
-				2BD5A6972632FA970048FA5E /* AlgosUSDValue.swift in Sources */,
+				2BD5A6972632FA970048FA5E /* AlgoUSDPrice.swift in Sources */,
 				2BD5A6972632FA970048FA5E /* AlgoUSDPrice.swift in Sources */,
 				95BB6C2827A51B3C00F2A2F1 /* TransactionCurrencyAmountInformationViewModel.swift in Sources */,
 				2BD36E0E2681DC8E00C57728 /* WCGroupTransactionAccountInformationViewModel.swift in Sources */,
@@ -17049,7 +17040,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 17;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = KHH37325LN;
+				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17078,7 +17069,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 17;
-				DEVELOPMENT_TEAM = KHH37325LN;
+				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17107,7 +17098,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 17;
-				DEVELOPMENT_TEAM = KHH37325LN;
+				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17137,7 +17128,7 @@
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 17;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = KHH37325LN;
+				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17167,7 +17158,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 17;
-				DEVELOPMENT_TEAM = KHH37325LN;
+				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17197,7 +17188,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 17;
-				DEVELOPMENT_TEAM = KHH37325LN;
+				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17350,7 +17341,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 17;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = KHH37325LN;
+				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17380,7 +17371,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 17;
-				DEVELOPMENT_TEAM = KHH37325LN;
+				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17537,7 +17528,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 17;
-				DEVELOPMENT_TEAM = KHH37325LN;
+				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
