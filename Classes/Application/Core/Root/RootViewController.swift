@@ -88,7 +88,13 @@ extension RootViewController {
         let homeTab = HomeTabBarItem(NavigationController(rootViewController: homeViewController))
         
         let algoStatisticsViewController =
-            AlgoStatisticsViewController(configuration: configuration)
+            AlgoStatisticsViewController(
+                dataController: AlgoStatisticsDataController(
+                    api: appConfiguration.api,
+                    sharedDataController: appConfiguration.sharedDataController
+                ),
+                configuration: configuration
+            )
         let algoStatisticsTab = AlgoStatisticsTabBarItem(
             NavigationController(rootViewController: algoStatisticsViewController)
         )

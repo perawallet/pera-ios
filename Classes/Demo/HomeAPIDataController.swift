@@ -69,8 +69,6 @@ extension HomeAPIDataController {
             }
         case .didFinishRunning:
             deliverContentSnapshot()
-        default:
-            break
         }
     }
 }

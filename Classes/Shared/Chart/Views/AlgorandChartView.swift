@@ -52,7 +52,7 @@ final class AlgorandChartView: BaseView {
         return lineChartView
     }()
 
-    private lazy var lineChartLoadingImageView = ImageView()
+    private lazy var loadingView = ImageView()
 
     private let chartCustomizer: AlgorandChartViewCustomizable
 
@@ -68,7 +68,7 @@ final class AlgorandChartView: BaseView {
 
     override func prepareLayout() {
         addLineChartView()
-        addLineChartLoadingImageView()
+        addLoadingView()
     }
 
     override func linkInteractors() {
@@ -90,26 +90,14 @@ extension AlgorandChartView {
         }
     }
 
-    private func addLineChartLoadingImageView() {
-        lineChartLoadingImageView.image = "chart-loading-bg".uiImage
-        lineChartLoadingImageView.contentMode = .scaleAspectFit
+    private func addLoadingView() {
+        loadingView.image = "chart-loading-bg".uiImage
+        loadingView.contentMode = .scaleAspectFit
 
-        addSubview(lineChartLoadingImageView)
-        lineChartLoadingImageView.snp.makeConstraints {
+        addSubview(loadingView)
+        loadingView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-    }
-}
-
-extension AlgorandChartView {
-    func startLoading() {
-        lineChartView.isHidden = true
-        lineChartLoadingImageView.isHidden = false
-    }
-
-    func stopLoading() {
-        lineChartView.isHidden = false
-        lineChartLoadingImageView.isHidden = true
     }
 }
 
@@ -179,12 +167,15 @@ extension AlgorandChartView: ChartViewDelegate {
 }
 
 extension AlgorandChartView {
-    func bind(_ viewModel: AlgorandChartViewModelConvertible) {
-        lineChartView.clear()
-
-        if let data = viewModel.chartData() {
-            lineChartView.data = data
+    func bind(_ viewModel: AlgorandChartViewModel?) {
+        if let anyData = viewModel?.data {
+            lineChartView.data = anyData
+        } else {
+            lineChartView.clear()
         }
+
+        lineChartView.isHidden = viewModel == nil
+        loadingView.isHidden = viewModel != nil
     }
 
     func clear() {

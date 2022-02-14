@@ -62,7 +62,7 @@ extension PortfolioCalculator {
         switch (coinsValueResult, assetsValueResult) {
         case (.success(let coinsValue), .success(let assetsValue)):
             let totalValue = coinsValue + assetsValue
-            return totalValue.unwrap { .success($0) } ?? .failure(.failedCurrency)
+            return totalValue.unwrap { .success($0) } ?? .failure(.currencyFailed)
         case (.success, .failure(let error)):
             return .failure(error)
         case (.failure(let error), _):
@@ -96,8 +96,8 @@ extension PortfolioValue {
 
 enum PortfolioValueError: Error {
     case idle
-    case failedCurrency
-    case failedAccounts
+    case currencyFailed
+    case accountsFailed
 }
 
 extension Result where Success == PortfolioValue {

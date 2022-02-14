@@ -27,13 +27,13 @@ struct ALGPortfolioCalculator: PortfolioCalculator {
             let currencyValue = currency.value,
             let currencyPriceValue = currencyValue.priceValue
         else {
-            return .failure(.failedCurrency)
+            return .failure(.currencyFailed)
         }
         
         var totalMicroAlgos: UInt64 = 0
         for account in accounts {
             if !canCalculateCoinsValue(account) {
-                return .failure(.failedAccounts)
+                return .failure(.accountsFailed)
             }
             
             totalMicroAlgos += account.value.amount
@@ -52,13 +52,13 @@ struct ALGPortfolioCalculator: PortfolioCalculator {
             let currencyValue = currency.value,
             let currencyUSDValue = currencyValue.usdValue
         else {
-            return .failure(.failedCurrency)
+            return .failure(.currencyFailed)
         }
         
         var totalAmount: Decimal = 0
         for account in accounts {
             if !canCalculateAssetsValue(account) {
-                return .failure(.failedAccounts)
+                return .failure(.accountsFailed)
             }
             
             totalAmount += account.value.compoundAssets.reduce(0) {

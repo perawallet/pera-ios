@@ -13,24 +13,27 @@
 // limitations under the License.
 
 //
-//   API+Algos.swift
+//   AlgoPriceHistory.swift
 
-import MagpieCore
 import Foundation
+import MagpieCore
+import MacaroonUtils
 
-extension ALGAPI {
-    @discardableResult
-    func fetchAlgoPriceHistory(
-        _ draft: FetchAlgoPriceHistoryDraft,
-        onCompleted handler: @escaping (Response.ModelResult<AlgoPriceHistory>) -> Void
-    ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
-            .base(.algoExplorer)
-            .path(.algoUSDHistory)
-            .method(.get)
-            .ignoreResponseWhenEndpointCancelled(false)
-            .completionHandler(handler)
-            .query(draft)
-            .execute()
+final class AlgoPriceHistory: ALGAPIModel {
+    let coin: String
+    let values: [AlgoUSDPrice]
+
+    init() {
+        self.coin = "ALGO"
+        self.values = []
+    }
+}
+
+extension AlgoPriceHistory {
+    enum CodingKeys:
+        String,
+        CodingKey {
+        case coin
+        case values = "history"
     }
 }

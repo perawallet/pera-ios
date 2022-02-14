@@ -20,7 +20,7 @@ import MagpieCore
 import MagpieHipo
 import SwiftDate
 
-enum CurrencyHandle {
+enum CurrencyHandle: Equatable {
     typealias Error = HIPNetworkError<NoAPIModel>
     
     case idle

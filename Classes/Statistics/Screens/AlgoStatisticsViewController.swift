@@ -15,246 +15,215 @@
 //
 //   AlgoStatisticsViewController.swift
 
-import UIKit
-import MacaroonBottomSheet
+import Foundation
 import MacaroonUIKit
 import MacaroonUtils
+import UIKit
 
-final class AlgoStatisticsViewController: BaseScrollViewController {
+final class AlgoStatisticsViewController:
+    BaseScrollViewController,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+    
     override var prefersLargeTitle: Bool {
         return true
     }
 
-    private lazy var algoStatisticsView = AlgoStatisticsView()
-    private lazy var loadingView = AlgoStatisticsLoadingView()
+    private lazy var algoPriceView = AlgoPriceView()
+    private lazy var algoPriceTimeFrameSelectionView = AlgoPriceChartTimeFrameSelectionView()
+    
+    private var algoPriceTimeFrameOptions: [AlgoPriceTimeFrameSelection] = []
 
-    private lazy var algoStatisticsDataController = AlgoStatisticsDataController(api: api)
-
-    private var cachedAlgoStatisticsViewModels: [AlgosUSDValueInterval: AlgoStatisticsViewModel] = [:]
-
-    private var chartEntries: [AlgosUSDValue]?
-    private var selectedTimeInterval: AlgosUSDValueInterval = .daily
+    private var chartEntries: [AlgoUSDPrice]?
+    private var selectedTimeInterval: AlgoPriceTimeFrameSelection = .lastDay
 
     private var currency: Currency? {
         return sharedDataController.currency.value
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        algoStatisticsView.isHidden = true
-        getChartData(for: .daily)
+    
+    private var isViewFirstAppeared = true
+    
+    private let dataController: AlgoStatisticsDataController
+    
+    init(
+        dataController: AlgoStatisticsDataController,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.dataController = dataController
+        super.init(configuration: configuration)
     }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        if !isViewFirstLoaded {
-            getChartData(for: selectedTimeInterval)
-        }
+    
+    deinit {
+        unobserveNotifications()
     }
-
+    
+    override func configureNavigationBarAppearance() {
+        navigationItem.title = "title-algorand".localized
+    }
+    
     override func customizeTabBarAppearence() {
         tabBarHidden = false
     }
+    
+    override func setListeners() {
+        super.setListeners()
+        
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            switch event {
+            case .didUpdateAlgoPrice(let result):
+                switch result {
+                case .none:
+                    self.algoPriceView.bindData(nil)
+                    
+                    if !self.algoPriceTimeFrameOptions.isEmpty {
+                        return
+                    }
 
-    override func configureAppearance() {
-        super.configureAppearance()
-        title = "title-algorand".localized
-    }
+                    self.algoPriceTimeFrameSelectionView.bindData(nil)
 
-    override func prepareLayout() {
-        super.prepareLayout()
-        addLoadingView()
-        addAlgoStatisticsView()
-    }
-
-    override func linkInteractors() {
-        super.linkInteractors()
-        algoStatisticsView.delegate = self
-        algoStatisticsDataController.delegate = self
-    }
-}
-
-extension AlgoStatisticsViewController {
-    private func addLoadingView() {
-        loadingView.customize(AlgoStatisticsLoadingViewTheme())
-
-        contentView.addSubview(loadingView)
-        loadingView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+                    self.algoPriceTimeFrameOptions = []
+                case .success(let viewModel):
+                    self.algoPriceView.bindData(viewModel)
+                    
+                    if !self.algoPriceTimeFrameOptions.isEmpty {
+                        return
+                    }
+                    
+                    let options: [AlgoPriceTimeFrameSelection] = [
+                        .lastDay,
+                        .lastWeek,
+                        .lastMonth,
+                        .lastYear,
+                        .all
+                    ]
+                    let algoPriceTimeFrameSelectionViewModel =
+                        AlgoPriceChartTimeFrameSelectionViewModel(options)
+                    self.algoPriceTimeFrameSelectionView.bindData(
+                        algoPriceTimeFrameSelectionViewModel
+                    )
+                    self.algoPriceTimeFrameSelectionView.selectedIndex =
+                        options.firstIndex(of: self.dataController.selectedAlgoPriceTimeFrame)
+                    
+                    self.algoPriceTimeFrameOptions = options
+                case .failure(let error):
+                    let algoPriceViewModel = AlgoPriceViewModel(error)
+                    self.algoPriceView.bindData(algoPriceViewModel)
+                    
+                    let algoPriceTimeFrameSelectionViewModel =
+                        AlgoPriceChartTimeFrameSelectionViewModel(error)
+                    self.algoPriceTimeFrameSelectionView.bindData(
+                        algoPriceTimeFrameSelectionViewModel
+                    )
+                    
+                    self.algoPriceTimeFrameOptions = []
+                }
+            case .didSelectAlgoPrice(let result):
+                switch result {
+                case .success(let viewModel):
+                    self.algoPriceView.bindPriceData(viewModel)
+                case .failure(let error):
+                    let algoPriceViewModel = AlgoPriceViewModel(error)
+                    self.algoPriceView.bindPriceData(algoPriceViewModel)
+                }
+            }
         }
-    }
-
-    private func addAlgoStatisticsView() {
-        contentView.addSubview(algoStatisticsView)
-        algoStatisticsView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+        
+        observeWhenApplicationDidBecomeActive {
+            [weak self] _ in
+            guard let self = self else { return }
+            self.reloadData()
         }
-    }
-}
-
-extension AlgoStatisticsViewController {    
-    private func getChartData(for interval: AlgosUSDValueInterval) {
-        algoStatisticsDataController.cancel()
-
-        algoStatisticsView.clearLineChart()
-        algoStatisticsView.startLoading()
-
-        if let cachedStatisticsViewModel = cachedAlgoStatisticsViewModels[interval] {
-            algoStatisticsView.stopLoading()
-
-            chartEntries = cachedStatisticsViewModel.values
-            bindView(with: cachedStatisticsViewModel)
-            return
-        }
-
-
-        algoStatisticsDataController.getChartData(for: interval)
-    }
-}
-
-extension AlgoStatisticsViewController: AlgoStatisticsViewDelegate {
-    func algoStatisticsView(_ view: AlgoStatisticsView, didSelect timeInterval: AlgosUSDValueInterval) {
-        guard selectedTimeInterval != timeInterval else {
-            return
-        }
-
-        selectedTimeInterval = timeInterval
-        getChartData(for: timeInterval)
-    }
-
-    func algoStatisticsView(_ view: AlgoStatisticsView, didSelectItemAt index: Int) {
-        guard let currency = currency,
-              let values = chartEntries,
-              !values.isEmpty,
-              let selectedPrice = values[safe: index] else {
-                  return
-              }
-
-        bindHeaderView(
-            values: values,
-            selectedPrice: selectedPrice,
-            timerInterval: selectedTimeInterval,
-            currency: currency
-        )
     }
     
-    func algoStatisticsViewDidDeselect(_ view: AlgoStatisticsView) {
-        guard let currency = currency,
-              let values = chartEntries,
-              !values.isEmpty else {
-                  return
-              }
-
-        bindHeaderView(
-            values: values,
-            selectedPrice: nil,
-            timerInterval: selectedTimeInterval,
-            currency: currency
-        )
-    }
-
-    private func bindHeaderView(
-        values: [AlgosUSDValue],
-        selectedPrice: AlgosUSDValue?,
-        timerInterval: AlgosUSDValueInterval,
-        currency: Currency
-    ) {
-        let priceChange = AlgoUSDPriceChange(
-            firstPrice: values.first,
-            lastPrice: values.last,
-            selectedPrice: selectedPrice,
-            currency: currency
-        )
-
-        algoStatisticsView.bind(
-            AlgoStatisticsHeaderViewModel(
-                priceChange: priceChange,
-                timeInterval: timerInterval,
-                currency: currency
-            )
-        )
-    }
-}
-
-extension AlgoStatisticsViewController: AlgoStatisticsDataControllerDelegate {
-    func algoStatisticsDataController(
-        _ dataController: AlgoStatisticsDataController,
-        didFetch values: [AlgosUSDValue]
-    ) {
-        chartEntries = values
-
-        guard let currency = currency else {
-            /// <todo>
-            /// Screen stays on loading if currency is nil.
-            return
+    override func linkInteractors() {
+        super.linkInteractors()
+        
+        algoPriceView.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            switch event {
+            case .selectChartAtPrice(let index): self.dataController.selectPrice(at: index)
+            case .deselectChart: self.dataController.deselectPrice()
+            }
         }
-
-        createAlgoStatisticViewModel(
-            values: values,
-            timeInterval: selectedTimeInterval,
-            currency: currency
-        ) {
-            [weak self] algoStatisticViewModel in
-            guard let self = self else {
+        algoPriceTimeFrameSelectionView.selectionHandler = {
+            [weak self] index in
+            guard let self = self else { return }
+            
+            guard let timeFrameSelection = self.algoPriceTimeFrameOptions[safe: index] else {
                 return
             }
-
-            self.algoStatisticsView.stopLoading()
-            self.bindView(with: algoStatisticViewModel)
+            
+            self.dataController.load(for: timeFrameSelection)
         }
     }
 
-    func algoStatisticsDataControllerDidFailToFetch(_ dataController: AlgoStatisticsDataController) {
-        chartEntries = nil
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        build()
+        loadData()
+    }
+
+    override func viewDidAppear(
+        _ animated: Bool
+    ) {
+        super.viewDidAppear(animated)
+        
+        if !isViewFirstAppeared {
+            reloadData()
+        }
+        
+        isViewFirstAppeared = false
     }
 }
 
 extension AlgoStatisticsViewController {
-    private func bindView(with algoStatisticViewModel: AlgoStatisticsViewModel) {
-        algoStatisticsView.isHidden = false
-        loadingView.isHidden = true
-
-        algoStatisticsView.bind(algoStatisticViewModel)
+    private func build() {
+        addAlgoPrice()
+        addAlgoPriceTimeFrameSelection()
+    }
+    
+    private func addAlgoPrice() {
+        algoPriceView.customize(AlgoPriceViewTheme())
+        
+        contentView.addSubview(algoPriceView)
+        algoPriceView.snp.makeConstraints {
+            $0.top == 18
+            $0.leading == 0
+            $0.bottom <= 0
+            $0.trailing == 0
+        }
+        
+        algoPriceView.bindData(nil)
+    }
+    
+    private func addAlgoPriceTimeFrameSelection() {
+        algoPriceTimeFrameSelectionView.customize(AlgoPriceChartTimeFrameSelectionViewTheme())
+        
+        contentView.addSubview(algoPriceTimeFrameSelectionView)
+        algoPriceTimeFrameSelectionView.snp.makeConstraints {
+            $0.top == algoPriceView.snp.bottom + 40
+            $0.leading == 24
+            $0.bottom <= 0
+            $0.trailing == 24
+            
+            $0.fitToHeight(30)
+        }
+        
+        algoPriceTimeFrameSelectionView.bindData(nil)
     }
 }
 
 extension AlgoStatisticsViewController {
-    func createAlgoStatisticViewModel(
-        values: [AlgosUSDValue],
-        timeInterval: AlgosUSDValueInterval,
-        currency: Currency,
-        then handler: @escaping (AlgoStatisticsViewModel) -> Void
-    ) {
-        let priceChange = AlgoUSDPriceChange(
-            firstPrice: values.first,
-            lastPrice: values.last,
-            selectedPrice: nil,
-            currency: currency
-        )
-
-        let algoStatisticViewModel = AlgoStatisticsViewModel(
-            values: values,
-            priceChange: priceChange,
-            timeInterval: timeInterval,
-            currency: currency
-        )
-
-        asyncMain {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.cacheAlgoStatisticsViewModel(algoStatisticViewModel, for: timeInterval)
-            handler(algoStatisticViewModel)
-        }
+    private func loadData() {
+        dataController.load()
     }
-
-    private func cacheAlgoStatisticsViewModel(
-        _ algoStatisticViewModel: AlgoStatisticsViewModel,
-        for timeInterval: AlgosUSDValueInterval
-    ) {
-        cachedAlgoStatisticsViewModels[timeInterval] = algoStatisticViewModel
+    
+    private func reloadData() {
+        dataController.reload()
     }
 }

@@ -184,17 +184,16 @@ extension SharedAPIDataController {
         _ currencyValue: Currency
     ) {
         currency = .ready(currency: currencyValue, lastUpdateDate: Date())
-        publish(.didUpdateCurrency)
     }
     
     private func blockProcessorDidFailToFetchCurrency(
         _ error: HIPNetworkError<NoAPIModel>
     ) {
-        if !currency.isAvailable {
-            currency = .failed(error)
+        if currency.isAvailable {
+            return
         }
         
-        publish(.didUpdateCurrency)
+        currency = .failed(error)
     }
     
     private func blockProcessorWillFetchAccount(

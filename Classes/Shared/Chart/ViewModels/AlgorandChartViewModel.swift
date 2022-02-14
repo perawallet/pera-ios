@@ -13,10 +13,11 @@
 // limitations under the License.
 
 //
-//   AlgorandChartViewModelConvertible.swift
+//   AlgorandChartViewModel.swift
 
 import Charts
+import MacaroonUIKit
 
-protocol AlgorandChartViewModelConvertible {
-    func chartData() -> ChartData?
+protocol AlgorandChartViewModel: ViewModel {
+    var data: ChartData? { get }
 }
