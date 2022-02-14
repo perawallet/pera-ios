@@ -19,10 +19,12 @@ import MagpieCore
 
 struct DeviceDeletionDraft: JSONObjectBody {
     let pushToken: String
+    let platform = "ios"
     
     var bodyParams: [APIBodyParam] {
         var params: [APIBodyParam] = []
         params.append(.init(.pushToken, pushToken))
+        params.append(.init(.platform, platform))
         return params
     }
 }

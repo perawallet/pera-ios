@@ -48,12 +48,16 @@ extension ALGAPI {
     }
 
     @discardableResult
-    func unregisterDevice(_ draft: DeviceDeletionDraft) -> EndpointOperatable {
+    func unregisterDevice(
+        _ draft: DeviceDeletionDraft,
+        onCompleted handler: @escaping (Response.ErrorModelResult<HIPAPIError>) -> Void
+    ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)
             .path(.devices)
             .method(.delete)
             .body(draft)
+            .completionHandler(handler)
             .execute()
     }
 
