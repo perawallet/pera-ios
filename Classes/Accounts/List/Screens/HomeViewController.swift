@@ -334,6 +334,12 @@ extension HomeViewController {
     }
 
     private func presentPeraIntroductionIfNeeded() {
+        let algAppLaunchStore = ALGAppLaunchStore()
+
+        if algAppLaunchStore.isFirstOnboard {
+            return
+        }
+
         let peraIntroductionStore = PeraIntroductionStore()
 
         if !peraIntroductionStore.isFirstPeraLaunch {

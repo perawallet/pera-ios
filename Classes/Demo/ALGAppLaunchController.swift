@@ -76,7 +76,7 @@ final class ALGAppLaunchController:
             /// App is deleted, but the keychain has the private keys.
             session.reset(includingContacts: false)
             firstLaunchUI(.onboarding)
-
+            ALGAppLaunchStore().saveFirstOnboardPera()
             return
         }
         
@@ -359,5 +359,19 @@ extension ALGAppLaunchController {
     
     private func cancelPendingDeeplink() {
         $pendingDeeplinkSource.modify { $0 = nil }
+    }
+}
+
+struct ALGAppLaunchStore: Storable {
+    typealias Object = Any
+
+    private let firstOnboard = "com.algorand.first.onboard"
+
+    var isFirstOnboard: Bool {
+        return userDefaults.bool(forKey: firstOnboard)
+    }
+
+    func saveFirstOnboardPera() {
+        userDefaults.set(true, forKey: firstOnboard)
     }
 }
