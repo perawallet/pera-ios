@@ -154,6 +154,10 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
         open(.qrGenerator(title: "options-auth-account".localized, draft: draft, isTrackable: true), by: .present)
     }
 
+    func optionsViewControllerDidRenameAccount(_ optionsViewController: OptionsViewController) {
+        accountTitleView.bindData(AccountNameViewModel(account: accountHandle.value))
+    }
+
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
         displayRemoveAccountAlert()
     }
