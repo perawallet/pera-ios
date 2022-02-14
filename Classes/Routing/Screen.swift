@@ -27,7 +27,7 @@ indirect enum Screen {
     case accountRecover(flow: AccountSetupFlow)
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
-    case accountDetail(accountHandle: AccountHandle)
+    case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
     case assetSearch(accountHandle: AccountHandle)
     case assetDetail(draft: TransactionListing)
     case algosDetail(draft: TransactionListing)

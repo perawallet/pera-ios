@@ -367,8 +367,10 @@ class Router:
             viewController = AssetDetailViewController(draft: draft, configuration: configuration)
         case let .algosDetail(draft):
             viewController = AlgosDetailViewController(draft: draft, configuration: configuration)
-        case let .accountDetail(accountHandle):
-            viewController = AccountDetailViewController(accountHandle: accountHandle, configuration: configuration)
+        case let .accountDetail(accountHandle, eventHandler):
+            let aViewController = AccountDetailViewController(accountHandle: accountHandle, configuration: configuration)
+            aViewController.eventHandler = eventHandler
+            viewController = aViewController
         case let .assetSearch(accountHandle):
             viewController = AssetSearchViewController(accountHandle: accountHandle, configuration: configuration)
         case let .addAsset(account):

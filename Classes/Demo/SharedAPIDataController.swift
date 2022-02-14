@@ -83,6 +83,22 @@ extension SharedAPIDataController {
 
         startPolling()
     }
+    
+    func resetPollingAfterRemoving(
+        _ account: Account
+    ) {
+        stopPolling()
+        
+        let address = account.address
+        
+        if let localAccount = session.accountInformation(from: address) {
+            session.authenticatedUser?.removeAccount(localAccount)
+        }
+
+        accountCollection[address] = nil
+        
+        startPolling()
+    }
 
     func resetPollingWithCurrency() {
         currency = .idle

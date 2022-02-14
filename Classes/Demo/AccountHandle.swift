@@ -20,7 +20,7 @@ import Foundation
 import MagpieCore
 import MagpieHipo
 
-struct AccountHandle {
+struct AccountHandle: Hashable {
     var isAvailable: Bool {
         return status == .ready
     }
@@ -54,7 +54,4 @@ extension AccountHandle {
         case failed(HIPNetworkError<NoAPIModel>) /// Account or assets aren't ready.
         case ready /// Account and assets are ready.
     }
-}
-
-extension AccountHandle: Hashable {
 }
