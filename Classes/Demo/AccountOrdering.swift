@@ -24,9 +24,21 @@ struct AccountOrdering {
     private let watchAccountOrderOffset = 100000
 
     func getNewAccountIndex(for type: AccountType) -> Int {
-        return type == .watch ?
-            sharedDataController.accountCollection.count + watchAccountOrderOffset :
-            sharedDataController.accountCollection.count
+        let sortedAccounts = sharedDataController.accountCollection.sorted()
+
+        if type == .watch {
+            guard let lastWatchAccount = sortedAccounts.last(where: { $0.value.type == .watch }) else {
+                return watchAccountOrderOffset
+            }
+
+            return lastWatchAccount.value.preferredOrder + 1
+        }
+
+        guard let lastNonWatchAccount = sortedAccounts.last(where: { $0.value.type != .watch }) else {
+            return 0
+        }
+
+        return lastNonWatchAccount.value.preferredOrder + 1
     }
 
     func reorder(_ accounts: [AccountHandle], with type: AccountType) {
