@@ -169,9 +169,11 @@ extension ContactDetailViewController {
                         }
                     } else {
                         self.loadingController?.stopLoading()
+                        self.contactDetailView.assetsCollectionView.reloadData()
                     }
                 } else {
                     self.loadingController?.stopLoading()
+                    self.contactDetailView.assetsCollectionView.reloadData()
                 }
             case let .failure(error, _):
                 if error.isHttpNotFound {
@@ -181,6 +183,7 @@ extension ContactDetailViewController {
                     guard let account = self.contactAccount else { return }
                     let assetPreviewModel = AssetPreviewModelAdapter.adapt((account, currency))
                     self.assetPreviews.append(assetPreviewModel)
+                    self.contactDetailView.assetsCollectionView.reloadData()
                 } else {
                     self.contactAccount = nil
                     self.loadingController?.stopLoading()
