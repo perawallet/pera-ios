@@ -16,17 +16,18 @@
 //   AlgosDetailInfoViewCell.swift
 
 import UIKit
+import MacaroonUIKit
 
-final class AlgosDetailInfoViewCell: BaseCollectionViewCell<AlgosDetailInfoView> {
+final class AlgosDetailInfoViewCell:
+    CollectionCell<AlgosDetailInfoView>,
+    ViewModelBindable {
     weak var delegate: AlgosDetailInfoViewCellDelegate?
+
+    static let theme = AlgosDetailInfoViewTheme()
 
     override func prepareLayout() {
         super.prepareLayout()
-        contextView.customize(AlgosDetailInfoViewTheme())
-    }
-
-    func bindData(_ viewModel: AlgosDetailInfoViewModel?) {
-        contextView.bindData(viewModel)
+        contextView.customize(Self.theme)
     }
 
     override func setListeners() {

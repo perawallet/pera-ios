@@ -48,7 +48,6 @@ struct RewardsInfoViewTheme: StyleSheet, LayoutSheet {
             .contentMode(.center)
         ]
         self.rewardsLabel = [
-            .text("rewards-title".localized),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.gray),

@@ -1630,9 +1630,9 @@
 		2B9EEADF264E7527007A112D /* RewardCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEADE264E7527007A112D /* RewardCalculator.swift */; };
 		2B9EEAE0264E7527007A112D /* RewardCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEADE264E7527007A112D /* RewardCalculator.swift */; };
 		2B9EEAE1264E7527007A112D /* RewardCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEADE264E7527007A112D /* RewardCalculator.swift */; };
-		2B9EEB67264ED202007A112D /* RewardCalculationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */; };
-		2B9EEB68264ED202007A112D /* RewardCalculationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */; };
-		2B9EEB69264ED202007A112D /* RewardCalculationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */; };
+		2B9EEB67264ED202007A112D /* RewardInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEB66264ED202007A112D /* RewardInfoViewModel.swift */; };
+		2B9EEB68264ED202007A112D /* RewardInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEB66264ED202007A112D /* RewardInfoViewModel.swift */; };
+		2B9EEB69264ED202007A112D /* RewardInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEB66264ED202007A112D /* RewardInfoViewModel.swift */; };
 		2B9EEBAA265185C0007A112D /* Dictionary+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEBA9265185C0007A112D /* Dictionary+Additions.swift */; };
 		2B9EEBAB265185C0007A112D /* Dictionary+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEBA9265185C0007A112D /* Dictionary+Additions.swift */; };
 		2B9EEBAC265185C1007A112D /* Dictionary+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B9EEBA9265185C0007A112D /* Dictionary+Additions.swift */; };
@@ -4461,7 +4461,7 @@
 		2B9EEACD264D3393007A112D /* AlgorandTotalSupply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorandTotalSupply.swift; sourceTree = "<group>"; };
 		2B9EEAD5264D33B1007A112D /* ALGAPI+Block.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Block.swift"; sourceTree = "<group>"; };
 		2B9EEADE264E7527007A112D /* RewardCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCalculator.swift; sourceTree = "<group>"; };
-		2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardCalculationViewModel.swift; sourceTree = "<group>"; };
+		2B9EEB66264ED202007A112D /* RewardInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardInfoViewModel.swift; sourceTree = "<group>"; };
 		2B9EEBA9265185C0007A112D /* Dictionary+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Additions.swift"; sourceTree = "<group>"; };
 		2B9EF2BB25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasshraseMnemonicNumberHeaderView.swift; sourceTree = "<group>"; };
 		2B9EF2C725D3D15F004BCCC4 /* PasshraseMnemonicNumberHeaderSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasshraseMnemonicNumberHeaderSupplementaryView.swift; sourceTree = "<group>"; };
@@ -9945,6 +9945,7 @@
 		2BD5476423171491007179FE /* Rewards */ = {
 			isa = PBXGroup;
 			children = (
+				D4E59E6727BBA5B9005048B0 /* ViewModels */,
 				2BA713232748545100B8A907 /* Screens */,
 				2BA713212748544300B8A907 /* Views */,
 			);
@@ -12314,6 +12315,15 @@
 			path = TimeFrame;
 			sourceTree = "<group>";
 		};
+		D46E3A7927BB8E0E003DC719 /* RewardInfo */ = {
+			isa = PBXGroup;
+			children = (
+				D4EC4C692777B34800428A3C /* RewardsInfoView.swift */,
+				D4EC4C6D2777B50C00428A3C /* RewardsInfoViewTheme.swift */,
+			);
+			path = RewardInfo;
+			sourceTree = "<group>";
+		};
 		D4710B1F276A6D9F00F35F74 /* QRAddress */ = {
 			isa = PBXGroup;
 			children = (
@@ -12569,6 +12579,7 @@
 		D4D746622779BDF4000545BD /* AlgosDetailInfo */ = {
 			isa = PBXGroup;
 			children = (
+				D4E59E6627BBA598005048B0 /* RewardInfo */,
 				D4D746592779ACE7000545BD /* AlgosDetailInfoViewModel.swift */,
 			);
 			path = AlgosDetailInfo;
@@ -12593,10 +12604,24 @@
 		D4DF53A42786105D00820DD0 /* Reward */ = {
 			isa = PBXGroup;
 			children = (
-				2B9EEB66264ED202007A112D /* RewardCalculationViewModel.swift */,
-				2BD5476923182636007179FE /* RewardDetailViewModel.swift */,
 			);
 			path = Reward;
+			sourceTree = "<group>";
+		};
+		D4E59E6627BBA598005048B0 /* RewardInfo */ = {
+			isa = PBXGroup;
+			children = (
+				2B9EEB66264ED202007A112D /* RewardInfoViewModel.swift */,
+			);
+			path = RewardInfo;
+			sourceTree = "<group>";
+		};
+		D4E59E6727BBA5B9005048B0 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2BD5476923182636007179FE /* RewardDetailViewModel.swift */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		D4EC4C602777A3DA00428A3C /* AlgosDetailInfo */ = {
@@ -12605,8 +12630,7 @@
 				D4EC4C612777A3E600428A3C /* AlgosDetailInfoView.swift */,
 				D4B1F5A02783BB30002D80FA /* AlgosDetailInfoViewCell.swift */,
 				D4EC4C652777A69F00428A3C /* AlgosDetailInfoViewTheme.swift */,
-				D4EC4C692777B34800428A3C /* RewardsInfoView.swift */,
-				D4EC4C6D2777B50C00428A3C /* RewardsInfoViewTheme.swift */,
+				D46E3A7927BB8E0E003DC719 /* RewardInfo */,
 			);
 			path = AlgosDetailInfo;
 			sourceTree = "<group>";
@@ -13776,7 +13800,7 @@
 				D4C19D50273E9A0200AFDBCC /* PassphraseView.swift in Sources */,
 				F0C64B21277355C000E5A6D2 /* AssetDetailCollection.swift in Sources */,
 				2B01FE5B26147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
-				2B9EEB69264ED202007A112D /* RewardCalculationViewModel.swift in Sources */,
+				2B9EEB69264ED202007A112D /* RewardInfoViewModel.swift in Sources */,
 				F0E7443627B45EBE0063DD83 /* AlgoPriceView.swift in Sources */,
 				D4C45BF52726C54800F4AE31 /* ContactInformationView.swift in Sources */,
 				D4194310273541140055EC70 /* PageBarButton.swift in Sources */,
@@ -14980,7 +15004,7 @@
 				D4C19D4F273E9A0200AFDBCC /* PassphraseView.swift in Sources */,
 				D4C3BD4C278CEB4100E898FD /* AssetDetailTitleViewTheme.swift in Sources */,
 				95AF1C8427B13EE1001AB131 /* TransactionHistoryLoadingItemView.swift in Sources */,
-				2B9EEB68264ED202007A112D /* RewardCalculationViewModel.swift in Sources */,
+				2B9EEB68264ED202007A112D /* RewardInfoViewModel.swift in Sources */,
 				D4C45BF42726C54800F4AE31 /* ContactInformationView.swift in Sources */,
 				D46AC87A26E8E416008CDE68 /* RecoverInputViewTheme.swift in Sources */,
 				2BEC6164279F455400152D53 /* WCSessionSaveErrorLog.swift in Sources */,
@@ -16232,7 +16256,7 @@
 				2B01FE5926147FD7006C3C56 /* AccountRecoverOptionsViewController.swift in Sources */,
 				95E7754F276DEFBE004E13F2 /* TransactionResultScreen+Theme.swift in Sources */,
 				D4C45BF32726C54800F4AE31 /* ContactInformationView.swift in Sources */,
-				2B9EEB67264ED202007A112D /* RewardCalculationViewModel.swift in Sources */,
+				2B9EEB67264ED202007A112D /* RewardInfoViewModel.swift in Sources */,
 				D46AC87926E8E416008CDE68 /* RecoverInputViewTheme.swift in Sources */,
 				D4B1F5A12783BB30002D80FA /* AlgosDetailInfoViewCell.swift in Sources */,
 				2B698250278C9C21008EC669 /* PendingAssetImageView.swift in Sources */,

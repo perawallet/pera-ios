@@ -18,7 +18,10 @@
 import UIKit
 import MacaroonUIKit
 
-final class RewardsInfoView: View, TripleShadowDrawable {
+final class RewardsInfoView:
+    View,
+    ViewModelBindable,
+    TripleShadowDrawable {
     weak var delegate: RewardsInfoViewDelegate?
 
     private lazy var rewardImageView = UIImageView()
@@ -31,11 +34,9 @@ final class RewardsInfoView: View, TripleShadowDrawable {
     var secondShadow: MacaroonUIKit.Shadow?
     var secondShadowLayer: CAShapeLayer = CAShapeLayer()
 
-    func setListeners() {
-        infoButton.addTarget(self, action: #selector(didTapInfoButton), for: .touchUpInside)
-    }
-
-    func customize(_ theme: RewardsInfoViewTheme) {
+    func customize(
+        _ theme: RewardsInfoViewTheme
+    ) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         draw(corner: theme.containerCorner)
         draw(border: theme.containerBorder)
@@ -49,9 +50,49 @@ final class RewardsInfoView: View, TripleShadowDrawable {
         addRewardsValueLabel(theme)
     }
 
-    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+    func prepareLayout(
+        _ layoutSheet: LayoutSheet
+    ) {}
 
-    func customizeAppearance(_ styleSheet: StyleSheet) {}
+    func customizeAppearance(
+        _ styleSheet: StyleSheet
+    ) {}
+
+    func bindData(_ viewModel: RewardInfoViewModel?) {
+        rewardsLabel.editText = viewModel?.title
+        rewardsValueLabel.editText = viewModel?.rewardAmount
+    }
+
+    class func calculatePreferredSize(
+        _ viewModel: RewardInfoViewModel?,
+        for theme: RewardsInfoViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let width = size.width
+        let titleSize = viewModel.title.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let valueSize = viewModel.rewardAmount.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let preferredHeight =
+        theme.bottomPadding +
+        titleSize.height +
+        theme.rewardsValueLabelTopPadding +
+        valueSize.height +
+        theme.bottomPadding
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+    }
+
+    func setListeners() {
+        infoButton.addTarget(self, action: #selector(didTapInfoButton), for: .touchUpInside)
+    }
 }
 
 extension RewardsInfoView {
@@ -62,18 +103,22 @@ extension RewardsInfoView {
 }
 
 extension RewardsInfoView {
-    private func addRewardImageView(_ theme: RewardsInfoViewTheme) {
+    private func addRewardImageView(
+        _ theme: RewardsInfoViewTheme
+    ) {
         rewardImageView.customizeAppearance(theme.rewardImage)
 
         addSubview(rewardImageView)
         rewardImageView.snp.makeConstraints {
             $0.fitToSize(theme.infoButtonSize)
             $0.leading.equalToSuperview().inset(theme.imageHorizontalInset)
-            $0.top.bottom.equalToSuperview().inset(theme.imageVerticalInset)
+            $0.centerY.equalToSuperview()
         }
     }
 
-    private func addInfoButton(_ theme: RewardsInfoViewTheme) {
+    private func addInfoButton(
+        _ theme: RewardsInfoViewTheme
+    ) {
         infoButton.customizeAppearance(theme.infoButton)
 
         addSubview(infoButton)
@@ -84,7 +129,9 @@ extension RewardsInfoView {
         }
     }
 
-    private func addRewardsLabel(_ theme: RewardsInfoViewTheme) {
+    private func addRewardsLabel(
+        _ theme: RewardsInfoViewTheme
+    ) {
         rewardsLabel.customizeAppearance(theme.rewardsLabel)
 
         addSubview(rewardsLabel)
@@ -95,7 +142,9 @@ extension RewardsInfoView {
         }
     }
 
-    private func addRewardsValueLabel(_ theme: RewardsInfoViewTheme) {
+    private func addRewardsValueLabel(
+        _ theme: RewardsInfoViewTheme
+    ) {
         rewardsValueLabel.customizeAppearance(theme.rewardsValueLabel)
 
         addSubview(rewardsValueLabel)
@@ -105,12 +154,6 @@ extension RewardsInfoView {
             $0.trailing.lessThanOrEqualTo(infoButton.snp.leading).offset(theme.minimumHorizontalInset)
             $0.bottom.equalToSuperview().inset(theme.bottomPadding)
         }
-    }
-}
-
-extension RewardsInfoView: ViewModelBindable {
-    func bindData(_ viewModel: RewardCalculationViewModel?) {
-        rewardsValueLabel.text = viewModel?.rewardAmount
     }
 }
 

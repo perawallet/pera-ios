@@ -89,7 +89,7 @@ extension RewardDetailViewController {
 
 extension RewardDetailViewController: RewardCalculatorDelegate {
     func rewardCalculator(_ rewardCalculator: RewardCalculator, didCalculate rewards: Decimal) {
-        rewardDetailView.bindData(RewardCalculationViewModel(account: account, calculatedRewards: rewards))
+        rewardDetailView.bindData(RewardDetailViewModel(account: account, calculatedRewards: rewards))
     }
 }
 

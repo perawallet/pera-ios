@@ -18,7 +18,9 @@
 import UIKit
 import MacaroonUIKit
 
-final class RewardDetailView: View {
+final class RewardDetailView:
+    View,
+    ViewModelBindable {
     weak var delegate: RewardDetailViewDelegate?
 
     private lazy var rewardsLabel = UILabel()
@@ -33,19 +35,34 @@ final class RewardDetailView: View {
         )
     }
     
-    func customize(_ theme: RewardDetailViewTheme) {
+    func customize(
+        _ theme: RewardDetailViewTheme
+    ) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addRewardsLabel(theme)
         addAlgoImageView(theme)
-        addAssetIDInfoButton(theme)
+        addRewardsValueLabel(theme)
         addDescriptionLabel(theme)
         addFAQLabel(theme)
     }
 
-    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+    func prepareLayout(
+        _ layoutSheet: LayoutSheet
+    ) {}
 
-    func customizeAppearance(_ styleSheet: StyleSheet) {}
+    func customizeAppearance(
+        _ styleSheet: StyleSheet
+    ) {}
+
+    func bindData(
+        _ viewModel: RewardDetailViewModel?
+    ) {
+        rewardsLabel.editText = viewModel?.title
+        rewardsValueLabel.editText = viewModel?.amount
+        descriptionLabel.editText = viewModel?.description
+        FAQLabel.editText = viewModel?.FAQLabel
+    }
 }
 
 extension RewardDetailView {
@@ -56,7 +73,9 @@ extension RewardDetailView {
 }
 
 extension RewardDetailView {
-    private func addRewardsLabel(_ theme: RewardDetailViewTheme) {
+    private func addRewardsLabel(
+        _ theme: RewardDetailViewTheme
+    ) {
         rewardsLabel.customizeAppearance(theme.rewardsLabel)
 
         addSubview(rewardsLabel)
@@ -66,7 +85,9 @@ extension RewardDetailView {
         }
     }
 
-    private func addAlgoImageView(_ theme: RewardDetailViewTheme) {
+    private func addAlgoImageView(
+        _ theme: RewardDetailViewTheme
+    ) {
         algoImageView.customizeAppearance(theme.algoImageView)
 
         addSubview(algoImageView)
@@ -79,7 +100,9 @@ extension RewardDetailView {
         rewardsLabel.addSeparator(theme.separator, padding: theme.separatorTopPadding)
     }
 
-    private func addAssetIDInfoButton(_ theme: RewardDetailViewTheme) {
+    private func addRewardsValueLabel(
+        _ theme: RewardDetailViewTheme
+    ) {
         rewardsValueLabel.customizeAppearance(theme.rewardsValueLabel)
         addSubview(rewardsValueLabel)
         rewardsValueLabel.snp.makeConstraints {
@@ -89,7 +112,9 @@ extension RewardDetailView {
         }
     }
 
-    private func addDescriptionLabel(_ theme: RewardDetailViewTheme) {
+    private func addDescriptionLabel(
+        _ theme: RewardDetailViewTheme
+    ) {
         descriptionLabel.customizeAppearance(theme.descriptionLabel)
 
         addSubview(descriptionLabel)
@@ -99,18 +124,10 @@ extension RewardDetailView {
         }
     }
 
-    private func addFAQLabel(_ theme: RewardDetailViewTheme) {
+    private func addFAQLabel(
+        _ theme: RewardDetailViewTheme
+    ) {
         FAQLabel.customizeAppearance(theme.FAQLabel)
-
-        let totalString = "total-rewards-faq-title".localized
-        let FAQString = "total-rewards-faq".localized
-        let attributedText = NSMutableAttributedString(string: totalString)
-        attributedText.addAttribute(
-            NSAttributedString.Key.foregroundColor,
-            value: theme.FAQLabelLinkTextColor.uiColor,
-            range: (totalString as NSString).range(of: FAQString)
-        )
-        FAQLabel.attributedText = attributedText
 
         addSubview(FAQLabel)
         FAQLabel.snp.makeConstraints {
@@ -118,16 +135,6 @@ extension RewardDetailView {
             $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.FAQLabelTopPadding)
             $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.bottomInset)
         }
-    }
-}
-
-extension RewardDetailView {
-    func bindData(_ viewModel: RewardDetailViewModel?) {
-        rewardsValueLabel.text = viewModel?.amount
-    }
-
-    func bindData(_ viewModel: RewardCalculationViewModel?) {
-        rewardsValueLabel.text = viewModel?.rewardAmount?.appending(" ALGO")
     }
 }
 

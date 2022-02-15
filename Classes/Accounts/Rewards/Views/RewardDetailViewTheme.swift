@@ -26,7 +26,6 @@ struct RewardDetailViewTheme: StyleSheet, LayoutSheet {
     let rewardsValueLabel: TextStyle
     let descriptionLabel: TextStyle
     let FAQLabel: TextStyle
-    let FAQLabelLinkTextColor: Color
     let separator: Separator
 
     let separatorTopPadding: LayoutMetric
@@ -43,38 +42,28 @@ struct RewardDetailViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = AppColors.Shared.System.background
         self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
         self.rewardsLabel = [
-            .text("rewards-title".localized),
-            .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.gray),
-            .font(Fonts.DMSans.regular.make(13)),
         ]
         self.algoImageView = [
             .image("icon-algo-circle-green"),
             .contentMode(.scaleAspectFit)
         ]
         self.rewardsValueLabel = [
-            .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMMono.regular.make(19)),
         ]
         self.descriptionLabel = [
-            .text("rewards-detail-subtitle".localized),
             .textColor(AppColors.Components.Text.main),
-            .font(Fonts.DMSans.regular.make(15)),
             .isInteractable(true),
-            .textAlignment(.left),
             .textOverflow(FittingText())
         ]
         self.FAQLabel = [
-            .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.regular.make(15)),
+            .textColor(AppColors.Components.Text.main),
             .isInteractable(true),
-            .textAlignment(.left),
             .textOverflow(FittingText())
         ]
-        self.FAQLabelLinkTextColor = AppColors.Components.Link.primary
 
         self.separatorTopPadding = -68
         self.horizontalPadding = 24

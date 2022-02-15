@@ -23,15 +23,11 @@ extension TransactionsListLayout {
         let transactionHistoryTitleCellSize: LayoutSize
         let transactionHistoryCellSize: LayoutSize
         let transactionHistoryFilterCellSize: LayoutSize
-        let assetInfoSize: LayoutSize
-        let algosInfoSize: LayoutSize
 
         init(_ family: LayoutFamily) {
             self.transactionHistoryTitleCellSize = (UIScreen.main.bounds.width, 49)
             self.transactionHistoryCellSize = (UIScreen.main.bounds.width, 72)
             self.transactionHistoryFilterCellSize = (UIScreen.main.bounds.width, 40)
-            self.assetInfoSize = (UIScreen.main.bounds.width, 251 + 32)
-            self.algosInfoSize = (UIScreen.main.bounds.width, 255 + 32)
         }
     }
 }

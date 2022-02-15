@@ -18,32 +18,104 @@
 import MacaroonUIKit
 import UIKit
 
-final class AlgosDetailInfoView: View {
+final class AlgosDetailInfoView:
+    View,
+    ViewModelBindable,
+    ListReusable {
     weak var delegate: AlgosDetailInfoViewDelegate?
 
     private lazy var yourBalanceTitleLabel = UILabel()
     private lazy var algoImageView = UIImageView()
     private lazy var algosValueLabel = UILabel()
-    private lazy var secondaryValueLabel = UILabel()
+    private lazy var secondaryValueLabel = Label()
     private lazy var rewardsInfoView = RewardsInfoView()
+    private lazy var bottomSeparator = UIView()
 
-    func customize(_ theme: AlgosDetailInfoViewTheme) {
+    func customize(
+        _ theme: AlgosDetailInfoViewTheme
+    ) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         
         addYourBalanceTitleLabel(theme)
         addAlgosValueLabel(theme)
         addSecondaryValueLabel(theme)
         addRewardsInfoView(theme)
+        addBottomSeparator(theme)
+    }
+
+    func customizeAppearance(
+        _ styleSheet: StyleSheet
+    ) {}
+
+    func prepareLayout(
+        _ layoutSheet: LayoutSheet
+    ) {}
+
+    func bindData(
+        _ viewModel: AlgosDetailInfoViewModel?
+    ) {
+        yourBalanceTitleLabel.editText = viewModel?.yourBalanceTitle
+        algosValueLabel.editText = viewModel?.totalAmount
+        secondaryValueLabel.editText = viewModel?.secondaryValue
+        rewardsInfoView.bindData(viewModel?.rewardsInfoViewModel)
+    }
+
+    class func calculatePreferredSize(
+        _ viewModel: AlgosDetailInfoViewModel?,
+        for theme: AlgosDetailInfoViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let width =
+            size.width -
+            2 * theme.horizontalPadding
+        let yourBalanceTitleSize = viewModel.yourBalanceTitle.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let amountSize = viewModel.totalAmount.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let rewardsInfoSize = RewardsInfoView.calculatePreferredSize(
+            viewModel.rewardsInfoViewModel,
+            for: theme.rewardsInfoViewTheme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        var preferredHeight =
+        theme.topPadding +
+        yourBalanceTitleSize.height +
+        theme.algosValueLabelTopPadding +
+        amountSize.height +
+        theme.rewardsInfoViewTopPadding +
+        rewardsInfoSize.height +
+        theme.separatorPadding +
+        theme.separator.size +
+        theme.bottomPadding
+
+        if !viewModel.secondaryValue.isNilOrEmpty {
+            let secondaryValueLabelSize = viewModel.secondaryValue.boundingSize(
+                multiline: false,
+                fittingSize: CGSize((width, .greatestFiniteMagnitude))
+            )
+
+            preferredHeight =
+            preferredHeight +
+            theme.secondaryValueLabelTopPadding +
+            secondaryValueLabelSize.height
+        }
+
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 
     func setListeners() {
         rewardsInfoView.setListeners()
         rewardsInfoView.delegate = self
     }
-
-    func customizeAppearance(_ styleSheet: StyleSheet) {}
-
-    func prepareLayout(_ layoutSheet: LayoutSheet) {}
 }
 
 extension AlgosDetailInfoView {
@@ -53,7 +125,7 @@ extension AlgosDetailInfoView {
         addSubview(yourBalanceTitleLabel)
         yourBalanceTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.topPadding)
-            $0.leading.equalToSuperview().inset(theme.horizontalPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
 
@@ -73,10 +145,12 @@ extension AlgosDetailInfoView {
 
         addSubview(secondaryValueLabel)
         secondaryValueLabel.snp.makeConstraints {
-            $0.top.equalTo(algosValueLabel.snp.bottom).offset(theme.secondaryValueLabelTopPadding)
+            $0.top.equalTo(algosValueLabel.snp.bottom)
             $0.leading.equalTo(yourBalanceTitleLabel)
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
+
+        secondaryValueLabel.contentEdgeInsets.top = theme.secondaryValueLabelTopPadding
     }
 
     private func addRewardsInfoView(_ theme: AlgosDetailInfoViewTheme) {
@@ -86,24 +160,27 @@ extension AlgosDetailInfoView {
         rewardsInfoView.snp.makeConstraints {
             $0.top.equalTo(secondaryValueLabel.snp.bottom).offset(theme.rewardsInfoViewTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.bottom.lessThanOrEqualToSuperview().inset(theme.bottomPadding)
         }
+    }
 
-        rewardsInfoView.addSeparator(theme.separator, padding: theme.bottomSeparatorTopPadding)
+    private func addBottomSeparator(
+        _ theme: AlgosDetailInfoViewTheme
+    ) {
+        bottomSeparator.backgroundColor = theme.separator.color
+
+        addSubview(bottomSeparator)
+        bottomSeparator.snp.makeConstraints {
+            $0.top.equalTo(rewardsInfoView.snp.bottom).offset(theme.separatorPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.bottom.equalToSuperview().inset(theme.bottomPadding)
+            $0.fitToHeight(theme.separator.size)
+        }
     }
 }
 
 extension AlgosDetailInfoView: RewardsInfoViewDelegate {
     func rewardsInfoViewDidTapInfoButton(_ rewardsInfoView: RewardsInfoView) {
         delegate?.algosDetailInfoViewDidTapInfoButton(self)
-    }
-}
-
-extension AlgosDetailInfoView: ViewModelBindable {
-    func bindData(_ viewModel: AlgosDetailInfoViewModel?) {
-        algosValueLabel.text = viewModel?.totalAmount
-        secondaryValueLabel.text = viewModel?.secondaryValue
-        rewardsInfoView.bindData(viewModel?.rewardsInfoViewModel)
     }
 }
 

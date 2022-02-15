@@ -35,13 +35,12 @@ struct AlgosDetailInfoViewTheme: StyleSheet, LayoutSheet {
     let minimumHorizontalInset: LayoutMetric
     let rewardsInfoViewTopPadding: LayoutMetric
     let bottomPadding: LayoutMetric
-    let bottomSeparatorTopPadding: LayoutMetric
+    let separatorPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
         self.yourBalanceTitleLabel = [
-            .text("accounts-transaction-your-balance".localized),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.gray),
@@ -66,8 +65,8 @@ struct AlgosDetailInfoViewTheme: StyleSheet, LayoutSheet {
         self.minimumHorizontalInset = 4
         self.algosValueLabelTopPadding = 8
         self.rewardsInfoViewTopPadding = 32
-        self.bottomSeparatorTopPadding = -32
-        self.bottomPadding = 65 - 32
+        self.separatorPadding = 32
+        self.bottomPadding = 32
         self.secondaryValueLabelTopPadding = 4
     }
 }

@@ -16,22 +16,23 @@
 //   AssetDetailInfoViewCell.swift
 
 import UIKit
+import MacaroonUIKit
 
-final class AssetDetailInfoViewCell: BaseCollectionViewCell<AssetDetailInfoView> {
+final class AssetDetailInfoViewCell:
+    CollectionCell<AssetDetailInfoView>,
+    ViewModelBindable {
     weak var delegate: AssetDetailInfoViewCellDelegate?
+
+    static let theme = AssetDetailInfoViewTheme()
 
     override func prepareLayout() {
         super.prepareLayout()
-        contextView.customize(AssetDetailInfoViewTheme())
+        contextView.customize(Self.theme)
     }
 
     override func setListeners() {
         contextView.setListeners()
         contextView.delegate = self
-    }
-
-    func bindData(_ viewModel: AssetDetailInfoViewModel?) {
-        contextView.bindData(viewModel)
     }
 }
 

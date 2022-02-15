@@ -21,15 +21,17 @@ import MacaroonUIKit
 struct AlgosDetailInfoViewModel:
     ViewModel,
     Hashable {
-    private(set) var totalAmount: String?
-    private(set) var secondaryValue: String?
-    private(set) var rewardsInfoViewModel: RewardCalculationViewModel?
+    private(set) var yourBalanceTitle: EditText?
+    private(set) var totalAmount: EditText?
+    private(set) var secondaryValue: EditText?
+    private(set) var rewardsInfoViewModel: RewardInfoViewModel?
 
     init(
         _ account: Account,
         _ currency: Currency?,
         _ calculatedRewards: Decimal?
     ) {
+        bindYourBalanceTitle()
         bindTotalAmount(from: account, calculatedRewards: calculatedRewards ?? 0)
         bindSecondaryValue(from: account, with: currency, calculatedRewards: calculatedRewards ?? 0)
         bindRewardsInfoViewModel(from: account, rewards: calculatedRewards ?? 0)
@@ -37,8 +39,46 @@ struct AlgosDetailInfoViewModel:
 }
 
 extension AlgosDetailInfoViewModel {
+    private mutating func bindYourBalanceTitle() {
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        yourBalanceTitle = .attributedString(
+            "accounts-transaction-your-balance"
+                .localized
+                .attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineHeightMultiple(lineHeightMultiplier),
+                    .textAlignment(.left)
+                ])
+            ])
+        )
+    }
+    
     private mutating func bindTotalAmount(from account: Account, calculatedRewards: Decimal) {
-        totalAmount = getTotalAmount(from: account, and: calculatedRewards).toAlgosStringForLabel
+        guard let totalAmount =
+                getTotalAmount(from: account, and: calculatedRewards)
+                .toAlgosStringForLabel else {
+                    return
+                }
+        
+
+        let font = Fonts.DMMono.regular.make(36)
+        let lineHeightMultiplier = 1.02
+
+        self.totalAmount = .attributedString(
+            totalAmount
+                .attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineHeightMultiple(lineHeightMultiplier),
+                    .textAlignment(.left)
+                ])
+            ])
+        )
     }
 
     private mutating func bindSecondaryValue(from account: Account, with currency: Currency?, calculatedRewards: Decimal) {
@@ -48,11 +88,30 @@ extension AlgosDetailInfoViewModel {
         }
 
         let totalAmount = getTotalAmount(from: account, and: calculatedRewards) * currencyPriceValue
-        secondaryValue = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
+        let secondaryValue = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
+
+        guard let secondaryValue = secondaryValue else {
+            return
+        }
+
+        let font = Fonts.DMMono.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        self.secondaryValue = .attributedString(
+            secondaryValue
+                .attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineHeightMultiple(lineHeightMultiplier),
+                    .textAlignment(.left)
+                ])
+            ])
+        )
     }
 
     private mutating func bindRewardsInfoViewModel(from account: Account, rewards: Decimal) {
-        rewardsInfoViewModel = RewardCalculationViewModel(account: account, calculatedRewards: rewards)
+        rewardsInfoViewModel = RewardInfoViewModel(account: account, calculatedRewards: rewards)
     }
 
     private func getTotalAmount(from account: Account, and calculatedRewards: Decimal) -> Decimal {

@@ -18,34 +18,116 @@
 import MacaroonUIKit
 import UIKit
 
-final class AssetDetailInfoView: View {
+final class AssetDetailInfoView:
+    View,
+    ViewModelBindable,
+    ListReusable {
     weak var delegate: AssetDetailInfoViewDelegate?
 
     private lazy var yourBalanceTitleLabel = UILabel()
     private lazy var balanceLabel = UILabel()
-    private lazy var secondaryValueLabel = UILabel()
+    private lazy var secondaryValueLabel = Label()
+    private lazy var topSeparator = UIView()
     private lazy var assetNameView = UIView()
     private lazy var assetNameLabel = UILabel()
     private lazy var assetIDButton = Button(.imageAtRight(spacing: 8))
     private lazy var verifiedImage = UIImageView()
+    private lazy var bottomSeparator = UIView()
 
     func setListeners() {
         assetIDButton.addTarget(self, action: #selector(notifyDelegateToCopyAssetID), for: .touchUpInside)
     }
 
-    func customize(_ theme: AssetDetailInfoViewTheme) {
+    func customize(
+        _ theme: AssetDetailInfoViewTheme
+    ) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addYourBalanceTitleLabel(theme)
         addBalanceLabel(theme)
         addSecondaryValueLabel(theme)
+        addTopSeparator(theme)
         addAssetNameLabel(theme)
         addAssetIDButton(theme)
+        addBottomSeparator(theme)
     }
 
-    func customizeAppearance(_ styleSheet: StyleSheet) {}
+    func customizeAppearance(
+        _ styleSheet: StyleSheet
+    ) {}
 
-    func prepareLayout(_ layoutSheet: LayoutSheet) {}
+    func prepareLayout(
+        _ layoutSheet: LayoutSheet
+    ) {}
+
+    func bindData(
+        _ viewModel: AssetDetailInfoViewModel?
+    ) {
+        yourBalanceTitleLabel.editText = viewModel?.yourBalanceTitle
+        verifiedImage.isHidden = !(viewModel?.isVerified ?? false)
+        balanceLabel.editText = viewModel?.amount
+        secondaryValueLabel.editText = viewModel?.secondaryValue
+        assetNameLabel.editText = viewModel?.name
+        assetIDButton.setEditTitle(viewModel?.ID, for: .normal)
+    }
+
+    class func calculatePreferredSize(
+        _ viewModel: AssetDetailInfoViewModel?,
+        for theme: AssetDetailInfoViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let width =
+            size.width -
+            2 * theme.horizontalPadding
+        let yourBalanceTitleSize = viewModel.yourBalanceTitle.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let amountSize = viewModel.amount.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let nameSize = viewModel.name.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let assetIDButtonSize = viewModel.ID.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        var preferredHeight =
+        theme.topPadding +
+        yourBalanceTitleSize.height +
+        theme.balanceLabelTopPadding +
+        amountSize.height +
+        theme.separatorPadding +
+        theme.separator.size +
+        theme.assetNameLabelTopPadding +
+        nameSize.height +
+        theme.assetIDLabelTopPadding +
+        assetIDButtonSize.height +
+        theme.separatorPadding +
+        theme.separator.size +
+        theme.bottomPadding
+
+        if !viewModel.secondaryValue.isNilOrEmpty {
+            let secondaryValueLabelSize = viewModel.secondaryValue.boundingSize(
+                multiline: false,
+                fittingSize: CGSize((width, .greatestFiniteMagnitude))
+            )
+
+            preferredHeight =
+            preferredHeight +
+            theme.secondaryValueLabelTopPadding +
+            secondaryValueLabelSize.height
+        }
+
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+    }
 }
 
 extension AssetDetailInfoView {
@@ -56,17 +138,21 @@ extension AssetDetailInfoView {
 }
 
 extension AssetDetailInfoView {
-    private func addYourBalanceTitleLabel(_ theme: AssetDetailInfoViewTheme) {
+    private func addYourBalanceTitleLabel(
+        _ theme: AssetDetailInfoViewTheme
+    ) {
         yourBalanceTitleLabel.customizeAppearance(theme.yourBalanceTitleLabel)
 
         addSubview(yourBalanceTitleLabel)
         yourBalanceTitleLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.topPadding)
-            $0.leading.equalToSuperview().offset(theme.horizontalPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
 
-    private func addBalanceLabel(_ theme: AssetDetailInfoViewTheme) {
+    private func addBalanceLabel(
+        _ theme: AssetDetailInfoViewTheme
+    ) {
         balanceLabel.customizeAppearance(theme.balanceLabel)
 
         addSubview(balanceLabel)
@@ -77,23 +163,40 @@ extension AssetDetailInfoView {
         }
     }
 
-    private func addSecondaryValueLabel(_ theme: AssetDetailInfoViewTheme) {
+    private func addSecondaryValueLabel(
+        _ theme: AssetDetailInfoViewTheme
+    ) {
         secondaryValueLabel.customizeAppearance(theme.secondaryValueLabel)
 
         addSubview(secondaryValueLabel)
         secondaryValueLabel.snp.makeConstraints {
-            $0.top.equalTo(balanceLabel.snp.bottom).offset(theme.secondaryValueLabelTopPadding)
+            $0.top.equalTo(balanceLabel.snp.bottom)
             $0.leading.equalTo(yourBalanceTitleLabel)
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
 
-        balanceLabel.addSeparator(theme.separator, padding: theme.topSeparatorTopPadding)
+        secondaryValueLabel.contentEdgeInsets.top = theme.balanceLabelTopPadding
     }
 
-    private func addAssetNameLabel(_ theme: AssetDetailInfoViewTheme) {
+    private func addTopSeparator(
+        _ theme: AssetDetailInfoViewTheme
+    ) {
+        topSeparator.backgroundColor = theme.separator.color
+
+        addSubview(topSeparator)
+        topSeparator.snp.makeConstraints {
+            $0.top.equalTo(secondaryValueLabel.snp.bottom).offset(theme.separatorPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.fitToHeight(theme.separator.size)
+        }
+    }
+
+    private func addAssetNameLabel(
+        _ theme: AssetDetailInfoViewTheme)
+    {
         addSubview(assetNameView)
         assetNameView.snp.makeConstraints {
-            $0.top.equalTo(balanceLabel.snp.bottom).offset(theme.assetNameLabelTopPadding)
+            $0.top.equalTo(topSeparator.snp.bottom).offset(theme.assetNameLabelTopPadding)
             $0.leading.equalTo(yourBalanceTitleLabel)
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
@@ -107,12 +210,13 @@ extension AssetDetailInfoView {
         assetNameView.addSubview(verifiedImage)
         verifiedImage.snp.makeConstraints {
             $0.leading.equalTo(assetNameLabel.snp.trailing).offset(theme.verifiedImageHorizontalSpacing)
-        }
-        
-        assetNameView.addSeparator(theme.separator, padding: theme.bottomSeparatorTopPadding)
+            $0.centerY == 0
+       }
     }
 
-    private func addAssetIDButton(_ theme: AssetDetailInfoViewTheme) {
+    private func addAssetIDButton(
+        _ theme: AssetDetailInfoViewTheme
+    ) {
         assetIDButton.customizeAppearance(theme.assetIDButton)
 
         addSubview(assetIDButton)
@@ -120,18 +224,21 @@ extension AssetDetailInfoView {
             $0.top.equalTo(assetNameView.snp.bottom).offset(theme.assetIDLabelTopPadding)
             $0.leading.equalTo(yourBalanceTitleLabel)
             $0.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalPadding)
-            $0.bottom.lessThanOrEqualToSuperview().inset(theme.bottomPadding)
         }
     }
-}
 
-extension AssetDetailInfoView: ViewModelBindable {
-    func bindData(_ viewModel: AssetDetailInfoViewModel?) {
-        verifiedImage.isHidden = !(viewModel?.isVerified ?? false)
-        balanceLabel.text = viewModel?.amount
-        secondaryValueLabel.text = viewModel?.secondaryValue
-        assetNameLabel.text = viewModel?.name
-        assetIDButton.setTitle(viewModel?.ID, for: .normal)
+    private func addBottomSeparator(
+        _ theme: AssetDetailInfoViewTheme
+    ) {
+        bottomSeparator.backgroundColor = theme.separator.color
+
+        addSubview(bottomSeparator)
+        bottomSeparator.snp.makeConstraints {
+            $0.top.equalTo(assetIDButton.snp.bottom).offset(theme.separatorPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.bottom.equalToSuperview().inset(theme.bottomPadding)
+            $0.fitToHeight(theme.separator.size)
+        }
     }
 }
 
