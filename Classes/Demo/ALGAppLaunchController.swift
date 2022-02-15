@@ -249,6 +249,7 @@ extension ALGAppLaunchController {
                 }
             }
         authenticatedUser?.syncronize()
+        session.authenticatedUser = authenticatedUser
     }
 }
 
