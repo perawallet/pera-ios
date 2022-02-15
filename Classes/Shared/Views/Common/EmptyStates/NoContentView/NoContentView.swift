@@ -69,6 +69,11 @@ extension NoContentView {
 
         contentView.addSubview(resultView)
         resultView.snp.makeConstraints {
+            if let topInset = theme.resultTopInset {
+                $0.setPaddings((topInset, 0, .noMetric, 0))
+                return
+            }
+
             $0.center == 0
 
             $0.setPaddings((.noMetric, 0, .noMetric, 0))

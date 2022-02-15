@@ -72,7 +72,7 @@ final class AccountSelectScreen: BaseViewController {
 
     override func configureAppearance() {
         super.configureAppearance()
-        searchNoContentView.customize(NoContentViewCommonTheme())
+        searchNoContentView.customize(NoContentViewTopAttachedTheme())
         searchNoContentView.bindData(AccountSelectSearchNoContentViewModel())
     }
 

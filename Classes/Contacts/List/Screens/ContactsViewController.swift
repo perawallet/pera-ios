@@ -105,7 +105,7 @@ class ContactsViewController: BaseViewController {
     
     override func prepareLayout() {
         noContentWithActionView.customize(NoContentWithActionViewCommonTheme())
-        searchNoContentView.customize(NoContentViewCommonTheme())
+        searchNoContentView.customize(NoContentViewTopAttachedTheme())
 
         view.addSubview(contactsView)
         contactsView.snp.makeConstraints {
