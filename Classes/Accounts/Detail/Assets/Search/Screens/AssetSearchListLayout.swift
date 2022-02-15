@@ -22,6 +22,11 @@ final class AssetSearchListLayout: NSObject {
     private lazy var theme = Theme()
     lazy var handlers = Handlers()
 
+    private let dataController: AssetSearchDataController
+
+    init(dataController: AssetSearchDataController) {
+        self.dataController = dataController
+    }
 }
 
 extension AssetSearchListLayout: UICollectionViewDelegateFlowLayout {
@@ -38,6 +43,10 @@ extension AssetSearchListLayout: UICollectionViewDelegateFlowLayout {
         layout collectionViewLayout: UICollectionViewLayout,
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
+        guard dataController.hasSection() else {
+            return .zero
+        }
+
         return CGSize(theme.listHeaderSize)
     }
 

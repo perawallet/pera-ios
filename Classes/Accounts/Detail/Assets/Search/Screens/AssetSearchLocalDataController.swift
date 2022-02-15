@@ -47,6 +47,10 @@ final class AssetSearchLocalDataController:
     subscript (index: Int) -> CompoundAsset? {
         return searchResults[safe: index]
     }
+
+    func hasSection() -> Bool {
+        return !searchResults.isEmpty
+    }
 }
 
 extension AssetSearchLocalDataController {
@@ -94,6 +98,16 @@ extension AssetSearchLocalDataController {
 
 extension AssetSearchLocalDataController {
     private func deliverContentSnapshot() {
+        guard !accountHandle.value.compoundAssets.isEmpty else {
+            deliverNoContentSnapshot()
+            return
+        }
+
+        guard !searchResults.isEmpty else {
+            deliverEmptyContentSnapshot()
+            return
+        }
+
         deliverSnapshot {
             [weak self] in
             guard let self = self else {
@@ -115,6 +129,34 @@ extension AssetSearchLocalDataController {
             snapshot.appendItems(
                 assetItems,
                 toSection: .assets
+            )
+
+            return snapshot
+        }
+    }
+
+    private func deliverNoContentSnapshot() {
+        deliverSnapshot {
+            var snapshot = Snapshot()
+
+            snapshot.appendSections([.empty])
+            snapshot.appendItems(
+                [.noContent],
+                toSection: .empty
+            )
+
+            return snapshot
+        }
+    }
+
+    private func deliverEmptyContentSnapshot() {
+        deliverSnapshot {
+            var snapshot = Snapshot()
+
+            snapshot.appendSections([.empty])
+            snapshot.appendItems(
+                [.empty],
+                toSection: .empty
             )
 
             return snapshot

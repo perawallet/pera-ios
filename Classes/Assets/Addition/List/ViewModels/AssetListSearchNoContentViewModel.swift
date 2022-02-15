@@ -23,8 +23,13 @@ struct AssetListSearchNoContentViewModel: NoContentViewModel {
     private(set) var title: EditText?
     private(set) var body: EditText?
 
-    init() {
+    init(hasBody: Bool = true) {
         bindTitle()
+        
+        guard hasBody else {
+            return
+        }
+
         bindBody()
     }
 }
