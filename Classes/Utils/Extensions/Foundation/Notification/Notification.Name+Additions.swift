@@ -53,4 +53,8 @@ extension Notification.Name {
     static var SingleTransactionHeaderUpdate: Notification.Name {
         return .init(rawValue: "com.algorand.algorand.notification.single.transaction.headerUpdate")
     }
+
+    static var didAddAccount: Notification.Name {
+        return .init(rawValue: "com.algorand.algorand.notification.account.added")
+    }
 }

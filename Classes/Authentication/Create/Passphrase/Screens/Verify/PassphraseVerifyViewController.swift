@@ -129,6 +129,11 @@ extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
             session?.authenticatedUser = user
         }
 
+        NotificationCenter.default.post(
+            name: .didAddAccount,
+            object: self
+        )
+
         return account
     }
 }
