@@ -93,8 +93,6 @@ final class HomeViewController:
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        reconnectToOldWCSessions()
-        
         let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
         loadingCell?.startAnimating()
         
