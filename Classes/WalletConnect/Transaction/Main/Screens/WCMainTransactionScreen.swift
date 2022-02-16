@@ -417,9 +417,8 @@ extension WCMainTransactionScreen: WCTransactionSignerDelegate {
 
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-green-large".uiImage,
-            title: "node-settings-warning-title".localized,
-            description: "wallet-connect-transaction-warning-initial".localized,
-            primaryActionButtonTitle: nil,
+            title: "wallet-connect-transaction-warning-initial-title".localized,
+            description: "wallet-connect-transaction-warning-initial-description".localized,
             secondaryActionButtonTitle: "title-close".localized
         )
 
