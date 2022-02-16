@@ -428,7 +428,7 @@ extension AccountSelectScreen: AccountSelectScreenDataSourceDelegate {
 
 extension AccountSelectScreen: TransactionSendControllerDelegate {
     func transactionSendControllerDidValidate(_ controller: TransactionSendController) {
-        loadingController?.stopLoadingAfter(seconds: 0.3, on: .main){ [weak self] in
+        stopLoadingIfNeeded { [weak self] in
             guard let self = self else {
                 return
             }
@@ -446,7 +446,7 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
         _ controller: TransactionSendController,
         didFailValidation error: TransactionSendControllerError
     ) {
-        loadingController?.stopLoadingAfter(seconds: 0.3, on: .main){ [weak self] in
+        stopLoadingIfNeeded { [weak self] in
             guard let self = self else {
                 return
             }
@@ -496,6 +496,17 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
                     message: "title-internet-connection".localized
                 )
             }
+        }
+    }
+
+    private func stopLoadingIfNeeded(execute: @escaping () -> Void) {
+        guard draft.from.requiresLedgerConnection() else {
+            execute()
+            return
+        }
+
+        loadingController?.stopLoadingAfter(seconds: 0.3, on: .main) {
+            execute()
         }
     }
 }
