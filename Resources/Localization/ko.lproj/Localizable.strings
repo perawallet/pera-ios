@@ -1505,7 +1505,7 @@
 "title-failed-connection" = "연결 실패";
 
 /* (No Comment) */
-"title-go-home" = "홈으로 이동";
+"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* (No Comment) */
 "title-go-to-accounts" = "계정으로 이동";
@@ -2189,7 +2189,8 @@
 "wallet-connect-transaction-warning-high-fee" = "이 트랜잭션 수수료는 일반적인 수수료(0.001알고)보다 높습니다.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial" = "다음 트랜잭션 요청은 알고랜드 지갑이 관리하지 않는 외부 애플리케이션에서 전송한 것입니다. 트랜잭션을 실행한 후에는 되돌릴 수 없으므로, 서명하기 전에 트랜잭션의 상세 정보를 신중히 검토하시기 바랍니다.";
+"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
+"wallet-connect-transaction-warning-initial-description" = "External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don’t know.";
 
 /* MARK: Wallet Connect Transaction Warning */
 "wallet-connect-transaction-warning-rekey" = "이번 트랜잭션으로 계정의 소유권을 이전합니다. 현재의 복원 비밀문구는 이러한 자산에 대한 접근 권한을 상실하게 됩니다.";

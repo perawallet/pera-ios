@@ -1505,7 +1505,7 @@
 "title-failed-connection" = "连接失败";
 
 /* (No Comment) */
-"title-go-home" = "返回主页";
+"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* (No Comment) */
 "title-go-to-accounts" = "回到账户";
@@ -2189,7 +2189,8 @@
 "wallet-connect-transaction-warning-high-fee" = "此交易费用高于平时的 0.01 ALGO。";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial" = "以下交易请求来自Algorand钱包无法控制的外部应用程序。由于交易发生后不可逆转，请在签署交易前仔细检查。";
+"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
+"wallet-connect-transaction-warning-initial-description" = "External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don’t know.";
 
 /* MARK: Wallet Connect Transaction Warning */
 "wallet-connect-transaction-warning-rekey" = "这项交易将转移该账户的所有权。您当前的恢复密码将不再可以访问这些资产。";

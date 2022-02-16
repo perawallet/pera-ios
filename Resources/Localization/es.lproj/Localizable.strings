@@ -1505,7 +1505,7 @@
 "title-failed-connection" = "Error de conexión";
 
 /* (No Comment) */
-"title-go-home" = "Volver al Inicio";
+"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 
 /* (No Comment) */
 "title-go-to-accounts" = "Ir a Cuentas";
@@ -2189,7 +2189,8 @@
 "wallet-connect-transaction-warning-high-fee" = "Esta tarifa de transacción es más alta que la tarifa habitual de 0,01 Algos.";
 
 /* (No Comment) */
-"wallet-connect-transaction-warning-initial" = "Las siguientes solicitudes de transacción provienen de aplicaciones externas que Algorand Wallet no controla. Asegúrate de revisar estas transacciones detenidamente antes de firmar, ya que las transacciones son irreversibles.";
+"wallet-connect-transaction-warning-initial-title" = "Transaction Request FAQ";
+"wallet-connect-transaction-warning-initial-description" = "External applications also called as dApps can make transaction requests that the Pera Wallet does not control. Please ensure you review these transactions carefully before approving and signing them.\n\nAll transactions are irreversible. Never approve transaction from dApp that you don’t know.";
 
 /* MARK: Wallet Connect Transaction Warning */
 "wallet-connect-transaction-warning-rekey" = "Esta transacción transferirá la propiedad de esta cuenta. Tu frase de recuperación actual ya no otorgará acceso a estos activos.";
