@@ -138,13 +138,13 @@ extension TutorialViewModel {
         case .passphraseVerified:
             primaryActionButtonTitle = "title-next".localized
         case .accountVerified:
-            primaryActionButtonTitle = "title-go-home".localized
+            primaryActionButtonTitle = "title-start-using-pera-wallet".localized
         case .ledger:
             primaryActionButtonTitle = "ledger-tutorial-title-text".localized
         case .ledgerSuccessfullyConnected:
             primaryActionButtonTitle = "tutorial-main-title-ledger-connected".localized
         case .accountSuccessfullyRekeyed:
-            primaryActionButtonTitle = "title-go-home".localized
+            primaryActionButtonTitle = "title-start-using-pera-wallet".localized
         }
     }
 

@@ -10,7 +10,7 @@
 "title-remove" = "Remove";
 "title-proceed" = "Proceed";
 "title-approve" = "Approve";
-"title-go-home" = "Go To Home";
+"title-start-using-pera-wallet" = "Start Using Pera Wallet";
 "title-share-qr" = "Share Address";
 "title-go-to-settings" = "Go To Settings";
 "title-error" = "Error";
@@ -60,7 +60,7 @@
 "account-type-selection-recover-detail" = "I want to recover an Algorand account using my 25-word passphrase.";
 "account-type-selection-ledger" = "Pair Ledger Device";
 "account-type-selection-ledger-detail" = "I want to create an account that is\nbacked by my Ledger hardware wallet.";
-"account-welcome-wallet-title" = "Welcome to the\nPera Wallet";
+"account-welcome-wallet-title" = "Welcome to\nPera Wallet";
 
 // MARK: Introduction
 
@@ -641,7 +641,7 @@
 "tutorial-main-title-recover" = "Recover an Algorand Account";
 "tutorial-main-title-write" = "I'm Ready to Begin";
 "tutorial-main-title-passcode" = "Set PIN Code";
-"tutorial-main-title-ledger-connected" = "Start Using Pera";
+"tutorial-main-title-ledger-connected" = "Start Using Pera Wallet";
 
 "tutorial-action-title-passcode" = "Not now";
 "tutorial-action-title-ledger" = "How does it work?";
