@@ -115,6 +115,8 @@ extension PageBar {
         addBarButtons()
 
         updateOnIndicatorLayoutWhenItemsDidChange()
+        
+        layoutIfNeeded()
 
         // swiftlint:disable force_cast
         barButtons = contentView.arrangedSubviews as! [PageBarButton]

@@ -270,15 +270,9 @@ extension RootViewController {
                 self.appConfiguration.sharedDataController.stopPolling()
                 NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
             }
-
-            asyncMain(afterDuration: 0.5) { [weak self] in
-                guard let self = self else {
-                    return
-                }
-
-                self.appConfiguration.loadingController.stopLoading()
-                handler(isCompleted)
-            }
+            
+             self.appConfiguration.loadingController.stopLoading()
+             handler(isCompleted)
         }
     }
 }
