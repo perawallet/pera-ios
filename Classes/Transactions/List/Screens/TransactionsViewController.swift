@@ -231,7 +231,6 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
 
 extension TransactionsViewController: AssetDetailInfoViewCellDelegate {
     func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell, assetID: String?) {
-        guard  UIPasteboard.general.string != assetID else { return }
         bannerController?.presentInfoBanner("asset-id-copied-title".localized)
         UIPasteboard.general.string = assetID
     }

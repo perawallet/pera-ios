@@ -104,7 +104,7 @@ struct AlgoTransactionHistoryLoadingViewCommonTheme: AlgoTransactionHistoryLoadi
             corners: .allCorners
         )
         self.rewardsContainerSize = (.noMetric, 72)
-        self.rewardsContainerMargin = (32, .noMetric, .noMetric, .noMetric)
+        self.rewardsContainerMargin = (32, .noMetric, 65, .noMetric)
         self.rewardsImageViewBackgroundColor =  AppColors.Shared.Helpers.positive.uiColor.withAlphaComponent(0.05)
         self.rewardsImageViewCorner = 20
         self.rewardsImageViewSize = (40, 40)

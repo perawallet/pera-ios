@@ -119,6 +119,8 @@ extension AlgoPriceChartTimeFrameSelectionView {
             optionView.tag = index
             contentView.addArrangedSubview(optionView)
         }
+
+        (contentView.arrangedSubviews.first as? UIControl)?.isSelected = true
     }
     
     private func updateOptionsForSelection(
@@ -182,7 +184,16 @@ extension AlgoPriceChartTimeFrameSelectionView {
     private func selectOption(
         _ optionView: UIControl
     ) {
+        deselectPreviousOption(selectedOptionView)
+
         selectedOptionView = optionView
+        selectedOptionView?.isSelected = true
         selectionHandler?(optionView.tag)
+    }
+
+    private func deselectPreviousOption(
+        _ optionView: UIControl?
+    ) {
+        optionView?.isSelected = false
     }
 }

@@ -12,24 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  RewardDetailViewModel.swift
+//   AssetTransactionHistoryLoadingCell.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct RewardDetailViewModel:
-    PairedViewModel,
-    Hashable {
-    private(set) var amount: String?
+final class AssetTransactionHistoryLoadingCell:
+    BaseCollectionViewCell<AssetTransactionHistoryLoadingView> {
+    override init(
+        frame: CGRect
+    ) {
+        super.init(
+            frame: frame
+        )
 
-    init(_ account: Account) {
-        bindAmount(from: account)
+        contextView.customize(
+            AssetTransactionHistoryLoadingViewCommonTheme()
+        )
+    }
+
+    static func height(
+        for theme: AssetTransactionHistoryLoadingViewTheme
+    ) -> LayoutMetric {
+        ContextView.height(for: theme)
     }
 }
 
-extension RewardDetailViewModel {
-    private mutating func bindAmount(from account: Account) {
-        amount = account.pendingRewards.toAlgos.toExactFractionLabel(fraction: 6)?.appending(" ALGO")
-    }
+extension AssetTransactionHistoryLoadingCell {
+    func startAnimating() {}
+
+    func stopAnimating() {}
 }

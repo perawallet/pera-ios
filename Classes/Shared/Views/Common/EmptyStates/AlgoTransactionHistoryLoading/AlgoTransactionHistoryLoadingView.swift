@@ -136,6 +136,7 @@ extension AlgoTransactionHistoryLoadingView {
             $0.top.equalTo(currencyView.snp.bottom).offset(theme.rewardsContainerMargin.top)
             $0.leading.trailing.equalToSuperview()
             $0.height.equalTo(theme.rewardsContainerSize.h)
+            $0.bottom.equalToSuperview().inset(theme.rewardsContainerMargin.bottom)
         }
 
         addRewardsItemsView(theme)
@@ -211,6 +212,7 @@ extension AlgoTransactionHistoryLoadingView {
         theme.currencyViewSize.h +
         theme.currencyViewMargin.top +
         theme.rewardsContainerSize.h +
-        theme.rewardsContainerMargin.top + 32
+        theme.rewardsContainerMargin.top +
+        theme.rewardsContainerMargin.bottom
     }
 }

@@ -456,13 +456,24 @@ extension TransactionsAPIDataController {
                     toSection: .empty
                 )
             } else {
-                snapshot.appendItems(
-                    [
-                        .empty(.algoTransactionHistoryLoading),
-                        .empty(.transactionHistoryLoading)
-                    ],
-                    toSection: .empty
-                )
+
+                if self.draft.type == .algos {
+                    snapshot.appendItems(
+                        [
+                            .empty(.algoTransactionHistoryLoading),
+                            .empty(.transactionHistoryLoading)
+                        ],
+                        toSection: .empty
+                    )
+                } else if self.draft.type == .asset {
+                    snapshot.appendItems(
+                        [
+                            .empty(.assetTransactionHistoryLoading),
+                            .empty(.transactionHistoryLoading)
+                        ],
+                        toSection: .empty
+                    )
+                }
             }
 
             return snapshot

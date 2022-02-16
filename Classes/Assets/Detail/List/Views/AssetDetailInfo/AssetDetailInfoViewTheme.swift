@@ -30,7 +30,7 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
     let separator: Separator
 
     let topPadding: LayoutMetric
-    let topSeparatorTopPadding: LayoutMetric
+    let separatorPadding: LayoutMetric
     let bottomSeparatorTopPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let balanceLabelTopPadding: LayoutMetric
@@ -45,7 +45,6 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
         self.backgroundColor = AppColors.Shared.System.background
         self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
         self.yourBalanceTitleLabel = [
-            .text("accounts-transaction-your-balance".localized),
             .textAlignment(.left),
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.gray),
@@ -78,14 +77,14 @@ struct AssetDetailInfoViewTheme: StyleSheet, LayoutSheet {
             .image("icon-verified-shield")
         ]
         self.topPadding = 24
-        self.topSeparatorTopPadding = -32
+        self.separatorPadding = 32
         self.horizontalPadding = 24
         self.balanceLabelTopPadding = 8
         self.assetIDLabelTopPadding = 11
         self.assetIDInfoButtonLeadingPadding = 5
-        self.assetNameLabelTopPadding = 65
+        self.assetNameLabelTopPadding = 32
         self.bottomSeparatorTopPadding = -67
-        self.bottomPadding = 65
+        self.bottomPadding = 32
         self.secondaryValueLabelTopPadding = 4
         self.verifiedImageHorizontalSpacing = 8
     }
