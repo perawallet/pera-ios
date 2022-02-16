@@ -41,20 +41,13 @@ final class SelectAccountView: View {
         return collectionView
     }()
 
-    private(set) lazy var nextButton = Button()
-
     private lazy var contentStateView = ContentStateView()
-
-    deinit {
-        endTracking()
-    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         customize(theme)
         linkInteractors()
-        beginTracking()
     }
 
     func customize(_ theme: SelectAccountViewTheme) {
@@ -63,7 +56,6 @@ final class SelectAccountView: View {
         addSearchInputView(theme)
         addClipboardView(theme)
         addListView(theme)
-        addNextButton(theme)
     }
 
     func customizeAppearance(_ styleSheet: StyleSheet) {}
@@ -78,26 +70,6 @@ final class SelectAccountView: View {
         }
 
         listView.contentInset = isVisible ? UIEdgeInsets(theme.contentInset) : .zero
-    }
-
-    private func beginTracking() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didReceive(keyboardWillShow:)),
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil)
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didReceive(keyboardWillHide:)),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil)
-    }
-
-    private func endTracking() {
-        NotificationCenter
-            .default
-            .removeObserver(self)
     }
 }
 
@@ -132,52 +104,5 @@ extension SelectAccountView {
         }
 
         listView.backgroundView = contentStateView
-    }
-
-    private func addNextButton(_ theme: SelectAccountViewTheme) {
-        nextButton.isHidden = true
-        nextButton.customize(theme.nextButtonStyle)
-        nextButton.setTitle("title-next".localized, for: .normal)
-
-        addSubview(nextButton)
-        nextButton.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomInset)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.height.equalTo(theme.nextButtonHeight)
-        }
-    }
-}
-
-extension SelectAccountView {
-    @objc
-    private func didReceive(keyboardWillShow notification: Notification) {
-        if !UIApplication.shared.isActive {
-            return
-        }
-
-        guard let kbHeight = notification.keyboardHeight else {
-            return
-        }
-
-        nextButton.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(safeAreaBottom + kbHeight)
-        }
-        UIView.animate(withDuration: 0.2) {
-            self.layoutIfNeeded()
-        }
-    }
-
-    @objc
-    private func didReceive(keyboardWillHide notification: Notification) {
-        if !UIApplication.shared.isActive {
-            return
-        }
-
-        nextButton.snp.updateConstraints {
-            $0.bottom.equalToSuperview().inset(safeAreaBottom)
-        }
-        UIView.animate(withDuration: 0.2) {
-            self.layoutIfNeeded()
-        }
     }
 }

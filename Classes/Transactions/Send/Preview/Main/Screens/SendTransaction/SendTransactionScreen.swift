@@ -409,7 +409,7 @@ extension SendTransactionScreen: TransactionSignChecking {
         case .assetDetail(let assetDetail):
             self.amount = draft.from.amountNumberWithAutoFraction(for: assetDetail) ?? "0"
         }
-
+        isAmountResetted = false
         bindAmount()
     }
 

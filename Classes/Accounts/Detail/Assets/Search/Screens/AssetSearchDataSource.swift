@@ -31,6 +31,15 @@ final class AssetSearchDataSource: UICollectionViewDiffableDataSource<AssetSearc
                 let cell = collectionView.dequeue(AssetPreviewCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
+
+            case .empty:
+                let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
+                cell.bindData(AssetListSearchNoContentViewModel())
+                return cell
+            case .noContent:
+                let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
+                cell.bindData(AssetListSearchNoContentViewModel(hasBody: false))
+                return cell
             }
         }
 
@@ -55,5 +64,6 @@ final class AssetSearchDataSource: UICollectionViewDiffableDataSource<AssetSearc
 
         collectionView.register(AssetPreviewCell.self)
         collectionView.register(header: SingleLineTitleActionHeaderView.self)
+        collectionView.register(NoContentCell.self)
     }
 }

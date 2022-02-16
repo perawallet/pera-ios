@@ -24,7 +24,7 @@ final class AssetSearchViewController: BaseViewController {
     private lazy var theme = Theme()
     lazy var handlers = Handlers()
 
-    private lazy var listLayout = AssetSearchListLayout()
+    private lazy var listLayout = AssetSearchListLayout(dataController: dataController)
     private lazy var dataSource = AssetSearchDataSource(listView)
     private lazy var dataController = AssetSearchLocalDataController(accountHandle, sharedDataController)
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)

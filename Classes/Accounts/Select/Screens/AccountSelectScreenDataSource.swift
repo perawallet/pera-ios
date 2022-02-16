@@ -32,7 +32,9 @@ final class AccountSelectScreenDataSource: NSObject {
 
     /// It refers list's status, when keyword is searched
     var isListEmtpy: Bool {
-        (list[safe: 0]?.isEmpty ?? false) && (list[safe: 1]?.isEmpty ?? false)
+        (list[safe: 0]?.isEmpty ?? false) &&
+        (list[safe: 1]?.isEmpty ?? false) &&
+        (list[safe: 2]?.isEmpty ?? false)
     }
 
     init(sharedDataController: SharedDataController) {
@@ -68,7 +70,7 @@ final class AccountSelectScreenDataSource: NSObject {
     }
 
     private func reloadData() {
-        self.list = [accounts, contacts]
+        self.list = [accounts, contacts, []]
         delegate?.accountSelectScreenDataSourceDidLoad(self)
     }
 
@@ -89,7 +91,14 @@ final class AccountSelectScreenDataSource: NSObject {
             (contact.address?.containsCaseInsensitive(searchKeyword) ?? false)
         }
 
-        self.list = [filteredAccounts, filteredContacts]
+        var searchedAccounts: [Account] = []
+        if filteredAccounts.isEmpty && filteredContacts.isEmpty && AlgorandSDK().isValidAddress(searchKeyword) {
+            searchedAccounts = [
+                Account(address: searchKeyword, type: .standard)
+            ]
+        }
+
+        self.list = [filteredAccounts, filteredContacts, searchedAccounts]
     }
 
     func item(at indexPath: IndexPath) -> Any? {
@@ -116,24 +125,34 @@ UICollectionViewDataSource {
         if indexPath.section == 0 {
             let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
 
-            if let account = accounts[safe: indexPath.item]?.value {
-                let accountNameViewModel = AuthAccountNameViewModel(account)
+            if let account = list[safe:0]?[safe: indexPath.item] as? AccountHandle {
+                let accountNameViewModel = AuthAccountNameViewModel(account.value)
                 let preview = CustomAccountPreview(accountNameViewModel)
                 cell.bindData(AccountPreviewViewModel(preview))
             }
 
             return cell
-        } else {
+        } else if indexPath.section == 1{
             let cell = collectionView.dequeue(SelectContactCell.self, at: indexPath)
             let theme = SelectContactViewTheme()
 
-            if let contact = contacts[safe: indexPath.item] {
+            if let contact = list[safe:1]?[safe: indexPath.item] as? Contact {
                 cell.bindData(
                     ContactsViewModel(
                         contact: contact,
                         imageSize: CGSize(width: theme.imageSize.w, height: theme.imageSize.h)
                     )
                 )
+            }
+
+            return cell
+        } else {
+            let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
+
+            if let account = list[safe:2]?[safe: indexPath.item] as? Account {
+                let accountNameViewModel = AccountNameViewModel(account: account)
+                let preview = CustomAccountPreview(accountNameViewModel)
+                cell.bindData(AccountPreviewViewModel(preview))
             }
 
             return cell
@@ -159,8 +178,10 @@ UICollectionViewDataSource {
 
         if indexPath.section == 0 {
             headerView.bind(SelectAccountHeaderViewModel(.accounts))
-        } else {
+        } else if indexPath.section == 1 {
             headerView.bind(SelectAccountHeaderViewModel(.contacts))
+        } else {
+            headerView.bind(SelectAccountHeaderViewModel(.search))
         }
 
         return headerView

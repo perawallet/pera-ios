@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentViewCommonTheme.swift
+//   NoContentViewTopAttachedTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct NoContentViewCommonTheme: NoContentViewTheme {
+struct NoContentViewTopAttachedTheme: NoContentViewTheme {
     let icon: ImageStyle
     let title: TextStyle
     let titleTopMargin: LayoutMetric
@@ -41,6 +40,6 @@ struct NoContentViewCommonTheme: NoContentViewTheme {
         self.bodyTopMargin = resultTheme.bodyTopMargin
         self.contentHorizontalPaddings = (24, 24)
         self.contentVerticalPadding = 16
-        self.resultTopInset = nil
+        self.resultTopInset = 16
     }
 }

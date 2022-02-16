@@ -61,18 +61,12 @@ final class AccountSelectScreen: BaseViewController {
         accountView.clipboardView.addGestureRecognizer(
             UITapGestureRecognizer(target: self, action: #selector(didTapCopy))
         )
-
-        accountView.nextButton.addTarget(
-            self,
-            action: #selector(didTapNext),
-            for: .touchUpInside
-        )
         transactionController.delegate = self
     }
 
     override func configureAppearance() {
         super.configureAppearance()
-        searchNoContentView.customize(NoContentViewCommonTheme())
+        searchNoContentView.customize(NoContentViewTopAttachedTheme())
         searchNoContentView.bindData(AccountSelectSearchNoContentViewModel())
     }
 
@@ -504,6 +498,9 @@ extension AccountSelectScreen: UICollectionViewDelegateFlowLayout {
         } else if let account = dataSource.item(at: indexPath) as? AccountHandle {
             draft.toAccount = account.value
             draft.toContact = nil
+        } else if let account = dataSource.item(at: indexPath) as? Account {
+            draft.toAccount = account
+            draft.toContact = nil
         } else {
             return
         }
@@ -529,8 +526,6 @@ extension AccountSelectScreen: UICollectionViewDelegateFlowLayout {
 
 extension AccountSelectScreen: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
-        accountView.nextButton.isHidden = true
-
         if dataSource.isEmpty {
             accountView.listView.contentState = .empty(searchNoContentView)
             return
@@ -551,11 +546,6 @@ extension AccountSelectScreen: SearchInputViewDelegate {
             accountView.listView.contentState = .empty(searchNoContentView)
         } else {
             accountView.listView.contentState = .none
-        }
-
-        if algorandSDK.isValidAddress(query) {
-            accountView.listView.contentState = .none
-            accountView.nextButton.isHidden = false
         }
 
         accountView.listView.reloadData()

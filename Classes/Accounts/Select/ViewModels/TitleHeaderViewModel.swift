@@ -40,6 +40,8 @@ final class SelectAccountHeaderViewModel: TitleHeaderViewModel {
             self.title = "account-select-header-accounts-title".localized
         case .contacts:
             self.title = "account-select-header-contacts-title".localized
+        case .search:
+            self.title = "title-account".localized
         }
     }
 }
@@ -47,4 +49,5 @@ final class SelectAccountHeaderViewModel: TitleHeaderViewModel {
 enum SelectAccountHeaderMode {
     case accounts
     case contacts
+    case search
 }

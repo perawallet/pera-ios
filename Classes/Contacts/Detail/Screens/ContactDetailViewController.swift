@@ -169,9 +169,11 @@ extension ContactDetailViewController {
                         }
                     } else {
                         self.loadingController?.stopLoading()
+                        self.contactDetailView.assetsCollectionView.reloadData()
                     }
                 } else {
                     self.loadingController?.stopLoading()
+                    self.contactDetailView.assetsCollectionView.reloadData()
                 }
             case let .failure(error, _):
                 if error.isHttpNotFound {
@@ -181,6 +183,7 @@ extension ContactDetailViewController {
                     guard let account = self.contactAccount else { return }
                     let assetPreviewModel = AssetPreviewModelAdapter.adapt((account, currency))
                     self.assetPreviews.append(assetPreviewModel)
+                    self.contactDetailView.assetsCollectionView.reloadData()
                 } else {
                     self.contactAccount = nil
                     self.loadingController?.stopLoading()
@@ -226,9 +229,20 @@ extension ContactDetailViewController: AssetPreviewActionCellDelegate {
             return
         }
 
+        let mode: AccountListViewController.Mode = .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.compoundAssets[itemIndex.item - 1].detail)
+        let accountListDataSource = AccountListDataSource(sharedDataController: sharedDataController, mode: mode)
+
+        guard !accountListDataSource.accounts.isEmpty else {
+            bannerController?.presentErrorBanner(
+                title: "asset-support-your-add-title".localized,
+                message: "asset-support-your-add-message".localized
+            )
+            return
+        }
+
         accountListModalTransition.perform(
             .accountList(
-                mode: .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.compoundAssets[itemIndex.item - 1].detail),
+                mode: mode,
                 delegate: self
             ),
             by: .present

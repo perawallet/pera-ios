@@ -20,22 +20,27 @@ import UIKit
 
 protocol AssetSearchDataController {
     typealias Snapshot = NSDiffableDataSourceSnapshot<AssetSearchSection, AssetSearchItem>
-    
+
     var eventHandler: ((AssetSearchDataControllerEvent) -> Void)? { get set }
 
     func load()
     func search(for query: String)
     func resetSearch()
+
+    func hasSection() -> Bool
 }
 
 enum AssetSearchSection:
     Int,
     Hashable {
     case assets
+    case empty
 }
 
 enum AssetSearchItem: Hashable {
     case asset(AssetPreviewViewModel)
+    case empty
+    case noContent
 }
 
 enum AssetSearchDataControllerEvent {
