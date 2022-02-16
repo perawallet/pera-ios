@@ -116,8 +116,8 @@ UICollectionViewDataSource {
         if indexPath.section == 0 {
             let cell = collectionView.dequeue(AccountPreviewCell.self, at: indexPath)
 
-            if let account = accounts[safe: indexPath.item]?.value {
-                let accountNameViewModel = AuthAccountNameViewModel(account)
+            if let account = list[safe:0]?[safe: indexPath.item] as? AccountHandle {
+                let accountNameViewModel = AuthAccountNameViewModel(account.value)
                 let preview = CustomAccountPreview(accountNameViewModel)
                 cell.bindData(AccountPreviewViewModel(preview))
             }
@@ -127,7 +127,7 @@ UICollectionViewDataSource {
             let cell = collectionView.dequeue(SelectContactCell.self, at: indexPath)
             let theme = SelectContactViewTheme()
 
-            if let contact = contacts[safe: indexPath.item] {
+            if let contact = list[safe:1]?[safe: indexPath.item] as? Contact {
                 cell.bindData(
                     ContactsViewModel(
                         contact: contact,
