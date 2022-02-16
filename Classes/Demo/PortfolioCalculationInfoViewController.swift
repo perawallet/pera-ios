@@ -92,7 +92,6 @@ extension PortfolioCalculationInfoViewController {
             theme.footerVerticalPaddings.top +
             closeActionView.bounds.height +
             theme.footerVerticalPaddings.bottom
-        /// <todo>: This creates a problem when scrolling up and down.
         scrollView.setContentInset(bottom: bottom)
     }
     
@@ -108,8 +107,8 @@ extension PortfolioCalculationInfoViewController {
         contextView.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
-            $0.bottom == 0
             $0.trailing == 0
+            $0.bottom <= 0
         }
     }
     
