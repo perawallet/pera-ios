@@ -101,7 +101,12 @@ extension LedgerDeviceListViewController {
 
     private func addTroubleshootBarButton() {
         let troubleshootBarButtonItem = ALGBarButtonItem(kind: .troubleshoot) { [weak self] in
-            self?.open(.ledgerTutorial(flow: .addNewAccount(mode: .add(type: .pair))), by: .present)
+            self?.open(
+                .ledgerTutorial(
+                    flow: .addNewAccount(mode: .recover(type: .ledger))
+                ),
+                by: .present
+            )
         }
 
         rightBarButtonItems = [troubleshootBarButtonItem]

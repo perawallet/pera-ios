@@ -12,17 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  AddAccountViewController.swift
+//   RecoverAccountViewController.swift
 
 import UIKit
 
-final class AddAccountViewController: BaseViewController {
-    private lazy var addAccountView = AddAccountView()
+final class RecoverAccountViewController: BaseViewController {
+    private lazy var addAccountView = RecoverAccountView()
     private lazy var theme = Theme()
-    
+
     private let flow: AccountSetupFlow
-    
+
     init(flow: AccountSetupFlow, configuration: ViewControllerConfiguration) {
         self.flow = flow
         super.init(configuration: configuration)
@@ -31,15 +30,15 @@ final class AddAccountViewController: BaseViewController {
     override func configureNavigationBarAppearance() {
         addBarButtons()
     }
-    
+
     override func configureAppearance() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
     override func bindData() {
-        addAccountView.bindData(AddAccountViewModel())
+        addAccountView.bindData(RecoverAccountViewModel())
     }
-    
+
     override func linkInteractors() {
         addAccountView.delegate = self
     }
@@ -47,15 +46,15 @@ final class AddAccountViewController: BaseViewController {
     override func setListeners() {
         addAccountView.setListeners()
     }
-    
+
     override func prepareLayout() {
-        addAccountView.customize(theme.addAccountViewTheme)
+        addAccountView.customize(theme.recoverAccountViewTheme)
 
         prepareWholeScreenLayoutFor(addAccountView)
     }
 }
 
-extension AddAccountViewController {
+extension RecoverAccountViewController {
     private func addBarButtons() {
         switch flow {
         case .initializeAccount:
@@ -75,15 +74,16 @@ extension AddAccountViewController {
     }
 }
 
-extension AddAccountViewController: AddAccountViewDelegate {
-    func addAccountView(_ addAccountView: AddAccountView, didSelect type: AccountAdditionType) {
+extension RecoverAccountViewController: RecoverAccountViewDelegate {
+    func recoverAccountView(_ recoverAccountView: RecoverAccountView, didSelect type: RecoverType) {
         switch type {
-        case .create:
-            open(.tutorial(flow: flow, tutorial: .backUp), by: .push)
-        case .watch:
-            open(.tutorial(flow: flow, tutorial: .watchAccount), by: .push)
+        case .passphrase:
+            open(.tutorial(flow: flow, tutorial: .recoverWithPassphrase), by: .push)
+        case .ledger:
+            open(.tutorial(flow: flow, tutorial: .recoverWithLedger), by: .push)
         default:
             break
         }
     }
 }
+
