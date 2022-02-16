@@ -70,6 +70,11 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
                     for: AlgoTransactionHistoryLoadingViewCommonTheme()
                 )
                 return CGSize(width: collectionView.bounds.width - 48, height: cellHeight)
+            case .assetTransactionHistoryLoading:
+                let cellHeight = AssetTransactionHistoryLoadingCell.height(
+                    for: AssetTransactionHistoryLoadingViewCommonTheme()
+                )
+                return CGSize(width: collectionView.bounds.width - 48, height: cellHeight)
             case .transactionHistoryLoading:
                 return CGSize(width: collectionView.bounds.width - 48, height: 500)
             default:

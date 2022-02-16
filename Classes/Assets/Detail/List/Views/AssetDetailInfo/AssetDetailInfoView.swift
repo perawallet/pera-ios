@@ -175,7 +175,7 @@ extension AssetDetailInfoView {
             $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
 
-        secondaryValueLabel.contentEdgeInsets.top = theme.balanceLabelTopPadding
+        secondaryValueLabel.contentEdgeInsets.top = theme.secondaryValueLabelTopPadding
     }
 
     private func addTopSeparator(
