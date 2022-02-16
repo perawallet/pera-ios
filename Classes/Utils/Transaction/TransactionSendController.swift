@@ -187,6 +187,7 @@ extension TransactionSendController {
 
     private func validateAssetTransaction() {
         guard let amount = self.draft.amount, let assetDetail = draft.assetDetail else {
+            self.delegate?.transactionSendController(self, didFailValidation: .amountNotSpecified)
             return
         }
 
