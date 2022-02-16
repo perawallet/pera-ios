@@ -269,20 +269,31 @@ extension TransactionsViewController {
 extension TransactionsViewController: TransactionFloatingActionButtonViewControllerDelegate {
     func transactionFloatingActionButtonViewControllerDidSend(_ viewController: TransactionFloatingActionButtonViewController) {
         log(SendAssetDetailEvent(address: accountHandle.value.address))
-        
-        let draft: SendTransactionDraft
 
-        if let compoundAsset = compoundAsset {
-            draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .assetDetail(compoundAsset.detail))
-        } else {
-            draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .algo)
+        switch draft.type {
+        case .all:
+            let controller = open(.assetSelection(account: accountHandle.value), by: .present) as? SelectAssetViewController
+            let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+                controller?.closeScreen(by: .dismiss, animated: true)
+            }
+            controller?.leftBarButtonItems = [closeBarButtonItem]
+        case .asset:
+            if let compoundAsset = compoundAsset {
+                let draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .assetDetail(compoundAsset.detail))
+                let controller = open(.sendTransaction(draft: draft), by: .present) as? SendTransactionScreen
+                let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+                    controller?.closeScreen(by: .dismiss, animated: true)
+                }
+                controller?.leftBarButtonItems = [closeBarButtonItem]
+            }
+        case .algos:
+            let draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .algo)
+            let controller = open(.sendTransaction(draft: draft), by: .present) as? SendTransactionScreen
+            let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+                controller?.closeScreen(by: .dismiss, animated: true)
+            }
+            controller?.leftBarButtonItems = [closeBarButtonItem]
         }
-
-        let controller = open(.sendTransaction(draft: draft), by: .present) as? SendTransactionScreen
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
-            controller?.closeScreen(by: .dismiss, animated: true)
-        }
-        controller?.leftBarButtonItems = [closeBarButtonItem]
     }
 
     func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController) {
@@ -329,14 +340,15 @@ extension TransactionsViewController {
     private func getAssetDetailForTransactionType(_ transaction: Transaction) -> AssetInformation? {
         switch draft.type {
         case .all:
-            if let assetId = transaction.assetTransfer?.assetId {
-                return accountHandle.value[assetId]?.detail
+            if let assetID = transaction.assetTransfer?.assetId {
+                return sharedDataController.assetDetailCollection[assetID]
             }
 
+            return nil
+        case .asset:
             return compoundAsset?.detail
-        case .algos,
-                .asset:
-            return compoundAsset?.detail
+        case .algos:
+            return nil
         }
     }
 }
