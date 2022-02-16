@@ -45,12 +45,6 @@ final class TransactionSendController {
     
 
     func validate() {
-        routePreviewScreen()
-    }
-}
-
-extension TransactionSendController {
-    private func routePreviewScreen() {
         if isClosingToSameAccount {
             delegate?.transactionSendController(self, didFailValidation: .closingSameAccount)
             return
@@ -60,10 +54,12 @@ extension TransactionSendController {
         case .algo:
             validateForAlgoTransaction()
         case .assetDetail:
-            routeForAssetTransaction()
+            validateForAssetTransaction()
         }
     }
+}
 
+extension TransactionSendController {
     private func validateForAlgoTransaction() {
         guard let amount = draft.amount else {
             delegate?.transactionSendController(self, didFailValidation: .amountNotSpecified)
@@ -130,7 +126,7 @@ extension TransactionSendController {
         }
     }
 
-    private func routeForAssetTransaction() {
+    private func validateForAssetTransaction() {
         if let contact = draft.toContact, let contactAddress = contact.address {
             checkIfAddressIsValidForTransaction(contactAddress)
         } else if let address = draft.toAccount?.address {
