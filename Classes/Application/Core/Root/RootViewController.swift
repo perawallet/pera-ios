@@ -259,6 +259,9 @@ extension RootViewController {
         onCompletion handler: @escaping BoolHandler
     ) {
         appConfiguration.loadingController.startLoadingWithMessage("title-loading".localized)
+
+        appConfiguration.sharedDataController.stopPolling()
+
         pushNotificationController.revokeDevice() { [weak self] isCompleted in
             guard let self = self else {
                 return
@@ -267,8 +270,10 @@ extension RootViewController {
             if isCompleted {
                 self.appConfiguration.session.reset(includingContacts: true)
                 self.appConfiguration.walletConnector.resetAllSessions()
-                self.appConfiguration.sharedDataController.stopPolling()
+                self.appConfiguration.sharedDataController.resetPolling()
                 NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: nil)
+            } else {
+                self.appConfiguration.sharedDataController.startPolling()
             }
             
              self.appConfiguration.loadingController.stopLoading()

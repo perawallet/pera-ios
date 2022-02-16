@@ -122,8 +122,10 @@ extension NodeSettingsViewController {
                 if isCompleted {
                     self.session?.authenticatedUser?.setDefaultNode(selectedNode)
                     self.didChangeNetwork(selectedNetwork)
+                    self.sharedDataController.resetPolling()
                 } else {
                     self.didChangeNetwork(self.lastActiveNetwork)
+                    self.sharedDataController.startPolling()
                 }
                 
                 self.loadingController?.stopLoading()
@@ -148,8 +150,6 @@ extension NodeSettingsViewController {
     ) {
         lastActiveNetwork = network
         nodeSettingsView.reloadData()
-        
-        sharedDataController.resetPolling()
         
         NotificationCenter.default.post(
             name: Self.didChangeNetwork,
