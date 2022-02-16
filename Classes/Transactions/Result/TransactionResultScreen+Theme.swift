@@ -41,13 +41,13 @@ extension TransactionResultScreen {
                 .textColor(AppColors.Components.Text.main),
                 .font(Fonts.DMSans.medium.make(19)),
                 .textAlignment(.center),
-                .textOverflow(SingleLineFittingText())
+                .textOverflow(FittingText())
             ]
             subtitleLabel = [
                 .textColor(AppColors.Components.Text.gray),
                 .font(Fonts.DMSans.regular.make(15)),
                 .textAlignment(.center),
-                .textOverflow(SingleLineFittingText())
+                .textOverflow(FittingText())
             ]
             successIconSize = (48, 48)
             successIconCenterYInset = -60

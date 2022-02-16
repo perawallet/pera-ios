@@ -873,10 +873,10 @@
 "edit-note-note-explanation" = "Enter your note";
 
 // MARK: TransactionResult
-"transaction-result-started-title" = "Order Placed";
-"transaction-result-started-subtitle" = "Your order was successfully received";
-"transaction-result-completed-title" = "Order Received";
-"transaction-result-completed-subtitle" = "Your order was successfully received";
+"transaction-result-started-title" = "Transaction Submitted";
+"transaction-result-started-subtitle" = "Your transaction was successfully submitted to the Algorand network.";
+"transaction-result-completed-title" = "Transaction Received";
+"transaction-result-completed-subtitle" = "Your transaction was successfully received by the Algorand network.";
 
 // MARK: AccountSelect
 "account-select-header-accounts-title" = "My Accounts";
@@ -887,7 +887,7 @@
 "account-select-clipboard-title" = "Paste From Clipboard";
 
 // MARK: SendTransactionPreview
-"send-transaction-preview-title" = "Confirm Order";
+"send-transaction-preview-title" = "Confirm Transaction";
 "send-transaction-preview-current-balance" = "Current\nBalance";
 
 "transaction-request-signing-alert-title" = "Are you sure?";
