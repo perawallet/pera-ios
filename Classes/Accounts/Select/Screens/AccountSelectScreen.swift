@@ -94,176 +94,15 @@ final class AccountSelectScreen: BaseViewController {
     }
 
     private func routePreviewScreen() {
-        if isClosingToSameAccount {
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "send-transaction-max-same-account-error".localized
-            )
-            return
-        }
-
-        switch draft.transactionMode {
-        case .algo:
-            routeForAlgoTransaction()
-        case .assetDetail:
-            routeForAssetTransaction()
-        }
-    }
-
-    private func routeForAlgoTransaction() {
-        let selectedAccount = draft.from
-
-        guard let amount = draft.amount else {
-            return
-        }
-
-        if amount.toMicroAlgos < minimumTransactionMicroAlgosLimit {
-            var receiverAddress: String?
-
-            if let contact = draft.toContact {
-                receiverAddress = contact.address
-            } else {
-                receiverAddress = draft.toAccount?.address
-            }
-
-            guard var receiverAddress = receiverAddress else {
-                self.displaySimpleAlertWith(title: "title-error".localized, message: "send-algos-address-not-selected".localized)
-                return
-            }
-
-
-            receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
-
-            if !AlgorandSDK().isValidAddress(receiverAddress) {
-                bannerController?.presentErrorBanner(
-                    title: "title-error".localized,
-                    message: "send-algos-receiver-address-validation".localized
-                )
-                return
-            }
-
-            let receiverFetchDraft = AccountFetchDraft(publicKey: receiverAddress)
-
-            loadingController?.startLoadingWithMessage("title-loading".localized)
-            api?.fetchAccount(
-                receiverFetchDraft,
-                queue: .main,
-                ignoreResponseOnCancelled: true
-            ) { [weak self] accountResponse in
-                guard let self = self else { return }
-                if !selectedAccount.requiresLedgerConnection() {
-                    self.loadingController?.stopLoading()
-                }
-
-                switch accountResponse {
-                case let .failure(error, _):
-                    if error.isHttpNotFound {
-                        let configurator = BottomWarningViewConfigurator(
-                            image: "icon-info-red".uiImage,
-                            title: "send-algos-minimum-amount-error-new-account-title".localized,
-                            description: "send-algos-minimum-amount-error-new-account-description".localized,
-                            secondaryActionButtonTitle: "title-i-understand".localized
-                        )
-
-                        self.modalTransition.perform(
-                            .bottomWarning(configurator: configurator),
-                            by: .presentWithoutNavigationController
-                        )
-                    } else {
-                        self.displaySimpleAlertWith(
-                            title: "title-error".localized,
-                            message: "title-internet-connection".localized
-                        )
-                    }
-                case let .success(accountWrapper):
-                    if !accountWrapper.account.isSameAccount(with: receiverAddress) {
-                        UIApplication.shared.firebaseAnalytics?.record(
-                            MismatchAccountErrorLog(requestedAddress: receiverAddress, receivedAddress: accountWrapper.account.address)
-                        )
-                        return
-                    }
-
-                    accountWrapper.account.assets = accountWrapper.account.nonDeletedAssets()
-                    if accountWrapper.account.amount == 0 {
-                        self.displaySimpleAlertWith(
-                            title: "title-error".localized,
-                            message: "send-algos-minimum-amount-error-new-account".localized
-                        )
-                    } else {
-                        self.composeAlgosTransactionData()
-                    }
-                }
-            }
-            return
-        } else {
-            loadingController?.startLoadingWithMessage("title-loading".localized)
-            composeAlgosTransactionData()
-        }
-    }
-
-    private func routeForAssetTransaction() {
-        if let contact = draft.toContact, let contactAddress = contact.address {
-            checkIfAddressIsValidForTransaction(contactAddress)
-        } else if let address = draft.toAccount?.address {
-            checkIfAddressIsValidForTransaction(address)
-        }
-    }
-
-    private func checkIfAddressIsValidForTransaction(_ address: String) {
-        guard let assetDetail = draft.assetDetail else {
-            return
-        }
-
-        if !AlgorandSDK().isValidAddress(address) {
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "send-algos-receiver-address-validation".localized
-            )
-            return
-        }
-
         loadingController?.startLoadingWithMessage("title-loading".localized)
-        api?.fetchAccount(
-            AccountFetchDraft(publicKey: address),
-            queue: .main,
-            ignoreResponseOnCancelled: true
-        ) { [weak self] fetchAccountResponse in
-            guard let self = self else { return }
-            if !self.draft.from.requiresLedgerConnection() {
-                self.loadingController?.stopLoading()
-            }
 
-            switch fetchAccountResponse {
-            case let .success(receiverAccountWrapper):
-                if !receiverAccountWrapper.account.isSameAccount(with: address) {
-                    UIApplication.shared.firebaseAnalytics?.record(
-                        MismatchAccountErrorLog(requestedAddress: address, receivedAddress: receiverAccountWrapper.account.address)
-                    )
-                    return
-                }
+        let transactionSendController = TransactionSendController(
+            draft: self.draft,
+            api: self.api!
+        )
 
-                receiverAccountWrapper.account.assets = receiverAccountWrapper.account.nonDeletedAssets()
-                let receiverAccount = receiverAccountWrapper.account
-
-                if let assets = receiverAccount.assets {
-                    if assets.contains(where: { asset -> Bool in
-                        assetDetail.id == asset.id
-                    }) {
-                        self.validateAssetTransaction()
-                    } else {
-                        self.presentAssetNotSupportedAlert(receiverAddress: address)
-                    }
-                } else {
-                    self.presentAssetNotSupportedAlert(receiverAddress: address)
-                }
-            case let .failure(error, _):
-                if error.isHttpNotFound {
-                    self.presentAssetNotSupportedAlert(receiverAddress: address)
-                } else {
-                    self.loadingController?.stopLoading()
-                }
-            }
-        }
+        transactionSendController.delegate = self
+        transactionSendController.validate()
     }
 
     private func presentAssetNotSupportedAlert(receiverAddress: String?) {
@@ -295,28 +134,6 @@ final class AccountSelectScreen: BaseViewController {
             by: .presentWithoutNavigationController
         )
     }
-
-    private func validateAssetTransaction() {
-        guard let amount = self.draft.amount, let assetDetail = draft.assetDetail else {
-            return
-        }
-
-        guard let assetAmount = draft.from.amount(for: assetDetail) else {
-            displaySimpleAlertWith(
-                title: "send-algos-alert-incomplete-title".localized,
-                message: "send-algos-alert-message-address".localized
-            )
-            return
-        }
-
-        if assetAmount < amount {
-            self.displaySimpleAlertWith(title: "title-error".localized, message: "send-asset-amount-error".localized)
-            return
-        }
-
-        composeAssetTransactionData()
-    }
-
 
     private func composeAlgosTransactionData() {
         var transactionDraft = AlgosTransactionSendDraft(
@@ -609,16 +426,76 @@ extension AccountSelectScreen: AccountSelectScreenDataSourceDelegate {
     }
 }
 
-extension AccountSelectScreen {
-    var isClosingToSameAccount: Bool {
-        if let receiverAddress = draft.toAccount?.address {
-            return draft.isMaxTransaction && receiverAddress == draft.from.address
-        }
+extension AccountSelectScreen: TransactionSendControllerDelegate {
+    func transactionSendControllerDidValidate(_ controller: TransactionSendController) {
+        loadingController?.stopLoadingAfter(seconds: 0.3, on: .main){ [weak self] in
+            guard let self = self else {
+                return
+            }
 
-        if let contactAddress = draft.toContact?.address {
-            return draft.isMaxTransaction && contactAddress == draft.from.address
+            switch self.draft.transactionMode {
+            case .algo:
+                self.composeAlgosTransactionData()
+            case .assetDetail:
+                self.composeAssetTransactionData()
+            }
         }
+    }
 
-        return false
+    func transactionSendController(
+        _ controller: TransactionSendController,
+        didFailValidation error: TransactionSendControllerError
+    ) {
+        loadingController?.stopLoadingAfter(seconds: 0.3, on: .main){ [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            switch error {
+            case .closingSameAccount:
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "send-transaction-max-same-account-error".localized
+                )
+            case .algo(let algoError):
+                switch algoError {
+                case .algoAddressNotSelected:
+                    self.bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "send-algos-address-not-selected".localized
+                    )
+                case .invalidAddressSelected:
+                    self.bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "send-algos-receiver-address-validation".localized
+                    )
+                case .minimumAmount:
+                    self.bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "send-algos-minimum-amount-error-new-account".localized
+                    )
+                }
+            case .asset(let assetError):
+                switch assetError {
+                case .assetNotSupported(let address):
+                    self.presentAssetNotSupportedAlert(receiverAddress: address)
+                case .minimumAmount:
+                    self.bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "send-asset-amount-error".localized
+                    )
+                }
+            case .amountNotSpecified, .mismatchReceiverAddress:
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "send-algos-receiver-address-validation".localized
+                )
+            case .internetConnection:
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "title-internet-connection".localized
+                )
+            }
+        }
     }
 }
