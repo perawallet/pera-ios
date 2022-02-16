@@ -229,9 +229,20 @@ extension ContactDetailViewController: AssetPreviewActionCellDelegate {
             return
         }
 
+        let mode: AccountListViewController.Mode = .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.compoundAssets[itemIndex.item - 1].detail)
+        let accountListDataSource = AccountListDataSource(sharedDataController: sharedDataController, mode: mode)
+
+        guard !accountListDataSource.accounts.isEmpty else {
+            bannerController?.presentErrorBanner(
+                title: "asset-support-your-add-title".localized,
+                message: "asset-support-your-add-message".localized
+            )
+            return
+        }
+
         accountListModalTransition.perform(
             .accountList(
-                mode: .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.compoundAssets[itemIndex.item - 1].detail),
+                mode: mode,
                 delegate: self
             ),
             by: .present
