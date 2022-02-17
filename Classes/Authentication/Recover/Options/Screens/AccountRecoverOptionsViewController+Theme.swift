@@ -20,16 +20,14 @@ import UIKit
 
 extension AccountRecoverOptionsViewController {
     struct Theme: LayoutSheet, StyleSheet {
-        let optionsViewTheme: OptionsViewTheme
         let backgroundColor: Color
-        let cellSize: LayoutSize
-        let modalHeight: LayoutMetric
+        let contentPaddings: LayoutPaddings
+        let action: ListActionViewTheme
 
         init(_ family: LayoutFamily) {
-            self.optionsViewTheme = OptionsViewTheme()
             self.backgroundColor = AppColors.Shared.System.background
-            self.cellSize = (UIScreen.main.bounds.width, 60)
-            self.modalHeight = 196 + UIApplication.shared.safeAreaBottom
+            self.contentPaddings = (12, 24, 12, 24)
+            self.action = ListActionViewTheme(family)
         }
     }
 }

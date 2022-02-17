@@ -12,23 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  OptionsCell.swift
+//   LearnMoreListActionViewModel.swift
 
-import UIKit
+import Foundation
+import MacaroonUIKit
 
-final class OptionsCell: BaseCollectionViewCell<OptionsContextView> {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        customize(OptionsContextViewTheme())
-    }
-
-    private func customize(_ theme: OptionsContextViewTheme) {
-        contextView.customize(theme)
-    }
-
-    func bind(_ viewModel: OptionsViewModel) {
-        contextView.bind(viewModel)
+struct LearnMoreListActionViewModel: ListActionViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
+    
+    init() {
+        icon = "icon-info-black-24"
+        title = Self.getTitle("title-learn-more".localized)
+        subtitle = nil
     }
 }
