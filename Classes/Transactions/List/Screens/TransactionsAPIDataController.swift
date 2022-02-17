@@ -570,35 +570,66 @@ extension TransactionsAPIDataController {
 extension TransactionsAPIDataController {
     private func getTransactionHistoryItemsWithDates() -> [TransactionsItem] {
         var transactionItems: [TransactionsItem] = []
+        var addedItemIDs: [String: Bool] = [:]
 
         if var currentDate = transactions.first?.date?.toFormat("MMM d, yyyy") {
             let item: TransactionsItem = .title(TransactionHistoryTitleContextViewModel(title: currentDate))
-            transactionItems.append(item)
+
+            if addedItemIDs[currentDate] == nil {
+                transactionItems.append(item)
+                addedItemIDs[currentDate] = true
+            }
 
             for transaction in transactions {
                 if let transactionDate = transaction.date,
                    transactionDate.toFormat("MMM d, yyyy") != currentDate {
-                    let item: TransactionsItem = .title(TransactionHistoryTitleContextViewModel(title: transactionDate.toFormat("MMM d, yyyy")))
-                    transactionItems.append(item)
-                    currentDate = transactionDate.toFormat("MMM d, yyyy")
+
+                    let newDate = transactionDate.toFormat("MMM d, yyyy")
+
+                    let item: TransactionsItem = .title(TransactionHistoryTitleContextViewModel(title: newDate))
+
+                    if addedItemIDs[newDate] == nil {
+                        transactionItems.append(item)
+                        addedItemIDs[newDate] = true
+                        currentDate = newDate
+                    }
                 }
 
                 if let transaction = transaction as? Transaction {
+                    guard let transactionID = transaction.id else {
+                        continue
+                    }
+
                     if let assetTransaction = transaction.assetTransfer {
                         let viewModel = composeTransactionItemViewModel(
                             with: transaction,
                             for: assetTransaction.receiverAddress == draft.accountHandle.value.address ? transaction.sender : assetTransaction.receiverAddress
                         )
-                        transactionItems.append(.transaction(viewModel))
+
+                        if addedItemIDs[transactionID] == nil {
+                            transactionItems.append(.transaction(viewModel))
+                            addedItemIDs[transactionID] = true
+                        }
                     } else if let payment = transaction.payment {
                         let viewModel = composeTransactionItemViewModel(
                             with: transaction,
                             for: payment.receiver == draft.accountHandle.value.address ? transaction.sender : transaction.payment?.receiver
                         )
-                        transactionItems.append(.transaction(viewModel))
+
+                        if addedItemIDs[transactionID] == nil {
+                            transactionItems.append(.transaction(viewModel))
+                            addedItemIDs[transactionID] = true
+                        }
                     }
                 } else if let reward = transaction as? Reward {
-                    transactionItems.append(.reward(TransactionHistoryContextViewModel(reward)))
+                    guard let transactionID = reward.transactionID else {
+                        continue
+                    }
+
+                    if addedItemIDs[transactionID] == nil {
+                        transactionItems.append(.reward(TransactionHistoryContextViewModel(reward)))
+                        addedItemIDs[transactionID] = true
+                    }
                 }
             }
         }
