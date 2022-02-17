@@ -49,7 +49,7 @@ final class TransactionsAPIDataController:
         sharedDataController: sharedDataController
     )
 
-    private var reward: Decimal = 0
+    private(set) var reward: Decimal = 0
 
     init(
         _ api: ALGAPI,
@@ -699,6 +699,8 @@ extension TransactionsAPIDataController: RewardCalculatorDelegate {
         }
 
         self.reward = rewards
+        self.eventHandler?(.didUpdateReward(reward: reward))
+
         self.deliverContentSnapshot()
     }
 }
