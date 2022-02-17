@@ -65,7 +65,7 @@
 "account-type-selection-passphrase" = "Recover an account";
 "account-type-selection-passphrase-detail" = "I want to recover an Algorand account using my 25-word passphrase";
 "account-welcome-wallet-title" = "Welcome to\nPera Wallet";
-"account-welcome-add-account-title" = "Add account to\nPera Wallet";
+"account-welcome-add-account-title" = "Add an account";
 
 // MARK: Introduction
 
