@@ -562,7 +562,7 @@ extension TransactionsAPIDataController {
             let newSnapshot = snapshot()
 
             self.lastSnapshot = newSnapshot
-            self.publish(.didUpdate(newSnapshot))
+            self.publish(.didUpdateSnapshot(newSnapshot))
         }
     }
 }
@@ -699,7 +699,7 @@ extension TransactionsAPIDataController: RewardCalculatorDelegate {
         }
 
         self.reward = rewards
-        self.eventHandler?(.didUpdateReward(reward: reward))
+        self.eventHandler?(.didUpdateReward(reward))
 
         self.deliverContentSnapshot()
     }

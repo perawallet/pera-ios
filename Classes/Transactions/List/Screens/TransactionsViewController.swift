@@ -77,7 +77,7 @@ class TransactionsViewController: BaseViewController {
             guard let self = self else { return }
 
             switch event {
-            case .didUpdate(let snapshot):
+            case .didUpdateSnapshot(let snapshot):
                 if let accountHandle = self.sharedDataController.accountCollection[self.accountHandle.value.address] {
                     self.accountHandle = accountHandle
                 }
