@@ -76,6 +76,8 @@ final class SendTransactionScreen: BaseViewController {
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
 
+    private var transactionSendController: TransactionSendController?
+
     init(draft: SendTransactionDraft, configuration: ViewControllerConfiguration) {
         self.draft = draft
         super.init(configuration: configuration)
@@ -443,13 +445,13 @@ extension SendTransactionScreen: TransactionSignChecking {
     private func redirectToPreview() {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
-        let transactionSendController = TransactionSendController(
+        self.transactionSendController = TransactionSendController(
             draft: self.draft,
             api: self.api!
         )
 
-        transactionSendController.delegate = self
-        transactionSendController.validate()
+        self.transactionSendController?.delegate = self
+        self.transactionSendController?.validate()
     }
 }
 

@@ -144,8 +144,10 @@ extension TransactionSendController {
             return
         }
 
+        let draft = AccountFetchDraft(publicKey: address)
+
         api.fetchAccount(
-            AccountFetchDraft(publicKey: address),
+            draft,
             queue: .main,
             ignoreResponseOnCancelled: true
         ) { [weak self] fetchAccountResponse in

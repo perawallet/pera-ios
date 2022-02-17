@@ -47,6 +47,8 @@ final class AccountSelectScreen: BaseViewController {
         tabBarHidden = false
     }
 
+    private var transactionSendController: TransactionSendController?
+
     init(draft: SendTransactionDraft, configuration: ViewControllerConfiguration) {
         self.draft = draft
         super.init(configuration: configuration)
@@ -96,13 +98,13 @@ final class AccountSelectScreen: BaseViewController {
     private func routePreviewScreen() {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
-        let transactionSendController = TransactionSendController(
+        self.transactionSendController = TransactionSendController(
             draft: self.draft,
             api: self.api!
         )
 
-        transactionSendController.delegate = self
-        transactionSendController.validate()
+        self.transactionSendController?.delegate = self
+        self.transactionSendController?.validate()
     }
 
     private func presentAssetNotSupportedAlert(receiverAddress: String?) {
