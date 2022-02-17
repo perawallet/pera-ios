@@ -24,7 +24,6 @@ final class AccountRecoverOptionsViewController:
     BottomSheetPresentable {
     weak var delegate: AccountRecoverOptionsViewControllerDelegate?
 
-    private lazy var optionsView = OptionsView()
     private lazy var contextView = VStackView()
     private lazy var theme = Theme()
     

@@ -12,22 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   OptionsViewController+Theme.swift
+//   ManageAssetsListActionViewModel.swift
 
+import Foundation
 import MacaroonUIKit
-import UIKit
 
-extension OptionsViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        var contentPaddings: LayoutPaddings
-        var action: ListActionViewTheme
-
-        init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
-            self.contentPaddings = (12, 24, 12, 24)
-            self.action = ListActionViewTheme(family)
-        }
+struct ManageAssetsListActionViewModel: ListActionViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
+    
+    init() {
+        icon = "icon-polygon"
+        title = Self.getTitle("options-manage-assets".localized)
+        subtitle = nil
     }
 }

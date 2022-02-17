@@ -16,13 +16,13 @@
 //  OptionsViewController.swift
 
 import UIKit
-import MagpieCore
-import MagpieHipo
 import MagpieExceptions
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-final class OptionsViewController: BaseViewController {
+final class OptionsViewController:
+    BaseScrollViewController,
+    BottomSheetPresentable {
     weak var delegate: OptionsViewControllerDelegate?
 
     override var shouldShowNavigationBar: Bool {
@@ -30,7 +30,7 @@ final class OptionsViewController: BaseViewController {
     }
     
     private lazy var theme = Theme()
-    private lazy var optionsView = OptionsView()
+    private lazy var contextView = VStackView()
 
     private let account: Account
     private var options: [Options]
@@ -63,83 +63,132 @@ final class OptionsViewController: BaseViewController {
         super.init(configuration: configuration)
     }
     
-    override func linkInteractors() {
-        optionsView.optionsCollectionView.delegate = self
-        optionsView.optionsCollectionView.dataSource = self
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        build()
     }
     
-    override func prepareLayout() {
+    private func build() {
+        addBackground()
+        addContext()
+        addActions()
+    }
+}
+
+extension OptionsViewController {
+    private func addBackground() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-
-        view.addSubview(optionsView)
-        optionsView.snp.makeConstraints {
-            $0.leading.trailing.top.equalToSuperview()
-            $0.bottom.safeEqualToBottom(of: self)
+    }
+    
+    private func addContext() {
+        contentView.addSubview(contextView)
+        contextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: theme.contentPaddings.top,
+            leading: theme.contentPaddings.leading,
+            bottom: theme.contentPaddings.bottom,
+            trailing: theme.contentPaddings.trailing
+        )
+        contextView.isLayoutMarginsRelativeArrangement = true
+        contextView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
         }
     }
-}
-
-extension OptionsViewController: BottomSheetPresentable {
-    var modalHeight: ModalHeight {
-        return .preferred(theme.modalHeight)
-    }
-}
-
-extension OptionsViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return options.count
-    }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeue(OptionsCell.self, at: indexPath)
-        cell.bind(OptionsViewModel(option: options[indexPath.item], account: account))
-        return cell
-    }
-}
-
-extension OptionsViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        let isCopyAddressCell = indexPath.row == 0
-        return CGSize(isCopyAddressCell ? theme.copyAddressCellSize : theme.defaultCellSize)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedOption = options[indexPath.item]
-        
-        switch selectedOption {
-        case .copyAddress:
-            dismissScreen()
-            delegate?.optionsViewControllerDidCopyAddress(self)
-        case .rekey:
-            dismissScreen()
-            delegate?.optionsViewControllerDidOpenRekeying(self)
-        case .removeAsset:
-            dismissScreen()
-            delegate?.optionsViewControllerDidRemoveAsset(self)
-        case .viewPassphrase:
-            closeScreen(by: .dismiss) { [weak self] in
-                guard let self = self else {
-                    return
-                }
-
-                self.delegate?.optionsViewControllerDidViewPassphrase(self)
+    private func addActions() {
+        options.forEach {
+            switch $0 {
+            case .copyAddress:
+                addAction(CopyAddressListActionViewModel(account), #selector(copyAddress))
+            case .rekey:
+                addAction(RekeyAccountListActionViewModel(), #selector(rekeyAccount))
+            case .viewPassphrase:
+                addAction(ViewPassphraseListActionViewModel(), #selector(viewPassphrase))
+            case .muteNotifications:
+                addAction(MuteNotificationsListActionViewModel(account), #selector(muteNotifications))
+            case .rekeyInformation:
+                addAction(ShowQrCodeListActionViewModel(), #selector(showQRCode))
+            case .renameAccount:
+                addAction(RenameAccountListActionViewModel(), #selector(renameAccount))
+            case .removeAsset:
+                addAction(ManageAssetsListActionViewModel(), #selector(manageAssets))
+            case .removeAccount:
+                addAction(RemoveAccountListActionViewModel(), #selector(removeAccount))
             }
-        case .rekeyInformation:
-            dismissScreen()
-            delegate?.optionsViewControllerDidViewRekeyInformation(self)
-        case .muteNotifications:
-            updateNotificationStatus()
-        case .renameAccount:
-            let controller = open(.editAccount(account: account), by: .push) as? EditAccountViewController
-            controller?.delegate = self
-        case .removeAccount:
-            dismissScreen()
-            delegate?.optionsViewControllerDidRemoveAccount(self)
         }
+    }
+    
+    private func addAction(
+        _ viewModel: ListActionViewModel,
+        _ selector: Selector
+    ) {
+        let actionView = ListActionView()
+        
+        actionView.customize(theme.action)
+        actionView.bindData(viewModel)
+        
+        contextView.addArrangedSubview(actionView)
+        
+        actionView.addTouch(
+            target: self,
+            action: selector
+        )
+    }
+}
+
+extension OptionsViewController {
+    @objc
+    private func copyAddress() {
+        dismissScreen()
+        delegate?.optionsViewControllerDidCopyAddress(self)
+    }
+    
+    @objc
+    private func rekeyAccount() {
+        dismissScreen()
+        delegate?.optionsViewControllerDidOpenRekeying(self)
+    }
+    
+    @objc
+    private func viewPassphrase() {
+        closeScreen(by: .dismiss) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.delegate?.optionsViewControllerDidViewPassphrase(self)
+        }
+    }
+    
+    @objc
+    private func muteNotifications() {
+        updateNotificationStatus()
+    }
+    
+    @objc
+    private func showQRCode() {
+        dismissScreen()
+        delegate?.optionsViewControllerDidViewRekeyInformation(self)
+    }
+    
+    @objc
+    private func renameAccount() {
+        let controller = open(.editAccount(account: account), by: .push) as? EditAccountViewController
+        controller?.delegate = self
+    }
+    
+    @objc
+    private func manageAssets() {
+        dismissScreen()
+        delegate?.optionsViewControllerDidRemoveAsset(self)
+    }
+    
+    @objc
+    private func removeAccount() {
+        dismissScreen()
+        delegate?.optionsViewControllerDidRemoveAccount(self)
     }
 }
 
@@ -185,8 +234,8 @@ extension OptionsViewController {
 
     private func updateNotificationFilterCell() {
         if let index = options.firstIndex(of: .muteNotifications),
-           let cell = optionsView.optionsCollectionView.cellForItem(at: IndexPath(item: index, section: 0)) as? OptionsCell {
-            cell.bind(OptionsViewModel(option: .muteNotifications, account: self.account))
+           let item = contextView.arrangedSubviews[safe: index] as? ListActionView {
+            item.bindData(MuteNotificationsListActionViewModel(account))
         }
     }
 
