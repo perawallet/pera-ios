@@ -391,7 +391,7 @@ extension SendTransactionScreen: TransactionSignChecking {
         case .valid:
             draft.amount = amount.decimalAmount
 
-            if draft.toAccount != nil || draft.toContact != nil {
+            if draft.hasReceiver {
                 redirectToPreview()
                 return
             }
@@ -445,13 +445,13 @@ extension SendTransactionScreen: TransactionSignChecking {
     private func redirectToPreview() {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
-        self.transactionSendController = TransactionSendController(
-            draft: self.draft,
-            api: self.api!
+        transactionSendController = TransactionSendController(
+            draft: draft,
+            api: api!
         )
 
-        self.transactionSendController?.delegate = self
-        self.transactionSendController?.validate()
+        transactionSendController?.delegate = self
+        transactionSendController?.validate()
     }
 }
 

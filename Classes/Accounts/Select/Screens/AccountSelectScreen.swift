@@ -98,13 +98,13 @@ final class AccountSelectScreen: BaseViewController {
     private func routePreviewScreen() {
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
-        self.transactionSendController = TransactionSendController(
-            draft: self.draft,
-            api: self.api!
+        transactionSendController = TransactionSendController(
+            draft: draft,
+            api: api!
         )
 
-        self.transactionSendController?.delegate = self
-        self.transactionSendController?.validate()
+        transactionSendController?.delegate = self
+        transactionSendController?.validate()
     }
 
     private func presentAssetNotSupportedAlert(receiverAddress: String?) {
