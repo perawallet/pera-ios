@@ -54,6 +54,9 @@ final class Account: ALGEntityModel {
     var compoundAssets: [CompoundAsset] = []
     private(set) var compoundAssetsIndexer: CompoundAssetIndexer = [:]
 
+    var standardAssets: [StandardAsset] = []
+    var nfts: [NFTAsset] = []
+
     init(
         _ apiModel: APIModel = APIModel()
     ) {
