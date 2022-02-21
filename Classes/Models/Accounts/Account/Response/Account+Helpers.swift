@@ -34,11 +34,11 @@ extension Account {
         return asset.amount.assetAmount(fromFraction: assetDetail.fractionDecimals)
     }
 
-    func amount(for assetInformation: AssetInformation) -> Decimal? {
-        guard let asset = assets?.first(where: { $0.id == assetInformation.id }) else {
+    func amount(for assetDecoration: AssetDecoration) -> Decimal? {
+        guard let asset = assets?.first(where: { $0.id == assetDecoration.id }) else {
             return nil
         }
-        return asset.amount.assetAmount(fromFraction: assetInformation.decimals)
+        return asset.amount.assetAmount(fromFraction: assetDecoration.decimals)
     }
 
     func amountWithoutFraction(for assetDetail: AssetDetail) -> UInt64? {
@@ -52,11 +52,11 @@ extension Account {
         return amount(for: assetDetail)?.toExactFractionLabel(fraction: assetDetail.fractionDecimals)
     }
 
-    func amountDisplayWithFraction(for assetInformation: AssetInformation) -> String? {
-        return amount(for: assetInformation)?.toExactFractionLabel(fraction: assetInformation.decimals)
+    func amountDisplayWithFraction(for assetDecoration: AssetDecoration) -> String? {
+        return amount(for: assetDecoration)?.toExactFractionLabel(fraction: assetDecoration.decimals)
     }
 
-    func amountNumberWithAutoFraction(for assetDetail: AssetInformation) -> String? {
+    func amountNumberWithAutoFraction(for assetDetail: AssetDecoration) -> String? {
         return amount(for: assetDetail)?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals)
     }
 
@@ -204,7 +204,7 @@ extension Account {
         return ledgerDetail
     }
 
-    func nonDeletedAssets() -> [Asset]? {
+    func nonDeletedAssets() -> [ALGAsset]? {
         return assets?.filter { !($0.isDeleted ?? true) }
     }
 }
