@@ -251,9 +251,13 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
 }
 
 extension TransactionsViewController: AssetDetailInfoViewCellDelegate {
-    func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell, assetID: String?) {
+    func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell) {
+        guard let assetID = draft.compoundAsset?.id else {
+            return
+        }
+
         bannerController?.presentInfoBanner("asset-id-copied-title".localized)
-        UIPasteboard.general.string = assetID
+        UIPasteboard.general.string = "\(assetID)"
     }
 }
 
