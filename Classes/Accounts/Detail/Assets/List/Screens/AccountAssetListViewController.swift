@@ -19,9 +19,7 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class AccountAssetListViewController:
-    BaseViewController,
-    UICollectionViewDelegateFlowLayout {
+final class AccountAssetListViewController: BaseViewController {
     typealias EventHandler = (Event) -> Void
 
     var eventHandler: EventHandler?
@@ -126,7 +124,7 @@ extension AccountAssetListViewController {
     }
 }
 
-extension AccountAssetListViewController {
+extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
