@@ -301,6 +301,10 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
         let draft = QRCreationDraft(address: accountHandle.value.address, mode: .address, title: accountHandle.value.name)
         open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
     }
+
+    func transactionFloatingActionButtonViewControllerDidBuy(_ viewController: TransactionFloatingActionButtonViewController) {
+        
+    }
 }
 
 extension TransactionsViewController {

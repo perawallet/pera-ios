@@ -41,6 +41,10 @@ struct HomeLoadingViewTheme:
     var algoHoldingLoadingLeadingInset: LayoutMetric
     var algoHoldingLoadingSize: LayoutSize
 
+    var buyButtonTheme: ButtonTheme
+    var buyButtonMargin: LayoutMargins
+    var buyButtonHeight: LayoutMetric
+
     var accountsLabelStyle: TextStyle
     var accountsLabelMargin: LayoutMargins
 
@@ -99,7 +103,7 @@ struct HomeLoadingViewTheme:
         self.loadingCorner = Corner(radius: 4)
 
         self.holdingsContainerMargin = (80, 24, .noMetric, 24)
-        self.holdingsContainerHeight = 60
+        self.holdingsContainerHeight = 63
 
         self.algoImageBackground = AppColors.Shared.Global.turquoise600.uiColor
         self.algoImageCornerRadius = 12
@@ -108,13 +112,17 @@ struct HomeLoadingViewTheme:
         self.algoHoldingLoadingLeadingInset = 12
         self.algoHoldingLoadingSize = (57, 20)
 
+        self.buyButtonTheme = ButtonPrimaryTheme(family)
+        self.buyButtonMargin = (44, 24, .noMetric, 24)
+        self.buyButtonHeight = 52
+
         self.accountsLabelStyle = [
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main),
             .textOverflow(FittingText()),
             .text("accounts-title".localized)
         ]
-        self.accountsLabelMargin = (92, 24, .noMetric, 24)
+        self.accountsLabelMargin = (44, 24, .noMetric, 24)
         self.accountLoadingMargin = (4, 24, .noMetric, 24)
         self.accountLoadingHeight = 72
     }

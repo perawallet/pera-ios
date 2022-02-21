@@ -29,6 +29,7 @@ final class AlgosDetailInfoView:
     private lazy var algosValueLabel = UILabel()
     private lazy var secondaryValueLabel = Label()
     private lazy var rewardsInfoView = RewardsInfoView()
+    private lazy var buyButton = Button()
     private lazy var bottomSeparator = UIView()
 
     func customize(
@@ -40,6 +41,7 @@ final class AlgosDetailInfoView:
         addAlgosValueLabel(theme)
         addSecondaryValueLabel(theme)
         addRewardsInfoView(theme)
+        addBuyButton(theme)
         addBottomSeparator(theme)
     }
 
@@ -95,7 +97,9 @@ final class AlgosDetailInfoView:
         rewardsInfoSize.height +
         theme.separatorPadding +
         theme.separator.size +
-        theme.bottomPadding
+        theme.bottomPadding +
+        theme.buyButtonHeight +
+        theme.buyButtonMargin.top
 
         if !viewModel.secondaryValue.isNilOrEmpty {
             let secondaryValueLabelSize = viewModel.secondaryValue.boundingSize(
@@ -163,6 +167,21 @@ extension AlgosDetailInfoView {
         }
     }
 
+    private func addBuyButton(
+        _ theme: AlgosDetailInfoViewTheme
+    ) {
+        buyButton.customize(theme.buyButton)
+        buyButton.setTitle("moonpay-buy-button-title".localized, for: .normal)
+
+        addSubview(buyButton)
+        buyButton.snp.makeConstraints {
+            $0.top.equalTo(rewardsInfoView.snp.bottom).offset(theme.buyButtonMargin.top)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.fitToHeight(theme.buyButtonHeight)
+        }
+    }
+
+
     private func addBottomSeparator(
         _ theme: AlgosDetailInfoViewTheme
     ) {
@@ -170,7 +189,7 @@ extension AlgosDetailInfoView {
 
         addSubview(bottomSeparator)
         bottomSeparator.snp.makeConstraints {
-            $0.top.equalTo(rewardsInfoView.snp.bottom).offset(theme.separatorPadding)
+            $0.top.equalTo(buyButton.snp.bottom).offset(theme.separatorPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.equalToSuperview().inset(theme.bottomPadding)
             $0.fitToHeight(theme.separator.size)
