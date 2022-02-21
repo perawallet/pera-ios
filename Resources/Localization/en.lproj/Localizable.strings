@@ -65,7 +65,7 @@
 // MARK: Introduction
 
 "introduction-add-account-text" = "Add New Account";
-"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"https://perawallet.app/terms-and-services/\">Terms and Conditions</a> and <a href=\"https://www.perawallet.app/privacy-policy/\">Privacy Policy</a>";
+"introduction-title-terms-and-services" = "By creating an account, you agree to Pera Wallet's<br><a href=\"%@\">Terms and Conditions</a> and <a href=\"%@\">Privacy Policy</a>";
 
 // MARK: Password Setting
 "password-set-subtitle" = "Choose your\n6-digit PIN";
@@ -434,9 +434,8 @@
 // MARK: Verified Asset Information
 "verified-assets-title" = "Verified Assets";
 "verified-asset-information-title" = "What does Asset Verification mean?";
-"verified-asset-information-text" = "Assets that go through our verification process are known projects that have their website and public information verified against this specific ASA. Verification status is not an endorsement of the asset.\n\nPera Wallet does not have any relationship with verified ASA owners. This badge is for informational purposes only.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit;\n\nwww.perawallet.app/support";
+"verified-asset-information-text" = "Assets that go through our verification process are known projects that have their website and public information verified against this specific ASA. Verification status is not an endorsement of the asset.\n\nPera Wallet does not have any relationship with verified ASA owners. This badge is for informational purposes only.\n\nThat being said, you should always double check that the asset’s ID is the one that you intended to choose before transacting with that asset.\n\nIf you have questions about the verification process or general feedback about the app, we encourage you to visit;\n\n%@";
 "verified-asset-double-check" = "always double check";
-"verified-asset-information-visit-site" = "www.perawallet.app/support";
 
 // MARK: Ledger Tutorial
 "ledger-pair-title" = "Create Ledger Account";
