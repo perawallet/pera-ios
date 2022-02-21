@@ -12,21 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WarningAlert.swift
+//   BannerModel.swift
 
 import UIKit
 
-class WarningAlert {
+struct BannerModel {
     let title: String
-    let image: UIImage?
+    let icon: UIImage?
     let description: String
-    let actionTitle: String?
 
-    init(title: String, image: UIImage?, description: String, actionTitle: String? = nil) {
+    init(
+        title: String,
+        icon: UIImage?,
+        description: String
+    ) {
         self.title = title
-        self.image = image
+        self.icon = icon
         self.description = description
-        self.actionTitle = actionTitle
     }
  }
