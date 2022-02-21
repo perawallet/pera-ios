@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BannerModel.swift
+//   BannerDraft.swift
 
 import UIKit
 
-struct BannerModel {
+struct BannerDraft {
     let title: String
     let icon: UIImage?
     let description: String

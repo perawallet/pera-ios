@@ -3112,9 +3112,9 @@
 		D45E77CB277F3DF400B0A149 /* TransactionCustomRangeSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E77CA277F3DF400B0A149 /* TransactionCustomRangeSelectionViewModel.swift */; };
 		D45E77CC277F3DF400B0A149 /* TransactionCustomRangeSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E77CA277F3DF400B0A149 /* TransactionCustomRangeSelectionViewModel.swift */; };
 		D45E77CD277F3DF400B0A149 /* TransactionCustomRangeSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45E77CA277F3DF400B0A149 /* TransactionCustomRangeSelectionViewModel.swift */; };
-		D45EC27827C38856004D5E46 /* BannerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45EC27727C38856004D5E46 /* BannerModel.swift */; };
-		D45EC27927C38856004D5E46 /* BannerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45EC27727C38856004D5E46 /* BannerModel.swift */; };
-		D45EC27A27C38856004D5E46 /* BannerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45EC27727C38856004D5E46 /* BannerModel.swift */; };
+		D45EC27827C38856004D5E46 /* BannerDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45EC27727C38856004D5E46 /* BannerDraft.swift */; };
+		D45EC27927C38856004D5E46 /* BannerDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45EC27727C38856004D5E46 /* BannerDraft.swift */; };
+		D45EC27A27C38856004D5E46 /* BannerDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45EC27727C38856004D5E46 /* BannerDraft.swift */; };
 		D45F6ED72788652900AE1EF0 /* AccountTransactionListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F6ED62788652900AE1EF0 /* AccountTransactionListViewController+Theme.swift */; };
 		D45F6ED82788652900AE1EF0 /* AccountTransactionListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F6ED62788652900AE1EF0 /* AccountTransactionListViewController+Theme.swift */; };
 		D45F6ED92788652900AE1EF0 /* AccountTransactionListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45F6ED62788652900AE1EF0 /* AccountTransactionListViewController+Theme.swift */; };
@@ -5010,7 +5010,7 @@
 		D45E191226E91ECD00A32744 /* WatchAccountAdditionViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WatchAccountAdditionViewController+Theme.swift"; sourceTree = "<group>"; };
 		D45E191626E91FA500A32744 /* AccountNameSetupViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountNameSetupViewController+Theme.swift"; sourceTree = "<group>"; };
 		D45E77CA277F3DF400B0A149 /* TransactionCustomRangeSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCustomRangeSelectionViewModel.swift; sourceTree = "<group>"; };
-		D45EC27727C38856004D5E46 /* BannerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerModel.swift; sourceTree = "<group>"; };
+		D45EC27727C38856004D5E46 /* BannerDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerDraft.swift; sourceTree = "<group>"; };
 		D45F6ED62788652900AE1EF0 /* AccountTransactionListViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AccountTransactionListViewController+Theme.swift"; sourceTree = "<group>"; };
 		D469E70927A13DEC002D8342 /* AlgoPriceChartTimeFrameSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoPriceChartTimeFrameSelectionView.swift; sourceTree = "<group>"; };
 		D46AC87426E8DEB8008CDE68 /* AccountRecoverViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountRecoverViewTheme.swift; sourceTree = "<group>"; };
@@ -5825,7 +5825,7 @@
 				D479D0FB26D4FB1F00110E04 /* BannerViewModel.swift */,
 				D44EEEE926D54740009998FA /* BannerInfoViewModel.swift */,
 				D401293326D5359B00BB55D1 /* BannerErrorViewModel.swift */,
-				D45EC27727C38856004D5E46 /* BannerModel.swift */,
+				D45EC27727C38856004D5E46 /* BannerDraft.swift */,
 				D479D0FF26D4FB6400110E04 /* BannerViewTheme.swift */,
 				D479D11026D51C4F00110E04 /* BannerViewInfoTheme.swift */,
 				D479D10C26D4FD7100110E04 /* BannerViewErrorTheme.swift */,
@@ -13674,7 +13674,7 @@
 				2B343CF2259D174A001EA8C8 /* AccountNameSwitchViewModel.swift in Sources */,
 				95266C0227B53EBF00E99EC7 /* SelectAccountListLayout.swift in Sources */,
 				2B3A34E1246DA32A001C8F22 /* AlgorandNode.swift in Sources */,
-				D45EC27A27C38856004D5E46 /* BannerModel.swift in Sources */,
+				D45EC27A27C38856004D5E46 /* BannerDraft.swift in Sources */,
 				2BA015782636B865009EC914 /* LedgerAccountVerificationViewController.swift in Sources */,
 				17BD4E452292F1260003E49A /* AppDelegate.swift in Sources */,
 				17BD4E462292F1260003E49A /* TransactionParams.swift in Sources */,
@@ -14902,7 +14902,7 @@
 				2B0F61E524EC129D00DA22A6 /* AppDelegate.swift in Sources */,
 				95266C0127B53EBF00E99EC7 /* SelectAccountListLayout.swift in Sources */,
 				2BECB4D525A1019F0081870A /* NotificationFilterDataSource.swift in Sources */,
-				D45EC27927C38856004D5E46 /* BannerModel.swift in Sources */,
+				D45EC27927C38856004D5E46 /* BannerDraft.swift in Sources */,
 				95D11D2A2775BF67001B2C37 /* AccountSelectScreen+Theme.swift in Sources */,
 				2B7E303A267A518800E89EE3 /* WCGroupTransactionView.swift in Sources */,
 				2B0F61E624EC129D00DA22A6 /* AssetActionConfirmationViewModel.swift in Sources */,
@@ -16064,7 +16064,7 @@
 				2BF811E625E6447D00D6B406 /* TutorialNumberViewModel.swift in Sources */,
 				F08708D0278C26B800BEE5C2 /* ALGBlockCycle.swift in Sources */,
 				D4BAABCC2770D8C200FF3D22 /* TransactionAmountViewSmallerTheme.swift in Sources */,
-				D45EC27827C38856004D5E46 /* BannerModel.swift in Sources */,
+				D45EC27827C38856004D5E46 /* BannerDraft.swift in Sources */,
 				D4241FBA26E763090064CDD0 /* FloatingTextInputFieldView.swift in Sources */,
 				D473CA4C26E15F0C00558598 /* PassphraseCellViewTheme.swift in Sources */,
 				2B3E227526C0837700ED0AAF /* WCAppCallTransactionItemView.swift in Sources */,

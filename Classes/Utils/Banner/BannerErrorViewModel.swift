@@ -25,7 +25,7 @@ struct BannerErrorViewModel: BannerViewModel, BindableViewModel {
     }
 
     mutating func bind<T>(_ model: T) {
-        if let model = model as? BannerModel {
+        if let model = model as? BannerDraft {
             bindIcon(model.icon)
             bindTitle(model.title)
             bindMessage(model.description)
