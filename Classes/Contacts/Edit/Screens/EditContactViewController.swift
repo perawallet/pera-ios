@@ -163,19 +163,15 @@ extension EditContactViewController: EditContactViewDelegate {
             description: "contacts-delete-contact-alert-explanation".localized,
             primaryActionButtonTitle: "contacts-approve-delete-contact".localized,
             secondaryActionButtonTitle: "title-keep".localized,
-            primaryAction: { [weak self] in
+            primaryAction: {
+                [weak self] in
                 guard let self = self else {
                     return
                 }
+
                 contact.remove(entity: Contact.entityName)
 
-                guard let navigationController = self.navigationController else {
-                    return
-                }
-
-                var viewControllers = navigationController.viewControllers
-                viewControllers.removeLast(2)
-                navigationController.setViewControllers(viewControllers, animated: true)
+                self.popScreenToContactsScreen()
 
                 NotificationCenter.default.post(name: .ContactDeletion, object: self, userInfo: ["contact": contact])
             }
@@ -185,6 +181,16 @@ extension EditContactViewController: EditContactViewDelegate {
             .bottomWarning(configurator: bottomWarningViewConfigurator),
             by: .presentWithoutNavigationController
         )
+    }
+
+    private func popScreenToContactsScreen() {
+        guard let navigationController = navigationController else {
+            return
+        }
+
+        var viewControllers = navigationController.viewControllers
+        viewControllers.removeLast(2)
+        navigationController.setViewControllers(viewControllers, animated: true)
     }
 
     func editContactViewDidTapQRCodeButton(_ editContactView: EditContactView) {
