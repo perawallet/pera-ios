@@ -155,6 +155,8 @@ class Router:
                 by: .present
             )
 
+        case .moonpay(let params):
+            break
         }
     }
     
