@@ -277,6 +277,7 @@
 "contacts-add" = "Add Contact";
 "contacts-add-photo" = "Add Photo";
 "contacts-info" = "Contact Info";
+"contacts-info-address" = "Account Address";
 "contacts-info-edit" = "Edit Contact";
 "contacts-input-name-explanation" = "Name";
 "contacts-input-name-placeholder" = "Contact name";
@@ -300,6 +301,7 @@
 "title-select-asset" = "Select Asset";
 "contact-search-empty-title" = "No contact found";
 "contact-search-empty-detail" = "Try different contact name";
+"contact-input-address-placeholder" = "Account address";
 
 // MARK: Settings
 "settings-sections-account" = "Account";

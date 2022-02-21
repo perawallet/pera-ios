@@ -59,7 +59,7 @@ struct AlgoStatisticsTabBarItem: TabBarItem {
     }
 }
 
-struct ContactsTabBarItem: TabBarItem {
+struct NFTsTabBarItem: TabBarItem {
     let id: String
     let barButtonItem: MacaroonTabBarController.TabBarButtonItem
     let screen: UIViewController?
@@ -67,12 +67,12 @@ struct ContactsTabBarItem: TabBarItem {
     init(
         _ screen: UIViewController
     ) {
-        self.id = TabBarItemID.contacts.rawValue
+        self.id = TabBarItemID.nfts.rawValue
         self.barButtonItem =
             TabBarButtonItem(
                 icon: [
-                    .normal("tabbar-icon-contacts"),
-                    .selected("tabbar-icon-contacts-selected")
+                    .normal("tabbar-icon-nfts"),
+                    .selected("tabbar-icon-nfts-selected")
                 ]
             )
         self.screen = screen
@@ -102,6 +102,6 @@ struct SettingsTabBarItem: TabBarItem {
 enum TabBarItemID: String {
     case home
     case algoStatistics
-    case contacts
+    case nfts
     case settings
 }

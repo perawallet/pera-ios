@@ -99,9 +99,9 @@ extension RootViewController {
             NavigationController(rootViewController: algoStatisticsViewController)
         )
         
-        let contactsViewController = ContactsViewController(configuration: configuration)
-        let contactsTab =
-            ContactsTabBarItem(NavigationController(rootViewController: contactsViewController))
+        let nftsViewController = UIViewController()
+        let nftsTab =
+            NFTsTabBarItem(NavigationController(rootViewController: nftsViewController))
         
         let settingsViewController = SettingsViewController(configuration: configuration)
         let settingsTab =
@@ -111,7 +111,7 @@ extension RootViewController {
             homeTab,
             algoStatisticsTab,
             FixedSpaceTabBarItem(width: .noMetric),
-            contactsTab,
+            nftsTab,
             settingsTab
         ]
     }
