@@ -51,7 +51,7 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
         configuration: configuration
     )
 
-    private var currentAsset: AssetInformation?
+    private var currentAsset: AssetDecoration?
 
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
@@ -161,7 +161,7 @@ extension AssetAdditionViewController:
     TransactionSignChecking {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetInformation
+        didConfirmedActionFor assetDetail: AssetDecoration
     ) {
         if !canSignTransaction(for: &account) {
             return
@@ -183,7 +183,7 @@ extension AssetAdditionViewController:
 }
 
 extension AssetAdditionViewController: AssetListViewControllerDelegate {
-    func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItem item: AssetInformation) {
+    func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItem item: AssetDecoration) {
         if account.containsAsset(item.id) {
             displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
             return
@@ -303,7 +303,7 @@ extension AssetAdditionViewController {
 protocol AssetAdditionViewControllerDelegate: AnyObject {
     func assetAdditionViewController(
         _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd assetSearchResult: AssetInformation,
+        didAdd assetSearchResult: AssetDecoration,
         to account: Account
     )
 }

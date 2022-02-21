@@ -205,7 +205,7 @@ extension DeepLinkParser {
         }
 
         guard
-            let assetInformation = sharedDataController.assetDetailCollection[assetId]
+            let assetDecoration = sharedDataController.assetDetailCollection[assetId]
         else {
             let draft = AssetAlertDraft(
                 account: nil,
@@ -223,7 +223,7 @@ extension DeepLinkParser {
             toAccount: accountAddress,
             amount: Decimal(amount),
             lockedNote: qr.lockedNote,
-            transactionMode: .assetDetail(assetInformation)
+            transactionMode: .assetDetail(assetDecoration)
         )
         return .success(.sendTransaction(draft: qrDraft))
     }

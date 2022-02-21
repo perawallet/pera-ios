@@ -50,7 +50,7 @@ extension WCGroupTransactionLayout: UICollectionViewDelegateFlowLayout {
         let viewModel = WCGroupTransactionItemViewModel(
             transaction: transaction,
             account: transaction.signerAccount,
-            assetInformation: assetInformation(from: transaction),
+            assetDecoration: assetDecoration(from: transaction),
             currency: sharedDataController.currency.value
         )
         
@@ -81,7 +81,7 @@ extension WCGroupTransactionLayout {
         let headerSize = CGSize(width: UIScreen.main.bounds.width, height: 100.0)
     }
 
-    private func assetInformation(from transaction: WCTransaction) -> AssetInformation? {
+    private func assetDecoration(from transaction: WCTransaction) -> AssetDecoration? {
         guard let assetId = transaction.transactionDetail?.currentAssetId else {
             return nil
         }

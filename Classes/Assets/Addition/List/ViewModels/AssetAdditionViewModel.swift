@@ -19,30 +19,30 @@ import UIKit
 
 class AssetAdditionViewModel {
     private(set) var backgroundColor: UIColor?
-    private(set) var assetDetail: AssetInformation?
+    private(set) var assetDetail: AssetDecoration?
     private(set) var actionColor: UIColor?
     private(set) var id: String?
 
-    init(assetInformation: AssetInformation) {
+    init(assetDecoration: AssetDecoration) {
         setBackgroundColor()
-        setAssetDetail(from: assetInformation)
+        setAssetDetail(from: assetDecoration)
         setActionColor()
-        setId(from: assetInformation)
+        setId(from: assetDecoration)
     }
 
     private func setBackgroundColor() {
         backgroundColor = Colors.Background.secondary
     }
 
-    private func setAssetDetail(from assetInformation: AssetInformation) {
-        self.assetDetail = assetInformation
+    private func setAssetDetail(from assetDecoration: AssetDecoration) {
+        self.assetDetail = assetDecoration
     }
 
     private func setActionColor() {
         actionColor = Colors.Text.tertiary
     }
 
-    private func setId(from assetInformation: AssetInformation) {
-        id = "\(assetInformation.id)"
+    private func setId(from assetDecoration: AssetDecoration) {
+        id = "\(assetDecoration.id)"
     }
 }

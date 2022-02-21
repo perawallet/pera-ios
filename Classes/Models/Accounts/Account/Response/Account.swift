@@ -33,7 +33,7 @@ final class Account: ALGEntityModel {
     var pendingRewards: UInt64
     var participation: Participation?
     var createdAssets: [AssetDetail]?
-    var assets: [Asset]?
+    var assets: [ALGAsset]?
     var authAddress: String?
     var createdRound: UInt64?
     var closedRound: UInt64?
@@ -173,7 +173,7 @@ extension Account {
     }
     
     func contains(
-        _ assetDetail: AssetInformation
+        _ assetDetail: AssetDecoration
     ) -> Bool {
         return self[assetDetail.id] != nil
     }
@@ -190,7 +190,7 @@ extension Account {
         var rewardBase: UInt64?
         var participation: Participation?
         var createdAssets: [AssetDetail.APIModel]?
-        var assets: [Asset]?
+        var assets: [ALGAsset]?
         var sigType: SignatureType?
         var round: UInt64?
         var authAddr: String?

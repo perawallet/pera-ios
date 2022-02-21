@@ -49,19 +49,19 @@ final class WCSingleTransactionRequestScreen:
             account = nil
         }
 
-        let assetInformation: AssetInformation?
+        let assetDecoration: AssetDecoration?
 
         if let assetId = transaction.transactionDetail?.currentAssetId, let asset = sharedDataController.assetDetailCollection[assetId] {
-            assetInformation = asset
+            assetDecoration = asset
         } else {
-            assetInformation = nil
+            assetDecoration = nil
         }
 
         return WCSingleTransactionRequestViewModel(
             transaction: transaction,
             account: account,
             currency: sharedDataController.currency.value,
-            assetInformation: assetInformation
+            assetDecoration: assetDecoration
         )
     }()
 
@@ -144,12 +144,12 @@ extension WCSingleTransactionRequestScreen {
     private func didAssetFetched(notification: Notification) {
         guard let transaction = transactions.first,
               let assetId = transaction.transactionDetail?.currentAssetId,
-              let assetInformation = sharedDataController.assetDetailCollection[assetId]
+              let assetDecoration = sharedDataController.assetDetailCollection[assetId]
         else {
             return
         }
         
-        self.viewModel?.middleView?.assetInformation = assetInformation
+        self.viewModel?.middleView?.assetDecoration = assetDecoration
 
         bindData()
     }

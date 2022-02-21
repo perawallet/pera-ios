@@ -71,7 +71,7 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
         }
         
         let assets = account.assets.someArray
-        let newAssets: [Asset]
+        let newAssets: [ALGAsset]
         
         if let cacheAccount = input.cachedAccounts.account(for: account.address) {
             newAssets = Array(Set(assets).subtracting(cacheAccount.assets.someArray))
@@ -85,7 +85,7 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
         
         let dispatchGroup = DispatchGroup()
         
-        var newAssetDetails: [AssetID: AssetInformation] = [:]
+        var newAssetDetails: [AssetID: AssetDecoration] = [:]
         var error: Error?
         
         newAssets.chunked(by: apiQueryLimit).enumerated().forEach {
@@ -176,8 +176,8 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
 
 extension AssetDetailGroupFetchOperation {
     private func fetchAssetDetails(
-        _ assets: [Asset],
-        onComplete handler: @escaping (Result<[AssetInformation], Error>) -> Void
+        _ assets: [ALGAsset],
+        onComplete handler: @escaping (Result<[AssetDecoration], Error>) -> Void
     ) -> EndpointOperatable {
         let ids = assets.map(\.id)
         let draft = AssetFetchQuery(ids: ids)
@@ -217,6 +217,6 @@ extension AssetDetailGroupFetchOperation {
     
     struct Output {
         let account: Account
-        let newAssetDetails: [AssetID: AssetInformation]
+        let newAssetDetails: [AssetID: AssetDecoration]
     }
 }

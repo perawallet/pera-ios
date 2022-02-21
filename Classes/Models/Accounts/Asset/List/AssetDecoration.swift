@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//  AssetQueryItem.swift
+//  AssetDecoration.swift
 
 import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class AssetInformation: ALGEntityModel {
+final class AssetDecoration: ALGEntityModel {
     let id: Int64
     let name: String?
     let unitName: String?
@@ -56,7 +56,7 @@ final class AssetInformation: ALGEntityModel {
     }
 }
 
-extension AssetInformation {
+extension AssetDecoration {
     struct APIModel: ALGAPIModel {
         var assetId: Int64
         var name: String?
@@ -88,7 +88,7 @@ extension AssetInformation {
     }
 }
 
-extension AssetInformation {
+extension AssetDecoration {
     func hasDisplayName() -> Bool {
         return !name.isNilOrEmpty || !unitName.isNilOrEmpty
     }
@@ -121,14 +121,14 @@ extension AssetInformation {
     }
 }
 
-extension AssetInformation: Hashable {
+extension AssetDecoration: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id.hashValue)
     }
 }
 
-extension AssetInformation: Comparable {
-    static func == (lhs: AssetInformation, rhs: AssetInformation) -> Bool {
+extension AssetDecoration: Comparable {
+    static func == (lhs: AssetDecoration, rhs: AssetDecoration) -> Bool {
         return lhs.id == rhs.id &&
             lhs.decimals == rhs.decimals &&
             lhs.isVerified == rhs.isVerified &&
@@ -136,22 +136,22 @@ extension AssetInformation: Comparable {
             lhs.unitName == rhs.unitName
     }
 
-    static func < (lhs: AssetInformation, rhs: AssetInformation) -> Bool {
+    static func < (lhs: AssetDecoration, rhs: AssetDecoration) -> Bool {
         return lhs.id < rhs.id
     }
 }
 
 /// <todo>
 /// Rethink the paginated list model. Should be more reusable.
-final class AssetInformationList:
-    PaginatedList<AssetInformation>,
+final class AssetDecorationList:
+    PaginatedList<AssetDecoration>,
     ALGEntityModel {
     convenience init(
         _ apiModel: APIModel = APIModel()
     ) {
         self.init(
             pagination: apiModel,
-            results: apiModel.results.unwrapMap(AssetInformation.init)
+            results: apiModel.results.unwrapMap(AssetDecoration.init)
         )
     }
 
@@ -165,14 +165,14 @@ final class AssetInformationList:
     }
 }
 
-extension AssetInformationList {
+extension AssetDecorationList {
     struct APIModel:
         ALGAPIModel,
         PaginationComponents {
         var count: Int?
         var next: URL?
         var previous: String?
-        var results: [AssetInformation.APIModel]?
+        var results: [AssetDecoration.APIModel]?
 
         init() {
             self.count = nil

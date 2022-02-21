@@ -30,7 +30,7 @@ final class ContactDetailViewController: BaseScrollViewController {
     
     private let contact: Contact
     private var contactAccount: Account?
-    private var selectedAsset: AssetInformation?
+    private var selectedAsset: AssetDecoration?
     private var assetPreviews: [AssetPreviewModel] = []
 
     init(contact: Contact, configuration: ViewControllerConfiguration) {

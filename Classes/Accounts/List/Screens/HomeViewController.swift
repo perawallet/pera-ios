@@ -405,7 +405,7 @@ extension HomeViewController: QRScannerViewControllerDelegate {
                       return
                   }
 
-            var asset: AssetInformation?
+            var asset: AssetDecoration?
 
             for accountHandle in sharedDataController.accountCollection.sorted() {
                 for compoundAsset in accountHandle.value.compoundAssets where compoundAsset.id == assetId {

@@ -24,10 +24,10 @@ final class AccountAssetListAPIDataController:
     var eventHandler: ((AccountAssetListDataControllerEvent) -> Void)?
 
     private var accountHandle: AccountHandle
-    private var assets: [AssetInformation] = []
+    private var assets: [AssetDecoration] = []
 
-    var addedAssetDetails: [AssetInformation] = []
-    var removedAssetDetails: [AssetInformation] = []
+    var addedAssetDetails: [AssetDecoration] = []
+    var removedAssetDetails: [AssetDecoration] = []
 
     private var lastSnapshot: Snapshot?
 
@@ -98,7 +98,7 @@ extension AccountAssetListAPIDataController {
                 toSection: .portfolio
             )
 
-            var assets: [AssetInformation] = []
+            var assets: [AssetDecoration] = []
             var assetItems: [AccountAssetsItem] = []
 
             assetItems.append(.search)

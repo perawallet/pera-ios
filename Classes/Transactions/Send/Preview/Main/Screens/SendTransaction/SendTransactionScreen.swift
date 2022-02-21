@@ -214,8 +214,8 @@ extension SendTransactionScreen {
            let amount = amountValue.decimalAmount {
 
             switch draft.transactionMode {
-            case let .assetDetail(assetInformation):
-                guard let assetUSDValue = assetInformation.usdValue,
+            case let .assetDetail(assetDecoration):
+                guard let assetUSDValue = assetDecoration.usdValue,
                       let currencyUsdValue = currency.usdValue else {
                           break
                 }
@@ -512,7 +512,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
         return .valid
     }
 
-    private func validateAsset(for value: String, on assetDetail: AssetInformation) -> TransactionValidation {
+    private func validateAsset(for value: String, on assetDetail: AssetDecoration) -> TransactionValidation {
         guard let assetAmount = draft.from.amount(for: assetDetail),
               let decimalAmount = value.decimalAmount else {
                   return .otherAsset

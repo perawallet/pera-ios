@@ -26,14 +26,14 @@ class WCGroupTransactionItemViewModel {
     private(set) var usdValue: String?
     private(set) var accountInformationViewModel: WCGroupTransactionAccountInformationViewModel?
 
-    init(transaction: WCTransaction, account: Account?, assetInformation: AssetInformation?, currency: Currency?) {
+    init(transaction: WCTransaction, account: Account?, assetDecoration: AssetDecoration?, currency: Currency?) {
         setHasWarning(from: transaction, and: account)
         setTitle(from: transaction, and: account)
         setIsAlgos(from: transaction)
-        setAmount(from: transaction, and: assetInformation)
-        setAssetName(from: assetInformation)
-        setUsdValue(transaction: transaction, assetInformation: assetInformation, currency: currency)
-        setAccountInformationViewModel(from: account, with: assetInformation)
+        setAmount(from: transaction, and: assetDecoration)
+        setAssetName(from: assetDecoration)
+        setUsdValue(transaction: transaction, assetDecoration: assetDecoration, currency: currency)
+        setAccountInformationViewModel(from: account, with: assetDecoration)
     }
 
     private func setHasWarning(from transaction: WCTransaction, and account: Account?) {
@@ -103,31 +103,31 @@ class WCGroupTransactionItemViewModel {
         isAlgos = transactionDetail.isAlgosTransaction
     }
 
-    private func setAmount(from transaction: WCTransaction, and assetInformation: AssetInformation?) {
+    private func setAmount(from transaction: WCTransaction, and assetDecoration: AssetDecoration?) {
         guard let transactionDetail = transaction.transactionDetail else {
             return
         }
         
-        if let assetInformation = assetInformation {
-            let decimals = assetInformation.decimals
+        if let assetDecoration = assetDecoration {
+            let decimals = assetDecoration.decimals
             amount = transactionDetail.amount.assetAmount(fromFraction: decimals).toFractionStringForLabel(fraction: decimals) ?? ""
         } else {
             amount = transactionDetail.amount.toAlgos.toAlgosStringForLabel ?? ""
         }
     }
 
-    private func setAssetName(from assetInformation: AssetInformation?) {
-        guard let assetInformation = assetInformation else {
+    private func setAssetName(from assetDecoration: AssetDecoration?) {
+        guard let assetDecoration = assetDecoration else {
             assetName = "ALGO"
             return
         }
 
-        assetName = assetInformation.getDisplayNames().1
+        assetName = assetDecoration.getDisplayNames().1
     }
 
     private func setUsdValue(
         transaction: WCTransaction,
-        assetInformation: AssetInformation?,
+        assetDecoration: AssetDecoration?,
         currency: Currency?
     ) {
         guard let currency = currency,
@@ -137,12 +137,12 @@ class WCGroupTransactionItemViewModel {
                   return
         }
 
-        if let assetInformation = assetInformation {
-            guard let assetUSDValue = assetInformation.usdValue else {
+        if let assetDecoration = assetDecoration {
+            guard let assetUSDValue = assetDecoration.usdValue else {
                 return
             }
 
-            let currencyValue = assetUSDValue * amount.assetAmount(fromFraction: assetInformation.decimals) * currencyUsdValue
+            let currencyValue = assetUSDValue * amount.assetAmount(fromFraction: assetDecoration.decimals) * currencyUsdValue
             if currencyValue > 0 {
                 usdValue = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
             }
@@ -154,14 +154,14 @@ class WCGroupTransactionItemViewModel {
         usdValue = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
     }
 
-    private func setAccountInformationViewModel(from account: Account?, with assetInformation: AssetInformation?) {
+    private func setAccountInformationViewModel(from account: Account?, with assetDecoration: AssetDecoration?) {
         guard let account = account else {
             return
         }
 
         accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
             account: account,
-            assetInformation: assetInformation,
+            assetDecoration: assetDecoration,
             isDisplayingAmount: true
         )
     }

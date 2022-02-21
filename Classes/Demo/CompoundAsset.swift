@@ -19,12 +19,12 @@ import Foundation
 
 final class CompoundAsset: Hashable {
     let id: Int64
-    let base: Asset
-    let detail: AssetInformation
+    let base: ALGAsset
+    let detail: AssetDecoration
     
     init(
-        _ base: Asset,
-        _ detail: AssetInformation
+        _ base: ALGAsset,
+        _ detail: AssetDecoration
     ) {
         self.id = base.id
         self.base = base

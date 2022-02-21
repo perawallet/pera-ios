@@ -93,5 +93,5 @@ final class AssetListViewController: BaseViewController {
 }
 
 protocol AssetListViewControllerDelegate: AnyObject {
-    func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItem item: AssetInformation)
+    func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItem item: AssetDecoration)
 }

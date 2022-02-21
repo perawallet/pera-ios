@@ -92,14 +92,14 @@ final class AssetDetail: ALGEntityModel {
         self.isDeleted = apiModel.params?.deleted
     }
     
-    init(assetInformation: AssetInformation) {
-        self.id = assetInformation.id
-        self.assetName = assetInformation.name
-        self.unitName = assetInformation.unitName
-        self.isVerified = assetInformation.isVerified
-        self.fractionDecimals = assetInformation.decimals
+    init(assetDecoration: AssetDecoration) {
+        self.id = assetDecoration.id
+        self.assetName = assetDecoration.name
+        self.unitName = assetDecoration.unitName
+        self.isVerified = assetDecoration.isVerified
+        self.fractionDecimals = assetDecoration.decimals
         self.total = 0
-        self.creator = assetInformation.creator?.address ?? ""
+        self.creator = assetDecoration.creator?.address ?? ""
         isDefaultFrozen = nil
         url = nil
         managerKey = nil

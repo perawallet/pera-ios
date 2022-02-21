@@ -80,7 +80,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             WCAssetConfigTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                assetInformation: assetInformation(from: transaction)
+                assetDecoration: assetDecoration(from: transaction)
             )
         )
 
@@ -104,7 +104,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             WCAssetConfigTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                assetInformation: assetInformation(from: transaction)
+                assetDecoration: assetDecoration(from: transaction)
             )
         )
 
@@ -127,7 +127,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: nil,
-                assetInformation: assetInformation(from: transaction),
+                assetDecoration: assetDecoration(from: transaction),
                 currency: sharedDataController.currency.value
             )
         )
@@ -152,7 +152,7 @@ extension WCGroupTransactionDataSource: UICollectionViewDataSource {
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                assetInformation: assetInformation(from: transaction),
+                assetDecoration: assetDecoration(from: transaction),
                 currency: sharedDataController.currency.value
             )
         )
@@ -187,7 +187,7 @@ extension WCGroupTransactionDataSource {
         return transactions[safe: index]
     }
 
-    private func assetInformation(from transaction: WCTransaction) -> AssetInformation? {
+    private func assetDecoration(from transaction: WCTransaction) -> AssetDecoration? {
         guard let assetId = transaction.transactionDetail?.currentAssetId else {
             return nil
         }

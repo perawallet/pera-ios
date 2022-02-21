@@ -24,17 +24,17 @@ final class WCSingleTransactionRequestMiddleViewModel {
     private(set) var subtitle: String?
     private(set) var isAssetIconHidden: Bool = true
 
-    var assetInformation: AssetInformation? {
+    var assetDecoration: AssetDecoration? {
         didSet {
             self.setData(transaction, for: account, with: currency)
         }
     }
 
     var assetDetail: AssetDetail? {
-        guard let assetInformation = assetInformation else {
+        guard let assetDecoration = assetDecoration else {
             return nil
         }
-        return AssetDetail(assetInformation: assetInformation)
+        return AssetDetail(assetDecoration: assetDecoration)
     }
 
     private let transaction: WCTransaction
@@ -58,7 +58,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
         case .algos:
             self.title = "\(transaction.transactionDetail?.amount.toAlgos.toAlgosStringForLabel ?? "") ALGO"
             self.isAssetIconHidden = true
-            self.setUsdValue(transaction: transaction, assetInformation: nil, currency: currency)
+            self.setUsdValue(transaction: transaction, assetDecoration: nil, currency: currency)
         case .asset:
             guard let assetDetail = assetDetail else {
                 return
@@ -73,7 +73,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
             
             self.isAssetIconHidden = !assetDetail.isVerified
 
-            self.setUsdValue(transaction: transaction, assetInformation: assetInformation, currency: currency)
+            self.setUsdValue(transaction: transaction, assetDecoration: assetDecoration, currency: currency)
         case .assetAddition, .possibleAssetAddition:
             guard let assetDetail = assetDetail else {
                 return
@@ -134,7 +134,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
 
     private func setUsdValue(
         transaction: WCTransaction,
-        assetInformation: AssetInformation?,
+        assetDecoration: AssetDecoration?,
         currency: Currency?
     ) {
         guard let currency = currency,
@@ -144,12 +144,12 @@ final class WCSingleTransactionRequestMiddleViewModel {
                   return
         }
 
-        if let assetInformation = assetInformation {
-            guard let assetUSDValue = assetInformation.usdValue else {
+        if let assetDecoration = assetDecoration {
+            guard let assetUSDValue = assetDecoration.usdValue else {
                 return
             }
 
-            let currencyValue = assetUSDValue * amount.assetAmount(fromFraction: assetInformation.decimals) * currencyUsdValue
+            let currencyValue = assetUSDValue * amount.assetAmount(fromFraction: assetDecoration.decimals) * currencyUsdValue
             if currencyValue > 0 {
                 subtitle = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
             }

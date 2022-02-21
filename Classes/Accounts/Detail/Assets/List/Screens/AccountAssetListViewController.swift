@@ -204,11 +204,11 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
 }
 
 extension AccountAssetListViewController {
-    func addAsset(_ assetDetail: AssetInformation) {
+    func addAsset(_ assetDetail: AssetDecoration) {
         dataController.addedAssetDetails.append(assetDetail)
     }
 
-    func removeAsset(_ assetDetail: AssetInformation) {
+    func removeAsset(_ assetDetail: AssetDecoration) {
         dataController.removedAssetDetails.append(assetDetail)
     }
 }
@@ -216,7 +216,7 @@ extension AccountAssetListViewController {
 extension AccountAssetListViewController: AssetAdditionViewControllerDelegate {
     func assetAdditionViewController(
         _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd assetSearchResult: AssetInformation,
+        didAdd assetSearchResult: AssetDecoration,
         to account: Account
     ) {
         assetSearchResult.isRecentlyAdded = true

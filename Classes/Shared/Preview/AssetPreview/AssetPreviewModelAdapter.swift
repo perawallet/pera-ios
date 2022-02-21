@@ -19,7 +19,7 @@ import Foundation
 import UIKit
 
 enum AssetPreviewModelAdapter {
-    static func adapt(_ adaptee: (assetDetail: AssetInformation, asset: Asset, currency: Currency?)) -> AssetPreviewModel {
+    static func adapt(_ adaptee: (assetDetail: AssetDecoration, asset: ALGAsset, currency: Currency?)) -> AssetPreviewModel {
         let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset, currency: adaptee.currency)
         return AssetPreviewModel(
             image: nil,
@@ -43,7 +43,7 @@ enum AssetPreviewModelAdapter {
         )
     }
 
-    static func adapt(_ adaptee: AssetInformation) -> AssetPreviewModel {
+    static func adapt(_ adaptee: AssetDecoration) -> AssetPreviewModel {
         return AssetPreviewModel(
             image: nil,
             secondaryImage: adaptee.isVerified ? img("icon-verified-shield") : nil,
@@ -54,7 +54,7 @@ enum AssetPreviewModelAdapter {
         )
     }
 
-    static func adaptAssetSelection(_ adaptee: (assetDetail: AssetInformation, asset: Asset, currency: Currency?)) -> AssetPreviewModel {
+    static func adaptAssetSelection(_ adaptee: (assetDetail: AssetDecoration, asset: ALGAsset, currency: Currency?)) -> AssetPreviewModel {
         let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset, currency: adaptee.currency)
         let assetId = assetViewModel.assetDetail?.id ?? 0
         return AssetPreviewModel(
@@ -67,7 +67,7 @@ enum AssetPreviewModelAdapter {
         )
     }
 
-    static func adaptPendingAsset(_ adaptee: AssetInformation) -> PendingAssetPreviewModel {
+    static func adaptPendingAsset(_ adaptee: AssetDecoration) -> PendingAssetPreviewModel {
         let status = adaptee.isRecentlyAdded ? "asset-add-confirmation-title".localized : "asset-removing-status".localized
         return PendingAssetPreviewModel(
             secondaryImage: adaptee.isVerified ? img("icon-verified-shield") : nil,

@@ -19,11 +19,11 @@ import UIKit
 import MacaroonUIKit
 
 struct AssetViewModel: ViewModel {
-    private(set) var assetDetail: AssetInformation?
+    private(set) var assetDetail: AssetDecoration?
     private(set) var amount: String?
     private(set) var currencyAmount: String?
 
-    init(assetDetail: AssetInformation?, asset: Asset?, currency: Currency?) {
+    init(assetDetail: AssetDecoration?, asset: ALGAsset?, currency: Currency?) {
         bindAssetDetail(assetDetail)
         bindAmount(from: assetDetail, with: asset)
         bindCurrencyAmount(from: assetDetail, with: asset, and: currency)
@@ -31,11 +31,11 @@ struct AssetViewModel: ViewModel {
 }
 
 extension AssetViewModel {
-    private mutating func bindAssetDetail(_ assetDetail: AssetInformation?) {
+    private mutating func bindAssetDetail(_ assetDetail: AssetDecoration?) {
         self.assetDetail = assetDetail
     }
 
-    private mutating func bindAmount(from assetDetail: AssetInformation?, with asset: Asset?) {
+    private mutating func bindAmount(from assetDetail: AssetDecoration?, with asset: ALGAsset?) {
         guard let assetDetail = assetDetail else {
             return
         }
@@ -45,7 +45,7 @@ extension AssetViewModel {
             .toFractionStringForLabel(fraction: assetDetail.decimals)
     }
 
-    private mutating func bindCurrencyAmount(from assetDetail: AssetInformation?, with asset: Asset?, and currency: Currency?) {
+    private mutating func bindCurrencyAmount(from assetDetail: AssetDecoration?, with asset: ALGAsset?, and currency: Currency?) {
         guard let asset = asset,
               let assetDetail = assetDetail,
               let assetUSDValue = assetDetail.usdValue,

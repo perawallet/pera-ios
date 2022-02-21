@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//  Asset.swift
+//  ALGAsset.swift
 
 import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class Asset:
+final class ALGAsset:
     ALGAPIModel,
     Hashable {
     let creator: String?
@@ -30,14 +30,14 @@ final class Asset:
 
     init() {
         self.creator = nil
-        self.amount = 10
+        self.amount = 0
         self.isFrozen = nil
         self.id = 1
         self.isDeleted = nil
     }
 }
 
-extension Asset {
+extension ALGAsset {
     func hash(
         into hasher: inout Hasher
     ) {
@@ -46,8 +46,8 @@ extension Asset {
     }
     
     static func == (
-        lhs: Asset,
-        rhs: Asset
+        lhs: ALGAsset,
+        rhs: ALGAsset
     ) -> Bool {
         return
             lhs.id == rhs.id &&
@@ -55,7 +55,7 @@ extension Asset {
     }
 }
 
-extension Asset {
+extension ALGAsset {
     private enum CodingKeys:
         String,
         CodingKey {

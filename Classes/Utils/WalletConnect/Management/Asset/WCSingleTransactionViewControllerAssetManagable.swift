@@ -43,13 +43,13 @@ extension WCSingleTransactionViewControllerAssetManagable where Self: WCSingleTr
                 return
             }
 
-            guard let assetInformation = assetDetail else {
+            guard let assetDecoration = assetDetail else {
                 self.walletConnector.rejectTransactionRequest(self.transactionRequest, with: .invalidInput(.asset))
                 completion()
                 return
             }
 
-            self.assetDetail = AssetDetail(assetInformation: assetInformation)
+            self.assetDetail = AssetDetail(assetDecoration: assetDecoration)
             completion()
         }
     }

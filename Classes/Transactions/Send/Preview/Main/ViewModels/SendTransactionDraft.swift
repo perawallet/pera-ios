@@ -51,7 +51,7 @@ struct SendTransactionDraft: TransactionSendDraft {
     var note: String?
     var lockedNote: String?
 
-    var assetDetail: AssetInformation? {
+    var assetDetail: AssetDecoration? {
         switch transactionMode {
         case .algo:
             return nil
@@ -63,5 +63,5 @@ struct SendTransactionDraft: TransactionSendDraft {
 
 enum TransactionMode {
     case algo
-    case assetDetail(AssetInformation)
+    case assetDetail(AssetDecoration)
 }

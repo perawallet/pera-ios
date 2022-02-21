@@ -30,7 +30,7 @@ struct AssetDetailInfoViewModel:
 
     init(
         _ account: Account,
-        _ assetDetail: AssetInformation,
+        _ assetDetail: AssetDecoration,
         _ currency: Currency?
     ) {
         bind(
@@ -44,7 +44,7 @@ struct AssetDetailInfoViewModel:
 extension AssetDetailInfoViewModel {
     private mutating func bind(
         _ account: Account,
-        _ assetDetail: AssetInformation,
+        _ assetDetail: AssetDecoration,
         _ currency: Currency?
     ) {
         bindYourBalanceTitle()
@@ -73,11 +73,11 @@ extension AssetDetailInfoViewModel {
         )
     }
 
-    private mutating func bindIsVerified(from assetDetail: AssetInformation) {
+    private mutating func bindIsVerified(from assetDetail: AssetDecoration) {
         isVerified = assetDetail.isVerified
     }
 
-    private mutating func bindName(from assetDetail: AssetInformation) {
+    private mutating func bindName(from assetDetail: AssetDecoration) {
         let font = Fonts.DMSans.medium.make(15)
         let lineHeightMultiplier = 1.23
 
@@ -94,7 +94,7 @@ extension AssetDetailInfoViewModel {
         )
     }
 
-    private mutating func bindAmount(from assetDetail: AssetInformation, in account: Account) {
+    private mutating func bindAmount(from assetDetail: AssetDecoration, in account: Account) {
         guard let fractionStringForLabel =
                 account
                 .amount(for: assetDetail)?
@@ -118,7 +118,7 @@ extension AssetDetailInfoViewModel {
         )
     }
 
-    private mutating func bindSecondaryValue(from assetDetail: AssetInformation, with account: Account, and currency: Currency?) {
+    private mutating func bindSecondaryValue(from assetDetail: AssetDecoration, with account: Account, and currency: Currency?) {
         guard let assetUSDValue = assetDetail.usdValue,
               let currency = currency,
               let currencyUSDValue = currency.usdValue,
@@ -148,7 +148,7 @@ extension AssetDetailInfoViewModel {
         }
     }
 
-    private mutating func bindID(from assetDetail: AssetInformation) {
+    private mutating func bindID(from assetDetail: AssetDecoration) {
         let font = Fonts.DMSans.regular.make(15)
         let lineHeightMultiplier = 1.23
 

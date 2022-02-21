@@ -69,7 +69,7 @@ class WCAppCallTransactionItemViewModel {
     private func setAccountInformationViewModel(from account: Account?) {
         accountInformationViewModel = WCGroupTransactionAccountInformationViewModel(
             account: account,
-            assetInformation: nil,
+            assetDecoration: nil,
             isDisplayingAmount: false
         )
     }

@@ -136,7 +136,7 @@ extension WCMainTransactionDataSource {
             WCAssetConfigTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                assetInformation: assetInformation(from: transaction)
+                assetDecoration: assetDecoration(from: transaction)
             )
         )
 
@@ -160,7 +160,7 @@ extension WCMainTransactionDataSource {
             WCAssetConfigTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                assetInformation: assetInformation(from: transaction)
+                assetDecoration: assetDecoration(from: transaction)
             )
         )
 
@@ -184,7 +184,7 @@ extension WCMainTransactionDataSource {
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                assetInformation: assetInformation(from: transaction),
+                assetDecoration: assetDecoration(from: transaction),
                 currency: sharedDataController.currency.value
             )
         )
@@ -209,7 +209,7 @@ extension WCMainTransactionDataSource {
             WCGroupTransactionItemViewModel(
                 transaction: transaction,
                 account: account,
-                assetInformation: assetInformation(from: transaction),
+                assetDecoration: assetDecoration(from: transaction),
                 currency: sharedDataController.currency.value
             )
         )
@@ -238,7 +238,7 @@ extension WCMainTransactionDataSource {
         return groupedTransactions[Int64(index)]
     }
 
-    private func assetInformation(from transaction: WCTransaction) -> AssetInformation? {
+    private func assetDecoration(from transaction: WCTransaction) -> AssetDecoration? {
         guard let assetId = transaction.transactionDetail?.currentAssetId else {
             return nil
         }

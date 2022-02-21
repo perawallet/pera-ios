@@ -643,7 +643,7 @@ extension TransactionsAPIDataController {
         with transaction: Transaction,
         for address: String?
     ) -> TransactionHistoryContextViewModel {
-        var assetDetail: AssetInformation?
+        var assetDetail: AssetDecoration?
         if let assetID = transaction.assetTransfer?.assetId,
            let asset = sharedDataController.assetDetailCollection[assetID] {
             assetDetail = asset

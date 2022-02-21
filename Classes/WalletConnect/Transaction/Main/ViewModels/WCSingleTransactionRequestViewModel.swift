@@ -28,12 +28,12 @@ final class WCSingleTransactionRequestViewModel {
         transaction: WCTransaction,
         account: Account?,
         currency: Currency?,
-        assetInformation: AssetInformation?
+        assetDecoration: AssetDecoration?
     ) {
         bottomView = WCSingleTransactionRequestBottomViewModel(
             transaction: transaction,
             account: account,
-            assetInformation: assetInformation
+            assetDecoration: assetDecoration
         )
         middleView = WCSingleTransactionRequestMiddleViewModel(transaction: transaction, account: account, currency: currency)
         setTitle(transaction: transaction, account: account)

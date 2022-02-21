@@ -337,7 +337,7 @@ extension TransactionsViewController {
         )
     }
 
-    private func getAssetDetailForTransactionType(_ transaction: Transaction) -> AssetInformation? {
+    private func getAssetDetailForTransactionType(_ transaction: Transaction) -> AssetDecoration? {
         switch draft.type {
         case .all:
             if let assetID = transaction.assetTransfer?.assetId {

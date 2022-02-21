@@ -20,7 +20,7 @@ import Foundation
 struct AssetAlertDraft {
     let account: Account?
     let assetIndex: Int64
-    var assetDetail: AssetInformation?
+    var assetDetail: AssetDecoration?
     let title: String?
     let detail: String?
     let actionTitle: String?
@@ -29,7 +29,7 @@ struct AssetAlertDraft {
     init(
         account: Account?,
         assetIndex: Int64,
-        assetDetail: AssetInformation?,
+        assetDetail: AssetDecoration?,
         title: String? = nil,
         detail: String? = nil,
         actionTitle: String? = nil,

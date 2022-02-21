@@ -68,7 +68,7 @@ extension AssetActionConfirmationViewController: BottomSheetPresentable {
 extension AssetActionConfirmationViewController {
     private func fetchAssetDetailIfNeeded() {
         if !draft.isValid() {
-            if let assetDetail = session?.assetInformations[draft.assetIndex] {
+            if let assetDetail = sharedDataController.assetDetailCollection[draft.assetIndex] {
                 handleAssetDetailSetup(with: assetDetail)
             } else {
                 loadingController?.startLoadingWithMessage("title-loading".localized)
@@ -95,7 +95,7 @@ extension AssetActionConfirmationViewController {
         }
     }
     
-    private func handleAssetDetailSetup(with asset: AssetInformation) {
+    private func handleAssetDetailSetup(with asset: AssetDecoration) {
         self.loadingController?.stopLoading()
         draft.assetDetail = asset
         assetActionConfirmationView.bindData(AssetActionConfirmationViewModel(draft))
@@ -128,6 +128,6 @@ extension AssetActionConfirmationViewController: AssetActionConfirmationViewDele
 protocol AssetActionConfirmationViewControllerDelegate: AnyObject {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetInformation
+        didConfirmedActionFor assetDetail: AssetDecoration
     )
 }

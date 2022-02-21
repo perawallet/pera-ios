@@ -205,7 +205,7 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
 extension AccountDetailViewController: ManageAssetsViewControllerDelegate {
     func manageAssetsViewController(
         _ assetRemovalViewController: ManageAssetsViewController,
-        didRemove assetDetail: AssetInformation,
+        didRemove assetDetail: AssetDecoration,
         from account: Account
     ) {
         assetListScreen.removeAsset(assetDetail)

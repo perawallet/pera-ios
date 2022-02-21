@@ -161,7 +161,7 @@ extension ManageAssetsViewController:
     TransactionSignChecking {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetInformation
+        didConfirmedActionFor assetDetail: AssetDecoration
     ) {
         if !canSignTransaction(for: &account) {
             return
@@ -181,7 +181,7 @@ extension ManageAssetsViewController:
         removeAssetFromAccount(assetDetail)
     }
     
-    private func removeAssetFromAccount(_ assetDetail: AssetInformation) {
+    private func removeAssetFromAccount(_ assetDetail: AssetDecoration) {
         guard let creator = assetDetail.creator else {
             return
         }
@@ -288,7 +288,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         ledgerApprovalViewController?.dismissScreen()
     }
     
-    private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetInformation? {
+    private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetDecoration? {
         return draft?.assetIndex.unwrap { account[$0]?.detail }
     }
 }
@@ -307,7 +307,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
 protocol ManageAssetsViewControllerDelegate: AnyObject {
     func manageAssetsViewController(
         _ manageAssetsViewController: ManageAssetsViewController,
-        didRemove assetDetail: AssetInformation,
+        didRemove assetDetail: AssetDecoration,
         from account: Account
     )
 }

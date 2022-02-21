@@ -685,7 +685,7 @@ extension Router {
 extension Router {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetInformation
+        didConfirmedActionFor assetDetail: AssetDecoration
     ) {
         let draft = assetActionConfirmationViewController.draft
         

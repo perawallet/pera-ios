@@ -23,7 +23,7 @@ final class AssetDisplayViewModel: PairedViewModel {
     private(set) var name: String?
     private(set) var code: String?
 
-    init(_ model: AssetInformation?) {
+    init(_ model: AssetDecoration?) {
         if let assetDetail = model {
             bindIsVerified(assetDetail)
 
@@ -35,7 +35,7 @@ final class AssetDisplayViewModel: PairedViewModel {
 }
 
 extension AssetDisplayViewModel {
-    private func bindIsVerified(_ assetDetail: AssetInformation) {
+    private func bindIsVerified(_ assetDetail: AssetDecoration) {
         isVerified = assetDetail.isVerified
     }
 
