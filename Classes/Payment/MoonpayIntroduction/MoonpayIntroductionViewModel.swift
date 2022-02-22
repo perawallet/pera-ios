@@ -1,0 +1,145 @@
+// Copyright 2022 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//   MoonpayIntroductionViewModel.swift
+
+import Foundation
+import MacaroonUIKit
+
+struct MoonpayIntroductionViewModel: ViewModel {
+    private(set) var logoImage: Image?
+    private(set) var backgroundImage: Image?
+    private(set) var title: EditText?
+    private(set) var subtitle: EditText?
+    private(set) var description: EditText?
+    private(set) var payment: EditText?
+    private(set) var paymentMastercardImage: Image?
+    private(set) var paymentVisaImage: Image?
+    private(set) var paymentAppleImage: Image?
+    private(set) var paymentGpayImage: Image?
+    
+    init() {
+        bind()
+    }
+}
+
+extension MoonpayIntroductionViewModel {
+    private mutating func bind() {
+        bindLogoImage()
+        bindBackgroundImage()
+        bindTitle()
+        bindSubtitle()
+        bindDescription()
+        bindPayment()
+        bindPaymentImages()
+    }
+    
+    private mutating func bindLogoImage() {
+        logoImage = "icon-moonpay-logo"
+    }
+    
+    private mutating func bindBackgroundImage() {
+        backgroundImage = "img-moonpay-background"
+    }
+    
+    private mutating func bindTitle() {
+        let font = Fonts.DMSans.regular.make(15).uiFont
+        let lineHeightMultiplier = 1.23
+        
+        title = .attributedString(
+            "moonpay-introduction-title"
+                .localized
+                .attributed(
+                    [
+                        .font(font),
+                        .lineHeightMultiplier(lineHeightMultiplier, font),
+                        .paragraph([
+                            .textAlignment(.center),
+                            .lineHeightMultiple(lineHeightMultiplier)
+                        ]),
+                    ]
+                )
+        )
+    }
+    
+    private mutating func bindSubtitle() {
+        let font = Fonts.DMSans.medium.make(32).uiFont
+        let lineHeightMultiplier = 0.96
+
+        subtitle = .attributedString(
+            "moonpay-buy-button-title"
+                .localized
+                .attributed(
+                    [
+                        .font(font),
+                        .lineHeightMultiplier(lineHeightMultiplier, font),
+                        .paragraph([
+                            .textAlignment(.left),
+                            .lineBreakMode(.byWordWrapping),
+                            .lineHeightMultiple(lineHeightMultiplier)
+                        ]),
+                    ]
+                )
+        )
+    }
+    
+    private mutating func bindDescription() {
+        let font = Fonts.DMSans.regular.make(15).uiFont
+        let lineHeightMultiplier = 1.23
+
+        description = .attributedString(
+            "moonpay-introduction-description"
+                .localized
+                .attributed(
+                    [
+                        .font(font),
+                        .lineHeightMultiplier(lineHeightMultiplier, font),
+                        .paragraph([
+                            .textAlignment(.left),
+                            .lineBreakMode(.byWordWrapping),
+                            .lineHeightMultiple(lineHeightMultiplier)
+                        ]),
+                    ]
+                )
+        )
+    }
+    
+    private mutating func bindPayment() {
+        let font = Fonts.DMSans.regular.make(15).uiFont
+        let lineHeightMultiplier = 1.23
+
+        payment = .attributedString(
+            "moonpay-introduction-payment"
+                .localized
+                .attributed(
+                    [
+                        .font(font),
+                        .lineHeightMultiplier(lineHeightMultiplier, font),
+                        .paragraph([
+                            .textAlignment(.left),
+                            .lineBreakMode(.byWordWrapping),
+                            .lineHeightMultiple(lineHeightMultiplier)
+                        ]),
+                    ]
+                )
+        )
+    }
+    
+    private mutating func bindPaymentImages() {
+        paymentMastercardImage = "icon-payment-mastercard"
+        paymentVisaImage = "icon-payment-visa"
+        paymentAppleImage = "icon-payment-apple"
+        paymentGpayImage = "icon-payment-gpay"
+    }
+}

@@ -116,6 +116,7 @@ indirect enum Screen {
         transactionOption: WCTransactionOption?
     )
     case peraIntroduction
+    case moonpayIntroduction
 }
 
 extension Screen {
