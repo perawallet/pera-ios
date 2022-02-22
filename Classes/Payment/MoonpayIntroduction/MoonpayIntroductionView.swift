@@ -24,7 +24,9 @@ final class MoonpayIntroductionView:
     UIInteractionObservable,
     UIControlInteractionPublisher {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .closeScreen: UIControlInteraction()
+        .closeScreen: UIControlInteraction(),
+        .buyAlgo: UIControlInteraction(),
+        .learnMore: UIControlInteraction()
     ]
     
     private lazy var theme = MoonpayIntroductionViewTheme()
@@ -91,6 +93,8 @@ final class MoonpayIntroductionView:
         scrollView.delegate = self
         
         startPublishing(event: .closeScreen, for: closeButton)
+        startPublishing(event: .buyAlgo, for: buyButton)
+        startPublishing(event: .learnMore, for: learnButton)
     }
 }
 
@@ -262,5 +266,7 @@ extension MoonpayIntroductionView: UIScrollViewDelegate {
 extension MoonpayIntroductionView {
     enum Event {
         case closeScreen
+        case buyAlgo
+        case learnMore
     }
 }

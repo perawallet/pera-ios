@@ -37,6 +37,10 @@ final class MoonpayIntroductionViewController: BaseViewController {
             guard let self = self else { return }
             self.dismissScreen()
         }
+        
+        moonpayIntroductionView.observe(event: .buyAlgo) {}
+        
+        moonpayIntroductionView.observe(event: .learnMore) {}
     }
 }
 
