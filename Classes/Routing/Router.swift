@@ -463,8 +463,6 @@ class Router:
             viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
         case let .bottomWarning(viewModel):
             viewController = BottomWarningViewController(viewModel, configuration: configuration)
-        case let .warningAlert(warningAlert):
-            viewController = WarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
         case let .tutorial(flow, tutorial):
             viewController = TutorialViewController(
                 flow: flow,
