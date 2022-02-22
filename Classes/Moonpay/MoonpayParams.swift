@@ -18,7 +18,7 @@ import Foundation
 
 struct MoonpayParams {
     let address: String
-    let amount: String
+    let amount: String?
     let transactionStatus: TransactionStatus
     let transactionId: String
 
