@@ -16146,7 +16146,6 @@
 				2B77474A25FFE97E0083EFFA /* InputSuggestionViewModel.swift in Sources */,
 				95609E2A27B69A50008CE7FA /* NotificationsAPIDataController.swift in Sources */,
 				2BD5A6972632FA970048FA5E /* AlgoUSDPrice.swift in Sources */,
-				2BD5A6972632FA970048FA5E /* AlgoUSDPrice.swift in Sources */,
 				95BB6C2827A51B3C00F2A2F1 /* TransactionCurrencyAmountInformationViewModel.swift in Sources */,
 				2BD36E0E2681DC8E00C57728 /* WCGroupTransactionAccountInformationViewModel.swift in Sources */,
 				F07CD2FB276A1E39006665FE /* AccountCollection.swift in Sources */,

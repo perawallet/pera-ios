@@ -33,7 +33,7 @@ indirect enum Screen {
     case algosDetail(draft: TransactionListing)
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
-    case editAccount(account: Account)
+    case editAccount(account: Account, delegate: EditAccountViewControllerDelegate)
     case contactSelection
     case notifications
     case addContact(address: String? = nil, name: String? = nil)

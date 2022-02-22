@@ -23,8 +23,8 @@ struct RenameAccountListActionViewModel: ListActionViewModel {
     let subtitle: EditText?
     
     init() {
-        icon = "icon-edit-account"
-        title = Self.getTitle("options-edit-account-name".localized)
-        subtitle = nil
+        self.icon = "icon-edit-account"
+        self.title = Self.getTitle("options-edit-account-name".localized)
+        self.subtitle = nil
     }
 }

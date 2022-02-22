@@ -23,8 +23,8 @@ struct RekeyAccountListActionViewModel: ListActionViewModel {
     let subtitle: EditText?
     
     init() {
-        icon = "icon-options-rekey"
-        title = Self.getTitle("options-rekey".localized)
-        subtitle = nil
+        self.icon = "icon-options-rekey"
+        self.title = Self.getTitle("options-rekey".localized)
+        self.subtitle = nil
     }
 }

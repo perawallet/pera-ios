@@ -23,21 +23,11 @@ struct RemoveAccountListActionViewModel: ListActionViewModel {
     let subtitle: EditText?
     
     init() {
-        icon = "icon-remove-account"
-        
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
-        title = .attributedString(
-            "options-remove-account".localized.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ]),
-                .textColor(AppColors.Shared.Helpers.negative)
-            ])
+        self.icon = "icon-remove-account"
+        self.title = Self.getTitle(
+            "options-remove-account".localized,
+            AppColors.Shared.Helpers.negative
         )
-        subtitle = nil
+        self.subtitle = nil
     }
 }

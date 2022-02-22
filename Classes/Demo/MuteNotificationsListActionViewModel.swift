@@ -19,32 +19,26 @@ import MacaroonUIKit
 
 struct MuteNotificationsListActionViewModel:
     ListActionViewModel,
-    BindableViewModel {
-    let subtitle: EditText?
-    
+    PairedViewModel {
     private(set) var title: EditText?
     private(set) var icon: Image?
+    private(set) var subtitle: EditText?
     
-    init<T>(
-        _ model: T
+    init(
+        _ model: Account
     ) {
-        subtitle = nil
-        
         bind(model)
-    }
-    
-    mutating func bind<T>(
-        _ model: T
-    ) {
-        if let account = model as? Account {
-            bindIcon(account)
-            bindTitle(account)
-            return
-        }
     }
 }
 
 extension MuteNotificationsListActionViewModel {
+    mutating func bind(
+        _ account: Account
+    ) {
+        bindIcon(account)
+        bindTitle(account)
+    }
+    
     mutating func bindIcon(
         _ account: Account
     ) {

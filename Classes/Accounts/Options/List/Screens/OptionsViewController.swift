@@ -15,10 +15,11 @@
 //
 //  OptionsViewController.swift
 
-import UIKit
-import MagpieExceptions
+import Foundation
 import MacaroonBottomSheet
 import MacaroonUIKit
+import MagpieExceptions
+import UIKit
 
 final class OptionsViewController:
     BaseScrollViewController,
@@ -29,36 +30,23 @@ final class OptionsViewController:
         return false
     }
     
-    private lazy var theme = Theme()
     private lazy var contextView = VStackView()
+    
+    private var muteNotificationsView: ListActionView?
 
     private let account: Account
-    private var options: [Options]
+    private let options: [Option]
     
-    init(account: Account, configuration: ViewControllerConfiguration) {
+    private let theme: OptionsViewControllerTheme
+    
+    init(
+        account: Account,
+        configuration: ViewControllerConfiguration,
+        theme: OptionsViewControllerTheme = .init()
+    ) {
         self.account = account
-        
-        if account.isThereAnyDifferentAsset {
-            options = Options.allOptions
-        } else {
-            options = Options.optionsWithoutRemoveAsset
-        }
-        
-        if account.requiresLedgerConnection() {
-            _ = options.removeAll { option in
-                option == .viewPassphrase
-            }
-        }
-        
-        if !account.isRekeyed() {
-            _ = options.removeAll { option in
-                option == .rekeyInformation
-            }
-        }
-        
-        if account.isWatchAccount() {
-            options = Options.watchAccountOptions
-        }
+        self.options = Option.makeOptions(for: account)
+        self.theme = theme
         
         super.init(configuration: configuration)
     }
@@ -77,7 +65,7 @@ final class OptionsViewController:
 
 extension OptionsViewController {
     private func addBackground() {
-        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        view.customizeAppearance(theme.background)
     }
     
     private func addContext() {
@@ -101,29 +89,54 @@ extension OptionsViewController {
         options.forEach {
             switch $0 {
             case .copyAddress:
-                addAction(CopyAddressListActionViewModel(account), #selector(copyAddress))
+                addAction(
+                    CopyAddressListActionViewModel(account),
+                    #selector(copyAddress)
+                )
             case .rekey:
-                addAction(RekeyAccountListActionViewModel(), #selector(rekeyAccount))
-            case .viewPassphrase:
-                addAction(ViewPassphraseListActionViewModel(), #selector(viewPassphrase))
-            case .muteNotifications:
-                addAction(MuteNotificationsListActionViewModel(account), #selector(muteNotifications))
+                addAction(
+                    RekeyAccountListActionViewModel(),
+                    #selector(rekeyAccount)
+                )
             case .rekeyInformation:
-                addAction(ShowQrCodeListActionViewModel(), #selector(showQRCode))
+                addAction(
+                    ShowQrCodeListActionViewModel(),
+                    #selector(showQRCode)
+                )
+            case .viewPassphrase:
+                addAction(
+                    ViewPassphraseListActionViewModel(),
+                    #selector(viewPassphrase)
+                )
+            case .muteNotifications:
+                muteNotificationsView = addAction(
+                    MuteNotificationsListActionViewModel(account),
+                    #selector(muteNotifications)
+                )
             case .renameAccount:
-                addAction(RenameAccountListActionViewModel(), #selector(renameAccount))
+                addAction(
+                    RenameAccountListActionViewModel(),
+                    #selector(renameAccount)
+                )
             case .removeAsset:
-                addAction(ManageAssetsListActionViewModel(), #selector(manageAssets))
+                addAction(
+                    ManageAssetsListActionViewModel(),
+                    #selector(manageAssets)
+                )
             case .removeAccount:
-                addAction(RemoveAccountListActionViewModel(), #selector(removeAccount))
+                addAction(
+                    RemoveAccountListActionViewModel(),
+                    #selector(removeAccount)
+                )
             }
         }
     }
     
+    @discardableResult
     private func addAction(
         _ viewModel: ListActionViewModel,
         _ selector: Selector
-    ) {
+    ) -> ListActionView {
         let actionView = ListActionView()
         
         actionView.customize(theme.action)
@@ -135,6 +148,8 @@ extension OptionsViewController {
             target: self,
             action: selector
         )
+        
+        return actionView
     }
 }
 
@@ -147,16 +162,29 @@ extension OptionsViewController {
     
     @objc
     private func rekeyAccount() {
-        dismissScreen()
-        delegate?.optionsViewControllerDidOpenRekeying(self)
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.delegate?.optionsViewControllerDidOpenRekeying(self)
+        }
+    }
+    
+    @objc
+    private func showQRCode() {
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.delegate?.optionsViewControllerDidViewRekeyInformation(self)
+        }
     }
     
     @objc
     private func viewPassphrase() {
-        closeScreen(by: .dismiss) { [weak self] in
-            guard let self = self else {
-                return
-            }
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
 
             self.delegate?.optionsViewControllerDidViewPassphrase(self)
         }
@@ -168,33 +196,39 @@ extension OptionsViewController {
     }
     
     @objc
-    private func showQRCode() {
-        dismissScreen()
-        delegate?.optionsViewControllerDidViewRekeyInformation(self)
-    }
-    
-    @objc
     private func renameAccount() {
-        let controller = open(.editAccount(account: account), by: .push) as? EditAccountViewController
-        controller?.delegate = self
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.delegate?.optionsViewControllerDidRenameAccount(self)
+        }
     }
     
     @objc
     private func manageAssets() {
-        dismissScreen()
-        delegate?.optionsViewControllerDidRemoveAsset(self)
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.delegate?.optionsViewControllerDidRemoveAsset(self)
+        }
     }
     
     @objc
     private func removeAccount() {
-        dismissScreen()
-        delegate?.optionsViewControllerDidRemoveAccount(self)
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.delegate?.optionsViewControllerDidRemoveAccount(self)
+        }
     }
 }
 
 extension OptionsViewController {
     private func updateNotificationStatus() {
-        guard let deviceId = api?.session.authenticatedUser?.deviceId else {
+        guard let deviceId = session?.authenticatedUser?.deviceId else {
             return
         }
 
@@ -206,92 +240,123 @@ extension OptionsViewController {
             receivesNotifications: !account.receivesNotification
         )
 
-        api?.updateNotificationFilter(draft) { response in
-            switch response {
-            case let .success(result):
-                self.updateNotificationFiltering(with: result)
-            case let .failure(_, hipApiError):
-                self.displayNotificationFilterError(hipApiError)
+        api?.updateNotificationFilter(draft) {
+            [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let response):
+                self.didUpdateNotificationStatus(response)
+            case .failure(_, let apiErrorDetail):
+                self.didFailToUpdateNotificationStatus(apiErrorDetail)
             }
+            
+            self.loadingController?.stopLoading()
         }
     }
 
-    private func updateNotificationFiltering(with result: NotificationFilterResponse) {
-        account.receivesNotification = result.receivesNotification
-        loadingController?.stopLoading()
-        updateAccountForNotificationFilters()
-        updateNotificationFilterCell()
-    }
-
-    private func updateAccountForNotificationFilters() {
-        guard let localAccount = api?.session.accountInformation(from: account.address) else {
-            return
+    private func didUpdateNotificationStatus(
+        _ response: NotificationFilterResponse
+    ) {
+        account.receivesNotification = response.receivesNotification
+        
+        if let localAccount = session?.accountInformation(from: account.address) {
+            localAccount.receivesNotification = response.receivesNotification
+            session?.authenticatedUser?.updateAccount(localAccount)
         }
 
-        localAccount.receivesNotification = account.receivesNotification
-        api?.session.authenticatedUser?.updateAccount(localAccount)
+        muteNotificationsView?.bindData(MuteNotificationsListActionViewModel(account))
     }
 
-    private func updateNotificationFilterCell() {
-        if let index = options.firstIndex(of: .muteNotifications),
-           let item = contextView.arrangedSubviews[safe: index] as? ListActionView {
-            item.bindData(MuteNotificationsListActionViewModel(account))
-        }
-    }
-
-    private func displayNotificationFilterError(_ error: HIPAPIError?) {
-        loadingController?.stopLoading()
+    private func didFailToUpdateNotificationStatus(
+        _ apiErrorDetail: HIPAPIError?
+    ) {
         bannerController?.presentErrorBanner(
-            title: "title-error".localized, message: error?.fallbackMessage ?? "transaction-filter-error-title".localized
+            title: "title-error".localized,
+            message: apiErrorDetail?.fallbackMessage ?? "transaction-filter-error-title".localized
         )
     }
 }
 
-extension OptionsViewController: EditAccountViewControllerDelegate {
-    func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
-        delegate?.optionsViewControllerDidRenameAccount(self)
-    }
-}
-
 extension OptionsViewController {
-    enum Options: Int, CaseIterable {
-        case copyAddress = 0
-        case rekey = 1
-        case viewPassphrase = 2
-        case muteNotifications = 3
-        case rekeyInformation = 4
-        case renameAccount = 5
-        case removeAsset = 6
-        case removeAccount = 7
-
-        static var optionsWithoutRemoveAsset: [Options] {
-            return [.copyAddress, .rekey, .rekeyInformation, .viewPassphrase, .muteNotifications, .renameAccount, .removeAccount]
-        }
-
-        static var optionsWithoutPassphrase: [Options] {
-            return [.copyAddress, .rekey, .rekeyInformation, .muteNotifications, .renameAccount, .removeAsset, .removeAccount]
+    enum Option {
+        case copyAddress
+        case rekey
+        case rekeyInformation
+        case viewPassphrase
+        case muteNotifications
+        case renameAccount
+        case removeAsset
+        case removeAccount
+        
+        static func makeOptions(
+            for account: Account
+        ) -> [Option] {
+            return account.isWatchAccount()
+                ? makeOptions(forWatchAccount: account)
+                : makeOptions(forNonWatchAccount: account)
         }
         
-        static var optionsWithoutPassphraseAndRemoveAsset: [Options] {
-            return [.copyAddress, .rekey, .rekeyInformation, .muteNotifications, .renameAccount, .removeAccount]
+        private static func makeOptions(
+            forWatchAccount account: Account
+        ) -> [Option] {
+            return [
+                .muteNotifications,
+                .renameAccount,
+                .removeAccount
+            ]
         }
         
-        static var allOptions: [Options] {
-            return allCases
-        }
-        
-        static var watchAccountOptions: [Options] {
-            return [.muteNotifications, .renameAccount, .removeAccount]
+        private static func makeOptions(
+            forNonWatchAccount account: Account
+        ) -> [Option] {
+            var options: [Option] = []
+            
+            options.append(.copyAddress)
+            options.append(.rekey)
+            
+            if account.isRekeyed() {
+                options.append(.rekeyInformation)
+            }
+            
+            if !account.requiresLedgerConnection() {
+                options.append(.viewPassphrase)
+            }
+            
+            options.append(.muteNotifications)
+            options.append(.renameAccount)
+            
+            if account.hasAnyAssets() {
+                options.append(.removeAsset)
+            }
+            
+            options.append(.removeAccount)
+            
+            return options
         }
     }
 }
 
 protocol OptionsViewControllerDelegate: AnyObject {
-    func optionsViewControllerDidCopyAddress(_ optionsViewController: OptionsViewController)
-    func optionsViewControllerDidOpenRekeying(_ optionsViewController: OptionsViewController)
-    func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController)
-    func optionsViewControllerDidViewPassphrase(_ optionsViewController: OptionsViewController)
-    func optionsViewControllerDidViewRekeyInformation(_ optionsViewController: OptionsViewController)
-    func optionsViewControllerDidRenameAccount(_ optionsViewController: OptionsViewController)
-    func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController)
+    func optionsViewControllerDidCopyAddress(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidOpenRekeying(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidRemoveAsset(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidViewPassphrase(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidViewRekeyInformation(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidRenameAccount(
+        _ optionsViewController: OptionsViewController
+    )
+    func optionsViewControllerDidRemoveAccount(
+        _ optionsViewController: OptionsViewController
+    )
 }

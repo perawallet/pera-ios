@@ -18,16 +18,20 @@
 import MacaroonUIKit
 import UIKit
 
-extension OptionsViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        var contentPaddings: LayoutPaddings
-        var action: ListActionViewTheme
+struct OptionsViewControllerTheme:
+    StyleSheet,
+    LayoutSheet {
+    var background: ViewStyle
+    var contentPaddings: LayoutPaddings
+    var action: ListActionViewTheme
 
-        init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
-            self.contentPaddings = (12, 24, 12, 24)
-            self.action = ListActionViewTheme(family)
-        }
+    init(
+        _ family: LayoutFamily
+) {
+        self.background = [
+            .backgroundColor(AppColors.Shared.System.background)
+        ]
+        self.contentPaddings = (12, 24, 12, 24)
+        self.action = ListActionViewTheme(family)
     }
 }

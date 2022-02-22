@@ -25,7 +25,16 @@ final class AccountRecoverOptionsViewController:
     weak var delegate: AccountRecoverOptionsViewControllerDelegate?
 
     private lazy var contextView = VStackView()
-    private lazy var theme = Theme()
+
+    private let theme: AccountRecoverOptionsViewControllerTheme
+    
+    init(
+        configuration: ViewControllerConfiguration,
+        theme: AccountRecoverOptionsViewControllerTheme = .init()
+    ) {
+        self.theme = theme
+        super.init(configuration: configuration)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,7 +50,7 @@ final class AccountRecoverOptionsViewController:
 
 extension AccountRecoverOptionsViewController {
     private func addBackground() {
-        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+        view.customizeAppearance(theme.background)
     }
     
     private func addContext() {
@@ -68,15 +77,24 @@ extension AccountRecoverOptionsViewController {
     }
     
     private func addPastePassphraseAction() {
-        addAction(PasteFullPassphraseListActionViewModel(), #selector(pasteFullPassphrase))
+        addAction(
+            PasteFullPassphraseListActionViewModel(),
+            #selector(pasteFullPassphrase)
+        )
     }
     
     private func addScanQRAction() {
-        addAction(ScanQRCodeListActionViewModel(), #selector(scanQRCode))
+        addAction(
+            ScanQRCodeListActionViewModel(),
+            #selector(scanQRCode)
+        )
     }
     
     private func addLearnAction() {
-        addAction(LearnMoreListActionViewModel(), #selector(learnMore))
+        addAction(
+            LearnMoreListActionViewModel(),
+            #selector(learnMore)
+        )
     }
     
     private func addAction(
@@ -106,19 +124,33 @@ extension AccountRecoverOptionsViewController {
     
     @objc
     private func scanQRCode() {
-        dismissScreen()
-        delegate?.accountRecoverOptionsViewControllerDidOpenScanQR(self)
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.delegate?.accountRecoverOptionsViewControllerDidOpenScanQR(self)
+        }
     }
     
     @objc
     private func learnMore() {
-        dismissScreen()
-        delegate?.accountRecoverOptionsViewControllerDidOpenMoreInfo(self)
+        closeScreen(by: .dismiss) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            self.delegate?.accountRecoverOptionsViewControllerDidOpenMoreInfo(self)
+        }
     }
 }
 
 protocol AccountRecoverOptionsViewControllerDelegate: AnyObject {
-    func accountRecoverOptionsViewControllerDidOpenScanQR(_ viewController: AccountRecoverOptionsViewController)
-    func accountRecoverOptionsViewControllerDidPasteFromClipboard(_ viewController: AccountRecoverOptionsViewController)
-    func accountRecoverOptionsViewControllerDidOpenMoreInfo(_ viewController: AccountRecoverOptionsViewController)
+    func accountRecoverOptionsViewControllerDidOpenScanQR(
+        _ viewController: AccountRecoverOptionsViewController
+    )
+    func accountRecoverOptionsViewControllerDidPasteFromClipboard(
+        _ viewController: AccountRecoverOptionsViewController
+    )
+    func accountRecoverOptionsViewControllerDidOpenMoreInfo(
+        _ viewController: AccountRecoverOptionsViewController
+    )
 }

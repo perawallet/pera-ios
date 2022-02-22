@@ -23,8 +23,8 @@ struct ManageAssetsListActionViewModel: ListActionViewModel {
     let subtitle: EditText?
     
     init() {
-        icon = "icon-polygon"
-        title = Self.getTitle("options-manage-assets".localized)
-        subtitle = nil
+        self.icon = "icon-polygon"
+        self.title = Self.getTitle("options-manage-assets".localized)
+        self.subtitle = nil
     }
 }

@@ -18,16 +18,20 @@
 import MacaroonUIKit
 import UIKit
 
-extension AccountRecoverOptionsViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        let contentPaddings: LayoutPaddings
-        let action: ListActionViewTheme
+struct AccountRecoverOptionsViewControllerTheme:
+    StyleSheet,
+    LayoutSheet {
+    var background: ViewStyle
+    let contentPaddings: LayoutPaddings
+    let action: ListActionViewTheme
 
-        init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
-            self.contentPaddings = (12, 24, 12, 24)
-            self.action = ListActionViewTheme(family)
-        }
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.background = [
+            .backgroundColor(AppColors.Shared.System.background)
+        ]
+        self.contentPaddings = (12, 24, 12, 24)
+        self.action = ListActionViewTheme(family)
     }
 }

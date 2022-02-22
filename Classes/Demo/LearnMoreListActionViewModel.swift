@@ -23,8 +23,8 @@ struct LearnMoreListActionViewModel: ListActionViewModel {
     let subtitle: EditText?
     
     init() {
-        icon = "icon-info-black-24"
-        title = Self.getTitle("title-learn-more".localized)
-        subtitle = nil
+        self.icon = "icon-info-black-24"
+        self.title = Self.getTitle("title-learn-more".localized)
+        self.subtitle = nil
     }
 }

@@ -23,8 +23,8 @@ struct ScanQRCodeListActionViewModel: ListActionViewModel {
     let subtitle: EditText?
     
     init() {
-        icon = "icon-qr-scan"
-        title = Self.getTitle("qr-scan-title".localized)
-        subtitle = nil
+        self.icon = "icon-qr-scan"
+        self.title = Self.getTitle("qr-scan-title".localized)
+        self.subtitle = nil
     }
 }

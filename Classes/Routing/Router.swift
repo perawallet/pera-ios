@@ -353,8 +353,10 @@ class Router:
             let optionsViewController = OptionsViewController(account: account, configuration: configuration)
             optionsViewController.delegate = delegate
             viewController = optionsViewController
-        case let .editAccount(account):
-            viewController = EditAccountViewController(account: account, configuration: configuration)
+        case let .editAccount(account, delegate):
+            let aViewController = EditAccountViewController(account: account, configuration: configuration)
+            aViewController.delegate = delegate
+            viewController = aViewController
         case .contactSelection:
             viewController = ContactSelectionViewController(configuration: configuration)
         case let .addContact(address, name):
