@@ -12,26 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountRecoverOptionsViewController+Theme.swift
+//   RemoveAccountListActionViewModel.swift
 
+import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct AccountRecoverOptionsViewControllerTheme:
-    StyleSheet,
-    LayoutSheet {
-    var background: ViewStyle
-    let contentPaddings: LayoutPaddings
-    let action: ListActionViewTheme
-
-    init(
-        _ family: LayoutFamily
-    ) {
-        self.background = [
-            .backgroundColor(AppColors.Shared.System.background)
-        ]
-        self.contentPaddings = (12, 24, 12, 24)
-        self.action = ListActionViewTheme(family)
+struct RemoveAccountListActionViewModel: ListActionViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
+    
+    init() {
+        self.icon = "icon-remove-account"
+        self.title = Self.getTitle(
+            "options-remove-account".localized,
+            AppColors.Shared.Helpers.negative
+        )
+        self.subtitle = nil
     }
 }

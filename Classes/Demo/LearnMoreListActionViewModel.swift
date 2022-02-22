@@ -12,26 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountRecoverOptionsViewController+Theme.swift
+//   LearnMoreListActionViewModel.swift
 
+import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct AccountRecoverOptionsViewControllerTheme:
-    StyleSheet,
-    LayoutSheet {
-    var background: ViewStyle
-    let contentPaddings: LayoutPaddings
-    let action: ListActionViewTheme
-
-    init(
-        _ family: LayoutFamily
-    ) {
-        self.background = [
-            .backgroundColor(AppColors.Shared.System.background)
-        ]
-        self.contentPaddings = (12, 24, 12, 24)
-        self.action = ListActionViewTheme(family)
+struct LearnMoreListActionViewModel: ListActionViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
+    
+    init() {
+        self.icon = "icon-info-black-24"
+        self.title = Self.getTitle("title-learn-more".localized)
+        self.subtitle = nil
     }
 }

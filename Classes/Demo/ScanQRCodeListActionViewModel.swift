@@ -12,26 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountRecoverOptionsViewController+Theme.swift
+//   ScanQRCodeListActionViewModel.swift
 
+import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct AccountRecoverOptionsViewControllerTheme:
-    StyleSheet,
-    LayoutSheet {
-    var background: ViewStyle
-    let contentPaddings: LayoutPaddings
-    let action: ListActionViewTheme
-
-    init(
-        _ family: LayoutFamily
-    ) {
-        self.background = [
-            .backgroundColor(AppColors.Shared.System.background)
-        ]
-        self.contentPaddings = (12, 24, 12, 24)
-        self.action = ListActionViewTheme(family)
+struct ScanQRCodeListActionViewModel: ListActionViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
+    
+    init() {
+        self.icon = "icon-qr-scan"
+        self.title = Self.getTitle("qr-scan-title".localized)
+        self.subtitle = nil
     }
 }
