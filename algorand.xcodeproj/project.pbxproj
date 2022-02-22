@@ -3731,6 +3731,10 @@
 		F0261A9C27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0261A9B27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift */; };
 		F0261A9D27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0261A9B27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift */; };
 		F0261A9E27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0261A9B27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift */; };
+		F0261A9F27C56F1A009D8BF4 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4487AAD27BD647A00B4B0AB /* WelcomeViewModel.swift */; };
+		F0261AA027C56F1B009D8BF4 /* WelcomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4487AAD27BD647A00B4B0AB /* WelcomeViewModel.swift */; };
+		F0261AA127C56F34009D8BF4 /* RecoverAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4487AA227BD357200B4B0AB /* RecoverAccountViewModel.swift */; };
+		F0261AA227C56F34009D8BF4 /* RecoverAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4487AA227BD357200B4B0AB /* RecoverAccountViewModel.swift */; };
 		F03422C72754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
 		F03422C82754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
 		F03422C92754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
@@ -13399,6 +13403,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2BBC2D44278A25990091B6FC /* OrderAccountListViewController+Theme.swift in Sources */,
+				F0261AA027C56F1B009D8BF4 /* WelcomeViewModel.swift in Sources */,
 				046767A52756AB1E00C88F21 /* SingleSelectionListViewTheme.swift in Sources */,
 				2B0E00BC27881A3D00D6B2E2 /* SecuritySettingsViewController.swift in Sources */,
 				046767A42756AAEF00C88F21 /* SingleSelectionViewTheme.swift in Sources */,
@@ -14421,6 +14426,7 @@
 				D411B36F26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift in Sources */,
 				D4F068BB26EF524B00C26F43 /* LedgerTutorialInstructionListViewController+Theme.swift in Sources */,
 				2B3E226B26BC234F00ED0AAF /* OneTimeDisplayStorage.swift in Sources */,
+				F0261AA227C56F34009D8BF4 /* RecoverAccountViewModel.swift in Sources */,
 				2B12633625F254450043CC03 /* LedgerAccountSelectionViewModel.swift in Sources */,
 				2BA015812636B8A7009EC914 /* LedgerAccountVerificationView.swift in Sources */,
 				9565CF6B27ABE07600A8095C /* AssetListViewDataController.swift in Sources */,
@@ -14635,6 +14641,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B5BE14F251B732800324BEE /* Currency.swift in Sources */,
+				F0261A9F27C56F1A009D8BF4 /* WelcomeViewModel.swift in Sources */,
 				2B288ADD269112EB00BC6FB6 /* JSONDisplayViewModel.swift in Sources */,
 				2B56B82A2505013600AC7B8D /* LedgerAccountSelectionDataSource.swift in Sources */,
 				D47C4AA72791B36A0012D7A6 /* ContactsSearchNoContentViewModel.swift in Sources */,
@@ -15657,6 +15664,7 @@
 				2B3E226A26BC234F00ED0AAF /* OneTimeDisplayStorage.swift in Sources */,
 				F03422C82754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */,
 				2BAB8AAC275F736F006CBB15 /* OrderAccountListViewController.swift in Sources */,
+				F0261AA127C56F34009D8BF4 /* RecoverAccountViewModel.swift in Sources */,
 				2B12633525F254450043CC03 /* LedgerAccountSelectionViewModel.swift in Sources */,
 				2BA015802636B8A7009EC914 /* LedgerAccountVerificationView.swift in Sources */,
 				9577909B278B07760061FB9C /* WCSingleTransactionRequestMiddleViewTheme.swift in Sources */,
