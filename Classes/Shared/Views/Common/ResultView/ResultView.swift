@@ -75,6 +75,7 @@ final class ResultView:
             )
         let preferredHeight =
             iconSize.height +
+            theme.titleTopMargin +
             titleSize.height +
             theme.bodyTopMargin +
             bodySize.height
@@ -90,8 +91,7 @@ extension ResultView {
         iconView.customizeAppearance(theme.icon)
 
         addSubview(iconView)
-        iconView.fitToHorizontalIntrinsicSize()
-        iconView.fitToVerticalIntrinsicSize()
+        iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {
             $0.centerHorizontally(
                 offset: 0,
@@ -119,11 +119,11 @@ extension ResultView {
         _ theme: ResultViewTheme
     ) {
         bodyView.customizeAppearance(theme.body)
+        bodyView.contentEdgeInsets.top = theme.bodyTopMargin
 
         addSubview(bodyView)
-        bodyView.fitToVerticalIntrinsicSize()
         bodyView.snp.makeConstraints {
-            $0.top == titleView.snp.bottom + theme.bodyTopMargin
+            $0.top == titleView.snp.bottom
 
             $0.setPaddings((.noMetric, 0, 0, 0))
         }

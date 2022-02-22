@@ -27,7 +27,7 @@ struct ScreenLoadingIndicatorTheme: StyleSheet, LayoutSheet {
     let titleTopMargin: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        self.contentEdgeInsets = (30, 40, 20, 40)
+        self.contentEdgeInsets = (20, 40, 20, 40)
         self.background =
             MacaroonUIKit.Shadow(
                 color: Colors.Background.primary,
@@ -44,10 +44,10 @@ struct ScreenLoadingIndicatorTheme: StyleSheet, LayoutSheet {
         ]
         self.title = [
             .textAlignment(.center),
-            .textOverflow(FittingText()),
+            .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
-            .font(UIFont.font(withWeight: .regular(size: 14)))
+            .font(Fonts.DMSans.regular.make(15))
         ]
-        self.titleTopMargin = 24
+        self.titleTopMargin = 20
     }
 }

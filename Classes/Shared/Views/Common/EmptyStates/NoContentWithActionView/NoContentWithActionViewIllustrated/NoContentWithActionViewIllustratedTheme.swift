@@ -12,14 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentWithActionViewCommonTheme.swift
+//   NoContentWithActionViewIllustratedTheme.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
+struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
     let icon: ImageStyle
     let title: TextStyle
     let titleTopMargin: LayoutMetric
@@ -30,31 +27,39 @@ struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
     let actionContentEdgeInsets: LayoutPaddings
     let actionCornerRadius: LayoutMetric
     let actionTopMargin: LayoutMetric
-    let action: ButtonStyle
+    var action: ButtonStyle
     let actionAlignment: NoContentWithActionView.ActionViewAlignment
 
     init(
         _ family: LayoutFamily
     ) {
-        let resultTheme = ResultViewCommonTheme()
+        let resultTheme = ResultViewIllustratedTheme()
 
-        self.icon = resultTheme.icon
-        self.title = resultTheme.title
-        self.titleTopMargin = resultTheme.titleTopMargin
-        self.body = resultTheme.body
-        self.bodyTopMargin = resultTheme.bodyTopMargin
-        self.contentHorizontalPaddings = (24, 24)
-        self.contentVerticalPaddings = (16, 16)
-        self.actionContentEdgeInsets = (14, 24, 14, 24)
-        self.actionCornerRadius = 4
-        self.actionTopMargin = 32
-        self.action = [
+        icon = resultTheme.icon
+        title = resultTheme.title
+        titleTopMargin = resultTheme.titleTopMargin
+        body = resultTheme.body
+        bodyTopMargin = resultTheme.bodyTopMargin
+        contentHorizontalPaddings = (24, 24)
+        contentVerticalPaddings = (16, 16)
+        actionContentEdgeInsets = (14, 24, 14, 24)
+        actionCornerRadius = 4
+        actionTopMargin = 52
+        action = [
             .titleColor(
                 [.normal(AppColors.Components.Button.Primary.text)]
             ),
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(AppColors.Components.Button.Primary.background)
         ]
-        self.actionAlignment = .centered
+        actionAlignment = .aligned(left: 0, right: 0)
+    }
+}
+
+extension NoContentWithActionViewIllustratedTheme {
+    mutating func configureForNFTsNoContentWithAction() {
+        action = action.modify(
+            [ .icon( [.normal("icon-plus"), .highlighted("icon-plus")] ) ]
+        )
     }
 }

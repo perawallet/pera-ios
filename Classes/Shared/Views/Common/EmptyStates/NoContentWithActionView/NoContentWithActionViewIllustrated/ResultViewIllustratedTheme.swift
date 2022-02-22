@@ -12,35 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentViewCommonTheme.swift
+//   ResultViewIllustratedTheme.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct NoContentViewCommonTheme: NoContentViewTheme {
+struct ResultViewIllustratedTheme: ResultViewTheme {
     let icon: ImageStyle
     let title: TextStyle
     let titleTopMargin: LayoutMetric
     let body: TextStyle
     let bodyTopMargin: LayoutMetric
-    let contentHorizontalPaddings: LayoutHorizontalPaddings
-    let contentVerticalPaddings: LayoutVerticalPaddings
-    let resultAlignment: NoContentView.ResultViewAlignment
 
     init(
         _ family: LayoutFamily
     ) {
-        let resultTheme = ResultViewCommonTheme()
-
-        self.icon = resultTheme.icon
-        self.title = resultTheme.title
-        self.body = resultTheme.body
-        self.titleTopMargin = resultTheme.titleTopMargin
-        self.bodyTopMargin = resultTheme.bodyTopMargin
-        self.contentHorizontalPaddings = (24, 24)
-        self.contentVerticalPaddings = (16, 16)
-        self.resultAlignment = .centered
+        self.icon = [
+            .adjustsImageForContentSizeCategory(true)
+        ]
+        self.title = [
+            .font(Fonts.DMSans.medium.make(32)),
+            .textAlignment(.center),
+            .adjustsFontForContentSizeCategory(true),
+            .textOverflow(FittingText()),
+            .textColor(AppColors.Components.Text.main)
+        ]
+        self.titleTopMargin = 40
+        self.body = [
+            .font(Fonts.DMSans.regular.make(15)),
+            .textAlignment(.center),
+            .adjustsFontForContentSizeCategory(true),
+            .textOverflow(FittingText()),
+            .textColor(AppColors.Components.Text.gray)
+        ]
+        self.bodyTopMargin = 16
     }
 }

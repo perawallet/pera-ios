@@ -56,7 +56,7 @@ extension NoContentView {
             $0.height <= snp.height
 
             $0.setHorizontalPaddings(theme.contentHorizontalPaddings)
-            $0.setVerticalPaddings((theme.contentVerticalPadding, theme.contentVerticalPadding))
+            $0.setVerticalPaddings(theme.contentVerticalPaddings)
         }
 
         addResult(theme)
@@ -69,14 +69,33 @@ extension NoContentView {
 
         contentView.addSubview(resultView)
         resultView.snp.makeConstraints {
-            if let topInset = theme.resultTopInset {
-                $0.setPaddings((topInset, 0, .noMetric, 0))
-                return
-            }
-
-            $0.center == 0
-
-            $0.setPaddings((.noMetric, 0, .noMetric, 0))
+            $0.bottom <= 0
         }
+
+        alignResult(resultView, for: theme.resultAlignment)
+    }
+
+    private func alignResult(
+        _ view: UIView,
+        for alignment: ResultViewAlignment
+    ) {
+        switch alignment {
+        case .centered:
+            view.snp.makeConstraints {
+                $0.center == 0
+                $0.setPaddings((.noMetric, 0, .noMetric, 0))
+            }
+        case let .aligned(top):
+            view.snp.makeConstraints {
+                $0.setPaddings((top, 0, .noMetric, 0))
+            }
+        }
+    }
+}
+
+extension NoContentView {
+    enum ResultViewAlignment {
+        case centered
+        case aligned(top: LayoutMetric)
     }
 }

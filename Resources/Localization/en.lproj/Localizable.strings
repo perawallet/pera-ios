@@ -914,3 +914,6 @@
 
 // MARK: NFTs
 "title-nfts" = "Collectibles";
+"nfts-empty-title" = "Collectibles";
+"nfts-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
+"nfts-receive-action" = "Receive an NFT";
