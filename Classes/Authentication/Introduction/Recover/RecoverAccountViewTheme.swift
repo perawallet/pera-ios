@@ -12,49 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WelcomeViewTheme.swift
+//   RecoverAccountViewTheme.swift
 
 import MacaroonUIKit
 import Foundation
 import UIKit
 
-struct WelcomeViewTheme: StyleSheet, LayoutSheet {
+struct RecoverAccountViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     let title: TextStyle
-    let termsOfConditionsAttributes: [AttributedTextBuilder.Attribute]
-    let termsOfConditionsLinkAttributes: [AttributedTextBuilder.Attribute]
     let accountTypeViewTheme: AccountTypeViewTheme
 
     let horizontalInset: LayoutMetric
     let topInset: LayoutMetric
     let verticalInset: LayoutMetric
-    
+
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
         self.title = [
+            .text("introduction-recover-account-text".localized),
             .textAlignment(.left),
             .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main),
             .font(Fonts.DMSans.medium.make(32))
         ]
-
-        self.termsOfConditionsLinkAttributes = [
-            .textColor(AppColors.Components.Link.primary.uiColor),
-            .underline(UIColor.clear),
-            .font(Fonts.DMSans.medium.make(13).uiFont),
-        ]
-        self.termsOfConditionsAttributes = [
-            .textColor(AppColors.Components.Text.gray.uiColor),
-            .font(Fonts.DMSans.medium.make(13).uiFont),
-            .paragraph([
-                .alignment(.center)
-            ])
-        ]
         self.accountTypeViewTheme = AccountTypeViewTheme()
-        
+
         self.horizontalInset = 24
+        self.verticalInset = 20
         self.topInset = 2
-        self.verticalInset = 16
     }
 }

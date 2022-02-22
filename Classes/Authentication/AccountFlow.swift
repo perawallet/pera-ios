@@ -25,7 +25,7 @@ enum AccountSetupFlow {
 
 enum AccountSetupMode {
     case add(type: AccountAdditionType)
-    case recover
+    case recover(type: RecoverType)
     case rekey(account: Account)
     case none
 }
@@ -33,6 +33,11 @@ enum AccountSetupMode {
 enum AccountAdditionType {
     case create
     case watch
-    case pair
+    case none
+}
+
+enum RecoverType {
+    case passphrase
+    case ledger
     case none
 }

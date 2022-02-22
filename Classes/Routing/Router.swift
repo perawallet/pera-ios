@@ -325,6 +325,8 @@ class Router:
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
         case let .addAccount(flow):
             viewController = AddAccountViewController(flow: flow, configuration: configuration)
+        case let .recoverAccount(flow):
+            viewController = RecoverAccountViewController(flow: flow, configuration: configuration)
         case let .choosePassword(mode, flow):
             viewController = ChoosePasswordViewController(
                 mode: mode,

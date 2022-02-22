@@ -12,24 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  AddAccountView.swift
+//   RecoverAccountView.swift
 
 import UIKit
 import MacaroonUIKit
 import Foundation
 
-final class AddAccountView:
+final class RecoverAccountView:
     View,
     ViewModelBindable {
-    weak var delegate: AddAccountViewDelegate?
+    weak var delegate: RecoverAccountViewDelegate?
 
     private lazy var titleLabel = UILabel()
     private lazy var stackView = UIStackView()
-    private lazy var createNewAccountView = AccountTypeView()
-    private lazy var addWatchAccountView = AccountTypeView()
+    private lazy var recoverWithPassphraseView = AccountTypeView()
+    private lazy var recoverWithLedgerView = AccountTypeView()
 
-    func customize(_ theme: AddAccountViewTheme) {
+    func customize(_ theme: RecoverAccountViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
         addTitleLabel(theme)
@@ -41,39 +40,39 @@ final class AddAccountView:
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 
     func setListeners() {
-        createNewAccountView.addTarget(
+        recoverWithPassphraseView.addTarget(
             self,
-            action: #selector(notifyDelegateToSelectCreateNewAccount),
+            action: #selector(notifyDelegateToRecoverWithPassphrase),
             for: .touchUpInside
         )
 
-        addWatchAccountView.addTarget(
+        recoverWithLedgerView.addTarget(
             self,
-            action: #selector(notifyDelegateToSelectAddWatchAccount),
+            action: #selector(notifyDelegateToRecoverWithLedger),
             for: .touchUpInside
         )
     }
 
-    func bindData(_ viewModel: AddAccountViewModel?) {
-        createNewAccountView.bindData(viewModel?.createNewAccountViewModel)
-        addWatchAccountView.bindData(viewModel?.addWatchAccountViewModel)
+    func bindData(_ viewModel: RecoverAccountViewModel?) {
+        recoverWithPassphraseView.bindData(viewModel?.recoverWithPassphraseViewModel)
+        recoverWithLedgerView.bindData(viewModel?.recoverWithLedgerViewModel)
     }
 }
 
-extension AddAccountView {
+extension RecoverAccountView {
     @objc
-    private func notifyDelegateToSelectCreateNewAccount() {
-        delegate?.addAccountView(self, didSelect: .create)
+    private func notifyDelegateToRecoverWithPassphrase() {
+        delegate?.recoverAccountView(self, didSelect: .passphrase)
     }
 
     @objc
-    private func notifyDelegateToSelectAddWatchAccount() {
-        delegate?.addAccountView(self, didSelect: .watch)
+    private func notifyDelegateToRecoverWithLedger() {
+        delegate?.recoverAccountView(self, didSelect: .ledger)
     }
 }
 
-extension AddAccountView {
-    private func addTitleLabel(_ theme: AddAccountViewTheme) {
+extension RecoverAccountView {
+    private func addTitleLabel(_ theme: RecoverAccountViewTheme) {
         titleLabel.customizeAppearance(theme.title)
 
         addSubview(titleLabel)
@@ -84,7 +83,7 @@ extension AddAccountView {
         }
     }
 
-    private func addStackView(_ theme: AddAccountViewTheme) {
+    private func addStackView(_ theme: RecoverAccountViewTheme) {
         stackView.axis = .vertical
 
         addSubview(stackView)
@@ -95,13 +94,13 @@ extension AddAccountView {
             $0.centerY.equalToSuperview()
         }
 
-        createNewAccountView.customize(theme.accountTypeViewTheme)
-        stackView.addArrangedSubview(createNewAccountView)
-        addWatchAccountView.customize(theme.accountTypeViewTheme)
-        stackView.addArrangedSubview(addWatchAccountView)
+        recoverWithPassphraseView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(recoverWithPassphraseView)
+        recoverWithLedgerView.customize(theme.accountTypeViewTheme)
+        stackView.addArrangedSubview(recoverWithLedgerView)
     }
 }
 
-protocol AddAccountViewDelegate: AnyObject {
-    func addAccountView(_ addAccountView: AddAccountView, didSelect type: AccountAdditionType)
+protocol RecoverAccountViewDelegate: AnyObject {
+    func recoverAccountView(_ recoverAccountView: RecoverAccountView, didSelect type: RecoverType)
 }
