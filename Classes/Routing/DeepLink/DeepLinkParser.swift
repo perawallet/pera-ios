@@ -129,6 +129,10 @@ extension DeepLinkParser {
     func discover(
         url: URL
     ) -> Result? {
+        if let moonpayParams = url.buildMoonPayParameters() {
+            return .success(.moonpay(params: moonpayParams))
+        }
+
         guard let qr = url.buildQRText() else {
             return nil
         }
@@ -264,6 +268,7 @@ extension DeepLinkParser {
         case assetActionConfirmation(draft: AssetAlertDraft)
         case assetDetail(draft: TransactionListing)
         case sendTransaction(draft: QRSendTransactionDraft)
+        case moonpay(params: MoonpayParams)
     }
     
     enum Error: Swift.Error {
