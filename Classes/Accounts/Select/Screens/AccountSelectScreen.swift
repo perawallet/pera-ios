@@ -472,9 +472,16 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
                         message: "send-algos-receiver-address-validation".localized
                     )
                 case .minimumAmount:
-                    self.bannerController?.presentErrorBanner(
-                        title: "title-error".localized,
-                        message: "send-algos-minimum-amount-error-new-account".localized
+                    let configurator = BottomWarningViewConfigurator(
+                        image: "icon-info-red".uiImage,
+                        title: "send-algos-minimum-amount-error-new-account-title".localized,
+                        description: "send-algos-minimum-amount-error-new-account-description".localized,
+                        secondaryActionButtonTitle: "title-i-understand".localized
+                    )
+
+                    self.modalTransition.perform(
+                        .bottomWarning(configurator: configurator),
+                        by: .presentWithoutNavigationController
                     )
                 }
             case .asset(let assetError):
