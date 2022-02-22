@@ -35,4 +35,5 @@ enum AnalyticsScreenName: String {
     case contactDetail = "screen_contact_detail"
     case contacts = "screen_contacts"
     case transactionDetail = "screen_transaction_detail"
+    case nfts = "screen_nfts"
 }

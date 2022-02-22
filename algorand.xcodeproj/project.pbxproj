@@ -2825,6 +2825,11 @@
 		D411B38926EA2341004FF980 /* AssetPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38826EA2341004FF980 /* AssetPreviewViewModel.swift */; };
 		D411B38A26EA2341004FF980 /* AssetPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38826EA2341004FF980 /* AssetPreviewViewModel.swift */; };
 		D411B38B26EA2341004FF980 /* AssetPreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D411B38826EA2341004FF980 /* AssetPreviewViewModel.swift */; };
+		D4150DCC27C4D0A00064F736 /* NFTListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4150DCB27C4D0A00064F736 /* NFTListViewController.swift */; };
+		D4150DCE27C4D3750064F736 /* NFTListLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4150DCD27C4D3750064F736 /* NFTListLoadingView.swift */; };
+		D4150DD027C4D7630064F736 /* NFTListLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4150DCF27C4D7630064F736 /* NFTListLoadingViewTheme.swift */; };
+		D4150DD227C4D87A0064F736 /* NFTListItemLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4150DD127C4D87A0064F736 /* NFTListItemLoadingView.swift */; };
+		D4150DD427C4E2EF0064F736 /* NFTListItemLoadingViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4150DD327C4E2EF0064F736 /* NFTListItemLoadingViewTheme.swift */; };
 		D4155E89276C956300BCBFA4 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4155E88276C956300BCBFA4 /* ViewFactory.swift */; };
 		D4155E8A276C956300BCBFA4 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4155E88276C956300BCBFA4 /* ViewFactory.swift */; };
 		D4155E8B276C956300BCBFA4 /* ViewFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4155E88276C956300BCBFA4 /* ViewFactory.swift */; };
@@ -4908,6 +4913,11 @@
 		D411B38026EA22F2004FF980 /* AssetPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewView.swift; sourceTree = "<group>"; };
 		D411B38426EA232F004FF980 /* AssetPreviewViewCommonTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewViewCommonTheme.swift; sourceTree = "<group>"; };
 		D411B38826EA2341004FF980 /* AssetPreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPreviewViewModel.swift; sourceTree = "<group>"; };
+		D4150DCB27C4D0A00064F736 /* NFTListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTListViewController.swift; sourceTree = "<group>"; };
+		D4150DCD27C4D3750064F736 /* NFTListLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTListLoadingView.swift; sourceTree = "<group>"; };
+		D4150DCF27C4D7630064F736 /* NFTListLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTListLoadingViewTheme.swift; sourceTree = "<group>"; };
+		D4150DD127C4D87A0064F736 /* NFTListItemLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTListItemLoadingView.swift; sourceTree = "<group>"; };
+		D4150DD327C4E2EF0064F736 /* NFTListItemLoadingViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTListItemLoadingViewTheme.swift; sourceTree = "<group>"; };
 		D4155E88276C956300BCBFA4 /* ViewFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewFactory.swift; sourceTree = "<group>"; };
 		D4155E8C276CD71600BCBFA4 /* AccountSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionView.swift; sourceTree = "<group>"; };
 		D4155E90276CDB1500BCBFA4 /* AccountSelectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSelectionViewCell.swift; sourceTree = "<group>"; };
@@ -5523,6 +5533,7 @@
 				2B9EEAC0264D3370007A112D /* Block */,
 				2B0F3D8723C8D1BE006BB01B /* Common */,
 				2B4DF446236C7D6200FF9551 /* Contacts */,
+				D4150DCA27C4D0790064F736 /* NFTs */,
 				2B4DF447236C7D7900FF9551 /* Error */,
 				2BB64BDA2402779C00519981 /* Ledger */,
 				2B4DF442236C7B7100FF9551 /* Node */,
@@ -11997,6 +12008,34 @@
 			path = AssetPreview;
 			sourceTree = "<group>";
 		};
+		D4150DCA27C4D0790064F736 /* NFTs */ = {
+			isa = PBXGroup;
+			children = (
+				D4150DD527C4F78D0064F736 /* NFTList */,
+			);
+			path = NFTs;
+			sourceTree = "<group>";
+		};
+		D4150DD527C4F78D0064F736 /* NFTList */ = {
+			isa = PBXGroup;
+			children = (
+				D4150DCB27C4D0A00064F736 /* NFTListViewController.swift */,
+				D4150DD627C4F7AC0064F736 /* Loading */,
+			);
+			path = NFTList;
+			sourceTree = "<group>";
+		};
+		D4150DD627C4F7AC0064F736 /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				D4150DCD27C4D3750064F736 /* NFTListLoadingView.swift */,
+				D4150DCF27C4D7630064F736 /* NFTListLoadingViewTheme.swift */,
+				D4150DD127C4D87A0064F736 /* NFTListItemLoadingView.swift */,
+				D4150DD327C4E2EF0064F736 /* NFTListItemLoadingViewTheme.swift */,
+			);
+			path = Loading;
+			sourceTree = "<group>";
+		};
 		D4155E80276C907F00BCBFA4 /* List */ = {
 			isa = PBXGroup;
 			children = (
@@ -15954,6 +15993,7 @@
 				95BB6C2427A4165700F2A2F1 /* TransactionCurrencyAmountViewModel.swift in Sources */,
 				D479D0F426D4F64500110E04 /* BannerController.swift in Sources */,
 				2B0F5EF724DD507000DA22A6 /* RekeyConfirmationViewController.swift in Sources */,
+				D4150DCC27C4D0A00064F736 /* NFTListViewController.swift in Sources */,
 				2B1ADD772511823D008B205E /* DeviceDeletionDraft.swift in Sources */,
 				F0DB41552793826D00EA437D /* TitleWithAccessoryViewTheme.swift in Sources */,
 				2B0F7DFF25D6DBE800B16B85 /* WelcomeView.swift in Sources */,
@@ -16159,6 +16199,7 @@
 				2B8BE4D222391C38005D8565 /* AppDelegate.swift in Sources */,
 				95BB6BEE27A0096200F2A2F1 /* TitledTransactionAccountNameViewTheme.swift in Sources */,
 				2BCBF45F27B557A0008814C7 /* MultilineTextInputFieldView.swift in Sources */,
+				D4150DD427C4E2EF0064F736 /* NFTListItemLoadingViewTheme.swift in Sources */,
 				F08708D8278C6BFA00BEE5C2 /* BlockEvent.swift in Sources */,
 				D43B23E827180B2F00444F35 /* LedgerAccountDetailSectionHeaderViewTheme.swift in Sources */,
 				2BE4D0A625939468005F5764 /* UIViewController+Analytics.swift in Sources */,
@@ -16198,6 +16239,7 @@
 				2B7E3039267A518800E89EE3 /* WCGroupTransactionView.swift in Sources */,
 				2B6687102248DBE2009F21E7 /* ALGBarButtonItem.swift in Sources */,
 				2B1336D92576987D00371CFB /* AppearanceSelectionViewController.swift in Sources */,
+				D4150DD227C4D87A0064F736 /* NFTListItemLoadingView.swift in Sources */,
 				2BC1826B23D8DED600888476 /* TransactionDraft.swift in Sources */,
 				2B6ED9662261063700787984 /* TransactionList.swift in Sources */,
 				2B01FE6626148482006C3C56 /* AccountRecoverOptionsViewModel.swift in Sources */,
@@ -16413,6 +16455,7 @@
 				95AF1C6827AD5A02001AB131 /* AssetPreviewLoadingViewCommonTheme.swift in Sources */,
 				17512620223BEAE90095AF4F /* Storable.swift in Sources */,
 				D46AC87D26E913D7008CDE68 /* AccountRecoverViewController+Theme.swift in Sources */,
+				D4150DCE27C4D3750064F736 /* NFTListLoadingView.swift in Sources */,
 				2BC1827723D8DF2400888476 /* AssetRemovalDraft.swift in Sources */,
 				2B3A34EC246EDA9C001C8F22 /* ImageWithTitleView.swift in Sources */,
 				D4710B1C276A6BED00F35F74 /* QRScannerOverlayViewModel.swift in Sources */,
@@ -16791,6 +16834,7 @@
 				2BFFEA0425DD33E00009F30C /* PassphraseVerifyDataSource.swift in Sources */,
 				D411B36D26EA01B7004FF980 /* AccountRecoverOptionsViewController+Theme.swift in Sources */,
 				D4F068B926EF524B00C26F43 /* LedgerTutorialInstructionListViewController+Theme.swift in Sources */,
+				D4150DD027C4D7630064F736 /* NFTListLoadingViewTheme.swift in Sources */,
 				2B3E226926BC234F00ED0AAF /* OneTimeDisplayStorage.swift in Sources */,
 				2B12633425F254450043CC03 /* LedgerAccountSelectionViewModel.swift in Sources */,
 				2BA0157F2636B8A7009EC914 /* LedgerAccountVerificationView.swift in Sources */,
