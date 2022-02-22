@@ -609,6 +609,8 @@ class Router:
             )
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
+        case .moonpayIntroduction:
+            viewController = MoonpayIntroductionViewController(configuration: configuration)
         }
 
         return viewController as? T

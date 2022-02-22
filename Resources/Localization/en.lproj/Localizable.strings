@@ -909,3 +909,9 @@
 "pera-announcement-description" = "We are very excited to announce that Algorand Wallet is now called Pera Wallet. This is much more than a new name and logo. We are relaunching the most popular wallet in the Algorand ecosystem with a renewed focus on our roadmap, partner integrations, and community.\n\nDon't worry, Pera Wallet is built and maintained by the same team and all the features you know and love are still here as usual – With many more to come in the upcoming months.\n\nTo read more about the relaunch and our roadmap, head over to the Pera Wallet blog";
 "pera-announcement-description-blog" = "Pera Wallet blog";
 "pera-announcement-action-title" = "Start Using Pera Wallet";
+
+//MARK: MoonPay
+"moonpay-buy-button-title" = "Buy ALGO";
+"moonpay-introduction-title"="Buy ALGO with Moonpay";
+"moonpay-introduction-description"="MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
+"moonpay-introduction-payment"="Payment methods on Moonpay:";
