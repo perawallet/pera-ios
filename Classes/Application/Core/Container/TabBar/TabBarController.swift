@@ -132,6 +132,11 @@ extension TabBarController {
             guard let self = self else { return }
             self.navigateToAccountSelection(.receive)
         }
+        aView.observe(event: .buy) {
+            [weak self] in
+            guard let self = self else { return }
+            self.navigateToMoonpay()
+        }
         aView.observe(event: .close) {
             [weak self] in
             guard let self = self else { return }
@@ -248,6 +253,12 @@ extension TabBarController {
         case .send: log(SendTabEvent())
         case .receive: log(ReceiveTabEvent())
         }
+    }
+
+    private func navigateToMoonpay() {
+        toggleTransactionOptions()
+
+//        log(BuyTabEvent())
     }
 }
 

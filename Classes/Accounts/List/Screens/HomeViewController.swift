@@ -214,6 +214,11 @@ extension HomeViewController {
                 by: .presentWithoutNavigationController
             )
         }
+
+        cell.observe(event: .buyAlgo) {
+            [weak self] in
+            guard let self = self else { return }
+        }
     }
     
     private func linkInteractors(
