@@ -509,7 +509,7 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
     }
 
     private func stopLoadingIfNeeded(execute: @escaping () -> Void) {
-        guard draft.from.requiresLedgerConnection() else {
+        guard !draft.from.requiresLedgerConnection() else {
             execute()
             return
         }
