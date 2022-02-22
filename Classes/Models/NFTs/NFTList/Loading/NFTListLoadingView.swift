@@ -98,7 +98,7 @@ extension NFTListLoadingView {
 
             (0..<columnCount).forEach { _ in
                 let nftListItem = NFTListItemLoadingView()
-                nftListItem.customize(NFTListItemLoadingViewTheme())
+                nftListItem.customize(theme.nftListItemLoadingViewTheme)
                 nftListItemsHorizontalStack.addArrangedSubview(nftListItem)
             }
 

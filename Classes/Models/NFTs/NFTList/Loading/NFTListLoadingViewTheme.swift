@@ -27,6 +27,8 @@ struct NFTListLoadingViewTheme:
 
     let nftListItemsHorizontalStackSpacing: LayoutMetric
 
+    let nftListItemLoadingViewTheme: NFTListItemLoadingViewTheme
+
     let corner: Corner
 
     init(
@@ -38,7 +40,9 @@ struct NFTListLoadingViewTheme:
         nftListItemsVerticalStackSpacing = 28
         nftListItemsVerticalStackPaddings = (24, 24, .noMetric, 24)
 
-        nftListItemsHorizontalStackSpacing = 24.5
+        nftListItemsHorizontalStackSpacing = 24
+
+        nftListItemLoadingViewTheme = NFTListItemLoadingViewTheme()
 
         corner = Corner(radius: 4)
     }

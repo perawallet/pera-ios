@@ -72,7 +72,8 @@ extension NFTListItemLoadingView {
             $0.top == 0
             $0.leading == 0
             $0.trailing == 0
-            $0.fitToHeight(theme.imageViewHeight)
+            $0.width == snp.width
+            $0.height == image.snp.width
         }
     }
 
@@ -81,7 +82,7 @@ extension NFTListItemLoadingView {
 
         addSubview(title)
         title.snp.makeConstraints {
-            $0.top == image.snp.bottom + theme.titleMargin.top
+            $0.top == image.snp.bottom + theme.titleTopPadding
             $0.leading == 0
             $0.width.equalToSuperview().multipliedBy(theme.titleWidthMultiplier)
             $0.fitToHeight(theme.titleViewHeight)
@@ -93,7 +94,7 @@ extension NFTListItemLoadingView {
 
         addSubview(subtitle)
         subtitle.snp.makeConstraints {
-            $0.top == title.snp.bottom + theme.subtitleMargin.top
+            $0.top == title.snp.bottom + theme.subtitleTopPadding
             $0.leading == 0
             $0.bottom == 0
             $0.width.equalToSuperview().multipliedBy(theme.subtitleWidthMultiplier)

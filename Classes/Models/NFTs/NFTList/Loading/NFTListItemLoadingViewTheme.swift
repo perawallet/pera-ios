@@ -19,28 +19,24 @@ import MacaroonUIKit
 struct NFTListItemLoadingViewTheme:
     LayoutSheet,
     StyleSheet {
-    let imageViewHeight: LayoutMetric
-
     let titleViewHeight: LayoutMetric
-    let titleMargin: LayoutMargins
+    let titleTopPadding: LayoutMetric
     let titleWidthMultiplier: LayoutMetric
 
     let subtitleViewHeight: LayoutMetric
-    let subtitleMargin: LayoutMargins
+    let subtitleTopPadding: LayoutMetric
     let subtitleWidthMultiplier: LayoutMetric
-
+    
     let corner: Corner
 
     init(
         _ family: LayoutFamily
     ) {
-        imageViewHeight = 151
-
-        titleMargin = (12, .noMetric, .noMetric, 107)
+        titleTopPadding = 12
         titleViewHeight = 16
         titleWidthMultiplier = 0.29
-        
-        subtitleMargin = (8, 16, .noMetric, 37.5)
+
+        subtitleTopPadding = 8
         subtitleViewHeight = 20
         subtitleWidthMultiplier = 0.75
 
