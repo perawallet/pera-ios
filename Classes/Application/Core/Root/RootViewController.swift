@@ -159,19 +159,21 @@ extension RootViewController: WalletConnectRequestHandlerDelegate {
         for request: WalletConnectRequest,
         with transactionOption: WCTransactionOption?
     ) {
-        if let currentWCTransactionRequest = currentWCTransactionRequest {
-            if currentWCTransactionRequest.isSameTransactionRequest(with: request) {
-                return
-            }
+        openMainViewController(animated: true, for: transactions, with: request, and: transactionOption)
 
-            appConfiguration.walletConnector.rejectTransactionRequest(currentWCTransactionRequest, with: .rejected(.alreadyDisplayed))
-
-            wcRequestScreen?.closeScreen(by: .dismiss, animated: false) {
-                self.openMainViewController(animated: false, for: transactions, with: request, and: transactionOption)
-            }
-        } else {
-            openMainViewController(animated: true, for: transactions, with: request, and: transactionOption)
-        }
+//        if let currentWCTransactionRequest = currentWCTransactionRequest {
+//            if currentWCTransactionRequest.isSameTransactionRequest(with: request) {
+//                return
+//            }
+//
+//            appConfiguration.walletConnector.rejectTransactionRequest(currentWCTransactionRequest, with: .rejected(.alreadyDisplayed))
+//
+//            wcRequestScreen?.closeScreen(by: .dismiss, animated: false) {
+//                self.openMainViewController(animated: false, for: transactions, with: request, and: transactionOption)
+//            }
+//        } else {
+//            openMainViewController(animated: true, for: transactions, with: request, and: transactionOption)
+//        }
     }
 
     private func openMainViewController(
