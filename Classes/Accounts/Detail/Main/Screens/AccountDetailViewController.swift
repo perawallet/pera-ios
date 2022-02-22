@@ -25,17 +25,27 @@ final class AccountDetailViewController: PageContainer {
     
     private lazy var theme = Theme()
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
-    private lazy var assetListScreen = AccountAssetListViewController(accountHandle: accountHandle, configuration: configuration)
-    private lazy var nftListScreen = AccountNFTListViewController(account: accountHandle.value, configuration: configuration)
+
+    private lazy var assetListScreen = AccountAssetListViewController(
+        accountHandle: accountHandle,
+        configuration: configuration
+    )
+
+    private lazy var nftListScreen = AccountNFTListViewController(
+        account: accountHandle.value,
+        configuration: configuration
+    )
+
     private lazy var transactionListScreen = AccountTransactionListViewController(
         draft: AccountTransactionListing(accountHandle: accountHandle),
         configuration: configuration
     )
+
     private lazy var localAuthenticator = LocalAuthenticator()
 
     private lazy var accountTitleView = ImageWithTitleView()
 
-    private let accountHandle: AccountHandle
+    private var accountHandle: AccountHandle
 
     init(accountHandle: AccountHandle, configuration: ViewControllerConfiguration) {
         self.accountHandle = accountHandle
@@ -55,6 +65,27 @@ final class AccountDetailViewController: PageContainer {
     override func configureAppearance() {
         super.configureAppearance()
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+        linkInteractors(assetListScreen)
+    }
+}
+
+extension AccountDetailViewController {
+    private func linkInteractors(
+        _ screen: AccountAssetListViewController
+    ) {
+        screen.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdate(let accountHandle):
+                self.accountHandle = accountHandle
+            }
+        }
     }
 }
 
