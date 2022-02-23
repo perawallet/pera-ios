@@ -13,20 +13,31 @@
 // limitations under the License.
 
 //
-//   WarningAlert.swift
+//  AccountFlow.swift
 
 import UIKit
 
-class WarningAlert {
-    let title: String
-    let image: UIImage?
-    let description: String
-    let actionTitle: String?
+enum AccountSetupFlow {
+    case initializeAccount(mode: AccountSetupMode)
+    case addNewAccount(mode: AccountSetupMode)
+    case none
+}
 
-    init(title: String, image: UIImage?, description: String, actionTitle: String? = nil) {
-        self.title = title
-        self.image = image
-        self.description = description
-        self.actionTitle = actionTitle
-    }
- }
+enum AccountSetupMode {
+    case add(type: AccountAdditionType)
+    case recover(type: RecoverType)
+    case rekey(account: Account)
+    case none
+}
+
+enum AccountAdditionType {
+    case create
+    case watch
+    case none
+}
+
+enum RecoverType {
+    case passphrase
+    case ledger
+    case none
+}

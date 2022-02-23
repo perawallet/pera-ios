@@ -12,27 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  AccountFlow.swift
+//   PasteFullPassphraseListActionItem.swift
 
-import UIKit
+import Foundation
+import MacaroonUIKit
 
-enum AccountSetupFlow {
-    case initializeAccount(mode: AccountSetupMode)
-    case addNewAccount(mode: AccountSetupMode)
-    case none
-}
-
-enum AccountSetupMode {
-    case add(type: AccountAdditionType)
-    case recover
-    case rekey(account: Account)
-    case none
-}
-
-enum AccountAdditionType {
-    case create
-    case watch
-    case pair
-    case none
+struct PasteFullPassphraseListActionViewModel: ListActionViewModel {
+    let icon: Image?
+    let title: EditText?
+    let subtitle: EditText?
+    
+    init() {
+        self.icon = "icon-paste"
+        self.title = Self.getTitle("title-paste-passphrase".localized)
+        self.subtitle = nil
+    }
 }
