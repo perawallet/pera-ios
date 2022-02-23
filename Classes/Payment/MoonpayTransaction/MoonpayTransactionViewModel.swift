@@ -38,17 +38,20 @@ struct MoonpayTransactionViewModel: ViewModel {
     }
 }
 
+/// <todo>
+/// Refactor image, title and description when the design gets an update.
 extension MoonpayTransactionViewModel {
     private mutating func bindImage(_ type: MoonpayParams.TransactionStatus) {
         switch type {
         case .completed:
-            image = "icon-moonpay-transaction"
+            image = "icon-moonpay-transaction-completed"
         case .pending:
-            image = "icon-moonpay-transaction"
+            image = "icon-moonpay-transaction-pending"
         case .rejected:
-            image = "icon-moonpay-transaction"
+            image = "icon-moonpay-transaction-pending"
         }
     }
+    
     private mutating func bindTitle(_ type: MoonpayParams.TransactionStatus) {
         let font = Fonts.DMSans.medium.make(32).uiFont
         let lineHeightMultiplier = 0.96
@@ -56,7 +59,7 @@ extension MoonpayTransactionViewModel {
         
         switch type {
         case .completed:
-            titleString = "moonpay-transaction-title-pending"
+            titleString = "moonpay-transaction-title-completed"
         case .pending:
             titleString = "moonpay-transaction-title-pending"
         case .rejected:
@@ -78,6 +81,7 @@ extension MoonpayTransactionViewModel {
                 )
         )
     }
+    
     private mutating func bindDescription(_ type: MoonpayParams.TransactionStatus) {
         let font = Fonts.DMSans.regular.make(15).uiFont
         let lineHeightMultiplier = 1.23

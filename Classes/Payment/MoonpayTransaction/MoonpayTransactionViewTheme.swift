@@ -25,7 +25,6 @@ struct MoonpayTransactionViewTheme:
     let accountLabel: TextStyle
     let addressLabel: TextStyle
     let doneButton: ButtonStyle
-    let learnButton: ButtonStyle
     let separator: Separator
     
     let topPadding: LayoutMetric
@@ -36,8 +35,7 @@ struct MoonpayTransactionViewTheme:
     let accountSeparatorTopPadding: LayoutMetric
     let amountTopPadding: LayoutMetric
     let doneButtonTopPadding: LayoutMetric
-    let learnButtonTopPadding: LayoutMetric
-    let learnButtonBottomPadding: LayoutMetric
+    let doneButtonBottomPadding: LayoutMetric
     let buttonContentEdgeInsets: LayoutPaddings
     let buttonCorner: Corner
     
@@ -72,14 +70,6 @@ struct MoonpayTransactionViewTheme:
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(AppColors.Components.Button.Primary.background)
         ]
-        learnButton = [
-            .title("title-learn-more".localized),
-            .titleColor([
-                .normal(AppColors.Components.Button.Secondary.text)
-            ]),
-            .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
-        ]
         buttonContentEdgeInsets = (14, 0, 14, 0)
         buttonCorner = Corner(radius: 4)
         separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
@@ -92,8 +82,7 @@ struct MoonpayTransactionViewTheme:
         accountSeparatorTopPadding = 20
         amountTopPadding = 41
         doneButtonTopPadding = 40
-        learnButtonTopPadding = 12
-        learnButtonBottomPadding = 16
+        doneButtonBottomPadding = 16
         
         horizontalPadding = 24
     }

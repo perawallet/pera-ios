@@ -33,7 +33,6 @@ final class MoonpayTransactionView:
     private lazy var accountIconView = ImageView()
     private lazy var accountAddressTitleView = Label()
     private lazy var doneButton = MacaroonUIKit.Button()
-    private lazy var learnButton = MacaroonUIKit.Button()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -47,7 +46,6 @@ final class MoonpayTransactionView:
         addDescriptionView(theme)
         addAccountView(theme)
         addDoneButton(theme)
-        addLearnButton(theme)
     }
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
@@ -134,19 +132,7 @@ extension MoonpayTransactionView {
         doneButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.top.equalTo(accountStackView.snp.bottom).offset(theme.doneButtonTopPadding)
-        }
-    }
-    
-    private func addLearnButton(_ theme: MoonpayTransactionViewTheme) {
-        learnButton.contentEdgeInsets = UIEdgeInsets(theme.buttonContentEdgeInsets)
-        learnButton.draw(corner: theme.buttonCorner)
-        learnButton.customizeAppearance(theme.learnButton)
-        
-        addSubview(learnButton)
-        learnButton.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.top.equalTo(doneButton.snp.bottom).offset(theme.learnButtonTopPadding)
-            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.learnButtonBottomPadding)
+            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.doneButtonBottomPadding)
         }
     }
 }
