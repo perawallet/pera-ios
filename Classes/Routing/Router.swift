@@ -626,8 +626,8 @@ class Router:
             viewController = PeraIntroductionViewController(configuration: configuration)
         case .moonpayIntroduction:
             viewController = MoonpayIntroductionViewController(configuration: configuration)
-        case .moonpayTransaction:
-            viewController = MoonpayTransactionViewController(configuration: configuration)
+        case let .moonpayTransaction(moonpayParams):
+            viewController = MoonpayTransactionViewController(moonpayParams: moonpayParams, configuration: configuration)
         }
 
         return viewController as? T

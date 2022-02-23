@@ -21,6 +21,7 @@ import UIKit
 final class MoonpayTransactionView:
     View,
     ViewModelBindable {
+    
     private lazy var theme = MoonpayTransactionViewTheme()
     
     private lazy var imageView = ImageView()
@@ -53,7 +54,13 @@ final class MoonpayTransactionView:
     
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
     
-    func bindData(_ viewModel: ViewModel?) {}
+    func bindData(_ viewModel: MoonpayTransactionViewModel?) {
+        imageView.image = viewModel?.image?.uiImage
+        titleView.editText = viewModel?.title
+        descriptionView.editText = viewModel?.description
+        accountIconView.image = viewModel?.accountIcon?.uiImage
+        accountAddressTitleView.editText = viewModel?.accountName
+    }
 }
 
 extension MoonpayTransactionView {

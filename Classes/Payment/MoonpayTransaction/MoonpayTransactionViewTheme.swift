@@ -24,8 +24,6 @@ struct MoonpayTransactionViewTheme:
     let descriptionLabel: TextStyle
     let accountLabel: TextStyle
     let addressLabel: TextStyle
-    let amountLabel: TextStyle
-    let amountInfoLabel: TextStyle
     let doneButton: ButtonStyle
     let learnButton: ButtonStyle
     let separator: Separator
@@ -48,6 +46,7 @@ struct MoonpayTransactionViewTheme:
     init(_ family: LayoutFamily) {
         titleLabel = [
             .textColor(AppColors.Components.Text.main),
+            .textOverflow(FittingText())
         ]
         descriptionLabel = [
             .font(Fonts.DMSans.regular.make(15)),
@@ -55,6 +54,7 @@ struct MoonpayTransactionViewTheme:
             .textOverflow(FittingText())
         ]
         accountLabel = [
+            .text("title-account".localized),
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.grayLighter),
             .textOverflow(FittingText())
@@ -63,15 +63,6 @@ struct MoonpayTransactionViewTheme:
             .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.main),
             .textOverflow(SingleLineText(lineBreakMode: .byTruncatingMiddle))
-        ]
-        amountLabel = [
-            .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.grayLighter),
-            .textOverflow(FittingText()),
-        ]
-        amountInfoLabel = [
-            .textColor(AppColors.Components.Text.main),
-            .textOverflow(FittingText())
         ]
         doneButton = [
             .title("title-done".localized),
