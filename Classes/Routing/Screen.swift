@@ -113,6 +113,7 @@ indirect enum Screen {
     )
     case peraIntroduction
     case moonpayIntroduction
+    case moonpayTransaction
 }
 
 extension Screen {

@@ -1016,6 +1016,15 @@
 		2B4EEEC924BF453500059A16 /* NotificationMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4EEEC724BF453500059A16 /* NotificationMessage.swift */; };
 		2B4EEECC24C105E100059A16 /* NotificationsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4EEECB24C105E100059A16 /* NotificationsDataSource.swift */; };
 		2B4EEECD24C105E100059A16 /* NotificationsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4EEECB24C105E100059A16 /* NotificationsDataSource.swift */; };
+		2B4FD1F627C63F580097AB65 /* MoonpayTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD1F527C63F580097AB65 /* MoonpayTransactionViewController.swift */; };
+		2B4FD1F727C63F580097AB65 /* MoonpayTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD1F527C63F580097AB65 /* MoonpayTransactionViewController.swift */; };
+		2B4FD1F827C63F580097AB65 /* MoonpayTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD1F527C63F580097AB65 /* MoonpayTransactionViewController.swift */; };
+		2B4FD1FA27C63F650097AB65 /* MoonpayTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD1F927C63F650097AB65 /* MoonpayTransactionView.swift */; };
+		2B4FD1FB27C63F650097AB65 /* MoonpayTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD1F927C63F650097AB65 /* MoonpayTransactionView.swift */; };
+		2B4FD1FC27C63F650097AB65 /* MoonpayTransactionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD1F927C63F650097AB65 /* MoonpayTransactionView.swift */; };
+		2B4FD1FE27C63F740097AB65 /* MoonpayTransactionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD1FD27C63F740097AB65 /* MoonpayTransactionViewTheme.swift */; };
+		2B4FD1FF27C63F740097AB65 /* MoonpayTransactionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD1FD27C63F740097AB65 /* MoonpayTransactionViewTheme.swift */; };
+		2B4FD20027C63F740097AB65 /* MoonpayTransactionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4FD1FD27C63F740097AB65 /* MoonpayTransactionViewTheme.swift */; };
 		2B51616D243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615B243F739B006DEA54 /* PublicSans-Medium.ttf */; };
 		2B51616E243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615B243F739B006DEA54 /* PublicSans-Medium.ttf */; };
 		2B516173243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615E243F739B006DEA54 /* PublicSans-Regular.ttf */; };
@@ -2683,12 +2692,12 @@
 		95FD4C0527941B5800BF29BE /* WCUnsignedRequestScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD4C0427941B5800BF29BE /* WCUnsignedRequestScreen.swift */; };
 		95FD4C0627941B5800BF29BE /* WCUnsignedRequestScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD4C0427941B5800BF29BE /* WCUnsignedRequestScreen.swift */; };
 		95FD4C0727941B5800BF29BE /* WCUnsignedRequestScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FD4C0427941B5800BF29BE /* WCUnsignedRequestScreen.swift */; };
-		95FE4BD527C37F2B00D8C38E /* BuyTabEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FE4BD427C37F2B00D8C38E /* BuyTabEvent.swift */; };
-		95FE4BD627C37F2B00D8C38E /* BuyTabEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FE4BD427C37F2B00D8C38E /* BuyTabEvent.swift */; };
-		95FE4BD727C37F2B00D8C38E /* BuyTabEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FE4BD427C37F2B00D8C38E /* BuyTabEvent.swift */; };
 		95FE4BD027BFB81400D8C38E /* MoonpayParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FE4BCF27BFB81400D8C38E /* MoonpayParams.swift */; };
 		95FE4BD127BFB81400D8C38E /* MoonpayParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FE4BCF27BFB81400D8C38E /* MoonpayParams.swift */; };
 		95FE4BD227BFB81400D8C38E /* MoonpayParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FE4BCF27BFB81400D8C38E /* MoonpayParams.swift */; };
+		95FE4BD527C37F2B00D8C38E /* BuyTabEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FE4BD427C37F2B00D8C38E /* BuyTabEvent.swift */; };
+		95FE4BD627C37F2B00D8C38E /* BuyTabEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FE4BD427C37F2B00D8C38E /* BuyTabEvent.swift */; };
+		95FE4BD727C37F2B00D8C38E /* BuyTabEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FE4BD427C37F2B00D8C38E /* BuyTabEvent.swift */; };
 		95FF7A1527B465CB00E00130 /* QRSendTransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF7A1427B465CB00E00130 /* QRSendTransactionDraft.swift */; };
 		95FF7A1627B465CB00E00130 /* QRSendTransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF7A1427B465CB00E00130 /* QRSendTransactionDraft.swift */; };
 		95FF7A1727B465CB00E00130 /* QRSendTransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF7A1427B465CB00E00130 /* QRSendTransactionDraft.swift */; };
@@ -4258,6 +4267,9 @@
 		2B4EEEC424BE008500059A16 /* NotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewModel.swift; sourceTree = "<group>"; };
 		2B4EEEC724BF453500059A16 /* NotificationMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationMessage.swift; sourceTree = "<group>"; };
 		2B4EEECB24C105E100059A16 /* NotificationsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsDataSource.swift; sourceTree = "<group>"; };
+		2B4FD1F527C63F580097AB65 /* MoonpayTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonpayTransactionViewController.swift; sourceTree = "<group>"; };
+		2B4FD1F927C63F650097AB65 /* MoonpayTransactionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonpayTransactionView.swift; sourceTree = "<group>"; };
+		2B4FD1FD27C63F740097AB65 /* MoonpayTransactionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonpayTransactionViewTheme.swift; sourceTree = "<group>"; };
 		2B51615B243F739B006DEA54 /* PublicSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PublicSans-Medium.ttf"; sourceTree = "<group>"; };
 		2B51615E243F739B006DEA54 /* PublicSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PublicSans-Regular.ttf"; sourceTree = "<group>"; };
 		2B51615F243F739B006DEA54 /* PublicSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PublicSans-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -4951,8 +4963,8 @@
 		95E7754E276DEFBE004E13F2 /* TransactionResultScreen+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionResultScreen+Theme.swift"; sourceTree = "<group>"; };
 		95EE6FD9278C670600E9F1E1 /* WCSingleTransactionRequestScreen+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WCSingleTransactionRequestScreen+Theme.swift"; sourceTree = "<group>"; };
 		95FD4C0427941B5800BF29BE /* WCUnsignedRequestScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCUnsignedRequestScreen.swift; sourceTree = "<group>"; };
-		95FE4BD427C37F2B00D8C38E /* BuyTabEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyTabEvent.swift; sourceTree = "<group>"; };
 		95FE4BCF27BFB81400D8C38E /* MoonpayParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonpayParams.swift; sourceTree = "<group>"; };
+		95FE4BD427C37F2B00D8C38E /* BuyTabEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuyTabEvent.swift; sourceTree = "<group>"; };
 		95FF7A1427B465CB00E00130 /* QRSendTransactionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRSendTransactionDraft.swift; sourceTree = "<group>"; };
 		CB3AEBD22743A6F500F85246 /* AlgoSDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = AlgoSDK.xcframework; sourceTree = "<group>"; };
 		CBAD47442745510900C91946 /* AccountFlow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountFlow.swift; sourceTree = "<group>"; };
@@ -5994,6 +6006,7 @@
 		2B233B4227C4525B00D16B82 /* Payment */ = {
 			isa = PBXGroup;
 			children = (
+				2B4FD1F427C63F3A0097AB65 /* MoonpayTransaction */,
 				2B233B4327C4527000D16B82 /* MoonpayIntroduction */,
 			);
 			path = Payment;
@@ -6818,6 +6831,16 @@
 				2B4E85AB260A6A8900FC04BB /* ledger_animation.json */,
 			);
 			path = Ledger;
+			sourceTree = "<group>";
+		};
+		2B4FD1F427C63F3A0097AB65 /* MoonpayTransaction */ = {
+			isa = PBXGroup;
+			children = (
+				2B4FD1F527C63F580097AB65 /* MoonpayTransactionViewController.swift */,
+				2B4FD1F927C63F650097AB65 /* MoonpayTransactionView.swift */,
+				2B4FD1FD27C63F740097AB65 /* MoonpayTransactionViewTheme.swift */,
+			);
+			path = MoonpayTransaction;
 			sourceTree = "<group>";
 		};
 		2B567151240019C20037FCFA /* Verified */ = {
@@ -11978,20 +12001,20 @@
 			path = UnsignedRequest;
 			sourceTree = "<group>";
 		};
-		95FE4BD327C37F0D00D8C38E /* Buy */ = {
-			isa = PBXGroup;
-			children = (
-				95FE4BD427C37F2B00D8C38E /* BuyTabEvent.swift */,
-			);
-			path = Buy;
-			sourceTree = "<group>";
-		};
 		95FE4BCE27BFB7FE00D8C38E /* Moonpay */ = {
 			isa = PBXGroup;
 			children = (
 				95FE4BCF27BFB81400D8C38E /* MoonpayParams.swift */,
 			);
 			path = Moonpay;
+			sourceTree = "<group>";
+		};
+		95FE4BD327C37F0D00D8C38E /* Buy */ = {
+			isa = PBXGroup;
+			children = (
+				95FE4BD427C37F2B00D8C38E /* BuyTabEvent.swift */,
+			);
+			path = Buy;
 			sourceTree = "<group>";
 		};
 		95FEED2E242A0843000E42EB /* Troubleshoot */ = {
@@ -13527,6 +13550,7 @@
 				F0E7446027B672D70063DD83 /* AlgoPriceCalculator.swift in Sources */,
 				2B6B3EFC2774E235006379F4 /* WalletRatingViewController.swift in Sources */,
 				17BD4DFD2292F1260003E49A /* UIApplication+Additions.swift in Sources */,
+				2B4FD1F827C63F580097AB65 /* MoonpayTransactionViewController.swift in Sources */,
 				D4AF540427676CB400A94200 /* WCConnectionApprovalViewTheme.swift in Sources */,
 				046767952756A6E000C88F21 /* CurrencySelectionViewController.swift in Sources */,
 				D411B36B26E9FD7A004FF980 /* OptionsContextViewTheme.swift in Sources */,
@@ -13967,6 +13991,7 @@
 				2B8E5F1125471F6E001D8E30 /* ReceiveShareEvent.swift in Sources */,
 				175CE59C2295709F003F7C02 /* RoundDetail.swift in Sources */,
 				2B835B7B27A425380091E9F6 /* WCAssetCreationTransactionViewController.swift in Sources */,
+				2B4FD1FC27C63F650097AB65 /* MoonpayTransactionView.swift in Sources */,
 				2B7E3080267B651A00E89EE3 /* WCTransactionFullDappDetailViewController.swift in Sources */,
 				2B4BDA26238D490300491149 /* AssetFetchDraft.swift in Sources */,
 				2BB0B136278335F500A16494 /* AssetSearchViewController+Theme.swift in Sources */,
@@ -14384,6 +14409,7 @@
 				D4006DE12710A5530018695D /* LedgerAccountDetailViewController+Theme.swift in Sources */,
 				D4DDF3BC27396AC000BC8F42 /* AssetActionConfirmationViewController+Theme.swift in Sources */,
 				D4FC47552714909A00FC5E3B /* LedgerAccountDetailLayoutBuilder.swift in Sources */,
+				2B4FD20027C63F740097AB65 /* MoonpayTransactionViewTheme.swift in Sources */,
 				2B0F5F3624E4084400DA22A6 /* RekeyTransactionDraft.swift in Sources */,
 				D4B1F59F2783A5FE002D80FA /* AssetDetailInfoViewCell.swift in Sources */,
 				2B83502C26B335EC0014F9CD /* WCContainedTransactionWarningView.swift in Sources */,
@@ -14776,6 +14802,7 @@
 				F0E7445F27B672D70063DD83 /* AlgoPriceCalculator.swift in Sources */,
 				2BD5A6A126332C3E0048FA5E /* ALGAPI+Algos.swift in Sources */,
 				2B0F616024EC129D00DA22A6 /* Asset.swift in Sources */,
+				2B4FD1F727C63F580097AB65 /* MoonpayTransactionViewController.swift in Sources */,
 				2B0F616224EC129D00DA22A6 /* ContactsViewController.swift in Sources */,
 				2B0F616424EC129D00DA22A6 /* TestNetTitleDisplayable.swift in Sources */,
 				F087090E2790D97F00BEE5C2 /* HomeNoContentView.swift in Sources */,
@@ -15216,6 +15243,7 @@
 				2B0F621A24EC129D00DA22A6 /* Checkbox.swift in Sources */,
 				F0DB4178279444AE00EA437D /* PortfolioCalculationErrorViewModel.swift in Sources */,
 				95D11D262774BE01001B2C37 /* AccountClipboardViewModel.swift in Sources */,
+				2B4FD1FB27C63F650097AB65 /* MoonpayTransactionView.swift in Sources */,
 				D411B38626EA232F004FF980 /* AssetPreviewViewCommonTheme.swift in Sources */,
 				2B8D383726B6EC3C00E7351D /* ApplicationStateSchema.swift in Sources */,
 				2BB93BAA25BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */,
@@ -15633,6 +15661,7 @@
 				2B0F62BC24EC129D00DA22A6 /* PasswordInputCircleView.swift in Sources */,
 				2BA015882636BB2D009EC914 /* LedgerAccountVerificationStatusView.swift in Sources */,
 				2BAD92A425B5F4A500DE56D5 /* AssetDisplayViewModel.swift in Sources */,
+				2B4FD1FF27C63F740097AB65 /* MoonpayTransactionViewTheme.swift in Sources */,
 				2B9EF2BD25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift in Sources */,
 				D450DE682701C131008CC094 /* LedgerAccountVerificationViewTheme.swift in Sources */,
 				D48281C927A0680A004412D5 /* LedgerPairWarningViewTheme.swift in Sources */,
@@ -16025,6 +16054,7 @@
 				D479D10026D4FB6400110E04 /* BannerViewTheme.swift in Sources */,
 				D411B36926E9FD7A004FF980 /* OptionsContextViewTheme.swift in Sources */,
 				D411B37426EA1043004FF980 /* AccountPreviewView.swift in Sources */,
+				2B4FD1F627C63F580097AB65 /* MoonpayTransactionViewController.swift in Sources */,
 				2B7E3043267A524D00E89EE3 /* WCTransactionDappMessageView.swift in Sources */,
 				D4092BB9276B5D810009722D /* WCSessionShortListItemViewTheme.swift in Sources */,
 				2BA172F12649F66A00A613C4 /* UIPanGestureRecognizer+Additions.swift in Sources */,
@@ -16465,6 +16495,7 @@
 				D4710B18276A526300F35F74 /* BottomWarningViewConfigurator.swift in Sources */,
 				2BECB48A25A0C64B0081870A /* TitledToggleView.swift in Sources */,
 				D4D7465A2779ACE7000545BD /* AlgosDetailInfoViewModel.swift in Sources */,
+				2B4FD1FA27C63F650097AB65 /* MoonpayTransactionView.swift in Sources */,
 				2B9A3E7726E7C7A200B050ED /* ALGAPIModel.swift in Sources */,
 				9511C29B242E2B6C003211ED /* Checkbox.swift in Sources */,
 				D41F93412722C02600E9F2E7 /* CharacterSet+Extension.swift in Sources */,
@@ -16882,6 +16913,7 @@
 				2B7E58832586702500731C97 /* LedgerAccountViewModel.swift in Sources */,
 				F0DB41AF2794C64600EA437D /* AddAccountListActionViewModel.swift in Sources */,
 				2BD739FC2241052600B66EEF /* PasswordInputCircleView.swift in Sources */,
+				2B4FD1FE27C63F740097AB65 /* MoonpayTransactionViewTheme.swift in Sources */,
 				2B83502A26B335EC0014F9CD /* WCContainedTransactionWarningView.swift in Sources */,
 				D4155E8D276CD71600BCBFA4 /* AccountSelectionView.swift in Sources */,
 				2B233B4527C452A000D16B82 /* MoonpayIntroductionView.swift in Sources */,
