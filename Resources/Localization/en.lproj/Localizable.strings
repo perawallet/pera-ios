@@ -22,7 +22,6 @@
 "title-done" = "Done";
 "title-loading" = "Loading";
 "default-error-message" = "An error occured.";
-"title-max" = "MAX";
 "title-internet-connection" = "The internet connection appears to be offline.";
 "title-unknown" = "Unnamed";
 "title-preview-and-sign-with-ledger-title" = "Preview and Sign With Ledger";
@@ -179,7 +178,6 @@
 "accounts-transaction-history-title" = "Transaction History";
 "accounts-add-account" = "+ ADD ACCOUNT";
 "accounts-title" = "Accounts";
-"accounts-add-new" = "Add new asset";
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
 "accounts-transaction-your-balance" = "Your balance";
 "accounts-transaction-value" = "Value";
@@ -227,11 +225,9 @@
 "send-sending-algos-select" = "Select Sending Account";
 "send-receiving-algos-select" = "Select Receiving Account";
 "send-select-asset" = "Select Asset";
-"send-choose-asset" = "Choose asset";
 "send-algos-address" = "Address";
 "send-algos-to" = "To";
 "send-algos-balance-title" = "Balance:";
-"send-algos-amount" = "Amount";
 "send-algos-sent-title" = "Algos Sent!";
 "send-algos-alert-incomplete-title" = "Incomplete Transaction";
 "send-algos-alert-message-address" = "Please enter a destination address.";
@@ -285,10 +281,7 @@
 "contacts-add-photo" = "Add Photo";
 "contacts-info" = "Contact Info";
 "contacts-info-edit" = "Edit Contact";
-"contacts-input-name-explanation" = "Name";
 "contacts-input-name-placeholder" = "Contact name";
-"contacts-input-address-explanation" = "Address";
-"contacts-input-address-placeholder" = "Paste # or Scan QR";
 "contacts-transactions-title" = "Transaction History";
 "contacts-empty-text" = "You haven't added any contacts yet";
 "contacts-empty-detail-text" = "You can make the process of sending assets faster by adding new contacts.";
