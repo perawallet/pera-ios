@@ -3644,6 +3644,9 @@
 		D4DF539D2785F97200820DD0 /* AlgosDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DF539C2785F97200820DD0 /* AlgosDetailViewController.swift */; };
 		D4DF539E2785F97200820DD0 /* AlgosDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DF539C2785F97200820DD0 /* AlgosDetailViewController.swift */; };
 		D4DF539F2785F97200820DD0 /* AlgosDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4DF539C2785F97200820DD0 /* AlgosDetailViewController.swift */; };
+		D4E7E6CD27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+NFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E7E6CC27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+NFT.swift */; };
+		D4E7E6CE27C64A65005EDCE9 /* NoContentWithActionViewIllustratedTheme+NFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E7E6CC27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+NFT.swift */; };
+		D4E7E6CF27C64A65005EDCE9 /* NoContentWithActionViewIllustratedTheme+NFT.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4E7E6CC27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+NFT.swift */; };
 		D4EC4C5D27772AF600428A3C /* RewardDetailViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EC4C5C27772AF600428A3C /* RewardDetailViewTheme.swift */; };
 		D4EC4C5E27772AF600428A3C /* RewardDetailViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EC4C5C27772AF600428A3C /* RewardDetailViewTheme.swift */; };
 		D4EC4C5F27772AF600428A3C /* RewardDetailViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EC4C5C27772AF600428A3C /* RewardDetailViewTheme.swift */; };
@@ -5199,6 +5202,7 @@
 		D4DF3F6A26F1EED4006625E6 /* LedgerApprovalViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerApprovalViewTheme.swift; sourceTree = "<group>"; };
 		D4DF3F6E26F2214D006625E6 /* LedgerAccountSelectionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountSelectionViewTheme.swift; sourceTree = "<group>"; };
 		D4DF539C2785F97200820DD0 /* AlgosDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgosDetailViewController.swift; sourceTree = "<group>"; };
+		D4E7E6CC27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+NFT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NoContentWithActionViewIllustratedTheme+NFT.swift"; sourceTree = "<group>"; };
 		D4EC4C5C27772AF600428A3C /* RewardDetailViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailViewTheme.swift; sourceTree = "<group>"; };
 		D4EC4C612777A3E600428A3C /* AlgosDetailInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgosDetailInfoView.swift; sourceTree = "<group>"; };
 		D4EC4C652777A69F00428A3C /* AlgosDetailInfoViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgosDetailInfoViewTheme.swift; sourceTree = "<group>"; };
@@ -12056,6 +12060,7 @@
 			isa = PBXGroup;
 			children = (
 				D4150DE127C5675E0064F736 /* NFTsNoContentWithActionViewModel.swift */,
+				D4E7E6CC27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+NFT.swift */,
 			);
 			path = Empty;
 			sourceTree = "<group>";
@@ -14106,6 +14111,7 @@
 				D43A0C2A2790D177007430B9 /* NoContentView.swift in Sources */,
 				2B6607E424113507002AC00F /* LedgerApprovalView.swift in Sources */,
 				2B56716024008B440037FCFA /* LedgerTutorialInstructionListView.swift in Sources */,
+				D4E7E6CF27C64A65005EDCE9 /* NoContentWithActionViewIllustratedTheme+NFT.swift in Sources */,
 				2BCBBAF324A66B48002CD56F /* TransactionFilterOptionView.swift in Sources */,
 				2B80C53327720F3300BB071E /* AccountAssetListViewController.swift in Sources */,
 				D411B36726E9F9BC004FF980 /* OptionsViewTheme.swift in Sources */,
@@ -15333,6 +15339,7 @@
 				2B0AD82F2757DA3500F83660 /* AnnouncementBannerView.swift in Sources */,
 				2B8E5F8F25482FC6001D8E30 /* ReceiveTabEvent.swift in Sources */,
 				2B3E228426C0859D00ED0AAF /* WCGroupAnotherAccountTransactionItemCell.swift in Sources */,
+				D4E7E6CE27C64A65005EDCE9 /* NoContentWithActionViewIllustratedTheme+NFT.swift in Sources */,
 				2BA1734E264B270100A613C4 /* AlgorandChartViewAxisCustomizable.swift in Sources */,
 				2B0F7E1E25D6E3C100B16B85 /* WelcomeViewController.swift in Sources */,
 				2B0F626C24EC129D00DA22A6 /* LedgerTutorialInstructionListView.swift in Sources */,
@@ -16563,6 +16570,7 @@
 				D411B36526E9F9BC004FF980 /* OptionsViewTheme.swift in Sources */,
 				F0DB4173279440AD00EA437D /* ErrorViewModel.swift in Sources */,
 				2BECB4B425A0F2210081870A /* NotificationFilterDraft.swift in Sources */,
+				D4E7E6CD27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+NFT.swift in Sources */,
 				D43A0C282790D177007430B9 /* NoContentView.swift in Sources */,
 				2B9EF31B25D576A1004BCCC4 /* TutorialViewController.swift in Sources */,
 				95BB6BFA27A1501200F2A2F1 /* WCTransactionFullDappDetailViewTheme.swift in Sources */,

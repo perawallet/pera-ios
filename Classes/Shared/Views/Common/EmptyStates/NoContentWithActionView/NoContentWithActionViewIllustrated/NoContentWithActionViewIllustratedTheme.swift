@@ -55,11 +55,3 @@ struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
         actionAlignment = .aligned(left: 0, right: 0)
     }
 }
-
-extension NoContentWithActionViewIllustratedTheme {
-    mutating func configureForNFTsNoContentWithAction() {
-        action = action.modify(
-            [ .icon( [.normal("icon-plus"), .highlighted("icon-plus")] ) ]
-        )
-    }
-}
