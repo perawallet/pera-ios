@@ -920,7 +920,7 @@
 "moonpay-buy-button-title" = "Buy ALGO";
 "moonpay-introduction-title"="Buy ALGO with Moonpay";
 "moonpay-introduction-description"="MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
-"moonpay-introduction-payment"="Payment methods on Moonpay:";
+"moonpay-introduction-security"="Secured by";
 "moonpay-transaction-title-pending" = "Your Algos are on their way!";
 "moonpay-transaction-title-completed" = "Success!
 Algo Received.";

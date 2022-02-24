@@ -39,8 +39,6 @@ final class MoonpayIntroductionViewController: BaseViewController {
         }
         
         moonpayIntroductionView.observe(event: .buyAlgo) {}
-        
-        moonpayIntroductionView.observe(event: .learnMore) {}
     }
 }
 
