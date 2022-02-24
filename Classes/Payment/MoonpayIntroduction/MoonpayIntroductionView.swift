@@ -25,8 +25,7 @@ final class MoonpayIntroductionView:
     UIControlInteractionPublisher {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .closeScreen: UIControlInteraction(),
-        .buyAlgo: UIControlInteraction(),
-        .learnMore: UIControlInteraction()
+        .buyAlgo: UIControlInteraction()
     ]
     
     private lazy var theme = MoonpayIntroductionViewTheme()
@@ -40,14 +39,13 @@ final class MoonpayIntroductionView:
     private lazy var titleLabel = Label()
     private lazy var subtitleLabel = Label()
     private lazy var descriptionLabel = Label()
-    private lazy var paymentLabel = Label()
+    private lazy var securityLabel = Label()
+    private lazy var securityImageView = ImageView()
     private lazy var paymentView = HStackView()
     private lazy var paymentMastercardImageView = ImageView()
     private lazy var paymentVisaImageView = ImageView()
     private lazy var paymentAppleImageView = ImageView()
-    private lazy var paymentGpayImageView = ImageView()
     private lazy var buyButton = MacaroonUIKit.Button()
-    private lazy var learnButton = MacaroonUIKit.Button()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -61,9 +59,9 @@ final class MoonpayIntroductionView:
         addContentView()
         addSubtitleLabel(theme)
         addDescriptionLabel(theme)
-        addPaymentLabel(theme)
+        addSecurityImageView(theme)
+        addSecurityLabel(theme)
         addPaymentView(theme)
-        addLearnButton(theme)
         addBuyButton(theme)
         addTopContainerView(theme)
         addMoonpayBackgroundImageView(theme)
@@ -82,11 +80,11 @@ final class MoonpayIntroductionView:
         titleLabel.editText = viewModel?.title
         subtitleLabel.editText = viewModel?.subtitle
         descriptionLabel.editText = viewModel?.description
-        paymentLabel.editText = viewModel?.payment
+        securityImageView.image = viewModel?.securityImage?.uiImage
+        securityLabel.editText = viewModel?.security
         paymentMastercardImageView.image = viewModel?.paymentMastercardImage?.uiImage
         paymentVisaImageView.image = viewModel?.paymentVisaImage?.uiImage
         paymentAppleImageView.image = viewModel?.paymentAppleImage?.uiImage
-        paymentGpayImageView.image = viewModel?.paymentGpayImage?.uiImage
     }
     
     func linkInteractors() {
@@ -94,7 +92,6 @@ final class MoonpayIntroductionView:
         
         startPublishing(event: .closeScreen, for: closeButton)
         startPublishing(event: .buyAlgo, for: buyButton)
-        startPublishing(event: .learnMore, for: learnButton)
     }
 }
 
@@ -136,13 +133,21 @@ extension MoonpayIntroductionView {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
-    private func addPaymentLabel(_ theme: MoonpayIntroductionViewTheme){
-        paymentLabel.customizeAppearance(theme.paymentLabel)
+    private func addSecurityImageView(_ theme: MoonpayIntroductionViewTheme) {
+        contentView.addSubview(securityImageView)
+        securityImageView.snp.makeConstraints {
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.securityImageTopPadding)
+            $0.leading.equalToSuperview().inset(theme.horizontalPadding)
+        }
+    }
+    private func addSecurityLabel(_ theme: MoonpayIntroductionViewTheme){
+        securityLabel.customizeAppearance(theme.securityLabel)
         
-        contentView.addSubview(paymentLabel)
-        paymentLabel.snp.makeConstraints {
-            $0.top.equalTo(descriptionLabel.snp.bottom).offset(theme.paymentLabelTopPadding)
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+        contentView.addSubview(securityLabel)
+        securityLabel.snp.makeConstraints {
+            $0.centerY.equalTo(securityImageView)
+            $0.leading.equalTo(securityImageView.snp.trailing).offset(theme.securityLabelLeadingPadding)
+            $0.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
     private func addPaymentView(_ theme: MoonpayIntroductionViewTheme){
@@ -151,7 +156,7 @@ extension MoonpayIntroductionView {
         paymentView.spacing = theme.paymentViewSpacing
         contentView.addSubview(paymentView)
         paymentView.snp.makeConstraints {
-            $0.top.equalTo(paymentLabel.snp.bottom).offset(theme.paymentViewTopPadding)
+            $0.top.equalTo(securityLabel.snp.bottom).offset(theme.paymentViewTopPadding)
             $0.leading.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.paymentViewBottomPadding)
         }
@@ -159,7 +164,6 @@ extension MoonpayIntroductionView {
         paymentView.addArrangedSubview(paymentMastercardImageView)
         paymentView.addArrangedSubview(paymentVisaImageView)
         paymentView.addArrangedSubview(paymentAppleImageView)
-        paymentView.addArrangedSubview(paymentGpayImageView)
     }
     private func addBuyButton(_ theme: MoonpayIntroductionViewTheme){
         buyButton.contentEdgeInsets = UIEdgeInsets(theme.buttonContentEdgeInsets)
@@ -168,17 +172,6 @@ extension MoonpayIntroductionView {
         
         addSubview(buyButton)
         buyButton.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.bottom.equalTo(learnButton.snp.top).offset(-theme.buttonSpacing)
-        }
-    }
-    private func addLearnButton(_ theme: MoonpayIntroductionViewTheme){
-        learnButton.contentEdgeInsets = UIEdgeInsets(theme.buttonContentEdgeInsets)
-        learnButton.draw(corner: theme.buttonCorner)
-        learnButton.customizeAppearance(theme.learnButton)
-        
-        addSubview(learnButton)
-        learnButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomPadding)
         }
@@ -267,6 +260,5 @@ extension MoonpayIntroductionView {
     enum Event {
         case closeScreen
         case buyAlgo
-        case learnMore
     }
 }

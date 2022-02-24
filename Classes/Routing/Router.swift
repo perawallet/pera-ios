@@ -630,6 +630,8 @@ class Router:
             moonPayIntroductionViewController.delegate = delegate
             moonPayIntroductionViewController.transactionDraft = draft
             viewController = moonPayIntroductionViewController
+        case let .moonpayTransaction(moonpayParams):
+            viewController = MoonpayTransactionViewController(moonpayParams: moonpayParams, configuration: configuration)
         }
 
         return viewController as? T

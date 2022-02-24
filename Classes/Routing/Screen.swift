@@ -116,6 +116,7 @@ indirect enum Screen {
         transactionDraft: MoonpayTransactionDraft?,
         delegate: MoonpayIntroductionViewControllerDelegate?
     )
+    case moonpayTransaction(moonpayParams: MoonpayParams)
 }
 
 extension Screen {

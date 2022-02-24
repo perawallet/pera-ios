@@ -25,12 +25,13 @@ struct MoonpayParams: Hashable {
     static var notificationObjectKey = "moonpay.params"
 
     enum TransactionStatus: String {
-        case completed
-        case pending = "pending"
-        case rejected
-    }
+            case completed
+            case pending
+            case failed
+            case waitingPayment
+            case waitingAuthorization
+        }
 }
-
 
 extension MoonpayParams {
     enum CodingKeys: String, CodingKey {
