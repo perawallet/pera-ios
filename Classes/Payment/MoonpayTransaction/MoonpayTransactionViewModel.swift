@@ -62,15 +62,15 @@ extension MoonpayTransactionViewModel {
         
         switch type {
         case .completed:
-            titleString = "moonpay-transaction-title-completed"
+            titleString = "moonpay-transaction-completed-title"
         case .pending:
-            titleString = "moonpay-transaction-title-pending"
+            titleString = "moonpay-transaction-pending-title"
         case .failed:
-            titleString = "moonpay-transaction-title-failed"
+            titleString = "moonpay-transaction-failed-title"
         case .waitingAuthorization:
-            titleString = "moonpay-transaction-title-waitingAuthorization"
+            titleString = "moonpay-transaction-waitingAuthorization-title"
         case .waitingPayment:
-            titleString = "moonpay-transaction-title-waitingPayment"
+            titleString = "moonpay-transaction-waitingPayment-title"
             
         }
         
@@ -97,15 +97,15 @@ extension MoonpayTransactionViewModel {
         
         switch type {
         case .completed:
-            descriptionString = "moonpay-transaction-description-completed"
+            descriptionString = "moonpay-transaction-completed-description"
         case .pending:
-            descriptionString = "moonpay-transaction-description-pending"
+            descriptionString = "moonpay-transaction-pending-description"
         case .failed:
-            descriptionString = "moonpay-transaction-description-failed"
+            descriptionString = "moonpay-transaction-failed-description"
         case .waitingAuthorization:
-            descriptionString = "moonpay-transaction-description-waitingAuthorization"
+            descriptionString = "moonpay-transaction-waitingAuthorization-description"
         case .waitingPayment:
-            descriptionString = "moonpay-transaction-description-waitingPayment"
+            descriptionString = "moonpay-transaction-waitingPayment-description"
         }
 
         description = .attributedString(
@@ -126,11 +126,7 @@ extension MoonpayTransactionViewModel {
     }
     
     private mutating func bindAccountName(_ account: Account) {
-        var name = account.address
-        
-        if let theName = account.name {
-            name = theName
-        }
+        let name = account.name ?? account.address.shortAddressDisplay()
         
         let font = Fonts.DMSans.regular.make(15).uiFont
         let lineHeightMultiplier = 1.23

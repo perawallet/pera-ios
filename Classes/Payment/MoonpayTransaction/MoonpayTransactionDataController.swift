@@ -29,11 +29,8 @@ final class MoonpayTransactionDataController: NSObject {
     }
     
     func loadData() {
-        let account = sharedDataController.accountCollection.account(for: accountAddress)
-        
-        guard let account = account else {
-            return
-        }
+        let account = sharedDataController.accountCollection.account(for: accountAddress) ??
+            Account(address: accountAddress, type: .standard)
         
         delegate?.moonpayTransactionDataControllerDidLoad(self, account: account)
     }
