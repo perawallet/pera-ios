@@ -29,7 +29,7 @@ final class MoonpayTransactionView:
     private lazy var accountAddressView = UIView()
     private lazy var accountIconView = ImageView()
     private lazy var accountAddressTitleView = Label()
-    private lazy var doneButton = MacaroonUIKit.Button()
+    private(set) lazy var doneButton = MacaroonUIKit.Button()
     
     func customize(_ theme: MoonpayTransactionViewTheme) {
         addImageView(theme)

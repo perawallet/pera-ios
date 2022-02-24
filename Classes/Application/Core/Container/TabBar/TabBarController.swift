@@ -35,6 +35,8 @@ final class TabBarController: TabBarContainer {
 
     private lazy var toggleTransactionOptionsActionView = Button()
     private lazy var transactionOptionsView = createTransactionOptions()
+
+    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
@@ -300,7 +302,12 @@ extension TabBarController: MoonpayIntroductionViewControllerDelegate {
         _ viewController: MoonpayIntroductionViewController,
         didCompletedTransaction params: MoonpayParams
     ) {
-        viewController.dismissScreen()
+        viewController.dismissScreen(animated: true) {
+            self.modalTransition.perform(
+                .moonpayTransaction(moonpayParams: params),
+                by: .present
+            )
+        }
     }
 }
 

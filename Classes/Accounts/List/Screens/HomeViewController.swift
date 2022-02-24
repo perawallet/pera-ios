@@ -736,7 +736,12 @@ extension HomeViewController: MoonpayIntroductionViewControllerDelegate {
         _ viewController: MoonpayIntroductionViewController,
         didCompletedTransaction params: MoonpayParams
     ) {
-        viewController.dismissScreen()
+        viewController.dismissScreen(animated: true) {
+            self.modalTransition.perform(
+                .moonpayTransaction(moonpayParams: params),
+                by: .present
+            )
+        }
     }
 }
 

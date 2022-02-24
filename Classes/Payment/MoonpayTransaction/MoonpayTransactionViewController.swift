@@ -39,6 +39,7 @@ final class MoonpayTransactionViewController: BaseViewController {
     override func linkInteractors() {
         super.linkInteractors()
         dataController.delegate = self
+        moonpayTransactionView.doneButton.addTarget(self, action: #selector(didTapDone), for: .touchUpInside)
     }
     
     override func prepareLayout() {
@@ -61,6 +62,11 @@ extension MoonpayTransactionViewController {
         moonpayTransactionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+
+    @objc
+    private func didTapDone() {
+        dismissScreen()
     }
 }
 

@@ -34,6 +34,8 @@ final class AccountAssetListViewController: BaseViewController {
     private lazy var listDataSource = AccountAssetListDataSource(listView)
     private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
+    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build()
         let collectionView = UICollectionView(
@@ -297,7 +299,12 @@ extension AccountAssetListViewController: MoonpayIntroductionViewControllerDeleg
         _ viewController: MoonpayIntroductionViewController,
         didCompletedTransaction params: MoonpayParams
     ) {
-        viewController.dismissScreen()
+        viewController.dismissScreen(animated: true) {
+            self.modalTransition.perform(
+                .moonpayTransaction(moonpayParams: params),
+                by: .present
+            )
+        }
     }
 }
 

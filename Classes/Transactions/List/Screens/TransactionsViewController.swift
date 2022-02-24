@@ -269,7 +269,12 @@ extension TransactionsViewController: MoonpayIntroductionViewControllerDelegate 
         _ viewController: MoonpayIntroductionViewController,
         didCompletedTransaction params: MoonpayParams
     ) {
-        viewController.dismissScreen()
+        viewController.dismissScreen(animated: true) {
+            self.bottomSheetTransition.perform(
+                .moonpayTransaction(moonpayParams: params),
+                by: .present
+            )
+        }
     }
 }
 
