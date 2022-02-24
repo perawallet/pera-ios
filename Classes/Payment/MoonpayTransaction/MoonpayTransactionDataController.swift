@@ -20,38 +20,28 @@ final class MoonpayTransactionDataController: NSObject {
     weak var delegate: MoonpayTransactionDataControllerDelegate?
     
     private let sharedDataController: SharedDataController
+    private let accountAddress: String
     
-    init(sharedDataController: SharedDataController) {
+    init(sharedDataController: SharedDataController, accountAddress: String) {
         self.sharedDataController = sharedDataController
+        self.accountAddress = accountAddress
         super.init()
     }
     
-    func getDataFor(accountAddress: String) {
-        searchAccount(accountAddress)
-    }
-    
-    func searchAccount(_ address: String) {
-        let account = sharedDataController.accountCollection.account(for: address)
+    func loadData() {
+        let account = sharedDataController.accountCollection.account(for: accountAddress)
         
         guard let account = account else {
             return
         }
         
-        let type = account.type
-        
-        if let name = account.name {
-            delegate?.MoonpayTransactionDataControllerDidFindAccount(self, accountName: name, accountType: type)
-            return
-        }
-        
-        delegate?.MoonpayTransactionDataControllerDidFindAccount(self, accountName: address, accountType: type)
+        delegate?.moonpayTransactionDataControllerDidLoad(self, account: account)
     }
 }
 
 protocol MoonpayTransactionDataControllerDelegate: AnyObject {
-    func MoonpayTransactionDataControllerDidFindAccount(
+    func moonpayTransactionDataControllerDidLoad(
         _ dataController: MoonpayTransactionDataController,
-        accountName: String,
-        accountType: AccountType
+        account: Account
     )
 }

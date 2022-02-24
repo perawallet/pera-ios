@@ -27,14 +27,13 @@ struct MoonpayTransactionViewModel: ViewModel {
     
     init(
         status: MoonpayParams.TransactionStatus,
-        name: String,
-        type: AccountType
+        account: Account
     ) {
         bindImage(status)
         bindTitle(status)
         bindDescription(status)
-        bindAccountName(name)
-        bindAccountIcon(type)
+        bindAccountName(account)
+        bindAccountIcon(account)
     }
 }
 
@@ -47,7 +46,11 @@ extension MoonpayTransactionViewModel {
             image = "icon-moonpay-transaction-completed"
         case .pending:
             image = "icon-moonpay-transaction-pending"
-        case .rejected:
+        case .failed:
+            image = "icon-moonpay-transaction-pending"
+        case .waitingAuthorization:
+            image = "icon-moonpay-transaction-pending"
+        case .waitingPayment:
             image = "icon-moonpay-transaction-pending"
         }
     }
@@ -62,8 +65,13 @@ extension MoonpayTransactionViewModel {
             titleString = "moonpay-transaction-title-completed"
         case .pending:
             titleString = "moonpay-transaction-title-pending"
-        case .rejected:
-            titleString = "moonpay-transaction-title-pending"
+        case .failed:
+            titleString = "moonpay-transaction-title-failed"
+        case .waitingAuthorization:
+            titleString = "moonpay-transaction-title-waitingAuthorization"
+        case .waitingPayment:
+            titleString = "moonpay-transaction-title-waitingPayment"
+            
         }
         
         title = .attributedString(
@@ -89,11 +97,15 @@ extension MoonpayTransactionViewModel {
         
         switch type {
         case .completed:
-            descriptionString = "moonpay-transaction-description-pending"
+            descriptionString = "moonpay-transaction-description-completed"
         case .pending:
             descriptionString = "moonpay-transaction-description-pending"
-        case .rejected:
-            descriptionString = "moonpay-transaction-description-pending"
+        case .failed:
+            descriptionString = "moonpay-transaction-description-failed"
+        case .waitingAuthorization:
+            descriptionString = "moonpay-transaction-description-waitingAuthorization"
+        case .waitingPayment:
+            descriptionString = "moonpay-transaction-description-waitingPayment"
         }
 
         description = .attributedString(
@@ -113,7 +125,13 @@ extension MoonpayTransactionViewModel {
         )
     }
     
-    private mutating func bindAccountName(_ name: String) {
+    private mutating func bindAccountName(_ account: Account) {
+        var name = account.address
+        
+        if let theName = account.name {
+            name = theName
+        }
+        
         let font = Fonts.DMSans.regular.make(15).uiFont
         let lineHeightMultiplier = 1.23
         
@@ -132,7 +150,7 @@ extension MoonpayTransactionViewModel {
         )
     }
     
-    private mutating func bindAccountIcon(_ type: AccountType) {
-        accountIcon = type.image(for: AccountImageType.getRandomImage(for: type))
+    private mutating func bindAccountIcon(_ account: Account) {
+        accountIcon = account.type.image(for: .getRandomImage(for: account.type))
     }
 }

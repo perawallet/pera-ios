@@ -25,7 +25,10 @@ final class MoonpayTransactionViewController: BaseViewController {
     
     private lazy var moonpayTransactionView = MoonpayTransactionView()
     
-    private lazy var dataController =  MoonpayTransactionDataController(sharedDataController: sharedDataController)
+    private lazy var dataController =  MoonpayTransactionDataController(
+        sharedDataController: sharedDataController,
+        accountAddress: moonpayParams.address
+    )
     private let moonpayParams: MoonpayParams
     
     init(moonpayParams: MoonpayParams, configuration: ViewControllerConfiguration) {
@@ -46,12 +49,14 @@ final class MoonpayTransactionViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        dataController.getDataFor(accountAddress: moonpayParams.address)
+        dataController.loadData()
     }
 }
 
 extension MoonpayTransactionViewController {
     private func addMoonpayTransactionProcessView() {
+        moonpayTransactionView.customize(MoonpayTransactionViewTheme())
+        
         view.addSubview(moonpayTransactionView)
         moonpayTransactionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -60,16 +65,14 @@ extension MoonpayTransactionViewController {
 }
 
 extension MoonpayTransactionViewController: MoonpayTransactionDataControllerDelegate {
-    func MoonpayTransactionDataControllerDidFindAccount(
+    func moonpayTransactionDataControllerDidLoad(
         _ dataController: MoonpayTransactionDataController,
-        accountName: String,
-        accountType: AccountType
+        account: Account
     ) {
         moonpayTransactionView.bindData(
             MoonpayTransactionViewModel(
                 status: moonpayParams.transactionStatus,
-                name: accountName,
-                type: accountType
+                account: account
             )
         )
     }

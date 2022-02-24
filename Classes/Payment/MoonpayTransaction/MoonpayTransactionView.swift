@@ -21,9 +21,6 @@ import UIKit
 final class MoonpayTransactionView:
     View,
     ViewModelBindable {
-    
-    private lazy var theme = MoonpayTransactionViewTheme()
-    
     private lazy var imageView = ImageView()
     private lazy var titleView = Label()
     private lazy var descriptionView = Label()
@@ -33,12 +30,6 @@ final class MoonpayTransactionView:
     private lazy var accountIconView = ImageView()
     private lazy var accountAddressTitleView = Label()
     private lazy var doneButton = MacaroonUIKit.Button()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        customize(MoonpayTransactionViewTheme())
-    }
     
     func customize(_ theme: MoonpayTransactionViewTheme) {
         addImageView(theme)
@@ -119,7 +110,6 @@ extension MoonpayTransactionView {
         accountAddressTitleView.snp.makeConstraints {
             $0.leading.equalTo(accountIconView.snp.trailing).offset(8)
             $0.trailing.top.bottom.equalToSuperview()
-            $0.fitToWidth(112)
         }
     }
      

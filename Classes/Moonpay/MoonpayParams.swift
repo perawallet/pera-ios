@@ -23,12 +23,13 @@ struct MoonpayParams {
     let transactionId: String
 
     enum TransactionStatus: String {
-        case completed
-        case pending = "pending"
-        case rejected
-    }
+            case completed
+            case pending = "pending"
+            case failed
+            case waitingPayment
+            case waitingAuthorization
+        }
 }
-
 
 extension MoonpayParams {
     enum CodingKeys: String, CodingKey {

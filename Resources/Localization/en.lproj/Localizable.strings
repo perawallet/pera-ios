@@ -922,6 +922,12 @@
 "moonpay-introduction-description"="MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
 "moonpay-introduction-security"="Secured by";
 "moonpay-transaction-title-pending" = "Your Algos are on their way!";
-"moonpay-transaction-title-completed" = "Success!
-Algo Received.";
-"moonpay-transaction-description-pending" = "Your payment is being processed. It can take few minutes to be completed.";
+"moonpay-transaction-title-completed" = "Your Algos are on their way!";
+"moonpay-transaction-title-failed" = "Uh oh, something went wrong.";
+"moonpay-transaction-title-waitingAuthorization" = "Almost there!";
+"moonpay-transaction-title-waitingPayment" = "Almost there!";
+"moonpay-transaction-description-pending" = "Your purchase is being processed. It can take a few minutes to be completed. You will receive a notification when it’s done.";
+"moonpay-transaction-description-completed" = "Your purchase is completed and is being processed by the network. You will receive a notification when they are in your account.";
+"moonpay-transaction-description-failed" = "Looks like your purchase failed. You will need to try again.";
+"moonpay-transaction-description-waitingAuthorization" = "Your purchase is waiting for authorization. Once payment is processed, you will receive a notification.";
+"moonpay-transaction-description-waitingPayment" = "Your purchase request is pending payment. Once payment is processed, you will receive a notification.";
