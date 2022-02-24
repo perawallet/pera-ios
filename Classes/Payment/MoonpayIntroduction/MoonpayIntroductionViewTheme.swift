@@ -27,9 +27,8 @@ struct MoonpayIntroductionViewTheme:
     let titleLabel: TextStyle
     let subtitleLabel: TextStyle
     let descriptionLabel: TextStyle
-    let paymentLabel: TextStyle
+    let securityLabel: TextStyle
     let buyButton: ButtonStyle
-    let learnButton: ButtonStyle
     let buttonContentEdgeInsets: LayoutPaddings
     let buttonCorner: Corner
     let topContainer: ViewStyle
@@ -44,12 +43,12 @@ struct MoonpayIntroductionViewTheme:
     let moonpayLogoMinSize: LayoutSize
     let subtitleLabelTopPadding: LayoutMetric
     let descriptionLabelTopPadding: LayoutMetric
-    let paymentLabelTopPadding: LayoutMetric
+    let securityImageTopPadding: LayoutMetric
+    let securityLabelLeadingPadding: LayoutMetric
     let paymentViewTopPadding: LayoutMetric
     let paymentViewBottomPadding: LayoutMetric
     let paymentViewTrailingPadding: LayoutMetric
     let paymentViewSpacing: LayoutMetric
-    let buttonSpacing: LayoutMetric
     let bottomPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     
@@ -80,9 +79,9 @@ struct MoonpayIntroductionViewTheme:
             .textColor(AppColors.Components.Text.gray),
             .textOverflow(FittingText())
         ]
-        paymentLabel = [
+        securityLabel = [
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(AppColors.Shared.Helpers.positive),
             .textOverflow(FittingText())
         ]
         buyButton = [
@@ -93,14 +92,6 @@ struct MoonpayIntroductionViewTheme:
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(AppColors.Components.Button.Primary.background)
         ]
-        learnButton = [
-            .title("title-learn-more".localized),
-            .titleColor([
-                .normal(AppColors.Components.Button.Secondary.text)
-            ]),
-            .font(Fonts.DMSans.medium.make(15)),
-            .backgroundColor(AppColors.Components.Button.Secondary.background)
-        ]
         buttonContentEdgeInsets = (14, 0, 14, 0)
         buttonCorner = Corner(radius: 4)
         
@@ -108,18 +99,18 @@ struct MoonpayIntroductionViewTheme:
         closeButtonTopPadding = 10
         closeButtonLeadingPadding = 12
         titleTopPadding = 18
-        topContainerMaxHeight = 254
-        topContainerMinHeight = 132
+        topContainerMaxHeight = 294
+        topContainerMinHeight = 220
         moonpayLogoMaxSize = (200, 36)
         moonpayLogoMinSize = (150, 27)
         subtitleLabelTopPadding = 40
         descriptionLabelTopPadding = 20
-        paymentLabelTopPadding = 24
+        securityImageTopPadding = 24
+        securityLabelLeadingPadding = 8
         paymentViewTopPadding = 16
         paymentViewBottomPadding = 58
         paymentViewTrailingPadding = 190
         paymentViewSpacing = 24
-        buttonSpacing = 12
         bottomPadding = 16
         horizontalPadding = 24
     }

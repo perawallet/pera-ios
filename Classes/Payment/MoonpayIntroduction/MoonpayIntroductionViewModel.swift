@@ -23,11 +23,11 @@ struct MoonpayIntroductionViewModel: ViewModel {
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
     private(set) var description: EditText?
-    private(set) var payment: EditText?
+    private(set) var securityImage: Image?
+    private(set) var security: EditText?
     private(set) var paymentMastercardImage: Image?
     private(set) var paymentVisaImage: Image?
     private(set) var paymentAppleImage: Image?
-    private(set) var paymentGpayImage: Image?
     
     init() {
         bind()
@@ -41,7 +41,7 @@ extension MoonpayIntroductionViewModel {
         bindTitle()
         bindSubtitle()
         bindDescription()
-        bindPayment()
+        bindSecurity()
         bindPaymentImages()
     }
     
@@ -115,12 +115,14 @@ extension MoonpayIntroductionViewModel {
         )
     }
     
-    private mutating func bindPayment() {
-        let font = Fonts.DMSans.regular.make(15).uiFont
+    private mutating func bindSecurity() {
+        securityImage = "icon-payment-security"
+        
+        let font = Fonts.DMSans.medium.make(15).uiFont
         let lineHeightMultiplier = 1.23
 
-        payment = .attributedString(
-            "moonpay-introduction-payment"
+        security = .attributedString(
+            "moonpay-introduction-security"
                 .localized
                 .attributed(
                     [
@@ -140,6 +142,5 @@ extension MoonpayIntroductionViewModel {
         paymentMastercardImage = "icon-payment-mastercard"
         paymentVisaImage = "icon-payment-visa"
         paymentAppleImage = "icon-payment-apple"
-        paymentGpayImage = "icon-payment-gpay"
     }
 }
