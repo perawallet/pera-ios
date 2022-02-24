@@ -24,7 +24,7 @@ struct MoonpayParams {
 
     enum TransactionStatus: String {
             case completed
-            case pending = "pending"
+            case pending
             case failed
             case waitingPayment
             case waitingAuthorization
