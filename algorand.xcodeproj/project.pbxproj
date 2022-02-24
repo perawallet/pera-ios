@@ -3343,6 +3343,7 @@
 		D4919D2E27A15C12001AABEE /* AlgoPriceChartTimeFrameSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4919D2C27A15AB7001AABEE /* AlgoPriceChartTimeFrameSelectionViewTheme.swift */; };
 		D4919D2F27A15C13001AABEE /* AlgoPriceChartTimeFrameSelectionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4919D2C27A15AB7001AABEE /* AlgoPriceChartTimeFrameSelectionViewTheme.swift */; };
 		D499D27B27C7BACE00641FF5 /* NFTListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D499D27A27C7BACE00641FF5 /* NFTListItemViewModel.swift */; };
+		D499D27E27C7D40B00641FF5 /* Prism in Frameworks */ = {isa = PBXBuildFile; productRef = D499D27D27C7D40B00641FF5 /* Prism */; };
 		D49B45742724A449005158B1 /* LedgerApprovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49B45732724A449005158B1 /* LedgerApprovalViewModel.swift */; };
 		D49B45752724A449005158B1 /* LedgerApprovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49B45732724A449005158B1 /* LedgerApprovalViewModel.swift */; };
 		D49B45762724A449005158B1 /* LedgerApprovalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D49B45732724A449005158B1 /* LedgerApprovalViewModel.swift */; };
@@ -5390,6 +5391,7 @@
 				CBAD47072745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
 				CBAD470A2745434A00C91946 /* MacaroonMedia in Frameworks */,
 				CBAD47102745434A00C91946 /* MacaroonVendors in Frameworks */,
+				D499D27E27C7D40B00641FF5 /* Prism in Frameworks */,
 				CBAD46FD2745434A00C91946 /* FirebaseAnalytics in Frameworks */,
 				CBAD470E2745434A00C91946 /* MacaroonUIKit in Frameworks */,
 				CBAD46FB2745434A00C91946 /* MagpieHipo in Frameworks */,
@@ -13076,6 +13078,7 @@
 				2B9A3E4026E6077000B050ED /* MacaroonUIKit */,
 				2B9A3E4226E6077000B050ED /* MacaroonURLImage */,
 				2B9A3E4426E6077000B050ED /* MacaroonVendors */,
+				D499D27D27C7D40B00641FF5 /* Prism */,
 			);
 			productName = algorand;
 			productReference = 2B8BE4CE22391C38005D8565 /* pera.app */;
@@ -13158,6 +13161,7 @@
 				2B187DB426E54B6F005BEDFD /* XCRemoteSwiftPackageReference "WalletConnectSwift" */,
 				2B187DB726E54B9C005BEDFD /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */,
+				D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */,
 			);
 			productRefGroup = 2B8BE4CF22391C38005D8565 /* Products */;
 			projectDirPath = "";
@@ -17858,6 +17862,14 @@
 				kind = branch;
 			};
 		};
+		D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Hipo/prism-ios";
+			requirement = {
+				kind = exactVersion;
+				version = 1.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -18205,6 +18217,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
 			productName = MacaroonVendors;
+		};
+		D499D27D27C7D40B00641FF5 /* Prism */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */;
+			productName = Prism;
 		};
 /* End XCSwiftPackageProductDependency section */
 
