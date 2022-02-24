@@ -62,7 +62,7 @@ extension NFTListItemReceiveView {
     ) {
         addSubview(contentView)
         contentView.snp.makeConstraints {
-            $0.setPaddings((16, 12, 16, 12)) // Ask ??
+            $0.setPaddings(theme.contentEdgeInsets)
         }
 
         addIconAndTitleContainer(theme)

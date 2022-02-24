@@ -26,8 +26,11 @@ struct NFTListItemReceiveViewTheme:
     let containerThirdShadow: MacaroonUIKit.Shadow
 
     let icon: ImageStyle
+
     let title: TextStyle
     let titleTopPadding: LayoutMetric
+
+    let contentEdgeInsets: LayoutPaddings
 
     init(
         _ family: LayoutFamily
@@ -93,5 +96,7 @@ struct NFTListItemReceiveViewTheme:
         ]
         
         titleTopPadding = 8
+
+        contentEdgeInsets = (8, 8, 8, 8)
     }
 }
