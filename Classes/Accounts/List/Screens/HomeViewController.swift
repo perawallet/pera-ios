@@ -218,6 +218,11 @@ extension HomeViewController {
         cell.observe(event: .buyAlgo) {
             [weak self] in
             guard let self = self else { return }
+
+            self.open(
+                .moonpayIntroduction(transactionDraft: nil, delegate: self),
+                by: .present
+            )
         }
     }
     
@@ -723,6 +728,15 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             .passphraseDisplay(address: accountHandle.value.address),
             by: .present
         )
+    }
+}
+
+extension HomeViewController: MoonpayIntroductionViewControllerDelegate {
+    func moonpayIntroductionViewController(
+        _ viewController: MoonpayIntroductionViewController,
+        didCompletedTransaction params: MoonpayParams
+    ) {
+        viewController.dismissScreen()
     }
 }
 

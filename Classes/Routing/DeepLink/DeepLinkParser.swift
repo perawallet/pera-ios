@@ -130,7 +130,12 @@ extension DeepLinkParser {
         url: URL
     ) -> Result? {
         if let moonpayParams = url.buildMoonPayParameters() {
-            return .success(.moonpay(params: moonpayParams))
+            NotificationCenter.default.post(
+                name: .didRedirectFromMoonPay,
+                object: self,
+                userInfo: [MoonpayParams.notificationObjectKey: moonpayParams]
+            )
+            return nil
         }
 
         guard let qr = url.buildQRText() else {
@@ -278,7 +283,6 @@ extension DeepLinkParser {
         case assetActionConfirmation(draft: AssetAlertDraft)
         case assetDetail(draft: TransactionListing)
         case sendTransaction(draft: QRSendTransactionDraft)
-        case moonpay(params: MoonpayParams)
         case wcMainTransactionScreen(draft: WalletConnectRequestDraft)
     }
     

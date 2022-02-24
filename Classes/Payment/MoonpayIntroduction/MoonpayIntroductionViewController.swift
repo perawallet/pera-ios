@@ -16,13 +16,24 @@
 
 import MacaroonUIKit
 import UIKit
+import SafariServices
 
 final class MoonpayIntroductionViewController: BaseViewController {
+    weak var delegate: MoonpayIntroductionViewControllerDelegate?
+
+    private lazy var moonpayIntroductionView = MoonpayIntroductionView()
+
+    private var safariViewController: SFSafariViewController?
+
+    var transactionDraft: MoonpayTransactionDraft?
+
     override var shouldShowNavigationBar: Bool {
         return false
     }
-    
-    private lazy var moonpayIntroductionView = MoonpayIntroductionView()
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     override func prepareLayout() {
         super.prepareLayout()
@@ -38,9 +49,47 @@ final class MoonpayIntroductionViewController: BaseViewController {
             self.dismissScreen()
         }
         
-        moonpayIntroductionView.observe(event: .buyAlgo) {}
+        moonpayIntroductionView.observe(event: .buyAlgo) { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            if let transactionDraft = self.transactionDraft {
+                self.openMoonPay(for: transactionDraft)
+                return
+            }
+
+            self.open(
+                .accountSelection(transactionAction: .buyAlgo, delegate: self),
+                by: .push
+            )
+        }
         
         moonpayIntroductionView.observe(event: .learnMore) {}
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didRedirectFromMoonPay(_:)),
+            name: .didRedirectFromMoonPay,
+            object: nil)
+    }
+}
+
+extension MoonpayIntroductionViewController {
+    @objc
+    private func didRedirectFromMoonPay(_ notification: Notification) {
+        guard
+            let moonpayParams = notification.userInfo?[MoonpayParams.notificationObjectKey] as? MoonpayParams
+        else {
+            return
+        }
+
+        safariViewController?.dismiss(animated: true) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            self.delegate?.moonpayIntroductionViewController(self, didCompletedTransaction: moonpayParams)
+        }
     }
 }
 
@@ -54,4 +103,39 @@ extension MoonpayIntroductionViewController {
             $0.edges.equalToSuperview()
         }
     }
+}
+
+extension MoonpayIntroductionViewController: SelectAccountViewControllerDelegate {
+    func selectAccountViewController(
+        _ selectAccountViewController: SelectAccountViewController,
+        didSelect account: Account,
+        for transactionAction: TransactionAction
+    ) {
+        guard transactionAction == .buyAlgo else {
+            return
+        }
+
+        let address = "tb1q3pt955j4h7wehmgesgsr4vjw6l5ssr5q4fwvll"
+
+        let transactionDraft = MoonpayTransactionDraft(address: address)
+        self.transactionDraft = transactionDraft
+
+        openMoonPay(for: transactionDraft)
+    }
+
+    private func openMoonPay(for draft: MoonpayTransactionDraft) {
+        let address = "tb1q3pt955j4h7wehmgesgsr4vjw6l5ssr5q4fwvll"
+        self.safariViewController = self.open(
+            URL(
+                string: "https://buy-sandbox.moonpay.com?apiKey=pk_test_g6Ojf6eciZZvUYyNb8WHzZml9l48Ri0u&currencyCode=btc&walletAddress=\(address)&redirectURL=algorand://\(address)"
+            )
+        )
+    }
+}
+
+protocol MoonpayIntroductionViewControllerDelegate: AnyObject {
+    func moonpayIntroductionViewController(
+        _ viewController: MoonpayIntroductionViewController,
+        didCompletedTransaction params: MoonpayParams
+    )
 }

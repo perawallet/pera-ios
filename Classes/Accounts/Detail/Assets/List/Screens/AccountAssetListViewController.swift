@@ -275,8 +275,29 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
         open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
     }
 
-    func transactionFloatingActionButtonViewControllerDidBuy(_ viewController: TransactionFloatingActionButtonViewController) {
-        
+    func transactionFloatingActionButtonViewControllerDidBuy(
+        _ viewController: TransactionFloatingActionButtonViewController
+    ) {
+        openBuyAlgo()
+    }
+
+    private func openBuyAlgo() {
+        self.open(
+            .moonpayIntroduction(
+                transactionDraft: MoonpayTransactionDraft(address: accountHandle.value.address),
+                delegate: self
+            ),
+            by: .present
+        )
+    }
+}
+
+extension AccountAssetListViewController: MoonpayIntroductionViewControllerDelegate {
+    func moonpayIntroductionViewController(
+        _ viewController: MoonpayIntroductionViewController,
+        didCompletedTransaction params: MoonpayParams
+    ) {
+        viewController.dismissScreen()
     }
 }
 

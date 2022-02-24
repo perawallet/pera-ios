@@ -12,30 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MoonpayParams.swift
+//   MoonpayTransactionDraft.swift
 
 import Foundation
 
-struct MoonpayParams: Hashable {
+struct MoonpayTransactionDraft {
     let address: String
-    let amount: String?
-    let transactionStatus: TransactionStatus
-    let transactionId: String
-
-    static var notificationObjectKey = "moonpay.params"
-
-    enum TransactionStatus: String {
-        case completed
-        case pending = "pending"
-        case rejected
-    }
-}
-
-
-extension MoonpayParams {
-    enum CodingKeys: String, CodingKey {
-        case amount = "amount"
-        case transactionStatus = "transactionStatus"
-        case transactionId = "transactionId"
-    }
 }

@@ -119,6 +119,7 @@ final class AlgosDetailInfoView:
     func setListeners() {
         rewardsInfoView.setListeners()
         rewardsInfoView.delegate = self
+        buyButton.addTarget(self, action: #selector(didTapBuy), for: .touchUpInside)
     }
 }
 
@@ -201,8 +202,14 @@ extension AlgosDetailInfoView: RewardsInfoViewDelegate {
     func rewardsInfoViewDidTapInfoButton(_ rewardsInfoView: RewardsInfoView) {
         delegate?.algosDetailInfoViewDidTapInfoButton(self)
     }
+
+    @objc
+    private func didTapBuy() {
+        delegate?.algosDetailInfoViewDidTapBuyButton(self)
+    }
 }
 
 protocol AlgosDetailInfoViewDelegate: AnyObject {
     func algosDetailInfoViewDidTapInfoButton(_ algosDetailInfoView: AlgosDetailInfoView)
+    func algosDetailInfoViewDidTapBuyButton(_ algosDetailInfoView: AlgosDetailInfoView)
 }

@@ -252,6 +252,8 @@ extension TabBarController {
         switch action {
         case .send: log(SendTabEvent())
         case .receive: log(ReceiveTabEvent())
+        case .buyAlgo:
+            break
         }
     }
 
@@ -259,6 +261,11 @@ extension TabBarController {
         toggleTransactionOptions()
 
 //        log(BuyTabEvent())
+
+        open(
+            .moonpayIntroduction(transactionDraft: nil, delegate: self),
+            by: .present
+        )
     }
 }
 
@@ -285,6 +292,15 @@ extension TabBarController: SelectAccountViewControllerDelegate {
                 )
             }
         }
+    }
+}
+
+extension TabBarController: MoonpayIntroductionViewControllerDelegate {
+    func moonpayIntroductionViewController(
+        _ viewController: MoonpayIntroductionViewController,
+        didCompletedTransaction params: MoonpayParams
+    ) {
+        viewController.dismissScreen()
     }
 }
 

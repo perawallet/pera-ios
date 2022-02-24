@@ -112,7 +112,10 @@ indirect enum Screen {
         transactionOption: WCTransactionOption?
     )
     case peraIntroduction
-    case moonpayIntroduction
+    case moonpayIntroduction(
+        transactionDraft: MoonpayTransactionDraft?,
+        delegate: MoonpayIntroductionViewControllerDelegate?
+    )
 }
 
 extension Screen {

@@ -27,11 +27,14 @@ final class SelectAccountAPIDataController:
 
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.selectAccountDataController")
+    private let transactionAction: TransactionAction
 
     init(
-        _ sharedDataController: SharedDataController
+        _ sharedDataController: SharedDataController,
+        transactionAction: TransactionAction
     ) {
         self.sharedDataController = sharedDataController
+        self.transactionAction = transactionAction
     }
 
     deinit {
@@ -111,15 +114,28 @@ extension SelectAccountAPIDataController {
                         return
                     }
 
-                    let accountPortfolio =
-                        AccountPortfolio(account: $0, currency: currency, calculator: calculator)
-                    
-                    let cellItem: SelectAccountListViewItem = .account(
-                        AccountPreviewViewModel(
-                            accountPortfolio
-                        ),
-                        $0
-                    )
+                    let cellItem: SelectAccountListViewItem
+
+                    if self.transactionAction == .buyAlgo {
+                        let algoAccount = CustomAccountPreview(
+                            AlgoAccountViewModel($0.value)
+                        )
+
+                        cellItem = .account(
+                            AccountPreviewViewModel(algoAccount),
+                            $0
+                        )
+                    } else {
+                        let accountPortfolio =
+                            AccountPortfolio(account: $0, currency: currency, calculator: calculator)
+
+                        cellItem = .account(
+                            AccountPreviewViewModel(
+                                accountPortfolio
+                            ),
+                            $0
+                        )
+                    }
 
                     accounts.append($0)
                     accountItems.append(cellItem)
