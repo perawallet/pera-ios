@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListItemReceiveViewTheme.swift
+//   CollectibleListItemReceiveViewTheme.swift
 
 import MacaroonUIKit
 
-struct NFTListItemReceiveViewTheme:
+struct CollectibleListItemReceiveViewTheme:
     LayoutSheet,
     StyleSheet {
     let containerCorner: Corner
@@ -76,7 +76,7 @@ struct NFTListItemReceiveViewTheme:
         let lineHeightMultiplier = 1.23
 
         let titleText: EditText = .attributedString(
-            "nfts-receive-action"
+            "collectibles-receive-action"
                 .localized
                 .attributed([
                     .font(font),

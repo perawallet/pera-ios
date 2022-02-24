@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListItemView.swift
+//   CollectibleListItemView.swift
 
 import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 
-final class NFTListItemView:
+final class CollectibleListItemView:
     View,
     ViewModelBindable,
     ListReusable {
@@ -28,7 +28,7 @@ final class NFTListItemView:
     private lazy var bottomLeftBadge = ImageView()
     
     func customize(
-        _ theme: NFTListItemViewTheme
+        _ theme: CollectibleListItemViewTheme
     ) {
         addImage(theme)
         addTitle(theme)
@@ -44,7 +44,7 @@ final class NFTListItemView:
     ) {}
 
     func bindData(
-        _ viewModel: NFTListItemViewModel?
+        _ viewModel: CollectibleListItemViewModel?
     ) {
         image.load(from: viewModel?.image)
         title.editText = viewModel?.title
@@ -53,9 +53,9 @@ final class NFTListItemView:
     }
 }
 
-extension NFTListItemView {
+extension CollectibleListItemView {
     private func addImage(
-        _ theme: NFTListItemViewTheme
+        _ theme: CollectibleListItemViewTheme
     ) {
         image.customizeAppearance(theme.image)
         image.layer.draw(corner: theme.corner)
@@ -73,7 +73,7 @@ extension NFTListItemView {
     }
 
     private func addTitle(
-        _ theme: NFTListItemViewTheme
+        _ theme: CollectibleListItemViewTheme
     ) {
         title.customizeAppearance(theme.title)
 
@@ -88,7 +88,7 @@ extension NFTListItemView {
     }
 
     private func addSubtitle(
-        _ theme: NFTListItemViewTheme
+        _ theme: CollectibleListItemViewTheme
     ) {
         subtitle.customizeAppearance(theme.subtitle)
 
@@ -101,7 +101,7 @@ extension NFTListItemView {
     }
 
     private func addBottomLeftBadge(
-        _ theme: NFTListItemViewTheme
+        _ theme: CollectibleListItemViewTheme
     ) {
         bottomLeftBadge.customizeAppearance(theme.bottomLeftBadge)
         bottomLeftBadge.layer.draw(corner: theme.corner)

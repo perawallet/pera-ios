@@ -295,7 +295,7 @@
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
 "accounts-title-assets" = "Assets";
-"accounts-title-nfts" = "NFTs";
+"accounts-title-collectibles" = "Collectibles";
 "accounts-title-history" = "History";
 "contacts-title-assets" = "Assets";
 "title-select-asset" = "Select Asset";
@@ -860,9 +860,9 @@
 "account-detail-portfolio-title" = "Account Value";
 "account-detail-assets-search" = "Search my assets";
 
-// MARK: NFTs
-"nft-list-empty-title" = "NFTs - Coming Soon!";
-"nft-list-empty-detail" = "You will be able to view your NFT collections\nin the Pera Wallet soon.\n\n\nOur team is working hard to make this feature available. Stay tuned!";
+// MARK: AccountDetail+Collectible
+"collectible-list-empty-title" = "NFTs - Coming Soon!";
+"collectible-list-empty-detail" = "You will be able to view your NFT collections\nin the Pera Wallet soon.\n\n\nOur team is working hard to make this feature available. Stay tuned!";
 
 // MARK: SendTransaction
 "send-transaction-title" = "Send %@";
@@ -912,8 +912,8 @@
 "pera-announcement-description-blog" = "Pera Wallet blog";
 "pera-announcement-action-title" = "Start Using Pera Wallet";
 
-// MARK: NFTs
-"title-nfts" = "Collectibles";
-"nfts-empty-title" = "Collectibles";
-"nfts-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
-"nfts-receive-action" = "Receive an NFT";
+// MARK: Collectibles
+"title-collectibles" = "Collectibles";
+"collectibles-empty-title" = "Collectibles";
+"collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
+"collectibles-receive-action" = "Receive an NFT";
