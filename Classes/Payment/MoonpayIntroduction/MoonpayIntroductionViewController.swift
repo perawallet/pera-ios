@@ -64,8 +64,6 @@ final class MoonpayIntroductionViewController: BaseViewController {
                 by: .push
             )
         }
-        
-        moonpayIntroductionView.observe(event: .learnMore) {}
 
         NotificationCenter.default.addObserver(
             self,
