@@ -1,0 +1,115 @@
+// Copyright 2022 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//   NFTListItemView.swift
+
+import UIKit
+import MacaroonUIKit
+import MacaroonURLImage
+
+final class NFTListItemView:
+    View,
+    ViewModelBindable,
+    ListReusable {
+    private lazy var image = URLImageView()
+    private lazy var title = Label()
+    private lazy var subtitle = Label()
+    private lazy var bottomLeftBadge = ImageView()
+    
+    func customize(
+        _ theme: NFTListItemViewTheme
+    ) {
+        addImage(theme)
+        addTitle(theme)
+        addSubtitle(theme)
+    }
+
+    func customizeAppearance(
+        _ styleSheet: NoStyleSheet
+    ) {}
+
+    func prepareLayout(
+        _ layoutSheet: NoLayoutSheet
+    ) {}
+
+    func bindData(
+        _ viewModel: NFTListItemViewModel?
+    ) {
+        image.load(from: viewModel?.image)
+        title.editText = viewModel?.title
+        subtitle.editText = viewModel?.subtitle
+        bottomLeftBadge.image = viewModel?.bottomLeftBadge?.uiImage
+    }
+}
+
+extension NFTListItemView {
+    private func addImage(
+        _ theme: NFTListItemViewTheme
+    ) {
+        image.customizeAppearance(theme.image)
+        image.layer.draw(corner: theme.corner)
+
+        addSubview(image)
+        image.fitToIntrinsicSize()
+        image.snp.makeConstraints {
+            $0.width == snp.width
+            $0.height == image.snp.width
+
+            $0.setPaddings((0, 0, .noMetric, 0))
+        }
+
+        addBottomLeftBadge(theme)
+    }
+
+    private func addTitle(
+        _ theme: NFTListItemViewTheme
+    ) {
+        title.customizeAppearance(theme.title)
+
+        title.contentEdgeInsets.top = theme.titleTopPadding
+        addSubview(title)
+        title.fitToVerticalIntrinsicSize()
+        title.snp.makeConstraints {
+            $0.top == image.snp.bottom
+
+            $0.setPaddings((.noMetric, 0, .noMetric, 0))
+        }
+    }
+
+    private func addSubtitle(
+        _ theme: NFTListItemViewTheme
+    ) {
+        subtitle.customizeAppearance(theme.subtitle)
+
+        addSubview(subtitle)
+        subtitle.snp.makeConstraints {
+            $0.top == title.snp.bottom
+
+            $0.setPaddings((.noMetric, 0, 0, 0))
+        }
+    }
+
+    private func addBottomLeftBadge(
+        _ theme: NFTListItemViewTheme
+    ) {
+        bottomLeftBadge.customizeAppearance(theme.bottomLeftBadge)
+        bottomLeftBadge.layer.draw(corner: theme.corner)
+
+        bottomLeftBadge.contentEdgeInsets = theme.bottomLeftBadgeContentEdgeInsets
+        image.addSubview(bottomLeftBadge)
+        bottomLeftBadge.snp.makeConstraints {
+            $0.setPaddings(theme.bottomLeftBadgePaddings)
+        }
+    }
+}

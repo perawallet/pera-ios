@@ -40,6 +40,6 @@ struct NFTListItemLoadingViewTheme:
         subtitleViewHeight = 20
         subtitleWidthMultiplier = 0.75
 
-        corner = Corner(radius:  4)
+        corner = Corner(radius: 4)
     }
 }

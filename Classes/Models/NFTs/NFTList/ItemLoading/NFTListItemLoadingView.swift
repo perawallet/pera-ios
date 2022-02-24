@@ -64,7 +64,9 @@ final class NFTListItemLoadingView:
 }
 
 extension NFTListItemLoadingView {
-    private func addImage(_ theme: NFTListItemLoadingViewTheme) {
+    private func addImage(
+        _ theme: NFTListItemLoadingViewTheme
+    ) {
         image.draw(corner: theme.corner)
 
         addSubview(image)
@@ -77,7 +79,9 @@ extension NFTListItemLoadingView {
         }
     }
 
-    private func addTitle(_ theme: NFTListItemLoadingViewTheme) {
+    private func addTitle(
+        _ theme: NFTListItemLoadingViewTheme
+    ) {
         title.draw(corner: theme.corner)
 
         addSubview(title)
@@ -89,7 +93,9 @@ extension NFTListItemLoadingView {
         }
     }
 
-    private func addSubtitle(_ theme: NFTListItemLoadingViewTheme) {
+    private func addSubtitle(
+        _ theme: NFTListItemLoadingViewTheme
+    ) {
         subtitle.draw(corner: theme.corner)
 
         addSubview(subtitle)
