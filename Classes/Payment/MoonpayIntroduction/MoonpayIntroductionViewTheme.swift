@@ -28,7 +28,7 @@ struct MoonpayIntroductionViewTheme:
     let subtitleLabel: TextStyle
     let descriptionLabel: TextStyle
     let securityLabel: TextStyle
-    let buyButton: ButtonStyle
+    let buyAlgoButton: ButtonStyle
     let buttonContentEdgeInsets: LayoutPaddings
     let buttonCorner: Corner
     let topContainer: ViewStyle
@@ -84,7 +84,7 @@ struct MoonpayIntroductionViewTheme:
             .textColor(AppColors.Shared.Helpers.positive),
             .textOverflow(FittingText())
         ]
-        buyButton = [
+        buyAlgoButton = [
             .title("moonpay-introduction-title".localized),
             .titleColor([
                 .normal(AppColors.Components.Button.Primary.text)

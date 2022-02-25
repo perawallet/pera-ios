@@ -36,7 +36,7 @@ final class TabBarController: TabBarContainer {
     private lazy var toggleTransactionOptionsActionView = Button()
     private lazy var transactionOptionsView = createTransactionOptions()
 
-    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
@@ -134,10 +134,10 @@ extension TabBarController {
             guard let self = self else { return }
             self.navigateToAccountSelection(.receive)
         }
-        aView.observe(event: .buy) {
+        aView.observe(event: .buyAlgo) {
             [weak self] in
             guard let self = self else { return }
-            self.navigateToMoonpay()
+            self.navigateToBuyAlgo()
         }
         aView.observe(event: .close) {
             [weak self] in
@@ -259,13 +259,11 @@ extension TabBarController {
         }
     }
 
-    private func navigateToMoonpay() {
+    private func navigateToBuyAlgo() {
         toggleTransactionOptions()
 
-//        log(BuyTabEvent())
-
         open(
-            .moonpayIntroduction(transactionDraft: nil, delegate: self),
+            .buyAlgoHome(transactionDraft: nil, delegate: self),
             by: .present
         )
     }
@@ -297,13 +295,10 @@ extension TabBarController: SelectAccountViewControllerDelegate {
     }
 }
 
-extension TabBarController: MoonpayIntroductionViewControllerDelegate {
-    func moonpayIntroductionViewController(
-        _ viewController: MoonpayIntroductionViewController,
-        didCompletedTransaction params: MoonpayParams
-    ) {
-        viewController.dismissScreen(animated: true) {
-            self.modalTransition.perform(
+extension TabBarController: BuyAlgoHomeScreenDelegate {
+    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: MoonpayParams) {
+        screen.dismissScreen(animated: true) {
+            self.buyAlgoResultTransition.perform(
                 .moonpayTransaction(moonpayParams: params),
                 by: .present
             )

@@ -112,9 +112,9 @@ indirect enum Screen {
         transactionOption: WCTransactionOption?
     )
     case peraIntroduction
-    case moonpayIntroduction(
+    case buyAlgoHome(
         transactionDraft: MoonpayTransactionDraft?,
-        delegate: MoonpayIntroductionViewControllerDelegate?
+        delegate: BuyAlgoHomeScreenDelegate?
     )
     case moonpayTransaction(moonpayParams: MoonpayParams)
 }

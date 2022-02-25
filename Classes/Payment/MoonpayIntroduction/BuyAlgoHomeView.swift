@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MoonpayIntroductionView.swift
+//   BuyAlgoHomeView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class MoonpayIntroductionView:
+final class BuyAlgoHomeView:
     View,
     ViewModelBindable,
     UIInteractionObservable,
@@ -45,7 +45,7 @@ final class MoonpayIntroductionView:
     private lazy var paymentMastercardImageView = ImageView()
     private lazy var paymentVisaImageView = ImageView()
     private lazy var paymentAppleImageView = ImageView()
-    private lazy var buyButton = MacaroonUIKit.Button()
+    private lazy var buyAlgoButton = MacaroonUIKit.Button()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,7 +62,7 @@ final class MoonpayIntroductionView:
         addSecurityImageView(theme)
         addSecurityLabel(theme)
         addPaymentView(theme)
-        addBuyButton(theme)
+        addBuyAlgoButton(theme)
         addTopContainerView(theme)
         addMoonpayBackgroundImageView(theme)
         addMoonpayLogoImageView(theme)
@@ -91,11 +91,11 @@ final class MoonpayIntroductionView:
         scrollView.delegate = self
         
         startPublishing(event: .closeScreen, for: closeButton)
-        startPublishing(event: .buyAlgo, for: buyButton)
+        startPublishing(event: .buyAlgo, for: buyAlgoButton)
     }
 }
 
-extension MoonpayIntroductionView {
+extension BuyAlgoHomeView {
     private func addScrollView(_ theme: MoonpayIntroductionViewTheme){
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
@@ -165,13 +165,13 @@ extension MoonpayIntroductionView {
         paymentView.addArrangedSubview(paymentVisaImageView)
         paymentView.addArrangedSubview(paymentAppleImageView)
     }
-    private func addBuyButton(_ theme: MoonpayIntroductionViewTheme){
-        buyButton.contentEdgeInsets = UIEdgeInsets(theme.buttonContentEdgeInsets)
-        buyButton.draw(corner: theme.buttonCorner)
-        buyButton.customizeAppearance(theme.buyButton)
+    private func addBuyAlgoButton(_ theme: MoonpayIntroductionViewTheme){
+        buyAlgoButton.contentEdgeInsets = UIEdgeInsets(theme.buttonContentEdgeInsets)
+        buyAlgoButton.draw(corner: theme.buttonCorner)
+        buyAlgoButton.customizeAppearance(theme.buyAlgoButton)
         
-        addSubview(buyButton)
-        buyButton.snp.makeConstraints {
+        addSubview(buyAlgoButton)
+        buyAlgoButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomPadding)
         }
@@ -225,7 +225,7 @@ extension MoonpayIntroductionView {
 
 
 /// <note>: Parallax effect
-extension MoonpayIntroductionView: UIScrollViewDelegate {
+extension BuyAlgoHomeView: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let contentY = scrollView.contentOffset.y + scrollView.contentInset.top
 
@@ -256,7 +256,7 @@ extension MoonpayIntroductionView: UIScrollViewDelegate {
     }
 }
 
-extension MoonpayIntroductionView {
+extension BuyAlgoHomeView {
     enum Event {
         case closeScreen
         case buyAlgo

@@ -29,7 +29,7 @@ final class AlgosDetailInfoView:
     private lazy var algosValueLabel = UILabel()
     private lazy var secondaryValueLabel = Label()
     private lazy var rewardsInfoView = RewardsInfoView()
-    private lazy var buyButton = Button()
+    private lazy var buyAlgoButton = Button()
     private lazy var bottomSeparator = UIView()
 
     func customize(
@@ -41,7 +41,7 @@ final class AlgosDetailInfoView:
         addAlgosValueLabel(theme)
         addSecondaryValueLabel(theme)
         addRewardsInfoView(theme)
-        addBuyButton(theme)
+        addBuyAlgoButton(theme)
         addBottomSeparator(theme)
     }
 
@@ -98,8 +98,8 @@ final class AlgosDetailInfoView:
         theme.separatorPadding +
         theme.separator.size +
         theme.bottomPadding +
-        theme.buyButtonHeight +
-        theme.buyButtonMargin.top
+        theme.buyAlgoButtonHeight +
+        theme.buyAlgoButtonMargin.top
 
         if !viewModel.secondaryValue.isNilOrEmpty {
             let secondaryValueLabelSize = viewModel.secondaryValue.boundingSize(
@@ -119,7 +119,7 @@ final class AlgosDetailInfoView:
     func setListeners() {
         rewardsInfoView.setListeners()
         rewardsInfoView.delegate = self
-        buyButton.addTarget(self, action: #selector(didTapBuy), for: .touchUpInside)
+        buyAlgoButton.addTouch(target: self, action: #selector(didTapBuy))
     }
 }
 
@@ -168,17 +168,17 @@ extension AlgosDetailInfoView {
         }
     }
 
-    private func addBuyButton(
+    private func addBuyAlgoButton(
         _ theme: AlgosDetailInfoViewTheme
     ) {
-        buyButton.customize(theme.buyButton)
-        buyButton.setTitle("moonpay-buy-button-title".localized, for: .normal)
+        buyAlgoButton.customize(theme.buyAlgoButton)
+        buyAlgoButton.setTitle("moonpay-buy-button-title".localized, for: .normal)
 
-        addSubview(buyButton)
-        buyButton.snp.makeConstraints {
-            $0.top.equalTo(rewardsInfoView.snp.bottom).offset(theme.buyButtonMargin.top)
+        addSubview(buyAlgoButton)
+        buyAlgoButton.snp.makeConstraints {
+            $0.top.equalTo(rewardsInfoView.snp.bottom).offset(theme.buyAlgoButtonMargin.top)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
-            $0.fitToHeight(theme.buyButtonHeight)
+            $0.fitToHeight(theme.buyAlgoButtonHeight)
         }
     }
 
@@ -190,7 +190,7 @@ extension AlgosDetailInfoView {
 
         addSubview(bottomSeparator)
         bottomSeparator.snp.makeConstraints {
-            $0.top.equalTo(buyButton.snp.bottom).offset(theme.separatorPadding)
+            $0.top.equalTo(buyAlgoButton.snp.bottom).offset(theme.separatorPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.equalToSuperview().inset(theme.bottomPadding)
             $0.fitToHeight(theme.separator.size)

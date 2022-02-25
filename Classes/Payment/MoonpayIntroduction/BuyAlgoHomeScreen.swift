@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MoonpayIntroductionViewController.swift
+//   BuyAlgoHomeScreen.swift
 
 import MacaroonUIKit
 import UIKit
 import SafariServices
 
-final class MoonpayIntroductionViewController: BaseViewController {
-    weak var delegate: MoonpayIntroductionViewControllerDelegate?
+final class BuyAlgoHomeScreen: BaseViewController {
+    weak var delegate: BuyAlgoHomeScreenDelegate?
 
-    private lazy var moonpayIntroductionView = MoonpayIntroductionView()
+    private lazy var homeView = BuyAlgoHomeView()
 
     private var safariViewController: SFSafariViewController?
 
@@ -37,19 +37,19 @@ final class MoonpayIntroductionViewController: BaseViewController {
     
     override func prepareLayout() {
         super.prepareLayout()
-        addMoonpayIntroductionView()
+        addHomeView()
     }
     
     override func setListeners() {
         super.setListeners()
         
-        moonpayIntroductionView.observe(event: .closeScreen) {
+        homeView.observe(event: .closeScreen) {
             [weak self] in
             guard let self = self else { return }
             self.dismissScreen()
         }
         
-        moonpayIntroductionView.observe(event: .buyAlgo) { [weak self] in
+        homeView.observe(event: .buyAlgo) { [weak self] in
             guard let self = self else {
                 return
             }
@@ -73,7 +73,7 @@ final class MoonpayIntroductionViewController: BaseViewController {
     }
 }
 
-extension MoonpayIntroductionViewController {
+extension BuyAlgoHomeScreen {
     @objc
     private func didRedirectFromMoonPay(_ notification: Notification) {
         guard
@@ -86,24 +86,24 @@ extension MoonpayIntroductionViewController {
             guard let self = self else {
                 return
             }
-            self.delegate?.moonpayIntroductionViewController(self, didCompletedTransaction: moonpayParams)
+            self.delegate?.buyAlgoHomeScreen(self, didCompletedTransaction: moonpayParams)
         }
     }
 }
 
-extension MoonpayIntroductionViewController {
-    private func addMoonpayIntroductionView() {
-        moonpayIntroductionView.customize(MoonpayIntroductionViewTheme())
-        moonpayIntroductionView.bindData(MoonpayIntroductionViewModel())
+extension BuyAlgoHomeScreen {
+    private func addHomeView() {
+        homeView.customize(MoonpayIntroductionViewTheme())
+        homeView.bindData(MoonpayIntroductionViewModel())
         
-        view.addSubview(moonpayIntroductionView)
-        moonpayIntroductionView.snp.makeConstraints {
+        view.addSubview(homeView)
+        homeView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
 }
 
-extension MoonpayIntroductionViewController: SelectAccountViewControllerDelegate {
+extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
     func selectAccountViewController(
         _ selectAccountViewController: SelectAccountViewController,
         didSelect account: Account,
@@ -131,9 +131,9 @@ extension MoonpayIntroductionViewController: SelectAccountViewControllerDelegate
     }
 }
 
-protocol MoonpayIntroductionViewControllerDelegate: AnyObject {
-    func moonpayIntroductionViewController(
-        _ viewController: MoonpayIntroductionViewController,
+protocol BuyAlgoHomeScreenDelegate: AnyObject {
+    func buyAlgoHomeScreen(
+        _ screen: BuyAlgoHomeScreen,
         didCompletedTransaction params: MoonpayParams
     )
 }

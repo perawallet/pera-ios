@@ -25,6 +25,8 @@ final class HomeViewController:
     UICollectionViewDelegateFlowLayout {
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+
     private lazy var pushNotificationController =
         PushNotificationController(session: session!, api: api!, bannerController: bannerController)
     
@@ -220,7 +222,7 @@ extension HomeViewController {
             guard let self = self else { return }
 
             self.open(
-                .moonpayIntroduction(transactionDraft: nil, delegate: self),
+                .buyAlgoHome(transactionDraft: nil, delegate: self),
                 by: .present
             )
         }
@@ -731,13 +733,10 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
     }
 }
 
-extension HomeViewController: MoonpayIntroductionViewControllerDelegate {
-    func moonpayIntroductionViewController(
-        _ viewController: MoonpayIntroductionViewController,
-        didCompletedTransaction params: MoonpayParams
-    ) {
-        viewController.dismissScreen(animated: true) {
-            self.modalTransition.perform(
+extension HomeViewController: BuyAlgoHomeScreenDelegate {
+    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: MoonpayParams) {
+        screen.dismissScreen(animated: true) {
+            self.buyAlgoResultTransition.perform(
                 .moonpayTransaction(moonpayParams: params),
                 by: .present
             )

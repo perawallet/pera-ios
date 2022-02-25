@@ -32,7 +32,7 @@ struct TransactionOptionsViewTheme:
     var spacingBetweenActions: LayoutMetric
     var sendAction: ButtonStyle
     var receiveAction: ButtonStyle
-    var buyAction: ButtonStyle
+    var buyAlgoAction: ButtonStyle
     
     init(
         _ family: LayoutFamily
@@ -72,7 +72,7 @@ struct TransactionOptionsViewTheme:
             .title("title-receive".localized),
             .titleColor([ .normal(actionTitleColor) ])
         ]
-        self.buyAction = [
+        self.buyAlgoAction = [
             .font(actionFont),
             .icon([ .normal("tabbar-icon-buy") ]),
             .title("moonpay-buy-button-title".localized),

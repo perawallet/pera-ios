@@ -22,6 +22,8 @@ import MacaroonUIKit
 class TransactionsViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var bottomSheetTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+
     private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
 
     private(set) var accountHandle: AccountHandle
@@ -255,7 +257,7 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
 
     private func openBuyAlgo() {
         self.open(
-            .moonpayIntroduction(
+            .buyAlgoHome(
                 transactionDraft: MoonpayTransactionDraft(address: accountHandle.value.address),
                 delegate: self
             ),
@@ -264,13 +266,10 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
     }
 }
 
-extension TransactionsViewController: MoonpayIntroductionViewControllerDelegate {
-    func moonpayIntroductionViewController(
-        _ viewController: MoonpayIntroductionViewController,
-        didCompletedTransaction params: MoonpayParams
-    ) {
-        viewController.dismissScreen(animated: true) {
-            self.bottomSheetTransition.perform(
+extension TransactionsViewController: BuyAlgoHomeScreenDelegate {
+    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: MoonpayParams) {
+        screen.dismissScreen(animated: true) {
+            self.buyAlgoResultTransition.perform(
                 .moonpayTransaction(moonpayParams: params),
                 by: .present
             )

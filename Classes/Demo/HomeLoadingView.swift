@@ -45,7 +45,7 @@ final class HomeLoadingView:
         gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
     )
 
-    private lazy var buyButton = Button()
+    private lazy var buyAlgoButton = Button()
 
     private lazy var accountsLabel = Label()
     private lazy var firstAccountPreviewLoading = AssetPreviewLoadingView()
@@ -56,7 +56,7 @@ final class HomeLoadingView:
     ) {
         super.init(frame: frame)
         addPortfolioView()
-        addBuyButton()
+        addBuyAlgoButton()
         addAccountCells()
     }
     
@@ -176,15 +176,15 @@ extension HomeLoadingView {
         }
     }
 
-    private func addBuyButton() {
-        buyButton.customize(theme.buyButtonTheme)
+    private func addBuyAlgoButton() {
+        buyAlgoButton.customize(theme.buyAlgoButtonTheme)
 
-        addSubview(buyButton)
-        buyButton.snp.makeConstraints {
-            $0.top.equalTo(holdingsContainer.snp.bottom).offset(theme.buyButtonMargin.top)
+        addSubview(buyAlgoButton)
+        buyAlgoButton.snp.makeConstraints {
+            $0.top.equalTo(holdingsContainer.snp.bottom).offset(theme.buyAlgoButtonMargin.top)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
-            $0.height.equalTo(theme.buyButtonHeight)
+            $0.height.equalTo(theme.buyAlgoButtonHeight)
         }
     }
 
@@ -193,7 +193,7 @@ extension HomeLoadingView {
 
         addSubview(accountsLabel)
         accountsLabel.snp.makeConstraints {
-            $0.top.equalTo(buyButton.snp.bottom).offset(theme.accountsLabelMargin.top)
+            $0.top.equalTo(buyAlgoButton.snp.bottom).offset(theme.accountsLabelMargin.top)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
         }

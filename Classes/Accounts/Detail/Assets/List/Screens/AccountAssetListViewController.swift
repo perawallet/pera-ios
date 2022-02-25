@@ -34,7 +34,7 @@ final class AccountAssetListViewController: BaseViewController {
     private lazy var listDataSource = AccountAssetListDataSource(listView)
     private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
-    private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build()
@@ -285,7 +285,7 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
 
     private func openBuyAlgo() {
         self.open(
-            .moonpayIntroduction(
+            .buyAlgoHome(
                 transactionDraft: MoonpayTransactionDraft(address: accountHandle.value.address),
                 delegate: self
             ),
@@ -294,13 +294,10 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
     }
 }
 
-extension AccountAssetListViewController: MoonpayIntroductionViewControllerDelegate {
-    func moonpayIntroductionViewController(
-        _ viewController: MoonpayIntroductionViewController,
-        didCompletedTransaction params: MoonpayParams
-    ) {
-        viewController.dismissScreen(animated: true) {
-            self.modalTransition.perform(
+extension AccountAssetListViewController: BuyAlgoHomeScreenDelegate {
+    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: MoonpayParams) {
+        screen.dismissScreen(animated: true) {
+            self.buyAlgoResultTransition.perform(
                 .moonpayTransaction(moonpayParams: params),
                 by: .present
             )

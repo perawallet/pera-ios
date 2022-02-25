@@ -623,13 +623,13 @@ class Router:
             )
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
-        case .moonpayIntroduction(let draft, let delegate):
-            let moonPayIntroductionViewController = MoonpayIntroductionViewController(
+        case .buyAlgoHome(let draft, let delegate):
+            let buyAlgoHomeScreen = BuyAlgoHomeScreen(
                 configuration: configuration
             )
-            moonPayIntroductionViewController.delegate = delegate
-            moonPayIntroductionViewController.transactionDraft = draft
-            viewController = moonPayIntroductionViewController
+            buyAlgoHomeScreen.delegate = delegate
+            buyAlgoHomeScreen.transactionDraft = draft
+            viewController = buyAlgoHomeScreen
         case let .moonpayTransaction(moonpayParams):
             viewController = MoonpayTransactionViewController(moonpayParams: moonpayParams, configuration: configuration)
         }

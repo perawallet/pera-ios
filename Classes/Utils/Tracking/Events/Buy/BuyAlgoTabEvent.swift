@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyTabEvent.swift
+//   BuyAlgoTabEvent.swift
 
 import Foundation
 
-struct BuyTabEvent: AnalyticsEvent {
+struct BuyAlgoTabEvent: AnalyticsEvent {
     let key: AnalyticsEventKey = .tabBuyAlgo
 }

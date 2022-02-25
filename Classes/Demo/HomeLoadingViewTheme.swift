@@ -41,9 +41,9 @@ struct HomeLoadingViewTheme:
     var algoHoldingLoadingLeadingInset: LayoutMetric
     var algoHoldingLoadingSize: LayoutSize
 
-    var buyButtonTheme: ButtonTheme
-    var buyButtonMargin: LayoutMargins
-    var buyButtonHeight: LayoutMetric
+    var buyAlgoButtonTheme: ButtonTheme
+    var buyAlgoButtonMargin: LayoutMargins
+    var buyAlgoButtonHeight: LayoutMetric
 
     var accountsLabelStyle: TextStyle
     var accountsLabelMargin: LayoutMargins
@@ -112,9 +112,9 @@ struct HomeLoadingViewTheme:
         self.algoHoldingLoadingLeadingInset = 12
         self.algoHoldingLoadingSize = (57, 20)
 
-        self.buyButtonTheme = ButtonPrimaryTheme(family)
-        self.buyButtonMargin = (44, 24, .noMetric, 24)
-        self.buyButtonHeight = 52
+        self.buyAlgoButtonTheme = ButtonPrimaryTheme(family)
+        self.buyAlgoButtonMargin = (44, 24, .noMetric, 24)
+        self.buyAlgoButtonHeight = 52
 
         self.accountsLabelStyle = [
             .font(Fonts.DMSans.medium.make(15)),
