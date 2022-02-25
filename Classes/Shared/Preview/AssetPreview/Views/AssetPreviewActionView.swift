@@ -102,7 +102,7 @@ extension AssetPreviewActionView {
     }
 
     private func addAssetShortNameLabel(_ theme: AssetPreviewActionViewTheme) {
-        assetShortNameLabel.customizeAppearance(theme.assetAndNFTs)
+        assetShortNameLabel.customizeAppearance(theme.assetAndCollectibles)
 
         assetNameVerticalStackView.addArrangedSubview(assetShortNameLabel)
     }

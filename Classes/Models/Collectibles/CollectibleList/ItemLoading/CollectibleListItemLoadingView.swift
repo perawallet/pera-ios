@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListItemLoadingView.swift
+//   CollectibleListItemLoadingView.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class NFTListItemLoadingView:
+final class CollectibleListItemLoadingView:
     View,
     ListReusable {
     private lazy var image = GradientView(
@@ -43,7 +43,7 @@ final class NFTListItemLoadingView:
     }
 
     func customize(
-        _ theme: NFTListItemLoadingViewTheme
+        _ theme: CollectibleListItemLoadingViewTheme
     ) {
         addImage(theme)
         addTitle(theme)
@@ -63,9 +63,9 @@ final class NFTListItemLoadingView:
     }
 }
 
-extension NFTListItemLoadingView {
+extension CollectibleListItemLoadingView {
     private func addImage(
-        _ theme: NFTListItemLoadingViewTheme
+        _ theme: CollectibleListItemLoadingViewTheme
     ) {
         image.draw(corner: theme.corner)
 
@@ -80,7 +80,7 @@ extension NFTListItemLoadingView {
     }
 
     private func addTitle(
-        _ theme: NFTListItemLoadingViewTheme
+        _ theme: CollectibleListItemLoadingViewTheme
     ) {
         title.draw(corner: theme.corner)
 
@@ -94,7 +94,7 @@ extension NFTListItemLoadingView {
     }
 
     private func addSubtitle(
-        _ theme: NFTListItemLoadingViewTheme
+        _ theme: CollectibleListItemLoadingViewTheme
     ) {
         subtitle.draw(corner: theme.corner)
 

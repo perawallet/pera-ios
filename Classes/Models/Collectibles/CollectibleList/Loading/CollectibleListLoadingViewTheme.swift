@@ -12,22 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListLoadingViewTheme.swift
+//   CollectibleListLoadingViewTheme.swift
 
 import MacaroonUIKit
 
-struct NFTListLoadingViewTheme:
+struct CollectibleListLoadingViewTheme:
     StyleSheet,
     LayoutSheet {
     let searchInputPaddings: LayoutPaddings
     let searchInputHeight: LayoutMetric
 
-    let nftListItemsVerticalStackSpacing: LayoutMetric
-    let nftListItemsVerticalStackPaddings: LayoutPaddings
+    let collectibleListItemsVerticalStackSpacing: LayoutMetric
+    let collectibleListItemsVerticalStackPaddings: LayoutPaddings
 
-    let nftListItemsHorizontalStackSpacing: LayoutMetric
+    let collectibleListItemsHorizontalStackSpacing: LayoutMetric
 
-    let nftListItemLoadingViewTheme: NFTListItemLoadingViewTheme
+    let collectibleListItemLoadingViewTheme: CollectibleListItemLoadingViewTheme
 
     let corner: Corner
 
@@ -37,12 +37,12 @@ struct NFTListLoadingViewTheme:
         searchInputPaddings = (20, 24, .noMetric, 24)
         searchInputHeight = 40
 
-        nftListItemsVerticalStackSpacing = 28
-        nftListItemsVerticalStackPaddings = (24, 24, .noMetric, 24)
+        collectibleListItemsVerticalStackSpacing = 28
+        collectibleListItemsVerticalStackPaddings = (24, 24, .noMetric, 24)
 
-        nftListItemsHorizontalStackSpacing = 24
+        collectibleListItemsHorizontalStackSpacing = 24
 
-        nftListItemLoadingViewTheme = NFTListItemLoadingViewTheme()
+        collectibleListItemLoadingViewTheme = CollectibleListItemLoadingViewTheme()
 
         corner = Corner(radius: 4)
     }

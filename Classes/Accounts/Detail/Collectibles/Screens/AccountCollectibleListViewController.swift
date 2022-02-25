@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//   AccountNFTListViewController.swift
+//   AccountCollectibleListViewController.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class AccountNFTListViewController: BaseViewController {
+final class AccountCollectibleListViewController: BaseViewController {
     
     private let account: Account
 
@@ -41,7 +41,7 @@ final class AccountNFTListViewController: BaseViewController {
     }
 }
 
-extension AccountNFTListViewController {
+extension AccountCollectibleListViewController {
     private func addNoContentView() {
         noContentView.customize(NoContentViewCommonTheme())
 
@@ -52,6 +52,6 @@ extension AccountNFTListViewController {
     }
 
     private func bindNoContentViewData() {
-        noContentView.bindData(AccountNFTListNoContentViewModel())
+        noContentView.bindData(AccountCollectibleListNoContentViewModel())
     }
 }

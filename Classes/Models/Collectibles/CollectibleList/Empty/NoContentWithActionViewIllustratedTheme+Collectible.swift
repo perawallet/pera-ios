@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NoContentWithActionViewIllustratedTheme+NFT.swift
+//   NoContentWithActionViewIllustratedTheme+Collectible.swift
 
 import Foundation
 
 extension NoContentWithActionViewIllustratedTheme {
-    mutating func configureForNFTsNoContentWithAction() {
+    mutating func configureForCollectiblesNoContentWithAction() {
         action = action.modify(
             [ .icon( [.normal("icon-plus"), .highlighted("icon-plus")] ) ]
         )

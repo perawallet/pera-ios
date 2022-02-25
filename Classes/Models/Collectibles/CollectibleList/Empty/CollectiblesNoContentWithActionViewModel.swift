@@ -12,36 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListItemViewModel.swift
+//   CollectiblesNoContentWithActionViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct NFTListItemViewModel: ViewModel {
-    private(set) var image: ImageSource?
+struct CollectiblesNoContentWithActionViewModel: NoContentWithActionViewModel {
+    private(set) var icon: Image?
     private(set) var title: EditText?
-    private(set) var subtitle: EditText?
-    private(set) var bottomLeftBadge: Image?
+    private(set) var body: EditText?
+    private(set) var actionTitle: EditText?
 
     init() {
-        bindImage()
+        bindIcon()
         bindTitle()
-        bindSubtitle()
-        bindBottomLeftBadge()
+        bindBody()
+        bindActionTitle()
     }
 }
 
-extension NFTListItemViewModel {
-    private mutating func bindImage() {
-        image = nil
+extension CollectiblesNoContentWithActionViewModel {
+    private mutating func bindIcon() {
+        icon = "img-collectible-empty"
     }
 
     private mutating func bindTitle() {
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
+        let font = Fonts.DMSans.medium.make(32)
+        let lineHeightMultiplier = 0.96
 
         title = .attributedString(
-            "" /// <todo>
+            "collectibles-empty-title"
                 .localized
                 .attributed([
                     .font(font),
@@ -55,12 +55,12 @@ extension NFTListItemViewModel {
         )
     }
 
-    private mutating func bindSubtitle() {
+    private mutating func bindBody() {
         let font = Fonts.DMSans.regular.make(15)
         let lineHeightMultiplier = 1.23
 
-        subtitle = .attributedString(
-            "" /// <todo>
+        body = .attributedString(
+            "collectibles-empty-body"
                 .localized
                 .attributed([
                     .font(font),
@@ -74,7 +74,7 @@ extension NFTListItemViewModel {
         )
     }
 
-    private mutating func bindBottomLeftBadge() {
-        bottomLeftBadge = nil
+    private mutating func bindActionTitle() {
+        actionTitle = .string("collectibles-receive-action".localized)
     }
 }

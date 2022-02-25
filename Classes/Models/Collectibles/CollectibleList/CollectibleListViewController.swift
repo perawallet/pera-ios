@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListViewController.swift
+//   CollectibleListViewController.swift
 
 import Foundation
 
-final class NFTListViewController: BaseViewController {
+final class CollectibleListViewController: BaseViewController {
     override var prefersLargeTitle: Bool {
         return true
     }
     
     override var name: AnalyticsScreenName? {
-        return .nfts
+        return .collectibles
     }
 
     override func configureNavigationBarAppearance() {
@@ -35,7 +35,7 @@ final class NFTListViewController: BaseViewController {
     }
 }
 
-extension NFTListViewController {
+extension CollectibleListViewController {
     private func addBarButtons() {
         let addBarButtonItem = ALGBarButtonItem(kind: .add) { [weak self] in
             guard let self = self else {
@@ -49,6 +49,6 @@ extension NFTListViewController {
     }
 
     private func bindNavigationItemTitle() {
-        title = "title-nfts".localized
+        title = "title-collectibles".localized
     }
 }
