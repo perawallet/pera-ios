@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListItemViewTheme.swift
+//   CollectibleListItemViewTheme.swift
 
 import MacaroonUIKit
 import MacaroonURLImage
 
-struct NFTListItemViewTheme:
+struct CollectibleListItemViewTheme:
     LayoutSheet,
     StyleSheet {
     let image: URLImageViewStyleSheet
@@ -36,7 +36,7 @@ struct NFTListItemViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        image = NFTListItemImageViewTheme()
+        image = CollectibleListItemImageViewTheme()
 
         title = [
             .textColor(AppColors.Components.Text.gray),
@@ -59,7 +59,7 @@ struct NFTListItemViewTheme:
     }
 }
 
-struct NFTListItemImageViewTheme: URLImageViewStyleSheet {
+struct CollectibleListItemImageViewTheme: URLImageViewStyleSheet {
     struct PlaceholderTheme: URLImagePlaceholderViewStyleSheet {
         let background: ViewStyle
         let image: ImageStyle

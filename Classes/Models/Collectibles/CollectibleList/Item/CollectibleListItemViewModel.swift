@@ -12,36 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTsNoContentWithActionViewModel.swift
+//   CollectibleListItemViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct NFTsNoContentWithActionViewModel: NoContentWithActionViewModel {
-    private(set) var icon: Image?
+struct CollectibleListItemViewModel: ViewModel {
+    private(set) var image: ImageSource?
     private(set) var title: EditText?
-    private(set) var body: EditText?
-    private(set) var actionTitle: EditText?
+    private(set) var subtitle: EditText?
+    private(set) var bottomLeftBadge: Image?
 
     init() {
-        bindIcon()
+        bindImage()
         bindTitle()
-        bindBody()
-        bindActionTitle()
+        bindSubtitle()
+        bindBottomLeftBadge()
     }
 }
 
-extension NFTsNoContentWithActionViewModel {
-    private mutating func bindIcon() {
-        icon = "img-nft-empty"
+extension CollectibleListItemViewModel {
+    private mutating func bindImage() {
+        image = nil
     }
 
     private mutating func bindTitle() {
-        let font = Fonts.DMSans.medium.make(32)
-        let lineHeightMultiplier = 0.96
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
 
         title = .attributedString(
-            "nfts-empty-title"
+            "" /// <todo>
                 .localized
                 .attributed([
                     .font(font),
@@ -55,12 +55,12 @@ extension NFTsNoContentWithActionViewModel {
         )
     }
 
-    private mutating func bindBody() {
+    private mutating func bindSubtitle() {
         let font = Fonts.DMSans.regular.make(15)
         let lineHeightMultiplier = 1.23
 
-        body = .attributedString(
-            "nfts-empty-body"
+        subtitle = .attributedString(
+            "" /// <todo>
                 .localized
                 .attributed([
                     .font(font),
@@ -74,7 +74,7 @@ extension NFTsNoContentWithActionViewModel {
         )
     }
 
-    private mutating func bindActionTitle() {
-        actionTitle = .string("nfts-receive-action".localized)
+    private mutating func bindBottomLeftBadge() {
+        bottomLeftBadge = nil
     }
 }

@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListItemLoadingViewTheme.swift
+//   CollectibleListItemLoadingViewTheme.swift
 
 import MacaroonUIKit
 
-struct NFTListItemLoadingViewTheme:
+struct CollectibleListItemLoadingViewTheme:
     LayoutSheet,
     StyleSheet {
     let titleViewHeight: LayoutMetric

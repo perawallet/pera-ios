@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   NFTListItemReceiveView.swift
+//   CollectibleListItemReceiveView.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class NFTListItemReceiveView:
+final class CollectibleListItemReceiveView:
     View,
     TripleShadowDrawable {
     var thirdShadow: MacaroonUIKit.Shadow?
@@ -31,7 +31,7 @@ final class NFTListItemReceiveView:
     private lazy var title = Label()
 
     func customize(
-        _ theme: NFTListItemReceiveViewTheme
+        _ theme: CollectibleListItemReceiveViewTheme
     ) {
         addBackground(theme)
         addContent(theme)
@@ -46,9 +46,9 @@ final class NFTListItemReceiveView:
     ) {}
 }
 
-extension NFTListItemReceiveView {
+extension CollectibleListItemReceiveView {
     private func addBackground(
-        _ theme: NFTListItemReceiveViewTheme
+        _ theme: CollectibleListItemReceiveViewTheme
     ) {
         draw(corner: theme.containerCorner)
         draw(border: theme.containerBorder)
@@ -58,7 +58,7 @@ extension NFTListItemReceiveView {
     }
 
     private func addContent(
-        _ theme: NFTListItemReceiveViewTheme
+        _ theme: CollectibleListItemReceiveViewTheme
     ) {
         addSubview(contentView)
         contentView.snp.makeConstraints {
@@ -69,7 +69,7 @@ extension NFTListItemReceiveView {
     }
 
     private func addIconAndTitleContainer(
-        _ theme: NFTListItemReceiveViewTheme
+        _ theme: CollectibleListItemReceiveViewTheme
     ) {
         contentView.addSubview(iconAndTitleContainer)
         iconAndTitleContainer.snp.makeConstraints {
@@ -85,7 +85,7 @@ extension NFTListItemReceiveView {
     }
 
     private func addIcon(
-        _ theme: NFTListItemReceiveViewTheme
+        _ theme: CollectibleListItemReceiveViewTheme
     ) {
         icon.customizeAppearance(theme.icon)
 
@@ -99,7 +99,7 @@ extension NFTListItemReceiveView {
     }
 
     private func addTitle(
-        _ theme: NFTListItemReceiveViewTheme
+        _ theme: CollectibleListItemReceiveViewTheme
     ) {
         title.customizeAppearance(theme.title)
         title.contentEdgeInsets.top = theme.titleTopPadding
