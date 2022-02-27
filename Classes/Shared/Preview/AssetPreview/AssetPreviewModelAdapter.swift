@@ -22,35 +22,35 @@ enum AssetPreviewModelAdapter {
     static func adapt(_ adaptee: (assetDetail: AssetInformation, asset: Asset, currency: Currency?)) -> AssetPreviewModel {
         let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset, currency: adaptee.currency)
         return AssetPreviewModel(
-            image: nil,
-            secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: assetViewModel.assetDetail?.name,
-            assetSecondaryTitle: assetViewModel.assetDetail?.unitName,
-            assetPrimaryValue: assetViewModel.amount,
-            assetSecondaryValue: assetViewModel.currencyAmount
+            icon: nil,
+            verifiedIcon: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
+            title: assetViewModel.assetDetail?.name,
+            subtitle: assetViewModel.assetDetail?.unitName,
+            primaryAccessory: assetViewModel.amount,
+            secondaryAccessory: assetViewModel.currencyAmount
         )
     }
 
     static func adapt(_ adaptee: (account: Account, currency: Currency?)) -> AssetPreviewModel {
         let algoAssetViewModel = AlgoAssetViewModel(account: adaptee.account, currency: adaptee.currency)
         return AssetPreviewModel(
-            image: img("icon-algo-circle-green"),
-            secondaryImage: img("icon-verified-shield"),
-            assetPrimaryTitle: "Algo",
-            assetSecondaryTitle: "ALGO",
-            assetPrimaryValue: algoAssetViewModel.amount,
-            assetSecondaryValue: algoAssetViewModel.currencyAmount
+            icon: img("icon-algo-circle-green"),
+            verifiedIcon: img("icon-verified-shield"),
+            title: "Algo",
+            subtitle: "ALGO",
+            primaryAccessory: algoAssetViewModel.amount,
+            secondaryAccessory: algoAssetViewModel.currencyAmount
         )
     }
 
     static func adapt(_ adaptee: AssetInformation) -> AssetPreviewModel {
         return AssetPreviewModel(
-            image: nil,
-            secondaryImage: adaptee.isVerified ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: adaptee.name,
-            assetSecondaryTitle: adaptee.unitName,
-            assetPrimaryValue: String(adaptee.id),
-            assetSecondaryValue: nil
+            icon: nil,
+            verifiedIcon: adaptee.isVerified ? img("icon-verified-shield") : nil,
+            title: adaptee.name,
+            subtitle: adaptee.unitName,
+            primaryAccessory: String(adaptee.id),
+            secondaryAccessory: nil
         )
     }
 
@@ -58,12 +58,12 @@ enum AssetPreviewModelAdapter {
         let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset, currency: adaptee.currency)
         let assetId = assetViewModel.assetDetail?.id ?? 0
         return AssetPreviewModel(
-            image: nil,
-            secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: assetViewModel.assetDetail?.name,
-            assetSecondaryTitle: "ID \(assetId)",
-            assetPrimaryValue: assetViewModel.amount,
-            assetSecondaryValue: assetViewModel.currencyAmount
+            icon: nil,
+            verifiedIcon: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
+            title: assetViewModel.assetDetail?.name,
+            subtitle: "ID \(assetId)",
+            primaryAccessory: assetViewModel.amount,
+            secondaryAccessory: assetViewModel.currencyAmount
         )
     }
 

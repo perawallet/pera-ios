@@ -269,7 +269,7 @@ extension SendTransactionScreen {
     }
 
     private func addAccountView() {
-        accountView.customize(AssetPreviewViewCommonTheme())
+        accountView.customize(AssetPreviewViewTheme())
 
         accountContainerView.draw(corner: theme.accountContainerCorner)
         accountContainerView.drawAppearance(border: theme.accountContainerBorder)

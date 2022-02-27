@@ -122,13 +122,13 @@ extension AssetPreviewActionView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
         imageView.bindData(
             AssetImageViewModel(
-                image: viewModel?.image,
-                assetAbbreviationForImage: viewModel?.assetAbbreviationForImage?.string
+                image: viewModel?.icon,
+                assetAbbreviationForImage: viewModel?.assetAbbreviationForIcon?.string
             )
         )
-        assetNameLabel.editText = viewModel?.assetPrimaryTitle
-        secondaryImageView.image = viewModel?.secondaryImage
-        assetShortNameLabel.editText = viewModel?.assetSecondaryTitle
+        assetNameLabel.editText = viewModel?.title
+        secondaryImageView.image = viewModel?.verifiedIcon
+        assetShortNameLabel.editText = viewModel?.subtitle
     }
 
     func prepareForReuse() {

@@ -12,19 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AssetListViewTheme.swift
+//   AssetPreviewAdditionCell.swift
 
+import UIKit
 import MacaroonUIKit
 
-struct AssetListViewTheme: LayoutSheet, StyleSheet {
-    let backgroundColor: Color
-    let cellSpacing: LayoutMetric
-    let contentInset: LayoutPaddings
+final class AssetPreviewAdditionCell:
+    CollectionCell<AssetPreviewView>,
+    ViewModelBindable {
+    override class var contextPaddings: LayoutPaddings {
+        return (14, 0, 14, 0)
+    }
 
-    init(_ family: LayoutFamily) {
-        self.backgroundColor = AppColors.Shared.System.background
-        self.cellSpacing = 0
-        self.contentInset = (24, 24, 0, 24)
+    static let theme: AssetPreviewViewTheme = {
+        var theme = AssetPreviewViewTheme()
+        theme.configureForAssetPreviewAddition()
+        return theme
+    }()
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }

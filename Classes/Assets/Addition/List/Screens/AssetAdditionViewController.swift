@@ -292,14 +292,6 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
     }
 }
 
-extension AssetAdditionViewController {
-    struct LayoutConstants: AdaptiveLayoutConstants {
-        let itemHeight: CGFloat = 52.0
-        let multiItemHeight: CGFloat = 72.0
-        let modalHeight: CGFloat = 510.0
-    }
-}
-
 protocol AssetAdditionViewControllerDelegate: AnyObject {
     func assetAdditionViewController(
         _ assetAdditionViewController: AssetAdditionViewController,
