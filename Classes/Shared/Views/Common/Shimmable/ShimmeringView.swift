@@ -13,18 +13,33 @@
 // limitations under the License.
 
 //
-//   HomeLoadingCell.swift
+//   GradientView.swift
 
 import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-final class HomeLoadingCell: CollectionCell<HomeLoadingView> {
-    func startAnimating() {
-        contextView.startSubviewsShimmer()
+final class ShimmeringView:
+    MacaroonUIKit.BaseView,
+    Shimmable {
+    override var isHidden: Bool {
+        didSet {
+            guard oldValue != isHidden else {
+                return
+            }
+
+            isHidden ? stopShimmer() : startShimmer()
+        }
     }
-    
-    func stopAnimating() {
-        contextView.stopSubviewsShimmer()
+
+    let configuration: ShimmerConfiguration
+
+    init(
+        configuration: ShimmerConfiguration = ShimmerConfiguration()
+    ) {
+        self.configuration = configuration
+        super.init(frame: .zero)
+
+        backgroundColor = AppColors.Shared.Layer.gray.uiColor
     }
 }

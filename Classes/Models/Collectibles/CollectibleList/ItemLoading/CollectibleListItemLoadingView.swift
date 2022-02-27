@@ -19,21 +19,11 @@ import MacaroonUIKit
 
 final class CollectibleListItemLoadingView:
     View,
-    ListReusable {
-    private lazy var image = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
-    private lazy var title = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
-    private lazy var subtitle = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
+    ListReusable,
+    ShimmerDisplayable {
+    private lazy var image = ShimmeringView()
+    private lazy var title = ShimmeringView()
+    private lazy var subtitle = ShimmeringView()
 
     override init(
         frame: CGRect

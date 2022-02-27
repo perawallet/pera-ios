@@ -21,30 +21,20 @@ import UIKit
 
 final class HomeLoadingView:
     View,
-    ListReusable {
+    ListReusable,
+    ShimmerDisplayable {
     private lazy var theme = HomeLoadingViewTheme()
 
-    private lazy var portfolioLabel = Label()
-    private lazy var portfoliloLoading = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
+    private lazy var portfolioLabel = UILabel()
+    private lazy var portfolioLoading = ShimmeringView()
     private lazy var holdingsContainer = UIView()
     private lazy var algoHoldingsContainer = UIView()
     private lazy var algoHoldingsLabel = Label()
     private lazy var algoImageView = UIView()
-    private lazy var algoHoldingLoading = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
+    private lazy var algoHoldingLoading = ShimmeringView()
     private lazy var assetHoldingsContainer = UIView()
     private lazy var assetHoldingsLabel = Label()
-    private lazy var assetHoldingLoading = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
+    private lazy var assetHoldingLoading = ShimmeringView()
     private lazy var accountsLabel = Label()
     private lazy var firstAccountPreviewLoading = AssetPreviewLoadingView()
     private lazy var secondAccountPreviewLoading = AssetPreviewLoadingView()
@@ -56,7 +46,7 @@ final class HomeLoadingView:
         addPortfolioView()
         addAccountCells()
     }
-    
+
     func customizeAppearance(
         _ styleSheet: NoStyleSheet
     ) {}
@@ -64,14 +54,6 @@ final class HomeLoadingView:
     func prepareLayout(
         _ layoutSheet: NoLayoutSheet
     ) {}
-}
-
-extension HomeLoadingView {
-    func startAnimating() {
-    }
-    
-    func stopAnimating() {
-    }
 }
 
 extension HomeLoadingView {
@@ -86,10 +68,10 @@ extension HomeLoadingView {
             make.leading.equalToSuperview()
         }
 
-        portfoliloLoading.draw(corner: theme.loadingCorner)
+        portfolioLoading.draw(corner: theme.loadingCorner)
 
-        addSubview(portfoliloLoading)
-        portfoliloLoading.snp.makeConstraints { make in
+        addSubview(portfolioLoading)
+        portfolioLoading.snp.makeConstraints { make in
             make.top.equalTo(portfolioLabel.snp.bottom).offset(theme.portfolioLoadingMargin.top)
             make.leading.equalTo(portfolioLabel)
             make.size.equalTo(

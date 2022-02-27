@@ -32,8 +32,10 @@ final class NotificationLoadingCell: BaseCollectionViewCell<NotificationLoadingV
 
 extension NotificationLoadingCell {
     func startAnimating() {
+        contextView.startSubviewsShimmer()
     }
 
     func stopAnimating() {
+        contextView.stopSubviewsShimmer()
     }
 }

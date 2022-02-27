@@ -12,18 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   HomeLoadingCell.swift
+//   CollectibleListItemLoadingViewCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class HomeLoadingCell: CollectionCell<HomeLoadingView> {
+final class CollectibleListItemLoadingViewCell:
+    CollectionCell<CollectibleListItemLoadingView> {
     func startAnimating() {
         contextView.startSubviewsShimmer()
     }
-    
+
     func stopAnimating() {
         contextView.stopSubviewsShimmer()
     }

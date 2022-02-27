@@ -33,8 +33,10 @@ final class AssetPreviewLoadingCell: BaseCollectionViewCell<AssetPreviewLoadingV
 
 extension AssetPreviewLoadingCell {
     func startAnimating() {
+        contextView.startSubviewsShimmer()
     }
 
     func stopAnimating() {
+        contextView.stopSubviewsShimmer()
     }
 }

@@ -37,10 +37,7 @@ final class AlgoPriceChartTimeFrameSelectionView:
     
     private lazy var contentView = UIStackView()
     private lazy var selectionView = MacaroonUIKit.BaseView()
-    private lazy var loadingView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
+    private lazy var loadingView = ShimmeringView()
     
     private var selectedOptionView: UIControl? {
         didSet { updateOptionsForSelection(selectedOptionView) }

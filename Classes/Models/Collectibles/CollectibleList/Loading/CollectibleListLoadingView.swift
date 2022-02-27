@@ -19,12 +19,9 @@ import MacaroonUIKit
 
 final class CollectibleListLoadingView:
     View,
-    ListReusable {
-    private lazy var searchInput = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
+    ListReusable,
+    ShimmerDisplayable {
+    private lazy var searchInput = ShimmeringView()
     private lazy var collectibleListItemsVerticalStack = UIStackView()
 
     override init(

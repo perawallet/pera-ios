@@ -21,26 +21,13 @@ import UIKit
 
 final class TransactionHistoryLoadingView:
     View,
-    ListReusable {
-
-    private lazy var titleView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
-    private lazy var sectionView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
+    ListReusable,
+    ShimmerDisplayable {
+    private lazy var titleView = ShimmeringView()
+    private lazy var sectionView = ShimmeringView()
     private lazy var firstRow = TransactionHistoryLoadingItemView()
     private lazy var secondRow = TransactionHistoryLoadingItemView()
-
-    private lazy var secondSectionView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-
+    private lazy var secondSectionView = ShimmeringView()
     private lazy var thirdRow = TransactionHistoryLoadingItemView()
     private lazy var fourthRow = TransactionHistoryLoadingItemView()
 
