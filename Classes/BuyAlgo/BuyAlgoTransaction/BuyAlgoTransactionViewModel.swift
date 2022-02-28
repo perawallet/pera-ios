@@ -44,14 +44,10 @@ extension BuyAlgoTransactionViewModel {
         switch type {
         case .completed:
             image = "icon-moonpay-transaction-completed"
-        case .pending:
+        case .pending, .waitingAuthorization, .waitingPayment:
             image = "icon-moonpay-transaction-pending"
         case .failed:
-            image = "icon-moonpay-transaction-pending"
-        case .waitingAuthorization:
-            image = "icon-moonpay-transaction-pending"
-        case .waitingPayment:
-            image = "icon-moonpay-transaction-pending"
+            image = "icon-moonpay-transaction-failed"
         }
     }
     
