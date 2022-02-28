@@ -81,7 +81,6 @@ extension Shimmable {
         animation.toValue = configuration.toValue
         animation.repeatCount = configuration.repeatCount
         animation.duration = configuration.duration
-        animation.isRemovedOnCompletion = false
         return animation
     }
 }
