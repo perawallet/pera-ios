@@ -24,7 +24,7 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
 
     weak var delegate: BuyAlgoHomeScreenDelegate?
 
-    private lazy var homeView = BuyAlgoHomeView()
+    private lazy var contentView = BuyAlgoHomeView()
 
     private var transactionDraft: BuyAlgoDraft
 
@@ -44,19 +44,29 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
     
     override func prepareLayout() {
         super.prepareLayout()
-        addHomeView()
+        addContent()
     }
     
     override func setListeners() {
         super.setListeners()
-        
-        homeView.observe(event: .close) {
+
+        observe(notification: .didRedirectFromMoonPay) {
+            [unowned self] notification in
+
+            self.didRedirectFromMoonPay(notification)
+        }
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+
+        contentView.observe(event: .close) {
             [weak self] in
             guard let self = self else { return }
             self.dismissScreen()
         }
-        
-        homeView.observe(event: .buyAlgo) { [weak self] in
+
+        contentView.observe(event: .buyAlgo) { [weak self] in
             guard let self = self else {
                 return
             }
@@ -70,12 +80,6 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
                 .accountSelection(transactionAction: .buyAlgo, delegate: self),
                 by: .push
             )
-        }
-
-        observe(notification: .didRedirectFromMoonPay) {
-            [unowned self] notification in
-
-            self.didRedirectFromMoonPay(notification)
         }
     }
 }
@@ -94,12 +98,12 @@ extension BuyAlgoHomeScreen {
 }
 
 extension BuyAlgoHomeScreen {
-    private func addHomeView() {
-        homeView.customize(BuyAlgoHomeViewTheme())
-        homeView.bindData(BuyAlgoHomeViewModel())
+    private func addContent() {
+        contentView.customize(BuyAlgoHomeViewTheme())
+        contentView.bindData(BuyAlgoHomeViewModel())
         
-        view.addSubview(homeView)
-        homeView.snp.makeConstraints {
+        view.addSubview(contentView)
+        contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }

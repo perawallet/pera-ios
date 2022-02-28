@@ -42,9 +42,6 @@ final class BuyAlgoHomeView:
     private lazy var securityLabel = Label()
     private lazy var securityImageView = ImageView()
     private lazy var paymentOptionsView = HStackView()
-    private lazy var paymentMastercardImageView = ImageView()
-    private lazy var paymentVisaImageView = ImageView()
-    private lazy var paymentAppleImageView = ImageView()
     private lazy var buyAlgoButton = MacaroonUIKit.Button()
     
     override init(frame: CGRect) {
@@ -76,15 +73,20 @@ final class BuyAlgoHomeView:
     
     func bindData(_ viewModel: BuyAlgoHomeViewModel?) {
         logoView.image = viewModel?.logoImage?.uiImage
-        headerBackgroundView.image = viewModel?.backgroundImage?.uiImage
+        headerBackgroundView.image = viewModel?.headerBackgroundImage?.uiImage
         titleLabel.editText = viewModel?.title
         subtitleLabel.editText = viewModel?.subtitle
         descriptionLabel.editText = viewModel?.description
         securityImageView.image = viewModel?.securityImage?.uiImage
         securityLabel.editText = viewModel?.security
-        paymentMastercardImageView.image = viewModel?.paymentMastercardImage?.uiImage
-        paymentVisaImageView.image = viewModel?.paymentVisaImage?.uiImage
-        paymentAppleImageView.image = viewModel?.paymentAppleImage?.uiImage
+
+        if let paymentMethodImages = viewModel?.paymentMethodImages {
+            for paymentMethodImage in paymentMethodImages {
+                let paymentMethodImageView = ImageView()
+                paymentMethodImageView.image = paymentMethodImage.uiImage
+                paymentOptionsView.addArrangedSubview(paymentMethodImageView)
+            }
+        }
     }
     
     func linkInteractors() {
@@ -160,10 +162,6 @@ extension BuyAlgoHomeView {
             $0.leading.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.lessThanOrEqualToSuperview().inset(safeAreaBottom + theme.paymentViewBottomPadding)
         }
-        
-        paymentOptionsView.addArrangedSubview(paymentMastercardImageView)
-        paymentOptionsView.addArrangedSubview(paymentVisaImageView)
-        paymentOptionsView.addArrangedSubview(paymentAppleImageView)
     }
     private func addBuyAlgoButton(_ theme: BuyAlgoHomeViewTheme){
         buyAlgoButton.contentEdgeInsets = UIEdgeInsets(theme.buttonContentEdgeInsets)
@@ -242,20 +240,19 @@ extension BuyAlgoHomeView: UIScrollViewDelegate {
         headerView.snp.updateConstraints {
             $0.fitToHeight(height)
         }
-        
+
+        let calculatedWidth = max(
+            theme.logoMinSize.w,
+            theme.logoMaxSize.w * height / theme.headerMaxHeight
+        )
+
+        let calculatedHeight = max(
+            theme.logoMinSize.h,
+            theme.logoMaxSize.h * height / theme.headerMaxHeight
+        )
+
         logoView.snp.updateConstraints {
-            $0.fitToSize(
-                (
-                    max(
-                        theme.logoMinSize.w,
-                        theme.logoMaxSize.w * height / theme.headerMaxHeight
-                    ),
-                    max(
-                        theme.logoMinSize.h,
-                        theme.logoMaxSize.h * height / theme.headerMaxHeight
-                    )
-                )
-            )
+            $0.fitToSize((calculatedWidth, calculatedHeight))
         }
     }
 }

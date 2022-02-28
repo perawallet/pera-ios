@@ -19,15 +19,13 @@ import MacaroonUIKit
 
 struct BuyAlgoHomeViewModel: ViewModel {
     private(set) var logoImage: Image?
-    private(set) var backgroundImage: Image?
+    private(set) var headerBackgroundImage: Image?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
     private(set) var description: EditText?
     private(set) var securityImage: Image?
     private(set) var security: EditText?
-    private(set) var paymentMastercardImage: Image?
-    private(set) var paymentVisaImage: Image?
-    private(set) var paymentAppleImage: Image?
+    private(set) var paymentMethodImages: [Image] = []
     
     init() {
         bind()
@@ -37,20 +35,20 @@ struct BuyAlgoHomeViewModel: ViewModel {
 extension BuyAlgoHomeViewModel {
     private mutating func bind() {
         bindLogoImage()
-        bindBackgroundImage()
+        bindHeaderBackground()
         bindTitle()
         bindSubtitle()
         bindDescription()
         bindSecurity()
-        bindPaymentImages()
+        bindPaymentMethods()
     }
     
     private mutating func bindLogoImage() {
         logoImage = "icon-moonpay-logo"
     }
     
-    private mutating func bindBackgroundImage() {
-        backgroundImage = "img-moonpay-background"
+    private mutating func bindHeaderBackground() {
+        headerBackgroundImage = "img-moonpay-background"
     }
     
     private mutating func bindTitle() {
@@ -138,9 +136,11 @@ extension BuyAlgoHomeViewModel {
         )
     }
     
-    private mutating func bindPaymentImages() {
-        paymentMastercardImage = "icon-payment-mastercard"
-        paymentVisaImage = "icon-payment-visa"
-        paymentAppleImage = "icon-payment-apple"
+    private mutating func bindPaymentMethods() {
+        paymentMethodImages = [
+            "icon-payment-mastercard",
+            "icon-payment-visa",
+            "icon-payment-apple"
+        ]
     }
 }
