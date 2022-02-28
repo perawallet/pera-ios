@@ -33,14 +33,14 @@ final class SelectAssetViewControllerDataSource: NSObject {
         super.init()
     }
     
-    subscript (indexPath: IndexPath) -> CompoundAsset? {
-        return account.compoundAssets[safe: indexPath.item.advanced(by: -1)]
+    subscript (indexPath: IndexPath) -> StandardAsset? {
+        return account.standardAssets[safe: indexPath.item.advanced(by: -1)]
     }
 }
 
 extension SelectAssetViewControllerDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return account.compoundAssets.count.advanced(by: 1)
+        return account.standardAssets.count.advanced(by: 1)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -52,11 +52,9 @@ extension SelectAssetViewControllerDataSource: UICollectionViewDataSource {
                 AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((account, currency)))
             )
         } else {
-            if let compoundAsset = self[indexPath] {
-                let asset = compoundAsset.base
-                let assetDetail = compoundAsset.detail
+            if let asset = self[indexPath] {
                 cell.bindData(
-                    AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, asset, currency)))
+                    AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((asset, currency)))
                 )
             }
         }

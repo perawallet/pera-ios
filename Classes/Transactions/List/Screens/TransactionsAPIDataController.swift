@@ -166,7 +166,7 @@ extension TransactionsAPIDataController {
     func loadTransactions() {
         let dates = getTransactionFilterDates()
         var assetId: String?
-        if let id = draft.compoundAsset?.id {
+        if let id = draft.asset?.id {
             assetId = String(id)
         }
 
@@ -238,7 +238,7 @@ extension TransactionsAPIDataController {
     func loadNextTransactions() {
         let dates = getTransactionFilterDates()
         var assetId: String?
-        if let id = draft.compoundAsset?.id {
+        if let id = draft.asset?.id {
             assetId = String(id)
         }
 
@@ -376,7 +376,7 @@ extension TransactionsAPIDataController {
                 return false
             }
 
-            return assetId == draft.compoundAsset?.id
+            return assetId == draft.asset?.id
         }
 
         setTransactionItems(
@@ -493,7 +493,7 @@ extension TransactionsAPIDataController {
             case .asset:
                 snapshot.appendSections([.info])
                 snapshot.appendItems(
-                    [.assetInfo(AssetDetailInfoViewModel(self.draft.accountHandle.value, self.draft.compoundAsset!.detail, self.sharedDataController.currency.value))],
+                    [.assetInfo(AssetDetailInfoViewModel(self.draft.accountHandle.value, self.draft.asset!, self.sharedDataController.currency.value))],
                     toSection: .info
                 )
             case .algos:
@@ -681,13 +681,18 @@ extension TransactionsAPIDataController {
         with transaction: PendingTransaction,
         for address: String?
     ) -> TransactionHistoryContextViewModel {
+        var assetDetail: AssetDecoration?
+        if let asset = draft.asset {
+            assetDetail = AssetDecoration(standardAsset: asset)
+        }
+
         if let contact = contacts.first(where: { contact  in
             contact.address == address
         }) {
             transaction.contact = contact
             let config = TransactionViewModelDependencies(
                 account: draft.accountHandle.value,
-                assetDetail: draft.compoundAsset?.detail,
+                assetDetail: assetDetail,
                 transaction: transaction,
                 contact: contact,
                 currency: sharedDataController.currency.value,
@@ -699,7 +704,7 @@ extension TransactionsAPIDataController {
 
         let config = TransactionViewModelDependencies(
             account: draft.accountHandle.value,
-            assetDetail: draft.compoundAsset?.detail,
+            assetDetail: assetDetail,
             transaction: transaction,
             currency: sharedDataController.currency.value,
             localAccounts: sharedDataController.accountCollection.sorted().map { $0.value }

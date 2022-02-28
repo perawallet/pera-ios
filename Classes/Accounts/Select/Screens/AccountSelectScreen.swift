@@ -264,7 +264,7 @@ final class AccountSelectScreen: BaseViewController {
         let assetAlertDraft = AssetAlertDraft(
             account: draft.from,
             assetIndex: assetDetail.id,
-            assetDetail: assetDetail,
+            assetDetail: AssetDecoration(standardAsset: assetDetail),
             title: "asset-support-title".localized,
             detail: "asset-support-error".localized,
             actionTitle: "title-ok".localized
@@ -287,19 +287,17 @@ final class AccountSelectScreen: BaseViewController {
     }
 
     private func validateAssetTransaction() {
-        guard let amount = self.draft.amount, let assetDetail = draft.assetDetail else {
+        guard let amount = self.draft.amount,
+              let assetDetail = draft.assetDetail else {
+                  displaySimpleAlertWith(
+                      title: "send-algos-alert-incomplete-title".localized,
+                      message: "send-algos-alert-message-address".localized
+                  )
+
             return
         }
-
-        guard let assetAmount = draft.from.amount(for: assetDetail) else {
-            displaySimpleAlertWith(
-                title: "send-algos-alert-incomplete-title".localized,
-                message: "send-algos-alert-message-address".localized
-            )
-            return
-        }
-
-        if assetAmount < amount {
+        
+        if assetDetail.amountWithFraction  < amount {
             self.displaySimpleAlertWith(title: "title-error".localized, message: "send-asset-amount-error".localized)
             return
         }

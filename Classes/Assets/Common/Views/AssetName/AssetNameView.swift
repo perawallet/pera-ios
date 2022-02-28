@@ -116,8 +116,8 @@ extension AssetNameView {
 }
 
 extension AssetNameView {
-    func setAssetName(for assetDetail: AssetDecoration) {
-        if assetDetail.hasDisplayName() {
+    func setAssetName(for assetDetail: StandardAsset) {
+        if assetDetail.hasDisplayName {
             nameLabel.text = assetDetail.name
             codeLabel.text = assetDetail.unitName
         } else {

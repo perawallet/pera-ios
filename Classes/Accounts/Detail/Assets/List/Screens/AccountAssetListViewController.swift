@@ -125,12 +125,12 @@ extension AccountAssetListViewController {
                 by: .present
             ) as? AssetSearchViewController
             
-            searchScreen?.handlers.didSelectAsset = { [weak self] compoundAsset in
+            searchScreen?.handlers.didSelectAsset = { [weak self] standardAsset in
                 guard let self = self else {
                     return
                 }
 
-                self.openAssetDetail(compoundAsset)
+                self.openAssetDetail(standardAsset)
             }
         }
 
@@ -142,21 +142,21 @@ extension AccountAssetListViewController {
             self.openAssetDetail(nil)
         }
 
-        listLayout.handlers.didSelectAsset = { [weak self] compoundAsset in
+        listLayout.handlers.didSelectAsset = { [weak self] standardAsset in
             guard let self = self else {
                 return
             }
 
-            self.openAssetDetail(compoundAsset)
+            self.openAssetDetail(standardAsset)
         }
     }
 
     private func openAssetDetail(
-        _ compoundAsset: CompoundAsset?
+        _ asset: StandardAsset?
     ) {
         let screen: Screen
-        if let compoundAsset = compoundAsset {
-            screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, compoundAsset: compoundAsset))
+        if let asset = asset {
+            screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, asset: asset))
         } else {
             screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
         }
@@ -204,11 +204,11 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
 }
 
 extension AccountAssetListViewController {
-    func addAsset(_ assetDetail: AssetDecoration) {
+    func addAsset(_ assetDetail: StandardAsset) {
         dataController.addedAssetDetails.append(assetDetail)
     }
 
-    func removeAsset(_ assetDetail: AssetDecoration) {
+    func removeAsset(_ assetDetail: StandardAsset) {
         dataController.removedAssetDetails.append(assetDetail)
     }
 }
@@ -219,7 +219,8 @@ extension AccountAssetListViewController: AssetAdditionViewControllerDelegate {
         didAdd assetSearchResult: AssetDecoration,
         to account: Account
     ) {
-        assetSearchResult.isRecentlyAdded = true
-        addAsset(assetSearchResult)
+        let standardAsset = StandardAsset(asset: ALGAsset(id: assetSearchResult.id), decoration: assetSearchResult)
+        standardAsset.isRecentlyAdded = true
+        addAsset(standardAsset)
     }
 }

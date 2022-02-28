@@ -94,9 +94,9 @@ extension AccountListViewController: AccountListLayoutBuilderDelegate {
 extension AccountListViewController {
     enum Mode: Equatable {
         case walletConnect(account: Account?)
-        case contact(assetDetail: AssetDecoration?)
-        case transactionReceiver(assetDetail: AssetDecoration?)
-        case transactionSender(assetDetail: AssetDecoration?)
+        case contact(assetDetail: StandardAsset?)
+        case transactionReceiver(assetDetail: StandardAsset?)
+        case transactionSender(assetDetail: StandardAsset?)
     }
 }
 

@@ -173,11 +173,9 @@ extension SendTransactionScreen {
                 AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((draft.from, currency)))
             )
         case .assetDetail(let assetDetail):
-            if let asset = draft.from.assets?.first(matching: (\.id, assetDetail.id)) {
-                accountView.bindData(
-                    AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, asset, currency)))
-                )
-            }
+            accountView.bindData(
+                AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, currency)))
+            )
         }
     }
 
@@ -407,7 +405,7 @@ extension SendTransactionScreen: TransactionSignChecking {
         case .algo:
             self.amount = draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
         case .assetDetail(let assetDetail):
-            self.amount = draft.from.amountNumberWithAutoFraction(for: assetDetail) ?? "0"
+            self.amount = assetDetail.amountNumberWithAutoFraction ?? "0"
         }
         isAmountResetted = false
         bindAmount()
@@ -512,11 +510,12 @@ extension SendTransactionScreen: NumpadViewDelegate {
         return .valid
     }
 
-    private func validateAsset(for value: String, on assetDetail: AssetDecoration) -> TransactionValidation {
-        guard let assetAmount = draft.from.amount(for: assetDetail),
-              let decimalAmount = value.decimalAmount else {
-                  return .otherAsset
+    private func validateAsset(for value: String, on assetDetail: StandardAsset) -> TransactionValidation {
+        guard let decimalAmount = value.decimalAmount else {
+            return .otherAsset
         }
+
+        let assetAmount = assetDetail.amountWithFraction
 
         if assetAmount < decimalAmount {
             return .minimumAmountAssetError

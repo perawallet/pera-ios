@@ -405,11 +405,11 @@ extension HomeViewController: QRScannerViewControllerDelegate {
                       return
                   }
 
-            var asset: AssetDecoration?
+            var asset: StandardAsset?
 
             for accountHandle in sharedDataController.accountCollection.sorted() {
-                for compoundAsset in accountHandle.value.compoundAssets where compoundAsset.id == assetId {
-                    asset = compoundAsset.detail
+                for standardAsset in accountHandle.value.standardAssets where standardAsset.id == assetId {
+                    asset = standardAsset
                     break
                 }
             }

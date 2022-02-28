@@ -26,7 +26,7 @@ final class AssetSearchLocalDataController:
     private var accountHandle: AccountHandle
     private var lastSnapshot: Snapshot?
 
-    private var searchResults: [CompoundAsset] = []
+    private var searchResults: [StandardAsset] = []
 
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.assetSearchDataController")
@@ -37,14 +37,14 @@ final class AssetSearchLocalDataController:
     ) {
         self.accountHandle = accountHandle
         self.sharedDataController = sharedDataController
-        self.searchResults = accountHandle.value.compoundAssets
+        self.searchResults = accountHandle.value.standardAssets
     }
 
     deinit {
         sharedDataController.remove(self)
     }
 
-    subscript (index: Int) -> CompoundAsset? {
+    subscript (index: Int) -> StandardAsset? {
         return searchResults[safe: index]
     }
 
@@ -59,17 +59,17 @@ extension AssetSearchLocalDataController {
     }
 
     func search(for query: String) {
-        searchResults = accountHandle.value.compoundAssets.filter {
+        searchResults = accountHandle.value.standardAssets.filter {
             String($0.id).contains(query) ||
-            $0.detail.name.unwrap(or: "").contains(query) ||
-            $0.detail.unitName.unwrap(or: "").contains(query)
+            $0.name.unwrap(or: "").contains(query) ||
+            $0.unitName.unwrap(or: "").contains(query)
         }
 
         deliverContentSnapshot()
     }
 
     func resetSearch() {
-        searchResults = accountHandle.value.compoundAssets
+        searchResults = accountHandle.value.standardAssets
         deliverContentSnapshot()
     }
 }
@@ -98,7 +98,7 @@ extension AssetSearchLocalDataController {
 
 extension AssetSearchLocalDataController {
     private func deliverContentSnapshot() {
-        guard !accountHandle.value.compoundAssets.isEmpty else {
+        guard !accountHandle.value.standardAssets.isEmpty else {
             deliverNoContentSnapshot()
             return
         }
@@ -120,7 +120,7 @@ extension AssetSearchLocalDataController {
             let currency = self.sharedDataController.currency.value
 
             self.searchResults.forEach {
-                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(($0.detail, $0.base, currency))
+                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(($0, currency))
                 let assetItem: AssetSearchItem = .asset(AssetPreviewViewModel(assetPreview))
                 assetItems.append(assetItem)
             }

@@ -16,13 +16,15 @@
 
 import Foundation
 
-/// Mimics ALGAsset in general so that it can be passed to different asset types as base.
 protocol Asset {
+    /// Mimics ALGAsset in general so that it can be passed to different asset types as base.
     var id: AssetID { get }
     var amount: UInt64 { get }
     var isFrozen: Bool? { get }
     var isDeleted: Bool? { get }
     var creator: AssetCreator? { get }
 
-    init(asset: ALGAsset, decoration: AssetDecoration)
+    /// Asset management actions
+    var isRemoved: Bool { get set }
+    var isRecentlyAdded: Bool { get set }
 }

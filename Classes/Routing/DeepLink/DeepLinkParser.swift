@@ -85,11 +85,11 @@ extension DeepLinkParser {
             return .failure(.waitingForAccountsToBeAvailable)
         }
         
-        guard let asset = account.value[assetId] else {
+        guard let asset = account.value[assetId] as? StandardAsset else {
             return .failure(.waitingForAssetsToBeAvailable)
         }
         
-        let draft = AssetTransactionListing(accountHandle: account, compoundAsset: asset)
+        let draft = AssetTransactionListing(accountHandle: account, asset: asset)
         return .success(.assetDetail(draft: draft))
     }
     
@@ -223,7 +223,7 @@ extension DeepLinkParser {
             toAccount: accountAddress,
             amount: Decimal(amount),
             lockedNote: qr.lockedNote,
-            transactionMode: .assetDetail(assetDecoration)
+            transactionMode: .assetDetail(StandardAsset(asset: ALGAsset(id: assetDecoration.id), decoration: assetDecoration))
         )
         return .success(.sendTransaction(draft: qrDraft))
     }

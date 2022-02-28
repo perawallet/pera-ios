@@ -49,19 +49,24 @@ final class WCSingleTransactionRequestScreen:
             account = nil
         }
 
-        let assetDecoration: AssetDecoration?
+        let asset: Asset?
 
-        if let assetId = transaction.transactionDetail?.currentAssetId, let asset = sharedDataController.assetDetailCollection[assetId] {
-            assetDecoration = asset
+        if let assetId = transaction.transactionDetail?.currentAssetId,
+           let assetDetail = sharedDataController.assetDetailCollection[assetId] {
+            if assetDetail.isCollectible {
+                asset = StandardAsset(asset: ALGAsset(id: assetId), decoration: assetDetail)
+            } else {
+                asset = nil
+            }
         } else {
-            assetDecoration = nil
+            asset = nil
         }
 
         return WCSingleTransactionRequestViewModel(
             transaction: transaction,
             account: account,
             currency: sharedDataController.currency.value,
-            assetDecoration: assetDecoration
+            asset: asset
         )
     }()
 

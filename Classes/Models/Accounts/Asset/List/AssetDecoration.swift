@@ -27,6 +27,7 @@ final class AssetDecoration: ALGEntityModel {
     let usdValue: Decimal?
     let isVerified: Bool
     let creator: AssetCreator?
+    let collectible: Collectible?
 
     var isRemoved = false
     var isRecentlyAdded = false
@@ -41,6 +42,7 @@ final class AssetDecoration: ALGEntityModel {
         self.usdValue = apiModel.usdValue.unwrap { Decimal(string: $0) }
         self.isVerified = apiModel.isVerified ?? false
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
+        self.collectible = apiModel.collectible.unwrap(Collectible.init)
     }
 
     func encode() -> APIModel {
@@ -52,7 +54,23 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.usdValue = usdValue.unwrap { String(describing: $0) }
         apiModel.isVerified = isVerified
         apiModel.creator = creator?.encode()
+        apiModel.collectible = collectible?.encode()
         return apiModel
+    }
+
+    init(standardAsset: StandardAsset) {
+        self.id = standardAsset.id
+        self.name = standardAsset.name
+        self.unitName = standardAsset.unitName
+        self.decimals = standardAsset.decimals
+        self.usdValue = standardAsset.usdValue
+        self.isVerified = standardAsset.isVerified
+        self.creator = standardAsset.creator
+        self.collectible = nil
+    }
+
+    var isCollectible: Bool {
+        return collectible != nil
     }
 }
 
@@ -65,6 +83,7 @@ extension AssetDecoration {
         var usdValue: String?
         var isVerified: Bool?
         var creator: AssetCreator.APIModel?
+        var collectible: Collectible.APIModel?
 
         init() {
             self.assetId = 0
@@ -74,6 +93,7 @@ extension AssetDecoration {
             self.usdValue = nil
             self.isVerified = nil
             self.creator = nil
+            self.collectible = nil
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -84,6 +104,7 @@ extension AssetDecoration {
             case usdValue = "usd_value"
             case isVerified = "is_verified"
             case creator
+            case collectible
         }
     }
 }

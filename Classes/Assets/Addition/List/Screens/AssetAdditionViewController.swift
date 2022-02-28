@@ -184,7 +184,7 @@ extension AssetAdditionViewController:
 
 extension AssetAdditionViewController: AssetListViewControllerDelegate {
     func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItem item: AssetDecoration) {
-        if account.containsAsset(item.id) {
+        if account.contains(item.id) {
             displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
             return
         }

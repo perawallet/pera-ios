@@ -89,7 +89,9 @@ extension Account {
     }
     
     func hasDifferentAssets(than account: Account) -> Bool {
-        return assets != account.assets || !compoundAssets.map { $0.detail }.containsSameElements(as: account.compoundAssets.map { $0.detail })
+        return
+            assets != account.assets ||
+            !standardAssets.containsSameElements(as: account.standardAssets)
     }
 
     func hasDifferentApps(than account: Account) -> Bool {
@@ -121,15 +123,9 @@ extension Account {
     }
 
     @discardableResult
-    func removeAsset(_ id: Int64?) -> [CompoundAsset] {
-        return compoundAssets.removeAll { compoundAsset  in
-            compoundAsset.id == id
-        }
-    }
-    
-    func containsAsset(_ id: Int64) -> Bool {
-        return compoundAssets.contains { compoundAsset -> Bool in
-            compoundAsset.id == id
+    func removeAsset(_ id: AssetID?) -> [StandardAsset] {
+        return standardAssets.removeAll { asset in
+            asset.id == id
         }
     }
 

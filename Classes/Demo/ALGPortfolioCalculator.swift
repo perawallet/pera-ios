@@ -61,13 +61,10 @@ struct ALGPortfolioCalculator: PortfolioCalculator {
                 return .failure(.accountsFailed)
             }
             
-            totalAmount += account.value.compoundAssets.reduce(0) {
-                result, compoundAsset in
+            totalAmount += account.value.standardAssets.reduce(0) {
+                result, standardAsset in
 
-                let assetDetail = compoundAsset.detail
-                let assetAmount = account.value
-                    .amount(for: assetDetail)
-                    .unwrap { $0 * currencyUSDValue * assetDetail.usdValue.unwrap(or: 0) } ?? 0
+                let assetAmount = standardAsset.amountWithFraction * currencyUSDValue * standardAsset.usdValue.unwrap(or: 0)
                 return result + assetAmount
             }
         }

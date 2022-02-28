@@ -12,21 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   StandardAsset.swift
+//   CollectibleAsset.swift
 
 import Foundation
 
-final class StandardAsset: Asset {
+final class CollectibleAsset: Asset {
     let id: AssetID
     let amount: UInt64
     let isFrozen: Bool?
     let isDeleted: Bool?
+    let creator: AssetCreator?
     let name: String?
     let unitName: String?
     let decimals: Int
     let usdValue: Decimal?
     let isVerified: Bool
-    let creator: AssetCreator?
+    let mediaType: MediaType?
+    let primaryImage: URL?
+    let title: String?
+    let collectionName: String?
 
     var isRemoved = false
     var isRecentlyAdded = false
@@ -39,16 +43,42 @@ final class StandardAsset: Asset {
         self.amount = asset.amount
         self.isFrozen = asset.isFrozen
         self.isDeleted = asset.isDeleted
+        self.creator = decoration.creator
         self.name = decoration.name
         self.unitName = decoration.unitName
         self.decimals = decoration.decimals
         self.usdValue = decoration.usdValue
         self.isVerified = decoration.isVerified
-        self.creator = decoration.creator
+        self.mediaType = decoration.collectible?.mediaType
+        self.primaryImage = decoration.collectible?.primaryImage
+        self.title = decoration.collectible?.title
+        self.collectionName = decoration.collectible?.collectionName
     }
 }
 
-extension StandardAsset {
+extension CollectibleAsset: Comparable {
+    static func == (lhs: CollectibleAsset, rhs: CollectibleAsset) -> Bool {
+        return lhs.id == rhs.id &&
+            lhs.amount == rhs.amount &&
+            lhs.isFrozen == rhs.isFrozen &&
+            lhs.isDeleted == rhs.isDeleted &&
+            lhs.name == rhs.name &&
+            lhs.unitName == rhs.unitName &&
+            lhs.decimals == rhs.decimals &&
+            lhs.usdValue == rhs.usdValue &&
+            lhs.isVerified == rhs.isVerified &&
+            lhs.mediaType == rhs.mediaType &&
+            lhs.primaryImage == rhs.primaryImage &&
+            lhs.title == rhs.title &&
+            lhs.collectionName == rhs.collectionName
+    }
+
+    static func < (lhs: CollectibleAsset, rhs: CollectibleAsset) -> Bool {
+        return lhs.id < rhs.id
+    }
+}
+
+extension CollectibleAsset {
     func getDisplayNames() -> (String, String?) {
         if let name = name,
            let code = unitName,
@@ -64,59 +94,5 @@ extension StandardAsset {
         } else {
             return ("title-unknown".localized, nil)
         }
-    }
-
-    var assetNameRepresentation: String {
-        if let name = name,
-           !name.isEmptyOrBlank {
-            return name
-        }
-        
-        return "title-unknown".localized
-    }
-
-    var unitNameRepresentation: String {
-        if let code = unitName,
-            !code.isEmptyOrBlank {
-            return code.uppercased()
-        }
-
-        return "title-unknown".localized
-    }
-
-    var hasDisplayName: Bool {
-        return !name.isNilOrEmpty || !unitName.isNilOrEmpty
-    }
-}
-
-extension StandardAsset: Comparable {
-    static func == (lhs: StandardAsset, rhs: StandardAsset) -> Bool {
-        return lhs.id == rhs.id &&
-            lhs.amount == rhs.amount &&
-            lhs.isFrozen == rhs.isFrozen &&
-            lhs.isDeleted == rhs.isDeleted &&
-            lhs.name == rhs.name &&
-            lhs.unitName == rhs.unitName &&
-            lhs.decimals == rhs.decimals &&
-            lhs.usdValue == rhs.usdValue &&
-            lhs.isVerified == rhs.isVerified
-    }
-
-    static func < (lhs: StandardAsset, rhs: StandardAsset) -> Bool {
-        return lhs.id < rhs.id
-    }
-}
-
-extension StandardAsset {
-    var amountWithFraction: Decimal {
-        return amount.assetAmount(fromFraction: decimals)
-    }
-
-    var amountDisplayWithFraction: String? {
-        return amountWithFraction.toExactFractionLabel(fraction: decimals)
-    }
-
-    var amountNumberWithAutoFraction: String? {
-        return amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: decimals)
     }
 }

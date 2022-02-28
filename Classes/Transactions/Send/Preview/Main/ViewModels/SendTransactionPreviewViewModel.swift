@@ -95,20 +95,19 @@ final class SendTransactionPreviewViewModel: ViewModel {
         setOpponentView(for: draft)
         setFee(for: draft)
 
-        if let balance = draft.from.amount(for: assetDetail) {
-            let balanceCurrencyString: String?
+        let balance = assetDetail.amountWithFraction
+        let balanceCurrencyString: String?
 
-            if let assetUSDValue = assetDetail.usdValue,
-               let currency = currency,
-               let currencyUSDValue = currency.usdValue {
-                let balanceCurrencyValue = assetUSDValue * balance * currencyUSDValue
-                balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
-            } else {
-                balanceCurrencyString = nil
-            }
-
-            balanceViewMode = .normal(amount: balance, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name, currency: balanceCurrencyString)
+        if let assetUSDValue = assetDetail.usdValue,
+           let currency = currency,
+           let currencyUSDValue = currency.usdValue {
+            let balanceCurrencyValue = assetUSDValue * balance * currencyUSDValue
+            balanceCurrencyString = balanceCurrencyValue.toCurrencyStringForLabel(with: currency.symbol)
+        } else {
+            balanceCurrencyString = nil
         }
+
+        balanceViewMode = .normal(amount: balance, isAlgos: false, fraction: algosFraction, assetSymbol: assetDetail.name, currency: balanceCurrencyString)
 
         setNote(for: draft)
     }

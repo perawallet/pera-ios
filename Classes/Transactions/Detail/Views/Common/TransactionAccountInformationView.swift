@@ -177,7 +177,7 @@ extension TransactionAccountInformationView {
         amountLabel.removeFromSuperview()
     }
     
-    func setAssetName(for assetDetail: AssetDecoration) {
+    func setAssetName(for assetDetail: StandardAsset) {
         assetNameView.setAssetName(for: assetDetail)
     }
     

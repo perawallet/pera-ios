@@ -125,28 +125,43 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
             guard let self = self else { return }
             
             if let error = error {
-                account.removeAllCompoundAssets()
+                account.removeAllAssets()
                 self.result = .failure(error)
             } else {
                 if self.finishIfCancelled() {
                     return
                 }
 
-                var newCompoundAssets: [CompoundAsset] = []
-                var newCompoundAssetsIndexer: Account.CompoundAssetIndexer = [:]
+                var newStandardAssets: [StandardAsset] = []
+                var newStandardAssetsIndexer: Account.StandardAssetIndexer = [:]
+
+                var newCollectibles: [CollectibleAsset] = []
+                var newCollectibleAssetsIndexer: Account.CollectibleAssetIndexer = [:]
                 
                 assets.enumerated().forEach { index, asset in
                     let id = asset.id
                     
                     if let assetDetail = newAssetDetails[id] ?? self.input.cachedAssetDetails[id] {
-                        newCompoundAssets.append(CompoundAsset(asset, assetDetail))
-                        newCompoundAssetsIndexer[asset.id] = index
+                        if assetDetail.isCollectible {
+                            let collectible = CollectibleAsset(asset: asset, decoration: assetDetail)
+                            newCollectibles.append(collectible)
+                            newCollectibleAssetsIndexer[asset.id] = index
+                        } else {
+                            let standardAsset = StandardAsset(asset: asset, decoration: assetDetail)
+                            newStandardAssets.append(standardAsset)
+                            newStandardAssetsIndexer[asset.id] = index
+                        }
                     }
                 }
                 
-                account.setCompoundAssets(
-                    newCompoundAssets,
-                    newCompoundAssetsIndexer
+                account.setStandardAssets(
+                    newStandardAssets,
+                    newStandardAssetsIndexer
+                )
+
+                account.setCollectibleAssets(
+                    newCollectibles,
+                    newCollectibleAssetsIndexer
                 )
                 
                 let output = Output(account: account, newAssetDetails: newAssetDetails)

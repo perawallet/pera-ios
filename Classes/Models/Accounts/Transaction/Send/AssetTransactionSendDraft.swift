@@ -33,5 +33,5 @@ struct AssetTransactionSendDraft: TransactionSendDraft {
     var lockedNote: String?
 
     var toContact: Contact?
-    var assetDetail: AssetDecoration?
+    var assetDetail: StandardAsset?
 }

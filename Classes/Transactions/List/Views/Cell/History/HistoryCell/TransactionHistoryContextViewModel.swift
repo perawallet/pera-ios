@@ -223,7 +223,7 @@ extension TransactionHistoryContextViewModel {
         if let transaction = transactionDependency.transaction as? Transaction {
             if let assetTransaction = transaction.assetTransfer,
                let assetId = transaction.assetTransfer?.assetId,
-               let assetDetail = account[assetId]?.detail {
+               let assetDetail = account[assetId] as? StandardAsset {
                 if assetTransaction.receiverAddress == assetTransaction.senderAddress {
                     transactionAmountViewModel = TransactionAmountViewModel(
                         .normal(
@@ -336,7 +336,7 @@ extension TransactionHistoryContextViewModel {
 
         if let transaction = transactionDependency.transaction as? Transaction {
             if let assetTransaction = transaction.assetTransfer,
-               let assetDetail = account[assetTransaction.assetId]?.detail {
+               let assetDetail = account[assetTransaction.assetId] as? StandardAsset {
                 bindSecondaryAmount(
                     getAssetCurrencyValue(
                         from: transactionDependency,

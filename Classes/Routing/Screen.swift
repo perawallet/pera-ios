@@ -40,7 +40,7 @@ indirect enum Screen {
     case editContact(contact: Contact)
     case contactDetail(contact: Contact)
     case nodeSettings
-    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: AssetDecoration?)
+    case transactionDetail(account: Account, transaction: Transaction, transactionType: TransactionType, assetDetail: StandardAsset?)
     case addAsset(account: Account)
     case removeAsset(account: Account)
     case assetActionConfirmation(assetAlertDraft: AssetAlertDraft, delegate: AssetActionConfirmationViewControllerDelegate?)

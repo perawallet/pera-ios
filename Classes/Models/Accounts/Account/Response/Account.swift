@@ -20,7 +20,8 @@ import MagpieCore
 import MacaroonUtils
 
 final class Account: ALGEntityModel {
-    typealias CompoundAssetIndexer = [Int64: Int] /// asset id -> compound asset index
+    typealias StandardAssetIndexer = [AssetID: Int] /// asset id -> standard asset index
+    typealias CollectibleAssetIndexer = [AssetID: Int] /// asset id -> collectible asset index
     
     let address: String
     var amount: UInt64
@@ -50,12 +51,12 @@ final class Account: ALGEntityModel {
     var rekeyDetail: RekeyDetail?
     var preferredOrder: Int
     var accountImage: String?
-    
-    var compoundAssets: [CompoundAsset] = []
-    private(set) var compoundAssetsIndexer: CompoundAssetIndexer = [:]
 
     var standardAssets: [StandardAsset] = []
-    var nfts: [NFTAsset] = []
+    private(set) var standardAssetsIndexer: StandardAssetIndexer = [:]
+
+    var collectibleAssets: [CollectibleAsset] = []
+    private(set) var collectibleAssetsIndexer: CollectibleAssetIndexer = [:]
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -147,38 +148,77 @@ final class Account: ALGEntityModel {
         apiModel.createdApps = createdApps
         return apiModel
     }
-    
-    subscript (assetId: Int64) -> CompoundAsset? {
-        let index = compoundAssetsIndexer[assetId]
-        return index.unwrap { compoundAssets[safe: $0] }
+
+    subscript (assetId: AssetID) -> Asset? {
+        if let index = standardAssetsIndexer[assetId] {
+            return standardAssets[index]
+        }
+
+        let index = collectibleAssetsIndexer[assetId]
+        return index.unwrap { collectibleAssets[safe: $0] }
     }
 }
 
 extension Account {
-    func setCompoundAssets(
-        _ assets: [CompoundAsset],
-        _ indexer: CompoundAssetIndexer
-    ) {
-        compoundAssets = assets
-        compoundAssetsIndexer = indexer
+    var allAssets: [Asset] {
+        return standardAssets + collectibleAssets
     }
-    
+
+    func setStandardAssets(
+        _ assets: [StandardAsset],
+        _ indexer: StandardAssetIndexer
+    ) {
+        standardAssets = assets
+        standardAssetsIndexer = indexer
+    }
+
+    func setCollectibleAssets(
+        _ assets: [CollectibleAsset],
+        _ indexer: CollectibleAssetIndexer
+    ) {
+        collectibleAssets = assets
+        collectibleAssetsIndexer = indexer
+    }
+
     func append(
-        _ compoundAsset: CompoundAsset
+        _ asset: StandardAsset
     ) {
-        compoundAssets.append(compoundAsset)
-        compoundAssetsIndexer[compoundAsset.id] = compoundAssets.lastIndex!
+        standardAssets.append(asset)
+        standardAssetsIndexer[asset.id] = standardAssets.lastIndex!
+    }
+
+    func append(
+        _ collectible: CollectibleAsset
+    ) {
+        collectibleAssets.append(collectible)
+        collectibleAssetsIndexer[collectible.id] = collectibleAssets.lastIndex!
     }
     
-    func removeAllCompoundAssets() {
-        compoundAssets = []
-        compoundAssetsIndexer = [:]
+    func removeAllAssets() {
+        standardAssets = []
+        collectibleAssets = []
+        standardAssetsIndexer = [:]
+        collectibleAssetsIndexer = [:]
     }
     
-    func contains(
-        _ assetDetail: AssetDecoration
+    func containsAsset(
+        _ id: AssetID
     ) -> Bool {
-        return self[assetDetail.id] != nil
+        let index = standardAssetsIndexer[id]
+        return index.unwrap { standardAssets[safe: $0] } != nil
+    }
+
+    func containsCollectible(
+        _ id: AssetID
+    ) -> Bool {
+        let index = collectibleAssetsIndexer[id]
+        return index.unwrap { collectibleAssets[safe: $0] } != nil
+    }
+
+    func contains(
+        _ id: AssetID
+    ) -> Bool {
+        return containsAsset(id) || containsCollectible(id)
     }
 }
 

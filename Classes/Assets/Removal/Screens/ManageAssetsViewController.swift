@@ -82,11 +82,11 @@ extension ManageAssetsViewController {
 
 extension ManageAssetsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return account.compoundAssets.count
+        return account.standardAssets.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let assetDetail = account.compoundAssets[indexPath.item].detail
+        let assetDetail = account.standardAssets[indexPath.item]
         let cell = collectionView.dequeue(AssetPreviewActionCell.self, at: indexPath)
         cell.customize(theme.assetPreviewActionViewTheme)
         cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(assetDetail)))
@@ -108,14 +108,13 @@ extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
 extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
     func assetPreviewSendCellDidTapSendButton(_ assetPreviewSendCell: AssetPreviewActionCell) {
         guard let index = manageAssetsView.assetsCollectionView.indexPath(for: assetPreviewSendCell),
-              index.item < account.compoundAssets.count else {
+              index.item < account.standardAssets.count else {
                   return
               }
 
-        let assetDetail = account.compoundAssets[index.item].detail
-        guard let assetAmount = account.amount(for: assetDetail) else {
-            return
-        }
+        let standardAsset = account.standardAssets[index.item]
+        let assetDetail = AssetDecoration(standardAsset: standardAsset)
+        let assetAmount = standardAsset.amountWithFraction
 
         let assetAlertDraft: AssetAlertDraft
 
@@ -166,11 +165,14 @@ extension ManageAssetsViewController:
         if !canSignTransaction(for: &account) {
             return
         }
+
+        guard let standardAsset = account.allAssets.first(matching: (\.id, assetDetail.id)) as? StandardAsset else {
+            return
+        }
         
-        if let assetAmount = account.amount(for: assetDetail),
-           assetAmount != 0 {
-            var draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(assetDetail))
-            draft.amount = assetAmount
+        if standardAsset.amountWithFraction != 0 {
+            var draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(standardAsset))
+            draft.amount = standardAsset.amountWithFraction
             open(
                 .sendTransaction(draft: draft),
                 by: .push
@@ -178,10 +180,10 @@ extension ManageAssetsViewController:
             return
         }
         
-        removeAssetFromAccount(assetDetail)
+        removeAssetFromAccount(standardAsset)
     }
     
-    private func removeAssetFromAccount(_ assetDetail: AssetDecoration) {
+    private func removeAssetFromAccount(_ assetDetail: Asset) {
         guard let creator = assetDetail.creator else {
             return
         }
@@ -208,7 +210,7 @@ extension ManageAssetsViewController:
 extension ManageAssetsViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
         guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
-              let removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
+              var removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
                   return
               }
 
@@ -288,8 +290,8 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         ledgerApprovalViewController?.dismissScreen()
     }
     
-    private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetDecoration? {
-        return draft?.assetIndex.unwrap { account[$0]?.detail }
+    private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> Asset? {
+        return draft?.assetIndex.unwrap { account[$0] }
     }
 }
 
@@ -307,7 +309,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
 protocol ManageAssetsViewControllerDelegate: AnyObject {
     func manageAssetsViewController(
         _ manageAssetsViewController: ManageAssetsViewController,
-        didRemove assetDetail: AssetDecoration,
+        didRemove asset: Asset,
         from account: Account
     )
 }

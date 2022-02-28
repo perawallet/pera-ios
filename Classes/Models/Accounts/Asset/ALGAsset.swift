@@ -35,6 +35,14 @@ final class ALGAsset:
         self.id = 1
         self.isDeleted = nil
     }
+
+    init(id: AssetID) {
+        self.id = id
+        self.creator = nil
+        self.amount = 0
+        self.isFrozen = nil
+        self.isDeleted = nil
+    }
 }
 
 extension ALGAsset {

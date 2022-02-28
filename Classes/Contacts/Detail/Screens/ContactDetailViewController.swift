@@ -30,7 +30,7 @@ final class ContactDetailViewController: BaseScrollViewController {
     
     private let contact: Contact
     private var contactAccount: Account?
-    private var selectedAsset: AssetDecoration?
+    private var selectedAsset: StandardAsset?
     private var assetPreviews: [AssetPreviewModel] = []
 
     init(contact: Contact, configuration: ViewControllerConfiguration) {
@@ -152,11 +152,16 @@ extension ContactDetailViewController {
 
                                 for asset in assets {
                                     if let assetDetail = self.sharedDataController.assetDetailCollection[asset.id] {
-                                        let compoundAsset = CompoundAsset(asset, assetDetail)
-                                        account.append(compoundAsset)
+                                        if assetDetail.isCollectible {
+                                            let collectible = CollectibleAsset(asset: asset, decoration: assetDetail)
+                                            account.append(collectible)
+                                        } else {
+                                            let standardAsset = StandardAsset(asset: asset, decoration: assetDetail)
+                                            account.append(standardAsset)
 
-                                        let assetPreviewModel = AssetPreviewModelAdapter.adapt((assetDetail: assetDetail, asset: asset, currency: currency))
-                                        self.assetPreviews.append(assetPreviewModel)
+                                            let assetPreviewModel = AssetPreviewModelAdapter.adapt((asset: standardAsset, currency: currency))
+                                            self.assetPreviews.append(assetPreviewModel)
+                                        }
                                     }
                                 }
 
@@ -229,7 +234,7 @@ extension ContactDetailViewController: AssetPreviewActionCellDelegate {
             return
         }
 
-        let mode: AccountListViewController.Mode = .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.compoundAssets[itemIndex.item - 1].detail)
+        let mode: AccountListViewController.Mode = .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.standardAssets[itemIndex.item - 1])
         let accountListDataSource = AccountListDataSource(sharedDataController: sharedDataController, mode: mode)
 
         guard !accountListDataSource.accounts.isEmpty else {
@@ -249,7 +254,7 @@ extension ContactDetailViewController: AssetPreviewActionCellDelegate {
         )
 
         if itemIndex.item != 0 {
-            selectedAsset = contactAccount.compoundAssets[itemIndex.item - 1].detail
+            selectedAsset = contactAccount.standardAssets[itemIndex.item - 1]
         }
     }
 }
