@@ -171,7 +171,7 @@ final class AlgoStatisticsViewController:
     override func viewDidLoad() {
         super.viewDidLoad()
         build()
-        showLoading()
+        startSubviewsShimmer()
         loadData()
     }
 
@@ -181,10 +181,16 @@ final class AlgoStatisticsViewController:
         super.viewDidAppear(animated)
         
         if !isViewFirstAppeared {
+            restartSubviewsShimmer()
             reloadData()
         }
         
         isViewFirstAppeared = false
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopSubviewsShimmer()
     }
 }
 
@@ -222,12 +228,6 @@ extension AlgoStatisticsViewController {
         }
         
         algoPriceTimeFrameSelectionView.bindData(nil)
-    }
-}
-
-extension AlgoStatisticsViewController {
-    private func showLoading() {
-        startSubviewsShimmer()
     }
 }
 
