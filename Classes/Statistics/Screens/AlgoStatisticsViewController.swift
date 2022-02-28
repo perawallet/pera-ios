@@ -22,7 +22,8 @@ import UIKit
 
 final class AlgoStatisticsViewController:
     BaseScrollViewController,
-    NotificationObserver {
+    NotificationObserver,
+    ShimmerDisplayable {
     var notificationObservations: [NSObjectProtocol] = []
     
     override var prefersLargeTitle: Bool {
@@ -170,6 +171,7 @@ final class AlgoStatisticsViewController:
     override func viewDidLoad() {
         super.viewDidLoad()
         build()
+        showLoading()
         loadData()
     }
 
@@ -220,6 +222,12 @@ extension AlgoStatisticsViewController {
         }
         
         algoPriceTimeFrameSelectionView.bindData(nil)
+    }
+}
+
+extension AlgoStatisticsViewController {
+    private func showLoading() {
+        startSubviewsShimmer()
     }
 }
 

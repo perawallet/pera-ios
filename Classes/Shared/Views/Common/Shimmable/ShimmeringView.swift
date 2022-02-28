@@ -18,10 +18,14 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
+import MacaroonUtils
 
 final class ShimmeringView:
     MacaroonUIKit.BaseView,
-    Shimmable {
+    Shimmable,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     override var isHidden: Bool {
         didSet {
             guard oldValue != isHidden else {
@@ -41,5 +45,10 @@ final class ShimmeringView:
         super.init(frame: .zero)
 
         backgroundColor = AppColors.Shared.Layer.gray.uiColor
+
+        observe(notification: UIApplication.willEnterForegroundNotification) {
+            [weak self] _ in
+            self?.restartShimmer()
+        }
     }
 }

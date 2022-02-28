@@ -16,18 +16,32 @@
 
 import UIKit
 
-protocol ShimmerDisplayable: UIView {
+protocol ShimmerDisplayable {
     var shimmableSubviews: [Shimmable] { get }
 
     func startSubviewsShimmer()
     func stopSubviewsShimmer()
 }
 
-extension ShimmerDisplayable {
+extension ShimmerDisplayable where Self: UIView {
     var shimmableSubviews: [Shimmable] {
         var shimmableViews = [Shimmable]()
 
         allSubviews.forEach {
+            if let subview = $0 as? Shimmable {
+                shimmableViews.append(subview)
+            }
+        }
+
+        return shimmableViews
+    }
+}
+
+extension ShimmerDisplayable where Self: UIViewController {
+    var shimmableSubviews: [Shimmable] {
+        var shimmableViews = [Shimmable]()
+
+        view.allSubviews.forEach {
             if let subview = $0 as? Shimmable {
                 shimmableViews.append(subview)
             }

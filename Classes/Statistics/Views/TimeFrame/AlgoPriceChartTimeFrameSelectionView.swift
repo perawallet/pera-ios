@@ -50,7 +50,7 @@ final class AlgoPriceChartTimeFrameSelectionView:
         _ theme: AlgoPriceChartTimeFrameSelectionViewTheme
     ) {
         self.theme = theme
-        
+
         addContent(theme)
         addSelection(theme)
         addLoading(theme)
@@ -69,6 +69,7 @@ final class AlgoPriceChartTimeFrameSelectionView:
     ) {
         addOptions(viewModel?.options)
         loadingView.isHidden = viewModel != nil
+        selectionView.isHidden = viewModel == nil
     }
 }
 

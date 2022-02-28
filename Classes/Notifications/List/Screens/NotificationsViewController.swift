@@ -51,6 +51,11 @@ final class NotificationsViewController: BaseViewController {
                 return
             }
 
+            if let loadingCell = cell as? NotificationLoadingCell {
+                loadingCell.startAnimating()
+                return
+            }
+
             self.dataController.loadNextPageIfNeeded(for: indexPath)
         }
 
@@ -78,6 +83,28 @@ final class NotificationsViewController: BaseViewController {
         if isInitialFetchCompleted {
             reloadNotifications()
         }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let loadingCell =
+        notificationsView
+            .notificationsCollectionView
+            .visibleCells
+            .first { $0 is NotificationLoadingCell } as? NotificationLoadingCell
+        loadingCell?.startAnimating()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        let loadingCell =
+        notificationsView
+            .notificationsCollectionView
+            .visibleCells
+            .first { $0 is NotificationLoadingCell } as? NotificationLoadingCell
+        loadingCell?.stopAnimating()
     }
     
     override func setListeners() {
