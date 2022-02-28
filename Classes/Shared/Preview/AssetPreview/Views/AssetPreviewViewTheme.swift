@@ -21,55 +21,56 @@ struct AssetPreviewViewTheme:
     LayoutSheet,
     StyleSheet {
     let verifiedIcon: ImageStyle
-    let primaryAssetTitle: TextStyle
-    let secondaryAssetTitle: TextStyle
-    var primaryAssetValue: TextStyle
-    var secondaryAssetValue: TextStyle
+    let title: TextStyle
+    let subtitle: TextStyle
+    var primaryAccessory: TextStyle
+    var secondaryAccessory: TextStyle
 
     let contentMinWidthRatio: LayoutMetric
     let minSpacingBetweenContentAndSecondaryContent: LayoutMetric
     let verifiedIconContentEdgeInsets: LayoutOffset
     let imageSize: LayoutSize
     let horizontalPadding: LayoutMetric
-    let verticalPadding: LayoutMetric
-    let secondaryImageLeadingPadding: LayoutMetric
 
     init(_ family: LayoutFamily) {
-        self.contentMinWidthRatio = 0.1
+        self.contentMinWidthRatio = 0.15
         self.minSpacingBetweenContentAndSecondaryContent = 8
         self.verifiedIconContentEdgeInsets = (8, 0)
         self.verifiedIcon = [
             .contentMode(.right)
         ]
-        self.primaryAssetTitle = [
+        self.title = [
             .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.main),
+            .textAlignment(.left)
         ]
-        self.secondaryAssetTitle = [
+        self.subtitle = [
             .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.grayLighter),
+            .textAlignment(.left)
         ]
-        self.primaryAssetValue = [
+        self.primaryAccessory = [
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
+            .textAlignment(.right)
         ]
-        self.secondaryAssetValue = [
+        self.secondaryAccessory = [
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.grayLighter),
+            .textAlignment(.right)
         ]
 
         self.imageSize = (40, 40)
         self.horizontalPadding = 16
-        self.secondaryImageLeadingPadding = 8
-        self.verticalPadding = 16
     }
 }
 
 extension AssetPreviewViewTheme {
     mutating func configureForAssetPreviewAddition() {
-        primaryAssetValue = primaryAssetValue.modify(
+        primaryAccessory = primaryAccessory.modify( [] )
+
+        secondaryAccessory = secondaryAccessory.modify(
             [ .textOverflow(SingleLineFittingText()), .textColor(AppColors.Components.Text.gray) ]
         )
-        secondaryAssetValue = secondaryAssetValue.modify( [ ] )
     }
 }

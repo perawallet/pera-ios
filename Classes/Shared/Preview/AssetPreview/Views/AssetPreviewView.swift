@@ -138,8 +138,8 @@ extension AssetPreviewView {
     private func addTitle(
         _ theme: AssetPreviewViewTheme
     ) {
-        titleView.customizeAppearance(theme.primaryAssetTitle)
-
+        titleView.customizeAppearance(theme.title)
+        
         contentView.addSubview(titleView)
 
         titleView.fitToVerticalIntrinsicSize(
@@ -149,7 +149,7 @@ extension AssetPreviewView {
 
         titleView.fitToHorizontalIntrinsicSize(
             hugging: .required,
-            compression: .defaultLow
+            compression: .defaultHigh
         )
 
         titleView.snp.makeConstraints {
@@ -166,21 +166,21 @@ extension AssetPreviewView {
         verifiedIconView.customizeAppearance(theme.verifiedIcon)
 
         contentView.addSubview(verifiedIconView)
-
+        
         verifiedIconView.fitToIntrinsicSize()
         verifiedIconView.contentEdgeInsets = theme.verifiedIconContentEdgeInsets
 
         verifiedIconView.snp.makeConstraints {
             $0.centerY == titleView
             $0.leading == titleView.snp.trailing
-            $0.trailing == 0
+            $0.trailing <= 0
         }
     }
 
     private func addSubtitle(
         _ theme: AssetPreviewViewTheme
     ) {
-        subtitleView.customizeAppearance(theme.secondaryAssetTitle)
+        subtitleView.customizeAppearance(theme.subtitle)
         
         contentView.addSubview(subtitleView)
 
@@ -194,7 +194,7 @@ extension AssetPreviewView {
             $0.top == titleView.snp.bottom
             $0.leading == 0
             $0.bottom == 0
-            $0.trailing == 0
+            $0.trailing <= 0
         }
     }
 
@@ -217,7 +217,7 @@ extension AssetPreviewView {
     private func addPrimaryAccessory(
         _ theme: AssetPreviewViewTheme
     ) {
-        primaryAccessoryView.customizeAppearance(theme.primaryAssetValue)
+        primaryAccessoryView.customizeAppearance(theme.primaryAccessory)
 
         accessoryView.addSubview(primaryAccessoryView)
 
@@ -233,24 +233,31 @@ extension AssetPreviewView {
         primaryAccessoryView.snp.makeConstraints {
             $0.top == 0
             $0.trailing == 0
-            $0.leading == 0
+            $0.leading >= 0
         }
     }
 
     private func addSecondaryAccessory(
         _ theme: AssetPreviewViewTheme
     ) {
-        secondaryAccessoryView.customizeAppearance(theme.secondaryAssetValue)
+        secondaryAccessoryView.customizeAppearance(theme.secondaryAccessory)
 
         accessoryView.addSubview(secondaryAccessoryView)
 
-        secondaryAccessoryView.fitToIntrinsicSize()
+        secondaryAccessoryView.fitToHorizontalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+        secondaryAccessoryView.fitToVerticalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .defaultLow
+        )
 
         secondaryAccessoryView.snp.makeConstraints {
             $0.top == primaryAccessoryView.snp.bottom
             $0.bottom == 0
             $0.trailing == 0
-            $0.leading == 0
+            $0.leading >= 0
         }
     }
 }

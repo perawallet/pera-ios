@@ -49,8 +49,8 @@ enum AssetPreviewModelAdapter {
             verifiedIcon: adaptee.isVerified ? img("icon-verified-shield") : nil,
             title: adaptee.name,
             subtitle: adaptee.unitName,
-            primaryAccessory: String(adaptee.id),
-            secondaryAccessory: nil
+            primaryAccessory: nil,
+            secondaryAccessory: String(adaptee.id)
         )
     }
 
