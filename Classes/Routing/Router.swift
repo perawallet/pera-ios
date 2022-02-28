@@ -154,8 +154,7 @@ class Router:
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
-        case .moonpay(let params):
-            break
+
         case .wcMainTransactionScreen(let draft):
             route(
                 to: .wcMainTransactionScreen(draft: draft, delegate: rootViewController),
@@ -568,7 +567,7 @@ class Router:
             viewController = aViewController
         case let .accountSelection(transactionAction, delegate):
             let selectAccountViewController = SelectAccountViewController(
-                dataController: SelectAccountAPIDataController(configuration.sharedDataController),
+                dataController: SelectAccountAPIDataController(configuration.sharedDataController, transactionAction: transactionAction),
                 transactionAction: transactionAction,
                 configuration: configuration
             )
@@ -624,10 +623,15 @@ class Router:
             )
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
-        case .moonpayIntroduction:
-            viewController = MoonpayIntroductionViewController(configuration: configuration)
-        case let .moonpayTransaction(moonpayParams):
-            viewController = MoonpayTransactionViewController(moonpayParams: moonpayParams, configuration: configuration)
+        case .buyAlgoHome(let draft, let delegate):
+            let buyAlgoHomeScreen = BuyAlgoHomeScreen(
+                draft: draft,
+                configuration: configuration
+            )
+            buyAlgoHomeScreen.delegate = delegate
+            viewController = buyAlgoHomeScreen
+        case let .buyAlgoTransaction(buyAlgoParams):
+            viewController = BuyAlgoTransactionViewController(buyAlgoParams: buyAlgoParams, configuration: configuration)
         }
 
         return viewController as? T

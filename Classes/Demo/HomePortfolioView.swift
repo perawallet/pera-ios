@@ -38,7 +38,7 @@ final class HomePortfolioView:
     private lazy var algoHoldingsView = HomePortfolioItemView()
     private lazy var assetHoldingsCanvasView = UIView()
     private lazy var assetHoldingsView = HomePortfolioItemView()
-    private lazy var buyButton = Button()
+    private lazy var buyAlgoButton = Button()
     
     func customize(
         _ theme: HomePortfolioViewTheme
@@ -47,7 +47,7 @@ final class HomePortfolioView:
         addInfoAction(theme)
         addValue(theme)
         addHoldings(theme)
-        addBuyButton(theme)
+        addBuyAlgoButton(theme)
     }
     
     func customizeAppearance(
@@ -106,8 +106,8 @@ final class HomePortfolioView:
             valueSize.height +
             theme.spacingBetweenValueAndHoldings +
             max(algoHoldingsSize.height, assetHoldingsSize.height) +
-            theme.buyButtonHeight +
-            theme.buyButtonMargin.top
+            theme.buyAlgoButtonHeight +
+            theme.buyAlgoButtonMargin.top
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
@@ -217,23 +217,23 @@ extension HomePortfolioView {
         }
     }
 
-    private func addBuyButton(
+    private func addBuyAlgoButton(
         _ theme: HomePortfolioViewTheme
     ) {
-        buyButton.customize(theme.buyButton)
-        buyButton.setTitle("moonpay-buy-button-title".localized, for: .normal)
+        buyAlgoButton.customize(theme.buyAlgoButton)
+        buyAlgoButton.setTitle("moonpay-buy-button-title".localized, for: .normal)
 
-        addSubview(buyButton)
-        buyButton.snp.makeConstraints {
-            $0.top == holdingsView.snp.bottom + theme.buyButtonMargin.top
+        addSubview(buyAlgoButton)
+        buyAlgoButton.snp.makeConstraints {
+            $0.top == holdingsView.snp.bottom + theme.buyAlgoButtonMargin.top
             $0.leading == 0
             $0.trailing == 0
-            $0.height.equalTo(theme.buyButtonHeight)
+            $0.height.equalTo(theme.buyAlgoButtonHeight)
         }
 
         startPublishing(
             event: .buyAlgo,
-            for: buyButton
+            for: buyAlgoButton
         )
     }
 }

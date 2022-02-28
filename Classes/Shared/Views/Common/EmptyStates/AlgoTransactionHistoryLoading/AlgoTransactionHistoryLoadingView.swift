@@ -51,7 +51,7 @@ final class AlgoTransactionHistoryLoadingView:
     )
     private lazy var rewardsSupplementaryImage = UIImageView()
 
-    private lazy var buyButton = Button()
+    private lazy var buyAlgoButton = Button()
 
     override init(
         frame: CGRect
@@ -67,7 +67,7 @@ final class AlgoTransactionHistoryLoadingView:
         addBalanceView(theme)
         addCurrencyView(theme)
         addRewardsView(theme)
-        addBuyButton(theme)
+        addBuyAlgoButton(theme)
     }
 
     func customizeAppearance(
@@ -204,15 +204,15 @@ extension AlgoTransactionHistoryLoadingView {
         }
     }
 
-    private func addBuyButton(_ theme: AlgoTransactionHistoryLoadingViewTheme) {
-        buyButton.customize(theme.buyButtonTheme)
+    private func addBuyAlgoButton(_ theme: AlgoTransactionHistoryLoadingViewTheme) {
+        buyAlgoButton.customize(theme.buyAlgoButtonTheme)
 
-        addSubview(buyButton)
-        buyButton.snp.makeConstraints {
-            $0.top.equalTo(rewardsContainer.snp.bottom).offset(theme.buyButtonMargin.top)
+        addSubview(buyAlgoButton)
+        buyAlgoButton.snp.makeConstraints {
+            $0.top.equalTo(rewardsContainer.snp.bottom).offset(theme.buyAlgoButtonMargin.top)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
-            $0.height.equalTo(theme.buyButtonHeight)
+            $0.height.equalTo(theme.buyAlgoButtonHeight)
         }
     }
 }
@@ -228,7 +228,7 @@ extension AlgoTransactionHistoryLoadingView {
         theme.rewardsContainerSize.h +
         theme.rewardsContainerMargin.top +
         theme.rewardsContainerMargin.bottom +
-        theme.buyButtonHeight +
-        theme.buyButtonMargin.top
+        theme.buyAlgoButtonHeight +
+        theme.buyAlgoButtonMargin.top
     }
 }

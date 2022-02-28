@@ -34,6 +34,8 @@ final class AccountAssetListViewController: BaseViewController {
     private lazy var listDataSource = AccountAssetListDataSource(listView)
     private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
+    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+    
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build()
         let collectionView = UICollectionView(
@@ -275,8 +277,38 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
         open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
     }
 
-    func transactionFloatingActionButtonViewControllerDidBuy(_ viewController: TransactionFloatingActionButtonViewController) {
-        
+    func transactionFloatingActionButtonViewControllerDidBuy(
+        _ viewController: TransactionFloatingActionButtonViewController
+    ) {
+        openBuyAlgo()
+    }
+
+    private func openBuyAlgo() {
+        let draft = BuyAlgoDraft()
+        draft.mutate(with: accountHandle.value.address)
+
+        self.open(
+            .buyAlgoHome(
+                transactionDraft: draft,
+                delegate: self
+            ),
+            by: .present
+        )
+    }
+}
+
+extension AccountAssetListViewController: BuyAlgoHomeScreenDelegate {
+    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
+        screen.dismissScreen()
+    }
+    
+    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
+        screen.dismissScreen(animated: true) {
+            self.buyAlgoResultTransition.perform(
+                .buyAlgoTransaction(buyAlgoParams: params),
+                by: .present
+            )
+        }
     }
 }
 

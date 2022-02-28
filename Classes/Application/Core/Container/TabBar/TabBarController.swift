@@ -35,6 +35,8 @@ final class TabBarController: TabBarContainer {
 
     private lazy var toggleTransactionOptionsActionView = Button()
     private lazy var transactionOptionsView = createTransactionOptions()
+
+    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
     
     private var isTransactionOptionsVisible: Bool = false
     private var currentTransactionOptionsAnimator: UIViewPropertyAnimator?
@@ -132,10 +134,10 @@ extension TabBarController {
             guard let self = self else { return }
             self.navigateToAccountSelection(.receive)
         }
-        aView.observe(event: .buy) {
+        aView.observe(event: .buyAlgo) {
             [weak self] in
             guard let self = self else { return }
-            self.navigateToMoonpay()
+            self.navigateToBuyAlgo()
         }
         aView.observe(event: .close) {
             [weak self] in
@@ -252,13 +254,18 @@ extension TabBarController {
         switch action {
         case .send: log(SendTabEvent())
         case .receive: log(ReceiveTabEvent())
+        case .buyAlgo:
+            break
         }
     }
 
-    private func navigateToMoonpay() {
+    private func navigateToBuyAlgo() {
         toggleTransactionOptions()
 
-//        log(BuyTabEvent())
+        open(
+            .buyAlgoHome(transactionDraft: BuyAlgoDraft(), delegate: self),
+            by: .present
+        )
     }
 }
 
@@ -284,6 +291,21 @@ extension TabBarController: SelectAccountViewControllerDelegate {
                     by: .present
                 )
             }
+        }
+    }
+}
+
+extension TabBarController: BuyAlgoHomeScreenDelegate {
+    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
+        screen.dismissScreen()
+    }
+    
+    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
+        screen.dismissScreen(animated: true) {
+            self.buyAlgoResultTransition.perform(
+                .buyAlgoTransaction(buyAlgoParams: params),
+                by: .present
+            )
         }
     }
 }

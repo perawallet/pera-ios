@@ -26,12 +26,12 @@ final class TransactionFloatingActionButtonViewController: BaseViewController {
     private lazy var closeButton = FloatingActionItemButton()
     private lazy var receiveButton = FloatingActionItemButton()
     private lazy var sendButton = FloatingActionItemButton()
-    private lazy var buyButton = FloatingActionItemButton()
+    private lazy var buyAlgoButton = FloatingActionItemButton()
     private lazy var theme = Theme()
 
     override func setListeners() {
         sendButton.addTarget(self, action: #selector(didTapSendButton), for: .touchUpInside)
-        buyButton.addTarget(self, action: #selector(didTapBuyButton), for: .touchUpInside)
+        buyAlgoButton.addTarget(self, action: #selector(didTapBuyButton), for: .touchUpInside)
         receiveButton.addTarget(self, action: #selector(didTapReceiveButton), for: .touchUpInside)
         closeButton.addTarget(self, action: #selector(didTapChromeView), for: .touchUpInside)
         chromeView.addTarget(self, action: #selector(didTapChromeView), for: .touchUpInside)
@@ -40,7 +40,7 @@ final class TransactionFloatingActionButtonViewController: BaseViewController {
     override func prepareLayout() {
         addChrome(theme)
         addCloseButton(theme)
-        addBuyButton(theme)
+        addBuyAlgoButton(theme)
         addReceiveButton(theme)
         addSendButton(theme)
     }
@@ -80,7 +80,7 @@ extension TransactionFloatingActionButtonViewController {
         view.addSubview(receiveButton)
         receiveButton.snp.makeConstraints {
             $0.trailing.equalTo(closeButton)
-            $0.bottom.equalTo(buyButton.snp.top).inset(-theme.buttonVerticalSpacing)
+            $0.bottom.equalTo(buyAlgoButton.snp.top).inset(-theme.buttonVerticalSpacing)
         }
 
         receiveButton.alpha = .zero
@@ -99,12 +99,12 @@ extension TransactionFloatingActionButtonViewController {
         sendButton.alpha = .zero
     }
 
-    private func addBuyButton(_ theme: Theme) {
-        buyButton.image = "fab-buy".uiImage
-        buyButton.title = "moonpay-buy-button-title".localized
+    private func addBuyAlgoButton(_ theme: Theme) {
+        buyAlgoButton.image = "fab-buy".uiImage
+        buyAlgoButton.title = "moonpay-buy-button-title".localized
 
-        view.addSubview(buyButton)
-        buyButton.snp.makeConstraints {
+        view.addSubview(buyAlgoButton)
+        buyAlgoButton.snp.makeConstraints {
             $0.trailing.equalTo(closeButton)
             $0.bottom.equalTo(closeButton.snp.top)
         }
@@ -131,14 +131,14 @@ extension TransactionFloatingActionButtonViewController {
     }
 
     private func showButtonsWithAnimation() {
-        buyButton.snp.updateConstraints {
+        buyAlgoButton.snp.updateConstraints {
             $0.bottom.equalTo(closeButton.snp.top).offset(-theme.buttonVerticalSpacing)
         }
 
         var delay = 0.0
         let animationSpeed = 0.05
 
-        [buyButton, receiveButton, sendButton].forEach { button in
+        [buyAlgoButton, receiveButton, sendButton].forEach { button in
             UIView.animate(withDuration: 0.2,
                            delay: delay,
                            animations: {
@@ -165,7 +165,7 @@ extension TransactionFloatingActionButtonViewController {
     }
 
     private func hideButtonsWithAnimation() {
-        [sendButton, receiveButton, buyButton, closeButton].forEach { button in
+        [sendButton, receiveButton, buyAlgoButton, closeButton].forEach { button in
             UIView.animate(withDuration: 0.2) {
                 button.alpha = 0
             }

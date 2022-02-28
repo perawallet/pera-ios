@@ -22,6 +22,8 @@ import MacaroonUIKit
 class TransactionsViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var bottomSheetTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+
     private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
 
     private(set) var accountHandle: AccountHandle
@@ -248,6 +250,38 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
 
         self.rewardDetailViewController = rewardDetailViewController
     }
+
+    func algosDetailInfoViewCellDidTapBuyButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell) {
+        openBuyAlgo()
+    }
+
+    private func openBuyAlgo() {
+        let draft = BuyAlgoDraft()
+        draft.mutate(with: accountHandle.value.address)
+
+        self.open(
+            .buyAlgoHome(
+                transactionDraft: draft,
+                delegate: self
+            ),
+            by: .present
+        )
+    }
+}
+
+extension TransactionsViewController: BuyAlgoHomeScreenDelegate {
+    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
+        screen.dismissScreen()
+    }
+
+    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
+        screen.dismissScreen(animated: true) {
+            self.buyAlgoResultTransition.perform(
+                .buyAlgoTransaction(buyAlgoParams: params),
+                by: .present
+            )
+        }
+    }
 }
 
 extension TransactionsViewController: AssetDetailInfoViewCellDelegate {
@@ -327,8 +361,10 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
         open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
     }
 
-    func transactionFloatingActionButtonViewControllerDidBuy(_ viewController: TransactionFloatingActionButtonViewController) {
-        
+    func transactionFloatingActionButtonViewControllerDidBuy(
+        _ viewController: TransactionFloatingActionButtonViewController
+    ) {
+        openBuyAlgo()
     }
 }
 
