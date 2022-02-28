@@ -119,9 +119,7 @@ extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
             return
         }
 
-        let address = "tb1q3pt955j4h7wehmgesgsr4vjw6l5ssr5q4fwvll"
-
-        transactionDraft.mutate(with: address)
+        transactionDraft.mutate(with: account.address)
 
         openMoonPay(for: transactionDraft)
     }
@@ -131,20 +129,30 @@ extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
             return
         }
 
-        api?.getSignedMoonpayURL(BuyAlgoSignDraft(walletAddress: address, redirectUrl: "algorand://\(address)"), onCompleted: { response in
+        let buyAlgoSignDraft = BuyAlgoSignDraft(walletAddress: address, redirectUrl: "algorand://\(address)")
+
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+
+        api?.getSignedMoonpayURL(buyAlgoSignDraft) { [weak self] response in
+            guard let self = self else {
+                return
+            }
+
+            self.loadingController?.stopLoading()
+
             switch response {
             case .failure:
                 break
             case let .success(response):
-                print(response.url)
+                if let url = response.url {
+                    self.openMoonPay(url: url)
+                }
             }
-        })
+        }
+    }
 
-//        self.open(
-//            URL(
-//                string: "https://buy-sandbox.moonpay.com?apiKey=pk_test_g6Ojf6eciZZvUYyNb8WHzZml9l48Ri0u&currencyCode=btc&walletAddress=\(address)&redirectURL=algorand://\(address)"
-//            )
-//        )
+    private func openMoonPay(url: URL) {
+        self.open(url)
     }
 }
 

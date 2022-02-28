@@ -28,6 +28,7 @@ extension ALGAPI {
             .path(.signBuyAlgo)
             .method(.post)
             .body(draft)
+            .completionHandler(handler)
             .execute()
     }
 }
