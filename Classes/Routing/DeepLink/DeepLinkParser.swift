@@ -129,11 +129,11 @@ extension DeepLinkParser {
     func discover(
         url: URL
     ) -> Result? {
-        if let moonpayParams = url.buildMoonPayParameters() {
+        if let buyAlgoParams = url.buildMoonPayParameters() {
             NotificationCenter.default.post(
                 name: .didRedirectFromMoonPay,
                 object: self,
-                userInfo: [MoonpayParams.notificationObjectKey: moonpayParams]
+                userInfo: [BuyAlgoParams.notificationObjectKey: buyAlgoParams]
             )
             return nil
         }

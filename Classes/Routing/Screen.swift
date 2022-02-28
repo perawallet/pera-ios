@@ -113,10 +113,10 @@ indirect enum Screen {
     )
     case peraIntroduction
     case buyAlgoHome(
-        transactionDraft: MoonpayTransactionDraft?,
+        transactionDraft: BuyAlgoDraft,
         delegate: BuyAlgoHomeScreenDelegate?
     )
-    case moonpayTransaction(moonpayParams: MoonpayParams)
+    case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
 }
 
 extension Screen {

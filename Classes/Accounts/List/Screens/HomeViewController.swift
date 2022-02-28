@@ -222,7 +222,7 @@ extension HomeViewController {
             guard let self = self else { return }
 
             self.open(
-                .buyAlgoHome(transactionDraft: nil, delegate: self),
+                .buyAlgoHome(transactionDraft: BuyAlgoDraft(), delegate: self),
                 by: .present
             )
         }
@@ -734,10 +734,14 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
 }
 
 extension HomeViewController: BuyAlgoHomeScreenDelegate {
-    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: MoonpayParams) {
+    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
+        screen.dismissScreen()
+    }
+
+    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
         screen.dismissScreen(animated: true) {
             self.buyAlgoResultTransition.perform(
-                .moonpayTransaction(moonpayParams: params),
+                .buyAlgoTransaction(buyAlgoParams: params),
                 by: .present
             )
         }

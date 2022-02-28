@@ -263,7 +263,7 @@ extension TabBarController {
         toggleTransactionOptions()
 
         open(
-            .buyAlgoHome(transactionDraft: nil, delegate: self),
+            .buyAlgoHome(transactionDraft: BuyAlgoDraft(), delegate: self),
             by: .present
         )
     }
@@ -296,10 +296,14 @@ extension TabBarController: SelectAccountViewControllerDelegate {
 }
 
 extension TabBarController: BuyAlgoHomeScreenDelegate {
-    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: MoonpayParams) {
+    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
+        screen.dismissScreen()
+    }
+    
+    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
         screen.dismissScreen(animated: true) {
             self.buyAlgoResultTransition.perform(
-                .moonpayTransaction(moonpayParams: params),
+                .buyAlgoTransaction(buyAlgoParams: params),
                 by: .present
             )
         }

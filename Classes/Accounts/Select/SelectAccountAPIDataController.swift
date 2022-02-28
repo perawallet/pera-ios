@@ -107,8 +107,8 @@ extension SelectAccountAPIDataController {
 
             self.sharedDataController.accountCollection
                 .sorted()
-                .forEach {
-                    let isWatchAccount = $0.value.type == .watch
+                .forEach { accountHandle in
+                    let isWatchAccount = accountHandle.value.type == .watch
 
                     if isWatchAccount {
                         return
@@ -117,27 +117,17 @@ extension SelectAccountAPIDataController {
                     let cellItem: SelectAccountListViewItem
 
                     if self.transactionAction == .buyAlgo {
-                        let algoAccount = CustomAccountPreview(
-                            AlgoAccountViewModel($0.value)
-                        )
+                        let algoAccount = CustomAccountPreview(AlgoAccountViewModel(accountHandle.value))
 
-                        cellItem = .account(
-                            AccountPreviewViewModel(algoAccount),
-                            $0
-                        )
+                        cellItem = .account(AccountPreviewViewModel(algoAccount), accountHandle)
                     } else {
                         let accountPortfolio =
-                            AccountPortfolio(account: $0, currency: currency, calculator: calculator)
+                            AccountPortfolio(account: accountHandle, currency: currency, calculator: calculator)
 
-                        cellItem = .account(
-                            AccountPreviewViewModel(
-                                accountPortfolio
-                            ),
-                            $0
-                        )
+                        cellItem = .account(AccountPreviewViewModel(accountPortfolio), accountHandle)
                     }
 
-                    accounts.append($0)
+                    accounts.append(accountHandle)
                     accountItems.append(cellItem)
                 }
 

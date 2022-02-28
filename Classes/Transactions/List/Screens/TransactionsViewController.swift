@@ -256,9 +256,12 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
     }
 
     private func openBuyAlgo() {
+        let draft = BuyAlgoDraft()
+        draft.mutate(with: accountHandle.value.address)
+
         self.open(
             .buyAlgoHome(
-                transactionDraft: MoonpayTransactionDraft(address: accountHandle.value.address),
+                transactionDraft: draft,
                 delegate: self
             ),
             by: .present
@@ -267,10 +270,14 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
 }
 
 extension TransactionsViewController: BuyAlgoHomeScreenDelegate {
-    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: MoonpayParams) {
+    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
+        screen.dismissScreen()
+    }
+
+    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
         screen.dismissScreen(animated: true) {
             self.buyAlgoResultTransition.perform(
-                .moonpayTransaction(moonpayParams: params),
+                .buyAlgoTransaction(buyAlgoParams: params),
                 by: .present
             )
         }

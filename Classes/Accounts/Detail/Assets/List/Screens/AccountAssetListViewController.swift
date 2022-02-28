@@ -284,9 +284,12 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
     }
 
     private func openBuyAlgo() {
+        let draft = BuyAlgoDraft()
+        draft.mutate(with: accountHandle.value.address)
+
         self.open(
             .buyAlgoHome(
-                transactionDraft: MoonpayTransactionDraft(address: accountHandle.value.address),
+                transactionDraft: draft,
                 delegate: self
             ),
             by: .present
@@ -295,10 +298,14 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
 }
 
 extension AccountAssetListViewController: BuyAlgoHomeScreenDelegate {
-    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: MoonpayParams) {
+    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
+        screen.dismissScreen()
+    }
+    
+    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
         screen.dismissScreen(animated: true) {
             self.buyAlgoResultTransition.perform(
-                .moonpayTransaction(moonpayParams: params),
+                .buyAlgoTransaction(buyAlgoParams: params),
                 by: .present
             )
         }

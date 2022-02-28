@@ -12,40 +12,43 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MoonpayTransactionViewController.swift
+//   BuyAlgoTransactionViewController.swift
 
 import Foundation
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-final class MoonpayTransactionViewController: BaseViewController {
+final class BuyAlgoTransactionViewController: BaseViewController {
     override var shouldShowNavigationBar: Bool {
         return false
     }
     
-    private lazy var moonpayTransactionView = MoonpayTransactionView()
+    private lazy var transactionView = BuyAlgoTransactionView()
     
-    private lazy var dataController =  MoonpayTransactionDataController(
+    private lazy var dataController =  BuyAlgoTransactionDataController(
         sharedDataController: sharedDataController,
-        accountAddress: moonpayParams.address
+        accountAddress: buyAlgoParams.address
     )
-    private let moonpayParams: MoonpayParams
+    private let buyAlgoParams: BuyAlgoParams
     
-    init(moonpayParams: MoonpayParams, configuration: ViewControllerConfiguration) {
-        self.moonpayParams = moonpayParams
+    init(buyAlgoParams: BuyAlgoParams, configuration: ViewControllerConfiguration) {
+        self.buyAlgoParams = buyAlgoParams
         super.init(configuration: configuration)
     }
     
     override func linkInteractors() {
         super.linkInteractors()
         dataController.delegate = self
-        moonpayTransactionView.doneButton.addTarget(self, action: #selector(didTapDone), for: .touchUpInside)
+
+        transactionView.observe(event: .close) { [weak self] in
+            self?.dismissScreen()
+        }
     }
     
     override func prepareLayout() {
         super.prepareLayout()
         view.customizeBaseAppearance(backgroundColor: AppColors.Shared.System.background)
-        addMoonpayTransactionProcessView()
+        addTransactionView()
     }
     
     override func viewDidLoad() {
@@ -54,37 +57,32 @@ final class MoonpayTransactionViewController: BaseViewController {
     }
 }
 
-extension MoonpayTransactionViewController {
-    private func addMoonpayTransactionProcessView() {
-        moonpayTransactionView.customize(MoonpayTransactionViewTheme())
+extension BuyAlgoTransactionViewController {
+    private func addTransactionView() {
+        transactionView.customize(BuyAlgoTransactionViewTheme())
         
-        view.addSubview(moonpayTransactionView)
-        moonpayTransactionView.snp.makeConstraints {
+        view.addSubview(transactionView)
+        transactionView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
     }
-
-    @objc
-    private func didTapDone() {
-        dismissScreen()
-    }
 }
 
-extension MoonpayTransactionViewController: MoonpayTransactionDataControllerDelegate {
-    func moonpayTransactionDataControllerDidLoad(
-        _ dataController: MoonpayTransactionDataController,
+extension BuyAlgoTransactionViewController: BuyAlgoTransactionDataControllerDelegate {
+    func buyAlgoTransactionDataControllerDidLoad(
+        _ dataController: BuyAlgoTransactionDataController,
         account: Account
     ) {
-        moonpayTransactionView.bindData(
-            MoonpayTransactionViewModel(
-                status: moonpayParams.transactionStatus,
+        transactionView.bindData(
+            BuyAlgoTransactionViewModel(
+                status: buyAlgoParams.transactionStatus,
                 account: account
             )
         )
     }
 }
 
-extension MoonpayTransactionViewController: BottomSheetPresentable {
+extension BuyAlgoTransactionViewController: BottomSheetPresentable {
     var modalHeight: ModalHeight {
         return .compressed
     }

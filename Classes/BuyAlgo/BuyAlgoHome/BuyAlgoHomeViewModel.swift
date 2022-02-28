@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MoonpayIntroductionViewModel.swift
+//   BuyAlgoHomeViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct MoonpayIntroductionViewModel: ViewModel {
+struct BuyAlgoHomeViewModel: ViewModel {
     private(set) var logoImage: Image?
     private(set) var backgroundImage: Image?
     private(set) var title: EditText?
@@ -34,7 +34,7 @@ struct MoonpayIntroductionViewModel: ViewModel {
     }
 }
 
-extension MoonpayIntroductionViewModel {
+extension BuyAlgoHomeViewModel {
     private mutating func bind() {
         bindLogoImage()
         bindBackgroundImage()

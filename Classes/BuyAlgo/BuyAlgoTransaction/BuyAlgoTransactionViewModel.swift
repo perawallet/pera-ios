@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MoonpayTransactionViewModel.swift
+//   BuyAlgoTransactionViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct MoonpayTransactionViewModel: ViewModel {
+struct BuyAlgoTransactionViewModel: ViewModel {
     private(set) var image: Image?
     private(set) var title: EditText?
     private(set) var description: EditText?
@@ -26,7 +26,7 @@ struct MoonpayTransactionViewModel: ViewModel {
     private(set) var accountIcon: Image?
     
     init(
-        status: MoonpayParams.TransactionStatus,
+        status: BuyAlgoParams.TransactionStatus,
         account: Account
     ) {
         bindImage(status)
@@ -39,8 +39,8 @@ struct MoonpayTransactionViewModel: ViewModel {
 
 /// <todo>
 /// Refactor image, title and description when the design gets an update.
-extension MoonpayTransactionViewModel {
-    private mutating func bindImage(_ type: MoonpayParams.TransactionStatus) {
+extension BuyAlgoTransactionViewModel {
+    private mutating func bindImage(_ type: BuyAlgoParams.TransactionStatus) {
         switch type {
         case .completed:
             image = "icon-moonpay-transaction-completed"
@@ -55,7 +55,7 @@ extension MoonpayTransactionViewModel {
         }
     }
     
-    private mutating func bindTitle(_ type: MoonpayParams.TransactionStatus) {
+    private mutating func bindTitle(_ type: BuyAlgoParams.TransactionStatus) {
         let font = Fonts.DMSans.medium.make(32).uiFont
         let lineHeightMultiplier = 0.96
         let titleString: String
@@ -90,7 +90,7 @@ extension MoonpayTransactionViewModel {
         )
     }
     
-    private mutating func bindDescription(_ type: MoonpayParams.TransactionStatus) {
+    private mutating func bindDescription(_ type: BuyAlgoParams.TransactionStatus) {
         let font = Fonts.DMSans.regular.make(15).uiFont
         let lineHeightMultiplier = 1.23
         let descriptionString: String

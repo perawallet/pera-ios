@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MoonpayTransactionProcessViewTheme.swift
+//   BuyAlgoTransactionViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct MoonpayTransactionViewTheme:
+struct BuyAlgoTransactionViewTheme:
     StyleSheet,
     LayoutSheet {
     let titleLabel: TextStyle
@@ -40,6 +40,8 @@ struct MoonpayTransactionViewTheme:
     let buttonCorner: Corner
     
     let horizontalPadding: LayoutMetric
+
+    let imageViewSize: LayoutSize
     
     init(_ family: LayoutFamily) {
         titleLabel = [
@@ -85,5 +87,6 @@ struct MoonpayTransactionViewTheme:
         doneButtonBottomPadding = 16
         
         horizontalPadding = 24
+        imageViewSize = (48, 48)
     }
 }

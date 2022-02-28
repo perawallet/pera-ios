@@ -19,13 +19,11 @@ import UIKit
 import MacaroonUIKit
 
 final class AlgoAccountViewModel: PairedViewModel {
-    private(set) var accountType: AccountType
     private(set) var image: UIImage?
     private(set) var address: String?
     private(set) var amount: String?
 
     init(_ model: Account) {
-        accountType = model.type
         bindAddress(model)
         bindImage(model)
         bindAmount(model)
@@ -34,16 +32,17 @@ final class AlgoAccountViewModel: PairedViewModel {
 
 extension AlgoAccountViewModel {
     private func bindAddress(_ account: Account) {
-        guard account.name == nil else {
-            address = account.name
+        if let accountName = account.name {
+            address = accountName
             return
         }
 
-        address = account.authAddress.unwrap(or: account.address).shortAddressDisplay()
+        let accountAddress = account.authAddress ?? account.address
+        address = accountAddress.shortAddressDisplay()
     }
 
     private func bindImage(_ account: Account) {
-        image = account.image ?? accountType.image(for: AccountImageType.getRandomImage(for: accountType))
+        image = account.image ?? account.type.image(for: AccountImageType.getRandomImage(for: account.type))
     }
 
     private func bindAmount(_ account: Account) {

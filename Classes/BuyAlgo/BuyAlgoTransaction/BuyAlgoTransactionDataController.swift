@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   MoonpayTransactionDataController.swift
+//   BuyAlgoTransactionDataController.swift
 
 import Foundation
 
-final class MoonpayTransactionDataController: NSObject {
-    weak var delegate: MoonpayTransactionDataControllerDelegate?
+final class BuyAlgoTransactionDataController: NSObject {
+    weak var delegate: BuyAlgoTransactionDataControllerDelegate?
     
     private let sharedDataController: SharedDataController
     private let accountAddress: String
@@ -32,13 +32,13 @@ final class MoonpayTransactionDataController: NSObject {
         let account = sharedDataController.accountCollection.account(for: accountAddress) ??
             Account(address: accountAddress, type: .standard)
         
-        delegate?.moonpayTransactionDataControllerDidLoad(self, account: account)
+        delegate?.buyAlgoTransactionDataControllerDidLoad(self, account: account)
     }
 }
 
-protocol MoonpayTransactionDataControllerDelegate: AnyObject {
-    func moonpayTransactionDataControllerDidLoad(
-        _ dataController: MoonpayTransactionDataController,
+protocol BuyAlgoTransactionDataControllerDelegate: AnyObject {
+    func buyAlgoTransactionDataControllerDidLoad(
+        _ dataController: BuyAlgoTransactionDataController,
         account: Account
     )
 }

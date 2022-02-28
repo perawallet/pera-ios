@@ -18,12 +18,12 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct MoonpayIntroductionViewTheme:
+struct BuyAlgoHomeViewTheme:
     StyleSheet,
     LayoutSheet {
     let closeButton: ButtonStyle
-    let moonpayBackgroundImageView: ImageStyle
-    let moonpayLogoImageView: ImageStyle
+    let headerBackgroundView: ImageStyle
+    let logoView: ImageStyle
     let titleLabel: TextStyle
     let subtitleLabel: TextStyle
     let descriptionLabel: TextStyle
@@ -31,16 +31,16 @@ struct MoonpayIntroductionViewTheme:
     let buyAlgoButton: ButtonStyle
     let buttonContentEdgeInsets: LayoutPaddings
     let buttonCorner: Corner
-    let topContainer: ViewStyle
+    let header: ViewStyle
     
     let closeButtonSize: LayoutSize
     let closeButtonTopPadding: LayoutMetric
     let closeButtonLeadingPadding: LayoutMetric
     let titleTopPadding: LayoutMetric
-    let topContainerMaxHeight: LayoutMetric
-    let topContainerMinHeight: LayoutMetric
-    let moonpayLogoMaxSize: LayoutSize
-    let moonpayLogoMinSize: LayoutSize
+    let headerMaxHeight: LayoutMetric
+    let headerMinHeight: LayoutMetric
+    let logoMaxSize: LayoutSize
+    let logoMinSize: LayoutSize
     let subtitleLabelTopPadding: LayoutMetric
     let descriptionLabelTopPadding: LayoutMetric
     let securityImageTopPadding: LayoutMetric
@@ -58,13 +58,13 @@ struct MoonpayIntroductionViewTheme:
             .icon([.normal(closeButtonIcon)]),
             .tintColor(UIColor.white)
         ]
-        topContainer = [
+        header = [
             .backgroundColor(AppColors.Shared.Global.purple)
         ]
-        moonpayBackgroundImageView = [
+        headerBackgroundView = [
             .contentMode(.bottomLeft),
         ]
-        moonpayLogoImageView = [
+        logoView = [
             .contentMode(.scaleAspectFit)
         ]
         titleLabel = [
@@ -99,10 +99,10 @@ struct MoonpayIntroductionViewTheme:
         closeButtonTopPadding = 10
         closeButtonLeadingPadding = 12
         titleTopPadding = 18
-        topContainerMaxHeight = 294
-        topContainerMinHeight = 220
-        moonpayLogoMaxSize = (200, 36)
-        moonpayLogoMinSize = (150, 27)
+        headerMaxHeight = 294
+        headerMinHeight = 220
+        logoMaxSize = (200, 36)
+        logoMinSize = (150, 27)
         subtitleLabelTopPadding = 40
         descriptionLabelTopPadding = 20
         securityImageTopPadding = 24

@@ -17,15 +17,21 @@
 import MacaroonUIKit
 import UIKit
 import SafariServices
+import MacaroonUtils
 
-final class BuyAlgoHomeScreen: BaseViewController {
+final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     weak var delegate: BuyAlgoHomeScreenDelegate?
 
     private lazy var homeView = BuyAlgoHomeView()
 
-    private var safariViewController: SFSafariViewController?
+    private var transactionDraft: BuyAlgoDraft
 
-    var transactionDraft: MoonpayTransactionDraft?
+    init(draft: BuyAlgoDraft, configuration: ViewControllerConfiguration) {
+        self.transactionDraft = draft
+        super.init(configuration: configuration)
+    }
 
     override var shouldShowNavigationBar: Bool {
         return false
@@ -33,6 +39,7 @@ final class BuyAlgoHomeScreen: BaseViewController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+        unobserveNotifications()
     }
     
     override func prepareLayout() {
@@ -43,7 +50,7 @@ final class BuyAlgoHomeScreen: BaseViewController {
     override func setListeners() {
         super.setListeners()
         
-        homeView.observe(event: .closeScreen) {
+        homeView.observe(event: .close) {
             [weak self] in
             guard let self = self else { return }
             self.dismissScreen()
@@ -54,8 +61,8 @@ final class BuyAlgoHomeScreen: BaseViewController {
                 return
             }
 
-            if let transactionDraft = self.transactionDraft {
-                self.openMoonPay(for: transactionDraft)
+            if self.transactionDraft.hasValidAddress() {
+                self.openMoonPay(for: self.transactionDraft)
                 return
             }
 
@@ -65,36 +72,31 @@ final class BuyAlgoHomeScreen: BaseViewController {
             )
         }
 
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didRedirectFromMoonPay(_:)),
-            name: .didRedirectFromMoonPay,
-            object: nil)
+        observe(notification: .didRedirectFromMoonPay) {
+            [unowned self] notification in
+
+            self.didRedirectFromMoonPay(notification)
+        }
     }
 }
 
 extension BuyAlgoHomeScreen {
-    @objc
     private func didRedirectFromMoonPay(_ notification: Notification) {
         guard
-            let moonpayParams = notification.userInfo?[MoonpayParams.notificationObjectKey] as? MoonpayParams
+            let buyAlgoParams = notification.userInfo?[BuyAlgoParams.notificationObjectKey] as? BuyAlgoParams
         else {
+            delegate?.buyAlgoHomeScreenDidFailedTransaction(self)
             return
         }
 
-        safariViewController?.dismiss(animated: true) { [weak self] in
-            guard let self = self else {
-                return
-            }
-            self.delegate?.buyAlgoHomeScreen(self, didCompletedTransaction: moonpayParams)
-        }
+        delegate?.buyAlgoHomeScreen(self, didCompletedTransaction: buyAlgoParams)
     }
 }
 
 extension BuyAlgoHomeScreen {
     private func addHomeView() {
-        homeView.customize(MoonpayIntroductionViewTheme())
-        homeView.bindData(MoonpayIntroductionViewModel())
+        homeView.customize(BuyAlgoHomeViewTheme())
+        homeView.bindData(BuyAlgoHomeViewModel())
         
         view.addSubview(homeView)
         homeView.snp.makeConstraints {
@@ -115,15 +117,17 @@ extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
 
         let address = "tb1q3pt955j4h7wehmgesgsr4vjw6l5ssr5q4fwvll"
 
-        let transactionDraft = MoonpayTransactionDraft(address: address)
-        self.transactionDraft = transactionDraft
+        transactionDraft.mutate(with: address)
 
         openMoonPay(for: transactionDraft)
     }
 
-    private func openMoonPay(for draft: MoonpayTransactionDraft) {
-        let address = "tb1q3pt955j4h7wehmgesgsr4vjw6l5ssr5q4fwvll"
-        self.safariViewController = self.open(
+    private func openMoonPay(for draft: BuyAlgoDraft) {
+        guard let address = draft.address else {
+            return
+        }
+
+        self.open(
             URL(
                 string: "https://buy-sandbox.moonpay.com?apiKey=pk_test_g6Ojf6eciZZvUYyNb8WHzZml9l48Ri0u&currencyCode=btc&walletAddress=\(address)&redirectURL=algorand://\(address)"
             )
@@ -134,6 +138,9 @@ extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
 protocol BuyAlgoHomeScreenDelegate: AnyObject {
     func buyAlgoHomeScreen(
         _ screen: BuyAlgoHomeScreen,
-        didCompletedTransaction params: MoonpayParams
+        didCompletedTransaction params: BuyAlgoParams
+    )
+    func buyAlgoHomeScreenDidFailedTransaction(
+        _ screen: BuyAlgoHomeScreen
     )
 }
