@@ -25,16 +25,16 @@ struct BuyAlgoParams: Hashable {
     static var notificationObjectKey = "buy.algo.params"
 
     enum TransactionStatus: String {
-            case completed
-            case pending
-            case failed
-            case waitingPayment
-            case waitingAuthorization
-        }
+        case completed
+        case pending
+        case failed
+        case waitingPayment
+        case waitingAuthorization
+    }
 }
 
 extension BuyAlgoParams {
-    enum CodingKeys: String, CodingKey {
+    enum Keys: String {
         case amount = "amount"
         case transactionStatus = "transactionStatus"
         case transactionId = "transactionId"

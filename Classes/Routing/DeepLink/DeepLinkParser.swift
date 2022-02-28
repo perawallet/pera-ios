@@ -129,38 +129,16 @@ extension DeepLinkParser {
     func discover(
         url: URL
     ) -> Result? {
-        if let buyAlgoParams = url.buildMoonPayParameters() {
-            NotificationCenter.default.post(
-                name: .didRedirectFromMoonPay,
-                object: self,
-                userInfo: [BuyAlgoParams.notificationObjectKey: buyAlgoParams]
-            )
+        if canDiscover(moonpayTransaction: url) {
+            /// note: When moonpay transaction can discoverable, we should return nil  Otherwise It may cause a conflcit on QR discover function
             return nil
         }
 
-        guard let qr = url.buildQRText() else {
-            return nil
+        if let result = discover(qr: url) {
+            return result
         }
-        
-        switch qr.mode {
-        case .address:
-            return makeAccountAdditionScreen(
-                qr,
-                for: url
-            )
-        case .algosRequest:
-            return makeTransactionRequestScreen(
-                qr,
-                for: url
-            )
-        case .assetRequest:
-            return makeAssetTransactionRequestScreen(
-                qr,
-                for: url
-            )
-        case .mnemonic:
-            return nil
-        }
+
+        return nil
     }
     
     private func makeAccountAdditionScreen(
@@ -271,6 +249,48 @@ extension DeepLinkParser {
         }
         
         return .success(.wcMainTransactionScreen(draft: draft))
+    }
+}
+
+extension DeepLinkParser {
+    private func canDiscover(moonpayTransaction url: URL) -> Bool {
+        if let buyAlgoParams = url.extractBuyAlgoParamsFromMoonPay() {
+            NotificationCenter.default.post(
+                name: .didRedirectFromMoonPay,
+                object: self,
+                userInfo: [BuyAlgoParams.notificationObjectKey: buyAlgoParams]
+            )
+
+            return true
+        }
+
+        return false
+    }
+
+    private func discover(qr url: URL) -> Result? {
+        guard let qr = url.buildQRText() else {
+            return nil
+        }
+
+        switch qr.mode {
+        case .address:
+            return makeAccountAdditionScreen(
+                qr,
+                for: url
+            )
+        case .algosRequest:
+            return makeTransactionRequestScreen(
+                qr,
+                for: url
+            )
+        case .assetRequest:
+            return makeAssetTransactionRequestScreen(
+                qr,
+                for: url
+            )
+        case .mnemonic:
+            return nil
+        }
     }
 }
 
