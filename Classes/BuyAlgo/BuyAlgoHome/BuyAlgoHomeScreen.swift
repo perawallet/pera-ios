@@ -131,11 +131,20 @@ extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
             return
         }
 
-        self.open(
-            URL(
-                string: "https://buy-sandbox.moonpay.com?apiKey=pk_test_g6Ojf6eciZZvUYyNb8WHzZml9l48Ri0u&currencyCode=btc&walletAddress=\(address)&redirectURL=algorand://\(address)"
-            )
-        )
+        api?.getSignedMoonpayURL(BuyAlgoSignDraft(walletAddress: address, redirectUrl: "algorand://\(address)"), onCompleted: { response in
+            switch response {
+            case .failure:
+                break
+            case let .success(response):
+                print(response.url)
+            }
+        })
+
+//        self.open(
+//            URL(
+//                string: "https://buy-sandbox.moonpay.com?apiKey=pk_test_g6Ojf6eciZZvUYyNb8WHzZml9l48Ri0u&currencyCode=btc&walletAddress=\(address)&redirectURL=algorand://\(address)"
+//            )
+//        )
     }
 }
 
