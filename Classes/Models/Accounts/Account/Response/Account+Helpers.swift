@@ -84,7 +84,7 @@ extension Account {
         )
     }
 
-    var isThereAnyDifferentAsset: Bool {
+    func hasAnyAssets() -> Bool {
         return !assets.isNilOrEmpty
     }
     
@@ -99,7 +99,7 @@ extension Account {
     }
 
     var hasMinAmountFields: Bool {
-        return isThereAnyDifferentAsset || isThereAnyCreatedApps || isThereAnyOptedApps || isThereSchemaValues || isThereAnyAppExtraPages
+        return hasAnyAssets() || isThereAnyCreatedApps || isThereAnyOptedApps || isThereSchemaValues || isThereAnyAppExtraPages
     }
 
    private var isThereAnyCreatedApps: Bool {

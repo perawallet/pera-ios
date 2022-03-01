@@ -230,7 +230,7 @@ extension TransactionHistoryContextViewModel {
                             amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                             isAlgos: false,
                             fraction: assetDetail.decimals,
-                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                            assetSymbol: getAssetSymbol(from: assetDetail)
                         )
                     )
                 } else if transaction.isAssetAdditionTransaction(for: account.address) {
@@ -243,7 +243,7 @@ extension TransactionHistoryContextViewModel {
                             amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                             isAlgos: false,
                             fraction: assetDetail.decimals,
-                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                            assetSymbol: getAssetSymbol(from: assetDetail)
                         )
                     )
                 } else {
@@ -252,7 +252,7 @@ extension TransactionHistoryContextViewModel {
                             amount: assetTransaction.amount.assetAmount(fromFraction: assetDetail.decimals),
                             isAlgos: false,
                             fraction: assetDetail.decimals,
-                            assetSymbol: assetDetail.unitName ?? assetDetail.name
+                            assetSymbol: getAssetSymbol(from: assetDetail)
                         )
                     )
                 }
@@ -291,7 +291,7 @@ extension TransactionHistoryContextViewModel {
                             amount: transaction.amount.assetAmount(fromFraction: asset.decimals),
                             isAlgos: false,
                             fraction: asset.decimals,
-                            assetSymbol: asset.unitName ?? asset.name
+                            assetSymbol: getAssetSymbol(from: asset)
                         )
                     )
                 } else if transaction.isAssetAdditionTransaction(for: account.address) {
@@ -304,7 +304,7 @@ extension TransactionHistoryContextViewModel {
                             amount: transaction.amount.assetAmount(fromFraction: asset.decimals),
                             isAlgos: false,
                             fraction: asset.decimals,
-                            assetSymbol: asset.unitName ?? asset.name
+                            assetSymbol: getAssetSymbol(from: asset)
                         )
                     )
                 } else {
@@ -313,7 +313,7 @@ extension TransactionHistoryContextViewModel {
                             amount: transaction.amount.assetAmount(fromFraction: asset.decimals),
                             isAlgos: false,
                             fraction: asset.decimals,
-                            assetSymbol: asset.unitName ?? asset.name
+                            assetSymbol: getAssetSymbol(from: asset)
                         )
                     )
                 }
@@ -420,6 +420,22 @@ extension TransactionHistoryContextViewModel {
         }
 
         return account.shortAddressDisplay()
+    }
+
+    private func getAssetSymbol(
+        from asset: StandardAsset
+    ) -> String {
+        if let unitName = asset.unitName,
+           !unitName.isEmptyOrBlank {
+            return unitName
+        }
+
+        if let name = asset.name,
+           !name.isEmptyOrBlank {
+            return name
+        }
+
+        return "title-unknown".localized.uppercased()
     }
 }
 

@@ -107,16 +107,20 @@ extension AccountAssetListAPIDataController {
 
             assetItems.append(.asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((self.accountHandle.value, currency)))))
 
-            self.accountHandle.value.standardAssets.forEach {
-                assets.append($0)
+            self.clearAddedAssetDetailsIfNeeded(for: self.accountHandle.value)
+            self.clearRemovedAssetDetailsIfNeeded(for: self.accountHandle.value)
+
+            self.accountHandle.value.standardAssets.forEach { asset in
+                if self.removedAssetDetails.contains(asset) {
+                    return
+                }
+
+                assets.append(asset)
                 
-                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection(($0, currency))
+                let assetPreview = AssetPreviewModelAdapter.adaptAssetSelection((asset, currency))
                 let assetItem: AccountAssetsItem = .asset(AssetPreviewViewModel(assetPreview))
                 assetItems.append(assetItem)
             }
-
-            self.clearAddedAssetDetailsIfNeeded(for: self.accountHandle.value)
-            self.clearRemovedAssetDetailsIfNeeded(for: self.accountHandle.value)
 
             self.addedAssetDetails.forEach {
                 let assetItem: AccountAssetsItem = .pendingAsset(PendingAssetPreviewViewModel(AssetPreviewModelAdapter.adaptPendingAsset($0)))
@@ -167,10 +171,10 @@ extension AccountAssetListAPIDataController {
     }
 
     private func clearAddedAssetDetailsIfNeeded(for account: Account) {
-        addedAssetDetails = addedAssetDetails.filter { !account.containsAsset($0.id) }
+        addedAssetDetails = addedAssetDetails.filter { !account.containsAsset($0.id) }.uniqueElements()
     }
 
     private func clearRemovedAssetDetailsIfNeeded(for account: Account) {
-        removedAssetDetails = removedAssetDetails.filter { account.containsAsset($0.id) }
+        removedAssetDetails = removedAssetDetails.filter { account.containsAsset($0.id) }.uniqueElements()
     }
 }

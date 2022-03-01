@@ -154,7 +154,17 @@ class Router:
                 from: findVisibleScreen(over: rootViewController),
                 by: .present
             )
-
+        case .wcMainTransactionScreen(let draft):
+            route(
+                to: .wcMainTransactionScreen(draft: draft, delegate: rootViewController),
+                from: findVisibleScreen(over: rootViewController),
+                by: .customPresent(
+                    presentationStyle: .fullScreen,
+                    transitionStyle: nil,
+                    transitioningDelegate: nil
+                ),
+                animated: true
+            )
         }
     }
     
@@ -315,6 +325,8 @@ class Router:
             viewController = WelcomeViewController(flow: flow, configuration: configuration)
         case let .addAccount(flow):
             viewController = AddAccountViewController(flow: flow, configuration: configuration)
+        case let .recoverAccount(flow):
+            viewController = RecoverAccountViewController(flow: flow, configuration: configuration)
         case let .choosePassword(mode, flow):
             viewController = ChoosePasswordViewController(
                 mode: mode,
@@ -343,8 +355,10 @@ class Router:
             let optionsViewController = OptionsViewController(account: account, configuration: configuration)
             optionsViewController.delegate = delegate
             viewController = optionsViewController
-        case let .editAccount(account):
-            viewController = EditAccountViewController(account: account, configuration: configuration)
+        case let .editAccount(account, delegate):
+            let aViewController = EditAccountViewController(account: account, configuration: configuration)
+            aViewController.delegate = delegate
+            viewController = aViewController
         case .contactSelection:
             viewController = ContactSelectionViewController(configuration: configuration)
         case let .addContact(address, name):
@@ -383,8 +397,12 @@ class Router:
             let aViewController = AssetActionConfirmationViewController(draft: assetAlertDraft, configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
-        case let .rewardDetail(account):
-            viewController = RewardDetailViewController(account: account, configuration: configuration)
+        case let .rewardDetail(account, calculatedRewards):
+            viewController = RewardDetailViewController(
+                account: account,
+                calculatedRewards: calculatedRewards,
+                configuration: configuration
+            )
         case .verifiedAssetInformation:
             viewController = VerifiedAssetInformationViewController(configuration: configuration)
         case let .ledgerTutorial(flow):
@@ -449,8 +467,6 @@ class Router:
             viewController = NotificationFilterViewController(flow: flow, configuration: configuration)
         case let .bottomWarning(viewModel):
             viewController = BottomWarningViewController(viewModel, configuration: configuration)
-        case let .warningAlert(warningAlert):
-            viewController = WarningAlertViewController(warningAlert: warningAlert, configuration: configuration)
         case let .tutorial(flow, tutorial):
             viewController = TutorialViewController(
                 flow: flow,
@@ -586,13 +602,10 @@ class Router:
                 transactionController: transactionController,
                 configuration: configuration
             )
-        case let .wcMainTransactionScreen(transactions, transactionRequest, transactionOption):
-            viewController = WCMainTransactionScreen(
-                transactions: transactions,
-                transactionRequest: transactionRequest,
-                transactionOption: transactionOption,
-                configuration: configuration
-            )
+        case let .wcMainTransactionScreen(draft, delegate):
+            let aViewController = WCMainTransactionScreen(draft: draft, configuration: configuration)
+            aViewController.delegate = delegate
+            viewController = aViewController
         case .transactionFloatingActionButton:
             viewController = TransactionFloatingActionButtonViewController(configuration: configuration)
         case let .wcSingleTransactionScreen(transactions, transactionRequest, transactionOption):

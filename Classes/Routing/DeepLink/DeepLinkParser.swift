@@ -255,6 +255,16 @@ extension DeepLinkParser {
             .unwrap(where: \.isWalletConnectConnection)
             .unwrap({ .success($0) })
     }
+    
+    func discover(
+        walletConnectRequest draft: WalletConnectRequestDraft
+    ) -> Result? {
+        if !sharedDataController.isAvailable {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+        
+        return .success(.wcMainTransactionScreen(draft: draft))
+    }
 }
 
 extension DeepLinkParser {
@@ -266,6 +276,7 @@ extension DeepLinkParser {
         case assetActionConfirmation(draft: AssetAlertDraft)
         case assetDetail(draft: TransactionListing)
         case sendTransaction(draft: QRSendTransactionDraft)
+        case wcMainTransactionScreen(draft: WalletConnectRequestDraft)
     }
     
     enum Error: Swift.Error {
