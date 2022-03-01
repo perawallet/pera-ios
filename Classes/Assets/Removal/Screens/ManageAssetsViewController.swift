@@ -169,7 +169,7 @@ extension ManageAssetsViewController:
             return
         }
         
-        if isValidAssetDeletion(asset) {
+        if !isValidAssetDeletion(asset) {
             var draft = SendTransactionDraft(from: account, transactionMode: .asset(asset))
             draft.amount = asset.amountWithFraction
             open(
