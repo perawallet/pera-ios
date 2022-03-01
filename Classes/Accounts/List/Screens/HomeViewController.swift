@@ -54,9 +54,9 @@ final class HomeViewController:
     private var sendTransactionDraft: SendTransactionDraft?
     
     private var isViewFirstAppeared = true
-    
+
     private let dataController: HomeDataController
-    
+
     init(
         dataController: HomeDataController,
         configuration: ViewControllerConfiguration
@@ -560,6 +560,13 @@ extension HomeViewController {
         case .account(let item):
             switch item {
             case .cell(let cellItem):
+                open(
+                    .receiveCollectibleAccountList(
+                        dataController: ReceiveCollectibleAccountListAPIDataController(sharedDataController)
+                    ),
+                    by: .present
+                )
+                return
                 guard let account = dataController[cellItem.address] else {
                     return
                 }
@@ -598,6 +605,7 @@ extension HomeViewController: SelectAccountViewControllerDelegate {
         didSelect account: Account,
         for transactionAction: TransactionAction
     ) {
+        /// ?? Why we don't have account.isAvailable check like in didSelect method
         guard transactionAction == .send, let draft = sendTransactionDraft else {
             return
         }

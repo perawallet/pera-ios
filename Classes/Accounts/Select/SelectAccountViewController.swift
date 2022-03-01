@@ -18,7 +18,7 @@
 
 import Foundation
 import UIKit
-
+// Shimmer? AssetPreviewLoadingCell
 final class SelectAccountViewController: BaseViewController {
     weak var delegate: SelectAccountViewControllerDelegate?
 
@@ -41,7 +41,7 @@ final class SelectAccountViewController: BaseViewController {
     private lazy var listLayout = SelectAccountListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = SelectAccountDataSource(listView)
 
-    private var dataController: SelectAccountDataController
+    private let dataController: SelectAccountDataController
 
     init(
         dataController: SelectAccountDataController,

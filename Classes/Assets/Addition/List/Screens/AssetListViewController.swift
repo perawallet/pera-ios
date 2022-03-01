@@ -16,7 +16,7 @@
 //   AssetListViewController.swift
 
 import Foundation
-
+// Shimmer? AssetPreviewLoadingCell
 final class AssetListViewController: BaseViewController {
     weak var delegate: AssetListViewControllerDelegate?
 
