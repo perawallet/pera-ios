@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//  AssetQueryItem.swift
+//  AssetDecoration.swift
 
 import Foundation
 import MagpieCore
 import MacaroonUtils
 
-final class AssetInformation: ALGEntityModel {
+final class AssetDecoration: ALGEntityModel {
     let id: Int64
     let name: String?
     let unitName: String?
@@ -27,9 +27,14 @@ final class AssetInformation: ALGEntityModel {
     let usdValue: Decimal?
     let isVerified: Bool
     let creator: AssetCreator?
+    let collectible: Collectible?
+    let url: String?
 
-    var isRemoved = false
-    var isRecentlyAdded = false
+    var state: AssetState = .ready
+
+    var isCollectible: Bool {
+        return collectible != nil
+    }
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -41,6 +46,8 @@ final class AssetInformation: ALGEntityModel {
         self.usdValue = apiModel.usdValue.unwrap { Decimal(string: $0) }
         self.isVerified = apiModel.isVerified ?? false
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
+        self.collectible = apiModel.collectible.unwrap(Collectible.init)
+        self.url = apiModel.url
     }
 
     func encode() -> APIModel {
@@ -52,11 +59,25 @@ final class AssetInformation: ALGEntityModel {
         apiModel.usdValue = usdValue.unwrap { String(describing: $0) }
         apiModel.isVerified = isVerified
         apiModel.creator = creator?.encode()
+        apiModel.collectible = collectible?.encode()
+        apiModel.url = url
         return apiModel
+    }
+
+    init(asset: Asset) {
+        self.id = asset.id
+        self.name = asset.presentation.name
+        self.unitName = asset.presentation.unitName
+        self.decimals = asset.presentation.decimals
+        self.usdValue = nil
+        self.isVerified = asset.presentation.isVerified
+        self.creator = asset.creator
+        self.collectible = nil
+        self.url = asset.presentation.url
     }
 }
 
-extension AssetInformation {
+extension AssetDecoration {
     struct APIModel: ALGAPIModel {
         var assetId: Int64
         var name: String?
@@ -65,6 +86,8 @@ extension AssetInformation {
         var usdValue: String?
         var isVerified: Bool?
         var creator: AssetCreator.APIModel?
+        var collectible: Collectible.APIModel?
+        var url: String?
 
         init() {
             self.assetId = 0
@@ -74,6 +97,8 @@ extension AssetInformation {
             self.usdValue = nil
             self.isVerified = nil
             self.creator = nil
+            self.collectible = nil
+            self.url = nil
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -84,16 +109,14 @@ extension AssetInformation {
             case usdValue = "usd_value"
             case isVerified = "is_verified"
             case creator
+            case collectible
+            case url
         }
     }
 }
 
-extension AssetInformation {
-    func hasDisplayName() -> Bool {
-        return !name.isNilOrEmpty || !unitName.isNilOrEmpty
-    }
-
-    func getDisplayNames() -> (String, String?) {
+extension AssetDecoration {
+    var displayNames: (primaryName: String, secondaryName: String?) {
         if let name = name, !name.isEmptyOrBlank,
             let code = unitName, !code.isEmptyOrBlank {
             return (name, "\(code.uppercased())")
@@ -105,30 +128,16 @@ extension AssetInformation {
             return ("title-unknown".localized, nil)
         }
     }
-
-    var assetNameRepresentation: String {
-        if let name = name, !name.isEmptyOrBlank {
-            return name
-        }
-        return "title-unknown".localized
-    }
-
-    var unitNameRepresentation: String {
-        if let code = unitName, !code.isEmptyOrBlank {
-            return code.uppercased()
-        }
-        return "title-unknown".localized
-    }
 }
 
-extension AssetInformation: Hashable {
+extension AssetDecoration: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id.hashValue)
     }
 }
 
-extension AssetInformation: Comparable {
-    static func == (lhs: AssetInformation, rhs: AssetInformation) -> Bool {
+extension AssetDecoration: Comparable {
+    static func == (lhs: AssetDecoration, rhs: AssetDecoration) -> Bool {
         return lhs.id == rhs.id &&
             lhs.decimals == rhs.decimals &&
             lhs.isVerified == rhs.isVerified &&
@@ -136,22 +145,22 @@ extension AssetInformation: Comparable {
             lhs.unitName == rhs.unitName
     }
 
-    static func < (lhs: AssetInformation, rhs: AssetInformation) -> Bool {
+    static func < (lhs: AssetDecoration, rhs: AssetDecoration) -> Bool {
         return lhs.id < rhs.id
     }
 }
 
 /// <todo>
 /// Rethink the paginated list model. Should be more reusable.
-final class AssetInformationList:
-    PaginatedList<AssetInformation>,
+final class AssetDecorationList:
+    PaginatedList<AssetDecoration>,
     ALGEntityModel {
     convenience init(
         _ apiModel: APIModel = APIModel()
     ) {
         self.init(
             pagination: apiModel,
-            results: apiModel.results.unwrapMap(AssetInformation.init)
+            results: apiModel.results.unwrapMap(AssetDecoration.init)
         )
     }
 
@@ -165,14 +174,14 @@ final class AssetInformationList:
     }
 }
 
-extension AssetInformationList {
+extension AssetDecorationList {
     struct APIModel:
         ALGAPIModel,
         PaginationComponents {
         var count: Int?
         var next: URL?
         var previous: String?
-        var results: [AssetInformation.APIModel]?
+        var results: [AssetDecoration.APIModel]?
 
         init() {
             self.count = nil

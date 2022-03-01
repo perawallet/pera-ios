@@ -19,13 +19,13 @@ import Foundation
 import UIKit
 
 enum AssetPreviewModelAdapter {
-    static func adapt(_ adaptee: (assetDetail: AssetInformation, asset: Asset, currency: Currency?)) -> AssetPreviewModel {
-        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset, currency: adaptee.currency)
+    static func adapt(_ adaptee: (asset: Asset, currency: Currency?)) -> AssetPreviewModel {
+        let assetViewModel = AssetViewModel(asset: adaptee.asset, currency: adaptee.currency)
         return AssetPreviewModel(
             image: nil,
-            secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: assetViewModel.assetDetail?.name,
-            assetSecondaryTitle: assetViewModel.assetDetail?.unitName,
+            secondaryImage: adaptee.asset.presentation.isVerified ? img("icon-verified-shield") : nil,
+            assetPrimaryTitle: adaptee.asset.presentation.name,
+            assetSecondaryTitle: adaptee.asset.presentation.unitName,
             assetPrimaryValue: assetViewModel.amount,
             assetSecondaryValue: assetViewModel.currencyAmount
         )
@@ -43,36 +43,47 @@ enum AssetPreviewModelAdapter {
         )
     }
 
-    static func adapt(_ adaptee: AssetInformation) -> AssetPreviewModel {
+    static func adapt(_ asset: Asset) -> AssetPreviewModel {
         return AssetPreviewModel(
             image: nil,
-            secondaryImage: adaptee.isVerified ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: adaptee.name,
-            assetSecondaryTitle: adaptee.unitName,
-            assetPrimaryValue: String(adaptee.id),
+            secondaryImage: asset.presentation.isVerified ? img("icon-verified-shield") : nil,
+            assetPrimaryTitle: asset.presentation.name,
+            assetSecondaryTitle: asset.presentation.unitName,
+            assetPrimaryValue: String(asset.id),
             assetSecondaryValue: nil
         )
     }
 
-    static func adaptAssetSelection(_ adaptee: (assetDetail: AssetInformation, asset: Asset, currency: Currency?)) -> AssetPreviewModel {
-        let assetViewModel = AssetViewModel(assetDetail: adaptee.assetDetail, asset: adaptee.asset, currency: adaptee.currency)
-        let assetId = assetViewModel.assetDetail?.id ?? 0
+    static func adaptAssetSelection(_ adaptee: (asset: Asset, currency: Currency?)) -> AssetPreviewModel {
+        let assetViewModel = AssetViewModel(asset: adaptee.asset, currency: adaptee.currency)
         return AssetPreviewModel(
             image: nil,
-            secondaryImage: assetViewModel.assetDetail?.isVerified ?? false ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: assetViewModel.assetDetail?.name,
-            assetSecondaryTitle: "ID \(assetId)",
+            secondaryImage: adaptee.asset.presentation.isVerified ? img("icon-verified-shield") : nil,
+            assetPrimaryTitle: adaptee.asset.presentation.name,
+            assetSecondaryTitle: "ID \(adaptee.asset.id)",
             assetPrimaryValue: assetViewModel.amount,
             assetSecondaryValue: assetViewModel.currencyAmount
         )
     }
 
-    static func adaptPendingAsset(_ adaptee: AssetInformation) -> PendingAssetPreviewModel {
-        let status = adaptee.isRecentlyAdded ? "asset-add-confirmation-title".localized : "asset-removing-status".localized
+    static func adaptPendingAsset(_ asset: StandardAsset) -> PendingAssetPreviewModel {
+        let status: String
+        switch asset.state {
+        case let .pending(operation):
+            switch operation {
+            case .add:
+                status = "asset-add-confirmation-title".localized
+            case .remove:
+                status = "asset-removing-status".localized
+            }
+        case .ready:
+            status = ""
+        }
+
         return PendingAssetPreviewModel(
-            secondaryImage: adaptee.isVerified ? img("icon-verified-shield") : nil,
-            assetPrimaryTitle: adaptee.name,
-            assetSecondaryTitle: "ID \(adaptee.id)",
+            secondaryImage: asset.isVerified ? img("icon-verified-shield") : nil,
+            assetPrimaryTitle: asset.name,
+            assetSecondaryTitle: "ID \(asset.id)",
             assetStatus: status
         )
     }

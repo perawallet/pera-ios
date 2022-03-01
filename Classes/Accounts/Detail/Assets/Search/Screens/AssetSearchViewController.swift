@@ -153,18 +153,18 @@ extension AssetSearchViewController {
     private func setListListeners() {
         listLayout.handlers.didSelectIndex = { [weak self] index in
             guard let self = self,
-                  let compoundAsset = self.dataController[index] else {
+                  let asset = self.dataController[index] else {
                 return
             }
 
             self.closeScreen(by: .dismiss, animated: false)
-            self.handlers.didSelectAsset?(compoundAsset)
+            self.handlers.didSelectAsset?(asset)
         }
     }
 }
 
 extension AssetSearchViewController {
     struct Handlers {
-        var didSelectAsset: ((CompoundAsset) -> Void)?
+        var didSelectAsset: ((StandardAsset) -> Void)?
     }
 }

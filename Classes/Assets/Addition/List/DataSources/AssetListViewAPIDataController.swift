@@ -22,7 +22,7 @@ final class AssetListViewAPIDataController:
     AssetListViewDataController {
     var eventHandler: ((AssetListViewDataControllerEvent) -> Void)?
 
-    var assets: [AssetInformation] = []
+    var assets: [AssetDecoration] = []
 
     private var lastSnapshot: Snapshot?
 
@@ -125,8 +125,9 @@ extension AssetListViewAPIDataController {
             var snapshot = Snapshot()
             var assetItems: [AssetListViewItem] = []
 
-            self.assets.forEach {
-                let assetItem: AssetListViewItem = .asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt($0)))
+            for asset in self.assets where !asset.isCollectible {
+                let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
+                let assetItem: AssetListViewItem = .asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(standardAsset)))
                 assetItems.append(assetItem)
             }
 
