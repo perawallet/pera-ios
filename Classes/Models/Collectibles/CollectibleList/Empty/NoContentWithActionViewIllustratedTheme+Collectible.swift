@@ -12,31 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   LoadingCell.swift
+//   NoContentWithActionViewIllustratedTheme+Collectible.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-final class LoadingCell:
-    CollectionCell<LoadingView> {
-    override init(
-        frame: CGRect
-    ) {
-        super.init(
-            frame: frame
+extension NoContentWithActionViewIllustratedTheme {
+    mutating func configureForCollectiblesNoContentWithAction() {
+        action = action.modify(
+            [ .icon( [.normal("icon-plus"), .highlighted("icon-plus")] ) ]
         )
-
-        contextView.customize(LoadingViewCommonTheme())
-    }
-}
-
-extension LoadingCell {
-    func startAnimating() {
-        contextView.startAnimating()
-    }
-
-    func stopAnimating() {
-        contextView.stopAnimating()
     }
 }

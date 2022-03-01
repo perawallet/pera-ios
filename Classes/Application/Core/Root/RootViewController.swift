@@ -99,9 +99,12 @@ extension RootViewController {
             NavigationController(rootViewController: algoStatisticsViewController)
         )
         
-        let nftsViewController = UIViewController()
-        let nftsTab =
-            NFTsTabBarItem(NavigationController(rootViewController: nftsViewController))
+        let collectibleListViewController = CollectibleListViewController(
+            configuration: configuration
+        )
+
+        let collectiblesTab =
+            CollectiblesTabBarItem(NavigationController(rootViewController: collectibleListViewController))
         
         let settingsViewController = SettingsViewController(configuration: configuration)
         let settingsTab =
@@ -111,7 +114,7 @@ extension RootViewController {
             homeTab,
             algoStatisticsTab,
             FixedSpaceTabBarItem(width: .noMetric),
-            nftsTab,
+            collectiblesTab,
             settingsTab
         ]
     }
