@@ -18,7 +18,6 @@
 import Foundation
 import MacaroonApplication
 import MacaroonUIKit
-import SwiftDate
 import UIKit
 
 protocol AppLaunchController: AnyObject {
@@ -28,6 +27,7 @@ protocol AppLaunchController: AnyObject {
     )
     func becomeActive()
     func resignActive()
+    func enterBackground()
 
     func launchOnboarding()
     func launchMain()
@@ -38,10 +38,4 @@ protocol AppLaunchController: AnyObject {
     func receive(
         deeplinkWithSource src: DeeplinkSource
     )
-}
-
-extension AppLaunchController {
-    var inactiveSessionExpirationDuration: DateComponents {
-        return 60.seconds
-    }
 }

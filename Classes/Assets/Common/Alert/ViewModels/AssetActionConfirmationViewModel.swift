@@ -42,7 +42,7 @@ extension AssetActionConfirmationViewModel {
     }
 
     private func bindID(_ draft: AssetAlertDraft) {
-        id = "\(draft.assetIndex)"
+        id = "\(draft.assetId)"
     }
 
     private func bindActionTitle(_ draft: AssetAlertDraft) {
@@ -60,8 +60,8 @@ extension AssetActionConfirmationViewModel {
 
         let attributedDetailText = NSMutableAttributedString(attributedString: detailText.attributed([.lineSpacing(1.2)]))
 
-        guard let assetDetail = draft.assetDetail,
-              let unitName = assetDetail.unitName,
+        guard let asset = draft.asset,
+              let unitName = asset.unitName,
               !unitName.isEmptyOrBlank else {
                   detail = attributedDetailText
                   return
@@ -74,6 +74,6 @@ extension AssetActionConfirmationViewModel {
     }
 
     private func bindAssetDisplayViewModel(_ draft: AssetAlertDraft) {
-        assetDisplayViewModel = AssetDisplayViewModel(draft.assetDetail)
+        assetDisplayViewModel = AssetDisplayViewModel(draft.asset)
     }
 }

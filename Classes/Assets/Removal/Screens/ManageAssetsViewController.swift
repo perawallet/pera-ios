@@ -82,14 +82,14 @@ extension ManageAssetsViewController {
 
 extension ManageAssetsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return account.compoundAssets.count
+        return account.allAssets.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let assetDetail = account.compoundAssets[indexPath.item].detail
+        let asset = account.allAssets[indexPath.item]
         let cell = collectionView.dequeue(AssetPreviewActionCell.self, at: indexPath)
         cell.customize(theme.assetPreviewActionViewTheme)
-        cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(assetDetail)))
+        cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(asset)))
         cell.delegate = self
         return cell
     }
@@ -108,26 +108,24 @@ extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
 extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
     func assetPreviewSendCellDidTapSendButton(_ assetPreviewSendCell: AssetPreviewActionCell) {
         guard let index = manageAssetsView.assetsCollectionView.indexPath(for: assetPreviewSendCell),
-              index.item < account.compoundAssets.count else {
+              index.item < account.allAssets.count else {
                   return
               }
 
-        let assetDetail = account.compoundAssets[index.item].detail
-        guard let assetAmount = account.amount(for: assetDetail) else {
-            return
-        }
+        let asset = account.allAssets[index.item]
+        let assetDecoration = AssetDecoration(asset: asset)
 
         let assetAlertDraft: AssetAlertDraft
 
-        if assetAmount == 0 {
+        if isValidAssetDeletion(asset) {
             assetAlertDraft = AssetAlertDraft(
                 account: account,
-                assetIndex: assetDetail.id,
-                assetDetail: assetDetail,
-                title: "asset-remove-confirmation-title".localized,
+                assetId: assetDecoration.id,
+                asset: assetDecoration,
+                title: "asset-remove-confirmation-title".localized,
                 detail: String(
                     format: "asset-remove-transaction-warning".localized,
-                    "\(assetDetail.unitName ?? "title-unknown".localized)",
+                    "\(assetDecoration.unitName ?? "title-unknown".localized)",
                     "\(account.name ?? "")"
                 ),
                 actionTitle: "title-remove".localized,
@@ -136,12 +134,12 @@ extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
         } else {
             assetAlertDraft = AssetAlertDraft(
                 account: account,
-                assetIndex: assetDetail.id,
-                assetDetail: assetDetail,
+                assetId: assetDecoration.id,
+                asset: assetDecoration,
                 title: "asset-remove-confirmation-title".localized,
                 detail: String(
                     format: "asset-remove-warning".localized,
-                    "\(assetDetail.unitName ?? "title-unknown".localized)",
+                    "\(assetDecoration.unitName ?? "title-unknown".localized)",
                     "\(account.name ?? "")"
                 ),
                 actionTitle: "asset-transfer-balance".localized,
@@ -161,16 +159,19 @@ extension ManageAssetsViewController:
     TransactionSignChecking {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetInformation
+        didConfirmAction asset: AssetDecoration
     ) {
         if !canSignTransaction(for: &account) {
             return
         }
+
+        guard let asset = account[asset.id] else {
+            return
+        }
         
-        if let assetAmount = account.amount(for: assetDetail),
-           assetAmount != 0 {
-            var draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(assetDetail))
-            draft.amount = assetAmount
+        if !isValidAssetDeletion(asset) {
+            var draft = SendTransactionDraft(from: account, transactionMode: .asset(asset))
+            draft.amount = asset.amountWithFraction
             open(
                 .sendTransaction(draft: draft),
                 by: .push
@@ -178,11 +179,15 @@ extension ManageAssetsViewController:
             return
         }
         
-        removeAssetFromAccount(assetDetail)
+        removeAssetFromAccount(asset)
+    }
+
+    private func isValidAssetDeletion(_ asset: Asset) -> Bool {
+        return asset.amountWithFraction == 0
     }
     
-    private func removeAssetFromAccount(_ assetDetail: AssetInformation) {
-        guard let creator = assetDetail.creator else {
+    private func removeAssetFromAccount(_ asset: Asset) {
+        guard let creator = asset.creator else {
             return
         }
 
@@ -190,7 +195,7 @@ extension ManageAssetsViewController:
             from: account,
             toAccount: Account(address: creator.address, type: .standard),
             amount: 0,
-            assetIndex: assetDetail.id,
+            assetIndex: asset.id,
             assetCreator: creator.address
         )
         transactionController.setTransactionDraft(assetTransactionDraft)
@@ -208,12 +213,18 @@ extension ManageAssetsViewController:
 extension ManageAssetsViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
         guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
-              let removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
+              var removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
                   return
               }
 
-        removedAssetDetail.isRemoved = true
-        delegate?.manageAssetsViewController(self, didRemove: removedAssetDetail, from: account)
+        removedAssetDetail.state = .pending(.remove)
+
+        if let standardAsset = removedAssetDetail as? StandardAsset {
+            delegate?.manageAssetsViewController(self, didRemove: standardAsset)
+        } else if let collectibleAsset = removedAssetDetail as? CollectibleAsset {
+            delegate?.manageAssetsViewController(self, didRemove: collectibleAsset)
+        }
+
         dismissScreen()
     }
     
@@ -248,19 +259,19 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let warningModalTransition = BottomSheetTransition(presentingViewController: self)
+            let bottomTransition = BottomSheetTransition(presentingViewController: self)
 
-             let warningAlert = WarningAlert(
-                 title: "ledger-pairing-issue-error-title".localized,
-                 image: img("img-warning-circle"),
-                 description: "ble-error-fail-ble-connection-repairing".localized,
-                 actionTitle: "title-ok".localized
-             )
-
-             warningModalTransition.perform(
-                 .warningAlert(warningAlert: warningAlert),
-                 by: .presentWithoutNavigationController
-             )
+            bottomTransition.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: "ble-error-fail-ble-connection-repairing".localized,
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
+            )
         default:
             break
         }
@@ -288,8 +299,8 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         ledgerApprovalViewController?.dismissScreen()
     }
     
-    private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetInformation? {
-        return draft?.assetIndex.unwrap { account[$0]?.detail }
+    private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> Asset? {
+        return draft?.assetIndex.unwrap { account[$0] }
     }
 }
 
@@ -307,7 +318,10 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
 protocol ManageAssetsViewControllerDelegate: AnyObject {
     func manageAssetsViewController(
         _ manageAssetsViewController: ManageAssetsViewController,
-        didRemove assetDetail: AssetInformation,
-        from account: Account
+        didRemove asset: StandardAsset
+    )
+    func manageAssetsViewController(
+        _ manageAssetsViewController: ManageAssetsViewController,
+        didRemove asset: CollectibleAsset
     )
 }

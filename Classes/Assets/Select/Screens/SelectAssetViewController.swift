@@ -84,11 +84,11 @@ extension SelectAssetViewController: UICollectionViewDelegate, UICollectionViewD
         if indexPath.item == .zero {
             draft = SendTransactionDraft(from: account, transactionMode: .algo)
         } else {
-            guard let compoundAsset = accountListDataSource[indexPath] else {
+            guard let asset = accountListDataSource[indexPath] else {
                 return
             }
 
-            draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(compoundAsset.detail))
+            draft = SendTransactionDraft(from: account, transactionMode: .asset(asset))
         }
 
         open(.sendTransaction(draft: draft), by: .push)

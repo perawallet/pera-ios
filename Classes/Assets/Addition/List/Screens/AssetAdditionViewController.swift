@@ -51,7 +51,7 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
         configuration: configuration
     )
 
-    private var currentAsset: AssetInformation?
+    private var currentAsset: AssetDecoration?
 
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
@@ -161,13 +161,13 @@ extension AssetAdditionViewController:
     TransactionSignChecking {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetInformation
+        didConfirmAction asset: AssetDecoration
     ) {
         if !canSignTransaction(for: &account) {
             return
         }
         
-        let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: assetDetail.id)
+        let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: asset.id)
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
@@ -178,21 +178,24 @@ extension AssetAdditionViewController:
             transactionController.startTimer()
         }
 
-        currentAsset = assetDetail
+        currentAsset = asset
     }
 }
 
 extension AssetAdditionViewController: AssetListViewControllerDelegate {
-    func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItem item: AssetInformation) {
-        if account.containsAsset(item.id) {
+    func assetListViewController(
+        _ assetListViewController: AssetListViewController,
+        didSelect asset: AssetDecoration
+    ) {
+        if account.containsAsset(asset.id) {
             displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
             return
         }
 
         let assetAlertDraft = AssetAlertDraft(
             account: account,
-            assetIndex: item.id,
-            assetDetail: item,
+            assetId: asset.id,
+            asset: asset,
             title: "asset-add-confirmation-title".localized,
             detail: "asset-add-warning".localized,
             actionTitle: "title-approve".localized,
@@ -239,7 +242,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
             return
         }
 
-        delegate?.assetAdditionViewController(self, didAdd: assetDetail, to: account)
+        delegate?.assetAdditionViewController(self, didAdd: assetDetail)
         popScreen()
     }
 
@@ -261,19 +264,19 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let warningModalTransition = BottomSheetTransition(presentingViewController: self)
+            let bottomTransition = BottomSheetTransition(presentingViewController: self)
 
-             let warningAlert = WarningAlert(
-                 title: "ledger-pairing-issue-error-title".localized,
-                 image: img("img-warning-circle"),
-                 description: "ble-error-fail-ble-connection-repairing".localized,
-                 actionTitle: "title-ok".localized
-             )
-
-             warningModalTransition.perform(
-                 .warningAlert(warningAlert: warningAlert),
-                 by: .presentWithoutNavigationController
-             )
+            bottomTransition.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: "ble-error-fail-ble-connection-repairing".localized,
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
+            )
         default:
             break
         }
@@ -303,7 +306,6 @@ extension AssetAdditionViewController {
 protocol AssetAdditionViewControllerDelegate: AnyObject {
     func assetAdditionViewController(
         _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd assetSearchResult: AssetInformation,
-        to account: Account
+        didAdd asset: AssetDecoration
     )
 }

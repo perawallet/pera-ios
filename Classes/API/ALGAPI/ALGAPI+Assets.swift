@@ -22,7 +22,7 @@ extension ALGAPI {
     @discardableResult
     func searchAssets(
         _ draft: AssetSearchQuery,
-        onCompleted handler: @escaping (Response.ModelResult<AssetInformationList>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)
@@ -38,7 +38,7 @@ extension ALGAPI {
         _ draft: AssetFetchQuery,
         queue: DispatchQueue,
         ignoreResponseOnCancelled: Bool,
-        onCompleted handler: @escaping (Response.ModelResult<AssetInformationList>) -> Void
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecorationList>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)

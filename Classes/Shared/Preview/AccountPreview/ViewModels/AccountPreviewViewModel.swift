@@ -103,7 +103,7 @@ extension AccountPreviewViewModel {
             return
         }
         
-        let numberOfAssets = accountPortfolio.account.value.compoundAssets.count
+        let numberOfAssets = accountPortfolio.account.value.standardAssets.count
         bindSubtitle(numberOfAssets: numberOfAssets)
     }
     
