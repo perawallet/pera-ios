@@ -438,7 +438,7 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
             switch self.draft.transactionMode {
             case .algo:
                 self.composeAlgosTransactionData()
-            case .assetDetail:
+            case .asset:
                 self.composeAssetTransactionData()
             }
         }

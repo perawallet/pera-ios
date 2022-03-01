@@ -252,7 +252,7 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
 
 extension TransactionsViewController: AssetDetailInfoViewCellDelegate {
     func assetDetailInfoViewCellDidTapAssetID(_ assetDetailInfoViewCell: AssetDetailInfoViewCell) {
-        guard let assetID = draft.compoundAsset?.id else {
+        guard let assetID = draft.asset?.id else {
             return
         }
 

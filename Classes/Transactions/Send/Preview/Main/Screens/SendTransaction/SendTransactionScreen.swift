@@ -746,7 +746,7 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
             switch self.draft.transactionMode {
             case .algo:
                 self.composeAlgosTransactionData()
-            case .assetDetail:
+            case .asset:
                 self.composeAssetTransactionData()
             }
         }
@@ -852,7 +852,7 @@ extension SendTransactionScreen {
     }
 
     private func composeAssetTransactionData() {
-        guard let assetDetail = draft.assetDetail else {
+        guard let asset = draft.asset else {
             return
         }
 
@@ -860,13 +860,13 @@ extension SendTransactionScreen {
             from: draft.from,
             toAccount: draft.toAccount,
             amount: draft.amount,
-            assetIndex: assetDetail.id,
-            assetDecimalFraction: assetDetail.decimals,
-            isVerifiedAsset: assetDetail.isVerified,
+            assetIndex: asset.id,
+            assetDecimalFraction: asset.presentation.decimals,
+            isVerifiedAsset: asset.presentation.isVerified,
             note: draft.note
         )
         transactionDraft.toContact = draft.toContact
-        transactionDraft.assetDetail = assetDetail
+        transactionDraft.asset = asset
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(transactionDraft)
@@ -879,14 +879,14 @@ extension SendTransactionScreen {
     }
 
     private func presentAssetNotSupportedAlert(receiverAddress: String?) {
-        guard let assetDetail = draft.assetDetail else {
+        guard let asset = draft.asset else {
             return
         }
 
         let assetAlertDraft = AssetAlertDraft(
             account: draft.from,
-            assetIndex: assetDetail.id,
-            assetDetail: assetDetail,
+            assetId: asset.id,
+            asset: AssetDecoration(asset: asset),
             title: "asset-support-title".localized,
             detail: "asset-support-error".localized,
             actionTitle: "title-ok".localized
@@ -897,7 +897,7 @@ extension SendTransactionScreen {
             let draft = AssetSupportDraft(
                 sender: senderAddress,
                 receiver: receiverAddress,
-                assetId: assetDetail.id
+                assetId: asset.id
             )
             api?.sendAssetSupportRequest(draft)
         }

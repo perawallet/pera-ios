@@ -113,3 +113,9 @@ extension StandardAsset: Comparable {
         return lhs.id < rhs.id
     }
 }
+
+extension StandardAsset: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id.hashValue)
+    }
+}
