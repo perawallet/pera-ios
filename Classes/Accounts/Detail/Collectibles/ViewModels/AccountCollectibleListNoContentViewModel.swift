@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   AccountNFTListNoContentViewModel.swift
+//   AccountCollectibleListNoContentViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct AccountNFTListNoContentViewModel: NoContentViewModel {
+struct AccountCollectibleListNoContentViewModel: NoContentViewModel {
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var body: EditText?
@@ -30,16 +30,16 @@ struct AccountNFTListNoContentViewModel: NoContentViewModel {
     }
 }
 
-extension AccountNFTListNoContentViewModel {
+extension AccountCollectibleListNoContentViewModel {
     private mutating func bindImage() {
-        icon = "img-nft-empty"
+        icon = "img-collectible-empty"
     }
 
     private mutating func bindTitle() {
-        title = .string("nft-list-empty-title".localized)
+        title = .string("collectible-list-empty-title".localized)
     }
 
     private mutating func bindBody() {
-        body = .string("nft-list-empty-detail".localized)
+        body = .string("collectible-list-empty-detail".localized)
     }
 }

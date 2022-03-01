@@ -103,9 +103,12 @@ extension RootViewController {
             NavigationController(rootViewController: algoStatisticsViewController)
         )
         
-        let contactsViewController = ContactsViewController(configuration: configuration)
-        let contactsTab =
-            ContactsTabBarItem(NavigationController(rootViewController: contactsViewController))
+        let collectibleListViewController = CollectibleListViewController(
+            configuration: configuration
+        )
+
+        let collectiblesTab =
+            CollectiblesTabBarItem(NavigationController(rootViewController: collectibleListViewController))
         
         let settingsViewController = SettingsViewController(configuration: configuration)
         let settingsTab =
@@ -115,7 +118,7 @@ extension RootViewController {
             homeTab,
             algoStatisticsTab,
             FixedSpaceTabBarItem(width: .noMetric),
-            contactsTab,
+            collectiblesTab,
             settingsTab
         ]
     }

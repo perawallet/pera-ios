@@ -109,8 +109,8 @@ class Router:
         
         switch screen {
         case .addContact(let address, let name):
-            launch(tab: .contacts)
-            
+            launch(tab: .settings)
+
             route(
                 to: .addContact(address: address, name: name),
                 from: findVisibleScreen(over: rootViewController),
@@ -355,12 +355,12 @@ class Router:
             let optionsViewController = OptionsViewController(account: account, configuration: configuration)
             optionsViewController.delegate = delegate
             viewController = optionsViewController
+        case .contacts:
+            viewController = ContactsViewController(configuration: configuration)
         case let .editAccount(account, delegate):
             let aViewController = EditAccountViewController(account: account, configuration: configuration)
             aViewController.delegate = delegate
             viewController = aViewController
-        case .contactSelection:
-            viewController = ContactSelectionViewController(configuration: configuration)
         case let .addContact(address, name):
             viewController = AddContactViewController(address: address, name: name, configuration: configuration)
         case let .editContact(contact):

@@ -280,6 +280,7 @@
 "contacts-add" = "Add Contact";
 "contacts-add-photo" = "Add Photo";
 "contacts-info" = "Contact Info";
+"contacts-info-address" = "Account Address";
 "contacts-info-edit" = "Edit Contact";
 "contacts-input-name-placeholder" = "Contact name";
 "contacts-transactions-title" = "Transaction History";
@@ -294,12 +295,13 @@
 "contacts-close-warning-title" = "Are you sure?";
 "contacts-close-warning-subtitle" = "Your unsaved progress will be lost. Are you sure?";
 "accounts-title-assets" = "Assets";
-"accounts-title-nfts" = "NFTs";
+"accounts-title-collectibles" = "Collectibles";
 "accounts-title-history" = "History";
 "contacts-title-assets" = "Assets";
 "title-select-asset" = "Select Asset";
 "contact-search-empty-title" = "No contact found";
 "contact-search-empty-detail" = "Try different contact name";
+"contact-input-address-placeholder" = "Account address";
 
 // MARK: Settings
 "settings-sections-account" = "Account";
@@ -857,9 +859,9 @@
 "account-detail-portfolio-title" = "Account Value";
 "account-detail-assets-search" = "Search my assets";
 
-// MARK: NFTs
-"nft-list-empty-title" = "NFTs - Coming Soon!";
-"nft-list-empty-detail" = "You will be able to view your NFT collections\nin the Pera Wallet soon.\n\n\nOur team is working hard to make this feature available. Stay tuned!";
+// MARK: AccountDetail+Collectible
+"collectible-list-empty-title" = "NFTs - Coming Soon!";
+"collectible-list-empty-detail" = "You will be able to view your NFT collections\nin the Pera Wallet soon.\n\n\nOur team is working hard to make this feature available. Stay tuned!";
 
 // MARK: SendTransaction
 "send-transaction-title" = "Send %@";
@@ -908,3 +910,9 @@
 "pera-announcement-description" = "We are very excited to announce that Algorand Wallet is now called Pera Wallet. This is much more than a new name and logo. We are relaunching the most popular wallet in the Algorand ecosystem with a renewed focus on our roadmap, partner integrations, and community.\n\nDon't worry, Pera Wallet is built and maintained by the same team and all the features you know and love are still here as usual – With many more to come in the upcoming months.\n\nTo read more about the relaunch and our roadmap, head over to the Pera Wallet blog";
 "pera-announcement-description-blog" = "Pera Wallet blog";
 "pera-announcement-action-title" = "Start Using Pera Wallet";
+
+// MARK: Collectibles
+"title-collectibles" = "Collectibles";
+"collectibles-empty-title" = "Collectibles";
+"collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
+"collectibles-receive-action" = "Receive an NFT";

@@ -35,7 +35,7 @@ indirect enum Screen {
     case options(account: Account, delegate: OptionsViewControllerDelegate)
     case accountList(mode: AccountListViewController.Mode, delegate: AccountListViewControllerDelegate)
     case editAccount(account: Account, delegate: EditAccountViewControllerDelegate)
-    case contactSelection
+    case contacts
     case notifications
     case addContact(address: String? = nil, name: String? = nil)
     case editContact(contact: Contact)

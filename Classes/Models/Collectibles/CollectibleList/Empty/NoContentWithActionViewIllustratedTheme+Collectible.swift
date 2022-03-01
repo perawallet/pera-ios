@@ -12,15 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  ContactSelectionCell.swift
+//   NoContentWithActionViewIllustratedTheme+Collectible.swift
 
-import UIKit
+import Foundation
 
-class ContactSelectionCell: ContactCell {
-    
-    override func configureAppearance() {
-        super.configureAppearance()
-        contextView.qrDisplayButton.isHidden = true
+extension NoContentWithActionViewIllustratedTheme {
+    mutating func configureForCollectiblesNoContentWithAction() {
+        action = action.modify(
+            [ .icon( [.normal("icon-plus"), .highlighted("icon-plus")] ) ]
+        )
     }
 }

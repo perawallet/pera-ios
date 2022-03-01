@@ -31,11 +31,11 @@ final class AccountDetailViewController: PageContainer {
         configuration: configuration
     )
 
-    private lazy var nftListScreen = AccountNFTListViewController(
+    private lazy var collectibleListScreen = AccountCollectibleListViewController(
         account: accountHandle.value,
         configuration: configuration
     )
-
+    
     private lazy var transactionListScreen = AccountTransactionListViewController(
         draft: AccountTransactionListing(accountHandle: accountHandle),
         configuration: configuration
@@ -108,7 +108,7 @@ extension AccountDetailViewController {
     private func setPageBarItems() {
         items = [
             AssetListPageBarItem(screen: assetListScreen),
-            NFTListPageBarItem(screen: nftListScreen),
+            CollectibleListPageBarItem(screen: collectibleListScreen),
             TransactionListPageBarItem(screen: transactionListScreen)
         ]
     }
@@ -271,14 +271,14 @@ extension AccountDetailViewController {
         }
     }
 
-    struct NFTListPageBarItem: PageBarItem {
+    struct CollectibleListPageBarItem: PageBarItem {
         let id: String
         let barButtonItem: PageBarButtonItem
         let screen: UIViewController
 
         init(screen: UIViewController) {
-            self.id = AccountDetailPageBarItemID.nfts.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-nfts".localized)
+            self.id = AccountDetailPageBarItemID.collectibles.rawValue
+            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-collectibles".localized)
             self.screen = screen
         }
     }
@@ -290,15 +290,14 @@ extension AccountDetailViewController {
 
         init(screen: UIViewController) {
             self.id = AccountDetailPageBarItemID.transactions.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-history".localized)
+            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-collectibles".localized)
             self.screen = screen
         }
     }
 
-
     enum AccountDetailPageBarItemID: String {
         case assets
-        case nfts
+        case collectibles
         case transactions
     }
 }

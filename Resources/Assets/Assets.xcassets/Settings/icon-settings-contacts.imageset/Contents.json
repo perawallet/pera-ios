@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "tabbar-icon-contacts.pdf",
+      "filename" : "icon-settings-contacts.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "tabbar-icon-contacts-1.pdf",
+      "filename" : "icon-settings-contacts-1.pdf",
       "idiom" : "universal"
     }
   ],

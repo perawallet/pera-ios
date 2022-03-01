@@ -82,7 +82,7 @@ extension ContactDetailViewController {
         let editBarButtonItem = ALGBarButtonItem(kind: .edit) { [unowned self] in
             let controller = self.open(
                 .editContact(contact: self.contact),
-                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
+                by: .push
             ) as? EditContactViewController
             controller?.delegate = self
         }
