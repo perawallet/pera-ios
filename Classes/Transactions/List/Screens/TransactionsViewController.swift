@@ -279,7 +279,7 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
             controller?.leftBarButtonItems = [closeBarButtonItem]
         case .asset:
             if let asset = asset {
-                let draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .assetDetail(asset))
+                let draft = SendTransactionDraft(from: accountHandle.value, transactionMode: .asset(asset))
                 let controller = open(.sendTransaction(draft: draft), by: .present) as? SendTransactionScreen
                 let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
                     controller?.closeScreen(by: .dismiss, animated: true)

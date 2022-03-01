@@ -216,11 +216,10 @@ extension AccountAssetListViewController {
 extension AccountAssetListViewController: AssetAdditionViewControllerDelegate {
     func assetAdditionViewController(
         _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd assetSearchResult: AssetDecoration,
-        to account: Account
+        didAdd asset: AssetDecoration
     ) {
-        let standardAsset = StandardAsset(asset: ALGAsset(id: assetSearchResult.id), decoration: assetSearchResult)
-        standardAsset.isRecentlyAdded = true
+        let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
+        standardAsset.state = .pending(.add)
         addAsset(standardAsset)
     }
 }

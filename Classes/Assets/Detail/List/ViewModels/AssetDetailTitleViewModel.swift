@@ -24,18 +24,20 @@ final class AssetDetailTitleViewModel: ViewModel {
     private(set) var title: String?
     private(set) var assetAbbreviationForImage: String?
     
-    init(assetDetail: StandardAsset? = nil) {
-        bindTitle(assetDetail)
-        bindImage(assetDetail)
+    init(
+        _ asset: Asset? = nil
+    ) {
+        bindTitle(asset)
+        bindImage(asset)
     }
 }
 
 extension AssetDetailTitleViewModel {
     private func bindImage(
-        _ assetDetail: StandardAsset?
+        _ asset: Asset?
     ) {
-        if let assetDetail = assetDetail {
-            if let assetName = assetDetail.name,
+        if let asset = asset {
+            if let assetName = asset.presentation.name,
                !assetName.isEmptyOrBlank {
                 assetAbbreviationForImage = TextFormatter.assetShortName.format(assetName)
             } else {
@@ -47,10 +49,10 @@ extension AssetDetailTitleViewModel {
     }
 
     private func bindTitle(
-        _ assetDetail: StandardAsset?
+        _ asset: Asset?
     ) {
-        if let assetDetail = assetDetail {
-            if let assetName = assetDetail.name,
+        if let asset = asset {
+            if let assetName = asset.presentation.name,
                !assetName.isEmptyOrBlank {
                 title = assetName
             } else {

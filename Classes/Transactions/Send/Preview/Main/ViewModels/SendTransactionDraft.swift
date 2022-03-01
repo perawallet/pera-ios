@@ -28,8 +28,8 @@ struct SendTransactionDraft: TransactionSendDraft {
             switch transactionMode {
             case .algo:
                 return self.amount == from.amount.toAlgos
-            case .assetDetail(let assetDetail):
-                return self.amount == assetDetail.amountWithFraction
+            case .asset(let asset):
+                return self.amount == asset.amountWithFraction
             }
         }
 
@@ -43,25 +43,25 @@ struct SendTransactionDraft: TransactionSendDraft {
         switch transactionMode {
         case .algo:
             return algosFraction
-        case .assetDetail(let assetDetail):
-            return assetDetail.decimals
+        case .asset(let asset):
+            return asset.presentation.decimals
         }
     }
     var toContact: Contact?
     var note: String?
     var lockedNote: String?
 
-    var assetDetail: StandardAsset? {
+    var asset: Asset? {
         switch transactionMode {
         case .algo:
             return nil
-        case .assetDetail(let assetDetail):
-            return assetDetail
+        case .asset(let asset):
+            return asset
         }
     }
 }
 
 enum TransactionMode {
     case algo
-    case assetDetail(StandardAsset)
+    case asset(Asset)
 }

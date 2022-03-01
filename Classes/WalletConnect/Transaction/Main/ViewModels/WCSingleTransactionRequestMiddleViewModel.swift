@@ -24,17 +24,10 @@ final class WCSingleTransactionRequestMiddleViewModel {
     private(set) var subtitle: String?
     private(set) var isAssetIconHidden: Bool = true
 
-    var assetDecoration: AssetDecoration? {
+    var asset: Asset? {
         didSet {
-            self.setData(transaction, for: account, with: currency)
+            setData(transaction, for: account, with: currency)
         }
-    }
-
-    var assetDetail: AssetDetail? {
-        guard let assetDecoration = assetDecoration else {
-            return nil
-        }
-        return AssetDetail(assetDecoration: assetDecoration)
     }
 
     private let transaction: WCTransaction
@@ -58,29 +51,33 @@ final class WCSingleTransactionRequestMiddleViewModel {
         case .algos:
             self.title = "\(transaction.transactionDetail?.amount.toAlgos.toAlgosStringForLabel ?? "") ALGO"
             self.isAssetIconHidden = true
-            self.setUsdValue(transaction: transaction, assetDecoration: nil, currency: currency)
+            self.setUsdValue(transaction: transaction, asset: nil, currency: currency)
         case .asset:
-            guard let assetDetail = assetDetail else {
+            guard let asset = asset else {
                 return
             }
 
-            let decimals = assetDetail.fractionDecimals
+            let decimals = asset.presentation.decimals
 
             let amount = transaction.transactionDetail?.amount.assetAmount(fromFraction: decimals).toFractionStringForLabel(fraction: decimals) ?? ""
 
-            let assetCode = assetDetail.hasOnlyAssetName() ? assetDetail.getAssetName() : assetDetail.getAssetCode()
-            self.title = "\(amount) \(assetCode)"
-            
-            self.isAssetIconHidden = !assetDetail.isVerified
+            if let assetCode = asset.presentation.hasOnlyAssetName ?
+                    asset.presentation.displayNames.primaryName :
+                    asset.presentation.displayNames.secondaryName {
+                self.title = "\(amount) \(assetCode)"
+            }
 
-            self.setUsdValue(transaction: transaction, assetDecoration: assetDecoration, currency: currency)
-        case .assetAddition, .possibleAssetAddition:
-            guard let assetDetail = assetDetail else {
+            self.isAssetIconHidden = !asset.presentation.isVerified
+
+            self.setUsdValue(transaction: transaction, asset: asset, currency: currency)
+        case .assetAddition,
+                .possibleAssetAddition:
+            guard let asset = asset else {
                 return
             }
-            self.title = assetDetail.getAssetName()
-            self.subtitle = "\(assetDetail.id)"
-            self.isAssetIconHidden = !assetDetail.isVerified
+            self.title = asset.presentation.displayNames.primaryName
+            self.subtitle = "\(asset.id)"
+            self.isAssetIconHidden = !asset.presentation.isVerified
             return
         case .appCall:
             let appCallOncomplete = transaction.transactionDetail?.appCallOnComplete ?? .noOp
@@ -116,16 +113,16 @@ final class WCSingleTransactionRequestMiddleViewModel {
                     self.isAssetIconHidden = assetConfigParams.name.isNilOrEmpty && assetConfigParams.unitName.isNilOrEmpty
                 }
             case .reconfig:
-                if let assetDetail = assetDetail {
-                    self.title = "\(assetDetail.assetName ?? assetDetail.unitName ?? "title-unknown".localized)"
-                    self.subtitle = "#\(assetDetail.id)"
-                    self.isAssetIconHidden = !assetDetail.isVerified
+                if let asset = asset {
+                    self.title = "\(asset.presentation.name ?? asset.presentation.unitName ?? "title-unknown".localized)"
+                    self.subtitle = "#\(asset.id)"
+                    self.isAssetIconHidden = !asset.presentation.isVerified
                 }
             case .delete:
-                if let assetDetail = assetDetail {
-                    self.title = "\(assetDetail.assetName ?? assetDetail.unitName ?? "title-unknown".localized)"
-                    self.subtitle = "#\(assetDetail.id)"
-                    self.isAssetIconHidden = !assetDetail.isVerified
+                if let asset = asset {
+                    self.title = "\(asset.presentation.name ?? asset.presentation.unitName ?? "title-unknown".localized)"
+                    self.subtitle = "#\(asset.id)"
+                    self.isAssetIconHidden = !asset.presentation.isVerified
                 }
             }
         }
@@ -134,7 +131,7 @@ final class WCSingleTransactionRequestMiddleViewModel {
 
     private func setUsdValue(
         transaction: WCTransaction,
-        assetDecoration: AssetDecoration?,
+        asset: Asset?,
         currency: Currency?
     ) {
         guard let currency = currency,
@@ -144,12 +141,12 @@ final class WCSingleTransactionRequestMiddleViewModel {
                   return
         }
 
-        if let assetDecoration = assetDecoration {
-            guard let assetUSDValue = assetDecoration.usdValue else {
+        if let asset = asset {
+            guard let assetUSDValue = AssetDecoration(asset: asset).usdValue else {
                 return
             }
 
-            let currencyValue = assetUSDValue * amount.assetAmount(fromFraction: assetDecoration.decimals) * currencyUsdValue
+            let currencyValue = assetUSDValue * amount.assetAmount(fromFraction: asset.presentation.decimals) * currencyUsdValue
             if currencyValue > 0 {
                 subtitle = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
             }

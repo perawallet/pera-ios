@@ -105,7 +105,7 @@ final class AccountSelectScreen: BaseViewController {
         switch draft.transactionMode {
         case .algo:
             routeForAlgoTransaction()
-        case .assetDetail:
+        case .asset:
             routeForAssetTransaction()
         }
     }
@@ -200,7 +200,7 @@ final class AccountSelectScreen: BaseViewController {
     }
 
     private func checkIfAddressIsValidForTransaction(_ address: String) {
-        guard let assetDetail = draft.assetDetail else {
+        guard let asset = draft.asset else {
             return
         }
 
@@ -236,8 +236,8 @@ final class AccountSelectScreen: BaseViewController {
                 let receiverAccount = receiverAccountWrapper.account
 
                 if let assets = receiverAccount.assets {
-                    if assets.contains(where: { asset -> Bool in
-                        assetDetail.id == asset.id
+                    if assets.contains(where: { anAsset -> Bool in
+                        asset.id == anAsset.id
                     }) {
                         self.validateAssetTransaction()
                     } else {
@@ -257,14 +257,14 @@ final class AccountSelectScreen: BaseViewController {
     }
 
     private func presentAssetNotSupportedAlert(receiverAddress: String?) {
-        guard let assetDetail = draft.assetDetail else {
+        guard let asset = draft.asset else {
             return
         }
 
         let assetAlertDraft = AssetAlertDraft(
             account: draft.from,
-            assetIndex: assetDetail.id,
-            assetDetail: AssetDecoration(standardAsset: assetDetail),
+            assetId: asset.id,
+            asset: AssetDecoration(asset: asset),
             title: "asset-support-title".localized,
             detail: "asset-support-error".localized,
             actionTitle: "title-ok".localized
@@ -275,7 +275,7 @@ final class AccountSelectScreen: BaseViewController {
             let draft = AssetSupportDraft(
                 sender: senderAddress,
                 receiver: receiverAddress,
-                assetId: assetDetail.id
+                assetId: asset.id
             )
             api?.sendAssetSupportRequest(draft)
         }
@@ -287,8 +287,8 @@ final class AccountSelectScreen: BaseViewController {
     }
 
     private func validateAssetTransaction() {
-        guard let amount = self.draft.amount,
-              let assetDetail = draft.assetDetail else {
+        guard let amount = draft.amount,
+              let asset = draft.asset else {
                   displaySimpleAlertWith(
                       title: "send-algos-alert-incomplete-title".localized,
                       message: "send-algos-alert-message-address".localized
@@ -297,7 +297,7 @@ final class AccountSelectScreen: BaseViewController {
             return
         }
         
-        if assetDetail.amountWithFraction  < amount {
+        if asset.amountWithFraction < amount {
             self.displaySimpleAlertWith(title: "title-error".localized, message: "send-asset-amount-error".localized)
             return
         }
@@ -329,7 +329,7 @@ final class AccountSelectScreen: BaseViewController {
     }
 
     private func composeAssetTransactionData() {
-        guard let assetDetail = draft.assetDetail else {
+        guard let asset = draft.asset else {
             return
         }
 
@@ -337,13 +337,13 @@ final class AccountSelectScreen: BaseViewController {
             from: draft.from,
             toAccount: draft.toAccount,
             amount: draft.amount,
-            assetIndex: assetDetail.id,
-            assetDecimalFraction: assetDetail.decimals,
-            isVerifiedAsset: assetDetail.isVerified,
+            assetIndex: asset.id,
+            assetDecimalFraction: asset.presentation.decimals,
+            isVerifiedAsset: asset.presentation.isVerified,
             note: draft.note
         )
         transactionDraft.toContact = draft.toContact
-        transactionDraft.assetDetail = assetDetail
+        transactionDraft.asset = asset
 
         transactionController.delegate = self
         transactionController.setTransactionDraft(transactionDraft)
@@ -367,7 +367,7 @@ extension AccountSelectScreen {
 
     private func addTitleView() {
         assetDetailTitleView.customize(AssetDetailTitleViewTheme())
-        assetDetailTitleView.bindData(AssetDetailTitleViewModel(assetDetail: draft.assetDetail))
+        assetDetailTitleView.bindData(AssetDetailTitleViewModel(draft.asset))
 
         navigationItem.titleView = assetDetailTitleView
     }

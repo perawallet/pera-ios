@@ -40,7 +40,7 @@ extension AssetDetailViewController {
     private func addTitleView() {
         let assetDetailTitleView = AssetDetailTitleView()
         assetDetailTitleView.customize(AssetDetailTitleViewTheme())
-        assetDetailTitleView.bindData(AssetDetailTitleViewModel(assetDetail: asset))
+        assetDetailTitleView.bindData(AssetDetailTitleViewModel(asset))
 
         navigationItem.titleView = assetDetailTitleView
     }

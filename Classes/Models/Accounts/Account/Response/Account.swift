@@ -52,11 +52,11 @@ final class Account: ALGEntityModel {
     var preferredOrder: Int
     var accountImage: String?
 
-    var standardAssets: [StandardAsset] = []
-    private(set) var standardAssetsIndexer: StandardAssetIndexer = [:]
+    private(set) var standardAssets: [StandardAsset] = []
+    private var standardAssetsIndexer: StandardAssetIndexer = [:]
 
-    var collectibleAssets: [CollectibleAsset] = []
-    private(set) var collectibleAssetsIndexer: CollectibleAssetIndexer = [:]
+    private(set) var collectibleAssets: [CollectibleAsset] = []
+    private var collectibleAssetsIndexer: CollectibleAssetIndexer = [:]
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -201,24 +201,24 @@ extension Account {
         collectibleAssetsIndexer = [:]
     }
     
-    func containsAsset(
+    func containsStandardAsset(
         _ id: AssetID
     ) -> Bool {
         let index = standardAssetsIndexer[id]
         return index.unwrap { standardAssets[safe: $0] } != nil
     }
 
-    func containsCollectible(
+    func containsCollectibleAsset(
         _ id: AssetID
     ) -> Bool {
         let index = collectibleAssetsIndexer[id]
         return index.unwrap { collectibleAssets[safe: $0] } != nil
     }
 
-    func contains(
+    func containsAsset(
         _ id: AssetID
     ) -> Bool {
-        return containsAsset(id) || containsCollectible(id)
+        return containsStandardAsset(id) || containsCollectibleAsset(id)
     }
 }
 

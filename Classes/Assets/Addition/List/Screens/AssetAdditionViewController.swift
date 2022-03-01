@@ -161,13 +161,13 @@ extension AssetAdditionViewController:
     TransactionSignChecking {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetDecoration
+        didConfirmAction asset: AssetDecoration
     ) {
         if !canSignTransaction(for: &account) {
             return
         }
         
-        let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: assetDetail.id)
+        let assetTransactionDraft = AssetTransactionSendDraft(from: account, assetIndex: asset.id)
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
 
@@ -178,21 +178,24 @@ extension AssetAdditionViewController:
             transactionController.startTimer()
         }
 
-        currentAsset = assetDetail
+        currentAsset = asset
     }
 }
 
 extension AssetAdditionViewController: AssetListViewControllerDelegate {
-    func assetListViewController(_ assetListViewController: AssetListViewController, didSelectItem item: AssetDecoration) {
-        if account.contains(item.id) {
+    func assetListViewController(
+        _ assetListViewController: AssetListViewController,
+        didSelect asset: AssetDecoration
+    ) {
+        if account.containsAsset(asset.id) {
             displaySimpleAlertWith(title: "asset-you-already-own-message".localized, message: "")
             return
         }
 
         let assetAlertDraft = AssetAlertDraft(
             account: account,
-            assetIndex: item.id,
-            assetDetail: item,
+            assetId: asset.id,
+            asset: asset,
             title: "asset-add-confirmation-title".localized,
             detail: "asset-add-warning".localized,
             actionTitle: "title-approve".localized,
@@ -239,7 +242,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
             return
         }
 
-        delegate?.assetAdditionViewController(self, didAdd: assetDetail, to: account)
+        delegate?.assetAdditionViewController(self, didAdd: assetDetail)
         popScreen()
     }
 
@@ -303,7 +306,6 @@ extension AssetAdditionViewController {
 protocol AssetAdditionViewControllerDelegate: AnyObject {
     func assetAdditionViewController(
         _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd assetSearchResult: AssetDecoration,
-        to account: Account
+        didAdd asset: AssetDecoration
     )
 }

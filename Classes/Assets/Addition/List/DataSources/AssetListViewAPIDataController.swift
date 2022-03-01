@@ -125,12 +125,10 @@ extension AssetListViewAPIDataController {
             var snapshot = Snapshot()
             var assetItems: [AssetListViewItem] = []
 
-            self.assets.forEach {
-                if !$0.isCollectible {
-                    let standardAsset = StandardAsset(asset: ALGAsset(id: $0.id), decoration: $0)
-                    let assetItem: AssetListViewItem = .asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(standardAsset)))
-                    assetItems.append(assetItem)
-                }
+            for asset in self.assets where !asset.isCollectible {
+                let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
+                let assetItem: AssetListViewItem = .asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(standardAsset)))
+                assetItems.append(assetItem)
             }
 
             snapshot.appendSections([.assets])

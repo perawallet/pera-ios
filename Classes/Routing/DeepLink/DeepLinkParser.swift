@@ -114,8 +114,8 @@ extension DeepLinkParser {
         let accountName = account.value.name.someString
         let draft = AssetAlertDraft(
             account: account.value,
-            assetIndex: assetId,
-            assetDetail: nil,
+            assetId: assetId,
+            asset: nil,
             title: "asset-support-add-title".localized,
             detail: String(format: "asset-support-add-message".localized, "\(accountName)"),
             actionTitle: "title-approve".localized,
@@ -209,8 +209,8 @@ extension DeepLinkParser {
         else {
             let draft = AssetAlertDraft(
                 account: nil,
-                assetIndex: assetId,
-                assetDetail: nil,
+                assetId: assetId,
+                asset: nil,
                 title: "asset-support-title".localized,
                 detail: "asset-support-error".localized,
                 actionTitle: "title-approve".localized,
@@ -219,11 +219,13 @@ extension DeepLinkParser {
             return .success(.assetActionConfirmation(draft: draft))
         }
 
+        /// <todo> Support the collectibles later when its detail screen is done.
+
         let qrDraft = QRSendTransactionDraft(
             toAccount: accountAddress,
             amount: Decimal(amount),
             lockedNote: qr.lockedNote,
-            transactionMode: .assetDetail(StandardAsset(asset: ALGAsset(id: assetDecoration.id), decoration: assetDecoration))
+            transactionMode: .asset(StandardAsset(asset: ALGAsset(id: assetDecoration.id), decoration: assetDecoration))
         )
         return .success(.sendTransaction(draft: qrDraft))
     }

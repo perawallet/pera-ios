@@ -19,31 +19,23 @@ import UIKit
 import MacaroonUIKit
 
 struct AssetViewModel: ViewModel {
-    private(set) var assetDetail: StandardAsset?
     private(set) var amount: String?
     private(set) var currencyAmount: String?
 
     init(
-        asset: StandardAsset?,
+        asset: Asset?,
         currency: Currency?
     ) {
-        bindAssetDetail(asset)
         bindAmount(from: asset)
         bindCurrencyAmount(from: asset, with: currency)
     }
 }
 
 extension AssetViewModel {
-    private mutating func bindAssetDetail(
-        _ asset: StandardAsset?
-    ) {
-        self.assetDetail = asset
-    }
-
     private mutating func bindAmount(
-        from asset: StandardAsset?
+        from asset: Asset?
     ) {
-        guard let asset = asset else {
+        guard let asset = asset as? StandardAsset else {
             return
         }
 
@@ -53,10 +45,10 @@ extension AssetViewModel {
     }
 
     private mutating func bindCurrencyAmount(
-        from asset: StandardAsset?,
+        from asset: Asset?,
         with currency: Currency?
     ) {
-        guard let asset = asset,
+        guard let asset = asset as? StandardAsset,
               let assetUSDValue = asset.usdValue,
               let currency = currency,
               let currencyUSDValue = currency.usdValue else {

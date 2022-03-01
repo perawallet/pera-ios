@@ -27,9 +27,32 @@ final class StandardAsset: Asset {
     let usdValue: Decimal?
     let isVerified: Bool
     let creator: AssetCreator?
+    let url: String?
 
-    var isRemoved = false
-    var isRecentlyAdded = false
+    var state: AssetState = .ready
+
+    var presentation: AssetPresentation {
+        return AssetPresentation(
+            id: id,
+            decimals: decimals,
+            name: name,
+            unitName: unitName,
+            isVerified: isVerified,
+            url: url
+        )
+    }
+
+    var amountWithFraction: Decimal {
+        return amount.assetAmount(fromFraction: decimals)
+    }
+
+    var amountDisplayWithFraction: String? {
+        return amountWithFraction.toExactFractionLabel(fraction: decimals)
+    }
+
+    var amountNumberWithAutoFraction: String? {
+        return amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: decimals)
+    }
 
     init(
         asset: ALGAsset,
@@ -45,33 +68,17 @@ final class StandardAsset: Asset {
         self.usdValue = decoration.usdValue
         self.isVerified = decoration.isVerified
         self.creator = decoration.creator
+        self.url = decoration.url
     }
 }
 
 extension StandardAsset {
-    func getDisplayNames() -> (String, String?) {
-        if let name = name,
-           let code = unitName,
-           !name.isEmptyOrBlank,
-           !code.isEmptyOrBlank {
-            return (name, "\(code.uppercased())")
-        } else if let name = name,
-                  !name.isEmptyOrBlank {
-            return (name, nil)
-        } else if let code = unitName,
-                  !code.isEmptyOrBlank {
-            return ("\(code.uppercased())", nil)
-        } else {
-            return ("title-unknown".localized, nil)
-        }
-    }
-
     var assetNameRepresentation: String {
         if let name = name,
            !name.isEmptyOrBlank {
             return name
         }
-        
+
         return "title-unknown".localized
     }
 
@@ -104,19 +111,5 @@ extension StandardAsset: Comparable {
 
     static func < (lhs: StandardAsset, rhs: StandardAsset) -> Bool {
         return lhs.id < rhs.id
-    }
-}
-
-extension StandardAsset {
-    var amountWithFraction: Decimal {
-        return amount.assetAmount(fromFraction: decimals)
-    }
-
-    var amountDisplayWithFraction: String? {
-        return amountWithFraction.toExactFractionLabel(fraction: decimals)
-    }
-
-    var amountNumberWithAutoFraction: String? {
-        return amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: decimals)
     }
 }

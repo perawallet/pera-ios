@@ -19,7 +19,7 @@ import MagpieCore
 import MacaroonUtils
 
 final class Collectible: ALGEntityModel {
-    let mediaType: MediaType?
+    let mediaType: MediaType
     let primaryImage: URL?
     let title: String?
     let collectionName: String?
@@ -45,13 +45,13 @@ final class Collectible: ALGEntityModel {
 
 extension Collectible {
     struct APIModel: ALGAPIModel {
-        var mediaType: MediaType?
+        var mediaType: MediaType
         var primaryImage: URL?
         var title: String?
         var collectionName: String?
 
         init() {
-            self.mediaType = nil
+            self.mediaType = .unknown
             self.primaryImage = nil
             self.title = nil
             self.collectionName = nil
@@ -68,4 +68,5 @@ extension Collectible {
 
 enum MediaType: String, Codable {
     case image
+    case unknown
 }

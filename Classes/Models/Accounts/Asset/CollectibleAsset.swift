@@ -31,9 +31,32 @@ final class CollectibleAsset: Asset {
     let primaryImage: URL?
     let title: String?
     let collectionName: String?
+    let url: String?
 
-    var isRemoved = false
-    var isRecentlyAdded = false
+    var state: AssetState = .ready
+
+    var presentation: AssetPresentation {
+        return AssetPresentation(
+            id: id,
+            decimals: decimals,
+            name: name,
+            unitName: unitName,
+            isVerified: isVerified,
+            url: url
+        )
+    }
+
+    var amountWithFraction: Decimal {
+        return amount.assetAmount(fromFraction: decimals)
+    }
+
+    var amountDisplayWithFraction: String? {
+        return amountWithFraction.toExactFractionLabel(fraction: decimals)
+    }
+
+    var amountNumberWithAutoFraction: String? {
+        return amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: decimals)
+    }
 
     init(
         asset: ALGAsset,
@@ -53,6 +76,7 @@ final class CollectibleAsset: Asset {
         self.primaryImage = decoration.collectible?.primaryImage
         self.title = decoration.collectible?.title
         self.collectionName = decoration.collectible?.collectionName
+        self.url = decoration.url
     }
 }
 
@@ -75,24 +99,5 @@ extension CollectibleAsset: Comparable {
 
     static func < (lhs: CollectibleAsset, rhs: CollectibleAsset) -> Bool {
         return lhs.id < rhs.id
-    }
-}
-
-extension CollectibleAsset {
-    func getDisplayNames() -> (String, String?) {
-        if let name = name,
-           let code = unitName,
-           !name.isEmptyOrBlank,
-           !code.isEmptyOrBlank {
-            return (name, "\(code.uppercased())")
-        } else if let name = name,
-                  !name.isEmptyOrBlank {
-            return (name, nil)
-        } else if let code = unitName,
-                  !code.isEmptyOrBlank {
-            return ("\(code.uppercased())", nil)
-        } else {
-            return ("title-unknown".localized, nil)
-        }
     }
 }

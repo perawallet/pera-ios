@@ -71,8 +71,6 @@ final class AssetDetail: ALGEntityModel {
     var isDeleted: Bool?
     
     var isVerified: Bool = false
-    var isRemoved: Bool = false
-    var isRecentlyAdded: Bool = false
 
     init(
         _ apiModel: APIModel = APIModel()

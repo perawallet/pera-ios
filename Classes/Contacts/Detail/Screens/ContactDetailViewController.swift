@@ -234,7 +234,7 @@ extension ContactDetailViewController: AssetPreviewActionCellDelegate {
             return
         }
 
-        let mode: AccountListViewController.Mode = .contact(assetDetail: itemIndex.item == 0 ? nil : contactAccount.standardAssets[itemIndex.item - 1])
+        let mode: AccountListViewController.Mode = .contact(asset: itemIndex.item == 0 ? nil : contactAccount.standardAssets[itemIndex.item - 1])
         let accountListDataSource = AccountListDataSource(sharedDataController: sharedDataController, mode: mode)
 
         guard !accountListDataSource.accounts.isEmpty else {
@@ -304,10 +304,10 @@ extension ContactDetailViewController: AccountListViewControllerDelegate {
 
         var transactionDraft: SendTransactionDraft
         
-        if let assetDetail = selectedAsset {
+        if let asset = selectedAsset {
             transactionDraft = SendTransactionDraft(
                 from: account.value,
-                transactionMode: .assetDetail(assetDetail)
+                transactionMode: .asset(asset)
             )
         } else {
             transactionDraft = SendTransactionDraft(

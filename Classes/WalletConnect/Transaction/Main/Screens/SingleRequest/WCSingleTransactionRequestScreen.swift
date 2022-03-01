@@ -153,8 +153,14 @@ extension WCSingleTransactionRequestScreen {
         else {
             return
         }
-        
-        self.viewModel?.middleView?.assetDecoration = assetDecoration
+
+        if assetDecoration.isCollectible {
+            let asset = CollectibleAsset(asset: ALGAsset(id: assetId), decoration: assetDecoration)
+            self.viewModel?.middleView?.asset = asset
+        } else {
+            let asset = StandardAsset(asset: ALGAsset(id: assetId), decoration: assetDecoration)
+            self.viewModel?.middleView?.asset = asset
+        }
 
         bindData()
     }

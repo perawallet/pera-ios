@@ -78,8 +78,8 @@ final class SendTransactionScreen: BaseViewController {
         switch draft.transactionMode {
         case .algo:
             self.amount = amount.toNumberStringWithSeparatorForLabel ?? "0"
-        case .assetDetail(let assetDetail):
-            self.amount = amount.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals) ?? "0"
+        case .asset(let asset):
+            self.amount = amount.toNumberStringWithSeparatorForLabel(fraction: asset.presentation.decimals) ?? "0"
         }
     }
 
@@ -103,8 +103,8 @@ final class SendTransactionScreen: BaseViewController {
         view.backgroundColor = theme.backgroundColor
 
         switch draft.transactionMode {
-        case .assetDetail(let assetDetail):
-            title = "send-transaction-title".localized(assetDetail.getDisplayNames().0)
+        case .asset(let asset):
+            title = "send-transaction-title".localized(asset.presentation.displayNames.primaryName)
         case .algo:
             title = "send-transaction-title".localized("asset-algos-title".localized)
         }
@@ -172,9 +172,9 @@ extension SendTransactionScreen {
             accountView.bindData(
                 AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((draft.from, currency)))
             )
-        case .assetDetail(let assetDetail):
+        case .asset(let asset):
             accountView.bindData(
-                AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, currency)))
+                AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((asset, currency)))
             )
         }
     }
@@ -191,9 +191,9 @@ extension SendTransactionScreen {
                 showingValue = (amountValue.replacingOccurrences(of: decimalStrings, with: "")
                     .decimalAmount?.toNumberStringWithSeparatorForLabel ?? amountValue)
                     .appending(decimalStrings)
-            case .assetDetail(let assetDetail):
+            case .asset(let asset):
                 showingValue = (amountValue.replacingOccurrences(of: decimalStrings, with: "")
-                    .decimalAmount?.toNumberStringWithSeparatorForLabel(fraction: assetDetail.decimals) ?? amountValue)
+                    .decimalAmount?.toNumberStringWithSeparatorForLabel(fraction: asset.presentation.decimals) ?? amountValue)
                     .appending(decimalStrings)
             }
         } else {
@@ -212,16 +212,15 @@ extension SendTransactionScreen {
            let amount = amountValue.decimalAmount {
 
             switch draft.transactionMode {
-            case let .assetDetail(assetDecoration):
-                guard let assetUSDValue = assetDecoration.usdValue,
-                      let currencyUsdValue = currency.usdValue else {
-                          break
+            case let .asset(asset):
+                if let standardAsset = asset as? StandardAsset,
+                   let assetUSDValue = standardAsset.usdValue,
+                   let currencyUsdValue = currency.usdValue {
+                    let currencyValue = assetUSDValue * amount * currencyUsdValue
+                    usdValueLabel.text = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
+                } else {
+                    usdValueLabel.text = nil
                 }
-
-                let currencyValue = assetUSDValue * amount * currencyUsdValue
-
-                usdValueLabel.text = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
-
             case .algo:
                 let usdValue = currencyPriceValue * amount
                 usdValueLabel.text = usdValue.toCurrencyStringForLabel(with: currency.symbol)
@@ -404,8 +403,8 @@ extension SendTransactionScreen: TransactionSignChecking {
         switch draft.transactionMode {
         case .algo:
             self.amount = draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
-        case .assetDetail(let assetDetail):
-            self.amount = assetDetail.amountNumberWithAutoFraction ?? "0"
+        case .asset(let asset):
+            self.amount = asset.amountNumberWithAutoFraction ?? "0"
         }
         isAmountResetted = false
         bindAmount()
@@ -475,8 +474,8 @@ extension SendTransactionScreen: NumpadViewDelegate {
         switch draft.transactionMode {
         case .algo:
             return validateAlgo(for: value)
-        case .assetDetail(let assetDetail):
-            return validateAsset(for: value, on: assetDetail)
+        case .asset(let asset):
+            return validateAsset(for: value, on: asset)
         }
 
     }
@@ -510,12 +509,12 @@ extension SendTransactionScreen: NumpadViewDelegate {
         return .valid
     }
 
-    private func validateAsset(for value: String, on assetDetail: StandardAsset) -> TransactionValidation {
+    private func validateAsset(for value: String, on asset: Asset) -> TransactionValidation {
         guard let decimalAmount = value.decimalAmount else {
             return .otherAsset
         }
 
-        let assetAmount = assetDetail.amountWithFraction
+        let assetAmount = asset.amountWithFraction
 
         if assetAmount < decimalAmount {
             return .minimumAmountAssetError

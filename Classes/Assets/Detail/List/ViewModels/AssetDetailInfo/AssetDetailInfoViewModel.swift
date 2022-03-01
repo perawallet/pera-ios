@@ -86,7 +86,7 @@ extension AssetDetailInfoViewModel {
         let lineHeightMultiplier = 1.23
 
         name = .attributedString(
-            assetDetail.getDisplayNames().0
+            assetDetail.presentation.displayNames.primaryName
                 .attributed([
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),

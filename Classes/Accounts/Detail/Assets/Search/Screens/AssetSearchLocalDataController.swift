@@ -59,10 +59,10 @@ extension AssetSearchLocalDataController {
     }
 
     func search(for query: String) {
-        searchResults = accountHandle.value.standardAssets.filter {
-            String($0.id).contains(query) ||
-            $0.name.unwrap(or: "").contains(query) ||
-            $0.unitName.unwrap(or: "").contains(query)
+        searchResults = accountHandle.value.standardAssets.filter { asset in
+            isAssetContainsID(asset, query: query) ||
+            isAssetContainsName(asset, query: query) ||
+            isAssetContainsUnitName(asset, query: query)
         }
 
         deliverContentSnapshot()
@@ -71,6 +71,18 @@ extension AssetSearchLocalDataController {
     func resetSearch() {
         searchResults = accountHandle.value.standardAssets
         deliverContentSnapshot()
+    }
+
+    private func isAssetContainsID(_ asset: StandardAsset, query: String) -> Bool {
+        return String(asset.id).contains(query)
+    }
+
+    private func isAssetContainsName(_ asset: StandardAsset, query: String) -> Bool {
+        return asset.name.someString.contains(query)
+    }
+
+    private func isAssetContainsUnitName(_ asset: StandardAsset, query: String) -> Bool {
+        return asset.unitName.someString.contains(query)
     }
 }
 
@@ -103,7 +115,7 @@ extension AssetSearchLocalDataController {
             return
         }
 
-        guard !searchResults.isEmpty else {
+        if searchResults.isEmpty {
             deliverEmptyContentSnapshot()
             return
         }

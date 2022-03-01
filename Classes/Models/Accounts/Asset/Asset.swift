@@ -25,6 +25,67 @@ protocol Asset {
     var creator: AssetCreator? { get }
 
     /// Asset management actions
-    var isRemoved: Bool { get set }
-    var isRecentlyAdded: Bool { get set }
+    var state: AssetState { get set }
+
+    /// Asset presentation
+    var presentation: AssetPresentation { get }
+    var amountWithFraction: Decimal { get }
+    var amountDisplayWithFraction: String? { get }
+    var amountNumberWithAutoFraction: String? { get }
+}
+
+enum AssetState: Codable {
+    case ready
+    case pending(AssetOperation)
+}
+
+enum AssetOperation: Codable {
+    case remove
+    case add
+}
+
+struct AssetPresentation {
+    let id: AssetID
+    let decimals: Int
+    let name: String?
+    let unitName: String?
+    let isVerified: Bool
+    let url: String?
+
+    var displayNames: (primaryName: String, secondaryName: String?) {
+        if let name = name,
+           let code = unitName,
+           !name.isEmptyOrBlank,
+           !code.isEmptyOrBlank {
+            return (name, "\(code.uppercased())")
+        }
+
+        if let name = name,
+           !name.isEmptyOrBlank {
+            return (name, nil)
+        }
+
+        if let code = unitName,
+           !code.isEmptyOrBlank {
+            return ("\(code.uppercased())", nil)
+        }
+
+        return ("title-unknown".localized, nil)
+    }
+
+    var hasOnlyAssetName: Bool {
+        return !name.isNilOrEmpty && unitName.isNilOrEmpty
+    }
+
+    var hasOnlyUnitName: Bool {
+        return name.isNilOrEmpty && !unitName.isNilOrEmpty
+    }
+
+    var hasBothDisplayName: Bool {
+        return !name.isNilOrEmpty && !unitName.isNilOrEmpty
+    }
+
+    var hasDisplayName: Bool {
+        return !name.isNilOrEmpty || !unitName.isNilOrEmpty
+    }
 }

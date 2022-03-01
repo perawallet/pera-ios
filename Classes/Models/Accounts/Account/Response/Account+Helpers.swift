@@ -122,13 +122,6 @@ extension Account {
         return appsTotalExtraPages.unwrap(or: 0) > 0
     }
 
-    @discardableResult
-    func removeAsset(_ id: AssetID?) -> [StandardAsset] {
-        return standardAssets.removeAll { asset in
-            asset.id == id
-        }
-    }
-
     func update(from localAccount: AccountInformation) {
         name = localAccount.name
         type = localAccount.type

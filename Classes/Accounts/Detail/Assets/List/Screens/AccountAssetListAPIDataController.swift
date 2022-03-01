@@ -167,10 +167,10 @@ extension AccountAssetListAPIDataController {
     }
 
     private func clearAddedAssetDetailsIfNeeded(for account: Account) {
-        addedAssetDetails = addedAssetDetails.filter { !account.contains($0.id) }
+        addedAssetDetails = addedAssetDetails.filter { !account.containsAsset($0.id) }
     }
 
     private func clearRemovedAssetDetailsIfNeeded(for account: Account) {
-        removedAssetDetails = removedAssetDetails.filter { account.contains($0.id) }
+        removedAssetDetails = removedAssetDetails.filter { account.containsAsset($0.id) }
     }
 }

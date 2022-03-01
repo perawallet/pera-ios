@@ -28,9 +28,13 @@ final class AssetDecoration: ALGEntityModel {
     let isVerified: Bool
     let creator: AssetCreator?
     let collectible: Collectible?
+    let url: String?
 
-    var isRemoved = false
-    var isRecentlyAdded = false
+    var state: AssetState = .ready
+
+    var isCollectible: Bool {
+        return collectible != nil
+    }
 
     init(
         _ apiModel: APIModel = APIModel()
@@ -43,6 +47,7 @@ final class AssetDecoration: ALGEntityModel {
         self.isVerified = apiModel.isVerified ?? false
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
+        self.url = apiModel.url
     }
 
     func encode() -> APIModel {
@@ -55,22 +60,20 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.isVerified = isVerified
         apiModel.creator = creator?.encode()
         apiModel.collectible = collectible?.encode()
+        apiModel.url = url
         return apiModel
     }
 
-    init(standardAsset: StandardAsset) {
-        self.id = standardAsset.id
-        self.name = standardAsset.name
-        self.unitName = standardAsset.unitName
-        self.decimals = standardAsset.decimals
-        self.usdValue = standardAsset.usdValue
-        self.isVerified = standardAsset.isVerified
-        self.creator = standardAsset.creator
+    init(asset: Asset) {
+        self.id = asset.id
+        self.name = asset.presentation.name
+        self.unitName = asset.presentation.unitName
+        self.decimals = asset.presentation.decimals
+        self.usdValue = nil
+        self.isVerified = asset.presentation.isVerified
+        self.creator = asset.creator
         self.collectible = nil
-    }
-
-    var isCollectible: Bool {
-        return collectible != nil
+        self.url = asset.presentation.url
     }
 }
 
@@ -84,6 +87,7 @@ extension AssetDecoration {
         var isVerified: Bool?
         var creator: AssetCreator.APIModel?
         var collectible: Collectible.APIModel?
+        var url: String?
 
         init() {
             self.assetId = 0
@@ -94,6 +98,7 @@ extension AssetDecoration {
             self.isVerified = nil
             self.creator = nil
             self.collectible = nil
+            self.url = nil
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -105,16 +110,13 @@ extension AssetDecoration {
             case isVerified = "is_verified"
             case creator
             case collectible
+            case url
         }
     }
 }
 
 extension AssetDecoration {
-    func hasDisplayName() -> Bool {
-        return !name.isNilOrEmpty || !unitName.isNilOrEmpty
-    }
-
-    func getDisplayNames() -> (String, String?) {
+    var displayNames: (primaryName: String, secondaryName: String?) {
         if let name = name, !name.isEmptyOrBlank,
             let code = unitName, !code.isEmptyOrBlank {
             return (name, "\(code.uppercased())")
@@ -125,20 +127,6 @@ extension AssetDecoration {
         } else {
             return ("title-unknown".localized, nil)
         }
-    }
-
-    var assetNameRepresentation: String {
-        if let name = name, !name.isEmptyOrBlank {
-            return name
-        }
-        return "title-unknown".localized
-    }
-
-    var unitNameRepresentation: String {
-        if let code = unitName, !code.isEmptyOrBlank {
-            return code.uppercased()
-        }
-        return "title-unknown".localized
     }
 }
 

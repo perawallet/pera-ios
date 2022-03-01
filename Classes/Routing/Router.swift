@@ -685,7 +685,7 @@ extension Router {
 extension Router {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetDecoration
+        didConfirmAction asset: AssetDecoration
     ) {
         let draft = assetActionConfirmationViewController.draft
         
@@ -694,7 +694,7 @@ extension Router {
         }
         
         let assetTransactionDraft =
-            AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetIndex))
+            AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
         let transactionController = TransactionController(
             api: appConfiguration.api,
             bannerController: appConfiguration.bannerController

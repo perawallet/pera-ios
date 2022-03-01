@@ -33,14 +33,14 @@ final class SelectAssetViewControllerDataSource: NSObject {
         super.init()
     }
     
-    subscript (indexPath: IndexPath) -> StandardAsset? {
-        return account.standardAssets[safe: indexPath.item.advanced(by: -1)]
+    subscript (indexPath: IndexPath) -> Asset? {
+        return account.allAssets[safe: indexPath.item.advanced(by: -1)]
     }
 }
 
 extension SelectAssetViewControllerDataSource: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return account.standardAssets.count.advanced(by: 1)
+        return account.allAssets.count.advanced(by: 1)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
