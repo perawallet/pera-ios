@@ -25,13 +25,27 @@ final class CollectibleListViewController: BaseViewController {
         return .collectibles
     }
 
+    private lazy var collectiblesScreen = CollectiblesViewController(
+        dataController: CollectibleListAPIDataController(
+            accounts: sharedDataController.accountCollection.sorted(),
+            sharedDataController: sharedDataController
+        ),
+        configuration: configuration
+    )
+
     override func configureNavigationBarAppearance() {
+        /// <todo> Complete nav bar configuration
         addBarButtons()
         bindNavigationItemTitle()
     }
 
     override func customizeTabBarAppearence() {
         tabBarHidden = false
+    }
+
+    override func prepareLayout() {
+        super.prepareLayout()
+        add(collectiblesScreen)
     }
 }
 

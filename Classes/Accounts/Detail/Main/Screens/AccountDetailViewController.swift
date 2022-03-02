@@ -32,7 +32,7 @@ final class AccountDetailViewController: PageContainer {
     )
 
     private lazy var collectibleListScreen = AccountCollectibleListViewController(
-        account: accountHandle.value,
+        account: accountHandle,
         configuration: configuration
     )
     
