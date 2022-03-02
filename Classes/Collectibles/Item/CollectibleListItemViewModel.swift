@@ -15,28 +15,48 @@
 //   CollectibleListItemViewModel.swift
 
 import Foundation
+import UIKit
 import MacaroonUIKit
 
-struct CollectibleListItemViewModel: ViewModel {
-    private(set) var image: ImageSource?
+struct CollectibleListItemViewModel:
+    BindableViewModel,
+    Hashable {
+    private(set) var image: UIImage? /// <todo> Why does ImageSource not conforming Hashable? Ask Salih for the alternative solution.
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
-    private(set) var bottomLeftBadge: Image?
+    private(set) var bottomLeftBadge: UIImage?
 
-    init() {
-        bindImage()
-        bindTitle()
-        bindSubtitle()
-        bindBottomLeftBadge()
+    init<T>(
+        _ model: T
+    ) {
+        bind(model)
     }
 }
 
 extension CollectibleListItemViewModel {
-    private mutating func bindImage() {
+    mutating func bind<T>(
+        _ model: T
+    ) {
+        if let asset = model as? CollectibleAsset {
+            bindImage(asset)
+            bindTitle(asset)
+            bindSubtitle(asset)
+            bindBottomLeftBadge(asset)
+            return
+        }
+    }
+}
+
+extension CollectibleListItemViewModel {
+    private mutating func bindImage(
+        _ asset: CollectibleAsset
+    ) {
         image = nil
     }
 
-    private mutating func bindTitle() {
+    private mutating func bindTitle(
+        _ asset: CollectibleAsset
+    ) {
         let font = Fonts.DMSans.regular.make(13)
         let lineHeightMultiplier = 1.18
 
@@ -55,7 +75,9 @@ extension CollectibleListItemViewModel {
         )
     }
 
-    private mutating func bindSubtitle() {
+    private mutating func bindSubtitle(
+        _ asset: CollectibleAsset
+    ) {
         let font = Fonts.DMSans.regular.make(15)
         let lineHeightMultiplier = 1.23
 
@@ -74,7 +96,9 @@ extension CollectibleListItemViewModel {
         )
     }
 
-    private mutating func bindBottomLeftBadge() {
+    private mutating func bindBottomLeftBadge(
+        _ asset: CollectibleAsset
+    ) {
         bottomLeftBadge = nil
     }
 }
