@@ -102,6 +102,7 @@ extension AccountAssetListAPIDataController {
             var assetItems: [AccountAssetsItem] = []
 
             assetItems.append(.search)
+            assetItems.append(.addAsset)
 
             let currency = self.sharedDataController.currency.value
 
