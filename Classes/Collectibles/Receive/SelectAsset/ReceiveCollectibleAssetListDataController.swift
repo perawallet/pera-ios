@@ -28,7 +28,7 @@ protocol ReceiveCollectibleAssetListDataController: AnyObject {
 
     var account: AccountHandle { get }
 
-    subscript(index: Int) -> AssetInformation? { get }
+    subscript(index: Int) -> AssetDecoration? { get }
 }
 
 enum ReceiveCollectibleAssetListSection:

@@ -25,7 +25,7 @@ final class ReceiveCollectibleAssetListAPIDataController:
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.15) /// <todo>: How long should the interval be?
     private var ongoingEndpoint: EndpointOperatable?
 
-    var assets: [AssetInformation] = []
+    var assets: [AssetDecoration] = []
 
     private var lastSnapshot: Snapshot?
 
@@ -50,7 +50,7 @@ final class ReceiveCollectibleAssetListAPIDataController:
         self.api = api
     }
 
-    subscript(index: Int) -> AssetInformation? {
+    subscript(index: Int) -> AssetDecoration? {
         return assets[safe: index]
     }
 }
@@ -151,11 +151,13 @@ extension ReceiveCollectibleAssetListAPIDataController {
             var snapshot = Snapshot()
 
             snapshot.appendSections([.header, .search, .assets])
-            
-            self.assets.forEach {
+
+            for asset in self.assets where !asset.isCollectible {
+                let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
+                
                 let assetItem: ReceiveCollectibleAssetListItem = .asset(
                     AssetPreviewViewModel(
-                        AssetPreviewModelAdapter.adapt($0)
+                        AssetPreviewModelAdapter.adapt(standardAsset)
                     )
                 )
 

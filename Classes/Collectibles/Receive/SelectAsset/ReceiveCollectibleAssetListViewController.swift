@@ -217,8 +217,8 @@ extension ReceiveCollectibleAssetListViewController {
 
             let assetAlertDraft = AssetAlertDraft(
                 account: account,
-                assetIndex: selectedAsset.id,
-                assetDetail: selectedAsset,
+                assetId: selectedAsset.id,
+                asset: selectedAsset,
                 title: "asset-add-confirmation-title".localized,
                 detail: "asset-add-warning".localized,
                 actionTitle: "title-approve".localized,
@@ -259,7 +259,7 @@ extension ReceiveCollectibleAssetListViewController: SearchInputViewDelegate {
 extension ReceiveCollectibleAssetListViewController: AssetActionConfirmationViewControllerDelegate {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetInformation
+        didConfirmAction asset: AssetDecoration
     ) {
         // <todo>
     }
