@@ -104,7 +104,7 @@ extension ReceiveCollectibleAssetListViewController {
     }
 
     private func addBarButtons() {
-        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
+        let infoBarButtonItem = ALGBarButtonItem(kind: .info) {
             fatalError("Not Implemented Yet")
         }
 
