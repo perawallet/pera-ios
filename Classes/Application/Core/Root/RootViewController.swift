@@ -106,7 +106,6 @@ extension RootViewController {
         let collectibleListViewController = CollectibleListViewController(
             configuration: configuration
         )
-
         let collectiblesTab =
             CollectiblesTabBarItem(NavigationController(rootViewController: collectibleListViewController))
         
