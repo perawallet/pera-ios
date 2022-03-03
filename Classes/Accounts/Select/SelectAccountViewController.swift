@@ -18,7 +18,7 @@
 
 import Foundation
 import UIKit
-// Shimmer? AssetPreviewLoadingCell
+
 final class SelectAccountViewController: BaseViewController {
     weak var delegate: SelectAccountViewControllerDelegate?
 
@@ -104,7 +104,7 @@ final class SelectAccountViewController: BaseViewController {
         listView
             .visibleCells
             .forEach {
-                let loadingCell = $0 as? AssetPreviewLoadingCell
+                let loadingCell = $0 as? PreviewLoadingCell
                 loadingCell?.startAnimating()
             }
     }
@@ -115,7 +115,7 @@ final class SelectAccountViewController: BaseViewController {
         listView
             .visibleCells
             .forEach {
-                let loadingCell = $0 as? AssetPreviewLoadingCell
+                let loadingCell = $0 as? PreviewLoadingCell
                 loadingCell?.stopAnimating()
             }
     }

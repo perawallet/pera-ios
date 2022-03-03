@@ -21,10 +21,10 @@ import UIKit
 final class CollectibleListItemLoadingViewCell:
     CollectionCell<CollectibleListItemLoadingView> {
     func startAnimating() {
-        contextView.startSubviewsShimmer()
+        contextView.startAnimating()
     }
 
     func stopAnimating() {
-        contextView.stopSubviewsShimmer()
+        contextView.stopAnimating()
     }
 }

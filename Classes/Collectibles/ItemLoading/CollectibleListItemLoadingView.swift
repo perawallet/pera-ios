@@ -20,10 +20,10 @@ import MacaroonUIKit
 final class CollectibleListItemLoadingView:
     View,
     ListReusable,
-    ShimmerDisplayable {
-    private lazy var image = ShimmeringView()
-    private lazy var title = ShimmeringView()
-    private lazy var subtitle = ShimmeringView()
+    ShimmerAnimationDisplaying {
+    private lazy var image = ShimmerView()
+    private lazy var title = ShimmerView()
+    private lazy var subtitle = ShimmerView()
 
     override init(
         frame: CGRect

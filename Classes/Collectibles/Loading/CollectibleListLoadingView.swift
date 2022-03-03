@@ -20,8 +20,8 @@ import MacaroonUIKit
 final class CollectibleListLoadingView:
     View,
     ListReusable,
-    ShimmerDisplayable {
-    private lazy var searchInput = ShimmeringView()
+    ShimmerAnimationDisplaying {
+    private lazy var searchInput = ShimmerView()
     private lazy var collectibleListItemsVerticalStack = UIStackView()
 
     override init(

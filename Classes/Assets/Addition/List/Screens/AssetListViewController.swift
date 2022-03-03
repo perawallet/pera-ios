@@ -16,7 +16,7 @@
 //   AssetListViewController.swift
 
 import Foundation
-// Shimmer? AssetPreviewLoadingCell
+
 final class AssetListViewController: BaseViewController {
     weak var delegate: AssetListViewControllerDelegate?
 
@@ -72,7 +72,7 @@ final class AssetListViewController: BaseViewController {
             .collectionView
             .visibleCells
             .forEach {
-                let loadingCell = $0 as? AssetPreviewLoadingCell
+                let loadingCell = $0 as? PreviewLoadingCell
                 loadingCell?.startAnimating()
             }
     }
@@ -83,7 +83,7 @@ final class AssetListViewController: BaseViewController {
             .collectionView
             .visibleCells
             .forEach {
-                let loadingCell = $0 as? AssetPreviewLoadingCell
+                let loadingCell = $0 as? PreviewLoadingCell
                 loadingCell?.stopAnimating()
             }
     }
