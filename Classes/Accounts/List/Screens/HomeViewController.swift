@@ -405,20 +405,20 @@ extension HomeViewController: QRScannerViewControllerDelegate {
                       return
                   }
 
-            var asset: AssetInformation?
+            var asset: Asset?
 
             for accountHandle in sharedDataController.accountCollection.sorted() {
-                for compoundAsset in accountHandle.value.compoundAssets where compoundAsset.id == assetId {
-                    asset = compoundAsset.detail
+                for anAsset in accountHandle.value.allAssets where anAsset.id == assetId {
+                    asset = anAsset
                     break
                 }
             }
 
-            guard let assetDetail = asset else {
+            guard let asset = asset else {
                 let assetAlertDraft = AssetAlertDraft(
                     account: nil,
-                    assetIndex: assetId,
-                    assetDetail: nil,
+                    assetId: assetId,
+                    asset: nil,
                     title: "asset-support-your-add-title".localized,
                     detail: "asset-support-your-add-message".localized,
                     actionTitle: "title-approve".localized,
@@ -433,7 +433,7 @@ extension HomeViewController: QRScannerViewControllerDelegate {
             }
 
             let toAccount = Account(address: address, type: .standard)
-            var draft = SendTransactionDraft(from: toAccount, transactionMode: .assetDetail(assetDetail))
+            var draft = SendTransactionDraft(from: toAccount, transactionMode: .asset(asset))
             draft.amount = Decimal(amount)
             draft.note = qrText.lockedNote
             draft.lockedNote = qrText.lockedNote

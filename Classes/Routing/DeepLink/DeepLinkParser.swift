@@ -85,11 +85,11 @@ extension DeepLinkParser {
             return .failure(.waitingForAccountsToBeAvailable)
         }
         
-        guard let asset = account.value[assetId] else {
+        guard let asset = account.value[assetId] as? StandardAsset else {
             return .failure(.waitingForAssetsToBeAvailable)
         }
         
-        let draft = AssetTransactionListing(accountHandle: account, compoundAsset: asset)
+        let draft = AssetTransactionListing(accountHandle: account, asset: asset)
         return .success(.assetDetail(draft: draft))
     }
     
@@ -114,8 +114,8 @@ extension DeepLinkParser {
         let accountName = account.value.name.someString
         let draft = AssetAlertDraft(
             account: account.value,
-            assetIndex: assetId,
-            assetDetail: nil,
+            assetId: assetId,
+            asset: nil,
             title: "asset-support-add-title".localized,
             detail: String(format: "asset-support-add-message".localized, "\(accountName)"),
             actionTitle: "title-approve".localized,
@@ -205,12 +205,12 @@ extension DeepLinkParser {
         }
 
         guard
-            let assetInformation = sharedDataController.assetDetailCollection[assetId]
+            let assetDecoration = sharedDataController.assetDetailCollection[assetId]
         else {
             let draft = AssetAlertDraft(
                 account: nil,
-                assetIndex: assetId,
-                assetDetail: nil,
+                assetId: assetId,
+                asset: nil,
                 title: "asset-support-title".localized,
                 detail: "asset-support-error".localized,
                 actionTitle: "title-approve".localized,
@@ -219,11 +219,13 @@ extension DeepLinkParser {
             return .success(.assetActionConfirmation(draft: draft))
         }
 
+        /// <todo> Support the collectibles later when its detail screen is done.
+
         let qrDraft = QRSendTransactionDraft(
             toAccount: accountAddress,
             amount: Decimal(amount),
             lockedNote: qr.lockedNote,
-            transactionMode: .assetDetail(assetInformation)
+            transactionMode: .asset(StandardAsset(asset: ALGAsset(id: assetDecoration.id), decoration: assetDecoration))
         )
         return .success(.sendTransaction(draft: qrDraft))
     }
@@ -253,6 +255,16 @@ extension DeepLinkParser {
             .unwrap(where: \.isWalletConnectConnection)
             .unwrap({ .success($0) })
     }
+    
+    func discover(
+        walletConnectRequest draft: WalletConnectRequestDraft
+    ) -> Result? {
+        if !sharedDataController.isAvailable {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+        
+        return .success(.wcMainTransactionScreen(draft: draft))
+    }
 }
 
 extension DeepLinkParser {
@@ -264,6 +276,7 @@ extension DeepLinkParser {
         case assetActionConfirmation(draft: AssetAlertDraft)
         case assetDetail(draft: TransactionListing)
         case sendTransaction(draft: QRSendTransactionDraft)
+        case wcMainTransactionScreen(draft: WalletConnectRequestDraft)
     }
     
     enum Error: Swift.Error {

@@ -20,38 +20,27 @@ import UIKit
 import MacaroonUIKit
 
 final class AccountCollectibleListViewController: BaseViewController {
-    
-    private let account: Account
 
-    init(account: Account, configuration: ViewControllerConfiguration) {
+    private lazy var collectiblesScreen = CollectiblesViewController(
+        dataController: CollectibleListAPIDataController(
+            accounts: [account],
+            sharedDataController: sharedDataController
+        ),
+        configuration: configuration
+    )
+    
+    private let account: AccountHandle
+
+    init(
+        account: AccountHandle,
+        configuration: ViewControllerConfiguration
+    ) {
         self.account = account
         super.init(configuration: configuration)
     }
 
-    private lazy var noContentView = NoContentView()
-
     override func prepareLayout() {
         super.prepareLayout()
-        addNoContentView()
-    }
-
-    override func bindData() {
-        super.bindData()
-        bindNoContentViewData()
-    }
-}
-
-extension AccountCollectibleListViewController {
-    private func addNoContentView() {
-        noContentView.customize(NoContentViewCommonTheme())
-
-        view.addSubview(noContentView)
-        noContentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
-        }
-    }
-
-    private func bindNoContentViewData() {
-        noContentView.bindData(AccountCollectibleListNoContentViewModel())
+        add(collectiblesScreen)
     }
 }
