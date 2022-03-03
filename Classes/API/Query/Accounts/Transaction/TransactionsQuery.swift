@@ -23,6 +23,7 @@ struct TransactionsQuery: ObjectQuery {
     let to: String?
     let next: String?
     let assetId: String?
+    let transactionType: String?
     
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
@@ -42,6 +43,10 @@ struct TransactionsQuery: ObjectQuery {
         
         if let assetId = assetId {
             params.append(.init(.assetIdFilter, assetId))
+        }
+
+        if let transactionType = transactionType {
+            params.append(.init(.transactionType, transactionType))
         }
         
         return params

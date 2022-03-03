@@ -170,7 +170,23 @@ extension TransactionsAPIDataController {
             assetId = String(id)
         }
 
-        let draft = TransactionFetchDraft(account: draft.accountHandle.value, dates: dates, nextToken: nil, assetId: assetId, limit: 30)
+        let transactionType: Transaction.TransferType?
+
+        if assetId == nil && draft.type == .algos {
+            transactionType = .payment
+        } else {
+            transactionType = nil
+        }
+
+        let draft = TransactionFetchDraft(
+            account: draft.accountHandle.value,
+            dates: dates,
+            nextToken: nil,
+            assetId: assetId,
+            limit: 30,
+            transactionType: transactionType
+        )
+
         fetchRequest = api.fetchTransactions(draft) { [weak self] response in
             guard let self = self else {
                 return
@@ -242,7 +258,23 @@ extension TransactionsAPIDataController {
             assetId = String(id)
         }
 
-        let draft = TransactionFetchDraft(account: draft.accountHandle.value, dates: dates, nextToken: nextToken, assetId: assetId, limit: 30)
+        let transactionType: Transaction.TransferType?
+
+        if assetId == nil && draft.type == .algos {
+            transactionType = .payment
+        } else {
+            transactionType = nil
+        }
+
+        let draft = TransactionFetchDraft(
+            account: draft.accountHandle.value,
+            dates: dates,
+            nextToken: nextToken,
+            assetId: assetId,
+            limit: 30,
+            transactionType: transactionType
+        )
+
         fetchRequest = api.fetchTransactions(draft) { [weak self] response in
             guard let self = self else {
                 return

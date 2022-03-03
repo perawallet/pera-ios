@@ -120,7 +120,10 @@ extension Transaction {
             return false
         }
         
-        return assetTransfer.receiverAddress == address && assetTransfer.amount == 0 && type == .assetTransfer
+        return assetTransfer.receiverAddress == address &&
+        sender == address &&
+        assetTransfer.amount == 0 &&
+        type == .assetTransfer
     }
     
     func getAmount() -> UInt64? {
@@ -155,7 +158,9 @@ extension Transaction {
         guard let assetTransfer = assetTransfer else {
             return false
         }
-        return assetTransfer.receiverAddress == account && assetTransfer.amount == 0
+        return assetTransfer.receiverAddress == account &&
+        assetTransfer.amount == 0 &&
+        sender == account
     }
 }
 
