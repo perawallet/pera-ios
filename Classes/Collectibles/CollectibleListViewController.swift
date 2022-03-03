@@ -56,7 +56,14 @@ extension CollectibleListViewController {
                 return
             }
 
-            fatalError("Not implemented yet.")
+            self.open(
+                .receiveCollectibleAccountList(
+                    dataController: ReceiveCollectibleAccountListAPIDataController(
+                        self.sharedDataController
+                    )
+                ),
+                by: .present
+            )
         }
 
         rightBarButtonItems = [addBarButtonItem]

@@ -290,7 +290,7 @@ extension AccountDetailViewController {
 
         init(screen: UIViewController) {
             self.id = AccountDetailPageBarItemID.transactions.rawValue
-            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-collectibles".localized)
+            self.barButtonItem = PrimaryPageBarButtonItem(title: "accounts-title-history".localized)
             self.screen = screen
         }
     }

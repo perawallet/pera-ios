@@ -52,6 +52,8 @@ final class ViewLoadingIndicator:
     func applyStyle(
         _ style: ImageStyle
     ) {
+        backgroundColor = .clear
+
         indicatorView.customizeAppearance(style)
     }
 }

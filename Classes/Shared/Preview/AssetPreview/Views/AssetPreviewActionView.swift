@@ -59,6 +59,7 @@ extension AssetPreviewActionView {
 
 extension AssetPreviewActionView {
     private func addImage(_ theme: AssetPreviewActionViewTheme) {
+        imageView.customize(AssetImageViewTheme())
         addSubview(imageView)
 
         imageView.snp.makeConstraints {
@@ -121,14 +122,14 @@ extension AssetPreviewActionView {
 extension AssetPreviewActionView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
         imageView.bindData(
-            AssetImageViewModel(
-                image: viewModel?.image,
-                assetAbbreviationForImage: viewModel?.assetAbbreviationForImage?.string
+            AssetImageLargeViewModel(
+                image: viewModel?.icon,
+                assetAbbreviatedName: viewModel?.assetAbbreviatedName?.string
             )
         )
-        assetNameLabel.editText = viewModel?.assetPrimaryTitle
-        secondaryImageView.image = viewModel?.secondaryImage
-        assetShortNameLabel.editText = viewModel?.assetSecondaryTitle
+        assetNameLabel.editText = viewModel?.title
+        secondaryImageView.image = viewModel?.verifiedIcon
+        assetShortNameLabel.editText = viewModel?.subtitle
     }
 
     func prepareForReuse() {

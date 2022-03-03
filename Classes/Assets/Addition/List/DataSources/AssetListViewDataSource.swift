@@ -32,7 +32,7 @@ final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetLis
                 cell.bindData(item)
                 return cell
             case .loading:
-                return collectionView.dequeue(AssetPreviewLoadingCell.self, at: indexPath)
+                return collectionView.dequeue(PreviewLoadingCell.self, at: indexPath)
             case .noContent:
                 let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
                 cell.bindData(AssetAdditionNoContentViewModel())
@@ -40,7 +40,7 @@ final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetLis
             }
         }
 
-        collectionView.register(AssetPreviewLoadingCell.self)
+        collectionView.register(PreviewLoadingCell.self)
         collectionView.register(AssetPreviewCell.self)
         collectionView.register(NoContentCell.self)
     }

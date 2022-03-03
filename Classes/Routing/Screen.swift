@@ -112,6 +112,12 @@ indirect enum Screen {
         transactionOption: WCTransactionOption?
     )
     case peraIntroduction
+    case receiveCollectibleAccountList(
+        dataController: ReceiveCollectibleAccountListDataController
+    )
+    case receiveCollectibleAssetList(
+        dataController: ReceiveCollectibleAssetListDataController
+    )
 }
 
 extension Screen {

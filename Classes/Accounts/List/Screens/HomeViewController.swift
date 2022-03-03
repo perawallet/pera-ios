@@ -54,9 +54,9 @@ final class HomeViewController:
     private var sendTransactionDraft: SendTransactionDraft?
     
     private var isViewFirstAppeared = true
-    
+
     private let dataController: HomeDataController
-    
+
     init(
         dataController: HomeDataController,
         configuration: ViewControllerConfiguration
@@ -95,7 +95,7 @@ final class HomeViewController:
         
         let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
         loadingCell?.startAnimating()
-        
+
         if isViewFirstAppeared {
             presentPeraIntroductionIfNeeded()
             presentPasscodeFlowIfNeeded()
@@ -598,6 +598,7 @@ extension HomeViewController: SelectAccountViewControllerDelegate {
         didSelect account: Account,
         for transactionAction: TransactionAction
     ) {
+        /// <todo> Why we don't have account.isAvailable check like in didSelect method
         guard transactionAction == .send, let draft = sendTransactionDraft else {
             return
         }

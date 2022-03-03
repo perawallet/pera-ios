@@ -279,7 +279,7 @@ extension SendTransactionScreen {
     }
 
     private func addAccountView() {
-        accountView.customize(AssetPreviewViewCommonTheme())
+        accountView.customize(AssetPreviewViewTheme())
 
         accountContainerView.draw(corner: theme.accountContainerCorner)
         accountContainerView.drawAppearance(border: theme.accountContainerBorder)
@@ -292,13 +292,11 @@ extension SendTransactionScreen {
         accountContainerView.snp.makeConstraints { make in
             make.bottom.equalTo(nextButton.snp.top).offset(theme.defaultBottomInset)
             make.leading.trailing.equalToSuperview().inset(theme.defaultLeadingInset)
-            make.height.equalTo(theme.accountContainerHeight)
         }
 
         accountContainerView.addSubview(accountView)
         accountView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(theme.accountLeadingInset)
-            make.top.bottom.equalToSuperview()
+            make.setPaddings(theme.accountPaddings)
         }
     }
 

@@ -13,13 +13,13 @@
 // limitations under the License.
 
 //
-//   AssetPreviewLoadingCell.swift
+//   PreviewLoadingCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AssetPreviewLoadingCell: BaseCollectionViewCell<AssetPreviewLoadingView> {
+final class PreviewLoadingCell: BaseCollectionViewCell<PreviewLoadingView> {
     override init(
         frame: CGRect
     ) {
@@ -27,14 +27,16 @@ final class AssetPreviewLoadingCell: BaseCollectionViewCell<AssetPreviewLoadingV
             frame: frame
         )
 
-        contextView.customize(AssetPreviewLoadingViewCommonTheme())
+        contextView.customize(PreviewLoadingViewCommonTheme())
     }
 }
 
-extension AssetPreviewLoadingCell {
+extension PreviewLoadingCell {
     func startAnimating() {
+        contextView.startAnimating()
     }
 
     func stopAnimating() {
+        contextView.stopAnimating()
     }
 }

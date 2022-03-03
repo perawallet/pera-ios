@@ -13,25 +13,18 @@
 // limitations under the License.
 
 //
-//   AssetPreviewLoadingViewTheme.swift
+//   AssetImageViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-protocol AssetPreviewLoadingViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var imageViewCorner: LayoutMetric { get }
-    var imageViewSize: LayoutSize { get }
+struct AssetImageViewTheme:
+    LayoutSheet,
+    StyleSheet {
+    let placeholder: AssetImagePlaceholderViewTheme
 
-    var titleViewCorner: LayoutMetric { get }
-    var titleViewSize: LayoutSize { get }
-    var titleMargin: LayoutMargins { get }
-
-    var subtitleViewCorner: LayoutMetric { get }
-    var subtitleViewSize: LayoutSize { get }
-    var subtitleMargin: LayoutMargins { get }
-
-    var supplementaryViewCorner: LayoutMetric { get }
-    var supplementaryViewSize: LayoutSize { get }
+    init(_ family: LayoutFamily) {
+        placeholder = AssetImagePlaceholderViewTheme()
+    }
 }

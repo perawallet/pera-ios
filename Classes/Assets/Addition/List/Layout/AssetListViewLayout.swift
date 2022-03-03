@@ -20,9 +20,10 @@ import MacaroonUIKit
 import UIKit
 
 final class AssetListViewLayout: NSObject {
-
     private lazy var theme = AssetListViewController.Theme()
     lazy var handlers = Handlers()
+
+    private var sizeCache: [String: CGSize] = [:]
 
     private let listDataSource: AssetListViewDataSource
 
@@ -48,13 +49,18 @@ extension AssetListViewLayout: UICollectionViewDelegateFlowLayout {
         switch itemIdentifier {
         case .loading:
             return CGSize(theme.cellSize)
-        case .asset:
-            return CGSize(theme.cellSize)
+        case .asset(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForAssetCellItem: item
+            )
         case .noContent:
-            let width = collectionView.bounds.width
-            let height = collectionView.bounds.height - collectionView.adjustedContentInset.bottom
-            return CGSize((width, height))
-            
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForEmptyItem: nil
+            )
         }
     }
 
@@ -67,8 +73,9 @@ extension AssetListViewLayout: UICollectionViewDelegateFlowLayout {
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        if let loadingCell = cell as? LoadingCell {
+        if let loadingCell = cell as? PreviewLoadingCell {
             loadingCell.startAnimating()
+            return
         }
 
         handlers.willDisplay?(cell, indexPath)
@@ -79,7 +86,7 @@ extension AssetListViewLayout: UICollectionViewDelegateFlowLayout {
         didEndDisplaying cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        if let loadingCell = cell as? LoadingCell {
+        if let loadingCell = cell as? PreviewLoadingCell {
             loadingCell.stopAnimating()
         }
     }
@@ -95,11 +102,38 @@ extension AssetListViewLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForEmptyItem item: AssetListViewItem
+        sizeForEmptyItem item: AssetListViewItem? = nil
     ) -> CGSize {
-        let width = listView.bounds.width
-        let height = listView.bounds.height - listView.adjustedContentInset.bottom
+        let width = calculateContentWidth(for: listView)
+        let height =
+            listView.bounds.height -
+            listView.safeAreaTop -
+            listView.safeAreaBottom
         return CGSize((width, height))
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForAssetCellItem item: AssetPreviewViewModel
+    ) -> CGSize {
+        let sizeCacheIdentifier = AssetPreviewCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+
+        let newSize = AssetPreviewCell.calculatePreferredSize(
+            item,
+            for: AssetPreviewCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
     }
 }
 

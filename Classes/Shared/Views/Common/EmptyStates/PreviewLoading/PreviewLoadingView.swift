@@ -13,31 +13,20 @@
 // limitations under the License.
 
 //
-//   AssetPreviewLoadingView.swift
+//   PreviewLoadingView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AssetPreviewLoadingView:
+final class PreviewLoadingView:
     View,
-    ListReusable {
-    private lazy var imageView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-    private lazy var titleView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-    private lazy var subtitleView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
-    private lazy var supplementaryView = GradientView(
-        gradientStartColor: AppColors.Shared.Layer.gray.uiColor,
-        gradientEndColor: AppColors.Shared.Layer.grayLighter.uiColor.withAlphaComponent(0.5)
-    )
+    ListReusable,
+    ShimmerAnimationDisplaying {
+    private lazy var imageView = ShimmerView()
+    private lazy var titleView = ShimmerView()
+    private lazy var subtitleView = ShimmerView()
+    private lazy var supplementaryView = ShimmerView()
 
     override init(
         frame: CGRect
@@ -47,7 +36,7 @@ final class AssetPreviewLoadingView:
     }
 
     func customize(
-        _ theme: AssetPreviewLoadingViewTheme
+        _ theme: PreviewLoadingViewTheme
     ) {
         addImageView(theme)
         addTitleView(theme)
@@ -68,8 +57,8 @@ final class AssetPreviewLoadingView:
     }
 }
 
-extension AssetPreviewLoadingView {
-    private func addImageView(_ theme: AssetPreviewLoadingViewTheme) {
+extension PreviewLoadingView {
+    private func addImageView(_ theme: PreviewLoadingViewTheme) {
         imageView.draw(corner: Corner(radius: theme.imageViewCorner))
         
         addSubview(imageView)
@@ -83,7 +72,7 @@ extension AssetPreviewLoadingView {
         }
     }
 
-    private func addTitleView(_ theme: AssetPreviewLoadingViewTheme) {
+    private func addTitleView(_ theme: PreviewLoadingViewTheme) {
         titleView.draw(corner: Corner(radius: theme.titleViewCorner))
 
         addSubview(titleView)
@@ -97,7 +86,7 @@ extension AssetPreviewLoadingView {
         }
     }
 
-    private func addSubtitleView(_ theme: AssetPreviewLoadingViewTheme) {
+    private func addSubtitleView(_ theme: PreviewLoadingViewTheme) {
         subtitleView.draw(corner: Corner(radius: theme.subtitleViewCorner))
 
         addSubview(subtitleView)
@@ -111,7 +100,7 @@ extension AssetPreviewLoadingView {
         }
     }
 
-    private func addSupplementaryView(_ theme: AssetPreviewLoadingViewTheme) {
+    private func addSupplementaryView(_ theme: PreviewLoadingViewTheme) {
         supplementaryView.draw(corner: Corner(radius: theme.supplementaryViewCorner))
 
         addSubview(supplementaryView)

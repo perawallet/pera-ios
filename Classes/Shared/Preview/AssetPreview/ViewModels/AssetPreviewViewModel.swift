@@ -19,62 +19,134 @@ import MacaroonUIKit
 import UIKit
 
 struct AssetPreviewModel: Hashable {
-    let image: UIImage?
-    let secondaryImage: UIImage?
-    let assetPrimaryTitle: String?
-    let assetSecondaryTitle: String?
-    let assetPrimaryValue: String?
-    let assetSecondaryValue: String?
+    let icon: UIImage?
+    let verifiedIcon: UIImage?
+    let title: String?
+    let subtitle: String?
+    let primaryAccessory: String?
+    let secondaryAccessory: String?
 }
 
 struct AssetPreviewViewModel:
     PairedViewModel,
     Hashable {
-    private(set) var image: UIImage?
-    private(set) var secondaryImage: UIImage?
-    private(set) var assetPrimaryTitle: EditText?
-    private(set) var assetSecondaryTitle: EditText?
-    private(set) var assetPrimaryValue: EditText?
-    private(set) var assetSecondaryAssetValue: EditText?
-    private(set) var assetAbbreviationForImage: EditText?
+    private(set) var icon: UIImage?
+    private(set) var verifiedIcon: UIImage?
+    private(set) var title: EditText?
+    private(set) var subtitle: EditText?
+    private(set) var primaryAccessory: EditText?
+    private(set) var secondaryAccessory: EditText?
+    private(set) var assetAbbreviatedName: EditText?
     
-    init(_ model: AssetPreviewModel) {
-        bindImage(model.image)
-        bindSecondaryImage(model.secondaryImage)
-        bindAssetPrimaryTitle(model.assetPrimaryTitle)
-        bindAssetSecondaryTitle(model.assetSecondaryTitle)
-        bindAssetPrimaryValue(model.assetPrimaryValue)
-        bindAssetSecondaryValue(model.assetSecondaryValue)
-        bindAssetAbbreviationForImage()
+    init(
+        _ model: AssetPreviewModel
+    ) {
+        bindIcon(model.icon)
+        bindVerifiedIcon(model.verifiedIcon)
+        bindTitle(model.title)
+        bindSubtitle(model.subtitle)
+        bindPrimaryAccessory(model.primaryAccessory)
+        bindSecondAccessory(model.secondaryAccessory)
+        bindAssetAbbreviatedName()
     }
 }
 
 extension AssetPreviewViewModel {
-    private mutating func bindImage(_ image: UIImage?) {
-        self.image = image
+    private mutating func bindIcon(_ icon: UIImage?) {
+        self.icon = icon
     }
     
-    private mutating func bindSecondaryImage(_ image: UIImage?) {
-        self.secondaryImage = image
+    private mutating func bindVerifiedIcon(_ image: UIImage?) {
+        self.verifiedIcon = image
     }
     
-    private mutating func bindAssetPrimaryTitle(_ title: String?) {
-        self.assetPrimaryTitle =  .string(title.isNilOrEmpty ? "title-unknown".localized : title)
+    private mutating func bindTitle(_ title: String?) {
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+        
+        self.title = .attributedString(
+            (title.isNilOrEmpty ? "title-unknown".localized : title!)
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byTruncatingTail),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.left)
+                    ])
+                ])
+        )
     }
     
-    private mutating func bindAssetSecondaryTitle(_ title: String?) {
-        self.assetSecondaryTitle = .string(title)
+    private mutating func bindSubtitle(_ subtitle: String?) {
+        guard let subtitle = subtitle else {
+            return
+        }
+        
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+        
+        self.subtitle = .attributedString(
+            subtitle
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byTruncatingTail),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.left)
+                    ])
+                ])
+        )
     }
     
-    private mutating func bindAssetPrimaryValue(_ value: String?) {
-        self.assetPrimaryValue = .string(value)
+    private mutating func bindPrimaryAccessory(_ accessory: String?) {
+        guard let accessory = accessory else {
+            return
+        }
+        
+        let font = Fonts.DMMono.regular.make(15)
+        let lineHeightMultiplier = 1.23
+        
+        primaryAccessory = .attributedString(
+            accessory
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byTruncatingTail),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.right)
+                    ])
+                ])
+        )
     }
     
-    private mutating func bindAssetSecondaryValue(_ value: String?) {
-        self.assetSecondaryAssetValue = .string(value)
+    private mutating func bindSecondAccessory(_ accessory: String?) {
+        guard let accessory = accessory else {
+            return
+        }
+        
+        let font = Fonts.DMMono.regular.make(13)
+        let lineHeightMultiplier = 1.18
+        
+        secondaryAccessory = .attributedString(
+            accessory
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byTruncatingTail),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.right)
+                    ])
+                ])
+        )
     }
-
-    private mutating func bindAssetAbbreviationForImage() {
-        self.assetAbbreviationForImage = .string(TextFormatter.assetShortName.format(assetPrimaryTitle?.string))
+    
+    private mutating func bindAssetAbbreviatedName() {
+        assetAbbreviatedName = .string(
+            TextFormatter.assetShortName.format(title?.string)
+        )
     }
 }

@@ -31,7 +31,6 @@ final class SelectAccountViewController: BaseViewController {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.listBackgroundColor
-        collectionView.register(AccountPreviewCell.self)
         collectionView.contentInset.top = theme.listContentInsetTop
         return collectionView
     }()
@@ -41,7 +40,7 @@ final class SelectAccountViewController: BaseViewController {
     private lazy var listLayout = SelectAccountListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = SelectAccountDataSource(listView)
 
-    private var dataController: SelectAccountDataController
+    private let dataController: SelectAccountDataController
 
     init(
         dataController: SelectAccountDataController,
@@ -98,6 +97,28 @@ final class SelectAccountViewController: BaseViewController {
         }
         dataController.load()
     }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        listView
+            .visibleCells
+            .forEach {
+                let loadingCell = $0 as? PreviewLoadingCell
+                loadingCell?.startAnimating()
+            }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        listView
+            .visibleCells
+            .forEach {
+                let loadingCell = $0 as? PreviewLoadingCell
+                loadingCell?.stopAnimating()
+            }
+    }
 }
 
 extension SelectAccountViewController {
@@ -115,16 +136,6 @@ extension SelectAccountViewController {
             $0.trailing.leading.equalToSuperview().inset(theme.horizontalPadding)
             $0.top.bottom.equalToSuperview()
         }
-    }
-}
-
-extension SelectAccountViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: theme.listItemHeight)
     }
 }
 

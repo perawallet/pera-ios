@@ -21,8 +21,8 @@ import MacaroonUIKit
 
 final class AssetDetailTitleViewModel: ViewModel {
     private(set) var image: UIImage?
-    private(set) var title: String?
-    private(set) var assetAbbreviationForImage: String?
+    private(set) var title: EditText?
+    private(set) var assetAbbreviatedName: String?
     
     init(
         _ asset: Asset? = nil
@@ -39,9 +39,9 @@ extension AssetDetailTitleViewModel {
         if let asset = asset {
             if let assetName = asset.presentation.name,
                !assetName.isEmptyOrBlank {
-                assetAbbreviationForImage = TextFormatter.assetShortName.format(assetName)
+                assetAbbreviatedName = TextFormatter.assetShortName.format(assetName)
             } else {
-                assetAbbreviationForImage = TextFormatter.assetShortName.format("title-unknown".localized)
+                assetAbbreviatedName = TextFormatter.assetShortName.format("title-unknown".localized)
             }
         } else {
             image = "icon-algo-circle-green".uiImage
@@ -54,12 +54,37 @@ extension AssetDetailTitleViewModel {
         if let asset = asset {
             if let assetName = asset.presentation.name,
                !assetName.isEmptyOrBlank {
-                title = assetName
+                title = getTitle(assetName)
             } else {
-                title = "title-unknown".localized
+                title = getTitle("title-unknown".localized)
             }
         } else {
-            title = "ALGO"
+            title = getTitle("ALGO")
         }
+    }
+}
+
+extension AssetDetailTitleViewModel {
+    func getTitle(
+        _ aTitle: String?
+    ) -> EditText? {
+        guard let aTitle = aTitle else {
+            return nil
+        }
+
+        let font = Fonts.DMSans.medium.make(15)
+        let lineHeightMultiplier = 1.23
+
+        return .attributedString(
+            aTitle.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.left),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
     }
 }
