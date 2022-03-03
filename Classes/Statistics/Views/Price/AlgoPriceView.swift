@@ -29,7 +29,7 @@ final class AlgoPriceView:
     
     private lazy var priceCanvasView = UIView()
     private lazy var priceView = Label()
-    private lazy var priceLoadingView = ShimmeringView()
+    private lazy var priceLoadingView = ShimmerView()
     private lazy var priceAttributeView = AlgoPriceAttributeView()
     private lazy var chartView = AlgorandChartView(chartCustomizer: AlgoUSDValueChartCustomizer())
     

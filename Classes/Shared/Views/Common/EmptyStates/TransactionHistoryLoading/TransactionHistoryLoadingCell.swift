@@ -33,10 +33,10 @@ final class TransactionHistoryLoadingCell: BaseCollectionViewCell<TransactionHis
 
 extension TransactionHistoryLoadingCell {
     func startAnimating() {
-        contextView.startSubviewsShimmer()
+        contextView.startAnimating()
     }
 
     func stopAnimating() {
-        contextView.stopSubviewsShimmer()
+        contextView.stopAnimating()
     }
 }

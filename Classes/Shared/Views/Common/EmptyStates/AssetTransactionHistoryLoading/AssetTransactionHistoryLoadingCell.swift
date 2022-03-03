@@ -41,10 +41,10 @@ final class AssetTransactionHistoryLoadingCell:
 
 extension AssetTransactionHistoryLoadingCell {
     func startAnimating() {
-        contextView.startSubviewsShimmer()
+        contextView.startAnimating()
     }
 
     func stopAnimating() {
-        contextView.stopSubviewsShimmer()
+        contextView.stopAnimating()
     }
 }

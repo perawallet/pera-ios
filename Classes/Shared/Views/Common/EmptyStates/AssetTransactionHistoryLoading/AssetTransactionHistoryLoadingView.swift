@@ -21,13 +21,13 @@ import UIKit
 final class AssetTransactionHistoryLoadingView:
     View,
     ListReusable,
-    ShimmerDisplayable {
-    private lazy var titleView = ShimmeringView()
-    private lazy var balanceView = ShimmeringView()
-    private lazy var currencyView = ShimmeringView()
+    ShimmerAnimationDisplaying {
+    private lazy var titleView = ShimmerView()
+    private lazy var balanceView = ShimmerView()
+    private lazy var currencyView = ShimmerView()
     private lazy var topSeparator = UIView()
-    private lazy var assetNameLabel = ShimmeringView()
-    private lazy var assetIDButton = ShimmeringView()
+    private lazy var assetNameLabel = ShimmerView()
+    private lazy var assetIDButton = ShimmerView()
     private lazy var bottomSeparator = UIView()
 
     override init(

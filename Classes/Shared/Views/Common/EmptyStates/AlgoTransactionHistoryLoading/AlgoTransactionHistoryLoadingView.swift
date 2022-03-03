@@ -22,14 +22,14 @@ import UIKit
 final class AlgoTransactionHistoryLoadingView:
     View,
     ListReusable,
-    ShimmerDisplayable {
-    private lazy var titleView = ShimmeringView()
-    private lazy var balanceView = ShimmeringView()
-    private lazy var currencyView = ShimmeringView()
+    ShimmerAnimationDisplaying {
+    private lazy var titleView = ShimmerView()
+    private lazy var balanceView = ShimmerView()
+    private lazy var currencyView = ShimmerView()
     private lazy var rewardsContainer = TripleShadowView()
     private lazy var rewardsImage = ImageView()
-    private lazy var rewardsTitle = ShimmeringView()
-    private lazy var rewardsSubtitle = ShimmeringView()
+    private lazy var rewardsTitle = ShimmerView()
+    private lazy var rewardsSubtitle = ShimmerView()
     private lazy var rewardsSupplementaryImage = UIImageView()
 
     override init(

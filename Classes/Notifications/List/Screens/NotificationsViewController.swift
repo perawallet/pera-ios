@@ -88,23 +88,25 @@ final class NotificationsViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        let loadingCell =
         notificationsView
             .notificationsCollectionView
             .visibleCells
-            .first { $0 is NotificationLoadingCell } as? NotificationLoadingCell
-        loadingCell?.startAnimating()
+            .forEach {
+                let loadingCell = $0 as? NotificationLoadingCell
+                loadingCell?.startAnimating()
+            }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        let loadingCell =
         notificationsView
             .notificationsCollectionView
             .visibleCells
-            .first { $0 is NotificationLoadingCell } as? NotificationLoadingCell
-        loadingCell?.stopAnimating()
+            .forEach {
+                let loadingCell = $0 as? NotificationLoadingCell
+                loadingCell?.stopAnimating()
+            }
     }
     
     override func setListeners() {

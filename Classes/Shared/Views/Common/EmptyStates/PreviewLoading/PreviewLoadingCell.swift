@@ -33,10 +33,10 @@ final class PreviewLoadingCell: BaseCollectionViewCell<PreviewLoadingView> {
 
 extension PreviewLoadingCell {
     func startAnimating() {
-        contextView.startSubviewsShimmer()
+        contextView.startAnimating()
     }
 
     func stopAnimating() {
-        contextView.stopSubviewsShimmer()
+        contextView.stopAnimating()
     }
 }

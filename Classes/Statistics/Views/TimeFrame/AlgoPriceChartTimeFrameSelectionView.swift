@@ -37,7 +37,7 @@ final class AlgoPriceChartTimeFrameSelectionView:
     
     private lazy var contentView = UIStackView()
     private lazy var selectionView = MacaroonUIKit.BaseView()
-    private lazy var loadingView = ShimmeringView()
+    private lazy var loadingView = ShimmerView()
     
     private var selectedOptionView: UIControl? {
         didSet { updateOptionsForSelection(selectedOptionView) }

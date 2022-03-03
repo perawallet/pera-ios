@@ -22,19 +22,19 @@ import UIKit
 final class HomeLoadingView:
     View,
     ListReusable,
-    ShimmerDisplayable {
+    ShimmerAnimationDisplaying {
     private lazy var theme = HomeLoadingViewTheme()
 
     private lazy var portfolioLabel = UILabel()
-    private lazy var portfolioLoading = ShimmeringView()
+    private lazy var portfolioLoading = ShimmerView()
     private lazy var holdingsContainer = UIView()
     private lazy var algoHoldingsContainer = UIView()
     private lazy var algoHoldingsLabel = Label()
     private lazy var algoImageView = UIView()
-    private lazy var algoHoldingLoading = ShimmeringView()
+    private lazy var algoHoldingLoading = ShimmerView()
     private lazy var assetHoldingsContainer = UIView()
     private lazy var assetHoldingsLabel = Label()
-    private lazy var assetHoldingLoading = ShimmeringView()
+    private lazy var assetHoldingLoading = ShimmerView()
     private lazy var accountsLabel = Label()
     private lazy var firstAccountPreviewLoading = PreviewLoadingView()
     private lazy var secondAccountPreviewLoading = PreviewLoadingView()

@@ -37,10 +37,10 @@ final class AlgoTransactionHistoryLoadingCell: BaseCollectionViewCell<AlgoTransa
 
 extension AlgoTransactionHistoryLoadingCell {
     func startAnimating() {
-        contextView.startSubviewsShimmer()
+        contextView.startAnimating()
     }
 
     func stopAnimating() {
-        contextView.stopSubviewsShimmer()
+        contextView.stopAnimating()
     }
 }

@@ -23,7 +23,7 @@ import UIKit
 final class AlgoStatisticsViewController:
     BaseScrollViewController,
     NotificationObserver,
-    ShimmerDisplayable {
+    ShimmerAnimationDisplaying {
     var notificationObservations: [NSObjectProtocol] = []
     
     override var prefersLargeTitle: Bool {
@@ -171,7 +171,7 @@ final class AlgoStatisticsViewController:
     override func viewDidLoad() {
         super.viewDidLoad()
         build()
-        startSubviewsShimmer()
+        startAnimating()
         loadData()
     }
 
@@ -181,7 +181,7 @@ final class AlgoStatisticsViewController:
         super.viewDidAppear(animated)
         
         if !isViewFirstAppeared {
-            restartSubviewsShimmer()
+            restartAnimating()
             reloadData()
         }
         
@@ -190,7 +190,7 @@ final class AlgoStatisticsViewController:
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        stopSubviewsShimmer()
+        stopAnimating()
     }
 }
 

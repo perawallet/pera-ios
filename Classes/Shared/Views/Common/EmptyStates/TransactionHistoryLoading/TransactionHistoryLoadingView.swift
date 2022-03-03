@@ -22,12 +22,12 @@ import UIKit
 final class TransactionHistoryLoadingView:
     View,
     ListReusable,
-    ShimmerDisplayable {
-    private lazy var titleView = ShimmeringView()
-    private lazy var sectionView = ShimmeringView()
+    ShimmerAnimationDisplaying {
+    private lazy var titleView = ShimmerView()
+    private lazy var sectionView = ShimmerView()
     private lazy var firstRow = TransactionHistoryLoadingItemView()
     private lazy var secondRow = TransactionHistoryLoadingItemView()
-    private lazy var secondSectionView = ShimmeringView()
+    private lazy var secondSectionView = ShimmerView()
     private lazy var thirdRow = TransactionHistoryLoadingItemView()
     private lazy var fourthRow = TransactionHistoryLoadingItemView()
 

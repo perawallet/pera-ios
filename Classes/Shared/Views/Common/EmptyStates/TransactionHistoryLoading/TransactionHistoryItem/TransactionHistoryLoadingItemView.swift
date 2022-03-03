@@ -22,9 +22,9 @@ import UIKit
 final class TransactionHistoryLoadingItemView:
     View,
     ListReusable {
-    private lazy var titleView = ShimmeringView()
-    private lazy var subtitleView = ShimmeringView()
-    private lazy var supplementaryView = ShimmeringView()
+    private lazy var titleView = ShimmerView()
+    private lazy var subtitleView = ShimmerView()
+    private lazy var supplementaryView = ShimmerView()
 
     override init(
         frame: CGRect
