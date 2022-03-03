@@ -95,7 +95,7 @@ final class HomeViewController:
         
         let loadingCell = listView.visibleCells.first { $0 is HomeLoadingCell } as? HomeLoadingCell
         loadingCell?.startAnimating()
-        
+
         if isViewFirstAppeared {
             presentPeraIntroductionIfNeeded()
             presentPasscodeFlowIfNeeded()
