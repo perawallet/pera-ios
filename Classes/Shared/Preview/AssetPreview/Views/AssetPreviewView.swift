@@ -51,9 +51,9 @@ final class AssetPreviewView:
         _ viewModel: AssetPreviewViewModel?
     ) {
         iconView.bindData(
-            AssetImageViewModel(
+            AssetImageLargeViewModel(
                 image: viewModel?.icon,
-                assetAbbreviationForImage: viewModel?.assetAbbreviationForIcon?.string
+                assetAbbreviatedName: viewModel?.assetAbbreviatedName?.string
             )
         )
         titleView.editText = viewModel?.title
@@ -111,6 +111,8 @@ extension AssetPreviewView {
     private func addIconView(
         _ theme: AssetPreviewViewTheme
     ) {
+        iconView.customize(AssetImageViewTheme())
+
         addSubview(iconView)
         iconView.fitToIntrinsicSize()
         iconView.snp.makeConstraints {

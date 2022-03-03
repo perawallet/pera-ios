@@ -31,7 +31,7 @@ final class ReceiveCollectibleAccountListDataSource:
                 switch item {
                 case .loading:
                     return collectionView.dequeue(
-                        AssetPreviewLoadingCell.self,
+                        PreviewLoadingCell.self,
                         at: indexPath
                     )
                 case .noContent:
@@ -44,13 +44,13 @@ final class ReceiveCollectibleAccountListDataSource:
                     )
                     return cell
                 }
-            case .header:
+            case .header(let item):
                 let cell = collectionView.dequeue(
                     TitleSupplementaryCell.self,
                     at: indexPath
                 )
                 cell.bindData(
-                    ReceiveCollectibleAccountListHeaderViewModel()
+                    item
                 )
                 return cell
             case .account(let item):
@@ -66,7 +66,7 @@ final class ReceiveCollectibleAccountListDataSource:
         }
 
         [
-            AssetPreviewLoadingCell.self,
+            PreviewLoadingCell.self,
             NoContentCell.self,
             TitleSupplementaryCell.self,
             AccountPreviewCell.self,

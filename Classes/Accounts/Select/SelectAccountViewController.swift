@@ -31,7 +31,6 @@ final class SelectAccountViewController: BaseViewController {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.listBackgroundColor
-        collectionView.register(AccountPreviewCell.self)
         collectionView.contentInset.top = theme.listContentInsetTop
         return collectionView
     }()

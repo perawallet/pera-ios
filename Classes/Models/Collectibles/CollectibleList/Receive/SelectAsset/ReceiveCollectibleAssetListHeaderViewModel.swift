@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ReceiveCollectibleAccountListHeaderViewModel.swift
+//   ReceiveCollectibleAssetListHeaderViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct ReceiveCollectibleAccountListHeaderViewModel:
+struct ReceiveCollectibleAssetListHeaderViewModel:
     TitleViewModel,
     Hashable {
     private(set) var title: EditText?
@@ -29,7 +29,7 @@ struct ReceiveCollectibleAccountListHeaderViewModel:
     }
 }
 
-extension ReceiveCollectibleAccountListHeaderViewModel {
+extension ReceiveCollectibleAssetListHeaderViewModel {
     mutating func bind() {
         bindTitle()
         bindTitleStyle()
@@ -40,7 +40,7 @@ extension ReceiveCollectibleAccountListHeaderViewModel {
         let lineHeightMultiplier = 1.23
 
         title = .attributedString(
-            "collectibles-receive-account-list-header-description"
+            "collectibles-receive-asset-list-header-description"
                 .localized
                 .attributed([
                     .font(font),
@@ -61,7 +61,7 @@ extension ReceiveCollectibleAccountListHeaderViewModel {
     }
 }
 
-extension ReceiveCollectibleAccountListHeaderViewModel {
+extension ReceiveCollectibleAssetListHeaderViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
@@ -69,8 +69,8 @@ extension ReceiveCollectibleAccountListHeaderViewModel {
     }
 
     static func == (
-        lhs: ReceiveCollectibleAccountListHeaderViewModel,
-        rhs: ReceiveCollectibleAccountListHeaderViewModel
+        lhs: ReceiveCollectibleAssetListHeaderViewModel,
+        rhs: ReceiveCollectibleAssetListHeaderViewModel
     ) -> Bool {
         return lhs.title == rhs.title
     }

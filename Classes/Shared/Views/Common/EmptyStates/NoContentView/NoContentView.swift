@@ -45,6 +45,34 @@ final class NoContentView:
     ) {
         resultView.bindData(viewModel)
     }
+
+    class func calculatePreferredSize(
+        _ viewModel: NoContentViewModel?,
+        for theme: NoContentViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let resultSize = ResultView.calculatePreferredSize(
+            viewModel,
+            for: theme,
+            fittingIn: size
+        )
+
+        var additionalTopHeight: LayoutMetric = 0
+
+        switch theme.resultAlignment {
+        case let .aligned(top):
+            additionalTopHeight = top
+        default: break
+        }
+
+        let preferredHeight = resultSize.height + additionalTopHeight
+
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+    }
 }
 
 extension NoContentView {

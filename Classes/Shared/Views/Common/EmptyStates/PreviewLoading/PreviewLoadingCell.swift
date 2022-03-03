@@ -13,18 +13,30 @@
 // limitations under the License.
 
 //
-//   AssetImageViewModel.swift
+//   PreviewLoadingCell.swift
 
 import Foundation
-import UIKit
 import MacaroonUIKit
+import UIKit
 
-final class AssetImageViewModel: ViewModel {
-    private(set) var image: UIImage?
-    private(set) var assetAbbreviationForImage: String?
+final class PreviewLoadingCell: BaseCollectionViewCell<PreviewLoadingView> {
+    override init(
+        frame: CGRect
+    ) {
+        super.init(
+            frame: frame
+        )
 
-    init(image: UIImage? = nil, assetAbbreviationForImage: String? = nil) {
-        self.image = image
-        self.assetAbbreviationForImage = assetAbbreviationForImage
+        contextView.customize(PreviewLoadingViewCommonTheme())
+    }
+}
+
+extension PreviewLoadingCell {
+    func startAnimating() {
+        contextView.startSubviewsShimmer()
+    }
+
+    func stopAnimating() {
+        contextView.stopSubviewsShimmer()
     }
 }

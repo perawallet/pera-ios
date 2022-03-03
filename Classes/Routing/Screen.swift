@@ -119,6 +119,9 @@ indirect enum Screen {
     case receiveCollectibleAccountList(
         dataController: ReceiveCollectibleAccountListDataController
     )
+    case receiveCollectibleAssetList(
+        dataController: ReceiveCollectibleAssetListDataController
+    )
 }
 
 extension Screen {

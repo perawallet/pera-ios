@@ -13,28 +13,25 @@
 // limitations under the License.
 
 //
-//   NoContentCell.swift
+//   PreviewLoadingViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class NoContentCell:
-    CollectionCell<NoContentView>,
-    ViewModelBindable {
-    static let theme = NoContentViewCommonTheme()
+protocol PreviewLoadingViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    var imageViewCorner: LayoutMetric { get }
+    var imageViewSize: LayoutSize { get }
 
-    override init(
-        frame: CGRect
-    ) {
-        super.init(
-            frame: frame
-        )
+    var titleViewCorner: LayoutMetric { get }
+    var titleViewSize: LayoutSize { get }
+    var titleMargin: LayoutMargins { get }
 
-        customize()
-    }
+    var subtitleViewCorner: LayoutMetric { get }
+    var subtitleViewSize: LayoutSize { get }
+    var subtitleMargin: LayoutMargins { get }
 
-    func customize() {
-        contextView.customize(Self.theme)
-    }
+    var supplementaryViewCorner: LayoutMetric { get }
+    var supplementaryViewSize: LayoutSize { get }
 }

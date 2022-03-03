@@ -12,31 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AssetPreviewLoadingCell.swift
+//   AssetImagePlaceholderViewTheme.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class AssetPreviewLoadingCell: BaseCollectionViewCell<AssetPreviewLoadingView> {
-    override init(
-        frame: CGRect
-    ) {
-        super.init(
-            frame: frame
-        )
+struct AssetImagePlaceholderViewTheme:
+    LayoutSheet,
+    StyleSheet {
+    let borderImage: ImageStyle
+    let assetNameLabel: TextStyle
+    let assetNameLabelPaddings: LayoutPaddings
 
-        contextView.customize(AssetPreviewLoadingViewCommonTheme())
-    }
-}
-
-extension AssetPreviewLoadingCell {
-    func startAnimating() {
-        contextView.startSubviewsShimmer()
-    }
-
-    func stopAnimating() {
-        contextView.stopSubviewsShimmer()
+    init(_ family: LayoutFamily) {
+        borderImage = [ .image("asset-image-placeholder-border") ]
+        assetNameLabel = [
+            .textAlignment(.center),
+            .textOverflow(SingleLineFittingText()),
+            .textColor(AppColors.Components.Text.gray),
+            .font(Fonts.DMSans.regular.make(13))
+        ]
+        assetNameLabelPaddings = (2, 2, 2, 2)
     }
 }

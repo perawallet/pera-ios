@@ -12,29 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentCell.swift
+//   CollectibleSearchInputCell.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-final class NoContentCell:
-    CollectionCell<NoContentView>,
-    ViewModelBindable {
-    static let theme = NoContentViewCommonTheme()
-
+final class CollectibleSearchInputCell:
+    CollectionCell<SearchInputView> {
     override init(
         frame: CGRect
     ) {
-        super.init(
-            frame: frame
+        super.init(frame: frame)
+
+        contextView.customize(
+            SearchInputViewCommonTheme(
+                placeholder: "collectibles-receive-asset-list-search-placeholder".localized,
+                family: .current
+            )
         )
-
-        customize()
-    }
-
-    func customize() {
-        contextView.customize(Self.theme)
     }
 }

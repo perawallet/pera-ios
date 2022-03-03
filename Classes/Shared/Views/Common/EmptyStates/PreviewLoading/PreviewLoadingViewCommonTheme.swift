@@ -13,12 +13,12 @@
 // limitations under the License.
 
 //
-//   AssetPreviewLoadingViewCommonTheme.swift
+//   PreviewLoadingViewCommonTheme.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct AssetPreviewLoadingViewCommonTheme: AssetPreviewLoadingViewTheme {
+struct PreviewLoadingViewCommonTheme: PreviewLoadingViewTheme {
     var imageViewCorner: LayoutMetric
     var imageViewSize: LayoutSize
 

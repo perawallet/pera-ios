@@ -12,66 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ReceiveCollectibleAccountListHeaderViewModel.swift
+//   ReceiveCollectibleAssetListSearchNoContentViewModel.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct ReceiveCollectibleAccountListHeaderViewModel:
-    TitleViewModel,
-    Hashable {
+struct ReceiveCollectibleAssetListSearchNoContentViewModel: NoContentViewModel {
+    private(set) var icon: Image?
     private(set) var title: EditText?
-    private(set) var titleStyle: TextStyle?
+    private(set) var body: EditText?
 
     init() {
-        bind()
+        bindTitle()
     }
 }
 
-extension ReceiveCollectibleAccountListHeaderViewModel {
-    mutating func bind() {
-        bindTitle()
-        bindTitleStyle()
-    }
-
-    mutating func bindTitle() {
-        let font = Fonts.DMSans.regular.make(15)
-        let lineHeightMultiplier = 1.23
+extension ReceiveCollectibleAssetListSearchNoContentViewModel {
+    private mutating func bindTitle() {
+        let font = Fonts.DMSans.medium.make(19)
+        let lineHeightMultiplier = 1.13
 
         title = .attributedString(
-            "collectibles-receive-account-list-header-description"
+            "collectibles-receive-asset-list-search-no-content"
                 .localized
                 .attributed([
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
+                        .textAlignment(.center),
                         .lineBreakMode(.byWordWrapping),
                         .lineHeightMultiple(lineHeightMultiplier)
                     ])
                 ])
         )
-    }
-
-    mutating func bindTitleStyle() {
-        titleStyle = [
-            .textColor(AppColors.Components.Text.gray),
-            .textOverflow(FittingText())
-        ]
-    }
-}
-
-extension ReceiveCollectibleAccountListHeaderViewModel {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(title)
-    }
-
-    static func == (
-        lhs: ReceiveCollectibleAccountListHeaderViewModel,
-        rhs: ReceiveCollectibleAccountListHeaderViewModel
-    ) -> Bool {
-        return lhs.title == rhs.title
     }
 }

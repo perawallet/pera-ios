@@ -59,6 +59,7 @@ extension AssetPreviewActionView {
 
 extension AssetPreviewActionView {
     private func addImage(_ theme: AssetPreviewActionViewTheme) {
+        imageView.customize(AssetImageViewTheme())
         addSubview(imageView)
 
         imageView.snp.makeConstraints {
@@ -121,9 +122,9 @@ extension AssetPreviewActionView {
 extension AssetPreviewActionView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
         imageView.bindData(
-            AssetImageViewModel(
+            AssetImageLargeViewModel(
                 image: viewModel?.icon,
-                assetAbbreviationForImage: viewModel?.assetAbbreviationForIcon?.string
+                assetAbbreviatedName: viewModel?.assetAbbreviatedName?.string
             )
         )
         assetNameLabel.editText = viewModel?.title

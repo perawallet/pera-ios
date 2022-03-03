@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   SelectAccountDataSource.swift
+//   ReceiveCollectibleAccountListDataSource.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class SelectAccountDataSource: UICollectionViewDiffableDataSource<SelectAccountListViewSection, SelectAccountListViewItem> {
+final class ReceiveCollectibleAssetListDataSource:
+    UICollectionViewDiffableDataSource<ReceiveCollectibleAssetListSection, ReceiveCollectibleAssetListItem> {
     init(
         _ collectionView: UICollectionView
     ) {
@@ -40,17 +40,29 @@ final class SelectAccountDataSource: UICollectionViewDiffableDataSource<SelectAc
                         at: indexPath
                     )
                     cell.bindData(
-                        HomeNoContentViewModel()
+                        ReceiveCollectibleAssetListSearchNoContentViewModel()
                     )
                     return cell
                 }
-            case .account(let item, _):
+            case .header(let item):
                 let cell = collectionView.dequeue(
-                    AccountPreviewCell.self,
+                    TitleSupplementaryCell.self,
                     at: indexPath
                 )
                 cell.bindData(
-                   item
+                    item
+                )
+                return cell
+            case .search:
+                let cell = collectionView.dequeue(CollectibleSearchInputCell.self, at: indexPath)
+                return cell
+            case .asset(let item):
+                let cell = collectionView.dequeue(
+                    AssetPreviewCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    item
                 )
                 return cell
             }
@@ -58,8 +70,10 @@ final class SelectAccountDataSource: UICollectionViewDiffableDataSource<SelectAc
 
         [
             PreviewLoadingCell.self,
-            AccountPreviewCell.self,
-            NoContentCell.self
+            NoContentCell.self,
+            TitleSupplementaryCell.self,
+            CollectibleSearchInputCell.self,
+            AssetPreviewCell.self,
         ].forEach {
             collectionView.register($0)
         }

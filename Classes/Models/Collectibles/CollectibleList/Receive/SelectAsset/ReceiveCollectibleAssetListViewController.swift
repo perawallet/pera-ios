@@ -12,39 +12,39 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ReceiveCollectibleAccountListViewController.swift
+//   ReceiveCollectibleAssetListViewController.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class ReceiveCollectibleAccountListViewController:
+final class ReceiveCollectibleAssetListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
-    private lazy var titleView = Label()
-
     private lazy var listView: UICollectionView = {
-        let collectionViewLayout = ReceiveCollectibleAccountListLayout.build()
+        let collectionViewLayout = ReceiveCollectibleAssetListLayout.build()
         let collectionView =
         UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
+        collectionView.keyboardDismissMode = .onDrag
         collectionView.backgroundColor = .clear
         return collectionView
     }()
 
-    private lazy var listLayout = ReceiveCollectibleAccountListLayout(
-        listDataSource: listDataSource
+    private lazy var bottomSheetTransition = BottomSheetTransition(
+        presentingViewController: self
     )
 
-    private lazy var listDataSource = ReceiveCollectibleAccountListDataSource(listView)
+    private lazy var listLayout = ReceiveCollectibleAssetListLayout(listDataSource: listDataSource)
+    private lazy var listDataSource = ReceiveCollectibleAssetListDataSource(listView)
 
-    private let dataController: ReceiveCollectibleAccountListDataController
-    private let theme: ReceiveCollectibleAccountListViewControllerTheme
+    private let dataController: ReceiveCollectibleAssetListDataController
+    private let theme: ReceiveCollectibleAssetListViewControllerTheme
 
     init(
-        dataController: ReceiveCollectibleAccountListDataController,
-        theme: ReceiveCollectibleAccountListViewControllerTheme = .init(),
+        dataController: ReceiveCollectibleAssetListDataController,
+        theme: ReceiveCollectibleAssetListViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
@@ -54,6 +54,7 @@ final class ReceiveCollectibleAccountListViewController:
     }
 
     override func configureNavigationBarAppearance() {
+        navigationItem.title = "collectibles-receive-action".localized
         addBarButtons()
     }
 
@@ -80,50 +81,38 @@ final class ReceiveCollectibleAccountListViewController:
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             }
         }
-        
+
         dataController.load()
     }
 
     private func build() {
         addBackground()
-        addTitleView()
         addListView()
     }
 }
 
-extension ReceiveCollectibleAccountListViewController {
+extension ReceiveCollectibleAssetListViewController {
     private func addBackground() {
         view.customizeAppearance(theme.background)
-    }
-
-    private func addTitleView() {
-        titleView.customizeAppearance(theme.title)
-
-        view.addSubview(titleView)
-        titleView.snp.makeConstraints {
-            $0.setPaddings(theme.titlePaddings)
-        }
     }
 
     private func addListView() {
         view.addSubview(listView)
         listView.snp.makeConstraints {
-            $0.top == titleView.snp.bottom
-
-            $0.setPaddings((.noMetric, 0, 0, 0))
+            $0.setPaddings()
         }
     }
 
     private func addBarButtons() {
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak self] in
-            self?.dismissScreen()
+        let infoBarButtonItem = ALGBarButtonItem(kind: .info) { [weak self] in
+            fatalError("Not Implemented Yet")
         }
 
-        leftBarButtonItems = [closeBarButtonItem]
+        rightBarButtonItems = [infoBarButtonItem]
     }
 }
 
-extension ReceiveCollectibleAccountListViewController {
+extension ReceiveCollectibleAssetListViewController {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -149,7 +138,7 @@ extension ReceiveCollectibleAccountListViewController {
     }
 }
 
-extension ReceiveCollectibleAccountListViewController {
+extension ReceiveCollectibleAssetListViewController {
     func collectionView(
         _ collectionView: UICollectionView,
         willDisplay cell: UICollectionViewCell,
@@ -168,6 +157,10 @@ extension ReceiveCollectibleAccountListViewController {
             default:
                 break
             }
+        case .search:
+            linkInteractors(cell as! CollectibleSearchInputCell)
+        case .asset:
+            dataController.loadNextPageIfNeeded(for: indexPath)
         default:
             break
         }
@@ -197,7 +190,7 @@ extension ReceiveCollectibleAccountListViewController {
     }
 }
 
-extension ReceiveCollectibleAccountListViewController {
+extension ReceiveCollectibleAssetListViewController {
     func collectionView(
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
@@ -207,22 +200,67 @@ extension ReceiveCollectibleAccountListViewController {
         }
 
         switch itemIdentifier {
-        case .account(let item):
-            guard let account = dataController[item.address],
-                  account.isAvailable else {
-                      return
-                  }
+        case .asset:
+            guard let selectedAsset = dataController[indexPath.item] else {
+                return
+            }
 
-            open(
-                .receiveCollectibleAssetList(
-                    dataController: ReceiveCollectibleAssetListAPIDataController(
-                        account: account,
-                        api: api!
-                    )
-                ),
-                by: .push
+            let account = dataController.account.value
+
+            if account.containsAsset(selectedAsset.id) {
+                displaySimpleAlertWith(
+                    title: "asset-you-already-own-message".localized,
+                    message: .empty
+                )
+                return
+            }
+
+            let assetAlertDraft = AssetAlertDraft(
+                account: account,
+                assetIndex: selectedAsset.id,
+                assetDetail: selectedAsset,
+                title: "asset-add-confirmation-title".localized,
+                detail: "asset-add-warning".localized,
+                actionTitle: "title-approve".localized,
+                cancelTitle: "title-cancel".localized
+            )
+
+            bottomSheetTransition.perform(
+                .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
+                by: .presentWithoutNavigationController
             )
         default: break
         }
+    }
+}
+
+extension ReceiveCollectibleAssetListViewController {
+    private func linkInteractors(
+        _ cell: CollectibleSearchInputCell
+    ) {
+        cell.contextView.delegate = self
+    }
+}
+
+extension ReceiveCollectibleAssetListViewController: SearchInputViewDelegate {
+    func searchInputViewDidEdit(_ view: SearchInputView) {
+        guard let query = view.text else {
+            return
+        }
+
+        dataController.search(for: query)
+    }
+
+    func searchInputViewDidReturn(_ view: SearchInputView) {
+        view.endEditing()
+    }
+}
+
+extension ReceiveCollectibleAssetListViewController: AssetActionConfirmationViewControllerDelegate {
+    func assetActionConfirmationViewController(
+        _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
+        didConfirmedActionFor assetDetail: AssetInformation
+    ) {
+        // <todo>
     }
 }

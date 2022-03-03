@@ -614,6 +614,11 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
+        case let .receiveCollectibleAssetList(dataController):
+            viewController = ReceiveCollectibleAssetListViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
         }
 
         return viewController as? T

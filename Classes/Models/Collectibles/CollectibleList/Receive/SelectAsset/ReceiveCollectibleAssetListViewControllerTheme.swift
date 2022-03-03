@@ -12,29 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentCell.swift
+//   ReceiveCollectibleAssetListViewControllerTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class NoContentCell:
-    CollectionCell<NoContentView>,
-    ViewModelBindable {
-    static let theme = NoContentViewCommonTheme()
+struct ReceiveCollectibleAssetListViewControllerTheme:
+    StyleSheet,
+    LayoutSheet {
+    var background: ViewStyle
 
-    override init(
-        frame: CGRect
+    init(
+        _ family: LayoutFamily
     ) {
-        super.init(
-            frame: frame
-        )
-
-        customize()
-    }
-
-    func customize() {
-        contextView.customize(Self.theme)
+        background = [
+            .backgroundColor(AppColors.Shared.System.background)
+        ]
     }
 }

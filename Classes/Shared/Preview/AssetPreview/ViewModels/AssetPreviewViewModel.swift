@@ -36,7 +36,7 @@ struct AssetPreviewViewModel:
     private(set) var subtitle: EditText?
     private(set) var primaryAccessory: EditText?
     private(set) var secondaryAccessory: EditText?
-    private(set) var assetAbbreviationForIcon: EditText?
+    private(set) var assetAbbreviatedName: EditText?
     
     init(
         _ model: AssetPreviewModel
@@ -47,7 +47,7 @@ struct AssetPreviewViewModel:
         bindSubtitle(model.subtitle)
         bindPrimaryAccessory(model.primaryAccessory)
         bindSecondAccessory(model.secondaryAccessory)
-        bindAssetAbbreviationForImage()
+        bindAssetAbbreviatedName()
     }
 }
 
@@ -144,8 +144,8 @@ extension AssetPreviewViewModel {
         )
     }
     
-    private mutating func bindAssetAbbreviationForImage() {
-        assetAbbreviationForIcon = .string(
+    private mutating func bindAssetAbbreviatedName() {
+        assetAbbreviatedName = .string(
             TextFormatter.assetShortName.format(title?.string)
         )
     }
