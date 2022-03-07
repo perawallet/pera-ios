@@ -39,6 +39,16 @@ final class ReceiveCollectibleAssetListViewController:
     private lazy var listLayout = ReceiveCollectibleAssetListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = ReceiveCollectibleAssetListDataSource(listView)
 
+    private lazy var transactionController: TransactionController = {
+        return TransactionController(
+            api: api!,
+            bannerController: bannerController
+        )
+    }()
+
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var currentAsset: AssetDecoration?
+
     private let dataController: ReceiveCollectibleAssetListDataController
     private let theme: ReceiveCollectibleAssetListViewControllerTheme
 
@@ -55,7 +65,6 @@ final class ReceiveCollectibleAssetListViewController:
 
     override func configureNavigationBarAppearance() {
         navigationItem.title = "collectibles-receive-action".localized
-        addBarButtons()
     }
 
     override func prepareLayout() {
@@ -85,9 +94,35 @@ final class ReceiveCollectibleAssetListViewController:
         dataController.load()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        listView
+            .visibleCells
+            .forEach {
+                let loadingCell = $0 as? PreviewLoadingCell
+                loadingCell?.startAnimating()
+            }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        listView
+            .visibleCells
+            .forEach {
+                let loadingCell = $0 as? PreviewLoadingCell
+                loadingCell?.stopAnimating()
+            }
+    }
+
     private func build() {
         addBackground()
         addListView()
+    }
+
+    override func linkInteractors() {
+        transactionController.delegate = self
     }
 }
 
@@ -101,14 +136,6 @@ extension ReceiveCollectibleAssetListViewController {
         listView.snp.makeConstraints {
             $0.setPaddings()
         }
-    }
-
-    private func addBarButtons() {
-        let infoBarButtonItem = ALGBarButtonItem(kind: .info) {
-            fatalError("Not Implemented Yet")
-        }
-
-        rightBarButtonItems = [infoBarButtonItem]
     }
 }
 
@@ -159,7 +186,7 @@ extension ReceiveCollectibleAssetListViewController {
             }
         case .search:
             linkInteractors(cell as! CollectibleSearchInputCell)
-        case .asset:
+        case .collectible:
             dataController.loadNextPageIfNeeded(for: indexPath)
         default:
             break
@@ -200,7 +227,7 @@ extension ReceiveCollectibleAssetListViewController {
         }
 
         switch itemIdentifier {
-        case .asset:
+        case .collectible:
             guard let selectedAsset = dataController[indexPath.item] else {
                 return
             }
@@ -238,7 +265,7 @@ extension ReceiveCollectibleAssetListViewController {
     private func linkInteractors(
         _ cell: CollectibleSearchInputCell
     ) {
-        cell.contextView.delegate = self
+        cell.delegate = self
     }
 }
 
@@ -256,11 +283,113 @@ extension ReceiveCollectibleAssetListViewController: SearchInputViewDelegate {
     }
 }
 
-extension ReceiveCollectibleAssetListViewController: AssetActionConfirmationViewControllerDelegate {
+extension ReceiveCollectibleAssetListViewController:
+    AssetActionConfirmationViewControllerDelegate,
+    TransactionSignChecking {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmAction asset: AssetDecoration
     ) {
-        // <todo>
+        var account = dataController.account.value
+
+        if !canSignTransaction(for: &account) {
+            return
+        }
+
+        let assetTransactionDraft = AssetTransactionSendDraft(
+            from: account,
+            assetIndex: asset.id
+        )
+        transactionController.setTransactionDraft(assetTransactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetAddition)
+
+        loadingController?.startLoadingWithMessage("title-loading".localized)
+
+        if account.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
+    }
+}
+
+extension ReceiveCollectibleAssetListViewController: TransactionControllerDelegate {
+    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
+        loadingController?.stopLoading()
+        currentAsset = nil
+
+        switch error {
+        case let .inapp(transactionError):
+            displayTransactionError(from: transactionError)
+        default:
+            break
+        }
+    }
+
+    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
+        loadingController?.stopLoading()
+        currentAsset = nil
+
+        switch error {
+        case let .network(apiError):
+            bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+        default:
+            bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
+        loadingController?.stopLoading()
+        dismissScreen()
+    }
+
+    private func displayTransactionError(from transactionError: TransactionError) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            bannerController?.presentErrorBanner(
+                title: "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+            )
+        case .invalidAddress:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "send-algos-receiver-address-validation".localized
+            )
+        case let .sdkError(error):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.debugDescription
+            )
+        case .ledgerConnection:
+            let bottomTransition = BottomSheetTransition(presentingViewController: self)
+
+            bottomTransition.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: "ble-error-fail-ble-connection-repairing".localized,
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
+            )
+        default:
+            break
+        }
+    }
+
+    func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) {
+        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+            .ledgerApproval(mode: .approve, deviceName: ledger),
+            by: .present
+        )
+    }
+
+    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
+        ledgerApprovalViewController?.dismissScreen()
     }
 }

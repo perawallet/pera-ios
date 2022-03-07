@@ -58,6 +58,10 @@ final class CollectibleAsset: Asset {
         return amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: decimals)
     }
 
+    var isOwner: Bool {
+        return amount != 0
+    }
+
     init(
         asset: ALGAsset,
         decoration: AssetDecoration

@@ -12,35 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentWithActionCell.swift
+//   CollectiblePreviewCell.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-final class NoContentWithActionCell:
-    CollectionCell<NoContentWithActionView>,
+final class CollectiblePreviewCell:
+    CollectionCell<CollectiblePreviewView>,
     ViewModelBindable {
-    lazy var handlers = Handlers() {
-        didSet {
-            contextView.handlers.didTapActionView = handlers.didTapActionView
-        }
+    override class var contextPaddings: LayoutPaddings {
+        return (14, 0, 14, 0)
     }
+
+    static let theme = CollectiblePreviewViewTheme()
 
     override init(
         frame: CGRect
     ) {
-        super.init(
-            frame: frame
-        )
-
-        contextView.customize(NoContentWithActionViewCommonTheme())
-    }
-}
-
-extension NoContentWithActionCell {
-    struct Handlers {
-        var didTapActionView: EmptyHandler?
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }

@@ -37,14 +37,14 @@ enum ReceiveCollectibleAssetListSection:
     case loading
     case header
     case search
-    case assets
+    case collectibles
 }
 
 enum ReceiveCollectibleAssetListItem: Hashable {
     case empty(ReceiveCollectibleAssetListEmptyItem)
     case header(ReceiveCollectibleAssetListHeaderViewModel)
     case search
-    case asset(AssetPreviewViewModel)
+    case collectible(CollectiblePreviewViewModel)
 }
 
 enum ReceiveCollectibleAssetListEmptyItem: Hashable {

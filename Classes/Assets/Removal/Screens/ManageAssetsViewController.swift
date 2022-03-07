@@ -212,6 +212,8 @@ extension ManageAssetsViewController:
 
 extension ManageAssetsViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
+        loadingController?.stopLoading()
+
         guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
               var removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
                   return

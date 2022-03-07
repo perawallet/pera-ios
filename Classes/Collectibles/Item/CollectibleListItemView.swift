@@ -46,10 +46,53 @@ final class CollectibleListItemView:
     func bindData(
         _ viewModel: CollectibleListItemViewModel?
     ) {
-        image.load(from: viewModel?.image)
+        var viewModel = viewModel
+
+        image.load(from: viewModel?.image) { error in
+            guard error != nil else {
+                return
+            }
+
+            viewModel?.bindBottomLeftBadgeForError()
+        }
+
         title.editText = viewModel?.title
         subtitle.editText = viewModel?.subtitle
         bottomLeftBadge.image = viewModel?.bottomLeftBadge?.uiImage
+    }
+
+    func prepareForReuse() {
+        image.prepareForReuse()
+        title.editText = nil
+        subtitle.editText = nil
+        bottomLeftBadge.image = nil
+    }
+
+    class func calculatePreferredSize(
+        _ viewModel: CollectibleListItemViewModel?,
+        for theme: CollectibleListItemViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let iconHeight = size.width
+        let titleSize =
+            viewModel.title.boundingSize(
+                fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
+            )
+        let bodySize =
+            viewModel.subtitle.boundingSize(
+                fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
+            )
+        let preferredHeight =
+        iconHeight +
+        theme.titleTopPadding +
+        titleSize.height +
+        bodySize.height
+
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
 
@@ -59,6 +102,7 @@ extension CollectibleListItemView {
     ) {
         image.customizeAppearance(theme.image)
         image.layer.draw(corner: theme.corner)
+        image.clipsToBounds = true
 
         addSubview(image)
         image.fitToIntrinsicSize()
@@ -79,7 +123,7 @@ extension CollectibleListItemView {
 
         title.contentEdgeInsets.top = theme.titleTopPadding
         addSubview(title)
-        title.fitToVerticalIntrinsicSize()
+        title.fitToIntrinsicSize()
         title.snp.makeConstraints {
             $0.top == image.snp.bottom
 
@@ -93,6 +137,7 @@ extension CollectibleListItemView {
         subtitle.customizeAppearance(theme.subtitle)
 
         addSubview(subtitle)
+        
         subtitle.snp.makeConstraints {
             $0.top == title.snp.bottom
 
@@ -105,11 +150,24 @@ extension CollectibleListItemView {
     ) {
         bottomLeftBadge.customizeAppearance(theme.bottomLeftBadge)
         bottomLeftBadge.layer.draw(corner: theme.corner)
+        bottomLeftBadge.layer.draw(
+            border: Border(
+                color: AppColors.SendTransaction.Shadow.first.uiColor,
+                width: 1
+            )
+        ) /// <todo> Add proper shadow when shadow & borders are refactored.
 
         bottomLeftBadge.contentEdgeInsets = theme.bottomLeftBadgeContentEdgeInsets
-        image.addSubview(bottomLeftBadge)
+        addSubview(bottomLeftBadge)
         bottomLeftBadge.snp.makeConstraints {
-            $0.setPaddings(theme.bottomLeftBadgePaddings)
+            $0.leading == theme.bottomLeftBadgePaddings.leading
+            $0.bottom == image.snp.bottom - theme.bottomLeftBadgePaddings.bottom
         }
+    }
+}
+
+extension CollectibleListItemView {
+    func configureImageAlphaForOptedInCell() {
+        image.alpha = 0.4
     }
 }

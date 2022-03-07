@@ -151,7 +151,7 @@ final class Account: ALGEntityModel {
 
     subscript (assetId: AssetID) -> Asset? {
         if let index = standardAssetsIndexer[assetId] {
-            return standardAssets[index]
+            return standardAssets[safe: index]
         }
 
         let index = collectibleAssetsIndexer[assetId]

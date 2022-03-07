@@ -24,32 +24,83 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
     ) {
         super.init(collectionView: collectionView) {
             collectionView, indexPath, itemIdentifier in
-
-            /// <todo> Replace home with collectible cells
-
+            
             switch itemIdentifier {
             case .empty(let item):
                 switch item {
                 case .loading:
                     return collectionView.dequeue(
-                        HomeLoadingCell.self,
+                        CollectibleListLoadingViewCell.self,
                         at: indexPath
                     )
                 case .noContent:
-                    return collectionView.dequeue(
-                        HomeNoContentCell.self,
+                    let cell = collectionView.dequeue(
+                        NoContentWithActionIllustratedCell.self,
                         at: indexPath
                     )
+                    cell.bindData(
+                        CollectiblesNoContentWithActionViewModel()
+                    )
+                    return cell
+                case .noContentSearch:
+                    let cell = collectionView.dequeue(
+                        NoContentCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(
+                        ReceiveCollectibleAssetListSearchNoContentViewModel()
+                    )
+                    return cell
                 }
-            case .collectible(let item):
+            case .search:
                 let cell = collectionView.dequeue(
-                    HomePortfolioCell.self,
+                    CollectibleSearchInputCell.self,
                     at: indexPath
                 )
                 return cell
+            case .collectible(let item):
+                switch item {
+                case .cell(let item):
+                    switch item {
+                    case .owner(let item):
+                        let cell = collectionView.dequeue(
+                            CollectibleListItemCell.self,
+                            at: indexPath
+                        )
+                        cell.bindData(
+                            item
+                        )
+                        return cell
+                    case .optedIn(let item):
+                        let cell = collectionView.dequeue(
+                            CollectibleListItemOptedInCell.self,
+                            at: indexPath
+                        )
+                        cell.bindData(
+                            item
+                        )
+                        return cell
+                    }
+                case .footer:
+                    let cell = collectionView.dequeue(
+                        CollectibleListItemReceiveCell.self,
+                        at: indexPath
+                    )
+                    return cell
+                }
             }
         }
 
-        /// <todo> Register cells and items
+        [
+            CollectibleListItemCell.self,
+            CollectibleListItemOptedInCell.self,
+            CollectibleListItemReceiveCell.self,
+            NoContentWithActionIllustratedCell.self,
+            CollectibleSearchInputCell.self,
+            CollectibleListLoadingViewCell.self,
+            NoContentCell.self,
+        ].forEach {
+            collectionView.register($0)
+        }
     }
 }

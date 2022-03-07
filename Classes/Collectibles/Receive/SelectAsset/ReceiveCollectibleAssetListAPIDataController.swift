@@ -22,7 +22,7 @@ final class ReceiveCollectibleAssetListAPIDataController:
     ReceiveCollectibleAssetListDataController {
     var eventHandler: ((ReceiveCollectibleAssetListDataControllerEvent) -> Void)?
 
-    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.15) /// <todo>: How long should the interval be?
+    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.15)
     private var ongoingEndpoint: EndpointOperatable?
 
     var assets: [AssetDecoration] = []
@@ -82,9 +82,9 @@ extension ReceiveCollectibleAssetListAPIDataController {
 
     func loadNextPageIfNeeded(for indexPath: IndexPath) {
         guard indexPath.item == assets.count - 3,
-                hasNext else {
-            return
-        }
+              hasNext else {
+                  return
+              }
 
         load(with: nil, isPaginated: true)
     }
@@ -150,15 +150,12 @@ extension ReceiveCollectibleAssetListAPIDataController {
 
             var snapshot = Snapshot()
 
-            snapshot.appendSections([.header, .search, .assets])
+            snapshot.appendSections([.header, .search, .collectibles])
 
-            for asset in self.assets where !asset.isCollectible {
-                let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
-                
-                let assetItem: ReceiveCollectibleAssetListItem = .asset(
-                    AssetPreviewViewModel(
-                        AssetPreviewModelAdapter.adapt(standardAsset)
-                    )
+            for asset in self.assets where asset.isCollectible {
+                let collectibleAsset = CollectibleAsset(asset: ALGAsset(id: asset.id), decoration: asset)
+                let assetItem: ReceiveCollectibleAssetListItem = .collectible(
+                    CollectiblePreviewViewModel(collectibleAsset)
                 )
 
                 assetItems.append(assetItem)
@@ -181,7 +178,7 @@ extension ReceiveCollectibleAssetListAPIDataController {
 
                 snapshot.appendItems(
                     assetItems,
-                    toSection: .assets
+                    toSection: .collectibles
                 )
             }
 

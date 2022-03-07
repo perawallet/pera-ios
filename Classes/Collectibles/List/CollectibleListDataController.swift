@@ -15,8 +15,6 @@
 //   CollectibleListDataController.swift
 
 import Foundation
-
-import Foundation
 import UIKit
 
 protocol CollectibleListDataController: AnyObject {
@@ -24,8 +22,11 @@ protocol CollectibleListDataController: AnyObject {
 
     var eventHandler: ((CollectibleDataControllerEvent) -> Void)? { get set }
 
+    var imageSize: CGSize { get set }
+    
     func load()
-    func reload()
+    func search(for query: String)
+    func resetSearch()
 }
 
 enum CollectibleSection:
@@ -33,22 +34,37 @@ enum CollectibleSection:
     Hashable {
     case empty
     case loading
+    case search
     case collectibles
 }
 
 enum CollectibleListItem: Hashable {
     case empty(CollectibleEmptyItem)
+    case search
     case collectible(CollectibleItem)
-    /// <todo> Add search bar?
 }
 
 enum CollectibleEmptyItem: Hashable {
     case loading
     case noContent
+    case noContentSearch
 }
 
 enum CollectibleItem: Hashable {
-    case cell(CollectibleListItemViewModel)
+    case cell(CollectibleCellItem)
+    case footer
+}
+
+enum CollectibleCellItem: Hashable {
+    case owner(CollectibleListItemViewModel)
+    case optedIn(CollectibleListItemViewModel)
+
+    var viewModel: CollectibleListItemViewModel {
+        switch self {
+        case .owner(let viewModel): return viewModel
+        case .optedIn(let viewModel): return viewModel
+        }
+    }
 }
 
 enum CollectibleDataControllerEvent {

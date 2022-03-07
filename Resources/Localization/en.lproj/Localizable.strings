@@ -604,6 +604,8 @@
 
 "title-plus-asset-count" = "%@ Assets";
 "title-plus-asset-singular-count" = "%@ Asset";
+"title-plus-collectible-count" = "%@ NFTs";
+"title-plus-collectible-singular-count" = "%@ NFT";
 
 "ledger-account-detail-name" = "Ledger #%@";
 "ledger-account-detail-title" = "Ledger Account";

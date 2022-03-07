@@ -17,28 +17,56 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
+import MacaroonURLImage
+import Prism
 
 struct CollectibleListItemViewModel:
-    BindableViewModel,
+    ViewModel,
     Hashable {
-    private(set) var image: UIImage? /// <todo> Why does ImageSource not conforming Hashable? Ask Salih for the alternative solution.
+    private(set) var assetID: AssetID?
+    private(set) var image: ImageSource?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
     private(set) var bottomLeftBadge: UIImage?
 
     init<T>(
-        _ model: T
+        imageSize: CGSize,
+        model: T
     ) {
-        bind(model)
+        bind(
+            imageSize: imageSize,
+            model: model
+        )
+    }
+}
+
+extension CollectibleListItemViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(assetID)
+        hasher.combine(title)
+        hasher.combine(subtitle)
+    }
+
+    static func == (
+        lhs: CollectibleListItemViewModel,
+        rhs: CollectibleListItemViewModel
+    ) -> Bool {
+        return lhs.assetID == rhs.assetID &&
+        lhs.title == rhs.title &&
+        lhs.subtitle == rhs.subtitle
     }
 }
 
 extension CollectibleListItemViewModel {
     mutating func bind<T>(
-        _ model: T
+        imageSize: CGSize,
+        model: T
     ) {
         if let asset = model as? CollectibleAsset {
-            bindImage(asset)
+            bindAssetID(asset)
+            bindImage(imageSize: imageSize, asset: asset)
             bindTitle(asset)
             bindSubtitle(asset)
             bindBottomLeftBadge(asset)
@@ -48,28 +76,74 @@ extension CollectibleListItemViewModel {
 }
 
 extension CollectibleListItemViewModel {
-    private mutating func bindImage(
+    private mutating func bindAssetID(
         _ asset: CollectibleAsset
     ) {
-        image = nil
+        assetID = asset.id
+    }
+
+    private mutating func bindImage(
+        imageSize: CGSize,
+        asset: CollectibleAsset
+    ) {
+        let placeholder = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
+
+        let size: ImageSize
+
+        if imageSize.width <= 0 ||
+            imageSize.height <= 0 {
+            size = .original
+        } else {
+            size = .resize(imageSize, .aspectFit)
+        }
+
+        if let primaryImage = asset.primaryImage {
+            let prismURL = PrismURL(baseURL: primaryImage).build()
+
+            image = PNGImageSource(
+                url: prismURL,
+                size: size,
+                shape: .rounded(4),
+                placeholder: ImagePlaceholder(
+                    image: nil,
+                    text: getPlaceholder(placeholder)
+                )
+            )
+            return
+        }
+
+        let imageSource =
+        PNGImageSource(
+            url: nil,
+            placeholder: ImagePlaceholder(
+                image: nil,
+                text: getPlaceholder(placeholder)
+            )
+        )
+
+        image = imageSource
     }
 
     private mutating func bindTitle(
         _ asset: CollectibleAsset
     ) {
+        guard let collectionName = asset.collectionName,
+              !collectionName.isEmptyOrBlank else {
+                  return
+              }
+
         let font = Fonts.DMSans.regular.make(13)
         let lineHeightMultiplier = 1.18
-
+        
         title = .attributedString(
-            "" /// <todo>
-                .localized
+            collectionName
                 .attributed([
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
                         .lineBreakMode(.byWordWrapping),
                         .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.center)
+                        .textAlignment(.left)
                     ])
                 ])
         )
@@ -78,19 +152,20 @@ extension CollectibleListItemViewModel {
     private mutating func bindSubtitle(
         _ asset: CollectibleAsset
     ) {
+        let subtitle = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
+
         let font = Fonts.DMSans.regular.make(15)
         let lineHeightMultiplier = 1.23
 
-        subtitle = .attributedString(
-            "" /// <todo>
-                .localized
+        self.subtitle = .attributedString(
+            subtitle
                 .attributed([
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
                         .lineBreakMode(.byWordWrapping),
                         .lineHeightMultiple(lineHeightMultiplier),
-                        .textAlignment(.center)
+                        .textAlignment(.left)
                     ])
                 ])
         )
@@ -99,6 +174,70 @@ extension CollectibleListItemViewModel {
     private mutating func bindBottomLeftBadge(
         _ asset: CollectibleAsset
     ) {
-        bottomLeftBadge = nil
+        if !asset.isOwner {
+            bottomLeftBadge = "badge-warning".uiImage
+            return
+        }
+    }
+}
+
+extension CollectibleListItemViewModel {
+    mutating func bindBottomLeftBadgeForError() {
+        bottomLeftBadge = "badge-error".uiImage
+    }
+}
+
+extension CollectibleListItemViewModel {
+    func getPlaceholder(
+        _ aPlaceholder: String
+    ) -> EditText {
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        return .attributedString(
+            aPlaceholder.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.center),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
+    }
+}
+
+fileprivate extension AssetID {
+    var stringWithHashtag: String {
+        "#".appending(String(self))
+    }
+}
+
+extension Optional where Wrapped == String {
+    func fallback(
+        _ stringOrNilOrEmptyOrBlank: @autoclosure () -> Self
+    ) -> Self {
+        switch self {
+        case .none:
+            return stringOrNilOrEmptyOrBlank()
+        case .some(let value):
+            if !value.isEmptyOrBlank {
+                return value
+            }
+
+            return stringOrNilOrEmptyOrBlank()
+        }
+    }
+
+    func fallback(
+        _ string: @autoclosure () -> Wrapped
+    ) -> Wrapped {
+        switch self {
+        case .none:
+            return string()
+        case .some(let value):
+            return value
+        }
     }
 }

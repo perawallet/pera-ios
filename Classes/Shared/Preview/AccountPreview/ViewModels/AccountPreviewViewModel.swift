@@ -103,8 +103,10 @@ extension AccountPreviewViewModel {
             return
         }
         
-        let numberOfAssets = accountPortfolio.account.value.standardAssets.count
-        bindSubtitle(numberOfAssets: numberOfAssets)
+        bindSubtitle(
+            numberOfAssets: accountPortfolio.account.value.standardAssets.count,
+            numberOfCollectibles: accountPortfolio.account.value.collectibleAssets.count
+        )
     }
     
     mutating func bindPrimaryAccessory(
@@ -147,7 +149,10 @@ extension AccountPreviewViewModel {
     mutating func bindSubtitle(
         _ account: Account
     ) {
-        bindSubtitle(numberOfAssets: account.assets?.count ?? 0)
+        bindSubtitle(
+            numberOfAssets: account.standardAssets.count,
+            numberOfCollectibles: account.collectibleAssets.count
+        )
     }
     
     mutating func bindPrimaryAccessory(
@@ -227,20 +232,33 @@ extension AccountPreviewViewModel {
     }
     
     mutating func bindSubtitle(
-        numberOfAssets: Int
+        numberOfAssets: Int,
+        numberOfCollectibles: Int
     ) {
         let numberOfAssetsDescription: String
-        
+        let numberOfCollectiblesDescription: String
         /// <todo>
         /// Support singulars/plurals as localization feature
-        if numberOfAssets > 1 {
+        if numberOfAssets > 0 {
             numberOfAssetsDescription =
                 "title-plus-asset-count".localized(params: "\(numberOfAssets + 1)")
         } else {
             numberOfAssetsDescription = "title-plus-asset-singular-count".localized(params: "1")
         }
-        
-        bindSubtitle(numberOfAssetsDescription)
+
+        var subtitle = numberOfAssetsDescription
+
+        if numberOfCollectibles > 0 {
+            if numberOfCollectibles > 1 {
+                numberOfCollectiblesDescription = "title-plus-collectible-count".localized(params: "\(numberOfCollectibles)")
+            } else {
+                numberOfCollectiblesDescription = "title-plus-collectible-singular-count".localized(params: "1")
+            }
+
+            subtitle += ", " + numberOfCollectiblesDescription
+        }
+
+        bindSubtitle(subtitle)
     }
     
     mutating func bindSubtitle(

@@ -12,35 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentWithActionCell.swift
+//   CollectibleListItemOptedInCell.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-final class NoContentWithActionCell:
-    CollectionCell<NoContentWithActionView>,
+final class CollectibleListItemOptedInCell:
+    CollectionCell<CollectibleListItemView>,
     ViewModelBindable {
-    lazy var handlers = Handlers() {
-        didSet {
-            contextView.handlers.didTapActionView = handlers.didTapActionView
-        }
-    }
+    static let theme = CollectibleListItemViewTheme()
 
     override init(
         frame: CGRect
     ) {
-        super.init(
-            frame: frame
-        )
-
-        contextView.customize(NoContentWithActionViewCommonTheme())
-    }
-}
-
-extension NoContentWithActionCell {
-    struct Handlers {
-        var didTapActionView: EmptyHandler?
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+        contextView.configureImageAlphaForOptedInCell() // <todo>: Should Alpha change be in theme or like this?
     }
 }

@@ -16,12 +16,14 @@
 
 import MacaroonUIKit
 import UIKit
+import MacaroonURLImage
 
 final class CollectiblePreviewView:
     View,
     ViewModelBindable,
     ListReusable {
-    private lazy var iconView = ImageView()
+    private lazy var placeholderView = AssetImagePlaceholderView()
+    private lazy var iconView = URLImageView()
     private lazy var contentView = UIView()
     private lazy var titleView = Label()
     private lazy var subtitleView = Label()
@@ -30,6 +32,7 @@ final class CollectiblePreviewView:
     func customize(
         _ theme: CollectiblePreviewViewTheme
     ) {
+        addPlaceholderView(theme)
         addIconView(theme)
         addContent(theme)
         addAccessory(theme)
@@ -44,15 +47,32 @@ final class CollectiblePreviewView:
     ) {}
 
     func bindData(
-        _ viewModel: ViewModel?
+        _ viewModel: CollectiblePreviewViewModel?
     ) {
-        fatalError("Not Implemented Yet")
+
+        placeholderView.bindData(viewModel)
+        iconView.load(from: viewModel?.image) { [weak self] error in
+            guard let self = self else {
+                return
+            }
+
+            if error == nil {
+                self.placeholderView.isHidden = true
+            }
+        }
+
+        titleView.editText = viewModel?.title
+        subtitleView.editText = viewModel?.subtitle
+        accessoryView.editText = viewModel?.accessory
     }
 
     func prepareForReuse() {
-        iconView.image = nil
+        placeholderView.prepareForReuse()
+        placeholderView.isHidden = false
+        iconView.prepareForReuse()
         titleView.editText = nil
         subtitleView.editText = nil
+        accessoryView.editText = nil
     }
 
     class func calculatePreferredSize(
@@ -86,6 +106,20 @@ final class CollectiblePreviewView:
 }
 
 extension CollectiblePreviewView {
+    private func addPlaceholderView(
+        _ theme: CollectiblePreviewViewTheme
+    ) {
+        placeholderView.customize(AssetImagePlaceholderViewTheme())
+
+        addSubview(placeholderView)
+        placeholderView.fitToIntrinsicSize()
+        placeholderView.snp.makeConstraints {
+            $0.leading == 0
+            $0.centerY == 0
+            $0.fitToSize(theme.iconSize)
+        }
+    }
+
     private func addIconView(
         _ theme: CollectiblePreviewViewTheme
     ) {
