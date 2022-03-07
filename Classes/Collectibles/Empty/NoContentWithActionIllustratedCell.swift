@@ -12,14 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentWithActionCell.swift
+//   NoContentWithActionIllustratedCell.swift
 
 import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-final class NoContentWithActionCell:
+final class NoContentWithActionIllustratedCell:
     CollectionCell<NoContentWithActionView>,
     ViewModelBindable {
     lazy var handlers = Handlers() {
@@ -35,11 +34,11 @@ final class NoContentWithActionCell:
             frame: frame
         )
 
-        contextView.customize(NoContentWithActionViewCommonTheme())
+        contextView.customize(NoContentWithActionViewIllustratedTheme())
     }
 }
 
-extension NoContentWithActionCell {
+extension NoContentWithActionIllustratedCell {
     struct Handlers {
         var didTapActionView: EmptyHandler?
     }

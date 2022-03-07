@@ -16,6 +16,7 @@
 
 import MacaroonUIKit
 import MacaroonURLImage
+import UIKit
 
 struct CollectibleListItemViewTheme:
     LayoutSheet,
@@ -50,7 +51,7 @@ struct CollectibleListItemViewTheme:
         ]
 
         bottomLeftBadge = [
-            .backgroundColor(AppColors.Shared.Global.white),
+            .backgroundColor(AppColors.Shared.System.background),
             .contentMode(.center)
         ]
         bottomLeftBadgeContentEdgeInsets = (8, 8)
@@ -70,7 +71,10 @@ struct CollectibleListItemImageViewTheme: URLImageViewStyleSheet {
                 .backgroundColor(AppColors.Shared.Layer.grayLighter)
             ]
             self.image = []
-            self.text = []
+            self.text = [
+                .textColor(AppColors.Components.Text.gray),
+                .textOverflow(FittingText())
+            ]
         }
     }
 

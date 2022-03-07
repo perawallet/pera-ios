@@ -34,11 +34,11 @@ struct CollectibleListLoadingViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        searchInputPaddings = (20, 24, .noMetric, 24)
+        searchInputPaddings = (20, 0, .noMetric, 0)
         searchInputHeight = 40
 
         collectibleListItemsVerticalStackSpacing = 28
-        collectibleListItemsVerticalStackPaddings = (24, 24, .noMetric, 24)
+        collectibleListItemsVerticalStackPaddings = (24, 0, .noMetric, 0)
 
         collectibleListItemsHorizontalStackSpacing = 24
 

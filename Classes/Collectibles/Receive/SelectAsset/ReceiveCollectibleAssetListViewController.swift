@@ -55,7 +55,6 @@ final class ReceiveCollectibleAssetListViewController:
 
     override func configureNavigationBarAppearance() {
         navigationItem.title = "collectibles-receive-action".localized
-        addBarButtons()
     }
 
     override func prepareLayout() {
@@ -85,6 +84,28 @@ final class ReceiveCollectibleAssetListViewController:
         dataController.load()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        listView
+            .visibleCells
+            .forEach {
+                let loadingCell = $0 as? PreviewLoadingCell
+                loadingCell?.startAnimating()
+            }
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        listView
+            .visibleCells
+            .forEach {
+                let loadingCell = $0 as? PreviewLoadingCell
+                loadingCell?.stopAnimating()
+            }
+    }
+
     private func build() {
         addBackground()
         addListView()
@@ -101,14 +122,6 @@ extension ReceiveCollectibleAssetListViewController {
         listView.snp.makeConstraints {
             $0.setPaddings()
         }
-    }
-
-    private func addBarButtons() {
-        let infoBarButtonItem = ALGBarButtonItem(kind: .info) {
-            fatalError("Not Implemented Yet")
-        }
-
-        rightBarButtonItems = [infoBarButtonItem]
     }
 }
 
@@ -159,7 +172,7 @@ extension ReceiveCollectibleAssetListViewController {
             }
         case .search:
             linkInteractors(cell as! CollectibleSearchInputCell)
-        case .asset:
+        case .collectible:
             dataController.loadNextPageIfNeeded(for: indexPath)
         default:
             break
@@ -200,7 +213,7 @@ extension ReceiveCollectibleAssetListViewController {
         }
 
         switch itemIdentifier {
-        case .asset:
+        case .collectible:
             guard let selectedAsset = dataController[indexPath.item] else {
                 return
             }
@@ -238,7 +251,7 @@ extension ReceiveCollectibleAssetListViewController {
     private func linkInteractors(
         _ cell: CollectibleSearchInputCell
     ) {
-        cell.contextView.delegate = self
+        cell.delegate = self
     }
 }
 
@@ -261,6 +274,6 @@ extension ReceiveCollectibleAssetListViewController: AssetActionConfirmationView
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmAction asset: AssetDecoration
     ) {
-        // <todo>
+        /// <todo> Apply transaction
     }
 }

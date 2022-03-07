@@ -56,10 +56,8 @@ extension AssetListViewLayout: UICollectionViewDelegateFlowLayout {
                 sizeForAssetCellItem: item
             )
         case .noContent:
-            return listView(
-                collectionView,
-                layout: collectionViewLayout,
-                sizeForEmptyItem: nil
+            return sizeForSearchNoContent(
+                collectionView
             )
         }
     }
@@ -99,17 +97,26 @@ extension AssetListViewLayout {
         return listView.bounds.width - listView.contentInset.horizontal
     }
 
-    private func listView(
-        _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        sizeForEmptyItem item: AssetListViewItem? = nil
+    private func sizeForSearchNoContent(
+        _ listView: UICollectionView
     ) -> CGSize {
+        let sizeCacheIdentifier = NoContentCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
         let width = calculateContentWidth(for: listView)
-        let height =
-            listView.bounds.height -
-            listView.safeAreaTop -
-            listView.safeAreaBottom
-        return CGSize((width, height))
+        let item = AssetAdditionNoContentViewModel()
+        let newSize = NoContentCell.calculatePreferredSize(
+            item,
+            for: NoContentCell.theme,
+            fittingIn:  CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
     }
 
     private func listView(

@@ -16,14 +16,156 @@
 
 import MacaroonUIKit
 import UIKit
+import Prism
+import MacaroonURLImage
 
-struct CollectiblePreviewViewModel: ViewModel {
-    private(set) var icon: UIImage?
+struct CollectiblePreviewViewModel:
+    BindableViewModel,
+    AssetImagePlaceholderViewModel,
+    Hashable {
+    private(set) var assetID: AssetID?
+    private(set) var image: ImageSource?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
     private(set) var accessory: EditText?
+    private(set) var assetAbbreviatedName: EditText?
 
-    init() {
-        fatalError("Not Implemented Yet")
+    init<T>(
+        _ model: T
+    ) {
+        bind(model)
+    }
+
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(assetID)
+        hasher.combine(title)
+        hasher.combine(subtitle)
+    }
+
+    static func == (
+        lhs: CollectiblePreviewViewModel,
+        rhs: CollectiblePreviewViewModel
+    ) -> Bool {
+        return lhs.assetID == rhs.assetID &&
+        lhs.title == rhs.title &&
+        lhs.subtitle == rhs.subtitle
+    }
+}
+
+extension CollectiblePreviewViewModel {
+    mutating func bind<T>(
+        _ model: T
+    ) {
+        if let asset = model as? CollectibleAsset {
+            bindAssetID(asset)
+            bindImage(asset)
+            bindTitle(asset)
+            bindSubtitle(asset)
+            bindAccessory(asset)
+            bindAssetAbbreviatedName()
+            return
+        }
+    }
+}
+
+extension CollectiblePreviewViewModel {
+    private mutating func bindAssetID(
+        _ asset: CollectibleAsset
+    ) {
+        assetID = asset.id
+    }
+
+    private mutating func bindImage(
+        _ asset: CollectibleAsset
+    ) {
+        if let primaryImage = asset.primaryImage {
+            let prismURL = PrismURL(baseURL: primaryImage).build()
+
+            image = PNGImageSource(
+                url: prismURL,
+                size: .resize(CGSize((40, 40)), .aspectFit),
+                shape: .rounded(4),
+                placeholder: nil
+            )
+            return
+        }
+    }
+
+    private mutating func bindTitle(
+        _ asset: CollectibleAsset
+    ) {
+        let name = asset.name
+
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        self.title = .attributedString(
+            (name.isNilOrEmpty ? "title-unknown".localized : name!)
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byTruncatingTail),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.left)
+                    ])
+                ])
+        )
+    }
+
+    private mutating func bindSubtitle(
+        _ asset: CollectibleAsset
+    ) {
+        guard let unitName = asset.unitName else {
+            return
+        }
+
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        self.subtitle = .attributedString(
+            unitName
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byTruncatingTail),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.left)
+                    ])
+                ])
+        )
+    }
+
+    private mutating func bindAccessory(
+        _ asset: CollectibleAsset
+    ) {
+        let font = Fonts.DMMono.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        accessory = .attributedString(
+            String(asset.id)
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byTruncatingTail),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.right)
+                    ])
+                ])
+        )
+    }
+
+    private mutating func bindAssetAbbreviatedName() {
+        assetAbbreviatedName = getAssetAbbreviatedName(
+            name: TextFormatter.assetShortName.format(title?.string),
+            with: TextAttributes(
+                font: Fonts.DMSans.regular.make(13),
+                lineHeightMultiplier: 1.18
+            )
+        )
     }
 }

@@ -26,7 +26,7 @@ final class CollectibleListViewController: BaseViewController {
     }
 
     private lazy var collectiblesScreen = CollectiblesViewController(
-        dataController: CollectibleListAPIDataController(
+        dataController: CollectibleListLocalDataController(
             accounts: sharedDataController.accountCollection.sorted(),
             sharedDataController: sharedDataController
         ),
@@ -34,18 +34,23 @@ final class CollectibleListViewController: BaseViewController {
     )
 
     override func configureNavigationBarAppearance() {
-        /// <todo> Complete nav bar configuration
         addBarButtons()
         bindNavigationItemTitle()
     }
 
     override func customizeTabBarAppearence() {
         tabBarHidden = false
+        collectiblesScreen.tabBarHidden = false
     }
 
     override func prepareLayout() {
         super.prepareLayout()
         add(collectiblesScreen)
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+        linkInteractors(collectiblesScreen)
     }
 }
 
@@ -56,14 +61,7 @@ extension CollectibleListViewController {
                 return
             }
 
-            self.open(
-                .receiveCollectibleAccountList(
-                    dataController: ReceiveCollectibleAccountListAPIDataController(
-                        self.sharedDataController
-                    )
-                ),
-                by: .present
-            )
+            self.openReceiveCollectible()
         }
 
         rightBarButtonItems = [addBarButtonItem]
@@ -71,5 +69,33 @@ extension CollectibleListViewController {
 
     private func bindNavigationItemTitle() {
         title = "title-collectibles".localized
+    }
+}
+
+extension CollectibleListViewController {
+    private func linkInteractors(
+        _ screen: CollectiblesViewController
+    ) {
+        screen.observe(event: .performReceiveAction) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.openReceiveCollectible()
+        }
+    }
+}
+
+extension CollectibleListViewController {
+    private func openReceiveCollectible() {
+        open(
+            .receiveCollectibleAccountList(
+                dataController: ReceiveCollectibleAccountListAPIDataController(
+                    sharedDataController
+                )
+            ),
+            by: .present
+        )
     }
 }

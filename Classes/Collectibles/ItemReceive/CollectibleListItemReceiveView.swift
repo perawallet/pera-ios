@@ -19,7 +19,8 @@ import MacaroonUIKit
 
 final class CollectibleListItemReceiveView:
     View,
-    TripleShadowDrawable {
+    TripleShadowDrawable,
+    ListReusable {
     var thirdShadow: MacaroonUIKit.Shadow?
     var thirdShadowLayer: CAShapeLayer = CAShapeLayer()
     var secondShadow: MacaroonUIKit.Shadow?
@@ -61,7 +62,7 @@ extension CollectibleListItemReceiveView {
         _ theme: CollectibleListItemReceiveViewTheme
     ) {
         addSubview(contentView)
-        contentView.snp.makeConstraints {
+        contentView.snp.makeConstraints {            
             $0.setPaddings(theme.contentEdgeInsets)
         }
 

@@ -12,35 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   NoContentWithActionCell.swift
+//   CollectibleListItemReceiveCell.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-final class NoContentWithActionCell:
-    CollectionCell<NoContentWithActionView>,
-    ViewModelBindable {
-    lazy var handlers = Handlers() {
-        didSet {
-            contextView.handlers.didTapActionView = handlers.didTapActionView
-        }
-    }
+final class CollectibleListItemReceiveCell:
+    CollectionCell<CollectibleListItemReceiveView> {
+    static let theme = CollectibleListItemReceiveViewTheme()
 
     override init(
         frame: CGRect
     ) {
-        super.init(
-            frame: frame
-        )
-
-        contextView.customize(NoContentWithActionViewCommonTheme())
-    }
-}
-
-extension NoContentWithActionCell {
-    struct Handlers {
-        var didTapActionView: EmptyHandler?
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }

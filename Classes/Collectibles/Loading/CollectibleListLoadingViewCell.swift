@@ -20,6 +20,16 @@ import UIKit
 
 final class CollectibleListLoadingViewCell:
     CollectionCell<CollectibleListLoadingView> {
+    override init(
+        frame: CGRect
+    ) {
+        super.init(
+            frame: frame
+        )
+
+        contextView.customize(CollectibleListLoadingViewTheme())
+    }
+
     func startAnimating() {
         contextView.startAnimating()
     }

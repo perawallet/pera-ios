@@ -25,7 +25,8 @@ protocol CollectibleListDataController: AnyObject {
     var eventHandler: ((CollectibleDataControllerEvent) -> Void)? { get set }
 
     func load()
-    func reload()
+    func search(for query: String)
+    func resetSearch()
 }
 
 enum CollectibleSection:
@@ -33,22 +34,37 @@ enum CollectibleSection:
     Hashable {
     case empty
     case loading
+    case search
     case collectibles
 }
 
 enum CollectibleListItem: Hashable {
     case empty(CollectibleEmptyItem)
+    case search
     case collectible(CollectibleItem)
-    /// <todo> Add search bar?
 }
 
 enum CollectibleEmptyItem: Hashable {
     case loading
     case noContent
+    case noContentSearch
 }
 
 enum CollectibleItem: Hashable {
-    case cell(CollectibleListItemViewModel)
+    case cell(CollectibleCellItem)
+    case footer
+}
+
+enum CollectibleCellItem: Hashable {
+    case opaque(CollectibleListItemViewModel)
+    case translucent(CollectibleListItemViewModel)
+
+    var viewModel: CollectibleListItemViewModel {
+        switch self {
+        case .opaque(let viewModel): return viewModel
+        case .translucent(let viewModel): return viewModel
+        }
+    }
 }
 
 enum CollectibleDataControllerEvent {

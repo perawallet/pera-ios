@@ -17,6 +17,7 @@
 
 import Foundation
 import MacaroonUtils
+import MagpieCore
 
 final class AssetListViewAPIDataController:
     AssetListViewDataController {
@@ -25,6 +26,9 @@ final class AssetListViewAPIDataController:
     var assets: [AssetDecoration] = []
 
     private var lastSnapshot: Snapshot?
+
+    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.15)
+    private var ongoingEndpoint: EndpointOperatable?
 
     private let api: ALGAPI
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.assetListViewDataController")
@@ -57,9 +61,17 @@ extension AssetListViewAPIDataController {
     }
 
     func search(for query: String?) {
-        resetSearch()
+        searchThrottler.performNext {
+            [weak self] in
 
-        load(with: query)
+            guard let self = self else {
+                return
+            }
+
+            self.resetSearch()
+
+            self.load(with: query)
+        }
     }
 
     func resetSearch() {
@@ -75,8 +87,10 @@ extension AssetListViewAPIDataController {
     }
 
     private func load(with query: String?, isPaginated: Bool = false) {
+        cancelOngoingEndpoint()
         let searchDraft = AssetSearchQuery(status: filter, query: query, cursor: nextCursor)
 
+        ongoingEndpoint =
         api.searchAssets(searchDraft) { [weak self] response in
             switch response {
             case let .success(searchResults):
@@ -97,6 +111,11 @@ extension AssetListViewAPIDataController {
                 break
             }
         }
+    }
+
+    private func cancelOngoingEndpoint() {
+        ongoingEndpoint?.cancel()
+        ongoingEndpoint = nil
     }
 }
 

@@ -19,6 +19,12 @@ import MacaroonUIKit
 
 final class CollectibleSearchInputCell:
     CollectionCell<SearchInputView> {
+    weak var delegate: SearchInputViewDelegate? {
+        didSet {
+            contextView.delegate = delegate
+        }
+    }
+
     override init(
         frame: CGRect
     ) {
@@ -30,5 +36,11 @@ final class CollectibleSearchInputCell:
                 family: .current
             )
         )
+    }
+}
+
+extension CollectibleSearchInputCell {
+    func beginEditing() {
+        contextView.beginEditing()
     }
 }

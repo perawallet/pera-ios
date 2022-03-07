@@ -22,7 +22,8 @@ import MacaroonUIKit
 final class AccountCollectibleListViewController: BaseViewController {
 
     private lazy var collectiblesScreen = CollectiblesViewController(
-        dataController: CollectibleListAPIDataController(
+        dataController: CollectibleListLocalDataController(
+            isWatchAccount: account.value.isWatchAccount(),
             accounts: [account],
             sharedDataController: sharedDataController
         ),
@@ -42,5 +43,37 @@ final class AccountCollectibleListViewController: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
         add(collectiblesScreen)
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+        linkInteractors(collectiblesScreen)
+    }
+}
+
+extension AccountCollectibleListViewController {
+    private func linkInteractors(
+        _ screen: CollectiblesViewController
+    ) {
+        screen.observe(event: .performReceiveAction) {
+            [weak self] in
+            guard let self = self else { return }
+
+            let controller = self.open(
+                .receiveCollectibleAssetList(
+                    dataController: ReceiveCollectibleAssetListAPIDataController(
+                        account: self.account,
+                        api: self.api!
+                    )
+                ),
+                by: .present
+            ) as? ReceiveCollectibleAssetListViewController
+
+            let close = ALGBarButtonItem(kind: .close) {
+                controller?.dismissScreen()
+            }
+
+            controller?.leftBarButtonItems = [close]
+        }
     }
 }

@@ -68,7 +68,7 @@ extension ReceiveCollectibleAssetListLayout {
         case .search:
             insets.top = 40
             return insets
-        case .assets:
+        case .collectibles:
             insets.top = 16
             insets.bottom = 8
             return insets
@@ -109,7 +109,7 @@ extension ReceiveCollectibleAssetListLayout {
                 collectionView,
                 layout: collectionViewLayout
             )
-        case .asset(let item):
+        case .collectible(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
@@ -172,7 +172,7 @@ extension ReceiveCollectibleAssetListLayout {
         }
 
         let width = calculateContentWidth(for: listView)
-        let item = AssetListSearchNoContentViewModel()
+        let item = ReceiveCollectibleAssetListSearchNoContentViewModel()
         let newSize = NoContentCell.calculatePreferredSize(
             item,
             for: NoContentCell.theme,
@@ -187,7 +187,7 @@ extension ReceiveCollectibleAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetCellItem item: AssetPreviewViewModel?
+        sizeForAssetCellItem item: CollectiblePreviewViewModel?
     ) -> CGSize {
         let sizeCacheIdentifier = AssetPreviewCell.reuseIdentifier
 
@@ -224,8 +224,7 @@ extension ReceiveCollectibleAssetListLayout {
     private func calculateContentWidth(
         for listView: UICollectionView
     ) -> LayoutMetric {
-        return
-        listView.bounds.width -
+        return listView.bounds.width -
         listView.contentInset.horizontal -
         sectionHorizontalInsets.leading -
         sectionHorizontalInsets.trailing
