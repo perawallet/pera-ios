@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectbileListItemTranslucentCell.swift
+//   CollectibleListItemOptedInCell.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class CollectbileListItemTranslucentCell:
+final class CollectibleListItemOptedInCell:
     CollectionCell<CollectibleListItemView>,
     ViewModelBindable {
     static let theme = CollectibleListItemViewTheme()
@@ -27,6 +27,6 @@ final class CollectbileListItemTranslucentCell:
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
-        contextView.configureImageAlphaForTranslucentCell() // <todo>: Should Alpha change be in theme or like this?
+        contextView.configureImageAlphaForOptedInCell() // <todo>: Should Alpha change be in theme or like this?
     }
 }

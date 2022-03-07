@@ -74,15 +74,15 @@ extension AssetSearchLocalDataController {
     }
 
     private func isAssetContainsID(_ asset: StandardAsset, query: String) -> Bool {
-        return String(asset.id).contains(query)
+        return String(asset.id).localizedCaseInsensitiveContains(query)
     }
 
     private func isAssetContainsName(_ asset: StandardAsset, query: String) -> Bool {
-        return asset.name.someString.contains(query)
+        return asset.name.someString.localizedCaseInsensitiveContains(query)
     }
 
     private func isAssetContainsUnitName(_ asset: StandardAsset, query: String) -> Bool {
-        return asset.unitName.someString.contains(query)
+        return asset.unitName.someString.localizedCaseInsensitiveContains(query)
     }
 }
 

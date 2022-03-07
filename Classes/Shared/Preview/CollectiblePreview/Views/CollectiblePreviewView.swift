@@ -49,8 +49,18 @@ final class CollectiblePreviewView:
     func bindData(
         _ viewModel: CollectiblePreviewViewModel?
     ) {
+
         placeholderView.bindData(viewModel)
-        iconView.load(from: viewModel?.image)
+        iconView.load(from: viewModel?.image) { [weak self] error in
+            guard let self = self else {
+                return
+            }
+
+            if error == nil {
+                self.placeholderView.isHidden = true
+            }
+        }
+
         titleView.editText = viewModel?.title
         subtitleView.editText = viewModel?.subtitle
         accessoryView.editText = viewModel?.accessory
@@ -58,6 +68,7 @@ final class CollectiblePreviewView:
 
     func prepareForReuse() {
         placeholderView.prepareForReuse()
+        placeholderView.isHidden = false
         iconView.prepareForReuse()
         titleView.editText = nil
         subtitleView.editText = nil

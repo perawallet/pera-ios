@@ -195,14 +195,9 @@ extension CollectibleListLayout {
             return cachedSize
         }
 
-        let column = 2
+        let width = calculateGridCellWidth(listView, layout: listViewLayout)
 
-        let flowLayout = listViewLayout as! UICollectionViewFlowLayout
-        let width = calculateContentWidth(for: listView)
-        let rowSpacing = (flowLayout.minimumInteritemSpacing * CGFloat(column - 1))
-
-        let fittingInWidth = (width - rowSpacing)  / column.cgFloat
-        let newSize = CGSize(width: fittingInWidth.float(), height: fittingInWidth.float())
+        let newSize = CGSize(width: width.float(), height: width.float())
 
         sizeCache[sizeCacheIdentifier] = newSize
 
@@ -214,19 +209,12 @@ extension CollectibleListLayout {
         layout listViewLayout: UICollectionViewLayout,
         sizeForCollectibleCellItem item: CollectibleListItemViewModel?
     ) -> CGSize {
-        /// <todo> Cache the size
-        let column = 2
-
-        let flowLayout = listViewLayout as! UICollectionViewFlowLayout
-        let width = calculateContentWidth(for: listView)
-        let rowSpacing = (flowLayout.minimumInteritemSpacing * CGFloat(column - 1))
-
-        let fittingInWidth = (width - rowSpacing)  / column.cgFloat
+        let width = calculateGridCellWidth(listView, layout: listViewLayout)
 
         let newSize = CollectibleListItemCell.calculatePreferredSize(
             item,
             for: CollectibleListItemCell.theme,
-            fittingIn: CGSize(width: fittingInWidth.float(), height: .greatestFiniteMagnitude)
+            fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
 
         return newSize
@@ -234,6 +222,20 @@ extension CollectibleListLayout {
 }
 
 extension CollectibleListLayout {
+    func calculateGridCellWidth(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout
+    ) ->  LayoutMetric {
+        let column = 2
+
+        let flowLayout = listViewLayout as! UICollectionViewFlowLayout
+        let contentWidth = calculateContentWidth(for: listView)
+        let rowSpacing = flowLayout.minimumInteritemSpacing * CGFloat(column - 1)
+        let width = (contentWidth - rowSpacing)  / column.cgFloat
+
+        return width
+    }
+
     private func calculateContentWidth(
         for listView: UICollectionView
     ) -> LayoutMetric {

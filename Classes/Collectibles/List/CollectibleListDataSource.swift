@@ -62,7 +62,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                 switch item {
                 case .cell(let item):
                     switch item {
-                    case .opaque(let item):
+                    case .owner(let item):
                         let cell = collectionView.dequeue(
                             CollectibleListItemCell.self,
                             at: indexPath
@@ -71,9 +71,9 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                             item
                         )
                         return cell
-                    case .translucent(let item):
+                    case .optedIn(let item):
                         let cell = collectionView.dequeue(
-                            CollectbileListItemTranslucentCell.self,
+                            CollectibleListItemOptedInCell.self,
                             at: indexPath
                         )
                         cell.bindData(
@@ -93,7 +93,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
 
         [
             CollectibleListItemCell.self,
-            CollectbileListItemTranslucentCell.self,
+            CollectibleListItemOptedInCell.self,
             CollectibleListItemReceiveCell.self,
             NoContentWithActionIllustratedCell.self,
             CollectibleSearchInputCell.self,

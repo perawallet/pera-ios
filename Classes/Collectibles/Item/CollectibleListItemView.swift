@@ -167,7 +167,7 @@ extension CollectibleListItemView {
 }
 
 extension CollectibleListItemView {
-    func configureImageAlphaForTranslucentCell() {
+    func configureImageAlphaForOptedInCell() {
         image.alpha = 0.4
     }
 }

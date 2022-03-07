@@ -21,7 +21,7 @@ import MacaroonURLImage
 import Prism
 
 struct CollectibleListItemViewModel:
-    BindableViewModel,
+    ViewModel,
     Hashable {
     private(set) var assetID: AssetID?
     private(set) var image: ImageSource?
@@ -30,11 +30,17 @@ struct CollectibleListItemViewModel:
     private(set) var bottomLeftBadge: UIImage?
 
     init<T>(
-        _ model: T
+        imageSize: CGSize,
+        model: T
     ) {
-        bind(model)
+        bind(
+            imageSize: imageSize,
+            model: model
+        )
     }
+}
 
+extension CollectibleListItemViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
@@ -55,11 +61,12 @@ struct CollectibleListItemViewModel:
 
 extension CollectibleListItemViewModel {
     mutating func bind<T>(
-        _ model: T
+        imageSize: CGSize,
+        model: T
     ) {
         if let asset = model as? CollectibleAsset {
             bindAssetID(asset)
-            bindImage(asset)
+            bindImage(imageSize: imageSize, asset: asset)
             bindTitle(asset)
             bindSubtitle(asset)
             bindBottomLeftBadge(asset)
@@ -76,16 +83,26 @@ extension CollectibleListItemViewModel {
     }
 
     private mutating func bindImage(
-        _ asset: CollectibleAsset
+        imageSize: CGSize,
+        asset: CollectibleAsset
     ) {
         let placeholder = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
+
+        let size: ImageSize
+
+        if imageSize.width <= 0 ||
+            imageSize.height <= 0 {
+            size = .original
+        } else {
+            size = .resize(imageSize, .aspectFit)
+        }
 
         if let primaryImage = asset.primaryImage {
             let prismURL = PrismURL(baseURL: primaryImage).build()
 
             image = PNGImageSource(
                 url: prismURL,
-                size: .original,
+                size: size,
                 shape: .rounded(4),
                 placeholder: ImagePlaceholder(
                     image: nil,
@@ -96,13 +113,13 @@ extension CollectibleListItemViewModel {
         }
 
         let imageSource =
-            PNGImageSource(
-                url: nil,
-                placeholder: ImagePlaceholder(
-                    image: nil,
-                    text: getPlaceholder(placeholder)
-                )
+        PNGImageSource(
+            url: nil,
+            placeholder: ImagePlaceholder(
+                image: nil,
+                text: getPlaceholder(placeholder)
             )
+        )
 
         image = imageSource
     }
@@ -157,9 +174,7 @@ extension CollectibleListItemViewModel {
     private mutating func bindBottomLeftBadge(
         _ asset: CollectibleAsset
     ) {
-        let isNotOwner = asset.amount == 0
-
-        if isNotOwner { /// <note> Not owner of this asset but opted in for it.
+        if !asset.isOwner {
             bottomLeftBadge = "badge-warning".uiImage
             return
         }
@@ -208,7 +223,7 @@ extension Optional where Wrapped == String {
             return stringOrNilOrEmptyOrBlank()
         case .some(let value):
             if !value.isEmptyOrBlank {
-               return value
+                return value
             }
 
             return stringOrNilOrEmptyOrBlank()

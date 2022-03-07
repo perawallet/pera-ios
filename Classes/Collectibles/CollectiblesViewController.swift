@@ -86,6 +86,15 @@ final class CollectiblesViewController:
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.layoutIfNeeded()
+
+        let imageWidth = listLayout.calculateGridCellWidth(
+            listView,
+            layout: listView.collectionViewLayout
+        )
+        let imageSize = CGSize((imageWidth, imageWidth))
+        dataController.imageSize = imageSize
+
         dataController.eventHandler = {
             [weak self] event in
             guard let self = self else {

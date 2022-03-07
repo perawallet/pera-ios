@@ -20,13 +20,13 @@ final class TopAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
     override func layoutAttributesForElements(
         in rect: CGRect
     ) -> [UICollectionViewLayoutAttributes]? {
-        let attributes = super.layoutAttributesForElements(in: rect)?.map {
-            $0.copy()
+        let attributes = super.layoutAttributesForElements(in: rect)?.map { attribute in
+            attribute.copy()
         } as? [UICollectionViewLayoutAttributes]
 
         attributes?
             .reduce([CGFloat: (CGFloat, [UICollectionViewLayoutAttributes])]()) {
-                guard $1.representedElementCategory == .cell else {
+                if $1.representedElementCategory != .cell {
                     return $0
                 }
 
@@ -35,11 +35,11 @@ final class TopAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
                 }
             }
             .values
-            .forEach { minY, line in
-                line.forEach {
-                    $0.frame = $0.frame.offsetBy(
+            .forEach { minY, lines in
+                lines.forEach { line in
+                    line.frame = line.frame.offsetBy(
                         dx: 0,
-                        dy: minY - $0.frame.origin.y
+                        dy: minY - line.frame.origin.y
                     )
                 }
             }

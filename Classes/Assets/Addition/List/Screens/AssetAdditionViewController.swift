@@ -238,6 +238,8 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
+        loadingController?.stopLoading()
+
         guard let assetDetail = currentAsset else {
             return
         }

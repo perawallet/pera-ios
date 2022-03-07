@@ -59,21 +59,27 @@ extension AccountCollectibleListViewController {
             [weak self] in
             guard let self = self else { return }
 
-            let controller = self.open(
-                .receiveCollectibleAssetList(
-                    dataController: ReceiveCollectibleAssetListAPIDataController(
-                        account: self.account,
-                        api: self.api!
-                    )
-                ),
-                by: .present
-            ) as? ReceiveCollectibleAssetListViewController
-
-            let close = ALGBarButtonItem(kind: .close) {
-                controller?.dismissScreen()
-            }
-
-            controller?.leftBarButtonItems = [close]
+            self.openReceiveCollectible()
         }
+    }
+}
+
+extension AccountCollectibleListViewController {
+    private func openReceiveCollectible() {
+        let controller = open(
+            .receiveCollectibleAssetList(
+                dataController: ReceiveCollectibleAssetListAPIDataController(
+                    account: account,
+                    api: api!
+                )
+            ),
+            by: .present
+        ) as? ReceiveCollectibleAssetListViewController
+
+        let close = ALGBarButtonItem(kind: .close) {
+            controller?.dismissScreen()
+        }
+
+        controller?.leftBarButtonItems = [close]
     }
 }

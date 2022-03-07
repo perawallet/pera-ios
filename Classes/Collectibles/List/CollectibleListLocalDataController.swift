@@ -15,6 +15,7 @@
 //   CollectibleListLocalDataController.swift
 
 import Foundation
+import CoreGraphics
 
 final class CollectibleListLocalDataController:
     CollectibleListDataController,
@@ -36,6 +37,8 @@ final class CollectibleListLocalDataController:
     private lazy var searchResults: [CollectibleAsset] = collectibleAssets
 
     private let isWatchAccount: Bool
+
+    var imageSize: CGSize = .zero
 
     init(
         isWatchAccount: Bool = false,
@@ -59,6 +62,7 @@ extension CollectibleListLocalDataController {
 
     func search(for query: String) {
         searchResults = collectibleAssets.filter { asset in
+            isAssetContainsTitle(asset, query: query) ||
             isAssetContainsID(asset, query: query) ||
             isAssetContainsName(asset, query: query) ||
             isAssetContainsUnitName(asset, query: query)
@@ -72,25 +76,32 @@ extension CollectibleListLocalDataController {
         deliverContentSnapshot()
     }
 
+    private func isAssetContainsTitle(
+        _ asset: CollectibleAsset,
+        query: String
+    ) -> Bool {
+        return asset.title.someString.localizedCaseInsensitiveContains(query)
+    }
+
     private func isAssetContainsID(
         _ asset: CollectibleAsset,
         query: String
     ) -> Bool {
-        return String(asset.id).contains(query)
+        return String(asset.id).localizedCaseInsensitiveContains(query)
     }
 
     private func isAssetContainsName(
         _ asset: CollectibleAsset,
         query: String
     ) -> Bool {
-        return asset.name.someString.contains(query)
+        return asset.name.someString.localizedCaseInsensitiveContains(query)
     }
 
     private func isAssetContainsUnitName(
         _ asset: CollectibleAsset,
         query: String
     ) -> Bool {
-        return asset.unitName.someString.contains(query)
+        return asset.unitName.someString.localizedCaseInsensitiveContains(query)
     }
 }
 
@@ -109,7 +120,7 @@ extension CollectibleListLocalDataController {
             }
         case .didFinishRunning:
             /// <todo> Update accounts
-
+            accounts = sharedDataController.accountCollection.sorted()
             deliverContentSnapshot()
         }
     }
@@ -137,7 +148,7 @@ extension CollectibleListLocalDataController {
     }
 
     private func deliverContentSnapshot() {
-        guard !collectibleAssets.isEmpty else {
+        if collectibleAssets.isEmpty {
             deliverNoContentSnapshot()
             return
         }
@@ -161,15 +172,23 @@ extension CollectibleListLocalDataController {
 
                 let cellItem: CollectibleItem
 
-                let isNotOwner = collectible.amount == 0 /// <note> Not owner of this asset but opted in for it.
-
-                if isNotOwner {
+                if collectible.isOwner {
                     cellItem = .cell(
-                        .translucent(CollectibleListItemViewModel(collectible))
+                        .owner(
+                            CollectibleListItemViewModel(
+                                imageSize: self.imageSize,
+                                model: collectible
+                            )
+                        )
                     )
                 } else {
                     cellItem = .cell(
-                        .opaque(CollectibleListItemViewModel(collectible))
+                        .optedIn(
+                            CollectibleListItemViewModel(
+                                imageSize: self.imageSize,
+                                model: collectible
+                            )
+                        )
                     )
                 }
 
