@@ -70,20 +70,6 @@ extension Account {
         return !(participation == nil || participation?.voteParticipationKey == defaultParticipationKey)
     }
 
-    func containsDifferentAssets(than account: Account) -> Bool {
-        return assets != account.assets
-    }
-
-    func hasDifference(with account: Account) -> Bool {
-        return !(
-            address == account.address &&
-            amount == account.amount &&
-            rewards == account.rewards &&
-            !hasDifferentAssets(than: account) &&
-            !hasDifferentApps(than: account)
-        )
-    }
-
     func hasAnyAssets() -> Bool {
         return !assets.isNilOrEmpty
     }

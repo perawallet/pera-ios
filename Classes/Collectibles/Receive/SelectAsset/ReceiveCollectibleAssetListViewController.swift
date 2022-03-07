@@ -49,14 +49,17 @@ final class ReceiveCollectibleAssetListViewController:
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     private var currentAsset: AssetDecoration?
 
+    private let account: AccountHandle
     private let dataController: ReceiveCollectibleAssetListDataController
     private let theme: ReceiveCollectibleAssetListViewControllerTheme
 
     init(
+        account: AccountHandle,
         dataController: ReceiveCollectibleAssetListDataController,
         theme: ReceiveCollectibleAssetListViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
+        self.account = account
         self.dataController = dataController
         self.theme = theme
 
@@ -232,9 +235,7 @@ extension ReceiveCollectibleAssetListViewController {
                 return
             }
 
-            let account = dataController.account.value
-
-            if account.containsAsset(selectedAsset.id) {
+            if account.value.containsAsset(selectedAsset.id) {
                 displaySimpleAlertWith(
                     title: "asset-you-already-own-message".localized,
                     message: .empty
@@ -243,7 +244,7 @@ extension ReceiveCollectibleAssetListViewController {
             }
 
             let assetAlertDraft = AssetAlertDraft(
-                account: account,
+                account: account.value,
                 assetId: selectedAsset.id,
                 asset: selectedAsset,
                 title: "asset-add-confirmation-title".localized,
@@ -290,14 +291,14 @@ extension ReceiveCollectibleAssetListViewController:
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
         didConfirmAction asset: AssetDecoration
     ) {
-        var account = dataController.account.value
+        var anAccount = account.value
 
-        if !canSignTransaction(for: &account) {
+        if !canSignTransaction(for: &anAccount) {
             return
         }
 
         let assetTransactionDraft = AssetTransactionSendDraft(
-            from: account,
+            from: anAccount,
             assetIndex: asset.id
         )
         transactionController.setTransactionDraft(assetTransactionDraft)
@@ -305,7 +306,7 @@ extension ReceiveCollectibleAssetListViewController:
 
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
-        if account.requiresLedgerConnection() {
+        if anAccount.requiresLedgerConnection() {
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
         }

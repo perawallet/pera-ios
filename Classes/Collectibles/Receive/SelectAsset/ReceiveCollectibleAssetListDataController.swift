@@ -25,9 +25,7 @@ protocol ReceiveCollectibleAssetListDataController: AnyObject {
     func loadNextPageIfNeeded(for indexPath: IndexPath)
     func search(for query: String?)
     func resetSearch()
-
-    var account: AccountHandle { get }
-
+    
     subscript(index: Int) -> AssetDecoration? { get }
 }
 

@@ -627,8 +627,9 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-        case let .receiveCollectibleAssetList(dataController):
+        case let .receiveCollectibleAssetList(account, dataController):
             viewController = ReceiveCollectibleAssetListViewController(
+                account: account,
                 dataController: dataController,
                 configuration: configuration
             )

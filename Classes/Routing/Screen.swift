@@ -116,6 +116,7 @@ indirect enum Screen {
         dataController: ReceiveCollectibleAccountListDataController
     )
     case receiveCollectibleAssetList(
+        account: AccountHandle,
         dataController: ReceiveCollectibleAssetListDataController
     )
 }

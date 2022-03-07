@@ -103,7 +103,7 @@ extension RootViewController {
             NavigationController(rootViewController: algoStatisticsViewController)
         )
         
-        let collectibleListViewController = CollectibleListViewController(
+        let collectibleListViewController = CollectiblesViewController(
             configuration: configuration
         )
         let collectiblesTab =

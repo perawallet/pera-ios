@@ -25,7 +25,7 @@ final class ReceiveCollectibleAssetListAPIDataController:
     private lazy var searchThrottler = Throttler(intervalInSeconds: 0.15)
     private var ongoingEndpoint: EndpointOperatable?
 
-    var assets: [AssetDecoration] = []
+    private var assets: [AssetDecoration] = []
 
     private var lastSnapshot: Snapshot?
 
@@ -40,13 +40,7 @@ final class ReceiveCollectibleAssetListAPIDataController:
         return nextCursor != nil
     }
 
-    let account: AccountHandle
-
-    init(
-        account: AccountHandle,
-        api: ALGAPI
-    ) {
-        self.account = account
+    init(_ api: ALGAPI) {
         self.api = api
     }
 

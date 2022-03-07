@@ -215,10 +215,8 @@ extension ReceiveCollectibleAccountListViewController {
 
             open(
                 .receiveCollectibleAssetList(
-                    dataController: ReceiveCollectibleAssetListAPIDataController(
-                        account: account,
-                        api: api!
-                    )
+                    account: account,
+                    dataController: ReceiveCollectibleAssetListAPIDataController(api!)
                 ),
                 by: .push
             )

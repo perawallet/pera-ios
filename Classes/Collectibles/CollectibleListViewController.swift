@@ -14,88 +14,269 @@
 
 //   CollectibleListViewController.swift
 
-import Foundation
+import UIKit
+import MacaroonUIKit
 
-final class CollectibleListViewController: BaseViewController {
-    override var prefersLargeTitle: Bool {
-        return true
-    }
-    
-    override var name: AnalyticsScreenName? {
-        return .collectibles
-    }
+final class CollectibleListViewController:
+    BaseViewController,
+    UICollectionViewDelegateFlowLayout,
+    UIInteractionObservable {
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .performReceiveAction: UIBlockInteraction()
+    ]
 
-    private lazy var collectiblesScreen = CollectiblesViewController(
-        dataController: CollectibleListLocalDataController(
-            galleryAccount: .all,
-            sharedDataController: sharedDataController
-        ),
-        configuration: configuration
-    )
+    private lazy var listView: UICollectionView = {
+        let collectionViewLayout = CollectibleListLayout.build()
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: collectionViewLayout
+        )
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.alwaysBounceVertical = true
+        collectionView.keyboardDismissMode = .onDrag
+        collectionView.backgroundColor = .clear
+        return collectionView
+    }()
 
-    override func configureNavigationBarAppearance() {
-        addBarButtons()
-        bindNavigationItemTitle()
-    }
+    private lazy var listLayout = CollectibleListLayout(listDataSource: listDataSource)
+    private lazy var listDataSource = CollectibleListDataSource(listView)
 
-    override func customizeTabBarAppearence() {
-        tabBarHidden = false
-        collectiblesScreen.tabBarHidden = false
+    private let dataController: CollectibleListDataController
+
+    init(
+        dataController: CollectibleListDataController,
+        configuration: ViewControllerConfiguration
+    ) {
+        self.dataController = dataController
+        super.init(configuration: configuration)
     }
 
     override func prepareLayout() {
         super.prepareLayout()
-        add(collectiblesScreen)
+        build()
     }
 
-    override func linkInteractors() {
-        super.linkInteractors()
-        linkInteractors(collectiblesScreen)
-    }
-}
+    override func setListeners() {
+        super.setListeners()
 
-extension CollectibleListViewController {
-    private func addBarButtons() {
-        let addBarButtonItem = ALGBarButtonItem(kind: .add) { [weak self] in
+        listView.delegate = self
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        let loadingCell =
+        listView
+            .visibleCells
+            .first { $0 is CollectibleListLoadingViewCell } as? CollectibleListLoadingViewCell
+        loadingCell?.startAnimating()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        let loadingCell =
+        listView
+            .visibleCells
+            .first { $0 is CollectibleListLoadingViewCell } as? CollectibleListLoadingViewCell
+        loadingCell?.stopAnimating()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.layoutIfNeeded()
+
+        let imageWidth = listLayout.calculateGridCellWidth(
+            listView,
+            layout: listView.collectionViewLayout
+        )
+        let imageSize = CGSize((imageWidth, imageWidth))
+        dataController.imageSize = imageSize
+
+        dataController.eventHandler = {
+            [weak self] event in
             guard let self = self else {
                 return
             }
 
-            self.openReceiveCollectible()
+            switch event {
+            case .didUpdate(let snapshot):
+                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            }
         }
 
-        rightBarButtonItems = [addBarButtonItem]
+        dataController.load()
     }
 
-    private func bindNavigationItemTitle() {
-        title = "title-collectibles".localized
+    private func build() {
+        addListView()
+    }
+}
+
+extension CollectibleListViewController {
+    private func addListView() {
+        view.addSubview(listView)
+        listView.snp.makeConstraints {
+            $0.setPaddings()
+        }
+    }
+}
+
+extension CollectibleListViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            insetForSectionAt: section
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            sizeForItemAt: indexPath
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .search:
+            linkInteractors(cell as! CollectibleSearchInputCell)
+        case .empty(let item):
+            switch item {
+            case .loading:
+                let loadingCell = cell as? CollectibleListLoadingViewCell
+                loadingCell?.startAnimating()
+            case .noContent:
+                linkInteractors(cell as! NoContentWithActionIllustratedCell)
+            default:
+                break
+            }
+        default:
+            break
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .empty(let item):
+            switch item {
+            case .loading:
+                let loadingCell = cell as? CollectibleListLoadingViewCell
+                loadingCell?.stopAnimating()
+            default:
+                break
+            }
+        default:
+            break
+        }
+    }
+}
+
+extension CollectibleListViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
+
+        switch itemIdentifier {
+        case .collectible(let item):
+            switch item {
+            case .cell(_):
+                /// <todo>: Navigate to detail screen.
+                break
+            case .footer:
+                openReceiveCollectibleAccountList()
+            }
+        default:
+            break
+        }
     }
 }
 
 extension CollectibleListViewController {
     private func linkInteractors(
-        _ screen: CollectiblesViewController
+        _ cell: NoContentWithActionIllustratedCell
     ) {
-        screen.observe(event: .performReceiveAction) {
+        cell.handlers.didTapActionView = {
             [weak self] in
             guard let self = self else {
                 return
             }
 
-            self.openReceiveCollectible()
+            self.openReceiveCollectibleAccountList()
         }
+    }
+
+    private func linkInteractors(
+        _ cell: CollectibleSearchInputCell
+    ) {
+        cell.delegate = self
     }
 }
 
 extension CollectibleListViewController {
-    private func openReceiveCollectible() {
-        open(
-            .receiveCollectibleAccountList(
-                dataController: ReceiveCollectibleAccountListAPIDataController(
-                    sharedDataController
-                )
-            ),
-            by: .present
-        )
+    private func openReceiveCollectibleAccountList() {
+        let interaction = uiInteractions[.performReceiveAction] as? UIBlockInteraction
+        interaction?.notify()
+    }
+}
+
+extension CollectibleListViewController: SearchInputViewDelegate {
+    func searchInputViewDidEdit(_ view: SearchInputView) {
+        guard let query = view.text else {
+            return
+        }
+
+        if query.isEmpty {
+            dataController.resetSearch()
+            return
+        }
+
+        dataController.search(for: query)
+    }
+
+    func searchInputViewDidReturn(_ view: SearchInputView) {
+        view.endEditing()
+    }
+
+    func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
+        dataController.resetSearch()
+    }
+}
+
+extension CollectibleListViewController {
+    enum Event {
+        case performReceiveAction
     }
 }
