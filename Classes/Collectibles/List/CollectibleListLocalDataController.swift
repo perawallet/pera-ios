@@ -191,7 +191,7 @@ extension CollectibleListLocalDataController {
             for collectible in searchResults {
                 let cellItem: CollectibleItem
 
-                if collectible.isOwner {
+                if collectible.isOwned {
                     cellItem = .cell(
                         .owner(
                             CollectibleListItemViewModel(

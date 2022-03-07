@@ -58,7 +58,7 @@ final class CollectibleAsset: Asset {
         return amountWithFraction.toNumberStringWithSeparatorForLabel(fraction: decimals)
     }
 
-    var isOwner: Bool {
+    var isOwned: Bool {
         return amount != 0
     }
 

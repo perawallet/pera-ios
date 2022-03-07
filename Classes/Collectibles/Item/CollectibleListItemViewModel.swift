@@ -174,7 +174,7 @@ extension CollectibleListItemViewModel {
     private mutating func bindBottomLeftBadge(
         _ asset: CollectibleAsset
     ) {
-        if !asset.isOwner {
+        if !asset.isOwned {
             bottomLeftBadge = "badge-warning".uiImage
             return
         }
