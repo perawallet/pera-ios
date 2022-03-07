@@ -65,7 +65,6 @@ final class AssetAdditionViewController: PageContainer, TestNetTitleDisplayable 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
-        loadingController?.stopLoading()
         transactionController.stopTimer()
     }
     

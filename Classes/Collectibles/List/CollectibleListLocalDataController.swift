@@ -38,6 +38,8 @@ final class CollectibleListLocalDataController:
 
     var imageSize: CGSize = .zero
 
+    private var lastQuery: String?
+
     init(
         galleryAccount: CollectibleGalleryAccount,
         sharedDataController: SharedDataController
@@ -70,6 +72,8 @@ extension CollectibleListLocalDataController {
     }
 
     func search(for query: String) {
+        lastQuery = query
+
         searchResults = collectibleAssets.filter { asset in
             isAssetContainsTitle(asset, query: query) ||
             isAssetContainsID(asset, query: query) ||
@@ -81,6 +85,7 @@ extension CollectibleListLocalDataController {
     }
 
     func resetSearch() {
+        lastQuery = nil
         searchResults = collectibleAssets
         deliverContentSnapshot()
     }
@@ -132,13 +137,21 @@ extension CollectibleListLocalDataController {
             case .single(let account):
                 if let updatedAccount = sharedDataController.accountCollection[account.value.address] {
                     accounts = [updatedAccount]
-                    collectibleAssets = account.value.collectibleAssets.compactMap { $0 }.uniqueElements(for: \.id)
+                    collectibleAssets = updatedAccount.value.collectibleAssets.compactMap { $0 }.uniqueElements(for: \.id)
+
+                    if let lastQuery = lastQuery {
+                        search(for: lastQuery)
+                    }
                 }
             case .all:
                 accounts = sharedDataController.accountCollection.sorted()
                 collectibleAssets = accounts
                     .map { $0.value.collectibleAssets }
                     .flatMap { $0 }.uniqueElements(for: \.id)
+
+                if let lastQuery = lastQuery {
+                    search(for: lastQuery)
+                }
             }
 
             deliverContentSnapshot()
