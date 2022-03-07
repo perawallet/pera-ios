@@ -145,11 +145,11 @@ final class AssetDetailGroupFetchOperation: MacaroonUtils.AsyncOperation {
                         if assetDetail.isCollectible {
                             let collectible = CollectibleAsset(asset: asset, decoration: assetDetail)
                             newCollectibles.append(collectible)
-                            newCollectibleAssetsIndexer[asset.id] = index
+                            newCollectibleAssetsIndexer[asset.id] = newCollectibleAssetsIndexer.count
                         } else {
                             let standardAsset = StandardAsset(asset: asset, decoration: assetDetail)
                             newStandardAssets.append(standardAsset)
-                            newStandardAssetsIndexer[asset.id] = index
+                            newStandardAssetsIndexer[asset.id] = newStandardAssetsIndexer.count
                         }
                     }
                 }
