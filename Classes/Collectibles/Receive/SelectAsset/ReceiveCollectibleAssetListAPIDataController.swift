@@ -98,9 +98,13 @@ extension ReceiveCollectibleAssetListAPIDataController {
 
                 if isPaginated {
                     let results = self.assets + searchResults.results
-                    self.assets = results.uniqued()
+                    self.assets = results.uniqued().filter {
+                        $0.isCollectible
+                    }
                 } else {
-                    self.assets = searchResults.results.uniqued()
+                    self.assets = searchResults.results.uniqued().filter {
+                        $0.isCollectible
+                    }
                 }
 
                 self.deliverContentSnapshot()

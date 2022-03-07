@@ -64,7 +64,6 @@ final class ManageAssetsViewController: BaseViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
-        loadingController?.stopLoading()
         transactionController.stopTimer()
     }
 }
