@@ -78,9 +78,7 @@ extension CollectibleListItemViewModel {
     private mutating func bindImage(
         _ asset: CollectibleAsset
     ) {
-        guard let name = asset.name else {
-            return
-        }
+        let placeholder = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
 
         if let primaryImage = asset.primaryImage {
             let prismURL = PrismURL(baseURL: primaryImage).build()
@@ -91,7 +89,7 @@ extension CollectibleListItemViewModel {
                 shape: .rounded(4),
                 placeholder: ImagePlaceholder(
                     image: nil,
-                    text: getPlaceholder(name)
+                    text: getPlaceholder(placeholder)
                 )
             )
             return
@@ -102,7 +100,7 @@ extension CollectibleListItemViewModel {
                 url: nil,
                 placeholder: ImagePlaceholder(
                     image: nil,
-                    text: getPlaceholder(name)
+                    text: getPlaceholder(placeholder)
                 )
             )
 
@@ -112,15 +110,16 @@ extension CollectibleListItemViewModel {
     private mutating func bindTitle(
         _ asset: CollectibleAsset
     ) {
-        guard let name = asset.name else {
-            return
-        }
+        guard let collectionName = asset.collectionName,
+              !collectionName.isEmptyOrBlank else {
+                  return
+              }
 
         let font = Fonts.DMSans.regular.make(13)
         let lineHeightMultiplier = 1.18
         
         title = .attributedString(
-            name
+            collectionName
                 .attributed([
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
@@ -136,16 +135,13 @@ extension CollectibleListItemViewModel {
     private mutating func bindSubtitle(
         _ asset: CollectibleAsset
     ) {
-        guard let collectionName = asset.collectionName,
-        !collectionName.isEmptyOrBlank else {
-            return
-        }
+        let subtitle = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
 
         let font = Fonts.DMSans.regular.make(15)
         let lineHeightMultiplier = 1.23
 
-        subtitle = .attributedString(
-            collectionName
+        self.subtitle = .attributedString(
+            subtitle
                 .attributed([
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
@@ -194,5 +190,39 @@ extension CollectibleListItemViewModel {
                 ])
             ])
         )
+    }
+}
+
+fileprivate extension AssetID {
+    var stringWithHashtag: String {
+        "#".appending(String(self))
+    }
+}
+
+extension Optional where Wrapped == String {
+    func fallback(
+        _ stringOrNilOrEmptyOrBlank: @autoclosure () -> Self
+    ) -> Self {
+        switch self {
+        case .none:
+            return stringOrNilOrEmptyOrBlank()
+        case .some(let value):
+            if !value.isEmptyOrBlank {
+               return value
+            }
+
+            return stringOrNilOrEmptyOrBlank()
+        }
+    }
+
+    func fallback(
+        _ string: @autoclosure () -> Wrapped
+    ) -> Wrapped {
+        switch self {
+        case .none:
+            return string()
+        case .some(let value):
+            return value
+        }
     }
 }
