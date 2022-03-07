@@ -27,7 +27,7 @@ final class CollectibleListViewController: BaseViewController {
 
     private lazy var collectiblesScreen = CollectiblesViewController(
         dataController: CollectibleListLocalDataController(
-            accounts: sharedDataController.accountCollection.sorted(),
+            galleryAccount: .all,
             sharedDataController: sharedDataController
         ),
         configuration: configuration

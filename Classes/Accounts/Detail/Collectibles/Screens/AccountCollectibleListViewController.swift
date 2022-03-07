@@ -23,8 +23,7 @@ final class AccountCollectibleListViewController: BaseViewController {
 
     private lazy var collectiblesScreen = CollectiblesViewController(
         dataController: CollectibleListLocalDataController(
-            isWatchAccount: account.value.isWatchAccount(),
-            accounts: [account],
+            galleryAccount: .single(account),
             sharedDataController: sharedDataController
         ),
         configuration: configuration

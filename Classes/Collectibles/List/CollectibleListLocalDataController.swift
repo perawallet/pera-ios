@@ -25,14 +25,12 @@ final class CollectibleListLocalDataController:
     private var lastSnapshot: Snapshot?
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.collectibleListDataController")
 
+    private let galleryAccount: CollectibleGalleryAccount
+
     private var accounts: [AccountHandle]
     private let sharedDataController: SharedDataController
 
-    private var collectibleAssets: [CollectibleAsset] {
-        accounts
-            .map { $0.value.collectibleAssets }
-            .flatMap { $0 }.uniqueElements(for: \.id)
-    }
+    private var collectibleAssets: [CollectibleAsset]
 
     private lazy var searchResults: [CollectibleAsset] = collectibleAssets
 
@@ -41,13 +39,24 @@ final class CollectibleListLocalDataController:
     var imageSize: CGSize = .zero
 
     init(
-        isWatchAccount: Bool = false,
-        accounts: [AccountHandle],
+        galleryAccount: CollectibleGalleryAccount,
         sharedDataController: SharedDataController
     ) {
-        self.isWatchAccount = isWatchAccount
-        self.accounts = accounts
+        self.galleryAccount = galleryAccount
+
+        switch galleryAccount {
+        case .single(let account):
+            accounts = [account]
+            collectibleAssets = account.value.collectibleAssets.compactMap { $0 }.uniqueElements(for: \.id)
+        case .all:
+            accounts = sharedDataController.accountCollection.sorted()
+            collectibleAssets = accounts
+                .map { $0.value.collectibleAssets }
+                .flatMap { $0 }.uniqueElements(for: \.id)
+        }
+
         self.sharedDataController = sharedDataController
+        self.isWatchAccount = galleryAccount.singleAccount?.value.isWatchAccount() ?? false
     }
 
     deinit {
@@ -119,8 +128,19 @@ extension CollectibleListLocalDataController {
                 deliverInitialSnapshot()
             }
         case .didFinishRunning:
-            /// <todo> Update accounts
-            accounts = sharedDataController.accountCollection.sorted()
+            switch galleryAccount {
+            case .single(let account):
+                if let updatedAccount = sharedDataController.accountCollection[account.value.address] {
+                    accounts = [updatedAccount]
+                    collectibleAssets = account.value.collectibleAssets.compactMap { $0 }.uniqueElements(for: \.id)
+                }
+            case .all:
+                accounts = sharedDataController.accountCollection.sorted()
+                collectibleAssets = accounts
+                    .map { $0.value.collectibleAssets }
+                    .flatMap { $0 }.uniqueElements(for: \.id)
+            }
+
             deliverContentSnapshot()
         }
     }
@@ -169,7 +189,6 @@ extension CollectibleListLocalDataController {
             var collectibleItems: [CollectibleListItem] = []
 
             for collectible in searchResults {
-
                 let cellItem: CollectibleItem
 
                 if collectible.isOwner {
@@ -272,6 +291,20 @@ extension CollectibleListLocalDataController {
 
             self.lastSnapshot = event.snapshot
             self.eventHandler?(event)
+        }
+    }
+}
+
+extension CollectibleListLocalDataController {
+    enum CollectibleGalleryAccount {
+        case single(AccountHandle)
+        case all
+
+        var singleAccount: AccountHandle? {
+            switch self {
+            case .single(let account): return account
+            default: return nil
+            }
         }
     }
 }

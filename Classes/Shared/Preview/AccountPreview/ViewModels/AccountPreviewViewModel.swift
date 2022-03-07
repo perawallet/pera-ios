@@ -239,7 +239,7 @@ extension AccountPreviewViewModel {
         let numberOfCollectiblesDescription: String
         /// <todo>
         /// Support singulars/plurals as localization feature
-        if numberOfAssets > 1 {
+        if numberOfAssets > 0 {
             numberOfAssetsDescription =
                 "title-plus-asset-count".localized(params: "\(numberOfAssets + 1)")
         } else {
