@@ -45,6 +45,7 @@
 "title-off" = "Off";
 "title-on" = "On";
 "title-retry" = "Retry";
+"title-not-available" = "Not available";
 
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";
@@ -924,3 +925,4 @@
 "moonpay-transaction-waitingAuthorization-description" = "Your purchase is waiting for authorization. Once payment is processed, you will receive a notification.";
 "moonpay-transaction-waitingPayment-title" = "Almost there!";
 "moonpay-transaction-waitingPayment-description" = "Your purchase request is pending payment. Once payment is processed, you will receive a notification.";
+"moonpay-transaction-testnet-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use MoonPay.";

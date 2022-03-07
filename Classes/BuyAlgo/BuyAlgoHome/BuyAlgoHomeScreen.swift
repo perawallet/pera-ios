@@ -70,6 +70,11 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
             guard let self = self else {
                 return
             }
+            
+            if (self.api?.isTestNet ?? true) {
+                self.presentTestNetAlert()
+                return
+            }
 
             if self.transactionDraft.hasValidAddress() {
                 self.openMoonPay(for: self.transactionDraft)
@@ -153,6 +158,14 @@ extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
 
     private func openMoonPay(url: URL) {
         self.open(url)
+    }
+    
+    private func presentTestNetAlert() {
+        displaySimpleAlertWith(
+            title: "title-not-available".localized,
+            message: "moonpay-transaction-testnet-not-available-description".localized,
+            handler: nil
+        )
     }
 }
 
