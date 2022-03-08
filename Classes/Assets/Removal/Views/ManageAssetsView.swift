@@ -20,19 +20,22 @@ import MacaroonUIKit
 
 final class ManageAssetsView: View {
     private lazy var theme = ManageAssetsViewTheme()
-    private lazy var titleLabel = UILabel()
-    private lazy var subtitleLabel = UILabel()
+    private lazy var titleLabel = Label()
+    private lazy var subtitleLabel = Label()
+    private(set) lazy var searchInputView = SearchInputView()
 
     private(set) lazy var assetsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = theme.cellSpacing
+        flowLayout.minimumLineSpacing = 0
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = theme.backgroundColor.uiColor
-        collectionView.register(AssetPreviewActionCell.self)
+        collectionView.register(AssetPreviewDeleteCell.self)
         return collectionView
     }()
+    
+    private lazy var contentStateView = ContentStateView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,17 +48,19 @@ final class ManageAssetsView: View {
 
         addTitleLabel(theme)
         addSubitleLabel(theme)
+        addSearchInputView(theme)
         addAssetsCollectionView(theme)
     }
 
-    func prepareLayout(_ layoutSheet: ManageAssetsViewTheme) {}
+    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
-    func customizeAppearance(_ styleSheet: ManageAssetsViewTheme) {}
+    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
 }
 
 extension ManageAssetsView {
     private func addTitleLabel(_ theme: ManageAssetsViewTheme) {
         titleLabel.customizeAppearance(theme.title)
+        titleLabel.editText = theme.titleText
 
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
@@ -66,11 +71,22 @@ extension ManageAssetsView {
 
     private func addSubitleLabel(_ theme: ManageAssetsViewTheme) {
         subtitleLabel.customizeAppearance(theme.subtitle)
-
+        subtitleLabel.editText = theme.subtitleText
+        
         addSubview(subtitleLabel)
         subtitleLabel.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.subtitleTopPadding)
+        }
+    }
+    
+    private func addSearchInputView(_ theme: ManageAssetsViewTheme) {
+        searchInputView.customize(theme.searchInputViewTheme)
+        
+        addSubview(searchInputView)
+        searchInputView.snp.makeConstraints {
+            $0.top.equalTo(subtitleLabel.snp.bottom).offset(theme.searchInputViewTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
 
@@ -78,8 +94,10 @@ extension ManageAssetsView {
         addSubview(assetsCollectionView)
         
         assetsCollectionView.snp.makeConstraints {
-            $0.top.equalTo(subtitleLabel.snp.bottom).offset(theme.collectionViewTopPadding)
+            $0.top.equalTo(searchInputView.snp.bottom).offset(theme.collectionViewTopPadding)
             $0.leading.trailing.bottom.equalToSuperview()
         }
+        
+        assetsCollectionView.backgroundView = contentStateView
     }
 }

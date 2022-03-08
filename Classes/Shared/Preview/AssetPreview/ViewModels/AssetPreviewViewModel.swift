@@ -71,7 +71,7 @@ extension AssetPreviewViewModel {
     }
     
     private mutating func bindAssetSecondaryValue(_ value: String?) {
-        self.assetSecondaryAssetValue = .string(value)
+        self.assetSecondaryAssetValue = .string(value.isNilOrEmpty ? "N/A" : value)
     }
 
     private mutating func bindAssetAbbreviationForImage() {

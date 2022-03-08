@@ -26,9 +26,12 @@ final class ManageAssetsViewController: BaseViewController {
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
     
     private lazy var manageAssetsView = ManageAssetsView()
+    private lazy var searchNoContentView = NoContentView()
     
     private var account: Account
-
+    
+    private var searchResults = [CompoundAsset]()
+    
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
     private lazy var transactionController: TransactionController = {
@@ -48,13 +51,16 @@ final class ManageAssetsViewController: BaseViewController {
         addBarButtons()
     }
     
-    override func setListeners() {
+    override func linkInteractors() {
         manageAssetsView.assetsCollectionView.delegate = self
         manageAssetsView.assetsCollectionView.dataSource = self
+        manageAssetsView.searchInputView.delegate = self
         transactionController.delegate = self
     }
     
     override func prepareLayout() {
+        searchNoContentView.customize(NoContentViewCommonTheme())
+        
         view.addSubview(manageAssetsView)
         manageAssetsView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -66,6 +72,15 @@ final class ManageAssetsViewController: BaseViewController {
         transactionController.stopBLEScan()
         loadingController?.stopLoading()
         transactionController.stopTimer()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchAssets()
+    }
+    
+    override func bindData() {
+        searchNoContentView.bindData(AssetListSearchNoContentViewModel())
     }
 }
 
@@ -82,14 +97,18 @@ extension ManageAssetsViewController {
 
 extension ManageAssetsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return account.compoundAssets.count
+        return searchResults.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let assetDetail = account.compoundAssets[indexPath.item].detail
-        let cell = collectionView.dequeue(AssetPreviewActionCell.self, at: indexPath)
+        let currency = sharedDataController.currency.value
+        let assetDetail = searchResults[indexPath.item].detail
+        let assetBase = searchResults[indexPath.item].base
+        
+        let cell = collectionView.dequeue(AssetPreviewDeleteCell.self, at: indexPath)
+        let assetPreviewModel = AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, assetBase, currency))
         cell.customize(theme.assetPreviewActionViewTheme)
-        cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(assetDetail)))
+        cell.bindData(AssetPreviewViewModel(assetPreviewModel))
         cell.delegate = self
         return cell
     }
@@ -105,14 +124,50 @@ extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
-    func assetPreviewSendCellDidTapSendButton(_ assetPreviewSendCell: AssetPreviewActionCell) {
-        guard let index = manageAssetsView.assetsCollectionView.indexPath(for: assetPreviewSendCell),
-              index.item < account.compoundAssets.count else {
+extension ManageAssetsViewController {
+    private func fetchAssets() {
+        self.searchResults = account.compoundAssets
+        manageAssetsView.assetsCollectionView.reloadData()
+    }
+}
+
+extension ManageAssetsViewController: SearchInputViewDelegate {
+    func searchInputViewDidEdit(_ view: SearchInputView) {
+        guard let query = view.text,
+              !query.isEmpty else {
+                  manageAssetsView.assetsCollectionView.contentState = .none
+                  searchResults = account.compoundAssets
+                  manageAssetsView.assetsCollectionView.reloadData()
+                  return
+        }
+        
+        searchResults = account.compoundAssets.filter {
+            String($0.id).contains(query) ||
+            $0.detail.name.unwrap(or: "").contains(query) ||
+            $0.detail.unitName.unwrap(or: "").contains(query)
+        }
+        
+        if searchResults.isEmpty {
+            manageAssetsView.assetsCollectionView.contentState = .empty(searchNoContentView)
+        } else {
+            manageAssetsView.assetsCollectionView.contentState = .none
+        }
+        manageAssetsView.assetsCollectionView.reloadData()
+    }
+    
+    func searchInputViewDidReturn(_ view: SearchInputView) {
+        view.endEditing()
+    }
+}
+
+extension ManageAssetsViewController: AssetPreviewDeleteCellDelegate {
+    func assetPreviewDeleteCellDidTapDeleteButton(_ assetPreviewDeleteCell: AssetPreviewDeleteCell) {
+        guard let index = manageAssetsView.assetsCollectionView.indexPath(for: assetPreviewDeleteCell),
+              index.item < searchResults.count else {
                   return
               }
 
-        let assetDetail = account.compoundAssets[index.item].detail
+        let assetDetail = searchResults[index.item].detail
         guard let assetAmount = account.amount(for: assetDetail) else {
             return
         }

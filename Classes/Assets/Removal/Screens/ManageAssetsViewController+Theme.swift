@@ -22,17 +22,12 @@ extension ManageAssetsViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
         let cellSize: LayoutSize
-        let assetPreviewActionViewTheme: AssetPreviewActionViewTheme
+        let assetPreviewActionViewTheme: AssetPreviewDeleteViewTheme
 
         init(_ family: LayoutFamily) {
             backgroundColor = AppColors.Shared.System.background
             cellSize = (UIScreen.main.bounds.width - 48, 72)
-            let actionButtonStyle: ButtonStyle = [
-                .titleColor([.normal(AppColors.Shared.Helpers.negative)]),
-                .title("title-remove".localized),
-                .font(Fonts.DMSans.medium.make(15))
-            ]
-            assetPreviewActionViewTheme = AssetPreviewActionViewTheme(actionButtonStyle: actionButtonStyle, family)
+            assetPreviewActionViewTheme = AssetPreviewDeleteViewTheme()
         }
     }
 }
