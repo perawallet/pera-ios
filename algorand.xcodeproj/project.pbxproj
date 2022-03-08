@@ -233,7 +233,6 @@
 		17BD4EFF2292F1260003E49A /* LocalAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6687142248DF83009F21E7 /* LocalAuthenticator.swift */; };
 		17BD4F012292F1260003E49A /* NSAttributedString+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8C12792241970F00E34D37 /* NSAttributedString+Additions.swift */; };
 		17BD4F052292F1260003E49A /* PollingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53173224A940E00A7455F /* PollingOperation.swift */; };
-		17BD4F192292F1260003E49A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B09603722578C990005BE27 /* GoogleService-Info.plist */; };
 		17BD4F1A2292F1260003E49A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4DA22391C3B005D8565 /* LaunchScreen.storyboard */; };
 		17BD4F1B2292F1260003E49A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2BF34CCB223AA63D0052CAD3 /* Localizable.strings */; };
 		17BEC4602248C81E00AAF370 /* PassphraseVerifyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17BEC45F2248C81E00AAF370 /* PassphraseVerifyView.swift */; };
@@ -306,7 +305,6 @@
 		2B09171627B6AC9D00187246 /* PeraInroductionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D45A2E27B556D500DBB334 /* PeraInroductionViewTheme.swift */; };
 		2B09171727B6ACB000187246 /* PeraIntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D45A2A27B556AF00DBB334 /* PeraIntroductionViewController.swift */; };
 		2B09171827B6ACB000187246 /* PeraIntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D45A2A27B556AF00DBB334 /* PeraIntroductionViewController.swift */; };
-		2B09603822578C990005BE27 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B09603722578C990005BE27 /* GoogleService-Info.plist */; };
 		2B0A6A98265414B9001C88C3 /* AlgoUSDValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0A6A97265414B9001C88C3 /* AlgoUSDValueFormatter.swift */; };
 		2B0A6A99265414B9001C88C3 /* AlgoUSDValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0A6A97265414B9001C88C3 /* AlgoUSDValueFormatter.swift */; };
 		2B0A6A9A265414B9001C88C3 /* AlgoUSDValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0A6A97265414B9001C88C3 /* AlgoUSDValueFormatter.swift */; };
@@ -667,7 +665,6 @@
 		2B0F632524EC129D00DA22A6 /* PollingOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF53173224A940E00A7455F /* PollingOperation.swift */; };
 		2B0F632624EC129D00DA22A6 /* RewardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BD54765231714A9007179FE /* RewardDetailViewController.swift */; };
 		2B0F632E24EC129D00DA22A6 /* PublicSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615E243F739B006DEA54 /* PublicSans-Regular.ttf */; };
-		2B0F633224EC129D00DA22A6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2B09603722578C990005BE27 /* GoogleService-Info.plist */; };
 		2B0F633524EC129D00DA22A6 /* PublicSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615B243F739B006DEA54 /* PublicSans-Medium.ttf */; };
 		2B0F633724EC129D00DA22A6 /* PublicSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2B51615F243F739B006DEA54 /* PublicSans-SemiBold.ttf */; };
 		2B0F633B24EC129D00DA22A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B8BE4DA22391C3B005D8565 /* LaunchScreen.storyboard */; };
@@ -3645,6 +3642,9 @@
 		F03422C72754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
 		F03422C82754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
 		F03422C92754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
+		F060AD0B27D763FC00511615 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F060AD0A27D763FC00511615 /* GoogleService-Info.plist */; };
+		F060AD0D27D7640700511615 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F060AD0C27D7640700511615 /* GoogleService-Info.plist */; };
+		F060AD0F27D7641200511615 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F060AD0E27D7641200511615 /* GoogleService-Info.plist */; };
 		F0772B54275EB1DD003A9329 /* AccountDetailFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */; };
 		F0772B55275EB1DD003A9329 /* AccountDetailFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */; };
 		F0772B56275EB1DD003A9329 /* AccountDetailFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */; };
@@ -3965,7 +3965,6 @@
 		2B05A674251E3BED008A8791 /* UITextView+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Additions.swift"; sourceTree = "<group>"; };
 		2B0823DA23B6677A00D52BCF /* AssetSupportDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetSupportDraft.swift; sourceTree = "<group>"; };
 		2B0823DD23B668DB00D52BCF /* NotificationAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationAsset.swift; sourceTree = "<group>"; };
-		2B09603722578C990005BE27 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2B0A6A97265414B9001C88C3 /* AlgoUSDValueFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoUSDValueFormatter.swift; sourceTree = "<group>"; };
 		2B0AD7F127565D7300F83660 /* AssetFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFetcher.swift; sourceTree = "<group>"; };
 		2B0AD8192756AE9F00F83660 /* AssetCreator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetCreator.swift; sourceTree = "<group>"; };
@@ -3996,7 +3995,7 @@
 		2B0F5F3D24E5F29B00DA22A6 /* RekeyTransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransactionSendDraft.swift; sourceTree = "<group>"; };
 		2B0F5F5A24EAECB700DA22A6 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crypto.framework; path = ../../Desktop/Algorand/SDK/Crypto.framework; sourceTree = "<group>"; };
 		2B0F634E24EC129D00DA22A6 /* pera-prod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pera-prod.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2B0F634F24EC129D00DA22A6 /* Info-Prod.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Prod.plist"; sourceTree = "<group>"; };
+		2B0F634F24EC129D00DA22A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B0F635124ED0CCF00DA22A6 /* RekeyedAccountsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountsResponse.swift; sourceTree = "<group>"; };
 		2B0F635524ED0CFC00DA22A6 /* RekeyedAccountQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountQuery.swift; sourceTree = "<group>"; };
 		2B0F7DFE25D6DBE800B16B85 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
@@ -5118,12 +5117,15 @@
 		D4FC474E27146E1100FC5E3B /* LedgerAccountDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailView.swift; sourceTree = "<group>"; };
 		D4FC47522714909A00FC5E3B /* LedgerAccountDetailLayoutBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailLayoutBuilder.swift; sourceTree = "<group>"; };
 		D4FC47562714940600FC5E3B /* LedgerAccountDetailDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerAccountDetailDataSource.swift; sourceTree = "<group>"; };
-		EC9412FF22BD6D4C00745662 /* Info-Demo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-Demo.plist"; sourceTree = "<group>"; };
+		EC9412FF22BD6D4C00745662 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F022D1D82760AAFC00D786CD /* BlockCycle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCycle.swift; sourceTree = "<group>"; };
 		F022D1DC276365DE00D786CD /* BlockProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockProcessor.swift; sourceTree = "<group>"; };
 		F0261A9727C4E28D009D8BF4 /* AppAuthChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAuthChecker.swift; sourceTree = "<group>"; };
 		F0261A9B27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAppAuthChecker.swift; sourceTree = "<group>"; };
 		F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
+		F060AD0A27D763FC00511615 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F060AD0C27D7640700511615 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F060AD0E27D7641200511615 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailFetchOperation.swift; sourceTree = "<group>"; };
 		F0772B5B275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailGroupFetchOperation.swift; sourceTree = "<group>"; };
 		F07CD2FA276A1E39006665FE /* AccountCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollection.swift; sourceTree = "<group>"; };
@@ -7196,6 +7198,7 @@
 				17512612223BDC2B0095AF4F /* Libraries */,
 				2B8BE4CF22391C38005D8565 /* Products */,
 				2B8BE4E5223924DB005D8565 /* Resources */,
+				F060AD0627D7634A00511615 /* Target Support Files */,
 				2B8BE4E42239248A005D8565 /* Support */,
 			);
 			sourceTree = "<group>";
@@ -7239,10 +7242,6 @@
 		2B8BE4E42239248A005D8565 /* Support */ = {
 			isa = PBXGroup;
 			children = (
-				2B0F634F24EC129D00DA22A6 /* Info-Prod.plist */,
-				EC9412FF22BD6D4C00745662 /* Info-Demo.plist */,
-				2B09603722578C990005BE27 /* GoogleService-Info.plist */,
-				2B8BE4DD22391C3B005D8565 /* Info.plist */,
 				2B3BC385266FEBCD007D7107 /* Config.xcconfig */,
 			);
 			path = Support;
@@ -12407,6 +12406,43 @@
 			path = Macaroon;
 			sourceTree = "<group>";
 		};
+		F060AD0627D7634A00511615 /* Target Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				F060AD0927D7636D00511615 /* Beta */,
+				F060AD0727D7636000511615 /* Staging */,
+				F060AD0827D7636600511615 /* Store */,
+			);
+			path = "Target Support Files";
+			sourceTree = "<group>";
+		};
+		F060AD0727D7636000511615 /* Staging */ = {
+			isa = PBXGroup;
+			children = (
+				F060AD0C27D7640700511615 /* GoogleService-Info.plist */,
+				EC9412FF22BD6D4C00745662 /* Info.plist */,
+			);
+			path = Staging;
+			sourceTree = "<group>";
+		};
+		F060AD0827D7636600511615 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				F060AD0E27D7641200511615 /* GoogleService-Info.plist */,
+				2B8BE4DD22391C3B005D8565 /* Info.plist */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		F060AD0927D7636D00511615 /* Beta */ = {
+			isa = PBXGroup;
+			children = (
+				F060AD0A27D763FC00511615 /* GoogleService-Info.plist */,
+				2B0F634F24EC129D00DA22A6 /* Info.plist */,
+			);
+			path = Beta;
+			sourceTree = "<group>";
+		};
 		F0772B52275EB17F003A9329 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
@@ -12821,7 +12857,6 @@
 				D405059626F0F0A7001D0D11 /* dark-ledger.json in Resources */,
 				D4CC472226DD18E900AA1BFE /* DMSans-Bold.ttf in Resources */,
 				2B95421925B07FDF0098805B /* LedgerAccount.json in Resources */,
-				17BD4F192292F1260003E49A /* GoogleService-Info.plist in Resources */,
 				2B95410125A861810098805B /* TurkishLiraAsset.json in Resources */,
 				2B9541C025AF16B20098805B /* AssetTransaction.json in Resources */,
 				2B95410B25A861870098805B /* User.json in Resources */,
@@ -12835,6 +12870,7 @@
 				2B95422725B0B3280098805B /* AssetAdditionTransaction.json in Resources */,
 				2B95422E25B19E3D0098805B /* PreviousUser.json in Resources */,
 				17BD4F1A2292F1260003E49A /* LaunchScreen.storyboard in Resources */,
+				F060AD0D27D7640700511615 /* GoogleService-Info.plist in Resources */,
 				2B98844F25B880D5004532CE /* AssetSearchResult.json in Resources */,
 				2B6811E125345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B95421225B07FD60098805B /* RekeyedAccount.json in Resources */,
@@ -12870,7 +12906,6 @@
 				D446A74F272ABEFC0081D60B /* dark-rekey.json in Resources */,
 				2B0F632E24EC129D00DA22A6 /* PublicSans-Regular.ttf in Resources */,
 				D4CC470926DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */,
-				2B0F633224EC129D00DA22A6 /* GoogleService-Info.plist in Resources */,
 				2B0F633524EC129D00DA22A6 /* PublicSans-Medium.ttf in Resources */,
 				2B0F633724EC129D00DA22A6 /* PublicSans-SemiBold.ttf in Resources */,
 				D4CC470026DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
@@ -12878,6 +12913,7 @@
 				2B0F633B24EC129D00DA22A6 /* LaunchScreen.storyboard in Resources */,
 				D4CC472426DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */,
 				D4CC471526DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */,
+				F060AD0B27D763FC00511615 /* GoogleService-Info.plist in Resources */,
 				D446A74B272ABEF50081D60B /* light-rekey.json in Resources */,
 				2B77479C26012E670083EFFA /* mnemonics.txt in Resources */,
 				D4CC471B26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */,
@@ -12905,7 +12941,6 @@
 				D446A74E272ABEFC0081D60B /* dark-rekey.json in Resources */,
 				2B516173243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */,
 				D4CC470826DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */,
-				2B09603822578C990005BE27 /* GoogleService-Info.plist in Resources */,
 				2B51616D243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */,
 				2B516175243F739D006DEA54 /* PublicSans-SemiBold.ttf in Resources */,
 				D4CC46FF26DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
@@ -12913,6 +12948,7 @@
 				2B8BE4DC22391C3B005D8565 /* LaunchScreen.storyboard in Resources */,
 				D4CC472326DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */,
 				D4CC471426DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */,
+				F060AD0F27D7641200511615 /* GoogleService-Info.plist in Resources */,
 				D446A74A272ABEF50081D60B /* light-rekey.json in Resources */,
 				2B77479B26012E670083EFFA /* mnemonics.txt in Resources */,
 				D4CC471A26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */,
@@ -16781,15 +16817,15 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Support/Info-Demo.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Staging/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 5.0.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algoranddemo;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
+				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -16810,16 +16846,16 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Support/Info-Demo.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Staging/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 5.0.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algoranddemo;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.algorandllc.algoranddemo";
+				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -16839,16 +16875,16 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Support/Info-Demo.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Staging/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 5.0.3;
-				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algoranddemo;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.algorandllc.algoranddemo";
+				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.staging;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.staging";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -16869,7 +16905,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Support/Info-Prod.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Beta/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -16878,7 +16914,7 @@
 				MARKETING_VERSION = 5.0.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = Algorand_Development;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -16899,7 +16935,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Support/Info-Prod.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Beta/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -16908,7 +16944,7 @@
 				MARKETING_VERSION = 5.0.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.algorandllc.algorand";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -16929,7 +16965,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Support/Info-Prod.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Beta/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -16938,7 +16974,7 @@
 				MARKETING_VERSION = 5.0.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.algorandllc.algorand";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -17082,7 +17118,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Support/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Store/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17091,7 +17127,7 @@
 				MARKETING_VERSION = 5.0.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION -D DEBUG";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -17112,7 +17148,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Support/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Store/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17121,7 +17157,7 @@
 				MARKETING_VERSION = 5.0.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.algorandllc.algorand";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -17269,7 +17305,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libraries",
 				);
-				INFOPLIST_FILE = "$(SRCROOT)/Support/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/Target Support Files/Store/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 13.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17278,7 +17314,7 @@
 				MARKETING_VERSION = 5.0.3;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "${TARGET_NAME}";
 				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.algorandllc.algorand";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
