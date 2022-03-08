@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2B8BE4CD22391C38005D8565"
-               BuildableName = "Pera Algo Wallet.app"
+               BuildableName = "pera.app"
                BlueprintName = "pera"
                ReferencedContainer = "container:algorand.xcodeproj">
             </BuildableReference>
@@ -31,7 +31,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2B8BE4CD22391C38005D8565"
-            BuildableName = "Pera Algo Wallet.app"
+            BuildableName = "pera.app"
             BlueprintName = "pera"
             ReferencedContainer = "container:algorand.xcodeproj">
          </BuildableReference>
@@ -54,7 +54,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2B8BE4CD22391C38005D8565"
-            BuildableName = "Pera Algo Wallet.app"
+            BuildableName = "pera.app"
             BlueprintName = "pera"
             ReferencedContainer = "container:algorand.xcodeproj">
          </BuildableReference>
@@ -71,7 +71,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2B8BE4CD22391C38005D8565"
-            BuildableName = "Pera Algo Wallet.app"
+            BuildableName = "pera.app"
             BlueprintName = "pera"
             ReferencedContainer = "container:algorand.xcodeproj">
          </BuildableReference>
