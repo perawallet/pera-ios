@@ -81,11 +81,12 @@ extension CollectiblePreviewViewModel {
         _ asset: CollectibleAsset
     ) {
         if let primaryImage = asset.primaryImage {
-            let prismURL = PrismURL(baseURL: primaryImage).build()
+            let imageSize = CGSize(width: 40, height: 40)
+            let prismURL = PrismURL(baseURL: primaryImage).setExpectedImageSize(imageSize).setResizeMode(.fit).build()
 
             image = PNGImageSource(
                 url: prismURL,
-                size: .resize(CGSize((40, 40)), .aspectFit),
+                size: .resize(imageSize, .aspectFit),
                 shape: .rounded(4),
                 placeholder: nil
             )

@@ -98,7 +98,10 @@ extension CollectibleListItemViewModel {
         }
 
         if let primaryImage = asset.primaryImage {
-            let prismURL = PrismURL(baseURL: primaryImage).build()
+            let prismURL = PrismURL(baseURL: primaryImage)
+                .setExpectedImageSize(imageSize)
+                .setResizeMode(.fit)
+                .build()
 
             image = PNGImageSource(
                 url: prismURL,
