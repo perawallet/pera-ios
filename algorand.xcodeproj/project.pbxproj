@@ -11936,6 +11936,7 @@
 				D4F3380A27C6E150009DDCF9 /* ItemReceive */,
 				2B4334BB27CEEA0100A3D9D6 /* List */,
 				D4150DD627C4F7AC0064F736 /* Loading */,
+				D48FDF9527CD75CA00C39FC7 /* Receive */,
 			);
 			path = Collectibles;
 			sourceTree = "<group>";
@@ -11946,7 +11947,6 @@
 				D4AEC3BD27CAF1B400507965 /* CollectibleListLoadingViewCell.swift */,
 				D4150DCD27C4D3750064F736 /* CollectibleListLoadingView.swift */,
 				D4150DCF27C4D7630064F736 /* CollectibleListLoadingViewTheme.swift */,
-				D48FDF9527CD75CA00C39FC7 /* Receive */,
 			);
 			path = Loading;
 			sourceTree = "<group>";
