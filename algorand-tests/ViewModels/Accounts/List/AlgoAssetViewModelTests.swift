@@ -21,7 +21,7 @@ import XCTest
 
 class AlgoAssetViewModelTests: XCTestCase {
 
-    private let account = Bundle.main.decode(Account.self, from: "AccountA.json")
+    private let account = Bundle.main.decode(response: Account.self, from: "AccountA.json")
 
 //    func testAmount() {
 //        let viewModel = AlgoAssetViewModel(account: account)

@@ -20,7 +20,7 @@ import MagpieCore
 
 extension Bundle {
     func decode<T: ResponseModel>(
-        _ type: T.Type,
+        response type: T.Type,
         from file: String
     ) -> T {
         guard let url = self.url(forResource: file, withExtension: nil) else {

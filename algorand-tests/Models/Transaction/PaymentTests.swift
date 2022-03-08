@@ -21,7 +21,7 @@ import XCTest
 
 class PaymentTests: XCTestCase {
 
-    private let payment = Bundle.main.decode(Payment.self, from: "Payment.json")
+    private let payment = Bundle.main.decode(response: Payment.self, from: "Payment.json")
 
     func testAmountForTransaction() {
         let amount = payment.amountForTransaction(includesCloseAmount: false)

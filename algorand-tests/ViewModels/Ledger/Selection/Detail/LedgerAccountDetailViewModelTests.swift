@@ -21,8 +21,8 @@ import XCTest
 
 class LedgerAccountDetailViewModelTests: XCTestCase {
 
-    private let account = Bundle.main.decode(Account.self, from: "AccountA.json")
-    private let accountB = Bundle.main.decode(Account.self, from: "AccountB.json")
+    private let account = Bundle.main.decode(response: Account.self, from: "AccountA.json")
+    private let accountB = Bundle.main.decode(response: Account.self, from: "AccountB.json")
 
     func testSubtitle() {
         let viewModel = LedgerAccountDetailViewModel(account: account, rekeyedAccounts: [accountB])

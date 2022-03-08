@@ -21,7 +21,7 @@ import XCTest
 
 class RewardDetailViewModelTests: XCTestCase {
 
-    private let account = Bundle.main.decode(Account.self, from: "AccountA.json")
+    private let account = Bundle.main.decode(response: Account.self, from: "AccountA.json")
 
 //    func testRewardAmount() {
 //        let viewModel = RewardDetailViewModel(account: account)

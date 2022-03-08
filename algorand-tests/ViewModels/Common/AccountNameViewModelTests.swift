@@ -21,7 +21,7 @@ import XCTest
 
 class AccountNameViewModelTests: XCTestCase {
 
-    private let account = Bundle.main.decode(Account.self, from: "AccountA.json")
+    private let account = Bundle.main.decode(response: Account.self, from: "AccountA.json")
 
 //    func testImage() {
 //        let viewModel = AccountNameViewModel(account: account)
