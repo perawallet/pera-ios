@@ -49,9 +49,10 @@ final class CollectibleListItemView:
         var viewModel = viewModel
 
         image.load(from: viewModel?.image) { error in
-            guard error != nil else {
-                return
-            }
+            guard error != nil,
+                  viewModel?.image == nil else {
+                      return
+                  }
 
             viewModel?.bindBottomLeftBadgeForError()
         }
