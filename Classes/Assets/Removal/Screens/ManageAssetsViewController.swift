@@ -121,7 +121,7 @@ extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
                 account: account,
                 assetId: assetDecoration.id,
                 asset: assetDecoration,
-                title: "asset-remove-confirmation-title".localized,
+                title: "asset-remove-confirmation-title".localized,
                 detail: String(
                     format: "asset-remove-transaction-warning".localized,
                     "\(assetDecoration.unitName ?? "title-unknown".localized)",
