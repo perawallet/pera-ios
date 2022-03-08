@@ -71,7 +71,7 @@ final class BuyAlgoHomeScreen: BaseViewController, NotificationObserver {
                 return
             }
             
-            if (self.api?.isTestNet ?? true) {
+            if self.api.isTestNet {
                 self.presentTestNetAlert()
                 return
             }
