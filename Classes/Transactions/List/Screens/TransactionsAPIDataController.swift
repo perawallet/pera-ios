@@ -170,13 +170,7 @@ extension TransactionsAPIDataController {
             assetId = String(id)
         }
 
-        let transactionType: Transaction.TransferType?
-
-        if assetId == nil && draft.type == .algos {
-            transactionType = .payment
-        } else {
-            transactionType = nil
-        }
+        let transactionType = transactionTransferType(for: assetId)
 
         let draft = TransactionFetchDraft(
             account: draft.accountHandle.value,
@@ -258,13 +252,7 @@ extension TransactionsAPIDataController {
             assetId = String(id)
         }
 
-        let transactionType: Transaction.TransferType?
-
-        if assetId == nil && draft.type == .algos {
-            transactionType = .payment
-        } else {
-            transactionType = nil
-        }
+        let transactionType = transactionTransferType(for: assetId)
 
         let draft = TransactionFetchDraft(
             account: draft.accountHandle.value,
@@ -317,6 +305,14 @@ extension TransactionsAPIDataController {
         case let .customRange(from, to):
             return (from, to)
         }
+    }
+    
+    private func transactionTransferType(for assetId: String?) -> Transaction.TransferType? {
+        if assetId == nil && draft.type == .algos {
+            return .payment
+        }
+        
+        return nil
     }
 }
 

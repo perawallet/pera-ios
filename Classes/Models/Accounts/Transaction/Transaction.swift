@@ -115,6 +115,7 @@ extension Transaction {
         return sender == getReceiver()
     }
     
+    ///TODO: Code duplication should be handled
     func isAssetAdditionTransaction(for address: String) -> Bool {
         guard let assetTransfer = assetTransfer else {
             return false

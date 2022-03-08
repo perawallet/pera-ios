@@ -34,13 +34,7 @@ extension ALGAPI {
             to = "\(toDate.toFormat("yyyy-MM-dd"))T23:59:59.000Z"
         }
 
-        let transactionType: String?
-
-        if let txType = draft.transactionType {
-            transactionType = txType.rawValue
-        } else {
-            transactionType = nil
-        }
+        let transactionType = draft.transactionType?.rawValue
         
         return EndpointBuilder(api: self)
             .base(.indexer(network))

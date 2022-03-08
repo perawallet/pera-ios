@@ -45,9 +45,7 @@ struct TransactionsQuery: ObjectQuery {
             params.append(.init(.assetIdFilter, assetId))
         }
 
-        if let transactionType = transactionType {
-            params.append(.init(.transactionType, transactionType))
-        }
+        params.append(.init(.transactionType, transactionType, .setIfPresent))
         
         return params
     }
