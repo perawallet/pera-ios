@@ -6246,6 +6246,8 @@
 		2B4334BB27CEEA0100A3D9D6 /* List */ = {
 			isa = PBXGroup;
 			children = (
+				2B4334B727CEE89600A3D9D6 /* CollectibleListViewController.swift */,
+				D4150DCB27C4D0A00064F736 /* CollectiblesViewController.swift */,
 				2B4334BC27CEEA2100A3D9D6 /* CollectibleListLayout.swift */,
 				2B4334C027CEEA3200A3D9D6 /* CollectibleListDataSource.swift */,
 				2B4334C427CEEA4100A3D9D6 /* CollectibleListDataController.swift */,
@@ -6364,6 +6366,13 @@
 				2B4334AF27C5293300A3D9D6 /* Collectible.swift */,
 			);
 			path = Asset;
+			sourceTree = "<group>";
+		};
+		2B4A8A7327D7555D005F1EFA /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Detail;
 			sourceTree = "<group>";
 		};
 		2B4A9C3E250782AB00D58B6B /* Transaction */ = {
@@ -11920,13 +11929,11 @@
 		D4150DD527C4F78D0064F736 /* Collectibles */ = {
 			isa = PBXGroup;
 			children = (
-				2B4334B727CEE89600A3D9D6 /* CollectibleListViewController.swift */,
-				D4150DCB27C4D0A00064F736 /* CollectiblesViewController.swift */,
-				D48FDF9527CD75CA00C39FC7 /* Receive */,
+				2B4A8A7327D7555D005F1EFA /* Detail */,
 				D4150DE027C566F50064F736 /* Empty */,
 				D4F3380E27C6E1AA009DDCF9 /* Item */,
-				D4F3380A27C6E150009DDCF9 /* ItemReceive */,
 				D4F3380D27C6E16E009DDCF9 /* ItemLoading */,
+				D4F3380A27C6E150009DDCF9 /* ItemReceive */,
 				2B4334BB27CEEA0100A3D9D6 /* List */,
 				D4150DD627C4F7AC0064F736 /* Loading */,
 			);
@@ -11939,6 +11946,7 @@
 				D4AEC3BD27CAF1B400507965 /* CollectibleListLoadingViewCell.swift */,
 				D4150DCD27C4D3750064F736 /* CollectibleListLoadingView.swift */,
 				D4150DCF27C4D7630064F736 /* CollectibleListLoadingViewTheme.swift */,
+				D48FDF9527CD75CA00C39FC7 /* Receive */,
 			);
 			path = Loading;
 			sourceTree = "<group>";
