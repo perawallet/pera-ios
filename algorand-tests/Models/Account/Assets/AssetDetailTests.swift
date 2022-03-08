@@ -21,7 +21,7 @@ import XCTest
 
 class AssetDetailTests: XCTestCase {
     
-    private let assetDetail = Bundle.main.decode(AssetDetail.self, from: "HipoCoinAsset.json")
+    private let assetDetail = Bundle.main.decode(response: AssetDetail.self, from: "HipoCoinAsset.json")
 
 //    func testGetDisplayNames() {
 //        let displayNames = assetDetail.getDisplayNames()

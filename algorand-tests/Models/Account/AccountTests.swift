@@ -21,9 +21,9 @@ import XCTest
 
 class AccountTests: XCTestCase {
 
-    private let account = Bundle.main.decode(Account.self, from: "AccountA.json")
-    private let accountB = Bundle.main.decode(Account.self, from: "AccountB.json")
-    private let assetDetail = Bundle.main.decode(AssetDetail.self, from: "HipoCoinAsset.json")
+    private let account = Bundle.main.decode(response: Account.self, from: "AccountA.json")
+    private let accountB = Bundle.main.decode(response: Account.self, from: "AccountB.json")
+    private let assetDetail = Bundle.main.decode(response: AssetDetail.self, from: "HipoCoinAsset.json")
 
     func testAmount() {
         let amount = account.amount(for: assetDetail)
@@ -73,13 +73,13 @@ class AccountTests: XCTestCase {
     }
 
     func testCurrentLedgerDetailForRekey() {
-        let rekeyedAccount = Bundle.main.decode(Account.self, from: "RekeyedAccount.json")
+        let rekeyedAccount = Bundle.main.decode(response: Account.self, from: "RekeyedAccount.json")
         let currentLedgerDetail = rekeyedAccount.currentLedgerDetail
         XCTAssertEqual(currentLedgerDetail?.id, currentLedgerDetail?.id)
     }
 
     func testCurrentLedgerDetailForLedger() {
-        let ledgerAccount = Bundle.main.decode(Account.self, from: "LedgerAccount.json")
+        let ledgerAccount = Bundle.main.decode(response: Account.self, from: "LedgerAccount.json")
         let currentLedgerDetail = ledgerAccount.currentLedgerDetail
         XCTAssertEqual(currentLedgerDetail?.id, currentLedgerDetail?.id)
     }

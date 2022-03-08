@@ -23,8 +23,8 @@ import XCTest
 
 class NotificationsViewModelTests: XCTestCase {
 
-    private let notification = Bundle.main.decode(NotificationMessage.self, from: "NotificationMessage.json")
-    private let account = Bundle.main.decode(Account.self, from: "AccountA.json")
+    private let notification = Bundle.main.decode(response: NotificationMessage.self, from: "NotificationMessage.json")
+    private let account = Bundle.main.decode(response: Account.self, from: "AccountA.json")
 
 //    func testNotificationMessageSenderAccount() {
 //        let viewModel = NotificationsViewModel(notification: notification, senderAccount: account, latestReadTimestamp: 3000)

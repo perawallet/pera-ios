@@ -21,10 +21,10 @@ import XCTest
 
 class TransactionFeeCalculatorTests: XCTestCase {
 
-    private let account = Bundle.main.decode(Account.self, from: "AccountA.json")
-    private let transactionSendDraft = AlgosTransactionSendDraft(from: Bundle.main.decode(Account.self, from: "AccountA.json"))
+    private let account = Bundle.main.decode(response: Account.self, from: "AccountA.json")
+    private let transactionSendDraft = AlgosTransactionSendDraft(from: Bundle.main.decode(response: Account.self, from: "AccountA.json"))
     private let transactionData = TransactionData()
-    private let params = Bundle.main.decode(TransactionParams.self, from: "TransactionParams.json")
+    private let params = Bundle.main.decode(response: TransactionParams.self, from: "TransactionParams.json")
 
     private lazy var transactionFeeCalculator: TransactionFeeCalculator = {
         transactionData.setSignedTransaction(Data(count: 250))
@@ -32,7 +32,7 @@ class TransactionFeeCalculatorTests: XCTestCase {
     }()
 
     private lazy var notValidTransactionFeeCalculator: TransactionFeeCalculator = {
-        let minAccountBalanceAccount = Bundle.main.decode(Account.self, from: "AccountA.json")
+        let minAccountBalanceAccount = Bundle.main.decode(response: Account.self, from: "AccountA.json")
         minAccountBalanceAccount.amount = 600000
 
         transactionData.setSignedTransaction(Data(count: 250))
@@ -45,7 +45,7 @@ class TransactionFeeCalculatorTests: XCTestCase {
     override func setUp() {
         super.setUp()
 
-        let minAccountBalanceAccount = Bundle.main.decode(Account.self, from: "AccountA.json")
+        let minAccountBalanceAccount = Bundle.main.decode(response: Account.self, from: "AccountA.json")
         minAccountBalanceAccount.amount = 600000
         let minBalanceTransactionSendDraft = AlgosTransactionSendDraft(from: minAccountBalanceAccount)
         notValidTransactionFeeCalculator = TransactionFeeCalculator(

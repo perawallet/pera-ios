@@ -21,7 +21,7 @@ import XCTest
 
 class LedgerAccountViewModelTests: XCTestCase {
 
-    private let account = Bundle.main.decode(Account.self, from: "AccountA.json")
+    private let account = Bundle.main.decode(response: Account.self, from: "AccountA.json")
 
 //    func testSubviews() {
 //        let viewModel = LedgerAccountViewModel(account: account, isMultiSelect: true, isSelected: false)

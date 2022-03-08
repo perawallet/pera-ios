@@ -21,9 +21,9 @@ import XCTest
 
 class TransactionTests: XCTestCase {
 
-    private let algoTransaction = Bundle.main.decode(Transaction.self, from: "AlgoTransaction.json")
-    private let assetTransaction = Bundle.main.decode(Transaction.self, from: "AssetTransaction.json")
-    private let assetAdditionTransaction = Bundle.main.decode(Transaction.self, from: "AssetTransaction.json")
+    private let algoTransaction = Bundle.main.decode(response: Transaction.self, from: "AlgoTransaction.json")
+    private let assetTransaction = Bundle.main.decode(response: Transaction.self, from: "AssetTransaction.json")
+    private let assetAdditionTransaction = Bundle.main.decode(response: Transaction.self, from: "AssetTransaction.json")
     
     func testIsPending() {
         XCTAssertFalse(algoTransaction.isPending())
