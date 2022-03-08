@@ -72,6 +72,8 @@ extension AccountAssetListLayout {
             )
         case .pendingAsset:
             return CGSize(theme.assetItemSize)
+        case .addAsset:
+            return CGSize(theme.listFooterSize)
         }
     }
 
@@ -91,29 +93,6 @@ extension AccountAssetListLayout {
             return .zero
         case .assets:
             return CGSize(theme.listHeaderSize)
-        }
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForFooterInSection section: Int
-    ) -> CGSize {
-        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
-
-        guard let listSection = sectionIdentifiers[safe: section] else {
-            return .zero
-        }
-
-        switch listSection {
-        case .portfolio:
-            return .zero
-        case .assets:
-            if isWatchAccount {
-                return .zero
-            }
-
-            return CGSize(theme.listFooterSize)
         }
     }
 }
