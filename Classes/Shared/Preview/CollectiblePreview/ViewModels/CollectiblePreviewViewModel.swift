@@ -29,6 +29,7 @@ struct CollectiblePreviewViewModel:
     private(set) var subtitle: EditText?
     private(set) var accessory: EditText?
     private(set) var assetAbbreviatedName: EditText?
+    private(set) var mediaType: MediaType?
 
     init<T>(
         _ model: T
@@ -65,6 +66,7 @@ extension CollectiblePreviewViewModel {
             bindSubtitle(asset)
             bindAccessory(asset)
             bindAssetAbbreviatedName()
+            bindMediaType(asset)
             return
         }
     }
@@ -168,5 +170,11 @@ extension CollectiblePreviewViewModel {
                 lineHeightMultiplier: 1.18
             )
         )
+    }
+
+    private mutating func bindMediaType(
+        _ asset: CollectibleAsset
+    ) {
+        mediaType = asset.mediaType
     }
 }

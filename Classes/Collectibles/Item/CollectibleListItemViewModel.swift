@@ -27,6 +27,7 @@ struct CollectibleListItemViewModel:
     private(set) var image: ImageSource?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
+    private(set) var mediaType: MediaType?
     private(set) var bottomLeftBadge: UIImage?
 
     init<T>(
@@ -69,6 +70,7 @@ extension CollectibleListItemViewModel {
             bindImage(imageSize: imageSize, asset: asset)
             bindTitle(asset)
             bindSubtitle(asset)
+            bindMediaType(asset)
             bindBottomLeftBadge(asset)
             return
         }
@@ -181,6 +183,12 @@ extension CollectibleListItemViewModel {
             bottomLeftBadge = "badge-warning".uiImage
             return
         }
+    }
+
+    private mutating func bindMediaType(
+        _ asset: CollectibleAsset
+    ) {
+        mediaType = asset.mediaType
     }
 }
 

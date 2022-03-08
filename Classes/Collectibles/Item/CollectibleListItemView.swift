@@ -49,7 +49,9 @@ final class CollectibleListItemView:
         var viewModel = viewModel
 
         image.load(from: viewModel?.image) { error in
-            guard error != nil else {
+            if error == nil,
+               viewModel?.image != nil,
+               viewModel?.mediaType != .unknown {
                 return
             }
 

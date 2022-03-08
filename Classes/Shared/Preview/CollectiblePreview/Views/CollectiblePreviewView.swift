@@ -57,7 +57,8 @@ final class CollectiblePreviewView:
             }
 
             if error == nil,
-               viewModel?.image != nil {
+               viewModel?.image != nil,
+               viewModel?.mediaType != .unknown {
                 self.placeholderView.isHidden = true
             }
         }
