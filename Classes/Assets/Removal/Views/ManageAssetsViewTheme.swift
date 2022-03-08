@@ -22,6 +22,8 @@ import UIKit
 struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
     let backgroundColor: Color
     
+    let searchNoContentViewTheme: NoContentViewTheme
+    
     let title: TextStyle
     let titleText: EditText
     let titleTopPadding: LayoutMetric
@@ -40,6 +42,8 @@ struct ManageAssetsViewTheme: StyleSheet, LayoutSheet {
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
+        
+        self.searchNoContentViewTheme = NoContentViewCommonTheme()
         
         self.title = [
             .textOverflow(SingleLineFittingText()),

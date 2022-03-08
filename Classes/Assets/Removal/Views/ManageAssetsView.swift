@@ -19,7 +19,6 @@ import UIKit
 import MacaroonUIKit
 
 final class ManageAssetsView: View {
-    private lazy var theme = ManageAssetsViewTheme()
     private lazy var titleLabel = Label()
     private lazy var subtitleLabel = Label()
     private(set) lazy var searchInputView = SearchInputView()
@@ -30,22 +29,17 @@ final class ManageAssetsView: View {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = theme.backgroundColor.uiColor
+        collectionView.backgroundColor = AppColors.Shared.System.background.uiColor
         collectionView.register(AssetPreviewDeleteCell.self)
         return collectionView
     }()
     
-    private lazy var contentStateView = ContentStateView()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        customize(theme)
-    }
+    private lazy var searchNoContentView = NoContentView()
 
     func customize(_ theme: ManageAssetsViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
+        addSearchNoContentView(theme)
         addTitleLabel(theme)
         addSubitleLabel(theme)
         addSearchInputView(theme)
@@ -58,6 +52,10 @@ final class ManageAssetsView: View {
 }
 
 extension ManageAssetsView {
+    private func addSearchNoContentView(_ theme: ManageAssetsViewTheme) {
+        searchNoContentView.customize(theme.searchNoContentViewTheme)
+        searchNoContentView.bindData(AssetListSearchNoContentViewModel())
+    }
     private func addTitleLabel(_ theme: ManageAssetsViewTheme) {
         titleLabel.customizeAppearance(theme.title)
         titleLabel.editText = theme.titleText
@@ -98,6 +96,12 @@ extension ManageAssetsView {
             $0.leading.trailing.bottom.equalToSuperview()
         }
         
-        assetsCollectionView.backgroundView = contentStateView
+        assetsCollectionView.backgroundView = ContentStateView()
+    }
+}
+
+extension ManageAssetsView {
+    func updateContentStateView(_ isEmpty: Bool) {
+        assetsCollectionView.contentState = isEmpty ? .empty(searchNoContentView) : .none
     }
 }

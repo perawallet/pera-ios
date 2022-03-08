@@ -21,13 +21,15 @@ import UIKit
 extension ManageAssetsViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
+        let contextViewTheme: ManageAssetsViewTheme
         let cellSize: LayoutSize
-        let assetPreviewActionViewTheme: AssetPreviewDeleteViewTheme
+        let assetPreviewDeleteViewTheme: AssetPreviewDeleteViewTheme
 
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
-            cellSize = (UIScreen.main.bounds.width - 48, 72)
-            assetPreviewActionViewTheme = AssetPreviewDeleteViewTheme()
+            self.backgroundColor = AppColors.Shared.System.background
+            self.contextViewTheme = ManageAssetsViewTheme()
+            self.cellSize = (UIScreen.main.bounds.width - 48, 72)
+            self.assetPreviewDeleteViewTheme = AssetPreviewDeleteViewTheme()
         }
     }
 }
