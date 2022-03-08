@@ -86,7 +86,7 @@ final class PendingTransaction:
         hasher.combine(sender)
         hasher.combine(receiver)
         hasher.combine(amount)
-        hasher.combine(type?.rawValue)
+        hasher.combine(type)
     }
     
     static func == (lhs: PendingTransaction, rhs: PendingTransaction) -> Bool {
