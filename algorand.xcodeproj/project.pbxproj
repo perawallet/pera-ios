@@ -17704,7 +17704,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = W9875NV3WF;
+				DEVELOPMENT_TEAM = KHH37325LN;
 				HEADER_SEARCH_PATHS = "\"${SRCROOT}/Pods/Firebase/CoreOnly/Sources\"";
 				INFOPLIST_FILE = "algorand-tests/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
@@ -17717,7 +17717,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/algorand-staging.app/algorand-staging";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pera-staging.app/pera-staging";
 			};
 			name = Debug;
 		};
@@ -17740,7 +17740,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/algorand-staging.app/algorand-staging";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pera-staging.app/pera-staging";
 			};
 			name = Release;
 		};
@@ -17763,7 +17763,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/algorand-staging.app/algorand-staging";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/pera-staging.app/pera-staging";
 			};
 			name = "App Store";
 		};
