@@ -209,7 +209,7 @@ extension CollectibleListLocalDataController {
                 if collectible.isOwned {
                     cellItem = .cell(
                         .owner(
-                            CollectibleListItemViewModel(
+                            CollectibleListItemReadyViewModel(
                                 imageSize: self.imageSize,
                                 model: collectible
                             )
@@ -218,7 +218,7 @@ extension CollectibleListLocalDataController {
                 } else {
                     cellItem = .cell(
                         .optedIn(
-                            CollectibleListItemViewModel(
+                            CollectibleListItemReadyViewModel(
                                 imageSize: self.imageSize,
                                 model: collectible
                             )
