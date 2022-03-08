@@ -17,7 +17,7 @@
 
 import XCTest
 
-@testable import algorand_staging
+@testable import pera_staging
 
 class PaymentTests: XCTestCase {
 
@@ -28,13 +28,13 @@ class PaymentTests: XCTestCase {
         XCTAssertEqual(amount, 200000)
     }
 
-    func testAmountForTransactionWithClose() {
-        let amount = payment.amountForTransaction(includesCloseAmount: true)
-        XCTAssertEqual(amount, 200100)
-    }
-
-    func testCloseAmountForTransaction() {
-        let closeAmount = payment.closeAmountForTransaction()
-        XCTAssertEqual(closeAmount, 100)
-    }
+//    func testAmountForTransactionWithClose() {
+//        let amount = payment.amountForTransaction(includesCloseAmount: true)
+//        XCTAssertEqual(amount, 200100)
+//    }
+//
+//    func testCloseAmountForTransaction() {
+//        let closeAmount = payment.closeAmountForTransaction()
+//        XCTAssertEqual(closeAmount, 100)
+//    }
 }

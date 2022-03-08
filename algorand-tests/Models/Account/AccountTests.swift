@@ -17,7 +17,7 @@
 
 import XCTest
 
-@testable import algorand_staging
+@testable import pera_staging
 
 class AccountTests: XCTestCase {
 
@@ -35,10 +35,10 @@ class AccountTests: XCTestCase {
         XCTAssertEqual(amountDisplayWithFraction, "2,759.49")
     }
 
-    func testIsThereAnyDifferentAsset() {
-        let isThereAnyDifferentAsset = account.isThereAnyDifferentAsset()
-        XCTAssertTrue(isThereAnyDifferentAsset)
-    }
+//    func testIsThereAnyDifferentAsset() {
+//        let isThereAnyDifferentAsset = account.isThereAnyDifferentAsset()
+//        XCTAssertTrue(isThereAnyDifferentAsset)
+//    }
 
     func testDoesAccountHasParticipationKey() {
         let doesAccountHasParticipationKey = account.doesAccountHasParticipationKey()
@@ -50,16 +50,16 @@ class AccountTests: XCTestCase {
         XCTAssertTrue(hasDifferentAssets)
     }
 
-    func testRemoveAssets() {
-        let assetCount = account.assetDetails.count
-        account.removeAsset(assetDetail.id)
-        XCTAssertNotEqual(assetCount, account.assetDetails.count)
-    }
+//    func testRemoveAssets() {
+//        let assetCount = account.assetDetails.count
+//        account.removeAsset(assetDetail.id)
+//        XCTAssertNotEqual(assetCount, account.assetDetails.count)
+//    }
 
-    func testContainsAsset() {
-        let containsAsset = account.containsAsset(assetDetail.id)
-        XCTAssertTrue(containsAsset)
-    }
+//    func testContainsAsset() {
+//        let containsAsset = account.containsAsset(assetDetail.id)
+//        XCTAssertTrue(containsAsset)
+//    }
 
     func testRequiresLedgerConnection() {
         let requiresLedgerConnection = account.requiresLedgerConnection()
