@@ -138,6 +138,7 @@ extension CollectibleListLocalDataController {
                 if let updatedAccount = sharedDataController.accountCollection[account.value.address] {
                     accounts = [updatedAccount]
                     collectibleAssets = updatedAccount.value.collectibleAssets.compactMap { $0 }.uniqueElements(for: \.id)
+                    searchResults = collectibleAssets
 
                     if let lastQuery = lastQuery {
                         search(for: lastQuery)
@@ -148,6 +149,7 @@ extension CollectibleListLocalDataController {
                 collectibleAssets = accounts
                     .map { $0.value.collectibleAssets }
                     .flatMap { $0 }.uniqueElements(for: \.id)
+                searchResults = collectibleAssets
 
                 if let lastQuery = lastQuery {
                     search(for: lastQuery)
