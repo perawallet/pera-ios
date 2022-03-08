@@ -17,7 +17,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "17BD4DEE2292F1260003E49A"
-            BuildableName = "Pera Algo Wallet Staging.app"
+            BuildableName = "pera-staging.app"
             BlueprintName = "pera-staging"
             ReferencedContainer = "container:algorand.xcodeproj">
          </BuildableReference>
