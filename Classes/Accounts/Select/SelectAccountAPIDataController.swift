@@ -108,12 +108,6 @@ extension SelectAccountAPIDataController {
 
             accounts
                 .forEach {
-                    let isWatchAccount = $0.value.type == .watch
-
-                    if isWatchAccount {
-                        return
-                    }
-
                     let accountPortfolio =
                         AccountPortfolio(account: $0, currency: currency, calculator: calculator)
                     
