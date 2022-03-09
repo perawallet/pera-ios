@@ -79,8 +79,8 @@ extension TutorialViewModel {
             title = "local-authentication-enabled-title".localized
         case .passphraseVerified:
             title = "pass-phrase-verify-pop-up-title".localized
-        case .accountVerified:
-            title = "recover-from-seed-verify-pop-up-title".localized
+        case .accountVerified(let flow):
+            bindAccountSetupFlowTitle(flow)
         case .recoverWithLedger:
             title = "ledger-tutorial-title-text".localized
         case .ledgerSuccessfullyConnected:
@@ -108,8 +108,8 @@ extension TutorialViewModel {
             description = "local-authentication-enabled-subtitle".localized
         case .passphraseVerified:
             description = "pass-phrase-verify-pop-up-explanation".localized
-        case .accountVerified:
-            description = "recover-from-seed-verify-pop-up-explanation".localized
+        case .accountVerified(let flow):
+            bindAccountSetupFlowDescription(flow)
         case .recoverWithLedger:
             description = "tutorial-description-ledger".localized
         case .ledgerSuccessfullyConnected:
@@ -137,8 +137,8 @@ extension TutorialViewModel {
             primaryActionButtonTitle = "title-go-to-accounts".localized
         case .passphraseVerified:
             primaryActionButtonTitle = "title-next".localized
-        case .accountVerified:
-            primaryActionButtonTitle = "title-start-using-pera-wallet".localized
+        case .accountVerified(let flow):
+            bindAccountSetupFlowPrimaryButton(flow)
         case .recoverWithLedger:
             primaryActionButtonTitle = "ledger-tutorial-title-text".localized
         case .ledgerSuccessfullyConnected:
@@ -167,8 +167,58 @@ extension TutorialViewModel {
             secondaryActionButtonTitle = "local-authentication-no".localized
         case .recoverWithLedger:
             secondaryActionButtonTitle = "tutorial-action-title-ledger".localized
+        case .accountVerified(let flow):
+            bindAccountSetupFlowSecondaryButton(flow)
+            
         default:
             break
+        }
+    }
+}
+
+extension TutorialViewModel {
+    private func bindAccountSetupFlowTitle(_ flow: AccountSetupFlow) {
+        if case .initializeAccount(mode: .add(type: .watch)) = flow {
+            self.title = "recover-from-seed-verify-pop-up-title-watch-account".localized
+        } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+            self.title = "recover-from-seed-verify-pop-up-title-watch-account".localized
+        } else {
+            self.title = "recover-from-seed-verify-pop-up-title".localized
+        }
+    }
+    
+    private func bindAccountSetupFlowDescription(_ flow: AccountSetupFlow) {
+        if case .initializeAccount(mode: .add(type: .watch)) = flow {
+            self.description = "recover-from-seed-verify-pop-up-description-watch-account".localized
+        } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+            self.description = "recover-from-seed-verify-pop-up-description-watch-account".localized
+        } else {
+            switch flow {
+            case .initializeAccount:
+                self.description = "recover-from-seed-verify-pop-up-explanation".localized
+            case .addNewAccount, .none:
+                self.description = "recover-from-seed-verify-pop-up-explanation-already-added".localized
+            }
+        }
+    }
+    
+    private func bindAccountSetupFlowPrimaryButton(_ flow: AccountSetupFlow) {
+        if case .initializeAccount(mode: .add(type: .watch)) = flow {
+            self.primaryActionButtonTitle = "title-continue".localized
+        } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+            self.primaryActionButtonTitle = "title-continue".localized
+        } else {
+            self.primaryActionButtonTitle = "moonpay-buy-button-title".localized
+        }
+    }
+    
+    private func bindAccountSetupFlowSecondaryButton(_ flow: AccountSetupFlow) {
+        if case .initializeAccount(mode: .add(type: .watch)) = flow {
+            self.secondaryActionButtonTitle = nil
+        } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+            self.secondaryActionButtonTitle = nil
+        } else {
+            self.secondaryActionButtonTitle = "title-start-using-pera-wallet".localized
         }
     }
 }

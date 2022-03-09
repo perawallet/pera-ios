@@ -272,7 +272,7 @@ enum Tutorial: Equatable {
     case localAuthentication
     case biometricAuthenticationEnabled
     case passphraseVerified(account: AccountInformation)
-    case accountVerified
+    case accountVerified(flow: AccountSetupFlow)
     case recoverWithLedger
     case ledgerSuccessfullyConnected
     case accountSuccessfullyRekeyed(accountName: String)

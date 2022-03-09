@@ -115,21 +115,7 @@ extension AccountNameSetupViewController {
         case .initializeAccount:
             openPasscode()
         case .addNewAccount:
-            switch mode {
-            case let .add(type):
-                switch type {
-                case .create:
-                    launchMain()
-                case .watch:
-                    openAccountVerifiedTutorial()
-                default:
-                    break
-                }
-            case .recover:
-                openAccountVerifiedTutorial()
-            default:
-                break
-            }
+            openAccountVerifiedTutorial()
         default:
             break
         }
@@ -137,7 +123,7 @@ extension AccountNameSetupViewController {
 
     private func openAccountVerifiedTutorial() {
         open(
-            .tutorial(flow: .none, tutorial: .accountVerified),
+            .tutorial(flow: flow, tutorial: .accountVerified(flow: flow)),
             by: .push
         )
     }

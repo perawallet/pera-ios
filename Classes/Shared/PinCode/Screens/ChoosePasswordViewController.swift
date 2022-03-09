@@ -211,7 +211,7 @@ extension ChoosePasswordViewController {
                     tutorialViewController.dismissScreen()
                 } else if case .initializeAccount(mode: .add(type: .watch)) = flow {
                     tutorialViewController.open(
-                        .tutorial(flow: .none, tutorial: .accountVerified),
+                        .tutorial(flow: .none, tutorial: .accountVerified(flow: flow)),
                         by: .push
                     )
                 } else {
