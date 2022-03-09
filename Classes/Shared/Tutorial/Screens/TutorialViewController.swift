@@ -67,7 +67,9 @@ final class TutorialViewController: BaseScrollViewController {
     }
 
     override func bindData() {
-        tutorialView.bindData(TutorialViewModel(tutorial))
+        tutorialView.bindData(
+            TutorialViewModel(tutorial, theme: theme.tutorialViewTheme)
+        )
     }
 
     override func setListeners() {
@@ -155,8 +157,9 @@ extension TutorialViewController: TutorialViewDelegate {
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case let .passphraseVerified(account):
             open(.accountNameSetup(flow: flow, mode: .add(type: .create), accountAddress: account.address), by: .push)
-        case .accountVerified:
+        case .accountVerified(let flow):
             launchMain()
+            sendBuyAlgoNotificationIfNeeded(for: flow)
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case .recoverWithLedger:
@@ -179,6 +182,8 @@ extension TutorialViewController: TutorialViewDelegate {
                 ),
                 by: .present
             )
+        case .accountVerified:
+            launchMain()
         default:
             break
         }
@@ -254,6 +259,23 @@ extension TutorialViewController {
                 tutorialViewController.launchMain()
             }
         }
+    }
+    
+    private func sendBuyAlgoNotificationIfNeeded(for flow: AccountSetupFlow) {
+        if api.isTestNet {
+            return
+        }
+        
+        if case .initializeAccount(mode: .add(type: .watch)) = flow {
+            return
+        } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+            return
+        }
+        
+        NotificationCenter.default.post(
+            name: .didLaunchBuyAlgo,
+            object: self
+        )
     }
 }
 

@@ -19,21 +19,25 @@ import UIKit
 import MacaroonUIKit
 import Foundation
 
-final class TutorialViewModel: PairedViewModel {
+final class TutorialViewModel: ViewModel {
     private(set) var image: UIImage?
     private(set) var title: String?
     private(set) var description: String?
     private(set) var primaryActionButtonTitle: String?
     private(set) var secondaryActionButtonTitle: String?
     private(set) var warningDescription: String?
+    
+    private(set) var primaryActionButtonTheme: ButtonTheme?
+    private(set) var secondaryActionButtonTheme: ButtonTheme?
 
-    init(_ model: Tutorial) {
+    init(_ model: Tutorial, theme: TutorialViewTheme) {
         bindImage(model)
         bindTitle(model)
         bindDescription(model)
         bindPrimaryActionButtonTitle(model)
         bindSecondaryActionButtonTitle(model)
         bindWarningTitle(model)
+        bindButtonsStyle(model, theme: theme)
     }
 }
 
@@ -219,6 +223,26 @@ extension TutorialViewModel {
             self.secondaryActionButtonTitle = nil
         } else {
             self.secondaryActionButtonTitle = "title-start-using-pera-wallet".localized
+        }
+    }
+    
+    private func bindButtonsStyle(_ tutorial: Tutorial, theme: TutorialViewTheme) {
+        switch tutorial {
+        case .accountVerified(let flow):
+            bindAccountSetupFlowButtonsTheme(flow, theme: theme)
+        default:
+            return
+        }
+    }
+    
+    private func bindAccountSetupFlowButtonsTheme(_ flow: AccountSetupFlow, theme: TutorialViewTheme) {
+        if case .initializeAccount(mode: .add(type: .watch)) = flow {
+            return
+        } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+            return
+        } else {
+            self.primaryActionButtonTheme = theme.actionButtonTheme
+            self.secondaryActionButtonTheme = theme.mainButtonTheme
         }
     }
 }

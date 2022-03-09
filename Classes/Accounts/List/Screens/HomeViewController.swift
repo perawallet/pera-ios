@@ -22,7 +22,10 @@ import MacaroonUIKit
 
 final class HomeViewController:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout,
+    NotificationObserver {
+
+    var notificationObservations: [NSObjectProtocol] = []
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
@@ -65,6 +68,11 @@ final class HomeViewController:
     ) {
         self.dataController = dataController
         super.init(configuration: configuration)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+        unobserveNotifications()
     }
 
     override func configureNavigationBarAppearance() {
@@ -124,6 +132,19 @@ final class HomeViewController:
     override func linkInteractors() {
         super.linkInteractors()
         listView.delegate = self
+    }
+    
+    override func setListeners() {
+        super.setListeners()
+
+        observe(notification: .didLaunchBuyAlgo) {
+            [unowned self] _ in
+
+            self.open(
+                .buyAlgoHome(transactionDraft: BuyAlgoDraft(), delegate: self),
+                by: .present
+            )
+        }
     }
 }
 
