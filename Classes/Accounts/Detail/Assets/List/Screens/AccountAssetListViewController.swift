@@ -171,13 +171,19 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     self.openAssetDetail(compoundAsset)
                 }
             case .asset:
-                if indexPath.item == 1 {
+                var algoIndex = 2
+                
+                if accountHandle.value.isWatchAccount() {
+                    algoIndex -= 1
+                }
+                
+                if indexPath.item == algoIndex {
                     openAlgoDetail()
                     return
                 }
 
                 /// Reduce search and algos cells from index
-                if let assetDetail = accountHandle.value.compoundAssets[safe: indexPath.item - 2] {
+                if let assetDetail = accountHandle.value.compoundAssets[safe: indexPath.item - algoIndex.advanced(by: 1)] {
                     self.openAssetDetail(assetDetail)
                 }
 
