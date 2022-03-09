@@ -99,8 +99,12 @@ final class PendingTransaction:
 }
 
 extension PendingTransaction {
+    ///TODO: Code duplication should be handled
     func isAssetAdditionTransaction(for address: String) -> Bool {
-        return assetReceiver == address && assetAmount == 0 && type == .assetTransfer
+        return assetReceiver == address &&
+        assetAmount == 0 &&
+        type == .assetTransfer &&
+        sender == address
     }
 }
 
