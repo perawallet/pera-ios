@@ -26,6 +26,10 @@ final class CollectibleListLocalDataController:
         return .init(rawValue: "com.algorand.didAddPendingCollectible")
     }
 
+    static var assetDecorationUserInfoKey: String {
+        return "collectibleListLocalDataController.userInfoKey.assetDecoration"
+    }
+
     var notificationObservations: [NSObjectProtocol] = []
 
     var eventHandler: ((CollectibleDataControllerEvent) -> Void)?
@@ -73,7 +77,10 @@ final class CollectibleListLocalDataController:
             [weak self] notification in
             guard let self = self else { return }
 
-            if let assetDecoration = notification.userInfo?["assetDecoration"] as? AssetDecoration {
+            if let assetDecoration =
+                notification.userInfo?[
+                    Self.assetDecorationUserInfoKey
+                ] as? AssetDecoration {
                 let collectibleAsset = CollectibleAsset(
                     asset: ALGAsset(id: assetDecoration.id),
                     decoration: assetDecoration

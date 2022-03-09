@@ -350,7 +350,9 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
             NotificationCenter.default.post(
                 name: CollectibleListLocalDataController.didAddPendingCollectible,
                 object: self,
-                userInfo: ["assetDecoration": currentAsset]
+                userInfo: [
+                    CollectibleListLocalDataController.assetDecorationUserInfoKey: currentAsset
+                ]
             )
         }
 
