@@ -84,6 +84,12 @@ final class CollectibleAsset: Asset {
     }
 }
 
+extension CollectibleAsset: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
 extension CollectibleAsset: Comparable {
     static func == (lhs: CollectibleAsset, rhs: CollectibleAsset) -> Bool {
         return lhs.id == rhs.id &&

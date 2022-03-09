@@ -739,7 +739,7 @@ extension Router {
         let bannerController = appConfiguration.bannerController
         
         let hasNonWatchAccount = sharedDataController.accountCollection.contains {
-            $0.value.type != .watch
+            !$0.value.isWatchAccount()
         }
         
         if !hasNonWatchAccount {

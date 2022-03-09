@@ -16,10 +16,18 @@
 
 import Foundation
 import CoreGraphics
+import MacaroonUtils
 
 final class CollectibleListLocalDataController:
     CollectibleListDataController,
-    SharedDataControllerObserver {
+    SharedDataControllerObserver,
+    NotificationObserver {
+    static var didAddPendingCollectible: Notification.Name {
+        return .init(rawValue: "com.algorand.didAddPendingCollectible")
+    }
+
+    var notificationObservations: [NSObjectProtocol] = []
+
     var eventHandler: ((CollectibleDataControllerEvent) -> Void)?
 
     private var lastSnapshot: Snapshot?
@@ -31,6 +39,7 @@ final class CollectibleListLocalDataController:
     private let sharedDataController: SharedDataController
 
     private var collectibleAssets: [CollectibleAsset]
+    private var pendingCollectibleAssets: [CollectibleAsset] = []
 
     private lazy var searchResults: [CollectibleAsset] = collectibleAssets
 
@@ -59,10 +68,25 @@ final class CollectibleListLocalDataController:
 
         self.sharedDataController = sharedDataController
         self.isWatchAccount = galleryAccount.singleAccount?.value.isWatchAccount() ?? false
+
+        observe(notification: Self.didAddPendingCollectible) {
+            [weak self] notification in
+            guard let self = self else { return }
+
+            if let assetDecoration = notification.userInfo?["assetDecoration"] as? AssetDecoration {
+                let collectibleAsset = CollectibleAsset(
+                    asset: ALGAsset(id: assetDecoration.id),
+                    decoration: assetDecoration
+                )
+
+                self.addPendingAsset(collectibleAsset)
+            }
+        }
     }
 
     deinit {
         sharedDataController.remove(self)
+        unobserveNotifications()
     }
 }
 
@@ -236,6 +260,33 @@ extension CollectibleListLocalDataController {
                 [.search],
                 toSection: .search
             )
+
+            self.accounts.forEach { accountHandle in
+                self.clearPendingCollectibleAssetsIfNeeded(
+                    for: accountHandle.value
+                )
+            }
+
+            var pendingCollectibleItems: [CollectibleListItem] = []
+
+            self.pendingCollectibleAssets.uniqueElements().forEach { pendingCollectibleAsset in
+                let cellItem: CollectibleItem = .cell(
+                    .pending(
+                        CollectibleListItemPendingViewModel(
+                            imageSize: self.imageSize,
+                            model: pendingCollectibleAsset
+                        )
+                    )
+                )
+
+                let listItem: CollectibleListItem = .collectible(cellItem)
+                pendingCollectibleItems.append(listItem)
+            }
+
+            snapshot.appendItems(
+                pendingCollectibleItems,
+                toSection: .collectibles
+            )
             
             snapshot.appendItems(
                 collectibleItems,
@@ -292,6 +343,21 @@ extension CollectibleListLocalDataController {
             [weak self] in
             guard let self = self else { return }
             self.publish(.didUpdate(snapshot()))
+        }
+    }
+}
+
+extension CollectibleListLocalDataController {
+    private func addPendingAsset(_ collectible: CollectibleAsset) {
+        collectible.state = .pending(.add)
+        pendingCollectibleAssets.append(collectible)
+
+        deliverContentSnapshot()
+    }
+
+    private func clearPendingCollectibleAssetsIfNeeded(for account: Account) {
+        pendingCollectibleAssets = pendingCollectibleAssets.filter {
+            !account.containsCollectibleAsset($0.id)
         }
     }
 }
