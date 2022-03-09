@@ -25,14 +25,19 @@ final class TopAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
         } as? [UICollectionViewLayoutAttributes]
 
         attributes?
-            .reduce([CGFloat: (CGFloat, [UICollectionViewLayoutAttributes])]()) {
-                if $1.representedElementCategory != .cell {
-                    return $0
+            .reduce([CGFloat: (CGFloat, [UICollectionViewLayoutAttributes])]()) { partialResult, layoutAttributes in
+                if layoutAttributes.representedElementCategory != .cell {
+                    return partialResult
                 }
 
-                return $0.merging([ceil($1.center.y): ($1.frame.origin.y, [$1])]) {
-                    ($0.0 < $1.0 ? $0.0 : $1.0, $0.1 + $1.1)
-                }
+                let dictionaryToMerge = [
+                    ceil(layoutAttributes.center.y): (layoutAttributes.frame.origin.y, [layoutAttributes])
+                ]
+
+                return partialResult
+                    .merging(dictionaryToMerge) { current, new in
+                        (min(current.0, new.0), current.1 + new.1)
+                    }
             }
             .values
             .forEach { minY, lines in
