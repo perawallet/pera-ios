@@ -142,6 +142,14 @@ extension AccountNameSetupViewController {
             }
 
             passcodeSettingDisplayStore.disableAskingPasscode()
+            
+            switch self.flow {
+            case .initializeAccount:
+                self.openAccountVerifiedTutorial()
+                return
+            default:
+                break
+            }
 
             if case .add(type: .watch) = self.mode {
                 self.openAccountVerifiedTutorial()
@@ -155,7 +163,15 @@ extension AccountNameSetupViewController {
             guard let self = self else {
                 return
             }
-
+            
+            switch self.flow {
+            case .initializeAccount:
+                self.openAccountVerifiedTutorial()
+                return
+            default:
+                break
+            }
+            
             if case .add(type: .watch) = self.mode {
                 self.openAccountVerifiedTutorial()
                 return
