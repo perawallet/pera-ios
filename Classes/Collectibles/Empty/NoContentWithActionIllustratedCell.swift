@@ -34,7 +34,10 @@ final class NoContentWithActionIllustratedCell:
             frame: frame
         )
 
-        contextView.customize(NoContentWithActionViewIllustratedTheme())
+        var theme = NoContentWithActionViewIllustratedTheme()
+        theme.configureForCollectiblesNoContentWithAction()
+
+        contextView.customize(theme)
     }
 }
 

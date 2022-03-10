@@ -19,6 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 final class ReceiveCollectibleAssetListLayout: NSObject {
+    private var insetCache: [ReceiveCollectibleAssetListSection: UIEdgeInsets] = [:]
     private var sizeCache: [String: CGSize] = [:]
 
     private let listDataSource: ReceiveCollectibleAssetListDataSource
@@ -51,28 +52,11 @@ extension ReceiveCollectibleAssetListLayout {
             return .zero
         }
 
-        var insets = UIEdgeInsets(
-            (0, sectionHorizontalInsets.leading, 0, sectionHorizontalInsets.trailing)
+        return listView(
+            collectionView,
+            layout: collectionViewLayout,
+            insetForSectionAt: listSection
         )
-
-        switch listSection {
-        case .empty:
-            return insets
-        case .loading:
-            insets.top = 192 /// <note> Top margin to nav bar not header. <todo> Change this since header text is dynamic.
-            insets.bottom = 8
-            return insets
-        case .header:
-            insets.top = 24
-            return insets
-        case .search:
-            insets.top = 40
-            return insets
-        case .collectibles:
-            insets.top = 16
-            insets.bottom = 8
-            return insets
-        }
     }
 
     func collectionView(
@@ -162,6 +146,71 @@ extension ReceiveCollectibleAssetListLayout {
 }
 
 extension ReceiveCollectibleAssetListLayout {
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: ReceiveCollectibleAssetListSection
+    ) -> UIEdgeInsets {
+        if let insetCache = insetCache[section] {
+            return insetCache
+        }
+
+        var insets = UIEdgeInsets(
+            (0, sectionHorizontalInsets.leading, 0, sectionHorizontalInsets.trailing)
+        )
+
+        switch section {
+        case .empty:
+            break
+        case .loading:
+            let headerHeight = self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForHeaderItem: ReceiveCollectibleAssetListHeaderViewModel()
+            ).height
+            let headerSectionVerticalInsets = self.listView(
+                listView,
+                layout: listViewLayout,
+                insetForSectionAt: .header
+            ).vertical
+            let searchHeight = sizeForSearch(
+                listView,
+                layout: listViewLayout
+            ).height
+            let searchSectionVerticalInsets = self.listView(
+                listView,
+                layout: listViewLayout,
+                insetForSectionAt: .search
+            ).vertical
+            let collectiblesSectionTopInset = self.listView(
+                listView,
+                layout: listViewLayout,
+                insetForSectionAt: .collectibles
+            ).top
+            let topInset =
+            headerHeight +
+            headerSectionVerticalInsets +
+            searchHeight +
+            searchSectionVerticalInsets +
+            collectiblesSectionTopInset +
+            CollectibleListItemCell.contextPaddings.top
+
+            insets.top = topInset
+            insets.bottom = 8
+        case .header:
+            insets.top = 24
+        case .search:
+            insets.top = 40
+        case .collectibles:
+            insets.top = 16
+            insets.bottom = 8
+        }
+
+        insetCache[section] = insets
+
+        return insets
+    }
+
     private func sizeForSearchNoContent(
         _ listView: UICollectionView
     ) -> CGSize {
