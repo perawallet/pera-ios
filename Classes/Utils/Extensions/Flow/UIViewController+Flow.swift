@@ -32,6 +32,10 @@ extension UIViewController {
     ) {
         AppDelegate.shared?.launchMainAfterAuthorization(presented: viewController)
     }
+    
+    func launchBuyAlgo(shouldStartPolling: Bool = false, draft: BuyAlgoDraft = BuyAlgoDraft()) {
+        AppDelegate.shared?.launchBuyAlgo(shouldStartPolling: shouldStartPolling, draft: draft)
+    }
 }
 
 extension UIViewController {

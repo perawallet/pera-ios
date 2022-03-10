@@ -225,6 +225,10 @@ extension AppDelegate {
         appLaunchController.launchMain()
     }
     
+    func launchBuyAlgo(shouldStartPolling: Bool, draft: BuyAlgoDraft) {
+        appLaunchController.launchBuyAlgo(shouldStartPolling: shouldStartPolling, draft: draft)
+    }
+    
     func launchMainAfterAuthorization(
         presented viewController: UIViewController
     ) {
@@ -262,8 +266,8 @@ extension AppDelegate {
             router.launchAuthorization()
         case .onboarding:
             router.launchOnboarding()
-        case .main:
-            router.launchMain()
+        case .main(let completion):
+            router.launchMain(completion: completion)
         case .mainAfterAuthorization(let presentedViewController, let completion):
             router.launcMainAfterAuthorization(
                 presented: presentedViewController,

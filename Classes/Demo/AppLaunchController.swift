@@ -31,6 +31,7 @@ protocol AppLaunchController: AnyObject {
 
     func launchOnboarding()
     func launchMain()
+    func launchBuyAlgo(shouldStartPolling: Bool, draft: BuyAlgoDraft)
     func launchMainAfterAuthorization(
         presented viewController: UIViewController
     )

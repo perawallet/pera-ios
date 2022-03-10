@@ -250,6 +250,16 @@ extension DeepLinkParser {
         
         return .success(.wcMainTransactionScreen(draft: draft))
     }
+    
+    func discoverBuyAlgo(
+        draft: BuyAlgoDraft
+    ) -> Result? {
+        if !sharedDataController.isAvailable {
+            return .failure(.waitingForAccountsToBeAvailable)
+        }
+        
+        return .success(.buyAlgo(draft: draft))
+    }
 }
 
 extension DeepLinkParser {
@@ -304,6 +314,7 @@ extension DeepLinkParser {
         case assetDetail(draft: TransactionListing)
         case sendTransaction(draft: QRSendTransactionDraft)
         case wcMainTransactionScreen(draft: WalletConnectRequestDraft)
+        case buyAlgo(draft: BuyAlgoDraft)
     }
     
     enum Error: Swift.Error {

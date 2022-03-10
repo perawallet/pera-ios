@@ -107,8 +107,19 @@ final class ALGAppLaunchController:
     
     func launchMain() {
         authChecker.authorize()
-        uiHandler.launchUI(.main)
+        uiHandler.launchUI(.main(completion: nil))
         sharedDataController.startPolling()
+    }
+    
+    func launchBuyAlgo(shouldStartPolling: Bool = false, draft: BuyAlgoDraft) {
+        authChecker.authorize()
+        uiHandler.launchUI(.main(completion: {
+            self.receive(deeplinkWithSource: .buyAlgo(draft))
+        }))
+        
+        if shouldStartPolling {
+            sharedDataController.startPolling()
+        }
     }
     
     func launchMainAfterAuthorization(
@@ -281,6 +292,8 @@ extension ALGAppLaunchController {
             result = determineUIStateIfPossible(forWalletConnectSessionRequest: url)
         case .walletConnectRequest(let draft):
             result = determineUIStateIfPossible(forWalletConnectRequest: draft)
+        case .buyAlgo(let draft):
+            result = determineUIStateIfPossibleForBuyAlgo(draft: draft)
         }
         
         switch result {
@@ -350,6 +363,16 @@ extension ALGAppLaunchController {
         forWalletConnectRequest draft: WalletConnectRequestDraft
     ) -> DeeplinkResult {
         let parserResult = deeplinkParser.discover(walletConnectRequest: draft)
+        
+        switch parserResult {
+        case .none: return nil
+        case .success(let screen): return .success(.deeplink(screen))
+        case .failure(let error): return .failure(error)
+        }
+    }
+    
+    private func determineUIStateIfPossibleForBuyAlgo(draft: BuyAlgoDraft) -> DeeplinkResult {
+        let parserResult = deeplinkParser.discoverBuyAlgo(draft: draft)
         
         switch parserResult {
         case .none: return nil

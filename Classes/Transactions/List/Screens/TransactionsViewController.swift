@@ -309,28 +309,7 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
         let draft = BuyAlgoDraft()
         draft.mutate(with: accountHandle.value.address)
 
-        self.open(
-            .buyAlgoHome(
-                transactionDraft: draft,
-                delegate: self
-            ),
-            by: .present
-        )
-    }
-}
-
-extension TransactionsViewController: BuyAlgoHomeScreenDelegate {
-    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
-        screen.dismissScreen()
-    }
-
-    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
-        screen.dismissScreen(animated: true) {
-            self.buyAlgoResultTransition.perform(
-                .buyAlgoTransaction(buyAlgoParams: params),
-                by: .present
-            )
-        }
+        launchBuyAlgo(shouldStartPolling: false, draft: draft)
     }
 }
 

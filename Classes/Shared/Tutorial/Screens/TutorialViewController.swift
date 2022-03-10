@@ -158,8 +158,7 @@ extension TutorialViewController: TutorialViewDelegate {
         case let .passphraseVerified(account):
             open(.accountNameSetup(flow: flow, mode: .add(type: .create), accountAddress: account.address), by: .push)
         case .accountVerified(let flow):
-            launchMain()
-            sendBuyAlgoNotificationIfNeeded(for: flow)
+            routeBuyAlgo(for: flow)
         case .ledgerSuccessfullyConnected:
             uiHandlers.didTapButtonPrimaryActionButton?(self)
         case .recoverWithLedger:
@@ -261,21 +260,21 @@ extension TutorialViewController {
         }
     }
     
-    private func sendBuyAlgoNotificationIfNeeded(for flow: AccountSetupFlow) {
+    private func routeBuyAlgo(for flow: AccountSetupFlow) {
         if api.isTestNet {
+            launchMain()
             return
         }
         
         if case .initializeAccount(mode: .add(type: .watch)) = flow {
+            launchMain()
             return
         } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
+            launchMain()
             return
         }
         
-        NotificationCenter.default.post(
-            name: .didLaunchBuyAlgo,
-            object: self
-        )
+        launchBuyAlgo(shouldStartPolling: true)
     }
 }
 

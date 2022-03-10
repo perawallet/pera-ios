@@ -22,10 +22,7 @@ import MacaroonUIKit
 
 final class HomeViewController:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout,
-    NotificationObserver {
-
-    var notificationObservations: [NSObjectProtocol] = []
+    UICollectionViewDelegateFlowLayout {
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
@@ -68,11 +65,6 @@ final class HomeViewController:
     ) {
         self.dataController = dataController
         super.init(configuration: configuration)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-        unobserveNotifications()
     }
 
     override func configureNavigationBarAppearance() {
@@ -132,19 +124,6 @@ final class HomeViewController:
     override func linkInteractors() {
         super.linkInteractors()
         listView.delegate = self
-    }
-    
-    override func setListeners() {
-        super.setListeners()
-
-        observe(notification: .didLaunchBuyAlgo) {
-            [unowned self] _ in
-
-            self.open(
-                .buyAlgoHome(transactionDraft: BuyAlgoDraft(), delegate: self),
-                by: .present
-            )
-        }
     }
 }
 
@@ -242,10 +221,7 @@ extension HomeViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.open(
-                .buyAlgoHome(transactionDraft: BuyAlgoDraft(), delegate: self),
-                by: .present
-            )
+            self.launchBuyAlgo()
         }
     }
     
@@ -751,21 +727,6 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             .passphraseDisplay(address: accountHandle.value.address),
             by: .present
         )
-    }
-}
-
-extension HomeViewController: BuyAlgoHomeScreenDelegate {
-    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
-        screen.dismissScreen()
-    }
-
-    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
-        screen.dismissScreen(animated: true) {
-            self.buyAlgoResultTransition.perform(
-                .buyAlgoTransaction(buyAlgoParams: params),
-                by: .present
-            )
-        }
     }
 }
 

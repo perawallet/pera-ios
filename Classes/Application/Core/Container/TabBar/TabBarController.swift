@@ -262,10 +262,7 @@ extension TabBarController {
     private func navigateToBuyAlgo() {
         toggleTransactionOptions()
 
-        open(
-            .buyAlgoHome(transactionDraft: BuyAlgoDraft(), delegate: self),
-            by: .present
-        )
+        launchBuyAlgo()
     }
 }
 
@@ -291,21 +288,6 @@ extension TabBarController: SelectAccountViewControllerDelegate {
                     by: .present
                 )
             }
-        }
-    }
-}
-
-extension TabBarController: BuyAlgoHomeScreenDelegate {
-    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
-        screen.dismissScreen()
-    }
-    
-    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
-        screen.dismissScreen(animated: true) {
-            self.buyAlgoResultTransition.perform(
-                .buyAlgoTransaction(buyAlgoParams: params),
-                by: .present
-            )
         }
     }
 }

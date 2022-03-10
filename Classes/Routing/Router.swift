@@ -83,9 +83,9 @@ class Router:
         }
     }
     
-    func launchMain() {
+    func launchMain(completion: (() -> Void)? = nil) {
         rootViewController.launchTabsIfNeeded()
-        rootViewController.dismissIfNeeded()
+        rootViewController.dismissIfNeeded(animated: true, completion: completion)
     }
     
     func launcMainAfterAuthorization(
@@ -165,6 +165,13 @@ class Router:
                     transitioningDelegate: nil
                 ),
                 animated: true
+            )
+            
+        case .buyAlgo(let draft):
+            self.route(
+                to: .buyAlgoHome(transactionDraft: draft, delegate: self),
+                from: self.findVisibleScreen(over: self.rootViewController),
+                by: .present
             )
         }
     }
@@ -864,5 +871,29 @@ extension Router: SelectAccountViewControllerDelegate {
         selectAccountViewController.open(.sendTransaction(draft: draft), by: .push)
 
         self.qrSendDraft = nil
+    }
+}
+
+extension Router: BuyAlgoHomeScreenDelegate {
+    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
+        screen.dismissScreen()
+    }
+
+    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
+        screen.dismissScreen(animated: true) {
+            self.displayAlgoTransactionScreen(for: params)
+        }
+    }
+    
+    private func displayAlgoTransactionScreen(for params: BuyAlgoParams) {
+        let visibleScreen = findVisibleScreen(over: rootViewController)
+        let transition = BottomSheetTransition(presentingViewController: visibleScreen)
+        
+        ongoingTransitions.append(transition)
+        
+        transition.perform(
+            .buyAlgoTransaction(buyAlgoParams: params),
+            by: .presentWithoutNavigationController
+        )
     }
 }
