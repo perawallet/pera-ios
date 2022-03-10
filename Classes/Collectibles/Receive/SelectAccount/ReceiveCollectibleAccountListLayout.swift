@@ -19,6 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 final class ReceiveCollectibleAccountListLayout: NSObject {
+    private var insetCache: [ReceiveCollectibleAccountListSection: UIEdgeInsets] = [:]
     private var sizeCache: [String: CGSize] = [:]
 
     private let listDataSource: ReceiveCollectibleAccountListDataSource
@@ -51,25 +52,11 @@ extension ReceiveCollectibleAccountListLayout {
             return .zero
         }
 
-        var insets = UIEdgeInsets(
-            (0, sectionHorizontalInsets.leading, 0, sectionHorizontalInsets.trailing)
+        return listView(
+            collectionView,
+            layout: collectionViewLayout,
+            insetForSectionAt: listSection
         )
-
-        switch listSection {
-        case .empty:
-            return insets
-        case .loading:
-            insets.top = 104 /// <note> Top margin to title not header. <todo> Change this since header text is dynamic.
-            insets.bottom = 8
-            return insets
-        case .header:
-            insets.top = 16
-            return insets
-        case .accounts:
-            insets.top = 40
-            insets.bottom = 8
-            return insets
-        }
     }
 
     func collectionView(
@@ -115,12 +102,64 @@ extension ReceiveCollectibleAccountListLayout {
 }
 
 extension ReceiveCollectibleAccountListLayout {
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: ReceiveCollectibleAccountListSection
+    ) -> UIEdgeInsets {
+        if let insetCache = insetCache[section] {
+            return insetCache
+        }
+
+        var insets = UIEdgeInsets(
+            (0, sectionHorizontalInsets.leading, 0, sectionHorizontalInsets.trailing)
+        )
+
+        switch section {
+        case .empty:
+            break
+        case .loading:
+            let headerHeight = self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForHeaderItem: ReceiveCollectibleAccountListHeaderViewModel()
+            ).height
+            let headerSectionVerticalInsets = self.listView(
+                listView,
+                layout: listViewLayout,
+                insetForSectionAt: .header
+            ).vertical
+            let accountsSectionTopInset = self.listView(
+                listView,
+                layout: listViewLayout,
+                insetForSectionAt: .accounts
+            ).top
+            let topInset =
+            headerHeight +
+            headerSectionVerticalInsets +
+            accountsSectionTopInset +
+            AccountPreviewCell.contextPaddings.top
+
+            insets.top = topInset
+            insets.bottom = 8
+        case .header:
+            insets.top = 16
+        case .accounts:
+            insets.top = 40
+            insets.bottom = 8
+        }
+
+        insetCache[section] = insets
+
+        return insets
+    }
+
     func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
         sizeForHeaderItem item: ReceiveCollectibleAccountListHeaderViewModel
     ) -> CGSize {
-        let sizeCacheIdentifier = HomePortfolioCell.reuseIdentifier
+        let sizeCacheIdentifier = TitleSupplementaryCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize

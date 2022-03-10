@@ -22,8 +22,8 @@ struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
     let titleTopMargin: LayoutMetric
     let body: TextStyle
     let bodyTopMargin: LayoutMetric
-    let contentHorizontalPaddings: LayoutHorizontalPaddings
-    let contentVerticalPaddings: LayoutVerticalPaddings
+    var contentHorizontalPaddings: LayoutHorizontalPaddings
+    var contentVerticalPaddings: LayoutVerticalPaddings
     let actionContentEdgeInsets: LayoutPaddings
     let actionCornerRadius: LayoutMetric
     let actionTopMargin: LayoutMetric
