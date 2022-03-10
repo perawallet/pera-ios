@@ -86,7 +86,12 @@ extension ReceiveCollectibleAssetListAPIDataController {
     private func load(with query: String?, isPaginated: Bool = false) {
         cancelOngoingEndpoint()
 
-        let searchDraft = AssetSearchQuery(status: .all, query: query, cursor: nextCursor)
+        let searchDraft = AssetSearchQuery(
+            status: .all,
+            query: query,
+            cursor: nextCursor,
+            hasCollectible: true
+        )
 
         ongoingEndpoint =
         api.searchAssets(searchDraft) { [weak self] response in
@@ -98,18 +103,15 @@ extension ReceiveCollectibleAssetListAPIDataController {
 
                 if isPaginated {
                     let results = self.assets + searchResults.results
-                    self.assets = results.uniqued().filter {
-                        $0.isCollectible
-                    }
+                    self.assets = results.uniqued()
                 } else {
-                    self.assets = searchResults.results.uniqued().filter {
-                        $0.isCollectible
-                    }
+                    self.assets = searchResults.results.uniqued()
                 }
 
                 self.deliverContentSnapshot()
                 self.nextCursor = searchResults.nextCursor
             case .failure:
+                /// <todo> Handle failure case.
                 break
             }
         }
@@ -150,7 +152,7 @@ extension ReceiveCollectibleAssetListAPIDataController {
 
             snapshot.appendSections([.header, .search, .collectibles])
 
-            for asset in self.assets where asset.isCollectible {
+            for asset in self.assets {
                 let collectibleAsset = CollectibleAsset(asset: ALGAsset(id: asset.id), decoration: asset)
                 let assetItem: ReceiveCollectibleAssetListItem = .collectible(
                     CollectiblePreviewViewModel(collectibleAsset)

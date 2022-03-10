@@ -25,6 +25,7 @@ final class CollectibleListItemView:
     private lazy var image = URLImageView()
     private lazy var title = Label()
     private lazy var subtitle = Label()
+    private lazy var topLeftBadge = ImageView()
     private lazy var bottomLeftBadge = ImageView()
     
     func customize(
@@ -51,7 +52,8 @@ final class CollectibleListItemView:
         image.load(from: viewModel?.image) { error in
             if error == nil,
                viewModel?.image != nil,
-               viewModel?.mediaType != .unknown {
+               let mediaType = viewModel?.mediaType,
+               mediaType.isSupported {
                 return
             }
 
@@ -60,13 +62,15 @@ final class CollectibleListItemView:
 
         title.editText = viewModel?.title
         subtitle.editText = viewModel?.subtitle
-        bottomLeftBadge.image = viewModel?.bottomLeftBadge?.uiImage
+        topLeftBadge.image = viewModel?.topLeftBadge
+        bottomLeftBadge.image = viewModel?.bottomLeftBadge
     }
 
     func prepareForReuse() {
         image.prepareForReuse()
         title.editText = nil
         subtitle.editText = nil
+        topLeftBadge.image = nil
         bottomLeftBadge.image = nil
     }
 
@@ -116,6 +120,7 @@ extension CollectibleListItemView {
         }
 
         addBottomLeftBadge(theme)
+        addTopLeftBadge(theme)
     }
 
     private func addTitle(
@@ -164,6 +169,20 @@ extension CollectibleListItemView {
         bottomLeftBadge.snp.makeConstraints {
             $0.leading == theme.bottomLeftBadgePaddings.leading
             $0.bottom == image.snp.bottom - theme.bottomLeftBadgePaddings.bottom
+        }
+    }
+
+    private func addTopLeftBadge(
+        _ theme: CollectibleListItemViewTheme
+    ) {
+        topLeftBadge.customizeAppearance(theme.topLeftBadge)
+        topLeftBadge.layer.draw(corner: theme.corner)
+
+        topLeftBadge.contentEdgeInsets = theme.topLeftBadgeContentEdgeInsets
+        addSubview(topLeftBadge)
+        topLeftBadge.snp.makeConstraints {
+            $0.leading == theme.topLeftBadgePaddings.leading
+            $0.top == theme.topLeftBadgePaddings.top
         }
     }
 }

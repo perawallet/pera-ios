@@ -32,6 +32,10 @@ struct CollectibleListItemViewTheme:
     let bottomLeftBadgeContentEdgeInsets: LayoutOffset
     let bottomLeftBadgePaddings: LayoutPaddings
 
+    let topLeftBadge: ImageStyle
+    let topLeftBadgeContentEdgeInsets: LayoutOffset
+    let topLeftBadgePaddings: LayoutPaddings
+
     let corner: Corner
 
     init(
@@ -56,6 +60,15 @@ struct CollectibleListItemViewTheme:
         ]
         bottomLeftBadgeContentEdgeInsets = (8, 8)
         bottomLeftBadgePaddings = (.noMetric, 8, 8, .noMetric)
+
+        topLeftBadge = [
+            .backgroundColor(UIColor(red: 0.09, green: 0.09, blue: 0.11, alpha: 0.6)),
+            .contentMode(.center)
+        ]
+
+        topLeftBadgeContentEdgeInsets = (4, 4)
+        topLeftBadgePaddings = (8, 8, .noMetric, .noMetric)
+
         corner = Corner(radius: 4)
     }
 }

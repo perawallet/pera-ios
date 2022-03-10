@@ -25,6 +25,7 @@ final class CollectibleListItemPendingView:
     private lazy var image = URLImageView()
     private lazy var title = Label()
     private lazy var subtitle = Label()
+    private lazy var topLeftBadge = ImageView()
     private lazy var pendingContentView = UIView()
     private lazy var pendingLoadingIndicator = ViewLoadingIndicator()
     private lazy var pendingLabel = Label()
@@ -51,6 +52,7 @@ final class CollectibleListItemPendingView:
         image.load(from: viewModel?.image)
         title.editText = viewModel?.title
         subtitle.editText = viewModel?.subtitle
+        topLeftBadge.image = viewModel?.topLeftBadge
         pendingLabel.editText = viewModel?.pendingTitle
     }
 
@@ -59,6 +61,7 @@ final class CollectibleListItemPendingView:
         image.prepareForReuse()
         title.editText = nil
         subtitle.editText = nil
+        topLeftBadge.image = nil
     }
 
     class func calculatePreferredSize(
@@ -107,6 +110,7 @@ extension CollectibleListItemPendingView {
             $0.setPaddings((0, 0, .noMetric, 0))
         }
 
+        addTopLeftBadge(theme)
         addPendingContentView(theme)
     }
 
@@ -187,6 +191,20 @@ extension CollectibleListItemPendingView {
             $0.leading == pendingLoadingIndicator.snp.trailing + theme.pendingLabelPaddings.leading
             $0.bottom == theme.pendingLabelPaddings.bottom
             $0.trailing == theme.pendingLabelPaddings.trailing
+        }
+    }
+
+    private func addTopLeftBadge(
+        _ theme: CollectibleListItemPendingViewTheme
+    ) {
+        topLeftBadge.customizeAppearance(theme.topLeftBadge)
+        topLeftBadge.layer.draw(corner: theme.corner)
+
+        topLeftBadge.contentEdgeInsets = theme.topLeftBadgeContentEdgeInsets
+        addSubview(topLeftBadge)
+        topLeftBadge.snp.makeConstraints {
+            $0.leading == theme.topLeftBadgePaddings.leading
+            $0.top == theme.topLeftBadgePaddings.top
         }
     }
 }

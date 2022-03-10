@@ -27,6 +27,7 @@ struct CollectibleListItemPendingViewModel:
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
     private(set) var mediaType: MediaType?
+    private(set) var topLeftBadge: UIImage?
     private(set) var pendingTitle: EditText?
 
     init<T>(
@@ -70,6 +71,7 @@ extension CollectibleListItemPendingViewModel {
             bindTitle(asset)
             bindSubtitle(asset)
             bindMediaType(asset)
+            bindTopLeftBadge(asset)
             bindPendingTitle()
             return
         }
@@ -119,6 +121,12 @@ extension CollectibleListItemPendingViewModel {
                     ])
                 ])
         )
+    }
+
+    private mutating func bindTopLeftBadge(
+        _ asset: CollectibleAsset
+    ) {
+        topLeftBadge = getTopLeftBadge(asset)
     }
 
     private mutating func bindMediaType(

@@ -28,6 +28,10 @@ struct CollectibleListItemPendingViewTheme:
 
     let subtitle: TextStyle
 
+    let topLeftBadge: ImageStyle
+    let topLeftBadgeContentEdgeInsets: LayoutOffset
+    let topLeftBadgePaddings: LayoutPaddings
+
     let pendingContent: ViewStyle
     let pendingContentPaddings: LayoutPaddings
 
@@ -65,6 +69,14 @@ struct CollectibleListItemPendingViewTheme:
         ]
         indicatorSize = (16, 16)
         indicatorLeadingPadding = 8
+
+        topLeftBadge = [
+            .backgroundColor(UIColor(red: 0.09, green: 0.09, blue: 0.11, alpha: 0.6)),
+            .contentMode(.center)
+        ]
+
+        topLeftBadgeContentEdgeInsets = (4, 4)
+        topLeftBadgePaddings = (8, 8, .noMetric, .noMetric)
 
         pendingLabel = [
             .textColor(AppColors.Shared.Helpers.positive),
