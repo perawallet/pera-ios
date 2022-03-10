@@ -52,7 +52,8 @@ final class CollectibleListItemView:
         image.load(from: viewModel?.image) { error in
             if error == nil,
                viewModel?.image != nil,
-               viewModel?.mediaType?.isSupported == true {
+               let mediaType = viewModel?.mediaType,
+               mediaType.isSupported {
                 return
             }
 
