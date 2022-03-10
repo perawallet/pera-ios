@@ -69,4 +69,5 @@ enum APIParamKey: String, CodingKey {
     case until = "until"
     case interval = "interval"
     case includesAll = "include-all"
+    case hasCollectible = "has_collectible"
 }

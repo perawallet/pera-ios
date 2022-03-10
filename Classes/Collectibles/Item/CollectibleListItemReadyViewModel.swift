@@ -27,6 +27,7 @@ struct CollectibleListItemReadyViewModel:
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
     private(set) var mediaType: MediaType?
+    private(set) var topLeftBadge: UIImage?
     private(set) var bottomLeftBadge: UIImage?
 
     init<T>(
@@ -70,6 +71,7 @@ extension CollectibleListItemReadyViewModel {
             bindTitle(asset)
             bindSubtitle(asset)
             bindMediaType(asset)
+            bindTopLeftBadge(asset)
             bindBottomLeftBadge(asset)
             return
         }
@@ -100,6 +102,12 @@ extension CollectibleListItemReadyViewModel {
         _ asset: CollectibleAsset
     ) {
         subtitle = getSubtitle(asset)
+    }
+
+    private mutating func bindTopLeftBadge(
+        _ asset: CollectibleAsset
+    ) {
+        topLeftBadge = getTopLeftBadge(asset)
     }
 
     private mutating func bindBottomLeftBadge(

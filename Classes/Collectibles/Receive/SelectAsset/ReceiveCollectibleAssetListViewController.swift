@@ -351,7 +351,7 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
                 name: CollectibleListLocalDataController.didAddPendingCollectible,
                 object: self,
                 userInfo: [
-                    CollectibleListLocalDataController.assetDecorationUserInfoKey: currentAsset
+                    CollectibleListLocalDataController.assetUserInfoKey: currentAsset
                 ]
             )
         }

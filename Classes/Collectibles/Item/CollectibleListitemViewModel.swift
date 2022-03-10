@@ -125,6 +125,17 @@ extension CollectibleListItemViewModel {
         )
     }
 
+    func getTopLeftBadge(
+        _ asset: CollectibleAsset
+    ) -> UIImage? {
+        switch asset.mediaType {
+        case .video:
+            return "badge-video".uiImage
+        default:
+            return nil
+        }
+    }
+
     func getMediaType(
         _ asset: CollectibleAsset
     ) -> MediaType? {
@@ -151,7 +162,7 @@ extension CollectibleListItemViewModel {
     }
 }
 
-fileprivate extension Optional where Wrapped == String {
+extension Optional where Wrapped == String {
     func fallback(
         _ stringOrNilOrEmptyOrBlank: @autoclosure () -> Self
     ) -> Self {

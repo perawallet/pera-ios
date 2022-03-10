@@ -51,7 +51,7 @@ extension Collectible {
         var collectionName: String?
 
         init() {
-            self.mediaType = .unknown
+            self.mediaType = .init()
             self.primaryImage = nil
             self.title = nil
             self.collectionName = nil
@@ -66,7 +66,43 @@ extension Collectible {
     }
 }
 
-enum MediaType: String, Codable {
+enum MediaType:
+    RawRepresentable,
+    CaseIterable,
+    Codable,
+    Equatable {
     case image
-    case unknown
+    case video
+    case unknown(String)
+
+    var rawValue: String {
+        switch self {
+        case .image: return "image"
+        case .video: return "video"
+        case .unknown(let aRawValue): return aRawValue
+        }
+    }
+
+    static var allCases: [Self] = [
+        .image, .video
+    ]
+
+    init() {
+        self = .unknown("")
+    }
+
+    init?(
+        rawValue: String
+    ) {
+        let foundCase = Self.allCases.first { $0.rawValue == rawValue }
+        self = foundCase ?? .unknown(rawValue)
+    }
+
+    var isSupported: Bool {
+        if case .unknown = self {
+            return false
+        }
+
+        return true
+    }
 }
