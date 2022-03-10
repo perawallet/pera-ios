@@ -87,7 +87,11 @@ extension SelectAccountAPIDataController {
     }
 
     private func deliverContentSnapshot() {
-        if sharedDataController.accountCollection.isEmpty {
+        let filteredAccounts = sharedDataController.accountCollection.sorted().filter {
+            $0.value.type != .watch
+        }
+
+        if filteredAccounts.isEmpty {
             deliverNoContentSnapshot()
             return
         }
@@ -102,15 +106,8 @@ extension SelectAccountAPIDataController {
             let currency = self.sharedDataController.currency
             let calculator = ALGPortfolioCalculator()
 
-            self.sharedDataController.accountCollection
-                .sorted()
+            filteredAccounts
                 .forEach {
-                    let isWatchAccount = $0.value.type == .watch
-
-                    if isWatchAccount {
-                        return
-                    }
-
                     let accountPortfolio =
                         AccountPortfolio(account: $0, currency: currency, calculator: calculator)
                     
