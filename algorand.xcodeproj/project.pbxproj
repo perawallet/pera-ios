@@ -2571,7 +2571,6 @@
 		95FF7A1527B465CB00E00130 /* QRSendTransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF7A1427B465CB00E00130 /* QRSendTransactionDraft.swift */; };
 		95FF7A1627B465CB00E00130 /* QRSendTransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF7A1427B465CB00E00130 /* QRSendTransactionDraft.swift */; };
 		95FF7A1727B465CB00E00130 /* QRSendTransactionDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95FF7A1427B465CB00E00130 /* QRSendTransactionDraft.swift */; };
-		97F637CB9A81E02C6567D1FE /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		CB3AEBD32743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB3AEBD22743A6F500F85246 /* AlgoSDK.xcframework */; };
 		CB3AEBD42743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB3AEBD22743A6F500F85246 /* AlgoSDK.xcframework */; };
 		CB3AEBD52743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB3AEBD22743A6F500F85246 /* AlgoSDK.xcframework */; };
@@ -4163,7 +4162,7 @@
 		2B0F5F3424E4084400DA22A6 /* RekeyTransactionDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransactionDraft.swift; sourceTree = "<group>"; };
 		2B0F5F3D24E5F29B00DA22A6 /* RekeyTransactionSendDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransactionSendDraft.swift; sourceTree = "<group>"; };
 		2B0F5F5A24EAECB700DA22A6 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crypto.framework; path = ../../Desktop/Algorand/SDK/Crypto.framework; sourceTree = "<group>"; };
-		2B0F634E24EC129D00DA22A6 /* pera-prod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pera-prod.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2B0F634E24EC129D00DA22A6 /* pera-beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pera-beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B0F634F24EC129D00DA22A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B0F635124ED0CCF00DA22A6 /* RekeyedAccountsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountsResponse.swift; sourceTree = "<group>"; };
 		2B0F635524ED0CFC00DA22A6 /* RekeyedAccountQuery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyedAccountQuery.swift; sourceTree = "<group>"; };
@@ -5472,7 +5471,6 @@
 				CBAD47132745434A00C91946 /* MagpieExceptions in Frameworks */,
 				CBAD47202745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
 				CBAD47172745434A00C91946 /* Lottie in Frameworks */,
-				97F637CB9A81E02C6567D1FE /* (null) in Frameworks */,
 				CBAD471F2745434A00C91946 /* MacaroonBanner in Frameworks */,
 				CBAD47292745434A00C91946 /* MacaroonVendors in Frameworks */,
 				CB3AEBD42743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */,
@@ -7453,7 +7451,7 @@
 			children = (
 				2B8BE4CE22391C38005D8565 /* pera.app */,
 				17BD4F252292F1260003E49A /* pera-staging.app */,
-				2B0F634E24EC129D00DA22A6 /* pera-prod.app */,
+				2B0F634E24EC129D00DA22A6 /* pera-beta.app */,
 				2B95407725A75FB20098805B /* pera-tests.xctest */,
 			);
 			name = Products;
@@ -13066,9 +13064,9 @@
 			productReference = 17BD4F252292F1260003E49A /* pera-staging.app */;
 			productType = "com.apple.product-type.application";
 		};
-		2B0F615A24EC129D00DA22A6 /* pera-prod */ = {
+		2B0F615A24EC129D00DA22A6 /* pera-beta */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2B0F634A24EC129D00DA22A6 /* Build configuration list for PBXNativeTarget "pera-prod" */;
+			buildConfigurationList = 2B0F634A24EC129D00DA22A6 /* Build configuration list for PBXNativeTarget "pera-beta" */;
 			buildPhases = (
 				2B0F615C24EC129D00DA22A6 /* Sources */,
 				2B0F632824EC129D00DA22A6 /* Frameworks */,
@@ -13079,7 +13077,7 @@
 			);
 			dependencies = (
 			);
-			name = "pera-prod";
+			name = "pera-beta";
 			packageProductDependencies = (
 				2B187DBB26E54C4F005BEDFD /* MagpieAlamofire */,
 				2B187DBD26E54C4F005BEDFD /* MagpieCore */,
@@ -13107,7 +13105,7 @@
 				D4A241DD27D2BF1300641FF0 /* Prism */,
 			);
 			productName = algorand;
-			productReference = 2B0F634E24EC129D00DA22A6 /* pera-prod.app */;
+			productReference = 2B0F634E24EC129D00DA22A6 /* pera-beta.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2B8BE4CD22391C38005D8565 /* pera */ = {
@@ -13238,7 +13236,7 @@
 			projectRoot = "";
 			targets = (
 				2B8BE4CD22391C38005D8565 /* pera */,
-				2B0F615A24EC129D00DA22A6 /* pera-prod */,
+				2B0F615A24EC129D00DA22A6 /* pera-beta */,
 				17BD4DEE2292F1260003E49A /* pera-staging */,
 				2B95407625A75FB20098805B /* pera-tests */,
 			);
@@ -17468,12 +17466,13 @@
 		2B0F634B24EC129D00DA22A6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Beta";
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 3;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = 87QL82XC78;
+				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17487,9 +17486,9 @@
 				);
 				MARKETING_VERSION = 5.2.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION -D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
+				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE_SPECIFIER = Algorand_Development;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -17498,12 +17497,12 @@
 		2B0F634C24EC129D00DA22A6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Beta";
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = 87QL82XC78;
+				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17517,9 +17516,9 @@
 				);
 				MARKETING_VERSION = 5.2.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
-				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
+				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.algorandllc.algorand";
+				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.beta";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -17528,12 +17527,12 @@
 		2B0F634D24EC129D00DA22A6 /* App Store */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-Beta";
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 3;
-				DEVELOPMENT_TEAM = 87QL82XC78;
+				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -17547,9 +17546,9 @@
 				);
 				MARKETING_VERSION = 5.2.0;
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -D PRODUCTION";
-				PRODUCT_BUNDLE_IDENTIFIER = com.algorandllc.algorand;
+				PRODUCT_BUNDLE_IDENTIFIER = com.peralda.perawallet.beta;
 				PRODUCT_NAME = "${TARGET_NAME}";
-				PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.algorandllc.algorand";
+				PROVISIONING_PROFILE_SPECIFIER = "Profile appstore com.peralda.perawallet.beta";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -17908,7 +17907,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2B0F634A24EC129D00DA22A6 /* Build configuration list for PBXNativeTarget "pera-prod" */ = {
+		2B0F634A24EC129D00DA22A6 /* Build configuration list for PBXNativeTarget "pera-beta" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2B0F634B24EC129D00DA22A6 /* Debug */,

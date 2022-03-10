@@ -272,6 +272,9 @@ extension TransactionsViewController {
                 default:
                     break
                 }
+            case .pending:
+                let pendingCell = cell as! PendingTransactionCell
+                pendingCell.startAnimating()
             default:
                 break
             }
