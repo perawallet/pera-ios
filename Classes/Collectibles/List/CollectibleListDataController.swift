@@ -56,15 +56,9 @@ enum CollectibleItem: Hashable {
 }
 
 enum CollectibleCellItem: Hashable {
-    case owner(CollectibleListItemViewModel)
-    case optedIn(CollectibleListItemViewModel)
-
-    var viewModel: CollectibleListItemViewModel {
-        switch self {
-        case .owner(let viewModel): return viewModel
-        case .optedIn(let viewModel): return viewModel
-        }
-    }
+    case owner(CollectibleListItemReadyViewModel)
+    case optedIn(CollectibleListItemReadyViewModel)
+    case pending(CollectibleListItemPendingViewModel)
 }
 
 enum CollectibleDataControllerEvent {

@@ -66,21 +66,39 @@ final class CollectibleListViewController:
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        let loadingCell =
         listView
             .visibleCells
-            .first { $0 is CollectibleListLoadingViewCell } as? CollectibleListLoadingViewCell
-        loadingCell?.startAnimating()
+            .forEach { cell in 
+                switch cell {
+                case is CollectibleListLoadingViewCell:
+                    let loadingCell = cell as? CollectibleListLoadingViewCell
+                    loadingCell?.restartAnimating()
+                case is CollectibleListItemPendingCell:
+                    let pendingCell = cell as? CollectibleListItemPendingCell
+                    pendingCell?.startLoading()
+                default:
+                    break
+                }
+            }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        let loadingCell =
         listView
             .visibleCells
-            .first { $0 is CollectibleListLoadingViewCell } as? CollectibleListLoadingViewCell
-        loadingCell?.stopAnimating()
+            .forEach { cell in
+                switch cell {
+                case is CollectibleListLoadingViewCell:
+                    let loadingCell = cell as? CollectibleListLoadingViewCell
+                    loadingCell?.stopAnimating()
+                case is CollectibleListItemPendingCell:
+                    let pendingCell = cell as? CollectibleListItemPendingCell
+                    pendingCell?.stopLoading()
+                default:
+                    break
+                }
+            }
     }
 
     override func viewDidLoad() {
@@ -171,8 +189,19 @@ extension CollectibleListViewController {
             default:
                 break
             }
-        default:
-            break
+        case .collectible(let item):
+            switch item {
+            case .cell(let item):
+                switch item {
+                case .pending:
+                    let pendingCell = cell as? CollectibleListItemPendingCell
+                    pendingCell?.startLoading()
+                default:
+                    break
+                }
+            default:
+                break
+            }
         }
     }
 
@@ -191,6 +220,19 @@ extension CollectibleListViewController {
             case .loading:
                 let loadingCell = cell as? CollectibleListLoadingViewCell
                 loadingCell?.stopAnimating()
+            default:
+                break
+            }
+        case .collectible(let item):
+            switch item {
+            case .cell(let item):
+                switch item {
+                case .pending:
+                    let pendingCell = cell as? CollectibleListItemPendingCell
+                    pendingCell?.stopLoading()
+                default:
+                    break
+                }
             default:
                 break
             }

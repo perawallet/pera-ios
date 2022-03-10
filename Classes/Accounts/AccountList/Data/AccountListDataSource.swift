@@ -32,9 +32,9 @@ final class AccountListDataSource: NSObject {
 
         switch mode {
         case .walletConnect:
-            accounts = userAccounts.filter { $0.value.type != .watch }
+            accounts = userAccounts.filter { !$0.value.isWatchAccount() }
         case let .contact(assetDetail):
-            let availableAccounts = userAccounts.filter { $0.value.type != .watch }
+            let availableAccounts = userAccounts.filter { !$0.value.isWatchAccount() }
 
             guard let assetDetail = assetDetail else {
                 accounts.append(contentsOf: availableAccounts)

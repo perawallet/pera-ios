@@ -310,6 +310,8 @@ extension ReceiveCollectibleAssetListViewController:
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
         }
+
+        currentAsset = asset
     }
 }
 
@@ -343,6 +345,17 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
         loadingController?.stopLoading()
+
+        if let currentAsset = currentAsset {
+            NotificationCenter.default.post(
+                name: CollectibleListLocalDataController.didAddPendingCollectible,
+                object: self,
+                userInfo: [
+                    CollectibleListLocalDataController.assetDecorationUserInfoKey: currentAsset
+                ]
+            )
+        }
+
         dismissScreen()
     }
 

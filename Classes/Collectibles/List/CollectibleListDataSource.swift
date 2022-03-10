@@ -80,6 +80,15 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                             item
                         )
                         return cell
+                    case .pending(let item):
+                        let cell = collectionView.dequeue(
+                            CollectibleListItemPendingCell.self,
+                            at: indexPath
+                        )
+                        cell.bindData(
+                            item
+                        )
+                        return cell
                     }
                 case .footer:
                     let cell = collectionView.dequeue(
@@ -94,6 +103,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
         [
             CollectibleListItemCell.self,
             CollectibleListItemOptedInCell.self,
+            CollectibleListItemPendingCell.self,
             CollectibleListItemReceiveCell.self,
             NoContentWithActionIllustratedCell.self,
             CollectibleSearchInputCell.self,

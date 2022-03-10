@@ -14,80 +14,30 @@
 
 //   CollectibleListItemViewModel.swift
 
-import Foundation
 import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 import Prism
 
-struct CollectibleListItemViewModel:
-    ViewModel,
-    Hashable {
-    private(set) var assetID: AssetID?
-    private(set) var image: ImageSource?
-    private(set) var title: EditText?
-    private(set) var subtitle: EditText?
-    private(set) var mediaType: MediaType?
-    private(set) var bottomLeftBadge: UIImage?
-
-    init<T>(
-        imageSize: CGSize,
-        model: T
-    ) {
-        bind(
-            imageSize: imageSize,
-            model: model
-        )
-    }
+protocol CollectibleListItemViewModel: ViewModel {
+    var assetID: AssetID? { get }
+    var image: ImageSource? { get }
+    var title: EditText? { get }
+    var subtitle: EditText? { get }
+    var mediaType: MediaType? { get }
 }
 
 extension CollectibleListItemViewModel {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(assetID)
-        hasher.combine(title)
-        hasher.combine(subtitle)
-    }
-
-    static func == (
-        lhs: CollectibleListItemViewModel,
-        rhs: CollectibleListItemViewModel
-    ) -> Bool {
-        return lhs.assetID == rhs.assetID &&
-        lhs.title == rhs.title &&
-        lhs.subtitle == rhs.subtitle
-    }
-}
-
-extension CollectibleListItemViewModel {
-    mutating func bind<T>(
-        imageSize: CGSize,
-        model: T
-    ) {
-        if let asset = model as? CollectibleAsset {
-            bindAssetID(asset)
-            bindImage(imageSize: imageSize, asset: asset)
-            bindTitle(asset)
-            bindSubtitle(asset)
-            bindMediaType(asset)
-            bindBottomLeftBadge(asset)
-            return
-        }
-    }
-}
-
-extension CollectibleListItemViewModel {
-    private mutating func bindAssetID(
+    func getAssetID(
         _ asset: CollectibleAsset
-    ) {
-        assetID = asset.id
+    ) -> AssetID? {
+        return asset.id
     }
 
-    private mutating func bindImage(
+    func getImage(
         imageSize: CGSize,
         asset: CollectibleAsset
-    ) {
+    ) -> ImageSource? {
         let placeholder = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
 
         let size: ImageSize
@@ -105,7 +55,7 @@ extension CollectibleListItemViewModel {
                 .setResizeMode(.fit)
                 .build()
 
-            image = PNGImageSource(
+            return PNGImageSource(
                 url: prismURL,
                 size: size,
                 shape: .rounded(4),
@@ -114,7 +64,6 @@ extension CollectibleListItemViewModel {
                     text: getPlaceholder(placeholder)
                 )
             )
-            return
         }
 
         let imageSource =
@@ -126,21 +75,21 @@ extension CollectibleListItemViewModel {
             )
         )
 
-        image = imageSource
+        return imageSource
     }
 
-    private mutating func bindTitle(
+    func getTitle(
         _ asset: CollectibleAsset
-    ) {
+    ) -> EditText? {
         guard let collectionName = asset.collectionName,
               !collectionName.isEmptyOrBlank else {
-                  return
+                  return nil
               }
 
         let font = Fonts.DMSans.regular.make(13)
         let lineHeightMultiplier = 1.18
-        
-        title = .attributedString(
+
+        return .attributedString(
             collectionName
                 .attributed([
                     .font(font),
@@ -154,15 +103,15 @@ extension CollectibleListItemViewModel {
         )
     }
 
-    private mutating func bindSubtitle(
+    func getSubtitle(
         _ asset: CollectibleAsset
-    ) {
+    ) -> EditText? {
         let subtitle = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
 
         let font = Fonts.DMSans.regular.make(15)
         let lineHeightMultiplier = 1.23
 
-        self.subtitle = .attributedString(
+        return .attributedString(
             subtitle
                 .attributed([
                     .font(font),
@@ -176,30 +125,13 @@ extension CollectibleListItemViewModel {
         )
     }
 
-    private mutating func bindBottomLeftBadge(
+    func getMediaType(
         _ asset: CollectibleAsset
-    ) {
-        if !asset.isOwned {
-            bottomLeftBadge = "badge-warning".uiImage
-            return
-        }
+    ) -> MediaType? {
+        return asset.mediaType
     }
 
-    private mutating func bindMediaType(
-        _ asset: CollectibleAsset
-    ) {
-        mediaType = asset.mediaType
-    }
-}
-
-extension CollectibleListItemViewModel {
-    mutating func bindBottomLeftBadgeForError() {
-        bottomLeftBadge = "badge-error".uiImage
-    }
-}
-
-extension CollectibleListItemViewModel {
-    func getPlaceholder(
+    private func getPlaceholder(
         _ aPlaceholder: String
     ) -> EditText {
         let font = Fonts.DMSans.regular.make(13)
@@ -219,13 +151,7 @@ extension CollectibleListItemViewModel {
     }
 }
 
-fileprivate extension AssetID {
-    var stringWithHashtag: String {
-        "#".appending(String(self))
-    }
-}
-
-extension Optional where Wrapped == String {
+fileprivate extension Optional where Wrapped == String {
     func fallback(
         _ stringOrNilOrEmptyOrBlank: @autoclosure () -> Self
     ) -> Self {
@@ -250,5 +176,11 @@ extension Optional where Wrapped == String {
         case .some(let value):
             return value
         }
+    }
+}
+
+fileprivate extension AssetID {
+    var stringWithHashtag: String {
+        "#".appending(String(self))
     }
 }

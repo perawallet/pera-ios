@@ -112,7 +112,7 @@ extension CollectibleListLayout {
                 return listView(
                     collectionView,
                     layout: collectionViewLayout,
-                    sizeForCollectibleCellItem: item.viewModel
+                    sizeForCollectibleItem: item
                 )
             case .footer:
                 return sizeForFooter(
@@ -207,13 +207,51 @@ extension CollectibleListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForCollectibleCellItem item: CollectibleListItemViewModel?
+        sizeForCollectibleItem item: CollectibleCellItem
+    ) -> CGSize {
+        switch item {
+        case let .owner(item),
+             let .optedIn(item):
+            return self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForCollectibleReadyCellItem: item
+            )
+        case .pending(let item):
+            return self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForCollectiblePendingCellItem: item
+            )
+        }
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForCollectibleReadyCellItem item: CollectibleListItemReadyViewModel
     ) -> CGSize {
         let width = calculateGridCellWidth(listView, layout: listViewLayout)
 
         let newSize = CollectibleListItemCell.calculatePreferredSize(
             item,
             for: CollectibleListItemCell.theme,
+            fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
+        )
+
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForCollectiblePendingCellItem item: CollectibleListItemPendingViewModel
+    ) -> CGSize {
+        let width = calculateGridCellWidth(listView, layout: listViewLayout)
+
+        let newSize = CollectibleListItemPendingCell.calculatePreferredSize(
+            item,
+            for: CollectibleListItemPendingCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
 
