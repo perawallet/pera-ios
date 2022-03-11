@@ -30,7 +30,6 @@ final class CollectibleDetailViewController:
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
-        collectionView.keyboardDismissMode = .onDrag
         collectionView.backgroundColor = .clear
         return collectionView
     }()
