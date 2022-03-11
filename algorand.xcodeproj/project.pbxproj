@@ -935,6 +935,9 @@
 		2B46262B23758CC9000AE73C /* ALGAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46262923758CC9000AE73C /* ALGAsset.swift */; };
 		2B46262D23758CF4000AE73C /* AssetDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46262C23758CF4000AE73C /* AssetDetail.swift */; };
 		2B46262E23758CF4000AE73C /* AssetDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B46262C23758CF4000AE73C /* AssetDetail.swift */; };
+		2B4A8A7627D77D1F005F1EFA /* CollectibleTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4A8A7527D77D1F005F1EFA /* CollectibleTrait.swift */; };
+		2B4A8A7727D77D1F005F1EFA /* CollectibleTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4A8A7527D77D1F005F1EFA /* CollectibleTrait.swift */; };
+		2B4A8A7827D77D1F005F1EFA /* CollectibleTrait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4A8A7527D77D1F005F1EFA /* CollectibleTrait.swift */; };
 		2B4BD9ED2389CBC000491149 /* AssetNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9EC2389CBC000491149 /* AssetNameView.swift */; };
 		2B4BD9EE2389CBC000491149 /* AssetNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9EC2389CBC000491149 /* AssetNameView.swift */; };
 		2B4BD9FD238AD7F400491149 /* ALGAPI+Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B4BD9FC238AD7F400491149 /* ALGAPI+Assets.swift */; };
@@ -4271,6 +4274,7 @@
 		2B461B7526CAFF970079BF29 /* WCAccountInformationNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WCAccountInformationNameView.swift; sourceTree = "<group>"; };
 		2B46262923758CC9000AE73C /* ALGAsset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAsset.swift; sourceTree = "<group>"; };
 		2B46262C23758CF4000AE73C /* AssetDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetail.swift; sourceTree = "<group>"; };
+		2B4A8A7527D77D1F005F1EFA /* CollectibleTrait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleTrait.swift; sourceTree = "<group>"; };
 		2B4BD9EC2389CBC000491149 /* AssetNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetNameView.swift; sourceTree = "<group>"; };
 		2B4BD9FC238AD7F400491149 /* ALGAPI+Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Assets.swift"; sourceTree = "<group>"; };
 		2B4BDA0A238C9EDF00491149 /* AssetAlertDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetAlertDraft.swift; sourceTree = "<group>"; };
@@ -5667,7 +5671,6 @@
 				2B9EEAC0264D3370007A112D /* Block */,
 				2B0F3D8723C8D1BE006BB01B /* Common */,
 				2B4DF446236C7D6200FF9551 /* Contacts */,
-				D4150DCA27C4D0790064F736 /* Collectibles */,
 				2B4DF447236C7D7900FF9551 /* Error */,
 				2BB64BDA2402779C00519981 /* Ledger */,
 				2B4DF442236C7B7100FF9551 /* Node */,
@@ -6266,13 +6269,11 @@
 		2B4334BB27CEEA0100A3D9D6 /* List */ = {
 			isa = PBXGroup;
 			children = (
-				2B4334B727CEE89600A3D9D6 /* CollectibleListViewController.swift */,
-				D4150DCB27C4D0A00064F736 /* CollectiblesViewController.swift */,
-				2B4334BC27CEEA2100A3D9D6 /* CollectibleListLayout.swift */,
-				2B4334C027CEEA3200A3D9D6 /* CollectibleListDataSource.swift */,
-				2B4334C427CEEA4100A3D9D6 /* CollectibleListDataController.swift */,
-				2B4334C827CEEB9900A3D9D6 /* CollectibleListLocalDataController.swift */,
-				D4A241E127D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift */,
+				2B7A1EFC27DB7A780010F52E /* Data */,
+				2B7A1EFB27DB7A710010F52E /* Layout */,
+				2B7A1EF727DB7A230010F52E /* Screens */,
+				2B7A1EFA27DB7A580010F52E /* ViewModels */,
+				2B7A1EF927DB7A4E0010F52E /* Views */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -6375,6 +6376,7 @@
 		2B46262823758CBB000AE73C /* Asset */ = {
 			isa = PBXGroup;
 			children = (
+				2B4A8A7427D77CE4005F1EFA /* Collectibles */,
 				2B4BDA09238C9EB600491149 /* Draft */,
 				2B4BDA18238D359000491149 /* List */,
 				2B3D73B423C361F800597D32 /* Verified */,
@@ -6382,8 +6384,6 @@
 				2B46262C23758CF4000AE73C /* AssetDetail.swift */,
 				2B4334A327C44C3200A3D9D6 /* Asset.swift */,
 				2B4334A727C44C9000A3D9D6 /* StandardAsset.swift */,
-				2B4334AB27C44CA000A3D9D6 /* CollectibleAsset.swift */,
-				2B4334AF27C5293300A3D9D6 /* Collectible.swift */,
 			);
 			path = Asset;
 			sourceTree = "<group>";
@@ -6393,6 +6393,16 @@
 			children = (
 			);
 			path = Detail;
+			sourceTree = "<group>";
+		};
+		2B4A8A7427D77CE4005F1EFA /* Collectibles */ = {
+			isa = PBXGroup;
+			children = (
+				2B4334AB27C44CA000A3D9D6 /* CollectibleAsset.swift */,
+				2B4334AF27C5293300A3D9D6 /* Collectible.swift */,
+				2B4A8A7527D77D1F005F1EFA /* CollectibleTrait.swift */,
+			);
+			path = Collectibles;
 			sourceTree = "<group>";
 		};
 		2B4A9C3E250782AB00D58B6B /* Transaction */ = {
@@ -7124,6 +7134,245 @@
 				2B77479A26012E670083EFFA /* mnemonics.txt */,
 			);
 			path = Mnemonics;
+			sourceTree = "<group>";
+		};
+		2B7A1EF727DB7A230010F52E /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				2B4334B727CEE89600A3D9D6 /* CollectibleListViewController.swift */,
+				D4150DCB27C4D0A00064F736 /* CollectiblesViewController.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2B7A1EF927DB7A4E0010F52E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2B7A1F0327DB7B380010F52E /* Empty */,
+				D4150DD627C4F7AC0064F736 /* Loading */,
+				2B7A1EFD27DB7A9F0010F52E /* Items */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2B7A1EFA27DB7A580010F52E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				2B7A1F0227DB7B330010F52E /* Empty */,
+				2B7A1F0127DB7B180010F52E /* Items */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2B7A1EFB27DB7A710010F52E /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				2B4334BC27CEEA2100A3D9D6 /* CollectibleListLayout.swift */,
+				D4A241E127D2D24B00641FF0 /* TopAlignedCollectionViewFlowLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2B7A1EFC27DB7A780010F52E /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				2B4334C027CEEA3200A3D9D6 /* CollectibleListDataSource.swift */,
+				2B4334C427CEEA4100A3D9D6 /* CollectibleListDataController.swift */,
+				2B4334C827CEEB9900A3D9D6 /* CollectibleListLocalDataController.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2B7A1EFD27DB7A9F0010F52E /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				D4AAB8B427D238E70011B004 /* CollectibleListItemCell.swift */,
+				D4C6499927D3727700537400 /* CollectibleListItemOptedInCell.swift */,
+				D4F3380F27C6E1BA009DDCF9 /* CollectibleListItemView.swift */,
+				D4F3381127C6E1C6009DDCF9 /* CollectibleListItemViewTheme.swift */,
+				2B7A1F0027DB7AD70010F52E /* Loading */,
+				2B7A1F0427DB7B710010F52E /* Pending */,
+				2B7A1EFF27DB7ABB0010F52E /* Receive */,
+			);
+			path = Items;
+			sourceTree = "<group>";
+		};
+		2B7A1EFF27DB7ABB0010F52E /* Receive */ = {
+			isa = PBXGroup;
+			children = (
+				D4AAB8B827D23ACE0011B004 /* CollectibleListItemReceiveCell.swift */,
+				D4F3380427C68704009DDCF9 /* CollectibleListItemReceiveView.swift */,
+				D4F3380627C689DE009DDCF9 /* CollectibleListItemReceiveViewTheme.swift */,
+			);
+			path = Receive;
+			sourceTree = "<group>";
+		};
+		2B7A1F0027DB7AD70010F52E /* Loading */ = {
+			isa = PBXGroup;
+			children = (
+				D4AEC3B927CAF15C00507965 /* CollectibleListItemLoadingViewCell.swift */,
+				D4150DD127C4D87A0064F736 /* CollectibleListItemLoadingView.swift */,
+				D4150DD327C4E2EF0064F736 /* CollectibleListItemLoadingViewTheme.swift */,
+			);
+			path = Loading;
+			sourceTree = "<group>";
+		};
+		2B7A1F0127DB7B180010F52E /* Items */ = {
+			isa = PBXGroup;
+			children = (
+				D499D27A27C7BACE00641FF5 /* CollectibleListItemReadyViewModel.swift */,
+				D43D6B2B27D809FF000EBD74 /* CollectibleListitemViewModel.swift */,
+				D43D6B2727D7E988000EBD74 /* CollectibleListItemPendingViewModel.swift */,
+			);
+			path = Items;
+			sourceTree = "<group>";
+		};
+		2B7A1F0227DB7B330010F52E /* Empty */ = {
+			isa = PBXGroup;
+			children = (
+				D4150DE127C5675E0064F736 /* CollectiblesNoContentWithActionViewModel.swift */,
+			);
+			path = Empty;
+			sourceTree = "<group>";
+		};
+		2B7A1F0327DB7B380010F52E /* Empty */ = {
+			isa = PBXGroup;
+			children = (
+				D4E7E6CC27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift */,
+				D49E273627D620DF00A326FC /* NoContentWithActionIllustratedCell.swift */,
+			);
+			path = Empty;
+			sourceTree = "<group>";
+		};
+		2B7A1F0427DB7B710010F52E /* Pending */ = {
+			isa = PBXGroup;
+			children = (
+				D43D6B1B27D7DA4F000EBD74 /* CollectibleListItemPendingCell.swift */,
+				D43D6B1F27D7DAF2000EBD74 /* CollectibleListItemPendingView.swift */,
+				D43D6B2327D7DE21000EBD74 /* CollectibleListItemPendingViewTheme.swift */,
+			);
+			path = Pending;
+			sourceTree = "<group>";
+		};
+		2B7A1F0527DB7BB70010F52E /* Send */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Send;
+			sourceTree = "<group>";
+		};
+		2B7A1F0627DB7C150010F52E /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				2B7A1F0727DB7C1E0010F52E /* Title */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		2B7A1F0727DB7C1E0010F52E /* Title */ = {
+			isa = PBXGroup;
+			children = (
+				2B7A1F0927DB7C2C0010F52E /* ViewModels */,
+				2B7A1F0827DB7C240010F52E /* Views */,
+			);
+			path = Title;
+			sourceTree = "<group>";
+		};
+		2B7A1F0827DB7C240010F52E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D48FDFA827CE2AE200C39FC7 /* TitleSupplementaryCell.swift */,
+				D48FDFAA27CE2BF100C39FC7 /* TitleView.swift */,
+				D48FDFAE27CE327700C39FC7 /* TitleViewTheme.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2B7A1F0927DB7C2C0010F52E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D48FDFAC27CE2E6B00C39FC7 /* TitleViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2B7A1F0A27DB7C590010F52E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D48FDFF627CF725D00C39FC7 /* CollectibleSearchInputCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		2B7A1F0B27DB7C5D0010F52E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D48FDFEA27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift */,
+				D4C51B4127CFED2F00F21981 /* ReceiveCollectibleAssetListSearchNoContentViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2B7A1F0C27DB7C660010F52E /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				D48FDFDA27CF4FB600C39FC7 /* ReceiveCollectibleAssetListViewController.swift */,
+				D48FDFDE27CF4FF900C39FC7 /* ReceiveCollectibleAssetListViewControllerTheme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2B7A1F0D27DB7C6F0010F52E /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				D48FDFE227CF54D100C39FC7 /* ReceiveCollectibleAssetListLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2B7A1F0E27DB7C770010F52E /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D48FDFE627CF554F00C39FC7 /* ReceiveCollectibleAssetListDataSource.swift */,
+				D48FDFEE27CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift */,
+				D48FDFF227CF56FF00C39FC7 /* ReceiveCollectibleAssetListAPIDataController.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		2B7A1F1027DB7C840010F52E /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D48FDFB027CE361100C39FC7 /* ReceiveCollectibleAccountListHeaderViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		2B7A1F1127DB7C8A0010F52E /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				D48FDF9827CD765300C39FC7 /* ReceiveCollectibleAccountListViewController.swift */,
+				D48FDFA027CE05EE00C39FC7 /* ReceiveCollectibleAccountListViewControllerTheme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		2B7A1F1227DB7C8E0010F52E /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				D48FDF9A27CDFDC500C39FC7 /* ReceiveCollectibleAccountListLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		2B7A1F1327DB7C930010F52E /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D48FDFA427CE0A3A00C39FC7 /* ReceiveCollectibleAccountListDataSource.swift */,
+				D48FDFB227CE3A2D00C39FC7 /* ReceiveCollectibleAccountListDataController.swift */,
+				D48FDFB627CE3CB500C39FC7 /* ReceiveCollectibleAccountListAPIDataController.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		2B7E3014267A252700E89EE3 /* Empty */ = {
@@ -11936,24 +12185,13 @@
 			path = AssetPreview;
 			sourceTree = "<group>";
 		};
-		D4150DCA27C4D0790064F736 /* Collectibles */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Collectibles;
-			sourceTree = "<group>";
-		};
 		D4150DD527C4F78D0064F736 /* Collectibles */ = {
 			isa = PBXGroup;
 			children = (
 				2B4A8A7327D7555D005F1EFA /* Detail */,
-				D4150DE027C566F50064F736 /* Empty */,
-				D4F3380E27C6E1AA009DDCF9 /* Item */,
-				D4F3380D27C6E16E009DDCF9 /* ItemLoading */,
-				D4F3380A27C6E150009DDCF9 /* ItemReceive */,
 				2B4334BB27CEEA0100A3D9D6 /* List */,
-				D4150DD627C4F7AC0064F736 /* Loading */,
 				D48FDF9527CD75CA00C39FC7 /* Receive */,
+				2B7A1F0527DB7BB70010F52E /* Send */,
 			);
 			path = Collectibles;
 			sourceTree = "<group>";
@@ -11975,16 +12213,6 @@
 				D4150DDE27C543810064F736 /* ResultViewIllustratedTheme.swift */,
 			);
 			path = NoContentWithActionViewIllustrated;
-			sourceTree = "<group>";
-		};
-		D4150DE027C566F50064F736 /* Empty */ = {
-			isa = PBXGroup;
-			children = (
-				D4150DE127C5675E0064F736 /* CollectiblesNoContentWithActionViewModel.swift */,
-				D4E7E6CC27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift */,
-				D49E273627D620DF00A326FC /* NoContentWithActionIllustratedCell.swift */,
-			);
-			path = Empty;
 			sourceTree = "<group>";
 		};
 		D4155E80276C907F00BCBFA4 /* List */ = {
@@ -12430,12 +12658,9 @@
 		D48FDF9527CD75CA00C39FC7 /* Receive */ = {
 			isa = PBXGroup;
 			children = (
-				D48FDFD927CEC64400C39FC7 /* SelectAsset */,
+				2B7A1F0627DB7C150010F52E /* Common */,
 				D48FDFC127CEB9DD00C39FC7 /* SelectAccount */,
-				D48FDFA827CE2AE200C39FC7 /* TitleSupplementaryCell.swift */,
-				D48FDFAA27CE2BF100C39FC7 /* TitleView.swift */,
-				D48FDFAE27CE327700C39FC7 /* TitleViewTheme.swift */,
-				D48FDFAC27CE2E6B00C39FC7 /* TitleViewModel.swift */,
+				D48FDFD927CEC64400C39FC7 /* SelectAsset */,
 			);
 			path = Receive;
 			sourceTree = "<group>";
@@ -12443,13 +12668,10 @@
 		D48FDFC127CEB9DD00C39FC7 /* SelectAccount */ = {
 			isa = PBXGroup;
 			children = (
-				D48FDF9827CD765300C39FC7 /* ReceiveCollectibleAccountListViewController.swift */,
-				D48FDFA027CE05EE00C39FC7 /* ReceiveCollectibleAccountListViewControllerTheme.swift */,
-				D48FDF9A27CDFDC500C39FC7 /* ReceiveCollectibleAccountListLayout.swift */,
-				D48FDFA427CE0A3A00C39FC7 /* ReceiveCollectibleAccountListDataSource.swift */,
-				D48FDFB027CE361100C39FC7 /* ReceiveCollectibleAccountListHeaderViewModel.swift */,
-				D48FDFB227CE3A2D00C39FC7 /* ReceiveCollectibleAccountListDataController.swift */,
-				D48FDFB627CE3CB500C39FC7 /* ReceiveCollectibleAccountListAPIDataController.swift */,
+				2B7A1F1327DB7C930010F52E /* Data */,
+				2B7A1F1227DB7C8E0010F52E /* Layout */,
+				2B7A1F1127DB7C8A0010F52E /* Screens */,
+				2B7A1F1027DB7C840010F52E /* ViewModels */,
 			);
 			path = SelectAccount;
 			sourceTree = "<group>";
@@ -12457,15 +12679,11 @@
 		D48FDFD927CEC64400C39FC7 /* SelectAsset */ = {
 			isa = PBXGroup;
 			children = (
-				D48FDFDA27CF4FB600C39FC7 /* ReceiveCollectibleAssetListViewController.swift */,
-				D48FDFDE27CF4FF900C39FC7 /* ReceiveCollectibleAssetListViewControllerTheme.swift */,
-				D48FDFE227CF54D100C39FC7 /* ReceiveCollectibleAssetListLayout.swift */,
-				D48FDFE627CF554F00C39FC7 /* ReceiveCollectibleAssetListDataSource.swift */,
-				D48FDFEA27CF558F00C39FC7 /* ReceiveCollectibleAssetListHeaderViewModel.swift */,
-				D48FDFEE27CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift */,
-				D48FDFF227CF56FF00C39FC7 /* ReceiveCollectibleAssetListAPIDataController.swift */,
-				D4C51B4127CFED2F00F21981 /* ReceiveCollectibleAssetListSearchNoContentViewModel.swift */,
-				D48FDFF627CF725D00C39FC7 /* CollectibleSearchInputCell.swift */,
+				2B7A1F0E27DB7C770010F52E /* Data */,
+				2B7A1F0D27DB7C6F0010F52E /* Layout */,
+				2B7A1F0C27DB7C660010F52E /* Screens */,
+				2B7A1F0B27DB7C5D0010F52E /* ViewModels */,
+				2B7A1F0A27DB7C590010F52E /* Views */,
 			);
 			path = SelectAsset;
 			sourceTree = "<group>";
@@ -12761,43 +12979,6 @@
 				D46E3A7927BB8E0E003DC719 /* RewardInfo */,
 			);
 			path = AlgosDetailInfo;
-			sourceTree = "<group>";
-		};
-		D4F3380A27C6E150009DDCF9 /* ItemReceive */ = {
-			isa = PBXGroup;
-			children = (
-				D4AAB8B827D23ACE0011B004 /* CollectibleListItemReceiveCell.swift */,
-				D4F3380427C68704009DDCF9 /* CollectibleListItemReceiveView.swift */,
-				D4F3380627C689DE009DDCF9 /* CollectibleListItemReceiveViewTheme.swift */,
-			);
-			path = ItemReceive;
-			sourceTree = "<group>";
-		};
-		D4F3380D27C6E16E009DDCF9 /* ItemLoading */ = {
-			isa = PBXGroup;
-			children = (
-				D4AEC3B927CAF15C00507965 /* CollectibleListItemLoadingViewCell.swift */,
-				D4150DD127C4D87A0064F736 /* CollectibleListItemLoadingView.swift */,
-				D4150DD327C4E2EF0064F736 /* CollectibleListItemLoadingViewTheme.swift */,
-			);
-			path = ItemLoading;
-			sourceTree = "<group>";
-		};
-		D4F3380E27C6E1AA009DDCF9 /* Item */ = {
-			isa = PBXGroup;
-			children = (
-				D4AAB8B427D238E70011B004 /* CollectibleListItemCell.swift */,
-				D4C6499927D3727700537400 /* CollectibleListItemOptedInCell.swift */,
-				D43D6B1B27D7DA4F000EBD74 /* CollectibleListItemPendingCell.swift */,
-				D4F3380F27C6E1BA009DDCF9 /* CollectibleListItemView.swift */,
-				D43D6B1F27D7DAF2000EBD74 /* CollectibleListItemPendingView.swift */,
-				D4F3381127C6E1C6009DDCF9 /* CollectibleListItemViewTheme.swift */,
-				D43D6B2327D7DE21000EBD74 /* CollectibleListItemPendingViewTheme.swift */,
-				D499D27A27C7BACE00641FF5 /* CollectibleListItemReadyViewModel.swift */,
-				D43D6B2B27D809FF000EBD74 /* CollectibleListitemViewModel.swift */,
-				D43D6B2727D7E988000EBD74 /* CollectibleListItemPendingViewModel.swift */,
-			);
-			path = Item;
 			sourceTree = "<group>";
 		};
 		F03422C52754DB2300E3C8B5 /* Macaroon */ = {
@@ -14669,6 +14850,7 @@
 				D4BC640D26DE3D2C000CFD28 /* ButtonPrimaryTheme.swift in Sources */,
 				17BD4EF72292F1260003E49A /* CGFloat+Additions.swift in Sources */,
 				17BD4EF82292F1260003E49A /* SettingsView.swift in Sources */,
+				2B4A8A7827D77D1F005F1EFA /* CollectibleTrait.swift in Sources */,
 				2B9EEAD0264D3393007A112D /* AlgorandTotalSupply.swift in Sources */,
 				D4C45BFD2726E2A600F4AE31 /* ContactInformationViewModel.swift in Sources */,
 				2B2AACDE250BA4C200B8C5C5 /* DeveloperSettings.swift in Sources */,
@@ -15945,6 +16127,7 @@
 				2B28DB65276B3E57005C5986 /* NodeSettingsViewController+Theme.swift in Sources */,
 				2B9EEACF264D3393007A112D /* AlgorandTotalSupply.swift in Sources */,
 				2B0F630924EC129D00DA22A6 /* CGFloat+Additions.swift in Sources */,
+				2B4A8A7727D77D1F005F1EFA /* CollectibleTrait.swift in Sources */,
 				2B0F630A24EC129D00DA22A6 /* SettingsView.swift in Sources */,
 				2B2AACDD250BA4C200B8C5C5 /* DeveloperSettings.swift in Sources */,
 				D4092BBE276B5E690009722D /* WCSessionShortListLayout.swift in Sources */,
@@ -17221,6 +17404,7 @@
 				2BA4B3D52673F0B20041586B /* WCConnectionApprovalView.swift in Sources */,
 				2B85F3F8257A723C00C871A5 /* LedgerAccountFetchOperation.swift in Sources */,
 				2BB6EE58239339E400CF7874 /* AssetPreviewActionCell.swift in Sources */,
+				2B4A8A7627D77D1F005F1EFA /* CollectibleTrait.swift in Sources */,
 				2B56714823FABB550037FCFA /* AssetSearchFilter.swift in Sources */,
 				D4BC640B26DE3D2C000CFD28 /* ButtonPrimaryTheme.swift in Sources */,
 				D49D77D62789EC7B001FD5F6 /* TransactionFloatingActionButtonViewController.swift in Sources */,
