@@ -923,3 +923,18 @@
 "collectibles-receive-asset-list-header-description" = "You need to opt in to the ASA ID of the NFT to be able to receive it. Paste the ASA ID or scan it below.";
 "collectibles-receive-asset-list-search-no-content" = "No NFT Found";
 "collectible-list-item-pending-title" = "Pending";
+
+// MARK: Collectible Detail
+
+"collectible-detail-share" = "Share";
+"collectible-detail-description" = "Description";
+"collectible-detail-owner" = "Owner";
+"collectible-detail-collection-name" = "Collection Name";
+"collectible-detail-creator-name" = "Creator Name";
+"collectible-detail-creator-address" = "Creator Wallet Address";
+"collectible-detail-properties" = "Properties";
+"collectible-detail-view-transaction" = "View Transaction";
+"collectible-detail-algo-explorer" = "Show on Algoexplorer";
+"collectible-detail-nft-explorer" = "Show on NFTExplorer";
+"collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
+"collectible-detail-error-visual" = "We can’t display the visual temporarily.";
