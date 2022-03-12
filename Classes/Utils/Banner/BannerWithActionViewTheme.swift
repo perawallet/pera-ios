@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   BannerViewTheme.swift
+//   BannerWithActionViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct BannerViewTheme: LayoutSheet, StyleSheet {
+struct BannerWithActionViewTheme: LayoutSheet, StyleSheet {
+    let contentMinWidthRatio: LayoutMetric
     let contentPaddings: LayoutPaddings
 
-    var backgroundShadow: MacaroonUIKit.Shadow?
+    var background: ViewStyle
 
     let icon: ImageStyle
     let iconContentEdgeInsets: LayoutOffset
@@ -33,26 +33,25 @@ struct BannerViewTheme: LayoutSheet, StyleSheet {
     var message: TextStyle
     let messageContentEdgeInsets: LayoutPaddings
 
-    init(_ family: LayoutFamily) {
-        contentPaddings = (16, 16, 16, 16)
+    let actionHorizontalPaddings: LayoutHorizontalPaddings
+    let action: ButtonStyle
+    let actionCorner: Corner
+    let actionContentEdgeInsets: LayoutPaddings
 
-        backgroundShadow =
-        MacaroonUIKit.Shadow(
-            color: AppColors.Shared.Helpers.negative.uiColor,
-            opacity: 0.2,
-            offset: (0, 8),
-            radius: 20,
-            fillColor: AppColors.Shared.Helpers.negative.uiColor,
-            cornerRadii: (12, 12),
-            corners: .allCorners
-        )
+    init(_ family: LayoutFamily) {
+        contentMinWidthRatio = 0.5
+        contentPaddings = (20, 24, 20, .noMetric)
+
+        background = [
+            .backgroundColor(AppColors.Shared.Helpers.negative)
+        ]
 
         icon = [
-            .contentMode(.left),
+            .contentMode(.bottomLeft),
         ]
-        iconContentEdgeInsets = (12, 0)
+        iconContentEdgeInsets = (12, 12)
         iconSize = (24, 24)
-        
+
         title = [
             .textOverflow(FittingText()),
             .textColor(AppColors.Shared.System.background)
@@ -62,23 +61,13 @@ struct BannerViewTheme: LayoutSheet, StyleSheet {
             .textColor(AppColors.Shared.System.background)
         ]
         messageContentEdgeInsets = (4, 0, 0, 0)
-    }
-}
 
-extension BannerViewTheme {
-    mutating func configureForInfo() {
-        backgroundShadow =
-        MacaroonUIKit.Shadow(
-            color: rgba(0.0, 0.0, 0.0, 0.1),
-            opacity: 1,
-            offset: (0, 8),
-            radius: 20,
-            fillColor: Colors.Background.secondary,
-            cornerRadii: (12, 12),
-            corners: .allCorners
-        )
-
-        title = title.modify([ .textColor(AppColors.Components.Text.main) ])
-        message = message.modify([ .textColor(AppColors.Components.Text.main) ])
+        actionHorizontalPaddings = (20, 24)
+        action = [
+            .titleColor([.normal(AppColors.Components.Button.Primary.text)]),
+            .backgroundColor(UIColor(red: 1, green: 1, blue: 1, alpha: 0.12))
+        ]
+        actionCorner = Corner(radius: 4)
+        actionContentEdgeInsets = (8, 16, 8, 16)
     }
 }

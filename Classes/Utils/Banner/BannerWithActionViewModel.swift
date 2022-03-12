@@ -12,20 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   BannerViewModel.swift
+//   BannerWithActionViewModel.swift
 
-import Foundation
 import MacaroonUIKit
 
-protocol BannerViewModel: ViewModel {
-    var icon: Image? { get }
-    var title: EditText? { get }
-    var message: EditText? { get }
+protocol BannerWithActionViewModel: BannerViewModel {
+    var actionTitle: EditText? { get }
 }
 
-extension BannerViewModel {
-    func getTitle(
+extension BannerWithActionViewModel {
+    func getActionTitle(
         _ aTitle: String?
     ) -> EditText? {
         guard let aTitle = aTitle else {
@@ -40,31 +36,7 @@ extension BannerViewModel {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
-                    .textAlignment(.left),
-                    .lineBreakMode(.byWordWrapping),
-                    .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
-        )
-    }
-
-    func getMessage(
-        _ aMessage: String?
-    ) -> EditText? {
-        guard let aMessage = aMessage else {
-            return nil
-        }
-
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
-        return .attributedString(
-            aMessage.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .textAlignment(.left),
-                    .lineBreakMode(.byWordWrapping),
+                    .lineBreakMode(.byTruncatingTail),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])
