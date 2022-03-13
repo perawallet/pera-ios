@@ -23,6 +23,12 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
 
     private var lastSnapshot: Snapshot?
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.collectibleDetailDataController")
+
+    private var asset: CollectibleAsset
+
+    init(asset: CollectibleAsset) {
+        self.asset = asset
+    }
 }
 
 extension CollectibleDetailAPIDataController {
