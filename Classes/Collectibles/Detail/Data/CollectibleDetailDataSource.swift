@@ -35,7 +35,15 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
         }
 
         [
-            CollectibleDetailLoadingCell.self
+            CollectibleDetailLoadingCell.self,
+            CollectibleDetailActionCell.self,
+            CollectibleDetailWatchAccountActionCell.self,
+            CollectibleDescriptionCell.self,
+            SingleLineIconTitleActionCell.self,
+            CollectibleDetailHeaderCell.self,
+            CollectibleDetailInformationCell.self,
+            CollectibleMediaDetailCell.self,
+            CollectiblePropertyCell.self
         ].forEach {
             collectionView.register($0)
         }
