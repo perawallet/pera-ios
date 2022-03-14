@@ -19,6 +19,9 @@ import MacaroonUIKit
 import UIKit
 
 final class CollectibleDescriptionCell: CollectionCell<CollectibleDescriptionView> {
+    override class var contextPaddings: LayoutPaddings {
+        return (0, 24, 0, 24)
+    }
 
     override init(
         frame: CGRect

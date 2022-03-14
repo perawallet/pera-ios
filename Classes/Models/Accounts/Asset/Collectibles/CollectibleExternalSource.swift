@@ -12,23 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SingleLineIconTitleActionCell.swift
+//   CollectibleExternalSource.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class SingleLineIconTitleActionCell:
-    CollectionCell<SingleLineIconTitleActionView>,
-    UIInteractionObservable {
-    override class var contextPaddings: LayoutPaddings {
-        return (0, 24, 0, 16)
+enum CollectibleExternalSource {
+    case algoExplorer
+    case nftExplorer
+
+    var image: Image? {
+        switch self {
+        case .algoExplorer:
+            return img("icon-algo-explorer")
+        case .nftExplorer:
+            return img("icon-nft-explorer")
+        }
     }
 
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        contextView.customize(SingleLineIconTitleActionViewTheme())
+    var title: EditText? {
+        switch self {
+        case .algoExplorer:
+            return .string("collectible-detail-algo-explorer".localized)
+        case .nftExplorer:
+            return .string("collectible-detail-nft-explorer".localized)
+        }
     }
 }

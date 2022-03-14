@@ -17,7 +17,9 @@
 import Foundation
 import MacaroonUIKit
 
-struct CollectibleDescriptionViewModel: ViewModel {
+struct CollectibleDescriptionViewModel:
+    ViewModel,
+    Hashable {
     private(set) var description: EditText?
 
     init(

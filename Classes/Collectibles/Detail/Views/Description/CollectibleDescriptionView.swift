@@ -39,7 +39,7 @@ final class CollectibleDescriptionView:
 }
 
 extension CollectibleDescriptionView {
-    private func addTitle(
+    private func addDescription(
         _ theme: CollectibleDescriptionViewTheme
     ) {
         descriptionLabel.customizeAppearance(theme.description)
