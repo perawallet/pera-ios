@@ -40,7 +40,7 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
             CollectibleDetailWatchAccountActionCell.self,
             CollectibleDescriptionCell.self,
             SingleLineIconTitleActionCell.self,
-            CollectibleDetailHeaderCell.self,
+            TitleSupplementaryCell.self,
             CollectibleDetailInformationCell.self,
             CollectibleMediaDetailCell.self,
             CollectiblePropertyCell.self

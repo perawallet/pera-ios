@@ -16,21 +16,65 @@
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct CollectibleDetailHeaderViewModel: ViewModel {
+struct CollectibleDetailHeaderViewModel:
+    TitleViewModel,
+    Hashable {
     private(set) var title: EditText?
+    private(set) var titleStyle: TextStyle?
 
     init(
-        item: SingleLineIconTitleItem
+        _ item: SingleLineIconTitleItem
     ) {
         bindTitle(item)
+        bindTitleStyle()
     }
 }
 
 extension CollectibleDetailHeaderViewModel {
-    private mutating func bindTitle(
+    mutating func bindTitle(
         _ item: SingleLineIconTitleItem
     ) {
-        title = item.title
+        guard let text = item.title?.string else {
+            return
+        }
+
+        let font = Fonts.DMSans.medium.make(19)
+        let lineHeightMultiplier = 1.13
+
+        title = .attributedString(
+            text
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
+        )
+    }
+
+    mutating func bindTitleStyle() {
+        titleStyle = [
+            .textColor(AppColors.Components.Text.main),
+            .textOverflow(FittingText())
+        ]
+    }
+}
+
+extension CollectibleDetailHeaderViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(title)
+    }
+
+    static func == (
+        lhs: CollectibleDetailHeaderViewModel,
+        rhs: CollectibleDetailHeaderViewModel
+    ) -> Bool {
+        return lhs.title == rhs.title
     }
 }
