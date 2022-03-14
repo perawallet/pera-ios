@@ -19,10 +19,16 @@ import MacaroonUIKit
 struct CollectibleDescriptionViewTheme:
     StyleSheet,
     LayoutSheet {
+    let description: TextStyle
 
     init(
         _ family: LayoutFamily
     ) {
-
+        self.description = [
+            .textAlignment(.left),
+            .font(Fonts.DMSans.regular.make(15)),
+            .textColor(AppColors.Components.Text.main),
+            .textOverflow(FittingText())
+        ]
     }
 }

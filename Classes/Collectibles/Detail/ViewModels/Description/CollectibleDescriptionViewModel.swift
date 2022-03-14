@@ -18,5 +18,35 @@ import Foundation
 import MacaroonUIKit
 
 struct CollectibleDescriptionViewModel: ViewModel {
+    private(set) var description: EditText?
 
+    init(
+        _ description: String?
+    ) {
+        bindDescription(description)
+    }
+}
+
+extension CollectibleDescriptionViewModel {
+    private mutating func bindDescription(
+        _ aDescription: String?
+    ) {
+        guard let aDescription = aDescription else {
+            return
+        }
+
+        let font = Fonts.DMSans.medium.make(15)
+        let lineHeightMultiplier = 1.23
+
+        description = .attributedString(
+            aDescription.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
+    }
 }

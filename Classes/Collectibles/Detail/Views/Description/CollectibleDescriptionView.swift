@@ -19,12 +19,14 @@ import MacaroonUIKit
 
 final class CollectibleDescriptionView:
     View,
-    ListReusable {
+    ListReusable,
+    ViewModelBindable {
+    private lazy var descriptionLabel = UILabel()
 
     func customize(
         _ theme: CollectibleDescriptionViewTheme
     ) {
-
+        addDescription(theme)
     }
 
     func customizeAppearance(
@@ -34,4 +36,42 @@ final class CollectibleDescriptionView:
     func prepareLayout(
         _ layoutSheet: NoLayoutSheet
     ) {}
+}
+
+extension CollectibleDescriptionView {
+    private func addTitle(
+        _ theme: CollectibleDescriptionViewTheme
+    ) {
+        descriptionLabel.customizeAppearance(theme.description)
+
+        addSubview(descriptionLabel)
+        descriptionLabel.fitToVerticalIntrinsicSize()
+        descriptionLabel.snp.makeConstraints {
+            $0.setPaddings()
+        }
+    }
+}
+
+extension CollectibleDescriptionView {
+    class func calculatePreferredSize(
+        _ viewModel: CollectibleDescriptionViewModel?,
+        for theme: CollectibleDescriptionViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let width = size.width
+        let descriptionSize = viewModel.description.boundingSize(
+            multiline: true,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let preferredHeight = descriptionSize.height
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+    }
+
+    func bindData(_ viewModel: CollectibleDescriptionViewModel?) {
+        descriptionLabel.editText = viewModel?.description
+    }
 }
