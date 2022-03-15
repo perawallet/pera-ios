@@ -73,6 +73,20 @@ extension CurrencySelectionDataSource: UICollectionViewDataSource {
     
         fatalError("Index path is out of bounds")
     }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        viewForSupplementaryElementOfKind kind: String,
+        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        let headerView = collectionView.dequeueHeader(SingleGrayTitleHeaderSuplementaryView.self, at: indexPath)
+        headerView.bindData(SingleGrayTitleHeaderViewModel("settings-currency-header-title".localized))
+        return headerView
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
 }
 
 extension CurrencySelectionDataSource {
