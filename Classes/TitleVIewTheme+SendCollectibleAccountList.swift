@@ -12,29 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WatchAccountAdditionViewModel.swift
+//   TitleVIewTheme+SendCollectibleAccountList.swift
 
-import MacaroonUIKit
+import Foundation
 
-final class WatchAccountAdditionViewModel: PairedViewModel {
-    private(set) var copiedString: String?
-
-    var pasteButtonIsHidden: Bool {
-        return copiedString == nil
-    }
-
-    init(_ model: String?) {
-        bindCopiedString(model)
-    }
-}
-
-extension WatchAccountAdditionViewModel {
-    func bindCopiedString(_ string: String?) {
-        guard let address = string,
-              address.isValidatedAddress else {
-                  return
-              }
-        self.copiedString = address
+extension TitleViewTheme {
+    mutating func configureForSendCollectibleAccountListHeader() {
+        paddings = (0, 0, 12, 0)
     }
 }

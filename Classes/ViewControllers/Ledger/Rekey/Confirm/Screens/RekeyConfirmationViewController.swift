@@ -224,7 +224,7 @@ extension TransactionSignChecking where Self: BaseViewController {
             }
 
             bannerController?.presentErrorBanner(
-                title: "title-error".localized, message: "ledger-rekey-error-add-auth".localized(params: authAddress.shortAddressDisplay())
+                title: "title-error".localized, message: "ledger-rekey-error-add-auth".localized(params: authAddress.shortAddressDisplay)
             )
             return false
         }

@@ -12,39 +12,56 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AssetAdditionNoContentViewModel.swift
+//   AssetSearchListHeaderViewModel.swift
 
 import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct AssetAdditionNoContentViewModel: NoContentViewModel {
-    private(set) var icon: Image?
+struct AssetSearchListHeaderViewModel:
+    TitleViewModel,
+    Hashable {
     private(set) var title: EditText?
-    private(set) var body: EditText?
+    private(set) var titleStyle: TextStyle?
 
-    init() {
-        bindTitle()
+    init(
+        _ title: String
+    ) {
+        bind(title)
     }
 }
 
-extension AssetAdditionNoContentViewModel {
-    private mutating func bindTitle() {
-        let font = Fonts.DMSans.medium.make(19)
-        let lineHeightMultiplier = 1.13
-        
-        title = .attributedString(
-            "asset-not-found-title"
-                .localized
+extension AssetSearchListHeaderViewModel {
+    mutating func bind(
+        _ title: String
+    ) {
+        bindTitle(title)
+        bindTitleStyle()
+    }
+
+    mutating func bindTitle(
+        _ title: String
+    ) {
+        let font = Fonts.DMSans.medium.make(15)
+        let lineHeightMultiplier = 1.02
+
+        self.title = .attributedString(
+            title
                 .attributed([
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
-                        .textAlignment(.center),
                         .lineBreakMode(.byWordWrapping),
                         .lineHeightMultiple(lineHeightMultiplier)
                     ])
                 ])
         )
+    }
+
+    mutating func bindTitleStyle() {
+        titleStyle = [
+            .textColor(AppColors.Components.Text.main),
+            .textOverflow(FittingText())
+        ]
     }
 }
