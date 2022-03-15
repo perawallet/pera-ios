@@ -124,7 +124,7 @@ extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
             return
         }
 
-        transactionDraft.mutate(with: account.address)
+        transactionDraft.address = account.address
 
         openMoonPay(for: transactionDraft)
     }

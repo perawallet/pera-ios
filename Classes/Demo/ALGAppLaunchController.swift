@@ -105,9 +105,11 @@ final class ALGAppLaunchController:
         uiHandler.launchUI(.onboarding)
     }
     
-    func launchMain() {
+    func launchMain(
+        completion: (() -> Void)? = nil
+    ) {
         authChecker.authorize()
-        uiHandler.launchUI(.main(completion: nil))
+        uiHandler.launchUI(.main(completion: completion))
         sharedDataController.startPolling()
     }
     
@@ -293,7 +295,7 @@ extension ALGAppLaunchController {
         case .walletConnectRequest(let draft):
             result = determineUIStateIfPossible(forWalletConnectRequest: draft)
         case .buyAlgo(let draft):
-            result = determineUIStateIfPossibleForBuyAlgo(draft: draft)
+            result = determineUIStateIfPossible(forBuyAlgo: draft)
         }
         
         switch result {
@@ -371,7 +373,7 @@ extension ALGAppLaunchController {
         }
     }
     
-    private func determineUIStateIfPossibleForBuyAlgo(draft: BuyAlgoDraft) -> DeeplinkResult {
+    private func determineUIStateIfPossible(forBuyAlgo draft: BuyAlgoDraft) -> DeeplinkResult {
         let parserResult = deeplinkParser.discoverBuyAlgo(draft: draft)
         
         switch parserResult {

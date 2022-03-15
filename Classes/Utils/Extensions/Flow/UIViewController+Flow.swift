@@ -23,8 +23,10 @@ extension UIViewController {
         AppDelegate.shared?.launchOnboarding()
     }
     
-    func launchMain() {
-        AppDelegate.shared?.launchMain()
+    func launchMain(
+        completion: (() -> Void)? = nil
+    ) {
+        AppDelegate.shared?.launchMain(completion: completion)
     }
     
     func launchMainAfterAuthorization(
@@ -33,8 +35,10 @@ extension UIViewController {
         AppDelegate.shared?.launchMainAfterAuthorization(presented: viewController)
     }
     
-    func launchBuyAlgo(shouldStartPolling: Bool = false, draft: BuyAlgoDraft = BuyAlgoDraft()) {
-        AppDelegate.shared?.launchBuyAlgo(shouldStartPolling: shouldStartPolling, draft: draft)
+    func launchBuyAlgo(
+        draft: BuyAlgoDraft = BuyAlgoDraft()
+    ) {
+        AppDelegate.shared?.receive(deeplinkWithSource: .buyAlgo(draft))
     }
 }
 

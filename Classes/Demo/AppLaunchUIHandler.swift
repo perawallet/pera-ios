@@ -28,7 +28,7 @@ enum AppLaunchUIState {
     case authorization /// pin
     case onboarding
     case main(
-        completion: (() -> Void)?
+        completion: (() -> Void)? = nil
     )
     case mainAfterAuthorization(
         presented: UIViewController,

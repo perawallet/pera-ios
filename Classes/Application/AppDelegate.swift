@@ -186,10 +186,10 @@ class AppDelegate:
         /// Schemes should be controlled from a single point.
         switch scheme {
         case "algorand":
-            appLaunchController.receive(deeplinkWithSource: .url(url))
+            receive(deeplinkWithSource: .url(url))
             return true
         case "algorand-wc":
-            appLaunchController.receive(deeplinkWithSource: .walletConnectSessionRequest(url))
+            receive(deeplinkWithSource: .walletConnectSessionRequest(url))
             return true
         default:
             return false
@@ -221,12 +221,10 @@ extension AppDelegate {
         appLaunchController.launchOnboarding()
     }
     
-    func launchMain() {
-        appLaunchController.launchMain()
-    }
-    
-    func launchBuyAlgo(shouldStartPolling: Bool, draft: BuyAlgoDraft) {
-        appLaunchController.launchBuyAlgo(shouldStartPolling: shouldStartPolling, draft: draft)
+    func launchMain(
+        completion: (() -> Void)? = nil
+    ) {
+        appLaunchController.launchMain(completion: completion)
     }
     
     func launchMainAfterAuthorization(
@@ -294,6 +292,14 @@ extension AppDelegate {
                 ]
             )
         }
+    }
+}
+
+extension AppDelegate {
+    func receive(
+        deeplinkWithSource src: DeeplinkSource
+    ) {
+        appLaunchController.receive(deeplinkWithSource: src)
     }
 }
 

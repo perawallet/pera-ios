@@ -307,9 +307,9 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
 
     private func openBuyAlgo() {
         let draft = BuyAlgoDraft()
-        draft.mutate(with: accountHandle.value.address)
-
-        launchBuyAlgo(shouldStartPolling: false, draft: draft)
+        draft.address = accountHandle.value.address
+        
+        launchBuyAlgo(draft: draft)
     }
 }
 
