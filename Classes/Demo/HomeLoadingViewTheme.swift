@@ -34,12 +34,9 @@ struct HomeLoadingViewTheme:
     var holdingsContainerMargin: LayoutMargins
     var holdingsContainerHeight: LayoutMetric
 
-    var algoImageBackground: UIColor
-    var algoImageCornerRadius: LayoutMetric
-    var algoImageTopInset: LayoutMetric
-    var algoImageSize: LayoutSize
     var algoHoldingLoadingLeadingInset: LayoutMetric
     var algoHoldingLoadingSize: LayoutSize
+    var algoHoldingLoadingTopInset: LayoutMetric
 
     var accountsLabelStyle: TextStyle
     var accountsLabelMargin: LayoutMargins
@@ -101,12 +98,9 @@ struct HomeLoadingViewTheme:
         self.holdingsContainerMargin = (80, 24, .noMetric, 24)
         self.holdingsContainerHeight = 60
 
-        self.algoImageBackground = AppColors.Shared.Global.turquoise600.uiColor
-        self.algoImageCornerRadius = 12
-        self.algoImageTopInset = 13
-        self.algoImageSize = (24, 24)
         self.algoHoldingLoadingLeadingInset = 12
         self.algoHoldingLoadingSize = (57, 20)
+        self.algoHoldingLoadingTopInset = 13
 
         self.accountsLabelStyle = [
             .font(Fonts.DMSans.medium.make(15)),

@@ -40,7 +40,11 @@ extension CurrencySelectionDataSource {
             
             switch response {
             case let .success(currencyList):
-                self.currencies = currencyList.items
+                if let usdCurrency = currencyList.items.first(where: { $0.id == "USD" }) {
+                    let algoCurrency = AlgoCurrency(currency: usdCurrency)
+                    self.currencies.append(algoCurrency)
+                }
+                self.currencies.append(contentsOf: currencyList.items.sorted(by: \.id, using: <))
                 self.delegate?.currencySelectionDataSourceDidFetchCurrencies(self)
             case .failure:
                 self.delegate?.currencySelectionDataSourceDidFailToFetch(self)
@@ -63,7 +67,7 @@ extension CurrencySelectionDataSource: UICollectionViewDataSource {
         
         if let currency = currencies[safe: indexPath.item] {
             let isSelected = api.session.preferredCurrency == currency.id
-            cell.bindData(SingleSelectionViewModel(title: currency.name, isSelected: isSelected))
+            cell.bindData(SingleSelectionViewModel(title: currency.id, isSelected: isSelected))
             return cell
         }
     

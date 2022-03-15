@@ -35,7 +35,8 @@ extension AlgoAssetViewModel {
 
     private mutating func bindCurrencyAmount(from account: Account, with currency: Currency?) {
         guard let currency = currency,
-              let currencyPriceValue = currency.priceValue else {
+              let currencyPriceValue = currency.priceValue,
+              !(currency is AlgoCurrency) else {
             return
         }
 
