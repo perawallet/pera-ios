@@ -19,6 +19,8 @@ import UIKit
 import MacaroonUIKit
 import MacaroonUtils
 
+/// <todo>
+/// `AccountSelectScreen` should use this screen, rename & refactor if needed.
 final class SendCollectibleAccountListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout,
