@@ -114,6 +114,11 @@ class TransactionsViewController: BaseViewController {
                 loadingCell.startAnimating()
             case is AlgoTransactionHistoryLoadingCell:
                 let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
+                var theme = AlgoTransactionHistoryLoadingViewCommonTheme()
+                theme.buyAlgoVisible = !accountHandle.value.isWatchAccount()
+                loadingCell.contextView.customize(
+                    theme
+                )
                 loadingCell.startAnimating()
             case is AssetTransactionHistoryLoadingCell:
                 let loadingCell = cell as! AssetTransactionHistoryLoadingCell
@@ -264,6 +269,11 @@ extension TransactionsViewController {
                     loadingCell.startAnimating()
                 case .algoTransactionHistoryLoading:
                     let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
+                    var theme = AlgoTransactionHistoryLoadingViewCommonTheme()
+                    theme.buyAlgoVisible = !self.accountHandle.value.isWatchAccount()
+                    loadingCell.contextView.customize(
+                        theme
+                    )
                     loadingCell.startAnimating()
                 case .assetTransactionHistoryLoading:
                     let loadingCell = cell as! AssetTransactionHistoryLoadingCell

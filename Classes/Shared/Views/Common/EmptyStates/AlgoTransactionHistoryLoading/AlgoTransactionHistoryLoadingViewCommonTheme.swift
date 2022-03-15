@@ -58,11 +58,12 @@ struct AlgoTransactionHistoryLoadingViewCommonTheme: AlgoTransactionHistoryLoadi
     var buyAlgoButtonTheme: ButtonTheme
     var buyAlgoButtonMargin: LayoutMargins
     var buyAlgoButtonHeight: LayoutMetric
+    
+    var buyAlgoVisible: Bool = false
 
     init(
         _ family: LayoutFamily
     ) {
-
         self.titleViewCorner = 4
         self.titleMargin = (24, .noMetric, .noMetric, .noMetric)
         self.titleViewSize = (100, 20)

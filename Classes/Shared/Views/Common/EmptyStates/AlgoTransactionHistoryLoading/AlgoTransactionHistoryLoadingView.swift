@@ -48,7 +48,10 @@ final class AlgoTransactionHistoryLoadingView:
         addBalanceView(theme)
         addCurrencyView(theme)
         addRewardsView(theme)
-        addBuyAlgoButton(theme)
+        
+        if theme.buyAlgoVisible {
+            addBuyAlgoButton(theme)
+        }
     }
 
     func customizeAppearance(
@@ -200,7 +203,7 @@ extension AlgoTransactionHistoryLoadingView {
 
 extension AlgoTransactionHistoryLoadingView {
     static func height(for theme: AlgoTransactionHistoryLoadingViewTheme) -> LayoutMetric {
-        theme.titleViewSize.h +
+        var calculatedHeight = theme.titleViewSize.h +
         theme.titleMargin.top +
         theme.balanceViewSize.h +
         theme.balanceViewMargin.top +
@@ -208,8 +211,13 @@ extension AlgoTransactionHistoryLoadingView {
         theme.currencyViewMargin.top +
         theme.rewardsContainerSize.h +
         theme.rewardsContainerMargin.top +
-        theme.rewardsContainerMargin.bottom +
-        theme.buyAlgoButtonHeight +
-        theme.buyAlgoButtonMargin.top
+        theme.rewardsContainerMargin.bottom
+        
+        if theme.buyAlgoVisible {
+            calculatedHeight += theme.buyAlgoButtonHeight
+            calculatedHeight += theme.buyAlgoButtonMargin.top
+        }
+        
+        return calculatedHeight
     }
 }
