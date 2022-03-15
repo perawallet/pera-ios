@@ -60,6 +60,8 @@ final class AlgosDetailInfoView:
         algosValueLabel.editText = viewModel?.totalAmount
         secondaryValueLabel.editText = viewModel?.secondaryValue
         rewardsInfoView.bindData(viewModel?.rewardsInfoViewModel)
+        
+        buyAlgoButton.isHidden = !(viewModel?.hasBuyAlgoButton ?? false)
     }
 
     class func calculatePreferredSize(
@@ -97,9 +99,12 @@ final class AlgosDetailInfoView:
         rewardsInfoSize.height +
         theme.separatorPadding +
         theme.separator.size +
-        theme.bottomPadding +
-        theme.buyAlgoButtonHeight +
-        theme.buyAlgoButtonMargin.top
+        theme.bottomPadding
+        
+        if viewModel.hasBuyAlgoButton {
+            preferredHeight += theme.buyAlgoButtonHeight
+            preferredHeight += theme.buyAlgoButtonMargin.top
+        }
 
         if !viewModel.secondaryValue.isNilOrEmpty {
             let secondaryValueLabelSize = viewModel.secondaryValue.boundingSize(
@@ -190,7 +195,6 @@ extension AlgosDetailInfoView {
 
         addSubview(bottomSeparator)
         bottomSeparator.snp.makeConstraints {
-            $0.top.equalTo(buyAlgoButton.snp.bottom).offset(theme.separatorPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.equalToSuperview().inset(theme.bottomPadding)
             $0.fitToHeight(theme.separator.size)

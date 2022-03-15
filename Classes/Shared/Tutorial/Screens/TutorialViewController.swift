@@ -261,11 +261,6 @@ extension TutorialViewController {
     }
     
     private func routeBuyAlgo(for flow: AccountSetupFlow) {
-        if api.isTestNet {
-            launchMain()
-            return
-        }
-        
         if case .initializeAccount(mode: .add(type: .watch)) = flow {
             launchMain()
             return
