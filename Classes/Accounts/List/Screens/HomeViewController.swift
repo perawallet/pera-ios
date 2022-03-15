@@ -221,10 +221,7 @@ extension HomeViewController {
             [weak self] in
             guard let self = self else { return }
 
-            self.open(
-                .buyAlgoHome(transactionDraft: BuyAlgoDraft(), delegate: self),
-                by: .present
-            )
+            self.launchBuyAlgo()
         }
     }
     
@@ -730,21 +727,6 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             .passphraseDisplay(address: accountHandle.value.address),
             by: .present
         )
-    }
-}
-
-extension HomeViewController: BuyAlgoHomeScreenDelegate {
-    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
-        screen.dismissScreen()
-    }
-
-    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
-        screen.dismissScreen(animated: true) {
-            self.buyAlgoResultTransition.perform(
-                .buyAlgoTransaction(buyAlgoParams: params),
-                by: .present
-            )
-        }
     }
 }
 

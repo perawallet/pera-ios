@@ -17,13 +17,9 @@
 import Foundation
 
 final class BuyAlgoDraft {
-    private(set) var address: String?
+    var address: String?
 
     func hasValidAddress() -> Bool {
         address != nil
-    }
-
-    func mutate(with address: String) {
-        self.address = address
     }
 }

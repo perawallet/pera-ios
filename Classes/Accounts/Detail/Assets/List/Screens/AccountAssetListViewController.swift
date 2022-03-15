@@ -277,30 +277,9 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
 
     private func openBuyAlgo() {
         let draft = BuyAlgoDraft()
-        draft.mutate(with: accountHandle.value.address)
+        draft.address = accountHandle.value.address
 
-        self.open(
-            .buyAlgoHome(
-                transactionDraft: draft,
-                delegate: self
-            ),
-            by: .present
-        )
-    }
-}
-
-extension AccountAssetListViewController: BuyAlgoHomeScreenDelegate {
-    func buyAlgoHomeScreenDidFailedTransaction(_ screen: BuyAlgoHomeScreen) {
-        screen.dismissScreen()
-    }
-    
-    func buyAlgoHomeScreen(_ screen: BuyAlgoHomeScreen, didCompletedTransaction params: BuyAlgoParams) {
-        screen.dismissScreen(animated: true) {
-            self.buyAlgoResultTransition.perform(
-                .buyAlgoTransaction(buyAlgoParams: params),
-                by: .present
-            )
-        }
+        launchBuyAlgo(draft: draft)
     }
 }
 
