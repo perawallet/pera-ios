@@ -19,12 +19,18 @@ import MacaroonUIKit
 
 final class CollectiblePropertyView:
     View,
-    ListReusable {
+    ListReusable,
+    ViewModelBindable {
+    private lazy var containerView = UIView()
+    private lazy var nameLabel = Label()
+    private lazy var valueLabel = Label()
 
     func customize(
         _ theme: CollectiblePropertyViewTheme
     ) {
-
+        addContainerView(theme)
+        addNameLabel(theme)
+        addValueLabel(theme)
     }
 
     func customizeAppearance(
@@ -34,4 +40,72 @@ final class CollectiblePropertyView:
     func prepareLayout(
         _ layoutSheet: NoLayoutSheet
     ) {}
+}
+
+extension CollectiblePropertyView {
+    private func addContainerView(_ theme: CollectiblePropertyViewTheme) {
+        containerView.layer.draw(border: theme.border)
+        containerView.layer.draw(corner: theme.corner)
+
+        addSubview(containerView)
+        containerView.snp.makeConstraints {
+            $0.setPaddings()
+        }
+    }
+
+    private func addNameLabel(_ theme: CollectiblePropertyViewTheme) {
+        nameLabel.customizeAppearance(theme.name)
+
+        containerView.addSubview(nameLabel)
+        nameLabel.snp.makeConstraints {
+            $0.top == theme.verticallInset
+            $0.leading.trailing == theme.horizontalInset
+        }
+    }
+
+    private func addValueLabel(_ theme: CollectiblePropertyViewTheme) {
+        valueLabel.customizeAppearance(theme.value)
+
+        containerView.addSubview(valueLabel)
+        valueLabel.snp.makeConstraints {
+            $0.top == nameLabel.snp.bottom + theme.labelPadding
+            $0.leading.trailing == theme.horizontalInset
+            $0.bottom == theme.verticallInset
+        }
+    }
+}
+
+extension CollectiblePropertyView {
+    func bindData(_ viewModel: CollectiblePropertyViewModel?) {
+        nameLabel.editText = viewModel?.name
+        valueLabel.editText = viewModel?.value
+    }
+
+    class func calculatePreferredSize(
+        _ viewModel: CollectiblePropertyViewModel?,
+        for theme: CollectiblePropertyViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((0, size.height))
+        }
+
+        let height = size.height
+        let horizontalInset = theme.horizontalInset * 2
+        let verticalInset = theme.verticallInset * 2 + theme.labelPadding
+        let nameSize = viewModel.name.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((.greatestFiniteMagnitude, height - verticalInset))
+        )
+        let valueSize = viewModel.value.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((.greatestFiniteMagnitude, height - verticalInset))
+        )
+
+        let contentWidth =
+            max(nameSize.width, valueSize.width) +
+            horizontalInset
+        
+        return CGSize((contentWidth, height))
+    }
 }

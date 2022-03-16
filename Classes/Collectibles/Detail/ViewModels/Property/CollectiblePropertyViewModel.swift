@@ -17,6 +17,62 @@
 import Foundation
 import MacaroonUIKit
 
-struct CollectiblePropertyViewModel: ViewModel {
+struct CollectiblePropertyViewModel:
+    ViewModel,
+    Hashable {
+    private(set) var name: EditText?
+    private(set) var value: EditText?
 
+    init(
+        _ property: CollectibleTrait
+    ) {
+        bindName(property)
+        bindValue(property)
+    }
+}
+
+extension CollectiblePropertyViewModel {
+    private mutating func bindName(
+        _ property: CollectibleTrait
+    ) {
+        guard let aName = property.displayName else {
+            return
+        }
+
+        let font = Fonts.DMSans.regular.make(11)
+        let lineHeightMultiplier = 1.12
+
+        name = .attributedString(
+            aName.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
+    }
+
+    private mutating func bindValue(
+        _ property: CollectibleTrait
+    ) {
+        guard let aValue = property.displayValue else {
+            return
+        }
+
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        value = .attributedString(
+            aValue.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
+    }
 }
