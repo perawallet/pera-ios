@@ -18,12 +18,17 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectibleDetailActionCell: CollectionCell<CollectibleDetailActionView> {
+final class CollectibleDetailActionCell:
+    CollectionCell<CollectibleDetailActionView>,
+    UIInteractionObservable {
+    override class var contextPaddings: LayoutPaddings {
+        return (0, 24, 0, 24)
+    }
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
-        contextView.customize(CollectibleDetailNonWatchAccountActionViewTheme())
+        contextView.customize(CollectibleDetailActionViewTheme())
     }
 }

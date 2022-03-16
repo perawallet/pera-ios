@@ -16,8 +16,44 @@
 
 import MacaroonUIKit
 
-protocol CollectibleDetailActionViewTheme:
+struct CollectibleDetailActionViewTheme:
     StyleSheet,
     LayoutSheet {
+    let title: TextStyle
+    let subtitle: TextStyle
+    let send: ButtonTheme
+    let share: ButtonTheme
+    let separator: Separator
 
+    let topInset: LayoutMetric
+    let subtitleTopOffset: LayoutMetric
+    let buttonTopOffset: LayoutMetric
+    let buttonBottomInset: LayoutMetric
+    let buttonHeight: LayoutMetric
+    let sendButtonTrailingOffset: LayoutMetric
+
+    init(
+        _ family: LayoutFamily
+    ) {
+        self.title = [
+            .textOverflow(FittingText()),
+            .textAlignment(.left),
+            .textColor(AppColors.Components.Text.gray)
+        ]
+        self.subtitle = [
+            .textOverflow(FittingText()),
+            .textAlignment(.left),
+            .textColor(AppColors.Components.Text.main)
+        ]
+        self.send = ButtonSecondaryTheme()
+        self.share = ButtonSecondaryTheme()
+        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+
+        self.topInset = 36
+        self.subtitleTopOffset = 4
+        self.buttonTopOffset = 20
+        self.buttonBottomInset = -32
+        self.buttonHeight = 52
+        self.sendButtonTrailingOffset = 16
+    }
 }
