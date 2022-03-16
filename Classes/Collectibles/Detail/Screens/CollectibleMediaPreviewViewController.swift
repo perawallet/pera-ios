@@ -12,17 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleMediaDetailViewController.swift
+//   CollectibleMediaPreviewViewController.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class CollectibleMediaDetailViewController:
+final class CollectibleMediaPreviewViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
 
     private lazy var listView: UICollectionView = {
-        let collectionViewLayout = CollectibleMediaDetailLayout.build()
+        let collectionViewLayout = CollectibleMediaPreviewLayout.build()
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: collectionViewLayout
@@ -34,16 +34,16 @@ final class CollectibleMediaDetailViewController:
         return collectionView
     }()
 
-    private lazy var listLayout = CollectibleMediaDetailLayout(dataSource: dataSource)
-    private lazy var dataSource = CollectibleMediaDetailDataSource(listView)
+    private lazy var listLayout = CollectibleMediaPreviewLayout(dataSource: dataSource)
+    private lazy var dataSource = CollectibleMediaPreviewDataSource(listView)
 
-    private let dataController: CollectibleMediaDetailDataController
+    private let asset: Collectible
 
     init(
-        dataController: CollectibleMediaDetailDataController,
+        asset: Collectible,
         configuration: ViewControllerConfiguration
     ) {
-        self.dataController = dataController
+        self.asset = asset
         super.init(configuration: configuration)
     }
 
@@ -58,7 +58,7 @@ final class CollectibleMediaDetailViewController:
     }
 }
 
-extension CollectibleMediaDetailViewController {
+extension CollectibleMediaPreviewViewController {
     private func addListView() {
         view.addSubview(listView)
         listView.snp.makeConstraints {

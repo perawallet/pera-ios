@@ -12,23 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SingleLineIconTitleActionCell.swift
+//   CollectibleMediaPreviewLayout.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class SingleLineIconTitleActionCell:
-    CollectionCell<SingleLineIconTitleActionView>,
-    UIInteractionObservable {
-    override class var contextPaddings: LayoutPaddings {
-        return (0, 24, 0, 16)
+final class CollectibleMediaPreviewLayout: NSObject {
+    private let dataSource: CollectibleMediaPreviewDataSource
+
+    init(
+        dataSource: CollectibleMediaPreviewDataSource
+    ) {
+        self.dataSource = dataSource
+        super.init()
     }
 
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        contextView.customize(SingleLineIconTitleActionViewTheme())
+    class func build() -> UICollectionViewLayout {
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = 0
+        return flowLayout
     }
 }

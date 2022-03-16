@@ -119,7 +119,7 @@ indirect enum Screen {
         account: AccountHandle,
         dataController: ReceiveCollectibleAssetListDataController
     )
-    case collectibleDetail(dataController: CollectibleDetailDataController)
+    case collectibleDetail(asset: CollectibleAsset)
 }
 
 extension Screen {

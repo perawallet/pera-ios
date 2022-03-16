@@ -633,9 +633,9 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-        case let .collectibleDetail(dataController):
+        case let .collectibleDetail(asset):
             viewController = CollectibleDetailViewController(
-                dataController: dataController,
+                dataController: CollectibleDetailAPIDataController(asset),
                 configuration: configuration
             )
         }

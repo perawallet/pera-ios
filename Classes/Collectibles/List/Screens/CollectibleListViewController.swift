@@ -306,11 +306,9 @@ extension CollectibleListViewController {
         _ assetID: AssetID
     ) {
         if let asset = dataController[assetID] {
-            let dataController = CollectibleDetailAPIDataController(asset: asset)
-
             open(
                 .collectibleDetail(
-                    dataController: dataController
+                    asset: asset
                 ),
                 by: .push
             )

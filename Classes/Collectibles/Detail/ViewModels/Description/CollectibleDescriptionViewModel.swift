@@ -23,17 +23,17 @@ struct CollectibleDescriptionViewModel:
     private(set) var description: EditText?
 
     init(
-        _ description: String?
+        _ asset: Collectible
     ) {
-        bindDescription(description)
+        bindDescription(asset)
     }
 }
 
 extension CollectibleDescriptionViewModel {
     private mutating func bindDescription(
-        _ aDescription: String?
+        _ asset: Collectible
     ) {
-        guard let aDescription = aDescription else {
+        guard let aDescription = asset.description else {
             return
         }
 

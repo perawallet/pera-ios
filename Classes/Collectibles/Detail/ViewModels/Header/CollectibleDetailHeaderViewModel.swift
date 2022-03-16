@@ -36,7 +36,7 @@ extension CollectibleDetailHeaderViewModel {
     mutating func bindTitle(
         _ item: SingleLineIconTitleItem
     ) {
-        guard let text = item.title?.string else {
+        guard let text = item.title else {
             return
         }
 

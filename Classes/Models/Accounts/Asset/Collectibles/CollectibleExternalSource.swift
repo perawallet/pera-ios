@@ -15,13 +15,13 @@
 //   CollectibleExternalSource.swift
 
 import Foundation
-import MacaroonUIKit
+import UIKit
 
 enum CollectibleExternalSource {
     case algoExplorer
     case nftExplorer
 
-    var image: Image? {
+    var image: UIImage? {
         switch self {
         case .algoExplorer:
             return img("icon-algo-explorer")
@@ -30,12 +30,12 @@ enum CollectibleExternalSource {
         }
     }
 
-    var title: EditText? {
+    var title: String? {
         switch self {
         case .algoExplorer:
-            return .string("collectible-detail-algo-explorer".localized)
+            return "collectible-detail-algo-explorer".localized
         case .nftExplorer:
-            return .string("collectible-detail-nft-explorer".localized)
+            return "collectible-detail-nft-explorer".localized
         }
     }
 }

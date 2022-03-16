@@ -39,10 +39,10 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
             CollectibleDetailActionCell.self,
             CollectibleDetailWatchAccountActionCell.self,
             CollectibleDescriptionCell.self,
-            SingleLineIconTitleActionCell.self,
+            CollectibleExternalSourceCell.self,
             TitleSupplementaryCell.self,
             CollectibleDetailInformationCell.self,
-            CollectibleMediaDetailCell.self,
+            CollectibleMediaPreviewCell.self,
             CollectiblePropertyCell.self
         ].forEach {
             collectionView.register($0)

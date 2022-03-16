@@ -12,25 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleMediaDetailLayout.swift
+//   SingleLineIconTitleActionCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectibleMediaDetailLayout: NSObject {
-    private let dataSource: CollectibleMediaDetailDataSource
-
-    init(
-        dataSource: CollectibleMediaDetailDataSource
-    ) {
-        self.dataSource = dataSource
-        super.init()
+final class CollectibleExternalSourceCell:
+    CollectionCell<CollectibleExternalSourceView>,
+    UIInteractionObservable {
+    override class var contextPaddings: LayoutPaddings {
+        return (0, 24, 0, 16)
     }
 
-    class func build() -> UICollectionViewLayout {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 0
-        return flowLayout
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(CollectibleExternalSourceViewTheme())
     }
 }

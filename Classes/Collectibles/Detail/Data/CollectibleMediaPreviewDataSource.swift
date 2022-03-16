@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleMediaDetailDataSource.swift
+//   CollectibleMediaPreviewDataSource.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectibleMediaDetailDataSource: UICollectionViewDiffableDataSource<CollectibleMediaDetailSection, CollectibleMediaDetailItem> {
+final class CollectibleMediaPreviewDataSource: UICollectionViewDiffableDataSource<CollectibleMediaPreviewSection, CollectibleMediaPreviewItem> {
     init(
         _ collectionView: UICollectionView
     ) {
@@ -28,12 +28,22 @@ final class CollectibleMediaDetailDataSource: UICollectionViewDiffableDataSource
             switch itemIdentifier {
             case .item:
                 return collectionView.dequeue(
-                    CollectibleMediaDetailCell.self,
+                    CollectibleMediaPreviewCell.self,
                     at: indexPath
                 )
             }
         }
 
-        collectionView.register(CollectibleMediaDetailCell.self)
+        collectionView.register(CollectibleMediaPreviewCell.self)
     }
+}
+
+enum CollectibleMediaPreviewSection:
+    Int,
+    Hashable {
+    case media
+}
+
+enum CollectibleMediaPreviewItem: Hashable {
+    case item
 }

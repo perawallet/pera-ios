@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SingleLineIconTitleActionViewModel.swift
+//   CollectibleExternalSourceViewModel.swift
 
 import Foundation
 import MacaroonUIKit
 
-struct SingleLineIconTitleActionViewModel:
+struct CollectibleExternalSourceViewModel:
     ViewModel,
     Hashable {
     private(set) var icon: Image?
@@ -33,7 +33,7 @@ struct SingleLineIconTitleActionViewModel:
     }
 }
 
-extension SingleLineIconTitleActionViewModel {
+extension CollectibleExternalSourceViewModel {
     private mutating func bindIcon(
         _ item: SingleLineIconTitleItem
     ) {
@@ -43,7 +43,7 @@ extension SingleLineIconTitleActionViewModel {
     private mutating func bindTitle(
         _ item: SingleLineIconTitleItem
     ) {
-        guard let aTitle = item.title?.string else {
+        guard let aTitle = item.title else {
             return
         }
 
@@ -67,16 +67,18 @@ extension SingleLineIconTitleActionViewModel {
     }
 }
 
-extension SingleLineIconTitleActionViewModel {
+extension CollectibleExternalSourceViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
         hasher.combine(title)
+        hasher.combine(icon?.uiImage)
+        hasher.combine(action?.uiImage)
     }
 
     static func == (
-        lhs: SingleLineIconTitleActionViewModel,
-        rhs: SingleLineIconTitleActionViewModel
+        lhs: CollectibleExternalSourceViewModel,
+        rhs: CollectibleExternalSourceViewModel
     ) -> Bool {
         return lhs.title == rhs.title &&
             lhs.icon?.uiImage == rhs.icon?.uiImage &&

@@ -12,18 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SingleLineIconTitleActionView.swift
+//   CollectibleExternalSourceView.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class SingleLineIconTitleActionView:
+final class CollectibleExternalSourceView:
     View,
     ListReusable,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractionObservable,
+    UIControlInteractionPublisher {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performAction: UIBlockInteraction()
+        .performAction: UIControlInteraction()
     ]
 
     private lazy var iconView = UIImageView()
@@ -36,7 +37,7 @@ final class SingleLineIconTitleActionView:
     }
 
     func customize(
-        _ theme: SingleLineIconTitleActionViewTheme
+        _ theme: CollectibleExternalSourceViewTheme
     ) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
@@ -54,16 +55,15 @@ final class SingleLineIconTitleActionView:
     ) {}
 
     func setListeners() {
-        actionButton.addTarget(
-            self,
-            action: #selector(didHandleAction),
-            for: .touchUpInside
+        startPublishing(
+            event: .performAction,
+            for: actionButton
         )
     }
 }
 
-extension SingleLineIconTitleActionView {
-    private func addIconView(_ theme: SingleLineIconTitleActionViewTheme) {
+extension CollectibleExternalSourceView {
+    private func addIconView(_ theme: CollectibleExternalSourceViewTheme) {
         iconView.customizeAppearance(theme.icon)
 
         addSubview(iconView)
@@ -74,7 +74,7 @@ extension SingleLineIconTitleActionView {
         }
     }
 
-    private func addActionButton(_ theme: SingleLineIconTitleActionViewTheme) {
+    private func addActionButton(_ theme: CollectibleExternalSourceViewTheme) {
         addSubview(actionButton)
         actionButton.snp.makeConstraints {
             $0.centerY.equalToSuperview()
@@ -83,7 +83,7 @@ extension SingleLineIconTitleActionView {
         }
     }
 
-    private func addTitleLabel(_ theme: SingleLineIconTitleActionViewTheme) {
+    private func addTitleLabel(_ theme: CollectibleExternalSourceViewTheme) {
         titleLabel.customizeAppearance(theme.title)
 
         addSubview(titleLabel)
@@ -96,24 +96,16 @@ extension SingleLineIconTitleActionView {
     }
 }
 
-extension SingleLineIconTitleActionView {
-    @objc
-    private func didHandleAction() {
-        let interaction = uiInteractions[.performAction] as? UIBlockInteraction
-        interaction?.notify()
-    }
-}
-
-extension SingleLineIconTitleActionView {
-    func bindData(_ viewModel: SingleLineIconTitleActionViewModel?) {
+extension CollectibleExternalSourceView {
+    func bindData(_ viewModel: CollectibleExternalSourceViewModel?) {
         iconView.image = viewModel?.icon?.uiImage
         titleLabel.editText = viewModel?.title
         actionButton.setImage(viewModel?.action?.uiImage, for: .normal)
     }
 
     class func calculatePreferredSize(
-        _ viewModel: SingleLineIconTitleActionViewModel?,
-        for theme: SingleLineIconTitleActionViewTheme,
+        _ viewModel: CollectibleExternalSourceViewModel?,
+        for theme: CollectibleExternalSourceViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         guard let viewModel = viewModel else {
@@ -122,17 +114,17 @@ extension SingleLineIconTitleActionView {
 
         let width = size.width
         let iconSize = theme.iconSize
-        let verticalInset = theme.verticalInset
+        let verticalInset = theme.verticalInset * 2
         let titleSize = viewModel.title.boundingSize(
             multiline: false,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
-        let contentHeight = max(titleSize.height, iconSize.h) + 2 * verticalInset
+        let contentHeight = max(titleSize.height, iconSize.h) + verticalInset
         return CGSize((size.width, min(contentHeight.ceil(), size.height)))
     }
 }
 
-extension SingleLineIconTitleActionView {
+extension CollectibleExternalSourceView {
     enum Event {
         case performAction
     }

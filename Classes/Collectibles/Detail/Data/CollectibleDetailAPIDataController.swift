@@ -26,7 +26,9 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
 
     private var asset: CollectibleAsset
 
-    init(asset: CollectibleAsset) {
+    init(
+        _ asset: CollectibleAsset
+    ) {
         self.asset = asset
     }
 }
