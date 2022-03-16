@@ -362,6 +362,15 @@
 		2B0E00C227881DF900D6B2E2 /* SecuritySettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E00C127881DF900D6B2E2 /* SecuritySettingsViewController+Theme.swift */; };
 		2B0E00C327881DF900D6B2E2 /* SecuritySettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E00C127881DF900D6B2E2 /* SecuritySettingsViewController+Theme.swift */; };
 		2B0E00C427881DF900D6B2E2 /* SecuritySettingsViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E00C127881DF900D6B2E2 /* SecuritySettingsViewController+Theme.swift */; };
+		2B0E7CB527E29EE200A3ECCB /* PassphraseVerifyCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CB427E29EE200A3ECCB /* PassphraseVerifyCardView.swift */; };
+		2B0E7CB627E29EE200A3ECCB /* PassphraseVerifyCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CB427E29EE200A3ECCB /* PassphraseVerifyCardView.swift */; };
+		2B0E7CB727E29EE200A3ECCB /* PassphraseVerifyCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CB427E29EE200A3ECCB /* PassphraseVerifyCardView.swift */; };
+		2B0E7CB927E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CB827E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift */; };
+		2B0E7CBA27E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CB827E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift */; };
+		2B0E7CBB27E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CB827E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift */; };
+		2B0E7CBD27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CBC27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift */; };
+		2B0E7CBE27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CBC27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift */; };
+		2B0E7CBF27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CBC27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift */; };
 		2B0F3D8923C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
 		2B0F3D8A23C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
 		2B0F5EED24DD4F7100DA22A6 /* RekeyConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5EEC24DD4F7100DA22A6 /* RekeyConfirmationView.swift */; };
@@ -3984,6 +3993,9 @@
 		2B0E00B927881A3D00D6B2E2 /* SecuritySettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsViewController.swift; sourceTree = "<group>"; };
 		2B0E00BD27881AB800D6B2E2 /* SecuritySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettings.swift; sourceTree = "<group>"; };
 		2B0E00C127881DF900D6B2E2 /* SecuritySettingsViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecuritySettingsViewController+Theme.swift"; sourceTree = "<group>"; };
+		2B0E7CB427E29EE200A3ECCB /* PassphraseVerifyCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyCardView.swift; sourceTree = "<group>"; };
+		2B0E7CB827E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyCardViewTheme.swift; sourceTree = "<group>"; };
+		2B0E7CBC27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyCardViewModel.swift; sourceTree = "<group>"; };
 		2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedList.swift; sourceTree = "<group>"; };
 		2B0F5EEC24DD4F7100DA22A6 /* RekeyConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationView.swift; sourceTree = "<group>"; };
 		2B0F5EF624DD507000DA22A6 /* RekeyConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationViewController.swift; sourceTree = "<group>"; };
@@ -7821,6 +7833,8 @@
 				D473CA6326E278A900558598 /* PassphraseMnemonicViewTheme.swift */,
 				2B9EF2BB25D3D144004BCCC4 /* PasshraseMnemonicNumberHeaderView.swift */,
 				2B9EF2C725D3D15F004BCCC4 /* PasshraseMnemonicNumberHeaderSupplementaryView.swift */,
+				2B0E7CB427E29EE200A3ECCB /* PassphraseVerifyCardView.swift */,
+				2B0E7CB827E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift */,
 			);
 			path = Verify;
 			sourceTree = "<group>";
@@ -7830,6 +7844,7 @@
 			children = (
 				2B9EF2D025D3D185004BCCC4 /* PasshraseMnemonicNumberHeaderViewModel.swift */,
 				2B9EF2DC25D3E222004BCCC4 /* PassphraseMnemonicViewModel.swift */,
+				2B0E7CBC27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift */,
 			);
 			path = Verify;
 			sourceTree = "<group>";
@@ -13933,6 +13948,7 @@
 				D47C4AB32791BEA90012D7A6 /* NoInternetConnectionViewModel.swift in Sources */,
 				17BD4EBA2292F1260003E49A /* Screen.swift in Sources */,
 				17BD4EBB2292F1260003E49A /* QRScannerViewController.swift in Sources */,
+				2B0E7CBF27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift in Sources */,
 				2B9F063824B5E469006880F0 /* AnalyticsEvent.swift in Sources */,
 				2BF90F3F25FA3B100033F348 /* RecoverInputView.swift in Sources */,
 				F0E7443E27B45FB00063DD83 /* AlgoPriceViewModel.swift in Sources */,
@@ -14095,6 +14111,7 @@
 				2BA015D42637154C009EC914 /* LedgerAccountVerifyOperation.swift in Sources */,
 				2B7E3049267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */,
 				2B0AD8302757DA3500F83660 /* AnnouncementBannerView.swift in Sources */,
+				2B0E7CBB27E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift in Sources */,
 				2B397A1927843ADE00BBA9B3 /* AccountAssetListViewController+Theme.swift in Sources */,
 				2B8FC7022670CF7F008D9845 /* WalletConnectBridge.swift in Sources */,
 				2B57158A263479BF002C876D /* AlgorandChartView.swift in Sources */,
@@ -14255,6 +14272,7 @@
 				2B4487212379649700C19FDE /* AssetAdditionViewController.swift in Sources */,
 				2B0322DF269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift in Sources */,
 				2B835B8127A425380091E9F6 /* WCAssetReconfigurationTransactionViewController.swift in Sources */,
+				2B0E7CB727E29EE200A3ECCB /* PassphraseVerifyCardView.swift in Sources */,
 				17BD4EFF2292F1260003E49A /* LocalAuthenticator.swift in Sources */,
 				17BD4F012292F1260003E49A /* NSAttributedString+Additions.swift in Sources */,
 				2BB0B13A278343F800A16494 /* AssetSearchListLayout.swift in Sources */,
@@ -15153,6 +15171,7 @@
 				F08708F3278F622600BEE5C2 /* CurrencyFetchOperation.swift in Sources */,
 				2B0F62A824EC129D00DA22A6 /* QRScannerViewController.swift in Sources */,
 				D41699552790ECC400DE84FA /* TransactionHistoryNoContentViewModel.swift in Sources */,
+				2B0E7CBE27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift in Sources */,
 				2B0F62A924EC129D00DA22A6 /* AnalyticsEvent.swift in Sources */,
 				F0E7443D27B45FB00063DD83 /* AlgoPriceViewModel.swift in Sources */,
 				2BA4B41A267911010041586B /* WCSessionList.swift in Sources */,
@@ -15315,6 +15334,7 @@
 				2B7E3048267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */,
 				2B8FC7012670CF7F008D9845 /* WalletConnectBridge.swift in Sources */,
 				2BB0B120277DAC8300A16494 /* HomeViewController.swift in Sources */,
+				2B0E7CBA27E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift in Sources */,
 				2B571589263479BF002C876D /* AlgorandChartView.swift in Sources */,
 				0414ACC72721691100475F8E /* QRCreationViewTheme.swift in Sources */,
 				2B0F62DB24EC129D00DA22A6 /* UIView+SafeArea.swift in Sources */,
@@ -15475,6 +15495,7 @@
 				2B5F6F992768DA0700C9B780 /* SettingsFooterViewTheme.swift in Sources */,
 				2BBC2D48278B6EC80091B6FC /* ErrorView.swift in Sources */,
 				F08708C9278C21D900BEE5C2 /* SharedDataController.swift in Sources */,
+				2B0E7CB627E29EE200A3ECCB /* PassphraseVerifyCardView.swift in Sources */,
 				2B9E2F4326F0D332003D824A /* WCAssetCreationTransactionViewModel.swift in Sources */,
 				2B0F631D24EC129D00DA22A6 /* Optional+Nil.swift in Sources */,
 				2B0322DE269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift in Sources */,
@@ -16373,6 +16394,7 @@
 				2BBC2D66278B93780091B6FC /* InvalidAccountOptionsViewControllerTheme.swift in Sources */,
 				D4AEDD2B271C6E0A00AD2725 /* AlgoStatisticsFooterView.swift in Sources */,
 				D4194317273541550055EC70 /* PageBarCommonLayoutSheet.swift in Sources */,
+				2B0E7CBD27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift in Sources */,
 				F0E7443C27B45FB00063DD83 /* AlgoPriceViewModel.swift in Sources */,
 				17E2E3C5225210390065957A /* Notification.Name+Additions.swift in Sources */,
 				2B0E00B52788199900D6B2E2 /* SecuritySettingsViewTheme.swift in Sources */,
@@ -16535,6 +16557,7 @@
 				2BF71918224ED0C5001E8420 /* ContactDetailViewController.swift in Sources */,
 				2B83D04726C41521005A35AF /* WCTransactionConfirmedEvent.swift in Sources */,
 				D4BAABC42770D73900FF3D22 /* TransactionAmountViewTheme.swift in Sources */,
+				2B0E7CB927E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift in Sources */,
 				2B7E3050267A5D6100E89EE3 /* WCGroupTransactionItemViewModel.swift in Sources */,
 				2BA4B3F0267819840041586B /* WCSessionItemViewModel.swift in Sources */,
 				D46C647926E6025300FBAC6D /* PassphraseVerifyViewController+Theme.swift in Sources */,
@@ -16695,6 +16718,7 @@
 				2B7E5816257E56DB00731C97 /* Int16+Byte.swift in Sources */,
 				2B0322E7269F1E0B00C9B2F5 /* WCMainTransactionDataSource.swift in Sources */,
 				2B9E2F4226F0D332003D824A /* WCAssetCreationTransactionViewModel.swift in Sources */,
+				2B0E7CB527E29EE200A3ECCB /* PassphraseVerifyCardView.swift in Sources */,
 				2B4487202379649700C19FDE /* AssetAdditionViewController.swift in Sources */,
 				2B80C53927720F6A00BB071E /* AccountTransactionListViewController.swift in Sources */,
 				D43A0C452790D777007430B9 /* NoContentWithActionViewModel.swift in Sources */,
