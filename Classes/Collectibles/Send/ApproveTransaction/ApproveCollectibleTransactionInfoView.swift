@@ -1,0 +1,102 @@
+// Copyright 2022 Pera Wallet, LDA
+
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+
+//    http://www.apache.org/licenses/LICENSE-2.0
+
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+//   ApproveCollectibleTransactionInfoView.swift
+
+import MacaroonUIKit
+
+final class ApproveCollectibleTransactionInfoView:
+    View,
+    ViewModelBindable {
+    private lazy var contextView = HStackView()
+    private lazy var titleView = Label()
+    private lazy var iconView = ImageView()
+    private lazy var valueView = Label()
+
+    func customize(
+        _ theme: ApproveCollectibleTransactionInfoViewTheme
+    ) {
+        addContext(theme)
+    }
+
+    func prepareLayout(
+        _ layoutSheet: NoLayoutSheet
+    ) {}
+
+    func customizeAppearance(
+        _ styleSheet: NoStyleSheet
+    ) {}
+
+    func bindData(
+        _ viewModel: ApproveCollectibleTransactionInfoViewModel?
+    ) {
+        titleView.editText = viewModel?.title
+
+        if let icon = viewModel?.icon {
+            iconView.image = icon
+        } else {
+            iconView.isHidden = true
+        }
+
+        valueView.editText = viewModel?.value
+    }
+}
+
+extension ApproveCollectibleTransactionInfoView {
+    private func addContext(
+        _ theme: ApproveCollectibleTransactionInfoViewTheme
+    ) {
+        addSubview(contextView)
+        contextView.spacing = theme.contextViewSpacing
+
+        contextView.snp.makeConstraints {
+            $0.setPaddings()
+        }
+
+        addTitle(theme)
+        addIcon(theme)
+        addValue(theme)
+    }
+
+    private func addTitle(
+        _ theme: ApproveCollectibleTransactionInfoViewTheme
+    ) {
+        titleView.customizeAppearance(theme.title)
+        contextView.addArrangedSubview(titleView)
+
+        titleView.snp.makeConstraints {
+            $0.width >= self * theme.titleMinimumWidthRatio
+        }
+    }
+
+    private func addIcon(
+        _ theme: ApproveCollectibleTransactionInfoViewTheme
+    ) {
+        contextView.addArrangedSubview(iconView)
+        iconView.fitToIntrinsicSize()
+
+        iconView.snp.makeConstraints {
+            $0.fitToSize(theme.iconSize)
+        }
+    }
+
+    private func addValue(
+        _ theme: ApproveCollectibleTransactionInfoViewTheme
+    ) {
+        valueView.customizeAppearance(theme.value)
+
+        contextView.addArrangedSubview(valueView)
+        valueView.fitToIntrinsicSize()
+    }
+}
