@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ApproveCollectibleTransactionInfoViewModel.swift
+//   CollectibleTransactionInfoViewModel.swift
 
 import MacaroonUIKit
 import UIKit
 
-struct ApproveCollectibleTransactionInfoViewModel: ViewModel {
+struct CollectibleTransactionInfoViewModel: ViewModel {
     private(set) var title: EditText?
     private(set) var icon: UIImage?
     private(set) var value: EditText?
@@ -33,7 +33,7 @@ struct ApproveCollectibleTransactionInfoViewModel: ViewModel {
     }
 }
 
-extension ApproveCollectibleTransactionInfoViewModel {
+extension CollectibleTransactionInfoViewModel {
     private func getTitle(
         _ aTitle: String
     ) -> EditText {

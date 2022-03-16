@@ -31,9 +31,9 @@ final class ApproveCollectibleTransactionViewController:
     private lazy var contextView = UIView()
     private lazy var titleView = Label()
     private lazy var descriptionView = Label()
-    private lazy var senderAccountInfoView = ApproveCollectibleTransactionInfoView()
-    private lazy var toAccountInfoView = ApproveCollectibleTransactionInfoView()
-    private lazy var transactionFeeInfoView = ApproveCollectibleTransactionInfoView()
+    private lazy var senderAccountInfoView = CollectibleTransactionInfoView()
+    private lazy var toAccountInfoView = CollectibleTransactionInfoView()
+    private lazy var transactionFeeInfoView = CollectibleTransactionInfoView()
     private lazy var confirmActionView = MacaroonUIKit.Button()
     private lazy var learnMoreActionView = MacaroonUIKit.Button()
 

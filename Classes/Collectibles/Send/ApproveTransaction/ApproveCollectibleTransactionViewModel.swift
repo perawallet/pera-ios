@@ -18,9 +18,9 @@ import MacaroonUIKit
 import UIKit
 
 struct ApproveCollectibleTransactionViewModel: ViewModel {
-    private(set) var senderAccountViewModel: ApproveCollectibleTransactionInfoViewModel?
-    private(set) var toAccountViewModel: ApproveCollectibleTransactionInfoViewModel?
-    private(set) var transactionFeeViewModel: ApproveCollectibleTransactionInfoViewModel?
+    private(set) var senderAccountViewModel: CollectibleTransactionInfoViewModel?
+    private(set) var toAccountViewModel: CollectibleTransactionInfoViewModel?
+    private(set) var transactionFeeViewModel: CollectibleTransactionInfoViewModel?
 
     init() {
         bind()
@@ -37,14 +37,14 @@ extension ApproveCollectibleTransactionViewModel {
 
 extension ApproveCollectibleTransactionViewModel {
     private mutating func bindSenderAccount() {
-        senderAccountViewModel = ApproveCollectibleTransactionInfoViewModel()
+        senderAccountViewModel = CollectibleTransactionInfoViewModel()
     }
 
     private mutating func bindToAccount() {
-        toAccountViewModel = ApproveCollectibleTransactionInfoViewModel()
+        toAccountViewModel = CollectibleTransactionInfoViewModel()
     }
 
     private mutating func bindTransactionFee() {
-        transactionFeeViewModel = ApproveCollectibleTransactionInfoViewModel()
+        transactionFeeViewModel = CollectibleTransactionInfoViewModel()
     }
 }

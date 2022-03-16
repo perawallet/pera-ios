@@ -35,7 +35,7 @@ struct ApproveCollectibleTransactionViewControllerTheme:
     let confirmAction: ButtonStyle
     let learnMoreAction: ButtonStyle
     let spacingBetweenActions: LayoutMetric
-    let info: ApproveCollectibleTransactionInfoViewTheme
+    let info: CollectibleTransactionInfoViewTheme
 
     init(
         _ family: LayoutFamily
@@ -78,7 +78,7 @@ struct ApproveCollectibleTransactionViewControllerTheme:
             .backgroundColor(AppColors.Components.Button.Secondary.background)
         ]
         spacingBetweenActions = 12
-        info = ApproveCollectibleTransactionInfoViewTheme()
+        info = CollectibleTransactionInfoViewTheme()
     }
 }
 

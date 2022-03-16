@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ApproveCollectibleTransactionInfoViewTheme.swift
+//   CollectibleTransactionInfoViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct ApproveCollectibleTransactionInfoViewTheme:
+struct CollectibleTransactionInfoViewTheme:
     StyleSheet,
     LayoutSheet {
     let contextViewSpacing: LayoutMetric

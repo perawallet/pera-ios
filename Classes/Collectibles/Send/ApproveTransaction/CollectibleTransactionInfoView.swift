@@ -12,20 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ApproveCollectibleTransactionInfoView.swift
+//   CollectibleTransactionInfoView.swift
 
 import MacaroonUIKit
 
-final class ApproveCollectibleTransactionInfoView:
+final class CollectibleTransactionInfoView:
     View,
-    ViewModelBindable {
+    ViewModelBindable,
+    ListReusable {
     private lazy var contextView = HStackView()
     private lazy var titleView = Label()
     private lazy var iconView = ImageView()
     private lazy var valueView = Label()
 
     func customize(
-        _ theme: ApproveCollectibleTransactionInfoViewTheme
+        _ theme: CollectibleTransactionInfoViewTheme
     ) {
         addContext(theme)
     }
@@ -39,7 +40,7 @@ final class ApproveCollectibleTransactionInfoView:
     ) {}
 
     func bindData(
-        _ viewModel: ApproveCollectibleTransactionInfoViewModel?
+        _ viewModel: CollectibleTransactionInfoViewModel?
     ) {
         titleView.editText = viewModel?.title
 
@@ -53,9 +54,9 @@ final class ApproveCollectibleTransactionInfoView:
     }
 }
 
-extension ApproveCollectibleTransactionInfoView {
+extension CollectibleTransactionInfoView {
     private func addContext(
-        _ theme: ApproveCollectibleTransactionInfoViewTheme
+        _ theme: CollectibleTransactionInfoViewTheme
     ) {
         addSubview(contextView)
         contextView.spacing = theme.contextViewSpacing
@@ -70,7 +71,7 @@ extension ApproveCollectibleTransactionInfoView {
     }
 
     private func addTitle(
-        _ theme: ApproveCollectibleTransactionInfoViewTheme
+        _ theme: CollectibleTransactionInfoViewTheme
     ) {
         titleView.customizeAppearance(theme.title)
         contextView.addArrangedSubview(titleView)
@@ -81,7 +82,7 @@ extension ApproveCollectibleTransactionInfoView {
     }
 
     private func addIcon(
-        _ theme: ApproveCollectibleTransactionInfoViewTheme
+        _ theme: CollectibleTransactionInfoViewTheme
     ) {
         contextView.addArrangedSubview(iconView)
         iconView.fitToIntrinsicSize()
@@ -92,7 +93,7 @@ extension ApproveCollectibleTransactionInfoView {
     }
 
     private func addValue(
-        _ theme: ApproveCollectibleTransactionInfoViewTheme
+        _ theme: CollectibleTransactionInfoViewTheme
     ) {
         valueView.customizeAppearance(theme.value)
 
