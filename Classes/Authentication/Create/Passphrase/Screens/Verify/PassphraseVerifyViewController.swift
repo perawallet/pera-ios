@@ -20,11 +20,8 @@ import AVFoundation
 
 final class PassphraseVerifyViewController: BaseScrollViewController {
     private lazy var passphraseVerifyView = PassphraseVerifyView()
+        
     private lazy var theme = Theme()
-
-    private lazy var layoutBuilder: PassphraseVerifyLayoutBuilder = {
-        return PassphraseVerifyLayoutBuilder(dataSource: dataSource, theme: theme)
-    }()
 
     private lazy var accountOrdering = AccountOrdering(
         sharedDataController: sharedDataController,
@@ -45,95 +42,37 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
         configuration: ViewControllerConfiguration
     ) {
         self.flow = flow
+
         super.init(configuration: configuration)
     }
-
+    
     override func configureAppearance() {
         super.configureAppearance()
         customizeBackground()
-        passphraseVerifyView.setNextButtonEnabled(false)
     }
 
     private func customizeBackground() {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
         scrollView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
-    }
-    
-    override func linkInteractors() {
-        super.linkInteractors()
-        passphraseVerifyView.setCollectionViewDelegate(layoutBuilder)
-        passphraseVerifyView.setCollectionViewDataSource(dataSource)
-        passphraseVerifyView.delegate = self
-        dataSource.delegate = self
+        contentView.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
     override func prepareLayout() {
-        super.prepareLayout()        
+        super.prepareLayout()
+       
+        passphraseVerifyView.customize(PassphraseVerifyViewTheme())
+        
         contentView.addSubview(passphraseVerifyView)
-        passphraseVerifyView.pinToSuperview()
-    }
-}
-
-extension PassphraseVerifyViewController: PassphraseVerifyDataSourceDelegate {
-    func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isSelectedAllItems: Bool) {
-        passphraseVerifyView.setNextButtonEnabled(isSelectedAllItems)
-    }
-}
-
-extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
-    func passphraseVerifyViewDidVerifyPassphrase(_ passphraseVerifyView: PassphraseVerifyView) {
-        if !dataSource.isSelectedValidMnemonics(
-            for: passphraseVerifyView.passphraseCollectionView.indexPathsForSelectedItems
-        ) {
-            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "passphrase-verify-wrong-message".localized
-            )
-            dataSource.resetVerificationData()
-            passphraseVerifyView.resetSelectionStatesAndReloadData()
-            return
-        }
-
-        guard let account = createAccount() else {
-            return
-        }
-
-        open(
-            .tutorial(flow: flow, tutorial: .passphraseVerified(account: account)),
-            by: .push
-        )
-    }
-
-    private func createAccount() -> AccountInformation? {
-        guard let tempPrivateKey = session?.privateData(for: "temp"),
-            let address = session?.address(for: "temp") else {
-                return nil
-        }
-
-        log(RegistrationEvent(type: .create))
-
-        let account = AccountInformation(
-            address: address,
-            name: address.shortAddressDisplay(),
-            type: .standard,
-            preferredOrder: accountOrdering.getNewAccountIndex(for: .standard)
-        )
-        session?.savePrivate(tempPrivateKey, for: account.address)
-        session?.removePrivateData(for: "temp")
-
-        if let authenticatedUser = session?.authenticatedUser {
-            authenticatedUser.addAccount(account)
-        } else {
-            let user = User(accounts: [account])
-            session?.authenticatedUser = user
-        }
-
-        NotificationCenter.default.post(
-            name: .didAddAccount,
-            object: self
+        passphraseVerifyView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: 0,
+            leading: 0,
+            bottom: 0,
+            trailing: 0
         )
 
-        return account
+        passphraseVerifyView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.lessThanOrEqualToSuperview()
+        }
     }
 }

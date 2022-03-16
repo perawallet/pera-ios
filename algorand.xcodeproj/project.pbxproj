@@ -371,6 +371,9 @@
 		2B0E7CBD27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CBC27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift */; };
 		2B0E7CBE27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CBC27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift */; };
 		2B0E7CBF27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CBC27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift */; };
+		2B0E7CC127E2A02300A3ECCB /* PassphraseVerifyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CC027E2A02300A3ECCB /* PassphraseVerifyViewModel.swift */; };
+		2B0E7CC227E2A02300A3ECCB /* PassphraseVerifyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CC027E2A02300A3ECCB /* PassphraseVerifyViewModel.swift */; };
+		2B0E7CC327E2A02300A3ECCB /* PassphraseVerifyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0E7CC027E2A02300A3ECCB /* PassphraseVerifyViewModel.swift */; };
 		2B0F3D8923C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
 		2B0F3D8A23C8D1D6006BB01B /* PaginatedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */; };
 		2B0F5EED24DD4F7100DA22A6 /* RekeyConfirmationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B0F5EEC24DD4F7100DA22A6 /* RekeyConfirmationView.swift */; };
@@ -3996,6 +3999,7 @@
 		2B0E7CB427E29EE200A3ECCB /* PassphraseVerifyCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyCardView.swift; sourceTree = "<group>"; };
 		2B0E7CB827E29EEF00A3ECCB /* PassphraseVerifyCardViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyCardViewTheme.swift; sourceTree = "<group>"; };
 		2B0E7CBC27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyCardViewModel.swift; sourceTree = "<group>"; };
+		2B0E7CC027E2A02300A3ECCB /* PassphraseVerifyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyViewModel.swift; sourceTree = "<group>"; };
 		2B0F3D8823C8D1D6006BB01B /* PaginatedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaginatedList.swift; sourceTree = "<group>"; };
 		2B0F5EEC24DD4F7100DA22A6 /* RekeyConfirmationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationView.swift; sourceTree = "<group>"; };
 		2B0F5EF624DD507000DA22A6 /* RekeyConfirmationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationViewController.swift; sourceTree = "<group>"; };
@@ -7845,6 +7849,7 @@
 				2B9EF2D025D3D185004BCCC4 /* PasshraseMnemonicNumberHeaderViewModel.swift */,
 				2B9EF2DC25D3E222004BCCC4 /* PassphraseMnemonicViewModel.swift */,
 				2B0E7CBC27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift */,
+				2B0E7CC027E2A02300A3ECCB /* PassphraseVerifyViewModel.swift */,
 			);
 			path = Verify;
 			sourceTree = "<group>";
@@ -13140,6 +13145,7 @@
 				D43682A82767AFA700299964 /* WCConnectionAccountSelectionViewTheme.swift in Sources */,
 				2BB93BF625BEF3CF001F1D6C /* TransactionAPIConnector.swift in Sources */,
 				17BD4DFA2292F1260003E49A /* PassphraseMnemonicView.swift in Sources */,
+				2B0E7CC327E2A02300A3ECCB /* PassphraseVerifyViewModel.swift in Sources */,
 				D4155E8F276CD71600BCBFA4 /* AccountSelectionView.swift in Sources */,
 				F08708F4278F622600BEE5C2 /* CurrencyFetchOperation.swift in Sources */,
 				17BD4DFC2292F1260003E49A /* TabBarController.swift in Sources */,
@@ -14363,6 +14369,7 @@
 				2BD36DE7267E668E00C57728 /* TitledTransactionAccountNameViewModel.swift in Sources */,
 				D479D10126D4FB6400110E04 /* BannerViewTheme.swift in Sources */,
 				2BECB4AE25A0F09C0081870A /* ToggleTitleHeaderView.swift in Sources */,
+				2B0E7CC227E2A02300A3ECCB /* PassphraseVerifyViewModel.swift in Sources */,
 				F08708CD278C21EC00BEE5C2 /* SharedAPIDataController.swift in Sources */,
 				D4BAABBD2770D3D200FF3D22 /* TransactionTextInformationViewCommonTheme.swift in Sources */,
 				2B56B8432505013600AC7B8D /* LedgerAccountSelectionView.swift in Sources */,
@@ -15586,6 +15593,7 @@
 				2B8954BB2243FCFA00D6D068 /* UIApplication+Additions.swift in Sources */,
 				2B5DA9D1224CCC8400EE41B4 /* OptionsViewModel.swift in Sources */,
 				2BE9374D2464C66800322C1E /* TransactionTextInformationView.swift in Sources */,
+				2B0E7CC127E2A02300A3ECCB /* PassphraseVerifyViewModel.swift in Sources */,
 				2BEE062123E8572E004EBD6F /* AccountStatus.swift in Sources */,
 				2B79A14723167BFC00766021 /* RewardDetailView.swift in Sources */,
 				D47956892769D536003766D2 /* WCSessionItemViewTheme.swift in Sources */,
