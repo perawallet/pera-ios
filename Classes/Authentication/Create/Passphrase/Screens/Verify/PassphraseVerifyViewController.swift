@@ -46,6 +46,13 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
         super.init(configuration: configuration)
     }
     
+    override func linkInteractors() {
+        super.linkInteractors()
+        
+        dataSource.delegate = self
+        passphraseVerifyView.delegate = self
+    }
+
     override func configureAppearance() {
         super.configureAppearance()
         customizeBackground()
@@ -74,5 +81,89 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
             $0.top.leading.trailing.equalToSuperview()
             $0.bottom.lessThanOrEqualToSuperview()
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        dataSource.loadData()
+    }
+}
+
+extension PassphraseVerifyViewController: PassphraseVerifyDataSourceDelegate {
+    func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isSelectedAllItems: Bool) {
+        
+    }
+    
+    func passphraseVerifyDataSourceDidLoadData(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, shownMnemonics: [Int: [String]], correctIndexes: [Int]) {
+        passphraseVerifyView.bindData(
+            PassphraseVerifyViewModel(
+                shownMnemonics: shownMnemonics,
+                correctIndexes: correctIndexes
+            )
+        )
+    }
+}
+
+extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
+    func passphraseVerifyViewDidTapNextButton(
+        _ passphraseVerifyView: PassphraseVerifyView,
+        mnemonics: [Int: String]
+    ) {
+        if !dataSource.verifyPassphrase(for: mnemonics) {
+            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "passphrase-verify-wrong-message".localized
+            )
+            passphraseVerifyView.reset()
+            dataSource.resetAndReloadData()
+            return
+        }
+        
+        guard let account = createAccount() else {
+            return
+        }
+        
+        open(
+            .tutorial(
+                flow: flow,
+                tutorial: .passphraseVerified(account: account)
+            ),
+            by: .push
+        )
+    }
+}
+
+extension PassphraseVerifyViewController {
+    private func createAccount() -> AccountInformation? {
+        guard let tempPrivateKey = session?.privateData(for: "temp"),
+            let address = session?.address(for: "temp") else {
+                return nil
+        }
+
+        log(RegistrationEvent(type: .create))
+
+        let account = AccountInformation(
+            address: address,
+            name: address.shortAddressDisplay(),
+            type: .standard,
+            preferredOrder: accountOrdering.getNewAccountIndex(for: .standard)
+        )
+        session?.savePrivate(tempPrivateKey, for: account.address)
+        session?.removePrivateData(for: "temp")
+
+        if let authenticatedUser = session?.authenticatedUser {
+            authenticatedUser.addAccount(account)
+        } else {
+            let user = User(accounts: [account])
+            session?.authenticatedUser = user
+        }
+
+        NotificationCenter.default.post(
+            name: .didAddAccount,
+            object: self
+        )
+
+        return account
     }
 }

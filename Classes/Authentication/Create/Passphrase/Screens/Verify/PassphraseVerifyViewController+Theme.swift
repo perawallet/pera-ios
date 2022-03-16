@@ -22,18 +22,10 @@ extension PassphraseVerifyViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
         let contextViewInsets: LayoutPaddings
-        
-        let cellSize: LayoutSize
-        let headerSize: LayoutSize
-        let sectionInset: LayoutPaddings
 
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
+            self.backgroundColor = AppColors.Shared.System.background
             self.contextViewInsets = (0, 0, 0, 0)
-            
-            cellSize = (UIScreen.main.bounds.width, 44)
-            headerSize = (UIScreen.main.bounds.width, 36)
-            sectionInset = (0, 24, 40, 24)
         }
     }
 }
