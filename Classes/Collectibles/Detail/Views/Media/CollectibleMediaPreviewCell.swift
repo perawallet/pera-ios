@@ -12,17 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleMediaDetailViewTheme.swift
+//   CollectibleMediaPreviewCell.swift
 
+import Foundation
 import MacaroonUIKit
+import UIKit
 
-struct CollectibleMediaDetailViewTheme:
-    StyleSheet,
-    LayoutSheet {
+final class CollectibleMediaPreviewCell: CollectionCell<CollectibleMediaPreviewView> {
 
-    init(
-        _ family: LayoutFamily
+    override init(
+        frame: CGRect
     ) {
-
+        super.init(frame: frame)
+        contextView.customize(CollectibleMediaPreviewViewTheme())
     }
 }

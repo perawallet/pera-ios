@@ -12,26 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleMediaDetailView.swift
+//   CollectibleMediaPreviewViewTheme.swift
 
-import UIKit
 import MacaroonUIKit
+import MacaroonURLImage
 
-final class CollectibleMediaDetailView:
-    View,
-    ListReusable {
-
-    func customize(
-        _ theme: CollectibleMediaDetailViewTheme
+struct CollectibleMediaPreviewViewTheme:
+    StyleSheet,
+    LayoutSheet {
+    let image: URLImageViewStyleSheet
+    let corner: Corner
+    
+    init(
+        _ family: LayoutFamily
     ) {
-
+        image = CollectibleListItemImageViewTheme()
+        corner = Corner(radius: 4)
     }
-
-    func customizeAppearance(
-        _ styleSheet: NoStyleSheet
-    ) {}
-
-    func prepareLayout(
-        _ layoutSheet: NoLayoutSheet
-    ) {}
 }
