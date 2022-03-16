@@ -51,6 +51,10 @@ final class CollectibleTransactionInfoView:
         }
 
         valueView.editText = viewModel?.value
+
+        if let valueStyle = viewModel?.valueStyle {
+            valueView.customizeAppearance(valueStyle)
+        }
     }
 }
 

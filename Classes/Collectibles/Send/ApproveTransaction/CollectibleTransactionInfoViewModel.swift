@@ -21,15 +21,60 @@ struct CollectibleTransactionInfoViewModel: ViewModel {
     private(set) var title: EditText?
     private(set) var icon: UIImage?
     private(set) var value: EditText?
+    private(set) var valueStyle: TextStyle?
 
-    init() {
-        title = getTitle("Sender Account")
-        icon = AccountType.standard.image(
-            for: AccountImageType.getRandomImage(for: .standard)
-        )
-        value = getValue("QKZ6V2..2IHJA")
-        /// <todo>: Remove mock data when screen is connected to the flow.
-        fatalError()
+    init(
+        _ information: CollectibleTransactionInformation
+    ) {
+        bindTitle(information)
+        bindIcon(information)
+        bindValue(information)
+        bindValueStyle(information)
+    }
+}
+
+extension CollectibleTransactionInfoViewModel {
+    private mutating func bindTitle(
+        _ information: CollectibleTransactionInformation
+    ) {
+        title = getTitle(information.title)
+    }
+
+    private mutating func bindIcon(
+        _ information: CollectibleTransactionInformation
+    ) {
+        guard let account = information.account else {
+            return
+        }
+
+        icon = account.value.image
+    }
+
+    private mutating func bindValue(
+        _ information: CollectibleTransactionInformation
+    ) {
+        value = getValue(information.value)
+    }
+
+    private mutating func bindValueStyle(
+        _ information: CollectibleTransactionInformation
+    ) {
+        if information.isForegroundingValue {
+            valueStyle = [
+                .textOverflow(FittingText()),
+                .textAlignment(.right),
+                .font(Fonts.DMSans.medium.make(15)),
+                .textColor(AppColors.Components.Link.primary.uiColor)
+            ]
+            return
+        }
+
+        valueStyle = [
+            .textOverflow(FittingText()),
+            .textAlignment(.right),
+            .font(Fonts.DMSans.regular.make(15)),
+            .textColor(AppColors.Components.Text.main.uiColor)
+        ]
     }
 }
 
@@ -71,4 +116,11 @@ extension CollectibleTransactionInfoViewModel {
                 ])
         )
     }
+}
+
+struct CollectibleTransactionInformation {
+    let account: AccountHandle?
+    let title: String
+    let value: String
+    let isForegroundingValue: Bool
 }

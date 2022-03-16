@@ -37,14 +37,14 @@ extension ApproveCollectibleTransactionViewModel {
 
 extension ApproveCollectibleTransactionViewModel {
     private mutating func bindSenderAccount() {
-        senderAccountViewModel = CollectibleTransactionInfoViewModel()
+        /// <todo> Bind view model
     }
 
     private mutating func bindToAccount() {
-        toAccountViewModel = CollectibleTransactionInfoViewModel()
+        /// <todo> Bind view model
     }
 
     private mutating func bindTransactionFee() {
-        transactionFeeViewModel = CollectibleTransactionInfoViewModel()
+        /// <todo> Bind view model
     }
 }
