@@ -43,6 +43,7 @@ struct BuyAlgoHomeViewTheme:
     let logoMinSize: LayoutSize
     let subtitleLabelTopPadding: LayoutMetric
     let descriptionLabelTopPadding: LayoutMetric
+    let descriptionLabelBottomPadding: LayoutMetric
     let securityImageTopPadding: LayoutMetric
     let securityLabelLeadingPadding: LayoutMetric
     let paymentViewTopPadding: LayoutMetric
@@ -51,6 +52,7 @@ struct BuyAlgoHomeViewTheme:
     let paymentViewSpacing: LayoutMetric
     let bottomPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
+    let linearGradientHeight: LayoutMetric
     
     init(_ family: LayoutFamily) {
         let closeButtonIcon = "icon-close".uiImage.withRenderingMode(.alwaysTemplate)
@@ -99,12 +101,13 @@ struct BuyAlgoHomeViewTheme:
         closeButtonTopPadding = 10
         closeButtonLeadingPadding = 12
         titleTopPadding = 18
-        headerMaxHeight = 294
-        headerMinHeight = 220
-        logoMaxSize = (200, 36)
-        logoMinSize = (150, 27)
+        headerMaxHeight = 254
+        headerMinHeight = 132
+        logoMaxSize = (200, 37)
+        logoMinSize = (133, 27)
         subtitleLabelTopPadding = 40
         descriptionLabelTopPadding = 20
+        descriptionLabelBottomPadding = 2
         securityImageTopPadding = 24
         securityLabelLeadingPadding = 8
         paymentViewTopPadding = 16
@@ -113,5 +116,9 @@ struct BuyAlgoHomeViewTheme:
         paymentViewSpacing = 24
         bottomPadding = 16
         horizontalPadding = 24
+        
+        let buttonHeight: LayoutMetric = 52
+        let additionalLinearGradientHeightForButtonTop: LayoutMetric = 4
+        linearGradientHeight = bottomPadding + buttonHeight + additionalLinearGradientHeightForButtonTop
     }
 }
