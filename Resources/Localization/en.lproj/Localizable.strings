@@ -266,7 +266,8 @@
 "options-passphrase" = "Passphrase";
 "options-edit-account-name" = "Rename Account";
 "options-remove-account" = "Remove Account";
-"options-remove-alert-explanation" = "You are about to remove your main account, are you sure you want to proceed with this choice?";
+"options-remove-main-account-explanation" = "You are about to remove your main account, are you sure you want to proceed with this choice?";
+"options-remove-watch-account-explanation" = "You are about to remove a watch account. Are you sure you want to proceed with this choice?";
 "options-view-passphrase-password-alert-message" = "You should enter your correct password to display your passphrase.";
 "options-auth-account" = "Auth Account Address";
 "options-mute-notification" = "Mute Notifications";
