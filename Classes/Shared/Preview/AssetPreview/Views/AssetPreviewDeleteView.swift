@@ -29,7 +29,7 @@ final class AssetPreviewDeleteView: View {
     private lazy var assetValueVerticalStackView = VStackView()
     private lazy var primaryAssetValueLabel = Label()
     private lazy var secondaryAssetValueLabel = Label()
-    private lazy var actionButton = Button()
+    private lazy var deleteButton = Button()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,9 +48,9 @@ final class AssetPreviewDeleteView: View {
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
     
     func setListeners() {
-        actionButton.addTarget(
+        deleteButton.addTarget(
             self,
-            action: #selector(didTapActionButton),
+            action: #selector(didTapDeleteButton),
             for: .touchUpInside
         )
     }
@@ -58,8 +58,8 @@ final class AssetPreviewDeleteView: View {
 
 extension AssetPreviewDeleteView {
     @objc
-    func didTapActionButton() {
-        delegate?.assetPreviewDeleteViewDidTapDeleteButton(self)
+    func didTapDeleteButton() {
+        delegate?.assetPreviewDeleteViewDidDelete(self)
     }
 }
 
@@ -110,14 +110,14 @@ extension AssetPreviewDeleteView {
     }
     
     private func addActionButton(_ theme: AssetPreviewDeleteViewTheme) {
-        actionButton.customizeAppearance(theme.button)
-        actionButton.draw(corner: theme.buttonCorner)
-        actionButton.draw(shadow: theme.buttonFirstShadow)
-        actionButton.draw(secondShadow: theme.buttonSecondShadow)
-        actionButton.draw(thirdShadow: theme.buttonThirdShadow)
+        deleteButton.customizeAppearance(theme.button)
+        deleteButton.draw(corner: theme.buttonCorner)
+        deleteButton.draw(shadow: theme.buttonFirstShadow)
+        deleteButton.draw(secondShadow: theme.buttonSecondShadow)
+        deleteButton.draw(thirdShadow: theme.buttonThirdShadow)
         
-        addSubview(actionButton)
-        actionButton.snp.makeConstraints {
+        addSubview(deleteButton)
+        deleteButton.snp.makeConstraints {
             $0.fitToSize(theme.buttonSize)
             $0.trailing.equalToSuperview()
             $0.centerY.equalToSuperview()
@@ -129,7 +129,7 @@ extension AssetPreviewDeleteView {
         assetValueVerticalStackView.alignment = .trailing
 
         assetValueVerticalStackView.snp.makeConstraints {
-            $0.trailing.equalTo(actionButton.snp.leading).offset(-theme.assetValueTrailingPadding)
+            $0.trailing.equalTo(deleteButton.snp.leading).offset(-theme.assetValueTrailingPadding)
             $0.leading.equalTo(assetTitleVerticalStackView.snp.trailing).offset(theme.horizontalPadding)
             $0.centerY.equalTo(assetTitleVerticalStackView.snp.centerY)
         }
@@ -152,12 +152,7 @@ extension AssetPreviewDeleteView {
 
 extension AssetPreviewDeleteView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
-        imageView.bindData(
-            AssetImageViewModel(
-                image: viewModel?.image,
-                assetAbbreviationForImage: viewModel?.assetAbbreviationForImage?.string
-            )
-        )
+        imageView.bindData(viewModel?.assetImageView)
         primaryAssetTitleLabel.editText = viewModel?.assetPrimaryTitle
         secondaryImageView.image = viewModel?.secondaryImage
         secondaryAssetTitleLabel.editText = viewModel?.assetSecondaryTitle
@@ -165,7 +160,7 @@ extension AssetPreviewDeleteView: ViewModelBindable {
         secondaryAssetValueLabel.editText = viewModel?.assetSecondaryAssetValue
     }
     
-    func reset() {
+    func prepareForReuse() {
         imageView.prepareForReuse()
         secondaryImageView.image = nil
         primaryAssetTitleLabel.text = nil
@@ -176,6 +171,6 @@ extension AssetPreviewDeleteView: ViewModelBindable {
 }
 
 protocol AssetPreviewDeleteViewDelegate: AnyObject {
-    func assetPreviewDeleteViewDidTapDeleteButton(_ assetPreviewDeleteView: AssetPreviewDeleteView)
+    func assetPreviewDeleteViewDidDelete(_ assetPreviewDeleteView: AssetPreviewDeleteView)
 }
 

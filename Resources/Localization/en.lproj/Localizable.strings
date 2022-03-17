@@ -218,6 +218,7 @@
 "asset-support-your-add-message" = "Please add this asset and try again.";
 "asset-all-title" = "All";
 "asset-detail-id-title" = "ID %@";
+"asset-no-value" = "N/A";
 
 // MARK: Algos Send
 "send-algos-title" = "Send Algo";

@@ -19,27 +19,28 @@ import UIKit
 import MacaroonUIKit
 
 final class ManageAssetsView: View {
+    private lazy var theme = ManageAssetsViewTheme()
     private lazy var titleLabel = Label()
     private lazy var subtitleLabel = Label()
-    private(set) lazy var searchInputView = SearchInputView()
+    private lazy var searchInputView = SearchInputView()
 
     private(set) lazy var assetsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 0
+        flowLayout.minimumLineSpacing = theme.cellSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = AppColors.Shared.System.background.uiColor
+        collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.register(AssetPreviewDeleteCell.self)
         return collectionView
     }()
     
-    private lazy var searchNoContentView = NoContentView()
+    private lazy var noContentView = NoContentView()
 
     func customize(_ theme: ManageAssetsViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-        addSearchNoContentView(theme)
+        addNoContentView(theme)
         addTitleLabel(theme)
         addSubitleLabel(theme)
         addSearchInputView(theme)
@@ -52,9 +53,9 @@ final class ManageAssetsView: View {
 }
 
 extension ManageAssetsView {
-    private func addSearchNoContentView(_ theme: ManageAssetsViewTheme) {
-        searchNoContentView.customize(theme.searchNoContentViewTheme)
-        searchNoContentView.bindData(AssetListSearchNoContentViewModel())
+    private func addNoContentView(_ theme: ManageAssetsViewTheme) {
+        noContentView.customize(theme.noContentViewTheme)
+        noContentView.bindData(AssetListSearchNoContentViewModel())
     }
     private func addTitleLabel(_ theme: ManageAssetsViewTheme) {
         titleLabel.customizeAppearance(theme.title)
@@ -101,7 +102,13 @@ extension ManageAssetsView {
 }
 
 extension ManageAssetsView {
+    func setSearchInputDelegate(_ delegate: SearchInputViewDelegate?) {
+        searchInputView.delegate = delegate
+    }
+}
+
+extension ManageAssetsView {
     func updateContentStateView(_ isEmpty: Bool) {
-        assetsCollectionView.contentState = isEmpty ? .empty(searchNoContentView) : .none
+        assetsCollectionView.contentState = isEmpty ? .empty(noContentView) : .none
     }
 }

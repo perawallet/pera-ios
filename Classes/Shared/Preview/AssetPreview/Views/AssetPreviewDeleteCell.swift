@@ -33,16 +33,16 @@ final class AssetPreviewDeleteCell: BaseCollectionViewCell<AssetPreviewDeleteVie
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        contextView.reset()
+        contextView.prepareForReuse()
     }
 }
 
 extension AssetPreviewDeleteCell: AssetPreviewDeleteViewDelegate {
-    func assetPreviewDeleteViewDidTapDeleteButton(_ assetPreviewDeleteView: AssetPreviewDeleteView) {
-        delegate?.assetPreviewDeleteCellDidTapDeleteButton(self)
+    func assetPreviewDeleteViewDidDelete(_ assetPreviewDeleteView: AssetPreviewDeleteView) {
+        delegate?.assetPreviewDeleteCellDidDelete(self)
     }
 }
 
 protocol AssetPreviewDeleteCellDelegate: AnyObject {
-    func assetPreviewDeleteCellDidTapDeleteButton(_ assetPreviewDeleteCell: AssetPreviewDeleteCell)
+    func assetPreviewDeleteCellDidDelete(_ assetPreviewDeleteCell: AssetPreviewDeleteCell)
 }
