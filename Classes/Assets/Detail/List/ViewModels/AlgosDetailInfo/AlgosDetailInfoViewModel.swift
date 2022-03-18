@@ -85,7 +85,8 @@ extension AlgosDetailInfoViewModel {
 
     private mutating func bindSecondaryValue(from account: Account, with currency: Currency?, calculatedRewards: Decimal) {
         guard let currency = currency,
-              let currencyPriceValue = currency.priceValue else {
+              let currencyPriceValue = currency.priceValue,
+              !(currency is AlgoCurrency) else {
             return
         }
 

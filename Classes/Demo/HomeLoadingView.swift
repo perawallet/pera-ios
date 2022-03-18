@@ -30,7 +30,6 @@ final class HomeLoadingView:
     private lazy var holdingsContainer = UIView()
     private lazy var algoHoldingsContainer = UIView()
     private lazy var algoHoldingsLabel = Label()
-    private lazy var algoImageView = UIView()
     private lazy var algoHoldingLoading = ShimmerView()
     private lazy var assetHoldingsContainer = UIView()
     private lazy var assetHoldingsLabel = Label()
@@ -105,22 +104,12 @@ extension HomeLoadingView {
             $0.leading.equalToSuperview()
         }
 
-        algoImageView.backgroundColor = theme.algoImageBackground
-        algoImageView.layer.cornerRadius = theme.algoImageCornerRadius
-
-        algoHoldingsContainer.addSubview(algoImageView)
-        algoImageView.snp.makeConstraints {
-            $0.top.equalTo(algoHoldingsLabel.snp.bottom).offset(theme.algoImageTopInset)
-            $0.leading.equalToSuperview()
-            $0.fitToSize(theme.algoImageSize)
-        }
-
         algoHoldingLoading.draw(corner: theme.loadingCorner)
 
         algoHoldingsContainer.addSubview(algoHoldingLoading)
         algoHoldingLoading.snp.makeConstraints {
-            $0.centerY.equalTo(algoImageView)
-            $0.leading.equalTo(algoImageView.snp.trailing).offset(theme.algoHoldingLoadingLeadingInset)
+            $0.top.equalTo(algoHoldingsLabel.snp.bottom).offset(theme.algoHoldingLoadingTopInset)
+            $0.leading.equalToSuperview()
             $0.fitToSize(theme.algoHoldingLoadingSize)
         }
     }

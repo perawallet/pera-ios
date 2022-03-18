@@ -91,6 +91,21 @@
 		17B7D8AB2240E19600A6FF9E /* AccountFetchDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */; };
 		17B7D8AE2240F25000A6FF9E /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AD2240F25000A6FF9E /* Environment.swift */; };
 		17B7D8B0224128EC00A6FF9E /* Keychain+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */; };
+		17B7E1CB27DF4D0F00A89025 /* DMMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1CA27DF4D0E00A89025 /* DMMono-Regular.ttf */; };
+		17B7E1CC27DF4D0F00A89025 /* DMMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1CA27DF4D0E00A89025 /* DMMono-Regular.ttf */; };
+		17B7E1CD27DF4D0F00A89025 /* DMMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1CA27DF4D0E00A89025 /* DMMono-Regular.ttf */; };
+		17B7E1CF27DF4D1500A89025 /* DMMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1CE27DF4D1500A89025 /* DMMono-Medium.ttf */; };
+		17B7E1D027DF4D1500A89025 /* DMMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1CE27DF4D1500A89025 /* DMMono-Medium.ttf */; };
+		17B7E1D127DF4D1500A89025 /* DMMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1CE27DF4D1500A89025 /* DMMono-Medium.ttf */; };
+		17B7E1D327DF4D2800A89025 /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1D227DF4D2800A89025 /* DMSans-Bold.ttf */; };
+		17B7E1D427DF4D2800A89025 /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1D227DF4D2800A89025 /* DMSans-Bold.ttf */; };
+		17B7E1D527DF4D2800A89025 /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1D227DF4D2800A89025 /* DMSans-Bold.ttf */; };
+		17B7E1D727DF4D3100A89025 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1D627DF4D3100A89025 /* DMSans-Medium.ttf */; };
+		17B7E1D827DF4D3100A89025 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1D627DF4D3100A89025 /* DMSans-Medium.ttf */; };
+		17B7E1D927DF4D3100A89025 /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1D627DF4D3100A89025 /* DMSans-Medium.ttf */; };
+		17B7E1DB27DF4D3800A89025 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1DA27DF4D3800A89025 /* DMSans-Regular.ttf */; };
+		17B7E1DC27DF4D3800A89025 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1DA27DF4D3800A89025 /* DMSans-Regular.ttf */; };
+		17B7E1DD27DF4D3800A89025 /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 17B7E1DA27DF4D3800A89025 /* DMSans-Regular.ttf */; };
 		17BD4DF22292F1260003E49A /* AdaptiveLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B8BE4FE22393963005D8565 /* AdaptiveLayout.swift */; };
 		17BD4DF82292F1260003E49A /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF5317D224AA8B700A7455F /* ContactsViewController.swift */; };
 		17BD4DF92292F1260003E49A /* Snapkit+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF34CB6223A87B70052CAD3 /* Snapkit+SafeArea.swift */; };
@@ -3524,30 +3539,15 @@
 		D4CC470526DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F926DD18D800AA1BFE /* DMMono-MediumItalic.ttf */; };
 		D4CC470626DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F926DD18D800AA1BFE /* DMMono-MediumItalic.ttf */; };
 		D4CC470726DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46F926DD18D800AA1BFE /* DMMono-MediumItalic.ttf */; };
-		D4CC470826DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46FA26DD18D800AA1BFE /* DMMono-Medium.ttf */; };
-		D4CC470926DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46FA26DD18D800AA1BFE /* DMMono-Medium.ttf */; };
-		D4CC470A26DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46FA26DD18D800AA1BFE /* DMMono-Medium.ttf */; };
-		D4CC470B26DD18D800AA1BFE /* DMMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46FB26DD18D800AA1BFE /* DMMono-Regular.ttf */; };
-		D4CC470C26DD18D800AA1BFE /* DMMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46FB26DD18D800AA1BFE /* DMMono-Regular.ttf */; };
-		D4CC470D26DD18D800AA1BFE /* DMMono-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC46FB26DD18D800AA1BFE /* DMMono-Regular.ttf */; };
 		D4CC471426DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC470E26DD18E600AA1BFE /* DMSans-BoldItalic.ttf */; };
 		D4CC471526DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC470E26DD18E600AA1BFE /* DMSans-BoldItalic.ttf */; };
 		D4CC471626DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC470E26DD18E600AA1BFE /* DMSans-BoldItalic.ttf */; };
 		D4CC471726DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC470F26DD18E700AA1BFE /* DMSans-MediumItalic.ttf */; };
 		D4CC471826DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC470F26DD18E700AA1BFE /* DMSans-MediumItalic.ttf */; };
 		D4CC471926DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC470F26DD18E700AA1BFE /* DMSans-MediumItalic.ttf */; };
-		D4CC471A26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471026DD18E700AA1BFE /* DMSans-Regular.ttf */; };
-		D4CC471B26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471026DD18E700AA1BFE /* DMSans-Regular.ttf */; };
-		D4CC471C26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471026DD18E700AA1BFE /* DMSans-Regular.ttf */; };
 		D4CC471D26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */; };
 		D4CC471E26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */; };
 		D4CC471F26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */; };
-		D4CC472026DD18E900AA1BFE /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471226DD18E800AA1BFE /* DMSans-Bold.ttf */; };
-		D4CC472126DD18E900AA1BFE /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471226DD18E800AA1BFE /* DMSans-Bold.ttf */; };
-		D4CC472226DD18E900AA1BFE /* DMSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471226DD18E800AA1BFE /* DMSans-Bold.ttf */; };
-		D4CC472326DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471326DD18E900AA1BFE /* DMSans-Medium.ttf */; };
-		D4CC472426DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471326DD18E900AA1BFE /* DMSans-Medium.ttf */; };
-		D4CC472526DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D4CC471326DD18E900AA1BFE /* DMSans-Medium.ttf */; };
 		D4CCA1D527241DA400DF1B76 /* RekeyConfirmationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CCA1D427241DA400DF1B76 /* RekeyConfirmationViewTheme.swift */; };
 		D4CCA1D627241DA400DF1B76 /* RekeyConfirmationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CCA1D427241DA400DF1B76 /* RekeyConfirmationViewTheme.swift */; };
 		D4CCA1D727241DA400DF1B76 /* RekeyConfirmationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CCA1D427241DA400DF1B76 /* RekeyConfirmationViewTheme.swift */; };
@@ -3689,9 +3689,9 @@
 		F03422C72754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
 		F03422C82754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
 		F03422C92754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */; };
-		F060AD0B27D763FC00511615 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F060AD0A27D763FC00511615 /* GoogleService-Info.plist */; };
 		F060AD0D27D7640700511615 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F060AD0C27D7640700511615 /* GoogleService-Info.plist */; };
 		F060AD0F27D7641200511615 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F060AD0E27D7641200511615 /* GoogleService-Info.plist */; };
+		F06FF4BC27E1BE780047A20E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F06FF4BB27E1BE780047A20E /* GoogleService-Info.plist */; };
 		F0772B54275EB1DD003A9329 /* AccountDetailFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */; };
 		F0772B55275EB1DD003A9329 /* AccountDetailFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */; };
 		F0772B56275EB1DD003A9329 /* AccountDetailFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */; };
@@ -3978,6 +3978,11 @@
 		17B7D8AA2240E19600A6FF9E /* AccountFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountFetchDraft.swift; sourceTree = "<group>"; };
 		17B7D8AD2240F25000A6FF9E /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		17B7D8AF224128EC00A6FF9E /* Keychain+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keychain+Additions.swift"; sourceTree = "<group>"; };
+		17B7E1CA27DF4D0E00A89025 /* DMMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Regular.ttf"; sourceTree = "<group>"; };
+		17B7E1CE27DF4D1500A89025 /* DMMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Medium.ttf"; sourceTree = "<group>"; };
+		17B7E1D227DF4D2800A89025 /* DMSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Bold.ttf"; sourceTree = "<group>"; };
+		17B7E1D627DF4D3100A89025 /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
+		17B7E1DA27DF4D3800A89025 /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
 		17BD4F252292F1260003E49A /* pera-staging.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pera-staging.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		17BEC45C2248C7D900AAF370 /* PassphraseVerifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyViewController.swift; sourceTree = "<group>"; };
 		17BEC45F2248C81E00AAF370 /* PassphraseVerifyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseVerifyView.swift; sourceTree = "<group>"; };
@@ -5130,14 +5135,9 @@
 		D4CC46F726DD18D700AA1BFE /* DMMono-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Italic.ttf"; sourceTree = "<group>"; };
 		D4CC46F826DD18D800AA1BFE /* DMMono-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-LightItalic.ttf"; sourceTree = "<group>"; };
 		D4CC46F926DD18D800AA1BFE /* DMMono-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-MediumItalic.ttf"; sourceTree = "<group>"; };
-		D4CC46FA26DD18D800AA1BFE /* DMMono-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Medium.ttf"; sourceTree = "<group>"; };
-		D4CC46FB26DD18D800AA1BFE /* DMMono-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMMono-Regular.ttf"; sourceTree = "<group>"; };
 		D4CC470E26DD18E600AA1BFE /* DMSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-BoldItalic.ttf"; sourceTree = "<group>"; };
 		D4CC470F26DD18E700AA1BFE /* DMSans-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-MediumItalic.ttf"; sourceTree = "<group>"; };
-		D4CC471026DD18E700AA1BFE /* DMSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Regular.ttf"; sourceTree = "<group>"; };
 		D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Italic.ttf"; sourceTree = "<group>"; };
-		D4CC471226DD18E800AA1BFE /* DMSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Bold.ttf"; sourceTree = "<group>"; };
-		D4CC471326DD18E900AA1BFE /* DMSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DMSans-Medium.ttf"; sourceTree = "<group>"; };
 		D4CCA1D427241DA400DF1B76 /* RekeyConfirmationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationViewTheme.swift; sourceTree = "<group>"; };
 		D4CCA1D827242B3B00DF1B76 /* RekeyTransitionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransitionItemView.swift; sourceTree = "<group>"; };
 		D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransitionItemViewTheme.swift; sourceTree = "<group>"; };
@@ -5186,9 +5186,9 @@
 		F0261A9727C4E28D009D8BF4 /* AppAuthChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAuthChecker.swift; sourceTree = "<group>"; };
 		F0261A9B27C4E4C2009D8BF4 /* ALGAppAuthChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAppAuthChecker.swift; sourceTree = "<group>"; };
 		F03422C62754DB2300E3C8B5 /* UICollectionView+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extensions.swift"; sourceTree = "<group>"; };
-		F060AD0A27D763FC00511615 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F060AD0C27D7640700511615 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F060AD0E27D7641200511615 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F06FF4BB27E1BE780047A20E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailFetchOperation.swift; sourceTree = "<group>"; };
 		F0772B5B275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailGroupFetchOperation.swift; sourceTree = "<group>"; };
 		F07CD2FA276A1E39006665FE /* AccountCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollection.swift; sourceTree = "<group>"; };
@@ -12411,12 +12411,12 @@
 		D4CC46F326DD17F600AA1BFE /* DMSans */ = {
 			isa = PBXGroup;
 			children = (
-				D4CC471226DD18E800AA1BFE /* DMSans-Bold.ttf */,
+				17B7E1D227DF4D2800A89025 /* DMSans-Bold.ttf */,
 				D4CC470E26DD18E600AA1BFE /* DMSans-BoldItalic.ttf */,
 				D4CC471126DD18E800AA1BFE /* DMSans-Italic.ttf */,
-				D4CC471326DD18E900AA1BFE /* DMSans-Medium.ttf */,
+				17B7E1D627DF4D3100A89025 /* DMSans-Medium.ttf */,
 				D4CC470F26DD18E700AA1BFE /* DMSans-MediumItalic.ttf */,
-				D4CC471026DD18E700AA1BFE /* DMSans-Regular.ttf */,
+				17B7E1DA27DF4D3800A89025 /* DMSans-Regular.ttf */,
 			);
 			path = DMSans;
 			sourceTree = "<group>";
@@ -12427,9 +12427,9 @@
 				D4CC46F726DD18D700AA1BFE /* DMMono-Italic.ttf */,
 				D4CC46F626DD18D700AA1BFE /* DMMono-Light.ttf */,
 				D4CC46F826DD18D800AA1BFE /* DMMono-LightItalic.ttf */,
-				D4CC46FA26DD18D800AA1BFE /* DMMono-Medium.ttf */,
+				17B7E1CE27DF4D1500A89025 /* DMMono-Medium.ttf */,
 				D4CC46F926DD18D800AA1BFE /* DMMono-MediumItalic.ttf */,
-				D4CC46FB26DD18D800AA1BFE /* DMMono-Regular.ttf */,
+				17B7E1CA27DF4D0E00A89025 /* DMMono-Regular.ttf */,
 			);
 			path = DMMono;
 			sourceTree = "<group>";
@@ -12563,7 +12563,7 @@
 		F060AD0927D7636D00511615 /* Beta */ = {
 			isa = PBXGroup;
 			children = (
-				F060AD0A27D763FC00511615 /* GoogleService-Info.plist */,
+				F06FF4BB27E1BE780047A20E /* GoogleService-Info.plist */,
 				2B0F634F24EC129D00DA22A6 /* Info.plist */,
 			);
 			path = Beta;
@@ -12973,15 +12973,13 @@
 				2B516174243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */,
 				2B95420725B07FCC0098805B /* RekeyedAccountInformation.json in Resources */,
 				2B9541B525AF161C0098805B /* TransactionParams.json in Resources */,
-				D4CC470A26DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */,
 				2B9541E525AF217F0098805B /* AccountInformationB.json in Resources */,
+				17B7E1DD27DF4D3800A89025 /* DMSans-Regular.ttf in Resources */,
 				2B9540FB25A8617B0098805B /* AccountB.json in Resources */,
-				D4CC470D26DD18D800AA1BFE /* DMMono-Regular.ttf in Resources */,
 				D446A750272ABEFC0081D60B /* dark-rekey.json in Resources */,
 				CBAD474C2745595400C91946 /* Colors.xcassets in Resources */,
 				D4CC470426DD18D800AA1BFE /* DMMono-LightItalic.ttf in Resources */,
 				D405059626F0F0A7001D0D11 /* dark-ledger.json in Resources */,
-				D4CC472226DD18E900AA1BFE /* DMSans-Bold.ttf in Resources */,
 				2B95421925B07FDF0098805B /* LedgerAccount.json in Resources */,
 				2B95410125A861810098805B /* TurkishLiraAsset.json in Resources */,
 				2B9541C025AF16B20098805B /* AssetTransaction.json in Resources */,
@@ -12991,7 +12989,6 @@
 				2B51616E243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */,
 				2B9541D325AF1B8F0098805B /* Payment.json in Resources */,
 				2B516176243F739D006DEA54 /* PublicSans-SemiBold.ttf in Resources */,
-				D4CC472526DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */,
 				2B9541CB25AF16BD0098805B /* AlgoTransaction.json in Resources */,
 				2B95422725B0B3280098805B /* AssetAdditionTransaction.json in Resources */,
 				2B95422E25B19E3D0098805B /* PreviousUser.json in Resources */,
@@ -13004,10 +13001,12 @@
 				2B51617A243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */,
 				2B9541DE25AF21730098805B /* AccountInformationA.json in Resources */,
 				2B95411625A89C9D0098805B /* NotificationMessage.json in Resources */,
+				17B7E1D527DF4D2800A89025 /* DMSans-Bold.ttf in Resources */,
 				D4CC471F26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */,
 				2B98844425B8804D004532CE /* Asset.json in Resources */,
 				D446A74C272ABEF50081D60B /* light-rekey.json in Resources */,
 				2B95410025A8617E0098805B /* HipoCoinAsset.json in Resources */,
+				17B7E1D927DF4D3100A89025 /* DMSans-Medium.ttf in Resources */,
 				2B9540F625A861770098805B /* AccountA.json in Resources */,
 				CBAD474F2745595400C91946 /* Assets.xcassets in Resources */,
 				2B77479D26012E670083EFFA /* mnemonics.txt in Resources */,
@@ -13016,9 +13015,10 @@
 				2B95422025B07FEA0098805B /* LedgerAccountInformation.json in Resources */,
 				17BD4F1B2292F1260003E49A /* Localizable.strings in Resources */,
 				D4CC470126DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
-				D4CC471C26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */,
 				D4CC470726DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */,
+				17B7E1D127DF4D1500A89025 /* DMMono-Medium.ttf in Resources */,
 				2B9541FC25B07E160098805B /* LedgerDetail.json in Resources */,
+				17B7E1CD27DF4D0F00A89025 /* DMMono-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13026,34 +13026,34 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4CC470C26DD18D800AA1BFE /* DMMono-Regular.ttf in Resources */,
 				D4CC46EB26DD099000AA1BFE /* AppColors.xcassets in Resources */,
+				17B7E1CC27DF4D0F00A89025 /* DMMono-Regular.ttf in Resources */,
 				D405059126F0F0A1001D0D11 /* light-ledger.json in Resources */,
 				D446A74F272ABEFC0081D60B /* dark-rekey.json in Resources */,
 				2B0F632E24EC129D00DA22A6 /* PublicSans-Regular.ttf in Resources */,
-				D4CC470926DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */,
 				2B0F633524EC129D00DA22A6 /* PublicSans-Medium.ttf in Resources */,
 				2B0F633724EC129D00DA22A6 /* PublicSans-SemiBold.ttf in Resources */,
 				D4CC470026DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
 				D405059526F0F0A7001D0D11 /* dark-ledger.json in Resources */,
+				17B7E1D427DF4D2800A89025 /* DMSans-Bold.ttf in Resources */,
 				2B0F633B24EC129D00DA22A6 /* LaunchScreen.storyboard in Resources */,
-				D4CC472426DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */,
 				D4CC471526DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */,
-				F060AD0B27D763FC00511615 /* GoogleService-Info.plist in Resources */,
+				F06FF4BC27E1BE780047A20E /* GoogleService-Info.plist in Resources */,
 				D446A74B272ABEF50081D60B /* light-rekey.json in Resources */,
 				2B77479C26012E670083EFFA /* mnemonics.txt in Resources */,
-				D4CC471B26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */,
+				17B7E1DC27DF4D3800A89025 /* DMSans-Regular.ttf in Resources */,
 				CBAD474B2745595400C91946 /* Colors.xcassets in Resources */,
+				17B7E1D027DF4D1500A89025 /* DMMono-Medium.ttf in Resources */,
 				2B6811E025345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B0F633D24EC129D00DA22A6 /* PublicSans-Bold.ttf in Resources */,
 				2B0F634324EC129D00DA22A6 /* Localizable.strings in Resources */,
 				CBAD474E2745595400C91946 /* Assets.xcassets in Resources */,
 				D4CC471E26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */,
-				D4CC472126DD18E900AA1BFE /* DMSans-Bold.ttf in Resources */,
 				D4CC470326DD18D800AA1BFE /* DMMono-LightItalic.ttf in Resources */,
 				D4CC470626DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */,
 				D4CC471826DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */,
 				D4CC46FD26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */,
+				17B7E1D827DF4D3100A89025 /* DMSans-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13061,34 +13061,34 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D4CC470B26DD18D800AA1BFE /* DMMono-Regular.ttf in Resources */,
 				D4CC46EA26DD099000AA1BFE /* AppColors.xcassets in Resources */,
+				17B7E1CB27DF4D0F00A89025 /* DMMono-Regular.ttf in Resources */,
 				D405059026F0F0A1001D0D11 /* light-ledger.json in Resources */,
 				D446A74E272ABEFC0081D60B /* dark-rekey.json in Resources */,
 				2B516173243F739D006DEA54 /* PublicSans-Regular.ttf in Resources */,
-				D4CC470826DD18D800AA1BFE /* DMMono-Medium.ttf in Resources */,
 				2B51616D243F739D006DEA54 /* PublicSans-Medium.ttf in Resources */,
 				2B516175243F739D006DEA54 /* PublicSans-SemiBold.ttf in Resources */,
 				D4CC46FF26DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
 				D405059426F0F0A7001D0D11 /* dark-ledger.json in Resources */,
+				17B7E1D327DF4D2800A89025 /* DMSans-Bold.ttf in Resources */,
 				2B8BE4DC22391C3B005D8565 /* LaunchScreen.storyboard in Resources */,
-				D4CC472326DD18E900AA1BFE /* DMSans-Medium.ttf in Resources */,
 				D4CC471426DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */,
 				F060AD0F27D7641200511615 /* GoogleService-Info.plist in Resources */,
 				D446A74A272ABEF50081D60B /* light-rekey.json in Resources */,
 				2B77479B26012E670083EFFA /* mnemonics.txt in Resources */,
-				D4CC471A26DD18E900AA1BFE /* DMSans-Regular.ttf in Resources */,
+				17B7E1DB27DF4D3800A89025 /* DMSans-Regular.ttf in Resources */,
 				CBAD474A2745595300C91946 /* Colors.xcassets in Resources */,
+				17B7E1CF27DF4D1500A89025 /* DMMono-Medium.ttf in Resources */,
 				2B6811DF25345B5700D4437F /* InfoPlist.strings in Resources */,
 				2B516179243F739D006DEA54 /* PublicSans-Bold.ttf in Resources */,
 				2BF34CC9223AA63D0052CAD3 /* Localizable.strings in Resources */,
 				CBAD474D2745595400C91946 /* Assets.xcassets in Resources */,
 				D4CC471D26DD18E900AA1BFE /* DMSans-Italic.ttf in Resources */,
-				D4CC472026DD18E900AA1BFE /* DMSans-Bold.ttf in Resources */,
 				D4CC470226DD18D800AA1BFE /* DMMono-LightItalic.ttf in Resources */,
 				D4CC470526DD18D800AA1BFE /* DMMono-MediumItalic.ttf in Resources */,
 				D4CC471726DD18E900AA1BFE /* DMSans-MediumItalic.ttf in Resources */,
 				D4CC46FC26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */,
+				17B7E1D727DF4D3100A89025 /* DMSans-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
