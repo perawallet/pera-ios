@@ -42,7 +42,10 @@ final class BuyAlgoHomeView:
     private lazy var securityLabel = Label()
     private lazy var securityImageView = ImageView()
     private lazy var paymentOptionsView = HStackView()
+    private lazy var buyAlgoButtonContainer = UIView()
     private lazy var buyAlgoButton = MacaroonUIKit.Button()
+    
+    private var isLayoutFinalized = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -95,6 +98,20 @@ final class BuyAlgoHomeView:
         startPublishing(event: .close, for: closeButton)
         startPublishing(event: .buyAlgo, for: buyAlgoButton)
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+
+        if bounds.isEmpty {
+            return
+        }
+
+        if !isLayoutFinalized {
+            isLayoutFinalized = true
+
+            addLinearGradient()
+        }
+    }
 }
 
 extension BuyAlgoHomeView {
@@ -133,6 +150,11 @@ extension BuyAlgoHomeView {
         descriptionLabel.snp.makeConstraints {
             $0.top.equalTo(subtitleLabel.snp.bottom).offset(theme.descriptionLabelTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.bottom.lessThanOrEqualToSuperview().inset(
+                theme.descriptionLabelBottomPadding +
+                theme.linearGradientHeight +
+                safeAreaBottom
+            )
         }
     }
     private func addSecurityImageView(_ theme: BuyAlgoHomeViewTheme) {
@@ -164,11 +186,17 @@ extension BuyAlgoHomeView {
         }
     }
     private func addBuyAlgoButton(_ theme: BuyAlgoHomeViewTheme){
+        addSubview(buyAlgoButtonContainer)
+        buyAlgoButtonContainer.snp.makeConstraints {
+            $0.leading.trailing.bottom.equalToSuperview()
+            $0.fitToHeight(theme.linearGradientHeight + safeAreaBottom)
+        }
+
         buyAlgoButton.contentEdgeInsets = UIEdgeInsets(theme.buttonContentEdgeInsets)
         buyAlgoButton.draw(corner: theme.buttonCorner)
         buyAlgoButton.customizeAppearance(theme.buyAlgoButton)
-        
-        addSubview(buyAlgoButton)
+
+        buyAlgoButtonContainer.addSubview(buyAlgoButton)
         buyAlgoButton.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.bottomPadding)
@@ -218,6 +246,24 @@ extension BuyAlgoHomeView {
             $0.top.equalToSuperview().inset(theme.titleTopPadding)
             $0.centerX.equalToSuperview()
         }
+    }
+    
+    private func addLinearGradient() {
+        guard let theme = theme else {
+            return
+        }
+        
+        let layer = CAGradientLayer()
+        layer.frame = CGRect(
+            origin: .zero,
+            size: CGSize(width: bounds.width, height: theme.linearGradientHeight + safeAreaBottom)
+        )
+
+        let color0 = AppColors.Shared.System.background.uiColor.withAlphaComponent(0).cgColor
+        let color1 = AppColors.Shared.System.background.uiColor.cgColor
+
+        layer.colors = [color0, color1]
+        buyAlgoButtonContainer.layer.insertSublayer(layer, at: 0)
     }
 }
 
