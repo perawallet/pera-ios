@@ -108,7 +108,9 @@ extension ManageAssetsView {
 }
 
 extension ManageAssetsView {
-    func updateContentStateView(_ isEmpty: Bool) {
-        assetsCollectionView.contentState = isEmpty ? .empty(noContentView) : .none
+    func updateContentStateView() {
+        assetsCollectionView.contentState = assetsCollectionView.isEmpty
+            ? .empty(noContentView)
+            : .none
     }
 }

@@ -30,7 +30,7 @@ struct AssetPreviewModel: Hashable {
 struct AssetPreviewViewModel:
     PairedViewModel,
     Hashable {
-    private(set) var assetImageView: AssetImageViewModel?
+    private(set) var assetImageViewModel: AssetImageViewModel?
     private(set) var secondaryImage: UIImage?
     private(set) var assetPrimaryTitle: EditText?
     private(set) var assetSecondaryTitle: EditText?
@@ -51,7 +51,7 @@ extension AssetPreviewViewModel {
     private mutating func bindAssetImageView(_ image: UIImage?) {
         let assetAbbreviationForImage = TextFormatter.assetShortName.format(assetPrimaryTitle?.string)
         
-        assetImageView = AssetImageViewModel(
+        assetImageViewModel = AssetImageViewModel(
             image: image,
             assetAbbreviationForImage: assetAbbreviationForImage
         )
