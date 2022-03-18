@@ -179,7 +179,7 @@
 "accounts-add-account" = "+ ADD ACCOUNT";
 "accounts-title" = "Accounts";
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
-"accounts-transaction-your-balance" = "Your balance";
+"accounts-transaction-your-balance" = "Balance";
 "accounts-transaction-value" = "Value";
 
 // MARK: Asset
