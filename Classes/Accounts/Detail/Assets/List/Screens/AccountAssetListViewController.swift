@@ -144,6 +144,14 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        open(
+            .sendCollectible,
+            by: .customPresent(presentationStyle: .overCurrentContext, transitionStyle: .crossDissolve, transitioningDelegate: nil),
+            animated: false
+        )
+        return
+
         let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
 
         guard let listSection = sectionIdentifiers[safe: indexPath.section] else {

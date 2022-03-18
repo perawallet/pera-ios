@@ -633,6 +633,8 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
+        case .sendCollectible:
+            viewController = SendCollectibleViewController(configuration: configuration)
         }
 
         return viewController as? T

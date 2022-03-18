@@ -119,6 +119,7 @@ indirect enum Screen {
         account: AccountHandle,
         dataController: ReceiveCollectibleAssetListDataController
     )
+    case sendCollectible
 }
 
 extension Screen {

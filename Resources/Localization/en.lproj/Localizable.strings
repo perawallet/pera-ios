@@ -923,3 +923,6 @@
 "collectibles-receive-asset-list-header-description" = "You need to opt in to the ASA ID of the NFT to be able to receive it. Paste the ASA ID or scan it below.";
 "collectibles-receive-asset-list-search-no-content" = "No NFT Found";
 "collectible-list-item-pending-title" = "Pending";
+"collectible-send-title" = "Send your NFT";
+"collectible-send-input-placeholder" = "Paste an Algorand wallet address";
+"collectible-send-action" = "Transfer";

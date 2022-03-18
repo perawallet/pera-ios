@@ -50,6 +50,10 @@ extension AppColors.Shared {
         case positive = "Shared/Helpers/positive"
         case success = "Shared/Helpers/success"
     }
+
+    enum Modality: String, Color {
+        case background = "Shared/Modality/background"
+    }
 }
 
 extension AppColors.Components {
