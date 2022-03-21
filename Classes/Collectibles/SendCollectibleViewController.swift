@@ -188,7 +188,6 @@ extension SendCollectibleViewController {
     
     private func addImage() {
         imageView.customizeAppearance(theme.image)
-        imageView.backgroundColor = .red
 
         contextView.addSubview(imageView)
         imageView.snp.makeConstraints {
