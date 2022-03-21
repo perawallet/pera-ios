@@ -926,3 +926,14 @@
 "collectible-send-title" = "Send your NFT";
 "collectible-send-input-placeholder" = "Paste an Algorand wallet address";
 "collectible-send-action" = "Transfer";
+"collectible-transfer-confirmed-title" = "Your NFT transfer is confirmed!";
+"collectible-transfer-confirmed-description" = "Transactions can take a few minutes to finalize.";
+"collectible-transfer-confirmed-action-title" = "Got it!";
+"collectible-transfer-failed-title" = "Your NFT transfer has failed!";
+"collectible-transfer-failed-verify-algo-desription" = "Please verify that you have enough Algo to cover the transaction fees for transferring your NFT, and try again.";
+"collectible-transfer-failed-retry-desription" = "Please try again.";
+"collectible-opt-in-info-title" = "Information about Opt-In";
+"collectible-opt-in-info-description" = "To avoid spammy transaction, the Algorand Blockchain only allow you to send and receive transaction for assets that have been previously opted-in.";
+"collectible-approve-transaction-title" = "Approve Transaction";
+"collectible-approve-transaction-description" = "Are you sure you want to proceed?";
+"collectible-approve-transaction-action-title" = "Confirm transfer";

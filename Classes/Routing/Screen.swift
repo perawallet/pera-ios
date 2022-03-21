@@ -120,6 +120,7 @@ indirect enum Screen {
         dataController: ReceiveCollectibleAssetListDataController
     )
     case sendCollectible
+    case approveCollectibleTransaction
 }
 
 extension Screen {

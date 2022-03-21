@@ -635,6 +635,10 @@ class Router:
             )
         case .sendCollectible:
             viewController = SendCollectibleViewController(configuration: configuration)
+        case .approveCollectibleTransaction:
+            viewController = ApproveCollectibleTransactionViewController(
+                configuration: configuration
+            )
         }
 
         return viewController as? T
