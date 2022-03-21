@@ -353,15 +353,21 @@ extension SendCollectibleViewController {
 
         let isKeyboardHidden = keyboardHeight == 0
 
-        /// <note>
-        /// When text is deleted resize image to its initial size if needed.
-        if bottomSheetView.initialHeight == bottomSheetNewHeight && isKeyboardHidden {
-            updateImageBeforeAnimations(for: .initialIfNeeded)
+        guard isKeyboardHidden else {
+            return
         }
 
         /// <note>
-        /// If text is changed but keyboard isn't used we get the diff between `bottomSheetNewHeight` and `bottomSheetView.initialHeight`. If it is different than initial height, we substract the diff from the image size then apply the animations.
-        if bottomSheetView.isEditing && isKeyboardHidden {
+        /// When text is deleted, resize image to its initial size if needed.
+        if bottomSheetView.initialHeight == bottomSheetNewHeight {
+            updateImageBeforeAnimations(for: .initialIfNeeded)
+            animateImageLayout(imageView)
+            return
+        }
+
+        /// <note>
+        /// If text is changed but keyboard isn't used we get the diff between `bottomSheetNewHeight` and `bottomSheetView.initialHeight`. If diff is different than initial height, we substract the diff from the image size then apply the animations.
+        if bottomSheetView.isEditing {
             bottomSheetHeightDiff = bottomSheetNewHeight - bottomSheetView.initialHeight
 
             if bottomSheetHeightDiff != 0 {
@@ -377,10 +383,10 @@ extension SendCollectibleViewController {
                 updateImageBeforeAnimations(
                     for: .custom(height: imageViewHeight)
                 )
+
+                animateImageLayout(imageView)
             }
         }
-
-        animateImageLayout(imageView)
     }
 }
 
