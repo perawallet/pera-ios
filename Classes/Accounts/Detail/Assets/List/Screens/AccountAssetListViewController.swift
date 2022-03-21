@@ -40,6 +40,7 @@ final class AccountAssetListViewController: BaseViewController {
             frame: .zero,
             collectionViewLayout: collectionViewLayout
         )
+        collectionView.contentInset = UIEdgeInsets(theme.contentInset)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
