@@ -23,6 +23,7 @@ final class CollectibleListItemView:
     ViewModelBindable,
     ListReusable {
     private lazy var image = URLImageView()
+    private lazy var titleAndSubtitleContentView = MacaroonUIKit.BaseView()
     private lazy var title = Label()
     private lazy var subtitle = Label()
     private lazy var topLeftBadge = ImageView()
@@ -32,8 +33,7 @@ final class CollectibleListItemView:
         _ theme: CollectibleListItemViewTheme
     ) {
         addImage(theme)
-        addTitle(theme)
-        addSubtitle(theme)
+        addTitleAndSubtitleContent(theme)
     }
 
     func customizeAppearance(
@@ -94,7 +94,7 @@ final class CollectibleListItemView:
             )
         let preferredHeight =
         iconHeight +
-        theme.titleTopPadding +
+        theme.titleAndSubtitleContentTopPadding +
         titleSize.height +
         bodySize.height
 
@@ -123,18 +123,28 @@ extension CollectibleListItemView {
         addTopLeftBadge(theme)
     }
 
+    private func addTitleAndSubtitleContent(
+        _ theme: CollectibleListItemViewTheme
+    ) {
+        addSubview(titleAndSubtitleContentView)
+        titleAndSubtitleContentView.snp.makeConstraints {
+            $0.top == image.snp.bottom + theme.titleAndSubtitleContentTopPadding
+            $0.setPaddings((.noMetric, 0, 0, 0))
+        }
+
+        addTitle(theme)
+        addSubtitle(theme)
+    }
+
     private func addTitle(
         _ theme: CollectibleListItemViewTheme
     ) {
         title.customizeAppearance(theme.title)
 
-        title.contentEdgeInsets.top = theme.titleTopPadding
-        addSubview(title)
+        titleAndSubtitleContentView.addSubview(title)
         title.fitToIntrinsicSize()
         title.snp.makeConstraints {
-            $0.top == image.snp.bottom
-
-            $0.setPaddings((.noMetric, 0, .noMetric, 0))
+            $0.setPaddings((0, 0, .noMetric, 0))
         }
     }
 
@@ -143,8 +153,7 @@ extension CollectibleListItemView {
     ) {
         subtitle.customizeAppearance(theme.subtitle)
 
-        addSubview(subtitle)
-        
+        titleAndSubtitleContentView.addSubview(subtitle)
         subtitle.snp.makeConstraints {
             $0.top == title.snp.bottom
 
