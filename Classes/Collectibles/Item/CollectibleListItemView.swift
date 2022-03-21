@@ -197,7 +197,14 @@ extension CollectibleListItemView {
 }
 
 extension CollectibleListItemView {
-    func configureImageAlphaForOptedInCell() {
-        image.alpha = 0.4
+    func configureOverlayForOptedInCell() {
+        let overlayView = MacaroonUIKit.BaseView()
+        overlayView.backgroundColor = AppColors.Shared.System.background.uiColor
+        overlayView.alpha = 0.4
+
+        image.addSubview(overlayView)
+        overlayView.snp.makeConstraints {
+            $0.setPaddings()
+        }
     }
 }

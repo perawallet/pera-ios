@@ -23,6 +23,7 @@ final class CollectibleListItemPendingView:
     ViewModelBindable,
     ListReusable {
     private lazy var image = URLImageView()
+    private lazy var overlay = MacaroonUIKit.BaseView()
     private lazy var titleAndSubtitleContentView = MacaroonUIKit.BaseView()
     private lazy var title = Label()
     private lazy var subtitle = Label()
@@ -99,7 +100,6 @@ extension CollectibleListItemPendingView {
         image.customizeAppearance(theme.image)
         image.layer.draw(corner: theme.corner)
         image.clipsToBounds = true
-        image.alpha = 0.4
 
         addSubview(image)
         image.fitToIntrinsicSize()
@@ -110,8 +110,22 @@ extension CollectibleListItemPendingView {
             $0.setPaddings((0, 0, .noMetric, 0))
         }
 
+        addOverlay(theme)
         addTopLeftBadge(theme)
         addPendingContentView(theme)
+    }
+
+    private func addOverlay(
+        _ theme: CollectibleListItemPendingViewTheme
+    ) {
+        let overlay = MacaroonUIKit.BaseView()
+        overlay.customizeAppearance(theme.overlay)
+        overlay.alpha = theme.overlayAlpha
+
+        image.addSubview(overlay)
+        overlay.snp.makeConstraints {
+            $0.setPaddings()
+        }
     }
 
     private func addTitleAndSubtitleContent(

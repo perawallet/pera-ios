@@ -22,6 +22,9 @@ struct CollectibleListItemPendingViewTheme:
     LayoutSheet,
     StyleSheet {
     let image: URLImageViewStyleSheet
+    
+    let overlay: ViewStyle
+    let overlayAlpha: LayoutMetric
 
     let title: TextStyle
     let titleAndSubtitleContentTopPadding: LayoutMetric
@@ -48,6 +51,11 @@ struct CollectibleListItemPendingViewTheme:
         _ family: LayoutFamily
     ) {
         image = CollectibleListItemImageViewTheme()
+        
+        overlay = [
+            .backgroundColor(AppColors.Shared.System.background)
+        ]
+        overlayAlpha = 0.4
 
         title = [
             .textColor(AppColors.Components.Text.gray),
