@@ -52,6 +52,19 @@ extension ALGAPI {
     }
 
     @discardableResult
+    func fetchAssetDetail(
+        _ draft: AssetDetailFetchDraft,
+        onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.assetDetail, args: draft.id)
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
+
+    @discardableResult
     func sendAssetSupportRequest(_ draft: AssetSupportDraft) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)

@@ -254,9 +254,23 @@ extension CollectibleListViewController {
         switch itemIdentifier {
         case .collectible(let item):
             switch item {
-            case .cell(_):
-                /// <todo>: Navigate to detail screen.
-                break
+            case .cell(let cell):
+                switch cell {
+                case .owner(let viewModel):
+                    guard let assetID = viewModel.assetID else {
+                        return
+                    }
+
+                    openCollectibleDetail(assetID)
+                case .pending(let viewModel):
+                    guard let assetID = viewModel.assetID else {
+                        return
+                    }
+
+                    openCollectibleDetail(assetID)
+                case .optedIn:
+                    break
+                }
             case .footer:
                 openReceiveCollectibleAccountList()
             }
@@ -288,6 +302,21 @@ extension CollectibleListViewController {
 }
 
 extension CollectibleListViewController {
+    private func openCollectibleDetail(
+        _ assetID: AssetID
+    ) {
+        if let asset = dataController[assetID] {
+            let dataController = CollectibleDetailAPIDataController(asset: asset)
+
+            open(
+                .collectibleDetail(
+                    dataController: dataController
+                ),
+                by: .push
+            )
+        }
+    }
+
     private func openReceiveCollectibleAccountList() {
         let interaction = uiInteractions[.performReceiveAction] as? UIBlockInteraction
         interaction?.notify()

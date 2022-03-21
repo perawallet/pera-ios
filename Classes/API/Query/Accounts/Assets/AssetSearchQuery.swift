@@ -77,3 +77,7 @@ struct AssetFetchQuery: ObjectQuery {
         return params
     }
 }
+
+struct AssetDetailFetchDraft {
+    let id: AssetID
+}

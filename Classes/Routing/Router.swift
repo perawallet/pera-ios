@@ -641,6 +641,15 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
+        case let .collectibleDetail(dataController):
+            viewController = CollectibleDetailViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
+        case .approveCollectibleTransaction:
+            viewController = ApproveCollectibleTransactionViewController(
+                configuration: configuration
+            )
         }
 
         return viewController as? T
