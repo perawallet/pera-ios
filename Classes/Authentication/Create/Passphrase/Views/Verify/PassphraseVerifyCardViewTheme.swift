@@ -34,7 +34,7 @@ struct PassphraseVerifyCardViewTheme:
     let stackViewSpacing: LayoutMetric
     
     let mnemonicLabelCorner: Corner
-    let mnemonicLabelHeight: LayoutMetric
+    let mnemonicLabelContentInset: LayoutPaddings
     let mnemonicLabel: TextStyle
     
     let activeColor: UIColor
@@ -84,7 +84,7 @@ struct PassphraseVerifyCardViewTheme:
         self.stackViewSpacing = 8
         
         self.mnemonicLabelCorner = Corner(radius: 2)
-        self.mnemonicLabelHeight = 44
+        self.mnemonicLabelContentInset = (10, 0, 10, 0)
         self.mnemonicLabel = [
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),

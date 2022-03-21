@@ -79,23 +79,11 @@ extension PassphraseVerifyCardViewModel {
         for (index, word) in mnemonics.enumerated() {
             switch index {
             case 0:
-                firstMnemonic = .attributedString(
-                    word
-                        .localized
-                        .attributed(attributeGroup)
-                )
+                firstMnemonic = .attributedString(word.attributed(attributeGroup))
             case 1:
-                secondMnemonic = .attributedString(
-                    word
-                        .localized
-                        .attributed(attributeGroup)
-                )
+                secondMnemonic = .attributedString(word.attributed(attributeGroup))
             case 2:
-                thirdMnemonic = .attributedString(
-                    word
-                        .localized
-                        .attributed(attributeGroup)
-                )
+                thirdMnemonic = .attributedString(word.attributed(attributeGroup))
             default:
                 break
             }

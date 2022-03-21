@@ -107,7 +107,7 @@ extension PassphraseVerifyViewController: PassphraseVerifyDataSourceDelegate {
 extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
     func passphraseVerifyViewDidTapNextButton(
         _ passphraseVerifyView: PassphraseVerifyView,
-        mnemonics: [Int: String]
+        mnemonics: [Int?: String]
     ) {
         if !dataSource.verifyPassphrase(for: mnemonics) {
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))

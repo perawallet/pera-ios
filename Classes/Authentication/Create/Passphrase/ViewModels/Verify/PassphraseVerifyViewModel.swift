@@ -19,14 +19,10 @@ import UIKit
 import MacaroonUIKit
 
 final class PassphraseVerifyViewModel: ViewModel {
-    private(set) var firstCardMnemonics: [String]?
-    private(set) var firstCardIndex: Int?
-    private(set) var secondCardMnemonics: [String]?
-    private(set) var secondCardIndex: Int?
-    private(set) var thirdCardMnemonics: [String]?
-    private(set) var thirdCardIndex: Int?
-    private(set) var fourthCardMnemonics: [String]?
-    private(set) var fourthCardIndex: Int?
+    private(set) var firstCardViewModel: PassphraseVerifyCardViewModel?
+    private(set) var secondCardViewModel: PassphraseVerifyCardViewModel?
+    private(set) var thirdCardViewModel: PassphraseVerifyCardViewModel?
+    private(set) var fourthCardViewModel: PassphraseVerifyCardViewModel?
 
     init(
         shownMnemonics: [Int: [String]],
@@ -45,17 +41,25 @@ final class PassphraseVerifyViewModel: ViewModel {
         shownMnemonics.forEach {index, mnemonics in
             switch index {
             case 0:
-                firstCardMnemonics = mnemonics
-                firstCardIndex = indexes[index]
+                firstCardViewModel = PassphraseVerifyCardViewModel(
+                    index: indexes[index],
+                    mnemonics: mnemonics
+                )
             case 1:
-                secondCardMnemonics = mnemonics
-                secondCardIndex = indexes[index]
+                secondCardViewModel = PassphraseVerifyCardViewModel(
+                    index: indexes[index],
+                    mnemonics: mnemonics
+                )
             case 2:
-                thirdCardMnemonics = mnemonics
-                thirdCardIndex = indexes[index]
+                thirdCardViewModel = PassphraseVerifyCardViewModel(
+                    index: indexes[index],
+                    mnemonics: mnemonics
+                )
             case 3:
-                fourthCardMnemonics = mnemonics
-                fourthCardIndex = indexes[index]
+                fourthCardViewModel = PassphraseVerifyCardViewModel(
+                    index: indexes[index],
+                    mnemonics: mnemonics
+                )
             default:
                 break
             }

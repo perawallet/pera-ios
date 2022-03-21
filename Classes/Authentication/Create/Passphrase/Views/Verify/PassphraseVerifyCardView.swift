@@ -122,10 +122,7 @@ extension PassphraseVerifyCardView {
         return choosenMnemonic.someString
     }
     
-    func getIndex() -> Int {
-        guard let cardIndex = cardIndex else {
-            return 0
-        }
+    func getIndex() -> Int? {
         return cardIndex
     }
     
@@ -167,52 +164,30 @@ extension PassphraseVerifyCardView {
     }
     
     private func addStackView(_ theme: PassphraseVerifyCardViewTheme) {
+        stackView.alignment = .fill
         stackView.spacing = theme.stackViewSpacing
         
         containerView.addSubview(stackView)
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(theme.stackViewSpacing)
         }
-        
-        addFirstMnemonicLabel(theme)
-        addSecondMnemonicLabel(theme)
-        addThirdMnemonicLabel(theme)
+
+        addMnemonicLabel(theme, firstMnemonicLabel, tag: 1)
+        addMnemonicLabel(theme, secondMnemonicLabel, tag: 2)
+        addMnemonicLabel(theme, thirdMnemonicLabel, tag: 3)
     }
     
-    private func addFirstMnemonicLabel(_ theme: PassphraseVerifyCardViewTheme) {
-        firstMnemonicLabel.tag = 1
-        firstMnemonicLabel.customizeAppearance(theme.mnemonicLabel)
-        firstMnemonicLabel.draw(corner: theme.mnemonicLabelCorner)
+    private func addMnemonicLabel(
+        _ theme: PassphraseVerifyCardViewTheme,
+        _ mnemonicLabel: Label,
+        tag: Int
+    ) {
+        mnemonicLabel.tag = tag
+        mnemonicLabel.contentEdgeInsets = theme.mnemonicLabelContentInset
+        mnemonicLabel.customizeAppearance(theme.mnemonicLabel)
+        mnemonicLabel.draw(corner: theme.mnemonicLabelCorner)
         
-        stackView.addArrangedSubview(firstMnemonicLabel)
-        firstMnemonicLabel.snp.makeConstraints {
-            $0.fitToHeight(theme.mnemonicLabelHeight)
-            $0.leading.trailing.equalToSuperview()
-        }
-    }
-    
-    private func addSecondMnemonicLabel(_ theme: PassphraseVerifyCardViewTheme) {
-        secondMnemonicLabel.tag = 2
-        secondMnemonicLabel.customizeAppearance(theme.mnemonicLabel)
-        secondMnemonicLabel.draw(corner: theme.mnemonicLabelCorner)
-        
-        stackView.addArrangedSubview(secondMnemonicLabel)
-        secondMnemonicLabel.snp.makeConstraints {
-            $0.fitToHeight(theme.mnemonicLabelHeight)
-            $0.leading.trailing.equalToSuperview()
-        }
-    }
-    
-    private func addThirdMnemonicLabel(_ theme: PassphraseVerifyCardViewTheme) {
-        thirdMnemonicLabel.tag = 3
-        thirdMnemonicLabel.customizeAppearance(theme.mnemonicLabel)
-        thirdMnemonicLabel.draw(corner: theme.mnemonicLabelCorner)
-        
-        stackView.addArrangedSubview(thirdMnemonicLabel)
-        thirdMnemonicLabel.snp.makeConstraints {
-            $0.fitToHeight(theme.mnemonicLabelHeight)
-            $0.leading.trailing.equalToSuperview()
-        }
+        stackView.addArrangedSubview(mnemonicLabel)
     }
 }
 

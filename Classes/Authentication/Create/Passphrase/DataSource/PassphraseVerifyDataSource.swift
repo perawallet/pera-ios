@@ -143,7 +143,7 @@ extension PassphraseVerifyDataSource {
 }
 
 extension PassphraseVerifyDataSource {
-    func verifyPassphrase(for choosenMnemonics: [Int: String]) -> Bool {
+    func verifyPassphrase(for choosenMnemonics: [Int?: String]) -> Bool {
         var isValidate = true
         for mnemonicIndex in mnemonicIndexes {
             let rightMnemonic = mnemonics[mnemonicIndex]

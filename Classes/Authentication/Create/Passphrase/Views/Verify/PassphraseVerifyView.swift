@@ -31,7 +31,7 @@ final class PassphraseVerifyView:
 
     private lazy var nextButton = Button()
     
-    private var choosenMnemonics: [Int: String] = [:]
+    private var choosenMnemonics: [Int?: String] = [:]
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -71,22 +71,10 @@ final class PassphraseVerifyView:
     }
     
     func bindData(_ viewModel: PassphraseVerifyViewModel?) {
-        firstCardView.bindData(PassphraseVerifyCardViewModel(
-            index: viewModel?.firstCardIndex,
-            mnemonics: viewModel?.firstCardMnemonics)
-        )
-        secondCardView.bindData(PassphraseVerifyCardViewModel(
-            index: viewModel?.secondCardIndex,
-            mnemonics: viewModel?.secondCardMnemonics)
-        )
-        thirdCardView.bindData(PassphraseVerifyCardViewModel(
-            index: viewModel?.thirdCardIndex,
-            mnemonics: viewModel?.thirdCardMnemonics)
-        )
-        fourthCardView.bindData(PassphraseVerifyCardViewModel(
-            index: viewModel?.fourthCardIndex,
-            mnemonics: viewModel?.fourthCardMnemonics)
-        )
+        firstCardView.bindData(viewModel?.firstCardViewModel)
+        secondCardView.bindData(viewModel?.secondCardViewModel)
+        thirdCardView.bindData(viewModel?.thirdCardViewModel)
+        fourthCardView.bindData(viewModel?.fourthCardViewModel)
     }
 }
 
@@ -196,6 +184,6 @@ extension PassphraseVerifyView: PassphraseVerifyCardViewDelegate {
 protocol PassphraseVerifyViewDelegate: AnyObject {
     func passphraseVerifyViewDidTapNextButton(
         _ passphraseVerifyView: PassphraseVerifyView,
-        mnemonics: [Int: String]
+        mnemonics: [Int?: String]
     )
 }
