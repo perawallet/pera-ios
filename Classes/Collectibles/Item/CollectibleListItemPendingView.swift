@@ -118,7 +118,6 @@ extension CollectibleListItemPendingView {
     private func addOverlay(
         _ theme: CollectibleListItemPendingViewTheme
     ) {
-        let overlay = MacaroonUIKit.BaseView()
         overlay.customizeAppearance(theme.overlay)
         overlay.alpha = theme.overlayAlpha
 
