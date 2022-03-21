@@ -25,7 +25,7 @@ final class ApproveCollectibleTransactionViewController:
     UIControlInteractionPublisher {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
         .confirm: UIControlInteraction(),
-        .learnMore: UIControlInteraction()
+        .cancel: UIControlInteraction()
     ]
     
     private lazy var contextView = UIView()
@@ -35,7 +35,7 @@ final class ApproveCollectibleTransactionViewController:
     private lazy var toAccountInfoView = ApproveCollectibleTransactionInfoView()
     private lazy var transactionFeeInfoView = ApproveCollectibleTransactionInfoView()
     private lazy var confirmActionView = MacaroonUIKit.Button()
-    private lazy var learnMoreActionView = MacaroonUIKit.Button()
+    private lazy var cancelActionView = MacaroonUIKit.Button()
 
     private let theme: ApproveCollectibleTransactionViewControllerTheme
     private let viewModel: ApproveCollectibleTransactionViewModel
@@ -87,7 +87,7 @@ extension ApproveCollectibleTransactionViewController {
         addToAccount()
         addTransactionFee()
         addConfirmAction()
-        addLearnMoreAction()
+        addCancelAction()
     }
 
     private func addTitle() {
@@ -181,13 +181,13 @@ extension ApproveCollectibleTransactionViewController {
         )
     }
 
-    private func addLearnMoreAction() {
-        learnMoreActionView.customizeAppearance(theme.learnMoreAction)
-        learnMoreActionView.draw(corner: theme.actionCorner)
+    private func addCancelAction() {
+        cancelActionView.customizeAppearance(theme.cancelAction)
+        cancelActionView.draw(corner: theme.actionCorner)
 
-        contextView.addSubview(learnMoreActionView)
-        learnMoreActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
-        learnMoreActionView.snp.makeConstraints {
+        contextView.addSubview(cancelActionView)
+        cancelActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
+        cancelActionView.snp.makeConstraints {
             $0.leading == 0
             $0.trailing == 0
             $0.top == confirmActionView.snp.bottom + theme.spacingBetweenActions
@@ -195,8 +195,8 @@ extension ApproveCollectibleTransactionViewController {
         }
 
         startPublishing(
-            event: .learnMore,
-            for: learnMoreActionView
+            event: .cancel,
+            for: cancelActionView
         )
     }
 
@@ -215,6 +215,6 @@ extension ApproveCollectibleTransactionViewController {
 extension ApproveCollectibleTransactionViewController {
     enum Event {
         case confirm
-        case learnMore
+        case cancel
     }
 }
