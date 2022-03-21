@@ -38,9 +38,12 @@ struct BannerWithActionViewTheme: LayoutSheet, StyleSheet {
     let actionCorner: Corner
     let actionContentEdgeInsets: LayoutPaddings
 
-    init(_ family: LayoutFamily) {
+    init(
+        _ family: LayoutFamily,
+        contentBottomPadding: LayoutMetric = 20
+    ) {
         contentMinWidthRatio = 0.5
-        contentPaddings = (20, 24, 20, .noMetric)
+        contentPaddings = (20, 24, contentBottomPadding, .noMetric)
 
         background = [
             .backgroundColor(AppColors.Shared.Helpers.negative)
@@ -69,5 +72,9 @@ struct BannerWithActionViewTheme: LayoutSheet, StyleSheet {
         ]
         actionCorner = Corner(radius: 4)
         actionContentEdgeInsets = (8, 16, 8, 16)
+    }
+
+    init(_ family: LayoutFamily) {
+        self.init(family, contentBottomPadding: 20)
     }
 }

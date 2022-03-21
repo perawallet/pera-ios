@@ -54,7 +54,12 @@ final class BannerWithActionView:
         titleView.editText = viewModel?.title
         messageView.editText = viewModel?.message
         iconView.image = viewModel?.icon?.uiImage
-        actionView.editTitle = viewModel?.actionTitle
+
+        if let actionTitle = viewModel?.actionTitle {
+            actionView.editTitle = actionTitle
+        } else {
+            actionView.removeFromSuperview()
+        }
     }
 }
 
@@ -72,6 +77,10 @@ extension BannerWithActionView {
 
         contentView.snp.makeConstraints {
             $0.width >= self * theme.contentMinWidthRatio
+            $0.trailing
+                .equalToSuperview()
+                .inset(theme.actionHorizontalPaddings.trailing)
+                .priority(.medium)
             $0.setPaddings(
                 theme.contentPaddings
             )
@@ -137,11 +146,8 @@ extension BannerWithActionView {
         actionView.fitToIntrinsicSize()
         actionView.snp.makeConstraints {
             $0.leading == contentView.snp.trailing + theme.actionHorizontalPaddings.leading
-
-            $0.centerVertically(
-                offset: 0,
-                horizontalPaddings: (.noMetric, theme.actionHorizontalPaddings.trailing)
-            )
+            $0.trailing == theme.actionHorizontalPaddings.trailing
+            $0.centerY == contentView
         }
 
         startPublishing(

@@ -22,7 +22,7 @@ struct FetchErrorBannerDraft {
     let icon: UIImage
     let title: String
     let message: String
-    let actionTitle: String
+    let actionTitle: String?
 }
 
 struct FetchErrorBannerWithActionViewModel:
@@ -80,7 +80,7 @@ extension FetchErrorBannerWithActionViewModel {
     }
 
     mutating func bindActionTitle(
-        _ someActionTitle: String
+        _ someActionTitle: String?
     ) {
         actionTitle = getActionTitle(someActionTitle)
     }
