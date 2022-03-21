@@ -638,6 +638,10 @@ class Router:
                 dataController: CollectibleDetailAPIDataController(asset),
                 configuration: configuration
             )
+        case .approveCollectibleTransaction:
+            viewController = ApproveCollectibleTransactionViewController(
+                configuration: configuration
+            )
         }
 
         return viewController as? T
