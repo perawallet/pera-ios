@@ -64,27 +64,6 @@ final class BannerController: MacaroonBanner.BannerController {
 
         enqueue(view)
     }
-
-    func presentFetchErrorBanner(
-        title: String,
-        message: String,
-        actionTitle: String = "title-retry".localized,
-        icon: UIImage = "icon-info-24".uiImage,
-        retryAction: @autoclosure @escaping () -> Void
-    ) {
-        let view = makeFetchErrorBanner()
-        let draft = FetchErrorBannerDraft(
-            icon: icon,
-            title: title,
-            message: message,
-            actionTitle: actionTitle
-        )
-        view.bindData(FetchErrorBannerWithActionViewModel(draft))
-
-        view.observe(event: .performAction, handler: retryAction)
-
-        enqueue(view)
-    }
 }
 
 extension BannerController {
@@ -99,12 +78,6 @@ extension BannerController {
         var theme = BannerViewTheme()
         theme.configureForInfo()
         view.customize(theme)
-        return view
-    }
-
-    private func makeFetchErrorBanner() -> BannerWithActionView {
-        let view = BannerWithActionView()
-        view.customize(BannerWithActionViewTheme())
         return view
     }
 }
