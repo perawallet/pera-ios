@@ -163,8 +163,8 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                         dataController: AssetSearchLocalDataController(
                             accountHandle: accountHandle,
                             sharedDataController: sharedDataController
-                            )
-                        ),
+                        )
+                    ),
                     by: .present
                 ) as? AssetSearchViewController
 

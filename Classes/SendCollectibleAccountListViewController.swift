@@ -66,10 +66,30 @@ final class SendCollectibleAccountListViewController:
         super.init(configuration: configuration)
     }
 
+    deinit {
+        unobserveNotifications()
+    }
+
     override func configureNavigationBarAppearance() {
         addBarButtons()
 
         navigationItem.title = "collectible-send-account-list-title".localized
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdate(let snapshot):
+                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            }
+        }
+
+        dataController.load()
     }
 
     override func prepareLayout() {
@@ -77,12 +97,27 @@ final class SendCollectibleAccountListViewController:
         build()
     }
 
-    override func setListeners() {
-        super.setListeners()
+    override func linkInteractors() {
+        super.linkInteractors()
 
         listView.delegate = self
         searchInputView.delegate = self
 
+        linkPasteboardInteractors()
+    }
+
+    private func build() {
+        addSearchInputView()
+        addBackground()
+        addListView()
+        addClipboardView()
+
+        displayClipboardIfNeeded()
+    }
+}
+
+extension SendCollectibleAccountListViewController {
+    private func linkPasteboardInteractors() {
         clipboardView.addGestureRecognizer(
             UITapGestureRecognizer(target: self, action: #selector(didTapCopyAddress))
         )
@@ -102,41 +137,10 @@ final class SendCollectibleAccountListViewController:
         }
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        dataController.eventHandler = {
-            [weak self] event in
-            guard let self = self else { return }
-
-            switch event {
-            case .didUpdate(let snapshot):
-                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
-            }
-        }
-
-        dataController.load()
-    }
-
-    private func build() {
-        addSearchInputView()
-        addBackground()
-        addListView()
-        addClipboardView()
-
-        displayClipboardIfNeeded()
-    }
-
-    deinit {
-        unobserveNotifications()
-    }
-}
-
-extension SendCollectibleAccountListViewController {
     @objc
     private func didTapCopyAddress() {
         if let address = UIPasteboard.general.validAddress {
-           searchInputView.setText(address)
+            searchInputView.setText(address)
         }
     }
 }

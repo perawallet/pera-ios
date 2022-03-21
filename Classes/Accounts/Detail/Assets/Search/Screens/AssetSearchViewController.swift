@@ -130,13 +130,10 @@ extension AssetSearchViewController {
         let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
 
         guard let listSection = sectionIdentifiers[safe: indexPath.section],
-              listSection == .assets else {
+              listSection == .assets,
+              let asset = dataController[indexPath.item] else {
                   return
-        }
-
-        guard let asset = dataController[indexPath.item] else {
-            return
-        }
+              }
 
         closeScreen(by: .dismiss, animated: false) {
             [weak self] in
