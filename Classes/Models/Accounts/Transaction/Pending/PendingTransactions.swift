@@ -49,7 +49,7 @@ final class PendingTransaction:
     init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.signature = apiModel.sig
+        self.signature = apiModel.signature
         self.algosAmount = apiModel.txn?.amt
         self.assetAmount = apiModel.txn?.aamt
         self.fee = apiModel.txn?.fee
@@ -112,11 +112,105 @@ extension PendingTransaction {
     struct APIModel: ALGAPIModel {
         var sig: String?
         var txn: TransactionDetail?
+        var logicSignature: LogicSignature?
+        var multiSignature: MultiSignature?
+        
+        var signature: String? {
+            sig ?? logicSignature?.signature ?? multiSignature?.signature
+        }
 
         init() {
             self.sig = nil
             self.txn = nil
+            self.logicSignature = nil
+            self.multiSignature = nil
         }
+    }
+}
+
+extension PendingTransaction.APIModel {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case sig = "sig"
+        case txn = "txn"
+        case logicSignature = "lsig"
+        case multiSignature = "msig"
+    }
+}
+
+extension PendingTransaction.APIModel {
+    struct LogicSignature: ALGAPIModel {
+        var signature: String
+        
+        init() {
+            self.signature = ""
+        }
+    }
+}
+
+extension PendingTransaction.APIModel.LogicSignature {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case signature = "l"
+    }
+}
+
+extension PendingTransaction.APIModel {
+    struct MultiSignature: ALGAPIModel {
+        var subsignature: [MultiSubSignature]
+        
+        var signature: String? {
+            var combinedSignature: String?
+            
+            for signature in subsignature {
+                guard let signatureValue = signature.signature else {
+                    continue
+                }
+                
+                if let oldCombinedSignature = combinedSignature {
+                    combinedSignature = oldCombinedSignature.appending(signatureValue)
+                } else {
+                    combinedSignature = signatureValue
+                }
+            }
+            
+            return combinedSignature
+        }
+        
+        init() {
+            self.subsignature = []
+        }
+    }
+}
+
+extension PendingTransaction.APIModel.MultiSignature {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case subsignature = "subsig"
+    }
+}
+
+extension PendingTransaction.APIModel.MultiSignature {
+    struct MultiSubSignature: ALGAPIModel {
+        var publicKey: String?
+        var signature: String?
+        
+        init() {
+            self.publicKey = nil
+            self.signature = nil
+        }
+    }
+}
+
+extension PendingTransaction.APIModel.MultiSignature.MultiSubSignature {
+    private enum CodingKeys:
+        String,
+        CodingKey {
+        case publicKey = "pk"
+        case signature = "s"
     }
 }
 
