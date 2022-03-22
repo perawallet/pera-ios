@@ -23,7 +23,7 @@ struct TitleViewTheme:
     LayoutSheet {
 
     let title: TextStyle
-    let paddings: LayoutPaddings
+    var paddings: LayoutPaddings
 
     init(
         _ family: LayoutFamily = LayoutFamily.getCurrentLayoutFamily(),
