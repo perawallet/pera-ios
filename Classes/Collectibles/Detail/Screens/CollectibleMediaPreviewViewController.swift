@@ -20,41 +20,91 @@ import MacaroonUIKit
 final class CollectibleMediaPreviewViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
+    private let theme = Theme()
 
     private lazy var listView: UICollectionView = {
-        let collectionViewLayout = CollectibleMediaPreviewLayout.build()
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .horizontal
+        flowLayout.minimumLineSpacing = theme.cellSpacing
+        flowLayout.sectionInset.left = theme.horizontalInset
+        flowLayout.sectionInset.right = theme.horizontalInset
+
         let collectionView = UICollectionView(
             frame: .zero,
-            collectionViewLayout: collectionViewLayout
+            collectionViewLayout: flowLayout
         )
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.alwaysBounceVertical = true
+        collectionView.alwaysBounceVertical = false
+        collectionView.decelerationRate = .fast
         collectionView.backgroundColor = .clear
+        collectionView.register(
+            CollectibleMediaImagePreviewCell.self
+        )
         return collectionView
     }()
 
-    private lazy var listLayout = CollectibleMediaPreviewLayout(dataSource: dataSource)
-    private lazy var dataSource = CollectibleMediaPreviewDataSource(listView)
+    private lazy var pageControl: UIPageControl = {
+        let pageControl = UIPageControl()
+        pageControl.currentPage = 0
+        pageControl.pageIndicatorTintColor = AppColors.Shared.Layer.gray.uiColor
+        pageControl.currentPageIndicatorTintColor = AppColors.Shared.Helpers.positive.uiColor
+        return pageControl
+    }()
 
-    private let asset: Collectible
+    private var currentPage = 0 {
+        didSet {
+            pageControl.currentPage = currentPage
+        }
+    }
+
+    private var isPageControlSizeUpdated = false
+
+    private lazy var dataSource = CollectibleMediaPreviewDataSource(
+        theme: theme,
+        asset: asset,
+        ownerAccount: ownerAccount
+    )
+
+    private let asset: CollectibleAsset
+    private let ownerAccount: Account?
 
     init(
-        asset: Collectible,
+        asset: CollectibleAsset,
+        ownerAccount: Account?,
         configuration: ViewControllerConfiguration
     ) {
         self.asset = asset
+        self.ownerAccount = ownerAccount
         super.init(configuration: configuration)
     }
 
     override func prepareLayout() {
         super.prepareLayout()
         addListView()
+        addPageControl()
     }
 
-    override func setListeners() {
-        super.setListeners()
+    override func linkInteractors() {
+        super.linkInteractors()
         listView.delegate = self
+        listView.dataSource = dataSource
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        /// Update page control dot sizes if needed.
+        if !isPageControlSizeUpdated {
+            pageControl.subviews.forEach {
+                $0.transform = CGAffineTransform(
+                    scaleX: theme.pageControlScale,
+                    y: theme.pageControlScale
+                )
+            }
+
+            isPageControlSizeUpdated = true
+        }
     }
 }
 
@@ -62,7 +112,79 @@ extension CollectibleMediaPreviewViewController {
     private func addListView() {
         view.addSubview(listView)
         listView.snp.makeConstraints {
-            $0.setPaddings()
+            $0.leading == 0
+            $0.trailing == 0
+            $0.top == 0
         }
+    }
+
+    private func addPageControl() {
+        view.addSubview(pageControl)
+
+        pageControl.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.top == listView.snp.bottom
+            $0.bottom == 0
+            $0.leading.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalInset)
+        }
+
+        if let medias = asset.medias,
+           medias.count > 1 {
+            pageControl.numberOfPages = medias.count
+        }
+    }
+}
+
+extension CollectibleMediaPreviewViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        let width =
+            collectionView.bounds.width -
+            theme.horizontalInset * 2
+        return CGSize(width: width.float(), height: width.float())
+    }
+
+    func scrollViewWillEndDragging(
+        _ scrollView: UIScrollView,
+        withVelocity velocity: CGPoint,
+        targetContentOffset: UnsafeMutablePointer<CGPoint>
+    ) {
+        guard let medias = asset.medias else {
+            return
+        }
+
+        let pageWidth =
+            listView.bounds.width -
+            theme.horizontalInset * 2 +
+            theme.cellSpacing
+
+        var newPage = CGFloat(currentPage)
+
+        if velocity.x == 0 {
+            newPage = floor((targetContentOffset.pointee.x - pageWidth / 2) / pageWidth) + 1.0
+        } else {
+            newPage = CGFloat(velocity.x > 0 ? currentPage + 1 : currentPage - 1)
+            if newPage < 0 {
+                return
+            }
+
+            if newPage > listView.contentSize.width / pageWidth {
+                newPage = ceil(listView.contentSize.width / pageWidth) - 1.0
+            }
+        }
+
+        if newPage >= CGFloat(medias.count) {
+            return
+        }
+
+        currentPage = Int(newPage)
+
+        targetContentOffset.pointee = CGPoint(
+            x: newPage * pageWidth,
+            y: targetContentOffset.pointee.y
+        )
     }
 }
