@@ -12,23 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AssetSearchListLayout+Theme.swift
+//   TitleViewTheme+AssetSearchList.swift
 
 import Foundation
 
-import Foundation
-import MacaroonUIKit
-import UIKit
-
-extension AssetSearchListLayout {
-    struct Theme: LayoutSheet, StyleSheet {
-        let assetItemSize: LayoutSize
-        let listHeaderSize: LayoutSize
-
-        init(_ family: LayoutFamily) {
-            self.assetItemSize = (UIScreen.main.bounds.width - 48, 72)
-            self.listHeaderSize = (UIScreen.main.bounds.width, 40)
-        }
+extension TitleViewTheme {
+    mutating func configureForAsserSearchListHeader() {
+        paddings = (0, 0, 8, 0)
     }
 }

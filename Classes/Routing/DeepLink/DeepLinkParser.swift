@@ -235,7 +235,7 @@ extension DeepLinkParser {
     ) -> String? {
         let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true)
         let accountAddress = urlComponents?.host
-        return accountAddress.unwrap { $0.isValidatedAddress() }
+        return accountAddress.unwrap { $0.isValidatedAddress }
     }
 }
 

@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AssetSearchDataSource.swift
+//   SendCollectibleAccountListDataSource.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AssetSearchDataSource: UICollectionViewDiffableDataSource<AssetSearchSection, AssetSearchItem> {
+final class SendCollectibleAccountListDataSource:
+    UICollectionViewDiffableDataSource<SendCollectibleAccountListSection, SendCollectibleAccountListItem> {
     init(
         _ collectionView: UICollectionView
     ) {
@@ -27,28 +27,48 @@ final class AssetSearchDataSource: UICollectionViewDiffableDataSource<AssetSearc
             collectionView, indexPath, itemIdentifier in
 
             switch itemIdentifier {
-            case let .header(item):
-                let cell = collectionView.dequeue(
-                    AssetSearchListTitleSupplementaryCell.self,
-                    at: indexPath
-                )
-                cell.bindData(
-                    item
-                )
-                return cell
-            case let .asset(item):
-                let cell = collectionView.dequeue(
-                    AssetPreviewCell.self,
-                    at: indexPath
-                )
-                cell.bindData(
-                    item
-                )
-                return cell
-
             case .empty(let item):
+                switch item {
+                case .loading:
+                    return collectionView.dequeue(
+                        PreviewLoadingCell.self,
+                        at: indexPath
+                    )
+                case .noContent:
+                    let cell = collectionView.dequeue(
+                        NoContentCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(
+                        AccountSelectSearchNoContentViewModel()
+                    )
+                    return cell
+                }
+            case .header(let item):
                 let cell = collectionView.dequeue(
-                    NoContentCell.self,
+                    SendCollectibleAccountListTitleSupplementaryCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    item
+                )
+                return cell
+            case .account(let item):
+                /// <todo> Change background of cell if it is selected
+
+                let cell = collectionView.dequeue(
+                    AccountPreviewCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    item
+                )
+                return cell
+            case .contact(let item):
+                /// <todo> Change background of cell if it is selected
+
+                let cell = collectionView.dequeue(
+                    SelectContactCell.self,
                     at: indexPath
                 )
                 cell.bindData(
@@ -59,11 +79,14 @@ final class AssetSearchDataSource: UICollectionViewDiffableDataSource<AssetSearc
         }
 
         [
+            PreviewLoadingCell.self,
             NoContentCell.self,
-            AssetPreviewCell.self,
-            AssetSearchListTitleSupplementaryCell.self
+            SendCollectibleAccountListTitleSupplementaryCell.self,
+            AccountPreviewCell.self, /// <todo> Create new loading cell since preview has only image and address.
+            SelectContactCell.self
         ].forEach {
             collectionView.register($0)
         }
     }
 }
+

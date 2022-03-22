@@ -12,27 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TitleViewTheme.swift
+//   SendCollectibleAccountListViewControllerTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct TitleViewTheme:
+struct SendCollectibleAccountListViewControllerTheme:
     StyleSheet,
     LayoutSheet {
-    let title: TextStyle
-    var paddings: LayoutPaddings
+    let background: ViewStyle
+    let horizontalPadding: LayoutMetric
+    let searchInputViewTopPadding: LayoutMetric
+    let clipboardPaddings: LayoutPaddings
+    let contentInsetTopForClipboard: LayoutMetric
 
     init(
         _ family: LayoutFamily
     ) {
-        self.title = [
-            .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main),
-            .textOverflow(FittingText())
+        background = [
+            .backgroundColor(AppColors.Shared.System.background)
         ]
-
-        paddings = (0, 0, 0, 0)
+        horizontalPadding = 24
+        searchInputViewTopPadding = 16
+        clipboardPaddings = (20, 0, 0, 0)
+        contentInsetTopForClipboard = 112
     }
 }
