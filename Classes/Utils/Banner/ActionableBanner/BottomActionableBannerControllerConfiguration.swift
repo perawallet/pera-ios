@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   FetchErrorBannerControllerConfiguration.swift
+//   BottomActionableBannerControllerConfiguration.swift
 
 import MacaroonUIKit
 
-struct FetchErrorBannerControllerConfiguration {
+struct BottomActionableBannerControllerConfiguration {
     /// <note>
     /// A margin is the space around an element’s border, while padding is the space between an element’s border and the element’s content.
     var bottomMargin: LayoutMetric
@@ -30,5 +30,5 @@ struct FetchErrorBannerControllerConfiguration {
         self.contentBottomPadding = contentBottomPadding
     }
 
-    static let `default` = FetchErrorBannerControllerConfiguration()
+    static let `default` = BottomActionableBannerControllerConfiguration()
 }

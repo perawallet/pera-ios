@@ -12,21 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   FetchErrorBannerWithActionViewModel.swift
+//   FetchErrorActionableBannerViewModel.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-struct FetchErrorBannerDraft {
-    let icon: UIImage
-    let title: String
-    let message: String
-    let actionTitle: String?
-}
-
-struct FetchErrorBannerWithActionViewModel:
-    BannerWithActionViewModel,
+struct FetchErrorActionableBannerViewModel:
+    ActionableBannerViewModel,
     BindableViewModel {
     private(set) var icon: Image?
     private(set) var title: EditText?
@@ -40,20 +33,20 @@ struct FetchErrorBannerWithActionViewModel:
     }
 }
 
-extension FetchErrorBannerWithActionViewModel {
+extension FetchErrorActionableBannerViewModel {
     mutating func bind<T>(
         _ model: T
     ) {
-        if let draft = model as? FetchErrorBannerDraft {
+        if let draft = model as? ActionableBannerDraft {
             bind(draft: draft)
             return
         }
     }
 }
 
-extension FetchErrorBannerWithActionViewModel {
+extension FetchErrorActionableBannerViewModel {
     mutating func bind(
-        draft: FetchErrorBannerDraft
+        draft: ActionableBannerDraft
     ) {
         bindIcon(draft.icon)
         bindTitle(draft.title)

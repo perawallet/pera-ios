@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BannerWithActionViewTheme.swift
+//   ActionableBannerViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct BannerWithActionViewTheme: LayoutSheet, StyleSheet {
+struct ActionableBannerViewTheme: LayoutSheet, StyleSheet {
     let contentMinWidthRatio: LayoutMetric
     let contentPaddings: LayoutPaddings
 

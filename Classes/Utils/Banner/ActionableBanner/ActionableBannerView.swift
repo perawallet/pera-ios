@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BannerWithActionView.swift
+//   ActionableBannerView.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class BannerWithActionView:
+final class ActionableBannerView:
     View,
     ViewModelBindable,
     UIInteractionObservable,
@@ -33,7 +33,7 @@ final class BannerWithActionView:
     private lazy var actionView = MacaroonUIKit.Button()
 
     func customize(
-        _ theme: BannerWithActionViewTheme
+        _ theme: ActionableBannerViewTheme
     ) {
         addBackground(theme)
         addContent(theme)
@@ -49,7 +49,7 @@ final class BannerWithActionView:
     ) {}
 
     func bindData(
-        _ viewModel: BannerWithActionViewModel?
+        _ viewModel: ActionableBannerViewModel?
     ) {
         titleView.editText = viewModel?.title
         messageView.editText = viewModel?.message
@@ -63,15 +63,15 @@ final class BannerWithActionView:
     }
 }
 
-extension BannerWithActionView {
+extension ActionableBannerView {
     private func addBackground(
-        _ theme: BannerWithActionViewTheme
+        _ theme: ActionableBannerViewTheme
     ) {
         customizeAppearance(theme.background)
     }
 
     private func addContent(
-        _ theme: BannerWithActionViewTheme
+        _ theme: ActionableBannerViewTheme
     ) {
         addSubview(contentView)
 
@@ -92,7 +92,7 @@ extension BannerWithActionView {
     }
 
     private func addIcon(
-        _ theme: BannerWithActionViewTheme
+        _ theme: ActionableBannerViewTheme
     ) {
         iconView.customizeAppearance(theme.icon)
 
@@ -106,7 +106,7 @@ extension BannerWithActionView {
     }
 
     private func addTitle(
-        _ theme: BannerWithActionViewTheme
+        _ theme: ActionableBannerViewTheme
     ) {
         titleView.customizeAppearance(theme.title)
 
@@ -120,7 +120,7 @@ extension BannerWithActionView {
     }
 
     private func addMessage(
-        _ theme: BannerWithActionViewTheme
+        _ theme: ActionableBannerViewTheme
     ) {
         messageView.customizeAppearance(theme.message)
 
@@ -136,7 +136,7 @@ extension BannerWithActionView {
     }
 
     private func addAction(
-        _ theme: BannerWithActionViewTheme
+        _ theme: ActionableBannerViewTheme
     ) {
         actionView.customizeAppearance(theme.action)
         actionView.draw(corner: theme.actionCorner)
@@ -157,7 +157,7 @@ extension BannerWithActionView {
     }
 }
 
-extension BannerWithActionView {
+extension ActionableBannerView {
     enum Event {
         case performAction
     }

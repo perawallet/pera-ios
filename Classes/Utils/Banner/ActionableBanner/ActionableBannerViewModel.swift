@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BannerWithActionViewModel.swift
+//   ActionableBannerViewModel.swift
 
 import MacaroonUIKit
 
-protocol BannerWithActionViewModel: BannerViewModel {
+protocol ActionableBannerViewModel: BannerViewModel {
     var actionTitle: EditText? { get }
 }
 
-extension BannerWithActionViewModel {
+extension ActionableBannerViewModel {
     func getActionTitle(
         _ aTitle: String?
     ) -> EditText? {

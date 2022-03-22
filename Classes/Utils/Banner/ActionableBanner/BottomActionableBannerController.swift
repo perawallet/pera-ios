@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   FetchErrorBannerController.swift
+//   BottomActionableBannerController.swift
 
 import Foundation
 import SnapKit
 import UIKit
 import MacaroonUIKit
 
-final class FetchErrorBannerController {
+final class BottomActionableBannerController {
     private var isPresenting = false
     private var contentView: UIView?
 
     private unowned let presentingView: UIView
 
-    var configuration: FetchErrorBannerControllerConfiguration
+    var configuration: BottomActionableBannerControllerConfiguration
 
     private var currentContentLayoutAnimator: UIViewPropertyAnimator?
 
@@ -34,18 +34,14 @@ final class FetchErrorBannerController {
 
     init(
         presentingView: UIView,
-        configuration: FetchErrorBannerControllerConfiguration = .default
+        configuration: BottomActionableBannerControllerConfiguration = .default
     ) {
         self.presentingView = presentingView
         self.configuration = configuration
     }
 
-    func presentFetchError(
-        icon: UIImage = "icon-info-24".uiImage,
-        title: String,
-        message: String,
-        actionTitle: String? = nil,
-        actionHandler: (() -> Void)? = nil
+    private func presentError(
+        with view: UIView
     ) {
         if let currentContentLayoutAnimator = currentContentLayoutAnimator,
            currentContentLayoutAnimator.isRunning {
@@ -55,22 +51,6 @@ final class FetchErrorBannerController {
 
         if isPresenting {
             return
-        }
-
-        let view = makeFetchErrorBanner(
-            contentBottomPadding: configuration.contentBottomPadding
-        )
-
-        let draft = FetchErrorBannerDraft(
-            icon: icon,
-            title: title,
-            message: message,
-            actionTitle: actionTitle
-        )
-        view.bindData(FetchErrorBannerWithActionViewModel(draft))
-
-        if let actionHandler = actionHandler {
-            view.observe(event: .performAction, handler: actionHandler)
         }
 
         addContent(view)
@@ -97,7 +77,7 @@ final class FetchErrorBannerController {
         currentContentLayoutAnimator?.startAnimation()
     }
 
-    func dismissFetchError() {
+    func dismissError() {
         if let currentContentLayoutAnimator = currentContentLayoutAnimator,
            currentContentLayoutAnimator.isRunning {
             currentContentLayoutAnimator.isReversed.toggle()
@@ -130,7 +110,7 @@ final class FetchErrorBannerController {
     }
 }
 
-extension FetchErrorBannerController {
+extension BottomActionableBannerController {
     private func makeContentLayoutAnimator(
         isPresenting: Bool
     ) -> UIViewPropertyAnimator {
@@ -143,7 +123,7 @@ extension FetchErrorBannerController {
     }
 }
 
-extension FetchErrorBannerController {
+extension BottomActionableBannerController {
     private func updateLayoutWhenPresentingStatusDidChange(
         isPresenting: Bool
     ) {
@@ -211,17 +191,56 @@ extension FetchErrorBannerController {
     }
 }
 
-extension FetchErrorBannerController {
+extension BottomActionableBannerController {
+    func presentFetchError(
+        icon: UIImage = "icon-info-24".uiImage,
+        title: String,
+        message: String,
+        actionTitle: String? = nil,
+        actionHandler: (() -> Void)? = nil
+    ) {
+        let view = makeFetchErrorBanner(
+            icon: icon,
+            title: title,
+            message: message,
+            actionTitle: actionTitle,
+            actionHandler: actionHandler,
+            contentBottomPadding: configuration.contentBottomPadding
+        )
+
+        presentError(
+            with: view
+        )
+    }
+
     private func makeFetchErrorBanner(
+        icon: UIImage = "icon-info-24".uiImage,
+        title: String,
+        message: String,
+        actionTitle: String? = nil,
+        actionHandler: (() -> Void)? = nil,
         contentBottomPadding: LayoutMetric
-    ) -> BannerWithActionView {
-        let view = BannerWithActionView()
+    ) -> ActionableBannerView {
+        let view = ActionableBannerView()
         view.customize(
-            BannerWithActionViewTheme(
+            ActionableBannerViewTheme(
                 .current,
                 contentBottomPadding: contentBottomPadding
             )
         )
+        let draft = ActionableBannerDraft(
+            icon: icon,
+            title: title,
+            message: message,
+            actionTitle: actionTitle
+        )
+
+        view.bindData(FetchErrorActionableBannerViewModel(draft))
+
+        if let actionHandler = actionHandler {
+            view.observe(event: .performAction, handler: actionHandler)
+        }
+
         return view
     }
 }
