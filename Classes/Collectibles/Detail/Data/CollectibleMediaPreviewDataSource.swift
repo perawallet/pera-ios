@@ -18,32 +18,68 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectibleMediaPreviewDataSource: UICollectionViewDiffableDataSource<CollectibleMediaPreviewSection, CollectibleMediaPreviewItem> {
+final class CollectibleMediaPreviewDataSource:
+    NSObject,
+    UICollectionViewDataSource {
+    private let theme: CollectibleMediaPreviewViewController.Theme
+    private let asset: CollectibleAsset
+    private let ownerAccount: Account?
+
     init(
-        _ collectionView: UICollectionView
+        theme: CollectibleMediaPreviewViewController.Theme,
+        asset: CollectibleAsset,
+        ownerAccount: Account?
     ) {
-        super.init(collectionView: collectionView) {
-            collectionView, indexPath, itemIdentifier in
-
-            switch itemIdentifier {
-            case .item:
-                return collectionView.dequeue(
-                    CollectibleMediaPreviewCell.self,
-                    at: indexPath
-                )
-            }
-        }
-
-        collectionView.register(CollectibleMediaPreviewCell.self)
+        self.theme = theme
+        self.asset = asset
+        self.ownerAccount = ownerAccount
     }
 }
 
-enum CollectibleMediaPreviewSection:
-    Int,
-    Hashable {
-    case media
-}
+extension CollectibleMediaPreviewDataSource {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        return asset.medias?.count ?? 0
+    }
 
-enum CollectibleMediaPreviewItem: Hashable {
-    case item
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        guard let media = asset.medias?[safe: indexPath.item] else {
+            fatalError("Could not find the related media.")
+        }
+
+        let cell = collectionView.dequeue(
+            CollectibleMediaImagePreviewCell.self,
+            at: indexPath
+        )
+
+        let width = collectionView.bounds.width - theme.horizontalInset * 2
+
+        switch media.type {
+        case .image:
+            cell.bindData(
+                CollectibleMediaImagePreviewViewModel(
+                    imageSize: CGSize((width.float(), width.float())),
+                    asset: asset,
+                    ownerAccount: ownerAccount,
+                    url: media.sourceURL
+                )
+            )
+        default:
+            cell.bindData(
+                CollectibleMediaImagePreviewViewModel(
+                    imageSize: CGSize((width.float(), width.float())),
+                    asset: asset,
+                    ownerAccount: ownerAccount,
+                    url: nil
+                )
+            )
+        }
+
+        return cell
+    }
 }

@@ -18,12 +18,39 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectibleMediaPreviewCell: CollectionCell<CollectibleMediaPreviewView> {
+final class CollectibleMediaPreviewCell: UICollectionViewCell {
 
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        contextView.customize(CollectibleMediaPreviewViewTheme())
+    weak var contextView: UIView? {
+        didSet {
+            if contextView == oldValue {
+                return
+            }
+
+            removeContext(oldValue)
+
+            if let contextView = contextView {
+                addContext(contextView)
+            }
+        }
+    }
+}
+
+extension CollectibleMediaPreviewCell {
+    private func removeContext(_ view: UIView?) {
+        guard let aView = view else {
+            return
+        }
+
+        let hasContext = aView.isDescendant(of: self)
+
+        if hasContext {
+            aView.removeFromSuperview()
+        }
+    }
+
+    private func addContext(_ view: UIView) {
+        view.frame = contentView.bounds
+
+        contentView.addSubview(view)
     }
 }

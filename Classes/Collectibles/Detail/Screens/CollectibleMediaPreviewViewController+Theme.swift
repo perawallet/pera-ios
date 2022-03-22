@@ -12,25 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleMediaPreviewLayout.swift
+//   CollectibleMediaPreviewViewController+Theme.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class CollectibleMediaPreviewLayout: NSObject {
-    private let dataSource: CollectibleMediaPreviewDataSource
+extension CollectibleMediaPreviewViewController {
+    struct Theme:
+        StyleSheet,
+        LayoutSheet {
+        let cellSpacing: LayoutMetric
+        let horizontalInset: LayoutMetric
+        let pageControlScale: LayoutMetric
 
-    init(
-        dataSource: CollectibleMediaPreviewDataSource
-    ) {
-        self.dataSource = dataSource
-        super.init()
-    }
-
-    class func build() -> UICollectionViewLayout {
-        let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = 0
-        return flowLayout
+        init(
+            _ family: LayoutFamily
+        ) {
+            self.cellSpacing = 12
+            self.horizontalInset = 24
+            self.pageControlScale = 0.5
+        }
     }
 }
