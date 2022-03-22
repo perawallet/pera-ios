@@ -54,6 +54,7 @@ extension CollectibleDetailAPIDataController {
                     decoration: asset
                 )
 
+                self.eventHandler?(.didFetch(self.asset))
                 self.deliverContentSnapshot()
             case .failure(let error, _):
                 self.deliverErrorSnapshot(error)
@@ -97,8 +98,7 @@ extension CollectibleDetailAPIDataController {
                     )
                 )
             )
-        } else if let mediaType = asset.mediaType,
-                  !mediaType.isSupported {
+        } else if asset.containsUnsupportedMedia {
             mediaItems.append(
                 .error(
                     CollectibleMediaErrorViewModel(
@@ -224,7 +224,7 @@ extension CollectibleDetailAPIDataController {
     private func addPropertiesContent(
         _ snapshot: inout Snapshot
     ) {
-        if let properties = asset.traits,
+        if let properties = asset.properties,
            !properties.isEmpty {
             var propertyItems: [CollectibleDetailItem] = []
 

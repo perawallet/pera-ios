@@ -16,7 +16,44 @@
 
 import Foundation
 
-struct Media {
+final class Media: ALGEntityModel {
     let type: MediaType
-    let sourceURL: URL?
+    let previewURL: URL?
+    let downloadURL: URL?
+
+    init(
+        _ apiModel: APIModel = APIModel()
+    ) {
+        self.type = apiModel.type
+        self.previewURL = apiModel.previewURL
+        self.downloadURL = apiModel.downloadURL
+    }
+
+    func encode() -> APIModel {
+        var apiModel = APIModel()
+        apiModel.type = type
+        apiModel.previewURL = previewURL
+        apiModel.downloadURL = downloadURL
+        return apiModel
+    }
+}
+
+extension Media {
+    struct APIModel: ALGAPIModel {
+        var type: MediaType
+        var previewURL: URL?
+        var downloadURL: URL?
+
+        init() {
+            self.type = .init()
+            self.previewURL = nil
+            self.downloadURL = nil
+        }
+
+        private enum CodingKeys: String, CodingKey {
+            case type
+            case previewURL = "preview_url"
+            case downloadURL = "download_url"
+        }
+    }
 }

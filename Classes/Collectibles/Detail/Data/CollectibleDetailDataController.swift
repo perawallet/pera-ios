@@ -48,11 +48,14 @@ enum CollectibleDetailItem: Hashable {
 
 enum CollectibleDetailDataControllerEvent {
     case didUpdate(CollectibleDetailDataController.Snapshot)
+    case didFetch(CollectibleAsset)
 
-    var snapshot: CollectibleDetailDataController.Snapshot {
+    var snapshot: CollectibleDetailDataController.Snapshot? {
         switch self {
         case .didUpdate(let snapshot):
             return snapshot
+        case .didFetch:
+            return nil
         }
     }
 }

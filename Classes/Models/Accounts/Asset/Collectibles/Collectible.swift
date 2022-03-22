@@ -19,95 +19,67 @@ import MagpieCore
 import MacaroonUtils
 
 final class Collectible: ALGEntityModel {
-    let mediaType: MediaType
     let thumbnailImage: URL?
-    let medias: [Media]
     let title: String?
     let collectionName: String?
-    let description: String?
-    let traits: [CollectibleTrait]?
     let explorerURL: URL?
+    let media: [Media]
+    let description: String?
+    let properties: [CollectibleTrait]?
 
     init(
         _ apiModel: APIModel = APIModel()
     ) {
-        self.mediaType = apiModel.mediaType
         self.thumbnailImage = apiModel.primaryImage
-
-        var collectibleMedias: [Media] = []
-        if let image = apiModel.primaryImage,
-           mediaType == .image {
-            collectibleMedias.append(
-                Media(
-                    type: .image,
-                    sourceURL: image
-                )
-            )
-        }
-
-        if let video = apiModel.video,
-           mediaType == .video {
-            collectibleMedias.append(
-                Media(
-                    type: .video,
-                    sourceURL: video
-                )
-            )
-        }
-
-        self.medias = collectibleMedias
         self.title = apiModel.title
         self.collectionName = apiModel.collectionName
-        self.description = apiModel.description
-        self.traits = apiModel.traits
         self.explorerURL = apiModel.explorerURL
+        self.media = apiModel.media.unwrapMap(Media.init)
+        self.description = apiModel.description
+        self.properties = apiModel.traits
     }
 
     func encode() -> APIModel {
         var apiModel = APIModel()
-        apiModel.mediaType = mediaType
         apiModel.primaryImage = thumbnailImage
-        apiModel.video = medias.first(matching: (\.type, .video))?.sourceURL
         apiModel.title = title
         apiModel.collectionName = collectionName
-        apiModel.description = description
-        apiModel.traits = traits
         apiModel.explorerURL = explorerURL
+        apiModel.media = media.map { $0.encode() }
+        apiModel.description = description
+        apiModel.traits = properties
         return apiModel
     }
 }
 
 extension Collectible {
     struct APIModel: ALGAPIModel {
-        var mediaType: MediaType
         var primaryImage: URL?
-        var video: URL?
         var title: String?
         var collectionName: String?
+        var explorerURL: URL?
+        var media: [Media.APIModel]?
         var description: String?
         var traits: [CollectibleTrait]?
-        var explorerURL: URL?
 
         init() {
-            self.mediaType = .init()
             self.primaryImage = nil
-            self.video = nil
             self.title = nil
             self.collectionName = nil
+            self.explorerURL = nil
+            self.media = []
             self.description = nil
             self.traits = nil
-            self.explorerURL = nil
         }
 
         private enum CodingKeys: String, CodingKey {
-            case mediaType = "media_type"
             case primaryImage = "primary_image"
-            case video
             case title
             case collectionName = "collection_name"
+            case explorerURL = "explorer_url"
+            case media
             case description
             case traits
-            case explorerURL = "explorer_url"
         }
     }
 }

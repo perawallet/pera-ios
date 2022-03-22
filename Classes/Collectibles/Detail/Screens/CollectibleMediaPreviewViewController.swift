@@ -66,7 +66,7 @@ final class CollectibleMediaPreviewViewController:
         ownerAccount: ownerAccount
     )
 
-    private let asset: CollectibleAsset
+    private var asset: CollectibleAsset
     private let ownerAccount: Account?
 
     init(
@@ -128,9 +128,19 @@ extension CollectibleMediaPreviewViewController {
             $0.leading.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalInset)
         }
 
-        if let medias = asset.medias,
-           medias.count > 1 {
-            pageControl.numberOfPages = medias.count
+        configurePageControl()
+    }
+}
+
+extension CollectibleMediaPreviewViewController {
+    func updateAsset(_ asset: CollectibleAsset) {
+        self.asset = asset
+        configurePageControl()
+    }
+
+    private func configurePageControl() {
+        if asset.media.count > 1 {
+            pageControl.numberOfPages = asset.media.count
         }
     }
 }
@@ -152,10 +162,6 @@ extension CollectibleMediaPreviewViewController {
         withVelocity velocity: CGPoint,
         targetContentOffset: UnsafeMutablePointer<CGPoint>
     ) {
-        guard let medias = asset.medias else {
-            return
-        }
-
         let pageWidth =
             listView.bounds.width -
             theme.horizontalInset * 2 +
@@ -176,7 +182,7 @@ extension CollectibleMediaPreviewViewController {
             }
         }
 
-        if newPage >= CGFloat(medias.count) {
+        if newPage >= CGFloat(asset.media.count) {
             return
         }
 

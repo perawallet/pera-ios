@@ -41,14 +41,14 @@ extension CollectibleMediaPreviewDataSource {
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return asset.medias?.count ?? 0
+        return asset.media.count
     }
 
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        guard let media = asset.medias?[safe: indexPath.item] else {
+        guard let media = asset.media[safe: indexPath.item] else {
             fatalError("Could not find the related media.")
         }
 
@@ -66,7 +66,7 @@ extension CollectibleMediaPreviewDataSource {
                     imageSize: CGSize((width.float(), width.float())),
                     asset: asset,
                     ownerAccount: ownerAccount,
-                    url: media.sourceURL
+                    url: media.previewURL
                 )
             )
         default:

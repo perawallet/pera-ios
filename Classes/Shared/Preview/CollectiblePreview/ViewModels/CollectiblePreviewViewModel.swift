@@ -29,7 +29,7 @@ struct CollectiblePreviewViewModel:
     private(set) var subtitle: EditText?
     private(set) var accessory: EditText?
     private(set) var assetAbbreviatedName: EditText?
-    private(set) var mediaType: MediaType?
+    private(set) var containsUnsupportedMedia: Bool = false
 
     init<T>(
         _ model: T
@@ -66,7 +66,7 @@ extension CollectiblePreviewViewModel {
             bindSubtitle(asset)
             bindAccessory(asset)
             bindAssetAbbreviatedName()
-            bindMediaType(asset)
+            bindContainsUnsupportedMedia(asset)
             return
         }
     }
@@ -172,9 +172,9 @@ extension CollectiblePreviewViewModel {
         )
     }
 
-    private mutating func bindMediaType(
+    private mutating func bindContainsUnsupportedMedia(
         _ asset: CollectibleAsset
     ) {
-        mediaType = asset.mediaType
+        containsUnsupportedMedia = asset.containsUnsupportedMedia
     }
 }

@@ -26,7 +26,7 @@ struct CollectibleListItemReadyViewModel:
     private(set) var image: ImageSource?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
-    private(set) var mediaType: MediaType?
+    private(set) var containsUnsupportedMedia: Bool = false
     private(set) var topLeftBadge: UIImage?
     private(set) var bottomLeftBadge: UIImage?
 
@@ -70,8 +70,7 @@ extension CollectibleListItemReadyViewModel {
             bindImage(imageSize: imageSize, asset: asset)
             bindTitle(asset)
             bindSubtitle(asset)
-            bindMediaType(asset)
-            bindTopLeftBadge(asset)
+            bindContainsUnsupportedMedia(asset)
             bindBottomLeftBadge(asset)
             return
         }
@@ -104,12 +103,6 @@ extension CollectibleListItemReadyViewModel {
         subtitle = getSubtitle(asset)
     }
 
-    private mutating func bindTopLeftBadge(
-        _ asset: CollectibleAsset
-    ) {
-        topLeftBadge = getTopLeftBadge(asset)
-    }
-
     private mutating func bindBottomLeftBadge(
         _ asset: CollectibleAsset
     ) {
@@ -119,10 +112,10 @@ extension CollectibleListItemReadyViewModel {
         }
     }
 
-    private mutating func bindMediaType(
+    private mutating func bindContainsUnsupportedMedia(
         _ asset: CollectibleAsset
     ) {
-        mediaType = getMediaType(asset)
+        containsUnsupportedMedia = getContainsUnsupportedMedia(asset)
     }
 }
 
