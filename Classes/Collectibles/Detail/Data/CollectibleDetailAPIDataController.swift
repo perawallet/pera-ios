@@ -79,7 +79,6 @@ extension CollectibleDetailAPIDataController {
             self.addActionContent(&snapshot)
             self.addDescriptionContent(&snapshot)
             self.addPropertiesContent(&snapshot)
-            self.addExternalSourcesContent(&snapshot)
 
             return snapshot
         }
