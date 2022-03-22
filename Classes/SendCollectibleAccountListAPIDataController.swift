@@ -171,13 +171,12 @@ extension SendCollectibleAccountListAPIDataController {
 
                 return true
             }
-            .forEach {
-                let accountNameViewModel = AuthAccountNameViewModel($0.value)
-                let preview = CustomAccountPreview(accountNameViewModel)
-
+            .forEach { account in
                 let cellItem: SendCollectibleAccountListItem = .account(
                     AccountPreviewViewModel(
-                        preview
+                        IconWithShortAddressDraft(
+                            account.value
+                        )
                     )
                 )
 
@@ -256,15 +255,11 @@ extension SendCollectibleAccountListAPIDataController {
                 )
             )
 
-            let accountNameViewModel = AuthAccountNameViewModel( /// <todo>: Why do we need AccountNameViewModel & AuthAccountNameViewModel?
-                Account(address: query, type: .standard)
-            )
-
-            let preview = CustomAccountPreview(accountNameViewModel)
-
             let cellItem: SendCollectibleAccountListItem = .account(
                 AccountPreviewViewModel(
-                    preview
+                    IconWithShortAddressDraft(
+                        Account(address: query, type: .standard)
+                    )
                 )
             )
 

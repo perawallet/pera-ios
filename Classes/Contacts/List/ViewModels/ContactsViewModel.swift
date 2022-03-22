@@ -19,11 +19,13 @@ import UIKit
 import MacaroonUIKit
 
 final class ContactsViewModel: Hashable {
+    private(set) var fullAddress: String?
     private(set) var image: UIImage?
     private(set) var name: EditText?
     private(set) var address: String?
 
     init(contact: Contact, imageSize: CGSize) {
+        fullAddress = contact.address
         bindImage(from: contact, with: imageSize)
         bindName(contact)
         bindAddress(contact)

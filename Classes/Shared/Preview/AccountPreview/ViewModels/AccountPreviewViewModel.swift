@@ -79,6 +79,15 @@ extension AccountPreviewViewModel {
             
             return
         }
+
+        if let iconWithShortAddressDraft = model as? IconWithShortAddressDraft {
+            address = iconWithShortAddressDraft.account.address
+
+            bindIcon(iconWithShortAddressDraft)
+            bindTitle(iconWithShortAddressDraft)
+
+            return
+        }
     }
 }
 
@@ -209,6 +218,26 @@ extension AccountPreviewViewModel {
         _ customAccountPreview: CustomAccountPreview
     ) {
         accessoryIcon = nil
+    }
+}
+
+extension AccountPreviewViewModel {
+    mutating func bindIcon(
+        _ iconWithShortAddressDraft: IconWithShortAddressDraft
+    ) {
+        icon = iconWithShortAddressDraft.account.image
+    }
+
+    mutating func bindTitle(
+        _ iconWithShortAddressDraft: IconWithShortAddressDraft
+    ) {
+        let account = iconWithShortAddressDraft.account
+
+        let title = account.name.unwrap(
+            or: account.address.shortAddressDisplay
+        )
+
+        bindTitle(title)
     }
 }
 
@@ -357,7 +386,7 @@ struct CustomAccountPreview {
     }
     
     /// <todo>
-    /// ???
+    /// We should check & remove `AccountNameViewModel` & `AuthAccountNameViewModel`.
     init(
         _ viewModel: AccountNameViewModel
     ) {
@@ -372,5 +401,15 @@ struct CustomAccountPreview {
         icon = viewModel.image
         title = viewModel.address
         subtitle = nil
+    }
+}
+
+struct IconWithShortAddressDraft {
+    let account: Account
+
+    init(
+        _ account: Account
+    ) {
+        self.account = account
     }
 }

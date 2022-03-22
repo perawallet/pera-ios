@@ -55,6 +55,7 @@ final class SendCollectibleAccountListViewController:
     private let dataController: SendCollectibleAccountListDataController
     private let theme: SendCollectibleAccountListViewControllerTheme
 
+    /// <todo> Get selected address and change background of previously selected cell.
     init(
         dataController: SendCollectibleAccountListDataController,
         theme: SendCollectibleAccountListViewControllerTheme = .init(),
@@ -310,12 +311,10 @@ extension SendCollectibleAccountListViewController {
             guard let address = item.address else {
                 return
             }
-            /// <todo> Change background of cell when it is selected when binding
-            /// <todo> Handle account selection. Item doesn't contain the address.
-            fatalError("Not Impemented Yet")
+
             eventHandler?(.didSelectAddress(address))
         case .contact(let item):
-            guard let address = item.address else {
+            guard let address = item.fullAddress else {
                 return
             }
 
