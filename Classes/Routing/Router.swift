@@ -633,15 +633,27 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-        case let .collectibleDetail(asset):
+        case let .collectibleDetail(asset, account):
             viewController = CollectibleDetailViewController(
-                dataController: CollectibleDetailAPIDataController(asset),
+                asset: asset,
+                ownerAccount: account,
                 configuration: configuration
             )
         case .approveCollectibleTransaction:
             viewController = ApproveCollectibleTransactionViewController(
                 configuration: configuration
             )
+        case let .shareActivity(items):
+            let activityController = UIActivityViewController(
+                activityItems: items,
+                applicationActivities: nil
+            )
+
+            activityController.excludedActivityTypes = [
+                UIActivity.ActivityType.addToReadingList
+            ]
+
+            viewController = activityController
         }
 
         return viewController as? T

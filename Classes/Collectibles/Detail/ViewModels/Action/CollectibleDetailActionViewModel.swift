@@ -25,11 +25,12 @@ struct CollectibleDetailActionViewModel:
     private(set) var canTransfer: Bool = true
 
     init(
-        _ asset: CollectibleAsset
+        asset: CollectibleAsset,
+        ownerAccount: Account?
     ) {
         bindTitle(asset)
         bindSubtitle(asset)
-        bindCanTransfer()
+        bindCanTransfer(ownerAccount)
     }
 }
 
@@ -81,7 +82,9 @@ extension CollectibleDetailActionViewModel {
         )
     }
 
-    private mutating func bindCanTransfer() {
-
+    private mutating func bindCanTransfer(
+        _ ownerAccount: Account?
+    ) {
+        canTransfer = ownerAccount != nil
     }
 }

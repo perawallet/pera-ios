@@ -268,8 +268,12 @@ extension CollectibleListViewController {
                     }
 
                     openCollectibleDetail(assetID)
-                case .optedIn:
-                    break
+                case .optedIn(let viewModel):
+                    guard let assetID = viewModel.assetID else {
+                        return
+                    }
+
+                    openCollectibleDetail(assetID)
                 }
             case .footer:
                 openReceiveCollectibleAccountList()
@@ -306,9 +310,18 @@ extension CollectibleListViewController {
         _ assetID: AssetID
     ) {
         if let asset = dataController[assetID] {
+            let ownerAccount = sharedDataController.accountCollection.sorted().first { account in
+                if let ownedAsset = account.value[assetID] {
+                    return ownedAsset.amount > 0
+                }
+
+                return false
+            }
+
             open(
                 .collectibleDetail(
-                    asset: asset
+                    asset: asset,
+                    ownerAccount: ownerAccount?.value
                 ),
                 by: .push
             )
