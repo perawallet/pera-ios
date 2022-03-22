@@ -53,7 +53,7 @@ extension CollectibleTransactionInfoViewModel {
     private mutating func bindValue(
         _ information: CollectibleTransactionInformation
     ) {
-        value = getValue(information.value)
+        value = getValue(information)
     }
 
     private mutating func bindValueStyle(
@@ -63,7 +63,6 @@ extension CollectibleTransactionInfoViewModel {
             valueStyle = [
                 .textOverflow(FittingText()),
                 .textAlignment(.right),
-                .font(Fonts.DMSans.medium.make(15)),
                 .textColor(AppColors.Components.Link.primary)
             ]
             return
@@ -72,7 +71,6 @@ extension CollectibleTransactionInfoViewModel {
         valueStyle = [
             .textOverflow(FittingText()),
             .textAlignment(.right),
-            .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.main)
         ]
     }
@@ -100,13 +98,20 @@ extension CollectibleTransactionInfoViewModel {
     }
 
     private func getValue(
-        _ aValue: String
+        _ information: CollectibleTransactionInformation
     ) -> EditText {
-        let font = Fonts.DMSans.regular.make(15)
+        let font: CustomFont
+
+        if information.isForegroundingValue {
+            font = Fonts.DMSans.medium.make(15)
+        } else {
+            font = Fonts.DMSans.regular.make(15)
+        }
+
         let lineHeightMultiplier = 1.23
 
         return .attributedString(
-            aValue
+            information.value
                 .attributed([
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),

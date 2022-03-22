@@ -32,8 +32,8 @@ final class CollectibleDetailActionView:
     private lazy var titleLabel = Label()
     private lazy var subtitleLabel = Label()
     private lazy var buttonStackView = HStackView()
-    private lazy var sendButton = Button(.imageAtLeft(spacing: 8))
-    private lazy var shareButton = Button(.imageAtLeft(spacing: 8))
+    private lazy var sendButton = MacaroonUIKit.Button(.imageAtLeft(spacing: 12))
+    private lazy var shareButton = MacaroonUIKit.Button(.imageAtLeft(spacing: 12))
     private lazy var separator = UIView()
 
     override init(frame: CGRect) {
@@ -106,22 +106,17 @@ extension CollectibleDetailActionView {
             $0.height.equalTo(theme.buttonHeight)
         }
 
+        sendButton.customizeAppearance(theme.sendAction)
+        sendButton.draw(corner: theme.actionCorner)
+        sendButton.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
+
         buttonStackView.addArrangedSubview(sendButton)
+
+        shareButton.customizeAppearance(theme.shareAction)
+        shareButton.draw(corner: theme.actionCorner)
+        shareButton.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
+
         buttonStackView.addArrangedSubview(shareButton)
-
-        shareButton.customize(theme.share)
-        shareButton.bindData(
-            ButtonCommonViewModel(
-                title: "collectible-detail-share".localized,
-                iconSet: [.normal("icon-share")])
-        )
-
-        sendButton.customize(theme.send)
-        sendButton.bindData(
-            ButtonCommonViewModel(
-                title: "title-send".localized,
-                iconSet: [.normal("icon-arrow-up")])
-        )
     }
 
     private func addSeparator(_ theme: CollectibleDetailActionViewTheme) {

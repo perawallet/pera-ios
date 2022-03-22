@@ -21,8 +21,8 @@ struct CollectibleDetailActionViewTheme:
     LayoutSheet {
     let title: TextStyle
     let subtitle: TextStyle
-    let send: ButtonTheme
-    let share: ButtonTheme
+    let sendAction: ButtonStyle
+    let shareAction: ButtonStyle
     let separator: ViewStyle
 
     let topInset: LayoutMetric
@@ -30,6 +30,9 @@ struct CollectibleDetailActionViewTheme:
     let buttonTopOffset: LayoutMetric
     let buttonBottomInset: LayoutMetric
     let separatorHorizontalInset: LayoutMetric
+    let actionContentEdgeInsets: LayoutPaddings
+    let actionCorner: Corner
+    
     let buttonHeight: LayoutMetric
     let buttonSpacing: LayoutMetric
     let separatorHeight: LayoutMetric
@@ -37,29 +40,71 @@ struct CollectibleDetailActionViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        self.title = [
+        title = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .textColor(AppColors.Components.Text.gray)
         ]
-        self.subtitle = [
+        subtitle = [
             .textOverflow(FittingText()),
             .textAlignment(.left),
             .textColor(AppColors.Components.Text.main)
         ]
-        self.send = ButtonSecondaryTheme()
-        self.share = ButtonSecondaryTheme()
-        self.separator = [
+
+        actionContentEdgeInsets = (14, 0, 14, 0)
+        actionCorner = Corner(radius: 4)
+
+        sendAction = [
+            .title(Self.getActionTitle("title-send")),
+            .titleColor(
+                [ .normal(AppColors.Components.Button.Secondary.text)]
+            ),
+            .backgroundColor(AppColors.Components.Button.Secondary.background),
+            .icon([.normal("icon-arrow-up")])
+        ]
+
+        shareAction = [
+            .title(Self.getActionTitle("collectible-detail-share")),
+            .titleColor(
+                [ .normal(AppColors.Components.Button.Secondary.text) ]
+            ),
+            .backgroundColor(AppColors.Components.Button.Secondary.background),
+            .icon([ .normal("icon-share-24") ])
+        ]
+
+        separator = [
             .backgroundColor(AppColors.Shared.Layer.grayLighter)
         ]
 
-        self.topInset = 24
-        self.subtitleTopOffset = 4
-        self.buttonTopOffset = 20
-        self.buttonBottomInset = 32
-        self.separatorHorizontalInset = -24
-        self.buttonHeight = 52
-        self.buttonSpacing = 16
-        self.separatorHeight = 1
+        topInset = 24
+        subtitleTopOffset = 4
+        buttonTopOffset = 20
+        buttonBottomInset = 32
+        separatorHorizontalInset = -24
+        buttonHeight = 52
+        buttonSpacing = 16
+        separatorHeight = 1
+    }
+}
+
+extension CollectibleDetailActionViewTheme {
+    private static func getActionTitle(
+        _ aTitle: String
+    ) -> EditText {
+        let font = Fonts.DMSans.medium.make(15)
+        let lineHeightMultiplier = 1.23
+
+        return .attributedString(
+            aTitle
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier)
+                    ])
+                ])
+        )
     }
 }

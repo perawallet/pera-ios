@@ -213,13 +213,14 @@ extension CollectibleDetailViewController {
         cell.observe(event: .performShare) {
             [weak self] in
             guard let self = self,
-                  let url = self.asset.explorerURL else {
+                  let assetName = self.asset.name,
+                  let imageDownloadURL = self.asset.thumbnailImage?.absoluteString else { /// <todo>: Change the link.
                       return
                   }
 
             self.open(
                 .shareActivity(
-                    items: [url]
+                    items: [assetName, imageDownloadURL]
                 ),
                 by: .presentWithoutNavigationController
             )
