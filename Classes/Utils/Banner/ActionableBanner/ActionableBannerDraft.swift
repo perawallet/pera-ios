@@ -12,26 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   CurrencySelectionViewController+Theme.swift
+//   ActionableBannerDraft.swift
 
 import UIKit
-import MacaroonUIKit
 
-extension CurrencySelectionViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        
-        let cellWidth: LayoutMetric
-        let cellHeight: LayoutMetric
-        let headerSize: LayoutSize
-        
-        init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
-            
-            cellWidth = UIScreen.main.bounds.width - 48
-            cellHeight = 64
-            headerSize = (UIScreen.main.bounds.width, 28.0)
-        }
-    }
+struct ActionableBannerDraft {
+    let icon: UIImage
+    let title: String
+    let message: String
+    let actionTitle: String? /// <note>: If it is nil, `actionView` is removed.
 }

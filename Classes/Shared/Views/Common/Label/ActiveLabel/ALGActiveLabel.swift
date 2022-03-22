@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   CurrencySelectionViewController+Theme.swift
+//   ALGActiveLabel.swift
 
-import UIKit
-import MacaroonUIKit
+import ActiveLabel
 
-extension CurrencySelectionViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        
-        let cellWidth: LayoutMetric
-        let cellHeight: LayoutMetric
-        let headerSize: LayoutSize
-        
-        init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
-            
-            cellWidth = UIScreen.main.bounds.width - 48
-            cellHeight = 64
-            headerSize = (UIScreen.main.bounds.width, 28.0)
+final class ALGActiveLabel: ActiveLabel {}
+
+enum ALGActiveType {
+    case mention
+    case hashtag
+    case url
+    case email
+    case custom(pattern: String)
+
+    var mapped: ActiveType {
+        switch self {
+        case .mention: return .mention
+        case .hashtag: return .hashtag
+        case .url: return .url
+        case .email: return .email
+        case .custom(let pattern): return .custom(pattern: pattern)
         }
     }
 }

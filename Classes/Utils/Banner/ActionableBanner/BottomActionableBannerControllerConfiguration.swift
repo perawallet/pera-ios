@@ -12,31 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   HomePortfolioItemViewTheme.swift
+//   BottomActionableBannerControllerConfiguration.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct HomePortfolioItemViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var title: TextStyle
-    var value: TextStyle
-    var valueMinHeight: LayoutMetric
-    var spacingBetweenTitleAndValue: LayoutMetric
-    
+struct BottomActionableBannerControllerConfiguration {
+    /// <note>
+    /// A margin is the space around an element’s border, while padding is the space between an element’s border and the element’s content.
+    var bottomMargin: LayoutMetric
+    var contentBottomPadding: LayoutMetric
+
     init(
-        _ family: LayoutFamily
+        bottomMargin: LayoutMetric = .zero,
+        contentBottomPadding: LayoutMetric = 20
     ) {
-        self.title = [
-            .textColor(AppColors.Components.Text.gray.uiColor)
-        ]
-        self.value = [
-            .textColor(AppColors.Components.Text.main.uiColor)
-        ]
-        self.valueMinHeight = 24
-        self.spacingBetweenTitleAndValue = 12
+        self.bottomMargin = bottomMargin
+        self.contentBottomPadding = contentBottomPadding
     }
+
+    static let `default` = BottomActionableBannerControllerConfiguration()
 }

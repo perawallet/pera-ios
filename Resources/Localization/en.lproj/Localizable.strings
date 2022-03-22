@@ -179,7 +179,7 @@
 "accounts-add-account" = "+ ADD ACCOUNT";
 "accounts-title" = "Accounts";
 "accounts-qr-tooltip" = "Your account's address QR can be found here";
-"accounts-transaction-your-balance" = "Your balance";
+"accounts-transaction-your-balance" = "Balance";
 "accounts-transaction-value" = "Value";
 
 // MARK: Asset
@@ -322,6 +322,7 @@
 "settings-logout-success-message" = "Your data has been deleted successfully";
 "settings-developer" = "Developer Settings";
 "settings-currency" = "Currency";
+"settings-currency-header-title" = "Currency Preferences";
 "settings-developer-dispenser" = "Algorand Dispenser";
 "settings-rate-title" = "Rate Pera Wallet";
 "settings-rate-modal-title" = "Rate your experience";

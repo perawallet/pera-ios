@@ -833,7 +833,9 @@ extension Router {
                     BottomWarningViewConfigurator(
                         image: "icon-approval-check".uiImage,
                         title: "wallet-connect-session-connection-approved-title".localized(dAppName),
-                        description: "wallet-connect-session-connection-approved-description".localized(dAppName),
+                        description: .plain(
+                            "wallet-connect-session-connection-approved-description".localized(dAppName)
+                        ),
                         secondaryActionButtonTitle: "title-close".localized
                     )
             ),

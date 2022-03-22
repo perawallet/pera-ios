@@ -12,39 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   BannerView.swift
+//   ActionableBannerView.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-final class BannerView:
+final class ActionableBannerView:
     View,
     ViewModelBindable,
-    UIInteractionObservable {
+    UIInteractionObservable,
+    UIControlInteractionPublisher {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performAction: UIBlockInteraction()
+        .performAction: UIControlInteraction()
     ]
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        linkInteractors()
-    }
 
     private lazy var contentView = UIView()
     private lazy var iconView = ImageView()
     private lazy var titleView = Label()
     private lazy var messageView = Label()
+    private lazy var actionView = MacaroonUIKit.Button()
 
     func customize(
-        _ theme: BannerViewTheme
+        _ theme: ActionableBannerViewTheme
     ) {
         addBackground(theme)
         addContent(theme)
+        addAction(theme)
     }
-
+    
     func prepareLayout(
         _ layoutSheet: NoLayoutSheet
     ) {}
@@ -53,48 +48,39 @@ final class BannerView:
         _ styleSheet: NoStyleSheet
     ) {}
 
-    func linkInteractors() {
-        addGestureRecognizer(
-            UITapGestureRecognizer(target: self, action: #selector(didTapBanner))
-        )
-    }
-
     func bindData(
-        _ viewModel: BannerViewModel?
+        _ viewModel: ActionableBannerViewModel?
     ) {
         titleView.editText = viewModel?.title
         messageView.editText = viewModel?.message
         iconView.image = viewModel?.icon?.uiImage
+
+        if let actionTitle = viewModel?.actionTitle {
+            actionView.editTitle = actionTitle
+        } else {
+            actionView.removeFromSuperview()
+        }
     }
 }
 
-extension BannerView {
-    private func addBannerTapGesture() {
-        addGestureRecognizer(
-            UITapGestureRecognizer(target: self, action: #selector(didTapBanner))
-        )
-    }
-
-    @objc
-    private func didTapBanner() {
-        let interaction = uiInteractions[.performAction] as? UIBlockInteraction
-        interaction?.notify()
-    }
-}
-
-extension BannerView {
+extension ActionableBannerView {
     private func addBackground(
-        _ theme: BannerViewTheme
+        _ theme: ActionableBannerViewTheme
     ) {
-        drawAppearance(shadow: theme.backgroundShadow)
+        customizeAppearance(theme.background)
     }
 
     private func addContent(
-        _ theme: BannerViewTheme
+        _ theme: ActionableBannerViewTheme
     ) {
         addSubview(contentView)
 
         contentView.snp.makeConstraints {
+            $0.width >= self * theme.contentMinWidthRatio
+            $0.trailing
+                .equalToSuperview()
+                .inset(theme.actionHorizontalPaddings.trailing)
+                .priority(.medium)
             $0.setPaddings(
                 theme.contentPaddings
             )
@@ -106,7 +92,7 @@ extension BannerView {
     }
 
     private func addIcon(
-        _ theme: BannerViewTheme
+        _ theme: ActionableBannerViewTheme
     ) {
         iconView.customizeAppearance(theme.icon)
 
@@ -120,7 +106,7 @@ extension BannerView {
     }
 
     private func addTitle(
-        _ theme: BannerViewTheme
+        _ theme: ActionableBannerViewTheme
     ) {
         titleView.customizeAppearance(theme.title)
 
@@ -134,7 +120,7 @@ extension BannerView {
     }
 
     private func addMessage(
-        _ theme: BannerViewTheme
+        _ theme: ActionableBannerViewTheme
     ) {
         messageView.customizeAppearance(theme.message)
 
@@ -148,9 +134,30 @@ extension BannerView {
             $0.trailing == 0
         }
     }
+
+    private func addAction(
+        _ theme: ActionableBannerViewTheme
+    ) {
+        actionView.customizeAppearance(theme.action)
+        actionView.draw(corner: theme.actionCorner)
+
+        addSubview(actionView)
+        actionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
+        actionView.fitToIntrinsicSize()
+        actionView.snp.makeConstraints {
+            $0.leading == contentView.snp.trailing + theme.actionHorizontalPaddings.leading
+            $0.trailing == theme.actionHorizontalPaddings.trailing
+            $0.centerY == contentView
+        }
+
+        startPublishing(
+            event: .performAction,
+            for: actionView
+        )
+    }
 }
 
-extension BannerView {
+extension ActionableBannerView {
     enum Event {
         case performAction
     }

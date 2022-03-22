@@ -259,7 +259,7 @@ extension AccountSelectScreen: TransactionControllerDelegate {
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
                         title: "ledger-pairing-issue-error-title".localized,
-                        description: "ble-error-fail-ble-connection-repairing".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
                         secondaryActionButtonTitle: "title-ok".localized
                     )
                 ),
@@ -457,7 +457,7 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
                     let configurator = BottomWarningViewConfigurator(
                         image: "icon-info-red".uiImage,
                         title: "send-algos-minimum-amount-error-new-account-title".localized,
-                        description: "send-algos-minimum-amount-error-new-account-description".localized,
+                        description: .plain("send-algos-minimum-amount-error-new-account-description".localized),
                         secondaryActionButtonTitle: "title-i-understand".localized
                     )
 
