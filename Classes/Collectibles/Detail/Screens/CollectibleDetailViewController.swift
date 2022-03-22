@@ -16,6 +16,7 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonURLImage
 
 final class CollectibleDetailViewController:
     BaseViewController,
@@ -46,7 +47,7 @@ final class CollectibleDetailViewController:
         configuration: configuration
     )
 
-    private let asset: CollectibleAsset
+    private var asset: CollectibleAsset
     private let ownerAccount: Account?
     private let dataController: CollectibleDetailDataController
 
@@ -75,6 +76,9 @@ final class CollectibleDetailViewController:
             switch event {
             case .didUpdate(let snapshot):
                 self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            case .didFetch(let asset):
+                self.asset = asset
+                self.mediaPreviewController.updateAsset(asset)
             }
         }
 
@@ -212,19 +216,55 @@ extension CollectibleDetailViewController {
 
         cell.observe(event: .performShare) {
             [weak self] in
-            guard let self = self,
-                  let assetName = self.asset.name,
-                  let imageDownloadURL = self.asset.thumbnailImage?.absoluteString else { /// <todo>: Change the link.
-                      return
-                  }
+            guard let self = self else {
+                return
+            }
 
-            self.open(
-                .shareActivity(
-                    items: [assetName, imageDownloadURL]
-                ),
-                by: .presentWithoutNavigationController
-            )
+            self.shareCollectible()
         }
+    }
+
+    private func shareCollectible() {
+        var items: [Any] = []
+
+        if let name = asset.title {
+            items.append(name)
+        }
+
+        if let downloadURL = self.asset.media.first?.downloadURL {
+            items.append(downloadURL.absoluteString)
+
+            loadingController?.startLoadingWithMessage("title-loading".localized)
+
+            let imageView = URLImageView()
+            imageView.load(from: PNGImageSource(url: downloadURL)) {
+                [weak self] _ in
+                guard let self = self else { return }
+
+                self.loadingController?.stopLoading()
+
+                if let image = imageView.imageContainer.image {
+                    items.append(image)
+                }
+
+                self.presentShareController(items)
+            }
+
+            return
+        }
+
+        presentShareController(items)
+    }
+
+    private func presentShareController(
+        _ items: [Any]
+    ) {
+        open(
+            .shareActivity(
+                items: items
+            ),
+            by: .presentWithoutNavigationController
+        )
     }
 
     private func linkInteractors(
