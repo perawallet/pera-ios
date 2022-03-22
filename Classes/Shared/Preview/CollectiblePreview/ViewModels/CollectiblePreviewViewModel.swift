@@ -82,9 +82,9 @@ extension CollectiblePreviewViewModel {
     private mutating func bindImage(
         _ asset: CollectibleAsset
     ) {
-        if let primaryImage = asset.primaryImage {
+        if let thumbnailImage = asset.thumbnailImage {
             let imageSize = CGSize(width: 40, height: 40)
-            let prismURL = PrismURL(baseURL: primaryImage).setExpectedImageSize(imageSize).setResizeMode(.fit).build()
+            let prismURL = PrismURL(baseURL: thumbnailImage).setExpectedImageSize(imageSize).setResizeMode(.fit).build()
 
             image = PNGImageSource(
                 url: prismURL,

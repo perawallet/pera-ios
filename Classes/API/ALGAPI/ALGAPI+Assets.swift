@@ -58,7 +58,7 @@ extension ALGAPI {
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)
-            .path(.assetDetail, args: draft.id)
+            .path(.assetDetail, args: "\(draft.id)")
             .method(.get)
             .completionHandler(handler)
             .execute()

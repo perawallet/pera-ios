@@ -28,10 +28,14 @@ final class CollectibleAsset: Asset {
     let usdValue: Decimal?
     let isVerified: Bool
     let mediaType: MediaType?
-    let primaryImage: URL?
+    let thumbnailImage: URL?
+    let medias: [Media]?
     let title: String?
     let collectionName: String?
     let url: String?
+    let description: String?
+    let traits: [CollectibleTrait]?
+    let explorerURL: URL?
 
     var state: AssetState = .ready
 
@@ -77,10 +81,14 @@ final class CollectibleAsset: Asset {
         self.usdValue = decoration.usdValue
         self.isVerified = decoration.isVerified
         self.mediaType = decoration.collectible?.mediaType
-        self.primaryImage = decoration.collectible?.primaryImage
+        self.thumbnailImage = decoration.collectible?.thumbnailImage
+        self.medias = decoration.collectible?.medias
         self.title = decoration.collectible?.title
         self.collectionName = decoration.collectible?.collectionName
         self.url = decoration.url
+        self.description = decoration.collectible?.description
+        self.traits = decoration.collectible?.traits
+        self.explorerURL = decoration.collectible?.explorerURL
     }
 }
 
@@ -102,7 +110,7 @@ extension CollectibleAsset: Comparable {
             lhs.usdValue == rhs.usdValue &&
             lhs.isVerified == rhs.isVerified &&
             lhs.mediaType == rhs.mediaType &&
-            lhs.primaryImage == rhs.primaryImage &&
+            lhs.thumbnailImage == rhs.thumbnailImage &&
             lhs.title == rhs.title &&
             lhs.collectionName == rhs.collectionName
     }

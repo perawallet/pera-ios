@@ -49,8 +49,8 @@ extension CollectibleListItemViewModel {
             size = .resize(imageSize, .aspectFit)
         }
 
-        if let primaryImage = asset.primaryImage {
-            let prismURL = PrismURL(baseURL: primaryImage)
+        if let thumbnailImage = asset.thumbnailImage {
+            let prismURL = PrismURL(baseURL: thumbnailImage)
                 .setExpectedImageSize(imageSize)
                 .setResizeMode(.fit)
                 .build()

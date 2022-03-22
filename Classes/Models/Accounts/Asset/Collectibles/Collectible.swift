@@ -20,34 +20,59 @@ import MacaroonUtils
 
 final class Collectible: ALGEntityModel {
     let mediaType: MediaType
-    let primaryImage: URL?
-    let video: URL?
+    let thumbnailImage: URL?
+    let medias: [Media]
     let title: String?
     let collectionName: String?
     let description: String?
     let traits: [CollectibleTrait]?
+    let explorerURL: URL?
 
     init(
         _ apiModel: APIModel = APIModel()
     ) {
         self.mediaType = apiModel.mediaType
-        self.primaryImage = apiModel.primaryImage
-        self.video = apiModel.video
+        self.thumbnailImage = apiModel.primaryImage
+
+        var collectibleMedias: [Media] = []
+        if let image = apiModel.primaryImage,
+           mediaType == .image {
+            collectibleMedias.append(
+                Media(
+                    type: .image,
+                    sourceURL: image
+                )
+            )
+        }
+
+        if let video = apiModel.video,
+           mediaType == .video {
+            collectibleMedias.append(
+                Media(
+                    type: .video,
+                    sourceURL: video
+                )
+            )
+        }
+
+        self.medias = collectibleMedias
         self.title = apiModel.title
         self.collectionName = apiModel.collectionName
         self.description = apiModel.description
         self.traits = apiModel.traits
+        self.explorerURL = apiModel.explorerURL
     }
 
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.mediaType = mediaType
-        apiModel.primaryImage = primaryImage
-        apiModel.video = video
+        apiModel.primaryImage = thumbnailImage
+        apiModel.video = medias.first(matching: (\.type, .video))?.sourceURL
         apiModel.title = title
         apiModel.collectionName = collectionName
         apiModel.description = description
         apiModel.traits = traits
+        apiModel.explorerURL = explorerURL
         return apiModel
     }
 }
@@ -61,6 +86,7 @@ extension Collectible {
         var collectionName: String?
         var description: String?
         var traits: [CollectibleTrait]?
+        var explorerURL: URL?
 
         init() {
             self.mediaType = .init()
@@ -70,6 +96,7 @@ extension Collectible {
             self.collectionName = nil
             self.description = nil
             self.traits = nil
+            self.explorerURL = nil
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -80,6 +107,7 @@ extension Collectible {
             case collectionName = "collection_name"
             case description
             case traits
+            case explorerURL = "explorer_url"
         }
     }
 }
