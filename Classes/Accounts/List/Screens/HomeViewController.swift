@@ -25,8 +25,12 @@ final class HomeViewController:
     UICollectionViewDelegateFlowLayout {
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
-    private lazy var pushNotificationController =
-        PushNotificationController(session: session!, api: api!, bannerController: bannerController)
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!,
+        bannerController: bannerController
+    )
     
     private let onceWhenViewDidAppear = Once()
 
