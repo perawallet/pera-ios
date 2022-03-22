@@ -39,9 +39,7 @@ final class SendCollectibleAccountListAPIDataController:
         _ sharedDataController: SharedDataController
     ) {
         self.sharedDataController = sharedDataController
-        self.accounts = sharedDataController.accountCollection.sorted().filter {
-            !$0.value.isWatchAccount()
-        }
+        self.accounts = sharedDataController.accountCollection.sorted()
 
         getContacts { contacts in
             self.contacts = contacts
@@ -107,10 +105,7 @@ extension SendCollectibleAccountListAPIDataController {
         case .didFinishRunning:
             sharedDataController.remove(self)
 
-            let updatedAccounts = sharedDataController.accountCollection.sorted().filter {
-                !$0.value.isWatchAccount()
-            }
-
+            let updatedAccounts = sharedDataController.accountCollection.sorted()
             accounts = updatedAccounts
             deliverContentSnapshot(for: lastQuery)
         }
