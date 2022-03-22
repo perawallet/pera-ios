@@ -207,7 +207,7 @@ extension SettingsViewController: SettingsDataSourceDelegate {
         let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
             image: "icon-settings-logout".uiImage,
             title: "settings-delete-data-title".localized,
-            description: "settings-logout-detail".localized,
+            description: .plain("settings-logout-detail".localized),
             primaryActionButtonTitle: "settings-logout-button-delete".localized,
             secondaryActionButtonTitle: "settings-logout-button-cancel".localized,
             primaryAction: { [weak self] in
