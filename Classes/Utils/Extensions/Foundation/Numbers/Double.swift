@@ -106,9 +106,9 @@ extension Decimal {
     private func getAbbreviation(for number: NSDecimalNumber) -> Abbreviation {
         let abbreviations: [Abbreviation] = [
             (0, 1, ""),
-            (100_000.0, 1_000_000.0, "number-abbreviation-million".localized),
-            (100_000_000.0, 1_000_000_000.0, "number-abbreviation-billion".localized),
-            (100_000_000_000.0, 1_000_000_000_000.0, "number-abbreviation-trillion".localized)
+            (1_000_000.0, 1_000_000.0, "number-abbreviation-million".localized),
+            (1_000_000_000.0, 1_000_000_000.0, "number-abbreviation-billion".localized),
+            (1_000_000_000_000.0, 1_000_000_000_000.0, "number-abbreviation-trillion".localized)
         ]
 
         let startValue = number
