@@ -12,31 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   BannerInfoViewModel.swift
+//   ActionableBannerDraft.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
 
-struct BannerInfoViewModel: BannerViewModel, BindableViewModel {
-    private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var message: EditText?
-
-    init<T>(_ model: T) {
-        bind(model)
-    }
-
-    mutating func bind<T>(_ model: T) {
-        if let title = model as? String {
-            bindTitle(title)
-        }
-    }
-}
-
-extension BannerInfoViewModel {
-    private mutating func bindTitle(_ someTitle: String) {
-        title = getTitle(someTitle)
-    }
+struct ActionableBannerDraft {
+    let icon: UIImage
+    let title: String
+    let message: String
+    let actionTitle: String? /// <note>: If it is nil, `actionView` is removed.
 }
