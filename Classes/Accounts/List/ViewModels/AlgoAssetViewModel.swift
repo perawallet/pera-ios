@@ -30,7 +30,7 @@ struct AlgoAssetViewModel: ViewModel {
 
 extension AlgoAssetViewModel {
     private mutating func bindAmount(from account: Account) {
-        amount = account.amount.toAlgos.toAlgosStringForLabel
+        amount = account.amount.toAlgos.toFullAlgosStringForLabel
     }
 
     private mutating func bindCurrencyAmount(from account: Account, with currency: Currency?) {
@@ -41,6 +41,6 @@ extension AlgoAssetViewModel {
         }
 
         let totalAmount = account.amount.toAlgos * currencyPriceValue
-        currencyAmount = totalAmount.toCurrencyStringForLabel(with: currency.symbol)
+        currencyAmount = totalAmount.abbreviatedCurrencyStringForLabel(with: currency.symbol)
     }
 }

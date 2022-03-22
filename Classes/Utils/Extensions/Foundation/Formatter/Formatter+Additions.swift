@@ -37,16 +37,6 @@ extension Formatter {
         formatter.maximumFractionDigits = 6
         return formatter
     }()
-    
-    static let separatorForFullAlgosLabel: NumberFormatter = {
-        let formatter = NumberFormatter()
-        formatter.locale = Locale.preferred()
-        formatter.currencySymbol = "\u{00A6}"
-        formatter.numberStyle = .currencyAccounting
-        formatter.minimumFractionDigits = 6
-        formatter.maximumFractionDigits = 6
-        return formatter
-    }()
 
     static let separatorForRewardsLabel: NumberFormatter = {
         let formatter = NumberFormatter()
@@ -77,13 +67,15 @@ extension Formatter {
         return formatter
     }
     
-    static func separatorWith(fraction value: Int) -> NumberFormatter {
+    static func separatorWith(fraction value: Int, suffix: String? = nil) -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.locale = Locale.preferred()
         formatter.currencySymbol = ""
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = value == 0 ? 0 : 2
         formatter.maximumFractionDigits = value
+        formatter.negativeSuffix = suffix
+        formatter.positiveSuffix = suffix
         return formatter
     }
     
@@ -97,13 +89,15 @@ extension Formatter {
         return formatter
     }()
 
-    static func currencyFormatter(with symbol: String?) -> NumberFormatter {
+    static func currencyFormatter(with symbol: String?, suffix: String? = nil) -> NumberFormatter {
         let formatter = NumberFormatter()
         formatter.locale = Locale.preferred()
         formatter.currencySymbol = symbol ?? ""
         formatter.numberStyle = .currency
         formatter.minimumFractionDigits = 2
         formatter.maximumFractionDigits = 2
+        formatter.negativeSuffix = suffix
+        formatter.positiveSuffix = suffix
         return formatter
     }
 
@@ -124,6 +118,18 @@ extension Formatter {
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = 0
         formatter.maximumFractionDigits = value
+        return formatter
+    }
+    
+    static func fullAlgosLabel(with suffix: String) -> NumberFormatter {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.preferred()
+        formatter.currencySymbol = "\u{00A6}"
+        formatter.numberStyle = .currencyAccounting
+        formatter.minimumFractionDigits = 6
+        formatter.maximumFractionDigits = 6
+        formatter.positiveSuffix = suffix
+        formatter.negativeSuffix = suffix
         return formatter
     }
 }
