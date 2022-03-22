@@ -21,24 +21,33 @@ import MacaroonUtils
 final class Collectible: ALGEntityModel {
     let mediaType: MediaType
     let primaryImage: URL?
+    let video: URL?
     let title: String?
     let collectionName: String?
+    let description: String?
+    let traits: [CollectibleTrait]?
 
     init(
         _ apiModel: APIModel = APIModel()
     ) {
         self.mediaType = apiModel.mediaType
         self.primaryImage = apiModel.primaryImage
+        self.video = apiModel.video
         self.title = apiModel.title
         self.collectionName = apiModel.collectionName
+        self.description = apiModel.description
+        self.traits = apiModel.traits
     }
 
     func encode() -> APIModel {
         var apiModel = APIModel()
         apiModel.mediaType = mediaType
         apiModel.primaryImage = primaryImage
+        apiModel.video = video
         apiModel.title = title
         apiModel.collectionName = collectionName
+        apiModel.description = description
+        apiModel.traits = traits
         return apiModel
     }
 }
@@ -47,21 +56,30 @@ extension Collectible {
     struct APIModel: ALGAPIModel {
         var mediaType: MediaType
         var primaryImage: URL?
+        var video: URL?
         var title: String?
         var collectionName: String?
+        var description: String?
+        var traits: [CollectibleTrait]?
 
         init() {
             self.mediaType = .init()
             self.primaryImage = nil
+            self.video = nil
             self.title = nil
             self.collectionName = nil
+            self.description = nil
+            self.traits = nil
         }
 
         private enum CodingKeys: String, CodingKey {
             case mediaType = "media_type"
             case primaryImage = "primary_image"
+            case video
             case title
             case collectionName = "collection_name"
+            case description
+            case traits
         }
     }
 }

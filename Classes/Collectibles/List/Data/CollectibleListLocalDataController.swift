@@ -95,6 +95,14 @@ final class CollectibleListLocalDataController:
         sharedDataController.remove(self)
         unobserveNotifications()
     }
+
+    subscript (id: AssetID) -> CollectibleAsset? {
+        if let asset = collectibleAssets.first(matching: (\.id, id)) {
+            return asset
+        }
+
+        return pendingCollectibleAssets.first(matching: (\.id, id))
+    }
 }
 
 extension CollectibleListLocalDataController {

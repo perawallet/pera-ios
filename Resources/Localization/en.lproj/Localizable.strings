@@ -926,6 +926,23 @@
 "collectible-send-title" = "Send your NFT";
 "collectible-send-input-placeholder" = "Paste an Algorand wallet address";
 "collectible-send-action" = "Transfer";
+
+// MARK: Collectible Detail
+
+"collectible-detail-share" = "Share";
+"collectible-detail-description" = "Description";
+"collectible-detail-owner" = "Owner";
+"collectible-detail-collection-name" = "Collection Name";
+"collectible-detail-creator-name" = "Creator Name";
+"collectible-detail-creator-address" = "Creator Wallet Address";
+"collectible-detail-properties" = "Properties";
+"collectible-detail-view-transaction" = "View Transaction";
+"collectible-detail-algo-explorer" = "Show on Algoexplorer";
+"collectible-detail-nft-explorer" = "Show on NFTExplorer";
+"collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
+"collectible-detail-error-visual" = "We can’t display the visual temporarily.";
+
+
 "collectible-transfer-confirmed-title" = "Your NFT transfer is confirmed!";
 "collectible-transfer-confirmed-description" = "Transactions can take a few minutes to finalize.";
 "collectible-transfer-confirmed-action-title" = "Got it!";

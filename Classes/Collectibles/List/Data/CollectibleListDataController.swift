@@ -23,7 +23,9 @@ protocol CollectibleListDataController: AnyObject {
     var eventHandler: ((CollectibleDataControllerEvent) -> Void)? { get set }
 
     var imageSize: CGSize { get set }
-    
+
+    subscript (id: AssetID) -> CollectibleAsset? { get }
+
     func load()
     func search(for query: String)
     func resetSearch()

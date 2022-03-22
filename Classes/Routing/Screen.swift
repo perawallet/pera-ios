@@ -122,6 +122,7 @@ indirect enum Screen {
     case sendCollectible(
         draft: SendCollectibleDraft
     )
+    case collectibleDetail(dataController: CollectibleDetailDataController)
     case approveCollectibleTransaction
 }
 
