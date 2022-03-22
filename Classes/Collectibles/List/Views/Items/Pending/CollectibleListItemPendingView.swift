@@ -23,6 +23,8 @@ final class CollectibleListItemPendingView:
     ViewModelBindable,
     ListReusable {
     private lazy var image = URLImageView()
+    private lazy var overlay = MacaroonUIKit.BaseView()
+    private lazy var titleAndSubtitleContentView = MacaroonUIKit.BaseView()
     private lazy var title = Label()
     private lazy var subtitle = Label()
     private lazy var topLeftBadge = ImageView()
@@ -34,8 +36,7 @@ final class CollectibleListItemPendingView:
         _ theme: CollectibleListItemPendingViewTheme
     ) {
         addImage(theme)
-        addTitle(theme)
-        addSubtitle(theme)
+        addTitleAndSubtitleContent(theme)
     }
 
     func customizeAppearance(
@@ -84,7 +85,7 @@ final class CollectibleListItemPendingView:
             )
         let preferredHeight =
         iconHeight +
-        theme.titleTopPadding +
+        theme.titleAndSubtitleContentTopPadding +
         titleSize.height +
         bodySize.height
 
@@ -99,7 +100,6 @@ extension CollectibleListItemPendingView {
         image.customizeAppearance(theme.image)
         image.layer.draw(corner: theme.corner)
         image.clipsToBounds = true
-        image.alpha = 0.4
 
         addSubview(image)
         image.fitToIntrinsicSize()
@@ -110,8 +110,34 @@ extension CollectibleListItemPendingView {
             $0.setPaddings((0, 0, .noMetric, 0))
         }
 
+        addOverlay(theme)
         addTopLeftBadge(theme)
         addPendingContentView(theme)
+    }
+
+    private func addOverlay(
+        _ theme: CollectibleListItemPendingViewTheme
+    ) {
+        overlay.customizeAppearance(theme.overlay)
+        overlay.alpha = theme.overlayAlpha
+
+        image.addSubview(overlay)
+        overlay.snp.makeConstraints {
+            $0.setPaddings()
+        }
+    }
+
+    private func addTitleAndSubtitleContent(
+        _ theme: CollectibleListItemPendingViewTheme
+    ) {
+        addSubview(titleAndSubtitleContentView)
+        titleAndSubtitleContentView.snp.makeConstraints {
+            $0.top == image.snp.bottom + theme.titleAndSubtitleContentTopPadding
+            $0.setPaddings((.noMetric, 0, 0, 0))
+        }
+
+        addTitle(theme)
+        addSubtitle(theme)
     }
 
     private func addTitle(
@@ -119,13 +145,10 @@ extension CollectibleListItemPendingView {
     ) {
         title.customizeAppearance(theme.title)
 
-        title.contentEdgeInsets.top = theme.titleTopPadding
-        addSubview(title)
+        titleAndSubtitleContentView.addSubview(title)
         title.fitToIntrinsicSize()
         title.snp.makeConstraints {
-            $0.top == image.snp.bottom
-
-            $0.setPaddings((.noMetric, 0, .noMetric, 0))
+            $0.setPaddings((0, 0, .noMetric, 0))
         }
     }
 
@@ -134,8 +157,7 @@ extension CollectibleListItemPendingView {
     ) {
         subtitle.customizeAppearance(theme.subtitle)
 
-        addSubview(subtitle)
-
+        titleAndSubtitleContentView.addSubview(subtitle)
         subtitle.snp.makeConstraints {
             $0.top == title.snp.bottom
 

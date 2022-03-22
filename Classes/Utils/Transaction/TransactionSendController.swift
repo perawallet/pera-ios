@@ -82,7 +82,7 @@ extension TransactionSendController {
 
             receiverAddress = receiverAddress.trimmingCharacters(in: .whitespacesAndNewlines)
 
-            if !AlgorandSDK().isValidAddress(receiverAddress) {
+            if !receiverAddress.isValidatedAddress {
                 delegate?.transactionSendController(self, didFailValidation: .algo(.invalidAddressSelected))
                 return
             }
@@ -139,7 +139,7 @@ extension TransactionSendController {
             return
         }
 
-        if !AlgorandSDK().isValidAddress(address) {
+        if !address.isValidatedAddress {
             self.delegate?.transactionSendController(self, didFailValidation: .algo(.invalidAddressSelected))
             return
         }

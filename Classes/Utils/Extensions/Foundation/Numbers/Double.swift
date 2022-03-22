@@ -41,6 +41,10 @@ extension Decimal {
     var toAlgosStringForLabel: String? {
         return Formatter.separatorForAlgosLabel.string(from: NSDecimalNumber(decimal: self))
     }
+    
+    var toFullAlgosStringForLabel: String? {
+        return Formatter.separatorForFullAlgosLabel.string(from: NSDecimalNumber(decimal: self))
+    }
 
     var toNumberStringWithSeparatorForLabel: String? {
         return Formatter.numberWithAutoSeparator.string(from: NSDecimalNumber(decimal: self))

@@ -32,8 +32,8 @@ final class AssetSearchLocalDataController:
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.assetSearchDataController")
 
     init(
-        _ accountHandle: AccountHandle,
-        _ sharedDataController: SharedDataController
+        accountHandle: AccountHandle,
+        sharedDataController: SharedDataController
     ) {
         self.accountHandle = accountHandle
         self.sharedDataController = sharedDataController
@@ -46,10 +46,6 @@ final class AssetSearchLocalDataController:
 
     subscript (index: Int) -> StandardAsset? {
         return searchResults[safe: index]
-    }
-
-    func hasSection() -> Bool {
-        return !searchResults.isEmpty
     }
 }
 
@@ -138,6 +134,16 @@ extension AssetSearchLocalDataController {
             }
 
             snapshot.appendSections([.assets])
+
+            let headerItem: AssetSearchItem = .header(
+                AssetSearchListHeaderViewModel("accounts-title-assets".localized)
+            )
+
+            snapshot.appendItems(
+                [headerItem],
+                toSection: .assets
+            )
+
             snapshot.appendItems(
                 assetItems,
                 toSection: .assets
@@ -153,7 +159,7 @@ extension AssetSearchLocalDataController {
 
             snapshot.appendSections([.empty])
             snapshot.appendItems(
-                [.noContent],
+                [ .empty(AssetListSearchNoContentViewModel(hasBody: false)) ],
                 toSection: .empty
             )
 
@@ -166,8 +172,10 @@ extension AssetSearchLocalDataController {
             var snapshot = Snapshot()
 
             snapshot.appendSections([.empty])
+
+
             snapshot.appendItems(
-                [.empty],
+                [ .empty(AssetListSearchNoContentViewModel(hasBody: true)) ],
                 toSection: .empty
             )
 

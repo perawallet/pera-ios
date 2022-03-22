@@ -25,8 +25,8 @@ struct NoContentViewCommonTheme: NoContentViewTheme {
     let titleTopMargin: LayoutMetric
     let body: TextStyle
     let bodyTopMargin: LayoutMetric
-    let contentHorizontalPaddings: LayoutHorizontalPaddings
-    let contentVerticalPaddings: LayoutVerticalPaddings
+    var contentHorizontalPaddings: LayoutHorizontalPaddings
+    var contentVerticalPaddings: LayoutVerticalPaddings
     let resultAlignment: NoContentView.ResultViewAlignment
 
     init(
@@ -40,7 +40,14 @@ struct NoContentViewCommonTheme: NoContentViewTheme {
         self.titleTopMargin = resultTheme.titleTopMargin
         self.bodyTopMargin = resultTheme.bodyTopMargin
         self.contentHorizontalPaddings = (24, 24)
-        self.contentVerticalPaddings = (16, 16)
+        self.contentVerticalPaddings = (32, 32)
         self.resultAlignment = .centered
+    }
+}
+
+extension NoContentViewCommonTheme {
+    mutating func configureForCell() {
+        contentVerticalPaddings = (0, 0)
+        contentHorizontalPaddings = (0, 0)
     }
 }

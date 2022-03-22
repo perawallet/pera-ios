@@ -33,7 +33,7 @@ struct ApproveCollectibleTransactionViewControllerTheme:
     let actionCorner: Corner
     let confirmActionViewTopPadding: LayoutMetric
     let confirmAction: ButtonStyle
-    let learnMoreAction: ButtonStyle
+    let cancelAction: ButtonStyle
     let spacingBetweenActions: LayoutMetric
     let info: CollectibleTransactionInfoViewTheme
 
@@ -69,8 +69,8 @@ struct ApproveCollectibleTransactionViewControllerTheme:
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(AppColors.Components.Button.Primary.background)
         ]
-        learnMoreAction = [
-            .title(Self.getActionTitle("title-learn-more")),
+        cancelAction = [
+            .title(Self.getActionTitle("title-cancel")),
             .titleColor([
                 .normal(AppColors.Components.Button.Secondary.text),
             ]),

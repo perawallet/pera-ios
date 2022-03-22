@@ -184,7 +184,7 @@ extension RekeyConfirmationViewController {
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
                         title: "ledger-pairing-issue-error-title".localized,
-                        description: "ble-error-fail-ble-connection-repairing".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
                         secondaryActionButtonTitle: "title-ok".localized
                     )
                 ),
@@ -224,7 +224,7 @@ extension TransactionSignChecking where Self: BaseViewController {
             }
 
             bannerController?.presentErrorBanner(
-                title: "title-error".localized, message: "ledger-rekey-error-add-auth".localized(params: authAddress.shortAddressDisplay())
+                title: "title-error".localized, message: "ledger-rekey-error-add-auth".localized(params: authAddress.shortAddressDisplay)
             )
             return false
         }

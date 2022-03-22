@@ -159,7 +159,12 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             switch itemIdentifier {
             case .search:
                 let searchScreen = open(
-                    .assetSearch(accountHandle: accountHandle),
+                    .assetSearch(
+                        dataController: AssetSearchLocalDataController(
+                            accountHandle: accountHandle,
+                            sharedDataController: sharedDataController
+                        )
+                    ),
                     by: .present
                 ) as? AssetSearchViewController
 
@@ -264,7 +269,7 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
     func transactionFloatingActionButtonViewControllerDidReceive(_ viewController: TransactionFloatingActionButtonViewController) {
         log(ReceiveAssetDetailEvent(address: accountHandle.value.address))
         let draft = QRCreationDraft(address: accountHandle.value.address, mode: .address, title: accountHandle.value.name)
-        open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
+        open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay, draft: draft, isTrackable: true), by: .present)
     }
 }
 

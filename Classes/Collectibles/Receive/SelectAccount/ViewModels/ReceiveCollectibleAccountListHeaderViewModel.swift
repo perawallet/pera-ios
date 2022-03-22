@@ -60,18 +60,3 @@ extension ReceiveCollectibleAccountListHeaderViewModel {
         ]
     }
 }
-
-extension ReceiveCollectibleAccountListHeaderViewModel {
-    func hash(
-        into hasher: inout Hasher
-    ) {
-        hasher.combine(title)
-    }
-
-    static func == (
-        lhs: ReceiveCollectibleAccountListHeaderViewModel,
-        rhs: ReceiveCollectibleAccountListHeaderViewModel
-    ) -> Bool {
-        return lhs.title == rhs.title
-    }
-}

@@ -155,7 +155,7 @@ extension CollectibleDetailAPIDataController {
                     CollectibleTransactionInformation(
                         account: ownerAccount,
                         title: "collectible-detail-owner".localized,
-                        value: ownerAccount.name.fallback(ownerAccount.address.shortAddressDisplay()),
+                        value: ownerAccount.name.fallback(ownerAccount.address.shortAddressDisplay),
                         isForegroundingValue: false
                     )
                 )
@@ -207,7 +207,7 @@ extension CollectibleDetailAPIDataController {
                     CollectibleTransactionInformation(
                         account: nil,
                         title: "collectible-detail-creator-address".localized,
-                        value: creator.shortAddressDisplay(),
+                        value: creator.shortAddressDisplay,
                         isForegroundingValue: true
                     )
                 )

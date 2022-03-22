@@ -32,7 +32,7 @@ final class TitleSupplementaryCell:
 }
 
 final class TitleSupplementaryHeader: BaseSupplementaryView<TitleView> {
-    static let theme = TitleViewTheme(horizontalInset: 24)
+    static let theme = TitleViewTheme(paddings: (0, 24, 0, 24))
 
     override init(
         frame: CGRect

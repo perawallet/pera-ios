@@ -30,8 +30,6 @@ final class AccountSelectScreen: BaseViewController {
 
     private var draft: SendTransactionDraft
 
-    private let algorandSDK = AlgorandSDK()
-
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
             fatalError("API should be set.")
@@ -261,7 +259,7 @@ extension AccountSelectScreen: TransactionControllerDelegate {
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
                         title: "ledger-pairing-issue-error-title".localized,
-                        description: "ble-error-fail-ble-connection-repairing".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
                         secondaryActionButtonTitle: "title-ok".localized
                     )
                 ),
@@ -293,19 +291,6 @@ extension AccountSelectScreen {
         if let address = UIPasteboard.general.validAddress {
             accountView.searchInputView.setText(address)
         }
-    }
-
-    @objc
-    private func didTapNext() {
-        guard let address = accountView.searchInputView.text,
-              algorandSDK.isValidAddress(address) else {
-                  return
-        }
-
-        draft.toAccount = Account(address: address, type: .standard)
-        draft.toContact = nil
-
-        routePreviewScreen()
     }
 }
 
@@ -400,13 +385,10 @@ extension AccountSelectScreen: QRScannerViewControllerDelegate {
             completionHandler?()
         }
 
-        guard let qrAddress = qrText.address else {
-            return
-        }
-
-        guard algorandSDK.isValidAddress(qrAddress) else {
-            return
-        }
+        guard let qrAddress = qrText.address,
+              qrAddress.isValidatedAddress else {
+                  return
+              }
 
         accountView.searchInputView.setText(qrAddress)
     }
@@ -475,7 +457,7 @@ extension AccountSelectScreen: TransactionSendControllerDelegate {
                     let configurator = BottomWarningViewConfigurator(
                         image: "icon-info-red".uiImage,
                         title: "send-algos-minimum-amount-error-new-account-title".localized,
-                        description: "send-algos-minimum-amount-error-new-account-description".localized,
+                        description: .plain("send-algos-minimum-amount-error-new-account-description".localized),
                         secondaryActionButtonTitle: "title-i-understand".localized
                     )
 

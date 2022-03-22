@@ -115,7 +115,7 @@ extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
 
         let account = AccountInformation(
             address: address,
-            name: address.shortAddressDisplay(),
+            name: address.shortAddressDisplay,
             type: .standard,
             preferredOrder: accountOrdering.getNewAccountIndex(for: .standard)
         )

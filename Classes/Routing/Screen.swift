@@ -29,7 +29,7 @@ indirect enum Screen {
     case qrScanner(canReadWCSession: Bool)
     case qrGenerator(title: String?, draft: QRCreationDraft, isTrackable: Bool = false)
     case accountDetail(accountHandle: AccountHandle, eventHandler: AccountDetailViewController.EventHandler)
-    case assetSearch(accountHandle: AccountHandle)
+    case assetSearch(dataController: AssetSearchDataController)
     case assetDetail(draft: TransactionListing)
     case algosDetail(draft: TransactionListing)
     case options(account: Account, delegate: OptionsViewControllerDelegate)
@@ -122,6 +122,12 @@ indirect enum Screen {
     case collectibleDetail(
         asset: CollectibleAsset,
         ownerAccount: Account?
+    )
+    case sendCollectible(
+        draft: SendCollectibleDraft
+    )
+    case sendCollectibleAccountList(
+        dataController: SendCollectibleAccountListDataController
     )
     case approveCollectibleTransaction
     case shareActivity(items: [Any])

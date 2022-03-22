@@ -23,24 +23,25 @@ struct TitleViewTheme:
     LayoutSheet {
 
     let title: TextStyle
-    let horizontalInset: LayoutMetric
+    var paddings: LayoutPaddings
 
     init(
         _ family: LayoutFamily = LayoutFamily.getCurrentLayoutFamily(),
-        horizontalInset: LayoutMetric
+        paddings: LayoutPaddings
     ) {
         self.title = [
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main),
             .textOverflow(FittingText())
         ]
-        self.horizontalInset = horizontalInset
+
+        self.paddings = paddings
     }
 
     init(_ family: LayoutFamily) {
         self.init(
             family,
-            horizontalInset: 0
+            paddings: (0, 0, 0, 0)
         )
     }
 }
