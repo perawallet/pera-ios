@@ -30,8 +30,6 @@ final class AccountSelectScreen: BaseViewController {
 
     private var draft: SendTransactionDraft
 
-    private let algorandSDK = AlgorandSDK()
-
     private lazy var transactionController: TransactionController = {
         guard let api = api else {
             fatalError("API should be set.")
@@ -294,19 +292,6 @@ extension AccountSelectScreen {
             accountView.searchInputView.setText(address)
         }
     }
-
-    @objc
-    private func didTapNext() {
-        guard let address = accountView.searchInputView.text,
-              algorandSDK.isValidAddress(address) else {
-                  return
-        }
-
-        draft.toAccount = Account(address: address, type: .standard)
-        draft.toContact = nil
-
-        routePreviewScreen()
-    }
 }
 
 extension AccountSelectScreen: UICollectionViewDelegateFlowLayout {
@@ -400,13 +385,10 @@ extension AccountSelectScreen: QRScannerViewControllerDelegate {
             completionHandler?()
         }
 
-        guard let qrAddress = qrText.address else {
-            return
-        }
-
-        guard algorandSDK.isValidAddress(qrAddress) else {
-            return
-        }
+        guard let qrAddress = qrText.address,
+              qrAddress.isValidatedAddress else {
+                  return
+              }
 
         accountView.searchInputView.setText(qrAddress)
     }

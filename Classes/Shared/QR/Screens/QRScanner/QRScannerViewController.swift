@@ -276,7 +276,7 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 captureSession = nil
                 closeScreen(by: .pop)
                 delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
-            } else if AlgorandSDK().isValidAddress(qrString) {
+            } else if qrString.isValidatedAddress {
                 let qrText = QRText(mode: .address, address: qrString)
                 captureSession = nil
                 closeScreen(by: .pop)

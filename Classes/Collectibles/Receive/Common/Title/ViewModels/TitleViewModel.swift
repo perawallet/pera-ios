@@ -23,6 +23,21 @@ protocol TitleViewModel: ViewModel {
     var titleStyle: TextStyle? { get }
 }
 
+extension TitleViewModel where Self: Hashable {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(title)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.title == rhs.title
+    }
+}
+
 extension TitleViewModel {
     func getTitle(
         _ aTitle: String?

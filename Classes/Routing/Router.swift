@@ -385,8 +385,11 @@ class Router:
             let aViewController = AccountDetailViewController(accountHandle: accountHandle, configuration: configuration)
             aViewController.eventHandler = eventHandler
             viewController = aViewController
-        case let .assetSearch(accountHandle):
-            viewController = AssetSearchViewController(accountHandle: accountHandle, configuration: configuration)
+        case let .assetSearch(dataController):
+            viewController = AssetSearchViewController(
+                dataController: dataController,
+                configuration: configuration
+            )
         case let .addAsset(account):
             viewController = AssetAdditionViewController(account: account, configuration: configuration)
         case .notifications:
@@ -630,6 +633,11 @@ class Router:
         case let .receiveCollectibleAssetList(account, dataController):
             viewController = ReceiveCollectibleAssetListViewController(
                 account: account,
+                dataController: dataController,
+                configuration: configuration
+            )
+        case let .sendCollectibleAccountList(dataController):
+            viewController = SendCollectibleAccountListViewController(
                 dataController: dataController,
                 configuration: configuration
             )

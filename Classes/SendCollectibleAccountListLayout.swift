@@ -12,22 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AssetSearchListLayout.swift
+//   SendCollectibleAccountListLayout.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AssetSearchListLayout: NSObject {
+final class SendCollectibleAccountListLayout: NSObject {
     private var sizeCache: [String: CGSize] = [:]
 
-    private let listDataSource: AssetSearchDataSource
+    private let listDataSource: SendCollectibleAccountListDataSource
 
     private let sectionHorizontalInsets: LayoutHorizontalPaddings = (24, 24)
 
     init(
-        listDataSource: AssetSearchDataSource
+        listDataSource: SendCollectibleAccountListDataSource
     ) {
         self.listDataSource = listDataSource
         super.init()
@@ -40,7 +39,7 @@ final class AssetSearchListLayout: NSObject {
     }
 }
 
-extension AssetSearchListLayout {
+extension SendCollectibleAccountListLayout {
     func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
@@ -59,8 +58,16 @@ extension AssetSearchListLayout {
         switch listSection {
         case .empty:
             return insets
-        case .assets:
-            insets.top = 24
+        case .loading:
+            insets.top = 36
+            insets.bottom = 8
+            return insets
+        case .accounts:
+            insets.top = 36
+            insets.bottom = 8
+            return insets
+        case .contacts:
+            insets.top = 36
             insets.bottom = 8
             return insets
         }
@@ -76,31 +83,44 @@ extension AssetSearchListLayout {
         }
 
         switch itemIdentifier {
+        case .empty(let item):
+            switch item {
+            case .loading:
+                return listView(
+                    collectionView,
+                    layout: collectionViewLayout,
+                    sizeForAccountItem: nil
+                )
+            case .noContent:
+                return sizeForSearchNoContent(
+                    collectionView
+                )
+            }
         case .header(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
                 sizeForHeaderItem: item
             )
-        case .asset(let item):
+        case .account(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForAssetCellItem: item
+                sizeForAccountItem: item
             )
-        case .empty(let item):
-            return sizeForNoContent(
+        case .contact(let item):
+            return listView(
                 collectionView,
-                item: item
+                layout: collectionViewLayout,
+                sizeForContactItem: item
             )
         }
     }
 }
 
-extension AssetSearchListLayout {
-    private func sizeForNoContent(
-        _ listView: UICollectionView,
-        item: AssetListSearchNoContentViewModel
+extension SendCollectibleAccountListLayout {
+    private func sizeForSearchNoContent(
+        _ listView: UICollectionView
     ) -> CGSize {
         let sizeCacheIdentifier = NoContentCell.reuseIdentifier
 
@@ -109,11 +129,11 @@ extension AssetSearchListLayout {
         }
 
         let width = calculateContentWidth(for: listView)
-
+        let item = AccountSelectSearchNoContentViewModel()
         let newSize = NoContentCell.calculatePreferredSize(
             item,
             for: NoContentCell.theme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            fittingIn:  CGSize((width, .greatestFiniteMagnitude))
         )
 
         sizeCache[sizeCacheIdentifier] = newSize
@@ -121,22 +141,21 @@ extension AssetSearchListLayout {
         return newSize
     }
 
-
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForHeaderItem item: AssetSearchListHeaderViewModel
+        sizeForHeaderItem item: SendCollectibleAccountListHeaderViewModel
     ) -> CGSize {
-        let sizeCacheIdentifier = AssetSearchListTitleSupplementaryCell.reuseIdentifier
+        let sizeCacheIdentifier = SendCollectibleAccountListTitleSupplementaryCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
         let width = calculateContentWidth(for: listView)
-        let newSize = AssetSearchListTitleSupplementaryCell.calculatePreferredSize(
+        let newSize = SendCollectibleAccountListTitleSupplementaryCell.calculatePreferredSize(
             item,
-            for: AssetSearchListTitleSupplementaryCell.theme,
+            for: SendCollectibleAccountListTitleSupplementaryCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -148,9 +167,38 @@ extension AssetSearchListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetCellItem item: AssetPreviewViewModel?
+        sizeForAccountItem item: AccountPreviewViewModel?
     ) -> CGSize {
-        let sizeCacheIdentifier = AssetPreviewCell.reuseIdentifier
+        let sizeCacheIdentifier = AccountPreviewCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+        let sampleAccountPreview = CustomAccountPreview(
+            icon: "standard-orange".uiImage,
+            title: "title-unknown".localized,
+            subtitle: nil
+        )
+        let sampleAccountItem = AccountPreviewViewModel(sampleAccountPreview)
+        let newSize = AccountPreviewCell.calculatePreferredSize(
+            sampleAccountItem,
+            for: AccountPreviewCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForContactItem item: ContactsViewModel
+    ) -> CGSize {
+        let sizeCacheIdentifier = SelectContactCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -158,20 +206,9 @@ extension AssetSearchListLayout {
 
         let width = calculateContentWidth(for: listView)
 
-        let sampleAssetPreview = AssetPreviewModel(
-            icon: img("icon-algo-circle-green"),
-            verifiedIcon: img("icon-verified-shield"),
-            title: "title-unknown".localized,
-            subtitle: "title-unknown".localized,
-            primaryAccessory: "title-unknown".localized,
-            secondaryAccessory: "title-unknown".localized
-        )
-
-        let sampleAssetItem = AssetPreviewViewModel(sampleAssetPreview)
-
-        let newSize = AssetPreviewCell.calculatePreferredSize(
-            sampleAssetItem,
-            for: AssetPreviewCell.theme,
+        let newSize = SelectContactCell.calculatePreferredSize(
+            item,
+            for: SelectContactCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -181,7 +218,7 @@ extension AssetSearchListLayout {
     }
 }
 
-extension AssetSearchListLayout {
+extension SendCollectibleAccountListLayout {
     private func calculateContentWidth(
         for listView: UICollectionView
     ) -> LayoutMetric {

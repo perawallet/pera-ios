@@ -12,29 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   WatchAccountAdditionViewModel.swift
+//   SendCollectibleAccountListTitleSupplementaryCell.swift
 
+import Foundation
 import MacaroonUIKit
+import UIKit
 
-final class WatchAccountAdditionViewModel: PairedViewModel {
-    private(set) var copiedString: String?
+final class SendCollectibleAccountListTitleSupplementaryCell:
+    CollectionCell<TitleView>,
+    ViewModelBindable {
+    static let theme: TitleViewTheme = {
+        var theme = TitleViewTheme()
+        theme.configureForSendCollectibleAccountListHeader()
+        return theme
+    }()
 
-    var pasteButtonIsHidden: Bool {
-        return copiedString == nil
-    }
-
-    init(_ model: String?) {
-        bindCopiedString(model)
-    }
-}
-
-extension WatchAccountAdditionViewModel {
-    func bindCopiedString(_ string: String?) {
-        guard let address = string,
-              address.isValidatedAddress else {
-                  return
-              }
-        self.copiedString = address
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }

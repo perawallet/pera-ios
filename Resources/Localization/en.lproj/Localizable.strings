@@ -861,10 +861,6 @@
 "account-detail-portfolio-title" = "Account Value";
 "account-detail-assets-search" = "Search my assets";
 
-// MARK: AccountDetail+Collectible
-"collectible-list-empty-title" = "NFTs - Coming Soon!";
-"collectible-list-empty-detail" = "You will be able to view your NFT collections\nin the Pera Wallet soon.\n\n\nOur team is working hard to make this feature available. Stay tuned!";
-
 // MARK: SendTransaction
 "send-transaction-title" = "Send %@";
 "send-transaction-add-note-title" = "+ Add Note";
@@ -923,9 +919,9 @@
 "collectibles-receive-asset-list-header-description" = "You need to opt in to the ASA ID of the NFT to be able to receive it. Paste the ASA ID or scan it below.";
 "collectibles-receive-asset-list-search-no-content" = "No NFT Found";
 "collectible-list-item-pending-title" = "Pending";
+"collectible-send-account-list-title" = "Select the Receiver Account";
 
 // MARK: Collectible Detail
-
 "collectible-detail-share" = "Share";
 "collectible-detail-description" = "Description";
 "collectible-detail-owner" = "Owner";

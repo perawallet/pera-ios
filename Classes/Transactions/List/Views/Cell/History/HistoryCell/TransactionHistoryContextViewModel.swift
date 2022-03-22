@@ -421,7 +421,7 @@ extension TransactionHistoryContextViewModel {
             return localAccount.name
         }
 
-        return account.shortAddressDisplay()
+        return account.shortAddressDisplay
     }
 
     private func getAssetSymbol(

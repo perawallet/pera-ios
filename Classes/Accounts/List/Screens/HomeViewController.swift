@@ -555,7 +555,7 @@ extension HomeViewController {
         guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
             return
         }
-        
+
         switch itemIdentifier {
         case .account(let item):
             switch item {
@@ -634,7 +634,7 @@ extension HomeViewController: ChoosePasswordViewControllerDelegate {
             )
             self.open(
                 .qrGenerator(
-                    title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay(),
+                    title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay,
                     draft: draft,
                     isTrackable: true
                 ),

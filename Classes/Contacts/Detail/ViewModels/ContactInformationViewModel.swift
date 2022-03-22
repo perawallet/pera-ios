@@ -35,6 +35,6 @@ final class ContactInformationViewModel {
 
         name = contact.name
         address = contact.address
-        shortAddress = address.shortAddressDisplay()
+        shortAddress = address.shortAddressDisplay
     }
 }

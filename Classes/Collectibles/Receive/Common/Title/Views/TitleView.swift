@@ -57,15 +57,15 @@ final class TitleView:
             return CGSize((size.width, 0))
         }
 
-        /// <warning>
-        /// The constrained widths of the accessory view will be discarded from the calculations
-        /// because the title will not has the multi-line texts as of now.
         let width = size.width
         let titleSize = viewModel.title.boundingSize(
             multiline: true,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
-        let preferredHeight = titleSize.height
+        let preferredHeight =
+        titleSize.height +
+        theme.paddings.top +
+        theme.paddings.bottom
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
@@ -79,7 +79,7 @@ extension TitleView {
         addSubview(titleView)
         titleView.fitToVerticalIntrinsicSize()
         titleView.snp.makeConstraints {
-            $0.setPaddings()
+            $0.setPaddings(theme.paddings)
         }
     }
 }
