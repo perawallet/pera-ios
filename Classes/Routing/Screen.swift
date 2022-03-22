@@ -119,7 +119,9 @@ indirect enum Screen {
         account: AccountHandle,
         dataController: ReceiveCollectibleAssetListDataController
     )
-    case sendCollectible
+    case sendCollectible(
+        draft: SendCollectibleDraft
+    )
     case approveCollectibleTransaction
 }
 

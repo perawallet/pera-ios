@@ -17,5 +17,6 @@
 import UIKit
 
 struct SendCollectibleDraft {
+    let collectibleAsset: CollectibleAsset
     let image: UIImage?
 }

@@ -31,8 +31,10 @@ struct SendCollectibleBottomSheetViewTheme:
     let titleViewHorizontalPaddings: LayoutHorizontalPaddings
     let contextViewPaddings: LayoutPaddings
     let addressInputTheme: MultilineTextInputFieldViewTheme
+    let addressInputViewMinHeight: LayoutMetric
     let selectReceiverAction: ButtonStyle
     let scanQRAction: ButtonStyle
+    let spacingBetweenSelectReceiverAndScanQR: LayoutMetric
     let actionButton: ButtonStyle
     let actionButtonContentEdgeInsets: LayoutPaddings
     let actionButtonCorner: Corner
@@ -87,6 +89,7 @@ struct SendCollectibleBottomSheetViewTheme:
 
         addressInputTheme.configureForDoubleAccessory()
         self.addressInputTheme = addressInputTheme
+        addressInputViewMinHeight = 48
 
         selectReceiverAction = [
             .icon([ .normal("icon-settings-contacts") ])
@@ -95,6 +98,8 @@ struct SendCollectibleBottomSheetViewTheme:
         scanQRAction = [
             .icon([ .normal("icon-qr-scan") ])
         ]
+
+        spacingBetweenSelectReceiverAndScanQR = 16
 
         actionButton = [
             .title(Self.getTitle("collectible-send-action".localized)),

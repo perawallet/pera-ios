@@ -40,7 +40,7 @@ final class SendCollectibleViewController: BaseScrollViewController {
     private let theme: SendCollectibleViewControllerTheme
 
     init(
-        draft: SendCollectibleDraft = .init(image: nil),
+        draft: SendCollectibleDraft,
         theme: SendCollectibleViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {

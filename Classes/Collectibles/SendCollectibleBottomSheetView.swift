@@ -218,7 +218,7 @@ extension SendCollectibleBottomSheetView {
 
         contextView.addSubview(addressInputView)
         addressInputView.snp.makeConstraints {
-            $0.greaterThanHeight(48)
+            $0.greaterThanHeight(theme.addressInputViewMinHeight)
 
             $0.setPaddings((0, 0, .noMetric, 0))
         }
@@ -232,7 +232,7 @@ extension SendCollectibleBottomSheetView {
 
         accessoryContainerView.addSubview(scanQRActionView)
         scanQRActionView.snp.makeConstraints {
-            $0.leading == selectReceiverActionView.snp.trailing + 16
+            $0.leading == selectReceiverActionView.snp.trailing + theme.spacingBetweenSelectReceiverAndScanQR
 
             $0.setPaddings((0, .noMetric, 0, 0))
         }
