@@ -31,9 +31,19 @@ extension Formatter {
     static let separatorForAlgosLabel: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.locale = Locale.preferred()
-        formatter.currencySymbol = ""
+        formatter.currencySymbol = "\u{00A6}"
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 6
+        return formatter
+    }()
+    
+    static let separatorForFullAlgosLabel: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.preferred()
+        formatter.currencySymbol = "\u{00A6}"
+        formatter.numberStyle = .currencyAccounting
+        formatter.minimumFractionDigits = 6
         formatter.maximumFractionDigits = 6
         return formatter
     }()

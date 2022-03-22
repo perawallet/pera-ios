@@ -12,23 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AssetSearchListLayout+Theme.swift
+//   ActionableBannerDraft.swift
 
-import Foundation
-
-import Foundation
-import MacaroonUIKit
 import UIKit
 
-extension AssetSearchListLayout {
-    struct Theme: LayoutSheet, StyleSheet {
-        let assetItemSize: LayoutSize
-        let listHeaderSize: LayoutSize
-
-        init(_ family: LayoutFamily) {
-            self.assetItemSize = (UIScreen.main.bounds.width - 48, 72)
-            self.listHeaderSize = (UIScreen.main.bounds.width, 40)
-        }
-    }
+struct ActionableBannerDraft {
+    let icon: UIImage
+    let title: String
+    let message: String
+    let actionTitle: String? /// <note>: If it is nil, `actionView` is removed.
 }

@@ -351,10 +351,6 @@ extension CollectibleListViewController: SearchInputViewDelegate {
     func searchInputViewDidReturn(_ view: SearchInputView) {
         view.endEditing()
     }
-
-    func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
-        dataController.resetSearch()
-    }
 }
 
 extension CollectibleListViewController {

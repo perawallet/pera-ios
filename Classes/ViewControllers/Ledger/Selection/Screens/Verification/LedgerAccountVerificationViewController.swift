@@ -169,7 +169,7 @@ extension LedgerAccountVerificationViewController {
     private func setupLocalAccount(from account: Account) {
         var localAccount = AccountInformation(
             address: account.address,
-            name: account.address.shortAddressDisplay(),
+            name: account.address.shortAddressDisplay,
             type: account.type,
             preferredOrder: accountOrdering.getNewAccountIndex(for: account.type)
         )
@@ -256,7 +256,7 @@ extension LedgerAccountVerificationViewController: LedgerAccountVerifyOperationD
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
                         title: "ledger-pairing-issue-error-title".localized,
-                        description: "ble-error-fail-ble-connection-repairing".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
                         secondaryActionButtonTitle: "title-ok".localized
                     )
                 ),

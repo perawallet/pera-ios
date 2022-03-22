@@ -29,7 +29,7 @@ final class WCSingleTransactionRequestBottomViewModel {
     init(transaction: WCTransaction, account: Account?, asset: Asset?) {
         let fee = transaction.transactionDetail?.fee ?? 0
         let warningCount = transaction.transactionDetail?.warningCount ?? 0
-        networkFee = "\(fee.toAlgos.toAlgosStringForLabel ?? "") ALGO"
+        networkFee = "\(fee.toAlgos.toAlgosStringForLabel ?? "")"
         senderAddress = transaction.signerAccount?.name ?? transaction.signerAccount?.address
         warningMessage = warningCount > 0 ? "node-settings-warning-title".localized: nil
         assetIcon = account?.image ?? account?.accountTypeImage()
@@ -42,7 +42,7 @@ final class WCSingleTransactionRequestBottomViewModel {
                       return
             }
 
-            balance = "\(amount) ALGO"
+            balance = "\(amount)"
         }
     }
 }

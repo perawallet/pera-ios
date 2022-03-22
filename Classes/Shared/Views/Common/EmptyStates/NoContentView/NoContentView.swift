@@ -69,7 +69,11 @@ final class NoContentView:
         default: break
         }
 
-        let preferredHeight = resultSize.height + additionalTopHeight
+        let preferredHeight =
+        resultSize.height +
+        additionalTopHeight +
+        theme.contentVerticalPaddings.top +
+        theme.contentVerticalPaddings.bottom
 
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }

@@ -73,12 +73,18 @@ final class ResultView:
             viewModel.body.boundingSize(
                 fittingSize: CGSize((size.width, .greatestFiniteMagnitude))
             )
-        let preferredHeight =
+        var preferredHeight =
             iconSize.height +
-            theme.titleTopMargin +
             titleSize.height +
-            theme.bodyTopMargin +
             bodySize.height
+
+        if viewModel.icon != nil {
+            preferredHeight += theme.titleTopMargin
+        }
+
+        if viewModel.body != nil {
+            preferredHeight += theme.bodyTopMargin
+        }
 
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }

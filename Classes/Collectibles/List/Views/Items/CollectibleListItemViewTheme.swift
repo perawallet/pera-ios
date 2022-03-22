@@ -24,7 +24,7 @@ struct CollectibleListItemViewTheme:
     let image: URLImageViewStyleSheet
 
     let title: TextStyle
-    let titleTopPadding: LayoutMetric
+    let titleAndSubtitleContentTopPadding: LayoutMetric
 
     let subtitle: TextStyle
 
@@ -45,13 +45,13 @@ struct CollectibleListItemViewTheme:
 
         title = [
             .textColor(AppColors.Components.Text.gray),
-            .textOverflow(FittingText()),
+            .textOverflow(SingleLineText()),
         ]
-        titleTopPadding = 12
+        titleAndSubtitleContentTopPadding = 12
 
         subtitle = [
             .textColor(AppColors.Components.Text.main),
-            .textOverflow(FittingText()),
+            .textOverflow(MultilineText(numberOfLines: 2)),
         ]
 
         bottomLeftBadge = [

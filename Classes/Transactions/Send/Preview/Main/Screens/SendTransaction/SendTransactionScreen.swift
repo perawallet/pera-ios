@@ -592,13 +592,21 @@ extension SendTransactionScreen: NumpadViewDelegate {
         }
 
         let viewModel = MaximumBalanceWarningViewModel(draft.from, transactionParams)
+
+        var bottomWarningDescription: BottomWarningViewConfigurator.BottomWarningDescription?
+
+        if let description = viewModel.description {
+            bottomWarningDescription = .plain(description)
+        }
+
         let configurator = BottomWarningViewConfigurator(
             image: "icon-info-red".uiImage,
             title: "min-balance-title".localized,
-            description: viewModel.description ?? .empty,
+            description: bottomWarningDescription,
             primaryActionButtonTitle: "title-continue".localized,
             secondaryActionButtonTitle: "title-cancel".localized,
-            primaryAction: { [weak self] in
+            primaryAction: {
+                [weak self] in
                 guard let self = self else {
                     return
                 }
@@ -708,7 +716,7 @@ extension SendTransactionScreen: TransactionControllerDelegate {
                     configurator: BottomWarningViewConfigurator(
                         image: "img-warning-circle".uiImage,
                         title: "ledger-pairing-issue-error-title".localized,
-                        description: "ble-error-fail-ble-connection-repairing".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
                         secondaryActionButtonTitle: "title-ok".localized
                     )
                 ),
@@ -781,7 +789,7 @@ extension SendTransactionScreen: TransactionSendControllerDelegate {
                     let configurator = BottomWarningViewConfigurator(
                         image: "icon-info-red".uiImage,
                         title: "send-algos-minimum-amount-error-new-account-title".localized,
-                        description: "send-algos-minimum-amount-error-new-account-description".localized,
+                        description: .plain("send-algos-minimum-amount-error-new-account-description".localized),
                         secondaryActionButtonTitle: "title-i-understand".localized
                     )
 
