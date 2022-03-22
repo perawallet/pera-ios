@@ -27,6 +27,6 @@ final class CollectibleListItemOptedInCell:
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
-        contextView.configureImageAlphaForOptedInCell() // <todo>: Should Alpha change be in theme or like this?
+        contextView.configureOverlayForOptedInCell()
     }
 }

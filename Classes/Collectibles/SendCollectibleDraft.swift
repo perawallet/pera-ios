@@ -12,20 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   MultilineTextInputFieldViewTheme.swift
+//   SendCollectibleDraft.swift
 
-import Foundation
-import MacaroonUIKit
+import UIKit
 
-protocol MultilineTextInputFieldViewTheme: StyleSheet, LayoutSheet {
-    var textInput: TextInputStyle { get }
-    var textContainerInsets: LayoutPaddings { get }
-    var placeholder: TextStyle { get }
-    var floatingPlaceholder: TextStyle { get }
-    var topInset: LayoutMetric { get }
-    var focusIndicator: ViewStyle { get }
-    var focusIndicatorActive: ViewStyle { get }
-    var errorFocusIndicator: ViewStyle { get }
-    var assistive: FormInputFieldAssistiveViewTheme { get }
+struct SendCollectibleDraft {
+    let collectibleAsset: CollectibleAsset
+    let image: UIImage?
 }

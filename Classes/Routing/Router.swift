@@ -217,7 +217,7 @@ class Router:
             
             rootViewController.present(navigationController, animated: false, completion: completion)
         case .present,
-            .customPresent:
+                .customPresent:
             let navigationController: NavigationController
             
             if let navController = viewController as? NavigationController {
@@ -636,6 +636,11 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
+        case let .sendCollectible(draft):
+            viewController = SendCollectibleViewController(
+                draft: draft,
+                configuration: configuration
+            )
         case let .sendCollectibleAccountList(dataController):
             viewController = SendCollectibleAccountListViewController(
                 dataController: dataController,
@@ -662,9 +667,9 @@ extension Router {
         over screen: UIViewController? = nil
     ) -> UIViewController {
         let topmostPresentedScreen =
-            findVisibleScreen(
-                presentedBy: screen ?? rootViewController
-            )
+        findVisibleScreen(
+            presentedBy: screen ?? rootViewController
+        )
 
         return findVisibleScreen(
             in: topmostPresentedScreen
@@ -735,7 +740,7 @@ extension Router {
         }
         
         let assetTransactionDraft =
-            AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
+        AssetTransactionSendDraft(from: account, assetIndex: Int64(draft.assetId))
         let transactionController = TransactionController(
             api: appConfiguration.api,
             bannerController: appConfiguration.bannerController
@@ -869,7 +874,7 @@ extension Router: SelectAccountViewControllerDelegate {
         guard let qrDraft = self.qrSendDraft else {
             return
         }
-
+        
         let draft = SendTransactionDraft(
             from: account,
             toAccount: Account(address: qrDraft.toAccount, type: .standard),

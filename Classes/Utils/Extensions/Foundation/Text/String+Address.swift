@@ -20,6 +20,12 @@ import Foundation
 let defaultParticipationKey = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
 
 extension String {
+    var hasValidAddressLength: Bool {
+        let validatedAddressLength = 58
+
+        return count <= validatedAddressLength
+    }
+
     var isValidatedAddress: Bool {
         return AlgorandSDK().isValidAddress(self)
     }
