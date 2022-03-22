@@ -21,15 +21,26 @@ import UIKit
 struct TitleViewTheme:
     StyleSheet,
     LayoutSheet {
+
     let title: TextStyle
+    let horizontalInset: LayoutMetric
 
     init(
-        _ family: LayoutFamily
+        _ family: LayoutFamily = LayoutFamily.getCurrentLayoutFamily(),
+        horizontalInset: LayoutMetric
     ) {
         self.title = [
             .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main),
             .textOverflow(FittingText())
         ]
+        self.horizontalInset = horizontalInset
+    }
+
+    init(_ family: LayoutFamily) {
+        self.init(
+            family,
+            horizontalInset: 0
+        )
     }
 }

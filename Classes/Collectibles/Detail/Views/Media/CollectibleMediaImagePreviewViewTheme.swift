@@ -12,21 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleMediaPreviewViewTheme.swift
+//   CollectibleMediaImagePreviewViewTheme.swift
 
 import MacaroonUIKit
 import MacaroonURLImage
 
-struct CollectibleMediaPreviewViewTheme:
+struct CollectibleMediaImagePreviewViewTheme:
     StyleSheet,
     LayoutSheet {
     let image: URLImageViewStyleSheet
+    let overlay: ViewStyle
     let corner: Corner
-    
+
     init(
         _ family: LayoutFamily
     ) {
-        image = CollectibleListItemImageViewTheme()
-        corner = Corner(radius: 4)
+        self.image = CollectibleListItemImageViewTheme()
+        self.overlay = [
+            .backgroundColor(AppColors.Shared.System.background)
+        ]
+        
+        self.corner = Corner(radius: 4)
     }
 }

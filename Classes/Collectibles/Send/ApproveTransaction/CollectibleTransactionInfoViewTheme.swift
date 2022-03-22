@@ -21,27 +21,29 @@ import UIKit
 struct CollectibleTransactionInfoViewTheme:
     StyleSheet,
     LayoutSheet {
-    let contextViewSpacing: LayoutMetric
     let title: TextStyle
-    let titleMinimumWidthRatio: LayoutMetric
-    let iconSize: LayoutSize
-    let iconHorizontalPaddings: LayoutPaddings
     let value: TextStyle
+
+    let iconHorizontalInset: LayoutMetric
+    let iconSize: LayoutSize
+    let valueWidthRatio: LayoutMetric
+    let verticalPadding: LayoutMetric
 
     init(
         _ family: LayoutFamily
     ) {
-        contextViewSpacing = 8
-        iconSize = (24, 24)
-        iconHorizontalPaddings = (0, 8, 0, 8)
-        title = [
-            .textOverflow(SingleLineText()),
+        self.title = [
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.gray)
         ]
-        titleMinimumWidthRatio = 0.25
-        value = [
-            .textOverflow(SingleLineFittingText()),
+        self.value = [
+            .textOverflow(FittingText()),
             .textColor(AppColors.Components.Text.main)
         ]
+
+        self.iconHorizontalInset = 8
+        self.iconSize = (24, 24)
+        self.valueWidthRatio = 0.45
+        self.verticalPadding = 16
     }
 }

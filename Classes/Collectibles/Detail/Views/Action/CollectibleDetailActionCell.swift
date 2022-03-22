@@ -20,15 +20,14 @@ import UIKit
 
 final class CollectibleDetailActionCell:
     CollectionCell<CollectibleDetailActionView>,
+    ViewModelBindable,
     UIInteractionObservable {
-    override class var contextPaddings: LayoutPaddings {
-        return (0, 24, 0, 24)
-    }
+    static let theme = CollectibleDetailActionViewTheme()
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
-        contextView.customize(CollectibleDetailActionViewTheme())
+        contextView.customize(Self.theme)
     }
 }

@@ -23,7 +23,7 @@ struct CollectibleDescriptionViewModel:
     private(set) var description: EditText?
 
     init(
-        _ asset: Collectible
+        _ asset: CollectibleAsset
     ) {
         bindDescription(asset)
     }
@@ -31,13 +31,13 @@ struct CollectibleDescriptionViewModel:
 
 extension CollectibleDescriptionViewModel {
     private mutating func bindDescription(
-        _ asset: Collectible
+        _ asset: CollectibleAsset
     ) {
         guard let aDescription = asset.description else {
             return
         }
 
-        let font = Fonts.DMSans.medium.make(15)
+        let font = Fonts.DMSans.regular.make(15)
         let lineHeightMultiplier = 1.23
 
         description = .attributedString(

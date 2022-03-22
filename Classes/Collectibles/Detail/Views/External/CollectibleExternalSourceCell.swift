@@ -20,15 +20,14 @@ import UIKit
 
 final class CollectibleExternalSourceCell:
     CollectionCell<CollectibleExternalSourceView>,
+    ViewModelBindable,
     UIInteractionObservable {
-    override class var contextPaddings: LayoutPaddings {
-        return (0, 24, 0, 16)
-    }
+    static let theme = CollectibleExternalSourceViewTheme()
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
-        contextView.customize(CollectibleExternalSourceViewTheme())
+        contextView.customize(Self.theme)
     }
 }

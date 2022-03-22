@@ -12,38 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   TitleSupplementaryCell.swift
+//   CollectibleMediaImagePreviewCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class TitleSupplementaryCell:
-    CollectionCell<TitleView>,
+final class CollectibleMediaImagePreviewCell:
+    CollectionCell<CollectibleMediaImagePreviewView>,
     ViewModelBindable {
-    static let theme = TitleViewTheme()
+
+    static let theme = CollectibleMediaImagePreviewViewTheme()
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
-    }
-}
-
-final class TitleSupplementaryHeader: BaseSupplementaryView<TitleView> {
-    static let theme = TitleViewTheme(horizontalInset: 24)
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
-    }
-
-    func bindData(
-        _ viewModel: TitleViewModel
-    ) {
-        contextView.bindData(viewModel)
     }
 }

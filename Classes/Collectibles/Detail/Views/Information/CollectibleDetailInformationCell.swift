@@ -18,15 +18,15 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectibleDetailInformationCell: CollectionCell<CollectibleTransactionInfoView> {
-    override class var contextPaddings: LayoutPaddings {
-        return (0, 24, 0, 24)
-    }
+final class CollectibleDetailInformationCell:
+    CollectionCell<CollectibleTransactionInfoView>,
+    ViewModelBindable {
+    static let theme = CollectibleTransactionInfoViewTheme()
     
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
-        contextView.customize(CollectibleTransactionInfoViewTheme())
+        contextView.customize(Self.theme)
     }
 }

@@ -20,38 +20,42 @@ import MacaroonUIKit
 struct CollectibleExternalSourceViewModel:
     ViewModel,
     Hashable {
+    private(set) var source: CollectibleExternalSource?
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var action: Image?
 
     init(
-        item: SingleLineIconTitleItem
+        _ source: CollectibleExternalSource
     ) {
-        bindIcon(item)
-        bindTitle(item)
+        bindSource(source)
+        bindIcon(source)
+        bindTitle(source)
         bindAction()
     }
 }
 
 extension CollectibleExternalSourceViewModel {
-    private mutating func bindIcon(
-        _ item: SingleLineIconTitleItem
+    private mutating func bindSource(
+        _ source: CollectibleExternalSource
     ) {
-        icon = item.icon
+        self.source = source
+    }
+
+    private mutating func bindIcon(
+        _ source: CollectibleExternalSource
+    ) {
+        icon = source.image
     }
 
     private mutating func bindTitle(
-        _ item: SingleLineIconTitleItem
+        _ source: CollectibleExternalSource
     ) {
-        guard let aTitle = item.title else {
-            return
-        }
-
         let font = Fonts.DMSans.regular.make(15)
         let lineHeightMultiplier = 1.23
 
         title = .attributedString(
-            aTitle.attributed([
+            source.title.attributed([
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([

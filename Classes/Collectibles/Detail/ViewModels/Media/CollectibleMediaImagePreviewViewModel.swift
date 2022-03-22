@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleMediaPreviewViewModel.swift
+//   CollectibleMediaImagePreviewViewModel.swift
 
 import Foundation
 import UIKit
@@ -20,24 +20,31 @@ import MacaroonUIKit
 import MacaroonURLImage
 import Prism
 
-struct CollectibleMediaPreviewViewModel: ViewModel {
+struct CollectibleMediaImagePreviewViewModel: ViewModel {
     private(set) var image: ImageSource?
+    private(set) var isOwned: Bool = true
 
     init(
         imageSize: CGSize,
-        model: CollectibleAsset
+        asset: CollectibleAsset,
+        ownerAccount: Account?,
+        url: URL?
     ) {
         bindImage(
             imageSize: imageSize,
-            asset: model
+            asset: asset,
+            url: url
         )
+
+        bindOwned(ownerAccount)
     }
 }
 
-extension CollectibleMediaPreviewViewModel {
+extension CollectibleMediaImagePreviewViewModel {
     private mutating func bindImage(
         imageSize: CGSize,
-        asset: CollectibleAsset
+        asset: CollectibleAsset,
+        url: URL?
     ) {
         let placeholder = asset.title.fallback(asset.name.fallback("#\(String(asset.id))"))
 
@@ -50,8 +57,8 @@ extension CollectibleMediaPreviewViewModel {
             size = .resize(imageSize, .aspectFit)
         }
 
-        if let primaryImage = asset.primaryImage {
-            let prismURL = PrismURL(baseURL: primaryImage)
+        if let imageURL = url {
+            let prismURL = PrismURL(baseURL: imageURL)
                 .setExpectedImageSize(imageSize)
                 .setResizeMode(.fit)
                 .build()
@@ -65,6 +72,7 @@ extension CollectibleMediaPreviewViewModel {
                     text: getPlaceholder(placeholder)
                 )
             )
+            return
         }
 
         image = PNGImageSource(
@@ -76,6 +84,12 @@ extension CollectibleMediaPreviewViewModel {
         )
     }
 
+    private mutating func bindOwned(_ ownerAccount: Account?) {
+        isOwned = ownerAccount != nil
+    }
+}
+
+extension CollectibleMediaImagePreviewViewModel {
     private func getPlaceholder(
         _ aPlaceholder: String
     ) -> EditText {

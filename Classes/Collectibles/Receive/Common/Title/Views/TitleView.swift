@@ -79,7 +79,7 @@ extension TitleView {
         addSubview(titleView)
         titleView.fitToVerticalIntrinsicSize()
         titleView.snp.makeConstraints {
-            $0.setPaddings()
+            $0.setPaddings((0, theme.horizontalInset, 0, theme.horizontalInset))
         }
     }
 }

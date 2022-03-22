@@ -28,10 +28,13 @@ final class CollectibleDetailActionView:
         .performShare: UIControlInteraction()
     ]
 
-    private lazy var titleLabel = UILabel()
-    private lazy var subtitleLabel = UILabel()
-    private lazy var sendButton = Button(.imageAtLeft(spacing: 12))
-    private lazy var shareButton = Button(.imageAtLeft(spacing: 12))
+    private lazy var labelStackView = VStackView()
+    private lazy var titleLabel = Label()
+    private lazy var subtitleLabel = Label()
+    private lazy var buttonStackView = HStackView()
+    private lazy var sendButton = Button(.imageAtLeft(spacing: 8))
+    private lazy var shareButton = Button(.imageAtLeft(spacing: 8))
+    private lazy var separator = UIView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,10 +44,9 @@ final class CollectibleDetailActionView:
     func customize(
         _ theme: CollectibleDetailActionViewTheme
     ) {
-        addTitleLabel(theme)
-        addSubtitleLabel(theme)
-        addShareButton(theme)
-        addSendButton(theme)
+        addLabelStackView(theme)
+        addButtonStackView(theme)
+        addSeparator(theme)
     }
 
     func customizeAppearance(
@@ -69,27 +71,44 @@ final class CollectibleDetailActionView:
 }
 
 extension CollectibleDetailActionView {
-    private func addTitleLabel(_ theme: CollectibleDetailActionViewTheme) {
-        titleLabel.customizeAppearance(theme.title)
+    private func addLabelStackView(_ theme: CollectibleDetailActionViewTheme) {
+        labelStackView.distribution = .equalSpacing
+        labelStackView.spacing = theme.subtitleTopOffset
 
-        addSubview(titleLabel)
-        titleLabel.snp.makeConstraints {
+        addSubview(labelStackView)
+        labelStackView.snp.makeConstraints {
             $0.top == theme.topInset
             $0.leading.trailing == 0
         }
-    }
 
-    private func addSubtitleLabel(_ theme: CollectibleDetailActionViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+        labelStackView.addArrangedSubview(titleLabel)
+        titleLabel.fitToIntrinsicSize()
+
         subtitleLabel.customizeAppearance(theme.subtitle)
-
-        addSubview(subtitleLabel)
-        subtitleLabel.snp.makeConstraints {
-            $0.top == titleLabel.snp.bottom + theme.subtitleTopOffset
-            $0.leading.trailing == 0
-        }
+        labelStackView.addArrangedSubview(subtitleLabel)
+        subtitleLabel.fitToIntrinsicSize()
     }
 
-    private func addShareButton(_ theme: CollectibleDetailActionViewTheme) {
+    private func addButtonStackView(_ theme: CollectibleDetailActionViewTheme) {
+        addSubview(buttonStackView)
+
+        buttonStackView.alignment = .fill
+        buttonStackView.distribution = .fillEqually
+        buttonStackView.spacing = theme.buttonSpacing
+
+        buttonStackView.fitToIntrinsicSize()
+
+        buttonStackView.snp.makeConstraints {
+            $0.trailing == 0
+            $0.top == labelStackView.snp.bottom + theme.buttonTopOffset
+            $0.leading == 0
+            $0.height.equalTo(theme.buttonHeight)
+        }
+
+        buttonStackView.addArrangedSubview(sendButton)
+        buttonStackView.addArrangedSubview(shareButton)
+
         shareButton.customize(theme.share)
         shareButton.bindData(
             ButtonCommonViewModel(
@@ -97,31 +116,24 @@ extension CollectibleDetailActionView {
                 iconSet: [.normal("icon-share")])
         )
 
-        addSubview(shareButton)
-        shareButton.snp.makeConstraints {
-            $0.bottom.trailing == 0
-            $0.top == subtitleLabel.snp.bottom + theme.buttonTopOffset
-            $0.leading.equalToSuperview().priority(.low)
-            $0.height == theme.buttonHeight
-        }
-
-        shareButton.addSeparator(theme.separator, padding: theme.buttonBottomInset)
-    }
-
-    private func addSendButton(_ theme: CollectibleDetailActionViewTheme) {
         sendButton.customize(theme.send)
         sendButton.bindData(
             ButtonCommonViewModel(
                 title: "title-send".localized,
                 iconSet: [.normal("icon-arrow-up")])
         )
+    }
 
-        addSubview(sendButton)
-        sendButton.snp.makeConstraints {
-            $0.leading == 0
-            $0.top == shareButton
-            $0.trailing == shareButton.snp.leading - theme.sendButtonTrailingOffset
-            $0.height == shareButton.snp.height
+    private func addSeparator(_ theme: CollectibleDetailActionViewTheme) {
+        separator.customizeAppearance(theme.separator)
+
+        addSubview(separator)
+        separator.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(theme.separatorHorizontalInset)
+            $0.trailing.equalToSuperview().offset(-theme.separatorHorizontalInset)
+            $0.bottom.equalToSuperview()
+            $0.height.equalTo(theme.separatorHeight)
+            $0.top.equalTo(buttonStackView.snp.bottom).offset(theme.buttonBottomInset)
         }
     }
 }
@@ -132,12 +144,11 @@ extension CollectibleDetailActionView {
             return
         }
 
+        titleLabel.isHidden = viewModel.title == nil
         titleLabel.editText = viewModel.title
+        titleLabel.isHidden = viewModel.subtitle == nil
         subtitleLabel.editText = viewModel.subtitle
-
-        if !viewModel.canTransfer {
-            sendButton.removeFromSuperview()
-        }
+        sendButton.isHidden = !viewModel.canTransfer
     }
 
     class func calculatePreferredSize(
@@ -151,11 +162,11 @@ extension CollectibleDetailActionView {
 
         let width = size.width
         let titleSize = viewModel.title.boundingSize(
-            multiline: false,
+            multiline: true,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
         let subtitleSize = viewModel.subtitle.boundingSize(
-            multiline: false,
+            multiline: true,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
         let buttonHeight = theme.buttonHeight

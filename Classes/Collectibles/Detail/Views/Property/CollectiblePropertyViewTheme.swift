@@ -34,13 +34,11 @@ struct CollectiblePropertyViewTheme:
         self.name = [
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),
-            .font(Fonts.DMSans.medium.make(15)),
-            .textColor(AppColors.Components.Text.main.uiColor)
+            .textColor(AppColors.Components.Text.gray.uiColor)
         ]
         self.value = [
             .textOverflow(SingleLineFittingText()),
             .textAlignment(.left),
-            .font(Fonts.DMSans.medium.make(15)),
             .textColor(AppColors.Components.Text.main.uiColor)
         ]
         self.corner = Corner(radius: 8)

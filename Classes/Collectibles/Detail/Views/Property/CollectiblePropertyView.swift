@@ -28,6 +28,9 @@ final class CollectiblePropertyView:
     func customize(
         _ theme: CollectiblePropertyViewTheme
     ) {
+        layer.draw(border: theme.border)
+        layer.draw(corner: theme.corner)
+
         addContainerView(theme)
         addNameLabel(theme)
         addValueLabel(theme)
@@ -44,12 +47,12 @@ final class CollectiblePropertyView:
 
 extension CollectiblePropertyView {
     private func addContainerView(_ theme: CollectiblePropertyViewTheme) {
-        containerView.layer.draw(border: theme.border)
-        containerView.layer.draw(corner: theme.corner)
+        containerView.fitToIntrinsicSize()
 
         addSubview(containerView)
         containerView.snp.makeConstraints {
-            $0.setPaddings()
+            $0.top.bottom.equalToSuperview().inset(theme.verticallInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
 
@@ -58,8 +61,9 @@ extension CollectiblePropertyView {
 
         containerView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints {
-            $0.top == theme.verticallInset
-            $0.leading.trailing == theme.horizontalInset
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing == 0
         }
     }
 
@@ -69,8 +73,9 @@ extension CollectiblePropertyView {
         containerView.addSubview(valueLabel)
         valueLabel.snp.makeConstraints {
             $0.top == nameLabel.snp.bottom + theme.labelPadding
-            $0.leading.trailing == theme.horizontalInset
-            $0.bottom == theme.verticallInset
+            $0.leading == 0
+            $0.trailing == 0
+            $0.bottom.lessThanOrEqualToSuperview()
         }
     }
 }

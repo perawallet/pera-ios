@@ -12,23 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleMediaPreviewView.swift
+//   CollectibleMediaImagePreviewView.swift
 
 import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 
-final class CollectibleMediaPreviewView:
+final class CollectibleMediaImagePreviewView:
     View,
     ViewModelBindable,
     ListReusable {
 
     private lazy var image = URLImageView()
+    private lazy var overlayView = UIView()
 
     func customize(
-        _ theme: CollectibleMediaPreviewViewTheme
+        _ theme: CollectibleMediaImagePreviewViewTheme
     ) {
         addImage(theme)
+        addOverlayView(theme)
     }
 
     func customizeAppearance(
@@ -40,9 +42,9 @@ final class CollectibleMediaPreviewView:
     ) {}
 }
 
-extension CollectibleMediaPreviewView {
+extension CollectibleMediaImagePreviewView {
     private func addImage(
-        _ theme: CollectibleMediaPreviewViewTheme
+        _ theme: CollectibleMediaImagePreviewViewTheme
     ) {
         image.customizeAppearance(theme.image)
         image.layer.draw(corner: theme.corner)
@@ -56,27 +58,45 @@ extension CollectibleMediaPreviewView {
             $0.setPaddings((0, 0, .noMetric, 0))
         }
     }
+
+    private func addOverlayView(
+        _ theme: CollectibleMediaImagePreviewViewTheme
+    ) {
+        overlayView.customizeAppearance(theme.overlay)
+        overlayView.layer.draw(corner: theme.corner)
+        overlayView.clipsToBounds = true
+        overlayView.alpha = 0.0
+
+        image.addSubview(overlayView)
+        overlayView.snp.makeConstraints {
+            $0.setPaddings()
+        }
+    }
 }
 
-extension CollectibleMediaPreviewView {
+extension CollectibleMediaImagePreviewView {
     func bindData(
-        _ viewModel: CollectibleMediaPreviewViewModel?
+        _ viewModel: CollectibleMediaImagePreviewViewModel?
     ) {
         image.load(from: viewModel?.image)
+
+        if !(viewModel?.isOwned ?? true) {
+            overlayView.alpha = 0.4
+        }
     }
 
     class func calculatePreferredSize(
-        _ viewModel: CollectibleMediaPreviewViewModel?,
-        for theme: CollectibleMediaPreviewViewTheme,
+        _ viewModel: CollectibleMediaImagePreviewViewModel?,
+        for theme: CollectibleMediaImagePreviewViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
-        let iconHeight = size.width
-        return CGSize((size.width, min(iconHeight.ceil(), size.height)))
+        return CGSize((size.width, size.height))
     }
 }
 
-extension CollectibleMediaPreviewView {
+extension CollectibleMediaImagePreviewView {
     func prepareForReuse() {
+        overlayView.alpha = 0.0
         image.prepareForReuse()
     }
 }

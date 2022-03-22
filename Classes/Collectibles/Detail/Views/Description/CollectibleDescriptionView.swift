@@ -47,7 +47,7 @@ extension CollectibleDescriptionView {
         addSubview(descriptionLabel)
         descriptionLabel.fitToVerticalIntrinsicSize()
         descriptionLabel.snp.makeConstraints {
-            $0.setPaddings()
+            $0.setPaddings(theme.paddings)
         }
     }
 }
@@ -67,7 +67,9 @@ extension CollectibleDescriptionView {
             multiline: true,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))
         )
-        let preferredHeight = descriptionSize.height
+        let preferredHeight =
+            descriptionSize.height +
+            theme.paddings.bottom
         return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 

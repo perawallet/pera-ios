@@ -47,7 +47,7 @@ extension CollectibleTransactionInfoViewModel {
             return
         }
 
-        icon = account.value.image
+        icon = account.image
     }
 
     private mutating func bindValue(
@@ -64,7 +64,7 @@ extension CollectibleTransactionInfoViewModel {
                 .textOverflow(FittingText()),
                 .textAlignment(.right),
                 .font(Fonts.DMSans.medium.make(15)),
-                .textColor(AppColors.Components.Link.primary.uiColor)
+                .textColor(AppColors.Components.Link.primary)
             ]
             return
         }
@@ -73,7 +73,7 @@ extension CollectibleTransactionInfoViewModel {
             .textOverflow(FittingText()),
             .textAlignment(.right),
             .font(Fonts.DMSans.regular.make(15)),
-            .textColor(AppColors.Components.Text.main.uiColor)
+            .textColor(AppColors.Components.Text.main)
         ]
     }
 }
@@ -92,6 +92,7 @@ extension CollectibleTransactionInfoViewModel {
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
                         .lineBreakMode(.byTruncatingTail),
+                        .textAlignment(.left),
                         .lineHeightMultiple(lineHeightMultiplier)
                     ])
                 ])
@@ -111,6 +112,7 @@ extension CollectibleTransactionInfoViewModel {
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
                         .lineBreakMode(.byTruncatingTail),
+                        .textAlignment(.right),
                         .lineHeightMultiple(lineHeightMultiplier)
                     ])
                 ])
@@ -118,8 +120,8 @@ extension CollectibleTransactionInfoViewModel {
     }
 }
 
-struct CollectibleTransactionInformation {
-    let account: AccountHandle?
+struct CollectibleTransactionInformation: Hashable {
+    let account: Account?
     let title: String
     let value: String
     let isForegroundingValue: Bool

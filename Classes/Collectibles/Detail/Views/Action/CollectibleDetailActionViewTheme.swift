@@ -23,14 +23,16 @@ struct CollectibleDetailActionViewTheme:
     let subtitle: TextStyle
     let send: ButtonTheme
     let share: ButtonTheme
-    let separator: Separator
+    let separator: ViewStyle
 
     let topInset: LayoutMetric
     let subtitleTopOffset: LayoutMetric
     let buttonTopOffset: LayoutMetric
     let buttonBottomInset: LayoutMetric
+    let separatorHorizontalInset: LayoutMetric
     let buttonHeight: LayoutMetric
-    let sendButtonTrailingOffset: LayoutMetric
+    let buttonSpacing: LayoutMetric
+    let separatorHeight: LayoutMetric
 
     init(
         _ family: LayoutFamily
@@ -47,13 +49,17 @@ struct CollectibleDetailActionViewTheme:
         ]
         self.send = ButtonSecondaryTheme()
         self.share = ButtonSecondaryTheme()
-        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.separator = [
+            .backgroundColor(AppColors.Shared.Layer.grayLighter)
+        ]
 
-        self.topInset = 36
+        self.topInset = 24
         self.subtitleTopOffset = 4
         self.buttonTopOffset = 20
-        self.buttonBottomInset = -32
+        self.buttonBottomInset = 32
+        self.separatorHorizontalInset = -24
         self.buttonHeight = 52
-        self.sendButtonTrailingOffset = 16
+        self.buttonSpacing = 16
+        self.separatorHeight = 1
     }
 }
