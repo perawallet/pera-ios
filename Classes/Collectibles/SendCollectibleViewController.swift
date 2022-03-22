@@ -341,8 +341,7 @@ extension SendCollectibleViewController: SendCollectibleBottomSheetViewDelegate 
         }
 
         let newText = (text as NSString).replacingCharacters(in: range, with: string)
-        let numberOfCharacters = newText.count
-        return numberOfCharacters <= validatedAddressLength
+        return newText.hasValidAddressLength
     }
 }
 
