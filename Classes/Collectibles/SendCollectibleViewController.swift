@@ -360,7 +360,7 @@ extension SendCollectibleViewController {
         /// <note>
         /// When text is deleted, resize image to its initial size if needed.
         if bottomSheetView.initialHeight == bottomSheetNewHeight {
-            updateImageBeforeAnimations(for: .initialIfNeeded)
+            updateImageBeforeAnimations(for: .initial)
             animateImageLayout(imageView)
             return
         }
@@ -392,10 +392,10 @@ extension SendCollectibleViewController {
 
 extension SendCollectibleViewController {
     private func updateImageBeforeAnimations(
-        for position: ImagePosition
+        for layout: ImageLayout
     ) {
-        switch position {
-        case .initialIfNeeded:
+        switch layout {
+        case .initial:
             let imageHorizontalPaddings = 2 * theme.horizontalPadding
             let initialImageHeight = contextViewContainer.frame.width - imageHorizontalPaddings
             let currentImageHeight = imageView.frame.height
@@ -465,7 +465,7 @@ extension SendCollectibleViewController {
     private func dismissWithAnimation() {
         bottomSheetView.endEditing()
 
-        updateImageBeforeAnimations(for: .initialIfNeeded)
+        updateImageBeforeAnimations(for: .initial)
         bottomSheetView.updateContentBeforeAnimations(for: .start)
 
         animateContentLayout(view) {
@@ -576,8 +576,8 @@ extension SendCollectibleViewController: KeyboardControllerDataSource {
 }
 
 extension SendCollectibleViewController {
-    enum ImagePosition {
-        case initialIfNeeded
+    enum ImageLayout {
+        case initial
         case custom(height: CGFloat)
     }
 }
