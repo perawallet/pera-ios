@@ -17,14 +17,13 @@
 
 import UIKit
 import MacaroonUIKit
-import ActiveLabel
 
 final class BottomWarningView: View {
     lazy var handlers = Handlers()
 
     private lazy var titleLabel = Label()
     private lazy var imageView = ImageView()
-    private lazy var descriptionLabel = ActiveLabel()
+    private lazy var descriptionLabel = ALGActiveLabel()
     private lazy var verticalStackView = MacaroonUIKit.VStackView()
     private lazy var primaryActionButton = MacaroonUIKit.Button()
     private lazy var secondaryActionButton = MacaroonUIKit.Button()
@@ -191,9 +190,9 @@ extension BottomWarningView {
         descriptionLabel.customize { label in
             /// <note>
             /// Regex that looks for `hyperlink.word`
-            let customPatternType = ActiveType.custom(
+            let customPatternType = ALGActiveType.custom(
                 pattern: "\\s\(hyperlink.word)\\b"
-            )
+            ).mapped
 
             label.enabledTypes.append(customPatternType)
 
