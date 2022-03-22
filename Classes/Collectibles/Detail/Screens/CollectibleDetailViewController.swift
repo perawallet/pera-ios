@@ -35,16 +35,55 @@ final class CollectibleDetailViewController:
     }()
 
     private lazy var listLayout = CollectibleDetailLayout(dataSource: dataSource)
-    private lazy var dataSource = CollectibleDetailDataSource(listView)
+    private lazy var dataSource = CollectibleDetailDataSource(
+        collectionView: listView,
+        mediaPreviewController: mediaPreviewController
+    )
 
+    private lazy var mediaPreviewController = CollectibleMediaPreviewViewController(
+        asset: asset,
+        ownerAccount: ownerAccount,
+        configuration: configuration
+    )
+
+    private let asset: CollectibleAsset
+    private let ownerAccount: Account?
     private let dataController: CollectibleDetailDataController
 
     init(
-        dataController: CollectibleDetailDataController,
+        asset: CollectibleAsset,
+        ownerAccount: Account?,
         configuration: ViewControllerConfiguration
     ) {
-        self.dataController = dataController
+        self.asset = asset
+        self.ownerAccount = ownerAccount
+        self.dataController = CollectibleDetailAPIDataController(
+            api: configuration.api!,
+            asset: asset,
+            ownerAccount: ownerAccount
+        )
         super.init(configuration: configuration)
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didUpdate(let snapshot):
+                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            }
+        }
+
+        view.backgroundColor = AppColors.Shared.System.background.uiColor
+
+        dataController.load()
+
+        addChild(mediaPreviewController)
+        mediaPreviewController.didMove(toParent: self)
     }
 
     override func prepareLayout() {
@@ -73,7 +112,35 @@ extension CollectibleDetailViewController {
         layout collectionViewLayout: UICollectionViewLayout,
         insetForSectionAt section: Int
     ) -> UIEdgeInsets {
-        return .zero
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            insetForSectionAt: section
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            minimumLineSpacingForSectionAt: section
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            minimumInteritemSpacingForSectionAt: section
+        )
     }
 
     func collectionView(
@@ -81,7 +148,23 @@ extension CollectibleDetailViewController {
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return .zero
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            sizeForItemAt: indexPath
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            referenceSizeForHeaderInSection: section
+        )
     }
 
     func collectionView(
@@ -89,7 +172,24 @@ extension CollectibleDetailViewController {
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
+        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
 
+        switch itemIdentifier {
+        case .action(let item):
+            linkInteractors(
+                cell as! CollectibleDetailActionCell,
+                for: item
+            )
+        case .external(let item):
+            linkInteractors(
+                cell as! CollectibleExternalSourceCell,
+                for: item
+            )
+        default:
+            break
+        }
     }
 
     func collectionView(
@@ -98,5 +198,50 @@ extension CollectibleDetailViewController {
         forItemAt indexPath: IndexPath
     ) {
 
+    }
+}
+
+extension CollectibleDetailViewController {
+    private func linkInteractors(
+        _ cell: CollectibleDetailActionCell,
+        for item: CollectibleDetailActionViewModel
+    ) {
+        cell.observe(event: .performSend) {
+
+        }
+
+        cell.observe(event: .performShare) {
+            [weak self] in
+            guard let self = self,
+                  let url = self.asset.explorerURL else {
+                      return
+                  }
+
+            self.open(
+                .shareActivity(
+                    items: [url]
+                ),
+                by: .presentWithoutNavigationController
+            )
+        }
+    }
+
+    private func linkInteractors(
+        _ cell: CollectibleExternalSourceCell,
+        for item: CollectibleExternalSourceViewModel
+    ) {
+        cell.observe(event: .performAction) {
+            [weak self] in
+            guard let self = self else { return }
+
+            if let source = item.source,
+               let urlString = source.getURL(
+                    for: self.asset.id,
+                    in: self.api!.network
+               ),
+               let url = URL(string: urlString) {
+                self.open(url)
+            }
+        }
     }
 }

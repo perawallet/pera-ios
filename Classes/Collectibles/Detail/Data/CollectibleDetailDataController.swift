@@ -28,11 +28,22 @@ protocol CollectibleDetailDataController: AnyObject {
 enum CollectibleDetailSection:
     Int,
     Hashable {
-    case loading
+    case media
+    case action
+    case description
+    case properties
+    case external
 }
 
 enum CollectibleDetailItem: Hashable {
     case loading
+    case error(CollectibleMediaErrorViewModel)
+    case media(CollectibleAsset)
+    case action(CollectibleDetailActionViewModel)
+    case description(CollectibleDescriptionViewModel)
+    case information(CollectibleTransactionInformation)
+    case properties(CollectiblePropertyViewModel)
+    case external(CollectibleExternalSourceViewModel)
 }
 
 enum CollectibleDetailDataControllerEvent {
