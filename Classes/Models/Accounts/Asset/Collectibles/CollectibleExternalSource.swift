@@ -17,25 +17,56 @@
 import Foundation
 import UIKit
 
-enum CollectibleExternalSource {
-    case algoExplorer
-    case nftExplorer
+protocol CollectibleExternalSource {
+    var image: UIImage? { get }
+    var title: String { get }
 
+    func getURL(
+        for asset: AssetID,
+        in network: ALGAPI.Network
+    ) -> String?
+}
+
+struct AlgoExplorerExternalSource: CollectibleExternalSource {
     var image: UIImage? {
-        switch self {
-        case .algoExplorer:
-            return img("icon-algo-explorer")
-        case .nftExplorer:
-            return img("icon-nft-explorer")
-        }
+        return img("icon-algo-explorer")
     }
 
-    var title: String? {
-        switch self {
-        case .algoExplorer:
-            return "collectible-detail-algo-explorer".localized
-        case .nftExplorer:
-            return "collectible-detail-nft-explorer".localized
+    var title: String {
+        return "collectible-detail-algo-explorer".localized
+    }
+
+    func getURL(
+        for asset: AssetID,
+        in network: ALGAPI.Network
+    ) -> String? {
+        switch network {
+        case .mainnet:
+            return "https://algoexplorer.io/asset/\(String(asset))"
+        case .testnet:
+            return "https://testnet.algoexplorer.io/asset/\(String(asset))"
+        }
+    }
+}
+
+struct NFTExplorerExternalSource: CollectibleExternalSource {
+    var image: UIImage? {
+        return img("icon-nft-explorer")
+    }
+
+    var title: String {
+        return "collectible-detail-nft-explorer".localized
+    }
+
+    func getURL(
+        for asset: AssetID,
+        in network: ALGAPI.Network
+    ) -> String? {
+        switch network {
+        case .mainnet:
+            return "https://www.nftexplorer.app/asset/\(String(asset))"
+        case .testnet:
+            return nil
         }
     }
 }
