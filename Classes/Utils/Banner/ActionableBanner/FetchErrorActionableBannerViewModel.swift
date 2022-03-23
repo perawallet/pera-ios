@@ -12,49 +12,69 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   BannerErrorViewModel.swift
+//   FetchErrorActionableBannerViewModel.swift
 
 import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-struct BannerErrorViewModel:
-    BannerViewModel,
+struct FetchErrorActionableBannerViewModel:
+    ActionableBannerViewModel,
     BindableViewModel {
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var message: EditText?
+    private(set) var actionTitle: EditText?
 
-    init<T>(_ model: T) {
+    init<T>(
+        _ model: T
+    ) {
         bind(model)
     }
+}
 
-    mutating func bind<T>(_ model: T) {
-        if let model = model as? BannerDraft {
-            bindIcon(model.icon)
-            bindTitle(model.title)
-            bindMessage(model.description)
+extension FetchErrorActionableBannerViewModel {
+    mutating func bind<T>(
+        _ model: T
+    ) {
+        if let draft = model as? ActionableBannerDraft {
+            bind(draft: draft)
+            return
         }
     }
 }
 
-extension BannerErrorViewModel {
-    private mutating func bindIcon(
-        _ someIcon: UIImage?
+extension FetchErrorActionableBannerViewModel {
+    mutating func bind(
+        draft: ActionableBannerDraft
+    ) {
+        bindIcon(draft.icon)
+        bindTitle(draft.title)
+        bindMessage(draft.message)
+        bindActionTitle(draft.actionTitle)
+    }
+
+    mutating func bindIcon(
+        _ someIcon: UIImage
     ) {
         icon = someIcon
     }
 
-    private mutating func bindTitle(
+    mutating func bindTitle(
         _ someTitle: String
     ) {
         title = getTitle(someTitle)
     }
 
-    private mutating func bindMessage(
+    mutating func bindMessage(
         _ someMessage: String
     ) {
         message = getMessage(someMessage)
+    }
+
+    mutating func bindActionTitle(
+        _ someActionTitle: String?
+    ) {
+        actionTitle = getActionTitle(someActionTitle)
     }
 }

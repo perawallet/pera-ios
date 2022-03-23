@@ -12,31 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   BannerInfoViewModel.swift
+//   ALGActiveLabel.swift
 
-import Foundation
-import MacaroonUIKit
-import UIKit
+import ActiveLabel
 
-struct BannerInfoViewModel: BannerViewModel, BindableViewModel {
-    private(set) var icon: Image?
-    private(set) var title: EditText?
-    private(set) var message: EditText?
+final class ALGActiveLabel: ActiveLabel {}
 
-    init<T>(_ model: T) {
-        bind(model)
-    }
+enum ALGActiveType {
+    case mention
+    case hashtag
+    case url
+    case email
+    case custom(pattern: String)
 
-    mutating func bind<T>(_ model: T) {
-        if let title = model as? String {
-            bindTitle(title)
+    var mapped: ActiveType {
+        switch self {
+        case .mention: return .mention
+        case .hashtag: return .hashtag
+        case .url: return .url
+        case .email: return .email
+        case .custom(let pattern): return .custom(pattern: pattern)
         }
-    }
-}
-
-extension BannerInfoViewModel {
-    private mutating func bindTitle(_ someTitle: String) {
-        title = getTitle(someTitle)
     }
 }

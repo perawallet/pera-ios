@@ -78,7 +78,7 @@ class AppDelegate:
     private lazy var sharedDataController = SharedAPIDataController(session: session, api: api)
     private lazy var walletConnector = WalletConnector()
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
-    private lazy var bannerController = BannerController(window: window!)
+    private lazy var bannerController = BannerController(presentingView: window!)
     
     private lazy var router =
         Router(rootViewController: rootViewController, appConfiguration: appConfiguration)
