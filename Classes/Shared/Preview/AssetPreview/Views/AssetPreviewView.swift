@@ -123,12 +123,7 @@ extension AssetPreviewView {
 
 extension AssetPreviewView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
-        imageView.bindData(
-            AssetImageViewModel(
-                image: viewModel?.image,
-                assetAbbreviationForImage: viewModel?.assetAbbreviationForImage?.string
-            )
-        )
+        imageView.bindData(viewModel?.assetImageViewModel)
         primaryAssetTitleLabel.editText = viewModel?.assetPrimaryTitle
         secondaryImageView.image = viewModel?.secondaryImage
         secondaryAssetTitleLabel.editText = viewModel?.assetSecondaryTitle
