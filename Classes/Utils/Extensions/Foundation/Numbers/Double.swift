@@ -113,15 +113,21 @@ extension Decimal {
 
         let startValue = number
         
-        var prevAbbreviation = abbreviations[0]
-        for tmpAbbreviation in abbreviations {
-            if startValue.doubleValue < tmpAbbreviation.threshold {
+        var abbreviationIndex = 0
+        
+        while abbreviationIndex < abbreviations.count {
+            let abbreviation = abbreviations[abbreviationIndex]
+            
+            if startValue.doubleValue < abbreviation.threshold {
                 break
             }
-            prevAbbreviation = tmpAbbreviation
+            
+            abbreviationIndex = abbreviationIndex.advanced(by: 1)
         }
         
-        return prevAbbreviation
+        abbreviationIndex = max(0, abbreviationIndex.advanced(by: -1))
+        
+        return abbreviations[abbreviationIndex]
     }
 }
 
