@@ -101,6 +101,7 @@ extension AssetPreviewView {
             $0.trailing.equalToSuperview()
             $0.leading.equalTo(assetTitleVerticalStackView.snp.trailing).offset(theme.horizontalPadding)
             $0.centerY.equalTo(assetTitleVerticalStackView.snp.centerY)
+            $0.width.greaterThanOrEqualToSuperview().multipliedBy(theme.assetValueMinRatio)
         }
 
         addPrimaryAssetValueLabel(theme)

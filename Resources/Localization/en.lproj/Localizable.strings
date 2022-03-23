@@ -916,6 +916,11 @@
 "pera-announcement-description-blog" = "Pera Wallet blog";
 "pera-announcement-action-title" = "Start Using Pera Wallet";
 
+// MARK: Number Abbreviation
+"number-abbreviation-million" = "M";
+"number-abbreviation-billion" = "B";
+"number-abbreviation-trillion" = "T";
+
 //MARK: MoonPay
 "moonpay-buy-button-title" = "Buy ALGO";
 "moonpay-introduction-title"="Buy ALGO with Moonpay";

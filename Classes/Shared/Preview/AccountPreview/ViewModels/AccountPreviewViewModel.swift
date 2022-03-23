@@ -115,7 +115,7 @@ extension AccountPreviewViewModel {
             return
         }
         
-        bindPrimaryAccessory(accountPortfolio.valueResult.uiDescription)
+        bindPrimaryAccessory(accountPortfolio.valueResult.abbreviatedUiDescription)
     }
     
     mutating func bindSecondaryAccessory(
