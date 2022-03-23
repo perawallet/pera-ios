@@ -34,6 +34,8 @@ final class AccountAssetListViewController: BaseViewController {
     private lazy var listDataSource = AccountAssetListDataSource(listView)
     private lazy var dataController = AccountAssetListAPIDataController(accountHandle, sharedDataController)
 
+    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+    
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = AccountAssetListLayout.build()
         let collectionView = UICollectionView(
@@ -265,6 +267,19 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
         log(ReceiveAssetDetailEvent(address: accountHandle.value.address))
         let draft = QRCreationDraft(address: accountHandle.value.address, mode: .address, title: accountHandle.value.name)
         open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
+    }
+
+    func transactionFloatingActionButtonViewControllerDidBuy(
+        _ viewController: TransactionFloatingActionButtonViewController
+    ) {
+        openBuyAlgo()
+    }
+
+    private func openBuyAlgo() {
+        let draft = BuyAlgoDraft()
+        draft.address = accountHandle.value.address
+
+        launchBuyAlgo(draft: draft)
     }
 }
 
