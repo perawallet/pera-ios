@@ -282,8 +282,14 @@ extension SendCollectibleBottomSheetView {
         }
 
         selectReceiverActionView.customizeAppearance(theme.selectReceiverAction)
+        selectReceiverActionView.snp.makeConstraints {
+            $0.greaterThanHeight(theme.addressInputViewMinHeight)
+        }
 
         scanQRActionView.customizeAppearance(theme.scanQRAction)
+        scanQRActionView.snp.makeConstraints {
+            $0.greaterThanHeight(theme.addressInputViewMinHeight)
+        }
 
         addressInputView.addRightAccessoryItem(
             accessoryContainerView
