@@ -20,32 +20,39 @@ import MacaroonBottomSheet
 
 final class ApproveCollectibleTransactionViewController:
     BaseScrollViewController,
-    BottomSheetPresentable,
-    UIInteractionObservable,
-    UIControlInteractionPublisher {
-    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .confirm: UIControlInteraction(),
-        .cancel: UIControlInteraction()
-    ]
-    
+    BottomSheetPresentable {
+    lazy var handlers = Handlers()
+
+    private lazy var bottomTransition = BottomSheetTransition(presentingViewController: self)
+
     private lazy var contextView = UIView()
     private lazy var titleView = Label()
     private lazy var descriptionView = Label()
     private lazy var senderAccountInfoView = CollectibleTransactionInfoView()
     private lazy var toAccountInfoView = CollectibleTransactionInfoView()
     private lazy var transactionFeeInfoView = CollectibleTransactionInfoView()
-    private lazy var confirmActionView = MacaroonUIKit.Button()
+
+    private lazy var confirmActionViewIndicator = ViewLoadingIndicator()
+    private lazy var confirmActionView = MacaroonUIKit.LoadingButton(
+        loadingIndicator: confirmActionViewIndicator
+    )
+
     private lazy var cancelActionView = MacaroonUIKit.Button()
 
-    private let theme: ApproveCollectibleTransactionViewControllerTheme
+    private let transactionController: TransactionController
+    private let draft: SendCollectibleDraft
     private let viewModel: ApproveCollectibleTransactionViewModel
+    private let theme: ApproveCollectibleTransactionViewControllerTheme
 
     init(
-        configuration: ViewControllerConfiguration,
-        viewModel: ApproveCollectibleTransactionViewModel = .init(),
-        theme: ApproveCollectibleTransactionViewControllerTheme = .init()
+        draft: SendCollectibleDraft,
+        transactionController: TransactionController,
+        theme: ApproveCollectibleTransactionViewControllerTheme = .init(),
+        configuration: ViewControllerConfiguration
     ) {
-        self.viewModel = viewModel
+        self.draft = draft
+        self.transactionController = transactionController
+        self.viewModel = ApproveCollectibleTransactionViewModel(draft)
         self.theme = theme
 
         super.init(configuration: configuration)
@@ -67,6 +74,13 @@ final class ApproveCollectibleTransactionViewController:
         senderAccountInfoView.bindData(viewModel.senderAccountViewModel)
         toAccountInfoView.bindData(viewModel.toAccountViewModel)
         transactionFeeInfoView.bindData(viewModel.transactionFeeViewModel)
+    }
+
+    override func linkInteractors() {
+        transactionController.delegate = self
+
+        cancelActionView.addTouch(target: self, action: #selector(didTapCancel))
+        confirmActionView.addTouch(target: self, action: #selector(didTapConfirm))
     }
 }
 
@@ -125,45 +139,35 @@ extension ApproveCollectibleTransactionViewController {
         senderAccountInfoView.snp.makeConstraints {
             $0.leading == 0
             $0.trailing == 0
-            $0.top == topSeparator.snp.bottom + theme.spacingBetweenInfoAndSeparator
+            $0.top == topSeparator.snp.top
         }
     }
 
     private func addToAccount() {
         toAccountInfoView.customize(theme.info)
 
-        let topSeparator = addSeparator(
-            to: senderAccountInfoView,
-            margin: theme.spacingBetweenInfoAndSeparator
-        )
-
         contextView.addSubview(toAccountInfoView)
-
         toAccountInfoView.snp.makeConstraints {
             $0.leading == 0
             $0.trailing == 0
-            $0.top == topSeparator.snp.bottom + theme.spacingBetweenInfoAndSeparator
+            $0.top == senderAccountInfoView.snp.bottom
         }
     }
 
     private func addTransactionFee() {
         transactionFeeInfoView.customize(theme.info)
 
-        let topSeparator = addSeparator(
-            to: toAccountInfoView,
-            margin: theme.spacingBetweenInfoAndSeparator
-        )
-
         contextView.addSubview(transactionFeeInfoView)
-
         transactionFeeInfoView.snp.makeConstraints {
             $0.leading == 0
             $0.trailing == 0
-            $0.top == topSeparator.snp.bottom + theme.spacingBetweenInfoAndSeparator
+            $0.top == toAccountInfoView.snp.bottom
         }
     }
 
     private func addConfirmAction() {
+        confirmActionViewIndicator.applyStyle(theme.confirmActionIndicator)
+
         confirmActionView.customizeAppearance(theme.confirmAction)
         confirmActionView.draw(corner: theme.actionCorner)
 
@@ -172,13 +176,9 @@ extension ApproveCollectibleTransactionViewController {
         confirmActionView.snp.makeConstraints {
             $0.leading == 0
             $0.trailing == 0
+            $0.fitToHeight(theme.confirmActionHeight)
             $0.top == transactionFeeInfoView.snp.bottom + theme.confirmActionViewTopPadding
         }
-
-        startPublishing(
-            event: .confirm,
-            for: confirmActionView
-        )
     }
 
     private func addCancelAction() {
@@ -193,11 +193,6 @@ extension ApproveCollectibleTransactionViewController {
             $0.top == confirmActionView.snp.bottom + theme.spacingBetweenActions
             $0.bottom == 0
         }
-
-        startPublishing(
-            event: .cancel,
-            for: cancelActionView
-        )
     }
 
     private func addSeparator(
@@ -213,8 +208,113 @@ extension ApproveCollectibleTransactionViewController {
 }
 
 extension ApproveCollectibleTransactionViewController {
-    enum Event {
-        case confirm
-        case cancel
+    @objc
+    private func didTapConfirm() {
+        uploadTransaction()
+    }
+
+    @objc
+    private func didTapCancel() {
+        dismissScreen()
+    }
+}
+
+extension ApproveCollectibleTransactionViewController: TransactionControllerDelegate {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didCompletedTransaction id: TransactionID
+    ) {
+        stopLoading()
+
+        /// <todo> Add different event for collectibles
+        log(
+           TransactionEvent(
+              accountType: draft.fromAccount.type,
+              assetId: String(draft.collectibleAsset.id),
+              isMaxTransaction: false,
+              amount: draft.collectibleAsset.amount,
+              transactionId: id.identifier
+           )
+        )
+
+        openSuccessScreen()
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedTransaction error: HIPTransactionError
+    ) {
+        stopLoading()
+
+        switch error {
+        case let .network(apiError):
+            switch apiError {
+            case .connection:
+                bannerController?.presentErrorBanner(
+                 title: "title-error".localized,
+                 message: "title-internet-connection".localized
+                )
+            default:
+                openTransferFailedWithRetry()
+            }
+        default:
+            bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+        }
+        // <todo>: I think we should show `openTransferFailedWithRetry` in any case.
+    }
+}
+
+extension ApproveCollectibleTransactionViewController {
+    private func openSuccessScreen() {
+        dismissScreen {
+            self.handlers.didSendTransactionSuccessfully?(self)
+        }
+    }
+
+    private func openTransferFailedWithRetry() {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: "collectible-transfer-failed-title".localized,
+            description: .plain("collectible-transfer-failed-retry-desription".localized),
+            primaryActionButtonTitle: "title-retry".localized,
+            secondaryActionButtonTitle: "title-close".localized,
+            primaryAction: {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.uploadTransaction()
+            }
+        )
+
+        bottomTransition.perform(
+            .bottomWarning(
+                configurator: configurator
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension ApproveCollectibleTransactionViewController {
+    private func uploadTransaction() {
+        startLoading()
+        transactionController.uploadTransaction()
+    }
+}
+
+extension ApproveCollectibleTransactionViewController {
+    private func startLoading() {
+        confirmActionView.startLoading()
+    }
+
+    private func stopLoading() {
+        confirmActionView.stopLoading()
+    }
+}
+
+extension ApproveCollectibleTransactionViewController {
+    struct Handlers {
+        var didSendTransactionSuccessfully: ((ApproveCollectibleTransactionViewController) -> Void)?
     }
 }

@@ -31,7 +31,11 @@ final class SendCollectibleAccountListAPIDataController:
     )
 
     private var accounts: [AccountHandle] = []
-    private var contacts: [Contact] = []
+
+    typealias Address = String
+    private var contacts: [Address: Contact] = [:]
+
+    private var accountGeneratedFromQuery: Account?
 
     private var lastQuery: String?
 
@@ -42,7 +46,14 @@ final class SendCollectibleAccountListAPIDataController:
         self.accounts = sharedDataController.accountCollection.sorted()
 
         getContacts { contacts in
-            self.contacts = contacts
+            self.contacts =
+            contacts.reduce(into: [Address: Contact]()) { partialResult, contact in
+                guard let address = contact.address else {
+                    return
+                }
+
+                partialResult[address] = contact
+            }
         }
     }
 
@@ -50,10 +61,12 @@ final class SendCollectibleAccountListAPIDataController:
         sharedDataController.remove(self)
     }
 
-    subscript(address: String?) -> AccountHandle? {
-        return address.unwrap {
-            sharedDataController.accountCollection[$0]
-        }
+    subscript(accountAddress address: Address) -> Account? {
+        return (sharedDataController.accountCollection[address]?.value) ?? accountGeneratedFromQuery
+    }
+
+    subscript(contactAddress address: Address) -> Contact? {
+        return contacts[address]
     }
 }
 
@@ -80,11 +93,14 @@ extension SendCollectibleAccountListAPIDataController {
     }
 
     func search(for query: String?) {
+        accountGeneratedFromQuery = nil
+
         deliverContentSnapshot(for: query)
     }
 
     func resetSearch() {
         lastQuery = nil
+        accountGeneratedFromQuery = nil
         deliverContentSnapshot()
     }
 }
@@ -141,19 +157,22 @@ extension SendCollectibleAccountListAPIDataController {
         var contactItems: [SendCollectibleAccountListItem] = []
 
         contacts
-            .filter {
+            .filter { contact in
                 if let query = query {
-                    return isContactContainsNameOrAddress($0, query: query)
+                    return isContactContainsNameOrAddress(
+                        contact.value,
+                        query: query
+                    )
                 }
 
                 return true
             }
-            .forEach {
+            .forEach { contact in
                 let imageSize = SelectContactCell.theme.imageSize
 
                 let cellItem: SendCollectibleAccountListItem = .contact(
                     ContactsViewModel(
-                        contact: $0,
+                        contact: contact.value,
                         imageSize: CGSize(imageSize)
                     )
                 )
@@ -255,10 +274,12 @@ extension SendCollectibleAccountListAPIDataController {
                 )
             )
 
+            let accountGeneratedFromQuery = Account(address: query, type: .standard)
+            self.accountGeneratedFromQuery = accountGeneratedFromQuery
             let cellItem: SendCollectibleAccountListItem = .account(
                 AccountPreviewViewModel(
                     IconWithShortAddressDraft(
-                        Account(address: query, type: .standard)
+                        accountGeneratedFromQuery
                     )
                 )
             )

@@ -20,13 +20,16 @@ import MacaroonUIKit
 final class CollectibleListItemOptedInCell:
     CollectionCell<CollectibleListItemView>,
     ViewModelBindable {
-    static let theme = CollectibleListItemViewTheme()
+    static let theme: CollectibleListItemViewTheme = {
+        var theme = CollectibleListItemViewTheme()
+        theme.configureOverlayForOptedInCell()
+        return theme
+    }()
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
-        contextView.configureOverlayForOptedInCell()
     }
 }

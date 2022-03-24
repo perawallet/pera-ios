@@ -67,7 +67,10 @@ extension BottomWarningView {
     private func addImageView(
         _ theme: BottomWarningViewTheme
     ) {
+        imageView.customizeAppearance(theme.image)
+
         addSubview(imageView)
+        imageView.contentEdgeInsets = theme.imageContentInsets
         imageView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top.equalToSuperview().inset(theme.topInset)
@@ -82,7 +85,7 @@ extension BottomWarningView {
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(imageView.snp.bottom).offset(theme.titleTopInset)
+            $0.top.equalTo(imageView.snp.bottom)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
     }
@@ -155,12 +158,12 @@ extension BottomWarningView {
             switch description {
             case .plain:
                 descriptionLabel.editText = configurator.getDescription()
-            case .customURL(_, let hyperlink):
+            case .custom(_, let markedWordWithHandler):
                 descriptionLabel.editText = configurator.getDescription()
 
                 customizeDescriptionLabel(
                     configurator,
-                    forHyperlink: hyperlink
+                    for: markedWordWithHandler
                 )
             }
         } else {
@@ -181,7 +184,7 @@ extension BottomWarningView {
 
     private func customizeDescriptionLabel(
         _ configurator: BottomWarningViewConfigurator,
-        forHyperlink hyperlink: BottomWarningViewConfigurator.BottomWarningDescription.Hyperlink
+        for markedWordWithHandler: BottomWarningViewConfigurator.BottomWarningDescription.MarkedWordWithHandler
     ) {
         /// <ref>
         ///  https://github.com/optonaut/ActiveLabel.swift#batched-customization
@@ -191,7 +194,7 @@ extension BottomWarningView {
             /// <note>
             /// Regex that looks for `hyperlink.word`
             let customPatternType = ALGActiveType.custom(
-                pattern: "\\s\(hyperlink.word)\\b"
+                pattern: "\\s\(markedWordWithHandler.word)\\b"
             ).mapped
 
             label.enabledTypes.append(customPatternType)
@@ -200,9 +203,8 @@ extension BottomWarningView {
                 return configurator.getLinkAttributes()
             }
 
-            label.handleCustomTap(for: customPatternType) {
-                [weak self] _ in
-                self?.handlers.didTapURL?(hyperlink.url)
+            label.handleCustomTap(for: customPatternType) { _ in
+                markedWordWithHandler.handler()
             }
         }
     }
@@ -224,6 +226,5 @@ extension BottomWarningView {
     struct Handlers {
         var didTapPrimaryActionButton: EmptyHandler?
         var didTapSecondaryActionButton: EmptyHandler?
-        var didTapURL: ((URL) -> Void)?
     }
 }

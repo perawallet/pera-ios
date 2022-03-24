@@ -17,13 +17,12 @@
 
 import Foundation
 
+let validatedAddressLength = 58
 let defaultParticipationKey = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
 
 extension String {
     var hasValidAddressLength: Bool {
-        let validatedAddressLength = 58
-
-        return count <= validatedAddressLength
+        count == validatedAddressLength
     }
 
     var isValidatedAddress: Bool {

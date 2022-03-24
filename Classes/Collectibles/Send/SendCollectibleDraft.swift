@@ -17,6 +17,11 @@
 import UIKit
 
 struct SendCollectibleDraft {
+    let fromAccount: Account
     let collectibleAsset: CollectibleAsset
     let image: UIImage?
+
+    var toAccount: Account? = nil
+    var toContact: Contact? = nil
+    var fee: UInt64? = nil
 }

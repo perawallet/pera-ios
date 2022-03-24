@@ -26,8 +26,12 @@ struct CollectibleTransactionInfoViewTheme:
 
     let iconHorizontalInset: LayoutMetric
     let iconSize: LayoutSize
+    let iconCorner: Corner
+
     let valueWidthRatio: LayoutMetric
     let verticalPadding: LayoutMetric
+
+    let separator: Separator
 
     init(
         _ family: LayoutFamily
@@ -43,7 +47,11 @@ struct CollectibleTransactionInfoViewTheme:
 
         self.iconHorizontalInset = 8
         self.iconSize = (24, 24)
+        self.iconCorner = Corner(radius: 12)
+
         self.valueWidthRatio = 0.45
         self.verticalPadding = 16
+
+        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter)
     }
 }

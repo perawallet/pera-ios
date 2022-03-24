@@ -28,11 +28,20 @@ final class SendCollectibleBottomSheetView:
 
     lazy var handlers = Handlers()
 
+    var addressInputViewText: String? {
+        get {
+            return addressInputView.text
+        }
+        set {
+            addressInputView.text = newValue
+        }
+    }
+
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .transfer: UIControlInteraction(),
-        .selectReceiverAccount: UIControlInteraction(),
-        .scanQR: UIControlInteraction(),
-        .close: UIControlInteraction()
+        .performTransfer: UIControlInteraction(),
+        .performSelectReceiverAccount: UIControlInteraction(),
+        .performScanQR: UIControlInteraction(),
+        .performClose: UIControlInteraction()
     ]
 
     private lazy var contentView = MacaroonUIKit.BaseView()
@@ -41,10 +50,12 @@ final class SendCollectibleBottomSheetView:
     private lazy var titleView = Label()
     private lazy var contextView = MacaroonUIKit.BaseView()
     private lazy var addressInputView = MultilineTextInputFieldView()
-    private lazy var actionViewContentView = MacaroonUIKit.BaseView()
     private lazy var selectReceiverActionView = MacaroonUIKit.Button()
     private lazy var scanQRActionView = MacaroonUIKit.Button()
-    private lazy var transferActionView = MacaroonUIKit.Button()
+    private lazy var transferActionButtonViewIndicator = ViewLoadingIndicator()
+    private lazy var transferActionView = MacaroonUIKit.LoadingButton(
+        loadingIndicator: transferActionButtonViewIndicator
+    )
 
     private var isLayoutFinalized = false
     private(set) var initialHeight: CGFloat = .zero
@@ -53,6 +64,16 @@ final class SendCollectibleBottomSheetView:
 
     private var contentStartLayout: [Constraint] = []
     private var contentEndLayout: [Constraint] = []
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(
+            frame: frame
+        )
+
+        linkInteractors()
+    }
 
     func customize(
         _ theme: SendCollectibleBottomSheetViewTheme
@@ -84,6 +105,26 @@ final class SendCollectibleBottomSheetView:
             previousHeight = currentHeight
             handlers.didHeightChange?(currentHeight)
         }
+    }
+
+    func linkInteractors() {
+        addressInputView.delegate = self
+        addressInputView.editingDelegate = self
+
+        startPublishing(
+            event: .performTransfer,
+            for: transferActionView
+        )
+
+        startPublishing(
+            event: .performSelectReceiverAccount,
+            for: selectReceiverActionView
+        )
+
+        startPublishing(
+            event: .performScanQR,
+            for: scanQRActionView
+        )
     }
 }
 
@@ -172,7 +213,7 @@ extension SendCollectibleBottomSheetView {
         }
 
         startPublishing(
-            event: .close,
+            event: .performClose,
             for: closeActionView
         )
 
@@ -211,9 +252,6 @@ extension SendCollectibleBottomSheetView {
     private func addAddressInput(
         _ theme: SendCollectibleBottomSheetViewTheme
     ) {
-        addressInputView.delegate = self
-        addressInputView.editingDelegate = self
-
         addressInputView.customize(theme.addressInputTheme)
 
         contextView.addSubview(addressInputView)
@@ -223,6 +261,12 @@ extension SendCollectibleBottomSheetView {
             $0.setPaddings((0, 0, .noMetric, 0))
         }
 
+        addAddressInputRightAccessory(theme)
+    }
+
+    private func addAddressInputRightAccessory(
+        _ theme: SendCollectibleBottomSheetViewTheme
+    ) {
         let accessoryContainerView = MacaroonUIKit.BaseView()
 
         accessoryContainerView.addSubview(selectReceiverActionView)
@@ -238,42 +282,41 @@ extension SendCollectibleBottomSheetView {
         }
 
         selectReceiverActionView.customizeAppearance(theme.selectReceiverAction)
-
-        startPublishing(
-            event: .selectReceiverAccount,
-            for: selectReceiverActionView
-        )
+        selectReceiverActionView.snp.makeConstraints {
+            $0.greaterThanHeight(theme.addressInputViewMinHeight)
+        }
 
         scanQRActionView.customizeAppearance(theme.scanQRAction)
+        scanQRActionView.snp.makeConstraints {
+            $0.greaterThanHeight(theme.addressInputViewMinHeight)
+        }
 
-        startPublishing(
-            event: .scanQR,
-            for: scanQRActionView
+        addressInputView.addRightAccessoryItem(
+            accessoryContainerView
         )
-
-        addressInputView.addRightAccessoryItem(accessoryContainerView)
     }
 
     private func addTransferAction(
         _ theme: SendCollectibleBottomSheetViewTheme
     ) {
+        transferActionButtonViewIndicator.applyStyle(theme.actionButtonIndicator)
+
+        recustomizeTransferActionButtonAppearance(
+            theme,
+            isEnabled: false
+        )
+
         transferActionView.contentEdgeInsets = UIEdgeInsets(theme.actionButtonContentEdgeInsets)
         transferActionView.draw(corner: theme.actionButtonCorner)
-        transferActionView.customizeAppearance(theme.actionButton)
 
         contextView.addSubview(transferActionView)
         transferActionView.fitToIntrinsicSize()
         transferActionView.snp.makeConstraints {
             $0.top == addressInputView.snp.bottom + theme.actionButtonTopPadding
             $0.bottom == 0
-
+            $0.fitToHeight(theme.actionButtonHeight)
             $0.setPaddings((.noMetric, 0, .noMetric, 0))
         }
-
-        startPublishing(
-            event: .transfer,
-            for: transferActionView
-        )
     }
 }
 
@@ -286,7 +329,9 @@ extension SendCollectibleBottomSheetView: FormInputFieldViewEditingDelegate {
         isEditing = false
     }
 
-    func formInputFieldViewDidEdit(_ view: FormInputFieldView) {}
+    func formInputFieldViewDidEdit(_ view: FormInputFieldView) {
+        delegate?.sendCollectibleBottomSheetViewDidEdit(self)
+    }
 }
 
 extension SendCollectibleBottomSheetView: MultilineTextInputFieldViewDelegate {
@@ -299,8 +344,8 @@ extension SendCollectibleBottomSheetView: MultilineTextInputFieldViewDelegate {
             return true
         }
 
-        return delegate.sendCollectibleBottomSheetView(
-            view,
+        return delegate.sendCollectibleBottomSheetViewShouldChangeCharactersIn(
+            self,
             shouldChangeCharactersIn: range,
             replacementString: string
         )
@@ -318,10 +363,36 @@ extension SendCollectibleBottomSheetView {
         addressInputView.endEditing()
     }
 
-    func setAddressInputViewText(
-        _ text: String?
+    func startLoading() {
+        endEditing()
+        addressInputView.isUserInteractionEnabled = false
+
+        transferActionView.startLoading()
+    }
+
+    func stopLoading() {
+        transferActionView.stopLoading()
+
+        addressInputView.isUserInteractionEnabled = true
+    }
+}
+
+extension SendCollectibleBottomSheetView {
+    func recustomizeTransferActionButtonAppearance(
+        _ theme: SendCollectibleBottomSheetViewTheme,
+        isEnabled: Bool
     ) {
-        addressInputView.text = text
+        transferActionView.isEnabled = isEnabled
+
+        let style: ButtonStyle
+
+        if isEnabled {
+            style = theme.actionButton
+        } else {
+            style = theme.actionButtonDisabled
+        }
+
+        transferActionView.customizeAppearance(style)
     }
 }
 
@@ -340,16 +411,19 @@ extension SendCollectibleBottomSheetView {
 
 extension SendCollectibleBottomSheetView {
     enum Event {
-        case transfer
-        case selectReceiverAccount
-        case scanQR
-        case close
+        case performTransfer
+        case performSelectReceiverAccount
+        case performScanQR
+        case performClose
     }
 }
 
 protocol SendCollectibleBottomSheetViewDelegate: AnyObject {
-    func sendCollectibleBottomSheetView(
-        _ view: MultilineTextInputFieldView,
+    func sendCollectibleBottomSheetViewDidEdit(
+        _ view: SendCollectibleBottomSheetView
+    )
+    func sendCollectibleBottomSheetViewShouldChangeCharactersIn(
+        _ view: SendCollectibleBottomSheetView,
         shouldChangeCharactersIn range: NSRange,
         replacementString string: String
     ) -> Bool

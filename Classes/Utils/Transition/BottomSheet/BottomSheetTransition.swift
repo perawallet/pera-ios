@@ -24,6 +24,7 @@ final class BottomSheetTransition {
     private(set) var transitionController: BottomSheetTransitionController?
 
     unowned let presentingViewController: UIViewController
+    unowned var presentedViewController: UIViewController? = nil
 
     init(
         presentingViewController: UIViewController
@@ -77,6 +78,8 @@ extension BottomSheetTransition {
         ) as? T
 
         self.transitionController = transitionController
+
+        self.presentedViewController = presentedViewController
 
         return presentedViewController
     }

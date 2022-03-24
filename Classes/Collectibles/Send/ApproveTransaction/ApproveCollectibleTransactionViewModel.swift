@@ -22,29 +22,69 @@ struct ApproveCollectibleTransactionViewModel: ViewModel {
     private(set) var toAccountViewModel: CollectibleTransactionInfoViewModel?
     private(set) var transactionFeeViewModel: CollectibleTransactionInfoViewModel?
 
-    init() {
-        bind()
+    init(
+        _ draft: SendCollectibleDraft
+    ) {
+        bind(draft)
     }
 }
 
 extension ApproveCollectibleTransactionViewModel {
-    private mutating func bind() {
-        bindSenderAccount()
-        bindToAccount()
-        bindTransactionFee()
+    private mutating func bind(
+        _ draft: SendCollectibleDraft
+    ) {
+        bindSenderAccount(draft)
+        bindToAccount(draft)
+        bindTransactionFee(draft)
     }
 }
 
 extension ApproveCollectibleTransactionViewModel {
-    private mutating func bindSenderAccount() {
-        /// <todo> Bind view model
+    private mutating func bindSenderAccount(
+        _ draft: SendCollectibleDraft
+    ) {
+        let info = CollectibleTransactionInformation(
+            account: draft.fromAccount,
+            title: "collectible-approve-transaction-sender".localized,
+            value: draft.fromAccount.address.shortAddressDisplay
+        )
+        senderAccountViewModel = CollectibleTransactionInfoViewModel(info)
     }
 
-    private mutating func bindToAccount() {
-        /// <todo> Bind view model
+    private mutating func bindToAccount(
+        _ draft: SendCollectibleDraft
+    ) {
+        var value: String = .empty
+
+        if let toContact = draft.toContact,
+           let address = toContact.address {
+            value = toContact.name ?? address.shortAddressDisplay
+        } else if let toAccount = draft.toAccount {
+            value = toAccount.address.shortAddressDisplay
+        }
+        
+        let info = CollectibleTransactionInformation(
+            contact: draft.toContact,
+            account: draft.toAccount,
+            title: "collectible-approve-transaction-to".localized,
+            value: value
+        )
+        toAccountViewModel = CollectibleTransactionInfoViewModel(info)
     }
 
-    private mutating func bindTransactionFee() {
-        /// <todo> Bind view model
+    private mutating func bindTransactionFee(
+        _ draft: SendCollectibleDraft
+    ) {
+
+        guard let fee = draft.fee,
+        let value = fee.toAlgos.toAlgosStringForLabel else {
+            return
+        }
+
+        let info = CollectibleTransactionInformation(
+            title: "collectible-approve-transaction-fee".localized,
+            value: value
+        )
+        transactionFeeViewModel = CollectibleTransactionInfoViewModel(info)
     }
 }

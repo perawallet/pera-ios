@@ -100,7 +100,7 @@ extension CollectibleTransactionInfoView {
         addValue(theme)
         addIcon(theme)
         addTitle(theme)
-        addSeparator(Separator(color: AppColors.Shared.Layer.grayLighter), padding: -theme.verticalPadding)
+        addSeparator(theme.separator)
     }
 
 
@@ -110,21 +110,32 @@ extension CollectibleTransactionInfoView {
         valueView.customizeAppearance(theme.value)
 
         addSubview(valueView)
-        valueView.fitToIntrinsicSize()
         valueView.snp.makeConstraints {
             $0.trailing == 0
             $0.top == theme.verticalPadding
-            $0.bottom == -theme.verticalPadding
+            $0.bottom == theme.verticalPadding
             $0.width <= self * theme.valueWidthRatio
         }
+
+        valueView.fitToVerticalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+
+        valueView.fitToHorizontalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
     }
 
     private func addIcon(
         _ theme: CollectibleTransactionInfoViewTheme
     ) {
+        iconView.layer.draw(corner: theme.iconCorner)
+        iconView.clipsToBounds = true
+
         addSubview(iconView)
         iconView.fitToIntrinsicSize()
-
         iconView.snp.makeConstraints {
             $0.fitToSize(theme.iconSize)
             $0.centerY == valueView
@@ -138,12 +149,21 @@ extension CollectibleTransactionInfoView {
         titleView.customizeAppearance(theme.title)
 
         addSubview(titleView)
-        titleView.fitToIntrinsicSize()
         titleView.snp.makeConstraints {
             $0.leading == 0
             $0.top == theme.verticalPadding
-            $0.bottom == -theme.verticalPadding
+            $0.bottom == theme.verticalPadding
             $0.trailing <= iconView.snp.leading - theme.iconHorizontalInset
         }
+
+        titleView.fitToVerticalIntrinsicSize(
+            hugging: .defaultHigh,
+            compression: .required
+        )
+
+        titleView.fitToHorizontalIntrinsicSize(
+            hugging: .required,
+            compression: .defaultHigh
+        )
     }
 }

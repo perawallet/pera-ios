@@ -211,7 +211,33 @@ extension CollectibleDetailViewController {
         for item: CollectibleDetailActionViewModel
     ) {
         cell.observe(event: .performSend) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
 
+            let draft = SendCollectibleDraft(
+                fromAccount: self.ownerAccount!,
+                collectibleAsset: self.asset,
+                image: nil /// Pass the image so we will not load.
+            )
+
+            self.open(
+                .sendCollectible(
+                    draft: draft,
+                    transactionController: TransactionController(
+                        api: self.api!,
+                        bannerController: self.bannerController
+                    ),
+                    uiInteractionsHandler: self.linkSendCollectibleUIInteractions()
+                ),
+                by: .customPresent(
+                    presentationStyle: .overCurrentContext,
+                    transitionStyle: .crossDissolve,
+                    transitioningDelegate: nil
+                ),
+                animated: false
+            )
         }
 
         cell.observe(event: .performShare) {
@@ -265,6 +291,24 @@ extension CollectibleDetailViewController {
             ),
             by: .presentWithoutNavigationController
         )
+    }
+
+    private func linkSendCollectibleUIInteractions()
+    -> SendCollectibleViewController.SendCollectibleUIInteractions {
+        var uiInteractions = SendCollectibleViewController.SendCollectibleUIInteractions()
+
+        uiInteractions.didSendTransactionSuccessfully = {
+            [weak self] controller in
+            guard let self = self else {
+                return
+            }
+
+            controller.dismissScreen(animated: false) {
+                self.popScreen(animated: false)
+            }
+        }
+
+        return uiInteractions
     }
 
     private func linkInteractors(
