@@ -637,8 +637,6 @@ extension SendCollectibleViewController: TransactionControllerDelegate {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            let bottomTransition = BottomSheetTransition(presentingViewController: self)
-
             bottomTransition.perform(
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
@@ -662,8 +660,7 @@ extension SendCollectibleViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
-        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+        ledgerApprovalViewController = bottomTransition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
