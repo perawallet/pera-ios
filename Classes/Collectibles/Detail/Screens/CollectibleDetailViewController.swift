@@ -231,7 +231,7 @@ extension CollectibleDetailViewController {
                     ),
                     uiInteractionsHandler: self.linkSendCollectibleUIInteractions()
                 ),
-                by: .customPresentWithoutNavigationController(
+                by: .customPresent(
                     presentationStyle: .overCurrentContext,
                     transitionStyle: .crossDissolve,
                     transitioningDelegate: nil
