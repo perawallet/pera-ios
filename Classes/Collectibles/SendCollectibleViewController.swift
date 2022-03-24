@@ -380,6 +380,8 @@ extension SendCollectibleViewController {
 
 extension SendCollectibleViewController {
     private func openSelectReceiver() {
+        closeKeyboard()
+
         let screen = open(
             .sendCollectibleAccountList(
                 dataController: SendCollectibleAccountListAPIDataController(sharedDataController)
@@ -391,7 +393,6 @@ extension SendCollectibleViewController {
             guard let self = self else {
                 return
             }
-
             self.bottomSheetView.recustomizeTransferActionButtonAppearance(
                 self.theme.bottomSheetViewTheme,
                 isEnabled: true
@@ -413,6 +414,8 @@ extension SendCollectibleViewController {
     }
 
     private func openScanQR() {
+        closeKeyboard()
+
         if !UIImagePickerController.isSourceTypeAvailable(.camera) {
             displaySimpleAlertWith(
                 title: "qr-scan-error-title".localized,
@@ -739,7 +742,7 @@ extension SendCollectibleViewController: SendCollectibleBottomSheetViewDelegate 
     ) -> Bool {
         if let input = view.addressInputViewText,
            input.hasValidAddressLength &&
-           input.isValidatedAddress {
+            input.isValidatedAddress {
             return true
         }
 
