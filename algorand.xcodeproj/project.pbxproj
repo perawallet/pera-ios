@@ -9001,13 +9001,6 @@
 			path = Pending;
 			sourceTree = "<group>";
 		};
-		2B7A1F0527DB7BB70010F52E /* Send */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Send;
-			sourceTree = "<group>";
-		};
 		2B7A1F0627DB7C150010F52E /* Common */ = {
 			isa = PBXGroup;
 			children = (
@@ -9642,15 +9635,6 @@
 				2B4486F4237958AD00C19FDE /* Assets */,
 				2BF727D8274717BF00CCAC30 /* Authentication */,
 				D4150DD527C4F78D0064F736 /* Collectibles */,
-				D4BAFA8927DF4C2E0077B781 /* SendCollectibleAccountListViewController.swift */,
-				D4BAFA8D27DF4F0C0077B781 /* SendCollectibleAccountListLayout.swift */,
-				D4BAFA9127DF4F8D0077B781 /* SendCollectibleAccountListDataSource.swift */,
-				D4BAFA9527DF522C0077B781 /* SendCollectibleAccountListDataController.swift */,
-				D4BAFA9D27DF58810077B781 /* SendCollectibleAccountListAPIDataController.swift */,
-				D4BAFA9927DF52DA0077B781 /* SendCollectibleAccountListViewControllerTheme.swift */,
-				D4BAFAA127DF796D0077B781 /* SendCollectibleAccountListHeaderViewModel.swift */,
-				D4BAFAA927DFEE1E0077B781 /* SendCollectibleAccountListTitleSupplementaryCell.swift */,
-				D4BAFAAD27DFEF4D0077B781 /* TitleVIewTheme+SendCollectibleAccountList.swift */,
 				2BF727B62747140B00CCAC30 /* Contacts */,
 				2B567155240074F60037FCFA /* Ledger */,
 				17B7D8A42240D79200A6FF9E /* Models */,
@@ -14128,17 +14112,10 @@
 		D4150DD527C4F78D0064F736 /* Collectibles */ = {
 			isa = PBXGroup;
 			children = (
-				D459E29727DE65DF00F7FC33 /* Send */,
 				2B4A8A7327D7555D005F1EFA /* Detail */,
 				2B4334BB27CEEA0100A3D9D6 /* List */,
 				D48FDF9527CD75CA00C39FC7 /* Receive */,
-				D443A07327E23A8900D2E52F /* SendCollectibleBottomSheetView.swift */,
-				D443A07827E267BB00D2E52F /* SendCollectibleBottomSheetViewTheme.swift */,
-				D4142AE227E8CE9100AFF4BE /* SendCollectibleDraft.swift */,
-				D443A06E27E2398B00D2E52F /* SendCollectibleViewController.swift */,
-				D431505E27EA62DF0084CA41 /* SendCollectibleViewModel.swift */,
-				D4A2C06A27E3AEC100625CA9 /* SendCollectibleViewControllerTheme.swift */,
-				2B7A1F0527DB7BB70010F52E /* Send */,
+				D459E29727DE65DF00F7FC33 /* Send */,
 			);
 			path = Collectibles;
 			sourceTree = "<group>";
@@ -14468,12 +14445,12 @@
 		D459E27D27DD331A00F7FC33 /* ApproveTransaction */ = {
 			isa = PBXGroup;
 			children = (
-				D459E28A27DE538F00F7FC33 /* CollectibleTransactionInfoView.swift */,
-				D459E29327DE584100F7FC33 /* CollectibleTransactionInfoViewModel.swift */,
-				D459E28E27DE541B00F7FC33 /* CollectibleTransactionInfoViewTheme.swift */,
 				D459E27E27DD332900F7FC33 /* ApproveCollectibleTransactionViewController.swift */,
 				D459E28027DD345200F7FC33 /* ApproveCollectibleTransactionViewControllerTheme.swift */,
 				D459E28627DE03A900F7FC33 /* ApproveCollectibleTransactionViewModel.swift */,
+				D459E28A27DE538F00F7FC33 /* CollectibleTransactionInfoView.swift */,
+				D459E29327DE584100F7FC33 /* CollectibleTransactionInfoViewModel.swift */,
+				D459E28E27DE541B00F7FC33 /* CollectibleTransactionInfoViewTheme.swift */,
 			);
 			path = ApproveTransaction;
 			sourceTree = "<group>";
@@ -14482,6 +14459,13 @@
 			isa = PBXGroup;
 			children = (
 				D459E27D27DD331A00F7FC33 /* ApproveTransaction */,
+				D479179127ECF271009ECBA7 /* ReceiverAccountSelection */,
+				D443A07327E23A8900D2E52F /* SendCollectibleBottomSheetView.swift */,
+				D443A07827E267BB00D2E52F /* SendCollectibleBottomSheetViewTheme.swift */,
+				D4142AE227E8CE9100AFF4BE /* SendCollectibleDraft.swift */,
+				D443A06E27E2398B00D2E52F /* SendCollectibleViewController.swift */,
+				D4A2C06A27E3AEC100625CA9 /* SendCollectibleViewControllerTheme.swift */,
+				D431505E27EA62DF0084CA41 /* SendCollectibleViewModel.swift */,
 			);
 			path = Send;
 			sourceTree = "<group>";
@@ -14602,6 +14586,22 @@
 				D4789FDC2775CD3F001395BA /* AssetDetailInfoViewTheme.swift */,
 			);
 			path = AssetDetailInfo;
+			sourceTree = "<group>";
+		};
+		D479179127ECF271009ECBA7 /* ReceiverAccountSelection */ = {
+			isa = PBXGroup;
+			children = (
+				D4BAFA9D27DF58810077B781 /* SendCollectibleAccountListAPIDataController.swift */,
+				D4BAFA9527DF522C0077B781 /* SendCollectibleAccountListDataController.swift */,
+				D4BAFA9127DF4F8D0077B781 /* SendCollectibleAccountListDataSource.swift */,
+				D4BAFAA127DF796D0077B781 /* SendCollectibleAccountListHeaderViewModel.swift */,
+				D4BAFA8D27DF4F0C0077B781 /* SendCollectibleAccountListLayout.swift */,
+				D4BAFAA927DFEE1E0077B781 /* SendCollectibleAccountListTitleSupplementaryCell.swift */,
+				D4BAFA8927DF4C2E0077B781 /* SendCollectibleAccountListViewController.swift */,
+				D4BAFA9927DF52DA0077B781 /* SendCollectibleAccountListViewControllerTheme.swift */,
+				D4BAFAAD27DFEF4D0077B781 /* TitleVIewTheme+SendCollectibleAccountList.swift */,
+			);
+			path = ReceiverAccountSelection;
 			sourceTree = "<group>";
 		};
 		D48FDF9127CC2B0500C39FC7 /* CollectiblePreview */ = {
