@@ -52,11 +52,6 @@ final class BottomWarningViewController: BaseScrollViewController {
                 self?.viewConfigurator.secondaryAction?()
             }
         }
-
-        bottomWarningView.handlers.didTapURL = {
-            [weak self] URL in
-            self?.open(URL)
-        }
     }
 
     override func prepareLayout() {

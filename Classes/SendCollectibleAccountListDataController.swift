@@ -25,7 +25,9 @@ protocol SendCollectibleAccountListDataController: AnyObject {
     func search(for query: String?)
     func resetSearch()
 
-    subscript(address: String?) -> AccountHandle? { get }
+    typealias Address = String
+    subscript(accountAddress address: Address) -> Account? { get }
+    subscript(contactAddress address: Address) -> Contact? { get }
 }
 
 enum SendCollectibleAccountListSection:

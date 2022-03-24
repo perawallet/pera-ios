@@ -308,18 +308,21 @@ extension SendCollectibleAccountListViewController {
 
         switch itemIdentifier {
         case .account(let item):
-            guard let address = item.address else {
+            guard let address = item.address,
+                  let account = dataController[accountAddress: address] else {
                 return
             }
 
-            eventHandler?(.didSelectAddress(address))
+            eventHandler?(.didSelectAccount(account))
         case .contact(let item):
-            guard let address = item.fullAddress else {
+            guard let address = item.fullAddress,
+                  let contact = dataController[contactAddress: address] else {
                 return
             }
 
-            eventHandler?(.didSelectAddress(address))
-        default: break
+            eventHandler?(.didSelectContact(contact))
+        default:
+            break
         }
     }
 }
@@ -378,7 +381,7 @@ extension SendCollectibleAccountListViewController: QRScannerViewControllerDeleg
     ) {
         displaySimpleAlertWith(
             title: "title-error".localized,
-            message: "qr-scan-should-scan-valid-qr".localized.localized
+            message: "qr-scan-should-scan-valid-qr".localized
         ) { _ in
             completionHandler?()
         }
@@ -387,6 +390,7 @@ extension SendCollectibleAccountListViewController: QRScannerViewControllerDeleg
 
 extension SendCollectibleAccountListViewController {
     enum Event {
-        case didSelectAddress(String)
+        case didSelectAccount(Account)
+        case didSelectContact(Contact)
     }
 }

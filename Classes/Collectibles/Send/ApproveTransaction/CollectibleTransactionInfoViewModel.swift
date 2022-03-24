@@ -43,11 +43,22 @@ extension CollectibleTransactionInfoViewModel {
     private mutating func bindIcon(
         _ information: CollectibleTransactionInformation
     ) {
-        guard let account = information.account else {
-            return
-        }
 
-        icon = account.image
+        if let contact = information.contact {
+
+            if let imageData = contact.image,
+               let image = UIImage(data: imageData) {
+                let resizedImage = image.convert(to: CGSize(width: 24, height: 24))
+                icon = resizedImage
+            } else {
+                icon = "icon-user-placeholder".uiImage
+            }
+
+        } else {
+            if let account = information.account {
+                icon = account.image
+            }
+        }
     }
 
     private mutating func bindValue(
@@ -126,8 +137,9 @@ extension CollectibleTransactionInfoViewModel {
 }
 
 struct CollectibleTransactionInformation: Hashable {
-    let account: Account?
+    var contact: Contact? = nil
+    var account: Account? = nil
     let title: String
     let value: String
-    let isForegroundingValue: Bool
+    var isForegroundingValue: Bool = false
 }

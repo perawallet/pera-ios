@@ -923,7 +923,7 @@
 "collectible-send-title" = "Send your NFT";
 "collectible-send-input-placeholder" = "Paste an Algorand wallet address";
 "collectible-send-action" = "Transfer";
-"collectible-send-account-list-title" = "Select the Receiver Account";
+"collectible-send-account-list-title" = "Select the receiver account";
 
 // MARK: Collectible Detail
 "collectible-detail-share" = "Share";
@@ -947,8 +947,21 @@
 "collectible-transfer-failed-title" = "Your NFT transfer has failed!";
 "collectible-transfer-failed-verify-algo-desription" = "Please verify that you have enough Algo to cover the transaction fees for transferring your NFT, and try again.";
 "collectible-transfer-failed-retry-desription" = "Please try again.";
+
+/// MARK: Collectible Opt In Info
 "collectible-opt-in-info-title" = "Information about Opt-In";
 "collectible-opt-in-info-description" = "To avoid spammy transaction, the Algorand Blockchain only allow you to send and receive transaction for assets that have been previously opted-in.";
+
+// MARK: Collectible Approve
 "collectible-approve-transaction-title" = "Approve Transaction";
 "collectible-approve-transaction-description" = "Are you sure you want to proceed?";
 "collectible-approve-transaction-action-title" = "Confirm transfer";
+"collectible-approve-transaction-sender" = "Sender Account";
+"collectible-approve-transaction-to" = "To";
+"collectible-approve-transaction-fee" = "Transaction Fee";
+
+/// MARK: Collecitble Ask recipient to opt in
+"collectible-recipient-opt-in-title" = "Ask recipient to opt in";
+"collectible-recipient-opt-in-description" = "You can't send %@ to %@ because this wallet didn't opt in for this asset yet. Learn more about Opt-in";
+"collectible-recipient-opt-in-description-marked" = "Learn more about Opt-in";
+"collectible-recipient-opt-in-action-title" = "Request Opt-in";

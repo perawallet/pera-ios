@@ -19,7 +19,7 @@ import UIKit
 import MacaroonUIKit
 
 struct BottomWarningViewConfigurator {
-    private(set) var image: UIImage
+    private(set) var image: UIImage? = nil
     private(set) var title: String
     private(set) var description: BottomWarningDescription? = nil
     private(set) var primaryActionButtonTitle: String? = nil
@@ -127,15 +127,21 @@ extension BottomWarningViewConfigurator {
 
 extension BottomWarningViewConfigurator {
     enum BottomWarningDescription {
-        typealias Hyperlink = (word: String, url: URL)
+        typealias MarkedWordWithHandler = (word: String, handler: () -> Void)
+        typealias LocalizedTextWithParams = (text: String, params: [String]?)
 
-        case plain(_ description: String)
-        case customURL(description: String, hyperlink: Hyperlink)
+        case plain(
+            _ description: String
+        )
+        case custom(
+            description: LocalizedTextWithParams,
+            markedWordWithHandler: MarkedWordWithHandler
+        )
 
         var underlyingDescription: String {
             switch self {
             case .plain(let description): return description
-            case .customURL(let description, _): return description
+            case .custom(let description, _): return description.text
             }
         }
     }

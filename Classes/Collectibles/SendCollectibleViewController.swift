@@ -18,8 +18,12 @@ import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 import SnapKit
+import MagpieCore
 
 final class SendCollectibleViewController: BaseScrollViewController {
+    lazy var uiInteractions = SendCollectibleUIInteractions()
+    private lazy var  bottomTransition = BottomSheetTransition(presentingViewController: self)
+
     private lazy var contextViewContainer = MacaroonUIKit.BaseView()
     private lazy var contextView = MacaroonUIKit.BaseView()
     private lazy var imageView = URLImageView()
@@ -36,15 +40,22 @@ final class SendCollectibleViewController: BaseScrollViewController {
     private lazy var keyboardHeight: CGFloat = .zero
     private lazy var bottomSheetHeightDiff: CGFloat = .zero
 
-    private let draft: SendCollectibleDraft
+    private var draft: SendCollectibleDraft
     private let theme: SendCollectibleViewControllerTheme
+    private let transactionController: TransactionController
+
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
+
+    private var ongoingFetchAccountsEnpoint: EndpointOperatable?
 
     init(
         draft: SendCollectibleDraft,
+        transactionController: TransactionController,
         theme: SendCollectibleViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
         self.draft = draft
+        self.transactionController = transactionController
         self.theme = theme
         super.init(configuration: configuration)
     }
@@ -64,6 +75,7 @@ final class SendCollectibleViewController: BaseScrollViewController {
     }
 
     override func linkInteractors() {
+        linkTransactionControllerInteractors()
         linkScrollViewInteractors()
         linkKeyboardInteractors()
         linkBottomSheetInteractors()
@@ -84,20 +96,27 @@ final class SendCollectibleViewController: BaseScrollViewController {
     }
 
     private func bind() {
-        /// <todo>: Bind properly
+        let viewModel = SendCollectibleViewModel(
+            imageSize: imageView.frame.size,
+            draft: draft
+        )
 
         if let image = draft.image {
             imageView.imageContainer.image = image
         } else {
-            /// <todo> Load image
+            imageView.load(from: viewModel.image)
         }
 
-        titleView.text = "MetaRilla"
-        subtitleView.text = "MetaRilla#10"
+        titleView.editText = viewModel.title
+        subtitleView.editText = viewModel.subtitle
     }
 }
 
 extension SendCollectibleViewController {
+    private func linkTransactionControllerInteractors() {
+        transactionController.delegate = self
+    }
+
     private func linkScrollViewInteractors() {
         scrollView.delegate = self
         scrollView.isScrollEnabled = false
@@ -126,22 +145,22 @@ extension SendCollectibleViewController {
             self?.handleBottomSheetHeightChange(bottomSheetNewHeight)
         }
 
-        bottomSheetView.observe(event: .transfer) {
+        bottomSheetView.observe(event: .performTransfer) {
             [weak self] in
             self?.makeTransfer()
         }
 
-        bottomSheetView.observe(event: .selectReceiverAccount) {
+        bottomSheetView.observe(event: .performSelectReceiverAccount) {
             [weak self] in
             self?.openSelectReceiver()
         }
 
-        bottomSheetView.observe(event: .scanQR) {
+        bottomSheetView.observe(event: .performScanQR) {
             [weak self] in
             self?.openScanQR()
         }
 
-        bottomSheetView.observe(event: .close) {
+        bottomSheetView.observe(event: .performClose) {
             [weak self] in
             self?.dismissWithAnimation()
         }
@@ -188,6 +207,8 @@ extension SendCollectibleViewController {
     
     private func addImage() {
         imageView.customizeAppearance(theme.image)
+        imageView.layer.draw(corner: theme.imageCorner)
+        imageView.clipsToBounds = true
 
         contextView.addSubview(imageView)
         imageView.snp.makeConstraints {
@@ -269,13 +290,126 @@ extension SendCollectibleViewController {
 
 extension SendCollectibleViewController {
     private func makeTransfer() {
-        /// <todo>: Make the transfer & open the related screens/error/success modals.
+        cancelOngoingFetchAccountsEnpoint()
+
+        guard let recipientAddress = bottomSheetView.addressInputViewText else {
+            return
+        }
+
+        let accountInShared = sharedDataController
+            .accountCollection
+            .account(for: recipientAddress)
+
+        if let accountInShared = accountInShared {
+
+            if accountInShared.containsCollectibleAsset(draft.collectibleAsset.id),
+               !accountInShared.isWatchAccount() {
+                bannerController?.presentErrorBanner(
+                    title: "asset-you-already-own-message".localized,
+                    message: .empty
+                )
+                return
+            }
+
+            makeTransfer(
+                for: accountInShared
+            )
+
+            return
+        }
+
+        bottomSheetView.startLoading()
+
+        ongoingFetchAccountsEnpoint =
+        api?.fetchAccount(
+            AccountFetchDraft(publicKey: recipientAddress),
+            queue: .main,
+            ignoreResponseOnCancelled: true
+        ) {
+            [weak self] response in
+            guard let self = self else { return }
+            self.bottomSheetView.stopLoading()
+
+            switch response {
+            case .success(let accountResponse):
+                let fetchedAccount = accountResponse.account
+
+                if !fetchedAccount.isSameAccount(with: recipientAddress) {
+                    UIApplication.shared.firebaseAnalytics?.record(
+                        MismatchAccountErrorLog(
+                            requestedAddress: recipientAddress,
+                            receivedAddress: fetchedAccount.address
+                        )
+                    )
+                    return
+                }
+
+                self.makeTransfer(
+                    for: fetchedAccount
+                )
+            case .failure(_, _):
+                break /// <todo> Show response error
+            }
+        }
+    }
+
+    private func makeTransfer(
+        for account: Account
+    ) {
+        draft.toAccount = account
+
+        let collectibleAsset = account.assets?.first(matching: (\.id, draft.collectibleAsset.id))
+
+        guard let collectibleAsset = collectibleAsset else {
+            openAskRecipientToOptIn()
+            return
+        }
+
+        let isNotOwned = (collectibleAsset.amount == 0)
+
+        if isNotOwned {
+            composeCollectibleAssetTransactionData()
+        }
+    }
+
+    private func cancelOngoingFetchAccountsEnpoint() {
+        ongoingFetchAccountsEnpoint?.cancel()
+        ongoingFetchAccountsEnpoint = nil
     }
 }
 
 extension SendCollectibleViewController {
     private func openSelectReceiver() {
-        /// <todo>: Open select receiver screen & bind the selected account's address to address input after selection.
+        let screen = open(
+            .sendCollectibleAccountList(
+                dataController: SendCollectibleAccountListAPIDataController(sharedDataController)
+            ),
+            by: .present
+        ) as? SendCollectibleAccountListViewController
+        screen?.eventHandler = {
+            [weak self] event in
+            guard let self = self else {
+                return
+            }
+
+            self.bottomSheetView.recustomizeTransferActionButtonAppearance(
+                self.theme.bottomSheetViewTheme,
+                isEnabled: true
+            )
+
+            switch event {
+            case .didSelectAccount(let account):
+                self.bottomSheetView.addressInputViewText = account.address
+                self.draft.toAccount = account
+
+                screen?.dismissScreen()
+            case .didSelectContact(let contact):
+                self.bottomSheetView.addressInputViewText = contact.address
+                self.draft.toContact = contact
+
+                screen?.dismissScreen()
+            }
+        }
     }
 
     private func openScanQR() {
@@ -293,6 +427,249 @@ extension SendCollectibleViewController {
         ) as? QRScannerViewController
 
         qrScannerViewController?.delegate = self
+    }
+
+    private func openApproveTransaction() {
+        let screen = bottomTransition.perform(
+            .approveCollectibleTransaction(
+                draft: draft,
+                transactionController: transactionController
+            ),
+            by: .presentWithoutNavigationController
+        ) as? ApproveCollectibleTransactionViewController
+
+        screen?.handlers.didSendTransactionSuccessfully = {
+            [unowned self] _ in
+            /// <todo> Dismiss screen properly.
+            self.openSuccessScreen()
+        }
+    }
+
+    private func openSuccessScreen() {
+        let controller = open(
+            .tutorial(flow: .none, tutorial: .collectibleTransferConfirmed),
+            by: .customPresent(
+                presentationStyle: .fullScreen,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            ),
+            then: {
+                [unowned self] in
+                self.uiInteractions.didSendTransactionSuccessfully?(self)
+            }
+        ) as? TutorialViewController
+
+        controller?.uiHandlers.didTapButtonPrimaryActionButton = {
+            controller in
+            controller.dismissScreen()
+        }
+    }
+
+    private func openAskRecipientToOptIn() {
+        let asset = draft.collectibleAsset
+        let title = asset.title.fallback(asset.name.fallback("#\(String(asset.id))"))
+        let to = draft.toContact?.address ?? draft.toAccount?.address
+
+        let description = "collectible-recipient-opt-in-description".localized(title, to!)
+
+        let configuratorDescription =
+        BottomWarningViewConfigurator.BottomWarningDescription.custom(
+            description: (description, [title, to!]), /// <todo> Change font & color of params.
+            markedWordWithHandler: (
+                word: "collectible-recipient-opt-in-description-marked".localized,
+                handler: {
+                    [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.bottomTransition.presentedViewController?.dismissScreen() {
+                        self.openOptInInformation()
+                    }
+                }
+            )
+        )
+
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-green".uiImage,
+            title: "collectible-recipient-opt-in-title".localized,
+            description: configuratorDescription,
+            primaryActionButtonTitle: "collectible-recipient-opt-in-action-title".localized,
+            secondaryActionButtonTitle: "title-close".localized,
+            primaryAction: {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.requestOptInToRecipeint()
+            }
+        )
+
+        bottomTransition.perform(
+            .bottomWarning(
+                configurator: configurator
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func openOptInInformation() {
+        let configurator = BottomWarningViewConfigurator(
+            title: "collectible-opt-in-info-title".localized,
+            description: .plain("collectible-opt-in-info-description".localized),
+            secondaryActionButtonTitle: "title-close".localized
+        )
+
+        bottomTransition.perform(
+            .bottomWarning(
+                configurator: configurator
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func openTransferFailed(
+        title: String = "collectible-transfer-failed-title".localized,
+        description: String = "collectible-transfer-failed-verify-algo-desription".localized
+    ) {
+        let configurator = BottomWarningViewConfigurator(
+            title: title,
+            description: .plain(description),
+            secondaryActionButtonTitle: "title-close".localized
+        )
+
+        bottomTransition.perform(
+            .bottomWarning(
+                configurator: configurator
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+}
+
+extension SendCollectibleViewController {
+    private func requestOptInToRecipeint() {
+        let receiverAddress = bottomSheetView.addressInputViewText
+
+        if let receiverAddress = receiverAddress {
+            let draft = AssetSupportDraft(
+                sender: draft.fromAccount.address,
+                receiver: receiverAddress,
+                assetId: draft.collectibleAsset.id
+            )
+
+            api?.sendAssetSupportRequest(
+                draft
+            )
+        }
+    }
+}
+
+extension SendCollectibleViewController {
+    private func composeCollectibleAssetTransactionData() {
+        let transactionDraft = AssetTransactionSendDraft(
+            from: draft.fromAccount,
+            toAccount: draft.toAccount,
+            amount: draft.collectibleAsset.amountWithFraction,
+            assetIndex: draft.collectibleAsset.id,
+            assetDecimalFraction: draft.collectibleAsset.presentation.decimals,
+            isVerifiedAsset: draft.collectibleAsset.presentation.isVerified,
+            note: nil,
+            toContact: draft.toContact,
+            asset: draft.collectibleAsset
+        )
+        transactionController.setTransactionDraft(transactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
+        
+        if draft.fromAccount.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
+    }
+
+}
+
+extension SendCollectibleViewController: TransactionControllerDelegate {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedComposing error: HIPTransactionError
+    ) {
+        loadingController?.stopLoading()
+
+        switch error {
+        case .network:
+            displaySimpleAlertWith(
+                title: "title-error".localized,
+                message: "title-internet-connection".localized
+            )
+        case let .inapp(transactionError):
+            displayTransactionError(from: transactionError)
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
+        loadingController?.stopLoading()
+        self.draft.fee = draft?.fee
+        openApproveTransaction()
+    }
+
+    private func displayTransactionError(from transactionError: TransactionError) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            openTransferFailed(
+                description: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
+            )
+        case .invalidAddress:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "send-algos-receiver-address-validation".localized
+            )
+        case let .sdkError(error):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.debugDescription
+            )
+        case .ledgerConnection:
+            let bottomTransition = BottomSheetTransition(presentingViewController: self)
+
+            bottomTransition.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
+            )
+        default:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: "title-internet-connection".localized
+            )
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
+        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+            .ledgerApproval(mode: .approve, deviceName: ledger),
+            by: .present
+        )
+    }
+
+    func transactionControllerDidResetLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        ledgerApprovalViewController?.dismissScreen()
     }
 }
 
@@ -313,7 +690,7 @@ extension SendCollectibleViewController: QRScannerViewControllerDelegate {
                   return
               }
 
-        bottomSheetView.setAddressInputViewText(qrAddress)
+        bottomSheetView.addressInputViewText = qrAddress
     }
 
     func qrScannerViewController(
@@ -331,17 +708,42 @@ extension SendCollectibleViewController: QRScannerViewControllerDelegate {
 }
 
 extension SendCollectibleViewController: SendCollectibleBottomSheetViewDelegate {
-    func sendCollectibleBottomSheetView(
-        _ view: MultilineTextInputFieldView,
+    func sendCollectibleBottomSheetViewDidEdit(
+        _ view: SendCollectibleBottomSheetView
+    ) {
+        bottomSheetView.recustomizeTransferActionButtonAppearance(
+            theme.bottomSheetViewTheme,
+            isEnabled: isTransferActionButtonEnabled(view)
+        )
+    }
+
+    func sendCollectibleBottomSheetViewShouldChangeCharactersIn(
+        _ view: SendCollectibleBottomSheetView,
         shouldChangeCharactersIn range: NSRange,
         replacementString string: String
     ) -> Bool {
-        guard let text = view.text else {
+        guard let text = view.addressInputViewText else {
             return true
         }
 
-        let newText = (text as NSString).replacingCharacters(in: range, with: string)
-        return newText.hasValidAddressLength
+        let newText = text.replacingCharacters(
+            in: range,
+            with: string
+        )
+
+        return newText.count <= validatedAddressLength
+    }
+
+    private func isTransferActionButtonEnabled(
+        _ view: SendCollectibleBottomSheetView
+    ) -> Bool {
+        if let input = view.addressInputViewText,
+           input.hasValidAddressLength &&
+           input.isValidatedAddress {
+            return true
+        }
+
+        return false
     }
 }
 
@@ -571,6 +973,12 @@ extension SendCollectibleViewController: KeyboardControllerDataSource {
         for keyboardController: KeyboardController
     ) -> CGFloat {
         return .zero
+    }
+}
+
+extension SendCollectibleViewController {
+    struct SendCollectibleUIInteractions {
+        var didSendTransactionSuccessfully: ((SendCollectibleViewController) -> Void)?
     }
 }
 

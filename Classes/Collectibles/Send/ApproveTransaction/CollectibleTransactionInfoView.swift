@@ -100,7 +100,7 @@ extension CollectibleTransactionInfoView {
         addValue(theme)
         addIcon(theme)
         addTitle(theme)
-        addSeparator(Separator(color: AppColors.Shared.Layer.grayLighter), padding: -theme.verticalPadding)
+        addSeparator(theme.separator)
     }
 
 
@@ -114,7 +114,7 @@ extension CollectibleTransactionInfoView {
         valueView.snp.makeConstraints {
             $0.trailing == 0
             $0.top == theme.verticalPadding
-            $0.bottom == -theme.verticalPadding
+            $0.bottom == theme.verticalPadding
             $0.width <= self * theme.valueWidthRatio
         }
     }
@@ -122,13 +122,15 @@ extension CollectibleTransactionInfoView {
     private func addIcon(
         _ theme: CollectibleTransactionInfoViewTheme
     ) {
+        iconView.layer.draw(corner: theme.iconCorner)
+        iconView.clipsToBounds = true
+
         addSubview(iconView)
         iconView.fitToIntrinsicSize()
-
         iconView.snp.makeConstraints {
             $0.fitToSize(theme.iconSize)
             $0.centerY == valueView
-            $0.trailing == valueView.snp.leading - theme.iconHorizontalInset
+            $0.trailing == valueView.snp.leading - theme.iconHorizontalInset /// <todo> Should be moved to contentEdgeInsets
         }
     }
 
@@ -142,7 +144,7 @@ extension CollectibleTransactionInfoView {
         titleView.snp.makeConstraints {
             $0.leading == 0
             $0.top == theme.verticalPadding
-            $0.bottom == -theme.verticalPadding
+            $0.bottom == theme.verticalPadding
             $0.trailing <= iconView.snp.leading - theme.iconHorizontalInset
         }
     }

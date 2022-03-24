@@ -23,6 +23,9 @@ struct CollectibleListItemViewTheme:
     StyleSheet {
     let image: URLImageViewStyleSheet
 
+    var overlay: ViewStyle
+    var overlayAlpha: LayoutMetric
+
     let title: TextStyle
     let titleAndSubtitleContentTopPadding: LayoutMetric
 
@@ -42,6 +45,11 @@ struct CollectibleListItemViewTheme:
         _ family: LayoutFamily
     ) {
         image = CollectibleListItemImageViewTheme()
+
+        overlay = [
+            .backgroundColor(UIColor.clear)
+        ]
+        overlayAlpha = 0
 
         title = [
             .textColor(AppColors.Components.Text.gray),
@@ -99,5 +107,12 @@ struct CollectibleListItemImageViewTheme: URLImageViewStyleSheet {
         self.background = []
         self.content = .aspectFill()
         self.placeholder = PlaceholderTheme()
+    }
+}
+
+extension CollectibleListItemViewTheme {
+    mutating func configureOverlayForOptedInCell() {
+        overlay = overlay.modify([ .backgroundColor(AppColors.Shared.System.background) ])
+        overlayAlpha = 0.4
     }
 }

@@ -35,10 +35,13 @@ struct SendCollectibleBottomSheetViewTheme:
     let selectReceiverAction: ButtonStyle
     let scanQRAction: ButtonStyle
     let spacingBetweenSelectReceiverAndScanQR: LayoutMetric
+    let actionButtonIndicator: ImageStyle
     let actionButton: ButtonStyle
+    let actionButtonDisabled: ButtonStyle
     let actionButtonContentEdgeInsets: LayoutPaddings
     let actionButtonCorner: Corner
     let actionButtonTopPadding: LayoutMetric
+    let actionButtonHeight: LayoutMetric
 
     init(
         _ family: LayoutFamily
@@ -101,14 +104,31 @@ struct SendCollectibleBottomSheetViewTheme:
 
         spacingBetweenSelectReceiverAndScanQR = 16
 
+        actionButtonIndicator = [
+            .image("button-loading-indicator"),
+            .contentMode(.scaleAspectFit)
+        ]
+
         actionButton = [
             .title(Self.getTitle("collectible-send-action".localized)),
-            .titleColor([ .normal(AppColors.Components.Button.Primary.text) ]),
+            .titleColor([
+                .normal(AppColors.Components.Button.Primary.text),
+            ]),
             .backgroundColor(AppColors.Components.Button.Primary.background)
         ]
+
+        actionButtonDisabled = [
+            .title(Self.getTitle("collectible-send-action".localized)),
+            .titleColor([
+                .normal(AppColors.Components.Button.Primary.disabledText),
+            ]),
+            .backgroundColor(AppColors.Components.Button.Primary.disabledBackground)
+        ]
+
         actionButtonContentEdgeInsets = (14, 0, 14, 0)
         actionButtonCorner = Corner(radius: 4)
         actionButtonTopPadding = 32
+        actionButtonHeight = 52
     }
 }
 

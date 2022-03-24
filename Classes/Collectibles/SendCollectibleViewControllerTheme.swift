@@ -27,6 +27,7 @@ struct SendCollectibleViewControllerTheme:
     let backgroundStart: ViewStyle
     let backgroundEnd: ViewStyle
     let image: URLImageViewStyleSheet
+    let imageCorner: Corner
     let titleAndSubtitleContainerVerticalPaddings: LayoutVerticalPaddings
     let title: TextStyle
     let subtitle: TextStyle
@@ -49,6 +50,8 @@ struct SendCollectibleViewControllerTheme:
         ]
 
         image = CollectibleListItemImageViewTheme()
+        imageCorner = Corner(radius: 4)
+
         titleAndSubtitleContainerVerticalPaddings = (16, 16)
 
         title = [

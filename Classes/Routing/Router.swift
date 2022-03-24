@@ -642,18 +642,23 @@ class Router:
                 ownerAccount: account,
                 configuration: configuration
             )
-        case let .sendCollectible(draft):
-            viewController = SendCollectibleViewController(
+        case let .sendCollectible(draft, transactionController, uiInteractions):
+            let aViewController = SendCollectibleViewController(
                 draft: draft,
+                transactionController: transactionController,
                 configuration: configuration
             )
+            aViewController.uiInteractions = uiInteractions
+            viewController = aViewController
         case let .sendCollectibleAccountList(dataController):
             viewController = SendCollectibleAccountListViewController(
                 dataController: dataController,
                 configuration: configuration
             )
-        case .approveCollectibleTransaction:
+        case let .approveCollectibleTransaction(draft, transactionController):
             viewController = ApproveCollectibleTransactionViewController(
+                draft: draft,
+                transactionController: transactionController,
                 configuration: configuration
             )
         case let .shareActivity(items):
