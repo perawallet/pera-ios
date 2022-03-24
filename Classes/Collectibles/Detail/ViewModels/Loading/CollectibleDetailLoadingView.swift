@@ -12,19 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleDetailLoadingCell.swift
+//   CollectibleDetailLoadingView.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
-
-final class CollectibleDetailLoadingCell:
-    CollectionCell<CollectibleDetailLoadingView> {
-    func startAnimating() {
-        contextView.startAnimating()
-    }
-
-    func stopAnimating() {
-        contextView.stopAnimating()
-    }
-}

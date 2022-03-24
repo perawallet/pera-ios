@@ -45,6 +45,7 @@
 "title-off" = "Off";
 "title-on" = "On";
 "title-retry" = "Retry";
+"title-error-description" = "Error: %@";
 
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";

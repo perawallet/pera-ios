@@ -42,6 +42,16 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
 
 extension CollectibleDetailAPIDataController {
     func load() {
+        deliverLoadingSnapshot()
+
+        fetchAssetDetailsThenDeliver()
+    }
+
+    func retry() {
+        fetchAssetDetailsThenDeliver()
+    }
+
+    private func fetchAssetDetailsThenDeliver() {
         api.fetchAssetDetail(
             AssetDetailFetchDraft(id: asset.id)
         ) { [weak self] response in
@@ -57,7 +67,7 @@ extension CollectibleDetailAPIDataController {
                 self.eventHandler?(.didFetch(self.asset))
                 self.deliverContentSnapshot()
             case .failure(let error, _):
-                self.deliverErrorSnapshot(error)
+                self.eventHandler?(.didResponseFail((error as! HTTPError)))
             }
         }
     }
@@ -65,7 +75,15 @@ extension CollectibleDetailAPIDataController {
 
 extension CollectibleDetailAPIDataController {
     private func deliverLoadingSnapshot() {
-
+        deliverSnapshot {
+            var snapshot = Snapshot()
+            snapshot.appendSections([.loading])
+            snapshot.appendItems(
+                [.loading],
+                toSection: .loading
+            )
+            return snapshot
+        }
     }
 
     private func deliverContentSnapshot() {
@@ -266,16 +284,6 @@ extension CollectibleDetailAPIDataController {
             externalSourceItems,
             toSection: .external
         )
-    }
-
-    private func deliverErrorSnapshot(
-        _ error: APIError
-    ) {
-        deliverSnapshot {
-            let snapshot = Snapshot()
-
-            return snapshot
-        }
     }
 
     private func deliverSnapshot(
