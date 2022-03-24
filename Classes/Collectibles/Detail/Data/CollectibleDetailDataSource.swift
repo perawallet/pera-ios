@@ -98,7 +98,8 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
 
             switch section {
             case .media,
-                 .action:
+                    .action,
+                    .loading:
                 header.bindData(
                     CollectibleDetailHeaderViewModel(
                         SingleLineIconTitleItem(

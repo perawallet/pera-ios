@@ -50,11 +50,14 @@ extension CollectibleDetailLayout {
         }
 
         var insets =
-            UIEdgeInsets(
-                (0, theme.sectionHorizontalInsets.leading, 0, theme.sectionHorizontalInsets.trailing)
-            )
+        UIEdgeInsets(
+            (0, theme.sectionHorizontalInsets.leading, 0, theme.sectionHorizontalInsets.trailing)
+        )
 
         switch listSection {
+        case .loading:
+            insets.bottom = 8
+            return insets
         case .media:
             insets.top = theme.mediaTopPadding
             insets.bottom = 0
@@ -131,7 +134,8 @@ extension CollectibleDetailLayout {
         case .loading:
             return listView(
                 collectionView,
-                layoutSizeForLoading: collectionViewLayout
+                layout: collectionViewLayout,
+                atSection: indexPath.section
             )
         case .media(let item):
             return listView(
@@ -191,11 +195,12 @@ extension CollectibleDetailLayout {
 
         switch listSection {
         case .media,
-            .action:
+                .action,
+                .loading:
             return .zero
         case .description,
-             .properties,
-             .external:
+                .properties,
+                .external:
             let width = calculateContentWidth(collectionView)
             return CGSize((width, theme.headerHeight))
         }
@@ -205,9 +210,21 @@ extension CollectibleDetailLayout {
 extension CollectibleDetailLayout {
     private func listView(
         _ listView: UICollectionView,
-        layoutSizeForLoading listViewLayout: UICollectionViewLayout
+        layout listViewLayout: UICollectionViewLayout,
+        atSection section: Int
     ) -> CGSize {
-        return .zero
+        let width = calculateContentWidth(listView)
+        let sectionInset = collectionView(
+            listView,
+            layout: listViewLayout,
+            insetForSectionAt: section
+        )
+        let height =
+        listView.bounds.height -
+        sectionInset.vertical -
+        listView.safeAreaTop -
+        listView.safeAreaBottom
+        return CGSize((width, height))
     }
 
     private func listView(
@@ -319,9 +336,9 @@ extension CollectibleDetailLayout {
         _ listView: UICollectionView
     ) -> LayoutMetric {
         return
-            listView.bounds.width -
-            listView.contentInset.horizontal -
-            theme.sectionHorizontalInsets.leading -
-            theme.sectionHorizontalInsets.trailing
+        listView.bounds.width -
+        listView.contentInset.horizontal -
+        theme.sectionHorizontalInsets.leading -
+        theme.sectionHorizontalInsets.trailing
     }
 }
