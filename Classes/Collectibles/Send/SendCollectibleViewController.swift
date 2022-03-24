@@ -302,8 +302,8 @@ extension SendCollectibleViewController {
 
         if let accountInShared = accountInShared {
 
-            if accountInShared.containsCollectibleAsset(draft.collectibleAsset.id),
-               !accountInShared.isWatchAccount() {
+            if draft.fromAccount.address == recipientAddress,
+               accountInShared.containsCollectibleAsset(draft.collectibleAsset.id) {
                 bannerController?.presentErrorBanner(
                     title: "asset-you-already-own-message".localized,
                     message: .empty
