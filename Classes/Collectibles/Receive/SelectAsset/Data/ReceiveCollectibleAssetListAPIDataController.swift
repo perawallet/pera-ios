@@ -22,7 +22,7 @@ final class ReceiveCollectibleAssetListAPIDataController:
     ReceiveCollectibleAssetListDataController {
     var eventHandler: ((ReceiveCollectibleAssetListDataControllerEvent) -> Void)?
 
-    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.15)
+    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
     private var ongoingEndpoint: EndpointOperatable?
 
     private var assets: [AssetDecoration] = []
@@ -94,7 +94,10 @@ extension ReceiveCollectibleAssetListAPIDataController {
         )
 
         ongoingEndpoint =
-        api.searchAssets(searchDraft) { [weak self] response in
+        api.searchAssets(
+            searchDraft,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
             switch response {
             case let .success(searchResults):
                 guard let self = self else {
