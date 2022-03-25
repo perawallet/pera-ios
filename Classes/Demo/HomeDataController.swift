@@ -27,6 +27,7 @@ protocol HomeDataController: AnyObject {
     
     func load()
     func reload()
+    func fetchBanners()
 }
 
 enum HomeSection:

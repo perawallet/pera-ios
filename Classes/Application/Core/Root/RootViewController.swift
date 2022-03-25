@@ -84,9 +84,13 @@ extension RootViewController {
         }
         
         let configuration = appConfiguration.all()
+        let bannerAPIDataController = HomeBannerAPIDataController(
+            api: configuration.api!,
+            session: configuration.session!
+        )
 
         let homeViewController = HomeViewController(
-            dataController: HomeAPIDataController(appConfiguration.sharedDataController),
+            dataController: HomeAPIDataController(appConfiguration.sharedDataController, bannerDataController: bannerAPIDataController),
             configuration: configuration
         )
         let homeTab = HomeTabBarItem(NavigationController(rootViewController: homeViewController))

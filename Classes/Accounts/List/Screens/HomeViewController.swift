@@ -103,6 +103,8 @@ final class HomeViewController:
             presentPasscodeFlowIfNeeded()
             isViewFirstAppeared = false
         }
+        
+        dataController.fetchBanners()
     }
     
     override func viewDidDisappear(_ animated: Bool) {

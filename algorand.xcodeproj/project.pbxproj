@@ -83,6 +83,18 @@
 		1761B3CD224A47AF00C6BA47 /* Session+Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */; };
 		179278952244F8EE00097D32 /* UIFont+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179278942244F8EE00097D32 /* UIFont+Additions.swift */; };
 		179B93D6225E447400DD03E9 /* Node.swift in Sources */ = {isa = PBXBuildFile; fileRef = 179B93D5225E447400DD03E9 /* Node.swift */; };
+		17A011C527EB6CBB008C147D /* HomeBannerAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011C427EB6CBB008C147D /* HomeBannerAPIDataController.swift */; };
+		17A011C627EB6CBB008C147D /* HomeBannerAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011C427EB6CBB008C147D /* HomeBannerAPIDataController.swift */; };
+		17A011C727EB6CBB008C147D /* HomeBannerAPIDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011C427EB6CBB008C147D /* HomeBannerAPIDataController.swift */; };
+		17A011C927EB6D1C008C147D /* ALGAPI+Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011C827EB6D1C008C147D /* ALGAPI+Banner.swift */; };
+		17A011CA27EB6D1C008C147D /* ALGAPI+Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011C827EB6D1C008C147D /* ALGAPI+Banner.swift */; };
+		17A011CB27EB6D1C008C147D /* ALGAPI+Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011C827EB6D1C008C147D /* ALGAPI+Banner.swift */; };
+		17A011CE27EB6D66008C147D /* BannerFetchDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011CD27EB6D66008C147D /* BannerFetchDraft.swift */; };
+		17A011CF27EB6D66008C147D /* BannerFetchDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011CD27EB6D66008C147D /* BannerFetchDraft.swift */; };
+		17A011D027EB6D66008C147D /* BannerFetchDraft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011CD27EB6D66008C147D /* BannerFetchDraft.swift */; };
+		17A011D327EB72FC008C147D /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011D227EB72FC008C147D /* Banner.swift */; };
+		17A011D427EB72FC008C147D /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011D227EB72FC008C147D /* Banner.swift */; };
+		17A011D527EB72FC008C147D /* Banner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A011D227EB72FC008C147D /* Banner.swift */; };
 		17AA1B0422660E59000B0BB0 /* Formatter+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AA1B0322660E59000B0BB0 /* Formatter+Additions.swift */; };
 		17AA1B0822662BAB000B0BB0 /* String+Number.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AA1B0722662BAB000B0BB0 /* String+Number.swift */; };
 		17AA1B0A22662BD1000B0BB0 /* Decimal+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17AA1B0922662BD1000B0BB0 /* Decimal+Additions.swift */; };
@@ -4000,6 +4012,10 @@
 		1761B3CC224A47AF00C6BA47 /* Session+Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Session+Crypto.swift"; sourceTree = "<group>"; };
 		179278942244F8EE00097D32 /* UIFont+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Additions.swift"; sourceTree = "<group>"; };
 		179B93D5225E447400DD03E9 /* Node.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Node.swift; sourceTree = "<group>"; };
+		17A011C427EB6CBB008C147D /* HomeBannerAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeBannerAPIDataController.swift; sourceTree = "<group>"; };
+		17A011C827EB6D1C008C147D /* ALGAPI+Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ALGAPI+Banner.swift"; sourceTree = "<group>"; };
+		17A011CD27EB6D66008C147D /* BannerFetchDraft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerFetchDraft.swift; sourceTree = "<group>"; };
+		17A011D227EB72FC008C147D /* Banner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Banner.swift; sourceTree = "<group>"; };
 		17AA1B0322660E59000B0BB0 /* Formatter+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Formatter+Additions.swift"; sourceTree = "<group>"; };
 		17AA1B0722662BAB000B0BB0 /* String+Number.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Number.swift"; sourceTree = "<group>"; };
 		17AA1B0922662BD1000B0BB0 /* Decimal+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Decimal+Additions.swift"; sourceTree = "<group>"; };
@@ -5526,6 +5542,22 @@
 			path = Libraries;
 			sourceTree = "<group>";
 		};
+		17A011CC27EB6D4F008C147D /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				17A011CD27EB6D66008C147D /* BannerFetchDraft.swift */,
+			);
+			path = Banner;
+			sourceTree = "<group>";
+		};
+		17A011D127EB72DC008C147D /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				17A011D227EB72FC008C147D /* Banner.swift */,
+			);
+			path = Banner;
+			sourceTree = "<group>";
+		};
 		17AA1B0222660E43000B0BB0 /* Formatter */ = {
 			isa = PBXGroup;
 			children = (
@@ -5542,6 +5574,7 @@
 				2B9A3E7A26E7C7C500B050ED /* ALGEntityModel.swift */,
 				2B4DF439236C787600FF9551 /* Accounts */,
 				2B4DF444236C7D5500FF9551 /* Application */,
+				17A011D127EB72DC008C147D /* Banner */,
 				2B9EEAC0264D3370007A112D /* Block */,
 				95CA71FF27CD5EAD00424626 /* BuyAlgo */,
 				2B0F3D8723C8D1BE006BB01B /* Common */,
@@ -5560,6 +5593,7 @@
 			isa = PBXGroup;
 			children = (
 				2B4DF42C236C772300FF9551 /* Account */,
+				17A011CC27EB6D4F008C147D /* Banner */,
 				95CA71FA27CD5D6700424626 /* BuyAlgo */,
 				2B4DF435236C77B200FF9551 /* Device */,
 				2B4DF42F236C773500FF9551 /* Settings */,
@@ -11154,6 +11188,7 @@
 				2B5BE145251B72AB00324BEE /* ALGAPI+Currency.swift */,
 				2B9EEAD5264D33B1007A112D /* ALGAPI+Block.swift */,
 				95CA71F627CD5D0A00424626 /* ALGAPI+BuyAlgo.swift */,
+				17A011C827EB6D1C008C147D /* ALGAPI+Banner.swift */,
 			);
 			path = ALGAPI;
 			sourceTree = "<group>";
@@ -12675,6 +12710,7 @@
 				F08708ED278F5E2E00BEE5C2 /* CurrencyHandle.swift */,
 				F0DB416427938F2300EA437D /* HomeAccountSectionHeaderViewModel.swift */,
 				F08708F92790878900BEE5C2 /* HomeAPIDataController.swift */,
+				17A011C427EB6CBB008C147D /* HomeBannerAPIDataController.swift */,
 				F08708F52790877300BEE5C2 /* HomeDataController.swift */,
 				F08709042790D67B00BEE5C2 /* HomeListDataSource.swift */,
 				F0DB41A62794B62800EA437D /* HomeLoadingCell.swift */,
@@ -13462,6 +13498,7 @@
 				2BE4D0702593845F005F5764 /* FirebaseAnalytics.swift in Sources */,
 				F087090B2790D97600BEE5C2 /* HomeLoadingView.swift in Sources */,
 				2B4EEEC224BE001D00059A16 /* NotificationCell.swift in Sources */,
+				17A011CB27EB6D1C008C147D /* ALGAPI+Banner.swift in Sources */,
 				D46C648326E613FB00FBAC6D /* TutorialViewController+Theme.swift in Sources */,
 				2B05A677251E3BED008A8791 /* UITextView+Additions.swift in Sources */,
 				D4A8759D27C9439200550935 /* ShimmerAnimatable.swift in Sources */,
@@ -13797,8 +13834,10 @@
 				2B80C545277322BB00BB071E /* AddAssetItemView.swift in Sources */,
 				2BD36E392686A4B700C57728 /* WCGroupTransactionLayout.swift in Sources */,
 				2BB93BB325BEE6A5001F1D6C /* TransactionDataBuildable.swift in Sources */,
+				17A011D527EB72FC008C147D /* Banner.swift in Sources */,
 				2B43349D27BDB17900A3D9D6 /* AssetTransactionHistoryLoadingView.swift in Sources */,
 				D41B233427842BE0008838C7 /* AssetDetailViewController.swift in Sources */,
+				17A011D027EB6D66008C147D /* BannerFetchDraft.swift in Sources */,
 				95AF1C6A27AD5A02001AB131 /* AssetPreviewLoadingViewCommonTheme.swift in Sources */,
 				2B448724237964D700C19FDE /* ManageAssetsViewController.swift in Sources */,
 				951E884B2757A74C00FFEB69 /* SelectAssetViewController+Theme.swift in Sources */,
@@ -14481,6 +14520,7 @@
 				2B0322E9269F1E0B00C9B2F5 /* WCMainTransactionDataSource.swift in Sources */,
 				95266BFA27B5386700E99EC7 /* SelectAccountDataController.swift in Sources */,
 				2B9E2F4426F0D332003D824A /* WCAssetCreationTransactionViewModel.swift in Sources */,
+				17A011C727EB6CBB008C147D /* HomeBannerAPIDataController.swift in Sources */,
 				D4592909276BACAD00862B21 /* WCSessionShortListViewController+Theme.swift in Sources */,
 				2B4487212379649700C19FDE /* AssetAdditionViewController.swift in Sources */,
 				2B0322DF269F1DBE00C9B2F5 /* WCMainTransactionViewModel.swift in Sources */,
@@ -14707,6 +14747,7 @@
 				95AF1C6527AD59F5001AB131 /* AssetPreviewLoadingViewTheme.swift in Sources */,
 				2B0F619924EC129D00DA22A6 /* TransactionCustomRangeSelectionView.swift in Sources */,
 				2B0A6A99265414B9001C88C3 /* AlgoUSDValueFormatter.swift in Sources */,
+				17A011CA27EB6D1C008C147D /* ALGAPI+Banner.swift in Sources */,
 				D4A8759C27C9439100550935 /* ShimmerAnimatable.swift in Sources */,
 				2B5BE0522518E4F200324BEE /* WatchAccountAdditionViewController.swift in Sources */,
 				2B835B7427A424FE0091E9F6 /* WCAssetAdditionTransactionViewController.swift in Sources */,
@@ -15042,8 +15083,10 @@
 				2BD36DCE267E0D6800C57728 /* WCTransactionActionableInformationViewModel.swift in Sources */,
 				2B43349E27BDB17A00A3D9D6 /* AssetTransactionHistoryLoadingView.swift in Sources */,
 				2B0F621D24EC129D00DA22A6 /* BaseCollectionViewCell.swift in Sources */,
+				17A011D427EB72FC008C147D /* Banner.swift in Sources */,
 				2B0F621E24EC129D00DA22A6 /* Participation.swift in Sources */,
 				2B0F622124EC129D00DA22A6 /* Codable+JSON.swift in Sources */,
+				17A011CF27EB6D66008C147D /* BannerFetchDraft.swift in Sources */,
 				95AF1C6E27AD79AD001AB131 /* ShimmerView.swift in Sources */,
 				2BF90F6025FBAAE70033F348 /* HStackView.swift in Sources */,
 				D442AA0927397331009E60D4 /* AssetPreviewViewAdditionTheme.swift in Sources */,
@@ -15726,6 +15769,7 @@
 				2B7E5817257E56DB00731C97 /* Int16+Byte.swift in Sources */,
 				95266BF927B5386700E99EC7 /* SelectAccountDataController.swift in Sources */,
 				2B0322E8269F1E0B00C9B2F5 /* WCMainTransactionDataSource.swift in Sources */,
+				17A011C627EB6CBB008C147D /* HomeBannerAPIDataController.swift in Sources */,
 				2B5F6F892768D80F00C9B780 /* SettingsDetailView.swift in Sources */,
 				2B5F6F992768DA0700C9B780 /* SettingsFooterViewTheme.swift in Sources */,
 				2BBC2D48278B6EC80091B6FC /* ErrorView.swift in Sources */,
@@ -15952,6 +15996,7 @@
 				D43A0C152790CA2D007430B9 /* LoadingView.swift in Sources */,
 				95AF1C6427AD59F5001AB131 /* AssetPreviewLoadingViewTheme.swift in Sources */,
 				95BB6BE2279F518600F2A2F1 /* WCAssetDeletionTransactionViewTheme.swift in Sources */,
+				17A011C927EB6D1C008C147D /* ALGAPI+Banner.swift in Sources */,
 				2B698242278C90AF008EC669 /* PendingAssetPreviewView.swift in Sources */,
 				2B835B7327A424FE0091E9F6 /* WCAssetAdditionTransactionViewController.swift in Sources */,
 				2B9EEADF264E7527007A112D /* RewardCalculator.swift in Sources */,
@@ -16287,8 +16332,10 @@
 				2B0AD81A2756AE9F00F83660 /* AssetCreator.swift in Sources */,
 				F0772B5C275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift in Sources */,
 				D42009B827BBC1FE00390C4C /* AssetTransactionHistoryLoadingView.swift in Sources */,
+				17A011D327EB72FC008C147D /* Banner.swift in Sources */,
 				2B7E307E267B651A00E89EE3 /* WCTransactionFullDappDetailViewController.swift in Sources */,
 				2BB93BB125BEE6A5001F1D6C /* TransactionDataBuildable.swift in Sources */,
+				17A011CE27EB6D66008C147D /* BannerFetchDraft.swift in Sources */,
 				2BD36E372686A4B700C57728 /* WCGroupTransactionLayout.swift in Sources */,
 				95AF1C6D27AD79AD001AB131 /* ShimmerView.swift in Sources */,
 				D4B6EA5A276F8E1A005E2D2C /* TransactionContactInformationViewTheme.swift in Sources */,
@@ -16971,6 +17018,7 @@
 				2B80C543277322BB00BB071E /* AddAssetItemView.swift in Sources */,
 				95266BF827B5386700E99EC7 /* SelectAccountDataController.swift in Sources */,
 				D4A875A127C9A24600550935 /* ShimmerAnimationConfiguration.swift in Sources */,
+				17A011C527EB6CBB008C147D /* HomeBannerAPIDataController.swift in Sources */,
 				2BAD559423A29C830037079F /* Optional+Nil.swift in Sources */,
 				2B288ACF268F158100BC6FB6 /* AssetCachable.swift in Sources */,
 				2B7E5816257E56DB00731C97 /* Int16+Byte.swift in Sources */,

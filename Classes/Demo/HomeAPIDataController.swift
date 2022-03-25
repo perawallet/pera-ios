@@ -25,12 +25,18 @@ final class HomeAPIDataController:
     private var lastSnapshot: Snapshot?
     
     private let sharedDataController: SharedDataController
+    private let bannerDataController: HomeBannerAPIDataController
+    
+    private var banners: [Banner] = []
+    
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.homeDataController")
     
     init(
-        _ sharedDataController: SharedDataController
+        _ sharedDataController: SharedDataController,
+        bannerDataController: HomeBannerAPIDataController
     ) {
         self.sharedDataController = sharedDataController
+        self.bannerDataController = bannerDataController
     }
     
     deinit {
@@ -47,10 +53,15 @@ final class HomeAPIDataController:
 extension HomeAPIDataController {
     func load() {
         sharedDataController.add(self)
+        bannerDataController.delegate = self
     }
     
     func reload() {
         deliverContentSnapshot()
+    }
+    
+    func fetchBanners() {
+        bannerDataController.loadData()
     }
 }
 
@@ -212,5 +223,11 @@ extension HomeAPIDataController {
             self.lastSnapshot = event.snapshot
             self.eventHandler?(event)
         }
+    }
+}
+
+extension HomeAPIDataController: HomeBannerAPIDataControllerDelegate {
+    func homeBannerAPIDataController(_ dataController: HomeBannerAPIDataController, didFetch bannerList: BannerList) {
+        self.banners = bannerList.results
     }
 }
