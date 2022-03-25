@@ -22,6 +22,14 @@ final class CollectibleDetailViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
 
+    private lazy var bottomBannerController = BottomActionableBannerController(
+        presentingView: view,
+        configuration: BottomActionableBannerControllerConfiguration(
+            bottomMargin: 0,
+            contentBottomPadding: view.safeAreaBottom + 20
+        )
+    )
+
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = CollectibleListLayout.build()
         let collectionView = UICollectionView(
@@ -82,6 +90,17 @@ final class CollectibleDetailViewController:
                 self.asset = asset
                 self.displayedMedia = asset.media.first
                 self.mediaPreviewController.updateAsset(asset)
+            case .didResponseFail(let error):
+                self.bottomBannerController.presentFetchError(
+                    title: "title-generic-api-error".localized,
+                    message: "title-error-description".localized(String(error.statusCode)),
+                    actionTitle: "title-retry".localized,
+                    actionHandler: {
+                        [unowned self] in
+                        self.bottomBannerController.dismissError()
+                        self.dataController.retry()
+                    }
+                )
             }
         }
 
@@ -189,6 +208,9 @@ extension CollectibleDetailViewController {
         }
 
         switch itemIdentifier {
+        case .loading:
+            let loadingCell = cell as? CollectibleDetailLoadingCell
+            loadingCell?.startAnimating()
         case .action(let item):
             linkInteractors(
                 cell as! CollectibleDetailActionCell,
@@ -209,7 +231,16 @@ extension CollectibleDetailViewController {
         didEndDisplaying cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
+        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
+            return
+        }
 
+        switch itemIdentifier {
+        case .loading:
+            let loadingCell = cell as? CollectibleDetailLoadingCell
+            loadingCell?.stopAnimating()
+        default: break
+        }
     }
 }
 

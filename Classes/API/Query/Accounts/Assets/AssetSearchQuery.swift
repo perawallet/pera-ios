@@ -22,7 +22,7 @@ struct AssetSearchQuery: ObjectQuery {
     let query: String?
     let paginator: Paginator = .cursor
     let cursor: String?
-    var hasCollectible: Bool = false
+    var hasCollectible: Bool? = nil
     
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
@@ -36,8 +36,10 @@ struct AssetSearchQuery: ObjectQuery {
             params.append(.init(.query, query))
         }
 
-        params.append(.init(.hasCollectible, hasCollectible))
-        
+        if let hasCollectible = hasCollectible {
+            params.append(.init(.hasCollectible, hasCollectible))
+        }
+
         switch status {
         case .all:
             return params

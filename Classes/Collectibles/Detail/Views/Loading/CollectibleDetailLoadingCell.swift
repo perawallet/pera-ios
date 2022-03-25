@@ -18,12 +18,13 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectibleDetailLoadingCell: CollectionCell<CollectibleDetailLoadingView> {
+final class CollectibleDetailLoadingCell:
+    CollectionCell<CollectibleDetailLoadingView> {
+    func startAnimating() {
+        contextView.startAnimating()
+    }
 
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        contextView.customize(CollectibleDetailLoadingViewTheme())
+    func stopAnimating() {
+        contextView.stopAnimating()
     }
 }

@@ -17,12 +17,62 @@
 import MacaroonUIKit
 
 struct CollectibleDetailLoadingViewTheme:
-    StyleSheet,
-    LayoutSheet {
+    LayoutSheet,
+    StyleSheet {
+    let titleViewHeight: LayoutMetric
+    let titleTopPadding: LayoutMetric
+    let titleWidthMultiplier: LayoutMetric
+
+    let subtitleViewHeight: LayoutMetric
+    let subtitleTopPadding: LayoutMetric
+    let subtitleWidthMultiplier: LayoutMetric
+
+    let actionTopPadding: LayoutMetric
+    let actionHeight: LayoutMetric
+    let spacingBetweeenActions: LayoutMetric
+
+    let descriptionHeight: LayoutMetric
+    let descriptionWidthMultiplier: LayoutMetric
+
+    let descriptionValueLineHeight: LayoutMetric
+    let descriptionValueLineSpacing: LayoutMetric
+    let descriptionValueFirstLineTopMargin: LayoutMetric
+    let descriptionValueFirstLineWidthMultiplier: LayoutMetric
+    let descriptionValueSecondLineWidthMultiplier: LayoutMetric
+
+    let corner: Corner
+
+    let spacingBetweenDescriptionAndSeparator: LayoutMetric
+    let separator: Separator
 
     init(
         _ family: LayoutFamily
     ) {
+        titleTopPadding = 36
+        titleViewHeight = 16
+        titleWidthMultiplier = 0.20
 
+        subtitleTopPadding = 8
+        subtitleViewHeight = 20
+        subtitleWidthMultiplier = 0.30
+
+        descriptionHeight = 24
+        descriptionWidthMultiplier = 0.30
+
+        descriptionValueLineHeight = 20
+        descriptionValueLineSpacing = 4
+        descriptionValueFirstLineTopMargin = 20
+        descriptionValueFirstLineWidthMultiplier = 0.80
+        descriptionValueSecondLineWidthMultiplier = 0.60
+
+        corner = Corner(radius: 4)
+
+        separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+
+        spacingBetweenDescriptionAndSeparator = 32
+
+        actionTopPadding = 20
+        actionHeight = 52
+        spacingBetweeenActions = 16
     }
 }

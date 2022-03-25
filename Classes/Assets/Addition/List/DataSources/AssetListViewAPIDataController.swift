@@ -145,8 +145,29 @@ extension AssetListViewAPIDataController {
             var assetItems: [AssetListViewItem] = []
 
             for asset in self.assets {
-                let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
-                let assetItem: AssetListViewItem = .asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(standardAsset)))
+                let assetItem: AssetListViewItem
+
+                if asset.isCollectible {
+                    let collectibleAsset = CollectibleAsset(
+                        asset: ALGAsset(id: asset.id),
+                        decoration: asset
+                    )
+                    assetItem = .collectible(
+                        CollectiblePreviewViewModel(collectibleAsset)
+                    )
+
+                } else {
+                    let standardAsset = StandardAsset(
+                        asset: ALGAsset(id: asset.id),
+                        decoration: asset
+                    )
+                    assetItem = .asset(
+                        AssetPreviewViewModel(
+                            AssetPreviewModelAdapter.adapt(standardAsset)
+                        )
+                    )
+                }
+                
                 assetItems.append(assetItem)
             }
 
