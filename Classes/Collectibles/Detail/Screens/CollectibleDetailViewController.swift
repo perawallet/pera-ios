@@ -90,10 +90,10 @@ final class CollectibleDetailViewController:
                 self.asset = asset
                 self.displayedMedia = asset.media.first
                 self.mediaPreviewController.updateAsset(asset)
-            case .didResponseFail(let error):
+            case .didResponseFail(let message):
                 self.bottomBannerController.presentFetchError(
                     title: "title-generic-api-error".localized,
-                    message: "title-error-description".localized(String(error.statusCode)),
+                    message: "title-error-description".localized(message),
                     actionTitle: "title-retry".localized,
                     actionHandler: {
                         [unowned self] in
