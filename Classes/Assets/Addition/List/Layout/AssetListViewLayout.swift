@@ -49,6 +49,12 @@ extension AssetListViewLayout: UICollectionViewDelegateFlowLayout {
         switch itemIdentifier {
         case .loading:
             return CGSize(theme.cellSize)
+        case .collectible(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForCollectibleAssetCellItem: item
+            )
         case .asset(let item):
             return listView(
                 collectionView,
@@ -135,6 +141,30 @@ extension AssetListViewLayout {
         let newSize = AssetPreviewCell.calculatePreferredSize(
             item,
             for: AssetPreviewCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForCollectibleAssetCellItem item: CollectiblePreviewViewModel
+    ) -> CGSize {
+        let sizeCacheIdentifier = CollectiblePreviewCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+
+        let newSize = CollectiblePreviewCell.calculatePreferredSize(
+            item,
+            for: CollectiblePreviewCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

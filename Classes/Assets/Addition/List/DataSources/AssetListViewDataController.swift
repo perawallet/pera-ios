@@ -36,6 +36,7 @@ enum AssetListViewSection:
 }
 
 enum AssetListViewItem: Hashable {
+    case collectible(CollectiblePreviewViewModel)
     case asset(AssetPreviewViewModel)
     case loading(String)
     case noContent

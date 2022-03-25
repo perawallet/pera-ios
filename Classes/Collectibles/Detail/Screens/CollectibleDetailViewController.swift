@@ -89,7 +89,7 @@ final class CollectibleDetailViewController:
                 self.mediaPreviewController.updateAsset(asset)
             case .didResponseFail(let error):
                 self.bottomBannerController.presentFetchError(
-                    title: "Well, this is unexpected",
+                    title: "title-generic-api-error".localized,
                     message: "title-error-description".localized(String(error.statusCode)),
                     actionTitle: "title-retry".localized,
                     actionHandler: {
