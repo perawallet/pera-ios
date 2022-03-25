@@ -30,7 +30,6 @@ protocol CollectibleDetailDataController: AnyObject {
 enum CollectibleDetailSection:
     Int,
     Hashable {
-    case loading
     case media
     case action
     case description
