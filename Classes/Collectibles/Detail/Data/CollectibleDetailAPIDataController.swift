@@ -23,25 +23,34 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
     var eventHandler: ((CollectibleDetailDataControllerEvent) -> Void)?
 
     private var lastSnapshot: Snapshot?
-    private let snapshotQueue = DispatchQueue(label: VariableLabels.collectibleDetailSnapshot.rawValue)
+    private let snapshotQueue = DispatchQueue(label: Constants.DispatchQueues.collectibleDetailSnapshot)
 
     private let api: ALGAPI
     private var asset: CollectibleAsset
-    private let ownerAccount: Account?
+    private let account: Account?
 
     init(
         api: ALGAPI,
         asset: CollectibleAsset,
-        ownerAccount: Account?
+        account: Account?
     ) {
         self.api = api
         self.asset = asset
-        self.ownerAccount = ownerAccount
+        self.account = account
     }
 }
 
 extension CollectibleDetailAPIDataController {
     func load() {
+        deliverLoadingSnapshot()
+        fetchAssetDetails()
+    }
+
+    func retry() {
+        fetchAssetDetails()
+    }
+
+    private func fetchAssetDetails() {
         api.fetchAssetDetail(
             AssetDetailFetchDraft(id: asset.id)
         ) { [weak self] response in
@@ -89,7 +98,7 @@ extension CollectibleDetailAPIDataController {
     ) {
         var mediaItems: [CollectibleDetailItem] = [.media(asset)]
 
-        if ownerAccount == nil {
+        if account == nil {
             mediaItems.append(
                 .error(
                     CollectibleMediaErrorViewModel(
@@ -97,7 +106,7 @@ extension CollectibleDetailAPIDataController {
                     )
                 )
             )
-        } else if asset.containsUnsupportedMedia {
+        } else if !asset.mediaType.isSupported {
             mediaItems.append(
                 .error(
                     CollectibleMediaErrorViewModel(
@@ -121,7 +130,7 @@ extension CollectibleDetailAPIDataController {
             .action(
                 CollectibleDetailActionViewModel(
                     asset: asset,
-                    ownerAccount: ownerAccount
+                    account: account
                 )
             )
         ]
@@ -148,14 +157,14 @@ extension CollectibleDetailAPIDataController {
             )
         }
 
-        if let ownerAccount = ownerAccount {
+        if let account = account {
             descriptionItems.append(
                 .information(
                     CollectibleTransactionInformation(
-                        account: ownerAccount,
+                        account: account,
                         title: "collectible-detail-owner".localized,
-                        value: ownerAccount.name.fallback(ownerAccount.address.shortAddressDisplay),
-                        isForegroundingValue: false
+                        value: account.name.fallback(account.address.shortAddressDisplay),
+                        isCollectibleSpecificValue: false
                     )
                 )
             )
@@ -167,7 +176,7 @@ extension CollectibleDetailAPIDataController {
                     account: nil,
                     title: "title-asset-id".localized,
                     value: String(asset.id),
-                    isForegroundingValue: false
+                    isCollectibleSpecificValue: false
                 )
             )
         )
@@ -180,7 +189,7 @@ extension CollectibleDetailAPIDataController {
                         account: nil,
                         title: "collectible-detail-collection-name".localized,
                         value: collectionName,
-                        isForegroundingValue: true
+                        isCollectibleSpecificValue: true
                     )
                 )
             )
@@ -194,7 +203,7 @@ extension CollectibleDetailAPIDataController {
                         account: nil,
                         title: "collectible-detail-creator-name".localized,
                         value: assetTitle,
-                        isForegroundingValue: true
+                        isCollectibleSpecificValue: true
                     )
                 )
             )
@@ -207,7 +216,7 @@ extension CollectibleDetailAPIDataController {
                         account: nil,
                         title: "collectible-detail-creator-address".localized,
                         value: creator.shortAddressDisplay,
-                        isForegroundingValue: true
+                        isCollectibleSpecificValue: true
                     )
                 )
             )
@@ -225,12 +234,7 @@ extension CollectibleDetailAPIDataController {
     ) {
         if let properties = asset.properties,
            !properties.isEmpty {
-            var propertyItems: [CollectibleDetailItem] = []
-
-            for property in properties {
-                let viewModel = CollectiblePropertyViewModel(property)
-                propertyItems.append(.properties(viewModel))
-            }
+            let propertyItems: [CollectibleDetailItem] = properties.map { .properties(CollectiblePropertyViewModel($0)) }
 
             snapshot.appendSections([.properties])
             snapshot.appendItems(
@@ -246,7 +250,10 @@ extension CollectibleDetailAPIDataController {
         var externalSourceItems: [CollectibleDetailItem] = [
             .external(
                 CollectibleExternalSourceViewModel(
-                    AlgoExplorerExternalSource()
+                    AlgoExplorerExternalSource(
+                        asset: asset.id,
+                        network: api.network
+                    )
                 )
             )
         ]
@@ -255,7 +262,10 @@ extension CollectibleDetailAPIDataController {
             externalSourceItems.append(
                 .external(
                     CollectibleExternalSourceViewModel(
-                        NFTExplorerExternalSource()
+                        NFTExplorerExternalSource(
+                            asset: asset.id,
+                            network: api.network
+                        )
                     )
                 )
             )

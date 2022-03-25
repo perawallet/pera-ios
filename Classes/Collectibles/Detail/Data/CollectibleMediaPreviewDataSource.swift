@@ -23,16 +23,16 @@ final class CollectibleMediaPreviewDataSource:
     UICollectionViewDataSource {
     private let theme: CollectibleMediaPreviewViewController.Theme
     private let asset: CollectibleAsset
-    private let ownerAccount: Account?
+    private let account: Account?
 
     init(
         theme: CollectibleMediaPreviewViewController.Theme,
         asset: CollectibleAsset,
-        ownerAccount: Account?
+        account: Account?
     ) {
         self.theme = theme
         self.asset = asset
-        self.ownerAccount = ownerAccount
+        self.account = account
     }
 }
 
@@ -52,34 +52,55 @@ extension CollectibleMediaPreviewDataSource {
             fatalError("Could not find the related media.")
         }
 
-        let cell = collectionView.dequeue(
-            CollectibleMediaImagePreviewCell.self,
-            at: indexPath
-        )
-
         let width = collectionView.bounds.width - theme.horizontalInset * 2
 
         switch media.type {
         case .image:
-            cell.bindData(
-                CollectibleMediaImagePreviewViewModel(
-                    imageSize: CGSize((width.float(), width.float())),
-                    asset: asset,
-                    ownerAccount: ownerAccount,
-                    url: media.previewURL
-                )
+            let cell = collectionView.dequeue(
+                CollectibleMediaImagePreviewCell.self,
+                at: indexPath
             )
-        default:
-            cell.bindData(
-                CollectibleMediaImagePreviewViewModel(
-                    imageSize: CGSize((width.float(), width.float())),
-                    asset: asset,
-                    ownerAccount: ownerAccount,
-                    url: nil
-                )
-            )
-        }
 
-        return cell
+            cell.bindData(
+                CollectibleMediaImagePreviewViewModel(
+                    imageSize: CGSize((width.float(), width.float())),
+                    asset: asset,
+                    account: account,
+                    media: media
+                )
+            )
+
+            return cell
+        case .video:
+            let cell = collectionView.dequeue(
+                CollectibleMediaVideoPreviewCell.self,
+                at: indexPath
+            )
+
+            cell.bindData(
+                CollectibleMediaVideoPreviewViewModel(
+                    media: media,
+                    account: account
+                )
+            )
+
+            return cell
+        default:
+            let cell = collectionView.dequeue(
+                CollectibleMediaImagePreviewCell.self,
+                at: indexPath
+            )
+
+            cell.bindData(
+                CollectibleMediaImagePreviewViewModel(
+                    imageSize: CGSize((width.float(), width.float())),
+                    asset: asset,
+                    account: account,
+                    media: nil
+                )
+            )
+
+            return cell
+        }
     }
 }

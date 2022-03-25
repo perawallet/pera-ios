@@ -43,25 +43,27 @@ final class CollectibleDetailViewController:
 
     private lazy var mediaPreviewController = CollectibleMediaPreviewViewController(
         asset: asset,
-        ownerAccount: ownerAccount,
+        account: account,
         configuration: configuration
     )
 
     private var asset: CollectibleAsset
-    private let ownerAccount: Account?
+    private let account: Account?
     private let dataController: CollectibleDetailDataController
+
+    private var displayedMedia: Media?
 
     init(
         asset: CollectibleAsset,
-        ownerAccount: Account?,
+        account: Account?,
         configuration: ViewControllerConfiguration
     ) {
         self.asset = asset
-        self.ownerAccount = ownerAccount
+        self.account = account
         self.dataController = CollectibleDetailAPIDataController(
             api: configuration.api!,
             asset: asset,
-            ownerAccount: ownerAccount
+            account: account
         )
         super.init(configuration: configuration)
     }
@@ -78,6 +80,7 @@ final class CollectibleDetailViewController:
                 self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             case .didFetch(let asset):
                 self.asset = asset
+                self.displayedMedia = asset.media.first
                 self.mediaPreviewController.updateAsset(asset)
             }
         }
@@ -98,6 +101,11 @@ final class CollectibleDetailViewController:
     override func setListeners() {
         super.setListeners()
         listView.delegate = self
+    }
+
+    override func linkInteractors() {
+        super.linkInteractors()
+        linkMediaPreviewInteractors()
     }
 }
 
@@ -206,6 +214,20 @@ extension CollectibleDetailViewController {
 }
 
 extension CollectibleDetailViewController {
+    private func linkMediaPreviewInteractors() {
+        mediaPreviewController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .didSelectMedia:
+                break
+            case .didScrollToMedia(let media):
+                self.displayedMedia = media
+            }
+        }
+    }
+
     private func linkInteractors(
         _ cell: CollectibleDetailActionCell,
         for item: CollectibleDetailActionViewModel
@@ -216,9 +238,14 @@ extension CollectibleDetailViewController {
                 return
             }
 
+            guard let account = self.account,
+                  let asset = account[self.asset.id] as? CollectibleAsset else {
+                return
+            }
+
             let draft = SendCollectibleDraft(
-                fromAccount: self.ownerAccount!,
-                collectibleAsset: self.asset,
+                fromAccount: self.account!,
+                collectibleAsset: asset,
                 image: nil /// Pass the image so we will not load.
             )
 
@@ -257,26 +284,8 @@ extension CollectibleDetailViewController {
             items.append(name)
         }
 
-        if let downloadURL = self.asset.media.first?.downloadURL {
+        if let downloadURL = displayedMedia?.downloadURL {
             items.append(downloadURL.absoluteString)
-
-            loadingController?.startLoadingWithMessage("title-loading".localized)
-
-            let imageView = URLImageView()
-            imageView.load(from: PNGImageSource(url: downloadURL)) {
-                [weak self] _ in
-                guard let self = self else { return }
-
-                self.loadingController?.stopLoading()
-
-                if let image = imageView.imageContainer.image {
-                    items.append(image)
-                }
-
-                self.presentShareController(items)
-            }
-
-            return
         }
 
         presentShareController(items)
@@ -319,11 +328,7 @@ extension CollectibleDetailViewController {
             [weak self] in
             guard let self = self else { return }
 
-            if let source = item.source,
-               let urlString = source.getURL(
-                    for: self.asset.id,
-                    in: self.api!.network
-               ),
+            if let urlString = item.source?.url,
                let url = URL(string: urlString) {
                 self.open(url)
             }

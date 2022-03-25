@@ -33,6 +33,7 @@ enum CollectibleDetailSection:
     case description
     case properties
     case external
+    case loading
 }
 
 enum CollectibleDetailItem: Hashable {

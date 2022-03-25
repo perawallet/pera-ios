@@ -98,15 +98,8 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
 
             switch section {
             case .media,
-                 .action:
-                header.bindData(
-                    CollectibleDetailHeaderViewModel(
-                        SingleLineIconTitleItem(
-                            icon: nil,
-                            title: "collectible-detail-description".localized
-                        )
-                    )
-                )
+                    .action,
+                    .loading:
                 return header
             case .description:
                 header.bindData(
