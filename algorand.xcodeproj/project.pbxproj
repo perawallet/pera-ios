@@ -3965,6 +3965,10 @@
 		D4CCA1DD27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */; };
 		D4CCA1DE27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */; };
 		D4CCA1DF27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */; };
+		D4D09B6527EE03D400DEEECA /* ContactImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D09B6427EE03D400DEEECA /* ContactImageProcessor.swift */; };
+		D4D09B6627EE03D400DEEECA /* ContactImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D09B6427EE03D400DEEECA /* ContactImageProcessor.swift */; };
+		D4D09B6727EE03D400DEEECA /* ContactImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D09B6427EE03D400DEEECA /* ContactImageProcessor.swift */; };
+		D4D09B6827EE03D400DEEECA /* ContactImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D09B6427EE03D400DEEECA /* ContactImageProcessor.swift */; };
 		D4D45A2B27B556AF00DBB334 /* PeraIntroductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D45A2A27B556AF00DBB334 /* PeraIntroductionViewController.swift */; };
 		D4D45A2D27B556BA00DBB334 /* PeraIntroductionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D45A2C27B556BA00DBB334 /* PeraIntroductionView.swift */; };
 		D4D45A2F27B556D500DBB334 /* PeraInroductionViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D45A2E27B556D500DBB334 /* PeraInroductionViewTheme.swift */; };
@@ -7024,6 +7028,7 @@
 		D4CCA1D427241DA400DF1B76 /* RekeyConfirmationViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyConfirmationViewTheme.swift; sourceTree = "<group>"; };
 		D4CCA1D827242B3B00DF1B76 /* RekeyTransitionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransitionItemView.swift; sourceTree = "<group>"; };
 		D4CCA1DC27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RekeyTransitionItemViewTheme.swift; sourceTree = "<group>"; };
+		D4D09B6427EE03D400DEEECA /* ContactImageProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactImageProcessor.swift; sourceTree = "<group>"; };
 		D4D45A2A27B556AF00DBB334 /* PeraIntroductionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraIntroductionViewController.swift; sourceTree = "<group>"; };
 		D4D45A2C27B556BA00DBB334 /* PeraIntroductionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraIntroductionView.swift; sourceTree = "<group>"; };
 		D4D45A2E27B556D500DBB334 /* PeraInroductionViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeraInroductionViewTheme.swift; sourceTree = "<group>"; };
@@ -8520,6 +8525,7 @@
 			children = (
 				2B4DF449236C7DD700FF9551 /* QR */,
 				2B82B1C422535F4300A8909F /* Contact.swift */,
+				D4D09B6427EE03D400DEEECA /* ContactImageProcessor.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -16246,6 +16252,7 @@
 				17BD4E412292F1260003E49A /* AddContactView.swift in Sources */,
 				D43B23EA27180B2F00444F35 /* LedgerAccountDetailSectionHeaderViewTheme.swift in Sources */,
 				2BE4D0A825939468005F5764 /* UIViewController+Analytics.swift in Sources */,
+				D4D09B6727EE03D400DEEECA /* ContactImageProcessor.swift in Sources */,
 				D4BAFAB027DFEF4D0077B781 /* TitleVIewTheme+SendCollectibleAccountList.swift in Sources */,
 				D43A0C2E2790D1A9007430B9 /* NoContentViewCommonTheme.swift in Sources */,
 				D459E26C27DBB50300F7FC33 /* ActionableBannerViewTheme.swift in Sources */,
@@ -17599,6 +17606,7 @@
 				2B0F61E124EC129D00DA22A6 /* AddContactView.swift in Sources */,
 				2B270392263A0F4F006BAF75 /* LedgerAccountVerificationDataController.swift in Sources */,
 				D4BAFAAF27DFEF4D0077B781 /* TitleVIewTheme+SendCollectibleAccountList.swift in Sources */,
+				D4D09B6627EE03D400DEEECA /* ContactImageProcessor.swift in Sources */,
 				F0DB419C279496A600EA437D /* ShowQrCodeListActionViewModel.swift in Sources */,
 				D459E26B27DBB50300F7FC33 /* ActionableBannerViewTheme.swift in Sources */,
 				2B0F61E324EC129D00DA22A6 /* UIButton+Factory.swift in Sources */,
@@ -18952,6 +18960,7 @@
 				2B835B7C27A425380091E9F6 /* WCAssetDeletionTransactionViewController.swift in Sources */,
 				2B5F6F842768D66100C9B780 /* SettingsViewTheme.swift in Sources */,
 				D4BAFAAE27DFEF4D0077B781 /* TitleVIewTheme+SendCollectibleAccountList.swift in Sources */,
+				D4D09B6527EE03D400DEEECA /* ContactImageProcessor.swift in Sources */,
 				2BB0B13027832D6900A16494 /* AssetSearchViewController.swift in Sources */,
 				2B68A22B26A5D8CF0076BD82 /* WCMultipleTransactionItemView.swift in Sources */,
 				F03422C72754DB2300E3C8B5 /* UICollectionView+Extensions.swift in Sources */,
@@ -20862,6 +20871,7 @@
 				F011480E27DF3B5C002DD4ED /* EditNoteScreen.swift in Sources */,
 				F011480F27DF3B5C002DD4ED /* ALGAPIInterceptor.swift in Sources */,
 				F011481027DF3B5C002DD4ED /* SelectAccountViewController+Theme.swift in Sources */,
+				D4D09B6827EE03D400DEEECA /* ContactImageProcessor.swift in Sources */,
 				F011481127DF3B5C002DD4ED /* PinLimitViewController.swift in Sources */,
 				F011481227DF3B5C002DD4ED /* FloatingTextInputFieldViewCommonTheme.swift in Sources */,
 				F011481327DF3B5C002DD4ED /* RekeyedAccountsResponse.swift in Sources */,

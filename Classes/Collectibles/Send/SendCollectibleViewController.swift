@@ -311,8 +311,8 @@ extension SendCollectibleViewController {
                 return
             }
 
-            makeTransfer(
-                for: accountInShared
+            sendTransaction(
+                to: accountInShared
             )
 
             return
@@ -344,23 +344,25 @@ extension SendCollectibleViewController {
                     return
                 }
 
-                self.makeTransfer(
-                    for: fetchedAccount
+                self.sendTransaction(
+                    to: fetchedAccount
                 )
-            case .failure(_, _):
-                break /// <todo> Show response error
+            case .failure(let error, _):
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: error.description
+                )
             }
         }
     }
 
-    private func makeTransfer(
-        for account: Account
+    private func sendTransaction(
+        to account: Account
     ) {
         draft.toAccount = account
 
-        let collectibleAsset = account.assets?.first(matching: (\.id, draft.collectibleAsset.id))
-
-        guard let collectibleAsset = collectibleAsset else {
+        guard let collectibleAsset =
+                account.assets?.first(matching: (\.id, draft.collectibleAsset.id)) else {
             openAskRecipientToOptIn()
             return
         }
@@ -458,7 +460,7 @@ extension SendCollectibleViewController {
             ),
             then: {
                 [unowned self] in
-                self.uiInteractions.didSendTransactionSuccessfully?(self)
+                self.uiInteractions.didCompleteTransaction?(self)
             }
         ) as? TutorialViewController
 
@@ -978,7 +980,7 @@ extension SendCollectibleViewController: KeyboardControllerDataSource {
 
 extension SendCollectibleViewController {
     struct SendCollectibleUIInteractions {
-        var didSendTransactionSuccessfully: ((SendCollectibleViewController) -> Void)?
+        var didCompleteTransaction: ((SendCollectibleViewController) -> Void)?
     }
 }
 
