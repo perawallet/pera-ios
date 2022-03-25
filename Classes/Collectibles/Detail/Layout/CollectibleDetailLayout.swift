@@ -336,9 +336,9 @@ extension CollectibleDetailLayout {
         _ listView: UICollectionView
     ) -> LayoutMetric {
         return
-        listView.bounds.width -
-        listView.contentInset.horizontal -
-        theme.sectionHorizontalInsets.leading -
-        theme.sectionHorizontalInsets.trailing
+            listView.bounds.width -
+            listView.contentInset.horizontal -
+            theme.sectionHorizontalInsets.leading -
+            theme.sectionHorizontalInsets.trailing
     }
 }
