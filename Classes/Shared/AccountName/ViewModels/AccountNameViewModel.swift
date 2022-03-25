@@ -49,12 +49,9 @@ extension AccountNameViewModel {
             return
         }
 
-        if let imageData = contact.image,
-           let image = UIImage(data: imageData) {
-            self.image = image
-        } else {
-            self.image = "icon-user-placeholder".uiImage
-        }
+        image = ContactImageProcessor(
+            data: contact.image
+        ).process()
     }
 
     private func bindName(from account: Account, with hasImage: Bool) {

@@ -45,14 +45,11 @@ extension CollectibleTransactionInfoViewModel {
     ) {
 
         if let contact = information.contact {
-
-            if let imageData = contact.image,
-               let image = UIImage(data: imageData) {
-                let resizedImage = image.convert(to: CGSize(width: 24, height: 24))
-                icon = resizedImage
-            } else {
-                icon = "icon-user-placeholder".uiImage
-            }
+            
+            icon = ContactImageProcessor(
+                data: contact.image,
+                size: CGSize(width: 24, height: 24)
+            ).process()
 
         } else {
             if let account = information.account {
