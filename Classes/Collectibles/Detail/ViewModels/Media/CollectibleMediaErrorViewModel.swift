@@ -56,7 +56,7 @@ extension CollectibleMediaErrorViewModel {
     }
 }
 
-enum CollectibleMediaError {
+enum CollectibleMediaError: Error {
     case unsupported
     case notOwner
     case unavailable

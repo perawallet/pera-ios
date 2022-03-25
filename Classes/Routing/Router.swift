@@ -639,7 +639,7 @@ class Router:
         case let .collectibleDetail(asset, account):
             viewController = CollectibleDetailViewController(
                 asset: asset,
-                ownerAccount: account,
+                account: account,
                 configuration: configuration
             )
         case let .sendCollectible(draft, transactionController, uiInteractions):
