@@ -150,8 +150,8 @@ enum CollectibleStandard:
 
     var rawValue: String {
         switch self {
-        case .arc3: return "image"
-        case .arc69: return "video"
+        case .arc3: return "arc3"
+        case .arc69: return "arc69"
         case .unknown(let aRawValue): return aRawValue
         }
     }
