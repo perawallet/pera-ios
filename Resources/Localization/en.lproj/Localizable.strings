@@ -917,6 +917,7 @@
 "pera-announcement-action-title" = "Start Using Pera Wallet";
 
 // MARK: Number Abbreviation
+"number-abbreviation-thousand" = "K";
 "number-abbreviation-million" = "M";
 "number-abbreviation-billion" = "B";
 "number-abbreviation-trillion" = "T";
