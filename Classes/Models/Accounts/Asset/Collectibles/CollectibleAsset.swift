@@ -29,6 +29,8 @@ final class CollectibleAsset: Asset {
     let isVerified: Bool
     let thumbnailImage: URL?
     let media: [Media]
+    let standard: CollectibleStandard?
+    let mediaType: MediaType
     let title: String?
     let collectionName: String?
     let url: String?
@@ -84,6 +86,8 @@ final class CollectibleAsset: Asset {
         self.usdValue = decoration.usdValue
         self.isVerified = decoration.isVerified
         self.thumbnailImage = decoration.collectible?.thumbnailImage
+        self.mediaType = decoration.collectible?.mediaType ?? .unknown("")
+        self.standard = decoration.collectible?.standard ?? .unknown("")
         self.media = decoration.collectible?.media ?? []
         self.title = decoration.collectible?.title
         self.collectionName = decoration.collectible?.collectionName
