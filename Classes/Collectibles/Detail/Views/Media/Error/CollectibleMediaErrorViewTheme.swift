@@ -39,4 +39,3 @@ struct CollectibleMediaErrorViewTheme:
         self.horizontalInset = 8
     }
 }
-
