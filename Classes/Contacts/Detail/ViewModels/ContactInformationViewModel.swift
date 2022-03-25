@@ -25,10 +25,13 @@ final class ContactInformationViewModel {
     private(set) var shortAddress: String?
 
     init(_ contact: Contact) {
-        image = ContactImageProcessor(
-            data: contact.image,
-            size: CGSize(width: 80, height: 80)
-        ).process()
+        if let imageData = contact.image,
+           let image = UIImage(data: imageData) {
+            let resizedImage = image.convert(to: CGSize(width: 80, height: 80))
+            self.image = resizedImage
+        } else {
+            self.image = "icon-user-placeholder".uiImage
+        }
 
         name = contact.name
         address = contact.address

@@ -59,14 +59,20 @@ extension CollectibleListItemViewModel {
                 url: prismURL,
                 size: size,
                 shape: .rounded(4),
-                placeholder: getPlaceholder(placeholder)
+                placeholder: ImagePlaceholder(
+                    image: nil,
+                    text: getPlaceholder(placeholder)
+                )
             )
         }
 
         let imageSource =
         PNGImageSource(
             url: nil,
-            placeholder: getPlaceholder(placeholder)
+            placeholder: ImagePlaceholder(
+                image: nil,
+                text: getPlaceholder(placeholder)
+            )
         )
 
         return imageSource
@@ -138,11 +144,11 @@ extension CollectibleListItemViewModel {
 
     private func getPlaceholder(
         _ aPlaceholder: String
-    ) -> ImagePlaceholder {
+    ) -> EditText {
         let font = Fonts.DMSans.regular.make(13)
         let lineHeightMultiplier = 1.18
 
-        let placeholderText: EditText = .attributedString(
+        return .attributedString(
             aPlaceholder.attributed([
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
@@ -152,11 +158,6 @@ extension CollectibleListItemViewModel {
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])
-        )
-
-        return ImagePlaceholder(
-            image: nil,
-            text: placeholderText
         )
     }
 }

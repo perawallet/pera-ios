@@ -53,10 +53,13 @@ final class NotificationsViewModel: Hashable {
 extension NotificationsViewModel {
     private func bindImage(notification: NotificationMessage, contact: Contact?) {
         if let contact = contact {
-            notificationImage = ContactImageProcessor(
-                data: contact.image,
-                size: CGSize(width: 40, height: 40)
-            ).process()
+            if let imageData = contact.image,
+                let image = UIImage(data: imageData) {
+                let resizedImage = image.convert(to: CGSize(width: 40, height: 40))
+                notificationImage = resizedImage
+            } else {
+                notificationImage = img("icon-user-placeholder")
+            }
             return
         }
 

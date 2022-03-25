@@ -73,14 +73,20 @@ extension SendCollectibleViewModel {
                 url: prismURL,
                 size: size,
                 shape: .rounded(4),
-                placeholder: getPlaceholder(placeholder)
+                placeholder: ImagePlaceholder(
+                    image: nil,
+                    text: getPlaceholder(placeholder)
+                )
             )
             return
         }
 
         image = PNGImageSource(
             url: nil,
-            placeholder: getPlaceholder(placeholder)
+            placeholder: ImagePlaceholder(
+                image: nil,
+                text: getPlaceholder(placeholder)
+            )
         )
     }
 
@@ -103,8 +109,8 @@ extension SendCollectibleViewModel {
     ) -> EditText? {
         guard let collectionName = asset.collectionName,
               !collectionName.isEmptyOrBlank else {
-            return nil
-        }
+                  return nil
+              }
 
         let font = Fonts.DMSans.regular.make(13)
         let lineHeightMultiplier = 1.18
@@ -147,11 +153,11 @@ extension SendCollectibleViewModel {
 
     private func getPlaceholder(
         _ aPlaceholder: String
-    ) -> ImagePlaceholder {
+    ) -> EditText {
         let font = Fonts.DMSans.regular.make(19)
         let lineHeightMultiplier = 1.13
 
-        let placeholderText: EditText = .attributedString(
+        return .attributedString(
             aPlaceholder.attributed([
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
@@ -161,11 +167,6 @@ extension SendCollectibleViewModel {
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])
-        )
-
-        return ImagePlaceholder(
-            image: nil,
-            text: placeholderText
         )
     }
 }

@@ -44,6 +44,17 @@ final class SendCollectibleAccountListAPIDataController:
     ) {
         self.sharedDataController = sharedDataController
         self.accounts = sharedDataController.accountCollection.sorted()
+
+        getContacts { contacts in
+            self.contacts =
+            contacts.reduce(into: [Address: Contact]()) { partialResult, contact in
+                guard let address = contact.address else {
+                    return
+                }
+
+                partialResult[address] = contact
+            }
+        }
     }
 
     deinit {
@@ -79,19 +90,6 @@ extension SendCollectibleAccountListAPIDataController {
 extension SendCollectibleAccountListAPIDataController {
     func load() {
         sharedDataController.add(self)
-
-        getContacts { contacts in
-            self.contacts =
-            contacts.reduce(
-                into: [Address: Contact]()
-            ) { partialResult, contact in
-                guard let address = contact.address else {
-                    return
-                }
-
-                partialResult[address] = contact
-            }
-        }
     }
 
     func search(for query: String?) {

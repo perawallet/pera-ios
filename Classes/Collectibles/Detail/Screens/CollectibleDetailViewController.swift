@@ -337,7 +337,7 @@ extension CollectibleDetailViewController {
     -> SendCollectibleViewController.SendCollectibleUIInteractions {
         var uiInteractions = SendCollectibleViewController.SendCollectibleUIInteractions()
 
-        uiInteractions.didCompleteTransaction = {
+        uiInteractions.didSendTransactionSuccessfully = {
             [weak self] controller in
             guard let self = self else {
                 return
