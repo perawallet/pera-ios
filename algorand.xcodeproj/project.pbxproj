@@ -58,6 +58,15 @@
 		04F153B4274F874900AD2732 /* QRAddressLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F153B3274F874900AD2732 /* QRAddressLabelViewModel.swift */; };
 		04F153B5274F874900AD2732 /* QRAddressLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F153B3274F874900AD2732 /* QRAddressLabelViewModel.swift */; };
 		04F153B6274F874900AD2732 /* QRAddressLabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04F153B3274F874900AD2732 /* QRAddressLabelViewModel.swift */; };
+		170A650D27ED9814006AC9DF /* GenericBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170A650C27ED9814006AC9DF /* GenericBannerCell.swift */; };
+		170A650E27ED9814006AC9DF /* GenericBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170A650C27ED9814006AC9DF /* GenericBannerCell.swift */; };
+		170A650F27ED9814006AC9DF /* GenericBannerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170A650C27ED9814006AC9DF /* GenericBannerCell.swift */; };
+		170A651127ED989E006AC9DF /* GenericBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170A651027ED989E006AC9DF /* GenericBannerView.swift */; };
+		170A651227ED989E006AC9DF /* GenericBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170A651027ED989E006AC9DF /* GenericBannerView.swift */; };
+		170A651327ED989E006AC9DF /* GenericBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170A651027ED989E006AC9DF /* GenericBannerView.swift */; };
+		170A651527ED992B006AC9DF /* GenericBannerViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170A651427ED992B006AC9DF /* GenericBannerViewTheme.swift */; };
+		170A651627ED992B006AC9DF /* GenericBannerViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170A651427ED992B006AC9DF /* GenericBannerViewTheme.swift */; };
+		170A651727ED992B006AC9DF /* GenericBannerViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170A651427ED992B006AC9DF /* GenericBannerViewTheme.swift */; };
 		170AFAFA224C9FF800520EA5 /* QRCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */; };
 		170AFAFC224CC70A00520EA5 /* QRText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFB224CC70A00520EA5 /* QRText.swift */; };
 		170AFAFE224CCBF300520EA5 /* QRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 170AFAFD224CCBF300520EA5 /* QRView.swift */; };
@@ -3989,6 +3998,9 @@
 		048B3C1D27229AAC003A5F5A /* QRCreationViewController+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "QRCreationViewController+Theme.swift"; sourceTree = "<group>"; };
 		04F153AE274F7F2500AD2732 /* QRViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRViewTheme.swift; sourceTree = "<group>"; };
 		04F153B3274F874900AD2732 /* QRAddressLabelViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRAddressLabelViewModel.swift; sourceTree = "<group>"; };
+		170A650C27ED9814006AC9DF /* GenericBannerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericBannerCell.swift; sourceTree = "<group>"; };
+		170A651027ED989E006AC9DF /* GenericBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericBannerView.swift; sourceTree = "<group>"; };
+		170A651427ED992B006AC9DF /* GenericBannerViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericBannerViewTheme.swift; sourceTree = "<group>"; };
 		170AFAF9224C9FF800520EA5 /* QRCreationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreationViewController.swift; sourceTree = "<group>"; };
 		170AFAFB224CC70A00520EA5 /* QRText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRText.swift; sourceTree = "<group>"; };
 		170AFAFD224CCBF300520EA5 /* QRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRView.swift; sourceTree = "<group>"; };
@@ -5516,6 +5528,16 @@
 				D4710B20276A6DA800F35F74 /* QRScanner */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		170A650B27ED97EE006AC9DF /* Banner */ = {
+			isa = PBXGroup;
+			children = (
+				170A650C27ED9814006AC9DF /* GenericBannerCell.swift */,
+				170A651027ED989E006AC9DF /* GenericBannerView.swift */,
+				170A651427ED992B006AC9DF /* GenericBannerViewTheme.swift */,
+			);
+			path = Banner;
 			sourceTree = "<group>";
 		};
 		170AFB00224D1CD100520EA5 /* CoreImage */ = {
@@ -7385,6 +7407,7 @@
 				2BF7280427471E8F00CCAC30 /* Application */,
 				2B4486F4237958AD00C19FDE /* Assets */,
 				2BF727D8274717BF00CCAC30 /* Authentication */,
+				170A650B27ED97EE006AC9DF /* Banner */,
 				2BF727B62747140B00CCAC30 /* Contacts */,
 				2B567155240074F60037FCFA /* Ledger */,
 				17B7D8A42240D79200A6FF9E /* Models */,
@@ -13635,6 +13658,7 @@
 				D419431B2735415C0055EC70 /* PageBar.swift in Sources */,
 				D4DF3F6926F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift in Sources */,
 				D48D11ED274297BA000061CE /* NotificationFilterView.swift in Sources */,
+				170A651727ED992B006AC9DF /* GenericBannerViewTheme.swift in Sources */,
 				D4F8F28C273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift in Sources */,
 				2B8E5F1825471F7D001D8E30 /* ReceiveShareCompleteEvent.swift in Sources */,
 				D4BF4A1E26F49E36009B53D8 /* WatchAccountAdditionViewModel.swift in Sources */,
@@ -13697,6 +13721,7 @@
 				D45EC27A27C38856004D5E46 /* BannerDraft.swift in Sources */,
 				2BA015782636B865009EC914 /* LedgerAccountVerificationViewController.swift in Sources */,
 				17BD4E452292F1260003E49A /* AppDelegate.swift in Sources */,
+				170A651327ED989E006AC9DF /* GenericBannerView.swift in Sources */,
 				17BD4E462292F1260003E49A /* TransactionParams.swift in Sources */,
 				95B01153276A7F9C00B5CA7B /* EditNoteScreen+Theme.swift in Sources */,
 				17BD4E482292F1260003E49A /* ContactSelectionViewController.swift in Sources */,
@@ -13821,6 +13846,7 @@
 				2BECB48C25A0C64B0081870A /* TitledToggleView.swift in Sources */,
 				2B0E00B72788199900D6B2E2 /* SecuritySettingsViewTheme.swift in Sources */,
 				17BD4E652292F1260003E49A /* Utils.swift in Sources */,
+				170A650F27ED9814006AC9DF /* GenericBannerCell.swift in Sources */,
 				2B9A3E7926E7C7A200B050ED /* ALGAPIModel.swift in Sources */,
 				D41F93432722C02600E9F2E7 /* CharacterSet+Extension.swift in Sources */,
 				F08708F0278F5E2E00BEE5C2 /* CurrencyHandle.swift in Sources */,
@@ -14884,6 +14910,7 @@
 				2B64861E276A1459009E29D0 /* DeveloperSettingsViewTheme.swift in Sources */,
 				D4919D2A27A13FA4001AABEE /* AlgoPriceChartTimeFrameSelectionView.swift in Sources */,
 				2B77470E25FFDB640083EFFA /* InputSuggestionViewController.swift in Sources */,
+				170A651627ED992B006AC9DF /* GenericBannerViewTheme.swift in Sources */,
 				D43B23E527180AF600444F35 /* LedgerAccountDetailSectionHeaderViewModel.swift in Sources */,
 				2B77473625FFE92E0083EFFA /* InputSuggestionView.swift in Sources */,
 				2B80C5732773695400BB071E /* AssetPortfolioItemView.swift in Sources */,
@@ -14946,6 +14973,7 @@
 				2B7E303A267A518800E89EE3 /* WCGroupTransactionView.swift in Sources */,
 				2B0F61E624EC129D00DA22A6 /* AssetActionConfirmationViewModel.swift in Sources */,
 				2B0AD83C2757E17400F83660 /* AnnouncementBannerViewTheme.swift in Sources */,
+				170A651227ED989E006AC9DF /* GenericBannerView.swift in Sources */,
 				D4822742272C5591004CB9BF /* AddContactViewController+Theme.swift in Sources */,
 				2B0F61E724EC129D00DA22A6 /* TransactionParams.swift in Sources */,
 				D45DFBC6273E6B300088306B /* EditAccountViewTheme.swift in Sources */,
@@ -15070,6 +15098,7 @@
 				F022D1DE276365DE00D786CD /* BlockProcessor.swift in Sources */,
 				2B0F621624EC129D00DA22A6 /* Utils.swift in Sources */,
 				D4CCA1DE27242C4300DF1B76 /* RekeyTransitionItemViewTheme.swift in Sources */,
+				170A650E27ED9814006AC9DF /* GenericBannerCell.swift in Sources */,
 				2BA172A926495B9400A613C4 /* AlgoStatisticsViewController.swift in Sources */,
 				2B0F621824EC129D00DA22A6 /* RoundDetail.swift in Sources */,
 				F0DB4178279444AE00EA437D /* PortfolioCalculationErrorViewModel.swift in Sources */,
@@ -16133,6 +16162,7 @@
 				D472B323271728D600E0D793 /* LedgerAccountDetailSectionHeaderView.swift in Sources */,
 				D419005B273FBA0E00F7829D /* ManageAssetsViewTheme.swift in Sources */,
 				95631BBD2760C0A5002FB831 /* TransactionShadowButtonTheme.swift in Sources */,
+				170A651527ED992B006AC9DF /* GenericBannerViewTheme.swift in Sources */,
 				D4DF3F6726F1EDDD006625E6 /* LedgerApprovalViewController+Theme.swift in Sources */,
 				2BD5476A23182636007179FE /* RewardDetailViewModel.swift in Sources */,
 				D48D11EB274297BA000061CE /* NotificationFilterView.swift in Sources */,
@@ -16195,6 +16225,7 @@
 				95FD4C0527941B5800BF29BE /* WCUnsignedRequestScreen.swift in Sources */,
 				2B4EEEC524BE008500059A16 /* NotificationsViewModel.swift in Sources */,
 				2B343CF0259D174A001EA8C8 /* AccountNameSwitchViewModel.swift in Sources */,
+				170A651127ED989E006AC9DF /* GenericBannerView.swift in Sources */,
 				2B3A34E0246DA32A001C8F22 /* AlgorandNode.swift in Sources */,
 				2B0AD81F2757D99600F83660 /* AccountPortfolioView.swift in Sources */,
 				2BA015762636B865009EC914 /* LedgerAccountVerificationViewController.swift in Sources */,
@@ -16319,6 +16350,7 @@
 				D46C647526E6005000FBAC6D /* PasswordInputViewTheme.swift in Sources */,
 				F0DB4193279494D700EA437D /* CopyAddressListActionViewModel.swift in Sources */,
 				2BD063ED25CEC8E5008BD15E /* BottomWarningView.swift in Sources */,
+				170A650D27ED9814006AC9DF /* GenericBannerCell.swift in Sources */,
 				2BF0FB30253D154C00D704D5 /* RewardViewModel.swift in Sources */,
 				D4710B18276A526300F35F74 /* BottomWarningViewConfigurator.swift in Sources */,
 				2BECB48A25A0C64B0081870A /* TitledToggleView.swift in Sources */,
