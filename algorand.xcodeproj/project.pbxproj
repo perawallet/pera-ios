@@ -2063,7 +2063,7 @@
 		2BB8485427EA50F6004F2E39 /* SendCollectibleAccountListHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAFAA127DF796D0077B781 /* SendCollectibleAccountListHeaderViewModel.swift */; };
 		2BB8485527EA50FC004F2E39 /* SendCollectibleAccountListTitleSupplementaryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAFAA927DFEE1E0077B781 /* SendCollectibleAccountListTitleSupplementaryCell.swift */; };
 		2BB8485627EA5103004F2E39 /* TitleVIewTheme+SendCollectibleAccountList.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4BAFAAD27DFEF4D0077B781 /* TitleVIewTheme+SendCollectibleAccountList.swift */; };
-		2BB8485827EA523A004F2E39 /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = 2BB8485727EA523A004F2E39 /* ActiveLabel */; };
+		2BB8485827EA523A004F2E39 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
 		2BB93BA925BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB93BA825BEE696001F1D6C /* TransactionDataBuilder.swift */; };
 		2BB93BAA25BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB93BA825BEE696001F1D6C /* TransactionDataBuilder.swift */; };
 		2BB93BAB25BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BB93BA825BEE696001F1D6C /* TransactionDataBuilder.swift */; };
@@ -7408,7 +7408,7 @@
 				F01149AC27DF3B5C002DD4ED /* MacaroonForm in Frameworks */,
 				F01149AD27DF3B5C002DD4ED /* FirebaseCrashlytics in Frameworks */,
 				F01149AE27DF3B5C002DD4ED /* MagpieHipo in Frameworks */,
-				2BB8485827EA523A004F2E39 /* ActiveLabel in Frameworks */,
+				2BB8485827EA523A004F2E39 /* (null) in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -15648,7 +15648,6 @@
 				F011449B27DF3B5C002DD4ED /* MacaroonURLImage */,
 				F011449C27DF3B5C002DD4ED /* MacaroonVendors */,
 				F011449D27DF3B5C002DD4ED /* Prism */,
-				2BB8485727EA523A004F2E39 /* ActiveLabel */,
 			);
 			productName = algorand;
 			productReference = F01149E727DF3B5C002DD4ED /* fifa.app */;
@@ -17497,7 +17496,7 @@
 				2BB8484727E911F6004F2E39 /* CollectibleMediaErrorViewModel.swift in Sources */,
 				2BD5A6A126332C3E0048FA5E /* ALGAPI+Algos.swift in Sources */,
 				2B0F616024EC129D00DA22A6 /* ALGAsset.swift in Sources */,
-				2B0F616024EC129D00DA22A6 /* Asset.swift in Sources */,
+				2B0F616024EC129D00DA22A6 /* ALGAsset.swift in Sources */,
 				2B4FD1F727C63F580097AB65 /* BuyAlgoTransactionViewController.swift in Sources */,
 				2B0F616224EC129D00DA22A6 /* ContactsViewController.swift in Sources */,
 				2B0F616424EC129D00DA22A6 /* TestNetTitleDisplayable.swift in Sources */,
@@ -17983,7 +17982,7 @@
 				D411B38626EA232F004FF980 /* AssetPreviewViewTheme.swift in Sources */,
 				2B7A1F3827DBF8150010F52E /* CollectibleDetailAPIDataController.swift in Sources */,
 				2B4FD1FB27C63F650097AB65 /* BuyAlgoTransactionView.swift in Sources */,
-				D411B38626EA232F004FF980 /* AssetPreviewViewCommonTheme.swift in Sources */,
+				D411B38626EA232F004FF980 /* AssetPreviewViewTheme.swift in Sources */,
 				2B8D383726B6EC3C00E7351D /* ApplicationStateSchema.swift in Sources */,
 				2BB93BAA25BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */,
 				D48FDFD727CEBC5400C39FC7 /* ReceiveCollectibleAccountListAPIDataController.swift in Sources */,
@@ -21618,7 +21617,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
@@ -21648,7 +21647,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -21677,7 +21676,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -21707,7 +21706,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
@@ -21738,7 +21737,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -21768,7 +21767,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -21920,7 +21919,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
@@ -21951,7 +21950,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -22108,7 +22107,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -22350,20 +22349,20 @@
 				kind = branch;
 			};
 		};
-		D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/perawallet/ActiveLabel.swift.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
 		D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Hipo/prism-ios";
 			requirement = {
 				kind = exactVersion;
 				version = 1.1.0;
+			};
+		};
+		D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/perawallet/ActiveLabel.swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
 			};
 		};
 		F011447F27DF3B5C002DD4ED /* XCRemoteSwiftPackageReference "magpie" */ = {
@@ -22786,21 +22785,6 @@
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
 			productName = MacaroonVendors;
 		};
-		D4B33AAC27F1E63000523CEA /* ActiveLabel */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
-			productName = ActiveLabel;
-		};
-		D4B33AAE27F1E64600523CEA /* ActiveLabel */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
-			productName = ActiveLabel;
-		};
-		D4B33AB027F1E65900523CEA /* ActiveLabel */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
-			productName = ActiveLabel;
-		};
 		D499D27D27C7D40B00641FF5 /* Prism */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */;
@@ -22815,6 +22799,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */;
 			productName = Prism;
+		};
+		D4B33AAC27F1E63000523CEA /* ActiveLabel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
+			productName = ActiveLabel;
+		};
+		D4B33AAE27F1E64600523CEA /* ActiveLabel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
+			productName = ActiveLabel;
+		};
+		D4B33AB027F1E65900523CEA /* ActiveLabel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
+			productName = ActiveLabel;
 		};
 		F011447E27DF3B5C002DD4ED /* MagpieAlamofire */ = {
 			isa = XCSwiftPackageProductDependency;
