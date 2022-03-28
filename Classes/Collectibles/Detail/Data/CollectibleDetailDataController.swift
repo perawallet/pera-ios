@@ -16,6 +16,7 @@
 
 import Foundation
 import UIKit
+import MagpieCore
 
 protocol CollectibleDetailDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<CollectibleDetailSection, CollectibleDetailItem>
@@ -23,25 +24,42 @@ protocol CollectibleDetailDataController: AnyObject {
     var eventHandler: ((CollectibleDetailDataControllerEvent) -> Void)? { get set }
 
     func load()
+    func retry()
 }
 
 enum CollectibleDetailSection:
     Int,
     Hashable {
+    case media
+    case action
+    case description
+    case properties
+    case external
     case loading
 }
 
 enum CollectibleDetailItem: Hashable {
     case loading
+    case error(CollectibleMediaErrorViewModel)
+    case media(CollectibleAsset)
+    case action(CollectibleDetailActionViewModel)
+    case description(CollectibleDescriptionViewModel)
+    case information(CollectibleTransactionInformation)
+    case properties(CollectiblePropertyViewModel)
+    case external(CollectibleExternalSourceViewModel)
 }
 
 enum CollectibleDetailDataControllerEvent {
     case didUpdate(CollectibleDetailDataController.Snapshot)
+    case didFetch(CollectibleAsset)
+    case didResponseFail(message: String)
 
-    var snapshot: CollectibleDetailDataController.Snapshot {
+    var snapshot: CollectibleDetailDataController.Snapshot? {
         switch self {
         case .didUpdate(let snapshot):
             return snapshot
+        default:
+            return nil
         }
     }
 }

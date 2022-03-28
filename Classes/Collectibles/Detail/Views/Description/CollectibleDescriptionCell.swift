@@ -18,15 +18,15 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectibleDescriptionCell: CollectionCell<CollectibleDescriptionView> {
-    override class var contextPaddings: LayoutPaddings {
-        return (0, 24, 0, 24)
-    }
+final class CollectibleDescriptionCell:
+    CollectionCell<CollectibleDescriptionView>,
+    ViewModelBindable {
+    static let theme = CollectibleDescriptionViewTheme()
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
-        contextView.customize(CollectibleDescriptionViewTheme())
+        contextView.customize(Self.theme)
     }
 }

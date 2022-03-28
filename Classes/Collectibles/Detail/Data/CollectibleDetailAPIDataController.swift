@@ -16,28 +16,284 @@
 
 import Foundation
 import MacaroonUtils
+import MagpieCore
 
 final class CollectibleDetailAPIDataController: CollectibleDetailDataController {
 
     var eventHandler: ((CollectibleDetailDataControllerEvent) -> Void)?
 
     private var lastSnapshot: Snapshot?
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.collectibleDetailDataController")
+    private let snapshotQueue = DispatchQueue(label: Constants.DispatchQueues.collectibleDetailSnapshot)
 
+    private let api: ALGAPI
     private var asset: CollectibleAsset
+    private let account: Account?
 
-    init(asset: CollectibleAsset) {
+    init(
+        api: ALGAPI,
+        asset: CollectibleAsset,
+        account: Account?
+    ) {
+        self.api = api
         self.asset = asset
+        self.account = account
     }
 }
 
 extension CollectibleDetailAPIDataController {
     func load() {
+        deliverLoadingSnapshot()
+        fetchAssetDetails()
+    }
 
+    func retry() {
+        fetchAssetDetails()
+    }
+
+    private func fetchAssetDetails() {
+        api.fetchAssetDetail(
+            AssetDetailFetchDraft(id: asset.id)
+        ) { [weak self] response in
+            guard let self = self else { return }
+
+            switch response {
+            case .success(let asset):
+                self.asset = CollectibleAsset(
+                    asset: ALGAsset(id: asset.id),
+                    decoration: asset
+                )
+
+                self.eventHandler?(.didFetch(self.asset))
+                self.deliverContentSnapshot()
+            case .failure(let error, _):
+                var message: String
+
+                if let statusCode = (error as? HTTPError)?.statusCode {
+                    message = String(statusCode)
+                } else {
+                    message = error.description
+                }
+
+                self.eventHandler?(.didResponseFail(message: message))
+            }
+        }
     }
 }
 
 extension CollectibleDetailAPIDataController {
+    private func deliverLoadingSnapshot() {
+        deliverSnapshot {
+            var snapshot = Snapshot()
+            snapshot.appendSections([.loading])
+            snapshot.appendItems(
+                [.loading],
+                toSection: .loading
+            )
+            return snapshot
+        }
+    }
+
+    private func deliverContentSnapshot() {
+        deliverSnapshot {
+            [weak self] in
+            guard let self = self else { return Snapshot() }
+
+            var snapshot = Snapshot()
+
+            self.addMediaContent(&snapshot)
+            self.addActionContent(&snapshot)
+            self.addDescriptionContent(&snapshot)
+            self.addPropertiesContent(&snapshot)
+
+            return snapshot
+        }
+    }
+
+    private func addMediaContent(
+        _ snapshot: inout Snapshot
+    ) {
+        var mediaItems: [CollectibleDetailItem] = [.media(asset)]
+
+        if account == nil {
+            mediaItems.append(
+                .error(
+                    CollectibleMediaErrorViewModel(
+                        .notOwner
+                    )
+                )
+            )
+        } else if !asset.mediaType.isSupported {
+            mediaItems.append(
+                .error(
+                    CollectibleMediaErrorViewModel(
+                        .unsupported
+                    )
+                )
+            )
+        }
+
+        snapshot.appendSections([.media])
+        snapshot.appendItems(
+            mediaItems,
+            toSection: .media
+        )
+    }
+
+    private func addActionContent(
+        _ snapshot: inout Snapshot
+    ) {
+        let actionItem: [CollectibleDetailItem] = [
+            .action(
+                CollectibleDetailActionViewModel(
+                    asset: asset,
+                    account: account
+                )
+            )
+        ]
+
+        snapshot.appendSections([.action])
+        snapshot.appendItems(
+            actionItem,
+            toSection: .action
+        )
+    }
+
+    private func addDescriptionContent(
+        _ snapshot: inout Snapshot
+    ) {
+        var descriptionItems: [CollectibleDetailItem] = []
+
+        if !asset.description.isNilOrEmpty {
+            descriptionItems.append(
+                .description(
+                    CollectibleDescriptionViewModel(
+                        asset
+                    )
+                )
+            )
+        }
+
+        if let account = account {
+            descriptionItems.append(
+                .information(
+                    CollectibleTransactionInformation(
+                        account: account,
+                        title: "collectible-detail-owner".localized,
+                        value: account.name.fallback(account.address.shortAddressDisplay),
+                        isCollectibleSpecificValue: false
+                    )
+                )
+            )
+        }
+
+        descriptionItems.append(
+            .information(
+                CollectibleTransactionInformation(
+                    account: nil,
+                    title: "title-asset-id".localized,
+                    value: String(asset.id),
+                    isCollectibleSpecificValue: false
+                )
+            )
+        )
+
+        if let collectionName = asset.collectionName,
+           !collectionName.isEmpty {
+            descriptionItems.append(
+                .information(
+                    CollectibleTransactionInformation(
+                        account: nil,
+                        title: "collectible-detail-collection-name".localized,
+                        value: collectionName,
+                        isCollectibleSpecificValue: true
+                    )
+                )
+            )
+        }
+
+        if let assetTitle = asset.title,
+           !assetTitle.isEmpty {
+            descriptionItems.append(
+                .information(
+                    CollectibleTransactionInformation(
+                        account: nil,
+                        title: "collectible-detail-creator-name".localized,
+                        value: assetTitle,
+                        isCollectibleSpecificValue: true
+                    )
+                )
+            )
+        }
+
+        if let creator = asset.creator?.address {
+            descriptionItems.append(
+                .information(
+                    CollectibleTransactionInformation(
+                        account: nil,
+                        title: "collectible-detail-creator-address".localized,
+                        value: creator.shortAddressDisplay,
+                        isCollectibleSpecificValue: true
+                    )
+                )
+            )
+        }
+
+        snapshot.appendSections([.description])
+        snapshot.appendItems(
+            descriptionItems,
+            toSection: .description
+        )
+    }
+
+    private func addPropertiesContent(
+        _ snapshot: inout Snapshot
+    ) {
+        if let properties = asset.properties,
+           !properties.isEmpty {
+            let propertyItems: [CollectibleDetailItem] = properties.map { .properties(CollectiblePropertyViewModel($0)) }
+
+            snapshot.appendSections([.properties])
+            snapshot.appendItems(
+                propertyItems,
+                toSection: .properties
+            )
+        }
+    }
+
+    private func addExternalSourcesContent(
+        _ snapshot: inout Snapshot
+    ) {
+        var externalSourceItems: [CollectibleDetailItem] = [
+            .external(
+                CollectibleExternalSourceViewModel(
+                    AlgoExplorerExternalSource(
+                        asset: asset.id,
+                        network: api.network
+                    )
+                )
+            )
+        ]
+
+        if !api.isTestNet {
+            externalSourceItems.append(
+                .external(
+                    CollectibleExternalSourceViewModel(
+                        NFTExplorerExternalSource(
+                            asset: asset.id,
+                            network: api.network
+                        )
+                    )
+                )
+            )
+        }
+
+        snapshot.appendSections([.external])
+        snapshot.appendItems(
+            externalSourceItems,
+            toSection: .external
+        )
+    }
+
     private func deliverSnapshot(
         _ snapshot: @escaping () -> Snapshot
     ) {

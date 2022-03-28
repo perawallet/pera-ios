@@ -23,6 +23,7 @@ final class CollectibleListItemView:
     ViewModelBindable,
     ListReusable {
     private lazy var image = URLImageView()
+    private lazy var overlay = MacaroonUIKit.BaseView()
     private lazy var titleAndSubtitleContentView = MacaroonUIKit.BaseView()
     private lazy var title = Label()
     private lazy var subtitle = Label()
@@ -119,8 +120,21 @@ extension CollectibleListItemView {
             $0.setPaddings((0, 0, .noMetric, 0))
         }
 
+        addOverlay(theme)
         addBottomLeftBadge(theme)
         addTopLeftBadge(theme)
+    }
+
+    private func addOverlay(
+        _ theme: CollectibleListItemViewTheme
+    ) {
+        overlay.customizeAppearance(theme.overlay)
+        overlay.alpha = theme.overlayAlpha
+
+        image.addSubview(overlay)
+        overlay.snp.makeConstraints {
+            $0.setPaddings()
+        }
     }
 
     private func addTitleAndSubtitleContent(
@@ -192,19 +206,6 @@ extension CollectibleListItemView {
         topLeftBadge.snp.makeConstraints {
             $0.leading == theme.topLeftBadgePaddings.leading
             $0.top == theme.topLeftBadgePaddings.top
-        }
-    }
-}
-
-extension CollectibleListItemView {
-    func configureOverlayForOptedInCell() {
-        let overlayView = MacaroonUIKit.BaseView()
-        overlayView.backgroundColor = AppColors.Shared.System.background.uiColor
-        overlayView.alpha = 0.4
-
-        image.addSubview(overlayView)
-        overlayView.snp.makeConstraints {
-            $0.setPaddings()
         }
     }
 }

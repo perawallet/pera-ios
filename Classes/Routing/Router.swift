@@ -636,25 +636,42 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-        case let .sendCollectible(draft):
-            viewController = SendCollectibleViewController(
-                draft: draft,
+        case let .collectibleDetail(asset, account):
+            viewController = CollectibleDetailViewController(
+                asset: asset,
+                account: account,
                 configuration: configuration
             )
+        case let .sendCollectible(draft, transactionController, uiInteractions):
+            let aViewController = SendCollectibleViewController(
+                draft: draft,
+                transactionController: transactionController,
+                configuration: configuration
+            )
+            aViewController.uiInteractions = uiInteractions
+            viewController = aViewController
         case let .sendCollectibleAccountList(dataController):
             viewController = SendCollectibleAccountListViewController(
                 dataController: dataController,
                 configuration: configuration
             )
-        case let .collectibleDetail(dataController):
-            viewController = CollectibleDetailViewController(
-                dataController: dataController,
-                configuration: configuration
-            )
-        case .approveCollectibleTransaction:
+        case let .approveCollectibleTransaction(draft, transactionController):
             viewController = ApproveCollectibleTransactionViewController(
+                draft: draft,
+                transactionController: transactionController,
                 configuration: configuration
             )
+        case let .shareActivity(items):
+            let activityController = UIActivityViewController(
+                activityItems: items,
+                applicationActivities: nil
+            )
+
+            activityController.excludedActivityTypes = [
+                UIActivity.ActivityType.addToReadingList
+            ]
+
+            viewController = activityController
         }
 
         return viewController as? T

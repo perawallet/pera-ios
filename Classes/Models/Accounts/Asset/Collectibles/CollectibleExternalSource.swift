@@ -15,27 +15,42 @@
 //   CollectibleExternalSource.swift
 
 import Foundation
-import MacaroonUIKit
+import UIKit
 
-enum CollectibleExternalSource {
-    case algoExplorer
-    case nftExplorer
+protocol CollectibleExternalSource {
+    var image: UIImage? { get }
+    var title: String { get }
+    var url: String? { get }
+}
 
-    var image: Image? {
-        switch self {
-        case .algoExplorer:
-            return img("icon-algo-explorer")
-        case .nftExplorer:
-            return img("icon-nft-explorer")
+struct AlgoExplorerExternalSource: CollectibleExternalSource {
+    let image = img("icon-algo-explorer")
+    let title = "collectible-detail-algo-explorer".localized
+
+    let url: String?
+
+    init(asset: AssetID, network: ALGAPI.Network) {
+        switch network {
+        case .mainnet:
+            url = "https://algoexplorer.io/asset/\(String(asset))"
+        case .testnet:
+            url = "https://testnet.algoexplorer.io/asset/\(String(asset))"
         }
     }
+}
 
-    var title: EditText? {
-        switch self {
-        case .algoExplorer:
-            return .string("collectible-detail-algo-explorer".localized)
-        case .nftExplorer:
-            return .string("collectible-detail-nft-explorer".localized)
+struct NFTExplorerExternalSource: CollectibleExternalSource {
+    let image = img("icon-nft-explorer")
+    let title = "collectible-detail-nft-explorer".localized
+
+    let url: String?
+
+    init(asset: AssetID, network: ALGAPI.Network) {
+        switch network {
+        case .mainnet:
+            url = "https://www.nftexplorer.app/asset/\(String(asset))"
+        case .testnet:
+            url = nil
         }
     }
 }

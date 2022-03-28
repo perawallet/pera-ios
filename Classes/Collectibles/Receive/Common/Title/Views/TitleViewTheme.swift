@@ -21,11 +21,13 @@ import UIKit
 struct TitleViewTheme:
     StyleSheet,
     LayoutSheet {
+
     let title: TextStyle
     var paddings: LayoutPaddings
 
     init(
-        _ family: LayoutFamily
+        _ family: LayoutFamily = LayoutFamily.getCurrentLayoutFamily(),
+        paddings: LayoutPaddings
     ) {
         self.title = [
             .font(Fonts.DMSans.medium.make(15)),
@@ -33,6 +35,13 @@ struct TitleViewTheme:
             .textOverflow(FittingText())
         ]
 
-        paddings = (0, 0, 0, 0)
+        self.paddings = paddings
+    }
+
+    init(_ family: LayoutFamily) {
+        self.init(
+            family,
+            paddings: (0, 0, 0, 0)
+        )
     }
 }

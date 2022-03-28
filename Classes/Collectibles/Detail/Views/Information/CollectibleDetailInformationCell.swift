@@ -18,12 +18,15 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectibleDetailInformationCell: CollectionCell<CollectibleDetailInformationView> {
-
+final class CollectibleDetailInformationCell:
+    CollectionCell<CollectibleTransactionInfoView>,
+    ViewModelBindable {
+    static let theme = CollectibleTransactionInfoViewTheme()
+    
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
-        contextView.customize(CollectibleDetailInformationViewTheme())
+        contextView.customize(Self.theme)
     }
 }

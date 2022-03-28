@@ -27,11 +27,16 @@ final class CollectibleAsset: Asset {
     let decimals: Int
     let usdValue: Decimal?
     let isVerified: Bool
-    let mediaType: MediaType?
-    let primaryImage: URL?
+    let thumbnailImage: URL?
+    let media: [Media]
+    let standard: CollectibleStandard?
+    let mediaType: MediaType
     let title: String?
     let collectionName: String?
     let url: String?
+    let description: String?
+    let properties: [CollectibleTrait]?
+    let explorerURL: URL?
 
     var state: AssetState = .ready
 
@@ -62,6 +67,10 @@ final class CollectibleAsset: Asset {
         return amount != 0
     }
 
+    var containsUnsupportedMedia: Bool {
+        return media.contains { !$0.type.isSupported }
+    }
+
     init(
         asset: ALGAsset,
         decoration: AssetDecoration
@@ -76,11 +85,16 @@ final class CollectibleAsset: Asset {
         self.decimals = decoration.decimals
         self.usdValue = decoration.usdValue
         self.isVerified = decoration.isVerified
-        self.mediaType = decoration.collectible?.mediaType
-        self.primaryImage = decoration.collectible?.primaryImage
+        self.thumbnailImage = decoration.collectible?.thumbnailImage
+        self.mediaType = decoration.collectible?.mediaType ?? .unknown("")
+        self.standard = decoration.collectible?.standard ?? .unknown("")
+        self.media = decoration.collectible?.media ?? []
         self.title = decoration.collectible?.title
         self.collectionName = decoration.collectible?.collectionName
         self.url = decoration.url
+        self.description = decoration.collectible?.description
+        self.properties = decoration.collectible?.properties
+        self.explorerURL = decoration.collectible?.explorerURL
     }
 }
 
@@ -101,8 +115,7 @@ extension CollectibleAsset: Comparable {
             lhs.decimals == rhs.decimals &&
             lhs.usdValue == rhs.usdValue &&
             lhs.isVerified == rhs.isVerified &&
-            lhs.mediaType == rhs.mediaType &&
-            lhs.primaryImage == rhs.primaryImage &&
+            lhs.thumbnailImage == rhs.thumbnailImage &&
             lhs.title == rhs.title &&
             lhs.collectionName == rhs.collectionName
     }

@@ -19,14 +19,15 @@ import MacaroonUIKit
 struct CollectibleDescriptionViewTheme:
     StyleSheet,
     LayoutSheet {
+    let paddings: LayoutPaddings
     let description: TextStyle
 
     init(
         _ family: LayoutFamily
     ) {
+        self.paddings = (0, 0, 12, 0)
         self.description = [
             .textAlignment(.left),
-            .font(Fonts.DMSans.regular.make(15)),
             .textColor(AppColors.Components.Text.main),
             .textOverflow(FittingText())
         ]

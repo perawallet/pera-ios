@@ -31,11 +31,13 @@ struct ApproveCollectibleTransactionViewControllerTheme:
     let spacingBetweenInfoAndSeparator: LayoutMetric
     let actionContentEdgeInsets: LayoutPaddings
     let actionCorner: Corner
+    let confirmActionIndicator: ImageStyle
     let confirmActionViewTopPadding: LayoutMetric
     let confirmAction: ButtonStyle
+    let confirmActionHeight: LayoutMetric
     let cancelAction: ButtonStyle
     let spacingBetweenActions: LayoutMetric
-    let info: ApproveCollectibleTransactionInfoViewTheme
+    let info: CollectibleTransactionInfoViewTheme
 
     init(
         _ family: LayoutFamily
@@ -60,6 +62,10 @@ struct ApproveCollectibleTransactionViewControllerTheme:
         spacingBetweenInfoAndSeparator = 20
         actionContentEdgeInsets = (14, 0, 14, 0)
         actionCorner = Corner(radius: 4)
+        confirmActionIndicator = [
+            .image("button-loading-indicator"),
+            .contentMode(.scaleAspectFit)
+        ]
         confirmActionViewTopPadding = 44
         confirmAction = [
             .title(Self.getActionTitle("collectible-approve-transaction-action-title")),
@@ -77,8 +83,9 @@ struct ApproveCollectibleTransactionViewControllerTheme:
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(AppColors.Components.Button.Secondary.background)
         ]
+        confirmActionHeight = 52
         spacingBetweenActions = 12
-        info = ApproveCollectibleTransactionInfoViewTheme()
+        info = CollectibleTransactionInfoViewTheme()
     }
 }
 

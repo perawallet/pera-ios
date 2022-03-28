@@ -30,3 +30,20 @@ final class TitleSupplementaryCell:
         contextView.customize(Self.theme)
     }
 }
+
+final class TitleSupplementaryHeader: BaseSupplementaryView<TitleView> {
+    static let theme = TitleViewTheme(paddings: (0, 24, 0, 24))
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+    }
+
+    func bindData(
+        _ viewModel: TitleViewModel
+    ) {
+        contextView.bindData(viewModel)
+    }
+}

@@ -49,7 +49,6 @@ final class CollectiblePreviewView:
     func bindData(
         _ viewModel: CollectiblePreviewViewModel?
     ) {
-
         placeholderView.bindData(viewModel)
         iconView.load(from: viewModel?.image) { [weak self] error in
             guard let self = self else {

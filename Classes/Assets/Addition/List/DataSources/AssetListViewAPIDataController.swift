@@ -27,7 +27,7 @@ final class AssetListViewAPIDataController:
 
     private var lastSnapshot: Snapshot?
 
-    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.15)
+    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
     private var ongoingEndpoint: EndpointOperatable?
 
     private let api: ALGAPI
@@ -91,7 +91,10 @@ extension AssetListViewAPIDataController {
         let searchDraft = AssetSearchQuery(status: filter, query: query, cursor: nextCursor)
 
         ongoingEndpoint =
-        api.searchAssets(searchDraft) { [weak self] response in
+        api.searchAssets(
+            searchDraft,
+            ignoreResponseOnCancelled: false
+        ) { [weak self] response in
             switch response {
             case let .success(searchResults):
                 guard let self = self else {
@@ -145,8 +148,29 @@ extension AssetListViewAPIDataController {
             var assetItems: [AssetListViewItem] = []
 
             for asset in self.assets {
-                let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
-                let assetItem: AssetListViewItem = .asset(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(standardAsset)))
+                let assetItem: AssetListViewItem
+
+                if asset.isCollectible {
+                    let collectibleAsset = CollectibleAsset(
+                        asset: ALGAsset(id: asset.id),
+                        decoration: asset
+                    )
+                    assetItem = .collectible(
+                        CollectiblePreviewViewModel(collectibleAsset)
+                    )
+
+                } else {
+                    let standardAsset = StandardAsset(
+                        asset: ALGAsset(id: asset.id),
+                        decoration: asset
+                    )
+                    assetItem = .asset(
+                        AssetPreviewViewModel(
+                            AssetPreviewModelAdapter.adapt(standardAsset)
+                        )
+                    )
+                }
+                
                 assetItems.append(assetItem)
             }
 

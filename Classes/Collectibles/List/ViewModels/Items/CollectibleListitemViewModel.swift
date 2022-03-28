@@ -49,8 +49,8 @@ extension CollectibleListItemViewModel {
             size = .resize(imageSize, .aspectFit)
         }
 
-        if let primaryImage = asset.primaryImage {
-            let prismURL = PrismURL(baseURL: primaryImage)
+        if let thumbnailImage = asset.thumbnailImage {
+            let prismURL = PrismURL(baseURL: thumbnailImage)
                 .setExpectedImageSize(imageSize)
                 .setResizeMode(.fit)
                 .build()
@@ -59,20 +59,14 @@ extension CollectibleListItemViewModel {
                 url: prismURL,
                 size: size,
                 shape: .rounded(4),
-                placeholder: ImagePlaceholder(
-                    image: nil,
-                    text: getPlaceholder(placeholder)
-                )
+                placeholder: getPlaceholder(placeholder)
             )
         }
 
         let imageSource =
         PNGImageSource(
             url: nil,
-            placeholder: ImagePlaceholder(
-                image: nil,
-                text: getPlaceholder(placeholder)
-            )
+            placeholder: getPlaceholder(placeholder)
         )
 
         return imageSource
@@ -144,11 +138,11 @@ extension CollectibleListItemViewModel {
 
     private func getPlaceholder(
         _ aPlaceholder: String
-    ) -> EditText {
+    ) -> ImagePlaceholder {
         let font = Fonts.DMSans.regular.make(13)
         let lineHeightMultiplier = 1.18
 
-        return .attributedString(
+        let placeholderText: EditText = .attributedString(
             aPlaceholder.attributed([
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
@@ -158,6 +152,11 @@ extension CollectibleListItemViewModel {
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])
+        )
+
+        return ImagePlaceholder(
+            image: nil,
+            text: placeholderText
         )
     }
 }

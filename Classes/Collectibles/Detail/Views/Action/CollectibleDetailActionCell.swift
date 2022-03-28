@@ -18,12 +18,16 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectibleDetailActionCell: CollectionCell<CollectibleDetailActionView> {
+final class CollectibleDetailActionCell:
+    CollectionCell<CollectibleDetailActionView>,
+    ViewModelBindable,
+    UIInteractionObservable {
+    static let theme = CollectibleDetailActionViewTheme()
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
-        contextView.customize(CollectibleDetailNonWatchAccountActionViewTheme())
+        contextView.customize(Self.theme)
     }
 }

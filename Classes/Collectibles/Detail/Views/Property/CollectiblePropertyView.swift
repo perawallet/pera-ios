@@ -19,12 +19,19 @@ import MacaroonUIKit
 
 final class CollectiblePropertyView:
     View,
-    ListReusable {
+    ListReusable,
+    ViewModelBindable {
+    private lazy var contentView = UIView()
+    private lazy var nameLabel = Label()
+    private lazy var valueLabel = Label()
 
     func customize(
         _ theme: CollectiblePropertyViewTheme
     ) {
+        layer.draw(border: theme.border)
+        layer.draw(corner: theme.corner)
 
+        addContentView(theme)
     }
 
     func customizeAppearance(
@@ -34,4 +41,77 @@ final class CollectiblePropertyView:
     func prepareLayout(
         _ layoutSheet: NoLayoutSheet
     ) {}
+}
+
+extension CollectiblePropertyView {
+    private func addContentView(_ theme: CollectiblePropertyViewTheme) {
+        contentView.fitToIntrinsicSize()
+
+        addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.top.bottom.equalToSuperview().inset(theme.verticallInset)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
+        }
+
+        addNameLabel(theme)
+        addValueLabel(theme)
+    }
+
+    private func addNameLabel(_ theme: CollectiblePropertyViewTheme) {
+        nameLabel.customizeAppearance(theme.name)
+
+        contentView.addSubview(nameLabel)
+        nameLabel.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.trailing == 0
+        }
+    }
+
+    private func addValueLabel(_ theme: CollectiblePropertyViewTheme) {
+        valueLabel.customizeAppearance(theme.value)
+
+        contentView.addSubview(valueLabel)
+        valueLabel.snp.makeConstraints {
+            $0.top == nameLabel.snp.bottom + theme.labelPadding
+            $0.leading == 0
+            $0.trailing == 0
+            $0.bottom.lessThanOrEqualToSuperview()
+        }
+    }
+}
+
+extension CollectiblePropertyView {
+    func bindData(_ viewModel: CollectiblePropertyViewModel?) {
+        nameLabel.editText = viewModel?.name
+        valueLabel.editText = viewModel?.value
+    }
+
+    class func calculatePreferredSize(
+        _ viewModel: CollectiblePropertyViewModel?,
+        for theme: CollectiblePropertyViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((0, size.height))
+        }
+
+        let height = size.height
+        let horizontalInset = theme.horizontalInset * 2
+        let verticalInset = theme.verticallInset * 2 + theme.labelPadding
+        let nameSize = viewModel.name.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((.greatestFiniteMagnitude, height - verticalInset))
+        )
+        let valueSize = viewModel.value.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((.greatestFiniteMagnitude, height - verticalInset))
+        )
+
+        let contentWidth =
+            max(nameSize.width, valueSize.width) +
+            horizontalInset
+        
+        return CGSize((contentWidth, height))
+    }
 }

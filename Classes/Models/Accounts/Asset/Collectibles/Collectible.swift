@@ -19,65 +19,77 @@ import MagpieCore
 import MacaroonUtils
 
 final class Collectible: ALGEntityModel {
+    let standard: CollectibleStandard?
     let mediaType: MediaType
-    let primaryImage: URL?
-    let video: URL?
+    let thumbnailImage: URL?
     let title: String?
     let collectionName: String?
+    let explorerURL: URL?
+    let media: [Media]
     let description: String?
-    let traits: [CollectibleTrait]?
+    let properties: [CollectibleTrait]?
 
     init(
         _ apiModel: APIModel = APIModel()
     ) {
+        self.standard = apiModel.standard
         self.mediaType = apiModel.mediaType
-        self.primaryImage = apiModel.primaryImage
-        self.video = apiModel.video
+        self.thumbnailImage = apiModel.primaryImage
         self.title = apiModel.title
         self.collectionName = apiModel.collectionName
+        self.explorerURL = apiModel.explorerURL
+        self.media = apiModel.media.unwrapMap(Media.init)
         self.description = apiModel.description
-        self.traits = apiModel.traits
+        self.properties = apiModel.traits
     }
 
     func encode() -> APIModel {
         var apiModel = APIModel()
+        apiModel.standard = standard
         apiModel.mediaType = mediaType
-        apiModel.primaryImage = primaryImage
-        apiModel.video = video
+        apiModel.primaryImage = thumbnailImage
         apiModel.title = title
         apiModel.collectionName = collectionName
+        apiModel.explorerURL = explorerURL
+        apiModel.media = media.map { $0.encode() }
         apiModel.description = description
-        apiModel.traits = traits
+        apiModel.traits = properties
         return apiModel
     }
 }
 
 extension Collectible {
     struct APIModel: ALGAPIModel {
+        var standard: CollectibleStandard?
         var mediaType: MediaType
         var primaryImage: URL?
-        var video: URL?
         var title: String?
         var collectionName: String?
+        var explorerURL: URL?
+        var media: [Media.APIModel]?
         var description: String?
         var traits: [CollectibleTrait]?
 
         init() {
+            self.standard = nil
             self.mediaType = .init()
             self.primaryImage = nil
-            self.video = nil
             self.title = nil
             self.collectionName = nil
+            self.explorerURL = nil
+            self.media = []
             self.description = nil
             self.traits = nil
         }
 
         private enum CodingKeys: String, CodingKey {
+            case standard
             case mediaType = "media_type"
             case primaryImage = "primary_image"
-            case video
             case title
             case collectionName = "collection_name"
+            case explorerURL = "explorer_url"
+            case media
             case description
             case traits
         }
@@ -91,18 +103,20 @@ enum MediaType:
     Equatable {
     case image
     case video
+    case mixed
     case unknown(String)
 
     var rawValue: String {
         switch self {
         case .image: return "image"
         case .video: return "video"
+        case .mixed: return "mixed"
         case .unknown(let aRawValue): return aRawValue
         }
     }
 
     static var allCases: [Self] = [
-        .image, .video
+        .image, .video, .mixed
     ]
 
     init() {
@@ -122,5 +136,38 @@ enum MediaType:
         }
 
         return true
+    }
+}
+
+enum CollectibleStandard:
+    RawRepresentable,
+    CaseIterable,
+    Codable,
+    Equatable {
+    case arc3
+    case arc69
+    case unknown(String)
+
+    var rawValue: String {
+        switch self {
+        case .arc3: return "arc3"
+        case .arc69: return "arc69"
+        case .unknown(let aRawValue): return aRawValue
+        }
+    }
+
+    static var allCases: [Self] = [
+        .arc3, .arc69
+    ]
+
+    init() {
+        self = .unknown("")
+    }
+
+    init?(
+        rawValue: String
+    ) {
+        let foundCase = Self.allCases.first { $0.rawValue == rawValue }
+        self = foundCase ?? .unknown(rawValue)
     }
 }

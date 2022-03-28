@@ -19,10 +19,36 @@ import MacaroonUIKit
 struct CollectiblePropertyViewTheme:
     StyleSheet,
     LayoutSheet {
+    let name: TextStyle
+    let value: TextStyle
+    let corner: Corner
+    let border: Border
+
+    let horizontalInset: LayoutMetric
+    let verticallInset: LayoutMetric
+    let labelPadding: LayoutMetric
 
     init(
         _ family: LayoutFamily
     ) {
+        self.name = [
+            .textOverflow(SingleLineFittingText()),
+            .textAlignment(.left),
+            .textColor(AppColors.Components.Text.gray.uiColor)
+        ]
+        self.value = [
+            .textOverflow(SingleLineFittingText()),
+            .textAlignment(.left),
+            .textColor(AppColors.Components.Text.main.uiColor)
+        ]
+        self.corner = Corner(radius: 8)
+        self.border = Border(
+            color: AppColors.Shared.Layer.grayLighter.uiColor,
+            width: 2
+        )
 
+        self.horizontalInset = 16
+        self.verticallInset = 8
+        self.labelPadding = 4
     }
 }

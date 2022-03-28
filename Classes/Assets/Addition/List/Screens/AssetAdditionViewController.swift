@@ -243,7 +243,18 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
             return
         }
 
-        delegate?.assetAdditionViewController(self, didAdd: assetDetail)
+        if assetDetail.isCollectible {
+            NotificationCenter.default.post(
+                name: CollectibleListLocalDataController.didAddPendingCollectible,
+                object: self,
+                userInfo: [
+                    CollectibleListLocalDataController.assetUserInfoKey: assetDetail
+                ]
+            )
+        } else {
+            delegate?.assetAdditionViewController(self, didAdd: assetDetail)
+        }
+
         popScreen()
     }
 

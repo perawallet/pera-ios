@@ -119,14 +119,23 @@ indirect enum Screen {
         account: AccountHandle,
         dataController: ReceiveCollectibleAssetListDataController
     )
+    case collectibleDetail(
+        asset: CollectibleAsset,
+        account: Account?
+    )
     case sendCollectible(
-        draft: SendCollectibleDraft
+        draft: SendCollectibleDraft,
+        transactionController: TransactionController,
+        uiInteractionsHandler: SendCollectibleViewController.SendCollectibleUIInteractions
     )
     case sendCollectibleAccountList(
         dataController: SendCollectibleAccountListDataController
     )
-    case collectibleDetail(dataController: CollectibleDetailDataController)
-    case approveCollectibleTransaction
+    case approveCollectibleTransaction(
+        draft: SendCollectibleDraft,
+        transactionController: TransactionController
+    )
+    case shareActivity(items: [Any])
 }
 
 extension Screen {

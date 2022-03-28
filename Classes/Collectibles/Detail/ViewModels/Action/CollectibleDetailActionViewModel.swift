@@ -17,6 +17,79 @@
 import Foundation
 import MacaroonUIKit
 
-struct CollectibleDetailActionViewModel: ViewModel {
+struct CollectibleDetailActionViewModel:
+    ViewModel,
+    Hashable {
+    private(set) var title: EditText?
+    private(set) var subtitle: EditText?
+    private(set) var canTransfer: Bool = true
 
+    init(
+        asset: CollectibleAsset,
+        account: Account?
+    ) {
+        bindTitle(asset)
+        bindSubtitle(asset)
+        bindCanTransfer(account)
+    }
+}
+
+extension CollectibleDetailActionViewModel {
+    private mutating func bindTitle(
+        _ asset: CollectibleAsset
+    ) {
+        guard let collectionName = asset.collectionName,
+              !collectionName.isEmptyOrBlank else {
+                  return
+              }
+
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        title = .attributedString(
+            collectionName
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.left)
+                    ])
+                ])
+        )
+    }
+
+    private mutating func bindSubtitle(
+        _ asset: CollectibleAsset
+    ) {
+        let aSubtitle = asset.title.fallback(asset.name.fallback("#".appending(String(asset.id))))
+
+        let font = Fonts.DMSans.medium.make(19)
+        let lineHeightMultiplier = 1.13
+
+        subtitle = .attributedString(
+            aSubtitle
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.left)
+                    ])
+                ])
+        )
+    }
+
+    private mutating func bindCanTransfer(
+        _ account: Account?
+    ) {
+        if let account = account {
+            canTransfer = !account.isWatchAccount()
+            return
+        }
+
+        canTransfer = false
+    }
 }

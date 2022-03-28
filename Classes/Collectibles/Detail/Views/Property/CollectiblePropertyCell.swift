@@ -18,12 +18,15 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class CollectiblePropertyCell: CollectionCell<CollectiblePropertyView> {
+final class CollectiblePropertyCell:
+    CollectionCell<CollectiblePropertyView>,
+    ViewModelBindable {
+    static let theme = CollectiblePropertyViewTheme()
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
-        contextView.customize(CollectiblePropertyViewTheme())
+        contextView.customize(Self.theme)
     }
 }
