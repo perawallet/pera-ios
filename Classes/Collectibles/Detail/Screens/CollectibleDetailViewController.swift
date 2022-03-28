@@ -277,7 +277,7 @@ extension CollectibleDetailViewController {
             let draft = SendCollectibleDraft(
                 fromAccount: self.account!,
                 collectibleAsset: asset,
-                image: nil /// Pass the image so we will not load.
+                image: self.mediaPreviewController.getExistingImage()
             )
 
             self.open(

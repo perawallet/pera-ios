@@ -12,25 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AccountPreviewCollectionCell.swift
+//   SendCollectibleAccountPreviewCell.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
+import CoreGraphics
 
-final class AccountPreviewCell:
+final class SendCollectibleAccountPreviewCell:
     CollectionCell<AccountPreviewView>,
     ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return (14, 0, 14, 0)
+    var isPreviouslySelected: Bool = false {
+        didSet {
+            recustomizeAppearanceWhenSelectedStateDidChange()
+        }
     }
-    
+
+    override class var contextPaddings: LayoutPaddings {
+        return (14, 24, 14, 24)
+    }
+
     static let theme = AccountPreviewViewTheme()
-    
+
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
+    }
+
+    private func recustomizeAppearanceWhenSelectedStateDidChange() {
+        backgroundColor = isPreviouslySelected ? AppColors.Shared.Layer.grayLighter.uiColor : .clear
     }
 }

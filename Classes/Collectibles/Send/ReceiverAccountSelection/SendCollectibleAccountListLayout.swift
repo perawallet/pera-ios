@@ -65,10 +65,14 @@ extension SendCollectibleAccountListLayout {
         case .accounts:
             insets.top = 36
             insets.bottom = 8
+            insets.left = 0
+            insets.right = 0
             return insets
         case .contacts:
             insets.top = 36
             insets.bottom = 8
+            insets.left = 0
+            insets.right = 0
             return insets
         }
     }
@@ -86,10 +90,9 @@ extension SendCollectibleAccountListLayout {
         case .empty(let item):
             switch item {
             case .loading:
-                return listView(
+                return sizeForLoadingItem(
                     collectionView,
-                    layout: collectionViewLayout,
-                    sizeForAccountItem: nil
+                    layout: collectionViewLayout
                 )
             case .noContent:
                 return sizeForSearchNoContent(
@@ -102,13 +105,13 @@ extension SendCollectibleAccountListLayout {
                 layout: collectionViewLayout,
                 sizeForHeaderItem: item
             )
-        case .account(let item):
+        case .account(let item, _):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
                 sizeForAccountItem: item
             )
-        case .contact(let item):
+        case .contact(let item, _):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
@@ -134,6 +137,34 @@ extension SendCollectibleAccountListLayout {
             item,
             for: NoContentCell.theme,
             fittingIn:  CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func sizeForLoadingItem(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout
+    ) -> CGSize {
+        let sizeCacheIdentifier = PreviewLoadingCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+        let sampleAccountPreview = CustomAccountPreview(
+            icon: "standard-orange".uiImage,
+            title: "title-unknown".localized,
+            subtitle: nil
+        )
+        let sampleAccountItem = AccountPreviewViewModel(sampleAccountPreview)
+        let newSize = SendCollectibleAccountPreviewCell.calculatePreferredSize(
+            sampleAccountItem,
+            for: SendCollectibleAccountPreviewCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
         sizeCache[sizeCacheIdentifier] = newSize
@@ -169,22 +200,22 @@ extension SendCollectibleAccountListLayout {
         layout listViewLayout: UICollectionViewLayout,
         sizeForAccountItem item: AccountPreviewViewModel?
     ) -> CGSize {
-        let sizeCacheIdentifier = AccountPreviewCell.reuseIdentifier
+        let sizeCacheIdentifier = SendCollectibleAccountPreviewCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
-        let width = calculateContentWidth(for: listView)
+        let width = listView.bounds.width
         let sampleAccountPreview = CustomAccountPreview(
             icon: "standard-orange".uiImage,
             title: "title-unknown".localized,
             subtitle: nil
         )
         let sampleAccountItem = AccountPreviewViewModel(sampleAccountPreview)
-        let newSize = AccountPreviewCell.calculatePreferredSize(
+        let newSize = SendCollectibleAccountPreviewCell.calculatePreferredSize(
             sampleAccountItem,
-            for: AccountPreviewCell.theme,
+            for: SendCollectibleAccountPreviewCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -198,17 +229,17 @@ extension SendCollectibleAccountListLayout {
         layout listViewLayout: UICollectionViewLayout,
         sizeForContactItem item: ContactsViewModel
     ) -> CGSize {
-        let sizeCacheIdentifier = SelectContactCell.reuseIdentifier
+        let sizeCacheIdentifier = SendCollectibleContactCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
-        let width = calculateContentWidth(for: listView)
+        let width = listView.bounds.width
 
-        let newSize = SelectContactCell.calculatePreferredSize(
+        let newSize = SendCollectibleContactCell.calculatePreferredSize(
             item,
-            for: SelectContactCell.theme,
+            for: SendCollectibleContactCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 

@@ -21,33 +21,52 @@ import MacaroonURLImage
 import Prism
 
 struct SendCollectibleViewModel: ViewModel {
+    private(set) var existingImage: UIImage?
     private(set) var image: ImageSource?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
 
-    init(
+    init<T>(
         imageSize: CGSize,
-        draft: SendCollectibleDraft
+        draft: T
     ) {
-        bind(imageSize: imageSize, model: draft.collectibleAsset)
+        bind(imageSize: imageSize, draft: draft)
     }
 }
 
 extension SendCollectibleViewModel {
     mutating func bind<T>(
         imageSize: CGSize,
-        model: T
+        draft: T
     ) {
-        if let asset = model as? CollectibleAsset {
-            bindImage(imageSize: imageSize, asset: asset)
-            bindTitle(asset)
-            bindSubtitle(asset)
+        if let draft = draft as? SendCollectibleDraft {
+
+            if let existingImage = draft.image {
+                bindExistingImage(
+                    existingImage
+                )
+            } else {
+                bindImage(
+                    imageSize: imageSize,
+                    asset: draft.collectibleAsset
+                )
+            }
+
+            bindTitle(draft.collectibleAsset)
+            bindSubtitle(draft.collectibleAsset)
+
             return
         }
     }
 }
 
 extension SendCollectibleViewModel {
+    private mutating func bindExistingImage(
+        _ image: UIImage
+    ) {
+        self.existingImage = image
+    }
+
     private mutating func bindImage(
         imageSize: CGSize,
         asset: CollectibleAsset

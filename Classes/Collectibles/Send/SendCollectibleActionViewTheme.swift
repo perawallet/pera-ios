@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SendCollectibleBottomSheetViewTheme.swift
+//   SendCollectibleActionViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct SendCollectibleBottomSheetViewTheme:
+struct SendCollectibleActionViewTheme:
     StyleSheet,
     LayoutSheet {
     let content: ViewStyle
@@ -132,7 +132,7 @@ struct SendCollectibleBottomSheetViewTheme:
     }
 }
 
-extension SendCollectibleBottomSheetViewTheme {
+extension SendCollectibleActionViewTheme {
     private static func getTitle(
         _ title: String
     ) -> EditText {

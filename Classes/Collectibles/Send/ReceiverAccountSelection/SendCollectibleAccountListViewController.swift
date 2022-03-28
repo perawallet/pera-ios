@@ -307,14 +307,14 @@ extension SendCollectibleAccountListViewController {
         }
 
         switch itemIdentifier {
-        case .account(let item):
+        case .account(let item, _):
             guard let address = item.address,
                   let account = dataController[accountAddress: address] else {
                 return
             }
 
             eventHandler?(.didSelectAccount(account))
-        case .contact(let item):
+        case .contact(let item, _):
             guard let address = item.fullAddress,
                   let contact = dataController[contactAddress: address] else {
                 return

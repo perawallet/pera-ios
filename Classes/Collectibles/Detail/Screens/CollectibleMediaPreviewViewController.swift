@@ -24,6 +24,9 @@ final class CollectibleMediaPreviewViewController:
 
     var eventHandler: ((Event) -> Void)?
 
+    private typealias Index = Int
+    private var existingImages: [Index: UIImage?]?
+
     private lazy var listView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
@@ -98,6 +101,10 @@ final class CollectibleMediaPreviewViewController:
         super.linkInteractors()
         listView.delegate = self
         listView.dataSource = dataSource
+
+        if let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer {
+            listView.panGestureRecognizer.require(toFail: interactivePopGestureRecognizer)
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -147,6 +154,14 @@ extension CollectibleMediaPreviewViewController {
         configurePageControl()
     }
 
+    func getExistingImage() -> UIImage? {
+        if let image = existingImages?[selectedIndex] {
+            return image
+        }
+
+        return nil
+    }
+
     private func configurePageControl() {
         if asset.media.count > 1 {
             pageControl.numberOfPages = asset.media.count
@@ -171,11 +186,27 @@ extension CollectibleMediaPreviewViewController {
         willDisplay cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        guard let cell = cell as? CollectibleMediaVideoPreviewCell else {
+        guard let media = asset.media[safe: indexPath.item] else {
             return
         }
 
-        cell.playVideo()
+        switch media.type {
+        case .image:
+            let cell = cell as? CollectibleMediaImagePreviewCell
+            cell?.handlers.didLoadImage = {
+                [weak self] image in
+                guard let self = self else {
+                    return
+                }
+
+                self.existingImages = [indexPath.item: image]
+            }
+        case .video:
+            let cell = cell as? CollectibleMediaVideoPreviewCell
+            cell?.playVideo()
+        default:
+            break
+        }
     }
 
     func collectionView(
@@ -183,11 +214,17 @@ extension CollectibleMediaPreviewViewController {
         didEndDisplaying cell: UICollectionViewCell,
         forItemAt indexPath: IndexPath
     ) {
-        guard let cell = cell as? CollectibleMediaVideoPreviewCell else {
+        guard let media = asset.media[safe: indexPath.item] else {
             return
         }
 
-        cell.stopVideo()
+        switch media.type {
+        case .video:
+            let cell = cell as? CollectibleMediaVideoPreviewCell
+            cell?.stopVideo()
+        default:
+            break
+        }
     }
 
     func collectionView(
