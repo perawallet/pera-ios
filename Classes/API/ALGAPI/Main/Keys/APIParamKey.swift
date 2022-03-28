@@ -70,4 +70,6 @@ enum APIParamKey: String, CodingKey {
     case interval = "interval"
     case includesAll = "include-all"
     case hasCollectible = "has_collectible"
+    case walletAddress = "wallet_address"
+    case redirectUrl = "redirect_url"
 }

@@ -136,6 +136,11 @@ indirect enum Screen {
         transactionController: TransactionController
     )
     case shareActivity(items: [Any])
+    case buyAlgoHome(
+        transactionDraft: BuyAlgoDraft,
+        delegate: BuyAlgoHomeScreenDelegate?
+    )
+    case buyAlgoTransaction(buyAlgoParams: BuyAlgoParams)
 }
 
 extension Screen {

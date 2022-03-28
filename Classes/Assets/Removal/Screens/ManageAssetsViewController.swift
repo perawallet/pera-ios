@@ -25,10 +25,10 @@ final class ManageAssetsViewController: BaseViewController {
 
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
     
-    private lazy var manageAssetsView = ManageAssetsView()
+    private lazy var contextView = ManageAssetsView()
     
     private var account: Account
-
+    
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
     private lazy var transactionController: TransactionController = {
@@ -48,23 +48,35 @@ final class ManageAssetsViewController: BaseViewController {
         addBarButtons()
     }
     
-    override func setListeners() {
-        manageAssetsView.assetsCollectionView.delegate = self
-        manageAssetsView.assetsCollectionView.dataSource = self
+    override func linkInteractors() {
+        contextView.assetsCollectionView.delegate = self
+        contextView.assetsCollectionView.dataSource = self
+        contextView.setSearchInputDelegate(self)
         transactionController.delegate = self
     }
     
     override func prepareLayout() {
-        view.addSubview(manageAssetsView)
-        manageAssetsView.snp.makeConstraints {
+        contextView.customize(theme.contextViewTheme)
+        
+        view.addSubview(contextView)
+        contextView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        fetchAssets()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         transactionController.stopBLEScan()
         transactionController.stopTimer()
+    }
+    
+    override func configureAppearance() {
+        contextView.updateContentStateView()
     }
 }
 
@@ -86,9 +98,10 @@ extension ManageAssetsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let asset = account.allAssets[indexPath.item]
-        let cell = collectionView.dequeue(AssetPreviewActionCell.self, at: indexPath)
-        cell.customize(theme.assetPreviewActionViewTheme)
-        cell.bindData(AssetPreviewViewModel(AssetPreviewModelAdapter.adapt(asset)))
+        let cell = collectionView.dequeue(AssetPreviewDeleteCell.self, at: indexPath)
+        let assetPreviewModel = AssetPreviewModelAdapter.adapt((asset))
+        cell.customize(theme.assetPreviewDeleteViewTheme)
+        cell.bindData(AssetPreviewViewModel(assetPreviewModel))
         cell.delegate = self
         return cell
     }
@@ -104,16 +117,55 @@ extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
-    func assetPreviewSendCellDidTapSendButton(_ assetPreviewSendCell: AssetPreviewActionCell) {
-        guard let index = manageAssetsView.assetsCollectionView.indexPath(for: assetPreviewSendCell),
-              index.item < account.allAssets.count else {
+extension ManageAssetsViewController {
+    private func fetchAssets() {
+        listItems = account.allAssets
+        reloadAssets()
+    }
+    
+    private func reloadAssets() {
+        contextView.assetsCollectionView.reloadData()
+        contextView.updateContentStateView()
+    }
+    
+    private func filterData(with query: String) {
+        listItems = account.compoundAssets.filter {
+            String($0.id).contains(query) ||
+            $0.detail.name.unwrap(or: "").containsCaseInsensitive(query) ||
+            $0.detail.unitName.unwrap(or: "").containsCaseInsensitive(query)
+        }
+        reloadAssets()
+    }
+}
+
+extension ManageAssetsViewController: SearchInputViewDelegate {
+    func searchInputViewDidEdit(_ view: SearchInputView) {
+        guard let query = view.text,
+              !query.isEmpty else {
+                  fetchAssets()
                   return
-              }
+        }
+        filterData(with: query)
+    }
+    
+    func searchInputViewDidReturn(_ view: SearchInputView) {
+        view.endEditing()
+    }
+}
 
-        let asset = account.allAssets[index.item]
-        let assetDecoration = AssetDecoration(asset: asset)
-
+extension ManageAssetsViewController: AssetPreviewDeleteCellDelegate {
+    func assetPreviewDeleteCellDidDelete(_ assetPreviewDeleteCell: AssetPreviewDeleteCell) {
+        guard let indexPath = contextView.assetsCollectionView.indexPath(for: assetPreviewDeleteCell),
+              let asset = listItems[safe: indexPath.item] else {
+                  return
+        }
+        
+        showAlertToDelete(asset)
+    }
+    
+    private func showAlertToDelete(_ asset: CompoundAsset) {
+        let assetDetail = asset.detail
+        let assetAmount = account.amount(for: assetDetail)
         let assetAlertDraft: AssetAlertDraft
 
         if isValidAssetDeletion(asset) {
@@ -145,7 +197,7 @@ extension ManageAssetsViewController: AssetPreviewActionCellDelegate {
                 cancelTitle: "title-keep".localized
             )
         }
-
+        
         assetActionConfirmationTransition.perform(
             .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
             by: .presentWithoutNavigationController
@@ -304,17 +356,6 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         return draft?.assetIndex.unwrap { account[$0] }
     }
 }
-
-//extension ManageAssetsViewController: SendAssetTransactionPreviewViewControllerDelegate {
-//    func sendAssetTransactionPreviewViewController(
-//        _ viewController: SendAssetTransactionPreviewViewController,
-//        didCompleteTransactionFor assetDetail: AssetDetail
-//    ) {
-//        removeAssetFromAccount(assetDetail)
-//        delegate?.manageAssetsViewController(self, didRemove: assetDetail, from: account)
-//        closeScreen(by: .dismiss, animated: false)
-//    }
-//}
 
 protocol ManageAssetsViewControllerDelegate: AnyObject {
     func manageAssetsViewController(

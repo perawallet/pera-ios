@@ -27,11 +27,14 @@ final class SelectAccountAPIDataController:
 
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.selectAccountDataController")
+    private let transactionAction: TransactionAction
 
     init(
-        _ sharedDataController: SharedDataController
+        _ sharedDataController: SharedDataController,
+        transactionAction: TransactionAction
     ) {
         self.sharedDataController = sharedDataController
+        self.transactionAction = transactionAction
     }
 
     deinit {
@@ -106,19 +109,29 @@ extension SelectAccountAPIDataController {
             let currency = self.sharedDataController.currency
             let calculator = ALGPortfolioCalculator()
 
-            filteredAccounts
-                .forEach {
-                    let accountPortfolio =
-                        AccountPortfolio(account: $0, currency: currency, calculator: calculator)
-                    
-                    let cellItem: SelectAccountListViewItem = .account(
-                        AccountPreviewViewModel(
-                            accountPortfolio
-                        ),
-                        $0
-                    )
+            self.sharedDataController.accountCollection
+                .sorted()
+                .forEach { accountHandle in
+                    let isWatchAccount = accountHandle.value.type == .watch
 
-                    accounts.append($0)
+                    if isWatchAccount {
+                        return
+                    }
+
+                    let cellItem: SelectAccountListViewItem
+
+                    if self.transactionAction == .buyAlgo {
+                        let algoAccount = CustomAccountPreview(AlgoAccountViewModel(accountHandle.value))
+
+                        cellItem = .account(AccountPreviewViewModel(algoAccount), accountHandle)
+                    } else {
+                        let accountPortfolio =
+                            AccountPortfolio(account: accountHandle, currency: currency, calculator: calculator)
+
+                        cellItem = .account(AccountPreviewViewModel(accountPortfolio), accountHandle)
+                    }
+
+                    accounts.append(accountHandle)
                     accountItems.append(cellItem)
                 }
 
