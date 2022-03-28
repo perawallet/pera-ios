@@ -28,6 +28,7 @@ protocol HomeDataController: AnyObject {
     func load()
     func reload()
     func fetchBanners()
+    func dismissBanner()
 }
 
 enum HomeSection:
@@ -37,6 +38,7 @@ enum HomeSection:
     case loading
     case portfolio
     case announcement
+    case buyAlgo
     case accounts
     case watchAccounts
 }
@@ -46,6 +48,8 @@ enum HomeItem: Hashable {
     case portfolio(HomePortfolioViewModel)
     case announcement(AnnouncementBannerViewModel)
     case account(HomeAccountItem)
+    case banner(HomeBannerViewModel)
+    case buyAlgo
 }
 
 enum HomeEmptyItem: Hashable {

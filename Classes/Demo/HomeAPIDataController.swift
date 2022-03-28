@@ -27,7 +27,7 @@ final class HomeAPIDataController:
     private let sharedDataController: SharedDataController
     private let bannerDataController: HomeBannerAPIDataController
     
-    private var banners: [Banner] = []
+    private var banner: Banner?
     
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.homeDataController")
     
@@ -62,6 +62,19 @@ extension HomeAPIDataController {
     
     func fetchBanners() {
         bannerDataController.loadData()
+    }
+
+    func dismissBanner() {
+        defer {
+            self.banner = nil
+            reload()
+        }
+
+        guard let banner = self.banner else {
+            return
+        }
+
+        bannerDataController.dismissBanner(banner)
     }
 }
 
@@ -154,6 +167,19 @@ extension HomeAPIDataController {
                 [.portfolio(portfolioItem)],
                 toSection: .portfolio
             )
+
+            if let banner = self.banner {
+                snapshot.appendSections([.announcement])
+
+                let bannerItem = HomeBannerViewModel(banner)
+                snapshot.appendItems([.banner(bannerItem)], toSection: .announcement)
+            }
+
+            /// note: If accounts empty which means there is no any authenticated account, buy button will be hidden
+            if !accounts.isEmpty {
+                snapshot.appendSections([.buyAlgo])
+                snapshot.appendItems([.buyAlgo], toSection: .buyAlgo)
+            }
             
             if !accounts.isEmpty {
                 let headerItem: HomeAccountItem =
@@ -227,7 +253,7 @@ extension HomeAPIDataController {
 }
 
 extension HomeAPIDataController: HomeBannerAPIDataControllerDelegate {
-    func homeBannerAPIDataController(_ dataController: HomeBannerAPIDataController, didFetch bannerList: BannerList) {
-        self.banners = bannerList.results
+    func homeBannerAPIDataController(_ dataController: HomeBannerAPIDataController, didFetch banner: Banner) {
+        self.banner = banner
     }
 }

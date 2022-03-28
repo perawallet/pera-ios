@@ -218,12 +218,38 @@ extension HomeViewController {
                 by: .presentWithoutNavigationController
             )
         }
+    }
 
+    private func linkInteractors(
+        _ cell: BuyAlgoCell
+    ) {
         cell.observe(event: .buyAlgo) {
             [weak self] in
             guard let self = self else { return }
 
             self.launchBuyAlgo()
+        }
+    }
+
+    private func linkInteractors(
+        _ cell: HomeBannerCell,
+        for item: HomeBannerViewModel
+    ) {
+        cell.observe(event: .close) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.dataController.dismissBanner()
+        }
+
+        cell.observe(event: .action) {
+            [weak self] in
+            guard let self = self else { return }
+
+
+            if let url = item.ctaUrl {
+                self.open(url)
+            }
         }
     }
     
@@ -531,6 +557,10 @@ extension HomeViewController {
             default:
                 break
             }
+        case .buyAlgo:
+            linkInteractors(cell as! BuyAlgoCell)
+        case .banner(let item):
+            linkInteractors(cell as! HomeBannerCell, for: item)
         default:
             break
         }

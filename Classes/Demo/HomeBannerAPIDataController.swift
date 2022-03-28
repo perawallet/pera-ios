@@ -43,12 +43,20 @@ final class HomeBannerAPIDataController {
                 ///  If we support error handling necessary views, delegate will be called with errors
                 break
             case .success(let bannerList):
-                self.delegate?.homeBannerAPIDataController(self, didFetch: bannerList)
+                if let banner = bannerList.results.first(where: { banner in
+                    return !self.session.hasRememberState(for: .banner(id: banner.id))
+                }) {
+                    self.delegate?.homeBannerAPIDataController(self, didFetch: banner)
+                }
             }
         }
+    }
+
+    func dismissBanner(_ banner: Banner) {
+        session.saveRememberState(.banner(id: banner.id))
     }
 }
 
 protocol HomeBannerAPIDataControllerDelegate: AnyObject {
-    func homeBannerAPIDataController(_ dataController: HomeBannerAPIDataController, didFetch bannerList: BannerList)
+    func homeBannerAPIDataController(_ dataController: HomeBannerAPIDataController, didFetch banner: Banner)
 }

@@ -12,22 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   GenericBannerCell.swift
+//   HomeBannerCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class GenericBannerCell:
-    CollectionCell<HomePortfolioView>,
+final class HomeBannerCell:
+    CollectionCell<HomeBannerView>,
     ViewModelBindable,
     UIInteractionObservable {
-    static let theme = HomePortfolioViewTheme()
-    
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
+
+    func customize(_ theme: HomeBannerViewTheme) {
+        contextView.customize(theme)
     }
 }

@@ -61,12 +61,13 @@ extension HomeListLayout {
         case .empty:
             return insets
         case .loading:
-            insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 72
+            insets.top = 72
             return insets
         case .portfolio:
-            insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 72
+            insets.top = 72
             return insets
         case .announcement:
+            insets.top = 36
             return insets
         case .accounts:
             insets.top = 36
@@ -75,6 +76,9 @@ extension HomeListLayout {
         case .watchAccounts:
             insets.top = 24
             insets.bottom = 8
+            return insets
+        case .buyAlgo:
+            insets.top = sectionIdentifiers.contains(.announcement) ? 24 : 44
             return insets
         }
     }
@@ -109,6 +113,17 @@ extension HomeListLayout {
                 collectionView,
                 layout: collectionViewLayout,
                 sizeForAccountItem: item
+            )
+        case .banner(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForBannerCellItem: item
+            )
+        case .buyAlgo:
+            return listViewBuyAlgo(
+                collectionView,
+                layout: collectionViewLayout
             )
         }
     }
@@ -228,6 +243,40 @@ extension HomeListLayout {
         sizeCache[sizeCacheIdentifier] = newSize
         
         return newSize
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForBannerCellItem item: HomeBannerViewModel
+    ) -> CGSize {
+        let width = calculateContentWidth(for: listView)
+
+        let theme: HomeBannerViewTheme
+
+        if item.isGeneric {
+            theme = GenericBannerViewTheme()
+        } else {
+            theme = GovernanceBannerViewTheme()
+        }
+
+        return HomeBannerView.calculatePreferredSize(
+            item,
+            for: theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+    }
+
+    private func listViewBuyAlgo(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout
+    ) -> CGSize {
+        let width = calculateContentWidth(for: listView)
+
+        return BuyAlgoCellView.calculatePreferredSize(
+            for: BuyAlgoCellViewTheme(),
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
     }
 }
 
