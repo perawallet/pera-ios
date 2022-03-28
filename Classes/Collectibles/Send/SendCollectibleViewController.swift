@@ -372,7 +372,7 @@ extension SendCollectibleViewController {
 
         let configuratorDescription =
         BottomWarningViewConfigurator.BottomWarningDescription.custom(
-            description: (description, [title, to!]), /// <todo> Change font & color of params.
+            description: (description, [title, to!]),
             markedWordWithHandler: (
                 word: "collectible-recipient-opt-in-description-marked".localized,
                 handler: {

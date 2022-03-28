@@ -22,7 +22,7 @@ struct AssetSearchQuery: ObjectQuery {
     let query: String?
     let paginator: Paginator = .cursor
     let cursor: String?
-    var filter: AssetFilter?
+    var type: AssetType?
     
     var queryParams: [APIQueryParam] {
         var params: [APIQueryParam] = []
@@ -36,8 +36,8 @@ struct AssetSearchQuery: ObjectQuery {
             params.append(.init(.query, query))
         }
 
-        if let filter = filter {
-            let hasCollectible = filter == .collectible ? true : false
+        if let type = type {
+            let hasCollectible = type == .collectible ? true : false
             params.append(.init(.hasCollectible, hasCollectible))
         }
 
@@ -56,11 +56,6 @@ struct AssetSearchQuery: ObjectQuery {
 extension AssetSearchQuery {
     enum Paginator: String {
         case cursor = "cursor"
-    }
-
-    enum AssetFilter {
-        case standard
-        case collectible
     }
 }
 

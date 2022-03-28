@@ -33,6 +33,9 @@ final class CollectibleMediaImagePreviewCell:
         )
 
         contextView.customize(Self.theme)
+    }
+
+    override func setListeners() {
         contextView.handlers.didLoadImage = {
             [weak self] image in
             guard let self = self else {

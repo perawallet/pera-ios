@@ -192,8 +192,11 @@ extension CollectibleMediaPreviewViewController {
 
         switch media.type {
         case .image:
-            let cell = cell as? CollectibleMediaImagePreviewCell
-            cell?.handlers.didLoadImage = {
+            guard let cell = cell as? CollectibleMediaImagePreviewCell else {
+                return
+            }
+
+            cell.handlers.didLoadImage = {
                 [weak self] image in
                 guard let self = self else {
                     return
@@ -202,8 +205,11 @@ extension CollectibleMediaPreviewViewController {
                 self.existingImages = [indexPath.item: image]
             }
         case .video:
-            let cell = cell as? CollectibleMediaVideoPreviewCell
-            cell?.playVideo()
+            guard let cell = cell as? CollectibleMediaVideoPreviewCell else {
+                return
+            }
+
+            cell.playVideo()
         default:
             break
         }
@@ -220,8 +226,11 @@ extension CollectibleMediaPreviewViewController {
 
         switch media.type {
         case .video:
-            let cell = cell as? CollectibleMediaVideoPreviewCell
-            cell?.stopVideo()
+            guard let cell = cell as? CollectibleMediaVideoPreviewCell else {
+                return
+            }
+
+            cell.stopVideo()
         default:
             break
         }

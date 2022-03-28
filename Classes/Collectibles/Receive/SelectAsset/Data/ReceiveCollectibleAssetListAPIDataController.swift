@@ -90,7 +90,7 @@ extension ReceiveCollectibleAssetListAPIDataController {
             status: .all,
             query: query,
             cursor: nextCursor,
-            filter: .collectible
+            type: .collectible
         )
 
         ongoingEndpoint =
