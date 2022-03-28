@@ -51,12 +51,10 @@ extension ContactsViewModel {
 
 extension ContactsViewModel {
     private func bindImage(from contact: Contact, with imageSize: CGSize) {
-        if let imageData = contact.image,
-           let image = UIImage(data: imageData) {
-            self.image = image.convert(to: imageSize)
-        } else {
-            self.image = img("icon-user-placeholder")
-        }
+        image = ContactImageProcessor(
+            data: contact.image,
+            size: imageSize
+        ).process()
     }
 
     private func bindName(_ contact: Contact) {

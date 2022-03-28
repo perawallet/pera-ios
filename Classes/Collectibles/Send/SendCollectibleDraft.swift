@@ -21,7 +21,7 @@ struct SendCollectibleDraft {
     let collectibleAsset: CollectibleAsset
     let image: UIImage?
 
-    var toAccount: Account? = nil
-    var toContact: Contact? = nil
-    var fee: UInt64? = nil
+    var toAccount: Account?
+    var toContact: Contact?
+    var fee: UInt64?
 }

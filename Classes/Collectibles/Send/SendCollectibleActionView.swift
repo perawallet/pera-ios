@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SendCollectibleBottomSheetView.swift
+//   SendCollectibleActionView.swift
 
 import Foundation
 import UIKit
@@ -20,11 +20,11 @@ import MacaroonUIKit
 import MacaroonForm
 import SnapKit
 
-final class SendCollectibleBottomSheetView:
+final class SendCollectibleActionView:
     View,
     UIInteractionObservable,
     UIControlInteractionPublisher {
-    weak var delegate: SendCollectibleBottomSheetViewDelegate?
+    weak var delegate: SendCollectibleActionViewDelegate?
 
     lazy var handlers = Handlers()
 
@@ -76,7 +76,7 @@ final class SendCollectibleBottomSheetView:
     }
 
     func customize(
-        _ theme: SendCollectibleBottomSheetViewTheme
+        _ theme: SendCollectibleActionViewTheme
     ) {
         addContent(theme)
     }
@@ -128,7 +128,7 @@ final class SendCollectibleBottomSheetView:
     }
 }
 
-extension SendCollectibleBottomSheetView {
+extension SendCollectibleActionView {
     func updateContentBeforeAnimations(
         for position: Position
     ) {
@@ -162,9 +162,9 @@ extension SendCollectibleBottomSheetView {
     }
 }
 
-extension SendCollectibleBottomSheetView {
+extension SendCollectibleActionView {
     private func addContent(
-        _ theme: SendCollectibleBottomSheetViewTheme
+        _ theme: SendCollectibleActionViewTheme
     ) {
         contentView.customizeAppearance(theme.content)
         contentView.draw(corner: theme.contentCorner)
@@ -189,7 +189,7 @@ extension SendCollectibleBottomSheetView {
     }
 
     private func addHandle(
-        _ theme: SendCollectibleBottomSheetViewTheme
+        _ theme: SendCollectibleActionViewTheme
     ) {
         handleView.customizeAppearance(theme.handle)
 
@@ -203,7 +203,7 @@ extension SendCollectibleBottomSheetView {
     }
 
     private func addCloseAction(
-        _ theme: SendCollectibleBottomSheetViewTheme
+        _ theme: SendCollectibleActionViewTheme
     ) {
         closeActionView.customizeAppearance(theme.closeAction)
 
@@ -221,7 +221,7 @@ extension SendCollectibleBottomSheetView {
     }
 
     private func addTitle(
-        _ theme: SendCollectibleBottomSheetViewTheme
+        _ theme: SendCollectibleActionViewTheme
     ) {
         titleView.customizeAppearance(theme.title)
 
@@ -235,7 +235,7 @@ extension SendCollectibleBottomSheetView {
     }
 
     private func addContext(
-        _ theme: SendCollectibleBottomSheetViewTheme
+        _ theme: SendCollectibleActionViewTheme
     ) {
         contentView.addSubview(contextView)
         contextView.snp.makeConstraints {
@@ -250,7 +250,7 @@ extension SendCollectibleBottomSheetView {
     }
 
     private func addAddressInput(
-        _ theme: SendCollectibleBottomSheetViewTheme
+        _ theme: SendCollectibleActionViewTheme
     ) {
         addressInputView.customize(theme.addressInputTheme)
 
@@ -265,7 +265,7 @@ extension SendCollectibleBottomSheetView {
     }
 
     private func addAddressInputRightAccessory(
-        _ theme: SendCollectibleBottomSheetViewTheme
+        _ theme: SendCollectibleActionViewTheme
     ) {
         let accessoryContainerView = MacaroonUIKit.BaseView()
 
@@ -297,7 +297,7 @@ extension SendCollectibleBottomSheetView {
     }
 
     private func addTransferAction(
-        _ theme: SendCollectibleBottomSheetViewTheme
+        _ theme: SendCollectibleActionViewTheme
     ) {
         transferActionButtonViewIndicator.applyStyle(theme.actionButtonIndicator)
 
@@ -320,7 +320,7 @@ extension SendCollectibleBottomSheetView {
     }
 }
 
-extension SendCollectibleBottomSheetView: FormInputFieldViewEditingDelegate {
+extension SendCollectibleActionView: FormInputFieldViewEditingDelegate {
     func formInputFieldViewDidBeginEditing(_ view: FormInputFieldView) {
         isEditing = true
     }
@@ -330,11 +330,11 @@ extension SendCollectibleBottomSheetView: FormInputFieldViewEditingDelegate {
     }
 
     func formInputFieldViewDidEdit(_ view: FormInputFieldView) {
-        delegate?.sendCollectibleBottomSheetViewDidEdit(self)
+        delegate?.sendCollectibleActionViewDidEdit(self)
     }
 }
 
-extension SendCollectibleBottomSheetView: MultilineTextInputFieldViewDelegate {
+extension SendCollectibleActionView: MultilineTextInputFieldViewDelegate {
     func multilineTextInputFieldView(
         _ view: MultilineTextInputFieldView,
         shouldChangeCharactersIn range: NSRange,
@@ -344,7 +344,7 @@ extension SendCollectibleBottomSheetView: MultilineTextInputFieldViewDelegate {
             return true
         }
 
-        return delegate.sendCollectibleBottomSheetViewShouldChangeCharactersIn(
+        return delegate.sendCollectibleActionViewShouldChangeCharactersIn(
             self,
             shouldChangeCharactersIn: range,
             replacementString: string
@@ -358,7 +358,7 @@ extension SendCollectibleBottomSheetView: MultilineTextInputFieldViewDelegate {
     }
 }
 
-extension SendCollectibleBottomSheetView {
+extension SendCollectibleActionView {
     func endEditing() {
         addressInputView.endEditing()
     }
@@ -377,9 +377,9 @@ extension SendCollectibleBottomSheetView {
     }
 }
 
-extension SendCollectibleBottomSheetView {
+extension SendCollectibleActionView {
     func recustomizeTransferActionButtonAppearance(
-        _ theme: SendCollectibleBottomSheetViewTheme,
+        _ theme: SendCollectibleActionViewTheme,
         isEnabled: Bool
     ) {
         transferActionView.isEnabled = isEnabled
@@ -396,20 +396,20 @@ extension SendCollectibleBottomSheetView {
     }
 }
 
-extension SendCollectibleBottomSheetView {
+extension SendCollectibleActionView {
     struct Handlers {
         var didHeightChange: ((CGFloat) -> Void)?
     }
 }
 
-extension SendCollectibleBottomSheetView {
+extension SendCollectibleActionView {
     enum Position {
         case start
         case end
     }
 }
 
-extension SendCollectibleBottomSheetView {
+extension SendCollectibleActionView {
     enum Event {
         case performTransfer
         case performSelectReceiverAccount
@@ -418,12 +418,12 @@ extension SendCollectibleBottomSheetView {
     }
 }
 
-protocol SendCollectibleBottomSheetViewDelegate: AnyObject {
-    func sendCollectibleBottomSheetViewDidEdit(
-        _ view: SendCollectibleBottomSheetView
+protocol SendCollectibleActionViewDelegate: AnyObject {
+    func sendCollectibleActionViewDidEdit(
+        _ view: SendCollectibleActionView
     )
-    func sendCollectibleBottomSheetViewShouldChangeCharactersIn(
-        _ view: SendCollectibleBottomSheetView,
+    func sendCollectibleActionViewShouldChangeCharactersIn(
+        _ view: SendCollectibleActionView,
         shouldChangeCharactersIn range: NSRange,
         replacementString string: String
     ) -> Bool

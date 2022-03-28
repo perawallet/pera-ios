@@ -71,6 +71,12 @@ final class AccountDetailViewController: PageContainer {
         super.linkInteractors()
         linkInteractors(assetListScreen)
     }
+
+    override func itemDidSelect(
+        _ index: Int
+    ) {
+        view.endEditing(true)
+    }
 }
 
 extension AccountDetailViewController {

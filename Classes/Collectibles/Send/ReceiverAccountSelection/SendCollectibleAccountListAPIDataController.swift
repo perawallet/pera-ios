@@ -39,22 +39,15 @@ final class SendCollectibleAccountListAPIDataController:
 
     private var lastQuery: String?
 
+    private let addressInputViewText: String?
+
     init(
-        _ sharedDataController: SharedDataController
+        _ sharedDataController: SharedDataController,
+        addressInputViewText: String?
     ) {
         self.sharedDataController = sharedDataController
+        self.addressInputViewText = addressInputViewText
         self.accounts = sharedDataController.accountCollection.sorted()
-
-        getContacts { contacts in
-            self.contacts =
-            contacts.reduce(into: [Address: Contact]()) { partialResult, contact in
-                guard let address = contact.address else {
-                    return
-                }
-
-                partialResult[address] = contact
-            }
-        }
     }
 
     deinit {
@@ -90,6 +83,19 @@ extension SendCollectibleAccountListAPIDataController {
 extension SendCollectibleAccountListAPIDataController {
     func load() {
         sharedDataController.add(self)
+
+        getContacts { contacts in
+            self.contacts =
+            contacts.reduce(
+                into: [Address: Contact]()
+            ) { partialResult, contact in
+                guard let address = contact.address else {
+                    return
+                }
+
+                partialResult[address] = contact
+            }
+        }
     }
 
     func search(for query: String?) {
@@ -168,13 +174,14 @@ extension SendCollectibleAccountListAPIDataController {
                 return true
             }
             .forEach { contact in
-                let imageSize = SelectContactCell.theme.imageSize
+                let imageSize = SendCollectibleContactCell.theme.imageSize
 
                 let cellItem: SendCollectibleAccountListItem = .contact(
-                    ContactsViewModel(
+                    viewModel: ContactsViewModel(
                         contact: contact.value,
                         imageSize: CGSize(imageSize)
-                    )
+                    ),
+                    isPreviouslySelected: addressInputViewText == contact.value.address
                 )
 
                 contactItems.append(cellItem)
@@ -192,11 +199,12 @@ extension SendCollectibleAccountListAPIDataController {
             }
             .forEach { account in
                 let cellItem: SendCollectibleAccountListItem = .account(
-                    AccountPreviewViewModel(
+                    viewModel: AccountPreviewViewModel(
                         IconWithShortAddressDraft(
                             account.value
                         )
-                    )
+                    ),
+                    isPreviouslySelected: addressInputViewText == account.value.address
                 )
 
                 accountItems.append(cellItem)
@@ -264,25 +272,26 @@ extension SendCollectibleAccountListAPIDataController {
     private func deliverAccountSnapshot(
         for query: String
     ) {
+        let accountsHeaderItem: SendCollectibleAccountListItem = .header(
+            SendCollectibleAccountListHeaderViewModel(
+                "title-account".localized
+            )
+        )
+
+        let accountGeneratedFromQuery = Account(address: query, type: .standard)
+        self.accountGeneratedFromQuery = accountGeneratedFromQuery
+        let cellItem: SendCollectibleAccountListItem = .account(
+            viewModel: AccountPreviewViewModel(
+                IconWithShortAddressDraft(
+                    accountGeneratedFromQuery
+                )
+            ),
+            isPreviouslySelected: addressInputViewText == accountGeneratedFromQuery.address
+        )
+
         deliverSnapshot {
             var snapshot = Snapshot()
             snapshot.appendSections([.accounts])
-
-            let accountsHeaderItem: SendCollectibleAccountListItem = .header(
-                SendCollectibleAccountListHeaderViewModel(
-                    "title-account".localized
-                )
-            )
-
-            let accountGeneratedFromQuery = Account(address: query, type: .standard)
-            self.accountGeneratedFromQuery = accountGeneratedFromQuery
-            let cellItem: SendCollectibleAccountListItem = .account(
-                AccountPreviewViewModel(
-                    IconWithShortAddressDraft(
-                        accountGeneratedFromQuery
-                    )
-                )
-            )
 
             snapshot.appendItems(
                 [accountsHeaderItem],

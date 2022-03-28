@@ -277,7 +277,7 @@ extension CollectibleDetailViewController {
             let draft = SendCollectibleDraft(
                 fromAccount: self.account!,
                 collectibleAsset: asset,
-                image: nil /// Pass the image so we will not load.
+                image: self.mediaPreviewController.getExistingImage()
             )
 
             self.open(
@@ -337,7 +337,7 @@ extension CollectibleDetailViewController {
     -> SendCollectibleViewController.SendCollectibleUIInteractions {
         var uiInteractions = SendCollectibleViewController.SendCollectibleUIInteractions()
 
-        uiInteractions.didSendTransactionSuccessfully = {
+        uiInteractions.didCompleteTransaction = {
             [weak self] controller in
             guard let self = self else {
                 return

@@ -21,13 +21,31 @@ import UIKit
 final class CollectibleMediaImagePreviewCell:
     CollectionCell<CollectibleMediaImagePreviewView>,
     ViewModelBindable {
-
+    lazy var handlers = Handlers()
+    
     static let theme = CollectibleMediaImagePreviewViewTheme()
 
     override init(
         frame: CGRect
     ) {
-        super.init(frame: frame)
+        super.init(
+            frame: frame
+        )
+
         contextView.customize(Self.theme)
+        contextView.handlers.didLoadImage = {
+            [weak self] image in
+            guard let self = self else {
+                return
+            }
+
+            self.handlers.didLoadImage?(image)
+        }
+    }
+}
+
+extension CollectibleMediaImagePreviewCell {
+    struct Handlers {
+        var didLoadImage: ((UIImage) -> Void)?
     }
 }

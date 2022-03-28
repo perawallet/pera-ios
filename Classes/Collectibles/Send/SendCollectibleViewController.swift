@@ -22,29 +22,34 @@ import MagpieCore
 
 final class SendCollectibleViewController: BaseScrollViewController {
     lazy var uiInteractions = SendCollectibleUIInteractions()
+
     private lazy var  bottomTransition = BottomSheetTransition(presentingViewController: self)
 
-    private lazy var contextViewContainer = MacaroonUIKit.BaseView()
-    private lazy var contextView = MacaroonUIKit.BaseView()
-    private lazy var imageView = URLImageView()
-    private lazy var titleAndSubtitleContainer = MacaroonUIKit.BaseView()
-    private lazy var titleView = Label()
-    private lazy var subtitleView = Label()
-    private lazy var bottomSheetView = SendCollectibleBottomSheetView()
+    private(set) lazy var sendCollectibleView = SendCollectibleView()
 
-    private lazy var backgroundStartStyle: ViewStyle = []
-    private lazy var backgroundEndStyle: ViewStyle = []
+    var imageView: URLImageView {
+        sendCollectibleView.imageView
+    }
+
+    var sendCollectibleActionView: SendCollectibleActionView {
+        sendCollectibleView.actionView
+    }
+
+    lazy var backgroundStartStyle: ViewStyle = []
+    lazy var backgroundEndStyle: ViewStyle = []
 
     private lazy var keyboardController = KeyboardController()
+    private(set) lazy var keyboardHeight: CGFloat = .zero
 
-    private lazy var keyboardHeight: CGFloat = .zero
-    private lazy var bottomSheetHeightDiff: CGFloat = .zero
+    lazy var actionViewHeightDiff: CGFloat = .zero
 
     private var draft: SendCollectibleDraft
-    private let theme: SendCollectibleViewControllerTheme
     private let transactionController: TransactionController
 
+    let theme: SendCollectibleViewControllerTheme
+
     private var ledgerApprovalViewController: LedgerApprovalViewController?
+    private var askRecipientToOptInViewController: BottomWarningViewController?
 
     private var ongoingFetchAccountsEnpoint: EndpointOperatable?
 
@@ -86,29 +91,20 @@ final class SendCollectibleViewController: BaseScrollViewController {
         super.prepareLayout()
 
         build()
-        bind()
     }
 
     private func build() {
         addBackground()
         addContext()
-        addBottomSheet()
     }
 
-    private func bind() {
-        let viewModel = SendCollectibleViewModel(
-            imageSize: imageView.frame.size,
-            draft: draft
+    override func bindData() {
+        sendCollectibleView.bindData(
+            SendCollectibleViewModel(
+                imageSize: sendCollectibleView.imageSize,
+                draft: draft
+            )
         )
-
-        if let image = draft.image {
-            imageView.imageContainer.image = image
-        } else {
-            imageView.load(from: viewModel.image)
-        }
-
-        titleView.editText = viewModel.title
-        subtitleView.editText = viewModel.subtitle
     }
 }
 
@@ -138,29 +134,29 @@ extension SendCollectibleViewController {
     }
 
     private func linkBottomSheetInteractors() {
-        bottomSheetView.delegate = self
+        sendCollectibleActionView.delegate = self
 
-        bottomSheetView.handlers.didHeightChange = {
+        sendCollectibleActionView.handlers.didHeightChange = {
             [weak self] bottomSheetNewHeight in
-            self?.handleBottomSheetHeightChange(bottomSheetNewHeight)
+            self?.handleActionViewHeightChange(bottomSheetNewHeight)
         }
 
-        bottomSheetView.observe(event: .performTransfer) {
+        sendCollectibleActionView.observe(event: .performTransfer) {
             [weak self] in
             self?.makeTransfer()
         }
 
-        bottomSheetView.observe(event: .performSelectReceiverAccount) {
+        sendCollectibleActionView.observe(event: .performSelectReceiverAccount) {
             [weak self] in
             self?.openSelectReceiver()
         }
 
-        bottomSheetView.observe(event: .performScanQR) {
+        sendCollectibleActionView.observe(event: .performScanQR) {
             [weak self] in
             self?.openScanQR()
         }
 
-        bottomSheetView.observe(event: .performClose) {
+        sendCollectibleActionView.observe(event: .performClose) {
             [weak self] in
             self?.dismissWithAnimation()
         }
@@ -176,115 +172,9 @@ extension SendCollectibleViewController {
 }
 
 extension SendCollectibleViewController {
-    private func addBackground() {
-        backgroundStartStyle = theme.backgroundStart
-        backgroundEndStyle = theme.backgroundEnd
-
-        updateBackground(for: .start)
-    }
-
-    private func addContext()  {
-        contentView.addSubview(contextViewContainer)
-        contextViewContainer.snp.makeConstraints {
-            $0.top <= view.safeAreaLayoutGuide.snp.top + theme.contextViewContainerTopPadding
-            $0.setPaddings(
-                (.noMetric, theme.horizontalPadding, .noMetric, theme.horizontalPadding)
-            )
-        }
-
-        contextViewContainer.addSubview(contextView)
-        contextView.snp.makeConstraints {
-            $0.top >= 0
-            $0.bottom == 0
-            $0.trailing == 0
-            $0.leading == 0
-            $0.center == 0
-        }
-
-        addImage()
-        addTitleAndSubtitleContainer()
-    }
-    
-    private func addImage() {
-        imageView.customizeAppearance(theme.image)
-        imageView.layer.draw(corner: theme.imageCorner)
-        imageView.clipsToBounds = true
-
-        contextView.addSubview(imageView)
-        imageView.snp.makeConstraints {
-            $0.centerX == 0
-            $0.top == 0
-            $0.leading == theme.horizontalPadding
-            $0.trailing == theme.horizontalPadding
-            $0.height == imageView.snp.width
-        }
-    }
-
-    private func addTitleAndSubtitleContainer() {
-        let aCanvasView = MacaroonUIKit.BaseView()
-
-        contextView.addSubview(aCanvasView)
-        aCanvasView.snp.makeConstraints {
-            $0.top == imageView.snp.bottom
-            $0.centerX == 0
-            $0.leading == 0
-            $0.trailing == 0
-            $0.bottom == 0
-        }
-
-        aCanvasView.addSubview(titleAndSubtitleContainer)
-        titleAndSubtitleContainer.snp.makeConstraints {
-            $0.top >= theme.titleAndSubtitleContainerVerticalPaddings.top
-            $0.bottom <= theme.titleAndSubtitleContainerVerticalPaddings.bottom
-            $0.center == 0
-
-            $0.setPaddings((.noMetric, 0, .noMetric, 0))
-        }
-
-        addTitle()
-        addSubtitle()
-    }
-
-    private func addTitle() {
-        titleView.customizeAppearance(theme.title)
-
-        titleAndSubtitleContainer.addSubview(titleView)
-        titleView.fitToIntrinsicSize()
-        titleView.snp.makeConstraints {
-            $0.setPaddings((0, 0, .noMetric, 0))
-        }
-    }
-
-    private func addSubtitle() {
-        subtitleView.customizeAppearance(theme.subtitle)
-
-        subtitleView.contentEdgeInsets.top = theme.subtitleTopPadding
-        subtitleView.fitToIntrinsicSize()
-        titleAndSubtitleContainer.addSubview(subtitleView)
-        subtitleView.snp.makeConstraints {
-            $0.top == titleView.snp.bottom
-
-            $0.setPaddings((.noMetric, 0, 0, 0))
-        }
-    }
-
-    private func addBottomSheet() {
-        bottomSheetView.customize(theme.bottomSheetViewTheme)
-
-        contentView.addSubview(bottomSheetView)
-        bottomSheetView.fitToIntrinsicSize()
-        bottomSheetView.snp.makeConstraints {
-            $0.top == contextViewContainer.snp.bottom
-
-            $0.setPaddings((.noMetric, 0, 0, 0))
-        }
-    }
-}
-
-extension SendCollectibleViewController {
     @objc
     private func closeKeyboard() {
-        bottomSheetView.endEditing()
+        sendCollectibleActionView.endEditing()
     }
 }
 
@@ -292,7 +182,7 @@ extension SendCollectibleViewController {
     private func makeTransfer() {
         cancelOngoingFetchAccountsEnpoint()
 
-        guard let recipientAddress = bottomSheetView.addressInputViewText else {
+        guard let recipientAddress = sendCollectibleActionView.addressInputViewText else {
             return
         }
 
@@ -311,14 +201,14 @@ extension SendCollectibleViewController {
                 return
             }
 
-            makeTransfer(
-                for: accountInShared
+            sendTransaction(
+                to: accountInShared
             )
 
             return
         }
 
-        bottomSheetView.startLoading()
+        sendCollectibleActionView.startLoading()
 
         ongoingFetchAccountsEnpoint =
         api?.fetchAccount(
@@ -328,7 +218,7 @@ extension SendCollectibleViewController {
         ) {
             [weak self] response in
             guard let self = self else { return }
-            self.bottomSheetView.stopLoading()
+            self.sendCollectibleActionView.stopLoading()
 
             switch response {
             case .success(let accountResponse):
@@ -344,23 +234,25 @@ extension SendCollectibleViewController {
                     return
                 }
 
-                self.makeTransfer(
-                    for: fetchedAccount
+                self.sendTransaction(
+                    to: fetchedAccount
                 )
-            case .failure(_, _):
-                break /// <todo> Show response error
+            case .failure(let error, _):
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: error.description
+                )
             }
         }
     }
 
-    private func makeTransfer(
-        for account: Account
+    private func sendTransaction(
+        to account: Account
     ) {
         draft.toAccount = account
 
-        let collectibleAsset = account.assets?.first(matching: (\.id, draft.collectibleAsset.id))
-
-        guard let collectibleAsset = collectibleAsset else {
+        guard let collectibleAsset =
+                account.assets?.first(matching: (\.id, draft.collectibleAsset.id)) else {
             openAskRecipientToOptIn()
             return
         }
@@ -384,7 +276,10 @@ extension SendCollectibleViewController {
 
         let screen = open(
             .sendCollectibleAccountList(
-                dataController: SendCollectibleAccountListAPIDataController(sharedDataController)
+                dataController: SendCollectibleAccountListAPIDataController(
+                    sharedDataController,
+                    addressInputViewText: sendCollectibleActionView.addressInputViewText
+                )
             ),
             by: .present
         ) as? SendCollectibleAccountListViewController
@@ -393,19 +288,19 @@ extension SendCollectibleViewController {
             guard let self = self else {
                 return
             }
-            self.bottomSheetView.recustomizeTransferActionButtonAppearance(
-                self.theme.bottomSheetViewTheme,
+            self.sendCollectibleActionView.recustomizeTransferActionButtonAppearance(
+                self.theme.sendCollectibleViewTheme.actionViewTheme,
                 isEnabled: true
             )
 
             switch event {
             case .didSelectAccount(let account):
-                self.bottomSheetView.addressInputViewText = account.address
+                self.sendCollectibleActionView.addressInputViewText = account.address
                 self.draft.toAccount = account
 
                 screen?.dismissScreen()
             case .didSelectContact(let contact):
-                self.bottomSheetView.addressInputViewText = contact.address
+                self.sendCollectibleActionView.addressInputViewText = contact.address
                 self.draft.toContact = contact
 
                 screen?.dismissScreen()
@@ -458,7 +353,7 @@ extension SendCollectibleViewController {
             ),
             then: {
                 [unowned self] in
-                self.uiInteractions.didSendTransactionSuccessfully?(self)
+                self.uiInteractions.didCompleteTransaction?(self)
             }
         ) as? TutorialViewController
 
@@ -486,7 +381,7 @@ extension SendCollectibleViewController {
                         return
                     }
 
-                    self.bottomTransition.presentedViewController?.dismissScreen() {
+                    self.askRecipientToOptInViewController?.dismissScreen {
                         self.openOptInInformation()
                     }
                 }
@@ -509,12 +404,12 @@ extension SendCollectibleViewController {
             }
         )
 
-        bottomTransition.perform(
+        askRecipientToOptInViewController = bottomTransition.perform(
             .bottomWarning(
                 configurator: configurator
             ),
             by: .presentWithoutNavigationController
-        )
+        ) as? BottomWarningViewController
     }
 
     private func openOptInInformation() {
@@ -553,7 +448,7 @@ extension SendCollectibleViewController {
 
 extension SendCollectibleViewController {
     private func requestOptInToRecipeint() {
-        let receiverAddress = bottomSheetView.addressInputViewText
+        let receiverAddress = sendCollectibleActionView.addressInputViewText
 
         if let receiverAddress = receiverAddress {
             let draft = AssetSupportDraft(
@@ -582,6 +477,7 @@ extension SendCollectibleViewController {
             toContact: draft.toContact,
             asset: draft.collectibleAsset
         )
+
         transactionController.setTransactionDraft(transactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
         
@@ -590,7 +486,6 @@ extension SendCollectibleViewController {
             transactionController.startTimer()
         }
     }
-
 }
 
 extension SendCollectibleViewController: TransactionControllerDelegate {
@@ -681,16 +576,16 @@ extension SendCollectibleViewController: QRScannerViewControllerDelegate {
     ) {
         guard qrText.mode == .address,
               let qrAddress = qrText.address else {
-                  displaySimpleAlertWith(
-                    title: "title-error".localized,
-                    message: "qr-scan-should-scan-address-message".localized
-                  ) { _ in
-                      completionHandler?()
-                  }
-                  return
-              }
+            displaySimpleAlertWith(
+                title: "title-error".localized,
+                message: "qr-scan-should-scan-address-message".localized
+            ) { _ in
+                completionHandler?()
+            }
+            return
+        }
 
-        bottomSheetView.addressInputViewText = qrAddress
+        sendCollectibleActionView.addressInputViewText = qrAddress
     }
 
     func qrScannerViewController(
@@ -707,18 +602,18 @@ extension SendCollectibleViewController: QRScannerViewControllerDelegate {
     }
 }
 
-extension SendCollectibleViewController: SendCollectibleBottomSheetViewDelegate {
-    func sendCollectibleBottomSheetViewDidEdit(
-        _ view: SendCollectibleBottomSheetView
+extension SendCollectibleViewController: SendCollectibleActionViewDelegate {
+    func sendCollectibleActionViewDidEdit(
+        _ view: SendCollectibleActionView
     ) {
-        bottomSheetView.recustomizeTransferActionButtonAppearance(
-            theme.bottomSheetViewTheme,
+        sendCollectibleActionView.recustomizeTransferActionButtonAppearance(
+            theme.sendCollectibleViewTheme.actionViewTheme,
             isEnabled: isTransferActionButtonEnabled(view)
         )
     }
 
-    func sendCollectibleBottomSheetViewShouldChangeCharactersIn(
-        _ view: SendCollectibleBottomSheetView,
+    func sendCollectibleActionViewShouldChangeCharactersIn(
+        _ view: SendCollectibleActionView,
         shouldChangeCharactersIn range: NSRange,
         replacementString string: String
     ) -> Bool {
@@ -735,7 +630,7 @@ extension SendCollectibleViewController: SendCollectibleBottomSheetViewDelegate 
     }
 
     private func isTransferActionButtonEnabled(
-        _ view: SendCollectibleBottomSheetView
+        _ view: SendCollectibleActionView
     ) -> Bool {
         if let input = view.addressInputViewText,
            input.hasValidAddressLength &&
@@ -747,127 +642,22 @@ extension SendCollectibleViewController: SendCollectibleBottomSheetViewDelegate 
     }
 }
 
-extension SendCollectibleViewController {
-    private func handleBottomSheetHeightChange(
-        _ bottomSheetNewHeight: CGFloat
-    ) {
-
-        let isKeyboardHidden = keyboardHeight == 0
-
-        guard isKeyboardHidden else {
-            return
-        }
-
-        /// <note>
-        /// When text is deleted, resize image to its initial size if needed.
-        if bottomSheetView.initialHeight == bottomSheetNewHeight {
-            updateImageBeforeAnimations(for: .initial)
-            animateImageLayout(imageView)
-            return
-        }
-
-        /// <note>
-        /// If text is changed but keyboard isn't used we get the diff between `bottomSheetNewHeight` and `bottomSheetView.initialHeight`. If diff is different than initial height, we substract the diff from the image size then apply the animations.
-        if bottomSheetView.isEditing {
-            bottomSheetHeightDiff = bottomSheetNewHeight - bottomSheetView.initialHeight
-
-            if bottomSheetHeightDiff != 0 {
-                let imageHorizontalPaddings = 2 * theme.horizontalPadding
-                let initialImageHeight = contextViewContainer.frame.width - imageHorizontalPaddings
-
-                let imageMaxHeight = initialImageHeight
-                let imageViewHeight = max(
-                    theme.imageMinHeight,
-                    imageMaxHeight - bottomSheetHeightDiff
-                )
-
-                updateImageBeforeAnimations(
-                    for: .custom(height: imageViewHeight)
-                )
-
-                animateImageLayout(imageView)
-            }
-        }
-    }
-}
-
-extension SendCollectibleViewController {
-    private func updateImageBeforeAnimations(
-        for layout: ImageLayout
-    ) {
-        switch layout {
-        case .initial:
-            let imageHorizontalPaddings = 2 * theme.horizontalPadding
-            let initialImageHeight = contextViewContainer.frame.width - imageHorizontalPaddings
-            let currentImageHeight = imageView.frame.height
-
-            let isUpdateNeeded = currentImageHeight != initialImageHeight
-
-            guard isUpdateNeeded else {
-                return
-            }
-
-            imageView.snp.remakeConstraints {
-                $0.centerX == 0
-                $0.top == 0
-                $0.leading == theme.horizontalPadding
-                $0.trailing == theme.horizontalPadding
-                $0.height == imageView.snp.width
-            }
-        case .custom(let height):
-            imageView.snp.remakeConstraints {
-                $0.centerX == 0
-                $0.top == 0
-                $0.leading >= theme.horizontalPadding
-                $0.trailing <= theme.horizontalPadding
-                $0.fitToSize(
-                    (
-                        height,
-                        height
-                    )
-                )
-            }
-        }
-    }
-}
-
 extension SendCollectibleViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(
         _ scrollView: UIScrollView
     ) {
-        let contentY = scrollView.contentOffset.y + scrollView.contentInset.top
-
-        let imageHorizontalPaddings = 2 * theme.horizontalPadding
-        let initialImageHeight = contextViewContainer.frame.width - imageHorizontalPaddings
-
-        var imageViewMaxHeight = initialImageHeight
-
-        if keyboardHeight == 0 {
-            imageViewMaxHeight -= bottomSheetHeightDiff
-        }
-
-        let calculatedHeight = imageViewMaxHeight - contentY
-
-        var imageViewHeight = max(
-            theme.imageMinHeight,
-            theme.imageMinHeight * calculatedHeight / imageViewMaxHeight
+        handleScrollViewDidScroll(
+            scrollView
         )
-
-        if contentY == 0 {
-            imageViewHeight = imageViewMaxHeight
-        }
-
-        updateImageBeforeAnimations(for: .custom(height: imageViewHeight))
-        animateContentLayout(view)
     }
 }
 
 extension SendCollectibleViewController {
     private func dismissWithAnimation() {
-        bottomSheetView.endEditing()
+        sendCollectibleActionView.endEditing()
 
         updateImageBeforeAnimations(for: .initial)
-        bottomSheetView.updateContentBeforeAnimations(for: .start)
+        sendCollectibleActionView.updateContentBeforeAnimations(for: .start)
 
         animateContentLayout(view) {
             [weak self] in
@@ -880,64 +670,8 @@ extension SendCollectibleViewController {
 }
 
 extension SendCollectibleViewController {
-    private func animateContentLayout(
-        _ view: UIView,
-        completion: EmptyHandler? = nil
-    ) {
-        let property = UIViewPropertyAnimator(
-            duration: 0.5,
-            dampingRatio: 0.8
-        ) {
-            view.layoutIfNeeded()
-        }
-        property.addCompletion { _ in
-            completion?()
-        }
-        property.startAnimation()
-    }
-
-    private func animateImageLayout(
-        _ view: UIView
-    ) {
-        let animator = UIViewPropertyAnimator(
-            duration: 0.5,
-            curve: .easeInOut
-        ) {
-            view.layoutIfNeeded()
-        }
-
-        animator.startAnimation()
-    }
-
-    private func animateBottomSheetLayout() {
-        bottomSheetView.updateContentBeforeAnimations(for: .end)
-
-        let animator = UIViewPropertyAnimator(
-            duration: 0.5,
-            dampingRatio: 0.8
-        ) {
-            [unowned self] in
-
-            updateAlongsideAnimations(for: .end)
-            view.layoutIfNeeded()
-        }
-
-        animator.startAnimation()
-    }
-}
-
-extension SendCollectibleViewController {
-    private func updateAlongsideAnimations(
-        for position: SendCollectibleBottomSheetView.Position
-    ) {
-        updateBackground(for: position)
-        bottomSheetView.updateContentAlongsideAnimations(for: position)
-    }
-}
-
-extension SendCollectibleViewController {
-    private func updateBackground(
-        for position: SendCollectibleBottomSheetView.Position
+    func updateBackground(
+        for position: SendCollectibleActionView.Position
     ) {
         let style: ViewStyle
 
@@ -960,7 +694,7 @@ extension SendCollectibleViewController: KeyboardControllerDataSource {
     func firstResponder(
         for keyboardController: KeyboardController
     ) -> UIView? {
-        return bottomSheetView
+        return sendCollectibleActionView
     }
 
     func containerView(
@@ -968,7 +702,7 @@ extension SendCollectibleViewController: KeyboardControllerDataSource {
     ) -> UIView {
         return contentView
     }
-
+    
     func bottomInsetWhenKeyboardDismissed(
         for keyboardController: KeyboardController
     ) -> CGFloat {
@@ -978,13 +712,6 @@ extension SendCollectibleViewController: KeyboardControllerDataSource {
 
 extension SendCollectibleViewController {
     struct SendCollectibleUIInteractions {
-        var didSendTransactionSuccessfully: ((SendCollectibleViewController) -> Void)?
-    }
-}
-
-extension SendCollectibleViewController {
-    enum ImageLayout {
-        case initial
-        case custom(height: CGFloat)
+        var didCompleteTransaction: ((SendCollectibleViewController) -> Void)?
     }
 }

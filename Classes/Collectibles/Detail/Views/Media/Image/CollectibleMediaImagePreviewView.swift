@@ -22,6 +22,7 @@ final class CollectibleMediaImagePreviewView:
     View,
     ViewModelBindable,
     ListReusable {
+    lazy var handlers = Handlers()
 
     private lazy var image = URLImageView()
     private lazy var overlayView = UIView()
@@ -78,7 +79,15 @@ extension CollectibleMediaImagePreviewView {
     func bindData(
         _ viewModel: CollectibleMediaImagePreviewViewModel?
     ) {
-        image.load(from: viewModel?.image)
+        image.load(from: viewModel?.image) {
+            [weak self] _ in
+            guard let self = self,
+                  let image = self.image.imageContainer.image else {
+                return
+            }
+
+            self.handlers.didLoadImage?(image)
+        }
 
         guard let viewModel = viewModel else {
             return
@@ -104,5 +113,11 @@ extension CollectibleMediaImagePreviewView {
     func prepareForReuse() {
         overlayView.alpha = 0.0
         image.prepareForReuse()
+    }
+}
+
+extension CollectibleMediaImagePreviewView {
+    struct Handlers {
+        var didLoadImage: ((UIImage) -> Void)?
     }
 }

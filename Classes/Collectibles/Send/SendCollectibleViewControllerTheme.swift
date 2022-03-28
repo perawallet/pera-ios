@@ -22,25 +22,18 @@ import MacaroonURLImage
 struct SendCollectibleViewControllerTheme:
     StyleSheet,
     LayoutSheet {
-    let contextViewContainerTopPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
+    let imageMinHeight: LayoutMetric
     let backgroundStart: ViewStyle
     let backgroundEnd: ViewStyle
-    let image: URLImageViewStyleSheet
-    let imageCorner: Corner
-    let titleAndSubtitleContainerVerticalPaddings: LayoutVerticalPaddings
-    let title: TextStyle
-    let subtitle: TextStyle
-    let subtitleTopPadding: LayoutMetric
-    let imageMinHeight: LayoutMetric
-    let bottomSheetViewTheme: SendCollectibleBottomSheetViewTheme
+    let sendCollectibleViewTheme: SendCollectibleViewTheme
 
     init(
         _ family: LayoutFamily
     ) {
-        contextViewContainerTopPadding = 56
         horizontalPadding = 24
-        
+        imageMinHeight = 32
+
         backgroundStart = [
             .backgroundColor(UIColor.clear)
         ]
@@ -49,25 +42,6 @@ struct SendCollectibleViewControllerTheme:
             .backgroundColor(AppColors.Shared.Modality.background)
         ]
 
-        image = CollectibleListItemImageViewTheme()
-        imageCorner = Corner(radius: 4)
-
-        titleAndSubtitleContainerVerticalPaddings = (16, 16)
-
-        title = [
-            .textAlignment(.center),
-            .textColor(AppColors.Components.Text.gray),
-            .textOverflow(SingleLineText()),
-        ]
-
-        subtitle = [
-            .textAlignment(.center),
-            .textColor(AppColors.Shared.Global.white),
-            .textOverflow(MultilineText(numberOfLines: 2)),
-        ]
-
-        subtitleTopPadding = 4
-        imageMinHeight = 32
-        bottomSheetViewTheme = SendCollectibleBottomSheetViewTheme()
+        sendCollectibleViewTheme = SendCollectibleViewTheme()
     }
 }

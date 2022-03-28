@@ -53,27 +53,25 @@ final class SendCollectibleAccountListDataSource:
                     item
                 )
                 return cell
-            case .account(let item):
-                /// <todo> Change background of cell if it is selected
-
+            case .account(let item, let isPreviouslySelected):
                 let cell = collectionView.dequeue(
-                    AccountPreviewCell.self,
+                    SendCollectibleAccountPreviewCell.self,
                     at: indexPath
                 )
                 cell.bindData(
                     item
                 )
+                cell.isPreviouslySelected = isPreviouslySelected
                 return cell
-            case .contact(let item):
-                /// <todo> Change background of cell if it is selected
-
+            case .contact(let item, let isPreviouslySelected):
                 let cell = collectionView.dequeue(
-                    SelectContactCell.self,
+                    SendCollectibleContactCell.self,
                     at: indexPath
                 )
                 cell.bindData(
                     item
                 )
+                cell.isPreviouslySelected = isPreviouslySelected
                 return cell
             }
         }
@@ -82,11 +80,10 @@ final class SendCollectibleAccountListDataSource:
             PreviewLoadingCell.self,
             NoContentCell.self,
             SendCollectibleAccountListTitleSupplementaryCell.self,
-            AccountPreviewCell.self, /// <todo> Create new loading cell since preview has only image and address.
-            SelectContactCell.self
+            SendCollectibleAccountPreviewCell.self,
+            SendCollectibleContactCell.self
         ].forEach {
             collectionView.register($0)
         }
     }
 }
-
