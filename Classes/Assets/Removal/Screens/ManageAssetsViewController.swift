@@ -95,11 +95,14 @@ extension ManageAssetsViewController {
 
 extension ManageAssetsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return account.allAssets.count
+        return listItems.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let asset = account.allAssets[indexPath.item]
+        guard let asset = listItems[safe: indexPath.item] else {
+            fatalError("Not found asset.")
+        }
+
         let cell = collectionView.dequeue(AssetPreviewDeleteCell.self, at: indexPath)
         let assetPreviewModel = AssetPreviewModelAdapter.adapt((asset))
         cell.customize(theme.assetPreviewDeleteViewTheme)
