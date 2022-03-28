@@ -55,8 +55,9 @@ final class ManageAssetsView: View {
 extension ManageAssetsView {
     private func addNoContentView(_ theme: ManageAssetsViewTheme) {
         noContentView.customize(theme.noContentViewTheme)
-        noContentView.bindData(AssetListSearchNoContentViewModel())
+        noContentView.bindData(AssetListSearchNoContentViewModel(hasBody: true))
     }
+
     private func addTitleLabel(_ theme: ManageAssetsViewTheme) {
         titleLabel.customizeAppearance(theme.title)
         titleLabel.editText = theme.titleText

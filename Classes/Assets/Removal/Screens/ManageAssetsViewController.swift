@@ -28,6 +28,7 @@ final class ManageAssetsViewController: BaseViewController {
     private lazy var contextView = ManageAssetsView()
     
     private var account: Account
+    private var listItems: [Asset]
     
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
@@ -40,6 +41,7 @@ final class ManageAssetsViewController: BaseViewController {
 
     init(account: Account, configuration: ViewControllerConfiguration) {
         self.account = account
+        self.listItems = account.allAssets
         super.init(configuration: configuration)
     }
 
@@ -128,13 +130,25 @@ extension ManageAssetsViewController {
         contextView.updateContentStateView()
     }
     
-    private func filterData(with query: String) {
-        listItems = account.compoundAssets.filter {
-            String($0.id).contains(query) ||
-            $0.detail.name.unwrap(or: "").containsCaseInsensitive(query) ||
-            $0.detail.unitName.unwrap(or: "").containsCaseInsensitive(query)
+    private func filterData(with query: String) { 
+        listItems = account.allAssets.filter { asset in
+            isAssetContainsID(asset, query: query) ||
+            isAssetContainsName(asset, query: query) ||
+            isAssetContainsUnitName(asset, query: query)
         }
         reloadAssets()
+    }
+
+    private func isAssetContainsID(_ asset: Asset, query: String) -> Bool {
+        return String(asset.presentation.id).localizedCaseInsensitiveContains(query)
+    }
+
+    private func isAssetContainsName(_ asset: Asset, query: String) -> Bool {
+        return asset.presentation.name.someString.localizedCaseInsensitiveContains(query)
+    }
+
+    private func isAssetContainsUnitName(_ asset: Asset, query: String) -> Bool {
+        return asset.presentation.unitName.someString.localizedCaseInsensitiveContains(query)
     }
 }
 
@@ -163,9 +177,9 @@ extension ManageAssetsViewController: AssetPreviewDeleteCellDelegate {
         showAlertToDelete(asset)
     }
     
-    private func showAlertToDelete(_ asset: CompoundAsset) {
-        let assetDetail = asset.detail
-        let assetAmount = account.amount(for: assetDetail)
+    private func showAlertToDelete(_ asset: Asset) {
+        let assetDecoration = AssetDecoration(asset: asset)
+        
         let assetAlertDraft: AssetAlertDraft
 
         if isValidAssetDeletion(asset) {

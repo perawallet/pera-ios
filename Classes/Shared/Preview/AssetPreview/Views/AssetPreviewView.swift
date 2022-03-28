@@ -50,12 +50,7 @@ final class AssetPreviewView:
     func bindData(
         _ viewModel: AssetPreviewViewModel?
     ) {
-        iconView.bindData(
-            AssetImageLargeViewModel(
-                image: viewModel?.icon,
-                assetAbbreviatedName: viewModel?.assetAbbreviatedName?.string
-            )
-        )
+        iconView.bindData(viewModel?.assetImageViewModel)
         titleView.editText = viewModel?.title
         verifiedIconView.image = viewModel?.verifiedIcon
         subtitleView.editText = viewModel?.subtitle

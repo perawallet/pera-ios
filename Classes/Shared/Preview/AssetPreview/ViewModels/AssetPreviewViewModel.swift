@@ -41,9 +41,9 @@ struct AssetPreviewViewModel:
     init(
         _ model: AssetPreviewModel
     ) {
-        bindIcon(model.icon)
-        bindVerifiedIcon(model.verifiedIcon)
         bindTitle(model.title)
+        bindAssetImageView(model.icon)
+        bindVerifiedIcon(model.verifiedIcon)
         bindSubtitle(model.subtitle)
         bindPrimaryAccessory(model.primaryAccessory)
         bindSecondAccessory(model.secondaryAccessory)
@@ -53,11 +53,11 @@ struct AssetPreviewViewModel:
 
 extension AssetPreviewViewModel {
     private mutating func bindAssetImageView(_ image: UIImage?) {
-        let assetAbbreviationForImage = TextFormatter.assetShortName.format(assetPrimaryTitle?.string)
+        let assetAbbreviationForImage = TextFormatter.assetShortName.format(title?.string)
         
-        assetImageViewModel = AssetImageViewModel(
+        assetImageViewModel = AssetImageLargeViewModel(
             image: image,
-            assetAbbreviationForImage: assetAbbreviationForImage
+            assetAbbreviatedName: assetAbbreviationForImage
         )
     }
     
@@ -153,5 +153,32 @@ extension AssetPreviewViewModel {
         assetAbbreviatedName = .string(
             TextFormatter.assetShortName.format(title?.string)
         )
+    }
+}
+
+extension AssetPreviewViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(assetImageViewModel?.image)
+        hasher.combine(verifiedIcon)
+        hasher.combine(title)
+        hasher.combine(subtitle)
+        hasher.combine(primaryAccessory)
+        hasher.combine(secondaryAccessory)
+        hasher.combine(assetAbbreviatedName)
+    }
+
+    static func == (
+        lhs: AssetPreviewViewModel,
+        rhs: AssetPreviewViewModel
+    ) -> Bool {
+        return lhs.assetImageViewModel?.image == rhs.assetImageViewModel?.image &&
+        lhs.verifiedIcon == rhs.verifiedIcon &&
+        lhs.title == rhs.title &&
+        lhs.subtitle == rhs.subtitle &&
+        lhs.primaryAccessory == rhs.primaryAccessory &&
+        lhs.secondaryAccessory == rhs.secondaryAccessory &&
+        lhs.assetAbbreviatedName == rhs.assetAbbreviatedName
     }
 }

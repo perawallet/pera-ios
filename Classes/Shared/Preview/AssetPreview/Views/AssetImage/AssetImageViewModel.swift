@@ -23,7 +23,9 @@ protocol AssetImageViewModel: AssetImagePlaceholderViewModel {
     var image: UIImage? { get }
 }
 
-struct AssetImageLargeViewModel: AssetImageViewModel {
+struct AssetImageLargeViewModel:
+    AssetImageViewModel,
+    Hashable {
     private(set) var image: UIImage?
     private(set) var assetAbbreviatedName: EditText?
 
@@ -50,7 +52,9 @@ struct AssetImageLargeViewModel: AssetImageViewModel {
     }
 }
 
-struct AssetImageSmallViewModel: AssetImageViewModel {
+struct AssetImageSmallViewModel:
+    AssetImageViewModel,
+    Hashable {
     private(set) var image: UIImage?
     private(set) var assetAbbreviatedName: EditText?
 

@@ -153,11 +153,11 @@ extension AssetPreviewDeleteView {
 extension AssetPreviewDeleteView: ViewModelBindable {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
         imageView.bindData(viewModel?.assetImageViewModel)
-        primaryAssetTitleLabel.editText = viewModel?.assetPrimaryTitle
-        secondaryImageView.image = viewModel?.secondaryImage
-        secondaryAssetTitleLabel.editText = viewModel?.assetSecondaryTitle
-        primaryAssetValueLabel.editText = viewModel?.assetPrimaryValue
-        secondaryAssetValueLabel.editText = viewModel?.assetSecondaryAssetValue
+        primaryAssetTitleLabel.editText = viewModel?.title
+        secondaryImageView.image = viewModel?.verifiedIcon
+        secondaryAssetTitleLabel.editText = viewModel?.subtitle
+        primaryAssetValueLabel.editText = viewModel?.primaryAccessory
+        secondaryAssetValueLabel.editText = viewModel?.secondaryAccessory
     }
     
     func prepareForReuse() {
