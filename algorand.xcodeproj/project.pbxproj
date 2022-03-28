@@ -3353,9 +3353,6 @@
 		D45867D4276F3AB800500370 /* TransactionDetailViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45867D3276F3AB800500370 /* TransactionDetailViewTheme.swift */; };
 		D45867D5276F3AB800500370 /* TransactionDetailViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45867D3276F3AB800500370 /* TransactionDetailViewTheme.swift */; };
 		D45867D6276F3AB800500370 /* TransactionDetailViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D45867D3276F3AB800500370 /* TransactionDetailViewTheme.swift */; };
-		D458758627E668D3002B42F5 /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = D458758527E668D3002B42F5 /* ActiveLabel */; };
-		D458758827E668FE002B42F5 /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = D458758727E668FE002B42F5 /* ActiveLabel */; };
-		D458758A27E66906002B42F5 /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = D458758927E66906002B42F5 /* ActiveLabel */; };
 		D4592903276B933700862B21 /* WCSessionShortListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4592902276B933700862B21 /* WCSessionShortListDataSource.swift */; };
 		D4592904276B933700862B21 /* WCSessionShortListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4592902276B933700862B21 /* WCSessionShortListDataSource.swift */; };
 		D4592905276B933700862B21 /* WCSessionShortListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4592902276B933700862B21 /* WCSessionShortListDataSource.swift */; };
@@ -3830,6 +3827,9 @@
 		D4B1F5A12783BB30002D80FA /* AlgosDetailInfoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B1F5A02783BB30002D80FA /* AlgosDetailInfoViewCell.swift */; };
 		D4B1F5A22783BB30002D80FA /* AlgosDetailInfoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B1F5A02783BB30002D80FA /* AlgosDetailInfoViewCell.swift */; };
 		D4B1F5A32783BB30002D80FA /* AlgosDetailInfoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B1F5A02783BB30002D80FA /* AlgosDetailInfoViewCell.swift */; };
+		D4B33AAD27F1E63000523CEA /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = D4B33AAC27F1E63000523CEA /* ActiveLabel */; };
+		D4B33AAF27F1E64600523CEA /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = D4B33AAE27F1E64600523CEA /* ActiveLabel */; };
+		D4B33AB127F1E65900523CEA /* ActiveLabel in Frameworks */ = {isa = PBXBuildFile; productRef = D4B33AB027F1E65900523CEA /* ActiveLabel */; };
 		D4B6EA52276F7C6F005E2D2C /* TransactionTextInformationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B6EA51276F7C6F005E2D2C /* TransactionTextInformationViewTheme.swift */; };
 		D4B6EA53276F7C6F005E2D2C /* TransactionTextInformationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B6EA51276F7C6F005E2D2C /* TransactionTextInformationViewTheme.swift */; };
 		D4B6EA54276F7C6F005E2D2C /* TransactionTextInformationViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4B6EA51276F7C6F005E2D2C /* TransactionTextInformationViewTheme.swift */; };
@@ -7295,7 +7295,7 @@
 				CBAD47402745434A00C91946 /* MacaroonUIKit in Frameworks */,
 				CBAD473A2745434A00C91946 /* MacaroonBottomSheet in Frameworks */,
 				CBAD47332745434A00C91946 /* WalletConnectSwift in Frameworks */,
-				D458758A27E66906002B42F5 /* ActiveLabel in Frameworks */,
+				D4B33AB127F1E65900523CEA /* ActiveLabel in Frameworks */,
 				CBAD47412745434A00C91946 /* MacaroonURLImage in Frameworks */,
 				CBAD472F2745434A00C91946 /* SwiftDate in Frameworks */,
 				CBAD472B2745434A00C91946 /* MagpieCore in Frameworks */,
@@ -7328,7 +7328,7 @@
 				CBAD47272745434A00C91946 /* MacaroonUIKit in Frameworks */,
 				CBAD47212745434A00C91946 /* MacaroonBottomSheet in Frameworks */,
 				CBAD471A2745434A00C91946 /* WalletConnectSwift in Frameworks */,
-				D458758827E668FE002B42F5 /* ActiveLabel in Frameworks */,
+				D4B33AAF27F1E64600523CEA /* ActiveLabel in Frameworks */,
 				CBAD47282745434A00C91946 /* MacaroonURLImage in Frameworks */,
 				CBAD47162745434A00C91946 /* SwiftDate in Frameworks */,
 				CBAD47122745434A00C91946 /* MagpieCore in Frameworks */,
@@ -7361,7 +7361,7 @@
 				CBAD47022745434A00C91946 /* Charts in Frameworks */,
 				CBAD47032745434A00C91946 /* WalletConnectSwift in Frameworks */,
 				CBAD470F2745434A00C91946 /* MacaroonURLImage in Frameworks */,
-				D458758627E668D3002B42F5 /* ActiveLabel in Frameworks */,
+				D4B33AAD27F1E63000523CEA /* ActiveLabel in Frameworks */,
 				CBAD47092745434A00C91946 /* MacaroonForm in Frameworks */,
 				CBAD46FE2745434A00C91946 /* FirebaseCrashlytics in Frameworks */,
 				CBAD47082745434A00C91946 /* MacaroonBottomSheet in Frameworks */,
@@ -15495,7 +15495,7 @@
 				2B9A3E7226E607D800B050ED /* MacaroonURLImage */,
 				2B9A3E7426E607D800B050ED /* MacaroonVendors */,
 				D4A241DF27D2BF1C00641FF0 /* Prism */,
-				D458758927E66906002B42F5 /* ActiveLabel */,
+				D4B33AB027F1E65900523CEA /* ActiveLabel */,
 			);
 			productName = algorand;
 			productReference = 17BD4F252292F1260003E49A /* pera-staging.app */;
@@ -15540,7 +15540,7 @@
 				2B9A3E5A26E607BD00B050ED /* MacaroonURLImage */,
 				2B9A3E5C26E607BD00B050ED /* MacaroonVendors */,
 				D4A241DD27D2BF1300641FF0 /* Prism */,
-				D458758727E668FE002B42F5 /* ActiveLabel */,
+				D4B33AAE27F1E64600523CEA /* ActiveLabel */,
 			);
 			productName = algorand;
 			productReference = 2B0F634E24EC129D00DA22A6 /* pera-beta.app */;
@@ -15585,7 +15585,7 @@
 				2B9A3E4226E6077000B050ED /* MacaroonURLImage */,
 				2B9A3E4426E6077000B050ED /* MacaroonVendors */,
 				D499D27D27C7D40B00641FF5 /* Prism */,
-				D458758527E668D3002B42F5 /* ActiveLabel */,
+				D4B33AAC27F1E63000523CEA /* ActiveLabel */,
 			);
 			productName = algorand;
 			productReference = 2B8BE4CE22391C38005D8565 /* pera.app */;
@@ -15714,7 +15714,7 @@
 				2B187DB726E54B9C005BEDFD /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */,
 				D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */,
-				D458758427E668D3002B42F5 /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */,
+				D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */,
 			);
 			productRefGroup = 2B8BE4CF22391C38005D8565 /* Products */;
 			projectDirPath = "";
@@ -22350,12 +22350,12 @@
 				kind = branch;
 			};
 		};
-		D458758427E668D3002B42F5 /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */ = {
+		D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/optonaut/ActiveLabel.swift.git";
+			repositoryURL = "https://github.com/perawallet/ActiveLabel.swift.git";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.1.5;
+				branch = master;
+				kind = branch;
 			};
 		};
 		D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */ = {
@@ -22786,24 +22786,19 @@
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
 			productName = MacaroonVendors;
 		};
-		2BB8485727EA523A004F2E39 /* ActiveLabel */ = {
+		D4B33AAC27F1E63000523CEA /* ActiveLabel */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D458758427E668D3002B42F5 /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
+			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
 			productName = ActiveLabel;
 		};
-		D458758527E668D3002B42F5 /* ActiveLabel */ = {
+		D4B33AAE27F1E64600523CEA /* ActiveLabel */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D458758427E668D3002B42F5 /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
+			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
 			productName = ActiveLabel;
 		};
-		D458758727E668FE002B42F5 /* ActiveLabel */ = {
+		D4B33AB027F1E65900523CEA /* ActiveLabel */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = D458758427E668D3002B42F5 /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
-			productName = ActiveLabel;
-		};
-		D458758927E66906002B42F5 /* ActiveLabel */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = D458758427E668D3002B42F5 /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
+			package = D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */;
 			productName = ActiveLabel;
 		};
 		D499D27D27C7D40B00641FF5 /* Prism */ = {

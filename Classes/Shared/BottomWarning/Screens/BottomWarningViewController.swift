@@ -68,9 +68,3 @@ final class BottomWarningViewController: BaseScrollViewController {
         bottomWarningView.bindData(viewConfigurator)
     }
 }
-
-extension BottomWarningViewController: BottomSheetPresentable {
-    var modalHeight: ModalHeight {
-        return .compressed
-    }
-}

@@ -152,15 +152,13 @@ extension BottomWarningView {
         }
 
         imageView.image = configurator.image
-        titleLabel.editText = configurator.getTitle()
+        titleLabel.editText = configurator.title
 
         if let description = configurator.description {
             switch description {
             case .plain:
-                descriptionLabel.editText = configurator.getDescription()
+                descriptionLabel.editText = configurator.descriptionText
             case .custom(_, let markedWordWithHandler):
-                descriptionLabel.editText = configurator.getDescription()
-
                 customizeDescriptionLabel(
                     configurator,
                     for: markedWordWithHandler
@@ -172,12 +170,12 @@ extension BottomWarningView {
 
         primaryActionButton.isHidden = configurator.primaryActionButtonTitle == nil
         primaryActionButton.setEditTitle(
-            configurator.getPrimaryActionTitle(),
+            configurator.primaryActionButtonTitle,
             for: .normal
         )
 
         secondaryActionButton.setEditTitle(
-            configurator.getSecondaryActionTitle(),
+            configurator.secondaryActionButtonTitle,
             for: .normal
         )
     }
@@ -191,6 +189,8 @@ extension BottomWarningView {
         /// <note>
         /// It is recommended to use the customize(block:) method to customize it. The reason is that ActiveLabel is reacting to each property that you set. So if you set 3 properties, the textContainer is refreshed 3 times.
         descriptionLabel.customize { label in
+            label.editText = configurator.descriptionText
+
             /// <note>
             /// Regex that looks for `hyperlink.word`
             let customPatternType = ALGActiveType.custom(
