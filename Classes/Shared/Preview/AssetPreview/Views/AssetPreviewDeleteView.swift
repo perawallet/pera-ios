@@ -65,8 +65,9 @@ extension AssetPreviewDeleteView {
 
 extension AssetPreviewDeleteView {
     private func addImage(_ theme: AssetPreviewDeleteViewTheme) {
-        addSubview(imageView)
+        imageView.customize(AssetImageViewTheme())
 
+        addSubview(imageView)
         imageView.snp.makeConstraints {
             $0.leading.equalToSuperview()
             $0.fitToSize(theme.imageSize)
