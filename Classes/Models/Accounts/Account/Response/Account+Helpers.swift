@@ -236,4 +236,12 @@ extension Account {
 
         return img("\(type.rawValue)-\(accountImage)")
     }
+
+    func isOwner(of asset: AssetID) -> Bool {
+        if let ownedAsset = self[asset] {
+            return ownedAsset.amount > 0
+        }
+
+        return false
+    }
 }

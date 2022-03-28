@@ -939,7 +939,7 @@
 "collectible-detail-algo-explorer" = "Show on Algoexplorer";
 "collectible-detail-nft-explorer" = "Show on NFTExplorer";
 "collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
-"collectible-detail-error-not-owner" = "You are not the owner of this NFT.";
+"collectible-detail-error-not-owner" = "You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.";
 "collectible-detail-error-visual" = "We can’t display the visual temporarily.";
 
 // MARK: Collectible Transfer

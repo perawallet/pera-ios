@@ -22,6 +22,8 @@ final class CollectibleMediaPreviewViewController:
     UICollectionViewDelegateFlowLayout {
     private let theme = Theme()
 
+    var eventHandler: ((Event) -> Void)?
+
     private lazy var listView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
@@ -41,6 +43,9 @@ final class CollectibleMediaPreviewViewController:
         collectionView.register(
             CollectibleMediaImagePreviewCell.self
         )
+        collectionView.register(
+            CollectibleMediaVideoPreviewCell.self
+        )
         return collectionView
     }()
 
@@ -52,30 +57,34 @@ final class CollectibleMediaPreviewViewController:
         return pageControl
     }()
 
-    private var currentPage = 0 {
+    private var selectedIndex = 0 {
         didSet {
-            pageControl.currentPage = currentPage
+            pageControl.currentPage = selectedIndex
+            selectedMedia = asset.media[safe: selectedIndex]
+            eventHandler?(.didScrollToMedia(selectedMedia))
         }
     }
+
+    private var selectedMedia: Media?
 
     private var isPageControlSizeUpdated = false
 
     private lazy var dataSource = CollectibleMediaPreviewDataSource(
         theme: theme,
         asset: asset,
-        ownerAccount: ownerAccount
+        account: account
     )
 
     private var asset: CollectibleAsset
-    private let ownerAccount: Account?
+    private let account: Account?
 
     init(
         asset: CollectibleAsset,
-        ownerAccount: Account?,
+        account: Account?,
         configuration: ViewControllerConfiguration
     ) {
         self.asset = asset
-        self.ownerAccount = ownerAccount
+        self.account = account
         super.init(configuration: configuration)
     }
 
@@ -157,6 +166,37 @@ extension CollectibleMediaPreviewViewController {
         return CGSize(width: width.float(), height: width.float())
     }
 
+    func collectionView(
+        _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let cell = cell as? CollectibleMediaVideoPreviewCell else {
+            return
+        }
+
+        cell.playVideo()
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didEndDisplaying cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        guard let cell = cell as? CollectibleMediaVideoPreviewCell else {
+            return
+        }
+
+        cell.stopVideo()
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        eventHandler?(.didSelectMedia(asset.media[safe: indexPath.item]))
+    }
+
     func scrollViewWillEndDragging(
         _ scrollView: UIScrollView,
         withVelocity velocity: CGPoint,
@@ -167,12 +207,12 @@ extension CollectibleMediaPreviewViewController {
             theme.horizontalInset * 2 +
             theme.cellSpacing
 
-        var newPage = CGFloat(currentPage)
+        var newPage = CGFloat(selectedIndex)
 
         if velocity.x == 0 {
             newPage = floor((targetContentOffset.pointee.x - pageWidth / 2) / pageWidth) + 1.0
         } else {
-            newPage = CGFloat(velocity.x > 0 ? currentPage + 1 : currentPage - 1)
+            newPage = CGFloat(velocity.x > 0 ? selectedIndex + 1 : selectedIndex - 1)
             if newPage < 0 {
                 return
             }
@@ -186,11 +226,18 @@ extension CollectibleMediaPreviewViewController {
             return
         }
 
-        currentPage = Int(newPage)
+        selectedIndex = Int(newPage)
 
         targetContentOffset.pointee = CGPoint(
             x: newPage * pageWidth,
             y: targetContentOffset.pointee.y
         )
+    }
+}
+
+extension CollectibleMediaPreviewViewController {
+    enum Event {
+        case didScrollToMedia(Media?)
+        case didSelectMedia(Media?)
     }
 }

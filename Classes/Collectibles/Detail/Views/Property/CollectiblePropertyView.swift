@@ -21,7 +21,7 @@ final class CollectiblePropertyView:
     View,
     ListReusable,
     ViewModelBindable {
-    private lazy var containerView = UIView()
+    private lazy var contentView = UIView()
     private lazy var nameLabel = Label()
     private lazy var valueLabel = Label()
 
@@ -31,9 +31,7 @@ final class CollectiblePropertyView:
         layer.draw(border: theme.border)
         layer.draw(corner: theme.corner)
 
-        addContainerView(theme)
-        addNameLabel(theme)
-        addValueLabel(theme)
+        addContentView(theme)
     }
 
     func customizeAppearance(
@@ -46,20 +44,23 @@ final class CollectiblePropertyView:
 }
 
 extension CollectiblePropertyView {
-    private func addContainerView(_ theme: CollectiblePropertyViewTheme) {
-        containerView.fitToIntrinsicSize()
+    private func addContentView(_ theme: CollectiblePropertyViewTheme) {
+        contentView.fitToIntrinsicSize()
 
-        addSubview(containerView)
-        containerView.snp.makeConstraints {
+        addSubview(contentView)
+        contentView.snp.makeConstraints {
             $0.top.bottom.equalToSuperview().inset(theme.verticallInset)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
         }
+
+        addNameLabel(theme)
+        addValueLabel(theme)
     }
 
     private func addNameLabel(_ theme: CollectiblePropertyViewTheme) {
         nameLabel.customizeAppearance(theme.name)
 
-        containerView.addSubview(nameLabel)
+        contentView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
@@ -70,7 +71,7 @@ extension CollectiblePropertyView {
     private func addValueLabel(_ theme: CollectiblePropertyViewTheme) {
         valueLabel.customizeAppearance(theme.value)
 
-        containerView.addSubview(valueLabel)
+        contentView.addSubview(valueLabel)
         valueLabel.snp.makeConstraints {
             $0.top == nameLabel.snp.bottom + theme.labelPadding
             $0.leading == 0

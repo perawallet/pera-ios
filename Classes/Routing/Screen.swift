@@ -121,7 +121,7 @@ indirect enum Screen {
     )
     case collectibleDetail(
         asset: CollectibleAsset,
-        ownerAccount: Account?
+        account: Account?
     )
     case sendCollectible(
         draft: SendCollectibleDraft,

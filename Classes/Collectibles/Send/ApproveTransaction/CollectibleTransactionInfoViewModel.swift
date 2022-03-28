@@ -70,7 +70,7 @@ extension CollectibleTransactionInfoViewModel {
     private mutating func bindValueStyle(
         _ information: CollectibleTransactionInformation
     ) {
-        if information.isForegroundingValue {
+        if information.isCollectibleSpecificValue {
             valueStyle = [
                 .textOverflow(FittingText()),
                 .textAlignment(.right),
@@ -113,7 +113,7 @@ extension CollectibleTransactionInfoViewModel {
     ) -> EditText {
         let font: CustomFont
 
-        if information.isForegroundingValue {
+        if information.isCollectibleSpecificValue {
             font = Fonts.DMSans.medium.make(15)
         } else {
             font = Fonts.DMSans.regular.make(15)
@@ -141,5 +141,5 @@ struct CollectibleTransactionInformation: Hashable {
     var account: Account? = nil
     let title: String
     let value: String
-    var isForegroundingValue: Bool = false
+    var isCollectibleSpecificValue = false
 }

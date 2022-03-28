@@ -26,7 +26,7 @@ struct CollectibleListItemPendingViewModel:
     private(set) var image: ImageSource?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
-    private(set) var containsUnsupportedMedia: Bool = false
+    private(set) var mediaType: MediaType?
     private(set) var topLeftBadge: UIImage?
     private(set) var pendingTitle: EditText?
 
@@ -70,7 +70,8 @@ extension CollectibleListItemPendingViewModel {
             bindImage(imageSize: imageSize, asset: asset)
             bindTitle(asset)
             bindSubtitle(asset)
-            bindContainsUnsupportedMedia(asset)
+            bindMediaType(asset)
+            bindTopLeftBadge(asset)
             bindPendingTitle()
             return
         }
@@ -122,9 +123,15 @@ extension CollectibleListItemPendingViewModel {
         )
     }
 
-    private mutating func bindContainsUnsupportedMedia(
+    private mutating func bindTopLeftBadge(
         _ asset: CollectibleAsset
     ) {
-        containsUnsupportedMedia = getContainsUnsupportedMedia(asset)
+        topLeftBadge = getTopLeftBadge(asset)
+    }
+
+    private mutating func bindMediaType(
+        _ asset: CollectibleAsset
+    ) {
+        mediaType = getMediaType(asset)
     }
 }

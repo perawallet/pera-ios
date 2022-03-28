@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   VariableLabels.swift
+//   Constants.swift
 
 import Foundation
 
-enum VariableLabels: String {
-    case collectibleDetailSnapshot
+enum Constants {
+    enum DispatchQueues {
+        static let collectibleDetailSnapshot = "collectibleDetailSnapshot"
+    }
 }

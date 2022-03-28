@@ -80,8 +80,14 @@ extension CollectibleMediaImagePreviewView {
     ) {
         image.load(from: viewModel?.image)
 
-        if !(viewModel?.isOwned ?? true) {
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        if !viewModel.isOwned {
             overlayView.alpha = 0.4
+        } else {
+            overlayView.alpha = 0.0
         }
     }
 

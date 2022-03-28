@@ -27,16 +27,16 @@ struct CollectibleMediaImagePreviewViewModel: ViewModel {
     init(
         imageSize: CGSize,
         asset: CollectibleAsset,
-        ownerAccount: Account?,
-        url: URL?
+        account: Account?,
+        media: Media?
     ) {
         bindImage(
             imageSize: imageSize,
             asset: asset,
-            url: url
+            media: media
         )
 
-        bindOwned(ownerAccount)
+        bindOwned(account)
     }
 }
 
@@ -44,20 +44,11 @@ extension CollectibleMediaImagePreviewViewModel {
     private mutating func bindImage(
         imageSize: CGSize,
         asset: CollectibleAsset,
-        url: URL?
+        media: Media?
     ) {
         let placeholder = asset.title.fallback(asset.name.fallback("#\(String(asset.id))"))
 
-        let size: ImageSize
-
-        if imageSize.width <= 0 ||
-            imageSize.height <= 0 {
-            size = .original
-        } else {
-            size = .resize(imageSize, .aspectFit)
-        }
-
-        if let imageURL = url {
+        if let imageURL = media?.previewURL {
             let prismURL = PrismURL(baseURL: imageURL)
                 .setExpectedImageSize(imageSize)
                 .setResizeMode(.fit)
@@ -65,38 +56,31 @@ extension CollectibleMediaImagePreviewViewModel {
 
             image = PNGImageSource(
                 url: prismURL,
-                size: size,
                 shape: .rounded(4),
-                placeholder: ImagePlaceholder(
-                    image: nil,
-                    text: getPlaceholder(placeholder)
-                )
+                placeholder: getPlaceholder(placeholder)
             )
             return
         }
 
         image = PNGImageSource(
             url: nil,
-            placeholder: ImagePlaceholder(
-                image: nil,
-                text: getPlaceholder(placeholder)
-            )
+            placeholder: getPlaceholder(placeholder)
         )
     }
 
-    private mutating func bindOwned(_ ownerAccount: Account?) {
-        isOwned = ownerAccount != nil
+    private mutating func bindOwned(_ account: Account?) {
+        isOwned = account != nil
     }
 }
 
 extension CollectibleMediaImagePreviewViewModel {
     private func getPlaceholder(
         _ aPlaceholder: String
-    ) -> EditText {
+    ) -> ImagePlaceholder {
         let font = Fonts.DMSans.regular.make(19)
         let lineHeightMultiplier = 1.13
 
-        return .attributedString(
+        let placeholderText: EditText = .attributedString(
             aPlaceholder.attributed([
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
@@ -106,6 +90,11 @@ extension CollectibleMediaImagePreviewViewModel {
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])
+        )
+
+        return ImagePlaceholder(
+            image: nil,
+            text: placeholderText
         )
     }
 }

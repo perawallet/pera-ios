@@ -20,53 +20,37 @@ import UIKit
 protocol CollectibleExternalSource {
     var image: UIImage? { get }
     var title: String { get }
-
-    func getURL(
-        for asset: AssetID,
-        in network: ALGAPI.Network
-    ) -> String?
+    var url: String? { get }
 }
 
 struct AlgoExplorerExternalSource: CollectibleExternalSource {
-    var image: UIImage? {
-        return img("icon-algo-explorer")
-    }
+    let image = img("icon-algo-explorer")
+    let title = "collectible-detail-algo-explorer".localized
 
-    var title: String {
-        return "collectible-detail-algo-explorer".localized
-    }
+    let url: String?
 
-    func getURL(
-        for asset: AssetID,
-        in network: ALGAPI.Network
-    ) -> String? {
+    init(asset: AssetID, network: ALGAPI.Network) {
         switch network {
         case .mainnet:
-            return "https://algoexplorer.io/asset/\(String(asset))"
+            url = "https://algoexplorer.io/asset/\(String(asset))"
         case .testnet:
-            return "https://testnet.algoexplorer.io/asset/\(String(asset))"
+            url = "https://testnet.algoexplorer.io/asset/\(String(asset))"
         }
     }
 }
 
 struct NFTExplorerExternalSource: CollectibleExternalSource {
-    var image: UIImage? {
-        return img("icon-nft-explorer")
-    }
+    let image = img("icon-nft-explorer")
+    let title = "collectible-detail-nft-explorer".localized
 
-    var title: String {
-        return "collectible-detail-nft-explorer".localized
-    }
+    let url: String?
 
-    func getURL(
-        for asset: AssetID,
-        in network: ALGAPI.Network
-    ) -> String? {
+    init(asset: AssetID, network: ALGAPI.Network) {
         switch network {
         case .mainnet:
-            return "https://www.nftexplorer.app/asset/\(String(asset))"
+            url = "https://www.nftexplorer.app/asset/\(String(asset))"
         case .testnet:
-            return nil
+            url = nil
         }
     }
 }

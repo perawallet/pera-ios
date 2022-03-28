@@ -24,7 +24,7 @@ protocol CollectibleListItemViewModel: ViewModel {
     var image: ImageSource? { get }
     var title: EditText? { get }
     var subtitle: EditText? { get }
-    var containsUnsupportedMedia: Bool { get }
+    var mediaType: MediaType? { get }
 }
 
 extension CollectibleListItemViewModel {
@@ -125,10 +125,21 @@ extension CollectibleListItemViewModel {
         )
     }
 
-    func getContainsUnsupportedMedia(
+    func getTopLeftBadge(
         _ asset: CollectibleAsset
-    ) -> Bool {
-        return asset.containsUnsupportedMedia
+    ) -> UIImage? {
+        switch asset.mediaType {
+        case .video:
+            return "badge-video".uiImage
+        default:
+            return nil
+        }
+    }
+
+    func getMediaType(
+        _ asset: CollectibleAsset
+    ) -> MediaType? {
+        return asset.mediaType
     }
 
     private func getPlaceholder(

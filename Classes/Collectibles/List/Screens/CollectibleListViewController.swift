@@ -310,18 +310,14 @@ extension CollectibleListViewController {
         _ assetID: AssetID
     ) {
         if let asset = dataController[assetID] {
-            let ownerAccount = sharedDataController.accountCollection.sorted().first { account in
-                if let ownedAsset = account.value[assetID] {
-                    return ownedAsset.amount > 0
-                }
-
-                return false
+            let account = sharedDataController.accountCollection.sorted().first { account in
+                return account.value.isOwner(of: assetID)
             }
 
             open(
                 .collectibleDetail(
                     asset: asset,
-                    ownerAccount: ownerAccount?.value
+                    account: account?.value
                 ),
                 by: .push
             )
