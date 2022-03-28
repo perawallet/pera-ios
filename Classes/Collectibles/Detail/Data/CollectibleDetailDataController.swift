@@ -52,7 +52,7 @@ enum CollectibleDetailItem: Hashable {
 enum CollectibleDetailDataControllerEvent {
     case didUpdate(CollectibleDetailDataController.Snapshot)
     case didFetch(CollectibleAsset)
-    case didResponseFail(HTTPError)
+    case didResponseFail(message: String)
 
     var snapshot: CollectibleDetailDataController.Snapshot? {
         switch self {

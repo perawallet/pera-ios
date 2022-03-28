@@ -57,6 +57,8 @@ extension CollectibleDetailLayout {
         switch listSection {
         case .loading:
             insets.bottom = 8
+            insets.left = 0
+            insets.right = 0
             return insets
         case .media:
             insets.top = theme.mediaTopPadding
@@ -132,10 +134,9 @@ extension CollectibleDetailLayout {
 
         switch itemIdentifier {
         case .loading:
-            return listView(
+            return sizeForLoadingItem(
                 collectionView,
-                layout: collectionViewLayout,
-                atSection: indexPath.section
+                layout: collectionViewLayout
             )
         case .media(let item):
             return listView(
@@ -208,20 +209,13 @@ extension CollectibleDetailLayout {
 }
 
 extension CollectibleDetailLayout {
-    private func listView(
+    private func sizeForLoadingItem(
         _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        atSection section: Int
+        layout listViewLayout: UICollectionViewLayout
     ) -> CGSize {
-        let width = calculateContentWidth(listView)
-        let sectionInset = collectionView(
-            listView,
-            layout: listViewLayout,
-            insetForSectionAt: section
-        )
+        let width = listView.bounds.width
         let height =
         listView.bounds.height -
-        sectionInset.vertical -
         listView.safeAreaTop -
         listView.safeAreaBottom
         return CGSize((width, height))

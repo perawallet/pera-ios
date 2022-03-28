@@ -66,7 +66,15 @@ extension CollectibleDetailAPIDataController {
                 self.eventHandler?(.didFetch(self.asset))
                 self.deliverContentSnapshot()
             case .failure(let error, _):
-                self.eventHandler?(.didResponseFail((error as! HTTPError)))
+                var message: String
+
+                if let statusCode = (error as? HTTPError)?.statusCode {
+                    message = String(statusCode)
+                } else {
+                    message = error.description
+                }
+
+                self.eventHandler?(.didResponseFail(message: message))
             }
         }
     }

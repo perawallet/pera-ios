@@ -74,10 +74,9 @@ extension CollectibleDetailLoadingView {
 
         addSubview(image)
         image.snp.makeConstraints {
-            $0.width == snp.width
             $0.height == image.snp.width
 
-            $0.setPaddings((12, 0, .noMetric, 0))
+            $0.setPaddings((12, 24, .noMetric, 24))
         }
     }
 
@@ -89,7 +88,7 @@ extension CollectibleDetailLoadingView {
         addSubview(title)
         title.snp.makeConstraints {
             $0.top == image.snp.bottom + theme.titleTopPadding
-            $0.leading == 0
+            $0.leading == image
             $0.width == self * theme.titleWidthMultiplier
             $0.fitToHeight(theme.titleViewHeight)
         }
@@ -103,7 +102,7 @@ extension CollectibleDetailLoadingView {
         addSubview(subtitle)
         subtitle.snp.makeConstraints {
             $0.top == title.snp.bottom + theme.subtitleTopPadding
-            $0.leading == 0
+            $0.leading == image
             $0.width == self * theme.subtitleWidthMultiplier
             $0.fitToHeight(theme.subtitleViewHeight)
         }
@@ -117,7 +116,7 @@ extension CollectibleDetailLoadingView {
         addSubview(leftAction)
         leftAction.snp.makeConstraints {
             $0.top == subtitle.snp.bottom + theme.actionTopPadding
-            $0.leading == 0
+            $0.leading == image
             $0.fitToHeight(theme.actionHeight)
         }
     }
@@ -130,7 +129,7 @@ extension CollectibleDetailLoadingView {
         addSubview(rightAction)
         rightAction.snp.makeConstraints {
             $0.top == leftAction
-            $0.trailing == 0
+            $0.trailing == image
             $0.leading == leftAction.snp.trailing + theme.spacingBetweeenActions
             $0.fitToHeight(theme.actionHeight)
             $0.width == leftAction.snp.width
@@ -151,7 +150,7 @@ extension CollectibleDetailLoadingView {
         addSubview(descriptionTitle)
         descriptionTitle.snp.makeConstraints {
             $0.top == separator.snp.bottom + theme.spacingBetweenDescriptionAndSeparator
-            $0.leading == 0
+            $0.leading == image
             $0.fitToHeight(theme.descriptionHeight)
             $0.width == self * theme.descriptionWidthMultiplier
         }
@@ -165,7 +164,7 @@ extension CollectibleDetailLoadingView {
         addSubview(descriptionValueFirstLine)
         descriptionValueFirstLine.snp.makeConstraints {
             $0.top == descriptionTitle.snp.bottom + theme.descriptionValueFirstLineTopMargin
-            $0.leading == 0
+            $0.leading == image
             $0.fitToHeight(theme.descriptionValueLineHeight)
             $0.width == self * theme.descriptionValueFirstLineWidthMultiplier
         }
@@ -179,7 +178,7 @@ extension CollectibleDetailLoadingView {
         addSubview(descriptionValueSecondLine)
         descriptionValueSecondLine.snp.makeConstraints {
             $0.top == descriptionValueFirstLine.snp.bottom + theme.descriptionValueLineSpacing
-            $0.leading == 0
+            $0.leading == image
             $0.fitToHeight(theme.descriptionValueLineHeight)
             $0.width == self * theme.descriptionValueSecondLineWidthMultiplier
             $0.bottom <= 0
