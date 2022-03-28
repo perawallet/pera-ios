@@ -171,12 +171,12 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     by: .present
                 ) as? AssetSearchViewController
 
-                searchScreen?.handlers.didSelectAsset = { [weak self] compoundAsset in
+                searchScreen?.handlers.didSelectAsset = { [weak self] asset in
                     guard let self = self else {
                         return
                     }
 
-                    self.openAssetDetail(compoundAsset)
+                    self.openAssetDetail(asset)
                 }
             case .asset:
                 var algoIndex = 2
