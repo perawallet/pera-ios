@@ -30,6 +30,7 @@ final class ManageAssetsViewController: BaseViewController {
     private var account: Account
     
     private var listItems = [CompoundAsset]()
+    private var accountAssets = [CompoundAsset]()
     
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
@@ -68,7 +69,7 @@ final class ManageAssetsViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchAssets()
+        getAssetsFromAccount()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -124,8 +125,12 @@ extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension ManageAssetsViewController {
-    private func fetchAssets() {
-        listItems = account.compoundAssets
+    private func getAssetsFromAccount() {
+        accountAssets = account.compoundAssets
+        loadAssets()
+    }
+    private func loadAssets() {
+        listItems = accountAssets
         reloadAssets()
     }
     
@@ -135,7 +140,7 @@ extension ManageAssetsViewController {
     }
     
     private func filterData(with query: String) {
-        listItems = account.compoundAssets.filter {
+        listItems = accountAssets.filter {
             String($0.id).contains(query) ||
             $0.detail.name.unwrap(or: "").containsCaseInsensitive(query) ||
             $0.detail.unitName.unwrap(or: "").containsCaseInsensitive(query)
@@ -148,7 +153,7 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         guard let query = view.text,
               !query.isEmpty else {
-                  fetchAssets()
+                  loadAssets()
                   return
         }
         filterData(with: query)
@@ -241,8 +246,6 @@ extension ManageAssetsViewController:
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
         
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-
         if account.requiresLedgerConnection() {
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
@@ -258,8 +261,15 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
               }
 
         removedAssetDetail.isRemoved = true
+        
+        accountAssets.enumerated().forEach { index, asset in
+            if asset.id == removedAssetDetail.id {
+                accountAssets.remove(at: index)
+                loadAssets()
+            }
+        }
+        
         delegate?.manageAssetsViewController(self, didRemove: removedAssetDetail, from: account)
-        dismissScreen()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
