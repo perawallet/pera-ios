@@ -37,6 +37,7 @@ extension AppColors.Shared {
 
     enum System: String, Color {
         case background = "Shared/System/background"
+        case chrome = "Shared/System/chrome"
     }
 
     enum Layer: String, Color {
@@ -50,6 +51,7 @@ extension AppColors.Shared {
         case negativeLighter = "Shared/Helpers/negativeLighter"
         case positive = "Shared/Helpers/positive"
         case success = "Shared/Helpers/success"
+        case testnet = "Shared/Helpers/testnet"
     }
 
     enum Modality: String, Color {
@@ -110,6 +112,9 @@ extension AppColors.Components {
         case defaultBackground = "Components/TextField/defaultBackground"
         case indicatorActive = "Components/TextField/indicatorActive"
         case indicatorDeactive = "Components/TextField/indicatorDeactive"
+        case inputSuggestionBackground = "Components/TextField/inputSuggestionBackground"
+        case inputSuggestionSeparator = "Components/TextField/inputSuggestionSeparator"
+        case inputSuggestionText = "Components/TextField/inputSuggestionText"
     }
 }
 

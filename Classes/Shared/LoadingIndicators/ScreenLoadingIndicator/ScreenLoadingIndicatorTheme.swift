@@ -30,11 +30,11 @@ struct ScreenLoadingIndicatorTheme: StyleSheet, LayoutSheet {
         self.contentEdgeInsets = (20, 40, 20, 40)
         self.background =
             MacaroonUIKit.Shadow(
-                color: Colors.Background.primary,
+                color: AppColors.Shared.System.background.uiColor,
                 opacity: 0.16,
                 offset: (0, 20),
                 radius: 80,
-                fillColor: Colors.Background.primary,
+                fillColor: AppColors.Shared.System.background.uiColor,
                 cornerRadii: (8, 8),
                 corners: .allCorners
             )
