@@ -3722,6 +3722,12 @@
 		F060AD0D27D7640700511615 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F060AD0C27D7640700511615 /* GoogleService-Info.plist */; };
 		F060AD0F27D7641200511615 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F060AD0E27D7641200511615 /* GoogleService-Info.plist */; };
 		F06FF4BC27E1BE780047A20E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F06FF4BB27E1BE780047A20E /* GoogleService-Info.plist */; };
+		F06FF4D727E88FF60047A20E /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = F06FF4D627E88FF60047A20E /* Config.json */; };
+		F06FF4D927E8901B0047A20E /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = F06FF4D827E8901B0047A20E /* Config.json */; };
+		F06FF4DB27E890320047A20E /* Config.json in Resources */ = {isa = PBXBuildFile; fileRef = F06FF4DA27E890320047A20E /* Config.json */; };
+		F06FF4DE27E8A82A0047A20E /* ALGAppTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06FF4DD27E8A82A0047A20E /* ALGAppTarget.swift */; };
+		F06FF4DF27E8A82A0047A20E /* ALGAppTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06FF4DD27E8A82A0047A20E /* ALGAppTarget.swift */; };
+		F06FF4E027E8A82A0047A20E /* ALGAppTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F06FF4DD27E8A82A0047A20E /* ALGAppTarget.swift */; };
 		F0772B54275EB1DD003A9329 /* AccountDetailFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */; };
 		F0772B55275EB1DD003A9329 /* AccountDetailFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */; };
 		F0772B56275EB1DD003A9329 /* AccountDetailFetchOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */; };
@@ -5228,6 +5234,10 @@
 		F060AD0C27D7640700511615 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F060AD0E27D7641200511615 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F06FF4BB27E1BE780047A20E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		F06FF4D627E88FF60047A20E /* Config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Config.json; sourceTree = "<group>"; };
+		F06FF4D827E8901B0047A20E /* Config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Config.json; sourceTree = "<group>"; };
+		F06FF4DA27E890320047A20E /* Config.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Config.json; sourceTree = "<group>"; };
+		F06FF4DD27E8A82A0047A20E /* ALGAppTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGAppTarget.swift; sourceTree = "<group>"; };
 		F0772B53275EB1DD003A9329 /* AccountDetailFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailFetchOperation.swift; sourceTree = "<group>"; };
 		F0772B5B275F5C5C003A9329 /* AssetDetailGroupFetchOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetDetailGroupFetchOperation.swift; sourceTree = "<group>"; };
 		F07CD2FA276A1E39006665FE /* AccountCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCollection.swift; sourceTree = "<group>"; };
@@ -5571,6 +5581,7 @@
 		17B7D8AC2240F23D00A6FF9E /* Environment */ = {
 			isa = PBXGroup;
 			children = (
+				F06FF4DC27E8A8130047A20E /* Target */,
 				17B7D8AD2240F25000A6FF9E /* Environment.swift */,
 			);
 			path = Environment;
@@ -11134,9 +11145,9 @@
 		2BF7280427471E8F00CCAC30 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				2B8BE4D122391C38005D8565 /* AppDelegate.swift */,
 				2B8BE4EB22393547005D8565 /* Core */,
 				17B7D8AC2240F23D00A6FF9E /* Environment */,
-				2B8BE4D122391C38005D8565 /* AppDelegate.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -12620,6 +12631,7 @@
 		F060AD0727D7636000511615 /* Staging */ = {
 			isa = PBXGroup;
 			children = (
+				F06FF4D827E8901B0047A20E /* Config.json */,
 				F060AD0C27D7640700511615 /* GoogleService-Info.plist */,
 				EC9412FF22BD6D4C00745662 /* Info.plist */,
 			);
@@ -12629,6 +12641,7 @@
 		F060AD0827D7636600511615 /* Store */ = {
 			isa = PBXGroup;
 			children = (
+				F06FF4DA27E890320047A20E /* Config.json */,
 				F060AD0E27D7641200511615 /* GoogleService-Info.plist */,
 				2B8BE4DD22391C3B005D8565 /* Info.plist */,
 			);
@@ -12638,10 +12651,19 @@
 		F060AD0927D7636D00511615 /* Beta */ = {
 			isa = PBXGroup;
 			children = (
+				F06FF4D627E88FF60047A20E /* Config.json */,
 				F06FF4BB27E1BE780047A20E /* GoogleService-Info.plist */,
 				2B0F634F24EC129D00DA22A6 /* Info.plist */,
 			);
 			path = Beta;
+			sourceTree = "<group>";
+		};
+		F06FF4DC27E8A8130047A20E /* Target */ = {
+			isa = PBXGroup;
+			children = (
+				F06FF4DD27E8A82A0047A20E /* ALGAppTarget.swift */,
+			);
+			path = Target;
 			sourceTree = "<group>";
 		};
 		F0772B52275EB17F003A9329 /* Demo */ = {
@@ -13091,6 +13113,7 @@
 				2B77479D26012E670083EFFA /* mnemonics.txt in Resources */,
 				D4CC46FE26DD18D800AA1BFE /* DMMono-Light.ttf in Resources */,
 				D405059226F0F0A1001D0D11 /* light-ledger.json in Resources */,
+				F06FF4D927E8901B0047A20E /* Config.json in Resources */,
 				2B95422025B07FEA0098805B /* LedgerAccountInformation.json in Resources */,
 				17BD4F1B2292F1260003E49A /* Localizable.strings in Resources */,
 				D4CC470126DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
@@ -13114,6 +13137,7 @@
 				2B0F633724EC129D00DA22A6 /* PublicSans-SemiBold.ttf in Resources */,
 				D4CC470026DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
 				D405059526F0F0A7001D0D11 /* dark-ledger.json in Resources */,
+				F06FF4D727E88FF60047A20E /* Config.json in Resources */,
 				17B7E1D427DF4D2800A89025 /* DMSans-Bold.ttf in Resources */,
 				2B0F633B24EC129D00DA22A6 /* LaunchScreen.storyboard in Resources */,
 				D4CC471526DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */,
@@ -13149,6 +13173,7 @@
 				2B516175243F739D006DEA54 /* PublicSans-SemiBold.ttf in Resources */,
 				D4CC46FF26DD18D800AA1BFE /* DMMono-Italic.ttf in Resources */,
 				D405059426F0F0A7001D0D11 /* dark-ledger.json in Resources */,
+				F06FF4DB27E890320047A20E /* Config.json in Resources */,
 				17B7E1D327DF4D2800A89025 /* DMSans-Bold.ttf in Resources */,
 				2B8BE4DC22391C3B005D8565 /* LaunchScreen.storyboard in Resources */,
 				D4CC471426DD18E900AA1BFE /* DMSans-BoldItalic.ttf in Resources */,
@@ -14127,6 +14152,7 @@
 				2B6B422B27BEA3A50036BF9E /* PasteFullPassphraseListActionViewModel.swift in Sources */,
 				2B32A2612552F031007CC3A6 /* LedgerTransactionErrorLog.swift in Sources */,
 				D4AEDD31271C6E1700AD2725 /* AlgoStatisticsFooterViewTheme.swift in Sources */,
+				F06FF4E027E8A82A0047A20E /* ALGAppTarget.swift in Sources */,
 				17BD4EB42292F1260003E49A /* AccountListView.swift in Sources */,
 				D482274C272C57D9004CB9BF /* EditContactViewController+Theme.swift in Sources */,
 				955B618D27858E1B005A5C7E /* WCSingleTransactionRequestViewTheme.swift in Sources */,
@@ -15372,6 +15398,7 @@
 				2B6B422A27BEA3A50036BF9E /* PasteFullPassphraseListActionViewModel.swift in Sources */,
 				2BB93BD625BEF37B001F1D6C /* SendAlgosTransactionDataBuilder.swift in Sources */,
 				2B83D05426C41554005A35AF /* WCSessionRejectedEvent.swift in Sources */,
+				F06FF4DF27E8A82A0047A20E /* ALGAppTarget.swift in Sources */,
 				2B5F6F9E2768EC0300C9B780 /* SingleGrayTitleHeaderSuplementaryView.swift in Sources */,
 				2B80C544277322BB00BB071E /* AddAssetItemView.swift in Sources */,
 				2B0F629E24EC129D00DA22A6 /* PinLimitViewController.swift in Sources */,
@@ -16620,6 +16647,7 @@
 				2BF34CA02239ACDC0052CAD3 /* AppConfiguration.swift in Sources */,
 				D4AEDD3C271C711100AD2725 /* AlgoStatisticsInfoViewTheme.swift in Sources */,
 				2B055FCA279839FB004E3CA0 /* AssetSearchLocalDataController.swift in Sources */,
+				F06FF4DE27E8A82A0047A20E /* ALGAppTarget.swift in Sources */,
 				D41F934D272309F000E9F2E7 /* InstructionItemViewTheme.swift in Sources */,
 				D47C4AB52791C1E80012D7A6 /* WCSessionListNoContentViewModel.swift in Sources */,
 				F0DB419B279496A600EA437D /* ShowQrCodeListActionViewModel.swift in Sources */,

@@ -44,6 +44,7 @@ class RootViewController: UIViewController {
     private lazy var mainContainer = TabBarController()
     
     private lazy var pushNotificationController = PushNotificationController(
+        target: target,
         session: appConfiguration.session,
         api: appConfiguration.api,
         bannerController: appConfiguration.bannerController
@@ -53,13 +54,16 @@ class RootViewController: UIViewController {
     private var wcRequestScreen: WCMainTransactionScreen?
     private var wcTransactionSuccessTransition: BottomSheetTransition?
     
+    let target: ALGAppTarget
     let appConfiguration: AppConfiguration
     let launchController: AppLaunchController
 
     init(
+        target: ALGAppTarget,
         appConfiguration: AppConfiguration,
         launchController: AppLaunchController
     ) {
+        self.target = target
         self.appConfiguration = appConfiguration
         self.launchController = launchController
         
