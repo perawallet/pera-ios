@@ -22,6 +22,8 @@ import MacaroonURLImage
 struct CollectibleListItemReadyViewModel:
     CollectibleListItemViewModel,
     Hashable {
+    private(set) var account: Account
+
     private(set) var assetID: AssetID?
     private(set) var image: ImageSource?
     private(set) var title: EditText?
@@ -31,9 +33,12 @@ struct CollectibleListItemReadyViewModel:
     private(set) var bottomLeftBadge: UIImage?
 
     init<T>(
+        account: Account,
         imageSize: CGSize,
         model: T
     ) {
+        self.account = account
+
         bind(
             imageSize: imageSize,
             model: model
@@ -45,6 +50,7 @@ extension CollectibleListItemReadyViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
+        hasher.combine(account.address)
         hasher.combine(assetID)
         hasher.combine(title)
         hasher.combine(subtitle)

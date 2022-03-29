@@ -39,13 +39,11 @@ final class CollectibleListLocalDataController:
 
     private let galleryAccount: CollectibleGalleryAccount
 
-    private var accounts: [AccountHandle]
+    private var accounts: [Account]
     private let sharedDataController: SharedDataController
 
-    private var collectibleAssets: [CollectibleAsset]
-    private var pendingCollectibleAssets: [CollectibleAsset] = []
-
-    private lazy var searchResults: [CollectibleAsset] = collectibleAssets
+    typealias AccountAssetPair = (account: Account, asset: CollectibleAsset)
+    private var pendingAccountAssetPairs: [AccountAssetPair] = []
 
     private let isWatchAccount: Bool
 
@@ -61,32 +59,30 @@ final class CollectibleListLocalDataController:
 
         switch galleryAccount {
         case .single(let account):
-            accounts = [account]
-            collectibleAssets = account.value.collectibleAssets.compactMap { $0 }.uniqueElements(for: \.id)
+            accounts = [account.value]
         case .all:
-            accounts = sharedDataController.accountCollection.sorted()
-            collectibleAssets = accounts
-                .map { $0.value.collectibleAssets }
-                .flatMap { $0 }.uniqueElements(for: \.id)
+            accounts = sharedDataController.accountCollection.sorted().map(\.value)
         }
 
         self.sharedDataController = sharedDataController
-        self.isWatchAccount = galleryAccount.singleAccount?.value.isWatchAccount() ?? false
+
+        isWatchAccount = galleryAccount.singleAccount?.value.isWatchAccount() ?? false
 
         observe(notification: Self.didAddPendingCollectible) {
             [weak self] notification in
             guard let self = self else { return }
 
-            if let asset =
+            if let accountAssetPair =
                 notification.userInfo?[
                     Self.assetUserInfoKey
-                ] as? AssetDecoration {
-                let collectibleAsset = CollectibleAsset(
-                    asset: ALGAsset(id: asset.id),
-                    decoration: asset
-                )
+                ] as? AccountAssetPair {
 
-                self.addPendingAsset(collectibleAsset)
+                self.addPendingAccountAssetPair(
+                    AccountAssetPair(
+                        account: accountAssetPair.account,
+                        asset: accountAssetPair.asset
+                    )
+                )
             }
         }
     }
@@ -96,12 +92,22 @@ final class CollectibleListLocalDataController:
         unobserveNotifications()
     }
 
-    subscript (id: AssetID) -> CollectibleAsset? {
-        if let asset = collectibleAssets.first(matching: (\.id, id)) {
-            return asset
-        }
+    subscript(account: Account, id: AssetID) -> CollectibleAsset? {
+        let account = accounts.first(matching: (\.address, account.address))
+        let collectibleAsset = account?.collectibleAssets.first(matching: (\.id, id))
 
-        return pendingCollectibleAssets.first(matching: (\.id, id))
+        if let collectibleAsset = collectibleAsset {
+            return collectibleAsset
+        } else {
+            let pendingCollectibleAsset =
+            pendingAccountAssetPairs
+                .first {
+                    $0.account.address == account?.address
+                }?
+                .asset
+
+            return pendingCollectibleAsset
+        }
     }
 }
 
@@ -113,48 +119,12 @@ extension CollectibleListLocalDataController {
     func search(for query: String) {
         lastQuery = query
 
-        searchResults = collectibleAssets.filter { asset in
-            isAssetContainsTitle(asset, query: query) ||
-            isAssetContainsID(asset, query: query) ||
-            isAssetContainsName(asset, query: query) ||
-            isAssetContainsUnitName(asset, query: query)
-        }
-
-        deliverContentSnapshot()
+        deliverContentSnapshot(with: query)
     }
 
     func resetSearch() {
         lastQuery = nil
-        searchResults = collectibleAssets
         deliverContentSnapshot()
-    }
-
-    private func isAssetContainsTitle(
-        _ asset: CollectibleAsset,
-        query: String
-    ) -> Bool {
-        return asset.title.someString.localizedCaseInsensitiveContains(query)
-    }
-
-    private func isAssetContainsID(
-        _ asset: CollectibleAsset,
-        query: String
-    ) -> Bool {
-        return String(asset.id).localizedCaseInsensitiveContains(query)
-    }
-
-    private func isAssetContainsName(
-        _ asset: CollectibleAsset,
-        query: String
-    ) -> Bool {
-        return asset.name.someString.localizedCaseInsensitiveContains(query)
-    }
-
-    private func isAssetContainsUnitName(
-        _ asset: CollectibleAsset,
-        query: String
-    ) -> Bool {
-        return asset.unitName.someString.localizedCaseInsensitiveContains(query)
     }
 }
 
@@ -175,27 +145,23 @@ extension CollectibleListLocalDataController {
             switch galleryAccount {
             case .single(let account):
                 if let updatedAccount = sharedDataController.accountCollection[account.value.address] {
-                    accounts = [updatedAccount]
-                    collectibleAssets = updatedAccount.value.collectibleAssets.compactMap { $0 }.uniqueElements(for: \.id)
-                    searchResults = collectibleAssets
+                    accounts = [updatedAccount.value]
 
                     if let lastQuery = lastQuery {
                         search(for: lastQuery)
+                    } else {
+                        deliverContentSnapshot()
                     }
                 }
             case .all:
-                accounts = sharedDataController.accountCollection.sorted()
-                collectibleAssets = accounts
-                    .map { $0.value.collectibleAssets }
-                    .flatMap { $0 }.uniqueElements(for: \.id)
-                searchResults = collectibleAssets
+                accounts = sharedDataController.accountCollection.sorted().map(\.value)
 
                 if let lastQuery = lastQuery {
                     search(for: lastQuery)
+                } else {
+                    deliverContentSnapshot()
                 }
             }
-
-            deliverContentSnapshot()
         }
     }
 }
@@ -221,16 +187,56 @@ extension CollectibleListLocalDataController {
         }
     }
 
-    private func deliverContentSnapshot() {
-        if collectibleAssets.isEmpty {
-            deliverNoContentSnapshot()
-            return
+    private func deliverContentSnapshot(
+        with query: String? = nil
+    ) {
+        var collectibleItems: [CollectibleListItem] = []
+
+        accounts.forEach { account in
+            account
+                .collectibleAssets
+                .forEach { collectibleAsset in
+                    if let query = query,
+                       !isAssetContains(collectibleAsset, query: query) {
+                        return
+                    }
+
+                    let cellItem: CollectibleItem
+
+                    if collectibleAsset.isOwned {
+                        cellItem = .cell(
+                            .owner(
+                                CollectibleListItemReadyViewModel(
+                                    account: account,
+                                    imageSize: self.imageSize,
+                                    model: collectibleAsset
+                                )
+                            )
+                        )
+                    } else {
+                        cellItem = .cell(
+                            .optedIn(
+                                CollectibleListItemReadyViewModel(
+                                    account: account,
+                                    imageSize: self.imageSize,
+                                    model: collectibleAsset
+                                )
+                            )
+                        )
+                    }
+
+                    let listItem: CollectibleListItem = .collectible(cellItem)
+                    collectibleItems.append(listItem)
+                }
         }
 
-        let searchResults = searchResults
+        if collectibleItems.isEmpty {
+            if lastQuery != nil {
+                deliverSearchNoContentSnapshot()
+            } else {
+                deliverNoContentSnapshot()
+            }
 
-        if searchResults.isEmpty {
-            deliverSearchNoContentSnapshot()
             return
         }
 
@@ -240,35 +246,6 @@ extension CollectibleListLocalDataController {
 
             var snapshot = Snapshot()
 
-            var collectibleItems: [CollectibleListItem] = []
-
-            for collectible in searchResults {
-                let cellItem: CollectibleItem
-
-                if collectible.isOwned {
-                    cellItem = .cell(
-                        .owner(
-                            CollectibleListItemReadyViewModel(
-                                imageSize: self.imageSize,
-                                model: collectible
-                            )
-                        )
-                    )
-                } else {
-                    cellItem = .cell(
-                        .optedIn(
-                            CollectibleListItemReadyViewModel(
-                                imageSize: self.imageSize,
-                                model: collectible
-                            )
-                        )
-                    )
-                }
-
-                let listItem: CollectibleListItem = .collectible(cellItem)
-                collectibleItems.append(listItem)
-            }
-
             snapshot.appendSections([.search, .collectibles])
 
             snapshot.appendItems(
@@ -276,20 +253,21 @@ extension CollectibleListLocalDataController {
                 toSection: .search
             )
 
-            self.accounts.forEach { accountHandle in
-                self.clearPendingCollectibleAssetsIfNeeded(
-                    for: accountHandle.value
+            self.accounts.forEach { account in
+                self.clearPendingAccountAssetPairsIfNeeded(
+                    for: account
                 )
             }
 
             var pendingCollectibleItems: [CollectibleListItem] = []
 
-            self.pendingCollectibleAssets.uniqueElements().forEach { pendingCollectibleAsset in
+            self.pendingAccountAssetPairs.forEach { pendingCollectibleAsset in
                 let cellItem: CollectibleItem = .cell(
                     .pending(
                         CollectibleListItemPendingViewModel(
+                            account: pendingCollectibleAsset.account,
                             imageSize: self.imageSize,
-                            model: pendingCollectibleAsset
+                            model: pendingCollectibleAsset.asset
                         )
                     )
                 )
@@ -308,7 +286,6 @@ extension CollectibleListLocalDataController {
                 toSection: .collectibles
             )
 
-            /// <todo> I think this shouldn't be handled like this for AccountCollectibleListViewController
             if !self.isWatchAccount {
                 snapshot.appendItems(
                     [.collectible(.footer)],
@@ -363,16 +340,24 @@ extension CollectibleListLocalDataController {
 }
 
 extension CollectibleListLocalDataController {
-    private func addPendingAsset(_ collectible: CollectibleAsset) {
-        collectible.state = .pending(.add)
-        pendingCollectibleAssets.append(collectible)
+    private func addPendingAccountAssetPair(
+        _ accountAssetPair: AccountAssetPair
+    ) {
+        accountAssetPair.asset.state = .pending(.add)
+        pendingAccountAssetPairs.append(accountAssetPair)
 
-        deliverContentSnapshot()
+        if let lastQuery = lastQuery {
+            search(for: lastQuery)
+        } else {
+            deliverContentSnapshot()
+        }
     }
 
-    private func clearPendingCollectibleAssetsIfNeeded(for account: Account) {
-        pendingCollectibleAssets = pendingCollectibleAssets.filter {
-            !account.containsCollectibleAsset($0.id)
+    private func clearPendingAccountAssetPairsIfNeeded(
+        for account: Account
+    ) {
+        pendingAccountAssetPairs = pendingAccountAssetPairs.filter {
+            return !($0.account.address == account.address && account.containsCollectibleAsset($0.asset.id))
         }
     }
 }
@@ -388,6 +373,46 @@ extension CollectibleListLocalDataController {
             self.lastSnapshot = event.snapshot
             self.eventHandler?(event)
         }
+    }
+}
+
+extension CollectibleListLocalDataController {
+    private func isAssetContains(
+        _ asset: CollectibleAsset,
+        query: String
+    ) -> Bool {
+        return isAssetContainsTitle(asset, query: query) ||
+        isAssetContainsID(asset, query: query) ||
+        isAssetContainsName(asset, query: query) ||
+        isAssetContainsUnitName(asset, query: query)
+    }
+
+    private func isAssetContainsTitle(
+        _ asset: CollectibleAsset,
+        query: String
+    ) -> Bool {
+        return asset.title.someString.localizedCaseInsensitiveContains(query)
+    }
+
+    private func isAssetContainsID(
+        _ asset: CollectibleAsset,
+        query: String
+    ) -> Bool {
+        return String(asset.id).localizedCaseInsensitiveContains(query)
+    }
+
+    private func isAssetContainsName(
+        _ asset: CollectibleAsset,
+        query: String
+    ) -> Bool {
+        return asset.name.someString.localizedCaseInsensitiveContains(query)
+    }
+
+    private func isAssetContainsUnitName(
+        _ asset: CollectibleAsset,
+        query: String
+    ) -> Bool {
+        return asset.unitName.someString.localizedCaseInsensitiveContains(query)
     }
 }
 

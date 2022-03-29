@@ -244,11 +244,16 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
         }
 
         if assetDetail.isCollectible {
+            let collectibleAsset = CollectibleAsset(
+                asset: ALGAsset(id: assetDetail.id),
+                decoration: assetDetail
+            )
+
             NotificationCenter.default.post(
                 name: CollectibleListLocalDataController.didAddPendingCollectible,
                 object: self,
                 userInfo: [
-                    CollectibleListLocalDataController.assetUserInfoKey: assetDetail
+                    CollectibleListLocalDataController.assetUserInfoKey: (account, collectibleAsset)
                 ]
             )
         } else {

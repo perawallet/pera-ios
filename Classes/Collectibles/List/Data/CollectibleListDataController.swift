@@ -24,7 +24,7 @@ protocol CollectibleListDataController: AnyObject {
 
     var imageSize: CGSize { get set }
 
-    subscript (id: AssetID) -> CollectibleAsset? { get }
+    subscript(account: Account, id: AssetID) -> CollectibleAsset? { get }
 
     func load()
     func search(for query: String)

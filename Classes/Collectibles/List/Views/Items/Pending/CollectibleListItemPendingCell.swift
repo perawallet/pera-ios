@@ -28,6 +28,8 @@ final class CollectibleListItemPendingCell:
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
+
+        isUserInteractionEnabled = false
     }
 }
 
