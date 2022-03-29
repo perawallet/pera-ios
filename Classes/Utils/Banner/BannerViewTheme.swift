@@ -73,7 +73,7 @@ extension BannerViewTheme {
             opacity: 1,
             offset: (0, 8),
             radius: 20,
-            fillColor: Colors.Background.secondary,
+            fillColor: AppColors.Shared.System.background.uiColor,
             cornerRadii: (12, 12),
             corners: .allCorners
         )

@@ -24,7 +24,7 @@ class PasshraseMnemonicNumberHeaderView: BaseView {
     private lazy var titleLabel: UILabel = {
         UILabel(frame: .zero)
             .withFont(UIFont.font(withWeight: .regular(size: 16.0)))
-            .withTextColor(Colors.Text.secondary)
+            .withTextColor(AppColors.Components.Text.gray.uiColor)
             .withAlignment(.left)
     }()
 
