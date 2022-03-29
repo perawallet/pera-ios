@@ -78,10 +78,7 @@ final class CollectibleListLocalDataController:
                 ] as? AccountAssetPair {
 
                 self.addPendingAccountAssetPair(
-                    AccountAssetPair(
-                        account: accountAssetPair.account,
-                        asset: accountAssetPair.asset
-                    )
+                    accountAssetPair
                 )
             }
         }
@@ -90,24 +87,6 @@ final class CollectibleListLocalDataController:
     deinit {
         sharedDataController.remove(self)
         unobserveNotifications()
-    }
-
-    subscript(account: Account, id: AssetID) -> CollectibleAsset? {
-        let account = accounts.first(matching: (\.address, account.address))
-        let collectibleAsset = account?.collectibleAssets.first(matching: (\.id, id))
-
-        if let collectibleAsset = collectibleAsset {
-            return collectibleAsset
-        } else {
-            let pendingCollectibleAsset =
-            pendingAccountAssetPairs
-                .first {
-                    $0.account.address == account?.address
-                }?
-                .asset
-
-            return pendingCollectibleAsset
-        }
     }
 }
 
@@ -206,20 +185,28 @@ extension CollectibleListLocalDataController {
                     if collectibleAsset.isOwned {
                         cellItem = .cell(
                             .owner(
-                                CollectibleListItemReadyViewModel(
+                                CollectibleCellItemContainer(
                                     account: account,
-                                    imageSize: self.imageSize,
-                                    model: collectibleAsset
+                                    asset: collectibleAsset,
+                                    viewModel: CollectibleListItemReadyViewModel(
+                                        account: account,
+                                        imageSize: imageSize,
+                                        model: collectibleAsset
+                                    )
                                 )
                             )
                         )
                     } else {
                         cellItem = .cell(
                             .optedIn(
-                                CollectibleListItemReadyViewModel(
+                                CollectibleCellItemContainer(
                                     account: account,
-                                    imageSize: self.imageSize,
-                                    model: collectibleAsset
+                                    asset: collectibleAsset,
+                                    viewModel: CollectibleListItemReadyViewModel(
+                                        account: account,
+                                        imageSize: imageSize,
+                                        model: collectibleAsset
+                                    )
                                 )
                             )
                         )
@@ -261,13 +248,17 @@ extension CollectibleListLocalDataController {
 
             var pendingCollectibleItems: [CollectibleListItem] = []
 
-            self.pendingAccountAssetPairs.forEach { pendingCollectibleAsset in
+            self.pendingAccountAssetPairs.forEach { pendingAccountAssetPair in
                 let cellItem: CollectibleItem = .cell(
                     .pending(
-                        CollectibleListItemPendingViewModel(
-                            account: pendingCollectibleAsset.account,
-                            imageSize: self.imageSize,
-                            model: pendingCollectibleAsset.asset
+                        CollectibleCellItemContainer(
+                            account: pendingAccountAssetPair.account,
+                            asset: pendingAccountAssetPair.asset,
+                            viewModel: CollectibleListItemPendingViewModel(
+                                account: pendingAccountAssetPair.account,
+                                imageSize: self.imageSize,
+                                model: pendingAccountAssetPair.asset
+                            )
                         )
                     )
                 )

@@ -256,24 +256,18 @@ extension CollectibleListViewController {
             switch item {
             case .cell(let cell):
                 switch cell {
-                case .owner(let viewModel):
-                    guard let assetID = viewModel.assetID else {
-                        return
-                    }
-
-                    openCollectibleDetail(account: viewModel.account, assetID)
-                case .pending(let viewModel):
-                    guard let assetID = viewModel.assetID else {
-                        return
-                    }
-
-                    openCollectibleDetail(account: viewModel.account, assetID)
-                case .optedIn(let viewModel):
-                    guard let assetID = viewModel.assetID else {
-                        return
-                    }
-
-                    openCollectibleDetail(account: viewModel.account, assetID)
+                case .owner(let item):
+                    openCollectibleDetail(
+                        account: item.account,
+                        asset: item.asset
+                    )
+                case .optedIn(let item):
+                    openCollectibleDetail(
+                        account: item.account,
+                        asset: item.asset
+                    )
+                default:
+                    break
                 }
             case .footer:
                 openReceiveCollectibleAccountList()
@@ -308,17 +302,15 @@ extension CollectibleListViewController {
 extension CollectibleListViewController {
     private func openCollectibleDetail(
         account: Account,
-        _ assetID: AssetID
+        asset: CollectibleAsset
     ) {
-        if let asset = dataController[account, assetID] {
-            open(
-                .collectibleDetail(
-                    asset: asset,
-                    account: account
-                ),
-                by: .push
-            )
-        }
+        open(
+            .collectibleDetail(
+                asset: asset,
+                account: account
+            ),
+            by: .push
+        )
     }
 
     private func openReceiveCollectibleAccountList() {

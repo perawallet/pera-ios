@@ -215,13 +215,13 @@ extension CollectibleListLayout {
             return self.listView(
                 listView,
                 layout: listViewLayout,
-                sizeForCollectibleReadyCellItem: item
+                sizeForCollectibleReadyCellItem: item.viewModel
             )
         case .pending(let item):
             return self.listView(
                 listView,
                 layout: listViewLayout,
-                sizeForCollectiblePendingCellItem: item
+                sizeForCollectiblePendingCellItem: item.viewModel
             )
         }
     }
