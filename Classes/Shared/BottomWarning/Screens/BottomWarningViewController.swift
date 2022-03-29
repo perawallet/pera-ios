@@ -22,7 +22,10 @@ import MacaroonUIKit
 final class BottomWarningViewController: BaseScrollViewController {
     private let viewConfigurator: BottomWarningViewConfigurator
 
-    init(_ viewConfigurator: BottomWarningViewConfigurator, configuration: ViewControllerConfiguration) {
+    init(
+        _ viewConfigurator: BottomWarningViewConfigurator,
+        configuration: ViewControllerConfiguration
+    ) {
         self.viewConfigurator = viewConfigurator
         super.init(configuration: configuration)
     }
@@ -36,7 +39,19 @@ final class BottomWarningViewController: BaseScrollViewController {
     }
 
     override func setListeners() {
-        bottomWarningView.delegate = self
+        bottomWarningView.handlers.didTapPrimaryActionButton = {
+            [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true) {
+                self?.viewConfigurator.primaryAction?()
+            }
+        }
+
+        bottomWarningView.handlers.didTapSecondaryActionButton = {
+            [weak self] in
+            self?.closeScreen(by: .dismiss, animated: true) {
+                self?.viewConfigurator.secondaryAction?()
+            }
+        }
     }
 
     override func prepareLayout() {
@@ -51,25 +66,5 @@ final class BottomWarningViewController: BaseScrollViewController {
 
     override func bindData() {
         bottomWarningView.bindData(viewConfigurator)
-    }
-}
-
-extension BottomWarningViewController: BottomSheetPresentable {
-    var modalHeight: ModalHeight {
-        return .compressed
-    }
-}
-
-extension BottomWarningViewController: BottomWarningViewDelegate {
-    func bottomWarningViewDidTapPrimaryActionButton(_ bottomWarningView: BottomWarningView) {
-        closeScreen(by: .dismiss, animated: true) { [weak self] in
-            self?.viewConfigurator.primaryAction?()
-        }
-    }
-
-    func bottomWarningViewDidTapSecondaryActionButton(_ bottomWarningView: BottomWarningView) {
-        closeScreen(by: .dismiss, animated: true) { [weak self] in
-            self?.viewConfigurator.secondaryAction?()
-        }
     }
 }
