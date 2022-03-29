@@ -2847,9 +2847,6 @@
 		CBAD47452745510900C91946 /* AccountFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAD47442745510900C91946 /* AccountFlow.swift */; };
 		CBAD47462745510900C91946 /* AccountFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAD47442745510900C91946 /* AccountFlow.swift */; };
 		CBAD47472745510900C91946 /* AccountFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAD47442745510900C91946 /* AccountFlow.swift */; };
-		CBAD474D2745595400C91946 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBAD47492745595300C91946 /* Assets.xcassets */; };
-		CBAD474E2745595400C91946 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBAD47492745595300C91946 /* Assets.xcassets */; };
-		CBAD474F2745595400C91946 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBAD47492745595300C91946 /* Assets.xcassets */; };
 		D4006DDF2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4006DDE2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift */; };
 		D4006DE02710A5530018695D /* LedgerAccountDetailViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4006DDE2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift */; };
 		D4006DE12710A5530018695D /* LedgerAccountDetailViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4006DDE2710A5530018695D /* LedgerAccountDetailViewController+Theme.swift */; };
@@ -14082,7 +14079,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1220;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = hippo;
 				TargetAttributes = {
 					17BD4DEE2292F1260003E49A = {
@@ -14524,7 +14521,6 @@
 				D48FDFE527CF54D200C39FC7 /* ReceiveCollectibleAssetListLayout.swift in Sources */,
 				2BC1827223D8DEFE00888476 /* AssetTransactionsDraft.swift in Sources */,
 				95779098278B040A0061FB9C /* WCSingleTransactionRequestMiddleView.swift in Sources */,
-				2B4BDA02238AE66E00491149 /* AssetAdditionViewModel.swift in Sources */,
 				2BD36DBA267CCB7100C57728 /* WCAssetAdditionTransactionView.swift in Sources */,
 				2BD6A06724A50D3E00D2D28D /* PinLimitView.swift in Sources */,
 				2B77471D25FFE84F0083EFFA /* InputSuggestionLayoutBuilder.swift in Sources */,
@@ -15834,7 +15830,6 @@
 				2BB8484727E911F6004F2E39 /* CollectibleMediaErrorViewModel.swift in Sources */,
 				2BD5A6A126332C3E0048FA5E /* ALGAPI+Algos.swift in Sources */,
 				2B0F616024EC129D00DA22A6 /* ALGAsset.swift in Sources */,
-				2B0F616024EC129D00DA22A6 /* ALGAsset.swift in Sources */,
 				2B4FD1F727C63F580097AB65 /* BuyAlgoTransactionViewController.swift in Sources */,
 				2B0F616224EC129D00DA22A6 /* ContactsViewController.swift in Sources */,
 				2B0F616424EC129D00DA22A6 /* TestNetTitleDisplayable.swift in Sources */,
@@ -16318,7 +16313,6 @@
 				D411B38626EA232F004FF980 /* AssetPreviewViewTheme.swift in Sources */,
 				2B7A1F3827DBF8150010F52E /* CollectibleDetailAPIDataController.swift in Sources */,
 				2B4FD1FB27C63F650097AB65 /* BuyAlgoTransactionView.swift in Sources */,
-				D411B38626EA232F004FF980 /* AssetPreviewViewTheme.swift in Sources */,
 				2B8D383726B6EC3C00E7351D /* ApplicationStateSchema.swift in Sources */,
 				2BB93BAA25BEE696001F1D6C /* TransactionDataBuilder.swift in Sources */,
 				D48FDFD727CEBC5400C39FC7 /* ReceiveCollectibleAccountListAPIDataController.swift in Sources */,

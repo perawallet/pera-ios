@@ -25,19 +25,24 @@ enum AppColors {
     enum SendTransaction {}
 }
 
+extension AppColors {
+    enum Dapp: String, Color {
+        case moonpay = "Dapp/moonpay"
+    }
+}
+
 extension AppColors.Shared {
     enum Global: String, Color {
         case white = "Shared/Global/white"
         case gray400 = "Shared/Global/gray400"
         case gray800 = "Shared/Global/gray800"
         case turquoise600 = "Shared/Global/turquoise600"
-        case yellow400 = "Shared/Global/yellow400"
-        case purple = "Shared/Global/purple"
     }
 
     enum System: String, Color {
         case background = "Shared/System/background"
         case chrome = "Shared/System/chrome"
+        case theme = "Shared/System/theme"
     }
 
     enum Layer: String, Color {
