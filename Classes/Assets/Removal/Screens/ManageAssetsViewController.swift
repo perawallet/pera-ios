@@ -126,7 +126,14 @@ extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
 
 extension ManageAssetsViewController {
     private func getAssetsFromAccount() {
-        accountAssets = account.compoundAssets
+        accountAssets.removeAll()
+        
+        account.compoundAssets.forEach {
+            if !$0.detail.isRemoved {
+                accountAssets.append($0)
+            }
+        }
+        
         loadAssets()
     }
     private func loadAssets() {
@@ -153,7 +160,7 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         guard let query = view.text,
               !query.isEmpty else {
-                  loadAssets()
+                  getAssetsFromAccount()
                   return
         }
         filterData(with: query)
@@ -261,13 +268,10 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
               }
 
         removedAssetDetail.isRemoved = true
+
+        getAssetsFromAccount()
         
-        accountAssets.enumerated().forEach { index, asset in
-            if asset.id == removedAssetDetail.id {
-                accountAssets.remove(at: index)
-                loadAssets()
-            }
-        }
+        contextView.resetSearchInputView()
         
         delegate?.manageAssetsViewController(self, didRemove: removedAssetDetail, from: account)
     }
