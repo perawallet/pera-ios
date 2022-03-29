@@ -189,7 +189,6 @@ extension CollectibleListLocalDataController {
                                     account: account,
                                     asset: collectibleAsset,
                                     viewModel: CollectibleListItemReadyViewModel(
-                                        account: account,
                                         imageSize: imageSize,
                                         model: collectibleAsset
                                     )
@@ -203,7 +202,6 @@ extension CollectibleListLocalDataController {
                                     account: account,
                                     asset: collectibleAsset,
                                     viewModel: CollectibleListItemReadyViewModel(
-                                        account: account,
                                         imageSize: imageSize,
                                         model: collectibleAsset
                                     )
@@ -255,7 +253,6 @@ extension CollectibleListLocalDataController {
                             account: pendingAccountAssetPair.account,
                             asset: pendingAccountAssetPair.asset,
                             viewModel: CollectibleListItemPendingViewModel(
-                                account: pendingAccountAssetPair.account,
                                 imageSize: self.imageSize,
                                 model: pendingAccountAssetPair.asset
                             )
