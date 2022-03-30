@@ -67,7 +67,7 @@ final class ReceiveCollectibleAssetListViewController:
     }
 
     override func configureNavigationBarAppearance() {
-        navigationItem.title = "collectibles-receive-action".localized
+        navigationItem.title = "collectibles-receive-asset-title".localized
     }
 
     override func prepareLayout() {

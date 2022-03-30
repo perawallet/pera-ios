@@ -82,11 +82,11 @@ extension ReceiveCollectibleAssetListLayout {
                     collectionView
                 )
             }
-        case .header(let item):
+        case .info:
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForHeaderItem: item
+                sizeForInfoItem: .init()
             )
         case .search:
             return sizeForSearch(
@@ -105,18 +105,18 @@ extension ReceiveCollectibleAssetListLayout {
     func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForHeaderItem item: ReceiveCollectibleAssetListHeaderViewModel
-    ) -> CGSize {
-        let sizeCacheIdentifier = TitleSupplementaryCell.reuseIdentifier
+        sizeForInfoItem item: ReceiveCollectibleAssetListInfoViewModel
+    )-> CGSize {
+        let sizeCacheIdentifier = InfoCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
         let width = calculateContentWidth(for: listView)
-        let newSize = TitleSupplementaryCell.calculatePreferredSize(
+        let newSize = InfoCell.calculatePreferredSize(
             item,
-            for: TitleSupplementaryCell.theme,
+            for: InfoCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -163,15 +163,15 @@ extension ReceiveCollectibleAssetListLayout {
         case .empty:
             break
         case .loading:
-            let headerHeight = self.listView(
+            let infoHeight = self.listView(
                 listView,
                 layout: listViewLayout,
-                sizeForHeaderItem: ReceiveCollectibleAssetListHeaderViewModel()
+                sizeForInfoItem: .init()
             ).height
-            let headerSectionVerticalInsets = self.listView(
+            let infoSectionVerticalInsets = self.listView(
                 listView,
                 layout: listViewLayout,
-                insetForSectionAt: .header
+                insetForSectionAt: .info
             ).vertical
             let searchHeight = sizeForSearch(
                 listView,
@@ -188,8 +188,8 @@ extension ReceiveCollectibleAssetListLayout {
                 insetForSectionAt: .collectibles
             ).top
             let topInset =
-            headerHeight +
-            headerSectionVerticalInsets +
+            infoHeight +
+            infoSectionVerticalInsets +
             searchHeight +
             searchSectionVerticalInsets +
             collectiblesSectionTopInset +
@@ -197,10 +197,10 @@ extension ReceiveCollectibleAssetListLayout {
 
             insets.top = topInset
             insets.bottom = 8
-        case .header:
-            insets.top = 24
+        case .info:
+            insets.top = 12
         case .search:
-            insets.top = 40
+            insets.top = 20
         case .collectibles:
             insets.top = 16
             insets.bottom = 8

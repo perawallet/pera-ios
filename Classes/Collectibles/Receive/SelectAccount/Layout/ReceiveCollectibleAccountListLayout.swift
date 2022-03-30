@@ -85,6 +85,12 @@ extension ReceiveCollectibleAccountListLayout {
                     atSection: indexPath.section
                 )
             }
+        case .info:
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForInfoItem: .init()
+            )
         case .header(let item):
             return listView(
                 collectionView,
@@ -119,6 +125,16 @@ extension ReceiveCollectibleAccountListLayout {
         case .empty:
             break
         case .loading:
+            let infoHeight = self.listView(
+                listView,
+                layout: listViewLayout,
+                sizeForInfoItem: .init()
+            ).height
+            let infoSectionVerticalInsets = self.listView(
+                listView,
+                layout: listViewLayout,
+                insetForSectionAt: .info
+            ).vertical
             let headerHeight = self.listView(
                 listView,
                 layout: listViewLayout,
@@ -135,6 +151,8 @@ extension ReceiveCollectibleAccountListLayout {
                 insetForSectionAt: .accounts
             ).top
             let topInset =
+            infoHeight +
+            infoSectionVerticalInsets +
             headerHeight +
             headerSectionVerticalInsets +
             accountsSectionTopInset +
@@ -142,16 +160,41 @@ extension ReceiveCollectibleAccountListLayout {
 
             insets.top = topInset
             insets.bottom = 8
+        case .info:
+            insets.top = 20
         case .header:
-            insets.top = 16
+            insets.top = 24
         case .accounts:
-            insets.top = 40
+            insets.top = 24
             insets.bottom = 8
         }
 
         insetCache[section] = insets
 
         return insets
+    }
+
+    func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForInfoItem item: ReceiveCollectibleAccountListInfoViewModel
+    )-> CGSize {
+        let sizeCacheIdentifier = InfoCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+        let newSize = InfoCell.calculatePreferredSize(
+            item,
+            for: InfoCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
     }
 
     func listView(

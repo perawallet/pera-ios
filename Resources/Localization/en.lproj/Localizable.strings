@@ -918,17 +918,26 @@
 "pera-announcement-description-blog" = "Pera Wallet blog";
 "pera-announcement-action-title" = "Start Using Pera Wallet";
 
-// MARK: Collectibles
+// MARK: Collectible Common
 "title-collectibles" = "Collectibles";
 "collectibles-empty-title" = "Collectibles";
 "collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
+
+/// MARK: Collectible List
+"collectible-list-item-pending-title" = "Pending";
 "collectibles-list-input-placeholder" = "Search your NFT";
+
+/// MARK: Collectible Receive
 "collectibles-receive-action" = "Receive an NFT";
-"collectibles-receive-account-list-header-description" = "Select the account you would like to opt in with:";
+"collectibles-receive-account-list-header-description" = "Select the wallet account you would like to receive to:";
+"collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
+"collectibles-receive-asset-title" = "Opt-in to NFT";
 "collectibles-receive-asset-list-search-placeholder" = "Search Asset ID or NFT name";
 "collectibles-receive-asset-list-header-description" = "You need to opt in to the ASA ID of the NFT to be able to receive it. Paste the ASA ID or scan it below.";
 "collectibles-receive-asset-list-search-no-content" = "No NFT Found";
-"collectible-list-item-pending-title" = "Pending";
+"collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
+
+/// MARK: Collectible Send
 "collectible-send-title" = "Send your NFT";
 "collectible-send-input-placeholder" = "Paste an Algorand wallet address";
 "collectible-send-action" = "Transfer";
