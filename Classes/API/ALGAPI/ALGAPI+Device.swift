@@ -12,15 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountTransactionListViewController.swift
+//   ALGAPI+Device.swift
 
 import Foundation
-import UIKit
-import MacaroonUIKit
+import MagpieCore
 
-final class AccountTransactionListViewController: TransactionsViewController {
-    init(draft: AccountTransactionListing, configuration: ViewControllerConfiguration) {
-        super.init(draft: draft, configuration: configuration)
+extension ALGAPI {
+    @discardableResult
+    func getAnnouncements(
+        _ draft: AnnouncementFetchDraft,
+        onCompleted handler: @escaping (Response.ModelResult<AnnouncementList>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.announcements, args: draft.deviceId)
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
     }
 }

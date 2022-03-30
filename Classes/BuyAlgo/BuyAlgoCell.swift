@@ -12,15 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountTransactionListViewController.swift
+//   BuyAlgoCell.swift
 
 import Foundation
-import UIKit
 import MacaroonUIKit
+import UIKit
 
-final class AccountTransactionListViewController: TransactionsViewController {
-    init(draft: AccountTransactionListing, configuration: ViewControllerConfiguration) {
-        super.init(draft: draft, configuration: configuration)
+final class BuyAlgoCell:
+    CollectionCell<BuyAlgoView>,
+    UIInteractionObservable {
+    static let theme = BuyAlgoViewTheme()
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+    }
+    
+    class func calculatePreferredSize(
+        for theme: BuyAlgoViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        return ContextView.calculatePreferredSize(for: theme, fittingIn: size)
     }
 }

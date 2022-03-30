@@ -12,15 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountTransactionListViewController.swift
+//   AnnouncementFetchDraft.swift
 
 import Foundation
-import UIKit
-import MacaroonUIKit
 
-final class AccountTransactionListViewController: TransactionsViewController {
-    init(draft: AccountTransactionListing, configuration: ViewControllerConfiguration) {
-        super.init(draft: draft, configuration: configuration)
-    }
+struct AnnouncementFetchDraft {
+    let deviceId: String
 }

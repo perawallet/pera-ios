@@ -12,15 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AccountTransactionListViewController.swift
+//   Session+Announcement.swift
 
 import Foundation
-import UIKit
-import MacaroonUIKit
 
-final class AccountTransactionListViewController: TransactionsViewController {
-    init(draft: AccountTransactionListing, configuration: ViewControllerConfiguration) {
-        super.init(draft: draft, configuration: configuration)
+extension Session {
+    func setAnnouncementHidden(_ announcement: Announcement, isHidden: Bool) {
+        let metadata = AnnouncementMetadata(isHidden: isHidden)
+        
+        var states = self.announcementStates
+        states["\(announcement.id)"] = metadata
+
+        self.announcementStates = states
+    }
+
+    func isAnnouncementHidden(_ announcement: Announcement) -> Bool {
+        announcementStates["\(announcement.id)"] != nil
+    }
+}
+
+extension Session {
+    struct AnnouncementMetadata: Codable {
+        let isHidden: Bool
     }
 }
