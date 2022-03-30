@@ -87,13 +87,13 @@ final class Announcement: ALGAPIModel {
 }
 
 enum AnnouncementType: String, Codable {
-    case governence
+    case governance
     case generic
     
     init?(rawValue: String) {
         switch rawValue {
-        case "governence":
-            self = .governence
+        case "governance":
+            self = .governance
         default:
             self = .generic
         }
