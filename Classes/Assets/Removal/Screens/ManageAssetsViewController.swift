@@ -69,7 +69,7 @@ final class ManageAssetsViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getAssetsFromAccount()
+        fetchAssets()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -125,7 +125,7 @@ extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension ManageAssetsViewController {
-    private func getAssetsFromAccount() {
+    private func fetchAssets() {
         accountAssets.removeAll()
         
         account.compoundAssets.forEach {
@@ -160,7 +160,7 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         guard let query = view.text,
               !query.isEmpty else {
-                  getAssetsFromAccount()
+                  fetchAssets()
                   return
         }
         filterData(with: query)
@@ -269,7 +269,7 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
 
         removedAssetDetail.isRemoved = true
 
-        getAssetsFromAccount()
+        fetchAssets()
         
         contextView.resetSearchInputView()
         
