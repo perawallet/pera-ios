@@ -925,7 +925,7 @@
 
 /// MARK: Collectible List
 "collectible-list-item-pending-title" = "Pending";
-"collectibles-list-input-placeholder" = "Search your NFT";
+"collectibles-list-input-placeholder" = "Search your NFTs";
 
 /// MARK: Collectible Receive
 "collectibles-receive-action" = "Receive an NFT";
