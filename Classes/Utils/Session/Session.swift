@@ -35,7 +35,7 @@ class Session: Storable {
     private let notificationLatestTimestamp = "com.algorand.algorand.notification.latest.timestamp"
     private let currencyPreferenceKey = "com.algorand.algorand.currency.preference"
     private let userInterfacePrefenceKey = "com.algorand.algorand.interface.preference"
-    private let rememberStateKey = "com.algorand.algorand.remember.state"
+    private let announcementStateKey = "com.algorand.algorand.announcement.state"
     
     let algorandSDK = AlgorandSDK()
     
@@ -159,25 +159,25 @@ class Session: Storable {
         }
     }
 
-    var rememberedStates: [String: RememberState] {
+    var announcementStates: [String: AnnouncementMetadata] {
         get {
-            guard let data = data(with: rememberStateKey, to: .defaults) else {
+            guard let data = data(with: announcementStateKey, to: .defaults) else {
                 return [:]
             }
 
-            let jsonDecoder = JSONDecoder()
-            guard let states = try? jsonDecoder.decode([String: RememberState].self, from: data) else {
+            do {
+                return try [String: AnnouncementMetadata].decoded(data, using: JSONDecodingStrategy())
+            } catch {
                 return [:]
             }
-
-            return states
         }
         set {
-            let jsonEncoder = JSONEncoder()
-            guard let data = try? jsonEncoder.encode(newValue) else {
+            do {
+                let data = try newValue.encoded()
+                save(data, for: announcementStateKey, to: .defaults)
+            } catch {
                 return
             }
-            save(data, for: rememberStateKey, to: .defaults)
         }
     }
     

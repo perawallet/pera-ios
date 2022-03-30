@@ -104,7 +104,7 @@ final class HomeViewController:
             isViewFirstAppeared = false
         }
         
-        dataController.fetchBanners()
+        dataController.fetchAnnouncements()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -232,14 +232,36 @@ extension HomeViewController {
     }
 
     private func linkInteractors(
-        _ cell: HomeBannerCell,
-        for item: HomeBannerViewModel
+        _ cell: GenericAnnouncementCell,
+        for item: AnnouncementViewModel
     ) {
         cell.observe(event: .close) {
             [weak self] in
             guard let self = self else { return }
 
-            self.dataController.dismissBanner()
+            self.dataController.hideAnnouncement()
+        }
+
+        cell.observe(event: .action) {
+            [weak self] in
+            guard let self = self else { return }
+
+
+            if let url = item.ctaUrl {
+                self.open(url)
+            }
+        }
+    }
+    
+    private func linkInteractors(
+        _ cell: GovernanceAnnouncementCell,
+        for item: AnnouncementViewModel
+    ) {
+        cell.observe(event: .close) {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.dataController.hideAnnouncement()
         }
 
         cell.observe(event: .action) {
@@ -559,10 +581,12 @@ extension HomeViewController {
             }
         case .buyAlgo:
             linkInteractors(cell as! BuyAlgoCell)
-        case .banner(let item):
-            linkInteractors(cell as! HomeBannerCell, for: item)
-        default:
-            break
+        case .announcement(let item):
+            if item.isGeneric {
+                linkInteractors(cell as! GenericAnnouncementCell, for: item)
+            } else {
+                linkInteractors(cell as! GovernanceAnnouncementCell, for: item)
+            }
         }
     }
     

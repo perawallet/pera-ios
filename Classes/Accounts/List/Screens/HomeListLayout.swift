@@ -106,19 +106,17 @@ extension HomeListLayout {
                 layout: collectionViewLayout,
                 sizeForPortfolioItem: item
             )
-        case .announcement:
-            return CGSize((calculateContentWidth(for: collectionView), 0))
         case .account(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
                 sizeForAccountItem: item
             )
-        case .banner(let item):
+        case .announcement(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForBannerCellItem: item
+                sizeForAnnouncementCellItem: item
             )
         case .buyAlgo:
             return listViewBuyAlgo(
@@ -248,23 +246,23 @@ extension HomeListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForBannerCellItem item: HomeBannerViewModel
+        sizeForAnnouncementCellItem item: AnnouncementViewModel
     ) -> CGSize {
         let width = calculateContentWidth(for: listView)
 
-        let theme: HomeBannerViewTheme
-
         if item.isGeneric {
-            theme = GenericBannerViewTheme()
+            return GenericAnnouncementCell.calculatePreferredSize(
+                item,
+                for: GenericAnnouncementViewTheme(),
+                fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            )
         } else {
-            theme = GovernanceBannerViewTheme()
+            return GovernanceAnnouncementCell.calculatePreferredSize(
+                item,
+                for: GovernanceAnnouncementViewTheme(),
+                fittingIn: CGSize((width, .greatestFiniteMagnitude))
+            )
         }
-
-        return HomeBannerView.calculatePreferredSize(
-            item,
-            for: theme,
-            fittingIn: CGSize((width, .greatestFiniteMagnitude))
-        )
     }
 
     private func listViewBuyAlgo(
@@ -273,8 +271,8 @@ extension HomeListLayout {
     ) -> CGSize {
         let width = calculateContentWidth(for: listView)
 
-        return BuyAlgoCellView.calculatePreferredSize(
-            for: BuyAlgoCellViewTheme(),
+        return BuyAlgoCell.calculatePreferredSize(
+            for: BuyAlgoViewTheme(),
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
     }

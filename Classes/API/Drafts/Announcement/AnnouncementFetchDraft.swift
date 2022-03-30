@@ -12,32 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   Session+State.swift
+//   AnnouncementFetchDraft.swift
 
 import Foundation
 
-extension Session {
-    func saveRememberState(_ state: RememberState) {
-        var states = self.rememberedStates
-        states[state.rawValue()] = state
-
-        rememberedStates = states
-    }
-
-    func hasRememberState(for state: RememberState) -> Bool {
-        rememberedStates[state.rawValue()] != nil
-    }
-}
-
-extension Session {
-    enum RememberState: Codable {
-        case banner(id: Int)
-
-        func rawValue() -> String {
-            switch self {
-            case .banner(let id):
-                return "banner-\(id)"
-            }
-        }
-    }
+struct AnnouncementFetchDraft {
+    let deviceId: String
 }

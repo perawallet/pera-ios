@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   HomeBannerViewTheme.swift
+//   AnnouncementViewTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-protocol HomeBannerViewTheme: StyleSheet, LayoutSheet {
+protocol AnnouncementViewTheme: StyleSheet, LayoutSheet {
     var background: ViewStyle { get }
     var backgroundImage: ImageSource? { get }
     var corner: Corner { get }
@@ -36,7 +36,7 @@ protocol HomeBannerViewTheme: StyleSheet, LayoutSheet {
     var closeSize: LayoutSize { get }
 }
 
-struct GenericBannerViewTheme: HomeBannerViewTheme {
+struct GenericAnnouncementViewTheme: AnnouncementViewTheme {
     var background: ViewStyle
     var backgroundImage: ImageSource? = nil
     var corner: Corner
@@ -88,7 +88,7 @@ struct GenericBannerViewTheme: HomeBannerViewTheme {
     }
 }
 
-struct GovernanceBannerViewTheme: HomeBannerViewTheme {
+struct GovernanceAnnouncementViewTheme: AnnouncementViewTheme {
     var background: ViewStyle
     var backgroundImage: ImageSource?
     var corner: Corner

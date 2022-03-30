@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   HomeBannerView.swift
+//   AnnouncementView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class HomeBannerView:
+final class AnnouncementView:
     View,
     ViewModelBindable,
     UIInteractionObservable,
@@ -37,7 +37,7 @@ final class HomeBannerView:
     private lazy var imageView = ImageView()
     
     func customize(
-        _ theme: HomeBannerViewTheme
+        _ theme: AnnouncementViewTheme
     ) {
         customizeAppearance(theme.background)
         draw(corner: theme.corner)
@@ -59,7 +59,7 @@ final class HomeBannerView:
     ) {}
     
     func bindData(
-        _ viewModel: HomeBannerViewModel?
+        _ viewModel: AnnouncementViewModel?
     ) {
         if let title = viewModel?.title {
             titleView.showViewInStack()
@@ -84,8 +84,8 @@ final class HomeBannerView:
     }
     
     class func calculatePreferredSize(
-        _ viewModel: HomeBannerViewModel?,
-        for theme: HomeBannerViewTheme,
+        _ viewModel: AnnouncementViewModel?,
+        for theme: AnnouncementViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         guard let viewModel = viewModel else {
@@ -124,9 +124,9 @@ final class HomeBannerView:
     }
 }
 
-extension HomeBannerView {
+extension AnnouncementView {
     private func addImageView(
-        _ theme: HomeBannerViewTheme
+        _ theme: AnnouncementViewTheme
     ) {
         imageView.load(from: theme.backgroundImage)
 
@@ -138,7 +138,7 @@ extension HomeBannerView {
     }
 
     private func addCloseButton(
-        _ theme: HomeBannerViewTheme
+        _ theme: AnnouncementViewTheme
     ) {
         closeButton.customizeAppearance(theme.close)
         
@@ -156,7 +156,7 @@ extension HomeBannerView {
     }
 
     private func addStackView(
-        _ theme: HomeBannerViewTheme
+        _ theme: AnnouncementViewTheme
     ) {
         addSubview(stackView)
         stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(
@@ -177,7 +177,7 @@ extension HomeBannerView {
     }
     
     private func addTitle(
-        _ theme: HomeBannerViewTheme
+        _ theme: AnnouncementViewTheme
     ) {
         titleView.customizeAppearance(theme.title)
         
@@ -185,7 +185,7 @@ extension HomeBannerView {
     }
     
     private func addSubtitle(
-        _ theme: HomeBannerViewTheme
+        _ theme: AnnouncementViewTheme
     ) {
         subtitleView.customizeAppearance(theme.subtitle)
         
@@ -194,7 +194,7 @@ extension HomeBannerView {
     }
 
     private func addActionView(
-        _ theme: HomeBannerViewTheme
+        _ theme: AnnouncementViewTheme
     ) {
         actionView.customizeAppearance(theme.action)
 
@@ -212,7 +212,7 @@ extension HomeBannerView {
     }
 }
 
-extension HomeBannerView {
+extension AnnouncementView {
     enum Event {
         case action
         case close

@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   HomeBannerAPIDataController.swift
+//   AnnouncementAPIDataController.swift
 
 import Foundation
 
-final class HomeBannerAPIDataController {
-    weak var delegate: HomeBannerAPIDataControllerDelegate?
+final class AnnouncementAPIDataController {
+    weak var delegate: AnnouncementAPIDataControllerDelegate?
     
     private let api: ALGAPI
     private let session: Session
@@ -32,7 +32,7 @@ final class HomeBannerAPIDataController {
             return
         }
         
-        api.getBanners(BannerFetchDraft(deviceId: deviceId)) { [weak self] response in
+        api.getAnnouncements(AnnouncementFetchDraft(deviceId: deviceId)) { [weak self] response in
             guard let self = self else {
                 return
             }
@@ -42,21 +42,21 @@ final class HomeBannerAPIDataController {
                 /// note: Delegate won't called here because we won't show any error on ui side.
                 ///  If we support error handling necessary views, delegate will be called with errors
                 break
-            case .success(let bannerList):
-                if let banner = bannerList.results.first(where: { banner in
-                    return !self.session.hasRememberState(for: .banner(id: banner.id))
+            case .success(let announcementList):
+                if let announcement = announcementList.results.first(where: { announcement in
+                    return !self.session.isAnnouncementHidden(announcement)
                 }) {
-                    self.delegate?.homeBannerAPIDataController(self, didFetch: banner)
+                    self.delegate?.announcementAPIDataController(self, didFetch: announcement)
                 }
             }
         }
     }
 
-    func dismissBanner(_ banner: Banner) {
-        session.saveRememberState(.banner(id: banner.id))
+    func hideAnnouncement(_ announcement: Announcement) {
+        session.setAnnouncementHidden(announcement, isHidden: true)
     }
 }
 
-protocol HomeBannerAPIDataControllerDelegate: AnyObject {
-    func homeBannerAPIDataController(_ dataController: HomeBannerAPIDataController, didFetch banner: Banner)
+protocol AnnouncementAPIDataControllerDelegate: AnyObject {
+    func announcementAPIDataController(_ dataController: AnnouncementAPIDataController, didFetch announcement: Announcement)
 }

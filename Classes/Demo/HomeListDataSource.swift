@@ -48,29 +48,21 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
                 cell.bindData(item)
                 return cell
             case .announcement(let item):
-                let cell = collectionView.dequeue(
-                    AnnouncementBannerCell.self,
-                    at: indexPath
-                )
-                cell.bindData(item)
-                return cell
-            case .banner(let item):
-                let cell = collectionView.dequeue(
-                    HomeBannerCell.self,
-                    at: indexPath
-                )
-
-                let theme: HomeBannerViewTheme
-
                 if item.isGeneric {
-                    theme = GenericBannerViewTheme()
+                    let cell = collectionView.dequeue(
+                        GenericAnnouncementCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(item)
+                    return cell
                 } else {
-                    theme = GovernanceBannerViewTheme()
+                    let cell = collectionView.dequeue(
+                        GovernanceAnnouncementCell.self,
+                        at: indexPath
+                    )
+                    cell.bindData(item)
+                    return cell
                 }
-
-                cell.customize(theme)
-                cell.bindData(item)
-                return cell
             case .account(let item):
                 switch item {
                 case .header(let headerItem):
@@ -101,8 +93,8 @@ final class HomeListDataSource: UICollectionViewDiffableDataSource<HomeSection, 
             HomeLoadingCell.self,
             HomeNoContentCell.self,
             HomePortfolioCell.self,
-            AnnouncementBannerCell.self,
-            HomeBannerCell.self,
+            GovernanceAnnouncementCell.self,
+            GenericAnnouncementCell.self,
             BuyAlgoCell.self,
             TitleWithAccessorySupplementaryCell.self,
             AccountPreviewCell.self

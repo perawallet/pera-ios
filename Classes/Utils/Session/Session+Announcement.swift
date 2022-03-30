@@ -12,22 +12,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ALGAPI+Banner.swift
+//   Session+Announcement.swift
 
 import Foundation
-import MagpieCore
 
-extension ALGAPI {
-    @discardableResult
-    func getBanners(
-        _ draft: BannerFetchDraft,
-        onCompleted handler: @escaping (Response.ModelResult<BannerList>) -> Void
-    ) -> EndpointOperatable {
-        return EndpointBuilder(api: self)
-            .base(.mobile)
-            .path(.banners, args: draft.deviceId)
-            .method(.get)
-            .completionHandler(handler)
-            .execute()
+extension Session {
+    func setAnnouncementHidden(_ announcement: Announcement, isHidden: Bool) {
+        let metadata = AnnouncementMetadata(isHidden: isHidden)
+        
+        var states = self.announcementStates
+        states["\(announcement.id)"] = metadata
+
+        self.announcementStates = states
+    }
+
+    func isAnnouncementHidden(_ announcement: Announcement) -> Bool {
+        announcementStates["\(announcement.id)"] != nil
+    }
+}
+
+extension Session {
+    struct AnnouncementMetadata: Codable {
+        let isHidden: Bool
     }
 }

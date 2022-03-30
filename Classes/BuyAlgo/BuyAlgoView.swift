@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoCellView.swift
+//   BuyAlgoView.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class BuyAlgoCellView:
+final class BuyAlgoView:
     View,
     UIInteractionObservable,
     UIControlInteractionPublisher,
@@ -30,7 +30,7 @@ final class BuyAlgoCellView:
     private lazy var buyAlgoButton = Button()
 
     func customize(
-        _ theme: BuyAlgoCellViewTheme
+        _ theme: BuyAlgoViewTheme
     ) {
         addBuyAlgoButton(theme)
     }
@@ -44,7 +44,7 @@ final class BuyAlgoCellView:
     ) {}
 
     class func calculatePreferredSize(
-        for theme: BuyAlgoCellViewTheme,
+        for theme: BuyAlgoViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
         let preferredHeight =
@@ -53,9 +53,9 @@ final class BuyAlgoCellView:
     }
 }
 
-extension BuyAlgoCellView {
+extension BuyAlgoView {
     private func addBuyAlgoButton(
-        _ theme: BuyAlgoCellViewTheme
+        _ theme: BuyAlgoViewTheme
     ) {
         buyAlgoButton.customize(theme.buyAlgoButton)
         buyAlgoButton.setTitle("moonpay-buy-button-title".localized, for: .normal)
@@ -72,7 +72,7 @@ extension BuyAlgoCellView {
     }
 }
 
-extension BuyAlgoCellView {
+extension BuyAlgoView {
     enum Event {
         case buyAlgo
     }

@@ -12,10 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BannerFetchDraft.swift
+//   ALGAPI+Device.swift
 
 import Foundation
+import MagpieCore
 
-struct BannerFetchDraft {
-    let deviceId: String
+extension ALGAPI {
+    @discardableResult
+    func getAnnouncements(
+        _ draft: AnnouncementFetchDraft,
+        onCompleted handler: @escaping (Response.ModelResult<AnnouncementList>) -> Void
+    ) -> EndpointOperatable {
+        return EndpointBuilder(api: self)
+            .base(.mobile)
+            .path(.announcements, args: draft.deviceId)
+            .method(.get)
+            .completionHandler(handler)
+            .execute()
+    }
 }

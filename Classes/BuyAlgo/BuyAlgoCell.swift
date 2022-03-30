@@ -19,14 +19,21 @@ import MacaroonUIKit
 import UIKit
 
 final class BuyAlgoCell:
-    CollectionCell<BuyAlgoCellView>,
+    CollectionCell<BuyAlgoView>,
     UIInteractionObservable {
-    static let theme = BuyAlgoCellViewTheme()
+    static let theme = BuyAlgoViewTheme()
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
+    }
+    
+    class func calculatePreferredSize(
+        for theme: BuyAlgoViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        return ContextView.calculatePreferredSize(for: theme, fittingIn: size)
     }
 }

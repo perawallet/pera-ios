@@ -25,18 +25,18 @@ final class HomeAPIDataController:
     private var lastSnapshot: Snapshot?
     
     private let sharedDataController: SharedDataController
-    private let bannerDataController: HomeBannerAPIDataController
+    private let announcementDataController: AnnouncementAPIDataController
     
-    private var banner: Banner?
+    private var visibleAnnouncement: Announcement?
     
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.homeDataController")
     
     init(
         _ sharedDataController: SharedDataController,
-        bannerDataController: HomeBannerAPIDataController
+        announcementDataController: AnnouncementAPIDataController
     ) {
         self.sharedDataController = sharedDataController
-        self.bannerDataController = bannerDataController
+        self.announcementDataController = announcementDataController
     }
     
     deinit {
@@ -53,28 +53,28 @@ final class HomeAPIDataController:
 extension HomeAPIDataController {
     func load() {
         sharedDataController.add(self)
-        bannerDataController.delegate = self
+        announcementDataController.delegate = self
     }
     
     func reload() {
         deliverContentSnapshot()
     }
     
-    func fetchBanners() {
-        bannerDataController.loadData()
+    func fetchAnnouncements() {
+        announcementDataController.loadData()
     }
 
-    func dismissBanner() {
+    func hideAnnouncement() {
         defer {
-            self.banner = nil
+            self.visibleAnnouncement = nil
             reload()
         }
 
-        guard let banner = self.banner else {
+        guard let visibleAnnouncement = self.visibleAnnouncement else {
             return
         }
 
-        bannerDataController.dismissBanner(banner)
+        announcementDataController.hideAnnouncement(visibleAnnouncement)
     }
 }
 
@@ -168,15 +168,15 @@ extension HomeAPIDataController {
                 toSection: .portfolio
             )
 
-            if let banner = self.banner {
+            if let visibleAnnouncement = self.visibleAnnouncement {
                 snapshot.appendSections([.announcement])
 
-                let bannerItem = HomeBannerViewModel(banner)
-                snapshot.appendItems([.banner(bannerItem)], toSection: .announcement)
+                let announcementItem = AnnouncementViewModel(visibleAnnouncement)
+                snapshot.appendItems([.announcement(announcementItem)], toSection: .announcement)
             }
 
             /// note: If accounts empty which means there is no any authenticated account, buy button will be hidden
-            if !accounts.isEmpty {
+            if !accounts.isEmpty {
                 snapshot.appendSections([.buyAlgo])
                 snapshot.appendItems([.buyAlgo], toSection: .buyAlgo)
             }
@@ -252,8 +252,8 @@ extension HomeAPIDataController {
     }
 }
 
-extension HomeAPIDataController: HomeBannerAPIDataControllerDelegate {
-    func homeBannerAPIDataController(_ dataController: HomeBannerAPIDataController, didFetch banner: Banner) {
-        self.banner = banner
+extension HomeAPIDataController: AnnouncementAPIDataControllerDelegate {
+    func announcementAPIDataController(_ dataController: AnnouncementAPIDataController, didFetch announcement: Announcement) {
+        self.visibleAnnouncement = announcement
     }
 }

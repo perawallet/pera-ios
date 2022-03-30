@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   Banner.swift
+//   Announcement.swift
 
 import Foundation
 
 /// <todo>
 /// Rethink the paginated list model. Should be more reusable.
-final class BannerList:
-    PaginatedList<Banner>,
+final class AnnouncementList:
+    PaginatedList<Announcement>,
     ALGEntityModel {
     convenience init(
         _ apiModel: APIModel = APIModel()
@@ -40,14 +40,14 @@ final class BannerList:
     }
 }
 
-extension BannerList {
+extension AnnouncementList {
     struct APIModel:
         ALGAPIModel,
         PaginationComponents {
         var count: Int?
         var next: URL?
         var previous: String?
-        var results: [Banner]?
+        var results: [Announcement]?
 
         init() {
             self.count = nil
@@ -58,9 +58,9 @@ extension BannerList {
     }
 }
 
-final class Banner: ALGAPIModel {
+final class Announcement: ALGAPIModel {
     let id: Int
-    let type: BannerType
+    let type: AnnouncementType
     let title: String?
     let subtitle: String?
     let buttonLabel: String?
@@ -86,7 +86,7 @@ final class Banner: ALGAPIModel {
     
 }
 
-enum BannerType: String, Codable {
+enum AnnouncementType: String, Codable {
     case governence
     case generic
     

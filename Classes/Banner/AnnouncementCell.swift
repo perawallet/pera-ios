@@ -12,23 +12,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   BuyAlgoCellViewTheme.swift
+//   AnnouncementCell.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-struct BuyAlgoCellViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var buyAlgoButton: ButtonTheme
-    var buyAlgoButtonHeight: LayoutMetric
-
-    init(
-        _ family: LayoutFamily
+final class GenericAnnouncementCell:
+    CollectionCell<AnnouncementView>,
+    ViewModelBindable,
+    UIInteractionObservable {
+    static let theme = GenericAnnouncementViewTheme()
+    
+    override init(
+        frame: CGRect
     ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
+    }
+}
 
-        self.buyAlgoButton = ButtonPrimaryTheme(family)
-        self.buyAlgoButtonHeight = 52
+final class GovernanceAnnouncementCell:
+    CollectionCell<AnnouncementView>,
+    ViewModelBindable,
+    UIInteractionObservable {
+    static let theme = GovernanceAnnouncementViewTheme()
+    
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+        contextView.customize(Self.theme)
     }
 }
