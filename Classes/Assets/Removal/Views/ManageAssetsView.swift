@@ -26,7 +26,6 @@ final class ManageAssetsView: View {
 
     private(set) lazy var assetsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        flowLayout.minimumLineSpacing = theme.cellSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
@@ -35,12 +34,9 @@ final class ManageAssetsView: View {
         return collectionView
     }()
     
-    private lazy var noContentView = NoContentView()
-
     func customize(_ theme: ManageAssetsViewTheme) {
         customizeBaseAppearance(backgroundColor: theme.backgroundColor)
 
-        addNoContentView(theme)
         addTitleLabel(theme)
         addSubitleLabel(theme)
         addSearchInputView(theme)
@@ -53,10 +49,6 @@ final class ManageAssetsView: View {
 }
 
 extension ManageAssetsView {
-    private func addNoContentView(_ theme: ManageAssetsViewTheme) {
-        noContentView.customize(theme.noContentViewTheme)
-        noContentView.bindData(AssetListSearchNoContentViewModel())
-    }
     private func addTitleLabel(_ theme: ManageAssetsViewTheme) {
         titleLabel.customizeAppearance(theme.title)
         titleLabel.editText = theme.titleText
@@ -91,26 +83,15 @@ extension ManageAssetsView {
 
     private func addAssetsCollectionView(_ theme: ManageAssetsViewTheme) {
         addSubview(assetsCollectionView)
-        
         assetsCollectionView.snp.makeConstraints {
             $0.top.equalTo(searchInputView.snp.bottom).offset(theme.collectionViewTopPadding)
             $0.leading.trailing.bottom.equalToSuperview()
         }
-        
-        assetsCollectionView.backgroundView = ContentStateView()
     }
 }
 
 extension ManageAssetsView {
     func setSearchInputDelegate(_ delegate: SearchInputViewDelegate?) {
         searchInputView.delegate = delegate
-    }
-}
-
-extension ManageAssetsView {
-    func updateContentStateView() {
-        assetsCollectionView.contentState = assetsCollectionView.isEmpty
-            ? .empty(noContentView)
-            : .none
     }
 }
