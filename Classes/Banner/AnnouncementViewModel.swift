@@ -12,12 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AnnouncementBannerViewModel.swift
+//   AnnouncementViewModel.swift
 
+import Foundation
 import MacaroonUIKit
 
-struct AnnouncementBannerViewModel:
-    ViewModel,
+struct AnnouncementViewModel:
+    PairedViewModel,
     Hashable {
+
+    private(set) var title: String?
+    private(set) var subtitle: String?
+    private(set) var ctaTitle: String?
+    private(set) var isGeneric: Bool = false
+    private(set) var ctaUrl: URL?
+
+    init(_ model: Announcement) {
+        title = model.title
+        subtitle = model.subtitle
+        ctaTitle = model.buttonLabel
+        isGeneric = model.type == .generic
+        ctaUrl = model.buttonUrl
+    }
 }
