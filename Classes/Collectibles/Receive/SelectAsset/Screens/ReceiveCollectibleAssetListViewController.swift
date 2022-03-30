@@ -347,11 +347,16 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         loadingController?.stopLoading()
 
         if let currentAsset = currentAsset {
+            let collectibleAsset = CollectibleAsset(
+                asset: ALGAsset(id: currentAsset.id),
+                decoration: currentAsset
+            )
+
             NotificationCenter.default.post(
                 name: CollectibleListLocalDataController.didAddPendingCollectible,
                 object: self,
                 userInfo: [
-                    CollectibleListLocalDataController.assetUserInfoKey: currentAsset
+                    CollectibleListLocalDataController.assetUserInfoKey: (account.value, collectibleAsset)
                 ]
             )
         }

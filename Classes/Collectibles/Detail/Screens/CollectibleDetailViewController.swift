@@ -63,7 +63,7 @@ final class CollectibleDetailViewController:
 
     init(
         asset: CollectibleAsset,
-        account: Account?,
+        account: Account,
         configuration: ViewControllerConfiguration
     ) {
         self.asset = asset

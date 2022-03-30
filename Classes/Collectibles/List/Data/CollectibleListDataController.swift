@@ -16,6 +16,7 @@
 
 import Foundation
 import UIKit
+import MacaroonUIKit
 
 protocol CollectibleListDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<CollectibleSection, CollectibleListItem>
@@ -23,8 +24,6 @@ protocol CollectibleListDataController: AnyObject {
     var eventHandler: ((CollectibleDataControllerEvent) -> Void)? { get set }
 
     var imageSize: CGSize { get set }
-
-    subscript (id: AssetID) -> CollectibleAsset? { get }
 
     func load()
     func search(for query: String)
@@ -58,9 +57,15 @@ enum CollectibleItem: Hashable {
 }
 
 enum CollectibleCellItem: Hashable {
-    case owner(CollectibleListItemReadyViewModel)
-    case optedIn(CollectibleListItemReadyViewModel)
-    case pending(CollectibleListItemPendingViewModel)
+    case owner(CollectibleCellItemContainer<CollectibleListItemReadyViewModel>)
+    case optedIn(CollectibleCellItemContainer<CollectibleListItemReadyViewModel>)
+    case pending(CollectibleCellItemContainer<CollectibleListItemPendingViewModel>)
+}
+
+struct CollectibleCellItemContainer<T: ViewModel & Hashable>: Hashable {
+    let account: Account
+    let asset: CollectibleAsset
+    let viewModel: T
 }
 
 enum CollectibleDataControllerEvent {

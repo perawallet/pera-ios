@@ -68,7 +68,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                             at: indexPath
                         )
                         cell.bindData(
-                            item
+                            item.viewModel
                         )
                         return cell
                     case .optedIn(let item):
@@ -77,7 +77,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                             at: indexPath
                         )
                         cell.bindData(
-                            item
+                            item.viewModel
                         )
                         return cell
                     case .pending(let item):
@@ -86,7 +86,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                             at: indexPath
                         )
                         cell.bindData(
-                            item
+                            item.viewModel
                         )
                         return cell
                     }

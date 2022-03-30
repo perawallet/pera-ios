@@ -27,12 +27,12 @@ final class CollectibleDetailAPIDataController: CollectibleDetailDataController 
 
     private let api: ALGAPI
     private var asset: CollectibleAsset
-    private let account: Account?
+    private let account: Account
 
     init(
         api: ALGAPI,
         asset: CollectibleAsset,
-        account: Account?
+        account: Account
     ) {
         self.api = api
         self.asset = asset
@@ -114,7 +114,11 @@ extension CollectibleDetailAPIDataController {
     ) {
         var mediaItems: [CollectibleDetailItem] = [.media(asset)]
 
-        if account == nil {
+        guard let asset = account[asset.id] as? CollectibleAsset else {
+            return
+        }
+
+        if !asset.isOwned {
             mediaItems.append(
                 .error(
                     CollectibleMediaErrorViewModel(
@@ -173,7 +177,8 @@ extension CollectibleDetailAPIDataController {
             )
         }
 
-        if let account = account {
+        if let asset = account[asset.id] as? CollectibleAsset,
+           asset.isOwned {
             descriptionItems.append(
                 .information(
                     CollectibleTransactionInformation(
