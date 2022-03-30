@@ -170,7 +170,7 @@ extension CollectibleListLayout {
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout
     ) -> CGSize {
-        let sizeCacheIdentifier = CollectibleSearchInputCell.reuseIdentifier
+        let sizeCacheIdentifier = CollectibleListSearchInputCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
