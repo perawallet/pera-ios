@@ -922,7 +922,7 @@
 "title-collectibles" = "Collectibles";
 "collectibles-empty-title" = "Collectibles";
 "collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
-"collectibles-list-input-placeholder" = "Search your NFT";
+"collectibles-list-input-placeholder" = "Search your NFTs";
 "collectibles-receive-action" = "Receive an NFT";
 "collectibles-receive-account-list-header-description" = "Select the account you would like to opt in with:";
 "collectibles-receive-asset-list-search-placeholder" = "Search Asset ID or NFT name";
