@@ -26,6 +26,7 @@ final class ManageAssetsView: View {
 
     private(set) lazy var assetsCollectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.minimumLineSpacing = theme.cellSpacing
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
