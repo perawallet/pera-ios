@@ -9157,8 +9157,6 @@
 		2BA713112748539E00B8A907 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				2B0AD8272757DA0400F83660 /* Announcement */,
-				2B4487022379595100C19FDE /* Cell */,
 				2B4487092379597800C19FDE /* Header */,
 				2B0AD81D2757D98900F83660 /* Main */,
 				2BE9371524602F9400322C1E /* TestNetTitleView.swift */,
@@ -15035,7 +15033,7 @@
 				D41B233427842BE0008838C7 /* AssetDetailViewController.swift in Sources */,
 				95AF1C6A27AD5A02001AB131 /* PreviewLoadingViewCommonTheme.swift in Sources */,
 				17A011D027EB6D66008C147D /* AnnouncementFetchDraft.swift in Sources */,
-				95AF1C6A27AD5A02001AB131 /* AssetPreviewLoadingViewCommonTheme.swift in Sources */,
+				95AF1C6A27AD5A02001AB131 /* PreviewLoadingViewCommonTheme.swift in Sources */,
 				2B448724237964D700C19FDE /* ManageAssetsViewController.swift in Sources */,
 				951E884B2757A74C00FFEB69 /* SelectAssetViewController+Theme.swift in Sources */,
 				D48FDFCB27CEBA0B00C39FC7 /* ReceiveCollectibleAccountListViewControllerTheme.swift in Sources */,
@@ -15324,7 +15322,6 @@
 				2B7A1F8F27DE64BA0010F52E /* CollectibleDescriptionCell.swift in Sources */,
 				17BD4E9F2292F1260003E49A /* AccountListViewController.swift in Sources */,
 				2B7A1F8727DE64850010F52E /* CollectibleDescriptionViewModel.swift in Sources */,
-				2B0AD82C2757DA1600F83660 /* AnnouncementBannerViewModel.swift in Sources */,
 				2B6B422F27BEA6D00036BF9E /* ScanQRCodeListActionViewModel.swift in Sources */,
 				95BB6BEC279FE36100F2A2F1 /* WCAssetReconfigurationTransactionViewTheme.swift in Sources */,
 				D4D6E9F5273E793500DAF1EC /* EditAccountViewController+Theme.swift in Sources */,
@@ -15615,7 +15612,6 @@
 				2B288ACC268E377300BC6FB6 /* WCWalletMeta.swift in Sources */,
 				2BA015D42637154C009EC914 /* LedgerAccountVerifyOperation.swift in Sources */,
 				2B7E3049267A526C00E89EE3 /* WCTransactionWarningView.swift in Sources */,
-				2B0AD8302757DA3500F83660 /* AnnouncementBannerView.swift in Sources */,
 				D443A07127E2398B00D2E52F /* SendCollectibleViewController.swift in Sources */,
 				2B397A1927843ADE00BBA9B3 /* AccountAssetListViewController+Theme.swift in Sources */,
 				D459E27427DBCCA200F7FC33 /* ActionableBannerViewModel.swift in Sources */,
@@ -17399,7 +17395,6 @@
 				2B7A1F6127DE5EBB0010F52E /* CollectiblePropertyView.swift in Sources */,
 				2BAD559723A29C9C0037079F /* String+Empty.swift in Sources */,
 				D4BF4A2426F4F6C5009B53D8 /* AssetImageView.swift in Sources */,
-				2B0AD83B2757E17400F83660 /* AnnouncementBannerViewTheme.swift in Sources */,
 				2B7A1F2B27DBD3B80010F52E /* CollectibleDetailLayout.swift in Sources */,
 				2B80C5722773695400BB071E /* AssetPortfolioItemView.swift in Sources */,
 				D4FFDCB727E9D32900BF56B9 /* ActionableBannerDraft.swift in Sources */,
@@ -18681,7 +18676,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
@@ -18711,7 +18706,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -18740,7 +18735,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -18770,7 +18765,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
@@ -18801,7 +18796,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -18831,7 +18826,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -18983,7 +18978,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
@@ -19014,7 +19009,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -19171,7 +19166,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
