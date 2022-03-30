@@ -13372,17 +13372,11 @@
 		D479179127ECF271009ECBA7 /* ReceiverAccountSelection */ = {
 			isa = PBXGroup;
 			children = (
-				D4BAFA9D27DF58810077B781 /* SendCollectibleAccountListAPIDataController.swift */,
-				D4BAFA9527DF522C0077B781 /* SendCollectibleAccountListDataController.swift */,
-				D4BAFA9127DF4F8D0077B781 /* SendCollectibleAccountListDataSource.swift */,
-				D4BAFAA127DF796D0077B781 /* SendCollectibleAccountListHeaderViewModel.swift */,
-				D4BAFA8D27DF4F0C0077B781 /* SendCollectibleAccountListLayout.swift */,
-				D4BAFAA927DFEE1E0077B781 /* SendCollectibleAccountListTitleSupplementaryCell.swift */,
-				D4BAFA8927DF4C2E0077B781 /* SendCollectibleAccountListViewController.swift */,
-				D4BAFA9927DF52DA0077B781 /* SendCollectibleAccountListViewControllerTheme.swift */,
-				D412C19527F1BD1C00E79308 /* SendCollectibleAccountPreviewCell.swift */,
-				D412C19027F1BCFC00E79308 /* SendCollectibleContactCell.swift */,
-				D4BAFAAD27DFEF4D0077B781 /* TitleVIewTheme+SendCollectibleAccountList.swift */,
+				D4FC5F3627F4CEE10017E81F /* Data */,
+				D4FC5F3827F4CF040017E81F /* Layout */,
+				D4FC5F3927F4CF0F0017E81F /* Screens */,
+				D4FC5F3A27F4CF400017E81F /* ViewModels */,
+				D4FC5F3B27F4CF570017E81F /* Views */,
 			);
 			path = ReceiverAccountSelection;
 			sourceTree = "<group>";
@@ -13746,6 +13740,52 @@
 				D4FC5F3227F4CAEF0017E81F /* CollectibleListSearchInputCell.swift */,
 			);
 			path = Search;
+			sourceTree = "<group>";
+		};
+		D4FC5F3627F4CEE10017E81F /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				D4BAFA9D27DF58810077B781 /* SendCollectibleAccountListAPIDataController.swift */,
+				D4BAFA9527DF522C0077B781 /* SendCollectibleAccountListDataController.swift */,
+				D4BAFA9127DF4F8D0077B781 /* SendCollectibleAccountListDataSource.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		D4FC5F3827F4CF040017E81F /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				D4BAFA8D27DF4F0C0077B781 /* SendCollectibleAccountListLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		D4FC5F3927F4CF0F0017E81F /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				D4BAFA8927DF4C2E0077B781 /* SendCollectibleAccountListViewController.swift */,
+				D4BAFA9927DF52DA0077B781 /* SendCollectibleAccountListViewControllerTheme.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		D4FC5F3A27F4CF400017E81F /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				D4BAFAA127DF796D0077B781 /* SendCollectibleAccountListHeaderViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		D4FC5F3B27F4CF570017E81F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D4BAFAA927DFEE1E0077B781 /* SendCollectibleAccountListTitleSupplementaryCell.swift */,
+				D412C19527F1BD1C00E79308 /* SendCollectibleAccountPreviewCell.swift */,
+				D412C19027F1BCFC00E79308 /* SendCollectibleContactCell.swift */,
+				D4BAFAAD27DFEF4D0077B781 /* TitleVIewTheme+SendCollectibleAccountList.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		D4FFDCBA27E9D36700BF56B9 /* ActionableBanner */ = {
