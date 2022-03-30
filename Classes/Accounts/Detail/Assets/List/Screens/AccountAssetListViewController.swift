@@ -40,7 +40,6 @@ final class AccountAssetListViewController: BaseViewController {
             frame: .zero,
             collectionViewLayout: collectionViewLayout
         )
-        collectionView.contentInset = UIEdgeInsets(theme.contentInset)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
@@ -81,6 +80,7 @@ final class AccountAssetListViewController: BaseViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
+        
         addListView()
 
         if !accountHandle.value.isWatchAccount() {
@@ -103,6 +103,9 @@ final class AccountAssetListViewController: BaseViewController {
 
 extension AccountAssetListViewController {
     private func addListView() {
+        let isWatchAccount = accountHandle.value.isWatchAccount()
+        listView.contentInset = isWatchAccount ? .zero : UIEdgeInsets(theme.contentInset)
+        
         view.addSubview(listView)
         listView.snp.makeConstraints {
             $0.edges.equalToSuperview()
