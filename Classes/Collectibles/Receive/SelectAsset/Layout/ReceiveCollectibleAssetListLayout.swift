@@ -26,6 +26,8 @@ final class ReceiveCollectibleAssetListLayout: NSObject {
 
     private let sectionHorizontalInsets: LayoutHorizontalPaddings = (24, 24)
 
+    var selectedAccountPreviewCanvasViewHeight: LayoutMetric = 0
+
     init(
         listDataSource: ReceiveCollectibleAssetListDataSource
     ) {
@@ -203,7 +205,14 @@ extension ReceiveCollectibleAssetListLayout {
             insets.top = 20
         case .collectibles:
             insets.top = 16
-            insets.bottom = 8
+            let defaultAdditionalBottomInset: LayoutMetric = 8
+
+            let bottomInset =
+            defaultAdditionalBottomInset +
+            selectedAccountPreviewCanvasViewHeight -
+            listView.safeAreaBottom
+
+            insets.bottom = bottomInset
         }
 
         insetCache[section] = insets

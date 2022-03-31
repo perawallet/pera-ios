@@ -44,6 +44,8 @@ final class ReceiveCollectibleAssetListViewController:
     private lazy var listLayout = ReceiveCollectibleAssetListLayout(listDataSource: listDataSource)
     private lazy var listDataSource = ReceiveCollectibleAssetListDataSource(listView)
 
+    private var isLayoutFinalized = false
+
     private lazy var transactionController: TransactionController = {
         return TransactionController(
             api: api!,
@@ -176,6 +178,14 @@ final class ReceiveCollectibleAssetListViewController:
                 )
             )
         )
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        if !isLayoutFinalized {
+            isLayoutFinalized = true
+            listLayout.selectedAccountPreviewCanvasViewHeight = selectedAccountPreviewCanvasView.frame.height
+        }
     }
 }
 

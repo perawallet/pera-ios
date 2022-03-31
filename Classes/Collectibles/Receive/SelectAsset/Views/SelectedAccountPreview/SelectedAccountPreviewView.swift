@@ -167,7 +167,6 @@ extension SelectedAccountPreviewView {
     }
 }
 
-
 extension SelectedAccountPreviewView {
     enum Event {
         case performCopyAction
