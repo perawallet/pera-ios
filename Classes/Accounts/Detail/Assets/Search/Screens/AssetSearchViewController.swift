@@ -74,6 +74,16 @@ final class AssetSearchViewController: BaseViewController {
 
         dataController.load()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        searchInputView.beginEditing()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchInputView.endEditing()
+    }
 
     override func setListeners() {
         listView.dataSource = dataSource
