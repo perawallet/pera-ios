@@ -78,16 +78,23 @@ class AppDelegate:
     private lazy var sharedDataController = SharedAPIDataController(session: session, api: api)
     private lazy var walletConnector = WalletConnector()
     private lazy var loadingController: LoadingController = BlockingLoadingController(presentingView: window!)
-    private lazy var bannerController = BannerController(window: window!)
+    private lazy var bannerController = BannerController(presentingView: window!)
     
     private lazy var router =
         Router(rootViewController: rootViewController, appConfiguration: appConfiguration)
     
-    private lazy var rootViewController =
-        RootViewController(appConfiguration: appConfiguration, launchController: appLaunchController)
+    private lazy var rootViewController = RootViewController(
+        target: ALGAppTarget.current,
+        appConfiguration: appConfiguration,
+        launchController: appLaunchController
+    )
 
-    private lazy var pushNotificationController =
-        PushNotificationController(session: session, api: api, bannerController: bannerController)
+    private lazy var pushNotificationController = PushNotificationController(
+        target: ALGAppTarget.current,
+        session: session,
+        api: api,
+        bannerController: bannerController
+    )
     
     private lazy var networkBannerView = UIView()
     private lazy var containerBlurView = UIVisualEffectView()
@@ -96,11 +103,13 @@ class AppDelegate:
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        prepareForLaunch()
-        
-        setupWindow()
-        setupNetworkBanner()
+        setupAppTarget()
         setupAppLibs()
+        
+        prepareForLaunch()
+
+        makeWindow()
+        makeNetworkBanner()
 
         launch(with: launchOptions)
 
@@ -186,10 +195,10 @@ class AppDelegate:
         /// Schemes should be controlled from a single point.
         switch scheme {
         case "algorand":
-            appLaunchController.receive(deeplinkWithSource: .url(url))
+            receive(deeplinkWithSource: .url(url))
             return true
         case "algorand-wc":
-            appLaunchController.receive(deeplinkWithSource: .walletConnectSessionRequest(url))
+            receive(deeplinkWithSource: .walletConnectSessionRequest(url))
             return true
         default:
             return false
@@ -221,8 +230,10 @@ extension AppDelegate {
         appLaunchController.launchOnboarding()
     }
     
-    func launchMain() {
-        appLaunchController.launchMain()
+    func launchMain(
+        completion: (() -> Void)? = nil
+    ) {
+        appLaunchController.launchMain(completion: completion)
     }
     
     func launchMainAfterAuthorization(
@@ -262,8 +273,8 @@ extension AppDelegate {
             router.launchAuthorization()
         case .onboarding:
             router.launchOnboarding()
-        case .main:
-            router.launchMain()
+        case .main(let completion):
+            router.launchMain(completion: completion)
         case .mainAfterAuthorization(let presentedViewController, let completion):
             router.launcMainAfterAuthorization(
                 presented: presentedViewController,
@@ -294,11 +305,16 @@ extension AppDelegate {
 }
 
 extension AppDelegate {
-    private func setupWindow() {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.backgroundColor = .clear
-        window?.rootViewController = rootViewController
-        window?.makeKeyAndVisible()
+    func receive(
+        deeplinkWithSource src: DeeplinkSource
+    ) {
+        appLaunchController.receive(deeplinkWithSource: src)
+    }
+}
+
+extension AppDelegate {
+    private func setupAppTarget() {
+        ALGAppTarget.setup()
     }
     
     private func setupAppLibs() {
@@ -317,17 +333,14 @@ extension AppDelegate {
 }
 
 extension AppDelegate {
-    private func setNeedsUserInterfaceStyleUpdateIfNeeded() {
-        if session.userInterfaceStyle == .system {
-            return
-        }
-
-        UserInterfaceStyleController.setNeedsUserInterfaceStyleUpdate(session.userInterfaceStyle)
+    private func makeWindow() {
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.backgroundColor = .clear
+        window?.rootViewController = rootViewController
+        window?.makeKeyAndVisible()
     }
-}
-
-extension AppDelegate {
-    private func setupNetworkBanner() {
+    
+    private func makeNetworkBanner() {
         networkBannerView.layer.zPosition = 1
         
         window?.addSubview(networkBannerView)
@@ -359,6 +372,16 @@ extension AppDelegate {
         }
 
         rootViewController.setNeedsStatusBarAppearanceUpdate()
+    }
+}
+
+extension AppDelegate {
+    private func setNeedsUserInterfaceStyleUpdateIfNeeded() {
+        if session.userInterfaceStyle == .system {
+            return
+        }
+
+        UserInterfaceStyleController.setNeedsUserInterfaceStyleUpdate(session.userInterfaceStyle)
     }
 }
 

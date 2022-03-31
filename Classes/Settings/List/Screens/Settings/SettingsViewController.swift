@@ -16,12 +16,17 @@
 //  SettingsViewController.swift
 
 import UIKit
+import MacaroonUIKit
 
 final class SettingsViewController: BaseViewController {
     private lazy var bottomModalTransition = BottomSheetTransition(presentingViewController: self)
     
-    private lazy var pushNotificationController =
-        PushNotificationController(session: session!, api: api!, bannerController: bannerController)
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!,
+        bannerController: bannerController
+    )
     
     private lazy var theme = Theme()
     private lazy var settingsView = SettingsView()
@@ -72,9 +77,7 @@ extension SettingsViewController {
         view.addSubview(settingsView)
 
         settingsView.snp.makeConstraints {
-            $0.leading.trailing.equalToSuperview()
-            $0.top.safeEqualToTop(of: self)
-            $0.bottom.safeEqualToBottom(of: self)
+            $0.setPaddings()
         }
     }
 }
@@ -208,7 +211,7 @@ extension SettingsViewController: SettingsDataSourceDelegate {
         let bottomWarningViewConfigurator = BottomWarningViewConfigurator(
             image: "icon-settings-logout".uiImage,
             title: "settings-delete-data-title".localized,
-            description: "settings-logout-detail".localized,
+            description: .plain("settings-logout-detail".localized),
             primaryActionButtonTitle: "settings-logout-button-delete".localized,
             secondaryActionButtonTitle: "settings-logout-button-cancel".localized,
             primaryAction: { [weak self] in

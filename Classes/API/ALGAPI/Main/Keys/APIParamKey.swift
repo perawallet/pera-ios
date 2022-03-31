@@ -22,6 +22,7 @@ typealias APIBodyParam = JSONObjectBodyParam<APIParamKey>
 
 enum APIParamKey: String, CodingKey {
     case address = "address"
+    case app = "application"
     case firstRound = "firstRound"
     case lastRound = "lastRound"
     case accessToken = "access_token"
@@ -69,4 +70,6 @@ enum APIParamKey: String, CodingKey {
     case until = "until"
     case interval = "interval"
     case includesAll = "include-all"
+    case walletAddress = "wallet_address"
+    case redirectUrl = "redirect_url"
 }

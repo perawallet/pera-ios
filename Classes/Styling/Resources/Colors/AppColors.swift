@@ -32,6 +32,7 @@ extension AppColors.Shared {
         case gray800 = "Shared/Global/gray800"
         case turquoise600 = "Shared/Global/turquoise600"
         case yellow400 = "Shared/Global/yellow400"
+        case purple = "Shared/Global/purple"
     }
 
     enum System: String, Color {
@@ -111,6 +112,15 @@ extension AppColors.Components {
 extension AppColors.Components {
     enum QR: String, Color {
         case background = "Components/QR/background"
+    }
+}
+
+extension AppColors.Components {
+    enum Banner: String, Color {
+        case background = "Components/Banner/background"
+        case text = "Components/Banner/text"
+        case governanceBackground = "Components/Banner/governance-background"
+        case governanceText = "Components/Banner/governance-text"
     }
 }
 
