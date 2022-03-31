@@ -34,19 +34,19 @@ final class PassphraseVerifyDataSource: NSObject {
     init(privateKey: Data) {
         self.privateKey = privateKey
         
+        var error: NSError?
+        self.mnemonics = AlgorandSDK().mnemonicFrom(privateKey, error: &error).components(separatedBy: " ")
+        
         super.init()
+        
+        if error == nil {
+            composeDisplayedData()
+        }
     }
 }
 
 extension PassphraseVerifyDataSource {
     func loadData() {
-        var error: NSError?
-        self.mnemonics = AlgorandSDK().mnemonicFrom(privateKey, error: &error).components(separatedBy: " ")
-
-        if error == nil {
-            composeDisplayedData()
-        }
-        
         delegate?.passphraseVerifyDataSourceDidLoadData(
             self,
             shownMnemonics: shownMnemonics,
