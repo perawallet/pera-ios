@@ -25,6 +25,7 @@ final class AssetDecoration: ALGEntityModel {
     let unitName: String?
     let decimals: Int
     let usdValue: Decimal?
+    let total: Int64?
     let isVerified: Bool
     let creator: AssetCreator?
     let collectible: Collectible?
@@ -44,6 +45,7 @@ final class AssetDecoration: ALGEntityModel {
         self.unitName = apiModel.unitName
         self.decimals = apiModel.fractionDecimals ?? 0
         self.usdValue = apiModel.usdValue.unwrap { Decimal(string: $0) }
+        self.total = apiModel.total.unwrap { Int64($0) }
         self.isVerified = apiModel.isVerified ?? false
         self.creator = apiModel.creator.unwrap(AssetCreator.init)
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
@@ -57,6 +59,7 @@ final class AssetDecoration: ALGEntityModel {
         apiModel.unitName = unitName
         apiModel.fractionDecimals = decimals
         apiModel.usdValue = usdValue.unwrap { String(describing: $0) }
+        apiModel.total = total.unwrap { String(describing: $0) }
         apiModel.isVerified = isVerified
         apiModel.creator = creator?.encode()
         apiModel.collectible = collectible?.encode()
@@ -88,6 +91,7 @@ extension AssetDecoration {
         var creator: AssetCreator.APIModel?
         var collectible: Collectible.APIModel?
         var url: String?
+        var total: String?
 
         init() {
             self.assetId = 0
@@ -99,6 +103,7 @@ extension AssetDecoration {
             self.creator = nil
             self.collectible = nil
             self.url = nil
+            self.total = nil
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -111,6 +116,7 @@ extension AssetDecoration {
             case creator
             case collectible
             case url
+            case total
         }
     }
 }

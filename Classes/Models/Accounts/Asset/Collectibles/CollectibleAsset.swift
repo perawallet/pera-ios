@@ -26,6 +26,7 @@ final class CollectibleAsset: Asset {
     let unitName: String?
     let decimals: Int
     let usdValue: Decimal?
+    let total: Int64?
     let isVerified: Bool
     let thumbnailImage: URL?
     let media: [Media]
@@ -71,6 +72,16 @@ final class CollectibleAsset: Asset {
         return media.contains { !$0.type.isSupported }
     }
 
+    /// Collectibles that are pure (non-frictional) according to ARC3
+    /// https://github.com/algorandfoundation/ARCs/blob/main/ARCs/arc-0003.md#pure-and-fractional-nfts
+    var isPure: Bool {
+        guard let total = total else {
+            return false
+        }
+
+        return total == 1 && decimals == 0
+    }
+
     init(
         asset: ALGAsset,
         decoration: AssetDecoration
@@ -84,6 +95,7 @@ final class CollectibleAsset: Asset {
         self.unitName = decoration.unitName
         self.decimals = decoration.decimals
         self.usdValue = decoration.usdValue
+        self.total = decoration.total
         self.isVerified = decoration.isVerified
         self.thumbnailImage = decoration.collectible?.thumbnailImage
         self.mediaType = decoration.collectible?.mediaType ?? .unknown("")
@@ -114,6 +126,7 @@ extension CollectibleAsset: Comparable {
             lhs.unitName == rhs.unitName &&
             lhs.decimals == rhs.decimals &&
             lhs.usdValue == rhs.usdValue &&
+            lhs.total == rhs.total &&
             lhs.isVerified == rhs.isVerified &&
             lhs.thumbnailImage == rhs.thumbnailImage &&
             lhs.title == rhs.title &&
