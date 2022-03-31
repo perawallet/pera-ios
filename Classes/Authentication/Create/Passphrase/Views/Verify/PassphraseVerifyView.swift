@@ -20,8 +20,14 @@ import MacaroonUIKit
 
 final class PassphraseVerifyView:
     View,
-    ViewModelBindable {
+    ViewModelBindable,
+    UIInteractionObservable,
+    UIControlInteractionPublisher {
     weak var delegate: PassphraseVerifyViewDelegate?
+    
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .next: UIControlInteraction()
+    ]
 
     private lazy var titleLabel = Label()
     private lazy var firstCardView = PassphraseVerifyCardView()
@@ -31,8 +37,6 @@ final class PassphraseVerifyView:
 
     private lazy var nextButton = Button()
     
-    private var choosenMnemonics: [Int?: String] = [:]
-
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -54,16 +58,12 @@ final class PassphraseVerifyView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
-
-    func setListeners() {
-        nextButton.addTarget(
-            self,
-            action: #selector(didTapNextButton),
-            for: .touchUpInside
-        )
-    }
     
     func linkInteractors() {
+        startPublishing(event: .next, for: nextButton)
+    }
+    
+    func setListeners() {
         firstCardView.delegate = self
         secondCardView.delegate = self
         thirdCardView.delegate = self
@@ -91,7 +91,9 @@ extension PassphraseVerifyView {
     }
     
     private func addFirstCardView(_ theme: PassphraseVerifyViewTheme) {
-        firstCardView.customize(PassphraseVerifyCardViewTheme())
+        firstCardView.tag = 0
+        firstCardView.customize(theme.cardViewTheme)
+        
         addSubview(firstCardView)
         firstCardView.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.listTopOffset)
@@ -100,7 +102,9 @@ extension PassphraseVerifyView {
     }
     
     private func addSecondCardView(_ theme: PassphraseVerifyViewTheme) {
-        secondCardView.customize(PassphraseVerifyCardViewTheme())
+        secondCardView.tag = 1
+        secondCardView.customize(theme.cardViewTheme)
+        
         addSubview(secondCardView)
         secondCardView.snp.makeConstraints {
             $0.top.equalTo(firstCardView.snp.bottom).offset(theme.cardViewBottomOffset)
@@ -109,7 +113,9 @@ extension PassphraseVerifyView {
     }
     
     private func addThirdCardView(_ theme: PassphraseVerifyViewTheme) {
-        thirdCardView.customize(PassphraseVerifyCardViewTheme())
+        thirdCardView.tag = 2
+        thirdCardView.customize(theme.cardViewTheme)
+        
         addSubview(thirdCardView)
         thirdCardView.snp.makeConstraints {
             $0.top.equalTo(secondCardView.snp.bottom).offset(theme.cardViewBottomOffset)
@@ -118,7 +124,9 @@ extension PassphraseVerifyView {
     }
     
     private func addFourthCardView(_ theme: PassphraseVerifyViewTheme) {
-        fourthCardView.customize(PassphraseVerifyCardViewTheme())
+        fourthCardView.tag = 3
+        fourthCardView.customize(theme.cardViewTheme)
+        
         addSubview(fourthCardView)
         fourthCardView.snp.makeConstraints {
             $0.top.equalTo(thirdCardView.snp.bottom).offset(theme.cardViewBottomOffset)
@@ -135,55 +143,48 @@ extension PassphraseVerifyView {
         nextButton.snp.makeConstraints {
             $0.top.equalTo(fourthCardView.snp.bottom).offset(theme.buttonTopOffset)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
-            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.buttonVerticalInset)
+            $0.bottom.equalToSuperview().inset(safeAreaBottom + theme.buttonBottomOffset)
         }
     }
 }
 
 extension PassphraseVerifyView {
     func reset() {
-        choosenMnemonics.removeAll()
         firstCardView.reset()
         secondCardView.reset()
         thirdCardView.reset()
         fourthCardView.reset()
         nextButton.isEnabled = false
     }
-}
-
-extension PassphraseVerifyView {
-    @objc
-    private func didTapNextButton() {
-        choosenMnemonics[firstCardView.getIndex()] = firstCardView.getMnemonic()
-        choosenMnemonics[secondCardView.getIndex()] = secondCardView.getMnemonic()
-        choosenMnemonics[thirdCardView.getIndex()] = thirdCardView.getMnemonic()
-        choosenMnemonics[fourthCardView.getIndex()] = fourthCardView.getMnemonic()
-        
-        delegate?.passphraseVerifyViewDidTapNextButton(
-            self,
-            mnemonics: choosenMnemonics
-        )
+    
+    func setButtonInteraction() {
+        nextButton.isEnabled = true
     }
 }
 
 extension PassphraseVerifyView: PassphraseVerifyCardViewDelegate {
     func passphraseVerifyCardViewDidSelectWord(
         _ passphraseVerifyCardView: PassphraseVerifyCardView,
-        index: Int,
-        word: String
+        item: Int
     ) {
-        if firstCardView.isSelected &&
-            secondCardView.isSelected &&
-            thirdCardView.isSelected &&
-            fourthCardView.isSelected {
-            nextButton.isEnabled = true
-        }
+        delegate?.passphraseVerifyViewDidSelectMnemonic(
+            self,
+            section: passphraseVerifyCardView.tag,
+            item: item
+        )
     }
 }
 
 protocol PassphraseVerifyViewDelegate: AnyObject {
-    func passphraseVerifyViewDidTapNextButton(
+    func passphraseVerifyViewDidSelectMnemonic(
         _ passphraseVerifyView: PassphraseVerifyView,
-        mnemonics: [Int?: String]
+        section: Int,
+        item: Int
     )
+}
+
+extension PassphraseVerifyView {
+    enum Event {
+        case next
+    }
 }

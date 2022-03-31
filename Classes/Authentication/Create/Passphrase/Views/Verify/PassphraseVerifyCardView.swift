@@ -31,9 +31,7 @@ final class PassphraseVerifyCardView:
     private lazy var secondMnemonicLabel = Label()
     private lazy var thirdMnemonicLabel = Label()
     
-    private(set) lazy var isSelected = false
     private var cardIndex: Int?
-    private var choosenMnemonic: String?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -82,33 +80,22 @@ final class PassphraseVerifyCardView:
 extension PassphraseVerifyCardView {
     @objc
     private func updateForSelection(_ sender: UITapGestureRecognizer) {
-        isSelected = true
+        guard let labelTag = sender.view?.tag else {
+            return
+        }
         
-        switch sender.view?.tag {
-        case 1:
-            choosenMnemonic = firstMnemonicLabel.text.someString
+        switch labelTag {
+        case 0:
             updateBackground(word: firstMnemonicLabel)
-        case 2:
-            choosenMnemonic = secondMnemonicLabel.text.someString
+        case 1:
             updateBackground(word: secondMnemonicLabel)
-        case 3:
-            choosenMnemonic = thirdMnemonicLabel.text.someString
+        case 2:
             updateBackground(word: thirdMnemonicLabel)
         default:
             return
         }
         
-        guard let cardIndex = cardIndex,
-              let choosenMnemonic = choosenMnemonic
-        else {
-            return
-        }
-        
-        delegate?.passphraseVerifyCardViewDidSelectWord(
-            self,
-            index: cardIndex,
-            word: choosenMnemonic
-        )
+        delegate?.passphraseVerifyCardViewDidSelectWord(self, item: labelTag)
     }
     
     private func updateBackground(word: Label) {
@@ -118,17 +105,7 @@ extension PassphraseVerifyCardView {
         word.backgroundColor = theme.activeColor
     }
     
-    func getMnemonic() -> String {
-        return choosenMnemonic.someString
-    }
-    
-    func getIndex() -> Int? {
-        return cardIndex
-    }
-    
     func reset() {
-        isSelected = false
-        choosenMnemonic = nil
         cardIndex = nil
         stackView.subviews.forEach {
             $0.backgroundColor = theme.deactiveColor
@@ -172,9 +149,9 @@ extension PassphraseVerifyCardView {
             $0.edges.equalToSuperview().inset(theme.stackViewSpacing)
         }
 
-        addMnemonicLabel(theme, firstMnemonicLabel, tag: 1)
-        addMnemonicLabel(theme, secondMnemonicLabel, tag: 2)
-        addMnemonicLabel(theme, thirdMnemonicLabel, tag: 3)
+        addMnemonicLabel(theme, firstMnemonicLabel, tag: 0)
+        addMnemonicLabel(theme, secondMnemonicLabel, tag: 1)
+        addMnemonicLabel(theme, thirdMnemonicLabel, tag: 2)
     }
     
     private func addMnemonicLabel(
@@ -194,7 +171,6 @@ extension PassphraseVerifyCardView {
 protocol PassphraseVerifyCardViewDelegate: AnyObject {
     func passphraseVerifyCardViewDidSelectWord(
         _ passphraseVerifyCardView: PassphraseVerifyCardView,
-        index: Int,
-        word: String
+        item: Int
     )
 }

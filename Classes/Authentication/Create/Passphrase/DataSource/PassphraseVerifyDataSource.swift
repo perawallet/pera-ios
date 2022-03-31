@@ -29,6 +29,7 @@ final class PassphraseVerifyDataSource: NSObject {
     private var mnemonics: [String] = []
     private var shownMnemonics: [Int: [String]] = [:]
     private var correctSelections: [String] = []
+    private var selectedMnemonics: [Int: Int] = [:]
 
     init(privateKey: Data) {
         self.privateKey = privateKey
@@ -56,7 +57,7 @@ extension PassphraseVerifyDataSource {
     func resetAndReloadData() {
         clearDisplayedData()
         composeDisplayedData()
-        
+                
         delegate?.passphraseVerifyDataSourceDidLoadData(
             self,
             shownMnemonics: shownMnemonics,
@@ -68,6 +69,7 @@ extension PassphraseVerifyDataSource {
         mnemonicIndexes.removeAll()
         shownMnemonics.removeAll()
         correctSelections.removeAll()
+        selectedMnemonics.removeAll()
     }
     
     private func composeDisplayedData() {
@@ -143,12 +145,27 @@ extension PassphraseVerifyDataSource {
 }
 
 extension PassphraseVerifyDataSource {
-    func verifyPassphrase(for choosenMnemonics: [Int?: String]) -> Bool {
+    func selectMnemonic(
+        _ section: Int,
+        _ item: Int
+    ) {
+        selectedMnemonics[section] = item
+        
+        if selectedMnemonics.count == numberOfValidations {
+            delegate?.passphraseVerifyDataSourceSelectAllItems()
+        }
+    }
+    
+    func verifyPassphrase() -> Bool {
         var isValidate = true
-        for mnemonicIndex in mnemonicIndexes {
-            let rightMnemonic = mnemonics[mnemonicIndex]
-            let choosenMnemonic = choosenMnemonics[mnemonicIndex]
-            if choosenMnemonic != rightMnemonic {
+        
+        for (section, item) in selectedMnemonics {
+            guard let shownSection = shownMnemonics[section] else {
+                isValidate = false
+                return isValidate
+            }
+            
+            if shownSection[item] != correctSelections[section] {
                 isValidate = false
                 break
             }
@@ -164,4 +181,6 @@ protocol PassphraseVerifyDataSourceDelegate: AnyObject {
         shownMnemonics: [Int: [String]],
         correctIndexes: [Int]
     )
+    
+    func passphraseVerifyDataSourceSelectAllItems()
 }

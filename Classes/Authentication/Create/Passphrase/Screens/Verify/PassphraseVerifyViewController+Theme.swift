@@ -21,11 +21,11 @@ import UIKit
 extension PassphraseVerifyViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
-        let contextViewInsets: LayoutPaddings
+        let contextViewTheme: PassphraseVerifyViewTheme
 
         init(_ family: LayoutFamily) {
             self.backgroundColor = AppColors.Shared.System.background
-            self.contextViewInsets = (0, 0, 0, 0)
+            self.contextViewTheme = PassphraseVerifyViewTheme()
         }
     }
 }

@@ -19,7 +19,7 @@ import UIKit
 import AVFoundation
 
 final class PassphraseVerifyViewController: BaseScrollViewController {
-    private lazy var passphraseVerifyView = PassphraseVerifyView()
+    private lazy var contextView = PassphraseVerifyView()
         
     private lazy var theme = Theme()
 
@@ -49,8 +49,40 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
     override func linkInteractors() {
         super.linkInteractors()
         
+        contextView.observe(event: .next) {
+            [weak self] in
+            guard let self = self else { return }
+            
+            if !self.dataSource.verifyPassphrase() {
+                AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+                self.bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "passphrase-verify-wrong-message".localized
+                )
+                self.contextView.reset()
+                self.dataSource.resetAndReloadData()
+                return
+            }
+                        
+            guard let account = self.createAccount() else {
+                return
+            }
+            
+            self.open(
+                .tutorial(
+                    flow: self.flow,
+                    tutorial: .passphraseVerified(account: account)
+                ),
+                by: .push
+            )
+        }
+    }
+    
+    override func setListeners() {
+        super.setListeners()
+        
         dataSource.delegate = self
-        passphraseVerifyView.delegate = self
+        contextView.delegate = self
     }
 
     override func configureAppearance() {
@@ -66,21 +98,7 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
 
     override func prepareLayout() {
         super.prepareLayout()
-       
-        passphraseVerifyView.customize(PassphraseVerifyViewTheme())
-        
-        contentView.addSubview(passphraseVerifyView)
-        passphraseVerifyView.directionalLayoutMargins = NSDirectionalEdgeInsets(
-            top: 0,
-            leading: 0,
-            bottom: 0,
-            trailing: 0
-        )
-
-        passphraseVerifyView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-            $0.bottom.lessThanOrEqualToSuperview()
-        }
+        addContextView()
     }
     
     override func viewDidLoad() {
@@ -89,48 +107,52 @@ final class PassphraseVerifyViewController: BaseScrollViewController {
     }
 }
 
-extension PassphraseVerifyViewController: PassphraseVerifyDataSourceDelegate {
-    func passphraseVerifyDataSource(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, isSelectedAllItems: Bool) {
+extension PassphraseVerifyViewController {
+    private func addContextView() {
+        contextView.customize(PassphraseVerifyViewTheme())
         
+        contentView.addSubview(contextView)
+        contextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: 0,
+            leading: 0,
+            bottom: 0,
+            trailing: 0
+        )
+
+        contextView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview()
+            $0.bottom.lessThanOrEqualToSuperview()
+        }
     }
-    
-    func passphraseVerifyDataSourceDidLoadData(_ passphraseVerifyDataSource: PassphraseVerifyDataSource, shownMnemonics: [Int: [String]], correctIndexes: [Int]) {
-        passphraseVerifyView.bindData(
+}
+
+extension PassphraseVerifyViewController: PassphraseVerifyDataSourceDelegate {
+    func passphraseVerifyDataSourceDidLoadData(
+        _ passphraseVerifyDataSource: PassphraseVerifyDataSource,
+        shownMnemonics: [Int: [String]],
+        correctIndexes: [Int]
+    ) {
+        contextView.reset()
+        contextView.bindData(
             PassphraseVerifyViewModel(
                 shownMnemonics: shownMnemonics,
                 correctIndexes: correctIndexes
             )
         )
     }
+    
+    func passphraseVerifyDataSourceSelectAllItems() {
+        contextView.setButtonInteraction()
+    }
 }
 
 extension PassphraseVerifyViewController: PassphraseVerifyViewDelegate {
-    func passphraseVerifyViewDidTapNextButton(
+    func passphraseVerifyViewDidSelectMnemonic(
         _ passphraseVerifyView: PassphraseVerifyView,
-        mnemonics: [Int?: String]
+        section: Int,
+        item: Int
     ) {
-        if !dataSource.verifyPassphrase(for: mnemonics) {
-            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            bannerController?.presentErrorBanner(
-                title: "title-error".localized,
-                message: "passphrase-verify-wrong-message".localized
-            )
-            passphraseVerifyView.reset()
-            dataSource.resetAndReloadData()
-            return
-        }
-        
-        guard let account = createAccount() else {
-            return
-        }
-        
-        open(
-            .tutorial(
-                flow: flow,
-                tutorial: .passphraseVerified(account: account)
-            ),
-            by: .push
-        )
+        dataSource.selectMnemonic(section, item)
     }
 }
 

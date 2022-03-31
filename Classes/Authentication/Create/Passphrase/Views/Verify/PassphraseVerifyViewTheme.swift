@@ -23,16 +23,18 @@ struct PassphraseVerifyViewTheme: StyleSheet, LayoutSheet {
     
     let title: TextStyle
     let titleText: EditText
+    let titleTopInset: LayoutMetric
     
+    let listTopOffset: LayoutMetric
+    
+    let cardViewTheme: PassphraseVerifyCardViewTheme
     let cardViewBottomOffset: LayoutMetric
 
     let nextButtonTheme: ButtonTheme
-
-    let titleTopInset: LayoutMetric
-    let horizontalInset: LayoutMetric
-    let buttonVerticalInset: LayoutMetric
     let buttonTopOffset: LayoutMetric
-    let listTopOffset: LayoutMetric
+    let buttonBottomOffset: LayoutMetric
+
+    let horizontalInset: LayoutMetric
 
     init(_ family: LayoutFamily) {
         self.backgroundColor = AppColors.Shared.System.background
@@ -56,15 +58,17 @@ struct PassphraseVerifyViewTheme: StyleSheet, LayoutSheet {
                     .letterSpacing(-0.32)
                 ])
         )
+        self.titleTopInset = 2
         
+        self.listTopOffset = 40
+        
+        self.cardViewTheme = PassphraseVerifyCardViewTheme()
         self.cardViewBottomOffset = 32
         
         self.nextButtonTheme = ButtonPrimaryTheme()
-
-        self.titleTopInset = 2
-        self.horizontalInset = 24
-        self.buttonVerticalInset = 16
         self.buttonTopOffset = 24
-        self.listTopOffset = 40
+        self.buttonBottomOffset = 16
+        
+        self.horizontalInset = 24
     }
 }
