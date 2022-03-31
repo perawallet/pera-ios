@@ -12,13 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   SelectedAccountPreviewModel.swift
+//   SelectedAccountPreviewViewModel.swift
 
 import Foundation
 import UIKit
 import MacaroonUIKit
 
-struct SelectedAccountPreviewModel:
+struct SelectedAccountPreviewViewModel:
     BindableViewModel {
     private(set) var icon: Image?
     private(set) var title: EditText?
@@ -31,7 +31,7 @@ struct SelectedAccountPreviewModel:
     }
 }
 
-extension SelectedAccountPreviewModel {
+extension SelectedAccountPreviewViewModel {
     mutating func bind<T>(
         _ model: T
     ) {
@@ -42,7 +42,7 @@ extension SelectedAccountPreviewModel {
     }
 }
 
-extension SelectedAccountPreviewModel {
+extension SelectedAccountPreviewViewModel {
     mutating func bind(
         draft: IconWithShortAddressDraft
     ) {
@@ -59,7 +59,7 @@ extension SelectedAccountPreviewModel {
     }
 }
 
-extension SelectedAccountPreviewModel {
+extension SelectedAccountPreviewViewModel {
     mutating func bindIcon(
         _ someIcon: UIImage?
     ) {
@@ -79,7 +79,7 @@ extension SelectedAccountPreviewModel {
     }
 }
 
-extension SelectedAccountPreviewModel {
+extension SelectedAccountPreviewViewModel {
     func getTitle(
         _ aTitle: String?
     ) -> EditText? {

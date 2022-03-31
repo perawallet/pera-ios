@@ -16,10 +16,14 @@
 
 import UIKit
 import MacaroonUIKit
+import MacaroonUtils
 
 final class ReceiveCollectibleAssetListViewController:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout,
+    NotificationObserver {
+    var notificationObservations: [NSObjectProtocol] = []
+
     weak var delegate: ReceiveCollectibleAssetListViewControllerDelegate?
 
     private lazy var listView: UICollectionView = {
@@ -73,19 +77,12 @@ final class ReceiveCollectibleAssetListViewController:
         super.init(configuration: configuration)
     }
 
+    deinit {
+        unobserveNotifications()
+    }
+
     override func configureNavigationBarAppearance() {
         navigationItem.title = "collectibles-receive-asset-title".localized
-    }
-
-    override func prepareLayout() {
-        super.prepareLayout()
-        build()
-    }
-
-    override func setListeners() {
-        super.setListeners()
-
-        listView.delegate = self
     }
 
     override func viewDidLoad() {
@@ -126,10 +123,38 @@ final class ReceiveCollectibleAssetListViewController:
             }
     }
 
-    private func build() {
-        addBackground()
-        addListView()
-        addSelectedAccountPreviewView()
+    override func prepareLayout() {
+        super.prepareLayout()
+        build()
+    }
+
+    override func setListeners() {
+        super.setListeners()
+
+        listView.delegate = self
+
+        transactionController.delegate = self
+
+        selectedAccountPreviewView.observe(event: .performCopyAction) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.copyAddress()
+        }
+
+        selectedAccountPreviewView.observe(event: .performQRAction) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.openQRGenerator()
+        }
+
+        observeWhenKeyboardWillShow(using: didReceive(keyboardWillShow:))
+        observeWhenKeyboardWillHide(using: didReceive(keyboardWillHide:))
     }
 
     override func linkInteractors() {
@@ -154,25 +179,9 @@ final class ReceiveCollectibleAssetListViewController:
         }
     }
 
-    override func beginTracking() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didReceive(keyboardWillShow:)),
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil
-        )
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(didReceive(keyboardWillHide:)),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
-    }
-
     override func bindData() {
         selectedAccountPreviewView.bindData(
-            SelectedAccountPreviewModel(
+            SelectedAccountPreviewViewModel(
                 IconWithShortAddressDraft(
                     account.value
                 )
@@ -186,6 +195,12 @@ final class ReceiveCollectibleAssetListViewController:
             isLayoutFinalized = true
             listLayout.selectedAccountPreviewCanvasViewHeight = selectedAccountPreviewCanvasView.frame.height
         }
+    }
+
+    private func build() {
+        addBackground()
+        addListView()
+        addSelectedAccountPreviewView()
     }
 }
 
@@ -571,7 +586,6 @@ extension ReceiveCollectibleAssetListViewController {
 }
 
 extension ReceiveCollectibleAssetListViewController {
-    @objc
     private func didReceive(
         keyboardWillShow notification: Notification
     ) {
@@ -586,7 +600,6 @@ extension ReceiveCollectibleAssetListViewController {
         )
     }
 
-    @objc
     private func didReceive(
         keyboardWillHide notification: Notification
     ) {

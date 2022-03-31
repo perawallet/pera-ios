@@ -54,7 +54,7 @@ final class SelectedAccountPreviewView:
     ) {}
 
     func bindData(
-        _ viewModel: SelectedAccountPreviewModel?
+        _ viewModel: SelectedAccountPreviewViewModel?
     ) {
         iconView.image = viewModel?.icon?.uiImage
         titleView.editText = viewModel?.title
