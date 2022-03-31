@@ -21,6 +21,8 @@ import MacaroonUIKit
 
 final class AccountCollectibleListViewController: BaseViewController {
 
+    private lazy var theme = Theme()
+
     private lazy var collectibleListScreen = CollectibleListViewController(
         dataController: CollectibleListLocalDataController(
             galleryAccount: .single(account),
@@ -28,6 +30,8 @@ final class AccountCollectibleListViewController: BaseViewController {
         ),
         configuration: configuration
     )
+
+    private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
     
     private let account: AccountHandle
 
@@ -42,6 +46,15 @@ final class AccountCollectibleListViewController: BaseViewController {
     override func prepareLayout() {
         super.prepareLayout()
         add(collectibleListScreen)
+
+        if !account.value.isWatchAccount() {
+            addTransactionActionButton(theme)
+        }
+    }
+
+    override func setListeners() {
+        super.setListeners()
+        setTransactionActionButtonAction()
     }
 
     override func linkInteractors() {
@@ -64,6 +77,66 @@ extension AccountCollectibleListViewController {
 }
 
 extension AccountCollectibleListViewController {
+    private func addTransactionActionButton(_ theme: Theme) {
+        transactionActionButton.image = "fab-swap".uiImage
+
+        view.addSubview(transactionActionButton)
+        transactionActionButton.snp.makeConstraints {
+            $0.setPaddings(theme.transactionActionButtonPaddings)
+        }
+    }
+
+    private func setTransactionActionButtonAction() {
+        transactionActionButton.addTarget(
+            self,
+            action: #selector(didTapTransactionActionButton),
+            for: .touchUpInside
+        )
+    }
+
+    @objc
+    private func didTapTransactionActionButton() {
+        let viewController = open(
+            .transactionFloatingActionButton,
+            by: .customPresentWithoutNavigationController(
+                presentationStyle: .overCurrentContext,
+                transitionStyle: nil,
+                transitioningDelegate: nil
+            ),
+            animated: false
+        ) as? TransactionFloatingActionButtonViewController
+
+        viewController?.delegate = self
+    }
+}
+
+extension AccountCollectibleListViewController: TransactionFloatingActionButtonViewControllerDelegate {
+    func transactionFloatingActionButtonViewControllerDidSend(
+        _ viewController: TransactionFloatingActionButtonViewController
+    ) {
+
+    }
+
+    func transactionFloatingActionButtonViewControllerDidReceive(
+        _ viewController: TransactionFloatingActionButtonViewController
+    ) {
+
+    }
+
+    func transactionFloatingActionButtonViewControllerDidBuy(
+        _ viewController: TransactionFloatingActionButtonViewController
+    ) {
+        openBuyAlgo()
+    }
+
+    private func openBuyAlgo() {
+        let draft = BuyAlgoDraft()
+        draft.address = account.value.address
+        launchBuyAlgo(draft: draft)
+    }
+}
+
+extension AccountCollectibleListViewController {
     private func openReceiveCollectible() {
         let controller = open(
             .receiveCollectibleAssetList(
@@ -78,5 +151,20 @@ extension AccountCollectibleListViewController {
         }
 
         controller?.leftBarButtonItems = [close]
+    }
+}
+
+extension AccountCollectibleListViewController {
+    struct Theme: LayoutSheet, StyleSheet {
+        let transactionActionButtonPaddings: LayoutPaddings
+
+        init(_ family: LayoutFamily) {
+            self.transactionActionButtonPaddings = (
+                .noMetric,
+                .noMetric,
+                UIApplication.shared.safeAreaBottom + 24,
+                24
+            )
+        }
     }
 }
