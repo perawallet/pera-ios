@@ -20,6 +20,8 @@ import MacaroonUIKit
 final class ReceiveCollectibleAssetListViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
+    weak var delegate: ReceiveCollectibleAssetListViewControllerDelegate?
+
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = ReceiveCollectibleAssetListLayout.build()
         let collectionView =
@@ -31,6 +33,9 @@ final class ReceiveCollectibleAssetListViewController:
         collectionView.backgroundColor = .clear
         return collectionView
     }()
+
+    private lazy var selectedAccountPreviewCanvasView = MacaroonUIKit.BaseView()
+    private lazy var selectedAccountPreviewView = SelectedAccountPreviewView()
 
     private lazy var bottomSheetTransition = BottomSheetTransition(
         presentingViewController: self
@@ -122,16 +127,61 @@ final class ReceiveCollectibleAssetListViewController:
     private func build() {
         addBackground()
         addListView()
+        addSelectedAccountPreviewView()
     }
 
     override func linkInteractors() {
         transactionController.delegate = self
+
+        selectedAccountPreviewView.observe(event: .performCopyAction) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.copyAddress()
+        }
+
+        selectedAccountPreviewView.observe(event: .performQRAction) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.openQRGenerator()
+        }
+    }
+
+    override func beginTracking() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didReceive(keyboardWillShow:)),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(didReceive(keyboardWillHide:)),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
+    }
+
+    override func bindData() {
+        selectedAccountPreviewView.bindData(
+            SelectedAccountPreviewModel(
+                IconWithShortAddressDraft(
+                    account.value
+                )
+            )
+        )
     }
 }
 
 extension ReceiveCollectibleAssetListViewController {
     private func addBackground() {
-        view.customizeAppearance(theme.background)
+        view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
 
     private func addListView() {
@@ -139,6 +189,52 @@ extension ReceiveCollectibleAssetListViewController {
         listView.snp.makeConstraints {
             $0.setPaddings()
         }
+    }
+
+    private func addSelectedAccountPreviewView() {
+        selectedAccountPreviewCanvasView.backgroundColor = theme.backgroundColor.uiColor
+
+        view.addSubview(selectedAccountPreviewCanvasView)
+        selectedAccountPreviewCanvasView.snp.makeConstraints {
+            $0.setPaddings((.noMetric, 0, 0, 0))
+        }
+
+        selectedAccountPreviewView.customize(
+            SelectedAccountPreviewViewTheme()
+        )
+
+        selectedAccountPreviewCanvasView.addSubview(selectedAccountPreviewView)
+        selectedAccountPreviewView.snp.makeConstraints {
+            $0.bottom == view.safeAreaBottom
+
+            $0.setPaddings((0, 0, .noMetric, 0))
+        }
+    }
+}
+
+extension ReceiveCollectibleAssetListViewController {
+    private func copyAddress() {
+        UIPasteboard.general.string = account.value.address
+        bannerController?.presentInfoBanner("qr-creation-copied".localized)
+    }
+
+    private func openQRGenerator() {
+        let account = account.value
+        
+        let draft = QRCreationDraft(
+            address: account.address,
+            mode: .address,
+            title: account.name
+        )
+
+        open(
+            .qrGenerator(
+                title: account.name ?? account.address.shortAddressDisplay,
+                draft: draft,
+                isTrackable: true
+            ),
+            by: .present
+        )
     }
 }
 
@@ -316,7 +412,10 @@ extension ReceiveCollectibleAssetListViewController:
 }
 
 extension ReceiveCollectibleAssetListViewController: TransactionControllerDelegate {
-    func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedComposing error: HIPTransactionError
+    ) {
         loadingController?.stopLoading()
         currentAsset = nil
 
@@ -328,7 +427,10 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         }
     }
 
-    func transactionController(_ transactionController: TransactionController, didFailedTransaction error: HIPTransactionError) {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedTransaction error: HIPTransactionError
+    ) {
         loadingController?.stopLoading()
         currentAsset = nil
 
@@ -361,10 +463,12 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
             )
         }
 
-        dismissScreen()
+        delegate?.receiveCollectibleAssetListViewController(self, didCompleteTransaction: account.value)
     }
 
-    private func displayTransactionError(from transactionError: TransactionError) {
+    private func displayTransactionError(
+        from transactionError: TransactionError
+    ) {
         switch transactionError {
         case let .minimumAmount(amount):
             bannerController?.presentErrorBanner(
@@ -400,7 +504,10 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         }
     }
 
-    func transactionController(_ transactionController: TransactionController, didRequestUserApprovalFrom ledger: String) {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
         let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
         ledgerApprovalViewController = ledgerApprovalTransition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
@@ -408,7 +515,82 @@ extension ReceiveCollectibleAssetListViewController: TransactionControllerDelega
         )
     }
 
-    func transactionControllerDidResetLedgerOperation(_ transactionController: TransactionController) {
+    func transactionControllerDidResetLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
         ledgerApprovalViewController?.dismissScreen()
     }
+}
+
+extension ReceiveCollectibleAssetListViewController {
+    private func updateLayoutWhenKeyboardHeightDidChange(
+        _ keyboardHeight: LayoutMetric = 0,
+        isShowing: Bool
+    ) {
+        if isShowing {
+            selectedAccountPreviewCanvasView.snp.updateConstraints {
+                $0.bottom == keyboardHeight
+            }
+
+            selectedAccountPreviewView.snp.updateConstraints {
+                $0.bottom == 0
+            }
+        } else {
+            selectedAccountPreviewCanvasView.snp.updateConstraints {
+                $0.bottom == 0
+            }
+
+            selectedAccountPreviewView.snp.updateConstraints {
+                $0.bottom == view.safeAreaBottom
+            }
+        }
+
+        UIView.animate(
+            withDuration: 0.25,
+            delay: 0,
+            options: UIView.AnimationOptions(
+                rawValue: UInt(UIView.AnimationCurve.linear.rawValue >> 16)
+            ),
+            animations: {
+                [weak self] in
+                guard let self = self else { return }
+                self.view.layoutIfNeeded()
+            }
+        )
+    }
+}
+
+extension ReceiveCollectibleAssetListViewController {
+    @objc
+    private func didReceive(
+        keyboardWillShow notification: Notification
+    ) {
+        guard UIApplication.shared.isActive,
+              let keyboardHeight = notification.keyboardHeight else {
+                  return
+              }
+
+        updateLayoutWhenKeyboardHeightDidChange(
+            keyboardHeight,
+            isShowing: true
+        )
+    }
+
+    @objc
+    private func didReceive(
+        keyboardWillHide notification: Notification
+    ) {
+        guard UIApplication.shared.isActive else {
+            return
+        }
+
+        updateLayoutWhenKeyboardHeightDidChange(isShowing: false)
+    }
+}
+
+protocol ReceiveCollectibleAssetListViewControllerDelegate: AnyObject {
+    func receiveCollectibleAssetListViewController(
+        _ controller: ReceiveCollectibleAssetListViewController,
+        didCompleteTransaction account: Account
+    )
 }
