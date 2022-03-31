@@ -136,6 +136,7 @@ extension SelectedAccountPreviewView {
         copyActionView.customizeAppearance(theme.copyAction)
 
         addSubview(copyActionView)
+        copyActionView.fitToIntrinsicSize()
         copyActionView.snp.makeConstraints {
             $0.leading == contentView.snp.trailing + theme.actionHorizontalPaddings.leading
             $0.centerY == 0
