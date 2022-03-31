@@ -128,12 +128,13 @@ extension AnnouncementView {
     private func addImageView(
         _ theme: AnnouncementViewTheme
     ) {
+        imageView.contentMode = .scaleAspectFill
         imageView.load(from: theme.backgroundImage)
 
         addSubview(imageView)
         imageView.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
-            make.centerY.equalToSuperview()
+            make.top.bottom.equalToSuperview()
         }
     }
 
