@@ -70,6 +70,19 @@ final class BannerController: MacaroonBanner.BannerController {
         enqueue(bannerView)
     }
 
+    func presentNotification(
+        _ title: String,
+        _ completion: (() -> Void)? = nil
+    ) {
+        let view = makeNotificationBanner()
+        view.bindData(BannerInfoViewModel(title))
+
+        view.observe(event: .performAction) {
+            completion?()
+        }
+
+        enqueue(view)
+    }
 
     func presentInfoBanner(
         _ title: String,
@@ -97,6 +110,14 @@ extension BannerController {
         let view = BannerView()
         var theme = BannerViewTheme()
         theme.configureForSuccess()
+        view.customize(theme)
+        return view
+    }
+
+    private func makeNotificationBanner() -> BannerView {
+        let view = BannerView()
+        var theme = BannerViewTheme()
+        theme.configureForNotification()
         view.customize(theme)
         return view
     }
