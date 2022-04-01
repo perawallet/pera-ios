@@ -105,6 +105,10 @@ extension ManageAssetsView {
     func setSearchInputDelegate(_ delegate: SearchInputViewDelegate?) {
         searchInputView.delegate = delegate
     }
+    
+    func resetSearchInputView() {
+        searchInputView.setText(nil)
+    }
 }
 
 extension ManageAssetsView {

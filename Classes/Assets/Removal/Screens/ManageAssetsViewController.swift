@@ -30,6 +30,7 @@ final class ManageAssetsViewController: BaseViewController {
     private var account: Account
     
     private var listItems = [CompoundAsset]()
+    private var accountAssets = [CompoundAsset]()
     
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
@@ -125,7 +126,18 @@ extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
 
 extension ManageAssetsViewController {
     private func fetchAssets() {
-        listItems = account.compoundAssets
+        accountAssets.removeAll()
+        
+        account.compoundAssets.forEach {
+            if !$0.detail.isRemoved {
+                accountAssets.append($0)
+            }
+        }
+        
+        loadAssets()
+    }
+    private func loadAssets() {
+        listItems = accountAssets
         reloadAssets()
     }
     
@@ -135,7 +147,7 @@ extension ManageAssetsViewController {
     }
     
     private func filterData(with query: String) {
-        listItems = account.compoundAssets.filter {
+        listItems = accountAssets.filter {
             String($0.id).contains(query) ||
             $0.detail.name.unwrap(or: "").containsCaseInsensitive(query) ||
             $0.detail.unitName.unwrap(or: "").containsCaseInsensitive(query)
@@ -241,8 +253,6 @@ extension ManageAssetsViewController:
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
         
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-
         if account.requiresLedgerConnection() {
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
@@ -258,8 +268,12 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
               }
 
         removedAssetDetail.isRemoved = true
+
+        fetchAssets()
+        
+        contextView.resetSearchInputView()
+        
         delegate?.manageAssetsViewController(self, didRemove: removedAssetDetail, from: account)
-        dismissScreen()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
