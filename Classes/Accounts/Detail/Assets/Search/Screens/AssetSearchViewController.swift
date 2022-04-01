@@ -77,6 +77,16 @@ final class AssetSearchViewController:
 
         dataController.load()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        searchInputView.beginEditing()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchInputView.endEditing()
+    }
 
     override func setListeners() {
         listView.delegate = self
@@ -190,6 +200,10 @@ extension AssetSearchViewController: SearchInputViewDelegate {
 
     func searchInputViewDidReturn(_ view: SearchInputView) {
         view.endEditing()
+    }
+
+    func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
+        dataController.resetSearch()
     }
 }
 

@@ -26,6 +26,8 @@ final class ReceiveCollectibleAssetListLayout: NSObject {
 
     private let sectionHorizontalInsets: LayoutHorizontalPaddings = (24, 24)
 
+    var selectedAccountPreviewCanvasViewHeight: LayoutMetric = 0
+
     init(
         listDataSource: ReceiveCollectibleAssetListDataSource
     ) {
@@ -82,11 +84,11 @@ extension ReceiveCollectibleAssetListLayout {
                     collectionView
                 )
             }
-        case .header(let item):
+        case .info:
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForHeaderItem: item
+                sizeForInfoItem: .init()
             )
         case .search:
             return sizeForSearch(
@@ -105,18 +107,18 @@ extension ReceiveCollectibleAssetListLayout {
     func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForHeaderItem item: ReceiveCollectibleAssetListHeaderViewModel
-    ) -> CGSize {
-        let sizeCacheIdentifier = TitleSupplementaryCell.reuseIdentifier
+        sizeForInfoItem item: ReceiveCollectibleAssetListInfoViewModel
+    )-> CGSize {
+        let sizeCacheIdentifier = InfoCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
         }
 
         let width = calculateContentWidth(for: listView)
-        let newSize = TitleSupplementaryCell.calculatePreferredSize(
+        let newSize = InfoCell.calculatePreferredSize(
             item,
-            for: TitleSupplementaryCell.theme,
+            for: InfoCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
@@ -129,7 +131,7 @@ extension ReceiveCollectibleAssetListLayout {
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout
     ) -> CGSize {
-        let sizeCacheIdentifier = CollectibleSearchInputCell.reuseIdentifier
+        let sizeCacheIdentifier = CollectibleReceiveSearchInputCell.reuseIdentifier
 
         if let cachedSize = sizeCache[sizeCacheIdentifier] {
             return cachedSize
@@ -163,15 +165,15 @@ extension ReceiveCollectibleAssetListLayout {
         case .empty:
             break
         case .loading:
-            let headerHeight = self.listView(
+            let infoHeight = self.listView(
                 listView,
                 layout: listViewLayout,
-                sizeForHeaderItem: ReceiveCollectibleAssetListHeaderViewModel()
+                sizeForInfoItem: .init()
             ).height
-            let headerSectionVerticalInsets = self.listView(
+            let infoSectionVerticalInsets = self.listView(
                 listView,
                 layout: listViewLayout,
-                insetForSectionAt: .header
+                insetForSectionAt: .info
             ).vertical
             let searchHeight = sizeForSearch(
                 listView,
@@ -188,8 +190,8 @@ extension ReceiveCollectibleAssetListLayout {
                 insetForSectionAt: .collectibles
             ).top
             let topInset =
-            headerHeight +
-            headerSectionVerticalInsets +
+            infoHeight +
+            infoSectionVerticalInsets +
             searchHeight +
             searchSectionVerticalInsets +
             collectiblesSectionTopInset +
@@ -197,13 +199,20 @@ extension ReceiveCollectibleAssetListLayout {
 
             insets.top = topInset
             insets.bottom = 8
-        case .header:
-            insets.top = 24
+        case .info:
+            insets.top = 12
         case .search:
-            insets.top = 40
+            insets.top = 20
         case .collectibles:
             insets.top = 16
-            insets.bottom = 8
+            let defaultAdditionalBottomInset: LayoutMetric = 8
+
+            let bottomInset =
+            defaultAdditionalBottomInset +
+            selectedAccountPreviewCanvasViewHeight -
+            listView.safeAreaBottom
+
+            insets.bottom = bottomInset
         }
 
         insetCache[section] = insets
@@ -236,7 +245,7 @@ extension ReceiveCollectibleAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetCellItem item: CollectiblePreviewViewModel?
+        sizeForAssetCellItem item: AssetPreviewViewModel?
     ) -> CGSize {
         let sizeCacheIdentifier = AssetPreviewCell.reuseIdentifier
 
@@ -247,7 +256,7 @@ extension ReceiveCollectibleAssetListLayout {
         let width = calculateContentWidth(for: listView)
 
         let sampleAssetPreview = AssetPreviewModel(
-            icon: img("icon-algo-circle-green"),
+            icon: .algo,
             verifiedIcon: img("icon-verified-shield"),
             title: "title-unknown".localized,
             subtitle: "title-unknown".localized,

@@ -15,25 +15,20 @@
 //   AssetPreviewDeleteCell.swift
 
 import UIKit
+import MacaroonUIKit
 
-final class AssetPreviewDeleteCell: BaseCollectionViewCell<AssetPreviewDeleteView> {
+final class AssetPreviewDeleteCell:
+    CollectionCell<AssetPreviewDeleteView>,
+    ViewModelBindable {
     weak var delegate: AssetPreviewDeleteCellDelegate?
-    
-    override func setListeners() {
-        super.setListeners()
+
+    override init(
+        frame: CGRect
+    ) {
+        super.init(frame: frame)
+
         contextView.delegate = self
-    }
-    func customize(_ theme: AssetPreviewDeleteViewTheme) {
-        contextView.customize(theme)
-    }
-    
-    func bindData(_ viewModel: AssetPreviewViewModel) {
-        contextView.bindData(viewModel)
-    }
-    
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        contextView.prepareForReuse()
+        contextView.customize(AssetPreviewDeleteViewTheme())
     }
 }
 

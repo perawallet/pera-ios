@@ -44,6 +44,15 @@ final class ReceiveCollectibleAccountListDataSource:
                     )
                     return cell
                 }
+            case .info:
+                let cell = collectionView.dequeue(
+                    InfoCell.self,
+                    at: indexPath
+                )
+                cell.bindData(
+                    ReceiveCollectibleAccountListInfoViewModel()
+                )
+                return cell
             case .header(let item):
                 let cell = collectionView.dequeue(
                     TitleSupplementaryCell.self,
@@ -68,6 +77,7 @@ final class ReceiveCollectibleAccountListDataSource:
         [
             PreviewLoadingCell.self,
             NoContentCell.self,
+            InfoCell.self,
             TitleSupplementaryCell.self,
             AccountPreviewCell.self,
         ].forEach {

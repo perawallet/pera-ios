@@ -12,24 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectiblePreviewCell.swift
+//   CollectibleListSearchInputCell.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class CollectiblePreviewCell:
-    CollectionCell<CollectiblePreviewView>,
-    ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return (14, 0, 14, 0)
+final class CollectibleListSearchInputCell:
+    CollectionCell<SearchInputView> {
+    weak var delegate: SearchInputViewDelegate? {
+        didSet {
+            contextView.delegate = delegate
+        }
     }
-
-    static let theme = CollectiblePreviewViewTheme()
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
-        contextView.customize(Self.theme)
+
+        contextView.customize(
+            SearchInputViewCommonTheme(
+                placeholder: "collectibles-list-input-placeholder".localized,
+                family: .current
+            )
+        )
+    }
+}
+
+extension CollectibleListSearchInputCell {
+    func beginEditing() {
+        contextView.beginEditing()
     }
 }

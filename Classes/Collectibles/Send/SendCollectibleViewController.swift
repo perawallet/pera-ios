@@ -469,7 +469,7 @@ extension SendCollectibleViewController {
         let transactionDraft = AssetTransactionSendDraft(
             from: draft.fromAccount,
             toAccount: draft.toAccount,
-            amount: draft.collectibleAsset.amountWithFraction,
+            amount: 1,
             assetIndex: draft.collectibleAsset.id,
             assetDecimalFraction: draft.collectibleAsset.presentation.decimals,
             isVerifiedAsset: draft.collectibleAsset.presentation.isVerified,

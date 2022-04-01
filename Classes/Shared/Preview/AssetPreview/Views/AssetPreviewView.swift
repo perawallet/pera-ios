@@ -15,8 +15,8 @@
 //
 //   AssetPreviewView.swift
 
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
 final class AssetPreviewView:
     View,

@@ -153,25 +153,21 @@ extension ReceiveCollectibleAssetListAPIDataController {
 
             var snapshot = Snapshot()
 
-            snapshot.appendSections([.header, .search, .collectibles])
+            snapshot.appendSections([.info, .search, .collectibles])
 
             for asset in self.assets {
                 let collectibleAsset = CollectibleAsset(asset: ALGAsset(id: asset.id), decoration: asset)
                 let assetItem: ReceiveCollectibleAssetListItem = .collectible(
-                    CollectiblePreviewViewModel(collectibleAsset)
+                    AssetPreviewViewModel(collectibleAsset)
                 )
 
                 assetItems.append(assetItem)
             }
 
             if !self.assets.isEmpty {
-                let headerItem: ReceiveCollectibleAssetListItem = .header(
-                    ReceiveCollectibleAssetListHeaderViewModel()
-                )
-
                 snapshot.appendItems(
-                    [headerItem],
-                    toSection: .header
+                    [.info],
+                    toSection: .info
                 )
 
                 snapshot.appendItems(
@@ -192,15 +188,11 @@ extension ReceiveCollectibleAssetListAPIDataController {
     private func deliverNoContentSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()
-            snapshot.appendSections([.header, .search, .empty])
-
-            let headerItem: ReceiveCollectibleAssetListItem = .header(
-                ReceiveCollectibleAssetListHeaderViewModel()
-            )
+            snapshot.appendSections([.info, .search, .empty])
 
             snapshot.appendItems(
-                [headerItem],
-                toSection: .header
+                [.info],
+                toSection: .info
             )
 
             snapshot.appendItems(

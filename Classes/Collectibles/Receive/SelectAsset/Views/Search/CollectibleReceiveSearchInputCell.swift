@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleSearchInputCell.swift
+//   CollectibleReceiveSearchInputCell.swift
 
 import UIKit
 import MacaroonUIKit
 
-final class CollectibleSearchInputCell:
+final class CollectibleReceiveSearchInputCell:
     CollectionCell<SearchInputView> {
     weak var delegate: SearchInputViewDelegate? {
         didSet {
@@ -39,7 +39,7 @@ final class CollectibleSearchInputCell:
     }
 }
 
-extension CollectibleSearchInputCell {
+extension CollectibleReceiveSearchInputCell {
     func beginEditing() {
         contextView.beginEditing()
     }

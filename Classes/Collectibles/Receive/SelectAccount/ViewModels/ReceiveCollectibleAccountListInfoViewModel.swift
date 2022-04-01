@@ -12,25 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  SelectAssetViewModel.swift
+//   ReceiveCollectibleAccountListInfoViewModel.swift
 
-import UIKit
+import MacaroonUIKit
 
-class SelectAssetViewModel {
-    private(set) var accountName: String?
-    private(set) var accountImage: UIImage?
+struct ReceiveCollectibleAccountListInfoViewModel: InfoViewModel {
+    var icon: Image?
+    var message: EditText?
 
-    init(account: Account) {
-        setAccountName(from: account)
-        setAccountImage(from: account)
-    }
-
-    private func setAccountName(from account: Account) {
-        accountName = account.name
-    }
-
-    private func setAccountImage(from account: Account) {
-        accountImage = account.accountTypeImage()
+    init() {
+        icon = getIcon()
+        message = getMessage(
+            "collectible-receive-account-list-info".localized
+        )
     }
 }

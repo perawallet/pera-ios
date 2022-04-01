@@ -159,7 +159,7 @@ extension AssetSearchListLayout {
         let width = calculateContentWidth(for: listView)
 
         let sampleAssetPreview = AssetPreviewModel(
-            icon: img("icon-algo-circle-green"),
+            icon: .algo,
             verifiedIcon: img("icon-verified-shield"),
             title: "title-unknown".localized,
             subtitle: "title-unknown".localized,

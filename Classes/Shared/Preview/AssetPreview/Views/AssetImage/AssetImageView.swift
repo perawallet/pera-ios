@@ -15,12 +15,16 @@
 //
 //   AssetImageView.swift
 
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
+import MacaroonURLImage
 
-final class AssetImageView: View {
+final class AssetImageView:
+    View,
+    ViewModelBindable,
+    ListReusable {
     private lazy var placeholderView = AssetImagePlaceholderView()
-    private lazy var imageView = ImageView()
+    private lazy var imageView = URLImageView()
 
     func customize(
         _ theme: AssetImageViewTheme
@@ -29,9 +33,49 @@ final class AssetImageView: View {
         addImage(theme)
     }
 
-    func customizeAppearance(_ styleSheet: NoStyleSheet) {}
+    func customizeAppearance(
+        _ styleSheet: NoStyleSheet
+    ) {}
 
-    func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
+    func prepareLayout(
+        _ layoutSheet: NoLayoutSheet
+    ) {}
+
+    func bindData(
+        _ viewModel: AssetImageViewModel?
+    ) {
+        if let image = viewModel?.image {
+            imageView.imageContainer.image = image
+            placeholderView.isHidden = true
+
+            return
+        }
+
+        if let imageSource = viewModel?.imageSource {
+            placeholderView.bindData(viewModel)
+
+            imageView.load(from: imageSource) {
+                [weak self] error in
+                guard let self = self else {
+                    return
+                }
+
+                if error == nil {
+                    self.placeholderView.isHidden = true
+                }
+            }
+
+            return
+        }
+
+        placeholderView.bindData(viewModel)
+    }
+
+    func prepareForReuse() {
+        placeholderView.prepareForReuse()
+        placeholderView.isHidden = false
+        imageView.prepareForReuse()
+    }
 }
 
 extension AssetImageView {
@@ -54,23 +98,5 @@ extension AssetImageView {
         imageView.snp.makeConstraints {
             $0.setPaddings()
         }
-    }
-}
-
-extension AssetImageView {
-    func prepareForReuse() {
-        placeholderView.prepareForReuse()
-        imageView.image = nil
-    }
-}
-
-extension AssetImageView: ViewModelBindable {
-    func bindData(_ viewModel: AssetImageViewModel?) {
-        if let image = viewModel?.image {
-            imageView.image = image
-            return
-        }
-
-        placeholderView.bindData(viewModel)
     }
 }

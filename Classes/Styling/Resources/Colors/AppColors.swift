@@ -55,6 +55,7 @@ extension AppColors.Shared {
         case negative = "Shared/Helpers/negative"
         case negativeLighter = "Shared/Helpers/negativeLighter"
         case positive = "Shared/Helpers/positive"
+        case positiveLighter = "Shared/Helpers/positiveLighter"
         case success = "Shared/Helpers/success"
         case testnet = "Shared/Helpers/testnet"
     }

@@ -21,13 +21,11 @@ import UIKit
 struct ReceiveCollectibleAssetListViewControllerTheme:
     StyleSheet,
     LayoutSheet {
-    var background: ViewStyle
+    let backgroundColor: Color
 
     init(
         _ family: LayoutFamily
     ) {
-        background = [
-            .backgroundColor(AppColors.Shared.System.background)
-        ]
+        backgroundColor = AppColors.Shared.System.background
     }
 }
