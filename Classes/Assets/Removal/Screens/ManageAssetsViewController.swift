@@ -29,7 +29,8 @@ final class ManageAssetsViewController: BaseViewController {
     
     private var account: Account
     private var listItems: [Asset]
-    
+    private var accountAssets: [Asset] = []
+
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
     private lazy var transactionController: TransactionController = {
@@ -133,7 +134,19 @@ extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
 
 extension ManageAssetsViewController {
     private func fetchAssets() {
-        listItems = account.allAssets
+        accountAssets.removeAll()
+        
+        account.allAssets.forEach {
+            if !$0.state.isPending {
+                accountAssets.append($0)
+            }
+        }
+        
+        loadAssets()
+    }
+
+    private func loadAssets() {
+        listItems = accountAssets
         reloadAssets()
     }
     
@@ -141,13 +154,14 @@ extension ManageAssetsViewController {
         contextView.assetsCollectionView.reloadData()
         contextView.updateContentStateView()
     }
-    
+
     private func filterData(with query: String) { 
         listItems = account.allAssets.filter { asset in
             isAssetContainsID(asset, query: query) ||
             isAssetContainsName(asset, query: query) ||
             isAssetContainsUnitName(asset, query: query)
         }
+
         reloadAssets()
     }
 
@@ -278,8 +292,6 @@ extension ManageAssetsViewController:
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
         
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-
         if account.requiresLedgerConnection() {
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
@@ -298,13 +310,15 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
 
         removedAssetDetail.state = .pending(.remove)
 
+        fetchAssets()
+        
+        contextView.resetSearchInputView()
+
         if let standardAsset = removedAssetDetail as? StandardAsset {
             delegate?.manageAssetsViewController(self, didRemove: standardAsset)
         } else if let collectibleAsset = removedAssetDetail as? CollectibleAsset {
             delegate?.manageAssetsViewController(self, didRemove: collectibleAsset)
         }
-
-        dismissScreen()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
