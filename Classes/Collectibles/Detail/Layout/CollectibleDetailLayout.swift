@@ -150,11 +150,18 @@ extension CollectibleDetailLayout {
                 layout: collectionViewLayout,
                 sizeForErrorItem: item
             )
-        case .action(let item):
+        case .action(let item),
+                .watchAccountAction(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
                 sizeForActionItem: item
+            )
+        case .optedInAction(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForOptedInActionItem: item
             )
         case .description(let item):
             return listView(
@@ -256,6 +263,22 @@ extension CollectibleDetailLayout {
         let size = CollectibleDetailActionCell.calculatePreferredSize(
             item,
             for: CollectibleDetailActionCell.theme,
+            fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
+        )
+
+        return size
+    }
+
+    private func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForOptedInActionItem item: CollectibleDetailOptedInActionViewModel
+    ) -> CGSize {
+        let width = calculateContentWidth(listView)
+
+        let size = CollectibleDetailOptedInActionCell.calculatePreferredSize(
+            item,
+            for: CollectibleDetailOptedInActionCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
 

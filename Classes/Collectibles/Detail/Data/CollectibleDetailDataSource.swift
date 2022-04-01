@@ -53,6 +53,20 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
                 )
                 cell.bindData(viewModel)
                 return cell
+            case .watchAccountAction(let viewModel):
+                let cell = collectionView.dequeue(
+                    CollectibleDetailWatchAccountActionCell.self,
+                    at: indexPath
+                )
+                cell.bindData(viewModel)
+                return cell
+            case .optedInAction(let viewModel):
+                let cell = collectionView.dequeue(
+                    CollectibleDetailOptedInActionCell.self,
+                    at: indexPath
+                )
+                cell.bindData(viewModel)
+                return cell
             case .description(let viewModel):
                 let cell = collectionView.dequeue(
                     CollectibleDescriptionCell.self,
@@ -138,6 +152,8 @@ final class CollectibleDetailDataSource: UICollectionViewDiffableDataSource<Coll
             CollectibleDetailLoadingCell.self,
             CollectibleMediaErrorCell.self,
             CollectibleDetailActionCell.self,
+            CollectibleDetailOptedInActionCell.self,
+            CollectibleDetailWatchAccountActionCell.self,
             CollectibleDescriptionCell.self,
             CollectibleExternalSourceCell.self,
             CollectibleDetailInformationCell.self,
