@@ -368,6 +368,8 @@ extension ReceiveCollectibleAssetListViewController {
                 account: account.value,
                 assetId: selectedAsset.id,
                 asset: selectedAsset,
+                transactionTitle: "collectible-approve-transaction-fee".localized,
+                transactionFee: Transaction.Constant.minimumFee,
                 title: "asset-add-confirmation-title".localized,
                 detail: "asset-add-warning".localized,
                 actionTitle: "title-approve".localized,
