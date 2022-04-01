@@ -583,8 +583,12 @@ class Router:
             )
             selectAccountViewController.delegate = delegate
             viewController = selectAccountViewController
-        case .assetSelection(let account):
-            viewController = SelectAssetViewController(account: account, configuration: configuration)
+        case .assetSelection(let filter, let account):
+            viewController = SelectAssetViewController(
+                filter: filter,
+                account: account,
+                configuration: configuration
+            )
         case .sendTransaction(let draft):
             let sendScreen = SendTransactionScreen(draft: draft, configuration: configuration)
             sendScreen.isModalInPresentation = true

@@ -34,7 +34,7 @@ enum AssetPreviewModelAdapter {
     static func adapt(_ adaptee: (account: Account, currency: Currency?)) -> AssetPreviewModel {
         let algoAssetViewModel = AlgoAssetViewModel(account: adaptee.account, currency: adaptee.currency)
         return AssetPreviewModel(
-            icon: img("icon-algo-circle-green"),
+            icon: .algo,
             verifiedIcon: img("icon-verified-shield"),
             title: "Algo",
             subtitle: "ALGO",

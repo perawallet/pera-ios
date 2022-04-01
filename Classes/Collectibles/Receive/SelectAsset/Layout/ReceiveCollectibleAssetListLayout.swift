@@ -236,7 +236,7 @@ extension ReceiveCollectibleAssetListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForAssetCellItem item: CollectiblePreviewViewModel?
+        sizeForAssetCellItem item: AssetPreviewViewModel?
     ) -> CGSize {
         let sizeCacheIdentifier = AssetPreviewCell.reuseIdentifier
 
@@ -247,7 +247,7 @@ extension ReceiveCollectibleAssetListLayout {
         let width = calculateContentWidth(for: listView)
 
         let sampleAssetPreview = AssetPreviewModel(
-            icon: img("icon-algo-circle-green"),
+            icon: .algo,
             verifiedIcon: img("icon-verified-shield"),
             title: "title-unknown".localized,
             subtitle: "title-unknown".localized,

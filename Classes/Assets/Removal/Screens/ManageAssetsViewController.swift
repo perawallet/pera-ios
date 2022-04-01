@@ -104,10 +104,19 @@ extension ManageAssetsViewController: UICollectionViewDataSource {
         }
 
         let cell = collectionView.dequeue(AssetPreviewDeleteCell.self, at: indexPath)
-        let assetPreviewModel = AssetPreviewModelAdapter.adapt((asset))
-        cell.customize(theme.assetPreviewDeleteViewTheme)
-        cell.bindData(AssetPreviewViewModel(assetPreviewModel))
+
+        let viewModel: AssetPreviewViewModel
+
+        if let collectibleAsset = asset as? CollectibleAsset {
+            viewModel = AssetPreviewViewModel(collectibleAsset)
+        } else {
+            let assetPreviewModel = AssetPreviewModelAdapter.adapt((asset))
+            viewModel = AssetPreviewViewModel(assetPreviewModel)
+        }
+
+        cell.bindData(viewModel)
         cell.delegate = self
+
         return cell
     }
 }

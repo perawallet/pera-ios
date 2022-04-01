@@ -20,7 +20,6 @@ import UIKit
 import MacaroonUIKit
 
 final class AccountCollectibleListViewController: BaseViewController {
-
     private lazy var theme = Theme()
 
     private lazy var collectibleListScreen = CollectibleListViewController(
@@ -114,13 +113,49 @@ extension AccountCollectibleListViewController: TransactionFloatingActionButtonV
     func transactionFloatingActionButtonViewControllerDidSend(
         _ viewController: TransactionFloatingActionButtonViewController
     ) {
+        let account = account.value
 
+        log(SendAssetDetailEvent(address: account.address))
+
+        let controller = open(
+            .assetSelection(
+                filter: nil,
+                account: account
+            ),
+            by: .present
+        ) as? SelectAssetViewController
+
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+            controller?.closeScreen(
+                by: .dismiss,
+                animated: true
+            )
+        }
+
+        controller?.leftBarButtonItems = [closeBarButtonItem]
     }
 
     func transactionFloatingActionButtonViewControllerDidReceive(
         _ viewController: TransactionFloatingActionButtonViewController
     ) {
+        let account = account.value
 
+        log(ReceiveAssetDetailEvent(address: account.address))
+
+        let draft = QRCreationDraft(
+            address: account.address,
+            mode: .address,
+            title: account.name
+        )
+        
+        open(
+            .qrGenerator(
+                title: account.name ?? account.address.shortAddressDisplay,
+                draft: draft,
+                isTrackable: true
+            ),
+            by: .present
+        )
     }
 
     func transactionFloatingActionButtonViewControllerDidBuy(
@@ -132,6 +167,7 @@ extension AccountCollectibleListViewController: TransactionFloatingActionButtonV
     private func openBuyAlgo() {
         let draft = BuyAlgoDraft()
         draft.address = account.value.address
+
         launchBuyAlgo(draft: draft)
     }
 }

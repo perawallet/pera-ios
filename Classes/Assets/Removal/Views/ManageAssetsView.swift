@@ -30,6 +30,7 @@ final class ManageAssetsView: View {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.keyboardDismissMode = .onDrag
         collectionView.backgroundColor = theme.backgroundColor.uiColor
         collectionView.register(AssetPreviewDeleteCell.self)
         return collectionView

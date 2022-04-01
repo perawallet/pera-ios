@@ -12,27 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   SelectAssetViewController+Theme.swift
+//   SelectAssetViewControllerTheme.swift
 
 import Foundation
 import MacaroonUIKit
 import UIKit
 
-extension SelectAssetViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let listBackgroundColor: UIColor
-        let listMinimumLineSpacing: LayoutMetric
-        let listItemHeight: LayoutMetric
-        let listContentInsetTop: LayoutMetric
-        let listLeadingInset: LayoutMetric
+struct SelectAssetViewControllerTheme:
+    StyleSheet,
+    LayoutSheet {
+    let background: ViewStyle
 
-        init(_ family: LayoutFamily) {
-            listBackgroundColor = AppColors.Shared.System.background.uiColor
-            listMinimumLineSpacing = 0
-            listItemHeight = 72
-            listContentInsetTop = 28
-            listLeadingInset = 24
-        }
+    init(
+        _ family: LayoutFamily
+    ) {
+        background = [
+            .backgroundColor(AppColors.Shared.System.background)
+        ]
     }
 }

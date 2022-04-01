@@ -42,7 +42,7 @@ enum ReceiveCollectibleAssetListItem: Hashable {
     case empty(ReceiveCollectibleAssetListEmptyItem)
     case header(ReceiveCollectibleAssetListHeaderViewModel)
     case search
-    case collectible(CollectiblePreviewViewModel)
+    case collectible(AssetPreviewViewModel)
 }
 
 enum ReceiveCollectibleAssetListEmptyItem: Hashable {

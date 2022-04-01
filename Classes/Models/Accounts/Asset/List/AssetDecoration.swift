@@ -73,6 +73,7 @@ final class AssetDecoration: ALGEntityModel {
         self.unitName = asset.presentation.unitName
         self.decimals = asset.presentation.decimals
         self.usdValue = nil
+        self.total = nil
         self.isVerified = asset.presentation.isVerified
         self.creator = asset.creator
         self.collectible = nil
