@@ -18,8 +18,8 @@
 import MacaroonUIKit
 import UIKit
 
-struct AssetPreviewModel: Hashable {
-    let icon: UIImage?
+struct AssetPreviewModel {
+    let icon: AssetImage?
     let verifiedIcon: UIImage?
     let title: String?
     let subtitle: String?
@@ -28,31 +28,60 @@ struct AssetPreviewModel: Hashable {
 }
 
 struct AssetPreviewViewModel:
-    PairedViewModel,
+    BindableViewModel,
     Hashable {
+    private(set) var assetID: AssetID?
     private(set) var assetImageViewModel: AssetImageViewModel?
     private(set) var verifiedIcon: UIImage?
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
     private(set) var primaryAccessory: EditText?
     private(set) var secondaryAccessory: EditText?
-    private(set) var assetAbbreviatedName: EditText?
-    
-    init(
-        _ model: AssetPreviewModel
+
+    init<T>(
+        _ model: T
     ) {
-        bindTitle(model.title)
-        bindAssetImageView(model.icon)
-        bindVerifiedIcon(model.verifiedIcon)
-        bindSubtitle(model.subtitle)
-        bindPrimaryAccessory(model.primaryAccessory)
-        bindSecondAccessory(model.secondaryAccessory)
-        bindAssetAbbreviatedName()
+        bind(model)
     }
 }
 
 extension AssetPreviewViewModel {
-    private mutating func bindAssetImageView(_ image: UIImage?) {
+    mutating func bind<T>(
+        _ model: T
+    ) {
+        if let preview = model as? AssetPreviewModel {
+            bindTitle(preview.title)
+            bindAssetImageView(preview.icon)
+            bindVerifiedIcon(preview.verifiedIcon)
+            bindSubtitle(preview.subtitle)
+            bindPrimaryAccessory(preview.primaryAccessory)
+            bindSecondAccessory(preview.secondaryAccessory)
+            return
+        }
+
+        if let collectibleAsset = model as? CollectibleAsset {
+            bindAssetID(collectibleAsset)
+            bindTitle(collectibleAsset)
+            bindImage(collectibleAsset)
+            bindSubtitle(collectibleAsset)
+            bindSecondAccessory(collectibleAsset)
+            return
+        }
+
+        if let collectibleAssetSelectionDraft = model as? CollectibleAssetSelectionDraft {
+            bindAssetID(collectibleAssetSelectionDraft)
+            bindTitle(collectibleAssetSelectionDraft)
+            bindImage(collectibleAssetSelectionDraft)
+            bindSubtitle(collectibleAssetSelectionDraft)
+            bindPrimaryAccessory(collectibleAssetSelectionDraft)
+            bindSecondaryAccessory(collectibleAssetSelectionDraft)
+            return
+        }
+    }
+}
+
+extension AssetPreviewViewModel {
+    private mutating func bindAssetImageView(_ image: AssetImage?) {
         let assetAbbreviationForImage = TextFormatter.assetShortName.format(title?.string)
         
         assetImageViewModel = AssetImageLargeViewModel(
@@ -148,11 +177,124 @@ extension AssetPreviewViewModel {
                 ])
         )
     }
-    
-    private mutating func bindAssetAbbreviatedName() {
-        assetAbbreviatedName = .string(
-            TextFormatter.assetShortName.format(title?.string)
+}
+
+extension AssetPreviewViewModel {
+    private mutating func bindAssetID(
+        _ asset: CollectibleAsset
+    ) {
+        assetID = asset.id
+    }
+
+    private mutating func bindImage(
+        _ asset: CollectibleAsset
+    ) {
+        var assetImage: AssetImage?
+
+        if let thumbnailImage = asset.thumbnailImage {
+            assetImage = .url(thumbnailImage)
+        }
+
+        let name = asset.name
+
+        assetImageViewModel = AssetImageLargeViewModel(
+            image: assetImage,
+            assetAbbreviatedName: TextFormatter.assetShortName.format(
+                (name.isNilOrEmpty ? "title-unknown".localized : name!)
+            )
         )
+    }
+
+    private mutating func bindTitle(
+        _ asset: CollectibleAsset
+    ) {
+        bindTitle(asset.name)
+    }
+
+    private mutating func bindSubtitle(
+        _ asset: CollectibleAsset
+    ) {
+        bindSubtitle(asset.unitName)
+    }
+
+    private mutating func bindSecondAccessory(
+        _ asset: CollectibleAsset
+    ) {
+        bindSecondAccessory(String(asset.id))
+    }
+}
+
+extension AssetPreviewViewModel {
+    private mutating func bindAssetID(
+        _ draft: CollectibleAssetSelectionDraft
+    ) {
+        assetID = draft.asset.id
+    }
+
+    private mutating func bindImage(
+        _ draft: CollectibleAssetSelectionDraft
+    ) {
+        var assetImage: AssetImage?
+
+        if let thumbnailImage = draft.asset.thumbnailImage {
+            assetImage = .url(thumbnailImage)
+        }
+
+        let name = draft.asset.name
+
+        assetImageViewModel = AssetImageLargeViewModel(
+            image: assetImage,
+            assetAbbreviatedName: TextFormatter.assetShortName.format(
+                (name.isNilOrEmpty ? "title-unknown".localized : name!)
+            )
+        )
+    }
+
+    private mutating func bindTitle(
+        _ draft: CollectibleAssetSelectionDraft
+    ) {
+        bindTitle(draft.asset.name)
+    }
+
+    private mutating func bindSubtitle(
+        _ draft: CollectibleAssetSelectionDraft
+    ) {
+        bindSubtitle("ID \(draft.asset.id)")
+    }
+
+    private mutating func bindPrimaryAccessory(
+        _ draft: CollectibleAssetSelectionDraft
+    ) {
+        let asset = draft.asset
+
+        let amount = asset.amount
+            .assetAmount(fromFraction: asset.decimals)
+            .abbreviatedFractionStringForLabel(fraction: asset.decimals)
+
+        bindPrimaryAccessory(amount)
+    }
+
+    private mutating func bindSecondaryAccessory(
+        _ draft: CollectibleAssetSelectionDraft
+    ) {
+        let asset = draft.asset
+
+        guard let currency = draft.currency,
+              let assetUSDValue = asset.usdValue,
+              let currencyUSDValue = currency.usdValue else {
+            return
+        }
+
+        let currencyValue =
+        assetUSDValue *
+        asset.amount.assetAmount(fromFraction: asset.decimals) *
+        currencyUSDValue
+
+        if currencyValue > 0 {
+            bindPrimaryAccessory(
+                currencyValue.abbreviatedCurrencyStringForLabel(with: currency.symbol)
+            )
+        }
     }
 }
 
@@ -160,25 +302,30 @@ extension AssetPreviewViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
+        hasher.combine(assetID)
         hasher.combine(assetImageViewModel?.image)
         hasher.combine(verifiedIcon)
         hasher.combine(title)
         hasher.combine(subtitle)
         hasher.combine(primaryAccessory)
         hasher.combine(secondaryAccessory)
-        hasher.combine(assetAbbreviatedName)
     }
 
     static func == (
         lhs: AssetPreviewViewModel,
         rhs: AssetPreviewViewModel
     ) -> Bool {
-        return lhs.assetImageViewModel?.image == rhs.assetImageViewModel?.image &&
+        return lhs.assetID == rhs.assetID &&
+        lhs.assetImageViewModel?.image == rhs.assetImageViewModel?.image &&
         lhs.verifiedIcon == rhs.verifiedIcon &&
         lhs.title == rhs.title &&
         lhs.subtitle == rhs.subtitle &&
         lhs.primaryAccessory == rhs.primaryAccessory &&
-        lhs.secondaryAccessory == rhs.secondaryAccessory &&
-        lhs.assetAbbreviatedName == rhs.assetAbbreviatedName
+        lhs.secondaryAccessory == rhs.secondaryAccessory
     }
+}
+
+struct CollectibleAssetSelectionDraft {
+    let currency: Currency?
+    let asset: CollectibleAsset
 }

@@ -180,16 +180,30 @@ extension SendTransactionScreen {
 extension SendTransactionScreen {
     private func bindAssetPreview() {
         let currency = sharedDataController.currency.value
+
+        let viewModel: AssetPreviewViewModel
+
         switch draft.transactionMode {
         case .algo:
-            accountView.bindData(
-                AssetPreviewViewModel(AssetPreviewModelAdapter.adapt((draft.from, currency)))
+            viewModel = AssetPreviewViewModel(
+                AssetPreviewModelAdapter.adapt((draft.from, currency))
             )
         case .asset(let asset):
-            accountView.bindData(
-                AssetPreviewViewModel(AssetPreviewModelAdapter.adaptAssetSelection((asset, currency)))
-            )
+
+            if let collectibleAsset = asset as? CollectibleAsset {
+                let draft = CollectibleAssetSelectionDraft(
+                    currency: currency,
+                    asset: collectibleAsset
+                )
+                viewModel = AssetPreviewViewModel(draft)
+            } else {
+                viewModel = AssetPreviewViewModel(
+                    AssetPreviewModelAdapter.adaptAssetSelection((asset, currency))
+                )
+            }
         }
+
+        accountView.bindData(viewModel)
     }
 
     private func bindAmount() {

@@ -36,15 +36,6 @@ final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetLis
                     item
                 )
                 return cell
-            case let .collectible(item):
-                let cell = collectionView.dequeue(
-                    CollectiblePreviewCell.self,
-                    at: indexPath
-                )
-                cell.bindData(
-                    item
-                )
-                return cell
             case .loading:
                 return collectionView.dequeue(
                     PreviewLoadingCell.self,
@@ -65,7 +56,6 @@ final class AssetListViewDataSource: UICollectionViewDiffableDataSource<AssetLis
         [
             PreviewLoadingCell.self,
             AssetPreviewCell.self,
-            CollectiblePreviewCell.self,
             NoContentCell.self
         ].forEach {
             collectionView.register($0)

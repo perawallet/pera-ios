@@ -17,7 +17,10 @@
 import UIKit
 import MacaroonUIKit
 
-final class AssetPreviewDeleteView: View {
+/// <todo>: Remove stack views (e.g `AssetPreviewView`)
+final class AssetPreviewDeleteView:
+    View,
+    ListReusable {
     weak var delegate: AssetPreviewDeleteViewDelegate?
     
     private lazy var imageView = AssetImageView()

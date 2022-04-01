@@ -18,27 +18,77 @@
 import Foundation
 import UIKit
 import MacaroonUIKit
+import MacaroonURLImage
+import Prism
 
 protocol AssetImageViewModel: AssetImagePlaceholderViewModel {
+    var imageSource: PNGImageSource? { get }
     var image: UIImage? { get }
+}
+
+extension AssetImageViewModel where Self: Hashable {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(imageSource?.url)
+        hasher.combine(image)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.imageSource?.url == rhs.imageSource?.url &&
+        lhs.image == rhs.image
+    }
+}
+
+enum AssetImage {
+    case url(URL)
+    case algo
+    case custom(UIImage)
 }
 
 struct AssetImageLargeViewModel:
     AssetImageViewModel,
     Hashable {
+    private(set) var imageSource: PNGImageSource?
     private(set) var image: UIImage?
     private(set) var assetAbbreviatedName: EditText?
 
     init(
-        image: UIImage? = nil,
+        image: AssetImage? = nil,
         assetAbbreviatedName: String? = nil
     ) {
         bindImage(image)
         bindAssetAbbreviatedName(assetAbbreviatedName)
     }
 
-    private mutating func bindImage(_ image: UIImage?) {
-        self.image = image
+    private mutating func bindImage(_ image: AssetImage?) {
+        guard let image = image else {
+            return
+        }
+
+        switch image {
+        case .url(let url):
+            let imageSize = CGSize(width: 40, height: 40)
+            let prismURL =
+            PrismURL(baseURL: url)
+                .setExpectedImageSize(imageSize)
+                .setResizeMode(.fit)
+                .build()
+
+            self.imageSource = PNGImageSource(
+                url: prismURL,
+                size: .resize(imageSize, .aspectFit),
+                shape: .rounded(4),
+                placeholder: nil
+            )
+        case .algo:
+            self.image = "icon-algo-circle-green".uiImage
+        case .custom(let image):
+            self.image = image
+        }
     }
 
     private mutating func bindAssetAbbreviatedName(_ name: String?) {
@@ -55,6 +105,7 @@ struct AssetImageLargeViewModel:
 struct AssetImageSmallViewModel:
     AssetImageViewModel,
     Hashable {
+    private(set) var imageSource: PNGImageSource?
     private(set) var image: UIImage?
     private(set) var assetAbbreviatedName: EditText?
 

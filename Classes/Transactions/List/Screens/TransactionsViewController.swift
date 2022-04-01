@@ -373,7 +373,13 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
 
         switch draft.type {
         case .all:
-            let controller = open(.assetSelection(account: accountHandle.value), by: .present) as? SelectAssetViewController
+            let controller = open(
+                .assetSelection(
+                    filter: nil,
+                    account: accountHandle.value
+                ),
+                by: .present
+            ) as? SelectAssetViewController
             let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
                 controller?.closeScreen(by: .dismiss, animated: true)
             }

@@ -273,7 +273,13 @@ extension TabBarController: SelectAccountViewControllerDelegate {
         for transactionAction: TransactionAction
     ) {
         if transactionAction == .send {
-            selectAccountViewController.open(.assetSelection(account: account), by: .push)
+            selectAccountViewController.open(
+                .assetSelection(
+                    filter: nil,
+                    account: account
+                ),
+                by: .push
+            )
         } else {
             selectAccountViewController.closeScreen(by: .dismiss) { [weak self] in
                 guard let self = self else {
