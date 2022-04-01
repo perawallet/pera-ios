@@ -39,6 +39,8 @@ final class CollectibleDetailViewController:
         return TransactionController(api: api, bannerController: bannerController)
     }()
 
+    private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
+
     private lazy var collectibleDetailTransactionController = CollectibleDetailTransactionController(
         account: account,
         asset: asset,
@@ -243,10 +245,14 @@ extension CollectibleDetailViewController {
         case .loading:
             let loadingCell = cell as? CollectibleDetailLoadingCell
             loadingCell?.startAnimating()
-        case .action(let item),
-                .watchAccountAction(let item):
+        case .action(let item):
             linkInteractors(
                 cell as! CollectibleDetailActionCell,
+                for: item
+            )
+        case .watchAccountAction(let item):
+            linkInteractors(
+                cell as! CollectibleDetailWatchAccountActionCell,
                 for: item
             )
         case .optedInAction(let item):
@@ -374,6 +380,20 @@ extension CollectibleDetailViewController {
     }
 
     private func linkInteractors(
+        _ cell: CollectibleDetailWatchAccountActionCell,
+        for item: CollectibleDetailActionViewModel
+    ) {
+        cell.observe(event: .performShare) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.shareCollectible()
+        }
+    }
+
+    private func linkInteractors(
         _ cell: CollectibleDetailOptedInActionCell,
         for item: CollectibleDetailOptedInActionViewModel
     ) {
@@ -383,9 +403,9 @@ extension CollectibleDetailViewController {
                 return
             }
 
-            let assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
+
             let draft = self.collectibleDetailTransactionController.createOptOutAlertDraft()
-            assetActionConfirmationTransition.perform(
+            self.assetActionConfirmationTransition.perform(
                 .assetActionConfirmation(
                     assetAlertDraft: draft,
                     delegate: self.collectibleDetailTransactionController
