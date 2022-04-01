@@ -143,7 +143,10 @@ extension CollectibleDetailActionView {
         titleLabel.editText = viewModel.title
         titleLabel.isHidden = viewModel.subtitle == nil
         subtitleLabel.editText = viewModel.subtitle
-        sendButton.isHidden = !viewModel.canTransfer
+    }
+
+    func configureSendButtonForHidingTransferOption() {
+        sendButton.isHidden = true
     }
 
     class func calculatePreferredSize(
