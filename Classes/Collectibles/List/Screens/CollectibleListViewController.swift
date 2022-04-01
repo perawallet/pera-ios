@@ -178,7 +178,7 @@ extension CollectibleListViewController {
 
         switch itemIdentifier {
         case .search:
-            linkInteractors(cell as! CollectibleSearchInputCell)
+            linkInteractors(cell as! CollectibleListSearchInputCell)
         case .empty(let item):
             switch item {
             case .loading:
@@ -293,7 +293,7 @@ extension CollectibleListViewController {
     }
 
     private func linkInteractors(
-        _ cell: CollectibleSearchInputCell
+        _ cell: CollectibleListSearchInputCell
     ) {
         cell.delegate = self
     }

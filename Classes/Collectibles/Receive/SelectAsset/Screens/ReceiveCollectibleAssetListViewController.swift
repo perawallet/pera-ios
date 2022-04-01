@@ -188,7 +188,7 @@ extension ReceiveCollectibleAssetListViewController {
                 break
             }
         case .search:
-            linkInteractors(cell as! CollectibleSearchInputCell)
+            linkInteractors(cell as! CollectibleReceiveSearchInputCell)
         case .collectible:
             dataController.loadNextPageIfNeeded(for: indexPath)
         default:
@@ -264,7 +264,7 @@ extension ReceiveCollectibleAssetListViewController {
 
 extension ReceiveCollectibleAssetListViewController {
     private func linkInteractors(
-        _ cell: CollectibleSearchInputCell
+        _ cell: CollectibleReceiveSearchInputCell
     ) {
         cell.delegate = self
     }
