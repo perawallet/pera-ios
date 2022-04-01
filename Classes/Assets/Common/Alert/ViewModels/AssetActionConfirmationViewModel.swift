@@ -54,7 +54,11 @@ extension AssetActionConfirmationViewModel {
     }
     
     private func bindFee(_ draft: AssetAlertDraft) {
-        fee = draft.fee.toAlgos.toAlgosStringForLabel
+        guard let feeAmount = draft.fee?.toAlgos else {
+            return
+        }
+        
+        fee = feeAmount.toAlgosStringForLabel
     }
 
     private func bindActionTitle(_ draft: AssetAlertDraft) {

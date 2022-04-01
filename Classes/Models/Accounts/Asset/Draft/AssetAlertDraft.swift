@@ -22,7 +22,7 @@ struct AssetAlertDraft {
     let assetId: Int64
     var asset: AssetDecoration?
     let transactionTitle: String?
-    let fee: UInt64
+    let fee: UInt64?
     let title: String?
     let detail: String?
     let actionTitle: String?
@@ -33,6 +33,7 @@ struct AssetAlertDraft {
         assetId: Int64,
         asset: AssetDecoration?,
         transactionTitle: String? = nil,
+        transactionFee: UInt64? = nil,
         title: String? = nil,
         detail: String? = nil,
         actionTitle: String? = nil,
@@ -42,7 +43,7 @@ struct AssetAlertDraft {
         self.assetId = assetId
         self.asset = asset
         self.transactionTitle = transactionTitle
-        self.fee = Transaction.Constant.minimumFee
+        self.fee = transactionFee
         self.title = title
         self.detail = detail
         self.actionTitle = actionTitle

@@ -196,6 +196,7 @@ extension AssetAdditionViewController: AssetListViewControllerDelegate {
             assetId: asset.id,
             asset: asset,
             transactionTitle: "collectible-approve-transaction-fee".localized,
+            transactionFee: Transaction.Constant.minimumFee,
             title: "asset-add-confirmation-title".localized,
             detail: "asset-add-warning".localized,
             actionTitle: "title-approve".localized,

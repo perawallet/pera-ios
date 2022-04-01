@@ -32,8 +32,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let verifiedImage: ImageStyle
     let assetIDLabel: TextStyle
     let copyIDButton: ButtonStyle
-    let titleSeparator: Separator
-    let transactionSeparator: Separator
+    let separator: Separator
 
     let titleTopPadding: LayoutMetric
     let assetCodeLabelTopPadding: LayoutMetric
@@ -47,8 +46,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let buttonInset: LayoutMetric
     let bottomInset: LayoutMetric
     let descriptionTopInset: LayoutMetric
-    let titleSeparatorPadding: LayoutMetric
-    let transactionSeparatorPadding: LayoutMetric
+    let separatorPadding: LayoutMetric
     let copyIDButtonSize: LayoutSize
     let copyIDButtonCorner: Corner
 
@@ -105,12 +103,8 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
             .textAlignment(.right),
             .textOverflow(FittingText())
         ]
-        let separatorColor = AppColors.Shared.Layer.grayLighter
-        let separatorHeight: LayoutMetric = 1
-        self.titleSeparatorPadding = -20
-        self.transactionSeparatorPadding = -22
-        self.titleSeparator = Separator(color: separatorColor, size: separatorHeight)
-        self.transactionSeparator = Separator(color: separatorColor, size: separatorHeight, position: .top((0, 0)))
+        self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
+        self.separatorPadding = -20
         self.mainButtonTheme = ButtonPrimaryTheme()
         self.secondaryButtonTheme = ButtonSecondaryTheme()
         self.horizontalPadding = 24
@@ -123,7 +117,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         self.assetCodeLabelMinHeight = 42
         self.assetNameLabelTopPadding = 4
         self.assetNameLabelMinHeight = 20
-        self.assetIDPaddings = (44, 8, .noMetric, 105)
+        self.assetIDPaddings = (40, 8, .noMetric, 105)
         self.transactionTopPadding = 46
         self.copyIDButtonSize = (73, 32)
         self.copyIDButtonCorner = Corner(radius: copyIDButtonSize.h / 2)
