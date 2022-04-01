@@ -12,20 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   ManageAssetsViewController+Theme.swift
+//   ManageAssetsListLayout+Theme.swift
 
+import Foundation
 import MacaroonUIKit
 import UIKit
 
-extension ManageAssetsViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        let contextViewTheme: ManageAssetsViewTheme
-
+extension ManageAssetsListLayout {
+    struct Theme:
+        LayoutSheet,
+        StyleSheet {
+        let cellSize: LayoutSize
+        
         init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
-            self.contextViewTheme = ManageAssetsViewTheme()
+            self.cellSize = (UIScreen.main.bounds.width - 48, 72)
         }
     }
 }

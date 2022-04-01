@@ -31,6 +31,8 @@ final class ManageAssetsListDataController:
     private let sharedDataController: SharedDataController
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.manageAssetsListDataController")
     
+    private var lastQuery: String? = nil
+    
     init(
         _ account: Account,
         _ sharedDataController: SharedDataController
@@ -39,8 +41,6 @@ final class ManageAssetsListDataController:
         self.sharedDataController = sharedDataController
         
         fetchAssets()
-        
-        self.searchResults = accountAssets
     }
     
     deinit {
@@ -64,6 +64,13 @@ extension ManageAssetsListDataController {
                 accountAssets.append($0)
             }
         }
+        searchResults = accountAssets
+        
+        guard let lastQuery = lastQuery else {
+            return
+        }
+        
+        search(for: lastQuery)
     }
     
     func load() {
@@ -71,6 +78,7 @@ extension ManageAssetsListDataController {
     }
 
     func search(for query: String) {
+        lastQuery = query
         searchResults = accountAssets.filter {
             String($0.id).contains(query) ||
             $0.detail.name.unwrap(or: "").containsCaseInsensitive(query) ||

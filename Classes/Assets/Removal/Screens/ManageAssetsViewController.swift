@@ -23,7 +23,8 @@ final class ManageAssetsViewController: BaseViewController {
     
     private lazy var theme = Theme()
     
-    private lazy var dataSource = ManageAssetsListDataSource(contextView.assetsCollectionView, self)
+    private lazy var listLayout = ManageAssetsListLayout()
+    private lazy var dataSource = ManageAssetsListDataSource(contextView.assetsCollectionView)
     private lazy var dataController = ManageAssetsListDataController(account, sharedDataController)
 
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
@@ -51,14 +52,30 @@ final class ManageAssetsViewController: BaseViewController {
         addBarButtons()
     }
     
-    override func linkInteractors() {
-        contextView.setSearchInputDelegate(self)
-        transactionController.delegate = self
-    }
-    
     override func setListeners() {
         contextView.assetsCollectionView.dataSource = dataSource
-        contextView.assetsCollectionView.delegate = self
+        contextView.assetsCollectionView.delegate = listLayout
+        contextView.setSearchInputDelegate(self)
+        transactionController.delegate = self
+        setListLayoutListeners()
+    }
+    
+    private func setListLayoutListeners() {
+        listLayout.handlers.willDisplay = {
+            [weak self] cell, indexPath in
+            guard let self = self,
+                  let itemIdentifier = self.dataSource.itemIdentifier(for: indexPath) else {
+                      return
+                  }
+            
+            switch itemIdentifier {
+            case .asset:
+                let assetCell = cell as! AssetPreviewDeleteCell
+                assetCell.delegate = self
+            default:
+                break
+            }
+        }
     }
     
     override func prepareLayout() {
@@ -106,19 +123,10 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return CGSize(theme.cellSize)
-    }
-}
-
 extension ManageAssetsViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
         guard let query = view.text else {
+            dataController.resetSearch()
             return
         }
         

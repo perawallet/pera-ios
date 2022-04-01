@@ -19,8 +19,7 @@ import UIKit
 
 final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<AssetSearchSection, AssetSearchItem> {
     init(
-        _ collectionView: UICollectionView,
-        _ controller: AssetPreviewDeleteCellDelegate
+        _ collectionView: UICollectionView
     ) {
         super.init(collectionView: collectionView) {
             collectionView, indexPath, itemIdentifier in
@@ -30,7 +29,6 @@ final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<Asset
                 let cell = collectionView.dequeue(AssetPreviewDeleteCell.self, at: indexPath)
                 cell.customize(AssetPreviewDeleteViewTheme())
                 cell.bindData(item)
-                cell.delegate = controller
                 return cell
             case .empty:
                 let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
