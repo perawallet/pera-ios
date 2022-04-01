@@ -57,7 +57,10 @@ final class TitleView:
             return CGSize((size.width, 0))
         }
 
-        let width = size.width
+        let width =
+        size.width -
+        theme.paddings.leading -
+        theme.paddings.trailing
         let titleSize = viewModel.title.boundingSize(
             multiline: true,
             fittingSize: CGSize((width, .greatestFiniteMagnitude))

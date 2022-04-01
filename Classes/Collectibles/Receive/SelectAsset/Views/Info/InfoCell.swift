@@ -12,20 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ReceiveCollectibleAssetListViewControllerTheme.swift
+//   InfoCell.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-struct ReceiveCollectibleAssetListViewControllerTheme:
-    StyleSheet,
-    LayoutSheet {
-    let backgroundColor: Color
+final class InfoCell:
+    CollectionCell<InfoView>,
+    ViewModelBindable {
+    static let theme = InfoViewTheme()
 
-    init(
-        _ family: LayoutFamily
+    override init(
+        frame: CGRect
     ) {
-        backgroundColor = AppColors.Shared.System.background
+        super.init(frame: frame)
+
+        contextView.customize(Self.theme)
     }
 }

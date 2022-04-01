@@ -55,7 +55,7 @@ extension ReceiveCollectibleAccountListHeaderViewModel {
 
     mutating func bindTitleStyle() {
         titleStyle = [
-            .textColor(AppColors.Components.Text.gray),
+            .textColor(AppColors.Components.Text.main),
             .textOverflow(FittingText())
         ]
     }

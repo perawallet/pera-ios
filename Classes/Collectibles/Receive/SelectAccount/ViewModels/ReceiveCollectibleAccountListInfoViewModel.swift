@@ -12,20 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   ReceiveCollectibleAssetListViewControllerTheme.swift
+//   ReceiveCollectibleAccountListInfoViewModel.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-struct ReceiveCollectibleAssetListViewControllerTheme:
-    StyleSheet,
-    LayoutSheet {
-    let backgroundColor: Color
+struct ReceiveCollectibleAccountListInfoViewModel: InfoViewModel {
+    var icon: Image?
+    var message: EditText?
 
-    init(
-        _ family: LayoutFamily
-    ) {
-        backgroundColor = AppColors.Shared.System.background
+    init() {
+        icon = getIcon()
+        message = getMessage(
+            "collectible-receive-account-list-info".localized
+        )
     }
 }
