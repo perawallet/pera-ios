@@ -22,7 +22,6 @@ struct CollectibleDetailActionViewModel:
     Hashable {
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
-    private(set) var canTransfer: Bool = true
 
     init(
         asset: CollectibleAsset,
@@ -30,7 +29,6 @@ struct CollectibleDetailActionViewModel:
     ) {
         bindTitle(asset)
         bindSubtitle(asset)
-        bindCanTransfer(account)
     }
 }
 
@@ -80,16 +78,5 @@ extension CollectibleDetailActionViewModel {
                     ])
                 ])
         )
-    }
-
-    private mutating func bindCanTransfer(
-        _ account: Account?
-    ) {
-        if let account = account {
-            canTransfer = !account.isWatchAccount()
-            return
-        }
-
-        canTransfer = false
     }
 }

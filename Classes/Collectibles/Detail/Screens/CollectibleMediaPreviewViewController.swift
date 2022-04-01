@@ -74,20 +74,16 @@ final class CollectibleMediaPreviewViewController:
 
     private lazy var dataSource = CollectibleMediaPreviewDataSource(
         theme: theme,
-        asset: asset,
-        account: account
+        asset: asset
     )
 
     private var asset: CollectibleAsset
-    private let account: Account?
 
     init(
         asset: CollectibleAsset,
-        account: Account?,
         configuration: ViewControllerConfiguration
     ) {
         self.asset = asset
-        self.account = account
         super.init(configuration: configuration)
     }
 
