@@ -89,6 +89,7 @@ extension ManageAssetsListDataController {
     }
     
     func resetSearch() {
+        lastQuery = nil
         searchResults = accountAssets
         deliverContentSnapshot()
     }
