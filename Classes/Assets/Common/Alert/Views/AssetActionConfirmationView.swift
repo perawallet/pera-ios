@@ -21,13 +21,16 @@ import MacaroonUIKit
 final class AssetActionConfirmationView: View {
     weak var delegate: AssetActionConfirmationViewDelegate?
 
-    private lazy var titleLabel = UILabel()
-    private lazy var assetCodeLabel = UILabel()
-    private lazy var assetNameLabel = UILabel()
+    private lazy var titleLabel = Label()
+    private lazy var assetCodeLabel = Label()
+    private lazy var assetNameLabel = Label()
     private lazy var verifiedImage = UIImageView()
-    private lazy var assetIDLabel = UILabel()
+    private lazy var assetIDLabel = Label()
     private lazy var copyIDButton = Button()
-    private lazy var detailLabel = UILabel()
+    private lazy var transactionView = HStackView()
+    private lazy var transactionLabel = Label()
+    private lazy var feeLabel = Label()
+    private lazy var detailLabel = Label()
     private lazy var actionButton = Button()
     private lazy var cancelButton = Button()
 
@@ -37,6 +40,7 @@ final class AssetActionConfirmationView: View {
         addAssetNameLabel(theme)
         addVerifiedImage(theme)
         addAssetIDLabel(theme)
+        addTransactionView(theme)
         addCopyIDButton(theme)
         addDetailLabel(theme)
         addActionButton(theme)
@@ -102,7 +106,7 @@ extension AssetActionConfirmationView {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
             $0.greaterThanHeight(theme.assetNameLabelMinHeight)
         }
-        assetNameLabel.addSeparator(theme.topSeparator, padding: theme.topSeparatorPadding)
+        assetNameLabel.addSeparator(theme.titleSeparator, padding: theme.titleSeparatorPadding)
     }
 
     private func addVerifiedImage(_ theme: AssetActionConfirmationViewTheme) {
@@ -140,17 +144,43 @@ extension AssetActionConfirmationView {
         }
     }
     
+    private func addTransactionView(_ theme: AssetActionConfirmationViewTheme) {
+        transactionView.distribution = .fillEqually
+        transactionView.alignment = .center
+        
+        addSubview(transactionView)
+        transactionView.snp.makeConstraints {
+            $0.top.equalTo(assetIDLabel.snp.bottom).offset(theme.transactionTopPadding)
+            $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+        }
+        
+        addFeeLabel(theme)
+        addFeeAmountLabel(theme)
+        transactionView.addSeparator(
+            theme.transactionSeparator,
+            padding: theme.transactionSeparatorPadding
+        )
+    }
+    
+    private func addFeeLabel(_ theme: AssetActionConfirmationViewTheme) {
+        transactionLabel.customizeAppearance(theme.transactionLabel)
+        transactionView.addArrangedSubview(transactionLabel)
+    }
+    
+    private func addFeeAmountLabel(_ theme: AssetActionConfirmationViewTheme) {
+        feeLabel.customizeAppearance(theme.feeLabel)
+        transactionView.addArrangedSubview(feeLabel)
+    }
+    
     private func addDetailLabel(_ theme: AssetActionConfirmationViewTheme) {
         detailLabel.customizeAppearance(theme.description)
 
         addSubview(detailLabel)
         detailLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(assetIDLabel.snp.bottom).offset(theme.descriptionTopInset)
+            $0.top.equalTo(transactionLabel.snp.bottom).offset(theme.descriptionTopInset)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
-
-        detailLabel.addSeparator(theme.bottomSeparator, padding: theme.bottomSeparatorPadding)
     }
     
     private func addActionButton(_ theme: AssetActionConfirmationViewTheme) {
@@ -181,6 +211,8 @@ extension AssetActionConfirmationView: ViewModelBindable {
     func bindData(_ viewModel: AssetActionConfirmationViewModel?) {
         titleLabel.text = viewModel?.title
         assetIDLabel.text = viewModel?.id
+        transactionLabel.text = viewModel?.transaction
+        feeLabel.text = viewModel?.fee
         detailLabel.attributedText = viewModel?.detail
         actionButton.bindData(ButtonCommonViewModel(title: viewModel?.actionTitle))
         cancelButton.bindData(ButtonCommonViewModel(title: viewModel?.cancelTitle))
