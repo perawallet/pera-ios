@@ -20,7 +20,8 @@ import MacaroonURLImage
 
 final class CollectibleDetailViewController:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout,
+    TransactionControllerDelegate {
 
     private lazy var bottomBannerController = BottomActionableBannerController(
         presentingView: view,
@@ -29,6 +30,24 @@ final class CollectibleDetailViewController:
             contentBottomPadding: view.safeAreaBottom + 20
         )
     )
+
+    private lazy var transactionController: TransactionController = {
+        guard let api = api else {
+            fatalError("API should be set.")
+        }
+
+        return TransactionController(api: api, bannerController: bannerController)
+    }()
+
+    private lazy var collectibleDetailTransactionController = CollectibleDetailTransactionController(
+        account: account,
+        asset: asset,
+        transactionController: transactionController
+    )
+
+    private var ledgerApprovalViewController: LedgerApprovalViewController?
+
+    lazy var eventHandlers = Event()
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = CollectibleListLayout.build()
@@ -51,12 +70,11 @@ final class CollectibleDetailViewController:
 
     private lazy var mediaPreviewController = CollectibleMediaPreviewViewController(
         asset: asset,
-        account: account,
         configuration: configuration
     )
 
     private var asset: CollectibleAsset
-    private let account: Account?
+    private let account: Account
     private let dataController: CollectibleDetailDataController
 
     private var displayedMedia: Media?
@@ -112,6 +130,12 @@ final class CollectibleDetailViewController:
         mediaPreviewController.didMove(toParent: self)
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        transactionController.stopBLEScan()
+        transactionController.stopTimer()
+    }
+
     override func prepareLayout() {
         super.prepareLayout()
         addListView()
@@ -120,6 +144,14 @@ final class CollectibleDetailViewController:
     override func setListeners() {
         super.setListeners()
         listView.delegate = self
+        transactionController.delegate = self
+
+        collectibleDetailTransactionController.eventHandlers.didStartRemovingAsset = {
+            [weak self] in
+            guard let self = self else { return }
+
+            self.loadingController?.startLoadingWithMessage("title-loading".localized)
+        }
     }
 
     override func linkInteractors() {
@@ -211,9 +243,15 @@ extension CollectibleDetailViewController {
         case .loading:
             let loadingCell = cell as? CollectibleDetailLoadingCell
             loadingCell?.startAnimating()
-        case .action(let item):
+        case .action(let item),
+                .watchAccountAction(let item):
             linkInteractors(
                 cell as! CollectibleDetailActionCell,
+                for: item
+            )
+        case .optedInAction(let item):
+            linkInteractors(
+                cell as! CollectibleDetailOptedInActionCell,
                 for: item
             )
         case .external(let item):
@@ -265,17 +303,13 @@ extension CollectibleDetailViewController {
     ) {
         cell.observe(event: .performSend) {
             [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            guard let account = self.account,
-                  let asset = account[self.asset.id] as? CollectibleAsset else {
+            guard let self = self,
+                  let asset = self.account[self.asset.id] as? CollectibleAsset else {
                 return
             }
 
             let draft = SendCollectibleDraft(
-                fromAccount: self.account!,
+                fromAccount: self.account,
                 collectibleAsset: asset,
                 image: self.mediaPreviewController.getExistingImage()
             )
@@ -315,8 +349,14 @@ extension CollectibleDetailViewController {
             items.append(name)
         }
 
-        if let downloadURL = displayedMedia?.downloadURL {
+        if let explorerURL = asset.explorerURL {
+            items.append(explorerURL.absoluteString)
+        } else if let downloadURL = displayedMedia?.downloadURL {
             items.append(downloadURL.absoluteString)
+        }
+
+        if let displayedImage = mediaPreviewController.getExistingImage() {
+            items.append(displayedImage)
         }
 
         presentShareController(items)
@@ -331,6 +371,62 @@ extension CollectibleDetailViewController {
             ),
             by: .presentWithoutNavigationController
         )
+    }
+
+    private func linkInteractors(
+        _ cell: CollectibleDetailOptedInActionCell,
+        for item: CollectibleDetailOptedInActionViewModel
+    ) {
+        cell.observe(event: .performOptOut) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            let assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
+            let draft = self.collectibleDetailTransactionController.createOptOutAlertDraft()
+            assetActionConfirmationTransition.perform(
+                .assetActionConfirmation(
+                    assetAlertDraft: draft,
+                    delegate: self.collectibleDetailTransactionController
+                ),
+                by: .presentWithoutNavigationController
+            )
+        }
+
+        cell.observe(event: .performCopy) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.bannerController?.presentInfoBanner("qr-creation-copied".localized)
+            UIPasteboard.general.string = self.account.address
+        }
+
+        cell.observe(event: .performShareQR) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            let accountName = self.account.name ?? self.account.address.shortAddressDisplay
+
+            let draft = QRCreationDraft(
+                address: self.account.address,
+                mode: .address,
+                title: accountName
+            )
+
+            self.open(
+                .qrGenerator(
+                    title: accountName,
+                    draft: draft,
+                    isTrackable: true
+                ),
+                by: .present
+            )
+        }
     }
 
     private func linkSendCollectibleUIInteractions()
@@ -364,5 +460,109 @@ extension CollectibleDetailViewController {
                 self.open(url)
             }
         }
+    }
+}
+
+extension CollectibleDetailViewController {
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
+        loadingController?.stopLoading()
+        asset.state = .pending(.remove)
+
+        let assetName = asset.title ?? asset.name ?? ""
+        bannerController?.presentSuccessBanner(title: "collectible-detail-opt-out-success".localized(params: assetName))
+        eventHandlers.didOptOutAssetFromAccount?(asset, account)
+        popScreen()
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedComposing error: HIPTransactionError
+    ) {
+        loadingController?.stopLoading()
+
+        switch error {
+        case let .inapp(transactionError):
+            displayTransactionError(from: transactionError)
+        default:
+            break
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedTransaction error: HIPTransactionError
+    ) {
+        loadingController?.stopLoading()
+        switch error {
+        case let .network(apiError):
+            bannerController?.presentErrorBanner(title: "title-error".localized, message: apiError.debugDescription)
+        default:
+            bannerController?.presentErrorBanner(title: "title-error".localized, message: error.localizedDescription)
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didRequestUserApprovalFrom ledger: String
+    ) {
+        let ledgerApprovalTransition = BottomSheetTransition(presentingViewController: self)
+        ledgerApprovalViewController = ledgerApprovalTransition.perform(
+            .ledgerApproval(
+                mode: .approve,
+                deviceName: ledger
+            ),
+            by: .present
+        )
+    }
+
+    func transactionControllerDidResetLedgerOperation(
+        _ transactionController: TransactionController
+    ) {
+        ledgerApprovalViewController?.dismissScreen()
+        ledgerApprovalViewController = nil
+    }
+}
+
+extension CollectibleDetailViewController {
+    private func displayTransactionError(from transactionError: TransactionError) {
+        switch transactionError {
+        case let .minimumAmount(amount):
+            bannerController?.presentErrorBanner(
+                title: "asset-min-transaction-error-title".localized,
+                message: "asset-min-transaction-error-message".localized(
+                    params: amount.toAlgos.toAlgosStringForLabel ?? ""
+                )
+            )
+        case let .sdkError(error):
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.debugDescription
+            )
+        case .ledgerConnection:
+            let bottomTransition = BottomSheetTransition(presentingViewController: self)
+
+            bottomTransition.perform(
+                .bottomWarning(
+                    configurator: BottomWarningViewConfigurator(
+                        image: "icon-info-green".uiImage,
+                        title: "ledger-pairing-issue-error-title".localized,
+                        description: .plain("ble-error-fail-ble-connection-repairing".localized),
+                        secondaryActionButtonTitle: "title-ok".localized
+                    )
+                ),
+                by: .presentWithoutNavigationController
+            )
+        default:
+            break
+        }
+    }
+}
+
+extension CollectibleDetailViewController {
+    struct Event {
+        var didOptOutAssetFromAccount: ((CollectibleAsset, Account) -> Void)?
     }
 }
