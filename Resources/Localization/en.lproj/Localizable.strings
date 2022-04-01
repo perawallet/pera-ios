@@ -947,6 +947,11 @@
 "collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
 "collectible-detail-error-not-owner" = "You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.";
 "collectible-detail-error-visual" = "We can’t display the visual temporarily.";
+"collectible-detail-opted-in" = "Opted in to";
+"collectible-detail-opt-out" = "Opt out";
+"collectible-detail-opt-out-success" = "%@ NFT successfully opted-out";
+"collectible-detail-opt-out-alert-title" = "Opt out from “%@”";
+"collectible-detail-opt-out-alert-message" = "You are about to opt out from this NFT with %@. You will not be able to transact with this asset until you opt in again.";
 
 // MARK: Collectible Transfer
 "collectible-transfer-confirmed-title" = "Your NFT transfer is confirmed!";

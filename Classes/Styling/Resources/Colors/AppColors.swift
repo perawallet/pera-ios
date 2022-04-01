@@ -135,6 +135,7 @@ extension AppColors.Components {
         case text = "Components/Banner/text"
         case governanceBackground = "Components/Banner/governance-background"
         case governanceText = "Components/Banner/governance-text"
+        case infoBackground = "Components/Banner/info-background"
     }
 }
 
