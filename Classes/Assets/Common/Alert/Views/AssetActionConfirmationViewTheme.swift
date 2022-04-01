@@ -35,7 +35,9 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
 
     let titleTopPadding: LayoutMetric
     let assetCodeLabelTopPadding: LayoutMetric
+    let assetCodeLabelMinHeight: LayoutMetric
     let assetNameLabelTopPadding: LayoutMetric
+    let assetNameLabelMinHeight: LayoutMetric
     let assetIDPaddings: LayoutPaddings
     let horizontalPadding: LayoutMetric
     let verticalInset: LayoutMetric
@@ -103,7 +105,9 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         self.bottomInset = 16
         self.descriptionTopInset = 48
         self.assetCodeLabelTopPadding = 42
+        self.assetCodeLabelMinHeight = 42
         self.assetNameLabelTopPadding = 4
+        self.assetNameLabelMinHeight = 20
         self.assetIDPaddings = (44, 8, .noMetric, 105)
         self.copyIDButtonSize = (73, 32)
         self.copyIDButtonCorner = Corner(radius: copyIDButtonSize.h / 2)
