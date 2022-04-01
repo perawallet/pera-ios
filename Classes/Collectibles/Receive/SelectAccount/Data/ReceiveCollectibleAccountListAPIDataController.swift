@@ -129,9 +129,14 @@ extension ReceiveCollectibleAccountListAPIDataController {
 
             var snapshot = Snapshot()
 
-            snapshot.appendSections([.header, .accounts])
+            snapshot.appendSections([.info, .header, .accounts])
 
             if !accounts.isEmpty {
+                snapshot.appendItems(
+                    [.info],
+                    toSection: .info
+                )
+                
                 let headerItem: ReceiveCollectibleAccountListItem = .header(
                     ReceiveCollectibleAccountListHeaderViewModel()
                 )

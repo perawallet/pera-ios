@@ -44,17 +44,17 @@ final class ReceiveCollectibleAssetListDataSource:
                     )
                     return cell
                 }
-            case .header(let item):
+            case .info:
                 let cell = collectionView.dequeue(
-                    TitleSupplementaryCell.self,
+                    InfoCell.self,
                     at: indexPath
                 )
                 cell.bindData(
-                    item
+                    ReceiveCollectibleAssetListInfoViewModel()
                 )
                 return cell
             case .search:
-                let cell = collectionView.dequeue(CollectibleSearchInputCell.self, at: indexPath)
+                let cell = collectionView.dequeue(CollectibleReceiveSearchInputCell.self, at: indexPath)
                 return cell
             case .collectible(let item):
                 let cell = collectionView.dequeue(
@@ -71,9 +71,9 @@ final class ReceiveCollectibleAssetListDataSource:
         [
             PreviewLoadingCell.self,
             NoContentCell.self,
-            TitleSupplementaryCell.self,
-            CollectibleSearchInputCell.self,
             AssetPreviewAdditionCell.self,
+            InfoCell.self,
+            CollectibleReceiveSearchInputCell.self,
         ].forEach {
             collectionView.register($0)
         }

@@ -89,6 +89,7 @@ extension AssetActionConfirmationView {
         assetCodeLabel.snp.makeConstraints {
             $0.top.equalTo(titleLabel.snp.bottom).offset(theme.assetCodeLabelTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.greaterThanHeight(theme.assetCodeLabelMinHeight)
         }
     }
 
@@ -99,6 +100,7 @@ extension AssetActionConfirmationView {
         assetNameLabel.snp.makeConstraints {
             $0.top.equalTo(assetCodeLabel.snp.bottom).offset(theme.assetNameLabelTopPadding)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
+            $0.greaterThanHeight(theme.assetNameLabelMinHeight)
         }
         assetNameLabel.addSeparator(theme.topSeparator, padding: theme.topSeparatorPadding)
     }

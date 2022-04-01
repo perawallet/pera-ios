@@ -54,7 +54,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                 }
             case .search:
                 let cell = collectionView.dequeue(
-                    CollectibleSearchInputCell.self,
+                    CollectibleListSearchInputCell.self,
                     at: indexPath
                 )
                 return cell
@@ -106,7 +106,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
             CollectibleListItemPendingCell.self,
             CollectibleListItemReceiveCell.self,
             NoContentWithActionIllustratedCell.self,
-            CollectibleSearchInputCell.self,
+            CollectibleListSearchInputCell.self,
             CollectibleListLoadingViewCell.self,
             NoContentCell.self,
         ].forEach {

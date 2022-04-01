@@ -182,11 +182,37 @@ extension AccountCollectibleListViewController {
             by: .present
         ) as? ReceiveCollectibleAssetListViewController
 
+        controller?.delegate = self
+
         let close = ALGBarButtonItem(kind: .close) {
             controller?.dismissScreen()
         }
 
         controller?.leftBarButtonItems = [close]
+    }
+}
+
+extension AccountCollectibleListViewController: ReceiveCollectibleAssetListViewControllerDelegate {
+    func receiveCollectibleAssetListViewController(
+        _ controller: ReceiveCollectibleAssetListViewController,
+        didCompleteTransaction account: Account
+    ) {
+        controller.dismissScreen {
+            let draft = QRCreationDraft(
+                address: account.address,
+                mode: .address,
+                title: account.name
+            )
+
+            self.open(
+                .qrGenerator(
+                    title: account.name ?? account.address.shortAddressDisplay,
+                    draft: draft,
+                    isTrackable: true
+                ),
+                by: .present
+            )
+        }
     }
 }
 

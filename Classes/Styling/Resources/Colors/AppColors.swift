@@ -55,6 +55,7 @@ extension AppColors.Shared {
         case negative = "Shared/Helpers/negative"
         case negativeLighter = "Shared/Helpers/negativeLighter"
         case positive = "Shared/Helpers/positive"
+        case positiveLighter = "Shared/Helpers/positiveLighter"
         case success = "Shared/Helpers/success"
         case testnet = "Shared/Helpers/testnet"
     }
@@ -126,6 +127,15 @@ extension AppColors.Components {
 extension AppColors.Components {
     enum QR: String, Color {
         case background = "Components/QR/background"
+    }
+}
+
+extension AppColors.Components {
+    enum Banner: String, Color {
+        case background = "Components/Banner/background"
+        case text = "Components/Banner/text"
+        case governanceBackground = "Components/Banner/governance-background"
+        case governanceText = "Components/Banner/governance-text"
     }
 }
 

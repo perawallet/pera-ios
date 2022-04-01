@@ -89,13 +89,39 @@ extension CollectiblesViewController {
 
 extension CollectiblesViewController {
     private func openReceiveCollectible() {
-        open(
+        let controller = open(
             .receiveCollectibleAccountList(
                 dataController: ReceiveCollectibleAccountListAPIDataController(
                     sharedDataController
                 )
             ),
             by: .present
-        )
+        ) as? ReceiveCollectibleAccountListViewController
+
+        controller?.delegate = self
+    }
+}
+
+extension CollectiblesViewController: ReceiveCollectibleAccountListViewControllerDelegate {
+    func receiveCollectibleAccountListViewController(
+        _ controller: ReceiveCollectibleAccountListViewController,
+        didCompleteTransaction account: Account
+    ) {
+        controller.dismissScreen() {
+            let draft = QRCreationDraft(
+                address: account.address,
+                mode: .address,
+                title: account.name
+            )
+
+            self.open(
+                .qrGenerator(
+                    title: account.name ?? account.address.shortAddressDisplay,
+                    draft: draft,
+                    isTrackable: true
+                ),
+                by: .present
+            )
+        }
     }
 }

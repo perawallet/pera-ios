@@ -31,12 +31,14 @@ enum ReceiveCollectibleAccountListSection:
     Hashable {
     case empty
     case loading
+    case info
     case header
     case accounts
 }
 
 enum ReceiveCollectibleAccountListItem: Hashable {
     case empty(ReceiveCollectibleAccountListEmptyItem)
+    case info
     case header(ReceiveCollectibleAccountListHeaderViewModel)
     case account(AccountPreviewViewModel)
 }

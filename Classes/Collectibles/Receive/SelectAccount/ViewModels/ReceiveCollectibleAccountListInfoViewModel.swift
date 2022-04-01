@@ -12,12 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AnnouncementBannerViewModel.swift
+//   ReceiveCollectibleAccountListInfoViewModel.swift
 
 import MacaroonUIKit
 
-struct AnnouncementBannerViewModel:
-    ViewModel,
-    Hashable {
+struct ReceiveCollectibleAccountListInfoViewModel: InfoViewModel {
+    var icon: Image?
+    var message: EditText?
+
+    init() {
+        icon = getIcon()
+        message = getMessage(
+            "collectible-receive-account-list-info".localized
+        )
+    }
 }
