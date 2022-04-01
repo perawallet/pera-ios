@@ -37,6 +37,15 @@ protocol Asset {
 enum AssetState: Codable {
     case ready
     case pending(AssetOperation)
+
+    var isPending: Bool {
+        switch self {
+        case .ready:
+            return false
+        case .pending(let assetOperation):
+            return assetOperation == .remove
+        }
+    }
 }
 
 enum AssetOperation: Codable {
