@@ -17,8 +17,15 @@
 import UIKit
 import MacaroonUIKit
 
-final class AssetPreviewDeleteView: View {
-    weak var delegate: AssetPreviewDeleteViewDelegate?
+final class AssetPreviewDeleteView:
+    View,
+    ViewModelBindable,
+    UIInteractionObservable,
+    UIControlInteractionPublisher,
+    ListReusable {
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .delete: UIControlInteraction()
+    ]
     
     private lazy var imageView = AssetImageView()
     private lazy var assetTitleVerticalStackView = VStackView()
@@ -31,11 +38,6 @@ final class AssetPreviewDeleteView: View {
     private lazy var secondaryAssetValueLabel = Label()
     private lazy var deleteButton = Button()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setListeners()
-    }
-    
     func customize(_ theme: AssetPreviewDeleteViewTheme) {
         addImage(theme)
         addAssetTitleVerticalStackView(theme)
@@ -46,21 +48,6 @@ final class AssetPreviewDeleteView: View {
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
-    
-    func setListeners() {
-        deleteButton.addTarget(
-            self,
-            action: #selector(didTapDeleteButton),
-            for: .touchUpInside
-        )
-    }
-}
-
-extension AssetPreviewDeleteView {
-    @objc
-    func didTapDeleteButton() {
-        delegate?.assetPreviewDeleteViewDidDelete(self)
-    }
 }
 
 extension AssetPreviewDeleteView {
@@ -122,6 +109,11 @@ extension AssetPreviewDeleteView {
             $0.trailing.equalToSuperview()
             $0.centerY.equalToSuperview()
         }
+        
+        startPublishing(
+            event: .delete,
+            for: deleteButton
+        )
     }
     
     private func addAssetValueVerticalStackView(_ theme: AssetPreviewDeleteViewTheme) {
@@ -150,7 +142,7 @@ extension AssetPreviewDeleteView {
     }
 }
 
-extension AssetPreviewDeleteView: ViewModelBindable {
+extension AssetPreviewDeleteView {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
         imageView.bindData(viewModel?.assetImageViewModel)
         primaryAssetTitleLabel.editText = viewModel?.assetPrimaryTitle
@@ -160,17 +152,18 @@ extension AssetPreviewDeleteView: ViewModelBindable {
         secondaryAssetValueLabel.editText = viewModel?.assetSecondaryAssetValue
     }
     
-    func prepareForReuse() {
+    /*func prepareForReuse() {
         imageView.prepareForReuse()
         secondaryImageView.image = nil
         primaryAssetTitleLabel.text = nil
         secondaryAssetTitleLabel.text = nil
         primaryAssetValueLabel.text = nil
         secondaryAssetValueLabel.text = nil
+    }*/
+}
+
+extension AssetPreviewDeleteView {
+    enum Event {
+        case delete
     }
 }
-
-protocol AssetPreviewDeleteViewDelegate: AnyObject {
-    func assetPreviewDeleteViewDidDelete(_ assetPreviewDeleteView: AssetPreviewDeleteView)
-}
-

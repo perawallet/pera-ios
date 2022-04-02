@@ -64,14 +64,22 @@ final class ManageAssetsViewController: BaseViewController {
         listLayout.handlers.willDisplay = {
             [weak self] cell, indexPath in
             guard let self = self,
-                  let itemIdentifier = self.dataSource.itemIdentifier(for: indexPath) else {
+                  let itemIdentifier = self.dataSource.itemIdentifier(for: indexPath),
+                  let asset = self.dataController[indexPath.item] else {
                       return
                   }
             
             switch itemIdentifier {
             case .asset:
                 let assetCell = cell as! AssetPreviewDeleteCell
-                assetCell.delegate = self
+                assetCell.observe(event: .delete) {
+                    [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    
+                    self.showAlertToDelete(asset)
+                }
             default:
                 break
             }
@@ -147,17 +155,7 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
     }
 }
 
-
-extension ManageAssetsViewController: AssetPreviewDeleteCellDelegate {
-    func assetPreviewDeleteCellDidDelete(_ assetPreviewDeleteCell: AssetPreviewDeleteCell) {
-        guard let indexPath = contextView.assetsCollectionView.indexPath(for: assetPreviewDeleteCell),
-              let asset = dataController[indexPath.item] else {
-                  return
-        }
-        
-        showAlertToDelete(asset)
-    }
-    
+extension ManageAssetsViewController {
     private func showAlertToDelete(_ asset: CompoundAsset) {
         let assetDetail = asset.detail
         let assetAmount = account.amount(for: assetDetail)
@@ -230,8 +228,6 @@ extension ManageAssetsViewController:
         transactionController.setTransactionDraft(assetTransactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetRemoval)
         
-        loadingController?.startLoadingWithMessage("title-loading".localized)
-
         if account.requiresLedgerConnection() {
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
@@ -247,8 +243,10 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
               }
 
         removedAssetDetail.isRemoved = true
+        
+        contextView.resetSearchInputView()
+        
         delegate?.manageAssetsViewController(self, didRemove: removedAssetDetail, from: account)
-        dismissScreen()
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {

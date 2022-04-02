@@ -58,6 +58,7 @@ final class ManageAssetsListDataController:
 
 extension ManageAssetsListDataController {
     func fetchAssets() {
+        searchResults.removeAll()
         accountAssets.removeAll()
         account.compoundAssets.forEach {
             if !$0.detail.isRemoved {
@@ -90,7 +91,7 @@ extension ManageAssetsListDataController {
     
     func resetSearch() {
         lastQuery = nil
-        searchResults = accountAssets
+        fetchAssets()
         deliverContentSnapshot()
     }
 }
@@ -152,6 +153,7 @@ extension ManageAssetsListDataController {
                 toSection: .assets
             )
             
+            snapshot.reloadItems(assetItems)
             return snapshot
         }
     }

@@ -22,7 +22,6 @@ import MacaroonUIKit
 
 final class AssetSearchViewController: BaseViewController {
     private lazy var theme = Theme()
-    lazy var handlers = Handlers()
 
     private lazy var listLayout = AssetSearchListLayout(dataController: dataController)
     private lazy var dataSource = AssetSearchDataSource(listView)
@@ -73,6 +72,16 @@ final class AssetSearchViewController: BaseViewController {
         }
 
         dataController.load()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        searchInputView.beginEditing()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchInputView.endEditing()
     }
 
     override func setListeners() {
@@ -157,14 +166,15 @@ extension AssetSearchViewController {
                 return
             }
 
-            self.closeScreen(by: .dismiss, animated: false)
-            self.handlers.didSelectAsset?(compoundAsset)
+            self.open(
+                .assetDetail(
+                    draft: AssetTransactionListing(
+                        accountHandle: self.accountHandle,
+                        compoundAsset: compoundAsset
+                    )
+                ),
+                by: .push
+            )
         }
-    }
-}
-
-extension AssetSearchViewController {
-    struct Handlers {
-        var didSelectAsset: ((CompoundAsset) -> Void)?
     }
 }
