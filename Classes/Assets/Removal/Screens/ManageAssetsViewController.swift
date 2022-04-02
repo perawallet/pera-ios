@@ -104,7 +104,9 @@ final class ManageAssetsViewController: BaseViewController {
             
             switch event {
             case .didUpdate(let snapshot):
-                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared) {
+                    self.contextView.assetsCollectionView.reloadData()
+                }
             }
         }
         
@@ -158,22 +160,15 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
 extension ManageAssetsViewController {
     private func showAlertToDelete(_ asset: CompoundAsset) {
         let assetDetail = asset.detail
-        let assetAmount = account.amount(for: assetDetail)
         let assetAlertDraft: AssetAlertDraft
-        
-        guard let assetAmount = assetAmount else {
-            return
-        }
-        
+                
         assetAlertDraft = AssetAlertDraft(
             account: account,
             assetIndex: assetDetail.id,
             assetDetail: assetDetail,
             title: "asset-remove-confirmation-title".localized,
             detail: String(
-                format: assetAmount.isZero
-                    ? "asset-remove-confirmation-title".localized
-                    : "asset-remove-transaction-warning".localized,
+                format: "asset-remove-transaction-warning".localized,
                 "\(assetDetail.unitName ?? "title-unknown".localized)",
                 "\(account.name ?? "")"
             ),
@@ -241,8 +236,6 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
               let removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
                   return
               }
-
-        removedAssetDetail.isRemoved = true
         
         contextView.resetSearchInputView()
         
