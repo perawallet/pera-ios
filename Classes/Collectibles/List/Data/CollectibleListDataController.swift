@@ -30,6 +30,10 @@ protocol CollectibleListDataController: AnyObject {
     func load()
     func search(for query: String)
     func resetSearch()
+    var currentFilter: CollectiblesFilterSelectionViewController.Filter? { get }
+    func filter(
+        forFilter filter: CollectiblesFilterSelectionViewController.Filter?
+    )
 }
 
 enum CollectibleSection:
@@ -38,12 +42,14 @@ enum CollectibleSection:
     case empty
     case loading
     case search
+    case infoWithFilter
     case collectibles
 }
 
 enum CollectibleListItem: Hashable {
     case empty(CollectibleEmptyItem)
     case search
+    case infoWithFilter(Selectable<CollectibleListInfoWithFilterViewModel>)
     case collectible(CollectibleItem)
 }
 
@@ -68,6 +74,11 @@ struct CollectibleCellItemContainer<T: ViewModel & Hashable>: Hashable {
     let account: Account
     let asset: CollectibleAsset
     let viewModel: T
+}
+
+struct Selectable<Value: Hashable>: Hashable {
+    let value: Value
+    var isSelected = false
 }
 
 enum CollectibleDataControllerEvent {

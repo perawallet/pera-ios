@@ -112,6 +112,7 @@ indirect enum Screen {
         transactionOption: WCTransactionOption?
     )
     case peraIntroduction
+    case collectiblesFilterSelection(filter: CollectiblesFilterSelectionViewController.Filter?)
     case receiveCollectibleAccountList(
         dataController: ReceiveCollectibleAccountListDataController
     )

@@ -251,7 +251,7 @@ extension AssetAdditionViewController: TransactionControllerDelegate {
             )
 
             NotificationCenter.default.post(
-                name: CollectibleListLocalDataController.didAddPendingCollectible,
+                name: CollectibleListLocalDataController.didAddPendingAddedCollectible,
                 object: self,
                 userInfo: [
                     CollectibleListLocalDataController.assetUserInfoKey: (account, collectibleAsset)

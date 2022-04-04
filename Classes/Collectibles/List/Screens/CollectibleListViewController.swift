@@ -181,6 +181,8 @@ extension CollectibleListViewController {
         }
 
         switch itemIdentifier {
+        case .infoWithFilter:
+            linkInteractors(cell as! CollectibleListInfoWithFilterCell)
         case .search:
             linkInteractors(cell as! CollectibleListSearchInputCell)
         case .empty(let item):
@@ -255,6 +257,8 @@ extension CollectibleListViewController {
             return
         }
 
+        view.endEditing(true)
+
         switch itemIdentifier {
         case .collectible(let item):
             switch item {
@@ -301,6 +305,35 @@ extension CollectibleListViewController {
     }
 
     private func linkInteractors(
+        _ cell: CollectibleListInfoWithFilterCell
+    ) {
+        cell.observe(event: .showFilterSelection) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            let controller = self.open(
+                .collectiblesFilterSelection(
+                    filter: self.dataController.currentFilter
+                ),
+                by: .present
+            ) as? CollectiblesFilterSelectionViewController
+
+            controller?.handlers.didTapDone = {
+                [weak self] filter in
+                guard let self = self else {
+                    return
+                }
+
+                self.dataController.filter(
+                    forFilter: filter
+                )
+            }
+        }
+    }
+
+    private func linkInteractors(
         _ cell: CollectibleListSearchInputCell
     ) {
         cell.delegate = self
@@ -313,14 +346,36 @@ extension CollectibleListViewController {
         asset: CollectibleAsset,
         thumbnailImage: UIImage?
     ) {
-        open(
+        let controller = open(
             .collectibleDetail(
                 asset: asset,
                 account: account,
                 thumbnailImage: thumbnailImage
             ),
             by: .push
-        )
+        ) as? CollectibleDetailViewController
+        controller?.eventHandlers.didOptOutAssetFromAccount = {
+            [weak self] (asset, account) in
+            guard let self = self else {
+                return
+            }
+
+            controller?.popScreen()
+
+            self.bannerController?.presentSuccessBanner(
+                title: "collectible-detail-opt-out-success".localized(
+                    params: asset.title ?? asset.name ?? .empty
+                )
+            )
+
+            NotificationCenter.default.post(
+                name: CollectibleListLocalDataController.didAddPendingRemovedCollectible,
+                object: self,
+                userInfo: [
+                    CollectibleListLocalDataController.assetUserInfoKey: (account, asset)
+                ]
+            )
+        }
     }
 
     private func openReceiveCollectibleAccountList() {

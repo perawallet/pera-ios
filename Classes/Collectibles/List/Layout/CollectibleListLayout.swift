@@ -62,11 +62,14 @@ extension CollectibleListLayout {
         case .loading:
             insets.bottom = 8
             return insets
+        case .infoWithFilter:
+            insets.top = 24
+            return insets
         case .search:
             insets.top = 20
             return insets
         case .collectibles:
-            insets.top = 24
+            insets.top = 16
             insets.bottom = 8
             return insets
         }
@@ -101,6 +104,12 @@ extension CollectibleListLayout {
                     collectionView
                 )
             }
+        case .infoWithFilter(let item):
+            return listView(
+                collectionView,
+                layout: collectionViewLayout,
+                sizeForInfoWithFilterItem: item.value
+            )
         case .search:
             return sizeForSearch(
                 collectionView,
@@ -139,7 +148,7 @@ extension CollectibleListLayout {
         let newSize = NoContentCell.calculatePreferredSize(
             item,
             for: NoContentCell.theme,
-            fittingIn:  CGSize((width, .greatestFiniteMagnitude))
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
 
         sizeCache[sizeCacheIdentifier] = newSize
@@ -179,6 +188,29 @@ extension CollectibleListLayout {
         let width = calculateContentWidth(for: listView)
         let height: LayoutMetric = 40
         let newSize = CGSize((width, height))
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    func listView(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout,
+        sizeForInfoWithFilterItem item: CollectibleListInfoWithFilterViewModel
+    )-> CGSize {
+        let sizeCacheIdentifier = CollectibleListInfoWithFilterCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+        let newSize = CollectibleListInfoWithFilterCell.calculatePreferredSize(
+            item,
+            for: CollectibleListInfoWithFilterCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
 
         sizeCache[sizeCacheIdentifier] = newSize
 

@@ -514,12 +514,8 @@ extension CollectibleDetailViewController {
         didComposedTransactionDataFor draft: TransactionSendDraft?
     ) {
         loadingController?.stopLoading()
-        asset.state = .pending(.remove)
 
-        let assetName = asset.title ?? asset.name ?? ""
-        bannerController?.presentSuccessBanner(title: "collectible-detail-opt-out-success".localized(params: assetName))
         eventHandlers.didOptOutAssetFromAccount?(asset, account)
-        popScreen()
     }
 
     func transactionController(

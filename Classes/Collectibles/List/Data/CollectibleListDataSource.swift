@@ -52,6 +52,16 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                     )
                     return cell
                 }
+            case .infoWithFilter(let item):
+                let cell = collectionView.dequeue(
+                    CollectibleListInfoWithFilterCell.self,
+                    at: indexPath
+                )
+                cell.isFilterSelected = item.isSelected
+                cell.bindData(
+                    item.value
+                )
+                return cell
             case .search:
                 let cell = collectionView.dequeue(
                     CollectibleListSearchInputCell.self,
@@ -107,6 +117,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
             CollectibleListItemReceiveCell.self,
             NoContentWithActionIllustratedCell.self,
             CollectibleListSearchInputCell.self,
+            CollectibleListInfoWithFilterCell.self,
             CollectibleListLoadingViewCell.self,
             NoContentCell.self,
         ].forEach {
