@@ -334,7 +334,7 @@ extension CollectibleListLocalDataController {
                 [
                     .empty(
                         .noContent(
-                            CollectiblesNoContentWithActionViewModel(hiddenNFTCount: self.hiddenNFTsCount)
+                            CollectiblesNoContentWithActionViewModel(hiddenNFTsCount: self.hiddenNFTsCount)
                         )
                     )
                 ],

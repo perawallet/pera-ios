@@ -26,31 +26,31 @@ struct CollectiblesNoContentWithActionViewModel:
     private(set) var actionTitle: EditText?
     private(set) var secondaryActionTitle: EditText?
 
-    private let hiddenNFTCount: Int
+    private let hiddenNFTsCount: Int
 
     init(
-        hiddenNFTCount: Int
+        hiddenNFTsCount: Int
     ) {
-        self.hiddenNFTCount = hiddenNFTCount
+        self.hiddenNFTsCount = hiddenNFTsCount
 
         bindIcon()
         bindTitle()
         bindBody()
         bindActionTitle()
-        bindSecondaryActionTitle(hiddenNFTCount)
+        bindSecondaryActionTitle(hiddenNFTsCount)
     }
 
     func hash(
         into hasher: inout Hasher
     ) {
-        hasher.combine(hiddenNFTCount)
+        hasher.combine(hiddenNFTsCount)
     }
 
     static func == (
         lhs: Self,
         rhs: Self
     ) -> Bool {
-        return lhs.hiddenNFTCount == rhs.hiddenNFTCount
+        return lhs.hiddenNFTsCount == rhs.hiddenNFTsCount
     }
 }
 
@@ -102,14 +102,14 @@ extension CollectiblesNoContentWithActionViewModel {
     }
 
     private mutating func bindSecondaryActionTitle(
-        _ hiddenNFTCount: Int
+        _ hiddenNFTsCount: Int
     ) {
-        if hiddenNFTCount < 1 {
+        if hiddenNFTsCount < 1 {
             return
         }
 
         secondaryActionTitle = .string(
-            "collectibles-empty-secondary-action-title".localized(params: "\(hiddenNFTCount)")
+            "collectibles-empty-secondary-action-title".localized(params: "\(hiddenNFTsCount)")
         )
     }
 }
