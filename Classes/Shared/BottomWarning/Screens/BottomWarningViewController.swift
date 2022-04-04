@@ -19,7 +19,9 @@ import UIKit
 import MacaroonBottomSheet
 import MacaroonUIKit
 
-final class BottomWarningViewController: BaseScrollViewController {
+final class BottomWarningViewController:
+    BaseScrollViewController,
+    BottomSheetPresentable {
     private let viewConfigurator: BottomWarningViewConfigurator
 
     init(
