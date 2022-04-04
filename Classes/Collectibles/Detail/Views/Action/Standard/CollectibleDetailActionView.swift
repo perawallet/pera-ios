@@ -145,7 +145,7 @@ extension CollectibleDetailActionView {
         subtitleLabel.editText = viewModel.subtitle
     }
 
-    func configureSendButtonForHidingTransferOption() {
+    func hideSendAction() {
         sendButton.isHidden = true
     }
 

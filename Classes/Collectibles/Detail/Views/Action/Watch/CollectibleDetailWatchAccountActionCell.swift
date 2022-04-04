@@ -29,6 +29,6 @@ final class CollectibleDetailWatchAccountActionCell:
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
-        contextView.configureSendButtonForHidingTransferOption()
+        contextView.hideSendAction()
     }
 }

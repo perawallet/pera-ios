@@ -244,13 +244,11 @@ extension CollectibleDetailLayout {
     ) -> CGSize {
         let width = calculateContentWidth(listView)
 
-        let size = CollectibleMediaErrorCell.calculatePreferredSize(
+        return CollectibleMediaErrorCell.calculatePreferredSize(
             item,
             for: CollectibleMediaErrorCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
-
-        return size
     }
 
     private func listView(
@@ -260,13 +258,11 @@ extension CollectibleDetailLayout {
     ) -> CGSize {
         let width = calculateContentWidth(listView)
 
-        let size = CollectibleDetailActionCell.calculatePreferredSize(
+        return CollectibleDetailActionCell.calculatePreferredSize(
             item,
             for: CollectibleDetailActionCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
-
-        return size
     }
 
     private func listView(
@@ -276,13 +272,11 @@ extension CollectibleDetailLayout {
     ) -> CGSize {
         let width = calculateContentWidth(listView)
 
-        let size = CollectibleDetailOptedInActionCell.calculatePreferredSize(
+        return CollectibleDetailOptedInActionCell.calculatePreferredSize(
             item,
             for: CollectibleDetailOptedInActionCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
-
-        return size
     }
 
     private func listView(
@@ -292,13 +286,11 @@ extension CollectibleDetailLayout {
     ) -> CGSize {
         let width = calculateContentWidth(listView)
 
-        let size = CollectibleDescriptionCell.calculatePreferredSize(
+        return CollectibleDescriptionCell.calculatePreferredSize(
             item,
             for: CollectibleDescriptionCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
-
-        return size
     }
 
     private func listView(
@@ -308,13 +300,11 @@ extension CollectibleDetailLayout {
     ) -> CGSize {
         let width = calculateContentWidth(listView)
 
-        let size = CollectibleDetailInformationCell.calculatePreferredSize(
+        return CollectibleDetailInformationCell.calculatePreferredSize(
             CollectibleTransactionInfoViewModel(item),
             for: CollectibleDetailInformationCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
-
-        return size
     }
 
     private func listView(
@@ -322,13 +312,11 @@ extension CollectibleDetailLayout {
         layout listViewLayout: UICollectionViewLayout,
         sizeForPropertyItem item: CollectiblePropertyViewModel
     ) -> CGSize {
-        let size = CollectiblePropertyCell.calculatePreferredSize(
+        return CollectiblePropertyCell.calculatePreferredSize(
             item,
             for: CollectiblePropertyCell.theme,
             fittingIn: CGSize(width: CGFloat.greatestFiniteMagnitude, height: theme.propertyHeight)
         )
-
-        return size
     }
 
     private func listView(
@@ -338,13 +326,11 @@ extension CollectibleDetailLayout {
     ) -> CGSize {
         let width = calculateContentWidth(listView)
 
-        let size = CollectibleExternalSourceCell.calculatePreferredSize(
+        return CollectibleExternalSourceCell.calculatePreferredSize(
             item,
             for: CollectibleExternalSourceCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
-
-        return size
     }
 }
 
