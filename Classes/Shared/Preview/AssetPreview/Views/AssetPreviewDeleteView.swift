@@ -87,6 +87,9 @@ extension AssetPreviewDeleteView {
         assetTitleHorizontalStackView.addArrangedSubview(primaryAssetTitleLabel)
     }
     private func addSecondaryImage(_ theme: AssetPreviewDeleteViewTheme) {
+        secondaryImageView.snp.makeConstraints {
+            $0.lessThanSize(theme.verifyImageSize)
+        }
         assetTitleHorizontalStackView.addArrangedSubview(secondaryImageView)
     }
     private func addSecondaryAssetTitleLabel(_ theme: AssetPreviewDeleteViewTheme) {
@@ -124,6 +127,7 @@ extension AssetPreviewDeleteView {
             $0.trailing.equalTo(deleteButton.snp.leading).offset(-theme.assetValueTrailingPadding)
             $0.leading.equalTo(assetTitleVerticalStackView.snp.trailing).offset(theme.horizontalPadding)
             $0.centerY.equalTo(assetTitleVerticalStackView.snp.centerY)
+            $0.width.greaterThanOrEqualToSuperview().multipliedBy(theme.assetValueMinRatio)
         }
 
         addPrimaryAssetValueLabel(theme)
