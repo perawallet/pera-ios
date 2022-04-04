@@ -25,6 +25,7 @@ struct CollectibleListInfoWithFilterViewTheme:
     let minimumHorizontalSpacing: LayoutMetric
 
     let info: TextStyle
+    let infoMinWidthRatio: LayoutMetric
     let filterAction: ButtonStyle
 
     init(
@@ -37,6 +38,8 @@ struct CollectibleListInfoWithFilterViewTheme:
             .textOverflow(SingleLineFittingText()),
             .textColor(AppColors.Components.Text.main),
         ]
+        infoMinWidthRatio = 0.5
+
         filterAction = [
             .title(Self.getFilterActionTitle()),
             .titleColor([ .normal(AppColors.Components.Link.primary) ]),
@@ -58,7 +61,7 @@ extension CollectibleListInfoWithFilterViewTheme {
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
                     .textAlignment(.left),
-                    .lineBreakMode(.byWordWrapping),
+                    .lineBreakMode(.byTruncatingTail),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])

@@ -97,6 +97,7 @@ extension CollectibleListInfoWithFilterView {
 
         addSubview(infoView)
         infoView.snp.makeConstraints {
+            $0.width >= self * theme.infoMinWidthRatio
             $0.top == 0
             $0.leading == 0
             $0.bottom == 0
@@ -109,7 +110,7 @@ extension CollectibleListInfoWithFilterView {
         filterActionView.customizeAppearance(theme.filterAction)
 
         addSubview(filterActionView)
-        filterActionView.fitToHorizontalIntrinsicSize()
+        filterActionView.fitToIntrinsicSize()
         filterActionView.snp.makeConstraints {
             $0.top == 0
             $0.leading >= infoView.snp.trailing + theme.minimumHorizontalSpacing
