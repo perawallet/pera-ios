@@ -42,7 +42,9 @@ final class Account: ALGEntityModel {
     var appsLocalState: [ApplicationLocalState]?
     var appsTotalExtraPages: Int?
     var appsTotalSchema: ApplicationStateSchema?
-    var createdApps: [AlgorandApplication]?
+
+    var totalCreatedApps: Int
+
     var name: String?
     var type: AccountType = .standard
     var ledgerDetail: LedgerDetail?
@@ -76,10 +78,10 @@ final class Account: ALGEntityModel {
         appsLocalState = apiModel.appsLocalState
         appsTotalExtraPages = apiModel.appsTotalExtraPages
         appsTotalSchema = apiModel.appsTotalSchema
-        createdApps = apiModel.createdApps
         receivesNotification = true
         preferredOrder = AccountInformation.invalidOrder
         accountImage = AccountImageType.getRandomImage(for: type).rawValue
+        totalCreatedApps = apiModel.totalCreatedApps
     }
 
     init(
@@ -104,6 +106,7 @@ final class Account: ALGEntityModel {
         self.rekeyDetail = rekeyDetail
         self.preferredOrder = preferredOrder
         self.accountImage = accountImage ?? AccountImageType.getRandomImage(for: type).rawValue
+        self.totalCreatedApps = 0
     }
     
     init(
@@ -121,6 +124,7 @@ final class Account: ALGEntityModel {
         self.rekeyDetail = localAccount.rekeyDetail
         self.preferredOrder = localAccount.preferredOrder
         self.accountImage = localAccount.accountImage
+        self.totalCreatedApps = 0
     }
 
     func encode() -> APIModel {
@@ -141,7 +145,7 @@ final class Account: ALGEntityModel {
         apiModel.appsLocalState = appsLocalState
         apiModel.appsTotalExtraPages = appsTotalExtraPages
         apiModel.appsTotalSchema = appsTotalSchema
-        apiModel.createdApps = createdApps
+        apiModel.totalCreatedApps = totalCreatedApps
         return apiModel
     }
     
@@ -201,6 +205,7 @@ extension Account {
         var appsTotalExtraPages: Int?
         var appsTotalSchema: ApplicationStateSchema?
         var createdApps: [AlgorandApplication]?
+        var totalCreatedApps: Int
 
         init() {
             self.address = ""
@@ -223,6 +228,7 @@ extension Account {
             self.appsTotalExtraPages = nil
             self.appsTotalSchema = nil
             self.createdApps = nil
+            self.totalCreatedApps = 0
         }
 
         private enum CodingKeys: String, CodingKey {
@@ -246,6 +252,7 @@ extension Account {
             case appsTotalExtraPages = "apps-total-extra-pages"
             case appsTotalSchema = "apps-total-schema"
             case createdApps = "created-apps"
+            case totalCreatedApps = "total-created-apps"
         }
     }
 }
