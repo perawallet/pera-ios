@@ -136,8 +136,8 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
                 let loadingCell = cell as! AssetTransactionHistoryLoadingCell
                 loadingCell.stopAnimating()
             case .transactionHistoryLoading:
-                let loadingCell = cell as! TransactionHistoryLoadingCell
-                loadingCell.stopAnimating()
+                let loadingCell = cell as? TransactionHistoryLoadingCell
+                loadingCell?.stopAnimating()
             default:
                 break
             }

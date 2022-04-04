@@ -74,6 +74,6 @@ extension AssetPreviewViewModel {
     }
     
     private mutating func bindAssetSecondaryValue(_ value: String?) {
-        self.assetSecondaryAssetValue = .string(value.isNilOrEmpty ? "asset-no-value".localized : value)
+        self.assetSecondaryAssetValue = value.isNilOrEmpty ? nil : .string(value)
     }
 }
