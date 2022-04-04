@@ -27,8 +27,8 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let description: TextStyle
     let assetCodeLabel: TextStyle
     let assetNameLabel: TextStyle
-    let transactionTitleLabel: TextStyle
-    let transactionAmountLabel: TextStyle
+    let transactionFeeTitleLabel: TextStyle
+    let transactionFeeAmountLabel: TextStyle
     let verifiedImage: ImageStyle
     let assetIDLabel: TextStyle
     let copyIDButton: ButtonStyle
@@ -92,14 +92,14 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(13)),
             .titleColor([.normal(AppColors.Components.Text.main)])
         ]
-        self.transactionTitleLabel = [
+        self.transactionFeeTitleLabel = [
             .text("collectible-approve-transaction-fee".localized),
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
-        self.transactionAmountLabel = [
+        self.transactionFeeAmountLabel = [
             .textColor(AppColors.Shared.Helpers.negative),
             .font(Fonts.DMSans.medium.make(15)),
             .textAlignment(.right),

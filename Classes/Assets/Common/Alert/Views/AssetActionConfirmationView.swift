@@ -29,8 +29,8 @@ final class AssetActionConfirmationView: View {
     private lazy var assetIDLabel = Label()
     private lazy var copyIDButton = Button()
     private lazy var transactionView = HStackView()
-    private lazy var transactionTitleLabel = Label()
-    private lazy var transactionAmountLabel = Label()
+    private lazy var transactionFeeTitleLabel = Label()
+    private lazy var transactionFeeAmountLabel = Label()
     private lazy var detailLabel = Label()
     private lazy var actionButton = Button()
     private lazy var cancelButton = Button()
@@ -170,13 +170,13 @@ extension AssetActionConfirmationView {
     }
     
     private func addTransactionTitleLabel(_ theme: AssetActionConfirmationViewTheme) {
-        transactionTitleLabel.customizeAppearance(theme.transactionTitleLabel)
-        transactionView.addArrangedSubview(transactionTitleLabel)
+        transactionFeeTitleLabel.customizeAppearance(theme.transactionFeeTitleLabel)
+        transactionView.addArrangedSubview(transactionFeeTitleLabel)
     }
     
     private func addTransactionAmountLabel(_ theme: AssetActionConfirmationViewTheme) {
-        transactionAmountLabel.customizeAppearance(theme.transactionAmountLabel)
-        transactionView.addArrangedSubview(transactionAmountLabel)
+        transactionFeeAmountLabel.customizeAppearance(theme.transactionFeeAmountLabel)
+        transactionView.addArrangedSubview(transactionFeeAmountLabel)
     }
     
     private func addDetailLabel(_ theme: AssetActionConfirmationViewTheme) {
@@ -185,7 +185,7 @@ extension AssetActionConfirmationView {
         addSubview(detailLabel)
         detailLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(transactionTitleLabel.snp.bottom).offset(theme.transactionBottomPadding)
+            $0.top.equalTo(transactionFeeTitleLabel.snp.bottom).offset(theme.transactionBottomPadding)
             $0.top.equalTo(assetIDView.snp.bottom).offset(theme.descriptionTopInset).priority(.medium)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
@@ -224,7 +224,7 @@ extension AssetActionConfirmationView: ViewModelBindable {
             transactionView.removeFromSuperview()
         }
         
-        transactionAmountLabel.text = viewModel?.transactionFee
+        transactionFeeAmountLabel.text = viewModel?.transactionFee
         detailLabel.attributedText = viewModel?.detail
         actionButton.bindData(ButtonCommonViewModel(title: viewModel?.actionTitle))
         cancelButton.bindData(ButtonCommonViewModel(title: viewModel?.cancelTitle))
