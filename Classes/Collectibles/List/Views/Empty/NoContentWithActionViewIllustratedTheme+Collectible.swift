@@ -22,5 +22,12 @@ extension NoContentWithActionViewIllustratedTheme {
         action = action.modify(
             [ .icon( [.normal("icon-plus"), .highlighted("icon-plus")] ) ]
         )
+
+        secondaryAction = secondaryAction.modify(
+            [
+                .icon( [.normal("icon-eye".templateImage), .highlighted("icon-eye".templateImage)] ),
+                .tintColor(AppColors.Components.Button.Secondary.text)
+            ]
+        )
     }
 }

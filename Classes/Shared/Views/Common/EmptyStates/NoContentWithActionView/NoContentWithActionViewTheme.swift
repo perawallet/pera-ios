@@ -26,5 +26,7 @@ protocol NoContentViewWithActionTheme: ResultViewTheme {
     var actionCornerRadius: LayoutMetric { get }
     var actionTopMargin: LayoutMetric { get }
     var action: ButtonStyle { get }
+    var secondaryActionTopMargin: LayoutMetric { get }
+    var secondaryAction: ButtonStyle { get }
     var actionAlignment: NoContentWithActionView.ActionViewAlignment { get }
 }

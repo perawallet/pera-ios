@@ -17,17 +17,40 @@
 import Foundation
 import MacaroonUIKit
 
-struct CollectiblesNoContentWithActionViewModel: NoContentWithActionViewModel {
+struct CollectiblesNoContentWithActionViewModel:
+    NoContentWithActionViewModel,
+    Hashable {
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var body: EditText?
     private(set) var actionTitle: EditText?
+    private(set) var secondaryActionTitle: EditText?
 
-    init() {
+    private let hiddenNFTCount: Int
+
+    init(
+        hiddenNFTCount: Int
+    ) {
+        self.hiddenNFTCount = hiddenNFTCount
+
         bindIcon()
         bindTitle()
         bindBody()
         bindActionTitle()
+        bindSecondaryActionTitle(hiddenNFTCount)
+    }
+
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(hiddenNFTCount)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.hiddenNFTCount == rhs.hiddenNFTCount
     }
 }
 
@@ -76,5 +99,17 @@ extension CollectiblesNoContentWithActionViewModel {
 
     private mutating func bindActionTitle() {
         actionTitle = .string("collectibles-receive-action".localized)
+    }
+
+    private mutating func bindSecondaryActionTitle(
+        _ hiddenNFTCount: Int
+    ) {
+        if hiddenNFTCount < 1 {
+            return
+        }
+
+        secondaryActionTitle = .string(
+            "collectibles-empty-secondary-action-title".localized(params: "\(hiddenNFTCount)")
+        )
     }
 }

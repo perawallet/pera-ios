@@ -21,9 +21,9 @@ import MacaroonUIKit
 final class NoContentWithActionIllustratedCell:
     CollectionCell<NoContentWithActionView>,
     ViewModelBindable {
-    lazy var handlers = Handlers() {
+    lazy var handlers = NoContentWithActionView.Handlers() {
         didSet {
-            contextView.handlers.didTapActionView = handlers.didTapActionView
+            contextView.handlers = handlers
         }
     }
 
@@ -38,11 +38,5 @@ final class NoContentWithActionIllustratedCell:
         theme.configureForCollectiblesNoContentWithAction()
 
         contextView.customize(theme)
-    }
-}
-
-extension NoContentWithActionIllustratedCell {
-    struct Handlers {
-        var didTapActionView: EmptyHandler?
     }
 }

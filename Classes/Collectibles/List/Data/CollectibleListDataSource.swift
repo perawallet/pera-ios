@@ -33,13 +33,13 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                         CollectibleListLoadingViewCell.self,
                         at: indexPath
                     )
-                case .noContent:
+                case .noContent(let item):
                     let cell = collectionView.dequeue(
                         NoContentWithActionIllustratedCell.self,
                         at: indexPath
                     )
                     cell.bindData(
-                        CollectiblesNoContentWithActionViewModel()
+                        item
                     )
                     return cell
                 case .noContentSearch:

@@ -28,8 +28,10 @@ final class NoContentWithActionView:
     private lazy var contentView = UIView()
     private lazy var resultWithActionContainer = UIView()
     private lazy var resultView = ResultView()
+    private lazy var actionContentView = MacaroonUIKit.VStackView()
     private lazy var actionView = Button(.imageAtLeft(spacing: 12))
-    
+    private lazy var secondaryActionView = Button(.imageAtLeft(spacing: 12))
+
     override init(
         frame: CGRect
     ) {
@@ -52,7 +54,8 @@ final class NoContentWithActionView:
     ) {}
 
     func setListeners() {
-        actionView.addTarget(self, action: #selector(didTapActionView), for: .touchUpInside)
+        actionView.addTouch(target: self, action: #selector(didTapActionView))
+        secondaryActionView.addTouch(target: self, action: #selector(didTapSecondaryActionView))
     }
 
     func bindData(
@@ -60,6 +63,10 @@ final class NoContentWithActionView:
     ) {
         resultView.bindData(viewModel)
         actionView.setEditTitle(viewModel?.actionTitle, for: .normal)
+
+        let secondaryActionTitle = viewModel?.secondaryActionTitle
+        secondaryActionView.isHidden = secondaryActionTitle == nil
+        secondaryActionView.setEditTitle(secondaryActionTitle, for: .normal)
     }
 }
 
@@ -90,7 +97,7 @@ extension NoContentWithActionView {
         }
 
         addResult(theme)
-        addAction(theme)
+        addActionContent(theme)
     }
 
     private func addResult(
@@ -104,22 +111,48 @@ extension NoContentWithActionView {
         }
     }
 
+    private func addActionContent(
+        _ theme: NoContentViewWithActionTheme
+    ) {
+        actionContentView.spacing = theme.secondaryActionTopMargin
+        actionContentView.alignment = .center
+
+        resultWithActionContainer.addSubview(actionContentView)
+        actionContentView.snp.makeConstraints {
+            $0.top == resultView.snp.bottom + theme.actionTopMargin
+            $0.setPaddings((.noMetric, 0, 0, 0))
+        }
+
+        addAction(theme)
+        addSecondaryAction(theme)
+    }
+
     private func addAction(
         _ theme: NoContentViewWithActionTheme
     ) {
         actionView.customizeAppearance(theme.action)
 
-        resultWithActionContainer.addSubview(actionView)
+        actionContentView.addArrangedSubview(actionView)
         actionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
         actionView.fitToIntrinsicSize()
-        actionView.snp.makeConstraints {
-            $0.top == resultView.snp.bottom + theme.actionTopMargin
-            $0.bottom == 0
-        }
 
         alignAction(actionView, for: theme.actionAlignment)
 
         actionView.draw(corner: Corner(radius: theme.actionCornerRadius))
+    }
+
+    private func addSecondaryAction(
+        _ theme: NoContentViewWithActionTheme
+    ) {
+        secondaryActionView.customizeAppearance(theme.secondaryAction)
+
+        actionContentView.addArrangedSubview(secondaryActionView)
+        secondaryActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
+        secondaryActionView.fitToIntrinsicSize()
+
+        alignAction(secondaryActionView, for: theme.actionAlignment)
+
+        secondaryActionView.draw(corner: Corner(radius: theme.actionCornerRadius))
     }
 
     private func alignAction(
@@ -157,10 +190,16 @@ extension NoContentWithActionView {
     private func didTapActionView() {
         handlers.didTapActionView?()
     }
+
+    @objc
+    private func didTapSecondaryActionView() {
+        handlers.didTapSecondaryActionView?()
+    }
 }
 
 extension NoContentWithActionView {
     struct Handlers {
         var didTapActionView: EmptyHandler?
+        var didTapSecondaryActionView: EmptyHandler?
     }
 }

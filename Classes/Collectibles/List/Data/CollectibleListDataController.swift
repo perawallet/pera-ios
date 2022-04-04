@@ -55,7 +55,7 @@ enum CollectibleListItem: Hashable {
 
 enum CollectibleEmptyItem: Hashable {
     case loading
-    case noContent
+    case noContent(CollectiblesNoContentWithActionViewModel)
     case noContentSearch
 }
 

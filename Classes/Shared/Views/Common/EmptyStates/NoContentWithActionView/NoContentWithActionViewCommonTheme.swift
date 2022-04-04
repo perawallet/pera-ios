@@ -31,6 +31,8 @@ struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
     let actionCornerRadius: LayoutMetric
     let actionTopMargin: LayoutMetric
     let action: ButtonStyle
+    let secondaryActionTopMargin: LayoutMetric
+    let secondaryAction: ButtonStyle
     let actionAlignment: NoContentWithActionView.ActionViewAlignment
 
     init(
@@ -54,6 +56,14 @@ struct NoContentWithActionViewCommonTheme: NoContentViewWithActionTheme {
             ),
             .font(Fonts.DMSans.medium.make(15)),
             .backgroundColor(AppColors.Components.Button.Primary.background)
+        ]
+        self.secondaryActionTopMargin = 16
+        self.secondaryAction = [
+            .titleColor(
+                [.normal(AppColors.Components.Button.Secondary.text)]
+            ),
+            .font(Fonts.DMSans.medium.make(15)),
+            .backgroundColor(AppColors.Components.Button.Secondary.background)
         ]
         self.actionAlignment = .centered
     }

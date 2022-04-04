@@ -22,6 +22,7 @@ struct HomeNoContentViewModel: NoContentWithActionViewModel, NoContentViewModel 
     private(set) var title: EditText?
     private(set) var body: EditText?
     private(set) var actionTitle: EditText?
+    private(set) var secondaryActionTitle: EditText?
 
     init() {
         bindIcon()

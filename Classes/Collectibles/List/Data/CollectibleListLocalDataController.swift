@@ -56,6 +56,7 @@ final class CollectibleListLocalDataController:
 
     private var lastQuery: String?
     private(set) var currentFilter: CollectiblesFilterSelectionViewController.Filter?
+    private var hiddenNFTsCount: Int = .zero
 
     init(
         galleryAccount: CollectibleGalleryAccount,
@@ -174,6 +175,7 @@ extension CollectibleListLocalDataController {
     private func deliverContentSnapshot(
         with query: String? = nil
     ) {
+        hiddenNFTsCount = .zero
         var collectibleItems: [CollectibleListItem] = []
 
         accounts.forEach { account in
@@ -186,6 +188,7 @@ extension CollectibleListLocalDataController {
                 .forEach { collectibleAsset in
                     if currentFilter != .optedInIncluded,
                        !collectibleAsset.isOwned {
+                        hiddenNFTsCount += 1
                         return
                     }
 
@@ -322,10 +325,19 @@ extension CollectibleListLocalDataController {
 
     private func deliverNoContentSnapshot() {
         deliverSnapshot {
+            [weak self] in
+            guard let self = self else { return Snapshot() }
+
             var snapshot = Snapshot()
             snapshot.appendSections([.empty])
             snapshot.appendItems(
-                [.empty(.noContent)],
+                [
+                    .empty(
+                        .noContent(
+                            CollectiblesNoContentWithActionViewModel(hiddenNFTCount: self.hiddenNFTsCount)
+                        )
+                    )
+                ],
                 toSection: .empty
             )
             return snapshot

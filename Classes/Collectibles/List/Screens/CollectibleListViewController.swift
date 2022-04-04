@@ -34,6 +34,7 @@ final class CollectibleListViewController:
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .onDrag
+        collectionView.contentInset.bottom = theme.listContentBottomInset
         collectionView.backgroundColor = .clear
         return collectionView
     }()
@@ -42,12 +43,15 @@ final class CollectibleListViewController:
     private lazy var listDataSource = CollectibleListDataSource(listView)
 
     private let dataController: CollectibleListDataController
+    private let theme: CollectibleListViewControllerTheme
 
     init(
         dataController: CollectibleListDataController,
+        theme: CollectibleListViewControllerTheme,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
+        self.theme = theme
         super.init(configuration: configuration)
     }
 
@@ -301,6 +305,17 @@ extension CollectibleListViewController {
             }
 
             self.openReceiveCollectibleAccountList()
+        }
+
+        cell.handlers.didTapSecondaryActionView = {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.dataController.filter(
+                forFilter: .optedInIncluded
+            )
         }
     }
 

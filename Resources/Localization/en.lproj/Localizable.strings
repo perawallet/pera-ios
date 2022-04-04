@@ -926,6 +926,7 @@
 // MARK: Collectible List
 "collectible-list-item-pending-title" = "Pending";
 "collectibles-list-input-placeholder" = "Search your NFTs";
+"collectibles-empty-secondary-action-title" =  "Show hidden NFTs (%@)";
 
 // MARK: Collectible Filter Selection
 "collectible-filter-selection-title" = "Filter";
