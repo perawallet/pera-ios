@@ -72,4 +72,5 @@ enum APIParamKey: String, CodingKey {
     case includesAll = "include-all"
     case walletAddress = "wallet_address"
     case redirectUrl = "redirect_url"
+    case exclude = "exclude"
 }
