@@ -43,6 +43,14 @@ final class ALGAsset:
         self.isFrozen = nil
         self.isDeleted = nil
     }
+
+    init(collectibleAsset: CollectibleAsset) {
+        self.id = collectibleAsset.id
+        self.creator = collectibleAsset.creator?.address
+        self.amount = collectibleAsset.amount
+        self.isFrozen = collectibleAsset.isFrozen
+        self.isDeleted = collectibleAsset.isDeleted
+    }
 }
 
 extension ALGAsset {

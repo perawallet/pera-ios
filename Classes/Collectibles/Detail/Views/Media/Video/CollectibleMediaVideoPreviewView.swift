@@ -67,7 +67,7 @@ extension CollectibleMediaVideoPreviewView {
             self,
             selector: #selector(playerItemDidReachEnd),
             name: .AVPlayerItemDidPlayToEndTime,
-            object: self.videoPlayerView.player?.currentItem
+            object: videoPlayerView.player?.currentItem
         )
     }
 

@@ -59,7 +59,7 @@ extension CollectibleDetailAPIDataController {
             switch response {
             case .success(let asset):
                 self.asset = CollectibleAsset(
-                    asset: ALGAsset(id: asset.id),
+                    asset: ALGAsset(collectibleAsset: self.asset),
                     decoration: asset
                 )
 
@@ -146,9 +146,63 @@ extension CollectibleDetailAPIDataController {
     private func addActionContent(
         _ snapshot: inout Snapshot
     ) {
+        if account.isWatchAccount() {
+            addWatchAccountActionContent(&snapshot)
+            return
+        }
+
+        if asset.isOwned {
+            addStandardActionContent(&snapshot)
+            return
+        }
+
+        addOptedInActionContent(&snapshot)
+    }
+
+    private func addWatchAccountActionContent(
+        _ snapshot: inout Snapshot
+    ) {
+        let actionItem: [CollectibleDetailItem] = [
+            .watchAccountAction(
+                CollectibleDetailActionViewModel(
+                    asset: asset,
+                    account: account
+                )
+            )
+        ]
+
+        snapshot.appendSections([.action])
+        snapshot.appendItems(
+            actionItem,
+            toSection: .action
+        )
+    }
+
+    private func addStandardActionContent(
+        _ snapshot: inout Snapshot
+    ) {
         let actionItem: [CollectibleDetailItem] = [
             .action(
                 CollectibleDetailActionViewModel(
+                    asset: asset,
+                    account: account
+                )
+            )
+        ]
+
+        snapshot.appendSections([.action])
+        snapshot.appendItems(
+            actionItem,
+            toSection: .action
+        )
+    }
+
+    private func addOptedInActionContent(
+        _ snapshot: inout Snapshot
+    ) {
+        let actionItem: [CollectibleDetailItem] = [
+            .optedInAction(
+                CollectibleDetailOptedInActionViewModel(
                     asset: asset,
                     account: account
                 )

@@ -28,8 +28,8 @@ final class ManageAssetsViewController: BaseViewController {
     private lazy var contextView = ManageAssetsView()
     
     private var account: Account
-    private var listItems: [Asset]
-    private var accountAssets: [Asset] = []
+    private var allAssets: [Asset]
+    private var currentAssets: [Asset]
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
@@ -40,9 +40,13 @@ final class ManageAssetsViewController: BaseViewController {
         return TransactionController(api: api, bannerController: bannerController)
     }()
 
-    init(account: Account, configuration: ViewControllerConfiguration) {
+    init(
+        account: Account,
+        configuration: ViewControllerConfiguration
+    ) {
         self.account = account
-        self.listItems = account.allAssets
+        self.allAssets = account.allAssets
+        self.currentAssets = account.allAssets
         super.init(configuration: configuration)
     }
 
@@ -96,11 +100,11 @@ extension ManageAssetsViewController {
 
 extension ManageAssetsViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return listItems.count
+        return allAssets.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let asset = listItems[safe: indexPath.item] else {
+        guard let asset = allAssets[safe: indexPath.item] else {
             fatalError("Not found asset.")
         }
 
@@ -134,11 +138,11 @@ extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
 
 extension ManageAssetsViewController {
     private func fetchAssets() {
-        accountAssets.removeAll()
+        currentAssets.removeAll()
         
         account.allAssets.forEach {
             if !$0.state.isPending {
-                accountAssets.append($0)
+                currentAssets.append($0)
             }
         }
         
@@ -146,7 +150,7 @@ extension ManageAssetsViewController {
     }
 
     private func loadAssets() {
-        listItems = accountAssets
+        allAssets = currentAssets
         reloadAssets()
     }
     
@@ -156,7 +160,7 @@ extension ManageAssetsViewController {
     }
 
     private func filterData(with query: String) { 
-        listItems = account.allAssets.filter { asset in
+        allAssets = currentAssets.filter { asset in
             isAssetContainsID(asset, query: query) ||
             isAssetContainsName(asset, query: query) ||
             isAssetContainsUnitName(asset, query: query)
@@ -196,7 +200,7 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
 extension ManageAssetsViewController: AssetPreviewDeleteCellDelegate {
     func assetPreviewDeleteCellDidDelete(_ assetPreviewDeleteCell: AssetPreviewDeleteCell) {
         guard let indexPath = contextView.assetsCollectionView.indexPath(for: assetPreviewDeleteCell),
-              let asset = listItems[safe: indexPath.item] else {
+              let asset = allAssets[safe: indexPath.item] else {
                   return
         }
         

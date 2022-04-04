@@ -12,23 +12,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleDetailWatchAccountActionCell.swift
+//   Collectible3DViewerTheme.swift
 
-import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class CollectibleDetailWatchAccountActionCell:
-    CollectionCell<CollectibleDetailActionView>,
-    UIInteractionObservable {
-    override class var contextPaddings: LayoutPaddings {
-        return (0, 24, 0, 24)
-    }
+struct Collectible3DViewerTheme:
+    StyleSheet,
+    LayoutSheet {
+    let close: ButtonStyle
 
-    override init(
-        frame: CGRect
+    let butonSize: LayoutSize
+    let buttonTopPadding: LayoutMetric
+    let buttonLeadingPadding: LayoutMetric
+
+    init(
+        _ family: LayoutFamily
     ) {
-        super.init(frame: frame)
-        contextView.customize(CollectibleDetailActionViewTheme())
+        close = [
+            .icon([.normal("icon-close")])
+        ]
+
+        butonSize = (44, 44)
+        buttonTopPadding = 12
+        buttonLeadingPadding = 20
     }
 }

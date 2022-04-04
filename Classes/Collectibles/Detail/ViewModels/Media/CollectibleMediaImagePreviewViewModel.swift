@@ -27,7 +27,6 @@ struct CollectibleMediaImagePreviewViewModel: ViewModel {
     init(
         imageSize: CGSize,
         asset: CollectibleAsset,
-        account: Account?,
         media: Media?
     ) {
         bindImage(
@@ -36,7 +35,7 @@ struct CollectibleMediaImagePreviewViewModel: ViewModel {
             media: media
         )
 
-        bindOwned(account)
+        bindOwned(asset)
     }
 }
 
@@ -51,7 +50,7 @@ extension CollectibleMediaImagePreviewViewModel {
         if let imageURL = media?.previewURL {
             let prismURL = PrismURL(baseURL: imageURL)
                 .setExpectedImageSize(imageSize)
-                .setResizeMode(.fit)
+                .setImageQuality(.normal)
                 .build()
 
             image = PNGImageSource(
@@ -68,8 +67,10 @@ extension CollectibleMediaImagePreviewViewModel {
         )
     }
 
-    private mutating func bindOwned(_ account: Account?) {
-        isOwned = account != nil
+    private mutating func bindOwned(
+        _ asset: CollectibleAsset
+    ) {
+        isOwned = asset.isOwned
     }
 }
 

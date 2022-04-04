@@ -23,11 +23,11 @@ struct CollectibleMediaVideoPreviewViewModel: ViewModel {
     private(set) var isOwned: Bool = true
 
     init(
-        media: Media,
-        account: Account?
+        asset: CollectibleAsset,
+        media: Media
     ) {
         bindURL(media)
-        bindOwned(account)
+        bindOwned(asset)
     }
 }
 
@@ -43,8 +43,8 @@ extension CollectibleMediaVideoPreviewViewModel {
     }
 
     private mutating func bindOwned(
-        _ account: Account?
+        _ asset: CollectibleAsset
     ) {
-        isOwned = account != nil
+        isOwned = asset.isOwned
     }
 }

@@ -52,6 +52,7 @@ extension CollectibleListItemViewModel {
         if let thumbnailImage = asset.thumbnailImage {
             let prismURL = PrismURL(baseURL: thumbnailImage)
                 .setExpectedImageSize(imageSize)
+                .setImageQuality(.normal)
                 .setResizeMode(.fit)
                 .build()
 
@@ -125,6 +126,10 @@ extension CollectibleListItemViewModel {
         switch asset.mediaType {
         case .video:
             return "badge-video".uiImage
+        case .mixed:
+            return "badge-mixed".uiImage
+        case .unknown:
+            return "badge-unknown".uiImage
         default:
             return nil
         }

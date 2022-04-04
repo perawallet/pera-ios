@@ -23,16 +23,13 @@ final class CollectibleMediaPreviewDataSource:
     UICollectionViewDataSource {
     private let theme: CollectibleMediaPreviewViewController.Theme
     private let asset: CollectibleAsset
-    private let account: Account?
 
     init(
         theme: CollectibleMediaPreviewViewController.Theme,
-        asset: CollectibleAsset,
-        account: Account?
+        asset: CollectibleAsset
     ) {
         self.theme = theme
         self.asset = asset
-        self.account = account
     }
 }
 
@@ -65,7 +62,6 @@ extension CollectibleMediaPreviewDataSource {
                 CollectibleMediaImagePreviewViewModel(
                     imageSize: CGSize((width.float(), width.float())),
                     asset: asset,
-                    account: account,
                     media: media
                 )
             )
@@ -79,8 +75,8 @@ extension CollectibleMediaPreviewDataSource {
 
             cell.bindData(
                 CollectibleMediaVideoPreviewViewModel(
-                    media: media,
-                    account: account
+                    asset: asset,
+                    media: media
                 )
             )
 
@@ -95,7 +91,6 @@ extension CollectibleMediaPreviewDataSource {
                 CollectibleMediaImagePreviewViewModel(
                     imageSize: CGSize((width.float(), width.float())),
                     asset: asset,
-                    account: account,
                     media: nil
                 )
             )

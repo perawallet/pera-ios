@@ -29,6 +29,10 @@ final class CollectibleListItemView:
     private lazy var subtitle = Label()
     private lazy var topLeftBadge = ImageView()
     private lazy var bottomLeftBadge = ImageView()
+
+    var currentImage: UIImage? {
+        return image.imageContainer.image
+    }
     
     func customize(
         _ theme: CollectibleListItemViewTheme

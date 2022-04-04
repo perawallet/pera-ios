@@ -16,6 +16,7 @@
 
 import UIKit
 import MacaroonUIKit
+import AVFoundation
 
 final class CollectibleMediaPreviewViewController:
     BaseViewController,
@@ -74,20 +75,19 @@ final class CollectibleMediaPreviewViewController:
 
     private lazy var dataSource = CollectibleMediaPreviewDataSource(
         theme: theme,
-        asset: asset,
-        account: account
+        asset: asset
     )
 
     private var asset: CollectibleAsset
-    private let account: Account?
+    private let thumbnailImage: UIImage?
 
     init(
         asset: CollectibleAsset,
-        account: Account?,
+        thumbnailImage: UIImage?,
         configuration: ViewControllerConfiguration
     ) {
         self.asset = asset
-        self.account = account
+        self.thumbnailImage = thumbnailImage
         super.init(configuration: configuration)
     }
 
@@ -240,7 +240,45 @@ extension CollectibleMediaPreviewViewController {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        eventHandler?(.didSelectMedia(asset.media[safe: indexPath.item]))
+        guard let media = asset.media[safe: indexPath.item] else {
+            return
+        }
+
+        open3DCard(
+            for: media,
+            at: indexPath
+        )
+
+        eventHandler?(.didSelectMedia(media, indexPath))
+    }
+
+    private func open3DCard(
+        for media: Media,
+        at indexPath: IndexPath
+    ) {
+        switch media.type {
+        case .image:
+            if let cell = listView.cellForItem(at: indexPath) as? CollectibleMediaImagePreviewCell,
+               let image = cell.contextView.currentImage {
+                open(
+                    .image3DCard(
+                        image: image
+                    ),
+                    by: .presentWithoutNavigationController
+                )
+            }
+        case .video:
+            if let url = media.downloadURL {
+                open(
+                    .video3DCard(
+                        image: thumbnailImage,
+                        url: url
+                    ),
+                    by: .presentWithoutNavigationController
+                )
+            }
+        default: break
+        }
     }
 
     func scrollViewWillEndDragging(
@@ -284,6 +322,6 @@ extension CollectibleMediaPreviewViewController {
 extension CollectibleMediaPreviewViewController {
     enum Event {
         case didScrollToMedia(Media?)
-        case didSelectMedia(Media?)
+        case didSelectMedia(Media, IndexPath)
     }
 }
