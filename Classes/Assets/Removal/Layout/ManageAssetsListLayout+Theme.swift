@@ -12,18 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetPreviewDeleteCell.swift
+//   ManageAssetsListLayout+Theme.swift
 
-import UIKit
+import Foundation
 import MacaroonUIKit
+import UIKit
 
-final class AssetPreviewDeleteCell: CollectionCell<AssetPreviewDeleteView>,
-    ViewModelBindable,
-    UIInteractionObservable {
-    static let theme = AssetPreviewDeleteViewTheme()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
+extension ManageAssetsListLayout {
+    struct Theme:
+        LayoutSheet,
+        StyleSheet {
+        let cellSize: LayoutSize
+        
+        init(_ family: LayoutFamily) {
+            self.cellSize = (UIScreen.main.bounds.width - 48, 72)
+        }
     }
 }

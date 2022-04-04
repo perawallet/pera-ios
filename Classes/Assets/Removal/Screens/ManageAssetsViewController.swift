@@ -20,18 +20,19 @@ import MagpieHipo
 
 final class ManageAssetsViewController: BaseViewController {
     weak var delegate: ManageAssetsViewControllerDelegate?
-
+    
     private lazy var theme = Theme()
+    
+    private lazy var listLayout = ManageAssetsListLayout()
+    private lazy var dataSource = ManageAssetsListDataSource(contextView.assetsCollectionView)
+    private lazy var dataController = ManageAssetsListDataController(account, sharedDataController)
 
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
     
     private lazy var contextView = ManageAssetsView()
     
     private var account: Account
-    
-    private var listItems = [CompoundAsset]()
-    private var accountAssets = [CompoundAsset]()
-    
+        
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
     private lazy var transactionController: TransactionController = {
@@ -51,11 +52,38 @@ final class ManageAssetsViewController: BaseViewController {
         addBarButtons()
     }
     
-    override func linkInteractors() {
-        contextView.assetsCollectionView.delegate = self
-        contextView.assetsCollectionView.dataSource = self
+    override func setListeners() {
+        contextView.assetsCollectionView.dataSource = dataSource
+        contextView.assetsCollectionView.delegate = listLayout
         contextView.setSearchInputDelegate(self)
         transactionController.delegate = self
+        setListLayoutListeners()
+    }
+    
+    private func setListLayoutListeners() {
+        listLayout.handlers.willDisplay = {
+            [weak self] cell, indexPath in
+            guard let self = self,
+                  let itemIdentifier = self.dataSource.itemIdentifier(for: indexPath),
+                  let asset = self.dataController[indexPath.item] else {
+                      return
+                  }
+            
+            switch itemIdentifier {
+            case .asset:
+                let assetCell = cell as! AssetPreviewDeleteCell
+                assetCell.observe(event: .delete) {
+                    [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    
+                    self.showAlertToDelete(asset)
+                }
+            default:
+                break
+            }
+        }
     }
     
     override func prepareLayout() {
@@ -69,18 +97,28 @@ final class ManageAssetsViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        fetchAssets()
+        
+        dataController.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            
+            switch event {
+            case .didUpdate(let snapshot):
+                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared) {
+                    self.contextView.assetsCollectionView.reloadData()
+                }
+            }
+        }
+        
+        dataController.load()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
         transactionController.stopBLEScan()
         loadingController?.stopLoading()
         transactionController.stopTimer()
-    }
-    
-    override func configureAppearance() {
-        contextView.updateContentStateView()
     }
 }
 
@@ -95,110 +133,42 @@ extension ManageAssetsViewController {
     }
 }
 
-extension ManageAssetsViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return listItems.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let currency = sharedDataController.currency.value
-        let assetDetail = listItems[indexPath.item].detail
-        let assetBase = listItems[indexPath.item].base
-        
-        let cell = collectionView.dequeue(AssetPreviewDeleteCell.self, at: indexPath)
-        let assetPreviewModel = AssetPreviewModelAdapter.adaptAssetSelection((assetDetail, assetBase, currency))
-        cell.customize(theme.assetPreviewDeleteViewTheme)
-        cell.bindData(AssetPreviewViewModel(assetPreviewModel))
-        cell.delegate = self
-        return cell
-    }
-}
-
-extension ManageAssetsViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return CGSize(theme.cellSize)
-    }
-}
-
-extension ManageAssetsViewController {
-    private func fetchAssets() {
-        accountAssets.removeAll()
-        
-        account.compoundAssets.forEach {
-            if !$0.detail.isRemoved {
-                accountAssets.append($0)
-            }
-        }
-        
-        loadAssets()
-    }
-    private func loadAssets() {
-        listItems = accountAssets
-        reloadAssets()
-    }
-    
-    private func reloadAssets() {
-        contextView.assetsCollectionView.reloadData()
-        contextView.updateContentStateView()
-    }
-    
-    private func filterData(with query: String) {
-        listItems = accountAssets.filter {
-            String($0.id).contains(query) ||
-            $0.detail.name.unwrap(or: "").containsCaseInsensitive(query) ||
-            $0.detail.unitName.unwrap(or: "").containsCaseInsensitive(query)
-        }
-        reloadAssets()
-    }
-}
-
 extension ManageAssetsViewController: SearchInputViewDelegate {
     func searchInputViewDidEdit(_ view: SearchInputView) {
-        guard let query = view.text,
-              !query.isEmpty else {
-                  fetchAssets()
-                  return
+        guard let query = view.text else {
+            dataController.resetSearch()
+            return
         }
-        filterData(with: query)
+        
+        if query.isEmpty {
+            dataController.resetSearch()
+            return
+        }
+        
+        dataController.search(for: query)
     }
     
     func searchInputViewDidReturn(_ view: SearchInputView) {
         view.endEditing()
     }
+    
+    func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
+        dataController.resetSearch()
+    }
 }
 
-extension ManageAssetsViewController: AssetPreviewDeleteCellDelegate {
-    func assetPreviewDeleteCellDidDelete(_ assetPreviewDeleteCell: AssetPreviewDeleteCell) {
-        guard let indexPath = contextView.assetsCollectionView.indexPath(for: assetPreviewDeleteCell),
-              let asset = listItems[safe: indexPath.item] else {
-                  return
-        }
-        
-        showAlertToDelete(asset)
-    }
-    
+extension ManageAssetsViewController {
     private func showAlertToDelete(_ asset: CompoundAsset) {
         let assetDetail = asset.detail
-        let assetAmount = account.amount(for: assetDetail)
         let assetAlertDraft: AssetAlertDraft
-        
-        guard let assetAmount = assetAmount else {
-            return
-        }
-        
+                
         assetAlertDraft = AssetAlertDraft(
             account: account,
             assetIndex: assetDetail.id,
             assetDetail: assetDetail,
             title: "asset-remove-confirmation-title".localized,
             detail: String(
-                format: assetAmount.isZero
-                    ? "asset-remove-confirmation-title".localized
-                    : "asset-remove-transaction-warning".localized,
+                format: "asset-remove-transaction-warning".localized,
                 "\(assetDetail.unitName ?? "title-unknown".localized)",
                 "\(account.name ?? "")"
             ),
@@ -266,10 +236,6 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
               let removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
                   return
               }
-
-        removedAssetDetail.isRemoved = true
-
-        fetchAssets()
         
         contextView.resetSearchInputView()
         
