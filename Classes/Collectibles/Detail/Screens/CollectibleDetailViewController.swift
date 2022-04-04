@@ -72,11 +72,13 @@ final class CollectibleDetailViewController:
 
     private lazy var mediaPreviewController = CollectibleMediaPreviewViewController(
         asset: asset,
+        thumbnailImage: thumbnailImage,
         configuration: configuration
     )
 
     private var asset: CollectibleAsset
     private let account: Account
+    private let thumbnailImage: UIImage?
     private let dataController: CollectibleDetailDataController
 
     private var displayedMedia: Media?
@@ -84,10 +86,12 @@ final class CollectibleDetailViewController:
     init(
         asset: CollectibleAsset,
         account: Account,
+        thumbnailImage: UIImage?,
         configuration: ViewControllerConfiguration
     ) {
         self.asset = asset
         self.account = account
+        self.thumbnailImage = thumbnailImage
         self.dataController = CollectibleDetailAPIDataController(
             api: configuration.api!,
             asset: asset,
@@ -295,10 +299,9 @@ extension CollectibleDetailViewController {
             guard let self = self else { return }
 
             switch event {
-            case .didSelectMedia:
-                break
             case .didScrollToMedia(let media):
                 self.displayedMedia = media
+            default: break
             }
         }
     }

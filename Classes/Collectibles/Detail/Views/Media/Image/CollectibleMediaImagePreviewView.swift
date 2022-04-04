@@ -27,6 +27,10 @@ final class CollectibleMediaImagePreviewView:
     private lazy var image = URLImageView()
     private lazy var overlayView = UIView()
 
+    var currentImage: UIImage? {
+        return image.imageContainer.image
+    }
+
     func customize(
         _ theme: CollectibleMediaImagePreviewViewTheme
     ) {
@@ -54,9 +58,7 @@ extension CollectibleMediaImagePreviewView {
         addSubview(image)
         image.fitToIntrinsicSize()
         image.snp.makeConstraints {
-            $0.width == snp.width
-            $0.height == image.snp.width
-            $0.setPaddings((0, 0, .noMetric, 0))
+            $0.setPaddings()
         }
     }
 

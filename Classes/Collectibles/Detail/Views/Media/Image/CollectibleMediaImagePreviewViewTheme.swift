@@ -27,11 +27,40 @@ struct CollectibleMediaImagePreviewViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        self.image = CollectibleListItemImageViewTheme()
+        self.image = CollectibleDetailImageTheme()
         self.overlay = [
             .backgroundColor(AppColors.Shared.System.background)
         ]
         
         self.corner = Corner(radius: 4)
+    }
+}
+
+struct CollectibleDetailImageTheme: URLImageViewStyleSheet {
+    struct PlaceholderTheme: URLImagePlaceholderViewStyleSheet {
+        let background: ViewStyle
+        let image: ImageStyle
+        let text: TextStyle
+
+        init() {
+            self.background = [
+                .backgroundColor(AppColors.Shared.Layer.grayLighter)
+            ]
+            self.image = []
+            self.text = [
+                .textColor(AppColors.Components.Text.gray),
+                .textOverflow(FittingText())
+            ]
+        }
+    }
+
+    let background: ViewStyle
+    let content: ImageStyle
+    let placeholder: URLImagePlaceholderViewStyleSheet?
+
+    init() {
+        self.background = []
+        self.content = .aspectFit()
+        self.placeholder = PlaceholderTheme()
     }
 }

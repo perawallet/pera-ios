@@ -648,10 +648,11 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-        case let .collectibleDetail(asset, account):
+        case let .collectibleDetail(asset, account, thumbnailImage):
             viewController = CollectibleDetailViewController(
                 asset: asset,
                 account: account,
+                thumbnailImage: thumbnailImage,
                 configuration: configuration
             )
         case let .sendCollectible(draft, transactionController, uiInteractions):
@@ -684,6 +685,17 @@ class Router:
             ]
 
             viewController = activityController
+        case .image3DCard(let image):
+            viewController = Collectible3DImageViewController(
+                image: image,
+                configuration: configuration
+            )
+        case .video3DCard(let image, let url):
+            viewController = Collectible3DVideoViewController(
+                image: image,
+                url: url,
+                configuration: configuration
+            )
         case .buyAlgoHome(let draft, let delegate):
             let buyAlgoHomeScreen = BuyAlgoHomeScreen(
                 draft: draft,
