@@ -81,7 +81,7 @@ extension Account {
     }
 
     func hasDifferentApps(than account: Account) -> Bool {
-        return createdApps?.count != account.createdApps?.count || appsLocalState?.count != account.appsLocalState?.count
+        return totalCreatedApps != account.totalCreatedApps || appsLocalState?.count != account.appsLocalState?.count
     }
 
     var hasMinAmountFields: Bool {
@@ -89,7 +89,7 @@ extension Account {
     }
 
    private var isThereAnyCreatedApps: Bool {
-        return !createdApps.isNilOrEmpty
+       return totalCreatedApps > 0
     }
 
     private var isThereAnyOptedApps: Bool {
@@ -208,7 +208,6 @@ extension Account {
         appsLocalState = account.appsLocalState
         appsTotalExtraPages = account.appsTotalExtraPages
         appsTotalSchema = account.appsTotalSchema
-        createdApps = account.createdApps
         preferredOrder = account.preferredOrder
         accountImage = account.accountImage
 

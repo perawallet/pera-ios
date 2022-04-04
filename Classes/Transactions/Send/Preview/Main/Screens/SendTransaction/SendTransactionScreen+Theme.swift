@@ -26,7 +26,7 @@ extension SendTransactionScreen {
         let nextButtonStyle: ButtonTheme
         let disabledValueLabelStyle: TextStyle
         let valueLabelStyle: TextStyle
-        let usdValueLabelStyle: TextStyle
+        let currencyValueLabelStyle: TextStyle
         let accountContainerCorner: Corner
         let accountContainerBorder: Border
         let accountContainerFirstShadow: MacaroonUIKit.Shadow
@@ -55,7 +55,7 @@ extension SendTransactionScreen {
                 .textAlignment(.center),
                 .textOverflow(SingleLineFittingText())
             ]
-            usdValueLabelStyle = [
+            currencyValueLabelStyle = [
                 .textColor(AppColors.Components.Button.TransactionShadow.text),
                 .font(Fonts.DMMono.regular.make(15)),
                 .textAlignment(.center),

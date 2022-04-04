@@ -26,9 +26,11 @@ struct AssetPreviewDeleteViewTheme: StyleSheet, LayoutSheet {
     let secondaryImageLeadingPadding: LayoutMetric
     
     let primaryAssetValue: TextStyle
+    let verifyImageSize: LayoutSize
     let secondaryAssetValue: TextStyle
     let assetValueTrailingPadding: LayoutMetric
     let assetValueVerticalPadding: LayoutMetric
+    let assetValueMinRatio: LayoutMetric
     
     let button: ButtonStyle
     let buttonSize: LayoutSize
@@ -43,13 +45,13 @@ struct AssetPreviewDeleteViewTheme: StyleSheet, LayoutSheet {
         
         self.primaryAssetTitle = [
             .font(Fonts.DMSans.regular.make(15)),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.main),
             .textAlignment(.left)
         ]
         self.secondaryAssetTitle = [
             .font(Fonts.DMSans.regular.make(13)),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.grayLighter),
             .textAlignment(.left)
         ]
@@ -57,18 +59,20 @@ struct AssetPreviewDeleteViewTheme: StyleSheet, LayoutSheet {
         
         self.primaryAssetValue = [
             .font(Fonts.DMMono.regular.make(15)),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.main),
             .textAlignment(.right)
         ]
+        self.verifyImageSize = (20, 20)
         self.secondaryAssetValue = [
             .font(Fonts.DMSans.regular.make(13)),
-            .textOverflow(SingleLineFittingText()),
+            .textOverflow(SingleLineText()),
             .textColor(AppColors.Components.Text.grayLighter),
             .textAlignment(.right)
         ]
         self.assetValueTrailingPadding = 20
         self.assetValueVerticalPadding = 14
+        self.assetValueMinRatio = 0.35
         
         self.button = [
             .icon([.normal("icon-asset-delete")]),

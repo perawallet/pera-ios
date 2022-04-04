@@ -12,14 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  PasshraseMnemonicNumberHeaderSupplementaryView.swift
+//   ManageAssetsListLayout+Theme.swift
 
+import Foundation
+import MacaroonUIKit
 import UIKit
 
-class PasshraseMnemonicNumberHeaderSupplementaryView: BaseSupplementaryView<PasshraseMnemonicNumberHeaderView> {
-
-    func bind(_ viewModel: PasshraseMnemonicNumberHeaderViewModel) {
-        contextView.bind(viewModel)
+extension ManageAssetsListLayout {
+    struct Theme:
+        LayoutSheet,
+        StyleSheet {
+        let cellSize: LayoutSize
+        
+        init(_ family: LayoutFamily) {
+            self.cellSize = (UIScreen.main.bounds.width - 48, 72)
+        }
     }
 }

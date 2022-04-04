@@ -380,12 +380,29 @@ extension TransactionHistoryContextViewModel {
     ) -> String? {
         guard let amount = amount,
               let currency = transactionDependency.currency,
-              let currencyPriceValue = currency.priceValue,
-              !(currency is AlgoCurrency)
+              let currencyPriceValue = currency.priceValue
         else {
             return nil
         }
+        
+        if let algoCurrency = currency as? AlgoCurrency {
+            return getUsdCurrencyValue(from: algoCurrency.currency, and: amount)
+        }
 
+        let totalAmount = amount * currencyPriceValue
+        return totalAmount.toCurrencyStringForLabel(with: currency.symbol)
+    }
+    
+    private func getUsdCurrencyValue(
+        from currency: Currency,
+        and amount: Decimal?
+    ) -> String? {
+        guard let amount = amount,
+              let currencyPriceValue = currency.priceValue
+        else {
+            return nil
+        }
+        
         let totalAmount = amount * currencyPriceValue
         return totalAmount.toCurrencyStringForLabel(with: currency.symbol)
     }

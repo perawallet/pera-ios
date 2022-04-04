@@ -40,6 +40,11 @@ final class SendTransactionPreviewViewModel: ViewModel {
         guard let amount = draft.amount else {
             return
         }
+        
+        if let algoCurrency = currency as? AlgoCurrency {
+            bindAlgoTransactionPreview(draft, with: algoCurrency.currency)
+            return
+        }
 
         let currencyString: String?
 

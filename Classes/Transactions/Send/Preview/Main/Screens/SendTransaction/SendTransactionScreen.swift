@@ -32,7 +32,7 @@ final class SendTransactionScreen: BaseViewController {
     private lazy var numpadView = NumpadView(mode: .decimal)
     private lazy var noteButton = Button()
     private lazy var maxButton = Button()
-    private lazy var usdValueLabel = UILabel()
+    private lazy var currencyValueLabel = UILabel()
     private lazy var valueLabel = UILabel()
 
     private let theme = Theme()
@@ -234,29 +234,37 @@ extension SendTransactionScreen {
             }
         }
 
-        if let currency = sharedDataController.currency.value,
-           let currencyPriceValue = currency.priceValue,
-           let amount = amountValue.decimalAmount {
-
-            switch draft.transactionMode {
-            case let .asset(asset):
-                if let standardAsset = asset as? StandardAsset,
-                   let assetUSDValue = standardAsset.usdValue,
-                   let currencyUsdValue = currency.usdValue {
-                    let currencyValue = assetUSDValue * amount * currencyUsdValue
-                    usdValueLabel.text = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
-                } else {
-                    usdValueLabel.text = nil
-                }
-            case .algo:
-                let usdValue = currencyPriceValue * amount
-                usdValueLabel.text = usdValue.toCurrencyStringForLabel(with: currency.symbol)
-            }
-        } else {
-            usdValueLabel.text = nil
+        bindCurrencyAmount(amountValue, currency: sharedDataController.currency.value)
+        valueLabel.text = showingValue
+    }
+    
+    private func bindCurrencyAmount(_ amountValue: String, currency: Currency?) {
+        guard let currency = currency,
+              let currencyPriceValue = currency.priceValue,
+              let amount = amountValue.decimalAmount  else {
+            currencyValueLabel.text = nil
+            return
         }
 
-        valueLabel.text = showingValue
+        switch draft.transactionMode {
+        case let .asset(asset):
+            if let standardAsset = asset as? StandardAsset,
+               let assetUSDValue = standardAsset.usdValue,
+               let currencyUsdValue = currency.usdValue {
+                let currencyValue = assetUSDValue * amount * currencyUsdValue
+                currencyValueLabel.text = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
+            } else {
+                currencyValueLabel.text = nil
+            }
+        case .algo:
+            if let algoCurrency = currency as? AlgoCurrency {
+                bindCurrencyAmount(amountValue, currency: algoCurrency.currency)
+                return
+            }
+            
+            let currencyValue = currencyPriceValue * amount
+            currencyValueLabel.text = currencyValue.toCurrencyStringForLabel(with: currency.symbol)
+        }
     }
 }
 
@@ -354,7 +362,7 @@ extension SendTransactionScreen {
         labelStackView.alignment = .center
         labelStackView.distribution = .equalCentering
 
-        usdValueLabel.customizeAppearance(theme.usdValueLabelStyle)
+        currencyValueLabel.customizeAppearance(theme.currencyValueLabelStyle)
         valueLabel.customizeAppearance(theme.disabledValueLabelStyle)
 
         view.addSubview(labelStackView)
@@ -365,7 +373,7 @@ extension SendTransactionScreen {
         }
 
         labelStackView.addArrangedSubview(valueLabel)
-        labelStackView.addArrangedSubview(usdValueLabel)
+        labelStackView.addArrangedSubview(currencyValueLabel)
     }
 }
 

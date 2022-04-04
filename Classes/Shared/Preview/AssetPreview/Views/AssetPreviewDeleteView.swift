@@ -20,8 +20,13 @@ import MacaroonUIKit
 /// <todo>: Remove stack views (e.g `AssetPreviewView`)
 final class AssetPreviewDeleteView:
     View,
+    ViewModelBindable,
+    UIInteractionObservable,
+    UIControlInteractionPublisher,
     ListReusable {
-    weak var delegate: AssetPreviewDeleteViewDelegate?
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .delete: UIControlInteraction()
+    ]
     
     private lazy var imageView = AssetImageView()
     private lazy var assetTitleVerticalStackView = VStackView()
@@ -34,11 +39,6 @@ final class AssetPreviewDeleteView:
     private lazy var secondaryAssetValueLabel = Label()
     private lazy var deleteButton = Button()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setListeners()
-    }
-    
     func customize(_ theme: AssetPreviewDeleteViewTheme) {
         addImage(theme)
         addAssetTitleVerticalStackView(theme)
@@ -49,21 +49,6 @@ final class AssetPreviewDeleteView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
     
     func customizeAppearance(_ styleSheet: NoStyleSheet) {}
-    
-    func setListeners() {
-        deleteButton.addTarget(
-            self,
-            action: #selector(didTapDeleteButton),
-            for: .touchUpInside
-        )
-    }
-}
-
-extension AssetPreviewDeleteView {
-    @objc
-    func didTapDeleteButton() {
-        delegate?.assetPreviewDeleteViewDidDelete(self)
-    }
 }
 
 extension AssetPreviewDeleteView {
@@ -104,6 +89,9 @@ extension AssetPreviewDeleteView {
         assetTitleHorizontalStackView.addArrangedSubview(primaryAssetTitleLabel)
     }
     private func addSecondaryImage(_ theme: AssetPreviewDeleteViewTheme) {
+        secondaryImageView.snp.makeConstraints {
+            $0.lessThanSize(theme.verifyImageSize)
+        }
         assetTitleHorizontalStackView.addArrangedSubview(secondaryImageView)
     }
     private func addSecondaryAssetTitleLabel(_ theme: AssetPreviewDeleteViewTheme) {
@@ -126,6 +114,11 @@ extension AssetPreviewDeleteView {
             $0.trailing.equalToSuperview()
             $0.centerY.equalToSuperview()
         }
+        
+        startPublishing(
+            event: .delete,
+            for: deleteButton
+        )
     }
     
     private func addAssetValueVerticalStackView(_ theme: AssetPreviewDeleteViewTheme) {
@@ -136,6 +129,7 @@ extension AssetPreviewDeleteView {
             $0.trailing.equalTo(deleteButton.snp.leading).offset(-theme.assetValueTrailingPadding)
             $0.leading.equalTo(assetTitleVerticalStackView.snp.trailing).offset(theme.horizontalPadding)
             $0.centerY.equalTo(assetTitleVerticalStackView.snp.centerY)
+            $0.width.greaterThanOrEqualToSuperview().multipliedBy(theme.assetValueMinRatio)
         }
 
         addPrimaryAssetValueLabel(theme)
@@ -154,7 +148,7 @@ extension AssetPreviewDeleteView {
     }
 }
 
-extension AssetPreviewDeleteView: ViewModelBindable {
+extension AssetPreviewDeleteView {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
         imageView.bindData(viewModel?.assetImageViewModel)
         primaryAssetTitleLabel.editText = viewModel?.title
@@ -164,17 +158,18 @@ extension AssetPreviewDeleteView: ViewModelBindable {
         secondaryAssetValueLabel.editText = viewModel?.secondaryAccessory
     }
     
-    func prepareForReuse() {
+    /*func prepareForReuse() {
         imageView.prepareForReuse()
         secondaryImageView.image = nil
         primaryAssetTitleLabel.text = nil
         secondaryAssetTitleLabel.text = nil
         primaryAssetValueLabel.text = nil
         secondaryAssetValueLabel.text = nil
+    }*/
+}
+
+extension AssetPreviewDeleteView {
+    enum Event {
+        case delete
     }
 }
-
-protocol AssetPreviewDeleteViewDelegate: AnyObject {
-    func assetPreviewDeleteViewDidDelete(_ assetPreviewDeleteView: AssetPreviewDeleteView)
-}
-
