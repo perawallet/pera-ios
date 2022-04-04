@@ -24,13 +24,13 @@ final class AssetActionConfirmationView: View {
     private lazy var titleLabel = Label()
     private lazy var assetCodeLabel = Label()
     private lazy var assetNameLabel = Label()
-    private lazy var verifiedImage = UIImageView()
+    private lazy var verifiedImage = ImageView()
     private lazy var assetIDView = UIView()
     private lazy var assetIDLabel = Label()
     private lazy var copyIDButton = Button()
     private lazy var transactionView = HStackView()
-    private lazy var transactionLabel = Label()
-    private lazy var feeLabel = Label()
+    private lazy var transactionTitleLabel = Label()
+    private lazy var transactionAmountLabel = Label()
     private lazy var detailLabel = Label()
     private lazy var actionButton = Button()
     private lazy var cancelButton = Button()
@@ -165,18 +165,18 @@ extension AssetActionConfirmationView {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
         
-        addFeeLabel(theme)
-        addFeeAmountLabel(theme)
+        addTransactionTitleLabel(theme)
+        addTransactionAmountLabel(theme)
     }
     
-    private func addFeeLabel(_ theme: AssetActionConfirmationViewTheme) {
-        transactionLabel.customizeAppearance(theme.transactionLabel)
-        transactionView.addArrangedSubview(transactionLabel)
+    private func addTransactionTitleLabel(_ theme: AssetActionConfirmationViewTheme) {
+        transactionTitleLabel.customizeAppearance(theme.transactionTitleLabel)
+        transactionView.addArrangedSubview(transactionTitleLabel)
     }
     
-    private func addFeeAmountLabel(_ theme: AssetActionConfirmationViewTheme) {
-        feeLabel.customizeAppearance(theme.feeLabel)
-        transactionView.addArrangedSubview(feeLabel)
+    private func addTransactionAmountLabel(_ theme: AssetActionConfirmationViewTheme) {
+        transactionAmountLabel.customizeAppearance(theme.transactionAmountLabel)
+        transactionView.addArrangedSubview(transactionAmountLabel)
     }
     
     private func addDetailLabel(_ theme: AssetActionConfirmationViewTheme) {
@@ -185,8 +185,8 @@ extension AssetActionConfirmationView {
         addSubview(detailLabel)
         detailLabel.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(transactionLabel.snp.bottom).offset(theme.descriptionTopInset)
-            $0.top.equalTo(assetIDView.snp.bottom).offset(44).priority(.medium)
+            $0.top.equalTo(transactionTitleLabel.snp.bottom).offset(theme.transactionBottomPadding)
+            $0.top.equalTo(assetIDView.snp.bottom).offset(theme.descriptionTopInset).priority(.medium)
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalPadding)
         }
     }
@@ -220,12 +220,11 @@ extension AssetActionConfirmationView: ViewModelBindable {
         titleLabel.text = viewModel?.title
         assetIDLabel.text = viewModel?.id
         
-        if viewModel?.transaction.isNilOrEmpty ?? true {
+        if viewModel?.transactionFee.isNilOrEmpty ?? true {
             transactionView.removeFromSuperview()
         }
         
-        transactionLabel.text = viewModel?.transaction
-        feeLabel.text = viewModel?.fee
+        transactionAmountLabel.text = viewModel?.transactionFee
         detailLabel.attributedText = viewModel?.detail
         actionButton.bindData(ButtonCommonViewModel(title: viewModel?.actionTitle))
         cancelButton.bindData(ButtonCommonViewModel(title: viewModel?.cancelTitle))

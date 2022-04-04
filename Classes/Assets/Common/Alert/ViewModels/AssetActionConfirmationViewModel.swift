@@ -21,8 +21,7 @@ import MacaroonUIKit
 final class AssetActionConfirmationViewModel: PairedViewModel {
     private(set) var title: String?
     private(set) var id: String?
-    private(set) var transaction: String?
-    private(set) var fee: String?
+    private(set) var transactionFee: String?
     private(set) var actionTitle: String?
     private(set) var cancelTitle: String?
     private(set) var detail: NSAttributedString?
@@ -31,8 +30,7 @@ final class AssetActionConfirmationViewModel: PairedViewModel {
     init(_ model: AssetAlertDraft) {
         bindTitle(model)
         bindID(model)
-        bindTransaction(model)
-        bindFee(model)
+        bindTransactionFee(model)
         bindActionTitle(model)
         bindCancelTitle(model)
         bindDetail(model)
@@ -49,16 +47,12 @@ extension AssetActionConfirmationViewModel {
         id = "\(draft.assetId)"
     }
     
-    private func bindTransaction(_ draft: AssetAlertDraft) {
-        transaction = draft.transactionTitle
-    }
-    
-    private func bindFee(_ draft: AssetAlertDraft) {
-        guard let feeAmount = draft.fee?.toAlgos else {
+    private func bindTransactionFee(_ draft: AssetAlertDraft) {
+        guard let fee = draft.transactionFee?.toAlgos else {
             return
         }
         
-        fee = feeAmount.toAlgosStringForLabel
+        transactionFee = fee.toAlgosStringForLabel
     }
 
     private func bindActionTitle(_ draft: AssetAlertDraft) {

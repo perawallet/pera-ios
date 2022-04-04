@@ -27,8 +27,8 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let description: TextStyle
     let assetCodeLabel: TextStyle
     let assetNameLabel: TextStyle
-    let transactionLabel: TextStyle
-    let feeLabel: TextStyle
+    let transactionTitleLabel: TextStyle
+    let transactionAmountLabel: TextStyle
     let verifiedImage: ImageStyle
     let assetIDLabel: TextStyle
     let copyIDButton: ButtonStyle
@@ -41,6 +41,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let assetNameLabelMinHeight: LayoutMetric
     let assetIDPaddings: LayoutPaddings
     let transactionTopPadding: LayoutMetric
+    let transactionBottomPadding: LayoutMetric
     let horizontalPadding: LayoutMetric
     let verticalInset: LayoutMetric
     let buttonInset: LayoutMetric
@@ -91,13 +92,14 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
             .font(Fonts.DMSans.medium.make(13)),
             .titleColor([.normal(AppColors.Components.Text.main)])
         ]
-        self.transactionLabel = [
+        self.transactionTitleLabel = [
+            .text("collectible-approve-transaction-fee".localized),
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
             .textOverflow(FittingText())
         ]
-        self.feeLabel = [
+        self.transactionAmountLabel = [
             .textColor(AppColors.Shared.Helpers.negative),
             .font(Fonts.DMSans.medium.make(15)),
             .textAlignment(.right),
@@ -112,13 +114,14 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         self.verticalInset = 36
         self.titleTopPadding = 22
         self.bottomInset = 16
-        self.descriptionTopInset = 32
+        self.descriptionTopInset = 44
         self.assetCodeLabelTopPadding = 42
         self.assetCodeLabelMinHeight = 42
         self.assetNameLabelTopPadding = 4
         self.assetNameLabelMinHeight = 20
         self.assetIDPaddings = (40, 8, .noMetric, 105)
         self.transactionTopPadding = 46
+        self.transactionBottomPadding = 32
         self.copyIDButtonSize = (73, 32)
         self.copyIDButtonCorner = Corner(radius: copyIDButtonSize.h / 2)
     }
