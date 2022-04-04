@@ -37,6 +37,7 @@ final class HomePortfolioView:
     private lazy var algoHoldingsView = HomePortfolioItemView()
     private lazy var assetHoldingsCanvasView = UIView()
     private lazy var assetHoldingsView = HomePortfolioItemView()
+    private lazy var buyAlgoButton = Button()
     
     func customize(
         _ theme: HomePortfolioViewTheme
@@ -159,7 +160,6 @@ extension HomePortfolioView {
         holdingsView.snp.makeConstraints {
             $0.top == valueView.snp.bottom + theme.spacingBetweenValueAndHoldings
             $0.leading == 0
-            $0.bottom == 0
             $0.trailing == 0
         }
         

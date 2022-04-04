@@ -44,6 +44,7 @@ class RootViewController: UIViewController {
     private lazy var mainContainer = TabBarController()
     
     private lazy var pushNotificationController = PushNotificationController(
+        target: target,
         session: appConfiguration.session,
         api: appConfiguration.api,
         bannerController: appConfiguration.bannerController
@@ -53,13 +54,16 @@ class RootViewController: UIViewController {
     private var wcRequestScreen: WCMainTransactionScreen?
     private var wcTransactionSuccessTransition: BottomSheetTransition?
     
+    let target: ALGAppTarget
     let appConfiguration: AppConfiguration
     let launchController: AppLaunchController
 
     init(
+        target: ALGAppTarget,
         appConfiguration: AppConfiguration,
         launchController: AppLaunchController
     ) {
+        self.target = target
         self.appConfiguration = appConfiguration
         self.launchController = launchController
         
@@ -84,9 +88,13 @@ extension RootViewController {
         }
         
         let configuration = appConfiguration.all()
+        let announcementAPIDataController = AnnouncementAPIDataController(
+            api: configuration.api!,
+            session: configuration.session!
+        )
 
         let homeViewController = HomeViewController(
-            dataController: HomeAPIDataController(appConfiguration.sharedDataController),
+            dataController: HomeAPIDataController(appConfiguration.sharedDataController, announcementDataController: announcementAPIDataController),
             configuration: configuration
         )
         let homeTab = HomeTabBarItem(NavigationController(rootViewController: homeViewController))
@@ -226,7 +234,9 @@ extension RootViewController: WCMainTransactionScreenDelegate {
         let configurator = BottomWarningViewConfigurator(
             image: "icon-approval-check".uiImage,
             title: "wc-transaction-request-signed-warning-title".localized,
-            description: "wc-transaction-request-signed-warning-message".localized(dappName, dappName),
+            description: .plain(
+                "wc-transaction-request-signed-warning-message".localized(dappName, dappName)
+            ),
             primaryActionButtonTitle: nil,
             secondaryActionButtonTitle: "title-close".localized
         )

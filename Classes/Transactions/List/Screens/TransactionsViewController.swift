@@ -22,6 +22,8 @@ import MacaroonUIKit
 class TransactionsViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var bottomSheetTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+
     private lazy var filterOptionsTransition = BottomSheetTransition(presentingViewController: self)
 
     private(set) var accountHandle: AccountHandle
@@ -112,6 +114,11 @@ class TransactionsViewController: BaseViewController {
                 loadingCell.startAnimating()
             case is AlgoTransactionHistoryLoadingCell:
                 let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
+                var theme = AlgoTransactionHistoryLoadingViewCommonTheme()
+                theme.buyAlgoVisible = !accountHandle.value.isWatchAccount()
+                loadingCell.contextView.customize(
+                    theme
+                )
                 loadingCell.startAnimating()
             case is AssetTransactionHistoryLoadingCell:
                 let loadingCell = cell as! AssetTransactionHistoryLoadingCell
@@ -179,6 +186,9 @@ class TransactionsViewController: BaseViewController {
 
 extension TransactionsViewController {
     private func addListView() {
+        let isWatchAccount = accountHandle.value.isWatchAccount()
+        listView.contentInset = isWatchAccount ? .zero : UIEdgeInsets(theme.contentInset)
+        
         view.addSubview(listView)
         listView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -262,6 +272,11 @@ extension TransactionsViewController {
                     loadingCell.startAnimating()
                 case .algoTransactionHistoryLoading:
                     let loadingCell = cell as! AlgoTransactionHistoryLoadingCell
+                    var theme = AlgoTransactionHistoryLoadingViewCommonTheme()
+                    theme.buyAlgoVisible = !self.accountHandle.value.isWatchAccount()
+                    loadingCell.contextView.customize(
+                        theme
+                    )
                     loadingCell.startAnimating()
                 case .assetTransactionHistoryLoading:
                     let loadingCell = cell as! AssetTransactionHistoryLoadingCell
@@ -297,6 +312,17 @@ extension TransactionsViewController: AlgosDetailInfoViewCellDelegate {
         ) as? RewardDetailViewController
 
         self.rewardDetailViewController = rewardDetailViewController
+    }
+
+    func algosDetailInfoViewCellDidTapBuyButton(_ algosDetailInfoViewCell: AlgosDetailInfoViewCell) {
+        openBuyAlgo()
+    }
+
+    private func openBuyAlgo() {
+        let draft = BuyAlgoDraft()
+        draft.address = accountHandle.value.address
+        
+        launchBuyAlgo(draft: draft)
     }
 }
 
@@ -375,6 +401,12 @@ extension TransactionsViewController: TransactionFloatingActionButtonViewControl
         log(ReceiveAssetDetailEvent(address: accountHandle.value.address))
         let draft = QRCreationDraft(address: accountHandle.value.address, mode: .address, title: accountHandle.value.name)
         open(.qrGenerator(title: accountHandle.value.name ?? accountHandle.value.address.shortAddressDisplay(), draft: draft, isTrackable: true), by: .present)
+    }
+
+    func transactionFloatingActionButtonViewControllerDidBuy(
+        _ viewController: TransactionFloatingActionButtonViewController
+    ) {
+        openBuyAlgo()
     }
 }
 
