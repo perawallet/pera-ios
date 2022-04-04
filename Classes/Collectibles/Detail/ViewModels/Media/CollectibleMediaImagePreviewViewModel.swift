@@ -50,7 +50,7 @@ extension CollectibleMediaImagePreviewViewModel {
         if let imageURL = media?.previewURL {
             let prismURL = PrismURL(baseURL: imageURL)
                 .setExpectedImageSize(imageSize)
-                .setResizeMode(.fit)
+                .setImageQuality(.normal)
                 .build()
 
             image = PNGImageSource(

@@ -75,6 +75,7 @@ struct AssetImageLargeViewModel:
             let prismURL =
             PrismURL(baseURL: url)
                 .setExpectedImageSize(imageSize)
+                .setImageQuality(.normal)
                 .setResizeMode(.fit)
                 .build()
 

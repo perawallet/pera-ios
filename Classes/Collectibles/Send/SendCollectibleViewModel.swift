@@ -85,6 +85,7 @@ extension SendCollectibleViewModel {
         if let imageURL = asset.thumbnailImage {
             let prismURL = PrismURL(baseURL: imageURL)
                 .setExpectedImageSize(imageSize)
+                .setImageQuality(.normal)
                 .setResizeMode(.fit)
                 .build()
 

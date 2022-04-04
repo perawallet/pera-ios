@@ -257,14 +257,18 @@ extension CollectibleListViewController {
             case .cell(let cell):
                 switch cell {
                 case .owner(let item):
+                    let cell = collectionView.cellForItem(at: indexPath) as? CollectibleListItemCell
                     openCollectibleDetail(
                         account: item.account,
-                        asset: item.asset
+                        asset: item.asset,
+                        thumbnailImage: cell?.contextView.currentImage
                     )
                 case .optedIn(let item):
+                    let cell = collectionView.cellForItem(at: indexPath) as? CollectibleListItemOptedInCell
                     openCollectibleDetail(
                         account: item.account,
-                        asset: item.asset
+                        asset: item.asset,
+                        thumbnailImage: cell?.contextView.currentImage
                     )
                 default:
                     break
@@ -302,12 +306,14 @@ extension CollectibleListViewController {
 extension CollectibleListViewController {
     private func openCollectibleDetail(
         account: Account,
-        asset: CollectibleAsset
+        asset: CollectibleAsset,
+        thumbnailImage: UIImage?
     ) {
         open(
             .collectibleDetail(
                 asset: asset,
-                account: account
+                account: account,
+                thumbnailImage: thumbnailImage
             ),
             by: .push
         )

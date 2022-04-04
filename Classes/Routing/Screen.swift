@@ -121,7 +121,8 @@ indirect enum Screen {
     )
     case collectibleDetail(
         asset: CollectibleAsset,
-        account: Account
+        account: Account,
+        thumbnailImage: UIImage?
     )
     case sendCollectible(
         draft: SendCollectibleDraft,
@@ -136,6 +137,11 @@ indirect enum Screen {
         transactionController: TransactionController
     )
     case shareActivity(items: [Any])
+    case image3DCard(image: UIImage)
+    case video3DCard(
+        image: UIImage?,
+        url: URL
+    )
     case buyAlgoHome(
         transactionDraft: BuyAlgoDraft,
         delegate: BuyAlgoHomeScreenDelegate?
