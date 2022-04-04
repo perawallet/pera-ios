@@ -52,6 +52,7 @@ extension CollectibleListItemViewModel {
         if let thumbnailImage = asset.thumbnailImage {
             let prismURL = PrismURL(baseURL: thumbnailImage)
                 .setExpectedImageSize(imageSize)
+                .setImageQuality(.normal)
                 .setResizeMode(.fit)
                 .build()
 
