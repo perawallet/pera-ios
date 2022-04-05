@@ -71,7 +71,7 @@ final class BottomWarningViewController:
     }
 }
 
-extension BottomWarningViewController: BottomSheetPresentable {
+extension BottomWarningViewController {
     var modalHeight: ModalHeight {
         return .compressed
     }

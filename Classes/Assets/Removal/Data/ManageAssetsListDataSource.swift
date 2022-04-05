@@ -17,7 +17,7 @@
 import Foundation
 import UIKit
 
-final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<AssetSearchSection, AssetSearchItem> {
+final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<ManageAssetSearchSection, ManageAssetSearchItem> {
     init(
         _ collectionView: UICollectionView
     ) {
@@ -29,13 +29,9 @@ final class ManageAssetsListDataSource: UICollectionViewDiffableDataSource<Asset
                 let cell = collectionView.dequeue(AssetPreviewDeleteCell.self, at: indexPath)
                 cell.bindData(item)
                 return cell
-            case .empty:
+            case .empty(let item):
                 let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
-                cell.bindData(AssetListSearchNoContentViewModel())
-                return cell
-            case .noContent:
-                let cell = collectionView.dequeue(NoContentCell.self, at: indexPath)
-                cell.bindData(AssetListSearchNoContentViewModel(hasBody: false))
+                cell.bindData(item)
                 return cell
             }
         }

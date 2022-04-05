@@ -25,7 +25,7 @@ final class ManageAssetsViewController: BaseViewController {
     
     private lazy var listLayout = ManageAssetsListLayout()
     private lazy var dataSource = ManageAssetsListDataSource(contextView.assetsCollectionView)
-    private lazy var dataController = ManageAssetsListDataController(account, sharedDataController)
+    private lazy var dataController = ManageAssetsListLocalDataController(account, sharedDataController)
 
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
     
@@ -107,9 +107,7 @@ final class ManageAssetsViewController: BaseViewController {
             
             switch event {
             case .didUpdate(let snapshot):
-                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared) {
-                    self.contextView.assetsCollectionView.reloadData()
-                }
+                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             }
         }
         
