@@ -116,18 +116,18 @@ extension PendingTransaction {
     struct APIModel: ALGAPIModel {
         var sig: String?
         var txn: TransactionDetail?
-        var logicSignature: LogicSignature?
-        var multiSignature: MultiSignature?
+        var lsig: LogicSignature?
+        var msig: MultiSignature?
         
         var signature: String? {
-            sig ?? logicSignature?.signature ?? multiSignature?.signature
+            sig ?? lsig?.l ?? msig?.signature
         }
 
         init() {
             self.sig = nil
             self.txn = nil
-            self.logicSignature = nil
-            self.multiSignature = nil
+            self.lsig = nil
+            self.msig = nil
         }
     }
 }
@@ -136,19 +136,19 @@ extension PendingTransaction.APIModel {
     private enum CodingKeys:
         String,
         CodingKey {
-        case sig = "sig"
-        case txn = "txn"
-        case logicSignature = "lsig"
-        case multiSignature = "msig"
+        case sig
+        case txn
+        case lsig
+        case msig
     }
 }
 
 extension PendingTransaction.APIModel {
     struct LogicSignature: ALGAPIModel {
-        var signature: String
+        var l: String
         
         init() {
-            self.signature = ""
+            self.l = ""
         }
     }
 }
@@ -157,19 +157,19 @@ extension PendingTransaction.APIModel.LogicSignature {
     private enum CodingKeys:
         String,
         CodingKey {
-        case signature = "l"
+        case l = "l"
     }
 }
 
 extension PendingTransaction.APIModel {
     struct MultiSignature: ALGAPIModel {
-        var subsignature: [MultiSubSignature]
+        var subsig: [MultiSubSignature]
         
         var signature: String? {
             var combinedSignature: String?
             
-            for signature in subsignature {
-                guard let signatureValue = signature.signature else {
+            for signature in subsig {
+                guard let signatureValue = signature.s else {
                     continue
                 }
                 
@@ -184,7 +184,7 @@ extension PendingTransaction.APIModel {
         }
         
         init() {
-            self.subsignature = []
+            self.subsig = []
         }
     }
 }
@@ -193,18 +193,18 @@ extension PendingTransaction.APIModel.MultiSignature {
     private enum CodingKeys:
         String,
         CodingKey {
-        case subsignature = "subsig"
+        case subsig = "subsig"
     }
 }
 
 extension PendingTransaction.APIModel.MultiSignature {
     struct MultiSubSignature: ALGAPIModel {
-        var publicKey: String?
-        var signature: String?
+        var pk: String?
+        var s: String?
         
         init() {
-            self.publicKey = nil
-            self.signature = nil
+            self.pk = nil
+            self.s = nil
         }
     }
 }
@@ -213,8 +213,8 @@ extension PendingTransaction.APIModel.MultiSignature.MultiSubSignature {
     private enum CodingKeys:
         String,
         CodingKey {
-        case publicKey = "pk"
-        case signature = "s"
+        case pk = "pk"
+        case s = "s"
     }
 }
 
