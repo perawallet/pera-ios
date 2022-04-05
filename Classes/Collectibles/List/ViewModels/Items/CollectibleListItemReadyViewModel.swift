@@ -18,9 +18,10 @@ import Foundation
 import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
+import Prism
 
-struct CollectibleListItemReadyViewModel:
-    CollectibleListItemViewModel,
+struct CollectibleListItemViewModel:
+    ViewModel,
     Hashable {
     private(set) var assetID: AssetID?
     private(set) var image: ImageSource?
@@ -29,6 +30,7 @@ struct CollectibleListItemReadyViewModel:
     private(set) var mediaType: MediaType?
     private(set) var topLeftBadge: UIImage?
     private(set) var bottomLeftBadge: UIImage?
+    private(set) var pendingTitle: EditText?
 
     init<T>(
         imageSize: CGSize,
@@ -41,7 +43,7 @@ struct CollectibleListItemReadyViewModel:
     }
 }
 
-extension CollectibleListItemReadyViewModel {
+extension CollectibleListItemViewModel {
     func hash(
         into hasher: inout Hasher
     ) {
@@ -51,8 +53,8 @@ extension CollectibleListItemReadyViewModel {
     }
 
     static func == (
-        lhs: CollectibleListItemReadyViewModel,
-        rhs: CollectibleListItemReadyViewModel
+        lhs: Self,
+        rhs: Self
     ) -> Bool {
         return lhs.assetID == rhs.assetID &&
         lhs.title == rhs.title &&
@@ -60,7 +62,7 @@ extension CollectibleListItemReadyViewModel {
     }
 }
 
-extension CollectibleListItemReadyViewModel {
+extension CollectibleListItemViewModel {
     mutating func bind<T>(
         imageSize: CGSize,
         model: T
@@ -73,12 +75,13 @@ extension CollectibleListItemReadyViewModel {
             bindMediaType(asset)
             bindTopLeftBadge(asset)
             bindBottomLeftBadge(asset)
+            bindPendingTitle()
             return
         }
     }
 }
 
-extension CollectibleListItemReadyViewModel {
+extension CollectibleListItemViewModel {
     private mutating func bindAssetID(
         _ asset: CollectibleAsset
     ) {
@@ -124,10 +127,173 @@ extension CollectibleListItemReadyViewModel {
     ) {
         mediaType = getMediaType(asset)
     }
+
+    private mutating func bindPendingTitle() {
+        let font = Fonts.DMSans.medium.make(13)
+        let lineHeightMultiplier = 1.18
+
+        pendingTitle = .attributedString(
+            "collectible-list-item-pending-title"
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byTruncatingTail),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.left)
+                    ])
+                ])
+        )
+    }
 }
 
-extension CollectibleListItemReadyViewModel {
+extension CollectibleListItemViewModel {
     mutating func bindBottomLeftBadgeForError() {
         bottomLeftBadge = "badge-error".uiImage
+    }
+}
+
+extension CollectibleListItemViewModel {
+    func getAssetID(
+        _ asset: CollectibleAsset
+    ) -> AssetID? {
+        return asset.id
+    }
+
+    func getImage(
+        imageSize: CGSize,
+        asset: CollectibleAsset
+    ) -> ImageSource? {
+        let placeholder = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
+
+        let size: ImageSize
+
+        if imageSize.width <= 0 ||
+            imageSize.height <= 0 {
+            size = .original
+        } else {
+            size = .resize(imageSize, .aspectFit)
+        }
+
+        if let thumbnailImage = asset.thumbnailImage {
+            let prismURL = PrismURL(baseURL: thumbnailImage)
+                .setExpectedImageSize(imageSize)
+                .setResizeMode(.fit)
+                .build()
+
+            return PNGImageSource(
+                url: prismURL,
+                size: size,
+                shape: .rounded(4),
+                placeholder: getPlaceholder(placeholder)
+            )
+        }
+
+        let imageSource =
+        PNGImageSource(
+            url: nil,
+            placeholder: getPlaceholder(placeholder)
+        )
+
+        return imageSource
+    }
+
+    func getTitle(
+        _ asset: CollectibleAsset
+    ) -> EditText? {
+        guard let collectionName = asset.collectionName,
+              !collectionName.isEmptyOrBlank else {
+                  return nil
+              }
+
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        return .attributedString(
+            collectionName
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.left)
+                    ])
+                ])
+        )
+    }
+
+    func getSubtitle(
+        _ asset: CollectibleAsset
+    ) -> EditText? {
+        let subtitle = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
+
+        let font = Fonts.DMSans.regular.make(15)
+        let lineHeightMultiplier = 1.23
+
+        return .attributedString(
+            subtitle
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byWordWrapping),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.left)
+                    ])
+                ])
+        )
+    }
+
+    func getTopLeftBadge(
+        _ asset: CollectibleAsset
+    ) -> UIImage? {
+        switch asset.mediaType {
+        case .video:
+            return "badge-video".uiImage
+        case .mixed:
+            return "badge-mixed".uiImage
+        case .unknown:
+            return "badge-unknown".uiImage
+        default:
+            return nil
+        }
+    }
+
+    func getMediaType(
+        _ asset: CollectibleAsset
+    ) -> MediaType? {
+        return asset.mediaType
+    }
+
+    private func getPlaceholder(
+        _ aPlaceholder: String
+    ) -> ImagePlaceholder {
+        let font = Fonts.DMSans.regular.make(13)
+        let lineHeightMultiplier = 1.18
+
+        let placeholderText: EditText = .attributedString(
+            aPlaceholder.attributed([
+                .font(font),
+                .lineHeightMultiplier(lineHeightMultiplier, font),
+                .paragraph([
+                    .textAlignment(.center),
+                    .lineBreakMode(.byWordWrapping),
+                    .lineHeightMultiple(lineHeightMultiplier)
+                ])
+            ])
+        )
+
+        return ImagePlaceholder(
+            image: nil,
+            text: placeholderText
+        )
+    }
+}
+
+fileprivate extension AssetID {
+    var stringWithHashtag: String {
+        "#".appending(String(self))
     }
 }

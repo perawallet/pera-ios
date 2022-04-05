@@ -77,6 +77,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                             CollectibleListItemCell.self,
                             at: indexPath
                         )
+                        cell.isPending = item.isPending
                         cell.bindData(
                             item.viewModel
                         )
@@ -86,15 +87,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                             CollectibleListItemOptedInCell.self,
                             at: indexPath
                         )
-                        cell.bindData(
-                            item.viewModel
-                        )
-                        return cell
-                    case .pending(let item):
-                        let cell = collectionView.dequeue(
-                            CollectibleListItemPendingCell.self,
-                            at: indexPath
-                        )
+                        cell.isPending = item.isPending
                         cell.bindData(
                             item.viewModel
                         )
@@ -113,7 +106,6 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
         [
             CollectibleListItemCell.self,
             CollectibleListItemOptedInCell.self,
-            CollectibleListItemPendingCell.self,
             CollectibleListItemReceiveCell.self,
             NoContentWithActionIllustratedCell.self,
             CollectibleListSearchInputCell.self,

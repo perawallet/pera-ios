@@ -203,9 +203,13 @@ extension CollectibleListLocalDataController {
                         cellItem = .cell(
                             .owner(
                                 CollectibleCellItemContainer(
+                                    isPending: isPending(
+                                        asset: collectibleAsset,
+                                        account: account
+                                    ),
                                     account: account,
                                     asset: collectibleAsset,
-                                    viewModel: CollectibleListItemReadyViewModel(
+                                    viewModel: CollectibleListItemViewModel(
                                         imageSize: imageSize,
                                         model: collectibleAsset
                                     )
@@ -216,9 +220,13 @@ extension CollectibleListLocalDataController {
                         cellItem = .cell(
                             .optedIn(
                                 CollectibleCellItemContainer(
+                                    isPending: isPending(
+                                        asset: collectibleAsset,
+                                        account: account
+                                    ),
                                     account: account,
                                     asset: collectibleAsset,
-                                    viewModel: CollectibleListItemReadyViewModel(
+                                    viewModel: CollectibleListItemViewModel(
                                         imageSize: imageSize,
                                         model: collectibleAsset
                                     )
@@ -239,6 +247,13 @@ extension CollectibleListLocalDataController {
         pendingRemovedAccountAssetPairs
 
         pendingAccountAssetPairs.forEach { pendingAccountAssetPair in
+            let account = accounts.first(matching: (\.address, pendingAccountAssetPair.account.address))
+
+            if let account = account,
+               account.containsCollectibleAsset(pendingAccountAssetPair.asset.id) {
+                return
+            }
+
             if let query = query,
                !isAssetContains(
                 pendingAccountAssetPair.asset,
@@ -248,12 +263,13 @@ extension CollectibleListLocalDataController {
             }
 
             let cellItem: CollectibleItem = .cell(
-                .pending(
+                .owner(
                     CollectibleCellItemContainer(
+                        isPending: true,
                         account: pendingAccountAssetPair.account,
                         asset: pendingAccountAssetPair.asset,
-                        viewModel: CollectibleListItemPendingViewModel(
-                            imageSize: self.imageSize,
+                        viewModel: CollectibleListItemViewModel(
+                            imageSize: imageSize,
                             model: pendingAccountAssetPair.asset
                         )
                     )
@@ -306,7 +322,7 @@ extension CollectibleListLocalDataController {
                 pendingCollectibleItems,
                 toSection: .collectibles
             )
-            
+
             snapshot.appendItems(
                 collectibleItems,
                 toSection: .collectibles
@@ -334,7 +350,9 @@ extension CollectibleListLocalDataController {
                 [
                     .empty(
                         .noContent(
-                            CollectiblesNoContentWithActionViewModel(hiddenCollectibleCount: self.hiddenCollectibleCount)
+                            CollectiblesNoContentWithActionViewModel(
+                                hiddenCollectibleCount: self.hiddenCollectibleCount
+                            )
                         )
                     )
                 ],
@@ -449,11 +467,12 @@ extension CollectibleListLocalDataController {
         for account: Account
     ) {
         pendingAddedAccountAssetPairs = pendingAddedAccountAssetPairs.filter {
-            if account.address != $0.account.address {
+            pendingAddedAccountAssetPair in
+            if account.address != pendingAddedAccountAssetPair.account.address {
                 return true
             }
 
-            return !account.containsCollectibleAsset($0.asset.id)
+            return !account.containsCollectibleAsset(pendingAddedAccountAssetPair.asset.id)
         }
     }
 
@@ -461,12 +480,23 @@ extension CollectibleListLocalDataController {
         for account: Account
     ) {
         pendingRemovedAccountAssetPairs = pendingRemovedAccountAssetPairs.filter {
-            if account.address != $0.account.address {
+            pendingRemovedAccountAssetPair in
+            if account.address != pendingRemovedAccountAssetPair.account.address {
                 return true
             }
 
-            return account.address == $0.account.address && account.containsCollectibleAsset($0.asset.id)
+            return account.containsCollectibleAsset(pendingRemovedAccountAssetPair.asset.id)
         }
+    }
+
+    private func isPending(
+        asset: CollectibleAsset,
+        account: Account
+    ) -> Bool {
+        let pendingAccountAssetPairs = pendingAddedAccountAssetPairs + pendingRemovedAccountAssetPairs
+
+        let matchingPendingAccountAssetPair = pendingAccountAssetPairs.first(matching: (\.asset.id, asset.id))
+        return matchingPendingAccountAssetPair?.account.address == account.address
     }
 }
 

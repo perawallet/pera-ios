@@ -247,13 +247,7 @@ extension CollectibleListLayout {
             return self.listView(
                 listView,
                 layout: listViewLayout,
-                sizeForCollectibleReadyCellItem: item.viewModel
-            )
-        case .pending(let item):
-            return self.listView(
-                listView,
-                layout: listViewLayout,
-                sizeForCollectiblePendingCellItem: item.viewModel
+                sizeForCollectibleItem: item.viewModel
             )
         }
     }
@@ -261,29 +255,13 @@ extension CollectibleListLayout {
     private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForCollectibleReadyCellItem item: CollectibleListItemReadyViewModel
+        sizeForCollectibleItem item: CollectibleListItemViewModel
     ) -> CGSize {
         let width = calculateGridCellWidth(listView, layout: listViewLayout)
 
         let newSize = CollectibleListItemCell.calculatePreferredSize(
             item,
             for: CollectibleListItemCell.theme,
-            fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
-        )
-
-        return newSize
-    }
-
-    private func listView(
-        _ listView: UICollectionView,
-        layout listViewLayout: UICollectionViewLayout,
-        sizeForCollectiblePendingCellItem item: CollectibleListItemPendingViewModel
-    ) -> CGSize {
-        let width = calculateGridCellWidth(listView, layout: listViewLayout)
-
-        let newSize = CollectibleListItemPendingCell.calculatePreferredSize(
-            item,
-            for: CollectibleListItemPendingCell.theme,
             fittingIn: CGSize(width: width.float(), height: .greatestFiniteMagnitude)
         )
 

@@ -71,14 +71,11 @@ final class CollectibleListViewController:
 
         listView
             .visibleCells
-            .forEach { cell in 
+            .forEach { cell in
                 switch cell {
                 case is CollectibleListLoadingViewCell:
                     let loadingCell = cell as? CollectibleListLoadingViewCell
                     loadingCell?.restartAnimating()
-                case is CollectibleListItemPendingCell:
-                    let pendingCell = cell as? CollectibleListItemPendingCell
-                    pendingCell?.startLoading()
                 default:
                     break
                 }
@@ -95,9 +92,6 @@ final class CollectibleListViewController:
                 case is CollectibleListLoadingViewCell:
                     let loadingCell = cell as? CollectibleListLoadingViewCell
                     loadingCell?.stopAnimating()
-                case is CollectibleListItemPendingCell:
-                    let pendingCell = cell as? CollectibleListItemPendingCell
-                    pendingCell?.stopLoading()
                 default:
                     break
                 }
@@ -202,13 +196,7 @@ extension CollectibleListViewController {
         case .collectible(let item):
             switch item {
             case .cell(let item):
-                switch item {
-                case .pending:
-                    let pendingCell = cell as? CollectibleListItemPendingCell
-                    pendingCell?.startLoading()
-                default:
-                    break
-                }
+                linkInteractors(cell, item: item)
             default:
                 break
             }
@@ -230,19 +218,6 @@ extension CollectibleListViewController {
             case .loading:
                 let loadingCell = cell as? CollectibleListLoadingViewCell
                 loadingCell?.stopAnimating()
-            default:
-                break
-            }
-        case .collectible(let item):
-            switch item {
-            case .cell(let item):
-                switch item {
-                case .pending:
-                    let pendingCell = cell as? CollectibleListItemPendingCell
-                    pendingCell?.stopLoading()
-                default:
-                    break
-                }
             default:
                 break
             }
@@ -282,8 +257,6 @@ extension CollectibleListViewController {
                         asset: item.asset,
                         thumbnailImage: cell?.contextView.currentImage
                     )
-                default:
-                    break
                 }
             case .footer:
                 openReceiveCollectibleAccountList()
@@ -352,6 +325,13 @@ extension CollectibleListViewController {
         _ cell: CollectibleListSearchInputCell
     ) {
         cell.delegate = self
+    }
+
+    private func linkInteractors(
+        _ cell: UICollectionViewCell,
+        item: CollectibleCellItem
+    ) {
+        cell.isUserInteractionEnabled = !item.isPending
     }
 }
 

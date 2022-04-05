@@ -65,12 +65,20 @@ enum CollectibleItem: Hashable {
 }
 
 enum CollectibleCellItem: Hashable {
-    case owner(CollectibleCellItemContainer<CollectibleListItemReadyViewModel>)
-    case optedIn(CollectibleCellItemContainer<CollectibleListItemReadyViewModel>)
-    case pending(CollectibleCellItemContainer<CollectibleListItemPendingViewModel>)
+    case owner(CollectibleCellItemContainer<CollectibleListItemViewModel>)
+    case optedIn(CollectibleCellItemContainer<CollectibleListItemViewModel>)
+
+    var isPending: Bool {
+        switch self {
+        case .optedIn(let item): return item.isPending
+        case .owner(let item): return item.isPending
+        }
+    }
 }
 
 struct CollectibleCellItemContainer<T: ViewModel & Hashable>: Hashable {
+    let isPending: Bool
+
     let account: Account
     let asset: CollectibleAsset
     let viewModel: T

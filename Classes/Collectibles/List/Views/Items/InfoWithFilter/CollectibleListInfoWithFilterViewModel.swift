@@ -46,9 +46,9 @@ extension CollectibleListInfoWithFilterViewModel {
 
 extension CollectibleListInfoWithFilterViewModel {
     func getInfo(
-        _ aInfo: String?
+        _ anInfo: String?
     ) -> EditText? {
-        guard let aInfo = aInfo else {
+        guard let anInfo = anInfo else {
             return nil
         }
 
@@ -56,7 +56,7 @@ extension CollectibleListInfoWithFilterViewModel {
         let lineHeightMultiplier = 1.23
 
         return .attributedString(
-            aInfo.attributed([
+            anInfo.attributed([
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
