@@ -27,14 +27,16 @@ struct CollectibleMediaErrorViewModel:
     init(
         _ error: CollectibleMediaError
     ) {
-        bindImage()
+        bindImage(error)
         bindMessage(error)
     }
 }
 
 extension CollectibleMediaErrorViewModel {
-    private mutating func bindImage() {
-        image = img("badge-error")
+    private mutating func bindImage(
+        _ error: CollectibleMediaError
+    ) {
+        image = error.image
     }
 
     private mutating func bindMessage(
@@ -58,17 +60,30 @@ extension CollectibleMediaErrorViewModel {
 
 enum CollectibleMediaError: Error {
     case unsupported
-    case notOwner
+    case notOwner(isWatchAccount: Bool)
     case unavailable
 
     var message: String {
         switch self {
         case .unsupported:
             return "collectible-detail-error-media-type".localized
-        case .notOwner:
-            return "collectible-detail-error-not-owner".localized
+        case .notOwner(let isWatchAccount):
+            if isWatchAccount {
+                return "collectible-detail-error-not-owner-watch-account".localized
+            } else {
+                return "collectible-detail-error-not-owner".localized
+            }
         case .unavailable:
             return "collectible-detail-error-visual".localized
+        }
+    }
+
+    var image: UIImage {
+        switch self {
+        case .notOwner:
+            return "badge-warning".uiImage
+        default:
+            return "badge-error".uiImage
         }
     }
 }
