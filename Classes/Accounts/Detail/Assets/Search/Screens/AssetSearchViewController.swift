@@ -141,7 +141,7 @@ extension AssetSearchViewController {
 
         guard let listSection = sectionIdentifiers[safe: indexPath.section],
               listSection == .assets,
-              let asset = dataController[indexPath.item] else {
+              let asset = dataController[indexPath.item.advanced(by: -1)] else {
                   return
               }
 
