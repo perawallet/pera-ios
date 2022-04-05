@@ -21,10 +21,7 @@ import MacaroonUIKit
 final class SingleSelectionListView: View {
     weak var delegate: SingleSelectionListViewDelegate?
     
-    private lazy var theme = SingleSelectionListViewTheme()
-    private lazy var errorView = NoContentWithActionView()
-
-    private lazy var collectionView: UICollectionView = {
+    private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = theme.collectionViewMinimumLineSpacing
         flowLayout.minimumInteritemSpacing = theme.collectionViewMinimumInteritemSpacing
@@ -37,6 +34,9 @@ final class SingleSelectionListView: View {
         collectionView.register(header: SingleGrayTitleHeaderSuplementaryView.self)
         return collectionView
     }()
+    
+    private lazy var theme = SingleSelectionListViewTheme()
+    private lazy var errorView = NoContentWithActionView()
     
     private lazy var refreshControl = UIRefreshControl()
     

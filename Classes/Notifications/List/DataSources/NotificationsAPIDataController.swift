@@ -74,7 +74,7 @@ extension NotificationsAPIDataController {
     }
 
     private func load(with query: String?, isPaginated: Bool = false) {
-        guard let deviceId = api.session.authenticatedUser?.deviceId else {
+        guard let deviceId = api.session.authenticatedUser?.getDeviceId(on: api.network) else {
             ///TODO: Should Deliver error snapshot
             deliverNoContentSnapshot()
             return
