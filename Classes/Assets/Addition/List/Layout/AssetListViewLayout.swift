@@ -19,6 +19,8 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
+/// <todo>
+/// Refactor, move `UICollectionViewDelegateFlowLayout` to the screen.
 final class AssetListViewLayout: NSObject {
     private lazy var theme = AssetListViewController.Theme()
     lazy var handlers = Handlers()
