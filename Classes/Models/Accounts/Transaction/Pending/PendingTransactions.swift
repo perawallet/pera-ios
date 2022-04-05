@@ -87,6 +87,8 @@ final class PendingTransaction:
         hasher.combine(receiver)
         hasher.combine(amount)
         hasher.combine(type)
+        hasher.combine(lv)
+        hasher.combine(fv)
     }
     
     static func == (lhs: PendingTransaction, rhs: PendingTransaction) -> Bool {
@@ -94,7 +96,9 @@ final class PendingTransaction:
         lhs.sender == rhs.sender &&
         lhs.receiver == rhs.receiver &&
         lhs.amount == rhs.amount &&
-        lhs.type == rhs.type
+        lhs.type == rhs.type &&
+        lhs.lv == rhs.lv &&
+        rhs.fv == rhs.fv
     }
 }
 
