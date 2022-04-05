@@ -127,7 +127,7 @@ extension Formatter {
         formatter.currencySymbol = "\u{00A6}"
         formatter.numberStyle = .currencyAccounting
         formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
+        formatter.maximumFractionDigits = suffix.isEmptyOrBlank ? 6 : 2
         formatter.positiveSuffix = suffix
         formatter.negativeSuffix = suffix
         return formatter
