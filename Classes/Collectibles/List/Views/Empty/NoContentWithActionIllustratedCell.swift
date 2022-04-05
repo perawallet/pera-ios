@@ -20,12 +20,8 @@ import MacaroonUIKit
 
 final class NoContentWithActionIllustratedCell:
     CollectionCell<NoContentWithActionView>,
-    ViewModelBindable {
-    lazy var handlers = NoContentWithActionView.Handlers() {
-        didSet {
-            contextView.handlers = handlers
-        }
-    }
+    ViewModelBindable,
+    UIInteractionObservable {
 
     override init(
         frame: CGRect

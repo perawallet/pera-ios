@@ -4272,9 +4272,9 @@
 		F08709092790D97600BEE5C2 /* HomeLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709082790D97600BEE5C2 /* HomeLoadingView.swift */; };
 		F087090A2790D97600BEE5C2 /* HomeLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709082790D97600BEE5C2 /* HomeLoadingView.swift */; };
 		F087090B2790D97600BEE5C2 /* HomeLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709082790D97600BEE5C2 /* HomeLoadingView.swift */; };
-		F087090D2790D97F00BEE5C2 /* HomeNoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087090C2790D97F00BEE5C2 /* HomeNoContentView.swift */; };
-		F087090E2790D97F00BEE5C2 /* HomeNoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087090C2790D97F00BEE5C2 /* HomeNoContentView.swift */; };
-		F087090F2790D97F00BEE5C2 /* HomeNoContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087090C2790D97F00BEE5C2 /* HomeNoContentView.swift */; };
+		F087090D2790D97F00BEE5C2 /* UIBlockInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087090C2790D97F00BEE5C2 /* UIBlockInteraction.swift */; };
+		F087090E2790D97F00BEE5C2 /* UIBlockInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087090C2790D97F00BEE5C2 /* UIBlockInteraction.swift */; };
+		F087090F2790D97F00BEE5C2 /* UIBlockInteraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087090C2790D97F00BEE5C2 /* UIBlockInteraction.swift */; };
 		F087091227917CB500BEE5C2 /* PortfolioCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087091127917CB500BEE5C2 /* PortfolioCalculator.swift */; };
 		F087091327917CB500BEE5C2 /* PortfolioCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087091127917CB500BEE5C2 /* PortfolioCalculator.swift */; };
 		F087091427917CB500BEE5C2 /* PortfolioCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087091127917CB500BEE5C2 /* PortfolioCalculator.swift */; };
@@ -4411,9 +4411,6 @@
 		F0DB41A72794B62800EA437D /* HomeLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41A62794B62800EA437D /* HomeLoadingCell.swift */; };
 		F0DB41A82794B62800EA437D /* HomeLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41A62794B62800EA437D /* HomeLoadingCell.swift */; };
 		F0DB41A92794B62800EA437D /* HomeLoadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41A62794B62800EA437D /* HomeLoadingCell.swift */; };
-		F0DB41AB2794B88000EA437D /* HomeNoContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41AA2794B88000EA437D /* HomeNoContentCell.swift */; };
-		F0DB41AC2794B88000EA437D /* HomeNoContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41AA2794B88000EA437D /* HomeNoContentCell.swift */; };
-		F0DB41AD2794B88000EA437D /* HomeNoContentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41AA2794B88000EA437D /* HomeNoContentCell.swift */; };
 		F0DB41AF2794C64600EA437D /* AddAccountListActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41AE2794C64600EA437D /* AddAccountListActionViewModel.swift */; };
 		F0DB41B02794C64600EA437D /* AddAccountListActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41AE2794C64600EA437D /* AddAccountListActionViewModel.swift */; };
 		F0DB41B12794C64600EA437D /* AddAccountListActionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0DB41AE2794C64600EA437D /* AddAccountListActionViewModel.swift */; };
@@ -5909,7 +5906,7 @@
 		F08708F92790878900BEE5C2 /* HomeAPIDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeAPIDataController.swift; sourceTree = "<group>"; };
 		F08709042790D67B00BEE5C2 /* HomeListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeListDataSource.swift; sourceTree = "<group>"; };
 		F08709082790D97600BEE5C2 /* HomeLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLoadingView.swift; sourceTree = "<group>"; };
-		F087090C2790D97F00BEE5C2 /* HomeNoContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoContentView.swift; sourceTree = "<group>"; };
+		F087090C2790D97F00BEE5C2 /* UIBlockInteraction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockInteraction.swift; sourceTree = "<group>"; };
 		F087091127917CB500BEE5C2 /* PortfolioCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioCalculator.swift; sourceTree = "<group>"; };
 		F087091527917CCF00BEE5C2 /* ALGPortfolioCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ALGPortfolioCalculator.swift; sourceTree = "<group>"; };
 		F087091927918E1A00BEE5C2 /* HomePortfolioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePortfolioViewModel.swift; sourceTree = "<group>"; };
@@ -5955,7 +5952,6 @@
 		F0DB419A279496A600EA437D /* ShowQrCodeListActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowQrCodeListActionViewModel.swift; sourceTree = "<group>"; };
 		F0DB41A22794A43800EA437D /* AccountPortfolioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountPortfolioCell.swift; sourceTree = "<group>"; };
 		F0DB41A62794B62800EA437D /* HomeLoadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeLoadingCell.swift; sourceTree = "<group>"; };
-		F0DB41AA2794B88000EA437D /* HomeNoContentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNoContentCell.swift; sourceTree = "<group>"; };
 		F0DB41AE2794C64600EA437D /* AddAccountListActionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountListActionViewModel.swift; sourceTree = "<group>"; };
 		F0DB41B22794C68A00EA437D /* ArrangeListListActionVIewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeListListActionVIewModel.swift; sourceTree = "<group>"; };
 		F0E7443327B45EBB0063DD83 /* AlgoPriceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgoPriceView.swift; sourceTree = "<group>"; };
@@ -14113,8 +14109,7 @@
 				F0DB41A62794B62800EA437D /* HomeLoadingCell.swift */,
 				F08709082790D97600BEE5C2 /* HomeLoadingView.swift */,
 				958416E027B29612005B1627 /* HomeLoadingViewTheme.swift */,
-				F0DB41AA2794B88000EA437D /* HomeNoContentCell.swift */,
-				F087090C2790D97F00BEE5C2 /* HomeNoContentView.swift */,
+				F087090C2790D97F00BEE5C2 /* UIBlockInteraction.swift */,
 				2BB68F51261261250070FFE9 /* HomeNoContentViewModel.swift */,
 				F08709312791A8ED00BEE5C2 /* HomePortfolioCell.swift */,
 				F08709252791921C00BEE5C2 /* HomePortfolioItemView.swift */,
@@ -14879,7 +14874,7 @@
 				D405058526F0A110001D0D11 /* LedgerDeviceListViewController+Theme.swift in Sources */,
 				D4A6479827846367009DE241 /* TransactionsViewController+Theme.swift in Sources */,
 				17BD4E0C2292F1260003E49A /* SettingsToggleCell.swift in Sources */,
-				F087090F2790D97F00BEE5C2 /* HomeNoContentView.swift in Sources */,
+				F087090F2790D97F00BEE5C2 /* UIBlockInteraction.swift in Sources */,
 				17BD4E0E2292F1260003E49A /* TransactionDetailViewController.swift in Sources */,
 				F0B5B0D527A1CBE100BC3E2D /* ALGAppLaunchController.swift in Sources */,
 				F0DB419127948DCE00EA437D /* ListActionViewTheme.swift in Sources */,
@@ -15189,7 +15184,6 @@
 				17BD4E512292F1260003E49A /* ALGBarButtonItem.swift in Sources */,
 				D48FDFF927CF725E00C39FC7 /* CollectibleReceiveSearchInputCell.swift in Sources */,
 				F08708FC2790878900BEE5C2 /* HomeAPIDataController.swift in Sources */,
-				F0DB41AD2794B88000EA437D /* HomeNoContentCell.swift in Sources */,
 				1828816726CA8616000C4D3D /* VisualEffectViewWithCustomIntensity.swift in Sources */,
 				17BD4E522292F1260003E49A /* TransactionList.swift in Sources */,
 				2B4334A627C44C3200A3D9D6 /* Asset.swift in Sources */,
@@ -16209,7 +16203,7 @@
 				2B4FD1F727C63F580097AB65 /* BuyAlgoTransactionViewController.swift in Sources */,
 				2B0F616224EC129D00DA22A6 /* ContactsViewController.swift in Sources */,
 				2B0F616424EC129D00DA22A6 /* TestNetTitleDisplayable.swift in Sources */,
-				F087090E2790D97F00BEE5C2 /* HomeNoContentView.swift in Sources */,
+				F087090E2790D97F00BEE5C2 /* UIBlockInteraction.swift in Sources */,
 				2B83D05026C41546005A35AF /* WCSessionApprovedEvent.swift in Sources */,
 				2B0F616524EC129D00DA22A6 /* AssetAlertDraft.swift in Sources */,
 				2B0F616624EC129D00DA22A6 /* Snapkit+SafeArea.swift in Sources */,
@@ -17164,7 +17158,6 @@
 				D49D77D72789ED16001FD5F6 /* TransactionFloatingActionButtonViewController.swift in Sources */,
 				2B0F62B624EC129D00DA22A6 /* WaitRoundDraft.swift in Sources */,
 				F087091B27918E1A00BEE5C2 /* HomePortfolioViewModel.swift in Sources */,
-				F0DB41AC2794B88000EA437D /* HomeNoContentCell.swift in Sources */,
 				2B0F62B724EC129D00DA22A6 /* TransactionStatusView.swift in Sources */,
 				2B0AD8202757D99600F83660 /* AccountPortfolioView.swift in Sources */,
 				2B0F62B824EC129D00DA22A6 /* AdaptiveLayoutConstants.swift in Sources */,
@@ -18014,7 +18007,6 @@
 				D4FC5F5927F525AF0017E81F /* SelectedAccountPreviewView.swift in Sources */,
 				D43A0C3D2790D753007430B9 /* NoContentWithActionView.swift in Sources */,
 				2B6B423127BEA7780036BF9E /* LearnMoreListActionViewModel.swift in Sources */,
-				F0DB41AB2794B88000EA437D /* HomeNoContentCell.swift in Sources */,
 				D48D11D3274279D2000061CE /* NotificationsViewTheme.swift in Sources */,
 				0467678A2756A65F00C88F21 /* SingleSelectionListView.swift in Sources */,
 				2B1CFA0B2554113300D60B73 /* Dictionary+ErrorLogParamKeys.swift in Sources */,
@@ -18434,7 +18426,7 @@
 				2B6B423527BEC5A00036BF9E /* RekeyAccountListActionViewModel.swift in Sources */,
 				D446A73D272A8BDD0081D60B /* AssetPreviewActionView.swift in Sources */,
 				2BE937342464AEE200322C1E /* TransactionDetailTitleLabel.swift in Sources */,
-				F087090D2790D97F00BEE5C2 /* HomeNoContentView.swift in Sources */,
+				F087090D2790D97F00BEE5C2 /* UIBlockInteraction.swift in Sources */,
 				D48933BC27183394009EE9AB /* AssetPreviewModelAdapter.swift in Sources */,
 				179B93D6225E447400DD03E9 /* Node.swift in Sources */,
 				2B1A1D5324AFAA2E00CB4E78 /* TransactionSignature.swift in Sources */,

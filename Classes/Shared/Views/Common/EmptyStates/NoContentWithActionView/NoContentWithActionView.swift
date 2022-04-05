@@ -22,22 +22,20 @@ import UIKit
 final class NoContentWithActionView:
     View,
     ViewModelBindable,
-    ListReusable {
-    lazy var handlers = Handlers()
+    ListReusable,
+    UIInteractionObservable,
+    UIControlInteractionPublisher {
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .performPrimaryAction: UIControlInteraction(),
+        .performSecondaryAction: UIControlInteraction()
+    ]
 
     private lazy var contentView = UIView()
     private lazy var resultWithActionContainer = UIView()
     private lazy var resultView = ResultView()
     private lazy var actionContentView = MacaroonUIKit.VStackView()
-    private lazy var actionView = Button(.imageAtLeft(spacing: 12))
+    private lazy var primaryActionView = Button(.imageAtLeft(spacing: 12))
     private lazy var secondaryActionView = Button(.imageAtLeft(spacing: 12))
-
-    override init(
-        frame: CGRect
-    ) {
-        super.init(frame: frame)
-        setListeners()
-    }
 
     func customize(
         _ theme: NoContentViewWithActionTheme
@@ -53,16 +51,11 @@ final class NoContentWithActionView:
         _ layoutSheet: NoLayoutSheet
     ) {}
 
-    func setListeners() {
-        actionView.addTouch(target: self, action: #selector(didTapActionView))
-        secondaryActionView.addTouch(target: self, action: #selector(didTapSecondaryActionView))
-    }
-
     func bindData(
         _ viewModel: NoContentWithActionViewModel?
     ) {
         resultView.bindData(viewModel)
-        actionView.setEditTitle(viewModel?.actionTitle, for: .normal)
+        primaryActionView.setEditTitle(viewModel?.primaryActionTitle, for: .normal)
 
         let secondaryActionTitle = viewModel?.secondaryActionTitle
         secondaryActionView.isHidden = secondaryActionTitle == nil
@@ -119,26 +112,31 @@ extension NoContentWithActionView {
 
         resultWithActionContainer.addSubview(actionContentView)
         actionContentView.snp.makeConstraints {
-            $0.top == resultView.snp.bottom + theme.actionTopMargin
+            $0.top == resultView.snp.bottom + theme.primaryActionTopMargin
             $0.setPaddings((.noMetric, 0, 0, 0))
         }
 
-        addAction(theme)
+        addPrimaryAction(theme)
         addSecondaryAction(theme)
     }
 
-    private func addAction(
+    private func addPrimaryAction(
         _ theme: NoContentViewWithActionTheme
     ) {
-        actionView.customizeAppearance(theme.action)
+        primaryActionView.customizeAppearance(theme.primaryAction)
 
-        actionContentView.addArrangedSubview(actionView)
-        actionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
-        actionView.fitToIntrinsicSize()
+        actionContentView.addArrangedSubview(primaryActionView)
+        primaryActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
+        primaryActionView.fitToIntrinsicSize()
 
-        alignAction(actionView, for: theme.actionAlignment)
+        alignAction(primaryActionView, for: theme.actionAlignment)
 
-        actionView.draw(corner: Corner(radius: theme.actionCornerRadius))
+        primaryActionView.draw(corner: Corner(radius: theme.actionCornerRadius))
+
+        startPublishing(
+            event: .performPrimaryAction,
+            for: primaryActionView
+        )
     }
 
     private func addSecondaryAction(
@@ -153,6 +151,11 @@ extension NoContentWithActionView {
         alignAction(secondaryActionView, for: theme.actionAlignment)
 
         secondaryActionView.draw(corner: Corner(radius: theme.actionCornerRadius))
+
+        startPublishing(
+            event: .performSecondaryAction,
+            for: secondaryActionView
+        )
     }
 
     private func alignAction(
@@ -186,20 +189,8 @@ extension NoContentWithActionView {
 }
 
 extension NoContentWithActionView {
-    @objc
-    private func didTapActionView() {
-        handlers.didTapActionView?()
-    }
-
-    @objc
-    private func didTapSecondaryActionView() {
-        handlers.didTapSecondaryActionView?()
-    }
-}
-
-extension NoContentWithActionView {
-    struct Handlers {
-        var didTapActionView: EmptyHandler?
-        var didTapSecondaryActionView: EmptyHandler?
+    enum Event {
+        case performPrimaryAction
+        case performSecondaryAction
     }
 }

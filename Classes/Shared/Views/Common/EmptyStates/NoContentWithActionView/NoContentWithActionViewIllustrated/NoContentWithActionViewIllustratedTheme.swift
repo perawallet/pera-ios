@@ -26,8 +26,8 @@ struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
     var contentVerticalPaddings: LayoutVerticalPaddings
     let actionContentEdgeInsets: LayoutPaddings
     let actionCornerRadius: LayoutMetric
-    let actionTopMargin: LayoutMetric
-    var action: ButtonStyle
+    let primaryActionTopMargin: LayoutMetric
+    var primaryAction: ButtonStyle
     let actionAlignment: NoContentWithActionView.ActionViewAlignment
     let secondaryActionTopMargin: LayoutMetric
     var secondaryAction: ButtonStyle
@@ -46,8 +46,8 @@ struct NoContentWithActionViewIllustratedTheme: NoContentViewWithActionTheme {
         contentVerticalPaddings = (16, 16)
         actionContentEdgeInsets = (14, 24, 14, 24)
         actionCornerRadius = 4
-        actionTopMargin = 52
-        action = [
+        primaryActionTopMargin = 52
+        primaryAction = [
             .titleColor(
                 [.normal(AppColors.Components.Button.Primary.text)]
             ),

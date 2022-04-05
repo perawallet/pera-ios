@@ -21,7 +21,7 @@ struct WCSessionListNoContentViewModel: NoContentWithActionViewModel {
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var body: EditText?
-    private(set) var actionTitle: EditText?
+    private(set) var primaryActionTitle: EditText?
     private(set) var secondaryActionTitle: EditText?
 
     init() {
@@ -36,6 +36,6 @@ extension WCSessionListNoContentViewModel {
     }
 
     private mutating func bindActionTitle() {
-        actionTitle = .string("qr-scan-title".localized)
+        primaryActionTitle = .string("qr-scan-title".localized)
     }
 }

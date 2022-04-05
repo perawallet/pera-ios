@@ -298,7 +298,7 @@ extension CollectibleListViewController {
     private func linkInteractors(
         _ cell: NoContentWithActionIllustratedCell
     ) {
-        cell.handlers.didTapActionView = {
+        cell.observe(event: .performPrimaryAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -307,7 +307,7 @@ extension CollectibleListViewController {
             self.openReceiveCollectibleAccountList()
         }
 
-        cell.handlers.didTapSecondaryActionView = {
+        cell.observe(event: .performSecondaryAction) {
             [weak self] in
             guard let self = self else {
                 return

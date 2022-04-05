@@ -22,7 +22,7 @@ protocol CollectibleListViewControllerTheme:
     var listContentBottomInset: LayoutMetric { get }
 }
 
-struct CollectibleListViewControllerThemeCommonTheme:
+struct CollectibleListViewControllerCommonTheme:
     CollectibleListViewControllerTheme {
     let listContentBottomInset: LayoutMetric
 
@@ -33,7 +33,7 @@ struct CollectibleListViewControllerThemeCommonTheme:
     }
 }
 
-struct CollectibleListViewControllerThemeAccountDetailTheme:
+struct CollectibleListViewControllerAccountDetailTheme:
     CollectibleListViewControllerTheme {
     let listContentBottomInset: LayoutMetric
 
