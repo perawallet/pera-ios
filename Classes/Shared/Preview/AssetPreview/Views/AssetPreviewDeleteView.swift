@@ -17,7 +17,6 @@
 import UIKit
 import MacaroonUIKit
 
-/// <todo>: Remove stack views (e.g `AssetPreviewView`)
 final class AssetPreviewDeleteView:
     View,
     ViewModelBindable,
@@ -28,22 +27,21 @@ final class AssetPreviewDeleteView:
         .delete: UIControlInteraction()
     ]
     
-    private lazy var imageView = AssetImageView()
-    private lazy var assetTitleVerticalStackView = VStackView()
-    private lazy var assetTitleHorizontalStackView = HStackView()
-    private lazy var primaryAssetTitleLabel = Label()
-    private lazy var secondaryImageView = ImageView()
-    private lazy var secondaryAssetTitleLabel = Label()
-    private lazy var assetValueVerticalStackView = VStackView()
-    private lazy var primaryAssetValueLabel = Label()
-    private lazy var secondaryAssetValueLabel = Label()
+    private lazy var iconView = AssetImageView()
+    private lazy var contentView = UIView()
+    private lazy var titleLabel = Label()
+    private lazy var verifiedIconView = ImageView()
+    private lazy var subtitleLabel = Label()
+    private lazy var accessoryView = UIView()
+    private lazy var primaryValueLabel = Label()
+    private lazy var secondaryValueLabel = Label()
     private lazy var deleteButton = Button()
     
     func customize(_ theme: AssetPreviewDeleteViewTheme) {
-        addImage(theme)
-        addAssetTitleVerticalStackView(theme)
+        addIconView(theme)
+        addContent(theme)
+        addAccessory(theme)
         addActionButton(theme)
-        addAssetValueVerticalStackView(theme)
     }
     
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
@@ -52,53 +50,138 @@ final class AssetPreviewDeleteView:
 }
 
 extension AssetPreviewDeleteView {
-    private func addImage(_ theme: AssetPreviewDeleteViewTheme) {
-        imageView.customize(AssetImageViewTheme())
+    private func addIconView(_ theme: AssetPreviewDeleteViewTheme) {
+        iconView.customize(AssetImageViewTheme())
 
-        addSubview(imageView)
-        imageView.snp.makeConstraints {
-            $0.leading.equalToSuperview()
-            $0.fitToSize(theme.imageSize)
-            $0.centerY.equalToSuperview()
+        addSubview(iconView)
+        iconView.fitToIntrinsicSize()
+        
+        iconView.snp.makeConstraints {
+            $0.leading == 0
+            $0.centerY == 0
+            $0.fitToSize(theme.iconSize)
         }
     }
     
-    private func addAssetTitleVerticalStackView(_ theme: AssetPreviewDeleteViewTheme) {
-        addSubview(assetTitleVerticalStackView)
-        assetTitleVerticalStackView.alignment = .leading
-        
-        assetTitleVerticalStackView.snp.makeConstraints {
-            $0.leading.equalTo(imageView.snp.trailing).offset(theme.horizontalPadding)
-            $0.centerY.equalTo(imageView.snp.centerY)
+    private func addContent(_ theme: AssetPreviewDeleteViewTheme) {
+        addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.width >= self * theme.contentMinWidthRatio
+            $0.top == 0
+            $0.leading == iconView.snp.trailing + theme.horizontalPadding
+            $0.bottom == 0
         }
-        
-        addAssetTitleHorizontalStackView(theme)
-        addSecondaryAssetTitleLabel(theme)
-    }
-    private func addAssetTitleHorizontalStackView(_ theme: AssetPreviewDeleteViewTheme) {
-        assetTitleVerticalStackView.addArrangedSubview(assetTitleHorizontalStackView)
-        assetTitleHorizontalStackView.spacing = theme.secondaryImageLeadingPadding
-        
-        addPrimaryAssetTitleLabel(theme)
-        addSecondaryImage(theme)
-    }
-    private func addPrimaryAssetTitleLabel(_ theme: AssetPreviewDeleteViewTheme) {
-        primaryAssetTitleLabel.customizeAppearance(theme.primaryAssetTitle)
-        primaryAssetTitleLabel.adjustsFontSizeToFitWidth = false
-        
-        assetTitleHorizontalStackView.addArrangedSubview(primaryAssetTitleLabel)
-    }
-    private func addSecondaryImage(_ theme: AssetPreviewDeleteViewTheme) {
-        secondaryImageView.snp.makeConstraints {
-            $0.lessThanSize(theme.verifyImageSize)
-        }
-        assetTitleHorizontalStackView.addArrangedSubview(secondaryImageView)
-    }
-    private func addSecondaryAssetTitleLabel(_ theme: AssetPreviewDeleteViewTheme) {
-        secondaryAssetTitleLabel.customizeAppearance(theme.secondaryAssetTitle)
-        secondaryAssetTitleLabel.adjustsFontSizeToFitWidth = false
 
-        assetTitleVerticalStackView.addArrangedSubview(secondaryAssetTitleLabel)
+        addTitle(theme)
+        addSubtitle(theme)
+    }
+    
+    private func addTitle(_ theme: AssetPreviewDeleteViewTheme) {
+        titleLabel.customizeAppearance(theme.title)
+        
+        contentView.addSubview(titleLabel)
+        titleLabel.fitToVerticalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+        titleLabel.fitToHorizontalIntrinsicSize(
+            hugging: .required,
+            compression: .defaultHigh
+        )
+        
+        titleLabel.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+        }
+        
+        addVerifiedIcon(theme)
+    }
+    
+    private func addVerifiedIcon(_ theme: AssetPreviewDeleteViewTheme) {
+        verifiedIconView.customizeAppearance(theme.verifiedIcon)
+        
+        contentView.addSubview(verifiedIconView)
+        verifiedIconView.fitToIntrinsicSize()
+        
+        verifiedIconView.snp.makeConstraints {
+            $0.centerY == titleLabel
+            $0.leading == titleLabel.snp.trailing + theme.verifiedIconLeadingPadding
+            $0.trailing <= 0
+        }
+    }
+    
+    private func addSubtitle(_ theme: AssetPreviewDeleteViewTheme) {
+        subtitleLabel.customizeAppearance(theme.subtitle)
+        
+        contentView.addSubview(subtitleLabel)
+        
+        subtitleLabel.fitToVerticalIntrinsicSize()
+        subtitleLabel.fitToHorizontalIntrinsicSize(
+            hugging: .required,
+            compression: .defaultLow
+        )
+        
+        subtitleLabel.snp.makeConstraints {
+            $0.top == titleLabel.snp.bottom
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing <= 0
+        }
+    }
+    
+    private func addAccessory(_ theme: AssetPreviewDeleteViewTheme) {
+        addSubview(accessoryView)
+        accessoryView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == contentView.snp.trailing + theme.spacingBetweenContents
+            $0.bottom == 0
+        }
+        
+        addPrimaryValue(theme)
+        addSecondaryValue(theme)
+    }
+    
+    private func addPrimaryValue(_ theme: AssetPreviewDeleteViewTheme) {
+        primaryValueLabel.customizeAppearance(theme.primaryValue)
+        
+        accessoryView.addSubview(primaryValueLabel)
+        
+        primaryValueLabel.fitToHorizontalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+        primaryValueLabel.fitToVerticalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+        
+        primaryValueLabel.snp.makeConstraints {
+            $0.top == 0
+            $0.trailing == 0
+            $0.leading >= 0
+        }
+    }
+    
+    private func addSecondaryValue(_ theme: AssetPreviewDeleteViewTheme) {
+        secondaryValueLabel.customizeAppearance(theme.secondaryValue)
+
+        accessoryView.addSubview(secondaryValueLabel)
+
+        secondaryValueLabel.fitToHorizontalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+        secondaryValueLabel.fitToVerticalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .defaultLow
+        )
+
+        secondaryValueLabel.snp.makeConstraints {
+            $0.top == primaryValueLabel.snp.bottom
+            $0.bottom == 0
+            $0.trailing == 0
+            $0.leading >= 0
+        }
     }
     
     private func addActionButton(_ theme: AssetPreviewDeleteViewTheme) {
@@ -111,8 +194,9 @@ extension AssetPreviewDeleteView {
         addSubview(deleteButton)
         deleteButton.snp.makeConstraints {
             $0.fitToSize(theme.buttonSize)
-            $0.trailing.equalToSuperview()
-            $0.centerY.equalToSuperview()
+            $0.leading == accessoryView.snp.trailing + theme.buttonLeadingPadding
+            $0.trailing == 0
+            $0.centerY == 0
         }
         
         startPublishing(
@@ -120,51 +204,25 @@ extension AssetPreviewDeleteView {
             for: deleteButton
         )
     }
-    
-    private func addAssetValueVerticalStackView(_ theme: AssetPreviewDeleteViewTheme) {
-        addSubview(assetValueVerticalStackView)
-        assetValueVerticalStackView.alignment = .trailing
-
-        assetValueVerticalStackView.snp.makeConstraints {
-            $0.trailing.equalTo(deleteButton.snp.leading).offset(-theme.assetValueTrailingPadding)
-            $0.leading.equalTo(assetTitleVerticalStackView.snp.trailing).offset(theme.horizontalPadding)
-            $0.centerY.equalTo(assetTitleVerticalStackView.snp.centerY)
-            $0.width.greaterThanOrEqualToSuperview().multipliedBy(theme.assetValueMinRatio)
-        }
-
-        addPrimaryAssetValueLabel(theme)
-        addSecondaryAssetValueLabel(theme)
-    }
-    private func addPrimaryAssetValueLabel(_ theme: AssetPreviewDeleteViewTheme) {
-        primaryAssetValueLabel.customizeAppearance(theme.primaryAssetValue)
-
-        assetValueVerticalStackView.addArrangedSubview(primaryAssetValueLabel)
-    }
-
-    private func addSecondaryAssetValueLabel(_ theme: AssetPreviewDeleteViewTheme) {
-        secondaryAssetValueLabel.customizeAppearance(theme.secondaryAssetValue)
-
-        assetValueVerticalStackView.addArrangedSubview(secondaryAssetValueLabel)
-    }
 }
 
 extension AssetPreviewDeleteView {
     func bindData(_ viewModel: AssetPreviewViewModel?) {
-        imageView.bindData(viewModel?.assetImageViewModel)
-        primaryAssetTitleLabel.editText = viewModel?.title
-        secondaryImageView.image = viewModel?.verifiedIcon
-        secondaryAssetTitleLabel.editText = viewModel?.subtitle
-        primaryAssetValueLabel.editText = viewModel?.primaryAccessory
-        secondaryAssetValueLabel.editText = viewModel?.secondaryAccessory
+        iconView.bindData(viewModel?.assetImageViewModel)
+        titleLabel.editText = viewModel?.title
+        verifiedIconView.image = viewModel?.verifiedIcon
+        subtitleLabel.editText = viewModel?.subtitle
+        primaryValueLabel.editText = viewModel?.primaryAccessory
+        secondaryValueLabel.editText = viewModel?.secondaryAccessory
     }
 
     func prepareForReuse() {
-        imageView.prepareForReuse()
-        secondaryImageView.image = nil
-        primaryAssetTitleLabel.editText = nil
-        secondaryAssetTitleLabel.editText = nil
-        primaryAssetValueLabel.editText = nil
-        secondaryAssetValueLabel.editText = nil
+        iconView.prepareForReuse()
+        verifiedIconView.image = nil
+        titleLabel.editText = nil
+        subtitleLabel.editText = nil
+        primaryValueLabel.editText = nil
+        secondaryValueLabel.editText = nil
     }
 }
 
