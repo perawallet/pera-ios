@@ -36,7 +36,7 @@ extension SendTransactionScreen {
         let accountContainerHeight: LayoutMetric
         let defaultLeadingInset: LayoutMetric
         let defaultBottomInset: LayoutMetric
-        let accountLeadingInset: LayoutMetric
+        let accountPaddings: LayoutPaddings
         let nextButtonHeight: LayoutMetric
         let numpadBottomInset: LayoutMetric
         let buttonsSpacing: LayoutMetric
@@ -101,10 +101,10 @@ extension SendTransactionScreen {
                 corners: .allCorners
             )
 
-            accountContainerHeight = 72
+            accountContainerHeight = 75
             defaultLeadingInset = 24
             defaultBottomInset = -24 * verticalScale
-            accountLeadingInset = 20
+            accountPaddings = (14, 20, 14, 20)
             nextButtonHeight = 52 * verticalScale
             numpadBottomInset = -16
             buttonsSpacing = 10

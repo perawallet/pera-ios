@@ -25,14 +25,14 @@ final class ManageAssetsViewController: BaseViewController {
     
     private lazy var listLayout = ManageAssetsListLayout()
     private lazy var dataSource = ManageAssetsListDataSource(contextView.assetsCollectionView)
-    private lazy var dataController = ManageAssetsListDataController(account, sharedDataController)
+    private lazy var dataController = ManageAssetsListLocalDataController(account, sharedDataController)
 
     private lazy var assetActionConfirmationTransition = BottomSheetTransition(presentingViewController: self)
     
     private lazy var contextView = ManageAssetsView()
     
     private var account: Account
-        
+
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     
     private lazy var transactionController: TransactionController = {
@@ -42,7 +42,10 @@ final class ManageAssetsViewController: BaseViewController {
         return TransactionController(api: api, bannerController: bannerController)
     }()
 
-    init(account: Account, configuration: ViewControllerConfiguration) {
+    init(
+        account: Account,
+        configuration: ViewControllerConfiguration
+    ) {
         self.account = account
         super.init(configuration: configuration)
     }
@@ -104,9 +107,7 @@ final class ManageAssetsViewController: BaseViewController {
             
             switch event {
             case .didUpdate(let snapshot):
-                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared) {
-                    self.contextView.assetsCollectionView.reloadData()
-                }
+                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             }
         }
         
@@ -117,7 +118,6 @@ final class ManageAssetsViewController: BaseViewController {
         super.viewWillDisappear(animated)
         
         transactionController.stopBLEScan()
-        loadingController?.stopLoading()
         transactionController.stopTimer()
     }
 }
@@ -158,23 +158,40 @@ extension ManageAssetsViewController: SearchInputViewDelegate {
 }
 
 extension ManageAssetsViewController {
-    private func showAlertToDelete(_ asset: CompoundAsset) {
-        let assetDetail = asset.detail
+    private func showAlertToDelete(_ asset: Asset) {
+        let assetDecoration = AssetDecoration(asset: asset)
+        
         let assetAlertDraft: AssetAlertDraft
-                
-        assetAlertDraft = AssetAlertDraft(
-            account: account,
-            assetIndex: assetDetail.id,
-            assetDetail: assetDetail,
-            title: "asset-remove-confirmation-title".localized,
-            detail: String(
-                format: "asset-remove-transaction-warning".localized,
-                "\(assetDetail.unitName ?? "title-unknown".localized)",
-                "\(account.name ?? "")"
-            ),
-            actionTitle: "title-remove".localized,
-            cancelTitle: "title-keep".localized
-        )
+
+        if isValidAssetDeletion(asset) {
+            assetAlertDraft = AssetAlertDraft(
+                account: account,
+                assetId: assetDecoration.id,
+                asset: assetDecoration,
+                title: "asset-remove-confirmation-title".localized,
+                detail: String(
+                    format: "asset-remove-transaction-warning".localized,
+                    "\(assetDecoration.unitName ?? "title-unknown".localized)",
+                    "\(account.name ?? "")"
+                ),
+                actionTitle: "title-remove".localized,
+                cancelTitle: "title-keep".localized
+            )
+        } else {
+            assetAlertDraft = AssetAlertDraft(
+                account: account,
+                assetId: assetDecoration.id,
+                asset: assetDecoration,
+                title: "asset-remove-confirmation-title".localized,
+                detail: String(
+                    format: "asset-remove-warning".localized,
+                    "\(assetDecoration.unitName ?? "title-unknown".localized)",
+                    "\(account.name ?? "")"
+                ),
+                actionTitle: "asset-transfer-balance".localized,
+                cancelTitle: "title-keep".localized
+            )
+        }
         
         assetActionConfirmationTransition.perform(
             .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: self),
@@ -188,16 +205,19 @@ extension ManageAssetsViewController:
     TransactionSignChecking {
     func assetActionConfirmationViewController(
         _ assetActionConfirmationViewController: AssetActionConfirmationViewController,
-        didConfirmedActionFor assetDetail: AssetInformation
+        didConfirmAction asset: AssetDecoration
     ) {
         if !canSignTransaction(for: &account) {
             return
         }
+
+        guard let asset = account[asset.id] else {
+            return
+        }
         
-        if let assetAmount = account.amount(for: assetDetail),
-           assetAmount != 0 {
-            var draft = SendTransactionDraft(from: account, transactionMode: .assetDetail(assetDetail))
-            draft.amount = assetAmount
+        if !isValidAssetDeletion(asset) {
+            var draft = SendTransactionDraft(from: account, transactionMode: .asset(asset))
+            draft.amount = asset.amountWithFraction
             open(
                 .sendTransaction(draft: draft),
                 by: .push
@@ -205,11 +225,15 @@ extension ManageAssetsViewController:
             return
         }
         
-        removeAssetFromAccount(assetDetail)
+        removeAssetFromAccount(asset)
+    }
+
+    private func isValidAssetDeletion(_ asset: Asset) -> Bool {
+        return asset.amountWithFraction == 0
     }
     
-    private func removeAssetFromAccount(_ assetDetail: AssetInformation) {
-        guard let creator = assetDetail.creator else {
+    private func removeAssetFromAccount(_ asset: Asset) {
+        guard let creator = asset.creator else {
             return
         }
 
@@ -217,7 +241,7 @@ extension ManageAssetsViewController:
             from: account,
             toAccount: Account(address: creator.address, type: .standard),
             amount: 0,
-            assetIndex: assetDetail.id,
+            assetIndex: asset.id,
             assetCreator: creator.address
         )
         transactionController.setTransactionDraft(assetTransactionDraft)
@@ -232,14 +256,22 @@ extension ManageAssetsViewController:
 
 extension ManageAssetsViewController: TransactionControllerDelegate {
     func transactionController(_ transactionController: TransactionController, didComposedTransactionDataFor draft: TransactionSendDraft?) {
+        loadingController?.stopLoading()
+
         guard let assetTransactionDraft = draft as? AssetTransactionSendDraft,
-              let removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
+              var removedAssetDetail = getRemovedAssetDetail(from: assetTransactionDraft) else {
                   return
               }
+
+        removedAssetDetail.state = .pending(.remove)
         
         contextView.resetSearchInputView()
-        
-        delegate?.manageAssetsViewController(self, didRemove: removedAssetDetail, from: account)
+
+        if let standardAsset = removedAssetDetail as? StandardAsset {
+            delegate?.manageAssetsViewController(self, didRemove: standardAsset)
+        } else if let collectibleAsset = removedAssetDetail as? CollectibleAsset {
+            delegate?.manageAssetsViewController(self, didRemove: collectibleAsset)
+        }
     }
     
     func transactionController(_ transactionController: TransactionController, didFailedComposing error: HIPTransactionError) {
@@ -313,15 +345,18 @@ extension ManageAssetsViewController: TransactionControllerDelegate {
         ledgerApprovalViewController?.dismissScreen()
     }
     
-    private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> AssetInformation? {
-        return draft?.assetIndex.unwrap { account[$0]?.detail }
+    private func getRemovedAssetDetail(from draft: AssetTransactionSendDraft?) -> Asset? {
+        return draft?.assetIndex.unwrap { account[$0] }
     }
 }
 
 protocol ManageAssetsViewControllerDelegate: AnyObject {
     func manageAssetsViewController(
         _ manageAssetsViewController: ManageAssetsViewController,
-        didRemove assetDetail: AssetInformation,
-        from account: Account
+        didRemove asset: StandardAsset
+    )
+    func manageAssetsViewController(
+        _ manageAssetsViewController: ManageAssetsViewController,
+        didRemove asset: CollectibleAsset
     )
 }

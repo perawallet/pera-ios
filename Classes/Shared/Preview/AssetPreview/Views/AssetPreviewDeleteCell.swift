@@ -17,10 +17,19 @@
 import UIKit
 import MacaroonUIKit
 
-final class AssetPreviewDeleteCell: CollectionCell<AssetPreviewDeleteView>,
+final class AssetPreviewDeleteCell:
+    CollectionCell<AssetPreviewDeleteView>,
     ViewModelBindable,
     UIInteractionObservable {
-    static let theme = AssetPreviewDeleteViewTheme()
+    static let theme: AssetPreviewDeleteViewTheme = {
+        var theme = AssetPreviewDeleteViewTheme()
+        theme.configureForAssetPreviewAddition()
+        return theme
+    }()
+    
+    override class var contextPaddings: LayoutPaddings {
+        return (14, 0, 14, 0)
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)

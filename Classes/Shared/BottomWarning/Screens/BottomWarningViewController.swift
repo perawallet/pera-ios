@@ -70,3 +70,9 @@ final class BottomWarningViewController:
         bottomWarningView.bindData(viewConfigurator)
     }
 }
+
+extension BottomWarningViewController {
+    var modalHeight: ModalHeight {
+        return .compressed
+    }
+}

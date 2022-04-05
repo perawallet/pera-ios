@@ -20,36 +20,40 @@ import UIKit
 import MacaroonUtils
 import MacaroonUIKit
 
-final class AssetSearchViewController: BaseViewController {
-    private lazy var theme = Theme()
-
-    private lazy var listLayout = AssetSearchListLayout(dataController: dataController)
-    private lazy var dataSource = AssetSearchDataSource(listView)
-    private lazy var dataController = AssetSearchLocalDataController(accountHandle, sharedDataController)
-    private lazy var searchThrottler = Throttler(intervalInSeconds: 0.3)
+final class AssetSearchViewController:
+    BaseViewController,
+    UICollectionViewDelegateFlowLayout {
+    lazy var handlers = Handlers()
 
     private lazy var searchInputView = SearchInputView()
 
     private lazy var listView: UICollectionView = {
-        let flowLayout = UICollectionViewFlowLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        let flowLayout = AssetSearchListLayout.build()
+        let collectionView =
+        UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundColor = theme.listBackgroundColor.uiColor
-        collectionView.contentInset = UIEdgeInsets(theme.collectionViewEdgeInsets)
+        collectionView.backgroundColor = .clear
         collectionView.keyboardDismissMode = .onDrag
-        collectionView.register(AssetPreviewCell.self)
-        collectionView.register(header: SingleLineTitleActionHeaderView.self)
         return collectionView
     }()
 
-    private let accountHandle: AccountHandle
+    private lazy var listLayout = AssetSearchListLayout(
+        listDataSource: listDataSource
+    )
+
+    private lazy var listDataSource = AssetSearchDataSource(listView)
+
+    private let theme: Theme
+    private let dataController: AssetSearchDataController
 
     init(
-        accountHandle: AccountHandle,
+        theme: Theme = .init(),
+        dataController: AssetSearchDataController,
         configuration: ViewControllerConfiguration
     ) {
-        self.accountHandle = accountHandle
+        self.theme = theme
+        self.dataController = dataController
         super.init(configuration: configuration)
     }
 
@@ -67,7 +71,7 @@ final class AssetSearchViewController: BaseViewController {
 
             switch event {
             case .didUpdate(let snapshot):
-                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             }
         }
 
@@ -85,22 +89,12 @@ final class AssetSearchViewController: BaseViewController {
     }
 
     override func setListeners() {
-        listView.dataSource = dataSource
-        listView.delegate = listLayout
-        setListListeners()
-    }
-
-    override func linkInteractors() {
+        listView.delegate = self
         searchInputView.delegate = self
     }
 
-    override func configureAppearance() {
-        view.customizeBaseAppearance(backgroundColor: theme.listBackgroundColor)
-    }
-
     override func prepareLayout() {
-        addSearchInputView()
-        addListView()
+        build()
     }
 }
 
@@ -115,6 +109,61 @@ extension AssetSearchViewController {
 }
 
 extension AssetSearchViewController {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            insetForSectionAt: section
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return listLayout.collectionView(
+            collectionView,
+            layout: collectionViewLayout,
+            sizeForItemAt: indexPath
+        )
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+
+        guard let listSection = sectionIdentifiers[safe: indexPath.section],
+              listSection == .assets,
+              let asset = dataController[indexPath.item] else {
+                  return
+              }
+
+        closeScreen(by: .dismiss, animated: false) {
+            [weak self] in
+            guard let self = self else { return }
+            self.handlers.didSelectAsset?(asset)
+        }
+    }
+}
+
+extension AssetSearchViewController {
+    private func build() {
+        addBackground()
+        addSearchInputView()
+        addListView()
+    }
+
+    private func addBackground() {
+        view.customizeAppearance(theme.background)
+    }
+
     private func addSearchInputView() {
         searchInputView.customize(theme.searchInputViewTheme)
 
@@ -152,29 +201,14 @@ extension AssetSearchViewController: SearchInputViewDelegate {
     func searchInputViewDidReturn(_ view: SearchInputView) {
         view.endEditing()
     }
-    
+
     func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
         dataController.resetSearch()
     }
 }
 
 extension AssetSearchViewController {
-    private func setListListeners() {
-        listLayout.handlers.didSelectIndex = { [weak self] index in
-            guard let self = self,
-                  let compoundAsset = self.dataController[index] else {
-                return
-            }
-
-            self.open(
-                .assetDetail(
-                    draft: AssetTransactionListing(
-                        accountHandle: self.accountHandle,
-                        compoundAsset: compoundAsset
-                    )
-                ),
-                by: .push
-            )
-        }
+    struct Handlers {
+        var didSelectAsset: ((StandardAsset) -> Void)?
     }
 }

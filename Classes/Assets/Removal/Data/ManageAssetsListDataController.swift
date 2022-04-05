@@ -15,202 +15,32 @@
 //   ManageAssetsListDataController.swift
 
 import Foundation
-import MacaroonUtils
+import UIKit
 
-final class ManageAssetsListDataController:
-    AssetSearchDataController,
-    SharedDataControllerObserver {
-    var eventHandler: ((AssetSearchDataControllerEvent) -> Void)?
-    
-    private var account: Account
-    private var lastSnapshot: Snapshot?
-    
-    private var searchResults: [CompoundAsset] = []
-    private var accountAssets: [CompoundAsset] = []
-    
-    private let sharedDataController: SharedDataController
-    private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.manageAssetsListDataController")
-    
-    private var lastQuery: String? = nil
-    
-    init(
-        _ account: Account,
-        _ sharedDataController: SharedDataController
-    ) {
-        self.account = account
-        self.sharedDataController = sharedDataController
-        
-        fetchAssets()
-    }
-    
-    deinit {
-        sharedDataController.remove(self)
-    }
-    
-    subscript (index: Int) -> CompoundAsset? {
-        return searchResults[safe: index]
-    }
-    
-    func hasSection() -> Bool {
-        return !searchResults.isEmpty
-    }
+protocol ManageAssetsListDataController: AnyObject {
+    typealias Snapshot = NSDiffableDataSourceSnapshot<ManageAssetSearchSection, ManageAssetSearchItem>
+
+    var eventHandler: ((ManageAssetsListDataControllerEvent) -> Void)? { get set }
+
+    func load()
+    func search(for query: String)
+    func resetSearch()
+
+    subscript(index: Int) -> Asset? { get }
 }
 
-extension ManageAssetsListDataController {
-    func fetchAssets() {
-        searchResults.removeAll()
-        accountAssets.removeAll()
-        account.compoundAssets.forEach {
-            if !$0.detail.isRemoved {
-                accountAssets.append($0)
-            }
-        }
-        searchResults = accountAssets
-        
-        guard let lastQuery = lastQuery else {
-            return
-        }
-        
-        search(for: lastQuery)
-    }
-    
-    func load() {
-        sharedDataController.add(self)
-    }
-
-    func search(for query: String) {
-        lastQuery = query
-        searchResults = accountAssets.filter {
-            String($0.id).contains(query) ||
-            $0.detail.name.unwrap(or: "").containsCaseInsensitive(query) ||
-            $0.detail.unitName.unwrap(or: "").containsCaseInsensitive(query)
-        }
-        
-        deliverContentSnapshot()
-    }
-    
-    func resetSearch() {
-        lastQuery = nil
-        fetchAssets()
-        deliverContentSnapshot()
-    }
+enum ManageAssetsListDataControllerEvent {
+    case didUpdate(ManageAssetsListDataController.Snapshot)
 }
 
-extension ManageAssetsListDataController {
-    func sharedDataController(
-        _ sharedDataController: SharedDataController,
-        didPublish event: SharedDataControllerEvent
-    ) {
-        switch event {
-        case let .didStartRunning(first):
-            if first ||
-                lastSnapshot == nil {
-                deliverContentSnapshot()
-            }
-        case .didFinishRunning:
-            if let updatedAccount = sharedDataController.accountCollection[account.address] {
-                account = updatedAccount.value
-            }
-            fetchAssets()
-            deliverContentSnapshot()
-        default:
-            break
-        }
-    }
+enum ManageAssetSearchSection:
+    Int,
+    Hashable {
+    case assets
+    case empty
 }
 
-extension ManageAssetsListDataController {
-    private func deliverContentSnapshot() {
-        guard !accountAssets.isEmpty else {
-            deliverNoContentSnapshot()
-            return
-        }
-        
-        guard !searchResults.isEmpty else {
-            deliverEmptyContentSnapshot()
-            return
-        }
-        
-        deliverSnapshot {
-            [weak self] in
-            guard let self = self else {
-                return Snapshot()
-            }
-            
-            var snapshot = Snapshot()
-            
-            var assetItems: [AssetSearchItem] = []
-            let currency = self.sharedDataController.currency.value
-            
-            self.searchResults.forEach {
-                let assetPreviewModel = AssetPreviewModelAdapter.adaptAssetSelection(($0.detail, $0.base, currency))
-                let assetItem: AssetSearchItem = .asset(AssetPreviewViewModel(assetPreviewModel))
-                assetItems.append(assetItem)
-            }
-            snapshot.appendSections([.assets])
-            snapshot.appendItems(
-                assetItems,
-                toSection: .assets
-            )
-            
-            snapshot.reloadItems(assetItems)
-            return snapshot
-        }
-    }
-    
-    private func deliverNoContentSnapshot() {
-        deliverSnapshot {
-            var snapshot = Snapshot()
-            
-            snapshot.appendSections([.empty])
-            snapshot.appendItems(
-                [.noContent],
-                toSection: .empty
-            )
-            
-            return snapshot
-        }
-    }
-    
-    private func deliverEmptyContentSnapshot() {
-        deliverSnapshot {
-            var snapshot = Snapshot()
-            
-            snapshot.appendSections([.empty])
-            snapshot.appendItems(
-                [.empty],
-                toSection: .empty
-            )
-            
-            return snapshot
-        }
-    }
-    
-    private func deliverSnapshot(
-        _ snapshot: @escaping () -> Snapshot
-    ) {
-        snapshotQueue.async {
-            [weak self] in
-            guard let self = self else { return }
-            
-            let newSnapshot = snapshot()
-            
-            self.lastSnapshot = newSnapshot
-            self.publish(.didUpdate(newSnapshot))
-        }
-    }
-}
-
-extension ManageAssetsListDataController {
-    private func publish(
-        _ event: AssetSearchDataControllerEvent
-    ) {
-        asyncMain { [weak self] in
-            guard let self = self else {
-                return
-            }
-            
-            self.eventHandler?(event)
-        }
-    }
+enum ManageAssetSearchItem: Hashable {
+    case asset(AssetPreviewViewModel)
+    case empty(AssetListSearchNoContentViewModel)
 }
