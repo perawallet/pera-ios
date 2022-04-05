@@ -187,7 +187,9 @@ class TransactionsViewController: BaseViewController {
 extension TransactionsViewController {
     private func addListView() {
         let isWatchAccount = accountHandle.value.isWatchAccount()
-        listView.contentInset = isWatchAccount ? .zero : UIEdgeInsets(theme.contentInset)
+        listView.contentInset = isWatchAccount
+            ? UIEdgeInsets(theme.contentInsetForWatchAccount)
+            : UIEdgeInsets(theme.contentInset)
         
         view.addSubview(listView)
         listView.snp.makeConstraints {
