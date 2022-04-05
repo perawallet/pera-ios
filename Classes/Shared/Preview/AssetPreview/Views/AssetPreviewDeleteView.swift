@@ -157,15 +157,15 @@ extension AssetPreviewDeleteView {
         primaryAssetValueLabel.editText = viewModel?.primaryAccessory
         secondaryAssetValueLabel.editText = viewModel?.secondaryAccessory
     }
-    
-    /*func prepareForReuse() {
+
+    func prepareForReuse() {
         imageView.prepareForReuse()
         secondaryImageView.image = nil
-        primaryAssetTitleLabel.text = nil
-        secondaryAssetTitleLabel.text = nil
-        primaryAssetValueLabel.text = nil
-        secondaryAssetValueLabel.text = nil
-    }*/
+        primaryAssetTitleLabel.editText = nil
+        secondaryAssetTitleLabel.editText = nil
+        primaryAssetValueLabel.editText = nil
+        secondaryAssetValueLabel.editText = nil
+    }
 }
 
 extension AssetPreviewDeleteView {
