@@ -142,7 +142,10 @@ extension TransactionsListLayout: UICollectionViewDelegateFlowLayout {
                 break
             }
         case .pending:
-            let pendingTransactionCell = cell as! PendingTransactionCell
+            guard let pendingTransactionCell = cell as? PendingTransactionCell else {
+                return
+            }
+            
             pendingTransactionCell.stopAnimating()
         default:
             break

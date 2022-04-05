@@ -139,7 +139,7 @@ extension TransactionsAPIDataController {
                 }
                 switch response {
                 case let .success(pendingTransactionList):
-                    let updatedPendingTransactions = pendingTransactionList.pendingTransactions
+                    let updatedPendingTransactions = pendingTransactionList.pendingTransactions.uniqued()
                     if !self.pendingTransactions.isEmpty && updatedPendingTransactions.isEmpty {
                         self.pendingTransactions = []
                         return
