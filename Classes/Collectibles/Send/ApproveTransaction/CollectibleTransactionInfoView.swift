@@ -20,10 +20,15 @@ import UIKit
 final class CollectibleTransactionInfoView:
     View,
     ViewModelBindable,
-    ListReusable {
+    ListReusable,
+    UIInteractionObservable,
+    UIControlInteractionPublisher {
+    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .performAction: UIControlInteraction()
+    ]
+
     private lazy var titleView = Label()
-    private lazy var iconView = ImageView()
-    private lazy var valueView = Label()
+    private lazy var valueButton = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
 
     func customize(
         _ theme: CollectibleTransactionInfoViewTheme
@@ -45,16 +50,16 @@ final class CollectibleTransactionInfoView:
         titleView.editText = viewModel?.title
 
         if let icon = viewModel?.icon {
-            iconView.image = icon
+            valueButton.setImage(icon, for: .normal)
         } else {
-            iconView.isHidden = true
+            valueButton.setImage(nil, for: .normal)
         }
 
         if let valueStyle = viewModel?.valueStyle {
-            valueView.customizeAppearance(valueStyle)
+            valueButton.customizeAppearance(valueStyle)
         }
 
-        valueView.editText = viewModel?.value
+        valueButton.setEditTitle(viewModel?.value, for: .normal)
     }
 
     class func calculatePreferredSize(
@@ -74,7 +79,7 @@ final class CollectibleTransactionInfoView:
             width -
             valueMaxWidth -
             theme.iconSize.w -
-            theme.iconHorizontalInset * 2
+            theme.buttonPadding * 2
         let titleSize = viewModel.title.boundingSize(
             multiline: true,
             fittingSize: CGSize((titleWidth, .greatestFiniteMagnitude))
@@ -98,7 +103,6 @@ extension CollectibleTransactionInfoView {
         _ theme: CollectibleTransactionInfoViewTheme
     ) {
         addValue(theme)
-        addIcon(theme)
         addTitle(theme)
         addSeparator(theme.separator)
     }
@@ -107,40 +111,31 @@ extension CollectibleTransactionInfoView {
     private func addValue(
         _ theme: CollectibleTransactionInfoViewTheme
     ) {
-        valueView.customizeAppearance(theme.value)
+        valueButton.customizeAppearance(theme.value)
+        valueButton.imageView?.contentMode = .scaleAspectFit
 
-        addSubview(valueView)
-        valueView.snp.makeConstraints {
+        addSubview(valueButton)
+        valueButton.snp.makeConstraints {
             $0.trailing == 0
             $0.top == theme.verticalPadding
             $0.bottom == theme.verticalPadding
             $0.width <= self * theme.valueWidthRatio
         }
 
-        valueView.fitToVerticalIntrinsicSize(
+        valueButton.fitToVerticalIntrinsicSize(
             hugging: .defaultLow,
             compression: .required
         )
 
-        valueView.fitToHorizontalIntrinsicSize(
+        valueButton.fitToHorizontalIntrinsicSize(
             hugging: .defaultLow,
             compression: .required
         )
-    }
 
-    private func addIcon(
-        _ theme: CollectibleTransactionInfoViewTheme
-    ) {
-        iconView.layer.draw(corner: theme.iconCorner)
-        iconView.clipsToBounds = true
-
-        addSubview(iconView)
-        iconView.fitToIntrinsicSize()
-        iconView.snp.makeConstraints {
-            $0.fitToSize(theme.iconSize)
-            $0.centerY == valueView
-            $0.trailing == valueView.snp.leading - theme.iconHorizontalInset
-        }
+        startPublishing(
+            event: .performAction,
+            for: valueButton
+        )
     }
 
     private func addTitle(
@@ -153,7 +148,7 @@ extension CollectibleTransactionInfoView {
             $0.leading == 0
             $0.top == theme.verticalPadding
             $0.bottom == theme.verticalPadding
-            $0.trailing <= iconView.snp.leading - theme.iconHorizontalInset
+            $0.trailing <= valueButton.snp.leading - theme.buttonPadding
         }
 
         titleView.fitToVerticalIntrinsicSize(
@@ -165,5 +160,11 @@ extension CollectibleTransactionInfoView {
             hugging: .required,
             compression: .defaultHigh
         )
+    }
+}
+
+extension CollectibleTransactionInfoView {
+    enum Event {
+        case performAction
     }
 }

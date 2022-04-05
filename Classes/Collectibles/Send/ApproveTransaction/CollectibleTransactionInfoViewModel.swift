@@ -21,7 +21,7 @@ struct CollectibleTransactionInfoViewModel: ViewModel {
     private(set) var title: EditText?
     private(set) var icon: UIImage?
     private(set) var value: EditText?
-    private(set) var valueStyle: TextStyle?
+    private(set) var valueStyle: ButtonStyle?
 
     init(
         _ information: CollectibleTransactionInformation
@@ -43,18 +43,20 @@ extension CollectibleTransactionInfoViewModel {
     private mutating func bindIcon(
         _ information: CollectibleTransactionInformation
     ) {
+        guard let icon = information.icon else {
+            return
+        }
 
-        if let contact = information.contact {
-            
-            icon = ContactImageProcessor(
+        switch icon {
+        case .account(let account):
+            self.icon = account.image?.convert(to: CGSize(width: 24, height: 24))
+        case .contact(let contact):
+            self.icon = ContactImageProcessor(
                 data: contact.image,
                 size: CGSize(width: 24, height: 24)
             ).process()
-
-        } else {
-            if let account = information.account {
-                icon = account.image
-            }
+        case .custom(let image):
+            self.icon = image
         }
     }
 
@@ -69,17 +71,13 @@ extension CollectibleTransactionInfoViewModel {
     ) {
         if information.isCollectibleSpecificValue {
             valueStyle = [
-                .textOverflow(FittingText()),
-                .textAlignment(.right),
-                .textColor(AppColors.Components.Link.primary)
+                .titleColor([.normal(AppColors.Components.Link.primary)])
             ]
             return
         }
 
         valueStyle = [
-            .textOverflow(FittingText()),
-            .textAlignment(.right),
-            .textColor(AppColors.Components.Text.main)
+            .titleColor([.normal(AppColors.Components.Text.main)])
         ]
     }
 }
@@ -134,9 +132,15 @@ extension CollectibleTransactionInfoViewModel {
 }
 
 struct CollectibleTransactionInformation: Hashable {
-    var contact: Contact? = nil
-    var account: Account? = nil
+    var icon: Icon?
     let title: String
     let value: String
     var isCollectibleSpecificValue = false
+    var actionURL: URL?
+
+    enum Icon: Hashable {
+        case account(Account)
+        case contact(Contact)
+        case custom(UIImage?)
+    }
 }
