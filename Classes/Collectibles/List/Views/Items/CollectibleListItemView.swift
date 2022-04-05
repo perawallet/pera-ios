@@ -55,14 +55,11 @@ final class CollectibleListItemView:
         var viewModel = viewModel
 
         image.load(from: viewModel?.image) { error in
-            if error == nil,
-               viewModel?.image != nil,
-               let mediaType = viewModel?.mediaType,
-               mediaType.isSupported {
+            if let mediaType = viewModel?.mediaType,
+               !mediaType.isSupported {
+                viewModel?.bindBottomLeftBadgeForError()
                 return
             }
-
-            viewModel?.bindBottomLeftBadgeForError()
         }
 
         title.editText = viewModel?.title
