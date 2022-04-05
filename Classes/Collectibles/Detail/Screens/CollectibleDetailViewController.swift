@@ -264,6 +264,13 @@ extension CollectibleDetailViewController {
                 cell as! CollectibleDetailOptedInActionCell,
                 for: item
             )
+        case .information(let item):
+            if item.actionURL != nil {
+                linkInteractors(
+                    cell as! CollectibleDetailInformationCell,
+                    for: item
+                )
+            }
         case .external(let item):
             linkInteractors(
                 cell as! CollectibleExternalSourceCell,
@@ -449,6 +456,21 @@ extension CollectibleDetailViewController {
                 ),
                 by: .present
             )
+        }
+    }
+
+    private func linkInteractors(
+        _ cell: CollectibleDetailInformationCell,
+        for item: CollectibleTransactionInformation
+    ) {
+        cell.observe(event: .performAction) {
+            [weak self] in
+            guard let self = self,
+                  let actionURL = item.actionURL else {
+                return
+            }
+
+            self.open(actionURL)
         }
     }
 

@@ -236,7 +236,7 @@ extension CollectibleDetailAPIDataController {
             descriptionItems.append(
                 .information(
                     CollectibleTransactionInformation(
-                        account: account,
+                        icon: .account(account),
                         title: "collectible-detail-owner".localized,
                         value: account.name.fallback(account.address.shortAddressDisplay),
                         isCollectibleSpecificValue: false
@@ -248,7 +248,7 @@ extension CollectibleDetailAPIDataController {
         descriptionItems.append(
             .information(
                 CollectibleTransactionInformation(
-                    account: nil,
+                    icon: nil,
                     title: "title-asset-id".localized,
                     value: String(asset.id),
                     isCollectibleSpecificValue: false
@@ -261,7 +261,7 @@ extension CollectibleDetailAPIDataController {
             descriptionItems.append(
                 .information(
                     CollectibleTransactionInformation(
-                        account: nil,
+                        icon: nil,
                         title: "collectible-detail-collection-name".localized,
                         value: collectionName,
                         isCollectibleSpecificValue: true
@@ -275,7 +275,7 @@ extension CollectibleDetailAPIDataController {
             descriptionItems.append(
                 .information(
                     CollectibleTransactionInformation(
-                        account: nil,
+                        icon: nil,
                         title: "collectible-detail-creator-name".localized,
                         value: assetTitle,
                         isCollectibleSpecificValue: true
@@ -288,7 +288,7 @@ extension CollectibleDetailAPIDataController {
             descriptionItems.append(
                 .information(
                     CollectibleTransactionInformation(
-                        account: nil,
+                        icon: nil,
                         title: "collectible-detail-creator-address".localized,
                         value: creator.shortAddressDisplay,
                         isCollectibleSpecificValue: true
@@ -296,6 +296,18 @@ extension CollectibleDetailAPIDataController {
                 )
             )
         }
+
+        descriptionItems.append(
+            .information(
+                CollectibleTransactionInformation(
+                    icon: .custom(img("icon-pera-logo")),
+                    title: "collectible-detail-show-on".localized,
+                    value: "collectible-detail-pera-explorer".localized,
+                    isCollectibleSpecificValue: true,
+                    actionURL: asset.explorerURL
+                )
+            )
+        )
 
         snapshot.appendSections([.description])
         snapshot.appendItems(

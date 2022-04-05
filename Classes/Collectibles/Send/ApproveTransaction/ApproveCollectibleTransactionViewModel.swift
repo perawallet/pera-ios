@@ -44,7 +44,7 @@ extension ApproveCollectibleTransactionViewModel {
         _ draft: SendCollectibleDraft
     ) {
         let info = CollectibleTransactionInformation(
-            account: draft.fromAccount,
+            icon: .account(draft.fromAccount),
             title: "collectible-approve-transaction-sender".localized,
             value: draft.fromAccount.address.shortAddressDisplay
         )
@@ -62,10 +62,16 @@ extension ApproveCollectibleTransactionViewModel {
         } else if let toAccount = draft.toAccount {
             value = toAccount.address.shortAddressDisplay
         }
-        
+
+        var icon: CollectibleTransactionInformation.Icon?
+        if let contact = draft.toContact {
+            icon = .contact(contact)
+        } else if let account = draft.toAccount {
+            icon = .account(account)
+        }
+
         let info = CollectibleTransactionInformation(
-            contact: draft.toContact,
-            account: draft.toAccount,
+            icon: icon,
             title: "collectible-approve-transaction-to".localized,
             value: value
         )
