@@ -48,7 +48,7 @@ struct CollectibleListLoadingViewTheme:
         filterActionWidthRatio = 1.5
 
         collectibleListItemsVerticalStackSpacing = 28
-        collectibleListItemsVerticalStackPaddings = (16, 0, .noMetric, 0)
+        collectibleListItemsVerticalStackPaddings = (16, 0, 8, 0)
 
         collectibleListItemsHorizontalStackSpacing = 24
 

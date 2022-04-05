@@ -61,6 +61,37 @@ final class NoContentWithActionView:
         secondaryActionView.isHidden = secondaryActionTitle == nil
         secondaryActionView.setEditTitle(secondaryActionTitle, for: .normal)
     }
+
+    class func calculatePreferredSize(
+        _ viewModel: NoContentWithActionViewModel?,
+        for theme: NoContentViewWithActionTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let resultSize = ResultView.calculatePreferredSize(
+            viewModel,
+            for: theme,
+            fittingIn: size
+        )
+
+        let buttonHeight = 52.cgFloat
+
+        var preferredHeight =
+        resultSize.height +
+        theme.contentVerticalPaddings.top +
+        theme.contentVerticalPaddings.bottom +
+        theme.primaryActionTopMargin +
+        buttonHeight
+
+        if viewModel.secondaryActionTitle != nil {
+            preferredHeight += (theme.secondaryActionTopMargin + buttonHeight)
+        }
+
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
+    }
 }
 
 extension NoContentWithActionView {

@@ -26,6 +26,9 @@ final class CollectibleListLoadingView:
     private lazy var filterActionView = ShimmerView()
     private lazy var collectibleListItemsVerticalStack = UIStackView()
 
+    private static let rowCount = 2
+    private static let columnCount = 2
+
     override init(
         frame: CGRect
     ) {
@@ -53,6 +56,37 @@ final class CollectibleListLoadingView:
 
     func linkInteractors() {
         isUserInteractionEnabled = false
+    }
+
+    class func calculatePreferredSize(
+        for theme: CollectibleListLoadingViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        let rowCount = CollectibleListLoadingView.rowCount
+        let columnCount = CollectibleListLoadingView.columnCount
+
+
+        let rowSpacing = theme.collectibleListItemsHorizontalStackSpacing
+        let itemWidth = (size.width - rowSpacing)  / columnCount.cgFloat
+
+        let itemHeight =  CollectibleListItemLoadingView.calculatePreferredSize(
+            for: theme.collectibleListItemLoadingViewTheme,
+            fittingIn: CGSize((itemWidth.float(), size.height))
+        )
+
+        let collectibleListItemsVerticalStackItemsHeight = itemHeight.height * rowCount.cgFloat
+
+        let preferredHeight =
+        theme.searchInputHeight +
+        theme.searchInputPaddings.top +
+        theme.infoTopPadding +
+        theme.infoSize.h +
+        theme.collectibleListItemsVerticalStackPaddings.top +
+        theme.collectibleListItemsVerticalStackSpacing +
+        collectibleListItemsVerticalStackItemsHeight +
+        theme.collectibleListItemsVerticalStackPaddings.bottom
+
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
 
@@ -109,15 +143,15 @@ extension CollectibleListLoadingView {
             $0.top == filterActionView.snp.bottom + theme.collectibleListItemsVerticalStackPaddings.top
             $0.leading == theme.collectibleListItemsVerticalStackPaddings.leading
             $0.trailing == theme.collectibleListItemsVerticalStackPaddings.trailing
-            $0.bottom <= 0
+            $0.bottom == theme.collectibleListItemsVerticalStackPaddings.bottom
         }
     }
 
     private func addCollectibleListItem(
         _ theme: CollectibleListLoadingViewTheme
     ) {
-        let rowCount = 2
-        let columnCount = 2
+        let rowCount = CollectibleListLoadingView.rowCount
+        let columnCount = CollectibleListLoadingView.columnCount
 
         (0..<rowCount).forEach { _ in
             let collectibleListItemsHorizontalStack = UIStackView()

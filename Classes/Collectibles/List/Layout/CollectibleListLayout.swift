@@ -60,7 +60,6 @@ extension CollectibleListLayout {
         case .empty:
             return insets
         case .loading:
-            insets.bottom = 8
             return insets
         case .infoWithFilter:
             insets.top = 24
@@ -88,16 +87,15 @@ extension CollectibleListLayout {
         case .empty(let item):
             switch item {
             case .loading:
-                return sizeForEmptyItem(
+                return sizeForLoadingItem(
                     collectionView,
-                    layout: collectionViewLayout,
-                    atSection: indexPath.section
+                    layout: collectionViewLayout
                 )
-            case .noContent:
-                return sizeForEmptyItem(
+            case .noContent(let item):
+                return listView(
                     collectionView,
                     layout: collectionViewLayout,
-                    atSection: indexPath.section
+                    sizeForNoContentItem: item
                 )
             case .noContentSearch:
                 return sizeForSearchNoContent(
@@ -156,23 +154,39 @@ extension CollectibleListLayout {
         return newSize
     }
 
-    private func sizeForEmptyItem(
+    private func sizeForLoadingItem(
+        _ listView: UICollectionView,
+        layout listViewLayout: UICollectionViewLayout
+    ) -> CGSize {
+        let sizeCacheIdentifier = CollectibleListLoadingViewCell.reuseIdentifier
+
+        if let cachedSize = sizeCache[sizeCacheIdentifier] {
+            return cachedSize
+        }
+
+        let width = calculateContentWidth(for: listView)
+        let newSize = CollectibleListLoadingView.calculatePreferredSize(
+            for: CollectibleListLoadingViewCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
+
+        sizeCache[sizeCacheIdentifier] = newSize
+
+        return newSize
+    }
+
+    private func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        atSection section: Int
+        sizeForNoContentItem item: CollectiblesNoContentWithActionViewModel
     ) -> CGSize {
         let width = calculateContentWidth(for: listView)
-        let sectionInset = collectionView(
-            listView,
-            layout: listViewLayout,
-            insetForSectionAt: section
+        
+        return NoContentWithActionIllustratedCell.calculatePreferredSize(
+            item,
+            for: NoContentWithActionIllustratedCell.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
-        let height =
-            listView.bounds.height -
-            sectionInset.vertical -
-            listView.safeAreaTop -
-            listView.safeAreaBottom
-        return CGSize((width, height))
     }
 
     private func sizeForSearch(

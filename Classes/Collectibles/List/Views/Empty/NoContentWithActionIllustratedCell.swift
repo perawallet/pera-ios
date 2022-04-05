@@ -22,6 +22,11 @@ final class NoContentWithActionIllustratedCell:
     CollectionCell<NoContentWithActionView>,
     ViewModelBindable,
     UIInteractionObservable {
+    static let theme: NoContentWithActionViewIllustratedTheme = {
+        var theme = NoContentWithActionViewIllustratedTheme()
+        theme.configureForCollectiblesNoContentWithAction()
+        return theme
+    }()
 
     override init(
         frame: CGRect
@@ -30,9 +35,6 @@ final class NoContentWithActionIllustratedCell:
             frame: frame
         )
 
-        var theme = NoContentWithActionViewIllustratedTheme()
-        theme.configureForCollectiblesNoContentWithAction()
-
-        contextView.customize(theme)
+        contextView.customize(Self.theme)
     }
 }
