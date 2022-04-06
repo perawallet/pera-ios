@@ -19,11 +19,10 @@ import MacaroonUIKit
 
 final class CollectibleListViewController:
     BaseViewController,
-    UICollectionViewDelegateFlowLayout,
-    UIInteractionObservable {
-    private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .performReceiveAction: UIBlockInteraction()
-    ]
+    UICollectionViewDelegateFlowLayout {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
 
     private lazy var listView: UICollectionView = {
         let collectionViewLayout = CollectibleListLayout.build()
@@ -121,6 +120,11 @@ final class CollectibleListViewController:
 
             switch event {
             case .didUpdate(let snapshot):
+                if let accountAddress = self.dataController.galleryAccount.singleAccount?.value.address,
+                    let accountHandle = self.sharedDataController.accountCollection[accountAddress] {
+                    self.eventHandler?(.didUpdate(accountHandle))
+                }
+
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
             }
         }
@@ -320,8 +324,7 @@ extension CollectibleListViewController {
     }
 
     private func openReceiveCollectibleAccountList() {
-        let interaction = uiInteractions[.performReceiveAction] as? UIBlockInteraction
-        interaction?.notify()
+        eventHandler?(.didTapReceive)
     }
 }
 
@@ -346,6 +349,7 @@ extension CollectibleListViewController: SearchInputViewDelegate {
 
 extension CollectibleListViewController {
     enum Event {
-        case performReceiveAction
+        case didUpdate(AccountHandle)
+        case didTapReceive
     }
 }

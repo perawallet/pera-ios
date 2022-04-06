@@ -25,6 +25,8 @@ protocol CollectibleListDataController: AnyObject {
 
     var imageSize: CGSize { get set }
 
+    var galleryAccount: CollectibleGalleryAccount { get }
+
     func load()
     func search(for query: String)
     func resetSearch()
@@ -74,6 +76,18 @@ enum CollectibleDataControllerEvent {
     var snapshot: CollectibleListDataController.Snapshot {
         switch self {
         case .didUpdate(let snapshot): return snapshot
+        }
+    }
+}
+
+enum CollectibleGalleryAccount {
+    case single(AccountHandle)
+    case all
+
+    var singleAccount: AccountHandle? {
+        switch self {
+        case .single(let account): return account
+        default: return nil
         }
     }
 }
