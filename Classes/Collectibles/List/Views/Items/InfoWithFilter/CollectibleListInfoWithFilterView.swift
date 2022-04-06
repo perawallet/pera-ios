@@ -74,7 +74,7 @@ final class CollectibleListInfoWithFilterView:
 }
 
 extension CollectibleListInfoWithFilterView {
-    func recustomizeAppearanceWhenIsSelectedChange(
+    func recustomizeAppearanceWhenFilterChanged(
         _ isFilterSelected: Bool
     ) {
         filterActionView.isSelected = isFilterSelected

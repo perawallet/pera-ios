@@ -179,7 +179,7 @@ extension CollectibleListViewController {
         }
 
         switch itemIdentifier {
-        case .infoWithFilter:
+        case .header:
             linkInteractors(cell as! CollectibleListInfoWithFilterCell)
         case .search:
             linkInteractors(cell as! CollectibleListSearchInputCell)
@@ -287,7 +287,7 @@ extension CollectibleListViewController {
             }
 
             self.dataController.filter(
-                forFilter: .optedInIncluded
+                by: .all
             )
         }
     }
@@ -315,7 +315,7 @@ extension CollectibleListViewController {
                 }
 
                 self.dataController.filter(
-                    forFilter: filter
+                    by: filter
                 )
             }
         }
@@ -364,10 +364,10 @@ extension CollectibleListViewController {
             )
 
             NotificationCenter.default.post(
-                name: CollectibleListLocalDataController.didAddPendingRemovedCollectible,
+                name: CollectibleListLocalDataController.didRemoveCollectible,
                 object: self,
                 userInfo: [
-                    CollectibleListLocalDataController.assetUserInfoKey: (account, asset)
+                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
                 ]
             )
         }

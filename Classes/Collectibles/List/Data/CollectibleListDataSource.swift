@@ -52,7 +52,7 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                     )
                     return cell
                 }
-            case .infoWithFilter(let item):
+            case .header(let item):
                 let cell = collectionView.dequeue(
                     CollectibleListInfoWithFilterCell.self,
                     at: indexPath

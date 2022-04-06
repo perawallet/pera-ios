@@ -61,7 +61,7 @@ extension CollectibleListLayout {
             return insets
         case .loading:
             return insets
-        case .infoWithFilter:
+        case .header:
             insets.top = 24
             return insets
         case .search:
@@ -102,11 +102,11 @@ extension CollectibleListLayout {
                     collectionView
                 )
             }
-        case .infoWithFilter(let item):
+        case .header(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,
-                sizeForInfoWithFilterItem: item.value
+                sizeForHeaderItem: item.value
             )
         case .search:
             return sizeForSearch(
@@ -211,7 +211,7 @@ extension CollectibleListLayout {
     func listView(
         _ listView: UICollectionView,
         layout listViewLayout: UICollectionViewLayout,
-        sizeForInfoWithFilterItem item: CollectibleListInfoWithFilterViewModel
+        sizeForHeaderItem item: CollectibleListInfoWithFilterViewModel
     )-> CGSize {
         let sizeCacheIdentifier = CollectibleListInfoWithFilterCell.reuseIdentifier
 

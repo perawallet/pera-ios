@@ -266,10 +266,10 @@ extension AccountDetailViewController: ManageAssetsViewControllerDelegate {
         didRemove asset: CollectibleAsset
     ) {
         NotificationCenter.default.post(
-            name: CollectibleListLocalDataController.didAddPendingRemovedCollectible,
+            name: CollectibleListLocalDataController.didRemoveCollectible,
             object: self,
             userInfo: [
-                CollectibleListLocalDataController.assetUserInfoKey: (accountHandle.value, asset)
+                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (accountHandle.value, asset)
             ]
         )
     }

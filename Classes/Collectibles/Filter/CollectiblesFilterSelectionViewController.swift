@@ -27,10 +27,10 @@ final class CollectiblesFilterSelectionViewController: BaseScrollViewController 
     private lazy var toggleView = Toggle()
 
     private let theme: CollectiblesFilterSelectionViewControllerTheme
-    private let filter: Filter?
+    private let filter: Filter
 
     init(
-        filter: Filter?,
+        filter: Filter,
         theme: CollectiblesFilterSelectionViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
@@ -48,10 +48,6 @@ final class CollectiblesFilterSelectionViewController: BaseScrollViewController 
     override func prepareLayout() {
         super.prepareLayout()
 
-        build()
-    }
-
-    private func build() {
         addContent()
     }
 }
@@ -76,7 +72,7 @@ extension CollectiblesFilterSelectionViewController {
             }
 
             self.dismissScreen {
-                let filter: Filter? = self.toggleView.isOn ? .optedInIncluded : nil
+                let filter: Filter = self.toggleView.isOn ? .all : .owned
                 self.handlers.didTapDone?(filter)
             }
         }
@@ -122,7 +118,7 @@ extension CollectiblesFilterSelectionViewController {
             $0.centerY == toggleTitleView
         }
 
-        toggleView.isOn = filter != nil
+        toggleView.isOn = filter == .all
     }
 
     private func addToggleDescription() {
@@ -140,12 +136,13 @@ extension CollectiblesFilterSelectionViewController {
 
 extension CollectiblesFilterSelectionViewController {
     struct Handlers {
-        var didTapDone: ((Filter?) -> Void)?
+        var didTapDone: ((Filter) -> Void)?
     }
 }
 
 extension CollectiblesFilterSelectionViewController {
     enum Filter {
-        case optedInIncluded
+        case all
+        case owned
     }
 }

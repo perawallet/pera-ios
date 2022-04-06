@@ -308,10 +308,10 @@ extension ApproveCollectibleTransactionViewController: TransactionControllerDele
         )
 
         NotificationCenter.default.post(
-            name: CollectibleListLocalDataController.didAddPendingRemovedCollectible,
+            name: CollectibleListLocalDataController.didRemoveCollectible,
             object: self,
             userInfo: [
-                CollectibleListLocalDataController.assetUserInfoKey: (draft.fromAccount, draft.collectibleAsset)
+                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (draft.fromAccount, draft.collectibleAsset)
             ]
         )
 

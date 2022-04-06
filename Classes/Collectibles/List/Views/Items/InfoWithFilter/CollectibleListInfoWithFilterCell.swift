@@ -23,7 +23,7 @@ final class CollectibleListInfoWithFilterCell:
     UIInteractionObservable {
     var isFilterSelected: Bool = false {
         didSet {
-            contextView.recustomizeAppearanceWhenIsSelectedChange(
+            contextView.recustomizeAppearanceWhenFilterChanged(
                 isFilterSelected
             )
         }

@@ -22,22 +22,22 @@ struct CollectibleListInfoWithFilterViewModel:
     private(set) var info: EditText?
 
     init(
-        nftCount: Int
+        collectibleCount: Int
     ) {
-        bindInfo(nftCount)
+        bindInfo(collectibleCount)
     }
 }
 
 extension CollectibleListInfoWithFilterViewModel {
     private mutating func bindInfo(
-        _ nftCount: Int
+        _ collectibleCount: Int
     ) {
         let info: String
 
-        if nftCount < 2 {
-            info = "title-plus-collectible-singular-count".localized(params: "\(nftCount)")
+        if collectibleCount < 2 {
+            info = "title-plus-collectible-singular-count".localized(params: "\(collectibleCount)")
         } else {
-            info = "title-plus-collectible-count".localized(params: "\(nftCount)")
+            info = "title-plus-collectible-count".localized(params: "\(collectibleCount)")
         }
 
         self.info = getInfo(info)

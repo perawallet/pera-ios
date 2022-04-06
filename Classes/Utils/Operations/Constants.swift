@@ -20,5 +20,15 @@ enum Constants {
     enum DispatchQueues {
         static let collectibleDetailSnapshot = "collectibleDetailSnapshot"
         static let manageAssetListSnapshot = "manageAssetListSnapshot"
+        static let collectibleListSnapshot = "collectibleListSnapshot"
+    }
+
+    enum Notification {
+        enum InfoKey {
+            static let collectibleListAccountAssetPair = "collectibleListAccountAssetPair"
+        }
+
+        static let collectibleListDidAddCollectible = "collectibleListDidAddCollectible"
+        static let collectibleListDidRemoveCollectible = "collectibleListDidRemoveCollectible"
     }
 }
