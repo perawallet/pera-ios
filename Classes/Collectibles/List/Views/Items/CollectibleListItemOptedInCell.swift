@@ -29,7 +29,7 @@ final class CollectibleListItemOptedInCell:
             contextView.setPendingHiddenWhenPendingStatusChange(isPending)
         }
     }
-    
+
     static let theme: CollectibleListItemViewTheme = {
         var theme = CollectibleListItemViewTheme()
         theme.configureOverlayForOptedInCell()
@@ -41,5 +41,11 @@ final class CollectibleListItemOptedInCell:
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
+    }
+
+    override func prepareForReuse() {
+        contextView.prepareForReuse()
+
+        isPending = false
     }
 }

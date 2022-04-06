@@ -72,6 +72,16 @@ final class CollectibleListDataSource: UICollectionViewDiffableDataSource<Collec
                 switch item {
                 case .cell(let item):
                     switch item {
+                    case .pending(let item):
+                        let cell = collectionView.dequeue(
+                            CollectibleListItemCell.self,
+                            at: indexPath
+                        )
+                        cell.isPending = item.isPending
+                        cell.bindData(
+                            item.viewModel
+                        )
+                        return cell
                     case .owner(let item):
                         let cell = collectionView.dequeue(
                             CollectibleListItemCell.self,

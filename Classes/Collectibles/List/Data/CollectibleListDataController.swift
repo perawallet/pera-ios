@@ -67,11 +67,13 @@ enum CollectibleItem: Hashable {
 enum CollectibleCellItem: Hashable {
     case owner(CollectibleCellItemContainer<CollectibleListItemViewModel>)
     case optedIn(CollectibleCellItemContainer<CollectibleListItemViewModel>)
+    case pending(CollectibleCellItemContainer<CollectibleListItemViewModel>)
 
     var isPending: Bool {
         switch self {
         case .optedIn(let item): return item.isPending
         case .owner(let item): return item.isPending
+        case .pending(let item): return item.isPending
         }
     }
 }

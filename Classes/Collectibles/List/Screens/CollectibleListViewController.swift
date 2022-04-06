@@ -243,6 +243,7 @@ extension CollectibleListViewController {
             switch item {
             case .cell(let cell):
                 switch cell {
+                case .pending: break
                 case .owner(let item):
                     let cell = collectionView.cellForItem(at: indexPath) as? CollectibleListItemCell
                     openCollectibleDetail(

@@ -256,8 +256,9 @@ extension CollectibleListLayout {
         sizeForCollectibleItem item: CollectibleCellItem
     ) -> CGSize {
         switch item {
-        case let .owner(item),
-             let .optedIn(item):
+        case let .pending(item),
+            let .owner(item),
+            let .optedIn(item):
             return self.listView(
                 listView,
                 layout: listViewLayout,

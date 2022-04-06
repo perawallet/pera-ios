@@ -38,4 +38,10 @@ final class CollectibleListItemCell:
         super.init(frame: frame)
         contextView.customize(Self.theme)
     }
+
+    override func prepareForReuse() {
+        contextView.prepareForReuse()
+
+        isPending = false
+    }
 }

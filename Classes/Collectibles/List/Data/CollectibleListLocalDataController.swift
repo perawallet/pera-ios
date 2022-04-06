@@ -249,30 +249,33 @@ extension CollectibleListLocalDataController {
         removedAccountAssetPairs
 
         pendingAccountAssetPairs.forEach { pendingAccountAssetPair in
-            let account = accounts.first(matching: (\.address, pendingAccountAssetPair.account.address))
+            let pendingCollectibleAsset = pendingAccountAssetPair.asset
+            let pendingCollectibleAccount = pendingAccountAssetPair.account
+
+            let account = accounts.first(matching: (\.address, pendingCollectibleAccount.address))
 
             if let account = account,
-               account.containsCollectibleAsset(pendingAccountAssetPair.asset.id) {
+               account.containsCollectibleAsset(pendingCollectibleAsset.id) {
                 return
             }
 
             if let query = query,
                !isAssetContains(
-                pendingAccountAssetPair.asset,
+                pendingCollectibleAsset,
                 query: query
                ) {
                 return
             }
 
             let cellItem: CollectibleItem = .cell(
-                .owner(
+                .pending(
                     CollectibleCellItemContainer(
                         isPending: true,
-                        account: pendingAccountAssetPair.account,
-                        asset: pendingAccountAssetPair.asset,
+                        account: pendingCollectibleAccount,
+                        asset: pendingCollectibleAsset,
                         viewModel: CollectibleListItemViewModel(
                             imageSize: imageSize,
-                            model: pendingAccountAssetPair.asset
+                            model: pendingCollectibleAsset
                         )
                     )
                 )
@@ -430,6 +433,15 @@ extension CollectibleListLocalDataController {
     private func addAddedAccountAssetPair(
         _ accountAssetPair: AccountAssetPair
     ) {
+        let isAlreadyPending = addedAccountAssetPairs.contains { addedAccountAssetPair in
+            addedAccountAssetPair.account.address == accountAssetPair.account.address &&
+            addedAccountAssetPair.asset.id == addedAccountAssetPair.asset.id
+        }
+
+        if isAlreadyPending {
+            return
+        }
+
         accountAssetPair.asset.state = .pending(.add)
         addedAccountAssetPairs.append(accountAssetPair)
 
@@ -443,6 +455,15 @@ extension CollectibleListLocalDataController {
     private func addRemovedAccountAssetPair(
         _ accountAssetPair: AccountAssetPair
     ) {
+        let isAlreadyPending = removedAccountAssetPairs.contains { addedAccountAssetPair in
+            addedAccountAssetPair.account.address == accountAssetPair.account.address &&
+            addedAccountAssetPair.asset.id == addedAccountAssetPair.asset.id
+        }
+
+        if isAlreadyPending {
+            return
+        }
+
         accountAssetPair.asset.state = .pending(.remove)
         removedAccountAssetPairs.append(accountAssetPair)
 
