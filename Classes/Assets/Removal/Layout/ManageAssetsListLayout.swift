@@ -36,6 +36,31 @@ final class ManageAssetsListLayout: NSObject {
 
 extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
     func collectionView(
+            _ collectionView: UICollectionView,
+            layout collectionViewLayout: UICollectionViewLayout,
+            insetForSectionAt section: Int
+        ) -> UIEdgeInsets {
+            let sectionIdentifiers = dataSource.snapshot().sectionIdentifiers
+
+            guard let listSection = sectionIdentifiers[safe: section] else {
+                return .zero
+            }
+
+            var insets =
+            UIEdgeInsets(
+                (0, theme.horizontalPaddings.leading, 0, theme.horizontalPaddings.trailing)
+            )
+
+            switch listSection {
+            case .empty:
+                return insets
+            case .assets:
+                insets.top = 20
+                return insets
+            }
+        }
+    
+    func collectionView(
         _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
