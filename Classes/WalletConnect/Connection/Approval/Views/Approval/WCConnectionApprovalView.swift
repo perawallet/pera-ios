@@ -26,7 +26,7 @@ final class WCConnectionApprovalView: View {
     private lazy var titleLabel = UILabel()
     private lazy var urlButton = UIButton()
 
-    private lazy var accountSelectionView = WCConnectionAccountSelectionView {
+    private lazy var accountSelectionView = WCConnectionAccountSelectionView(theme: WCConnectionAccountSelectionViewTheme()) {
         $0.showsArrowImageView = hasMultipleAccounts
     }
 
@@ -103,8 +103,6 @@ extension WCConnectionApprovalView {
     }
 
     private func addAccountSelectionView(_ theme: WCConnectionApprovalViewTheme) {
-        accountSelectionView.customize(WCConnectionAccountSelectionViewTheme())
-        
         addSubview(accountSelectionView)
         accountSelectionView.snp.makeConstraints {
             $0.leading.trailing.equalToSuperview().inset(theme.horizontalInset)
