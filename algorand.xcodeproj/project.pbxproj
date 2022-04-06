@@ -896,7 +896,6 @@
 		2B3E3A0A24796FCC00E8AEB7 /* TabBarItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0824796FCC00E8AEB7 /* TabBarItems.swift */; };
 		2B3E3A0C247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0B247BFD6E00E8AEB7 /* UIStackView+Additions.swift */; };
 		2B3E3A0D247BFD6E00E8AEB7 /* UIStackView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0B247BFD6E00E8AEB7 /* UIStackView+Additions.swift */; };
-		2B3E3A10247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0F247BFDA600E8AEB7 /* Bool+Additions.swift */; };
 		2B3E3A11247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0F247BFDA600E8AEB7 /* Bool+Additions.swift */; };
 		2B432A4F237C4F5D009191BF /* AssetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A4E237C4F5D009191BF /* AssetViewModel.swift */; };
 		2B432A50237C4F5D009191BF /* AssetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B432A4E237C4F5D009191BF /* AssetViewModel.swift */; };
@@ -4306,6 +4305,7 @@
 		F09E62A32767968300FEC701 /* ALGBlockOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E62A22767968300FEC701 /* ALGBlockOperationQueue.swift */; };
 		F09E62A42767968300FEC701 /* ALGBlockOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E62A22767968300FEC701 /* ALGBlockOperationQueue.swift */; };
 		F09E62A52767968300FEC701 /* ALGBlockOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E62A22767968300FEC701 /* ALGBlockOperationQueue.swift */; };
+		F0B50EA627FC6D0900478017 /* Bool+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3E3A0F247BFDA600E8AEB7 /* Bool+Additions.swift */; };
 		F0B5B0CB27A1CBB900BC3E2D /* AppLaunchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5B0CA27A1CBB900BC3E2D /* AppLaunchController.swift */; };
 		F0B5B0CC27A1CBB900BC3E2D /* AppLaunchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5B0CA27A1CBB900BC3E2D /* AppLaunchController.swift */; };
 		F0B5B0CD27A1CBB900BC3E2D /* AppLaunchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B5B0CA27A1CBB900BC3E2D /* AppLaunchController.swift */; };
@@ -18135,6 +18135,7 @@
 				2BA4B3EB267819530041586B /* WCSessionListView.swift in Sources */,
 				F0DB415D2793839B00EA437D /* TitleWithAccessoryView.swift in Sources */,
 				D4C85B5627690F5000655238 /* ButtonStyles.swift in Sources */,
+				F0B50EA627FC6D0900478017 /* Bool+Additions.swift in Sources */,
 				D42A022726D7A52F00CEFC16 /* BottomSheetTransitionController.swift in Sources */,
 				2B88CC862618A509000027B4 /* Array+View.swift in Sources */,
 				2BD36E052681DBC400C57728 /* WCAppCallTransactionViewModel.swift in Sources */,
@@ -18544,9 +18545,7 @@
 				D450DE672701C131008CC094 /* LedgerAccountVerificationViewTheme.swift in Sources */,
 				2B7A1FD527DFF1A10010F52E /* CollectibleExternalSource.swift in Sources */,
 				D4789FD92775CBB8001395BA /* AssetDetailInfoView.swift in Sources */,
-				2B3E3A10247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */,
 				D431505B27EA24710084CA41 /* ALGActiveLabel.swift in Sources */,
-				2B3E3A10247BFDA600E8AEB7 /* Bool+Additions.swift in Sources */,
 				2BCCB5BE27D755E500C5E497 /* AssetPreviewDeleteCell.swift in Sources */,
 				F0E7444D27B4763F0063DD83 /* AlgoPriceChartTimeFrameSelectionViewModel.swift in Sources */,
 				F0B5B0CB27A1CBB900BC3E2D /* AppLaunchController.swift in Sources */,
