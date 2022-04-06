@@ -351,26 +351,7 @@ extension CollectibleListViewController {
             by: .push
         ) as? CollectibleDetailViewController
         controller?.eventHandlers.didOptOutAssetFromAccount = {
-            [weak self] (asset, account) in
-            guard let self = self else {
-                return
-            }
-
             controller?.popScreen()
-
-            self.bannerController?.presentSuccessBanner(
-                title: "collectible-detail-opt-out-success".localized(
-                    params: asset.title ?? asset.name ?? .empty
-                )
-            )
-
-            NotificationCenter.default.post(
-                name: CollectibleListLocalDataController.didRemoveCollectible,
-                object: self,
-                userInfo: [
-                    CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
-                ]
-            )
         }
     }
 

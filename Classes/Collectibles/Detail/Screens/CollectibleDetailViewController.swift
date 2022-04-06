@@ -515,7 +515,21 @@ extension CollectibleDetailViewController {
     ) {
         loadingController?.stopLoading()
 
-        eventHandlers.didOptOutAssetFromAccount?(asset, account)
+        bannerController?.presentSuccessBanner(
+            title: "collectible-detail-opt-out-success".localized(
+                params: asset.title ?? asset.name ?? .empty
+            )
+        )
+
+        NotificationCenter.default.post(
+            name: CollectibleListLocalDataController.didSendCollectible,
+            object: self,
+            userInfo: [
+                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
+            ]
+        )
+
+        eventHandlers.didOptOutAssetFromAccount?()
     }
 
     func transactionController(
@@ -604,6 +618,6 @@ extension CollectibleDetailViewController {
 
 extension CollectibleDetailViewController {
     struct Event {
-        var didOptOutAssetFromAccount: ((CollectibleAsset, Account) -> Void)?
+        var didOptOutAssetFromAccount: EmptyHandler?
     }
 }

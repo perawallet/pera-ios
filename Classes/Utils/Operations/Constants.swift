@@ -30,5 +30,6 @@ enum Constants {
 
         static let collectibleListDidAddCollectible = "collectibleListDidAddCollectible"
         static let collectibleListDidRemoveCollectible = "collectibleListDidRemoveCollectible"
+        static let collectibleListDidSendCollectible = "collectibleListDidSendCollectible"
     }
 }

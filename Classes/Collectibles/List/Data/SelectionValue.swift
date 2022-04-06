@@ -12,29 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListViewControllerTheme.swift
+//   SelectionValue.swift
 
-import MacaroonUIKit
+import Foundation
 
-
-struct CollectibleListViewControllerTheme:
-    StyleSheet,
-    LayoutSheet {
-    let listContentBottomInset: LayoutMetric
-
-    init(
-        _ family: LayoutFamily,
-        listContentBottomInset: LayoutMetric
-    ) {
-        self.listContentBottomInset = listContentBottomInset
-    }
-
-    init(_ family: LayoutFamily) {
-        self = .common
-    }
-
-    static let common = CollectibleListViewControllerTheme(
-        .current,
-        listContentBottomInset: .zero
-    )
+struct SelectionValue<Value: Hashable>: Hashable {
+    let value: Value
+    var isSelected = false
 }

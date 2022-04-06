@@ -200,3 +200,9 @@ extension AssetDecorationList {
 }
 
 typealias AssetID = Int64
+
+extension AssetID {
+    var stringWithHashtag: String {
+        "#".appending(String(self))
+    }
+}

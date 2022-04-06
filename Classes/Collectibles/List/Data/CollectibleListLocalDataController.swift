@@ -30,6 +30,10 @@ final class CollectibleListLocalDataController:
         return .init(rawValue: Constants.Notification.collectibleListDidRemoveCollectible)
     }
 
+    static var didSendCollectible: Notification.Name {
+        return .init(rawValue: Constants.Notification.collectibleListDidSendCollectible)
+    }
+
     static var accountAssetPairUserInfoKey: String {
         return Constants.Notification.InfoKey.collectibleListAccountAssetPair
     }
@@ -205,7 +209,7 @@ extension CollectibleListLocalDataController {
                         cellItem = .cell(
                             .owner(
                                 CollectibleCellItemContainer(
-                                    isPending: isPending(
+                                    isPending: getPendingStatus(
                                         asset: collectibleAsset,
                                         account: account
                                     ),
@@ -222,7 +226,7 @@ extension CollectibleListLocalDataController {
                         cellItem = .cell(
                             .optedIn(
                                 CollectibleCellItemContainer(
-                                    isPending: isPending(
+                                    isPending: getPendingStatus(
                                         asset: collectibleAsset,
                                         account: account
                                     ),
@@ -428,6 +432,22 @@ extension CollectibleListLocalDataController {
                 )
             }
         }
+
+        /// <todo>: Find another solution for better way of handling pending items.
+        observe(notification: Self.didSendCollectible) {
+            [weak self] notification in
+            guard let self = self else { return }
+
+            if let accountAssetPair =
+                notification.userInfo?[
+                    Self.accountAssetPairUserInfoKey
+                ] as? AccountAssetPair {
+
+                self.addRemovedAccountAssetPair(
+                    accountAssetPair
+                )
+            }
+        }
     }
 
     private func addAddedAccountAssetPair(
@@ -512,7 +532,7 @@ extension CollectibleListLocalDataController {
         }
     }
 
-    private func isPending(
+    private func getPendingStatus(
         asset: CollectibleAsset,
         account: Account
     ) -> Bool {

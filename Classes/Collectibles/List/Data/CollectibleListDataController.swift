@@ -86,11 +86,6 @@ struct CollectibleCellItemContainer<T: ViewModel & Hashable>: Hashable {
     let viewModel: T
 }
 
-struct SelectionValue<Value: Hashable>: Hashable {
-    let value: Value
-    var isSelected = false
-}
-
 enum CollectibleDataControllerEvent {
     case didUpdate(CollectibleListDataController.Snapshot)
 

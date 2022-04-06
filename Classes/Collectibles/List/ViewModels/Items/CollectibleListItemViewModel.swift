@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListItemReadyViewModel.swift
+//   CollectibleListItemViewModel.swift
 
 import Foundation
 import UIKit
@@ -289,11 +289,5 @@ extension CollectibleListItemViewModel {
             image: nil,
             text: placeholderText
         )
-    }
-}
-
-fileprivate extension AssetID {
-    var stringWithHashtag: String {
-        "#".appending(String(self))
     }
 }

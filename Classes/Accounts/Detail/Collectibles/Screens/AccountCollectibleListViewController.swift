@@ -27,9 +27,9 @@ final class AccountCollectibleListViewController: BaseViewController {
             galleryAccount: .single(account),
             sharedDataController: sharedDataController
         ),
-        theme: CollectibleListViewControllerAccountDetailTheme(
+        theme: account.value.isWatchAccount() ? .common : CollectibleListViewControllerTheme(
             .current,
-            isWatchAccount: account.value.isWatchAccount()
+            listContentBottomInset: 88
         ),
         configuration: configuration
     )
