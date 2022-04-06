@@ -22,10 +22,10 @@ extension ManageAssetsListLayout {
     struct Theme:
         LayoutSheet,
         StyleSheet {
-        let cellSize: LayoutSize
+        let horizontalPaddings: LayoutHorizontalPaddings
         
         init(_ family: LayoutFamily) {
-            self.cellSize = (UIScreen.main.bounds.width - 48, 72)
+            self.horizontalPaddings = (24, 24)
         }
     }
 }
