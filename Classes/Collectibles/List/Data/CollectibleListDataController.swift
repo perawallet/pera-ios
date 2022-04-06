@@ -30,6 +30,10 @@ protocol CollectibleListDataController: AnyObject {
     func load()
     func search(for query: String)
     func resetSearch()
+    var currentFilter: CollectiblesFilterSelectionViewController.Filter { get }
+    func filter(
+        by filter: CollectiblesFilterSelectionViewController.Filter
+    )
 }
 
 enum CollectibleSection:
@@ -38,18 +42,20 @@ enum CollectibleSection:
     case empty
     case loading
     case search
+    case header
     case collectibles
 }
 
 enum CollectibleListItem: Hashable {
     case empty(CollectibleEmptyItem)
     case search
+    case header(SelectionValue<CollectibleListInfoWithFilterViewModel>)
     case collectible(CollectibleItem)
 }
 
 enum CollectibleEmptyItem: Hashable {
     case loading
-    case noContent
+    case noContent(CollectiblesNoContentWithActionViewModel)
     case noContentSearch
 }
 
@@ -59,12 +65,22 @@ enum CollectibleItem: Hashable {
 }
 
 enum CollectibleCellItem: Hashable {
-    case owner(CollectibleCellItemContainer<CollectibleListItemReadyViewModel>)
-    case optedIn(CollectibleCellItemContainer<CollectibleListItemReadyViewModel>)
-    case pending(CollectibleCellItemContainer<CollectibleListItemPendingViewModel>)
+    case owner(CollectibleCellItemContainer<CollectibleListItemViewModel>)
+    case optedIn(CollectibleCellItemContainer<CollectibleListItemViewModel>)
+    case pending(CollectibleCellItemContainer<CollectibleListItemViewModel>)
+
+    var isPending: Bool {
+        switch self {
+        case .optedIn(let item): return item.isPending
+        case .owner(let item): return item.isPending
+        case .pending(let item): return item.isPending
+        }
+    }
 }
 
 struct CollectibleCellItemContainer<T: ViewModel & Hashable>: Hashable {
+    let isPending: Bool
+
     let account: Account
     let asset: CollectibleAsset
     let viewModel: T

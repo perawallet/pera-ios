@@ -79,6 +79,12 @@ final class SendCollectibleViewController: BaseScrollViewController {
         animateBottomSheetLayout()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        transactionController.stopBLEScan()
+        transactionController.stopTimer()
+    }
+
     override func linkInteractors() {
         linkTransactionControllerInteractors()
         linkScrollViewInteractors()
@@ -231,6 +237,11 @@ extension SendCollectibleViewController {
                             receivedAddress: fetchedAccount.address
                         )
                     )
+
+                    self.bannerController?.presentErrorBanner(
+                        title: "title-error".localized,
+                        message: "send-algos-receiver-address-validation".localized
+                    )
                     return
                 }
 
@@ -238,6 +249,11 @@ extension SendCollectibleViewController {
                     to: fetchedAccount
                 )
             case .failure(let error, _):
+                if error.isHttpNotFound {
+                    self.requestOptInToRecipeint()
+                    return
+                }
+
                 self.bannerController?.presentErrorBanner(
                     title: "title-error".localized,
                     message: error.description

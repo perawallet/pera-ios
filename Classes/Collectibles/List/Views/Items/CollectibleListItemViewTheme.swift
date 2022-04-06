@@ -39,6 +39,17 @@ struct CollectibleListItemViewTheme:
     let topLeftBadgeContentEdgeInsets: LayoutOffset
     let topLeftBadgePaddings: LayoutPaddings
 
+    let pendingContent: ViewStyle
+    let pendingContentPaddings: LayoutPaddings
+
+    let indicator: ImageStyle
+    let indicatorSize: LayoutSize
+    let indicatorLeadingPadding: LayoutMetric
+
+    let pendingOverlay: ViewStyle
+    let pendingLabel: TextStyle
+    let pendingLabelPaddings: LayoutPaddings
+
     let corner: Corner
 
     init(
@@ -76,6 +87,26 @@ struct CollectibleListItemViewTheme:
 
         topLeftBadgeContentEdgeInsets = (4, 4)
         topLeftBadgePaddings = (8, 8, .noMetric, .noMetric)
+
+        pendingContentPaddings = (.noMetric, 8, 8, .noMetric)
+        pendingContent = [
+            .backgroundColor(AppColors.Shared.System.background)
+        ]
+        indicator = [
+            .image("loading-indicator"),
+            .contentMode(.scaleAspectFit)
+        ]
+        indicatorSize = (16, 16)
+        indicatorLeadingPadding = 8
+
+        pendingOverlay = [
+            .backgroundColor(AppColors.Shared.System.background.uiColor.withAlphaComponent(0.4))
+        ]
+        pendingLabel = [
+            .textColor(AppColors.Shared.Helpers.positive),
+            .textOverflow(SingleLineFittingText()),
+        ]
+        pendingLabelPaddings = (4, 8, 4, 8)
 
         corner = Corner(radius: 4)
     }

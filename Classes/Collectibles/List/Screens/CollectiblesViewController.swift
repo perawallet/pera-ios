@@ -30,6 +30,7 @@ final class CollectiblesViewController: BaseViewController {
             galleryAccount: .all,
             sharedDataController: sharedDataController
         ),
+        theme: .common,
         configuration: configuration
     )
 

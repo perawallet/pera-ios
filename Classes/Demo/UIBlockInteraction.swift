@@ -13,12 +13,27 @@
 // limitations under the License.
 
 //
-//   HomeNoContentCell.swift
+//   UIBlockInteraction.swift
 
 import Foundation
 import MacaroonUIKit
-import UIKit
 
-final class HomeNoContentCell:
-    CollectionCell<HomeNoContentView>,
-    UIInteractionObservable {}
+/// <todo>
+/// Refactor
+final class UIBlockInteraction: MacaroonUIKit.UIInteraction {
+    private var handler: Handler?
+    
+    func activate(
+        _ handler: @escaping Handler
+    ) {
+        self.handler = handler
+    }
+
+    func deactivate() {
+        self.handler = nil
+    }
+    
+    func notify() {
+        handler?()
+    }
+}

@@ -22,7 +22,8 @@ struct ListErrorViewModel: NoContentWithActionViewModel {
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var body: EditText?
-    private(set) var actionTitle: EditText?
+    private(set) var primaryActionTitle: EditText?
+    private(set) var secondaryActionTitle: EditText?
 
     init() {
         bindIcon()
@@ -46,6 +47,6 @@ extension ListErrorViewModel {
     }
 
     private mutating func bindActionTitle() {
-        actionTitle = .string("transaction-filter-try-again".localized)
+        primaryActionTitle = .string("transaction-filter-try-again".localized)
     }
 }

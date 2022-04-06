@@ -34,6 +34,7 @@ final class CollectibleListViewController:
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.alwaysBounceVertical = true
         collectionView.keyboardDismissMode = .onDrag
+        collectionView.contentInset.bottom = theme.listContentBottomInset
         collectionView.backgroundColor = .clear
         return collectionView
     }()
@@ -42,12 +43,15 @@ final class CollectibleListViewController:
     private lazy var listDataSource = CollectibleListDataSource(listView)
 
     private let dataController: CollectibleListDataController
+    private let theme: CollectibleListViewControllerTheme
 
     init(
         dataController: CollectibleListDataController,
+        theme: CollectibleListViewControllerTheme,
         configuration: ViewControllerConfiguration
     ) {
         self.dataController = dataController
+        self.theme = theme
         super.init(configuration: configuration)
     }
 
@@ -67,14 +71,11 @@ final class CollectibleListViewController:
 
         listView
             .visibleCells
-            .forEach { cell in 
+            .forEach { cell in
                 switch cell {
                 case is CollectibleListLoadingViewCell:
                     let loadingCell = cell as? CollectibleListLoadingViewCell
                     loadingCell?.restartAnimating()
-                case is CollectibleListItemPendingCell:
-                    let pendingCell = cell as? CollectibleListItemPendingCell
-                    pendingCell?.startLoading()
                 default:
                     break
                 }
@@ -91,9 +92,6 @@ final class CollectibleListViewController:
                 case is CollectibleListLoadingViewCell:
                     let loadingCell = cell as? CollectibleListLoadingViewCell
                     loadingCell?.stopAnimating()
-                case is CollectibleListItemPendingCell:
-                    let pendingCell = cell as? CollectibleListItemPendingCell
-                    pendingCell?.stopLoading()
                 default:
                     break
                 }
@@ -181,6 +179,8 @@ extension CollectibleListViewController {
         }
 
         switch itemIdentifier {
+        case .header:
+            linkInteractors(cell as! CollectibleListInfoWithFilterCell)
         case .search:
             linkInteractors(cell as! CollectibleListSearchInputCell)
         case .empty(let item):
@@ -196,13 +196,7 @@ extension CollectibleListViewController {
         case .collectible(let item):
             switch item {
             case .cell(let item):
-                switch item {
-                case .pending:
-                    let pendingCell = cell as? CollectibleListItemPendingCell
-                    pendingCell?.startLoading()
-                default:
-                    break
-                }
+                linkInteractors(cell, item: item)
             default:
                 break
             }
@@ -227,19 +221,6 @@ extension CollectibleListViewController {
             default:
                 break
             }
-        case .collectible(let item):
-            switch item {
-            case .cell(let item):
-                switch item {
-                case .pending:
-                    let pendingCell = cell as? CollectibleListItemPendingCell
-                    pendingCell?.stopLoading()
-                default:
-                    break
-                }
-            default:
-                break
-            }
         default:
             break
         }
@@ -255,11 +236,14 @@ extension CollectibleListViewController {
             return
         }
 
+        view.endEditing(true)
+
         switch itemIdentifier {
         case .collectible(let item):
             switch item {
             case .cell(let cell):
                 switch cell {
+                case .pending: break
                 case .owner(let item):
                     let cell = collectionView.cellForItem(at: indexPath) as? CollectibleListItemCell
                     openCollectibleDetail(
@@ -274,8 +258,6 @@ extension CollectibleListViewController {
                         asset: item.asset,
                         thumbnailImage: cell?.contextView.currentImage
                     )
-                default:
-                    break
                 }
             case .footer:
                 openReceiveCollectibleAccountList()
@@ -290,7 +272,7 @@ extension CollectibleListViewController {
     private func linkInteractors(
         _ cell: NoContentWithActionIllustratedCell
     ) {
-        cell.handlers.didTapActionView = {
+        cell.observe(event: .performPrimaryAction) {
             [weak self] in
             guard let self = self else {
                 return
@@ -298,12 +280,59 @@ extension CollectibleListViewController {
 
             self.openReceiveCollectibleAccountList()
         }
+
+        cell.observe(event: .performSecondaryAction) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.dataController.filter(
+                by: .all
+            )
+        }
+    }
+
+    private func linkInteractors(
+        _ cell: CollectibleListInfoWithFilterCell
+    ) {
+        cell.observe(event: .showFilterSelection) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            let controller = self.open(
+                .collectiblesFilterSelection(
+                    filter: self.dataController.currentFilter
+                ),
+                by: .present
+            ) as? CollectiblesFilterSelectionViewController
+
+            controller?.handlers.didTapDone = {
+                [weak self] filter in
+                guard let self = self else {
+                    return
+                }
+
+                self.dataController.filter(
+                    by: filter
+                )
+            }
+        }
     }
 
     private func linkInteractors(
         _ cell: CollectibleListSearchInputCell
     ) {
         cell.delegate = self
+    }
+
+    private func linkInteractors(
+        _ cell: UICollectionViewCell,
+        item: CollectibleCellItem
+    ) {
+        cell.isUserInteractionEnabled = !item.isPending
     }
 }
 
@@ -313,14 +342,17 @@ extension CollectibleListViewController {
         asset: CollectibleAsset,
         thumbnailImage: UIImage?
     ) {
-        open(
+        let controller = open(
             .collectibleDetail(
                 asset: asset,
                 account: account,
                 thumbnailImage: thumbnailImage
             ),
             by: .push
-        )
+        ) as? CollectibleDetailViewController
+        controller?.eventHandlers.didOptOutAssetFromAccount = {
+            controller?.popScreen()
+        }
     }
 
     private func openReceiveCollectibleAccountList() {
