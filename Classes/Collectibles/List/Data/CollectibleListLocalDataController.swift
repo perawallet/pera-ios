@@ -37,7 +37,7 @@ final class CollectibleListLocalDataController:
     private var lastSnapshot: Snapshot?
     private let snapshotQueue = DispatchQueue(label: "com.algorand.queue.collectibleListDataController")
 
-    private let galleryAccount: CollectibleGalleryAccount
+    let galleryAccount: CollectibleGalleryAccount
 
     private var accounts: [Account]
     private let sharedDataController: SharedDataController
@@ -401,19 +401,5 @@ extension CollectibleListLocalDataController {
         query: String
     ) -> Bool {
         return asset.unitName.someString.localizedCaseInsensitiveContains(query)
-    }
-}
-
-extension CollectibleListLocalDataController {
-    enum CollectibleGalleryAccount {
-        case single(AccountHandle)
-        case all
-
-        var singleAccount: AccountHandle? {
-            switch self {
-            case .single(let account): return account
-            default: return nil
-            }
-        }
     }
 }
