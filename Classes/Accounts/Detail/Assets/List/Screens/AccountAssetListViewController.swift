@@ -164,23 +164,16 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
             switch itemIdentifier {
             case .search:
-                let searchScreen = open(
+                open(
                     .assetSearch(
+                        accountHandle: accountHandle,
                         dataController: AssetSearchLocalDataController(
                             accountHandle: accountHandle,
                             sharedDataController: sharedDataController
                         )
                     ),
                     by: .present
-                ) as? AssetSearchViewController
-
-                searchScreen?.handlers.didSelectAsset = { [weak self] asset in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.openAssetDetail(asset)
-                }
+                )
             case .asset:
                 var algoIndex = 2
                 
