@@ -123,12 +123,6 @@ extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
         _ listView: UICollectionView,
         item: AssetListSearchNoContentViewModel
     ) -> CGSize {
-        let sizeCacheIdentifier = NoContentCell.reuseIdentifier
-        
-        if let cachedSize = sizeCache[sizeCacheIdentifier] {
-            return cachedSize
-        }
-        
         let width = calculateContentWidth(for: listView)
         
         let newSize = NoContentCell.calculatePreferredSize(
@@ -136,8 +130,6 @@ extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
             for: NoContentCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
-        
-        sizeCache[sizeCacheIdentifier] = newSize
         
         return newSize
     }
