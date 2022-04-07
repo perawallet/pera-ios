@@ -20,7 +20,8 @@ import MacaroonBottomSheet
 
 final class ApproveCollectibleTransactionViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetPresentable,
+    TransactionControllerDelegate {
     lazy var handlers = Handlers()
 
     private lazy var bottomTransition = BottomSheetTransition(presentingViewController: self)
@@ -108,7 +109,6 @@ extension ApproveCollectibleTransactionViewController {
         addSenderAccount()
         addToAccount()
         addTransactionFee()
-        addOptOutContent()
         addConfirmAction()
         addCancelAction()
     }
@@ -236,7 +236,7 @@ extension ApproveCollectibleTransactionViewController {
             $0.leading == 0
             $0.trailing == 0
             $0.fitToHeight(theme.confirmActionHeight)
-            $0.top == optOutContentView.snp.bottom + theme.confirmActionViewTopPadding
+            $0.top == transactionFeeInfoView.snp.bottom + theme.confirmActionViewTopPadding
         }
     }
 
@@ -289,7 +289,7 @@ extension ApproveCollectibleTransactionViewController {
     }
 }
 
-extension ApproveCollectibleTransactionViewController: TransactionControllerDelegate {
+extension ApproveCollectibleTransactionViewController {
     func transactionController(
         _ transactionController: TransactionController,
         didCompletedTransaction id: TransactionID
