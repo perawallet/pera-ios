@@ -361,10 +361,6 @@ extension CollectibleDetailViewController {
     private func shareCollectible() {
         var items: [Any] = []
 
-        if let name = asset.title {
-            items.append(name)
-        }
-
         if let explorerURL = asset.explorerURL {
             items.append(explorerURL.absoluteString)
         } else if let downloadURL = displayedMedia?.downloadURL {
