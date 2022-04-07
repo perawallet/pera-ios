@@ -117,7 +117,7 @@ extension CollectibleListItemViewModel {
         _ asset: CollectibleAsset
     ) {
         if !asset.isOwned {
-            bottomLeftBadge = "badge-warning".uiImage
+            bottomLeftBadge = "badge-warning".uiImage.template
             return
         }
     }
@@ -150,7 +150,7 @@ extension CollectibleListItemViewModel {
 
 extension CollectibleListItemViewModel {
     mutating func bindBottomLeftBadgeForError() {
-        bottomLeftBadge = "badge-error".uiImage
+        bottomLeftBadge = "badge-warning".uiImage.template
     }
 }
 
