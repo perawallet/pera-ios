@@ -278,6 +278,17 @@ extension CollectibleListViewController {
                 return
             }
 
+            let isWatchAccount =
+            self.dataController.galleryAccount.singleAccount?.value.isWatchAccount() ?? false
+
+            if isWatchAccount {
+                self.dataController.filter(
+                    by: .all
+                )
+
+                return
+            }
+
             self.openReceiveCollectibleAccountList()
         }
 

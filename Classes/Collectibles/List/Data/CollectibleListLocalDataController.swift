@@ -360,7 +360,8 @@ extension CollectibleListLocalDataController {
                     .empty(
                         .noContent(
                             CollectiblesNoContentWithActionViewModel(
-                                hiddenCollectibleCount: self.hiddenCollectibleCount
+                                hiddenCollectibleCount: self.hiddenCollectibleCount,
+                                isWatchAccount: self.isWatchAccount
                             )
                         )
                     )

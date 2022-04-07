@@ -29,15 +29,21 @@ struct CollectiblesNoContentWithActionViewModel:
     private let hiddenCollectibleCount: Int
 
     init(
-        hiddenCollectibleCount: Int
+        hiddenCollectibleCount: Int,
+        isWatchAccount: Bool
     ) {
         self.hiddenCollectibleCount = hiddenCollectibleCount
 
         bindIcon()
         bindTitle()
         bindBody()
-        bindActionTitle()
-        bindSecondaryActionTitle(hiddenCollectibleCount)
+
+        if isWatchAccount {
+            bindActionTitle(hiddenCollectibleCount)
+        } else {
+            bindActionTitle()
+            bindSecondaryActionTitle(hiddenCollectibleCount)
+        }
     }
 
     func hash(
@@ -96,20 +102,38 @@ extension CollectiblesNoContentWithActionViewModel {
                 ])
         )
     }
+}
 
+extension CollectiblesNoContentWithActionViewModel {
     private mutating func bindActionTitle() {
         primaryActionTitle = .string("collectibles-receive-action".localized)
     }
 
     private mutating func bindSecondaryActionTitle(
-        _ hiddenNFTsCount: Int
+        _ hiddenCollectibleCount: Int
     ) {
-        if hiddenNFTsCount < 1 {
-            return
+        secondaryActionTitle = getHiddenCollectibleCountTitle(hiddenCollectibleCount)
+    }
+}
+
+extension CollectiblesNoContentWithActionViewModel {
+    private mutating func bindActionTitle(
+        _ hiddenCollectibleCount: Int
+    ) {
+        primaryActionTitle = getHiddenCollectibleCountTitle(hiddenCollectibleCount)
+    }
+}
+
+extension CollectiblesNoContentWithActionViewModel {
+    private func getHiddenCollectibleCountTitle(
+        _ hiddenCollectibleCount: Int
+    ) -> EditText? {
+        if hiddenCollectibleCount < 1 {
+            return nil
         }
 
-        secondaryActionTitle = .string(
-            "collectibles-empty-secondary-action-title".localized(params: "\(hiddenNFTsCount)")
+        return .string(
+            "collectibles-empty-secondary-action-title".localized(params: "\(hiddenCollectibleCount)")
         )
     }
 }

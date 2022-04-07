@@ -78,6 +78,10 @@ extension AccountCollectibleListViewController {
 
             switch event {
             case .didTapReceive:
+                if self.account.value.isWatchAccount() {
+                    return
+                }
+
                 self.openReceiveCollectible()
             case .didUpdate(let account):
                 self.account = account
