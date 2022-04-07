@@ -181,12 +181,25 @@ extension CollectibleListLayout {
         sizeForNoContentItem item: CollectiblesNoContentWithActionViewModel
     ) -> CGSize {
         let width = calculateContentWidth(for: listView)
-        
-        return NoContentWithActionIllustratedCell.calculatePreferredSize(
+        let sectionInset = collectionView(
+            listView,
+            layout: listViewLayout,
+            insetForSectionAt: 0
+        )
+
+        let listFittingHeight =
+            listView.bounds.height -
+            sectionInset.vertical -
+            listView.safeAreaTop -
+            listView.safeAreaBottom
+
+        let calculatedHeight = NoContentWithActionIllustratedCell.calculatePreferredSize(
             item,
             for: NoContentWithActionIllustratedCell.theme,
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
-        )
+        ).height
+
+        return CGSize((width, max(listFittingHeight, calculatedHeight)))
     }
 
     private func sizeForSearch(
