@@ -182,7 +182,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                               return
                           }
                     
-                    self.openAssetDetail(asset, searchScreen)
+                    self.openAssetDetail(asset, on: searchScreen)
                 }
             case .asset:
                 var algoIndex = 2
@@ -198,7 +198,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
                 /// Reduce search and algos cells from index
                 if let assetDetail = accountHandle.value.standardAssets[safe: indexPath.item - algoIndex.advanced(by: 1)] {
-                    self.openAssetDetail(assetDetail, self)
+                    self.openAssetDetail(assetDetail, on: self)
                 }
 
             case .addAsset:
@@ -227,7 +227,7 @@ extension AccountAssetListViewController {
 
     private func openAssetDetail(
         _ asset: StandardAsset,
-        _ screen: UIViewController
+        on screen: UIViewController
     ) {
         screen.open(
             .assetDetail(
