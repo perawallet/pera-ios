@@ -20,6 +20,7 @@ struct CollectibleMediaErrorViewTheme:
     StyleSheet,
     LayoutSheet {
     let message: TextStyle
+    let icon: ImageStyle
 
     let iconSize: LayoutSize
     let messageVerticalInset: LayoutMetric
@@ -30,8 +31,11 @@ struct CollectibleMediaErrorViewTheme:
     ) {
         self.message = [
             .textAlignment(.left),
-            .textColor(AppColors.Shared.Helpers.negative),
+            .textColor(AppColors.Components.Text.gray),
             .textOverflow(FittingText())
+        ]
+        self.icon = [
+            .tintColor(AppColors.Components.Text.gray)
         ]
 
         self.iconSize = (24, 24)

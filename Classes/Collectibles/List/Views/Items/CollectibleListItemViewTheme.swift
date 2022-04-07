@@ -75,7 +75,8 @@ struct CollectibleListItemViewTheme:
 
         bottomLeftBadge = [
             .backgroundColor(AppColors.Shared.System.background),
-            .contentMode(.center)
+            .contentMode(.center),
+            .tintColor(AppColors.Components.Text.gray)
         ]
         bottomLeftBadgeContentEdgeInsets = (8, 8)
         bottomLeftBadgePaddings = (.noMetric, 8, 8, .noMetric)
