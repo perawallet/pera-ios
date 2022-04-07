@@ -48,7 +48,8 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let bottomInset: LayoutMetric
     let descriptionTopInset: LayoutMetric
     let separatorPadding: LayoutMetric
-    let copyIDButtonSize: LayoutSize
+    let copyIDButtonEdgeInsets: LayoutPaddings
+    let copyIDButtonHeight: LayoutMetric
     let copyIDButtonCorner: Corner
 
     init(_ family: LayoutFamily) {
@@ -122,7 +123,8 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         self.assetIDPaddings = (40, 8, .noMetric, 105)
         self.transactionTopPadding = 46
         self.transactionBottomPadding = 32
-        self.copyIDButtonSize = (73, 32)
-        self.copyIDButtonCorner = Corner(radius: copyIDButtonSize.h / 2)
+        self.copyIDButtonEdgeInsets = (6, 12, 6, 12)
+        self.copyIDButtonHeight = 32
+        self.copyIDButtonCorner = Corner(radius: 16)
     }
 }

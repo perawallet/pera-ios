@@ -23,6 +23,8 @@ import MacaroonUIKit
 final class AssetSearchViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
+    lazy var handlers = Handlers()
+    
     private lazy var searchInputView = SearchInputView()
 
     private lazy var listView: UICollectionView = {
@@ -147,15 +149,7 @@ extension AssetSearchViewController {
                   return
               }
 
-        self.open(
-            .assetDetail(
-                draft: AssetTransactionListing(
-                    accountHandle: accountHandle,
-                    asset: asset
-                )
-            ),
-            by: .push
-        )
+        self.handlers.didSelectAsset?(asset)
     }
 }
 
@@ -210,5 +204,11 @@ extension AssetSearchViewController: SearchInputViewDelegate {
 
     func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
         dataController.resetSearch()
+    }
+}
+
+extension AssetSearchViewController {
+    struct Handlers {
+        var didSelectAsset: ((StandardAsset) -> Void)?
     }
 }

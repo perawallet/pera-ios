@@ -55,7 +55,7 @@ extension ManageAssetsListLayout: UICollectionViewDelegateFlowLayout {
             case .empty:
                 return insets
             case .assets:
-                insets.top = 20
+                insets.top = theme.topContentInset
                 return insets
             }
         }

@@ -23,9 +23,11 @@ extension ManageAssetsListLayout {
         LayoutSheet,
         StyleSheet {
         let horizontalPaddings: LayoutHorizontalPaddings
+        let topContentInset: LayoutMetric
         
         init(_ family: LayoutFamily) {
             self.horizontalPaddings = (24, 24)
+            self.topContentInset = 20
         }
     }
 }
