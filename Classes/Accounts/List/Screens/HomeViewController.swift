@@ -177,9 +177,9 @@ extension HomeViewController {
 
 extension HomeViewController {
     private func linkInteractors(
-        _ cell: HomeNoContentCell
+        _ cell: NoContentWithActionCell
     ) {
-        cell.observe(event: .performAction) {
+        cell.observe(event: .performPrimaryAction) {
             [weak self] in
             guard let self = self else { return }
             
@@ -566,7 +566,7 @@ extension HomeViewController {
                 let loadingCell = cell as? HomeLoadingCell
                 loadingCell?.startAnimating()
             case .noContent:
-                linkInteractors(cell as! HomeNoContentCell)
+                linkInteractors(cell as! NoContentWithActionCell)
             }
         case .portfolio(let item):
             linkInteractors(

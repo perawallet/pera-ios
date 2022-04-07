@@ -19,5 +19,6 @@ import Foundation
 import MacaroonUIKit
 
 protocol NoContentWithActionViewModel: ResultViewModel {
-    var actionTitle: EditText? { get }
+    var primaryActionTitle: EditText? { get }
+    var secondaryActionTitle: EditText? { get }
 }

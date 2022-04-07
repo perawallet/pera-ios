@@ -12,33 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleListItemPendingCell.swift
+//   CollectibleListInfoWithFilterCell.swift
 
-import Foundation
-import MacaroonUIKit
 import UIKit
+import MacaroonUIKit
 
-final class CollectibleListItemPendingCell:
-    CollectionCell<CollectibleListItemPendingView>,
-    ViewModelBindable {
-    static let theme = CollectibleListItemPendingViewTheme()
+final class CollectibleListInfoWithFilterCell:
+    CollectionCell<CollectibleListInfoWithFilterView>,
+    ViewModelBindable,
+    UIInteractionObservable {
+    var isFilterSelected: Bool = false {
+        didSet {
+            contextView.recustomizeAppearanceWhenFilterChanged(
+                isFilterSelected
+            )
+        }
+    }
+
+    static let theme = CollectibleListInfoWithFilterViewTheme()
 
     override init(
         frame: CGRect
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
-
-        isUserInteractionEnabled = false
-    }
-}
-
-extension CollectibleListItemPendingCell {
-    func startLoading() {
-        contextView.startLoading()
-    }
-
-    func stopLoading() {
-        contextView.stopLoading()
     }
 }

@@ -923,11 +923,17 @@
 "collectibles-empty-title" = "Collectibles";
 "collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
 
-/// MARK: Collectible List
+// MARK: Collectible List
 "collectible-list-item-pending-title" = "Pending";
 "collectibles-list-input-placeholder" = "Search your NFTs";
+"collectibles-empty-secondary-action-title" =  "Show hidden NFTs (%@)";
 
-/// MARK: Collectible Receive
+// MARK: Collectible Filter Selection
+"collectible-filter-selection-title" = "Filter";
+"collectible-filter-selection-toggle-title" = "Display opted-in NFTs";
+"collectible-filter-selection-toggle-description" = "You can show/hide NFTs that are opted-in but not owned";
+
+// MARK: Collectible Receive
 "collectibles-receive-action" = "Receive an NFT";
 "collectibles-receive-account-list-header-description" = "Select the wallet account you would like to receive to:";
 "collectible-receive-account-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet.";
@@ -938,7 +944,7 @@
 "collectible-receive-asset-list-info" = "You need to opt-in to the NFT ASA ID to be able to transfer it to your wallet. Paste the ASA ID in the search bar.";
 "collectible-receive-asset-list-selected-account" = "Selected account";
 
-/// MARK: Collectible Send
+// MARK: Collectible Send
 "collectible-send-title" = "Send your NFT";
 "collectible-send-input-placeholder" = "Paste an Algorand wallet address";
 "collectible-send-action" = "Transfer";
@@ -975,9 +981,9 @@
 "collectible-transfer-failed-verify-algo-desription" = "Please verify that you have enough Algo to cover the transaction fees for transferring your NFT, and try again.";
 "collectible-transfer-failed-retry-desription" = "Please try again.";
 
-/// MARK: Collectible Opt In Info
+// MARK: Collectible Opt In Info
 "collectible-opt-in-info-title" = "Information about Opt-In";
-"collectible-opt-in-info-description" = "To avoid spammy transaction, the Algorand Blockchain only allow you to send and receive transaction for assets that have been previously opted-in.";
+"collectible-opt-in-info-description" = "To avoid spam transactions, Algorand blockchain only allows you to send and receive transactions for assets that have been previously opted-in to.";
 
 // MARK: Collectible Approve
 "collectible-approve-transaction-title" = "Approve Transaction";
@@ -986,8 +992,13 @@
 "collectible-approve-transaction-sender" = "Sender Account";
 "collectible-approve-transaction-to" = "To";
 "collectible-approve-transaction-fee" = "Transaction Fee";
+"collectible-approve-transaction-opt-out" = "Opt out from the NFT";
 
-/// MARK: Collecitble Ask recipient to opt in
+// MARK: Collectible Opt Out Info
+"collectible-opt-out-info-title" = "Opt out from the NFT ";
+"collectible-opt-out-info-description" = "Algorand blockchain requires an account to opt in to an ASA before it can receive it. Now that you've transferred this NFT to another account, you can opt out from it. Opting out requires an additional transaction.";
+
+// MARK: Collecitble Ask recipient to opt in
 "collectible-recipient-opt-in-title" = "Ask recipient to opt in";
 "collectible-recipient-opt-in-description" = "You can't send %@ to %@ because this wallet didn't opt in for this asset yet. Learn more about Opt-in";
 "collectible-recipient-opt-in-description-marked" = "Learn more about Opt-in";

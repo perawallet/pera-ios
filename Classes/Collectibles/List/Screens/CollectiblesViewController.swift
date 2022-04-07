@@ -30,6 +30,7 @@ final class CollectiblesViewController: BaseViewController {
             galleryAccount: .all,
             sharedDataController: sharedDataController
         ),
+        theme: .common,
         configuration: configuration
     )
 
@@ -76,13 +77,17 @@ extension CollectiblesViewController {
     private func linkInteractors(
         _ screen: CollectibleListViewController
     ) {
-        screen.observe(event: .performReceiveAction) {
-            [weak self] in
+        screen.eventHandler = {
+            [weak self] event in
             guard let self = self else {
                 return
             }
 
-            self.openReceiveCollectible()
+            switch event {
+            case .didTapReceive:
+                self.openReceiveCollectible()
+            default: break
+            }
         }
     }
 }

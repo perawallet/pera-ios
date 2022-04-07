@@ -638,6 +638,11 @@ class Router:
             )
         case .peraIntroduction:
             viewController = PeraIntroductionViewController(configuration: configuration)
+        case let .collectiblesFilterSelection(filter):
+            viewController = CollectiblesFilterSelectionViewController(
+                filter: filter,
+                configuration: configuration
+            )
         case let .receiveCollectibleAccountList(dataController):
             viewController = ReceiveCollectibleAccountListViewController(
                 dataController: dataController,

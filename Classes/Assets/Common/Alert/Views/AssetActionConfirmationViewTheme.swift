@@ -20,6 +20,7 @@ import MacaroonUIKit
 import UIKit
 
 struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
+    let minimumHorizontalSpacing: LayoutMetric
     let backgroundColor: Color
     let mainButtonTheme: ButtonTheme
     let secondaryButtonTheme: ButtonTheme
@@ -53,6 +54,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
     let copyIDButtonCorner: Corner
 
     init(_ family: LayoutFamily) {
+        self.minimumHorizontalSpacing = 8
         self.backgroundColor = AppColors.Shared.System.background
         self.titleLabel = [
             .textAlignment(.center),
@@ -85,7 +87,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Components.Text.gray),
             .font(Fonts.DMSans.regular.make(15)),
             .textAlignment(.left),
-            .textOverflow(FittingText())
+            .textOverflow(SingleLineFittingText())
         ]
         self.copyIDButton = [
             .backgroundColor(AppColors.Shared.Layer.grayLighter),
@@ -104,7 +106,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
             .textColor(AppColors.Shared.Helpers.negative),
             .font(Fonts.DMSans.medium.make(15)),
             .textAlignment(.right),
-            .textOverflow(FittingText())
+            .textOverflow(SingleLineText())
         ]
         self.separator = Separator(color: AppColors.Shared.Layer.grayLighter, size: 1)
         self.separatorPadding = -20
@@ -121,7 +123,7 @@ struct AssetActionConfirmationViewTheme: StyleSheet, LayoutSheet {
         self.assetNameLabelTopPadding = 4
         self.assetNameLabelMinHeight = 20
         self.assetIDPaddings = (40, 8, .noMetric, 105)
-        self.transactionTopPadding = 46
+        self.transactionTopPadding = 48
         self.transactionBottomPadding = 32
         self.copyIDButtonEdgeInsets = (6, 12, 6, 12)
         self.copyIDButtonHeight = 32

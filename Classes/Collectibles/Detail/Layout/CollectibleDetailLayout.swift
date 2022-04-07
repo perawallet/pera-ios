@@ -56,7 +56,6 @@ extension CollectibleDetailLayout {
 
         switch listSection {
         case .loading:
-            insets.bottom = 8
             insets.left = 0
             insets.right = 0
             return insets
@@ -221,11 +220,11 @@ extension CollectibleDetailLayout {
         layout listViewLayout: UICollectionViewLayout
     ) -> CGSize {
         let width = listView.bounds.width
-        let height =
-        listView.bounds.height -
-        listView.safeAreaTop -
-        listView.safeAreaBottom
-        return CGSize((width, height))
+
+        return CollectibleDetailLoadingView.calculatePreferredSize(
+            for: CollectibleDetailLoadingView.theme,
+            fittingIn: CGSize((width, .greatestFiniteMagnitude))
+        )
     }
 
     private func listView(

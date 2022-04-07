@@ -123,16 +123,16 @@ extension AssetDecoration {
 }
 
 extension AssetDecoration {
-    var displayNames: (primaryName: String, secondaryName: String?) {
+    var displayNames: (primaryName: String, secondaryName: String) {
         if let name = name, !name.isEmptyOrBlank,
             let code = unitName, !code.isEmptyOrBlank {
             return (name, "\(code.uppercased())")
         } else if let name = name, !name.isEmptyOrBlank {
-            return (name, nil)
+            return (name, "title-unknown".localized)
         } else if let code = unitName, !code.isEmptyOrBlank {
-            return ("\(code.uppercased())", nil)
+            return ("\(code.uppercased())", "title-unknown".localized)
         } else {
-            return ("title-unknown".localized, nil)
+            return ("title-unknown".localized, "title-unknown".localized)
         }
     }
 }
@@ -200,3 +200,9 @@ extension AssetDecorationList {
 }
 
 typealias AssetID = Int64
+
+extension AssetID {
+    var stringWithHashtag: String {
+        "#".appending(String(self))
+    }
+}

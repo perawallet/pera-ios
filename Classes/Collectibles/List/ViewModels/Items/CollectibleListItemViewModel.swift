@@ -14,17 +14,144 @@
 
 //   CollectibleListItemViewModel.swift
 
+import Foundation
 import UIKit
 import MacaroonUIKit
 import MacaroonURLImage
 import Prism
 
-protocol CollectibleListItemViewModel: ViewModel {
-    var assetID: AssetID? { get }
-    var image: ImageSource? { get }
-    var title: EditText? { get }
-    var subtitle: EditText? { get }
-    var mediaType: MediaType? { get }
+struct CollectibleListItemViewModel:
+    ViewModel,
+    Hashable {
+    private(set) var assetID: AssetID?
+    private(set) var image: ImageSource?
+    private(set) var title: EditText?
+    private(set) var subtitle: EditText?
+    private(set) var mediaType: MediaType?
+    private(set) var topLeftBadge: UIImage?
+    private(set) var bottomLeftBadge: UIImage?
+    private(set) var pendingTitle: EditText?
+
+    init<T>(
+        imageSize: CGSize,
+        model: T
+    ) {
+        bind(
+            imageSize: imageSize,
+            model: model
+        )
+    }
+}
+
+extension CollectibleListItemViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(assetID)
+        hasher.combine(title)
+        hasher.combine(subtitle)
+    }
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.assetID == rhs.assetID &&
+        lhs.title == rhs.title &&
+        lhs.subtitle == rhs.subtitle
+    }
+}
+
+extension CollectibleListItemViewModel {
+    mutating func bind<T>(
+        imageSize: CGSize,
+        model: T
+    ) {
+        if let asset = model as? CollectibleAsset {
+            bindAssetID(asset)
+            bindImage(imageSize: imageSize, asset: asset)
+            bindTitle(asset)
+            bindSubtitle(asset)
+            bindMediaType(asset)
+            bindTopLeftBadge(asset)
+            bindBottomLeftBadge(asset)
+            bindPendingTitle()
+            return
+        }
+    }
+}
+
+extension CollectibleListItemViewModel {
+    private mutating func bindAssetID(
+        _ asset: CollectibleAsset
+    ) {
+        assetID = getAssetID(asset)
+    }
+
+    private mutating func bindImage(
+        imageSize: CGSize,
+        asset: CollectibleAsset
+    ) {
+        image = getImage(imageSize: imageSize, asset: asset)
+    }
+
+    private mutating func bindTitle(
+        _ asset: CollectibleAsset
+    ) {
+        title = getTitle(asset)
+    }
+
+    private mutating func bindSubtitle(
+        _ asset: CollectibleAsset
+    ) {
+        subtitle = getSubtitle(asset)
+    }
+
+    private mutating func bindTopLeftBadge(
+        _ asset: CollectibleAsset
+    ) {
+        topLeftBadge = getTopLeftBadge(asset)
+    }
+
+    private mutating func bindBottomLeftBadge(
+        _ asset: CollectibleAsset
+    ) {
+        if !asset.isOwned {
+            bottomLeftBadge = "badge-warning".uiImage
+            return
+        }
+    }
+
+    private mutating func bindMediaType(
+        _ asset: CollectibleAsset
+    ) {
+        mediaType = getMediaType(asset)
+    }
+
+    private mutating func bindPendingTitle() {
+        let font = Fonts.DMSans.medium.make(13)
+        let lineHeightMultiplier = 1.18
+
+        pendingTitle = .attributedString(
+            "collectible-list-item-pending-title"
+                .localized
+                .attributed([
+                    .font(font),
+                    .lineHeightMultiplier(lineHeightMultiplier, font),
+                    .paragraph([
+                        .lineBreakMode(.byTruncatingTail),
+                        .lineHeightMultiple(lineHeightMultiplier),
+                        .textAlignment(.left)
+                    ])
+                ])
+        )
+    }
+}
+
+extension CollectibleListItemViewModel {
+    mutating func bindBottomLeftBadgeForError() {
+        bottomLeftBadge = "badge-error".uiImage
+    }
 }
 
 extension CollectibleListItemViewModel {
@@ -52,7 +179,6 @@ extension CollectibleListItemViewModel {
         if let thumbnailImage = asset.thumbnailImage {
             let prismURL = PrismURL(baseURL: thumbnailImage)
                 .setExpectedImageSize(imageSize)
-                .setImageQuality(.normal)
                 .setResizeMode(.fit)
                 .build()
 
@@ -163,11 +289,5 @@ extension CollectibleListItemViewModel {
             image: nil,
             text: placeholderText
         )
-    }
-}
-
-fileprivate extension AssetID {
-    var stringWithHashtag: String {
-        "#".appending(String(self))
     }
 }

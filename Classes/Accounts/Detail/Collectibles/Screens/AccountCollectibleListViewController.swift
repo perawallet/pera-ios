@@ -27,12 +27,16 @@ final class AccountCollectibleListViewController: BaseViewController {
             galleryAccount: .single(account),
             sharedDataController: sharedDataController
         ),
+        theme: account.value.isWatchAccount() ? .common : CollectibleListViewControllerTheme(
+            .current,
+            listContentBottomInset: 88
+        ),
         configuration: configuration
     )
 
     private lazy var transactionActionButton = FloatingActionItemButton(hasTitleLabel: false)
     
-    private let account: AccountHandle
+    private var account: AccountHandle
 
     init(
         account: AccountHandle,
@@ -66,11 +70,18 @@ extension AccountCollectibleListViewController {
     private func linkInteractors(
         _ screen: CollectibleListViewController
     ) {
-        screen.observe(event: .performReceiveAction) {
-            [weak self] in
-            guard let self = self else { return }
+        screen.eventHandler = {
+            [weak self] event in
+            guard let self = self else {
+                return
+            }
 
-            self.openReceiveCollectible()
+            switch event {
+            case .didTapReceive:
+                self.openReceiveCollectible()
+            case .didUpdate(let account):
+                self.account = account
+            }
         }
     }
 }

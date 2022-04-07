@@ -20,7 +20,8 @@ import MacaroonBottomSheet
 
 final class ApproveCollectibleTransactionViewController:
     BaseScrollViewController,
-    BottomSheetPresentable {
+    BottomSheetPresentable,
+    TransactionControllerDelegate {
     lazy var handlers = Handlers()
 
     private lazy var bottomTransition = BottomSheetTransition(presentingViewController: self)
@@ -31,6 +32,11 @@ final class ApproveCollectibleTransactionViewController:
     private lazy var senderAccountInfoView = CollectibleTransactionInfoView()
     private lazy var toAccountInfoView = CollectibleTransactionInfoView()
     private lazy var transactionFeeInfoView = CollectibleTransactionInfoView()
+
+    private lazy var optOutContentView = MacaroonUIKit.BaseView()
+    private lazy var optOutCheckboxView = MacaroonUIKit.Button()
+    private lazy var optOutTitleView = Label()
+    private lazy var optOutInfoActionView = MacaroonUIKit.Button()
 
     private lazy var confirmActionViewIndicator = ViewLoadingIndicator()
     private lazy var confirmActionView = MacaroonUIKit.LoadingButton(
@@ -78,6 +84,9 @@ final class ApproveCollectibleTransactionViewController:
 
     override func linkInteractors() {
         transactionController.delegate = self
+
+        optOutInfoActionView.addTouch(target: self, action: #selector(didTapOptOutInfo))
+        optOutCheckboxView.addTouch(target: self, action: #selector(didTapOptOutCheckbox))
 
         cancelActionView.addTouch(target: self, action: #selector(didTapCancel))
         confirmActionView.addTouch(target: self, action: #selector(didTapConfirm))
@@ -165,6 +174,56 @@ extension ApproveCollectibleTransactionViewController {
         }
     }
 
+    private func addOptOutContent() {
+        contextView.addSubview(optOutContentView)
+        optOutContentView.snp.makeConstraints {
+            $0.top == transactionFeeInfoView.snp.bottom + theme.spacingBetweenInfoAndSeparator
+            $0.leading == 0
+            $0.trailing == 0
+        }
+
+        addOptOutCheckbox()
+        addOptOutTitle()
+        addOptOutInfoAction()
+    }
+
+    private func addOptOutCheckbox() {
+        optOutCheckboxView.customizeAppearance(theme.optOutCheckbox)
+
+        optOutContentView.addSubview(optOutCheckboxView)
+        optOutCheckboxView.fitToHorizontalIntrinsicSize()
+        optOutCheckboxView.snp.makeConstraints {
+            $0.leading == 0
+            $0.centerY == 0
+        }
+
+        optOutCheckboxView.isSelected = true
+    }
+
+    private func addOptOutTitle() {
+        optOutTitleView.customizeAppearance(theme.optOutTitle)
+
+        optOutContentView.addSubview(optOutTitleView)
+        optOutTitleView.snp.makeConstraints {
+            $0.leading == optOutCheckboxView.snp.trailing + theme.optOutTitleLeadingMargin
+            $0.centerY == optOutCheckboxView
+            $0.top == 0
+            $0.bottom == 0
+        }
+    }
+
+    private func addOptOutInfoAction() {
+        optOutInfoActionView.customizeAppearance(theme.optOutInfo)
+
+        optOutContentView.addSubview(optOutInfoActionView)
+        optOutInfoActionView.fitToHorizontalIntrinsicSize()
+        optOutInfoActionView.snp.makeConstraints {
+            $0.trailing == 0
+            $0.leading >= optOutTitleView.snp.trailing + theme.minimumHorizontalSpacing
+            $0.centerY == optOutTitleView
+        }
+    }
+
     private func addConfirmAction() {
         confirmActionViewIndicator.applyStyle(theme.confirmActionIndicator)
 
@@ -209,7 +268,18 @@ extension ApproveCollectibleTransactionViewController {
 
 extension ApproveCollectibleTransactionViewController {
     @objc
+    private func didTapOptOutCheckbox(_ button: UIButton) {
+        button.isSelected.toggle()
+    }
+
+    @objc
+    private func didTapOptOutInfo() {
+        openOptInInformation()
+    }
+
+    @objc
     private func didTapConfirm() {
+        /// <todo>: Handle NFT opt out if `optOutCheckboxView.isSelected`.
         uploadTransaction()
     }
 
@@ -219,7 +289,7 @@ extension ApproveCollectibleTransactionViewController {
     }
 }
 
-extension ApproveCollectibleTransactionViewController: TransactionControllerDelegate {
+extension ApproveCollectibleTransactionViewController {
     func transactionController(
         _ transactionController: TransactionController,
         didCompletedTransaction id: TransactionID
@@ -228,13 +298,21 @@ extension ApproveCollectibleTransactionViewController: TransactionControllerDele
 
         /// <todo> Add different event for collectibles
         log(
-           TransactionEvent(
-              accountType: draft.fromAccount.type,
-              assetId: String(draft.collectibleAsset.id),
-              isMaxTransaction: false,
-              amount: draft.collectibleAsset.amount,
-              transactionId: id.identifier
-           )
+            TransactionEvent(
+                accountType: draft.fromAccount.type,
+                assetId: String(draft.collectibleAsset.id),
+                isMaxTransaction: false,
+                amount: draft.collectibleAsset.amount,
+                transactionId: id.identifier
+            )
+        )
+
+        NotificationCenter.default.post(
+            name: CollectibleListLocalDataController.didSendCollectible,
+            object: self,
+            userInfo: [
+                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (draft.fromAccount, draft.collectibleAsset)
+            ]
         )
 
         openSuccessScreen()
@@ -251,8 +329,8 @@ extension ApproveCollectibleTransactionViewController: TransactionControllerDele
             switch apiError {
             case .connection:
                 bannerController?.presentErrorBanner(
-                 title: "title-error".localized,
-                 message: "title-internet-connection".localized
+                    title: "title-error".localized,
+                    message: "title-internet-connection".localized
                 )
             default:
                 openTransferFailedWithRetry()
@@ -285,6 +363,22 @@ extension ApproveCollectibleTransactionViewController {
                 }
                 self.uploadTransaction()
             }
+        )
+
+        bottomTransition.perform(
+            .bottomWarning(
+                configurator: configurator
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func openOptInInformation() {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-green".uiImage,
+            title: "collectible-opt-out-info-title".localized,
+            description: .plain("collectible-opt-out-info-description".localized),
+            secondaryActionButtonTitle: "title-close".localized
         )
 
         bottomTransition.perform(
