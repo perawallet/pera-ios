@@ -963,7 +963,7 @@
 "collectible-detail-nft-explorer" = "Show on NFTExplorer";
 "collectible-detail-error-media-type" = "We don't support this NFT media type yet.";
 "collectible-detail-error-not-owner" = "You are not the owner of this NFT yet, however you opted in for it. You can now transfer it to your wallet.";
-"collectible-detail-error-not-owner-watch-account" = "The Watch Account has opted in for this NFT.";
+"collectible-detail-error-not-owner-watch-account" = "This watch account has opted in for this NFT, however doesn't own it.";
 "collectible-detail-error-visual" = "We can’t display the visual temporarily.";
 "collectible-detail-opted-in" = "Opted in to";
 "collectible-detail-opt-out" = "Opt out";
