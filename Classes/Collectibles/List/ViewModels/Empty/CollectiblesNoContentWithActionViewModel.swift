@@ -110,30 +110,30 @@ extension CollectiblesNoContentWithActionViewModel {
     }
 
     private mutating func bindSecondaryActionTitle(
-        _ hiddenNFTsCount: Int
+        _ hiddenCollectibleCount: Int
     ) {
-        secondaryActionTitle = getHiddenNFTsCountTitle(hiddenNFTsCount)
+        secondaryActionTitle = getHiddenCollectibleCountTitle(hiddenCollectibleCount)
     }
 }
 
 extension CollectiblesNoContentWithActionViewModel {
     private mutating func bindActionTitle(
-        _ hiddenNFTsCount: Int
+        _ hiddenCollectibleCount: Int
     ) {
-        primaryActionTitle = getHiddenNFTsCountTitle(hiddenNFTsCount)
+        primaryActionTitle = getHiddenCollectibleCountTitle(hiddenCollectibleCount)
     }
 }
 
 extension CollectiblesNoContentWithActionViewModel {
-    private func getHiddenNFTsCountTitle(
-        _ hiddenNFTsCount: Int
+    private func getHiddenCollectibleCountTitle(
+        _ hiddenCollectibleCount: Int
     ) -> EditText? {
-        if hiddenNFTsCount < 1 {
+        if hiddenCollectibleCount < 1 {
             return nil
         }
 
         return .string(
-            "collectibles-empty-secondary-action-title".localized(params: "\(hiddenNFTsCount)")
+            "collectibles-empty-secondary-action-title".localized(params: "\(hiddenCollectibleCount)")
         )
     }
 }
