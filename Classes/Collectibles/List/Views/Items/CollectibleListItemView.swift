@@ -57,16 +57,7 @@ final class CollectibleListItemView:
     func bindData(
         _ viewModel: CollectibleListItemViewModel?
     ) {
-        var viewModel = viewModel
-
-        image.load(from: viewModel?.image) { error in
-            if let mediaType = viewModel?.mediaType,
-               !mediaType.isSupported {
-                viewModel?.bindBottomLeftBadgeForError()
-                return
-            }
-        }
-
+        image.load(from: viewModel?.image)
         title.editText = viewModel?.title
         subtitle.editText = viewModel?.subtitle
         topLeftBadge.image = viewModel?.topLeftBadge
