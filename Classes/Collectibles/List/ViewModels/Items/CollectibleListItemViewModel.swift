@@ -118,7 +118,8 @@ extension CollectibleListItemViewModel {
     ) {
         if !asset.isOwned {
             bottomLeftBadge = "badge-warning".uiImage.template
-            return
+        } else if !asset.mediaType.isSupported {
+            bottomLeftBadge = "badge-warning".uiImage.template
         }
     }
 
@@ -145,12 +146,6 @@ extension CollectibleListItemViewModel {
                     ])
                 ])
         )
-    }
-}
-
-extension CollectibleListItemViewModel {
-    mutating func bindBottomLeftBadgeForError() {
-        bottomLeftBadge = "badge-warning".uiImage.template
     }
 }
 
