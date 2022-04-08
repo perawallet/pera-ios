@@ -197,6 +197,7 @@
 "asset-remove-subtitle" = "To remove an asset, you must first transfer that asset’s balance to another account";
 "asset-search-placeholder" = "Search Assets ID or Name";
 "asset-remove-confirmation-title" = "Manage asset";
+"asset-manage-button" = "Manage";
 "asset-transfer-balance" = "Transfer Balance";
 "title-remove-assets" = "Remove Assets";
 "title-add-asset" = "Add New Asset";

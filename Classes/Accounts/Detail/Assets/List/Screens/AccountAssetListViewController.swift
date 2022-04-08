@@ -127,6 +127,50 @@ extension AccountAssetListViewController {
 extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(
         _ collectionView: UICollectionView,
+        willDisplay cell: UICollectionViewCell,
+        forItemAt indexPath: IndexPath
+    ) {
+        let sectionIdentifiers = listDataSource.snapshot().sectionIdentifiers
+        
+        guard let listSection = sectionIdentifiers[safe: indexPath.section] else {
+            return
+        }
+        
+        switch listSection {
+        case .assets:
+            guard let itemIdentifier = listDataSource.itemIdentifier(for: indexPath) else {
+                return
+            }
+            
+            switch itemIdentifier {
+            case .assetManagement:
+                let item = cell as! AssetManagementItemCell
+                item.observe(event: .manage) {
+                    [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    
+                    self.eventHandler?(.manageAssets)
+                }
+                item.observe(event: .add) {
+                    [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    
+                    self.eventHandler?(.addAsset)
+                }
+            default:
+                return
+            }
+        default:
+            return
+        }
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
@@ -134,18 +178,6 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             collectionView,
             layout: collectionViewLayout,
             sizeForItemAt: indexPath
-        )
-    }
-
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        return listLayout.collectionView(
-            collectionView,
-            layout: collectionViewLayout,
-            referenceSizeForHeaderInSection: section
         )
     }
 
@@ -182,25 +214,19 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     self.openAssetDetail(asset)
                 }
             case .asset:
-                var algoIndex = 2
-                
-                if accountHandle.value.isWatchAccount() {
-                    algoIndex -= 1
-                }
+                let algoIndex = 2
                 
                 if indexPath.item == algoIndex {
                     openAlgoDetail()
                     return
                 }
 
+                let assetIndex = indexPath.item - (algoIndex + 1)
+                
                 /// Reduce search and algos cells from index
-                if let assetDetail = accountHandle.value.standardAssets[safe: indexPath.item - algoIndex.advanced(by: 1)] {
+                if let assetDetail = accountHandle.value.standardAssets[safe: assetIndex] {
                     self.openAssetDetail(assetDetail)
                 }
-
-            case .addAsset:
-                let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push)
-                (controller as? AssetAdditionViewController)?.delegate = self
             default:
                 break
             }
@@ -308,19 +334,10 @@ extension AccountAssetListViewController {
     }
 }
 
-extension AccountAssetListViewController: AssetAdditionViewControllerDelegate {
-    func assetAdditionViewController(
-        _ assetAdditionViewController: AssetAdditionViewController,
-        didAdd asset: AssetDecoration
-    ) {
-        let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
-        standardAsset.state = .pending(.add)
-        addAsset(standardAsset)
-    }
-}
-
 extension AccountAssetListViewController {
     enum Event {
         case didUpdate(AccountHandle)
+        case manageAssets
+        case addAsset
     }
 }
