@@ -263,7 +263,7 @@ extension NotificationsAPIDataController {
 
     func getUserAccount(
         from notificationDetail: NotificationDetail
-    ) -> (account: Account?, asset: Asset?) {
+    ) -> (account: Account?, asset: TransactionMode?) {
         let account = getAccount(from: notificationDetail.senderAddress) ?? getAccount(from: notificationDetail.receiverAddress)
 
         guard let account = account  else {
@@ -271,7 +271,16 @@ extension NotificationsAPIDataController {
         }
 
         let asset = notificationDetail.asset?.id.unwrap { account[$0] }
-        return (account: account, asset: asset)
+        
+        if notificationDetail.asset?.id != nil && asset == nil {
+            return (account: account, asset: nil)
+        }
+        
+        if let asset = asset {
+            return (account: account, asset: .asset(asset))
+        }
+        
+        return (account: account, asset: .algo)
     }
     
     private func getAccount(from address: String?) -> Account? {

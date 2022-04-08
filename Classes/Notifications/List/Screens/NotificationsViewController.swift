@@ -30,7 +30,6 @@ final class NotificationsViewController: BaseViewController {
         api: api!
     )
     private lazy var listLayout = NotificationsListLayout(listDataSource: dataSource)
-
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -169,14 +168,33 @@ extension NotificationsViewController {
             }
 
             let screen: Screen
-            if let asset = accountDetails.asset as? StandardAsset {
-                screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, asset: asset))
-            } else {
-                screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
+            
+            guard let assetMode = accountDetails.asset else {
+                presentAssetNotFoundError()
+                return
             }
-
+            
+            switch assetMode {
+            case .algo:
+                screen = .algosDetail(draft: AlgoTransactionListing(accountHandle: accountHandle))
+            case .asset(let asset):
+                if let asset = asset as? StandardAsset {
+                    screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, asset: asset))
+                } else {
+                    presentAssetNotFoundError()
+                    return
+                }
+            }
+            
             open(screen, by: .push)
         }
+    }
+    
+    private func presentAssetNotFoundError() {
+        bannerController?.presentErrorBanner(
+            title: "notifications-asset-not-found-title".localized,
+            message: "notifications-asset-not-found-description".localized
+        )
     }
 }
 
