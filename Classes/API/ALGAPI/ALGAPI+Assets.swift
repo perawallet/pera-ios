@@ -67,22 +67,22 @@ extension ALGAPI {
     }
     
     @discardableResult
-    func fetchAssetDetailFromIndexer(
+    func fetchAssetDetailFromNode(
         _ draft: AssetDetailFetchDraft,
         onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
     ) -> EndpointOperatable {
-        let assetDetailHandler: (Response.ModelResult<AssetDetailResponse>) -> Void = { response in
+        let assetDetailHandler: (Response.ModelResult<AssetDetail>) -> Void = { response in
             switch response {
             case .failure(let apiError, let apiModel):
                 handler(.failure(apiError, apiModel))
-            case .success(let assetDetailResponse):
-                let decoration = AssetDecoration(assetDetail: assetDetailResponse.assetDetail)
+            case .success(let assetDetail):
+                let decoration = AssetDecoration(assetDetail: assetDetail)
                 handler(.success(decoration))
             }
         }
         
         return EndpointBuilder(api: self)
-            .base(.indexer(network))
+            .base(.algod(network))
             .path(.assetDetail, args: "\(draft.id)")
             .method(.get)
             .completionHandler(assetDetailHandler)
