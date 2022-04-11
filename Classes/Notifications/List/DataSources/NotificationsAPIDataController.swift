@@ -264,7 +264,13 @@ extension NotificationsAPIDataController {
     func getUserAccount(
         from notificationDetail: NotificationDetail
     ) -> (account: Account?, asset: TransactionMode?) {
-        let account = getAccount(from: notificationDetail.senderAddress) ?? getAccount(from: notificationDetail.receiverAddress)
+        let account: Account?
+        
+        if notificationDetail.type.isSent() {
+            account = getAccount(from: notificationDetail.senderAddress) ?? getAccount(from: notificationDetail.receiverAddress)
+        } else {
+            account = getAccount(from: notificationDetail.receiverAddress) ?? getAccount(from: notificationDetail.senderAddress)
+        }
 
         guard let account = account  else {
             return (nil, nil)

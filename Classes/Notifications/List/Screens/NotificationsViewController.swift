@@ -180,13 +180,32 @@ extension NotificationsViewController {
             case .asset(let asset):
                 if let asset = asset as? StandardAsset {
                     screen = .assetDetail(draft: AssetTransactionListing(accountHandle: accountHandle, asset: asset))
+                } else if let collectibleAsset = asset as? CollectibleAsset {
+                    openCollectible(asset: collectibleAsset, with: accountHandle.value)
+                    return
                 } else {
                     presentAssetNotFoundError()
                     return
+
                 }
             }
             
             open(screen, by: .push)
+        }
+    }
+    
+    private func openCollectible(asset: CollectibleAsset, with account: Account) {
+        let controller = open(
+            .collectibleDetail(
+                asset: asset,
+                account: account,
+                thumbnailImage: nil
+            ),
+            by: .push
+        ) as? CollectibleDetailViewController
+        
+        controller?.eventHandlers.didOptOutAssetFromAccount = {
+            controller?.popScreen()
         }
     }
     
