@@ -33,15 +33,21 @@ extension AssetCachable where Self: BaseViewController {
         if let assetDecoration = self.sharedDataController.assetDetailCollection[id] {
             completion(assetDecoration)
         } else {
-            
-            api.fetchAssetDetailFromIndexer(AssetDetailFetchDraft(id: id)) {
-                [weak self] response in
+            api.fetchAssetDetails(
+                AssetFetchQuery(ids: [id]),
+                queue: .main,
+                ignoreResponseOnCancelled: false
+            ) { [weak self] assetResponse in
                 guard let self = self else {
                     return
                 }
                 
-                switch response {
-                case .success(let assetDecoration):
+                switch assetResponse {
+                case .success(let assetDetailResponse):
+                    guard let assetDecoration = assetDetailResponse.results.first else {
+                        completion(nil)
+                        return
+                    }
                     self.sharedDataController.assetDetailCollection[id] = assetDecoration
                     completion(assetDecoration)
                 case .failure:
