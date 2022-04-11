@@ -165,6 +165,7 @@ extension CollectibleMediaVideoPreviewView {
 extension CollectibleMediaVideoPreviewView {
     func prepareForReuse() {
         removeObservers()
+        stopVideo()
         videoPlayerView.player = nil
         placeholderView.prepareForReuse()
         overlayView.alpha = 0.0
