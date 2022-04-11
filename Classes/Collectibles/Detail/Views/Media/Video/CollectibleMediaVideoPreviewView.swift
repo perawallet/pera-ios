@@ -94,13 +94,6 @@ extension CollectibleMediaVideoPreviewView {
         videoPlayerView.snp.makeConstraints {
             $0.setPaddings()
         }
-
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(playerItemDidReachEnd),
-            name: .AVPlayerItemDidPlayToEndTime,
-            object: videoPlayerView.player?.currentItem
-        )
     }
 
     private func addOverlayView(
@@ -133,11 +126,7 @@ extension CollectibleMediaVideoPreviewView {
         videoPlayer.playImmediately(atRate: 1)
         videoPlayerView.player = videoPlayer
 
-        videoPlayerView.playerLayer?.addObserver(
-            self,
-            forKeyPath: #keyPath(AVPlayerLayer.isReadyForDisplay),
-            context: &playerLayerContext
-        )
+        addObservers()
 
         if !viewModel.isOwned {
             overlayView.alpha = 0.4
@@ -175,13 +164,29 @@ extension CollectibleMediaVideoPreviewView {
 
 extension CollectibleMediaVideoPreviewView {
     func prepareForReuse() {
-        overlayView.alpha = 0.0
-
         removeObservers()
+        videoPlayerView.player = nil
+        placeholderView.prepareForReuse()
+        overlayView.alpha = 0.0
     }
 }
 
 extension CollectibleMediaVideoPreviewView {
+    private func addObservers() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(playerItemDidReachEnd),
+            name: .AVPlayerItemDidPlayToEndTime,
+            object: videoPlayerView.player?.currentItem
+        )
+
+        videoPlayerView.playerLayer?.addObserver(
+            self,
+            forKeyPath: #keyPath(AVPlayerLayer.isReadyForDisplay),
+            context: &playerLayerContext
+        )
+    }
+
     private func removeObservers() {
         NotificationCenter.default.removeObserver(
             self,
