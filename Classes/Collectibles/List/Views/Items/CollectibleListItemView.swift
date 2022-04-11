@@ -107,10 +107,10 @@ extension CollectibleListItemView {
     private func addImage(
         _ theme: CollectibleListItemViewTheme
     ) {
-        image.customizeAppearance(theme.image)
+        image.build(theme.image)
         image.layer.draw(corner: theme.corner)
         image.clipsToBounds = true
-
+        
         addSubview(image)
         image.fitToIntrinsicSize()
         image.snp.makeConstraints {

@@ -71,6 +71,7 @@ final class WCConnectionApprovalView: View {
 
 extension WCConnectionApprovalView {
     private func addDappImageView(_ theme: WCConnectionApprovalViewTheme) {
+        dappImageView.build(URLImageViewNoStyleLayoutSheet())
         dappImageView.draw(corner: theme.dappImageViewCorner)
 
         addSubview(dappImageView)
