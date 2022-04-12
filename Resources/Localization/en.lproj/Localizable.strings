@@ -525,6 +525,9 @@
 "notifications-empty-title" = "No current notifications";
 "notifications-empty-subtitle" = "Your recent transactions, asset requests and other notifications will appear here.";
 
+"notifications-asset-not-found-title" = "Asset history not available";
+"notifications-asset-not-found-description" = "The history for this specific asset is not available.";
+
 // MARK: Transaction Filter
 "transaction-filter-title-sort" = "Sort by Date";
 "transaction-filter-option-all" = "All Time";
