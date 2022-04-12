@@ -95,7 +95,7 @@ extension CollectibleTransactionInfoViewModel {
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
-                        .lineBreakMode(.byTruncatingTail),
+                        .lineBreakMode(.byWordWrapping),
                         .textAlignment(.left),
                         .lineHeightMultiple(lineHeightMultiplier)
                     ])
@@ -122,7 +122,7 @@ extension CollectibleTransactionInfoViewModel {
                     .font(font),
                     .lineHeightMultiplier(lineHeightMultiplier, font),
                     .paragraph([
-                        .lineBreakMode(.byTruncatingTail),
+                        .lineBreakMode(.byWordWrapping),
                         .textAlignment(.right),
                         .lineHeightMultiple(lineHeightMultiplier)
                     ])

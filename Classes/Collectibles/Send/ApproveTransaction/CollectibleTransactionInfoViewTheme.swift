@@ -25,6 +25,7 @@ struct CollectibleTransactionInfoViewTheme:
     let value: ButtonStyle
 
     let iconSize: LayoutSize
+    let iconCorner: Corner
     let valueWidthRatio: LayoutMetric
     let buttonPadding: LayoutMetric
     let verticalPadding: LayoutMetric
@@ -43,6 +44,7 @@ struct CollectibleTransactionInfoViewTheme:
         ]
 
         self.iconSize = (24, 24)
+        self.iconCorner = Corner(radius: 12)
         self.valueWidthRatio = 0.45
         self.buttonPadding = 8
         self.verticalPadding = 16
