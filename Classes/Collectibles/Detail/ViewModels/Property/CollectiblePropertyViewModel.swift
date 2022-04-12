@@ -35,7 +35,7 @@ extension CollectiblePropertyViewModel {
     private mutating func bindName(
         _ property: CollectibleTrait
     ) {
-        guard let aName = property.displayName else {
+        guard let aName = property.displayName?.uppercased() else {
             return
         }
 

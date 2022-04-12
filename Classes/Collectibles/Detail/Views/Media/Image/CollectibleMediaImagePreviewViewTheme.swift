@@ -56,11 +56,11 @@ struct CollectibleDetailImageTheme: URLImageViewStyleSheet {
 
     let background: ViewStyle
     let content: ImageStyle
-    let placeholder: URLImagePlaceholderViewStyleSheet?
+    let placeholderStyleSheet: URLImagePlaceholderViewStyleSheet?
 
     init() {
         self.background = []
         self.content = .aspectFit()
-        self.placeholder = PlaceholderTheme()
+        self.placeholderStyleSheet = PlaceholderTheme()
     }
 }
