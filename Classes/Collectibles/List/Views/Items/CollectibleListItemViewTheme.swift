@@ -133,12 +133,12 @@ struct CollectibleListItemImageViewTheme: URLImageViewStyleSheet {
 
     let background: ViewStyle
     let content: ImageStyle
-    let placeholder: URLImagePlaceholderViewStyleSheet?
+    let placeholderStyleSheet: URLImagePlaceholderViewStyleSheet?
 
     init() {
         self.background = []
         self.content = .aspectFill()
-        self.placeholder = PlaceholderTheme()
+        self.placeholderStyleSheet = PlaceholderTheme()
     }
 }
 
