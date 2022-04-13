@@ -77,6 +77,8 @@ extension CollectibleMediaVideoPreviewView {
         _ theme: CollectibleMediaVideoPreviewViewTheme
     ) {
         placeholderView.build(theme.placeholder)
+        placeholderView.layer.draw(corner: theme.corner)
+        placeholderView.clipsToBounds = true
 
         addSubview(placeholderView)
         placeholderView.snp.makeConstraints {
