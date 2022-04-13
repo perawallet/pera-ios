@@ -127,16 +127,12 @@ indirect enum Screen {
     )
     case sendCollectible(
         draft: SendCollectibleDraft,
-        transactionController: TransactionController,
         uiInteractionsHandler: SendCollectibleViewController.SendCollectibleUIInteractions
     )
     case sendCollectibleAccountList(
         dataController: SendCollectibleAccountListDataController
     )
-    case approveCollectibleTransaction(
-        draft: SendCollectibleDraft,
-        transactionController: TransactionController
-    )
+    case approveCollectibleTransaction(draft: SendCollectibleDraft)
     case shareActivity(items: [Any])
     case image3DCard(image: UIImage)
     case video3DCard(

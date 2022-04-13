@@ -661,10 +661,9 @@ class Router:
                 thumbnailImage: thumbnailImage,
                 configuration: configuration
             )
-        case let .sendCollectible(draft, transactionController, uiInteractions):
+        case let .sendCollectible(draft, uiInteractions):
             let aViewController = SendCollectibleViewController(
                 draft: draft,
-                transactionController: transactionController,
                 configuration: configuration
             )
             aViewController.uiInteractions = uiInteractions
@@ -674,10 +673,9 @@ class Router:
                 dataController: dataController,
                 configuration: configuration
             )
-        case let .approveCollectibleTransaction(draft, transactionController):
+        case let .approveCollectibleTransaction(draft):
             viewController = ApproveCollectibleTransactionViewController(
                 draft: draft,
-                transactionController: transactionController,
                 configuration: configuration
             )
         case let .shareActivity(items):
