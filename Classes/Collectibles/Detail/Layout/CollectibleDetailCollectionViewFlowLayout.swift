@@ -43,7 +43,8 @@ final class CollectibleDetailCollectionViewFlowLayout: UICollectionViewFlowLayou
             return section == .properties && $0.representedElementCategory == .cell
         }
 
-        guard let propertiesAttributes = propertiesAttributes else {
+        guard let propertiesAttributes = propertiesAttributes,
+              !propertiesAttributes.isEmpty else {
             return super.layoutAttributesForElements(in: rect)
         }
 
