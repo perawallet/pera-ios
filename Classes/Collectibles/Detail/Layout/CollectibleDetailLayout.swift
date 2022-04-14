@@ -19,7 +19,7 @@ import MacaroonUIKit
 import UIKit
 
 final class CollectibleDetailLayout: NSObject {
-    static let theme = Theme()
+    private static let theme = Theme()
     
     private let dataSource: CollectibleDetailDataSource
 
