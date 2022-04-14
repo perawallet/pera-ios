@@ -34,6 +34,7 @@ final class NoContentWithActionView:
     private lazy var resultWithActionContainer = UIView()
     private lazy var resultView = ResultView()
     private lazy var actionContentView = MacaroonUIKit.VStackView()
+    private lazy var primaryActionCanvasView = MacaroonUIKit.BaseView()
     private lazy var primaryActionView = Button(.imageAtLeft(spacing: 12))
     private lazy var secondaryActionView = Button(.imageAtLeft(spacing: 12))
 
@@ -55,6 +56,9 @@ final class NoContentWithActionView:
         _ viewModel: NoContentWithActionViewModel?
     ) {
         resultView.bindData(viewModel)
+
+        let primaryActionTitle = viewModel?.primaryActionTitle
+        primaryActionCanvasView.isHidden = primaryActionTitle == nil
         primaryActionView.setEditTitle(viewModel?.primaryActionTitle, for: .normal)
 
         let secondaryActionTitle = viewModel?.secondaryActionTitle
@@ -82,9 +86,11 @@ final class NoContentWithActionView:
         var preferredHeight =
         resultSize.height +
         theme.contentVerticalPaddings.top +
-        theme.contentVerticalPaddings.bottom +
-        theme.primaryActionTopMargin +
-        buttonHeight
+        theme.contentVerticalPaddings.bottom
+
+        if viewModel.primaryActionTitle != nil {
+            preferredHeight += (theme.primaryActionTopMargin + buttonHeight)
+        }
 
         if viewModel.secondaryActionTitle != nil {
             preferredHeight += (theme.secondaryActionTopMargin + buttonHeight)
@@ -143,7 +149,7 @@ extension NoContentWithActionView {
 
         resultWithActionContainer.addSubview(actionContentView)
         actionContentView.snp.makeConstraints {
-            $0.top == resultView.snp.bottom + theme.primaryActionTopMargin
+            $0.top == resultView.snp.bottom
             $0.setPaddings((.noMetric, 0, 0, 0))
         }
 
@@ -154,13 +160,20 @@ extension NoContentWithActionView {
     private func addPrimaryAction(
         _ theme: NoContentViewWithActionTheme
     ) {
+        actionContentView.addArrangedSubview(primaryActionCanvasView)
+
+        alignAction(primaryActionCanvasView, for: theme.actionAlignment)
+
+        primaryActionCanvasView.addSubview(primaryActionView)
+
+        primaryActionView.snp.makeConstraints {
+            $0.setPaddings((theme.primaryActionTopMargin, 0, 0, 0))
+        }
+
         primaryActionView.customizeAppearance(theme.primaryAction)
 
-        actionContentView.addArrangedSubview(primaryActionView)
         primaryActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
         primaryActionView.fitToIntrinsicSize()
-
-        alignAction(primaryActionView, for: theme.actionAlignment)
 
         primaryActionView.draw(corner: Corner(radius: theme.actionCornerRadius))
 
@@ -190,7 +203,7 @@ extension NoContentWithActionView {
     }
 
     private func alignAction(
-        _ action: MacaroonUIKit.Button,
+        _ action: UIView,
         for alignment: ActionViewAlignment
     ) {
         switch alignment {
