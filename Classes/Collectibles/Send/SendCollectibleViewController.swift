@@ -20,10 +20,18 @@ import MacaroonURLImage
 import SnapKit
 import MagpieCore
 
-final class SendCollectibleViewController: BaseScrollViewController {
+final class SendCollectibleViewController:
+    BaseScrollViewController,
+    TransactionControllerDelegate,
+    SendCollectibleActionViewDelegate,
+    UIScrollViewDelegate,
+    KeyboardControllerDataSource {
     lazy var uiInteractions = SendCollectibleUIInteractions()
 
-    private lazy var  bottomTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var bottomTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var approveModalTransition = BottomSheetTransition(
+        presentingViewController: approveCollectibleTransactionViewController!
+    )
 
     private(set) lazy var sendCollectibleView = SendCollectibleView()
 
@@ -44,23 +52,28 @@ final class SendCollectibleViewController: BaseScrollViewController {
     lazy var actionViewHeightDiff: CGFloat = .zero
 
     private var draft: SendCollectibleDraft
-    private let transactionController: TransactionController
+    private lazy var transactionController = TransactionController(
+        api: api!,
+        bannerController: bannerController
+    )
 
     let theme: SendCollectibleViewControllerTheme
 
     private var ledgerApprovalViewController: LedgerApprovalViewController?
     private var askRecipientToOptInViewController: BottomWarningViewController?
+    private var approveCollectibleTransactionViewController: ApproveCollectibleTransactionViewController?
 
     private var ongoingFetchAccountsEnpoint: EndpointOperatable?
 
+    /// <todo> Recreating of the transaction should be refactored when the transaction structure is changed so that it can be separated from the view controller.
+    private var isRecreatingTransaction = false
+
     init(
         draft: SendCollectibleDraft,
-        transactionController: TransactionController,
         theme: SendCollectibleViewControllerTheme = .init(),
         configuration: ViewControllerConfiguration
     ) {
         self.draft = draft
-        self.transactionController = transactionController
         self.theme = theme
         super.init(configuration: configuration)
     }
@@ -250,7 +263,7 @@ extension SendCollectibleViewController {
                 )
             case .failure(let error, _):
                 if error.isHttpNotFound {
-                    self.requestOptInToRecipeint()
+                    self.openAskRecipientToOptIn()
                     return
                 }
 
@@ -276,8 +289,59 @@ extension SendCollectibleViewController {
         let isNotOwned = (collectibleAsset.amount == 0)
 
         if isNotOwned {
-            composeCollectibleAssetTransactionData()
+            composeCollectibleAssetTransactionData(
+                isOptingOut: false
+            )
         }
+    }
+
+    private func openAskRecipientToOptIn() {
+        let asset = draft.collectibleAsset
+        let title = asset.title.fallback(asset.name.fallback("#\(String(asset.id))"))
+        let to = draft.toContact?.address ?? draft.toAccount?.address
+
+        let description = "collectible-recipient-opt-in-description".localized(title, to!)
+
+        let configuratorDescription =
+        BottomWarningViewConfigurator.BottomWarningDescription.custom(
+            description: (description, [title, to!]),
+            markedWordWithHandler: (
+                word: "collectible-recipient-opt-in-description-marked".localized,
+                handler: {
+                    [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+
+                    self.askRecipientToOptInViewController?.dismissScreen {
+                        self.openOptInInformation()
+                    }
+                }
+            )
+        )
+
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-green".uiImage,
+            title: "collectible-recipient-opt-in-title".localized,
+            description: configuratorDescription,
+            primaryActionButtonTitle: "collectible-recipient-opt-in-action-title".localized,
+            secondaryActionButtonTitle: "title-close".localized,
+            primaryAction: {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.requestOptInToRecipeint()
+            }
+        )
+
+        askRecipientToOptInViewController = bottomTransition.perform(
+            .bottomWarning(
+                configurator: configurator
+            ),
+            by: .presentWithoutNavigationController
+        ) as? BottomWarningViewController
     }
 
     private func cancelOngoingFetchAccountsEnpoint() {
@@ -344,18 +408,26 @@ extension SendCollectibleViewController {
     }
 
     private func openApproveTransaction() {
-        let screen = bottomTransition.perform(
+        approveCollectibleTransactionViewController = bottomTransition.perform(
             .approveCollectibleTransaction(
-                draft: draft,
-                transactionController: transactionController
+                draft: draft
             ),
             by: .presentWithoutNavigationController
         ) as? ApproveCollectibleTransactionViewController
 
-        screen?.handlers.didSendTransactionSuccessfully = {
-            [unowned self] _ in
-            /// <todo> Dismiss screen properly.
-            self.openSuccessScreen()
+        approveCollectibleTransactionViewController?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .approvedSendAndOptOut:
+                self.isRecreatingTransaction = true
+                self.composeCollectibleAssetTransactionData(
+                    isOptingOut: true
+                )
+            case .approvedSend:
+                self.transactionController.uploadTransaction()
+            }
         }
     }
 
@@ -378,54 +450,29 @@ extension SendCollectibleViewController {
             controller.dismissScreen()
         }
     }
+}
 
-    private func openAskRecipientToOptIn() {
-        let asset = draft.collectibleAsset
-        let title = asset.title.fallback(asset.name.fallback("#\(String(asset.id))"))
-        let to = draft.toContact?.address ?? draft.toAccount?.address
+extension SendCollectibleViewController {
+    private func composeCollectibleAssetTransactionData(
+        isOptingOut: Bool
+    ) {
+        let creatorAddress = isOptingOut ? draft.collectibleAsset.creator?.address ?? "" : ""
 
-        let description = "collectible-recipient-opt-in-description".localized(title, to!)
-
-        let configuratorDescription =
-        BottomWarningViewConfigurator.BottomWarningDescription.custom(
-            description: (description, [title, to!]),
-            markedWordWithHandler: (
-                word: "collectible-recipient-opt-in-description-marked".localized,
-                handler: {
-                    [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.askRecipientToOptInViewController?.dismissScreen {
-                        self.openOptInInformation()
-                    }
-                }
-            )
+        let transactionDraft = AssetTransactionSendDraft(
+            from: draft.fromAccount,
+            toAccount: draft.toAccount,
+            amount: 1,
+            assetIndex: draft.collectibleAsset.id,
+            assetCreator: creatorAddress
         )
 
-        let configurator = BottomWarningViewConfigurator(
-            image: "icon-info-green".uiImage,
-            title: "collectible-recipient-opt-in-title".localized,
-            description: configuratorDescription,
-            primaryActionButtonTitle: "collectible-recipient-opt-in-action-title".localized,
-            secondaryActionButtonTitle: "title-close".localized,
-            primaryAction: {
-                [weak self] in
-                guard let self = self else {
-                    return
-                }
-
-                self.requestOptInToRecipeint()
-            }
-        )
-
-        askRecipientToOptInViewController = bottomTransition.perform(
-            .bottomWarning(
-                configurator: configurator
-            ),
-            by: .presentWithoutNavigationController
-        ) as? BottomWarningViewController
+        transactionController.setTransactionDraft(transactionDraft)
+        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
+        
+        if draft.fromAccount.requiresLedgerConnection() {
+            transactionController.initializeLedgerTransactionAccount()
+            transactionController.startTimer()
+        }
     }
 
     private func openOptInInformation() {
@@ -443,26 +490,6 @@ extension SendCollectibleViewController {
         )
     }
 
-    private func openTransferFailed(
-        title: String = "collectible-transfer-failed-title".localized,
-        description: String = "collectible-transfer-failed-verify-algo-desription".localized
-    ) {
-        let configurator = BottomWarningViewConfigurator(
-            title: title,
-            description: .plain(description),
-            secondaryActionButtonTitle: "title-close".localized
-        )
-
-        bottomTransition.perform(
-            .bottomWarning(
-                configurator: configurator
-            ),
-            by: .presentWithoutNavigationController
-        )
-    }
-}
-
-extension SendCollectibleViewController {
     private func requestOptInToRecipeint() {
         let receiverAddress = sendCollectibleActionView.addressInputViewText
 
@@ -481,30 +508,21 @@ extension SendCollectibleViewController {
 }
 
 extension SendCollectibleViewController {
-    private func composeCollectibleAssetTransactionData() {
-        let transactionDraft = AssetTransactionSendDraft(
-            from: draft.fromAccount,
-            toAccount: draft.toAccount,
-            amount: 1,
-            assetIndex: draft.collectibleAsset.id,
-            assetDecimalFraction: draft.collectibleAsset.presentation.decimals,
-            isVerifiedAsset: draft.collectibleAsset.presentation.isVerified,
-            note: nil,
-            toContact: draft.toContact,
-            asset: draft.collectibleAsset
-        )
+    func transactionController(
+        _ transactionController: TransactionController,
+        didComposedTransactionDataFor draft: TransactionSendDraft?
+    ) {
+        loadingController?.stopLoading()
+        self.draft.fee = draft?.fee
 
-        transactionController.setTransactionDraft(transactionDraft)
-        transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
-        
-        if draft.fromAccount.requiresLedgerConnection() {
-            transactionController.initializeLedgerTransactionAccount()
-            transactionController.startTimer()
+        if isRecreatingTransaction {
+            transactionController.uploadTransaction()
+            return
         }
-    }
-}
 
-extension SendCollectibleViewController: TransactionControllerDelegate {
+        openApproveTransaction()
+    }
+
     func transactionController(
         _ transactionController: TransactionController,
         didFailedComposing error: HIPTransactionError
@@ -522,19 +540,13 @@ extension SendCollectibleViewController: TransactionControllerDelegate {
         }
     }
 
-    func transactionController(
-        _ transactionController: TransactionController,
-        didComposedTransactionDataFor draft: TransactionSendDraft?
+    private func displayTransactionError(
+        from transactionError: TransactionError
     ) {
-        loadingController?.stopLoading()
-        self.draft.fee = draft?.fee
-        openApproveTransaction()
-    }
-
-    private func displayTransactionError(from transactionError: TransactionError) {
         switch transactionError {
         case let .minimumAmount(amount):
             openTransferFailed(
+                title: "collectible-transfer-failed-title".localized,
                 description: "send-algos-minimum-amount-custom-error".localized(params: amount.toAlgos.toAlgosStringForLabel ?? "")
             )
         case .invalidAddress:
@@ -548,7 +560,14 @@ extension SendCollectibleViewController: TransactionControllerDelegate {
                 message: error.debugDescription
             )
         case .ledgerConnection:
-            bottomTransition.perform(
+            let transition: BottomSheetTransition
+            if isRecreatingTransaction {
+                transition = approveModalTransition
+            } else {
+                transition = bottomTransition
+            }
+
+            transition.perform(
                 .bottomWarning(
                     configurator: BottomWarningViewConfigurator(
                         image: "icon-info-green".uiImage,
@@ -571,7 +590,14 @@ extension SendCollectibleViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController,
         didRequestUserApprovalFrom ledger: String
     ) {
-        ledgerApprovalViewController = bottomTransition.perform(
+        let transition: BottomSheetTransition
+        if isRecreatingTransaction {
+            transition = approveModalTransition
+        } else {
+            transition = bottomTransition
+        }
+
+        ledgerApprovalViewController = transition.perform(
             .ledgerApproval(mode: .approve, deviceName: ledger),
             by: .present
         )
@@ -581,6 +607,120 @@ extension SendCollectibleViewController: TransactionControllerDelegate {
         _ transactionController: TransactionController
     ) {
         ledgerApprovalViewController?.dismissScreen()
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didCompletedTransaction id: TransactionID
+    ) {
+        log(
+            TransactionEvent(
+                accountType: draft.fromAccount.type,
+                assetId: String(draft.collectibleAsset.id),
+                isMaxTransaction: false,
+                amount: draft.collectibleAsset.amount,
+                transactionId: id.identifier
+            )
+        )
+
+        NotificationCenter.default.post(
+            name: CollectibleListLocalDataController.didSendCollectible,
+            object: self,
+            userInfo: [
+                CollectibleListLocalDataController.accountAssetPairUserInfoKey: (draft.fromAccount, draft.collectibleAsset)
+            ]
+        )
+
+        approveCollectibleTransactionViewController?.stopLoading()
+        approveCollectibleTransactionViewController?.dismissScreen {
+            [weak self] in
+            self?.openSuccessScreen()
+        }
+    }
+
+    func transactionController(
+        _ transactionController: TransactionController,
+        didFailedTransaction error: HIPTransactionError
+    ) {
+        approveCollectibleTransactionViewController?.stopLoading()
+
+        switch error {
+        case let .network(apiError):
+            switch apiError {
+            case .connection:
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: "title-internet-connection".localized
+                )
+            case .client(let error, _):
+                bannerController?.presentErrorBanner(
+                    title: "title-error".localized,
+                    message: error.localizedDescription
+                )
+            default:
+                openTransferFailedWithRetry()
+            }
+        default:
+            bannerController?.presentErrorBanner(
+                title: "title-error".localized,
+                message: error.localizedDescription
+            )
+        }
+    }
+}
+
+extension SendCollectibleViewController {
+    private func openTransferFailed(
+        title: String,
+        description: String
+    ) {
+        let transition: BottomSheetTransition
+        if isRecreatingTransaction {
+            transition = approveModalTransition
+        } else {
+            transition = bottomTransition
+        }
+
+        let configurator = BottomWarningViewConfigurator(
+            title: title,
+            description: .plain(description),
+            secondaryActionButtonTitle: "title-close".localized
+        )
+
+        transition.perform(
+            .bottomWarning(
+                configurator: configurator
+            ),
+            by: .presentWithoutNavigationController
+        )
+    }
+
+    private func openTransferFailedWithRetry() {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: "collectible-transfer-failed-title".localized,
+            description: .plain("collectible-transfer-failed-retry-desription".localized),
+            primaryActionButtonTitle: "title-retry".localized,
+            secondaryActionButtonTitle: "title-close".localized,
+            primaryAction: {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.transactionController.uploadTransaction()
+            }
+        )
+
+        approveCollectibleTransactionViewController?.dismissScreen {
+            [weak self] in
+            guard let self = self else { return }
+            self.bottomTransition.perform(
+                .bottomWarning(
+                    configurator: configurator
+                ),
+                by: .presentWithoutNavigationController
+            )
+        }
     }
 }
 
@@ -618,7 +758,7 @@ extension SendCollectibleViewController: QRScannerViewControllerDelegate {
     }
 }
 
-extension SendCollectibleViewController: SendCollectibleActionViewDelegate {
+extension SendCollectibleViewController {
     func sendCollectibleActionViewDidEdit(
         _ view: SendCollectibleActionView
     ) {
@@ -658,7 +798,7 @@ extension SendCollectibleViewController: SendCollectibleActionViewDelegate {
     }
 }
 
-extension SendCollectibleViewController: UIScrollViewDelegate {
+extension SendCollectibleViewController {
     func scrollViewDidScroll(
         _ scrollView: UIScrollView
     ) {
@@ -700,7 +840,7 @@ extension SendCollectibleViewController {
     }
 }
 
-extension SendCollectibleViewController: KeyboardControllerDataSource {
+extension SendCollectibleViewController {
     func bottomInsetWhenKeyboardPresented(
         for keyboardController: KeyboardController
     ) -> CGFloat {

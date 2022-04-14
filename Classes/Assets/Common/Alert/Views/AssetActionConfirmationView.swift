@@ -147,12 +147,13 @@ extension AssetActionConfirmationView {
 
     private func addCopyIDButton(_ theme: AssetActionConfirmationViewTheme) {
         copyIDButton.customizeAppearance(theme.copyIDButton)
+        copyIDButton.contentEdgeInsets = UIEdgeInsets(theme.copyIDButtonEdgeInsets)
         copyIDButton.draw(corner: theme.copyIDButtonCorner)
         
         assetIDView.addSubview(copyIDButton)
         copyIDButton.fitToIntrinsicSize()
         copyIDButton.snp.makeConstraints {
-            $0.fitToSize(theme.copyIDButtonSize)
+            $0.fitToHeight(theme.copyIDButtonHeight)
             $0.leading >= assetIDLabel.snp.trailing + theme.minimumHorizontalSpacing
             $0.top.bottom.trailing.equalToSuperview()
         }

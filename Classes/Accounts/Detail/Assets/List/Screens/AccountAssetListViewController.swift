@@ -201,6 +201,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             case .search:
                 let searchScreen = open(
                     .assetSearch(
+                        accountHandle: accountHandle,
                         dataController: AssetSearchLocalDataController(
                             accountHandle: accountHandle,
                             sharedDataController: sharedDataController
@@ -209,12 +210,14 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     by: .present
                 ) as? AssetSearchViewController
 
-                searchScreen?.handlers.didSelectAsset = { [weak self] asset in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.openAssetDetail(asset)
+                searchScreen?.handlers.didSelectAsset = {
+                    [weak self] asset in
+                    guard let self = self,
+                          let searchScreen = searchScreen else {
+                              return
+                          }
+                    
+                    self.openAssetDetail(asset, on: searchScreen)
                 }
             case .asset:
                 let algoIndex = 2
@@ -224,11 +227,11 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     return
                 }
 
+                /// Reduce management and algos cells from index
                 let assetIndex = indexPath.item - (algoIndex + 1)
                 
-                /// Reduce search and algos cells from index
                 if let assetDetail = accountHandle.value.standardAssets[safe: assetIndex] {
-                    self.openAssetDetail(assetDetail)
+                    self.openAssetDetail(assetDetail, on: self)
                 }
             default:
                 break
@@ -252,9 +255,10 @@ extension AccountAssetListViewController {
     }
 
     private func openAssetDetail(
-        _ asset: StandardAsset
+        _ asset: StandardAsset,
+        on screen: UIViewController
     ) {
-        open(
+        screen.open(
             .assetDetail(
                 draft: AssetTransactionListing(
                     accountHandle: accountHandle,

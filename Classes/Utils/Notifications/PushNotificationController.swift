@@ -54,10 +54,6 @@ class PushNotificationController: NSObject {
 
 extension PushNotificationController {
     func requestAuthorization() {
-        if UIApplication.shared.isRegisteredForRemoteNotifications {
-            return
-        }
-        
         UNUserNotificationCenter.current().requestAuthorization(options: [.badge, .sound, .alert]) { isGranted, _ in
             if !isGranted {
                 return
