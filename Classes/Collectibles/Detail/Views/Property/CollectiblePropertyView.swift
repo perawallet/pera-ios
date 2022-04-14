@@ -59,6 +59,7 @@ extension CollectiblePropertyView {
         nameLabel.customizeAppearance(theme.name)
 
         contentView.addSubview(nameLabel)
+        nameLabel.fitToVerticalIntrinsicSize()
         nameLabel.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
