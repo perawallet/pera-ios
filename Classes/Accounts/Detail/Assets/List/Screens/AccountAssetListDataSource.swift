@@ -53,28 +53,6 @@ final class AccountAssetListDataSource: UICollectionViewDiffableDataSource<Accou
             }
         }
 
-        /*supplementaryViewProvider = { collectionView, kind, indexPath in
-            guard let section = AccountAssetsSection(rawValue: indexPath.section),
-                  section == .assets else {
-                return nil
-            }
-
-            if kind == UICollectionView.elementKindSectionHeader {
-                let view = collectionView.dequeueHeader(SingleLineTitleActionHeaderView.self, at: indexPath)
-                view.bindData(
-                    SingleLineTitleActionViewModel(
-                        item: SingleLineIconTitleItem(
-                            icon: nil,
-                            title: "accounts-title-assets".localized
-                        )
-                    )
-                )
-                return view
-            }
-
-            return nil
-        }*/
-
         [
             AccountPortfolioCell.self,
             AssetManagementItemCell.self,
