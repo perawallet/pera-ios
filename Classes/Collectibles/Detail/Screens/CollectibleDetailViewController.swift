@@ -52,7 +52,7 @@ final class CollectibleDetailViewController:
     lazy var eventHandlers = Event()
 
     private lazy var listView: UICollectionView = {
-        let collectionViewLayout = CollectibleListLayout.build()
+        let collectionViewLayout = CollectibleDetailLayout.build()
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: collectionViewLayout
