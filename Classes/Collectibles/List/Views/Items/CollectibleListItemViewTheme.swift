@@ -21,7 +21,7 @@ import UIKit
 struct CollectibleListItemViewTheme:
     LayoutSheet,
     StyleSheet {
-    let image: URLImageViewStyleSheet
+    let image: URLImageViewStyleLayoutSheet
 
     var overlay: ViewStyle
     var overlayAlpha: LayoutMetric
@@ -55,7 +55,7 @@ struct CollectibleListItemViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        image = CollectibleListItemImageViewTheme()
+        image = URLImageViewCollectibleListTheme()
 
         overlay = [
             .backgroundColor(UIColor.clear)
@@ -113,18 +113,28 @@ struct CollectibleListItemViewTheme:
     }
 }
 
-struct CollectibleListItemImageViewTheme: URLImageViewStyleSheet {
-    struct PlaceholderTheme: URLImagePlaceholderViewStyleSheet {
+struct URLImageViewCollectibleListTheme: URLImageViewStyleLayoutSheet {
+    struct PlaceholderLayoutSheet: URLImagePlaceholderViewLayoutSheet {
+        let textPaddings: LayoutPaddings
+
+        init(
+            _ family: LayoutFamily
+        ) {
+            textPaddings = (8, 8, 8, 8)
+        }
+    }
+
+    struct PlaceholderStyleSheet: URLImagePlaceholderViewStyleSheet {
         let background: ViewStyle
         let image: ImageStyle
         let text: TextStyle
 
         init() {
-            self.background = [
+            background = [
                 .backgroundColor(AppColors.Shared.Layer.grayLighter)
             ]
-            self.image = []
-            self.text = [
+            image = []
+            text = [
                 .textColor(AppColors.Components.Text.gray),
                 .textOverflow(FittingText())
             ]
@@ -134,11 +144,15 @@ struct CollectibleListItemImageViewTheme: URLImageViewStyleSheet {
     let background: ViewStyle
     let content: ImageStyle
     let placeholderStyleSheet: URLImagePlaceholderViewStyleSheet?
+    let placeholderLayoutSheet: URLImagePlaceholderViewLayoutSheet?
 
-    init() {
-        self.background = []
-        self.content = .aspectFill()
-        self.placeholderStyleSheet = PlaceholderTheme()
+    init(
+        _ family: LayoutFamily
+    ) {
+        background = []
+        content = .aspectFit()
+        placeholderStyleSheet = PlaceholderStyleSheet()
+        placeholderLayoutSheet = PlaceholderLayoutSheet()
     }
 }
 

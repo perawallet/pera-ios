@@ -12,25 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetImagePlaceholderViewTheme.swift
+//   URLImageViewNoStyleLayoutSheet.swift
 
+import Foundation
 import MacaroonUIKit
+import MacaroonURLImage
 
-struct AssetImagePlaceholderViewTheme:
-    LayoutSheet,
-    StyleSheet {
-    let borderImage: ImageStyle
-    let assetNameLabel: TextStyle
-    let assetNameLabelPaddings: LayoutPaddings
+typealias URLImageViewStyleLayoutSheet =  URLImageViewStyleSheet & URLImageViewLayoutSheet
 
-    init(_ family: LayoutFamily) {
-        borderImage = [ .image("asset-image-placeholder-border") ]
-        assetNameLabel = [
-            .textAlignment(.center),
-            .textOverflow(SingleLineFittingText()),
-            .textColor(AppColors.Components.Text.gray),
-            .font(Fonts.DMSans.regular.make(13))
-        ]
-        assetNameLabelPaddings = (2, 2, 2, 2)
+struct URLImageViewNoStyleLayoutSheet: URLImageViewStyleLayoutSheet {
+    let background: ViewStyle
+    let content: ImageStyle
+    let placeholderStyleSheet: URLImagePlaceholderViewStyleSheet?
+    let placeholderLayoutSheet: URLImagePlaceholderViewLayoutSheet?
+
+    init(
+        _ family: LayoutFamily
+    ) {
+        background = []
+        content = []
+        placeholderStyleSheet = nil
+        placeholderLayoutSheet = nil
     }
 }
