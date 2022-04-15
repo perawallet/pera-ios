@@ -118,12 +118,24 @@ final class CollectibleListViewController:
 
             switch event {
             case .didUpdate(let snapshot):
-                if let accountAddress = self.dataController.galleryAccount.singleAccount?.value.address,
-                    let accountHandle = self.sharedDataController.accountCollection[accountAddress] {
-                    self.eventHandler?(.didUpdate(accountHandle))
+                var accounts: [AccountHandle] = []
+
+                switch self.dataController.galleryAccount {
+                case .single(let account):
+                    guard let account = self.sharedDataController.accountCollection[account.value.address] else {
+                        return
+                    }
+
+                    accounts = [account]
+                case .all:
+                    accounts = self.sharedDataController.accountCollection.sorted()
                 }
 
+                self.eventHandler?(.didUpdate(accounts))
+
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            case .didFinishRunning(let hasError):
+                self.eventHandler?(.didFinishRunning(hasError: hasError))
             }
         }
 
@@ -392,7 +404,8 @@ extension CollectibleListViewController: SearchInputViewDelegate {
 
 extension CollectibleListViewController {
     enum Event {
-        case didUpdate(AccountHandle)
+        case didUpdate([AccountHandle])
         case didTapReceive
+        case didFinishRunning(hasError: Bool)
     }
 }

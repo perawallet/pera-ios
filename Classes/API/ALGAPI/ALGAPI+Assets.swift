@@ -56,12 +56,14 @@ extension ALGAPI {
     @discardableResult
     func fetchAssetDetail(
         _ draft: AssetDetailFetchDraft,
+        ignoreResponseOnCancelled: Bool = true,
         onCompleted handler: @escaping (Response.ModelResult<AssetDecoration>) -> Void
     ) -> EndpointOperatable {
         return EndpointBuilder(api: self)
             .base(.mobile)
             .path(.assetDetail, args: "\(draft.id)")
             .method(.get)
+            .ignoreResponseWhenEndpointCancelled(ignoreResponseOnCancelled)
             .completionHandler(handler)
             .execute()
     }

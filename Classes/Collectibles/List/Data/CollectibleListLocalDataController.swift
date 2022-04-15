@@ -135,17 +135,45 @@ extension CollectibleListLocalDataController {
         case .didFinishRunning:
             switch galleryAccount {
             case .single(let account):
-                if let updatedAccount = sharedDataController.accountCollection[account.value.address] {
-                    accounts = [updatedAccount.value]
+                guard let updatedAccount = sharedDataController.accountCollection[account.value.address] else {
+                    return
+                }
 
-                    if let lastQuery = lastQuery {
-                        search(for: lastQuery)
-                    } else {
-                        deliverContentSnapshot()
+                if case .failed = updatedAccount.status {
+                    if lastSnapshot == nil {
+                        deliverInitialSnapshot()
                     }
+
+                    eventHandler?(.didFinishRunning(hasError: true))
+                    return
+                }
+
+                eventHandler?(.didFinishRunning(hasError: false))
+
+                accounts = [updatedAccount.value]
+
+                if let lastQuery = lastQuery {
+                    search(for: lastQuery)
+                } else {
+                    deliverContentSnapshot()
                 }
             case .all:
-                accounts = sharedDataController.accountCollection.sorted().map(\.value)
+                let accounts = sharedDataController.accountCollection.sorted()
+
+                for account in accounts {
+                    if case .failed = account.status {
+                        if lastSnapshot == nil {
+                            deliverInitialSnapshot()
+                        }
+
+                        eventHandler?(.didFinishRunning(hasError: true))
+                        return
+                    }
+                }
+
+                eventHandler?(.didFinishRunning(hasError: false))
+
+                self.accounts = accounts.map(\.value)
 
                 if let lastQuery = lastQuery {
                     search(for: lastQuery)

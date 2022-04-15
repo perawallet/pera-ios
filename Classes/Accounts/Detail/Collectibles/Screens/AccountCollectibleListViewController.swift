@@ -22,6 +22,14 @@ import MacaroonUIKit
 final class AccountCollectibleListViewController: BaseViewController {
     private lazy var theme = Theme()
 
+    private lazy var bottomBannerController = BottomActionableBannerController(
+        presentingView: view,
+        configuration: BottomActionableBannerControllerConfiguration(
+            bottomMargin: 0,
+            contentBottomPadding: view.safeAreaBottom + 20
+        )
+    )
+
     private lazy var collectibleListScreen = CollectibleListViewController(
         dataController: CollectibleListLocalDataController(
             galleryAccount: .single(account),
@@ -84,7 +92,22 @@ extension AccountCollectibleListViewController {
 
                 self.openReceiveCollectible()
             case .didUpdate(let account):
-                self.account = account
+                self.account = account.first!
+            case .didFinishRunning(let hasError):
+                if hasError {
+                    self.bottomBannerController.presentFetchError(
+                        title: "title-generic-error".localized,
+                        message: "title-generic-response-description".localized,
+                        actionTitle: "title-retry".localized,
+                        actionHandler: {
+                            [unowned self] in
+                            self.bottomBannerController.dismissError()
+                        }
+                    )
+                    return
+                }
+
+                self.bottomBannerController.dismissError()
             }
         }
     }
