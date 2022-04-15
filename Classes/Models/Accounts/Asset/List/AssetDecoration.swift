@@ -51,6 +51,19 @@ final class AssetDecoration: ALGEntityModel {
         self.collectible = apiModel.collectible.unwrap(Collectible.init)
         self.url = apiModel.url
     }
+    
+    init(assetDetail: AssetDetail) {
+        self.id = assetDetail.id
+        self.name = assetDetail.assetName
+        self.unitName = assetDetail.unitName
+        self.decimals = assetDetail.fractionDecimals
+        self.usdValue = nil
+        self.total = nil
+        self.isVerified = assetDetail.isVerified
+        self.creator = AssetCreator(address: assetDetail.creator)
+        self.collectible = nil
+        self.url = assetDetail.url
+    }
 
     func encode() -> APIModel {
         var apiModel = APIModel()

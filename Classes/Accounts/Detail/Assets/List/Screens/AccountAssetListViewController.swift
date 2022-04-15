@@ -166,6 +166,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             case .search:
                 let searchScreen = open(
                     .assetSearch(
+                        accountHandle: accountHandle,
                         dataController: AssetSearchLocalDataController(
                             accountHandle: accountHandle,
                             sharedDataController: sharedDataController
@@ -174,12 +175,14 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     by: .present
                 ) as? AssetSearchViewController
 
-                searchScreen?.handlers.didSelectAsset = { [weak self] asset in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.openAssetDetail(asset)
+                searchScreen?.handlers.didSelectAsset = {
+                    [weak self] asset in
+                    guard let self = self,
+                          let searchScreen = searchScreen else {
+                              return
+                          }
+                    
+                    self.openAssetDetail(asset, on: searchScreen)
                 }
             case .asset:
                 var algoIndex = 2
@@ -195,7 +198,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
 
                 /// Reduce search and algos cells from index
                 if let assetDetail = accountHandle.value.standardAssets[safe: indexPath.item - algoIndex.advanced(by: 1)] {
-                    self.openAssetDetail(assetDetail)
+                    self.openAssetDetail(assetDetail, on: self)
                 }
 
             case .addAsset:
@@ -223,9 +226,10 @@ extension AccountAssetListViewController {
     }
 
     private func openAssetDetail(
-        _ asset: StandardAsset
+        _ asset: StandardAsset,
+        on screen: UIViewController
     ) {
-        open(
+        screen.open(
             .assetDetail(
                 draft: AssetTransactionListing(
                     accountHandle: accountHandle,

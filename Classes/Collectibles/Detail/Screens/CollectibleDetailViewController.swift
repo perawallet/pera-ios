@@ -52,7 +52,7 @@ final class CollectibleDetailViewController:
     lazy var eventHandlers = Event()
 
     private lazy var listView: UICollectionView = {
-        let collectionViewLayout = CollectibleListLayout.build()
+        let collectionViewLayout = CollectibleDetailLayout.build()
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: collectionViewLayout
@@ -324,6 +324,16 @@ extension CollectibleDetailViewController {
                 return
             }
 
+            if !asset.isPure {
+                let draft = SendTransactionDraft(
+                    from: self.account,
+                    transactionMode: .asset(asset)
+                )
+
+                self.open(.sendTransaction(draft: draft), by: .push)
+                return
+            }
+
             let draft = SendCollectibleDraft(
                 fromAccount: self.account,
                 collectibleAsset: asset,
@@ -333,10 +343,6 @@ extension CollectibleDetailViewController {
             self.open(
                 .sendCollectible(
                     draft: draft,
-                    transactionController: TransactionController(
-                        api: self.api!,
-                        bannerController: self.bannerController
-                    ),
                     uiInteractionsHandler: self.linkSendCollectibleUIInteractions()
                 ),
                 by: .customPresent(

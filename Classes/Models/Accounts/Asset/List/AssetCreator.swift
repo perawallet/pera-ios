@@ -30,6 +30,12 @@ final class AssetCreator: ALGEntityModel {
         self.address = apiModel.address
         self.isVerifiedAssetCreator = apiModel.isVerifiedAssetCreator
     }
+    
+    init(address: String) {
+        self.id = 0
+        self.address = address
+        self.isVerifiedAssetCreator = false
+    }
 
     func encode() -> APIModel {
         var apiModel = APIModel()

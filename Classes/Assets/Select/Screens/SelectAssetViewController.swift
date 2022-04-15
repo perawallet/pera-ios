@@ -162,10 +162,6 @@ extension SelectAssetViewController {
         open(
             .sendCollectible(
                 draft: sendCollectibleDraft,
-                transactionController: TransactionController(
-                    api: api!,
-                    bannerController: bannerController
-                ),
                 uiInteractionsHandler: linkSendCollectibleUIInteractions()
             ),
             by: .customPresent(
