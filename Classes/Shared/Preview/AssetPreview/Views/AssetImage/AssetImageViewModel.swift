@@ -104,12 +104,10 @@ struct AssetImageLargeViewModel:
         switch image {
         case .url(let url, let title):
             let imageSize = CGSize(width: 40, height: 40)
-
             let prismURL =
             PrismURL(baseURL: url)?
                 .setExpectedImageSize(imageSize)
                 .setImageQuality(.normal)
-                .setResizeMode(.fit)
                 .build()
 
             let placeholder = TextFormatter.assetShortName.format(
@@ -118,7 +116,6 @@ struct AssetImageLargeViewModel:
 
             self.imageSource = PNGImageSource(
                 url: prismURL,
-                size: .resize(imageSize, .aspectFit),
                 shape: .rounded(4),
                 placeholder: getPlaceholder(
                     placeholder,
@@ -161,7 +158,6 @@ struct AssetImageSmallViewModel:
             PrismURL(baseURL: url)?
                 .setExpectedImageSize(imageSize)
                 .setImageQuality(.normal)
-                .setResizeMode(.fit)
                 .build()
 
             let placeholder = TextFormatter.assetShortName.format(
@@ -170,7 +166,6 @@ struct AssetImageSmallViewModel:
 
             self.imageSource = PNGImageSource(
                 url: prismURL,
-                size: .resize(imageSize, .aspectFit),
                 shape: .rounded(4),
                 placeholder: getPlaceholder(
                     placeholder,

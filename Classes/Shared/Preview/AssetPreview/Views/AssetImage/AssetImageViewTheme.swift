@@ -65,7 +65,7 @@ struct URLImageViewAssetTheme: URLImageViewStyleLayoutSheet {
 
     init(_ family: LayoutFamily) {
         background = []
-        content = .aspectFill()
+        content = .aspectFit()
         placeholderStyleSheet = PlaceholderStyleSheet()
         placeholderLayoutSheet = PlaceholderLayoutSheet()
     }
