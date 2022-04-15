@@ -122,6 +122,20 @@ final class CollectibleMediaPreviewViewController:
             isPageControlSizeUpdated = true
         }
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        let visibleCells = listView.visibleCells
+
+        for visibleCell in visibleCells {
+            guard let videoCell = visibleCell as? CollectibleMediaVideoPreviewCell else {
+                continue
+            }
+
+            videoCell.stopVideo()
+        }
+    }
 }
 
 extension CollectibleMediaPreviewViewController {

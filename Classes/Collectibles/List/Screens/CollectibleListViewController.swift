@@ -361,7 +361,7 @@ extension CollectibleListViewController {
             ),
             by: .push
         ) as? CollectibleDetailViewController
-        controller?.eventHandlers.didOptOutAssetFromAccount = {
+        controller?.eventHandlers.didOptOutAssetFromAccount = { [weak controller] in
             controller?.popScreen()
         }
     }
