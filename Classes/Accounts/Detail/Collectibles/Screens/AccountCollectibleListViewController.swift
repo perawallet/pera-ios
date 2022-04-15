@@ -91,8 +91,8 @@ extension AccountCollectibleListViewController {
                 }
 
                 self.openReceiveCollectible()
-            case .didUpdate(let account):
-                self.account = account.first!
+            case .didUpdate(let accounts):
+                self.account = accounts.first!
             case .didFinishRunning(let hasError):
                 if hasError {
                     self.bottomBannerController.presentFetchError(
