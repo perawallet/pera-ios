@@ -661,12 +661,11 @@ class Router:
                 thumbnailImage: thumbnailImage,
                 configuration: configuration
             )
-        case let .sendCollectible(draft, uiInteractions):
+        case let .sendCollectible(draft):
             let aViewController = SendCollectibleViewController(
                 draft: draft,
                 configuration: configuration
             )
-            aViewController.uiInteractions = uiInteractions
             viewController = aViewController
         case let .sendCollectibleAccountList(dataController):
             viewController = SendCollectibleAccountListViewController(
@@ -936,7 +935,7 @@ extension Router: SelectAccountViewControllerDelegate {
             toAccount: Account(address: qrDraft.toAccount, type: .standard),
             amount: qrDraft.amount,
             transactionMode: qrDraft.transactionMode,
-            note: qrDraft.lockedNote,
+            note: qrDraft.note,
             lockedNote: qrDraft.lockedNote
         )
 

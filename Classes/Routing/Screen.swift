@@ -125,10 +125,7 @@ indirect enum Screen {
         account: Account,
         thumbnailImage: UIImage?
     )
-    case sendCollectible(
-        draft: SendCollectibleDraft,
-        uiInteractionsHandler: SendCollectibleViewController.SendCollectibleUIInteractions
-    )
+    case sendCollectible(draft: SendCollectibleDraft)
     case sendCollectibleAccountList(
         dataController: SendCollectibleAccountListDataController
     )

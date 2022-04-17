@@ -159,10 +159,9 @@ extension SelectAssetViewController {
             image: nil
         )
 
-        open(
+        let controller = open(
             .sendCollectible(
-                draft: sendCollectibleDraft,
-                uiInteractionsHandler: linkSendCollectibleUIInteractions()
+                draft: sendCollectibleDraft
             ),
             by: .customPresent(
                 presentationStyle: .overCurrentContext,
@@ -170,24 +169,15 @@ extension SelectAssetViewController {
                 transitioningDelegate: nil
             ),
             animated: false
-        )
-    }
-}
+        ) as? SendCollectibleViewController
 
-extension SelectAssetViewController {
-    private func linkSendCollectibleUIInteractions()
-    -> SendCollectibleViewController.SendCollectibleUIInteractions {
-        var uiInteractions = SendCollectibleViewController.SendCollectibleUIInteractions()
-
-        uiInteractions.didCompleteTransaction = {
-            [weak self] controller in
-            guard let self = self else {
-                return
+        controller?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCompleteTransaction:
+                self.popScreen(animated: false)
             }
-
-            /// <todo>: Dismiss the screen properly
         }
-
-        return uiInteractions
     }
 }
