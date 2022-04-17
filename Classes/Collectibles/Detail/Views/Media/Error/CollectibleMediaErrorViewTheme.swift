@@ -39,7 +39,7 @@ struct CollectibleMediaErrorViewTheme:
         ]
 
         self.iconSize = (24, 24)
-        self.messageVerticalInset = 32
+        self.messageVerticalInset = 24
         self.horizontalInset = 8
     }
 }

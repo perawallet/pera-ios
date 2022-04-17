@@ -61,11 +61,17 @@ final class CollectibleMediaPreviewViewController:
         return pageControl
     }()
 
+    private lazy var tap3DView = CollectibleMediaTapInfoView()
+
     private var selectedIndex = 0 {
         didSet {
             pageControl.currentPage = selectedIndex
             selectedMedia = asset.media[safe: selectedIndex]
             eventHandler?(.didScrollToMedia(selectedMedia))
+
+            if let selectedMedia = selectedMedia {
+                tap3DView.isHidden = !selectedMedia.type.isSupported
+            }
         }
     }
 
@@ -95,6 +101,7 @@ final class CollectibleMediaPreviewViewController:
         super.prepareLayout()
         addListView()
         addPageControl()
+        addTap3DView()
     }
 
     override func linkInteractors() {
@@ -140,11 +147,21 @@ extension CollectibleMediaPreviewViewController {
         pageControl.snp.makeConstraints {
             $0.centerX.equalToSuperview()
             $0.top == listView.snp.bottom
-            $0.bottom == 0
             $0.leading.trailing.lessThanOrEqualToSuperview().inset(theme.horizontalInset)
         }
 
         configurePageControl()
+    }
+
+    private func addTap3DView() {
+        view.addSubview(tap3DView)
+
+        tap3DView.snp.makeConstraints {
+            $0.leading == theme.tapInfoViewHorizontalPadding
+            $0.trailing == theme.tapInfoViewHorizontalPadding
+            $0.top == pageControl.snp.bottom + theme.tapInfoViewTopPadding
+            $0.bottom == 0
+        }
     }
 }
 
