@@ -11477,8 +11477,8 @@
 		2BF34CBD223A8E5F0052CAD3 /* Container */ = {
 			isa = PBXGroup;
 			children = (
+				F07A4397280CE1BF0080D8C8 /* Navigation */,
 				2B3E3A13247C2D0300E8AEB7 /* TabBar */,
-				2BF34CBE223A8E740052CAD3 /* NavigationController.swift */,
 			);
 			path = Container;
 			sourceTree = "<group>";
@@ -14136,6 +14136,14 @@
 				2B6B424427BECE380036BF9E /* RemoveAccountListActionViewModel.swift */,
 			);
 			path = Demo;
+			sourceTree = "<group>";
+		};
+		F07A4397280CE1BF0080D8C8 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				2BF34CBE223A8E740052CAD3 /* NavigationController.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 		F08708E8278E0F7500BEE5C2 /* Magpie */ = {

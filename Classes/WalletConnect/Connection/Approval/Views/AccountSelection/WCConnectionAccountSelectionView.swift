@@ -37,7 +37,10 @@ final class WCConnectionAccountSelectionView: Control {
         var configuration = Configuration()
         configurationHandler(&configuration)
         self.configuration = configuration
+
         super.init(frame: .zero)
+        
+        customize(theme)
     }
 
     func customize(_ theme: WCConnectionAccountSelectionViewTheme) {

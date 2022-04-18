@@ -97,7 +97,7 @@ extension RootViewController {
             dataController: HomeAPIDataController(appConfiguration.sharedDataController, announcementDataController: announcementAPIDataController),
             configuration: configuration
         )
-        let homeTab = HomeTabBarItem(NavigationController(rootViewController: homeViewController))
+        let homeTab = HomeTabBarItem(NavigationContainer(rootViewController: homeViewController))
         
         let algoStatisticsViewController =
             AlgoStatisticsViewController(
@@ -108,18 +108,18 @@ extension RootViewController {
                 configuration: configuration
             )
         let algoStatisticsTab = AlgoStatisticsTabBarItem(
-            NavigationController(rootViewController: algoStatisticsViewController)
+            NavigationContainer(rootViewController: algoStatisticsViewController)
         )
         
         let collectibleListViewController = CollectiblesViewController(
             configuration: configuration
         )
         let collectiblesTab =
-            CollectiblesTabBarItem(NavigationController(rootViewController: collectibleListViewController))
+            CollectiblesTabBarItem(NavigationContainer(rootViewController: collectibleListViewController))
         
         let settingsViewController = SettingsViewController(configuration: configuration)
         let settingsTab =
-            SettingsTabBarItem(NavigationController(rootViewController: settingsViewController))
+            SettingsTabBarItem(NavigationContainer(rootViewController: settingsViewController))
         
         mainContainer.items = [
             homeTab,
