@@ -140,7 +140,7 @@ extension AccountCollectibleListViewController: TransactionFloatingActionButtonV
             by: .present
         ) as? SelectAssetViewController
 
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
             controller?.closeScreen(
                 by: .dismiss,
                 animated: true
@@ -199,7 +199,7 @@ extension AccountCollectibleListViewController {
 
         controller?.delegate = self
 
-        let close = ALGBarButtonItem(kind: .close) {
+        let close = ALGBarButtonItem(kind: .close) { [weak controller] in
             controller?.dismissScreen()
         }
 
