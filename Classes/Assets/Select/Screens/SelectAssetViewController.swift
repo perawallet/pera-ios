@@ -180,11 +180,7 @@ extension SelectAssetViewController {
         var uiInteractions = SendCollectibleViewController.SendCollectibleUIInteractions()
 
         uiInteractions.didCompleteTransaction = {
-            [weak self] controller in
-            guard let self = self else {
-                return
-            }
-
+            controller in
             /// <todo>: Dismiss the screen properly
         }
 

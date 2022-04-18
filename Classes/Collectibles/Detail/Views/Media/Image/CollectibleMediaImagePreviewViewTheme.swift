@@ -20,14 +20,14 @@ import MacaroonURLImage
 struct CollectibleMediaImagePreviewViewTheme:
     StyleSheet,
     LayoutSheet {
-    let image: URLImageViewStyleSheet
+    let image: URLImageViewStyleLayoutSheet
     let overlay: ViewStyle
     let corner: Corner
 
     init(
         _ family: LayoutFamily
     ) {
-        self.image = CollectibleDetailImageTheme()
+        self.image = URLImageViewCollectibleMediaTheme()
         self.overlay = [
             .backgroundColor(AppColors.Shared.System.background)
         ]
@@ -36,18 +36,30 @@ struct CollectibleMediaImagePreviewViewTheme:
     }
 }
 
-struct CollectibleDetailImageTheme: URLImageViewStyleSheet {
-    struct PlaceholderTheme: URLImagePlaceholderViewStyleSheet {
+struct URLImageViewCollectibleMediaTheme:
+    URLImageViewStyleSheet,
+    URLImageViewLayoutSheet {
+    struct PlaceholderLayoutSheet: URLImagePlaceholderViewLayoutSheet {
+        let textPaddings: LayoutPaddings
+
+        init(
+            _ family: LayoutFamily
+        ) {
+            textPaddings = (8, 8, 8, 8)
+        }
+    }
+
+    struct PlaceholderStyleSheet: URLImagePlaceholderViewStyleSheet {
         let background: ViewStyle
         let image: ImageStyle
         let text: TextStyle
 
         init() {
-            self.background = [
+            background = [
                 .backgroundColor(AppColors.Shared.Layer.grayLighter)
             ]
-            self.image = []
-            self.text = [
+            image = []
+            text = [
                 .textColor(AppColors.Components.Text.gray),
                 .textOverflow(FittingText())
             ]
@@ -57,10 +69,14 @@ struct CollectibleDetailImageTheme: URLImageViewStyleSheet {
     let background: ViewStyle
     let content: ImageStyle
     let placeholderStyleSheet: URLImagePlaceholderViewStyleSheet?
+    let placeholderLayoutSheet: URLImagePlaceholderViewLayoutSheet?
 
-    init() {
-        self.background = []
-        self.content = .aspectFit()
-        self.placeholderStyleSheet = PlaceholderTheme()
+    init(
+        _ family: LayoutFamily
+    ) {
+        background = []
+        content = .aspectFit()
+        placeholderStyleSheet = PlaceholderStyleSheet()
+        placeholderLayoutSheet = PlaceholderLayoutSheet()
     }
 }

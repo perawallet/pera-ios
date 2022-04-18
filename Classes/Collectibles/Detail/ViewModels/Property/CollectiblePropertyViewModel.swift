@@ -47,7 +47,7 @@ extension CollectiblePropertyViewModel {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
-                    .lineBreakMode(.byWordWrapping),
+                    .lineBreakMode(.byTruncatingTail),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])
@@ -69,7 +69,7 @@ extension CollectiblePropertyViewModel {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
-                    .lineBreakMode(.byWordWrapping),
+                    .lineBreakMode(.byTruncatingTail),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])

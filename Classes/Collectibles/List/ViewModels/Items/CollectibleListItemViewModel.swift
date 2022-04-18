@@ -162,24 +162,13 @@ extension CollectibleListItemViewModel {
     ) -> ImageSource? {
         let placeholder = asset.title.fallback(asset.name.fallback(asset.id.stringWithHashtag))
 
-        let size: ImageSize
-
-        if imageSize.width <= 0 ||
-            imageSize.height <= 0 {
-            size = .original
-        } else {
-            size = .resize(imageSize, .aspectFit)
-        }
-
         if let thumbnailImage = asset.thumbnailImage {
             let prismURL = PrismURL(baseURL: thumbnailImage)
                 .setExpectedImageSize(imageSize)
-                .setResizeMode(.fit)
                 .build()
 
             return PNGImageSource(
                 url: prismURL,
-                size: size,
                 shape: .rounded(4),
                 placeholder: getPlaceholder(placeholder)
             )

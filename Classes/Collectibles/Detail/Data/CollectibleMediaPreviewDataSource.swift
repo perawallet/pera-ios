@@ -38,6 +38,10 @@ extension CollectibleMediaPreviewDataSource {
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
+        if asset.media.isEmpty {
+            return 1
+        }
+
         return asset.media.count
     }
 
@@ -45,11 +49,28 @@ extension CollectibleMediaPreviewDataSource {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
+        let width = collectionView.bounds.width - theme.horizontalInset * 2
+
+        if asset.media.isEmpty {
+            let cell = collectionView.dequeue(
+                CollectibleMediaImagePreviewCell.self,
+                at: indexPath
+            )
+
+            cell.bindData(
+                CollectibleMediaImagePreviewViewModel(
+                    imageSize: CGSize((width.float(), width.float())),
+                    asset: asset,
+                    media: nil
+                )
+            )
+
+            return cell
+        }
+
         guard let media = asset.media[safe: indexPath.item] else {
             fatalError("Could not find the related media.")
         }
-
-        let width = collectionView.bounds.width - theme.horizontalInset * 2
 
         switch media.type {
         case .image:
