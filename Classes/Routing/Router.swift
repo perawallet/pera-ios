@@ -205,9 +205,9 @@ class Router:
                 sourceViewController.closeScreen(by: .dismiss, animated: false)
             }
             
-            let navigationController: NavigationController
+            let navigationController: NavigationContainer
             
-            if let navController = viewController as? NavigationController {
+            if let navController = viewController as? NavigationContainer {
                 navigationController = navController
             } else {
                 if let presentingViewController = self as? StatusBarConfigurable,
@@ -218,7 +218,7 @@ class Router:
                     presentedViewController.isStatusBarHidden = true
                 }
                 
-                navigationController = NavigationController(rootViewController: viewController)
+                navigationController = NavigationContainer(rootViewController: viewController)
             }
             
             navigationController.modalPresentationStyle = .fullScreen
@@ -226,9 +226,9 @@ class Router:
             rootViewController.present(navigationController, animated: false, completion: completion)
         case .present,
                 .customPresent:
-            let navigationController: NavigationController
+            let navigationController: NavigationContainer
             
-            if let navController = viewController as? NavigationController {
+            if let navController = viewController as? NavigationContainer {
                 navigationController = navController
             } else {
                 if let presentingViewController = self as? StatusBarConfigurable,
@@ -239,7 +239,7 @@ class Router:
                     presentedViewController.isStatusBarHidden = true
                 }
                 
-                navigationController = NavigationController(rootViewController: viewController)
+                navigationController = NavigationContainer(rootViewController: viewController)
             }
             
             if case .customPresent(
