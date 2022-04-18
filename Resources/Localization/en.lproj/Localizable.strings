@@ -976,6 +976,7 @@
 "collectible-detail-opt-out-alert-message" = "You are about to opt out from this NFT with %@. You will not be able to transact with this asset until you opt in again.";
 "collectible-detail-show-on" = "Show on";
 "collectible-detail-pera-explorer" = "Pera Explorer";
+"collectible-detail-tap-3D" = "Tap media to view in 3D mode";
 
 // MARK: Collectible Transfer
 "collectible-transfer-confirmed-title" = "Your NFT transfer is confirmed!";

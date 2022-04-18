@@ -28,6 +28,8 @@ final class SendCollectibleViewController:
     KeyboardControllerDataSource {
     lazy var uiInteractions = SendCollectibleUIInteractions()
 
+    var eventHandler: ((SendCollectibleViewControllerEvent) -> Void)?
+
     private lazy var bottomTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var approveModalTransition = BottomSheetTransition(
         presentingViewController: approveCollectibleTransactionViewController!
@@ -446,8 +448,10 @@ extension SendCollectibleViewController {
         ) as? TutorialViewController
 
         controller?.uiHandlers.didTapButtonPrimaryActionButton = {
-            controller in
-            controller.dismissScreen()
+            [weak self, controller] _ in
+            guard let self = self else { return }
+            self.eventHandler?(.didCompleteTransaction)
+            controller?.dismissScreen()
         }
     }
 }
@@ -870,4 +874,8 @@ extension SendCollectibleViewController {
     struct SendCollectibleUIInteractions {
         var didCompleteTransaction: ((SendCollectibleViewController) -> Void)?
     }
+}
+
+enum SendCollectibleViewControllerEvent {
+    case didCompleteTransaction
 }

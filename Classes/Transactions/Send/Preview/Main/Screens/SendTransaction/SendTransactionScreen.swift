@@ -146,7 +146,7 @@ final class SendTransactionScreen: BaseViewController {
         bindAssetPreview()
         bindAmount()
 
-        self.note = draft.lockedNote
+        self.note = draft.lockedNote ?? draft.note
     }
 
     override func linkInteractors() {

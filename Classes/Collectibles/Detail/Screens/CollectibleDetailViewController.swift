@@ -340,10 +340,9 @@ extension CollectibleDetailViewController {
                 image: self.mediaPreviewController.getExistingImage()
             )
 
-            self.open(
+            let controller = self.open(
                 .sendCollectible(
-                    draft: draft,
-                    uiInteractionsHandler: self.linkSendCollectibleUIInteractions()
+                    draft: draft
                 ),
                 by: .customPresent(
                     presentationStyle: .overCurrentContext,
@@ -351,7 +350,16 @@ extension CollectibleDetailViewController {
                     transitioningDelegate: nil
                 ),
                 animated: false
-            )
+            ) as? SendCollectibleViewController
+
+            controller?.eventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+                switch event {
+                case .didCompleteTransaction:
+                    self.popScreen(animated: false)
+                }
+            }
         }
 
         cell.observe(event: .performShare) {
@@ -474,24 +482,6 @@ extension CollectibleDetailViewController {
 
             self.open(actionURL)
         }
-    }
-
-    private func linkSendCollectibleUIInteractions()
-    -> SendCollectibleViewController.SendCollectibleUIInteractions {
-        var uiInteractions = SendCollectibleViewController.SendCollectibleUIInteractions()
-
-        uiInteractions.didCompleteTransaction = {
-            [weak self] controller in
-            guard let self = self else {
-                return
-            }
-
-            controller.dismissScreen(animated: false) {
-                self.popScreen(animated: false)
-            }
-        }
-
-        return uiInteractions
     }
 
     private func linkInteractors(
