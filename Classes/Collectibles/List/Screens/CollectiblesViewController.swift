@@ -25,6 +25,14 @@ final class CollectiblesViewController: BaseViewController {
         return .collectibles
     }
 
+    private lazy var bottomBannerController = BottomActionableBannerController(
+        presentingView: view,
+        configuration: BottomActionableBannerControllerConfiguration(
+            bottomMargin: view.safeAreaBottom + 48,
+            contentBottomPadding: 20
+        )
+    )
+
     private lazy var collectibleListScreen = CollectibleListViewController(
         dataController: CollectibleListLocalDataController(
             galleryAccount: .all,
@@ -86,7 +94,23 @@ extension CollectiblesViewController {
             switch event {
             case .didTapReceive:
                 self.openReceiveCollectible()
-            default: break
+            case .didFinishRunning(let hasError):
+                if hasError {
+                    self.bottomBannerController.presentFetchError(
+                        title: "title-generic-error".localized,
+                        message: "title-generic-response-description".localized,
+                        actionTitle: "title-retry".localized,
+                        actionHandler: {
+                            [unowned self] in
+                            self.bottomBannerController.dismissError()
+                        }
+                    )
+                    return
+                }
+
+                self.bottomBannerController.dismissError()
+            default:
+                break
             }
         }
     }

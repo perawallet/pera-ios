@@ -88,10 +88,13 @@ struct CollectibleCellItemContainer<T: ViewModel & Hashable>: Hashable {
 
 enum CollectibleDataControllerEvent {
     case didUpdate(CollectibleListDataController.Snapshot)
+    case didFinishRunning(hasError: Bool)
 
-    var snapshot: CollectibleListDataController.Snapshot {
+    var snapshot: CollectibleListDataController.Snapshot? {
         switch self {
         case .didUpdate(let snapshot): return snapshot
+        default:
+            return nil
         }
     }
 }
