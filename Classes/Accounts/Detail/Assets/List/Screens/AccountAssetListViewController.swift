@@ -305,7 +305,7 @@ extension AccountAssetListViewController: TransactionFloatingActionButtonViewCon
             ),
             by: .present
         ) as? SelectAssetViewController
-        let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+        let closeBarButtonItem = ALGBarButtonItem(kind: .close) { [weak controller] in
             controller?.closeScreen(by: .dismiss, animated: true)
         }
         controller?.leftBarButtonItems = [closeBarButtonItem]
