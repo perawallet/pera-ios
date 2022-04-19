@@ -58,7 +58,7 @@ extension CollectibleMediaPreviewDataSource {
             )
 
             cell.bindData(
-                CollectibleMediaImagePreviewViewModel(
+                CollectibleMediaStandardImagePreviewViewModel(
                     imageSize: CGSize((width.float(), width.float())),
                     asset: asset,
                     media: nil
@@ -79,13 +79,24 @@ extension CollectibleMediaPreviewDataSource {
                 at: indexPath
             )
 
-            cell.bindData(
-                CollectibleMediaImagePreviewViewModel(
-                    imageSize: CGSize((width.float(), width.float())),
-                    asset: asset,
-                    media: media
+            switch media.mediaExtension {
+            case .webp:
+                cell.bindData(
+                    CollectibleMediaWebPImagePreviewViewModel(
+                        imageSize: CGSize((width.float(), width.float())),
+                        asset: asset,
+                        media: media
+                    )
                 )
-            )
+            default:
+                cell.bindData(
+                    CollectibleMediaStandardImagePreviewViewModel(
+                        imageSize: CGSize((width.float(), width.float())),
+                        asset: asset,
+                        media: media
+                    )
+                )
+            }
 
             return cell
         case .video:
@@ -109,7 +120,7 @@ extension CollectibleMediaPreviewDataSource {
             )
 
             cell.bindData(
-                CollectibleMediaImagePreviewViewModel(
+                CollectibleMediaStandardImagePreviewViewModel(
                     imageSize: CGSize((width.float(), width.float())),
                     asset: asset,
                     media: nil

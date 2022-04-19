@@ -1325,6 +1325,18 @@
 		2B77FA70280797AB0020376D /* CollectibleMediaTapInfoViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FA6F280797AB0020376D /* CollectibleMediaTapInfoViewTheme.swift */; };
 		2B77FA71280797AB0020376D /* CollectibleMediaTapInfoViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FA6F280797AB0020376D /* CollectibleMediaTapInfoViewTheme.swift */; };
 		2B77FA72280797AB0020376D /* CollectibleMediaTapInfoViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FA6F280797AB0020376D /* CollectibleMediaTapInfoViewTheme.swift */; };
+		2B77FAA1280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA0280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift */; };
+		2B77FAA2280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA0280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift */; };
+		2B77FAA3280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA0280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift */; };
+		2B77FAA5280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA4280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift */; };
+		2B77FAA6280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA4280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift */; };
+		2B77FAA7280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA4280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift */; };
+		2B77FAA9280D73E70020376D /* WebPImageSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA8280D73E70020376D /* WebPImageSource.swift */; };
+		2B77FAAA280D73E70020376D /* WebPImageSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA8280D73E70020376D /* WebPImageSource.swift */; };
+		2B77FAAB280D73E70020376D /* WebPImageSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B77FAA8280D73E70020376D /* WebPImageSource.swift */; };
+		2B77FAAE280D7F900020376D /* KingfisherWebP in Frameworks */ = {isa = PBXBuildFile; productRef = 2B77FAAD280D7F900020376D /* KingfisherWebP */; };
+		2B77FAB0280D7FC90020376D /* KingfisherWebP in Frameworks */ = {isa = PBXBuildFile; productRef = 2B77FAAF280D7FC90020376D /* KingfisherWebP */; };
+		2B77FAB2280D7FD30020376D /* KingfisherWebP in Frameworks */ = {isa = PBXBuildFile; productRef = 2B77FAB1280D7FD30020376D /* KingfisherWebP */; };
 		2B79A13D23147A4900766021 /* PassphraseBackUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13C23147A4900766021 /* PassphraseBackUpViewController.swift */; };
 		2B79A13E23147A4900766021 /* PassphraseBackUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13C23147A4900766021 /* PassphraseBackUpViewController.swift */; };
 		2B79A140231580AC00766021 /* TransactionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B79A13F231580AB00766021 /* TransactionController.swift */; };
@@ -1364,9 +1376,9 @@
 		2B7A1F5027DD26D40010F52E /* CollectibleMediaPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7A1F4F27DD26D40010F52E /* CollectibleMediaPreviewCell.swift */; };
 		2B7A1F5127DD26D40010F52E /* CollectibleMediaPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7A1F4F27DD26D40010F52E /* CollectibleMediaPreviewCell.swift */; };
 		2B7A1F5227DD26D40010F52E /* CollectibleMediaPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7A1F4F27DD26D40010F52E /* CollectibleMediaPreviewCell.swift */; };
-		2B7A1F5927DD41050010F52E /* CollectibleMediaImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7A1F5827DD41050010F52E /* CollectibleMediaImagePreviewViewModel.swift */; };
-		2B7A1F5A27DD41050010F52E /* CollectibleMediaImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7A1F5827DD41050010F52E /* CollectibleMediaImagePreviewViewModel.swift */; };
-		2B7A1F5B27DD41050010F52E /* CollectibleMediaImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7A1F5827DD41050010F52E /* CollectibleMediaImagePreviewViewModel.swift */; };
+		2B7A1F5927DD41050010F52E /* CollectibleMediaStandardImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7A1F5827DD41050010F52E /* CollectibleMediaStandardImagePreviewViewModel.swift */; };
+		2B7A1F5A27DD41050010F52E /* CollectibleMediaStandardImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7A1F5827DD41050010F52E /* CollectibleMediaStandardImagePreviewViewModel.swift */; };
+		2B7A1F5B27DD41050010F52E /* CollectibleMediaStandardImagePreviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7A1F5827DD41050010F52E /* CollectibleMediaStandardImagePreviewViewModel.swift */; };
 		2B7A1F6127DE5EBB0010F52E /* CollectiblePropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7A1F6027DE5EBB0010F52E /* CollectiblePropertyView.swift */; };
 		2B7A1F6227DE5EBB0010F52E /* CollectiblePropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7A1F6027DE5EBB0010F52E /* CollectiblePropertyView.swift */; };
 		2B7A1F6327DE5EBB0010F52E /* CollectiblePropertyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B7A1F6027DE5EBB0010F52E /* CollectiblePropertyView.swift */; };
@@ -4830,6 +4842,9 @@
 		2B7747A626026F9B0083EFFA /* InputSuggestionsDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputSuggestionsDataController.swift; sourceTree = "<group>"; };
 		2B77FA6B2807978E0020376D /* CollectibleMediaTapInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaTapInfoView.swift; sourceTree = "<group>"; };
 		2B77FA6F280797AB0020376D /* CollectibleMediaTapInfoViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaTapInfoViewTheme.swift; sourceTree = "<group>"; };
+		2B77FAA0280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaImagePreviewViewModel.swift; sourceTree = "<group>"; };
+		2B77FAA4280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaWebPImagePreviewViewModel.swift; sourceTree = "<group>"; };
+		2B77FAA8280D73E70020376D /* WebPImageSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebPImageSource.swift; sourceTree = "<group>"; };
 		2B79A13C23147A4900766021 /* PassphraseBackUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassphraseBackUpViewController.swift; sourceTree = "<group>"; };
 		2B79A13F231580AB00766021 /* TransactionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionController.swift; sourceTree = "<group>"; };
 		2B79A14623167BFC00766021 /* RewardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardDetailView.swift; sourceTree = "<group>"; };
@@ -4844,7 +4859,7 @@
 		2B7A1F3A27DD246F0010F52E /* CollectibleMediaPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaPreviewViewController.swift; sourceTree = "<group>"; };
 		2B7A1F4227DD24AD0010F52E /* CollectibleMediaPreviewDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaPreviewDataSource.swift; sourceTree = "<group>"; };
 		2B7A1F4F27DD26D40010F52E /* CollectibleMediaPreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaPreviewCell.swift; sourceTree = "<group>"; };
-		2B7A1F5827DD41050010F52E /* CollectibleMediaImagePreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaImagePreviewViewModel.swift; sourceTree = "<group>"; };
+		2B7A1F5827DD41050010F52E /* CollectibleMediaStandardImagePreviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleMediaStandardImagePreviewViewModel.swift; sourceTree = "<group>"; };
 		2B7A1F6027DE5EBB0010F52E /* CollectiblePropertyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblePropertyView.swift; sourceTree = "<group>"; };
 		2B7A1F6427DE5ECD0010F52E /* CollectiblePropertyViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblePropertyViewTheme.swift; sourceTree = "<group>"; };
 		2B7A1F6827DE5EDC0010F52E /* CollectiblePropertyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblePropertyCell.swift; sourceTree = "<group>"; };
@@ -5965,6 +5980,7 @@
 				CBAD472C2745434A00C91946 /* MagpieExceptions in Frameworks */,
 				CBAD47392745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
 				CBAD47302745434A00C91946 /* Lottie in Frameworks */,
+				2B77FAB2280D7FD30020376D /* KingfisherWebP in Frameworks */,
 				CBAD47382745434A00C91946 /* MacaroonBanner in Frameworks */,
 				CBAD47422745434A00C91946 /* MacaroonVendors in Frameworks */,
 				CB3AEBD52743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */,
@@ -5998,6 +6014,7 @@
 				CBAD47202745434A00C91946 /* MacaroonBottomOverlay in Frameworks */,
 				CBAD47172745434A00C91946 /* Lottie in Frameworks */,
 				CBAD471F2745434A00C91946 /* MacaroonBanner in Frameworks */,
+				2B77FAB0280D7FC90020376D /* KingfisherWebP in Frameworks */,
 				CBAD47292745434A00C91946 /* MacaroonVendors in Frameworks */,
 				CB3AEBD42743A6F500F85246 /* AlgoSDK.xcframework in Frameworks */,
 				CBAD471B2745434A00C91946 /* KeychainAccess in Frameworks */,
@@ -6031,6 +6048,7 @@
 				CBAD470E2745434A00C91946 /* MacaroonUIKit in Frameworks */,
 				CBAD46FB2745434A00C91946 /* MagpieHipo in Frameworks */,
 				CBAD470D2745434A00C91946 /* MacaroonTabBarController in Frameworks */,
+				2B77FAAE280D7F900020376D /* KingfisherWebP in Frameworks */,
 				CBAD47042745434A00C91946 /* KeychainAccess in Frameworks */,
 				CBAD46F92745434A00C91946 /* MagpieCore in Frameworks */,
 				CBAD47062745434A00C91946 /* MacaroonBanner in Frameworks */,
@@ -7718,6 +7736,14 @@
 				2B77FA6F280797AB0020376D /* CollectibleMediaTapInfoViewTheme.swift */,
 			);
 			path = Info;
+            sourceTree = "<group>";
+        };
+		2B77FA88280D58A30020376D /* WebP */ = {
+			isa = PBXGroup;
+			children = (
+				2B77FAA8280D73E70020376D /* WebPImageSource.swift */,
+			);
+			path = WebP;
 			sourceTree = "<group>";
 		};
 		2B7A1EF727DB7A230010F52E /* Screens */ = {
@@ -8034,8 +8060,10 @@
 			isa = PBXGroup;
 			children = (
 				2BB8484527E911F6004F2E39 /* CollectibleMediaErrorViewModel.swift */,
-				2B7A1F5827DD41050010F52E /* CollectibleMediaImagePreviewViewModel.swift */,
+				2B77FAA0280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift */,
+				2B7A1F5827DD41050010F52E /* CollectibleMediaStandardImagePreviewViewModel.swift */,
 				2B98E49327EB6AA8000FA690 /* CollectibleMediaVideoPreviewViewModel.swift */,
+				2B77FAA4280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -12255,35 +12283,36 @@
 		2BF7280227471E4700CCAC30 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				2B4DF408236C5F1900FF9551 /* Storable */,
-				2BF5314F224A45DC00A7455F /* Transition */,
-				2B5715B52634F1F0002C876D /* Chart */,
-				2B66870C2248DB6A009F21E7 /* NavigationBar */,
-				2B4DF406236C5E7F00FF9551 /* Reusable */,
-				2B4DF429236C76CD00FF9551 /* Session */,
-				2B4DF405236C5E7500FF9551 /* StatusBar */,
-				2B4DF428236C76A500FF9551 /* Storable */,
 				2BE4D0F82594D328005F5764 /* AppStoreReview */,
 				2B288ACD268F157500BC6FB6 /* Assets */,
 				2B0F5F3724E5684E00DA22A6 /* Banner */,
 				2B62B03B240813A5002DF2A0 /* BLE */,
-				2B9F064024B60EAA006880F0 /* CSVExport */,
+				2B5715B52634F1F0002C876D /* Chart */,
 				2BF34C9E2239ACC60052CAD3 /* Configuration */,
+				2B9F064024B60EAA006880F0 /* CSVExport */,
 				2B8BE4F62239370F005D8565 /* Extensions */,
 				D4DDF3B027395C9C00BC8F42 /* Formatter */,
 				2BC45DEC2252538D000CDCE2 /* ImagePicker */,
 				2BB37B142405D1B000F58662 /* Ledger */,
 				2B6687132248DF57009F21E7 /* LocalAuthentication */,
+				2B66870C2248DB6A009F21E7 /* NavigationBar */,
 				2B4DF407236C5EEB00FF9551 /* Notifications */,
 				2BF53172224A93E800A7455F /* Operations */,
+				2B4DF406236C5E7F00FF9551 /* Reusable */,
 				2B9EEADD264E7513007A112D /* Rewards */,
 				2BC1826523D8829D00888476 /* SDK */,
-				2B3A95E4238FF98800A3DF44 /* Transaction */,
+				2B4DF429236C76CD00FF9551 /* Session */,
+				2B4DF405236C5E7500FF9551 /* StatusBar */,
+				2B4DF408236C5F1900FF9551 /* Storable */,
+				2B4DF428236C76A500FF9551 /* Storable */,
 				2B3E39F2247837BF00E8AEB7 /* TestNet */,
 				2BA4998F24B5E43C00452650 /* Tracking */,
+				2B3A95E4238FF98800A3DF44 /* Transaction */,
+				2BF5314F224A45DC00A7455F /* Transition */,
 				1746715B225B6BE600B78641 /* TypeAliases */,
 				2BF34CA32239AD4A0052CAD3 /* UI */,
 				2B02A2EA266CE065002DD8AB /* WalletConnect */,
+				2B77FA88280D58A30020376D /* WebP */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -14281,6 +14310,7 @@
 				2B9A3E7426E607D800B050ED /* MacaroonVendors */,
 				D4A241DF27D2BF1C00641FF0 /* Prism */,
 				D4B33AB027F1E65900523CEA /* ActiveLabel */,
+				2B77FAB1280D7FD30020376D /* KingfisherWebP */,
 			);
 			productName = algorand;
 			productReference = 17BD4F252292F1260003E49A /* pera-staging.app */;
@@ -14326,6 +14356,7 @@
 				2B9A3E5C26E607BD00B050ED /* MacaroonVendors */,
 				D4A241DD27D2BF1300641FF0 /* Prism */,
 				D4B33AAE27F1E64600523CEA /* ActiveLabel */,
+				2B77FAAF280D7FC90020376D /* KingfisherWebP */,
 			);
 			productName = algorand;
 			productReference = 2B0F634E24EC129D00DA22A6 /* pera-beta.app */;
@@ -14371,6 +14402,7 @@
 				2B9A3E4426E6077000B050ED /* MacaroonVendors */,
 				D499D27D27C7D40B00641FF5 /* Prism */,
 				D4B33AAC27F1E63000523CEA /* ActiveLabel */,
+				2B77FAAD280D7F900020376D /* KingfisherWebP */,
 			);
 			productName = algorand;
 			productReference = 2B8BE4CE22391C38005D8565 /* pera.app */;
@@ -14455,6 +14487,7 @@
 				2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */,
 				D499D27C27C7D40B00641FF5 /* XCRemoteSwiftPackageReference "prism-ios" */,
 				D4B33AAB27F1E63000523CEA /* XCRemoteSwiftPackageReference "ActiveLabel.swift" */,
+				2B77FAAC280D7F900020376D /* XCRemoteSwiftPackageReference "KingfisherWebP" */,
 			);
 			productRefGroup = 2B8BE4CF22391C38005D8565 /* Products */;
 			projectDirPath = "";
@@ -14751,6 +14784,7 @@
 				D45DF91227F9A1F2008076E6 /* CollectibleListInfoWithFilterView.swift in Sources */,
 				17BD4DF82292F1260003E49A /* ContactsViewController.swift in Sources */,
 				D4AAB8BB27D23ACE0011B004 /* CollectibleListItemReceiveCell.swift in Sources */,
+				2B77FAA7280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift in Sources */,
 				2BD36E342686A49200C57728 /* WCGroupTransactionDataSource.swift in Sources */,
 				D46C647F26E6076300FBAC6D /* PasswordInputCircleViewTheme.swift in Sources */,
 				2B2AACDA250B6C6E00B8C5C5 /* SettingsDetailViewModel.swift in Sources */,
@@ -15686,7 +15720,7 @@
 				D47C4AB32791BEA90012D7A6 /* NoInternetConnectionViewModel.swift in Sources */,
 				95C0BD1927F2220A00FF010D /* Session+Announcement.swift in Sources */,
 				17BD4EBA2292F1260003E49A /* Screen.swift in Sources */,
-				2B7A1F5B27DD41050010F52E /* CollectibleMediaImagePreviewViewModel.swift in Sources */,
+				2B7A1F5B27DD41050010F52E /* CollectibleMediaStandardImagePreviewViewModel.swift in Sources */,
 				17BD4EBB2292F1260003E49A /* QRScannerViewController.swift in Sources */,
 				2B0E7CBF27E29F0200A3ECCB /* PassphraseVerifyCardViewModel.swift in Sources */,
 				2B9F063824B5E469006880F0 /* AnalyticsEvent.swift in Sources */,
@@ -15700,6 +15734,7 @@
 				D421178626D8ED6800C032B2 /* BlockingLoadingController.swift in Sources */,
 				D4AEDD2D271C6E0A00AD2725 /* AlgoStatisticsFooterView.swift in Sources */,
 				17BD4EBE2292F1260003E49A /* Notification.Name+Additions.swift in Sources */,
+				2B77FAA3280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift in Sources */,
 				95AF1C8D27B13F38001AB131 /* TransactionHistoryLoadingItemViewCommonTheme.swift in Sources */,
 				2BB8483427E8F766004F2E39 /* CollectibleDetailLayout+Theme.swift in Sources */,
 				D48FDFF127CF55D400C39FC7 /* ReceiveCollectibleAssetListDataController.swift in Sources */,
@@ -15804,6 +15839,7 @@
 				D4FC5F3527F4CAEF0017E81F /* CollectibleListSearchInputCell.swift in Sources */,
 				2B69826A278DF652008EC669 /* TransactionsListLayout+Theme.swift in Sources */,
 				2B98E49627EB6AA8000FA690 /* CollectibleMediaVideoPreviewViewModel.swift in Sources */,
+				2B77FAAB280D73E70020376D /* WebPImageSource.swift in Sources */,
 				2B7E306F267A5E8900E89EE3 /* WCTransactionDappMessageViewModel.swift in Sources */,
 				2B7A1FA727DE69590010F52E /* CollectibleDetailActionCell.swift in Sources */,
 				95FD4C0727941B5800BF29BE /* WCUnsignedRequestScreen.swift in Sources */,
@@ -16477,6 +16513,7 @@
 				D4A647A727847AE2009DE241 /* TransactionHistoryTitleContextViewTheme.swift in Sources */,
 				2B2359932794D1790006D259 /* TransactionsAPIDataController.swift in Sources */,
 				2B0F61CD24EC129D00DA22A6 /* VerifiedAssetInformationViewController.swift in Sources */,
+				2B77FAA6280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift in Sources */,
 				2B0F61CE24EC129D00DA22A6 /* VerifiedAssetList.swift in Sources */,
 				D43A0C5B2790DA63007430B9 /* ResultViewTheme.swift in Sources */,
 				2B0F61CF24EC129D00DA22A6 /* AssetAdditionDraft.swift in Sources */,
@@ -16890,6 +16927,7 @@
 				D43A0C1E2790CAAB007430B9 /* LoadingViewCommonTheme.swift in Sources */,
 				D43A0C122790C9FB007430B9 /* LoadingCell.swift in Sources */,
 				2B0F626524EC129D00DA22A6 /* Double.swift in Sources */,
+				2B77FAAA280D73E70020376D /* WebPImageSource.swift in Sources */,
 				D4592908276BACAD00862B21 /* WCSessionShortListViewController+Theme.swift in Sources */,
 				2B9EF31C25D576A1004BCCC4 /* TutorialViewController.swift in Sources */,
 				2B80C51F27720A9300BB071E /* AccountDetailViewController.swift in Sources */,
@@ -16914,6 +16952,7 @@
 				2B8E5F8F25482FC6001D8E30 /* ReceiveTabEvent.swift in Sources */,
 				2B3E228426C0859D00ED0AAF /* WCGroupAnotherAccountTransactionItemCell.swift in Sources */,
 				D4E7E6CE27C64A65005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift in Sources */,
+				2B77FAA2280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift in Sources */,
 				2BA1734E264B270100A613C4 /* AlgorandChartViewAxisCustomizable.swift in Sources */,
 				2B0F7E1E25D6E3C100B16B85 /* WelcomeViewController.swift in Sources */,
 				95B388B427F17C8500A500B3 /* BuyAlgoView.swift in Sources */,
@@ -17093,7 +17132,7 @@
 				2B88F50B27E2ADBE00E6E296 /* CollectibleMediaImagePreviewView.swift in Sources */,
 				2B0F62A624EC129D00DA22A6 /* Screen.swift in Sources */,
 				F08708F3278F622600BEE5C2 /* CurrencyFetchOperation.swift in Sources */,
-				2B7A1F5A27DD41050010F52E /* CollectibleMediaImagePreviewViewModel.swift in Sources */,
+				2B7A1F5A27DD41050010F52E /* CollectibleMediaStandardImagePreviewViewModel.swift in Sources */,
 				95C0BD1827F2220A00FF010D /* Session+Announcement.swift in Sources */,
 				2B0F62A824EC129D00DA22A6 /* QRScannerViewController.swift in Sources */,
 				D41699552790ECC400DE84FA /* TransactionHistoryNoContentViewModel.swift in Sources */,
@@ -17883,6 +17922,7 @@
 				2BD5476A23182636007179FE /* RewardDetailViewModel.swift in Sources */,
 				D48D11EB274297BA000061CE /* NotificationFilterView.swift in Sources */,
 				D4F8F28A273EA44D003DCE1D /* PassphraseDisplayViewController+Theme.swift in Sources */,
+				2B77FAA5280D70650020376D /* CollectibleMediaWebPImagePreviewViewModel.swift in Sources */,
 				D4BF4A1C26F49E36009B53D8 /* WatchAccountAdditionViewModel.swift in Sources */,
 				2B698268278DF651008EC669 /* TransactionsListLayout+Theme.swift in Sources */,
 				2B8E5F1625471F7D001D8E30 /* ReceiveShareCompleteEvent.swift in Sources */,
@@ -18296,6 +18336,7 @@
 				17D04F51225FAD920051BC43 /* Double.swift in Sources */,
 				0467678D2756A65F00C88F21 /* SingleSelectionListViewTheme.swift in Sources */,
 				2BE4D0822593864D005F5764 /* AnalyticsLog.swift in Sources */,
+				2B77FAA9280D73E70020376D /* WebPImageSource.swift in Sources */,
 				D49D31DB2725742500AADE9A /* ContactContextViewTheme.swift in Sources */,
 				2B01E2C524EF11FA00C6E5B7 /* LedgerAccountSelectionListLayout.swift in Sources */,
 				D4312D6B27351CDA00ABDA1E /* EditContactViewModel.swift in Sources */,
@@ -18320,6 +18361,7 @@
 				D411B36526E9F9BC004FF980 /* OptionsViewTheme.swift in Sources */,
 				F0DB4173279440AD00EA437D /* ErrorViewModel.swift in Sources */,
 				2BECB4B425A0F2210081870A /* NotificationFilterDraft.swift in Sources */,
+				2B77FAA1280D702E0020376D /* CollectibleMediaImagePreviewViewModel.swift in Sources */,
 				D4E7E6CD27C649C4005EDCE9 /* NoContentWithActionViewIllustratedTheme+Collectible.swift in Sources */,
 				D43A0C282790D177007430B9 /* NoContentView.swift in Sources */,
 				2B9EF31B25D576A1004BCCC4 /* TutorialViewController.swift in Sources */,
@@ -18502,7 +18544,7 @@
 				2B88F50A27E2ADBE00E6E296 /* CollectibleMediaImagePreviewView.swift in Sources */,
 				2BF90F3D25FA3B100033F348 /* RecoverInputView.swift in Sources */,
 				2B656EA6224BDC830064A49B /* AccountListLayoutBuilder.swift in Sources */,
-				2B7A1F5927DD41050010F52E /* CollectibleMediaImagePreviewViewModel.swift in Sources */,
+				2B7A1F5927DD41050010F52E /* CollectibleMediaStandardImagePreviewViewModel.swift in Sources */,
 				95C0BD1727F2220A00FF010D /* Session+Announcement.swift in Sources */,
 				D421178426D8ED6800C032B2 /* BlockingLoadingController.swift in Sources */,
 				2B5F6F902768D8BB00C9B780 /* SettingsToggleView.swift in Sources */,
@@ -19622,6 +19664,14 @@
 				minimumVersion = 4.0.0;
 			};
 		};
+		2B77FAAC280D7F900020376D /* XCRemoteSwiftPackageReference "KingfisherWebP" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yeatse/KingfisherWebP.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Hipo/macaroon/";
@@ -19813,6 +19863,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2B187DA326E5486E005BEDFD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCrashlytics;
+		};
+		2B77FAAD280D7F900020376D /* KingfisherWebP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B77FAAC280D7F900020376D /* XCRemoteSwiftPackageReference "KingfisherWebP" */;
+			productName = KingfisherWebP;
+		};
+		2B77FAAF280D7FC90020376D /* KingfisherWebP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B77FAAC280D7F900020376D /* XCRemoteSwiftPackageReference "KingfisherWebP" */;
+			productName = KingfisherWebP;
+		};
+		2B77FAB1280D7FD30020376D /* KingfisherWebP */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2B77FAAC280D7F900020376D /* XCRemoteSwiftPackageReference "KingfisherWebP" */;
+			productName = KingfisherWebP;
 		};
 		2B9A3E2C26E6077000B050ED /* MacaroonApplication */ = {
 			isa = XCSwiftPackageProductDependency;

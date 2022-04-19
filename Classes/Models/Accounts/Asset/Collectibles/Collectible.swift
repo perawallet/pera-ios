@@ -171,3 +171,36 @@ enum CollectibleStandard:
         self = foundCase ?? .unknown(rawValue)
     }
 }
+
+enum MediaExtension:
+    RawRepresentable,
+    CaseIterable,
+    Codable,
+    Equatable {
+    case gif
+    case webp
+    case unknown(String)
+
+    var rawValue: String {
+        switch self {
+        case .gif: return ".gif"
+        case .webp: return ".webp"
+        case .unknown(let aRawValue): return aRawValue
+        }
+    }
+
+    static var allCases: [Self] = [
+        .gif, .webp
+    ]
+
+    init() {
+        self = .unknown("")
+    }
+
+    init?(
+        rawValue: String
+    ) {
+        let foundCase = Self.allCases.first { $0.rawValue == rawValue }
+        self = foundCase ?? .unknown(rawValue)
+    }
+}
