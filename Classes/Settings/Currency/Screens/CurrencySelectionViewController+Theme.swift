@@ -22,16 +22,18 @@ extension CurrencySelectionViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
         
+        let currencySelectionViewTheme: CurrencySelectionViewTheme
+        
         let cellWidth: LayoutMetric
         let cellHeight: LayoutMetric
         let headerSize: LayoutSize
         
         init(_ family: LayoutFamily) {
-            backgroundColor = AppColors.Shared.System.background
-            
-            cellWidth = UIScreen.main.bounds.width - 48
-            cellHeight = 64
-            headerSize = (UIScreen.main.bounds.width, 28.0)
+            self.backgroundColor = AppColors.Shared.System.background
+            self.currencySelectionViewTheme = CurrencySelectionViewTheme()
+            self.cellWidth = UIScreen.main.bounds.width - 48
+            self.cellHeight = 64
+            self.headerSize = (UIScreen.main.bounds.width, 28.0)
         }
     }
 }

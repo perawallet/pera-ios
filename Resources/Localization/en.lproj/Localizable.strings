@@ -334,6 +334,7 @@
 "settings-developer" = "Developer Settings";
 "settings-currency" = "Currency";
 "settings-currency-header-title" = "Currency Preferences";
+"settings-currency-search" = "Search";
 "settings-developer-dispenser" = "Algorand Dispenser";
 "settings-rate-title" = "Rate Pera Wallet";
 "settings-rate-modal-title" = "Rate your experience";
