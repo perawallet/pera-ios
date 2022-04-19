@@ -531,7 +531,7 @@
 "notifications-asset-not-found-description" = "The history for this specific asset is not available.";
 
 // MARK: Transaction Filter
-"transaction-filter-title-sort" = "Sort by Date";
+"transaction-filter-title-sort" = "Filter by Date";
 "transaction-filter-option-all" = "All Time";
 "transaction-filter-option-today" = "Today";
 "transaction-filter-option-yesterday" = "Yesterday";
