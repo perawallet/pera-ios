@@ -90,6 +90,12 @@ extension AccountDetailViewController {
             switch event {
             case .didUpdate(let accountHandle):
                 self.accountHandle = accountHandle
+            case .manageAssets:
+                let controller = self.open(.removeAsset(account: self.accountHandle.value), by: .present) as? ManageAssetsViewController
+                controller?.delegate = self
+            case .addAsset:
+                let controller = self.open(.addAsset(account: self.accountHandle.value), by: .push) as? AssetAdditionViewController
+                controller?.delegate = self
             }
         }
     }
@@ -250,6 +256,14 @@ extension AccountDetailViewController: ChoosePasswordViewControllerDelegate {
 extension AccountDetailViewController: EditAccountViewControllerDelegate {
     func editAccountViewControllerDidTapDoneButton(_ viewController: EditAccountViewController) {
         accountTitleView.bindData(AccountNameViewModel(account: accountHandle.value))
+    }
+}
+
+extension AccountDetailViewController: AssetAdditionViewControllerDelegate {
+    func assetAdditionViewController(_ assetAdditionViewController: AssetAdditionViewController, didAdd asset: AssetDecoration) {
+        let standardAsset = StandardAsset(asset: ALGAsset(id: asset.id), decoration: asset)
+        standardAsset.state = .pending(.add)
+        assetListScreen.addAsset(standardAsset)
     }
 }
 
