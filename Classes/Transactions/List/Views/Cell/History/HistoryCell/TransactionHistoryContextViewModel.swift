@@ -233,7 +233,8 @@ extension TransactionHistoryContextViewModel {
                             isAlgos: false,
                             fraction: asset.decimals,
                             assetSymbol: getAssetSymbol(from: AssetDecoration(asset: asset))
-                        )
+                        ),
+                        showAbbreviation: true
                     )
                 } else if transaction.isAssetAdditionTransaction(for: account.address) {
                     if let fee = transaction.fee {
@@ -246,7 +247,8 @@ extension TransactionHistoryContextViewModel {
                             isAlgos: false,
                             fraction: asset.decimals,
                             assetSymbol: getAssetSymbol(from: AssetDecoration(asset: asset))
-                        )
+                        ),
+                        showAbbreviation: true
                     )
                 } else {
                     transactionAmountViewModel = TransactionAmountViewModel(
@@ -255,7 +257,8 @@ extension TransactionHistoryContextViewModel {
                             isAlgos: false,
                             fraction: asset.decimals,
                             assetSymbol: getAssetSymbol(from: AssetDecoration(asset: asset))
-                        )
+                        ),
+                        showAbbreviation: true
                     )
                 }
             } else {
@@ -270,15 +273,18 @@ extension TransactionHistoryContextViewModel {
 
                 if payment.receiver == transaction.sender {
                     transactionAmountViewModel = TransactionAmountViewModel(
-                        .normal(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
+                        .normal(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos),
+                        showAbbreviation: true
                     )
                 } else if payment.receiver == account.address {
                     transactionAmountViewModel = TransactionAmountViewModel(
-                        .positive(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
+                        .positive(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos),
+                        showAbbreviation: true
                     )
                 } else {
                     transactionAmountViewModel = TransactionAmountViewModel(
-                        .negative(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos)
+                        .negative(amount: payment.amountForTransaction(includesCloseAmount: true).toAlgos),
+                        showAbbreviation: true
                     )
                 }
             }
@@ -294,7 +300,8 @@ extension TransactionHistoryContextViewModel {
                             isAlgos: false,
                             fraction: asset.decimals,
                             assetSymbol: getAssetSymbol(from: asset)
-                        )
+                        ),
+                        showAbbreviation: true
                     )
                 } else if transaction.isAssetAdditionTransaction(for: account.address) {
                     if let fee = transaction.fee {
@@ -307,7 +314,8 @@ extension TransactionHistoryContextViewModel {
                             isAlgos: false,
                             fraction: asset.decimals,
                             assetSymbol: getAssetSymbol(from: asset)
-                        )
+                        ),
+                        showAbbreviation: true
                     )
                 } else {
                     transactionAmountViewModel = TransactionAmountViewModel(
@@ -316,16 +324,26 @@ extension TransactionHistoryContextViewModel {
                             isAlgos: false,
                             fraction: asset.decimals,
                             assetSymbol: getAssetSymbol(from: asset)
-                        )
+                        ),
+                        showAbbreviation: true
                     )
                 }
             } else {
                 if transaction.receiver == transaction.sender {
-                    transactionAmountViewModel = TransactionAmountViewModel(.normal(amount: transaction.amount.toAlgos))
+                    transactionAmountViewModel = TransactionAmountViewModel(
+                        .normal(amount: transaction.amount.toAlgos),
+                        showAbbreviation: true
+                    )
                 } else if transaction.receiver == account.address {
-                    transactionAmountViewModel = TransactionAmountViewModel(.positive(amount: transaction.amount.toAlgos))
+                    transactionAmountViewModel = TransactionAmountViewModel(
+                        .normal(amount: transaction.amount.toAlgos),
+                        showAbbreviation: true
+                    )
                 } else {
-                    transactionAmountViewModel = TransactionAmountViewModel(.negative(amount: transaction.amount.toAlgos))
+                    transactionAmountViewModel = TransactionAmountViewModel(
+                        .normal(amount: transaction.amount.toAlgos),
+                        showAbbreviation: true
+                    )
                 }
             }
         }
@@ -390,7 +408,7 @@ extension TransactionHistoryContextViewModel {
         }
 
         let totalAmount = amount * currencyPriceValue
-        return totalAmount.toCurrencyStringForLabel(with: currency.symbol)
+        return totalAmount.abbreviatedCurrencyStringForLabel(with: currency.symbol)
     }
     
     private func getUsdCurrencyValue(
@@ -404,7 +422,7 @@ extension TransactionHistoryContextViewModel {
         }
         
         let totalAmount = amount * currencyPriceValue
-        return totalAmount.toCurrencyStringForLabel(with: currency.symbol)
+        return totalAmount.abbreviatedCurrencyStringForLabel(with: currency.symbol)
     }
 
     private func getAssetCurrencyValue(
@@ -421,7 +439,7 @@ extension TransactionHistoryContextViewModel {
 
         let currencyValue = assetUSDValue * amount * currencyUSDValue
         if currencyValue > 0 {
-            return currencyValue.toCurrencyStringForLabel(with: currency.symbol)
+            return currencyValue.abbreviatedCurrencyStringForLabel(with: currency.symbol)
         }
 
         return nil

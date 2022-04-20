@@ -53,6 +53,6 @@ struct TransactionHistoryContextViewTheme: StyleSheet, LayoutSheet {
         self.horizontalInset = 24
         self.verticalInset = 14
         self.subtitleTopInset = 7
-        self.titleMaximumWidthRatio = 0.4
+        self.titleMaximumWidthRatio = 0.3
     }
 }
