@@ -18,7 +18,7 @@ import Foundation
 import MacaroonUtils
 import MagpieCore
 
-final class CurrencySelectionAPIDataController: CurrencySelectionDataController {
+final class CurrencySelectionListAPIDataController: CurrencySelectionDataController {
     var eventHandler: ((CurrencySelectionDataControllerEvent) -> Void)?
     
     private var currencies = [Currency]()
@@ -36,9 +36,13 @@ final class CurrencySelectionAPIDataController: CurrencySelectionDataController 
     ) {
         self.api = api
     }
+    
+    subscript (index: Int) -> Currency? {
+        return searchResults[safe: index]
+    }
 }
 
-extension CurrencySelectionAPIDataController {
+extension CurrencySelectionListAPIDataController {
     func load() {
         currencies.removeAll()
         searchResults.removeAll()
@@ -87,7 +91,7 @@ extension CurrencySelectionAPIDataController {
     }
 }
 
-extension CurrencySelectionAPIDataController {
+extension CurrencySelectionListAPIDataController {
     private func deliverContentSnapshot() {
         guard !self.currencies.isEmpty else {
             deliverErrorContentSnapshot()
@@ -174,7 +178,7 @@ extension CurrencySelectionAPIDataController {
     }
 }
 
-extension CurrencySelectionAPIDataController {
+extension CurrencySelectionListAPIDataController {
     private func publish(
         _ event: CurrencySelectionDataControllerEvent
     ) {

@@ -25,12 +25,13 @@ final class CurrencySelectionViewController: BaseViewController {
     private lazy var theme = Theme()
     private lazy var contextView = CurrencySelectionView()
     
-    private lazy var dataSource = CurrencySelectionDataSource(contextView.getCollectionView())
-    private lazy var dataController: CurrencySelectionAPIDataController = {
+    private lazy var listLayout = CurrencySelectionListLayout(dataSource)
+    private lazy var dataSource = CurrencySelectionListDataSource(contextView.getCollectionView())
+    private lazy var dataController: CurrencySelectionListAPIDataController = {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return CurrencySelectionAPIDataController(api)
+        return CurrencySelectionListAPIDataController(api)
     }()
         
     override func viewDidLoad() {
@@ -61,8 +62,48 @@ final class CurrencySelectionViewController: BaseViewController {
     
     override func setListeners() {
         contextView.setDataSource(dataSource)
-        contextView.setCollectionViewDelegate(self)
+        contextView.setCollectionViewDelegate(listLayout)
         contextView.setSearchInputDelegate(self)
+        setListLayoutListeners()
+    }
+    
+    private func setListLayoutListeners() {
+        listLayout.handlers.didTapReload = {
+            [weak self] cell in
+            
+            let noContentCell = cell as! NoContentWithActionCell
+            noContentCell.observe(event: .performPrimaryAction) {
+                [weak self] in
+                guard let self = self else {
+                    return
+                }
+                
+                self.dataController.load()
+            }
+        }
+        listLayout.handlers.didSelectCurrency = {
+            [weak self] indexPath in
+            guard let self = self,
+                  let selectedCurrency = self.dataController[indexPath.item] else {
+                      return
+                  }
+            
+            self.log(CurrencyChangeEvent(currencyId: selectedCurrency.id))
+            
+            self.sharedDataController.stopPolling()
+            
+            self.api?.session.preferredCurrency = selectedCurrency.id
+            self.dataController.load()
+            
+            self.sharedDataController.resetPollingAfterPreferredCurrencyWasChanged()
+            
+            NotificationCenter.default.post(
+                name: Self.didChangePreferredCurrency,
+                object: self
+            )
+            
+            
+        }
     }
     
     override func prepareLayout() {
@@ -95,43 +136,5 @@ extension CurrencySelectionViewController: SearchInputViewDelegate {
     
     func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
         dataController.resetSearch()
-    }
-}
-
-extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
-    /*func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let selectedCurrency = dataSource.currency(at: indexPath.item) else {
-            return
-        }
-        
-        log(CurrencyChangeEvent(currencyId: selectedCurrency.id))
-
-        sharedDataController.stopPolling()
-        
-        api?.session.preferredCurrency = selectedCurrency.id
-        currencySelectionView.reloadData()
-        
-        sharedDataController.resetPollingAfterPreferredCurrencyWasChanged()
-        
-        NotificationCenter.default.post(
-            name: Self.didChangePreferredCurrency,
-            object: self
-        )
-    }*/
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
-        return CGSize(width: theme.cellWidth, height: theme.cellHeight)
-    }
-    
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        return CGSize(theme.headerSize)
     }
 }

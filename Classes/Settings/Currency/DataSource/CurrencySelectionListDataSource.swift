@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-final class CurrencySelectionDataSource: UICollectionViewDiffableDataSource<CurrencySelectionSection, CurrencySelectionItem> {
+final class CurrencySelectionListDataSource: UICollectionViewDiffableDataSource<CurrencySelectionSection, CurrencySelectionItem> {
     init(
         _ collectionView: UICollectionView
     ) {
