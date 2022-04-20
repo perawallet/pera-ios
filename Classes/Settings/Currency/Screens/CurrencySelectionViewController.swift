@@ -23,18 +23,33 @@ final class CurrencySelectionViewController: BaseViewController {
     }
     
     private lazy var theme = Theme()
-    private lazy var currencySelectionView = SingleSelectionListView()
+    private lazy var contextView = CurrencySelectionView()
     
-    private lazy var dataSource: CurrencySelectionDataSource = {
+    private lazy var dataSource = CurrencySelectionDataSource(contextView.getCollectionView())
+    private lazy var dataController: CurrencySelectionAPIDataController = {
         guard let api = api else {
             fatalError("API should be set.")
         }
-        return CurrencySelectionDataSource(api: api)
+        return CurrencySelectionAPIDataController(api)
     }()
         
     override func viewDidLoad() {
         super.viewDidLoad()
-        getCurrencies()
+        
+        dataController.eventHandler = {
+            [weak self] event in
+            
+            guard let self = self else {
+                return
+            }
+            
+            switch event {
+            case .didUpdate(let snapshot):
+                self.dataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+            }
+        }
+        
+        dataController.load()
     }
     
     override func configureAppearance() {
@@ -44,43 +59,47 @@ final class CurrencySelectionViewController: BaseViewController {
         view.customizeBaseAppearance(backgroundColor: theme.backgroundColor)
     }
     
-    override func linkInteractors() {
-        super.linkInteractors()
-        
-        currencySelectionView.delegate = self
-        currencySelectionView.setDataSource(dataSource)
-        currencySelectionView.setListDelegate(self)
-        currencySelectionView.setRefreshControl()
-        dataSource.delegate = self
+    override func setListeners() {
+        contextView.setDataSource(dataSource)
+        contextView.setCollectionViewDelegate(self)
+        contextView.setSearchInputDelegate(self)
     }
     
     override func prepareLayout() {
-        super.prepareLayout()
-        prepareWholeScreenLayoutFor(currencySelectionView)
+        contextView.customize(theme.contextViewTheme)
+        
+        view.addSubview(contextView)
+        contextView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
     }
 }
 
-extension CurrencySelectionViewController: CurrencySelectionDataSourceDelegate {
-    func currencySelectionDataSourceDidFetchCurrencies(_ currencySelectionDataSource: CurrencySelectionDataSource) {
-        currencySelectionView.endRefreshing()
-        currencySelectionView.setNormalState()
-        currencySelectionView.reloadData()
+extension CurrencySelectionViewController: SearchInputViewDelegate {
+    func searchInputViewDidEdit(_ view: SearchInputView) {
+        guard let query = view.text else {
+            return
+        }
+        
+        if query.isEmpty {
+            dataController.resetSearch()
+            return
+        }
+        
+        dataController.search(for: query)
     }
     
-    func currencySelectionDataSourceDidFailToFetch(_ currencySelectionDataSource: CurrencySelectionDataSource) {
-        currencySelectionView.endRefreshing()
-        currencySelectionView.setErrorState()
-        currencySelectionView.reloadData()
+    func searchInputViewDidReturn(_ view: SearchInputView) {
+        view.endEditing()
     }
     
-    private func getCurrencies() {
-        currencySelectionView.setLoadingState()
-        dataSource.loadData()
+    func searchInputViewDidTapRightAccessory(_ view: SearchInputView) {
+        dataController.resetSearch()
     }
 }
 
 extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    /*func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let selectedCurrency = dataSource.currency(at: indexPath.item) else {
             return
         }
@@ -98,7 +117,7 @@ extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
             name: Self.didChangePreferredCurrency,
             object: self
         )
-    }
+    }*/
     
     func collectionView(
         _ collectionView: UICollectionView,
@@ -114,15 +133,5 @@ extension CurrencySelectionViewController: UICollectionViewDelegateFlowLayout {
         referenceSizeForHeaderInSection section: Int
     ) -> CGSize {
         return CGSize(theme.headerSize)
-    }
-}
-
-extension CurrencySelectionViewController: SingleSelectionListViewDelegate {
-    func singleSelectionListViewDidRefreshList(_ singleSelectionListView: SingleSelectionListView) {
-        getCurrencies()
-    }
-    
-    func singleSelectionListViewDidTryAgain(_ singleSelectionListView: SingleSelectionListView) {
-        getCurrencies()
     }
 }

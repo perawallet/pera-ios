@@ -22,7 +22,7 @@ extension CurrencySelectionViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
         
-        let currencySelectionViewTheme: CurrencySelectionViewTheme
+        let contextViewTheme: CurrencySelectionViewTheme
         
         let cellWidth: LayoutMetric
         let cellHeight: LayoutMetric
@@ -30,7 +30,7 @@ extension CurrencySelectionViewController {
         
         init(_ family: LayoutFamily) {
             self.backgroundColor = AppColors.Shared.System.background
-            self.currencySelectionViewTheme = CurrencySelectionViewTheme()
+            self.contextViewTheme = CurrencySelectionViewTheme()
             self.cellWidth = UIScreen.main.bounds.width - 48
             self.cellHeight = 64
             self.headerSize = (UIScreen.main.bounds.width, 28.0)
