@@ -21,19 +21,11 @@ import MacaroonUIKit
 extension CurrencySelectionViewController {
     struct Theme: LayoutSheet, StyleSheet {
         let backgroundColor: Color
-        
         let contextViewTheme: CurrencySelectionViewTheme
-        
-        let cellWidth: LayoutMetric
-        let cellHeight: LayoutMetric
-        let headerSize: LayoutSize
-        
+
         init(_ family: LayoutFamily) {
             self.backgroundColor = AppColors.Shared.System.background
             self.contextViewTheme = CurrencySelectionViewTheme()
-            self.cellWidth = UIScreen.main.bounds.width - 48
-            self.cellHeight = 64
-            self.headerSize = (UIScreen.main.bounds.width, 28.0)
         }
     }
 }
