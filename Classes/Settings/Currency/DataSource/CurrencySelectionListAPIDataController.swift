@@ -51,11 +51,21 @@ extension CurrencySelectionListAPIDataController {
             switch response {
             case let .success(currencyList):
                 self.currencies.append(contentsOf: currencyList.items)
+                self.addAlgoCurrency()
                 self.searchResults = self.currencies
                 self.deliverContentSnapshot()
             case .failure:
                 self.deliverErrorContentSnapshot()
             }
+        }
+    }
+    
+    private func addAlgoCurrency() {
+        if let usdCurrency = currencies.first(where: {
+            $0.id == "USD"
+        }) {
+            let algoCurrency = AlgoCurrency(currency: usdCurrency)
+            self.currencies.insert(algoCurrency, at: 0)
         }
     }
         
