@@ -50,7 +50,7 @@ extension CurrencySelectionAPIDataController {
                 self.searchResults = self.currencies
                 self.deliverContentSnapshot()
             case .failure:
-                self.deliverEmptyContentSnapshot()
+                self.deliverErrorContentSnapshot()
             }
         }
     }
@@ -90,12 +90,12 @@ extension CurrencySelectionAPIDataController {
 extension CurrencySelectionAPIDataController {
     private func deliverContentSnapshot() {
         guard !self.currencies.isEmpty else {
-            deliverNoContentSnapshot()
+            deliverErrorContentSnapshot()
             return
         }
         
         guard !self.searchResults.isEmpty else {
-            deliverEmptyContentSnapshot()
+            deliverNoContentSnapshot()
             return
         }
         
@@ -109,7 +109,7 @@ extension CurrencySelectionAPIDataController {
             var snapshot = Snapshot()
             
             var currencyItems: [CurrencySelectionItem] = []
-            
+                        
             self.searchResults.forEach { currency in
                 let viewModel: SingleSelectionViewModel
                 let isSelected = self.api.session.preferredCurrency == currency.id
@@ -120,7 +120,7 @@ extension CurrencySelectionAPIDataController {
                 
                 currencyItems.append(.currency(viewModel))
             }
-            
+                        
             snapshot.appendSections([.currencies])
             snapshot.appendItems(
                 currencyItems,
@@ -137,20 +137,20 @@ extension CurrencySelectionAPIDataController {
             var snapshot = Snapshot()
             snapshot.appendSections([.noContent])
             snapshot.appendItems(
-                [.noContent],
+                [.noContent(CurrencySelectionNoContentViewModel())],
                 toSection: .noContent
             )
             return snapshot
         }
     }
     
-    private func deliverEmptyContentSnapshot() {
+    private func deliverErrorContentSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()
-            snapshot.appendSections([.empty])
+            snapshot.appendSections([.error])
             snapshot.appendItems(
-                [.empty],
-                toSection: .empty
+                [.error],
+                toSection: .error
             )
             return snapshot
         }

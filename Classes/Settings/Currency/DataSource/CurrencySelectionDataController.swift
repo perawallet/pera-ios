@@ -35,13 +35,12 @@ enum CurrencySelectionSection:
     Int,
     Hashable {
     case currencies
-    case empty
     case noContent
+    case error
 }
 
 enum CurrencySelectionItem: Hashable {
     case currency(SingleSelectionViewModel)
-    case header
-    case empty
-    case noContent
+    case noContent(CurrencySelectionNoContentViewModel)
+    case error
 }
