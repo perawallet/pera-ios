@@ -50,6 +50,16 @@ final class CollectiblesFilterSelectionViewController: BaseScrollViewController 
 
         addContent()
     }
+
+    override func setListeners() {
+        toggleView.addTarget(self, action: #selector(didChangeToggle(_:)), for: .touchUpInside)
+    }
+
+    @objc
+    private func didChangeToggle(_ toggle: Toggle) {
+        let filter: Filter = toggleView.isOn ? .all : .owned
+        handlers.didChangeFilter?(filter)
+    }
 }
 
 extension CollectiblesFilterSelectionViewController {
@@ -64,20 +74,6 @@ extension CollectiblesFilterSelectionViewController {
         }
 
         leftBarButtonItems = [closeBarButtonItem]
-
-        let addBarButtonItem = ALGBarButtonItem(kind: .doneGreen) {
-            [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.dismissScreen {
-                let filter: Filter = self.toggleView.isOn ? .all : .owned
-                self.handlers.didTapDone?(filter)
-            }
-        }
-
-        rightBarButtonItems = [addBarButtonItem]
     }
 
     private func bindNavigationItemTitle() {
@@ -136,7 +132,7 @@ extension CollectiblesFilterSelectionViewController {
 
 extension CollectiblesFilterSelectionViewController {
     struct Handlers {
-        var didTapDone: ((Filter) -> Void)?
+        var didChangeFilter: ((Filter) -> Void)?
     }
 }
 

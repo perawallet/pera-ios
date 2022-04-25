@@ -332,7 +332,7 @@ extension CollectibleListViewController {
                 by: .present
             ) as? CollectiblesFilterSelectionViewController
 
-            controller?.handlers.didTapDone = {
+            controller?.handlers.didChangeFilter = {
                 [weak self] filter in
                 guard let self = self else {
                     return
