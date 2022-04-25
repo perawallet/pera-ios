@@ -80,6 +80,14 @@ extension CollectibleMediaPreviewDataSource {
             )
 
             switch media.mediaExtension {
+            case .gif:
+                cell.bindData(
+                    CollectibleMediaGIFPreviewViewModel(
+                        imageSize: CGSize((width.float(), width.float())),
+                        asset: asset,
+                        media: media
+                    )
+                )
             case .webp:
                 cell.bindData(
                     CollectibleMediaWebPImagePreviewViewModel(

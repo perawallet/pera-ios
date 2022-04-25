@@ -30,8 +30,8 @@ final class CollectibleMediaTapInfoView: View {
     func customize(
         _ theme: CollectibleMediaTapInfoViewTheme
     ) {
-        addImageView(theme)
         addTitleLabel(theme)
+        addImageView(theme)
     }
 
     func customizeAppearance(
@@ -44,6 +44,19 @@ final class CollectibleMediaTapInfoView: View {
 }
 
 extension CollectibleMediaTapInfoView {
+    private func addTitleLabel(
+        _ theme: CollectibleMediaTapInfoViewTheme
+    ) {
+        titleLabel.customizeAppearance(theme.title)
+
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.trailing <= 0
+            $0.centerY.equalToSuperview()
+        }
+    }
+
     private func addImageView(
         _ theme: CollectibleMediaTapInfoViewTheme
     ) {
@@ -52,22 +65,9 @@ extension CollectibleMediaTapInfoView {
         addSubview(imageView)
         imageView.snp.makeConstraints {
             $0.fitToSize(theme.iconSize)
-            $0.leading == 0
+            $0.trailing == titleLabel.snp.leading - theme.iconOffset
             $0.top == 0
             $0.bottom == 0
-        }
-    }
-
-    private func addTitleLabel(
-        _ theme: CollectibleMediaTapInfoViewTheme
-    ) {
-        titleLabel.customizeAppearance(theme.title)
-
-        addSubview(titleLabel)
-        titleLabel.snp.makeConstraints {
-            $0.leading == imageView.snp.trailing + theme.iconOffset
-            $0.trailing <= 0
-            $0.centerY.equalToSuperview()
         }
     }
 }

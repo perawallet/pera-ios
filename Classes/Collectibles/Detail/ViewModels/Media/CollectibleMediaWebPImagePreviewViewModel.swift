@@ -47,15 +47,10 @@ extension CollectibleMediaWebPImagePreviewViewModel {
     ) {
         let placeholder = asset.title.fallback(asset.name.fallback("#\(String(asset.id))"))
 
-        if let imageURL = media?.previewURL {
-            let prismURL = PrismURL(baseURL: imageURL)
-                .setExpectedImageSize(imageSize)
-                .setImageQuality(.normal)
-                .build()
-
-            image = WebPImageSource(
-                url: prismURL,
-                size: imageSize,
+        if let imageURL = media?.downloadURL {
+            image = PNGImageSource(
+                url: imageURL,
+                shape: .rounded(4),
                 placeholder: getPlaceholder(placeholder)
             )
             return
