@@ -2892,7 +2892,6 @@
 		CBAD470A2745434A00C91946 /* MacaroonMedia in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E3626E6077000B050ED /* MacaroonMedia */; };
 		CBAD470B2745434A00C91946 /* MacaroonResources in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E3826E6077000B050ED /* MacaroonResources */; };
 		CBAD470C2745434A00C91946 /* MacaroonSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E3C26E6077000B050ED /* MacaroonSwiftUI */; };
-		CBAD470D2745434A00C91946 /* MacaroonTabBarController in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E3E26E6077000B050ED /* MacaroonTabBarController */; };
 		CBAD470E2745434A00C91946 /* MacaroonUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E4026E6077000B050ED /* MacaroonUIKit */; };
 		CBAD470F2745434A00C91946 /* MacaroonURLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E4226E6077000B050ED /* MacaroonURLImage */; };
 		CBAD47102745434A00C91946 /* MacaroonVendors in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E4426E6077000B050ED /* MacaroonVendors */; };
@@ -2915,7 +2914,6 @@
 		CBAD47232745434A00C91946 /* MacaroonMedia in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5026E607BD00B050ED /* MacaroonMedia */; };
 		CBAD47242745434A00C91946 /* MacaroonResources in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5226E607BD00B050ED /* MacaroonResources */; };
 		CBAD47252745434A00C91946 /* MacaroonSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5426E607BD00B050ED /* MacaroonSwiftUI */; };
-		CBAD47262745434A00C91946 /* MacaroonTabBarController in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5626E607BD00B050ED /* MacaroonTabBarController */; };
 		CBAD47272745434A00C91946 /* MacaroonUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5826E607BD00B050ED /* MacaroonUIKit */; };
 		CBAD47282745434A00C91946 /* MacaroonURLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5A26E607BD00B050ED /* MacaroonURLImage */; };
 		CBAD47292745434A00C91946 /* MacaroonVendors in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E5C26E607BD00B050ED /* MacaroonVendors */; };
@@ -2938,7 +2936,6 @@
 		CBAD473C2745434A00C91946 /* MacaroonMedia in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6826E607D800B050ED /* MacaroonMedia */; };
 		CBAD473D2745434A00C91946 /* MacaroonResources in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6A26E607D800B050ED /* MacaroonResources */; };
 		CBAD473E2745434A00C91946 /* MacaroonSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6C26E607D800B050ED /* MacaroonSwiftUI */; };
-		CBAD473F2745434A00C91946 /* MacaroonTabBarController in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6E26E607D800B050ED /* MacaroonTabBarController */; };
 		CBAD47402745434A00C91946 /* MacaroonUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E7026E607D800B050ED /* MacaroonUIKit */; };
 		CBAD47412745434A00C91946 /* MacaroonURLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E7226E607D800B050ED /* MacaroonURLImage */; };
 		CBAD47422745434A00C91946 /* MacaroonVendors in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E7426E607D800B050ED /* MacaroonVendors */; };
@@ -5992,7 +5989,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBAD473F2745434A00C91946 /* MacaroonTabBarController in Frameworks */,
 				CBAD473E2745434A00C91946 /* MacaroonSwiftUI in Frameworks */,
 				CBAD473C2745434A00C91946 /* MacaroonMedia in Frameworks */,
 				D4A241E027D2BF1C00641FF0 /* Prism in Frameworks */,
@@ -6026,7 +6022,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBAD47262745434A00C91946 /* MacaroonTabBarController in Frameworks */,
 				CBAD47252745434A00C91946 /* MacaroonSwiftUI in Frameworks */,
 				CBAD47232745434A00C91946 /* MacaroonMedia in Frameworks */,
 				CBAD471C2745434A00C91946 /* FirebaseAnalytics in Frameworks */,
@@ -6067,7 +6062,6 @@
 				CBAD46FD2745434A00C91946 /* FirebaseAnalytics in Frameworks */,
 				CBAD470E2745434A00C91946 /* MacaroonUIKit in Frameworks */,
 				CBAD46FB2745434A00C91946 /* MagpieHipo in Frameworks */,
-				CBAD470D2745434A00C91946 /* MacaroonTabBarController in Frameworks */,
 				2B77FAAE280D7F900020376D /* KingfisherWebP in Frameworks */,
 				CBAD47042745434A00C91946 /* KeychainAccess in Frameworks */,
 				CBAD46F92745434A00C91946 /* MagpieCore in Frameworks */,
@@ -14345,7 +14339,6 @@
 				2B9A3E6826E607D800B050ED /* MacaroonMedia */,
 				2B9A3E6A26E607D800B050ED /* MacaroonResources */,
 				2B9A3E6C26E607D800B050ED /* MacaroonSwiftUI */,
-				2B9A3E6E26E607D800B050ED /* MacaroonTabBarController */,
 				2B9A3E7026E607D800B050ED /* MacaroonUIKit */,
 				2B9A3E7226E607D800B050ED /* MacaroonURLImage */,
 				2B9A3E7426E607D800B050ED /* MacaroonVendors */,
@@ -14391,7 +14384,6 @@
 				2B9A3E5026E607BD00B050ED /* MacaroonMedia */,
 				2B9A3E5226E607BD00B050ED /* MacaroonResources */,
 				2B9A3E5426E607BD00B050ED /* MacaroonSwiftUI */,
-				2B9A3E5626E607BD00B050ED /* MacaroonTabBarController */,
 				2B9A3E5826E607BD00B050ED /* MacaroonUIKit */,
 				2B9A3E5A26E607BD00B050ED /* MacaroonURLImage */,
 				2B9A3E5C26E607BD00B050ED /* MacaroonVendors */,
@@ -14437,7 +14429,6 @@
 				2B9A3E3626E6077000B050ED /* MacaroonMedia */,
 				2B9A3E3826E6077000B050ED /* MacaroonResources */,
 				2B9A3E3C26E6077000B050ED /* MacaroonSwiftUI */,
-				2B9A3E3E26E6077000B050ED /* MacaroonTabBarController */,
 				2B9A3E4026E6077000B050ED /* MacaroonUIKit */,
 				2B9A3E4226E6077000B050ED /* MacaroonURLImage */,
 				2B9A3E4426E6077000B050ED /* MacaroonVendors */,
@@ -19975,11 +19966,6 @@
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
 			productName = MacaroonSwiftUI;
 		};
-		2B9A3E3E26E6077000B050ED /* MacaroonTabBarController */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonTabBarController;
-		};
 		2B9A3E4026E6077000B050ED /* MacaroonUIKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
@@ -20035,11 +20021,6 @@
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
 			productName = MacaroonSwiftUI;
 		};
-		2B9A3E5626E607BD00B050ED /* MacaroonTabBarController */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonTabBarController;
-		};
 		2B9A3E5826E607BD00B050ED /* MacaroonUIKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
@@ -20094,11 +20075,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
 			productName = MacaroonSwiftUI;
-		};
-		2B9A3E6E26E607D800B050ED /* MacaroonTabBarController */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonTabBarController;
 		};
 		2B9A3E7026E607D800B050ED /* MacaroonUIKit */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -16,7 +16,6 @@
 //  RootViewController.swift
 
 import Foundation
-import MacaroonTabBarController
 import MacaroonUIKit
 import MacaroonUtils
 import UIKit
