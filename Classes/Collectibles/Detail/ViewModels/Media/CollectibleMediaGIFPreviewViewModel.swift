@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   CollectibleMediaWebPImagePreviewViewModel.swift
+//   CollectibleMediaGIFPreviewViewModel.swift
 
 import Foundation
 import UIKit
@@ -20,7 +20,7 @@ import MacaroonUIKit
 import MacaroonURLImage
 import Prism
 
-struct CollectibleMediaWebPImagePreviewViewModel: CollectibleMediaImagePreviewViewModel {
+struct CollectibleMediaGIFPreviewViewModel: CollectibleMediaImagePreviewViewModel {
     var image: ImageSource?
     var isOwned: Bool = true
 
@@ -39,7 +39,7 @@ struct CollectibleMediaWebPImagePreviewViewModel: CollectibleMediaImagePreviewVi
     }
 }
 
-extension CollectibleMediaWebPImagePreviewViewModel {
+extension CollectibleMediaGIFPreviewViewModel {
     private mutating func bindImage(
         imageSize: CGSize,
         asset: CollectibleAsset,
@@ -47,10 +47,14 @@ extension CollectibleMediaWebPImagePreviewViewModel {
     ) {
         let placeholder = asset.title.fallback(asset.name.fallback("#\(String(asset.id))"))
 
-        if let imageURL = media?.downloadURL {
+        if let imageURL = media?.previewURL {
+            let prismURL = PrismURL(baseURL: imageURL)
+                .setExpectedImageSize(imageSize)
+                .setImageQuality(.normal)
+                .build()
+
             image = PNGImageSource(
-                url: imageURL,
-                shape: .rounded(4),
+                url: prismURL,
                 placeholder: getPlaceholder(placeholder)
             )
             return

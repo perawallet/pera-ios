@@ -55,6 +55,7 @@ extension CollectibleMediaStandardImagePreviewViewModel {
 
             image = PNGImageSource(
                 url: prismURL,
+                shape: .rounded(4),
                 placeholder: getPlaceholder(placeholder)
             )
             return

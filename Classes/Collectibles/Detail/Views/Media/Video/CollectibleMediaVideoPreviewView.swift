@@ -29,31 +29,7 @@ final class CollectibleMediaVideoPreviewView:
     private lazy var videoPlayerView = VideoPlayerView()
     private lazy var overlayView = UIView()
 
-    /// Key-value observing context
-    private var playerLayerContext = 0
-
-    override func observeValue(
-        forKeyPath keyPath: String?,
-        of object: Any?,
-        change: [NSKeyValueChangeKey : Any]?,
-        context: UnsafeMutableRawPointer?
-    ) {
-        /// Only handle observations for the playerLayerContext
-        guard context == &playerLayerContext else {
-            super.observeValue(
-                forKeyPath: keyPath,
-                of: object,
-                change: change,
-                context: context
-            )
-            return
-        }
-
-        if keyPath == #keyPath(AVPlayerLayer.isReadyForDisplay) {
-            placeholderView.isHidden = true
-            return
-        }
-    }
+    private var playerStateObserver: NSKeyValueObservation?
 
     func customize(
         _ theme: CollectibleMediaVideoPreviewViewTheme
@@ -128,6 +104,15 @@ extension CollectibleMediaVideoPreviewView {
             return
         }
 
+        playerStateObserver = videoPlayerView.playerLayer?.observe(
+            \.isReadyForDisplay,
+             options:  [.new]
+        ) {
+            [weak self] (playerLayer, change) in
+            guard let self = self else { return }
+            self.placeholderView.isHidden = playerLayer.isReadyForDisplay
+        }
+
         let videoPlayer = AVPlayer(url: url)
         videoPlayer.playImmediately(atRate: 1)
         videoPlayerView.player = videoPlayer
@@ -171,6 +156,7 @@ extension CollectibleMediaVideoPreviewView {
 extension CollectibleMediaVideoPreviewView {
     func prepareForReuse() {
         removeObservers()
+        playerStateObserver?.invalidate()
         stopVideo()
         videoPlayerView.player = nil
         placeholderView.prepareForReuse()
@@ -186,12 +172,6 @@ extension CollectibleMediaVideoPreviewView {
             name: .AVPlayerItemDidPlayToEndTime,
             object: videoPlayerView.player?.currentItem
         )
-
-        videoPlayerView.playerLayer?.addObserver(
-            self,
-            forKeyPath: #keyPath(AVPlayerLayer.isReadyForDisplay),
-            context: &playerLayerContext
-        )
     }
 
     private func removeObservers() {
@@ -199,12 +179,6 @@ extension CollectibleMediaVideoPreviewView {
             self,
             name: .AVPlayerItemDidPlayToEndTime,
             object: nil
-        )
-
-        videoPlayerView.player?.removeObserver(
-            self,
-            forKeyPath: #keyPath(AVPlayerLayer.isReadyForDisplay),
-            context: &playerLayerContext
         )
     }
 }
