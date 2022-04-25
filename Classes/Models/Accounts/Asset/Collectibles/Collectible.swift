@@ -178,29 +178,37 @@ enum MediaExtension:
     Codable,
     Equatable {
     case gif
+    case jpg
+    case jpeg
+    case png
+    case mp4
     case webp
-    case unknown(String)
+    case other(String)
 
     var rawValue: String {
         switch self {
         case .gif: return ".gif"
+        case .jpg: return ".jpg"
+        case .jpeg: return ".jpeg"
+        case .png: return ".png"
+        case .mp4: return ".mp4"
         case .webp: return ".webp"
-        case .unknown(let aRawValue): return aRawValue
+        case .other(let aRawValue): return aRawValue
         }
     }
 
     static var allCases: [Self] = [
-        .gif, .webp
+        .gif, .jpg, .jpeg, .png, .mp4, .webp
     ]
 
     init() {
-        self = .unknown("")
+        self = .other("")
     }
 
     init?(
         rawValue: String
     ) {
         let foundCase = Self.allCases.first { $0.rawValue == rawValue }
-        self = foundCase ?? .unknown(rawValue)
+        self = foundCase ?? .other(rawValue)
     }
 }
