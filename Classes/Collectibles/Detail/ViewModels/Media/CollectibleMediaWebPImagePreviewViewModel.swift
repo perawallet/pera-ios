@@ -56,9 +56,8 @@ extension CollectibleMediaWebPImagePreviewViewModel {
             return
         }
 
-        image = WebPImageSource(
+        image = PNGImageSource(
             url: nil,
-            size: imageSize,
             placeholder: getPlaceholder(placeholder)
         )
     }

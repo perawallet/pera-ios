@@ -16,9 +16,9 @@
 
 import Foundation
 import Kingfisher
+import KingfisherWebP
 import MacaroonURLImage
 import UIKit
-import KingfisherWebP
 
 /// <todo> Should we move the WebP library and processor to Macaroon?
 public struct WebPImageSource: URLImageSource {
@@ -26,6 +26,8 @@ public struct WebPImageSource: URLImageSource {
     public let color: UIColor?
     public let placeholder: ImagePlaceholder?
     public let size: CGSize
+    public let scale: CGFloat
+    public let cornerRadius: CGFloat
     public let forceRefresh: Bool
 
     public init(
@@ -33,16 +35,35 @@ public struct WebPImageSource: URLImageSource {
         size: CGSize,
         color: UIColor? = nil,
         placeholder: ImagePlaceholder? = nil,
+        scale: CGFloat = UIScreen.main.scale,
+        cornerRadius: CGFloat = 0,
         forceRefresh: Bool = false
     ) {
         self.url = url
         self.size = size
         self.color = color
         self.placeholder = placeholder
+        self.scale = scale
+        self.cornerRadius = cornerRadius
         self.forceRefresh = forceRefresh
     }
 
     public func formImageProcessors() -> [ImageProcessor?] {
-        return [WebPProcessor()]
+        return [
+            WebPProcessor(),
+            formShapeImageProcessor()
+        ]
+    }
+
+    private func formShapeImageProcessor() -> ImageProcessor? {
+        if cornerRadius > 0 {
+            return RoundCornerImageProcessor(
+                radius: .point(cornerRadius.scaled(scale)),
+                targetSize: size.scaled(scale),
+                backgroundColor: .clear
+            )
+        }
+
+        return nil
     }
 }
