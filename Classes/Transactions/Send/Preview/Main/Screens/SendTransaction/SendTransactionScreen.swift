@@ -645,7 +645,9 @@ extension SendTransactionScreen: NumpadViewDelegate {
                     return
                 }
 
-                self.draft.amount = self.amount.decimalAmount
+                let maxAmount = self.draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
+                self.draft.amount = maxAmount.decimalAmount
+                
                 self.open(.transactionAccountSelect(draft: self.draft), by: .push)
             }
         )
