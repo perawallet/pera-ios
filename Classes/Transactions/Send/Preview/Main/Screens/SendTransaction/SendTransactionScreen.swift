@@ -422,11 +422,8 @@ extension SendTransactionScreen: TransactionSignChecking {
             self.displayMaxTransactionWarning()
             return
         case .requiredMinAlgo:
-            let minimumAmount = calculateMininmumAmount(for: draft.from)
-
-            errorTitle = "asset-min-transaction-error-title".localized
-            errorMessage = "send-algos-minimum-amount-custom-error".localized(params: minimumAmount.toAlgos.toAlgosStringForLabel ?? ""
-            )
+            self.displayRequiredMinAlgoWarning()
+            return
         }
 
         bannerController?.presentErrorBanner(
@@ -540,12 +537,13 @@ extension SendTransactionScreen: NumpadViewDelegate {
             return .maximumAmountAlgoError
         }
 
-        if Int(draft.from.amount) - Int(decimalAmount.toMicroAlgos) - Int(minimumFee) < minimumTransactionMicroAlgosLimit && !isMaxTransaction {
-            return .minimumAmountAlgoError
-        }
-
         if Int(draft.from.amount) - Int(decimalAmount.toMicroAlgos) - Int(minimumFee) < calculateMininmumAmount(for: draft.from) {
-            return .requiredMinAlgo
+            
+            if Int(decimalAmount.toMicroAlgos) <= Int(calculateMininmumAmount(for: draft.from)) + Int(minimumFee) {
+                return .requiredMinAlgo
+            }
+            
+            return .maxAlgo
         }
 
         if isMaxTransaction {
@@ -607,6 +605,20 @@ extension SendTransactionScreen: NumpadViewDelegate {
             }
         }
     }
+    
+    private func displayRequiredMinAlgoWarning() {
+        let configurator = BottomWarningViewConfigurator(
+            image: "icon-info-red".uiImage,
+            title: "required-min-balance-title".localized,
+            description: .plain("required-min-balance-description".localized),
+            secondaryActionButtonTitle: "title-got-it".localized
+        )
+
+        self.modalTransition.perform(
+            .bottomWarning(configurator: configurator),
+            by: .presentWithoutNavigationController
+        )
+    }
 
     private func displayMaxTransactionWarning() {
         guard let transactionParams = transactionParams else {
@@ -633,7 +645,9 @@ extension SendTransactionScreen: NumpadViewDelegate {
                     return
                 }
 
-                self.draft.amount = self.amount.decimalAmount
+                let maxAmount = self.draft.from.amount.toAlgos.toNumberStringWithSeparatorForLabel ?? "0"
+                self.draft.amount = maxAmount.decimalAmount
+                
                 self.open(.transactionAccountSelect(draft: self.draft), by: .push)
             }
         )
