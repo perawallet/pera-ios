@@ -874,7 +874,7 @@
 "account-listing-error-message" = "Sorry, we can't show the details of this portfolio. It looks like we are having issues for the calculation.\n\nPlease note that some asset values might not be available, therefore the total portfolio value should be considered an estimation.";
 
 "account-detail-portfolio-title" = "Account Value";
-"account-detail-assets-search" = "Search my assets";
+"account-detail-assets-search" = "Search your assets";
 
 // MARK: SendTransaction
 "send-transaction-title" = "Send %@";
