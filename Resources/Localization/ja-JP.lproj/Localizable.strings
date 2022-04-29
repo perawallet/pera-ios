@@ -1769,6 +1769,12 @@
 "title-dont-show-again" = "今後表示しない";
 
 /* (No Comment) */
+"required-min-balance-title" = "Low Balance";
+
+/* (No Comment) */
+"required-min-balance-description" = "You don't have enough balance to support the transaction fees. The Algorand blockchain requires 0.001 Algos to support a transaction. You can increase your Algo balance to support this transaction fee.\n\nIf you opted-in for dApps and smart contracts associated with your account (from different ecosystem apps), each asset increases the minimum balance required by 0.1 Algo. To reduce the minimum balance required for this account, you must opt-out from the assets or dApps causing that increased minimum balance.";
+
+/* (No Comment) */
 "title-edit" = "編集";
 
 /* (No Comment) */
