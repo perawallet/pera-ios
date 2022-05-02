@@ -172,11 +172,13 @@ extension SelectAssetViewController {
         ) as? SendCollectibleViewController
 
         controller?.eventHandler = {
-            [weak self] event in
+            [weak self, controller] event in
             guard let self = self else { return }
             switch event {
             case .didCompleteTransaction:
-                self.popScreen(animated: false)
+                controller?.dismissScreen(animated: false) {
+                    self.popScreen(animated: false)
+                }
             }
         }
     }

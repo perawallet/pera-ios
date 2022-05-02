@@ -26,8 +26,6 @@ final class SendCollectibleViewController:
     SendCollectibleActionViewDelegate,
     UIScrollViewDelegate,
     KeyboardControllerDataSource {
-    lazy var uiInteractions = SendCollectibleUIInteractions()
-
     var eventHandler: ((SendCollectibleViewControllerEvent) -> Void)?
 
     private lazy var bottomTransition = BottomSheetTransition(presentingViewController: self)
@@ -440,11 +438,7 @@ extension SendCollectibleViewController {
                 presentationStyle: .fullScreen,
                 transitionStyle: nil,
                 transitioningDelegate: nil
-            ),
-            then: {
-                [unowned self] in
-                self.uiInteractions.didCompleteTransaction?(self)
-            }
+            )
         ) as? TutorialViewController
 
         controller?.uiHandlers.didTapButtonPrimaryActionButton = {
@@ -745,6 +739,13 @@ extension SendCollectibleViewController: QRScannerViewControllerDelegate {
             return
         }
 
+        if qrAddress.isValidatedAddress {
+            sendCollectibleActionView.recustomizeTransferActionButtonAppearance(
+                theme.sendCollectibleViewTheme.actionViewTheme,
+                isEnabled: true
+            )
+        }
+
         sendCollectibleActionView.addressInputViewText = qrAddress
     }
 
@@ -867,12 +868,6 @@ extension SendCollectibleViewController {
         for keyboardController: KeyboardController
     ) -> CGFloat {
         return .zero
-    }
-}
-
-extension SendCollectibleViewController {
-    struct SendCollectibleUIInteractions {
-        var didCompleteTransaction: ((SendCollectibleViewController) -> Void)?
     }
 }
 
