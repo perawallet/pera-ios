@@ -39,9 +39,9 @@ struct CollectiblesNoContentWithActionViewModel:
         bindBody()
 
         if isWatchAccount {
-            bindActionTitle(hiddenCollectibleCount)
+            bindPrimaryActionTitle(hiddenCollectibleCount)
         } else {
-            bindActionTitle()
+            bindPrimaryActionTitle()
             bindSecondaryActionTitle(hiddenCollectibleCount)
         }
     }
@@ -105,7 +105,7 @@ extension CollectiblesNoContentWithActionViewModel {
 }
 
 extension CollectiblesNoContentWithActionViewModel {
-    private mutating func bindActionTitle() {
+    private mutating func bindPrimaryActionTitle() {
         primaryAction = Action(
             title: .string("collectibles-receive-action".localized),
             image: "icon-plus".uiImage
@@ -127,7 +127,7 @@ extension CollectiblesNoContentWithActionViewModel {
 }
 
 extension CollectiblesNoContentWithActionViewModel {
-    private mutating func bindActionTitle(
+    private mutating func bindPrimaryActionTitle(
         _ hiddenCollectibleCount: Int
     ) {
         if hiddenCollectibleCount < 1 {
