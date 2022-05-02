@@ -21,8 +21,8 @@ struct HomeNoContentViewModel: NoContentWithActionViewModel, NoContentViewModel 
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var body: EditText?
-    private(set) var primaryActionTitle: EditText?
-    private(set) var secondaryActionTitle: EditText?
+    private(set) var primaryAction: Action?
+    private(set) var secondaryAction: Action?
 
     init() {
         bindIcon()
@@ -76,6 +76,9 @@ extension HomeNoContentViewModel {
     }
 
     private mutating func bindActionTitle() {
-        primaryActionTitle = .string("empty-accounts-action".localized)
+        primaryAction = Action(
+            title: .string("empty-accounts-action".localized),
+            image: nil
+        )
     }
 }
