@@ -23,7 +23,6 @@ extension CollectibleMediaPreviewViewController {
         let cellSpacing: LayoutMetric
         let horizontalInset: LayoutMetric
         let pageControlScale: LayoutMetric
-        let tapInfoViewHorizontalPadding: LayoutMetric
         let tapInfoViewTopPadding: LayoutMetric
 
         init(
@@ -32,7 +31,6 @@ extension CollectibleMediaPreviewViewController {
             self.cellSpacing = 12
             self.horizontalInset = 24
             self.pageControlScale = 0.5
-            self.tapInfoViewHorizontalPadding = 60
             self.tapInfoViewTopPadding = 8
         }
     }
