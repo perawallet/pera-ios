@@ -22,8 +22,8 @@ struct ContactsNoContentWithActionViewModel: NoContentWithActionViewModel {
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var body: EditText?
-    private(set) var primaryActionTitle: EditText?
-    private(set) var secondaryActionTitle: EditText?
+    private(set) var primaryAction: Action?
+    private(set) var secondaryAction: Action?
 
     init() {
         bindIcon()
@@ -47,6 +47,9 @@ extension ContactsNoContentWithActionViewModel {
     }
 
     private mutating func bindActionTitle() {
-        primaryActionTitle = .string("contacts-add".localized)
+        primaryAction = Action(
+            title: .string("contacts-add".localized),
+            image: nil
+        )
     }
 }

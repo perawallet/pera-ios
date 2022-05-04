@@ -101,7 +101,10 @@ extension ApproveCollectibleTransactionViewController {
     private func addContent() {
         contentView.addSubview(contextView)
         contextView.snp.makeConstraints {
-            $0.setPaddings(theme.contentEdgeInsets)
+            $0.top == theme.contentEdgeInsets.top
+            $0.leading == theme.contentEdgeInsets.leading
+            $0.trailing == theme.contentEdgeInsets.trailing
+            $0.bottom <= theme.contentEdgeInsets.bottom
         }
 
         addTitle()

@@ -30,7 +30,8 @@ struct CollectibleMediaTapInfoViewTheme:
         _ family: LayoutFamily
     ) {
         image = [
-            .image("icon-3d")
+            .image("icon-3d"),
+            .contentMode(.scaleAspectFit)
         ]
         title = [
             .textOverflow(SingleLineFittingText()),

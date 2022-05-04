@@ -125,8 +125,6 @@ class Router:
                 by: .present
             )
         case .assetActionConfirmation(let draft):
-            launch(tab: .home)
-            
             let visibleScreen = findVisibleScreen(over: rootViewController)
             let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
@@ -788,7 +786,8 @@ extension Router {
     ) {
         let draft = assetActionConfirmationViewController.draft
         
-        guard let account = draft.account else {
+        guard let account = draft.account,
+              !account.isWatchAccount() else {
             return
         }
         

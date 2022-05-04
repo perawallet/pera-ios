@@ -335,7 +335,25 @@ extension CollectibleDetailViewController {
                     transactionMode: .asset(asset)
                 )
 
-                self.open(.sendTransaction(draft: draft), by: .push)
+                let controller = self.open(
+                    .sendTransaction(draft: draft),
+                    by: .present
+                ) as? SendTransactionScreen
+
+                controller?.eventHandler = {
+                    [weak self] event in
+                    guard let self = self else { return }
+                    switch event {
+                    case .didCompleteTransaction:
+                        self.popScreen()
+                    }
+                }
+
+                let closeBarButtonItem = ALGBarButtonItem(kind: .close) {
+                    [weak controller] in
+                    controller?.dismissScreen()
+                }
+                controller?.leftBarButtonItems = [closeBarButtonItem]
                 return
             }
 
@@ -535,7 +553,7 @@ extension CollectibleDetailViewController {
         )
 
         NotificationCenter.default.post(
-            name: CollectibleListLocalDataController.didSendCollectible,
+            name: CollectibleListLocalDataController.didRemoveCollectible,
             object: self,
             userInfo: [
                 CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)

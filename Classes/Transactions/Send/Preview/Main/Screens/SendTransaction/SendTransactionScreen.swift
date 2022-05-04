@@ -24,6 +24,10 @@ import Alamofire
 import MacaroonUIKit
 
 final class SendTransactionScreen: BaseViewController {
+    typealias EventHandler = (Event) -> Void
+
+    var eventHandler: EventHandler?
+
     private(set) lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var nextButton = Button()
@@ -413,7 +417,19 @@ extension SendTransactionScreen: TransactionSignChecking {
                 return
             }
 
-            open(.transactionAccountSelect(draft: self.draft), by: .push)
+            let controller = open(
+                .transactionAccountSelect(draft: draft),
+                by: .push
+            ) as? AccountSelectScreen
+
+            controller?.eventHandler = {
+                [weak self] event in
+                guard let self = self else { return }
+                switch event {
+                case .didCompleteTransaction:
+                    self.eventHandler?(.didCompleteTransaction)
+                }
+            }
             return
         case .algoParticipationKeyWarning:
             self.presentParticipationKeyWarningForMaxTransaction()
@@ -720,10 +736,22 @@ extension SendTransactionScreen: TransactionControllerDelegate {
             return
         }
 
-        open(
-            .sendTransactionPreview(draft: draft, transactionController: transactionController),
+        let controller = open(
+            .sendTransactionPreview(
+                draft: draft,
+                transactionController: transactionController
+            ),
             by: .push
-        )
+        ) as? SendTransactionPreviewScreen
+
+        controller?.eventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+            switch event {
+            case .didCompleteTransaction:
+                self.eventHandler?(.didCompleteTransaction)
+            }
+        }
     }
 
     private func displayTransactionError(from transactionError: TransactionError) {
@@ -948,5 +976,11 @@ extension SendTransactionScreen {
             .assetActionConfirmation(assetAlertDraft: assetAlertDraft, delegate: nil),
             by: .presentWithoutNavigationController
         )
+    }
+}
+
+extension SendTransactionScreen {
+    enum Event {
+        case didCompleteTransaction
     }
 }

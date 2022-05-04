@@ -450,14 +450,20 @@ extension SendCollectibleViewController {
     }
 }
 
-extension SendCollectibleViewController {
+extension SendCollectibleViewController: TransactionSignChecking {
     private func composeCollectibleAssetTransactionData(
         isOptingOut: Bool
     ) {
+        var fromAccount = draft.fromAccount
+
+        if !canSignTransaction(for: &fromAccount) {
+            return
+        }
+
         let creatorAddress = isOptingOut ? draft.collectibleAsset.creator?.address ?? "" : ""
 
         let transactionDraft = AssetTransactionSendDraft(
-            from: draft.fromAccount,
+            from: fromAccount,
             toAccount: draft.toAccount,
             amount: 1,
             assetIndex: draft.collectibleAsset.id,
@@ -467,7 +473,7 @@ extension SendCollectibleViewController {
         transactionController.setTransactionDraft(transactionDraft)
         transactionController.getTransactionParamsAndComposeTransactionData(for: .assetTransaction)
         
-        if draft.fromAccount.requiresLedgerConnection() {
+        if fromAccount.requiresLedgerConnection() {
             transactionController.initializeLedgerTransactionAccount()
             transactionController.startTimer()
         }

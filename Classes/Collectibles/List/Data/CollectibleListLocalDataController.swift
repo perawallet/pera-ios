@@ -55,6 +55,7 @@ final class CollectibleListLocalDataController:
     typealias AccountAssetPair = (account: Account, asset: CollectibleAsset)
     private var addedAccountAssetPairs: [AccountAssetPair] = []
     private var removedAccountAssetPairs: [AccountAssetPair] = []
+    private var sentAccountAssetPairs: [AccountAssetPair] = []
 
     private let isWatchAccount: Bool
 
@@ -278,7 +279,8 @@ extension CollectibleListLocalDataController {
 
         let pendingAccountAssetPairs =
         addedAccountAssetPairs +
-        removedAccountAssetPairs
+        removedAccountAssetPairs +
+        sentAccountAssetPairs
 
         pendingAccountAssetPairs.forEach { pendingAccountAssetPair in
             let pendingCollectibleAsset = pendingAccountAssetPair.asset
@@ -462,7 +464,6 @@ extension CollectibleListLocalDataController {
             }
         }
 
-        /// <todo>: Find another solution for better way of handling pending items.
         observe(notification: Self.didSendCollectible) {
             [weak self] notification in
             guard let self = self else { return }
@@ -472,7 +473,7 @@ extension CollectibleListLocalDataController {
                     Self.accountAssetPairUserInfoKey
                 ] as? AccountAssetPair {
 
-                self.addRemovedAccountAssetPair(
+                self.addSentAccountAssetPair(
                     accountAssetPair
                 )
             }
@@ -523,6 +524,28 @@ extension CollectibleListLocalDataController {
         }
     }
 
+    private func addSentAccountAssetPair(
+        _ accountAssetPair: AccountAssetPair
+    ) {
+        let isAlreadyPending = sentAccountAssetPairs.contains { sentAccountAssetPair in
+            sentAccountAssetPair.account.address == accountAssetPair.account.address &&
+            sentAccountAssetPair.asset.id == accountAssetPair.asset.id
+        }
+
+        if isAlreadyPending {
+            return
+        }
+
+        accountAssetPair.asset.state = .pending(.remove)
+        sentAccountAssetPairs.append(accountAssetPair)
+
+        if let lastQuery = lastQuery {
+            search(for: lastQuery)
+        } else {
+            deliverContentSnapshot()
+        }
+    }
+
     private func clearPendingAccountAssetPairsIfNeeded(
         for account: Account
     ) {
@@ -531,6 +554,10 @@ extension CollectibleListLocalDataController {
         )
 
         clearRemovedAccountAssetPairsIfNeeded(
+            for: account
+        )
+
+        clearSentAccountAssetPairsIfNeeded(
             for: account
         )
     }
@@ -561,13 +588,34 @@ extension CollectibleListLocalDataController {
         }
     }
 
+    private func clearSentAccountAssetPairsIfNeeded(
+        for account: Account
+    ) {
+        sentAccountAssetPairs = sentAccountAssetPairs.filter {
+            pendingSentAccountAssetPair in
+            if account.address != pendingSentAccountAssetPair.account.address {
+                return true
+            }
+
+            let matchingCollectibleAsset = account.collectibleAssets.first(
+                matching: (\.id, pendingSentAccountAssetPair.asset.id)
+            )
+            return (matchingCollectibleAsset?.isOwned ?? false)
+        }
+    }
+
     private func getPendingStatus(
         asset: CollectibleAsset,
         account: Account
     ) -> Bool {
-        let pendingAccountAssetPairs = addedAccountAssetPairs + removedAccountAssetPairs
+        let pendingAccountAssetPairs =
+        addedAccountAssetPairs +
+        removedAccountAssetPairs +
+        sentAccountAssetPairs
 
-        let matchingPendingAccountAssetPair = pendingAccountAssetPairs.first(matching: (\.asset.id, asset.id))
+        let matchingPendingAccountAssetPair = pendingAccountAssetPairs.first(
+            matching: (\.asset.id, asset.id)
+        )
         return matchingPendingAccountAssetPair?.account.address == account.address
     }
 }

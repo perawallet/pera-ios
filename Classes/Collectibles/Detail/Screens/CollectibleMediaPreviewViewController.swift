@@ -171,8 +171,8 @@ extension CollectibleMediaPreviewViewController {
         view.addSubview(tap3DView)
 
         tap3DView.snp.makeConstraints {
-            $0.leading == theme.tapInfoViewHorizontalPadding
-            $0.trailing == theme.tapInfoViewHorizontalPadding
+            $0.leading == theme.horizontalInset
+            $0.trailing == theme.horizontalInset
             $0.top == pageControl.snp.bottom + theme.tapInfoViewTopPadding
             $0.bottom == 0
         }
