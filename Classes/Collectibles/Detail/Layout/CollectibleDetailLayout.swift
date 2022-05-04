@@ -151,7 +151,7 @@ extension CollectibleDetailLayout {
             )
         case .action(let item),
                 .watchAccountAction(let item),
-                .createrAccountAction(let item):
+                .collectibleCreatorAccountAction(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,

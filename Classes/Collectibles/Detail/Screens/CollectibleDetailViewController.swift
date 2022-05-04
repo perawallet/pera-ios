@@ -259,7 +259,7 @@ extension CollectibleDetailViewController {
                 cell as! CollectibleDetailWatchAccountActionCell,
                 for: item
             )
-        case .createrAccountAction(let item):
+        case .collectibleCreatorAccountAction(let item):
             linkInteractors(
                 cell as! CollectibleDetailCreatorAccountActionCell,
                 for: item

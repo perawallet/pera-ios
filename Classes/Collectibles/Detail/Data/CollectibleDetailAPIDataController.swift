@@ -198,7 +198,7 @@ extension CollectibleDetailAPIDataController {
         _ snapshot: inout Snapshot
     ) {
         let actionItem: [CollectibleDetailItem] = [
-            .createrAccountAction(
+            .collectibleCreatorAccountAction(
                 CollectibleDetailActionViewModel(
                     asset: asset,
                     account: account
