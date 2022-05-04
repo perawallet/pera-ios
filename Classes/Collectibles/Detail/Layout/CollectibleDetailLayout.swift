@@ -150,7 +150,8 @@ extension CollectibleDetailLayout {
                 sizeForErrorItem: item
             )
         case .action(let item),
-                .watchAccountAction(let item):
+                .watchAccountAction(let item),
+                .collectibleCreatorAccountAction(let item):
             return listView(
                 collectionView,
                 layout: collectionViewLayout,

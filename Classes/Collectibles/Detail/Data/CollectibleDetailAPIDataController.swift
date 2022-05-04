@@ -166,6 +166,12 @@ extension CollectibleDetailAPIDataController {
             return
         }
 
+        /// <note>: Creators cannot opt-out from the asset.
+        if asset.creator?.address == account.address {
+            addCreatorAccountActionContent(&snapshot)
+            return
+        }
+
         addOptedInActionContent(&snapshot)
     }
 
@@ -174,6 +180,25 @@ extension CollectibleDetailAPIDataController {
     ) {
         let actionItem: [CollectibleDetailItem] = [
             .watchAccountAction(
+                CollectibleDetailActionViewModel(
+                    asset: asset,
+                    account: account
+                )
+            )
+        ]
+
+        snapshot.appendSections([.action])
+        snapshot.appendItems(
+            actionItem,
+            toSection: .action
+        )
+    }
+
+    private func addCreatorAccountActionContent(
+        _ snapshot: inout Snapshot
+    ) {
+        let actionItem: [CollectibleDetailItem] = [
+            .collectibleCreatorAccountAction(
                 CollectibleDetailActionViewModel(
                     asset: asset,
                     account: account

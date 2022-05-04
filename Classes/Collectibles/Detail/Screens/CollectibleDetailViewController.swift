@@ -259,6 +259,11 @@ extension CollectibleDetailViewController {
                 cell as! CollectibleDetailWatchAccountActionCell,
                 for: item
             )
+        case .collectibleCreatorAccountAction(let item):
+            linkInteractors(
+                cell as! CollectibleDetailCreatorAccountActionCell,
+                for: item
+            )
         case .optedInAction(let item):
             linkInteractors(
                 cell as! CollectibleDetailOptedInActionCell,
@@ -421,6 +426,20 @@ extension CollectibleDetailViewController {
 
     private func linkInteractors(
         _ cell: CollectibleDetailWatchAccountActionCell,
+        for item: CollectibleDetailActionViewModel
+    ) {
+        cell.observe(event: .performShare) {
+            [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.shareCollectible()
+        }
+    }
+
+    private func linkInteractors(
+        _ cell: CollectibleDetailCreatorAccountActionCell,
         for item: CollectibleDetailActionViewModel
     ) {
         cell.observe(event: .performShare) {
