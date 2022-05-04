@@ -786,7 +786,8 @@ extension Router {
     ) {
         let draft = assetActionConfirmationViewController.draft
         
-        guard let account = draft.account else {
+        guard let account = draft.account,
+              !account.isWatchAccount() else {
             return
         }
         
