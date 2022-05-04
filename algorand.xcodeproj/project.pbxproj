@@ -3783,10 +3783,10 @@
 		D4AC1FBE272D56760027353F /* AccountListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC1FBD272D56760027353F /* AccountListViewController+Theme.swift */; };
 		D4AC1FBF272D56760027353F /* AccountListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC1FBD272D56760027353F /* AccountListViewController+Theme.swift */; };
 		D4AC1FC0272D56760027353F /* AccountListViewController+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AC1FBD272D56760027353F /* AccountListViewController+Theme.swift */; };
+		D4ADED962821280600A834FD /* PreviewLoadingViewCommonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AF1C6727AD5A02001AB131 /* PreviewLoadingViewCommonTheme.swift */; };
 		D4ADED992821505E00A834FD /* CollectibleDetailCreatorAccountActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADED982821505E00A834FD /* CollectibleDetailCreatorAccountActionCell.swift */; };
 		D4ADED9A2821505F00A834FD /* CollectibleDetailCreatorAccountActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADED982821505E00A834FD /* CollectibleDetailCreatorAccountActionCell.swift */; };
 		D4ADED9B2821505F00A834FD /* CollectibleDetailCreatorAccountActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4ADED982821505E00A834FD /* CollectibleDetailCreatorAccountActionCell.swift */; };
-		D4ADED962821280600A834FD /* PreviewLoadingViewCommonTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95AF1C6727AD5A02001AB131 /* PreviewLoadingViewCommonTheme.swift */; };
 		D4AEC3B627CAED1C00507965 /* ShimmerAnimationDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AEC3B527CAED1C00507965 /* ShimmerAnimationDisplaying.swift */; };
 		D4AEC3B727CAED1C00507965 /* ShimmerAnimationDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AEC3B527CAED1C00507965 /* ShimmerAnimationDisplaying.swift */; };
 		D4AEC3B827CAED1C00507965 /* ShimmerAnimationDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AEC3B527CAED1C00507965 /* ShimmerAnimationDisplaying.swift */; };
@@ -19101,7 +19101,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
@@ -19131,7 +19131,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -19160,7 +19160,7 @@
 				CODE_SIGN_ENTITLEMENTS = "algorand-staging.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -19190,7 +19190,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
@@ -19221,7 +19221,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -19251,7 +19251,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = KHH37325LN;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -19403,7 +19403,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
@@ -19434,7 +19434,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -19591,7 +19591,7 @@
 				CODE_SIGN_ENTITLEMENTS = algorand.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 87QL82XC78;
 				ENABLE_BITCODE = YES;
 				FRAMEWORK_SEARCH_PATHS = (
