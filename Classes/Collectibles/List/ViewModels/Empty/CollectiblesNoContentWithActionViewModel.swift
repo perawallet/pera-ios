@@ -23,8 +23,8 @@ struct CollectiblesNoContentWithActionViewModel:
     private(set) var icon: Image?
     private(set) var title: EditText?
     private(set) var body: EditText?
-    private(set) var primaryActionTitle: EditText?
-    private(set) var secondaryActionTitle: EditText?
+    private(set) var primaryAction: Action?
+    private(set) var secondaryAction: Action?
 
     private let hiddenCollectibleCount: Int
 
@@ -39,9 +39,9 @@ struct CollectiblesNoContentWithActionViewModel:
         bindBody()
 
         if isWatchAccount {
-            bindActionTitle(hiddenCollectibleCount)
+            bindPrimaryActionTitle(hiddenCollectibleCount)
         } else {
-            bindActionTitle()
+            bindPrimaryActionTitle()
             bindSecondaryActionTitle(hiddenCollectibleCount)
         }
     }
@@ -105,22 +105,39 @@ extension CollectiblesNoContentWithActionViewModel {
 }
 
 extension CollectiblesNoContentWithActionViewModel {
-    private mutating func bindActionTitle() {
-        primaryActionTitle = .string("collectibles-receive-action".localized)
+    private mutating func bindPrimaryActionTitle() {
+        primaryAction = Action(
+            title: .string("collectibles-receive-action".localized),
+            image: "icon-plus".uiImage
+        )
     }
 
     private mutating func bindSecondaryActionTitle(
         _ hiddenCollectibleCount: Int
     ) {
-        secondaryActionTitle = getHiddenCollectibleCountTitle(hiddenCollectibleCount)
+        if hiddenCollectibleCount < 1 {
+            return
+        }
+
+        secondaryAction = Action(
+            title: getHiddenCollectibleCountTitle(hiddenCollectibleCount),
+            image: "icon-eye".uiImage
+        )
     }
 }
 
 extension CollectiblesNoContentWithActionViewModel {
-    private mutating func bindActionTitle(
+    private mutating func bindPrimaryActionTitle(
         _ hiddenCollectibleCount: Int
     ) {
-        primaryActionTitle = getHiddenCollectibleCountTitle(hiddenCollectibleCount)
+        if hiddenCollectibleCount < 1 {
+            return
+        }
+
+        primaryAction = Action(
+            title: getHiddenCollectibleCountTitle(hiddenCollectibleCount),
+            image: "icon-eye".uiImage
+        )
     }
 }
 

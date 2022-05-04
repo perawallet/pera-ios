@@ -57,13 +57,15 @@ final class NoContentWithActionView:
     ) {
         resultView.bindData(viewModel)
 
-        let primaryActionTitle = viewModel?.primaryActionTitle
-        primaryActionCanvasView.isHidden = primaryActionTitle == nil
-        primaryActionView.setEditTitle(viewModel?.primaryActionTitle, for: .normal)
+        let primaryAction = viewModel?.primaryAction
+        primaryActionCanvasView.isHidden = primaryAction == nil
+        primaryActionView.setEditTitle(primaryAction?.title, for: .normal)
+        primaryActionView.setImage(primaryAction?.image?.template, for: .normal)
 
-        let secondaryActionTitle = viewModel?.secondaryActionTitle
-        secondaryActionView.isHidden = secondaryActionTitle == nil
-        secondaryActionView.setEditTitle(secondaryActionTitle, for: .normal)
+        let secondaryAction = viewModel?.secondaryAction
+        secondaryActionView.isHidden = secondaryAction == nil
+        secondaryActionView.setEditTitle(secondaryAction?.title, for: .normal)
+        secondaryActionView.setImage(secondaryAction?.image?.template, for: .normal)
     }
 
     class func calculatePreferredSize(
@@ -88,11 +90,11 @@ final class NoContentWithActionView:
         theme.contentVerticalPaddings.top +
         theme.contentVerticalPaddings.bottom
 
-        if viewModel.primaryActionTitle != nil {
+        if viewModel.primaryAction != nil {
             preferredHeight += (theme.primaryActionTopMargin + buttonHeight)
         }
 
-        if viewModel.secondaryActionTitle != nil {
+        if viewModel.secondaryAction != nil {
             preferredHeight += (theme.secondaryActionTopMargin + buttonHeight)
         }
 
@@ -171,6 +173,7 @@ extension NoContentWithActionView {
         }
 
         primaryActionView.customizeAppearance(theme.primaryAction)
+        primaryActionView.adjustsImageWhenHighlighted = false
 
         primaryActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
         primaryActionView.fitToIntrinsicSize()
@@ -187,6 +190,7 @@ extension NoContentWithActionView {
         _ theme: NoContentViewWithActionTheme
     ) {
         secondaryActionView.customizeAppearance(theme.secondaryAction)
+        secondaryActionView.adjustsImageWhenHighlighted = false
 
         actionContentView.addArrangedSubview(secondaryActionView)
         secondaryActionView.contentEdgeInsets = UIEdgeInsets(theme.actionContentEdgeInsets)
