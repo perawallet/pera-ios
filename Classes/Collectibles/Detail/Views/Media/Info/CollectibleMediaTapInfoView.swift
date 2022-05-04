@@ -19,6 +19,7 @@ import MacaroonUIKit
 
 final class CollectibleMediaTapInfoView: View {
 
+    private lazy var contentView = MacaroonUIKit.BaseView()
     private lazy var imageView = UIImageView()
     private lazy var titleLabel = UILabel()
 
@@ -30,8 +31,7 @@ final class CollectibleMediaTapInfoView: View {
     func customize(
         _ theme: CollectibleMediaTapInfoViewTheme
     ) {
-        addTitleLabel(theme)
-        addImageView(theme)
+        addContent(theme)
     }
 
     func customizeAppearance(
@@ -44,30 +44,48 @@ final class CollectibleMediaTapInfoView: View {
 }
 
 extension CollectibleMediaTapInfoView {
+    private func addContent(
+        _ theme: CollectibleMediaTapInfoViewTheme
+    ) {
+        addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading >= 0
+            $0.bottom == 0
+            $0.trailing <= 0
+            $0.centerX == 0
+        }
+
+        addImageView(theme)
+        addTitleLabel(theme)
+    }
+    
+    private func addImageView(
+        _ theme: CollectibleMediaTapInfoViewTheme
+    ) {
+        imageView.customizeAppearance(theme.image)
+        
+        contentView.addSubview(imageView)
+        imageView.snp.makeConstraints {
+            $0.fitToSize(theme.iconSize)
+            $0.leading == 0
+            $0.centerY == 0
+        }
+    }
+
     private func addTitleLabel(
         _ theme: CollectibleMediaTapInfoViewTheme
     ) {
         titleLabel.customizeAppearance(theme.title)
 
-        addSubview(titleLabel)
+        contentView.addSubview(titleLabel)
+        titleLabel.fitToVerticalIntrinsicSize()
         titleLabel.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
-            $0.trailing <= 0
-            $0.centerY.equalToSuperview()
-        }
-    }
-
-    private func addImageView(
-        _ theme: CollectibleMediaTapInfoViewTheme
-    ) {
-        imageView.customizeAppearance(theme.image)
-
-        addSubview(imageView)
-        imageView.snp.makeConstraints {
-            $0.fitToSize(theme.iconSize)
-            $0.trailing == titleLabel.snp.leading - theme.iconOffset
             $0.top == 0
+            $0.leading == imageView.snp.trailing + theme.iconOffset
             $0.bottom == 0
+            $0.trailing == 0
+            $0.greaterThanHeight(theme.iconSize.h)
         }
     }
 }
