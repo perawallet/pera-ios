@@ -406,10 +406,6 @@ extension CollectibleDetailViewController {
             items.append(downloadURL.absoluteString)
         }
 
-        if let displayedImage = mediaPreviewController.getExistingImage() {
-            items.append(displayedImage)
-        }
-
         presentShareController(items)
     }
 
