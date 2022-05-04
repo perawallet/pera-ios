@@ -516,7 +516,7 @@ extension CollectibleDetailViewController {
         )
 
         NotificationCenter.default.post(
-            name: CollectibleListLocalDataController.didSendCollectible,
+            name: CollectibleListLocalDataController.didRemoveCollectible,
             object: self,
             userInfo: [
                 CollectibleListLocalDataController.accountAssetPairUserInfoKey: (account, asset)
