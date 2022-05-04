@@ -25,7 +25,6 @@ struct TransactionHistoryContextViewModel:
     private(set) var title: EditText?
     private(set) var subtitle: EditText?
     private(set) var transactionAmountViewModel: TransactionAmountViewModel?
-    private(set) var secondaryAmount: EditText?
 
     init<T>(
         _ model: T
@@ -48,7 +47,6 @@ struct TransactionHistoryContextViewModel:
             bindTitle(transactionDependencies)
             bindSubtitle(transactionDependencies)
             bindAmount(transactionDependencies)
-            bindSecondaryAmount(transactionDependencies)
         }
     }
 }
@@ -348,103 +346,9 @@ extension TransactionHistoryContextViewModel {
             }
         }
     }
-
-    private mutating func bindSecondaryAmount(
-        _ transactionDependency: TransactionViewModelDependencies
-    ) {
-        let account = transactionDependency.account
-
-        if let transaction = transactionDependency.transaction as? Transaction {
-            if let assetTransaction = transaction.assetTransfer,
-               let assetDetail = account[assetTransaction.assetId] as? StandardAsset {
-                bindSecondaryAmount(
-                    getAssetCurrencyValue(
-                        from: transactionDependency,
-                        and: transaction.getAmount()?.assetAmount(fromFraction: assetDetail.decimals)
-                    )
-                )
-            } else {
-                if transaction.payment == nil {
-                    if transaction.isAssetAdditionTransaction(for: account.address) {
-                        bindSecondaryAmount(getAlgoCurrencyValue(from: transactionDependency, and: transaction.fee?.toAlgos))
-                    }
-                    return
-                }
-
-                bindSecondaryAmount(getAlgoCurrencyValue(from: transactionDependency, and: transaction.getAmount()?.toAlgos))
-            }
-            return
-        }
-
-        if let transaction = transactionDependency.transaction as? PendingTransaction {
-            if let asset = transactionDependency.asset {
-                bindSecondaryAmount(
-                    getAssetCurrencyValue(
-                        from: transactionDependency,
-                        and: transaction.amount.assetAmount(fromFraction: asset.decimals)
-                    )
-                )
-            } else {
-                bindSecondaryAmount(getAlgoCurrencyValue(from: transactionDependency, and: transaction.amount.toAlgos))
-            }
-        }
-    }
 }
 
 extension TransactionHistoryContextViewModel {
-    private func getAlgoCurrencyValue(
-        from transactionDependency: TransactionViewModelDependencies,
-        and amount: Decimal?
-    ) -> String? {
-        guard let amount = amount,
-              let currency = transactionDependency.currency,
-              let currencyPriceValue = currency.priceValue
-        else {
-            return nil
-        }
-        
-        if let algoCurrency = currency as? AlgoCurrency {
-            return getUsdCurrencyValue(from: algoCurrency.currency, and: amount)
-        }
-
-        let totalAmount = amount * currencyPriceValue
-        return totalAmount.abbreviatedCurrencyStringForLabel(with: currency.symbol)
-    }
-    
-    private func getUsdCurrencyValue(
-        from currency: Currency,
-        and amount: Decimal?
-    ) -> String? {
-        guard let amount = amount,
-              let currencyPriceValue = currency.priceValue
-        else {
-            return nil
-        }
-        
-        let totalAmount = amount * currencyPriceValue
-        return totalAmount.abbreviatedCurrencyStringForLabel(with: currency.symbol)
-    }
-
-    private func getAssetCurrencyValue(
-        from transactionDependency: TransactionViewModelDependencies,
-        and amount: Decimal?
-    ) -> String? {
-        guard let amount = amount,
-              let asset = transactionDependency.asset,
-              let assetUSDValue = asset.usdValue,
-              let currency = transactionDependency.currency,
-              let currencyUSDValue = currency.usdValue else {
-            return nil
-        }
-
-        let currencyValue = assetUSDValue * amount * currencyUSDValue
-        if currencyValue > 0 {
-            return currencyValue.abbreviatedCurrencyStringForLabel(with: currency.symbol)
-        }
-
-        return nil
-    }
-
     private func getSubtitle(
         from transactionDependency: TransactionViewModelDependencies,
         and account: PublicKey?
@@ -520,29 +424,6 @@ extension TransactionHistoryContextViewModel {
                 .paragraph([
                     .lineBreakMode(.byTruncatingTail),
                     .lineHeightMultiple(lineHeightMultiplier)
-                ])
-            ])
-        )
-    }
-
-    private mutating func bindSecondaryAmount(
-        _ secondaryAmount: String?
-    ) {
-        guard let secondaryAmount = secondaryAmount else {
-            self.secondaryAmount = nil
-            return
-        }
-
-        let font = Fonts.DMSans.regular.make(13)
-        let lineHeightMultiplier = 1.18
-
-        self.secondaryAmount = .attributedString(
-            secondaryAmount.attributed([
-                .font(font),
-                .lineHeightMultiplier(lineHeightMultiplier, font),
-                .paragraph([
-                    .lineHeightMultiple(lineHeightMultiplier),
-                    .textAlignment(.right)
                 ])
             ])
         )
