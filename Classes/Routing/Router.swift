@@ -125,8 +125,6 @@ class Router:
                 by: .present
             )
         case .assetActionConfirmation(let draft):
-            launch(tab: .home)
-            
             let visibleScreen = findVisibleScreen(over: rootViewController)
             let transition = BottomSheetTransition(presentingViewController: visibleScreen)
 
