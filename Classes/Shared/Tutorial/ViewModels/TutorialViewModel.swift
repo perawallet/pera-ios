@@ -190,13 +190,7 @@ extension TutorialViewModel {
 
 extension TutorialViewModel {
     private func bindAccountSetupFlowTitle(_ flow: AccountSetupFlow) {
-        if case .initializeAccount(mode: .add(type: .watch)) = flow {
-            self.title = "recover-from-seed-verify-pop-up-title-watch-account".localized
-        } else if case .addNewAccount(mode: .add(type: .watch)) = flow {
-            self.title = "recover-from-seed-verify-pop-up-title-watch-account".localized
-        } else {
-            self.title = "recover-from-seed-verify-pop-up-title".localized
-        }
+        self.title = "recover-from-seed-verify-pop-up-title".localized
     }
     
     private func bindAccountSetupFlowDescription(_ flow: AccountSetupFlow) {
