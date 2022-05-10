@@ -26,7 +26,7 @@ final class CurrencySelectionViewController: BaseViewController {
     private lazy var contextView = CurrencySelectionView()
     
     private lazy var listLayout = CurrencySelectionListLayout(dataSource)
-    private lazy var dataSource = CurrencySelectionListDataSource(contextView.getCollectionView())
+    private lazy var dataSource = CurrencySelectionListDataSource(contextView.collectionView)
     private lazy var dataController: CurrencySelectionListAPIDataController = {
         guard let api = api else {
             fatalError("API should be set.")
