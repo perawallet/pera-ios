@@ -12,20 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   CurrencySelectionViewController+Theme.swift
+//   CurrencySelectionListLayout+Theme.swift
 
 import UIKit
 import MacaroonUIKit
 
-extension CurrencySelectionViewController {
-    struct Theme: LayoutSheet, StyleSheet {
-        let backgroundColor: Color
-        let contextViewTheme: CurrencySelectionViewTheme
-
+extension CurrencySelectionListLayout {
+    struct Theme:
+        LayoutSheet,
+        StyleSheet {
+        let horizontalPaddings: LayoutHorizontalPaddings
+        let topContentInset: LayoutMetric
+        let cellSize: LayoutSize
+        let headerSize: LayoutSize
+        
         init(_ family: LayoutFamily) {
-            self.backgroundColor = AppColors.Shared.System.background
-            self.contextViewTheme = CurrencySelectionViewTheme()
+            self.horizontalPaddings = (24, 24)
+            self.topContentInset = 16
+            self.cellSize = (UIScreen.main.bounds.width - 48, 64)
+            self.headerSize = (UIScreen.main.bounds.width, 28)
         }
     }
 }
