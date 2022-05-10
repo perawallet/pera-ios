@@ -18,7 +18,7 @@ import Foundation
 import MacaroonUtils
 import MagpieCore
 
-final class CurrencySelectionAPIDataController: CurrencySelectionDataController {
+final class CurrencySelectionListAPIDataController: CurrencySelectionDataController {
     var eventHandler: ((CurrencySelectionDataControllerEvent) -> Void)?
     
     private var currencies = [Currency]()
@@ -36,9 +36,13 @@ final class CurrencySelectionAPIDataController: CurrencySelectionDataController 
     ) {
         self.api = api
     }
+    
+    subscript (index: Int) -> Currency? {
+        return searchResults[safe: index]
+    }
 }
 
-extension CurrencySelectionAPIDataController {
+extension CurrencySelectionListAPIDataController {
     func load() {
         currencies.removeAll()
         searchResults.removeAll()
@@ -47,11 +51,21 @@ extension CurrencySelectionAPIDataController {
             switch response {
             case let .success(currencyList):
                 self.currencies.append(contentsOf: currencyList.items)
+                self.addAlgoCurrency()
                 self.searchResults = self.currencies
                 self.deliverContentSnapshot()
             case .failure:
-                self.deliverEmptyContentSnapshot()
+                self.deliverErrorContentSnapshot()
             }
+        }
+    }
+    
+    private func addAlgoCurrency() {
+        if let usdCurrency = currencies.first(where: {
+            $0.id == "USD"
+        }) {
+            let algoCurrency = AlgoCurrency(currency: usdCurrency)
+            self.currencies.insert(algoCurrency, at: 0)
         }
     }
         
@@ -87,15 +101,15 @@ extension CurrencySelectionAPIDataController {
     }
 }
 
-extension CurrencySelectionAPIDataController {
+extension CurrencySelectionListAPIDataController {
     private func deliverContentSnapshot() {
         guard !self.currencies.isEmpty else {
-            deliverNoContentSnapshot()
+            deliverErrorContentSnapshot()
             return
         }
         
         guard !self.searchResults.isEmpty else {
-            deliverEmptyContentSnapshot()
+            deliverNoContentSnapshot()
             return
         }
         
@@ -109,7 +123,7 @@ extension CurrencySelectionAPIDataController {
             var snapshot = Snapshot()
             
             var currencyItems: [CurrencySelectionItem] = []
-            
+                        
             self.searchResults.forEach { currency in
                 let viewModel: SingleSelectionViewModel
                 let isSelected = self.api.session.preferredCurrency == currency.id
@@ -120,7 +134,7 @@ extension CurrencySelectionAPIDataController {
                 
                 currencyItems.append(.currency(viewModel))
             }
-            
+                        
             snapshot.appendSections([.currencies])
             snapshot.appendItems(
                 currencyItems,
@@ -137,20 +151,20 @@ extension CurrencySelectionAPIDataController {
             var snapshot = Snapshot()
             snapshot.appendSections([.noContent])
             snapshot.appendItems(
-                [.noContent],
+                [.noContent(CurrencySelectionNoContentViewModel())],
                 toSection: .noContent
             )
             return snapshot
         }
     }
     
-    private func deliverEmptyContentSnapshot() {
+    private func deliverErrorContentSnapshot() {
         deliverSnapshot {
             var snapshot = Snapshot()
-            snapshot.appendSections([.empty])
+            snapshot.appendSections([.error])
             snapshot.appendItems(
-                [.empty],
-                toSection: .empty
+                [.error],
+                toSection: .error
             )
             return snapshot
         }
@@ -174,7 +188,7 @@ extension CurrencySelectionAPIDataController {
     }
 }
 
-extension CurrencySelectionAPIDataController {
+extension CurrencySelectionListAPIDataController {
     private func publish(
         _ event: CurrencySelectionDataControllerEvent
     ) {
