@@ -2947,7 +2947,6 @@
 		CBAD473C2745434A00C91946 /* MacaroonMedia in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6826E607D800B050ED /* MacaroonMedia */; };
 		CBAD473D2745434A00C91946 /* MacaroonResources in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6A26E607D800B050ED /* MacaroonResources */; };
 		CBAD473E2745434A00C91946 /* MacaroonSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6C26E607D800B050ED /* MacaroonSwiftUI */; };
-		CBAD473F2745434A00C91946 /* MacaroonTabBarController in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E6E26E607D800B050ED /* MacaroonTabBarController */; };
 		CBAD47402745434A00C91946 /* MacaroonUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E7026E607D800B050ED /* MacaroonUIKit */; };
 		CBAD47412745434A00C91946 /* MacaroonURLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E7226E607D800B050ED /* MacaroonURLImage */; };
 		CBAD47422745434A00C91946 /* MacaroonVendors in Frameworks */ = {isa = PBXBuildFile; productRef = 2B9A3E7426E607D800B050ED /* MacaroonVendors */; };
@@ -6004,7 +6003,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CBAD473F2745434A00C91946 /* MacaroonTabBarController in Frameworks */,
 				CBAD473E2745434A00C91946 /* MacaroonSwiftUI in Frameworks */,
 				CBAD473C2745434A00C91946 /* MacaroonMedia in Frameworks */,
 				D4A241E027D2BF1C00641FF0 /* Prism in Frameworks */,
@@ -14368,7 +14366,6 @@
 				2B9A3E6826E607D800B050ED /* MacaroonMedia */,
 				2B9A3E6A26E607D800B050ED /* MacaroonResources */,
 				2B9A3E6C26E607D800B050ED /* MacaroonSwiftUI */,
-				2B9A3E6E26E607D800B050ED /* MacaroonTabBarController */,
 				2B9A3E7026E607D800B050ED /* MacaroonUIKit */,
 				2B9A3E7226E607D800B050ED /* MacaroonURLImage */,
 				2B9A3E7426E607D800B050ED /* MacaroonVendors */,
@@ -20126,11 +20123,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
 			productName = MacaroonSwiftUI;
-		};
-		2B9A3E6E26E607D800B050ED /* MacaroonTabBarController */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2B9A3E2B26E6077000B050ED /* XCRemoteSwiftPackageReference "macaroon" */;
-			productName = MacaroonTabBarController;
 		};
 		2B9A3E7026E607D800B050ED /* MacaroonUIKit */ = {
 			isa = XCSwiftPackageProductDependency;
