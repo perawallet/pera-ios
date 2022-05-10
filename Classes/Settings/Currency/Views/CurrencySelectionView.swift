@@ -21,7 +21,7 @@ final class CurrencySelectionView: View {
     private lazy var theme = CurrencySelectionViewTheme()
     
     private lazy var searchInputView = SearchInputView()
-    private lazy var collectionView: UICollectionView = {
+    private(set) lazy var collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.minimumLineSpacing = .zero
         flowLayout.minimumInteritemSpacing = .zero
@@ -64,10 +64,6 @@ extension CurrencySelectionView {
 }
 
 extension CurrencySelectionView {
-    func getCollectionView() -> UICollectionView {
-        return collectionView
-    }
-    
     func setCollectionViewDelegate(_ delegate: UICollectionViewDelegate?) {
         collectionView.delegate = delegate
     }
