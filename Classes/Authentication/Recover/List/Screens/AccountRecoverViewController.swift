@@ -18,6 +18,13 @@
 import UIKit
 
 final class AccountRecoverViewController: BaseScrollViewController {
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!,
+        bannerController: bannerController
+    )
+
     private lazy var bottomSheetTransition = BottomSheetTransition(presentingViewController: self)
 
     private lazy var inputSuggestionsViewController: InputSuggestionViewController = {
@@ -40,7 +47,11 @@ final class AccountRecoverViewController: BaseScrollViewController {
         guard let session = session else {
             fatalError("Session should be set")
         }
-        let dataController = AccountRecoverDataController(sharedDataController: sharedDataController, session: session)
+        let dataController = AccountRecoverDataController(
+            sharedDataController: sharedDataController,
+            session: session,
+            pushNotificationController: pushNotificationController
+        )
         return dataController
     }()
 

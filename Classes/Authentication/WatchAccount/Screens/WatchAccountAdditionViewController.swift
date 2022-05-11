@@ -18,6 +18,13 @@
 import UIKit
 
 final class WatchAccountAdditionViewController: BaseScrollViewController {
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!,
+        bannerController: bannerController
+    )
+
     private lazy var watchAccountAdditionView = WatchAccountAdditionView()
     private lazy var theme = Theme()
     
@@ -141,6 +148,7 @@ extension WatchAccountAdditionViewController: WatchAccountAdditionViewDelegate {
             } else {
                 user.addAccount(account)
             }
+            pushNotificationController.sendDeviceDetails()
         } else {
             user = User(accounts: [account])
         }
