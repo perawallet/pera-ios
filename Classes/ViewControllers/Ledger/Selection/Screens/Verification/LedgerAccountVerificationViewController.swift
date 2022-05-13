@@ -22,6 +22,13 @@ final class LedgerAccountVerificationViewController: BaseScrollViewController {
     private lazy var ledgerAccountVerificationView = LedgerAccountVerificationView()
     private lazy var verifyButton = Button()
 
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!,
+        bannerController: bannerController
+    )
+
     private lazy var ledgerAccountVerificationOperation = LedgerAccountVerifyOperation()
     private lazy var dataController = LedgerAccountVerificationDataController(accounts: selectedAccounts)
 
@@ -149,12 +156,18 @@ extension LedgerAccountVerificationViewController {
     }
 
     private func saveVerifiedAccounts() {
+        var isNewAccountAdded = false
         dataController.getVerifiedAccounts().forEach { account in
             if let localAccount = api?.session.accountInformation(from: account.address) {
                 updateLocalAccount(localAccount, with: account)
             } else {
+                isNewAccountAdded = true
                 setupLocalAccount(from: account)
             }
+        }
+
+        if isNewAccountAdded {
+            pushNotificationController.sendDeviceDetails()
         }
     }
 

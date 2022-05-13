@@ -19,6 +19,13 @@ import UIKit
 import AVFoundation
 
 final class PassphraseVerifyViewController: BaseScrollViewController {
+    private lazy var pushNotificationController = PushNotificationController(
+        target: target,
+        session: session!,
+        api: api!,
+        bannerController: bannerController
+    )
+
     private lazy var contextView = PassphraseVerifyView()
         
     private lazy var theme = Theme()
@@ -176,6 +183,7 @@ extension PassphraseVerifyViewController {
 
         if let authenticatedUser = session?.authenticatedUser {
             authenticatedUser.addAccount(account)
+            pushNotificationController.sendDeviceDetails()
         } else {
             let user = User(accounts: [account])
             session?.authenticatedUser = user

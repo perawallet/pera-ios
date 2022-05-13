@@ -28,10 +28,16 @@ class AccountRecoverDataController: NSObject {
 
     private let sharedDataController: SharedDataController
     private let session: Session
+    private let pushNotificationController: PushNotificationController
 
-    init(sharedDataController: SharedDataController, session: Session) {
+    init(
+        sharedDataController: SharedDataController,
+        session: Session,
+        pushNotificationController: PushNotificationController
+    ) {
         self.sharedDataController = sharedDataController
         self.session = session
+        self.pushNotificationController = pushNotificationController
     }
 
     func recoverAccount(from mnemonics: String) {
@@ -104,6 +110,8 @@ class AccountRecoverDataController: NSObject {
             } else {
                 user.addAccount(account)
             }
+
+            pushNotificationController.sendDeviceDetails()
         } else {
             user = User(accounts: [account])
         }
