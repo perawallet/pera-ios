@@ -128,7 +128,10 @@ final class QRText: Codable {
 
 extension QRText {
     func qrText() -> String {
-        let base = "algorand://"
+        /// <todo>
+        /// This should be converted to a builder/generator, not implemented in the model itself.
+        let deeplinkConfig = ALGAppTarget.current.deeplinkConfig.qr
+        let base = "\(deeplinkConfig.preferredScheme)://"
         switch mode {
         case .mnemonic:
             if let mnemonic = mnemonic {

@@ -268,7 +268,8 @@ extension QRScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
                 closeScreen(by: .pop)
                 delegate?.qrScannerViewController(self, didRead: qrText, completionHandler: nil)
             } else if let url = URL(string: qrString),
-                qrString.hasPrefix("algorand://") {
+                let scheme = url.scheme,
+                target.deeplinkConfig.qr.canAcceptScheme(scheme) {
                 guard let qrText = url.buildQRText() else {
                     delegate?.qrScannerViewController(self, didFail: .jsonSerialization, completionHandler: cameraResetHandler)
                     return

@@ -6,6 +6,20 @@
         "web_base": ""
     },
     "deeplink_config": {
-        "host": ""
+        "qr": {
+            "acceptedSchemes": [
+                "algorand"
+            ],
+            "preferredScheme": "algorand"
+        },
+        "wallet_connect": {
+            "acceptedSchemes": [
+                "algorand-wc"
+            ],
+            "preferredScheme": "algorand-wc"
+        },
+        "moonpay": {
+            "scheme": "algorand"
+        }
     }
 }
