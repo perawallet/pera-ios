@@ -116,6 +116,8 @@ extension CollectibleMediaImagePreviewView {
         } else {
             overlayView.alpha = 0.0
         }
+
+        fullScreenBadge.isHidden = viewModel.isFullScreenBadgeHidden
     }
 
     class func calculatePreferredSize(
@@ -131,6 +133,7 @@ extension CollectibleMediaImagePreviewView {
     func prepareForReuse() {
         overlayView.alpha = 0.0
         imageView.prepareForReuse()
+        fullScreenBadge.isHidden = false
     }
 }
 

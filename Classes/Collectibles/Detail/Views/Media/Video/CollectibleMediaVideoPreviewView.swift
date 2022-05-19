@@ -147,6 +147,8 @@ extension CollectibleMediaVideoPreviewView {
         } else {
             overlayView.alpha = 0.0
         }
+
+        fullScreenBadge.isHidden = viewModel.isFullScreenBadgeHidden
     }
 
     class func calculatePreferredSize(
@@ -184,6 +186,7 @@ extension CollectibleMediaVideoPreviewView {
         videoPlayerView.player = nil
         placeholderView.prepareForReuse()
         overlayView.alpha = 0.0
+        fullScreenBadge.isHidden = false
     }
 }
 

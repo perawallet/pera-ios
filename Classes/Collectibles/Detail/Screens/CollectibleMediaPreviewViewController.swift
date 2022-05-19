@@ -72,9 +72,7 @@ final class CollectibleMediaPreviewViewController:
             selectedMedia = asset.media[safe: selectedIndex]
             eventHandler?(.didScrollToMedia(selectedMedia))
 
-            if let selectedMedia = selectedMedia {
-                tap3DActionView.isHidden = !selectedMedia.type.isSupported
-            }
+            tap3DActionView.isHidden = !(selectedMedia?.type.isSupported ?? false)
         }
     }
 
