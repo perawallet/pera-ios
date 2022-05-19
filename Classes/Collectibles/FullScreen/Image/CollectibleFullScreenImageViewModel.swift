@@ -76,7 +76,7 @@ extension CollectibleFullScreenImageViewModel {
 
             return PrismURL(baseURL: imageURL)
                 .setExpectedImageSize(expectedImageSize)
-                .setImageQuality(.high)
+                .setImageQuality(.normal)
                 .build()
         default:
             guard let imageURL = media.previewURL else {
@@ -85,7 +85,7 @@ extension CollectibleFullScreenImageViewModel {
 
             return PrismURL(baseURL: imageURL)
                 .setExpectedImageSize(expectedImageSize)
-                .setImageQuality(.high)
+                .setImageQuality(.normal)
                 .build()
         }
     }
