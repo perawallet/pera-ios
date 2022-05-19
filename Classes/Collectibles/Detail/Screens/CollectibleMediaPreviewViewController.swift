@@ -335,11 +335,13 @@ extension CollectibleMediaPreviewViewController {
             let videoPreviewCell = cell as? CollectibleMediaVideoPreviewCell
             let player = videoPreviewCell?.contextView.currentPlayer
 
-            guard let player = player else {
+            guard let videoPreviewCell = videoPreviewCell,
+                  videoPreviewCell.isReadyForDisplay,
+                  let player = player else {
                 return
             }
 
-            videoPreviewCell?.stopVideo()
+            videoPreviewCell.stopVideo()
 
             openFullScreenVideoPreview(
                 with: player,

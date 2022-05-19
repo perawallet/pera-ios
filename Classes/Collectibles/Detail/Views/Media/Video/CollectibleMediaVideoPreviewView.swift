@@ -30,6 +30,8 @@ final class CollectibleMediaVideoPreviewView:
     private lazy var overlayView = UIView()
     private lazy var fullScreenBadge = ImageView()
 
+    private(set) var isReadyForDisplay = false
+
     private var playerStateObserver: NSKeyValueObservation?
 
     var currentPlayer: AVPlayer? {
@@ -131,6 +133,7 @@ extension CollectibleMediaVideoPreviewView {
             [weak self] (playerLayer, change) in
             guard let self = self else { return }
             self.placeholderView.isHidden = playerLayer.isReadyForDisplay
+            self.isReadyForDisplay = playerLayer.isReadyForDisplay
         }
 
         let videoPlayer = AVPlayer(url: url)
