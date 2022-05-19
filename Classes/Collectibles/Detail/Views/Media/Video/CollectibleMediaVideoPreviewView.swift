@@ -26,10 +26,15 @@ final class CollectibleMediaVideoPreviewView:
     ListReusable {
 
     private lazy var placeholderView = URLImagePlaceholderView()
-    private lazy var videoPlayerView = VideoPlayerView()
+    private(set) lazy var videoPlayerView = VideoPlayerView()
     private lazy var overlayView = UIView()
+    private lazy var fullScreenBadge = ImageView()
 
     private var playerStateObserver: NSKeyValueObservation?
+
+    var currentPlayer: AVPlayer? {
+        return videoPlayerView.player
+    }
 
     func customize(
         _ theme: CollectibleMediaVideoPreviewViewTheme
@@ -37,6 +42,7 @@ final class CollectibleMediaVideoPreviewView:
         addPlaceholderView(theme)
         addVideoPlayerView(theme)
         addOverlayView(theme)
+        addFullScreenBadge(theme)
     }
 
     func customizeAppearance(
@@ -89,6 +95,20 @@ extension CollectibleMediaVideoPreviewView {
         addSubview(overlayView)
         overlayView.snp.makeConstraints {
             $0.setPaddings()
+        }
+    }
+
+    private func addFullScreenBadge(
+        _ theme: CollectibleMediaVideoPreviewViewTheme
+    ) {
+        fullScreenBadge.customizeAppearance(theme.fullScreenBadge)
+        fullScreenBadge.layer.draw(corner: theme.corner)
+
+        fullScreenBadge.contentEdgeInsets = theme.fullScreenBadgeContentEdgeInsets
+        addSubview(fullScreenBadge)
+        fullScreenBadge.snp.makeConstraints {
+            $0.trailing == theme.fullScreenBadgePaddings.trailing
+            $0.bottom == theme.fullScreenBadgePaddings.bottom
         }
     }
 }

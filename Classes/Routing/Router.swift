@@ -697,6 +697,16 @@ class Router:
                 url: url,
                 configuration: configuration
             )
+        case .collectibleFullScreenImage(let draft):
+            viewController = CollectibleFullScreenImageViewController(
+                draft: draft,
+                configuration: configuration
+            )
+        case .collectibleFullScreenVideo(let draft):
+            viewController = CollectibleFullScreenVideoViewController(
+                draft: draft,
+                configuration: configuration
+            )
         case .buyAlgoHome(let draft, let delegate):
             let buyAlgoHomeScreen = BuyAlgoHomeScreen(
                 draft: draft,
