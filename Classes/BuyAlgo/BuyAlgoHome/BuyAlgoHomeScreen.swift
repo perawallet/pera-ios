@@ -134,7 +134,8 @@ extension BuyAlgoHomeScreen: SelectAccountViewControllerDelegate {
             return
         }
 
-        let buyAlgoSignDraft = BuyAlgoSignDraft(walletAddress: address, redirectUrl: "algorand://\(address)")
+        let deeplinkURL = "\(target.deeplinkConfig.moonpay.scheme)://\(address)"
+        let buyAlgoSignDraft = BuyAlgoSignDraft(walletAddress: address, redirectUrl: deeplinkURL)
 
         loadingController?.startLoadingWithMessage("title-loading".localized)
 
