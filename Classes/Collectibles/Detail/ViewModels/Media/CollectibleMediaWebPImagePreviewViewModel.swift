@@ -23,6 +23,7 @@ import Prism
 struct CollectibleMediaWebPImagePreviewViewModel: CollectibleMediaImagePreviewViewModel {
     var image: ImageSource?
     var isOwned: Bool = true
+    var isFullScreenBadgeHidden: Bool = false
 
     init(
         imageSize: CGSize,
@@ -36,6 +37,7 @@ struct CollectibleMediaWebPImagePreviewViewModel: CollectibleMediaImagePreviewVi
         )
 
         bindOwned(asset)
+        bindIsFullScreenBadgeHidden(asset)
     }
 }
 

@@ -313,7 +313,6 @@ extension CollectibleDetailViewController {
             switch event {
             case .didScrollToMedia(let media):
                 self.displayedMedia = media
-            default: break
             }
         }
     }
@@ -640,6 +639,12 @@ extension CollectibleDetailViewController {
         default:
             break
         }
+    }
+}
+
+extension CollectibleDetailViewController {
+    var currentVisibleMediaCell: UICollectionViewCell? {
+        return mediaPreviewController.currentVisibleCell
     }
 }
 
