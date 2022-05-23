@@ -37,6 +37,23 @@ struct AlgoExplorerExternalSource: CollectibleExternalSource {
             url = "https://testnet.algoexplorer.io/asset/\(String(asset))"
         }
     }
+    
+    init(address: String, network: ALGAPI.Network) {
+        switch network {
+        case .mainnet:
+            url = "https://algoexplorer.io/address/\(address)"
+        case .testnet:
+            url = "https://testnet.algoexplorer.io/address/\(address)"
+        }
+    }
+    
+    func getExplorerUrl() -> URL? {
+        if let url = url {
+            return URL(string: url)
+        }
+        
+        return nil
+    }
 }
 
 struct NFTExplorerExternalSource: CollectibleExternalSource {
