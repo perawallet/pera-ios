@@ -12,31 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AlgoPriceAttributeViewTheme.swift
+//   WalletConnectConfig.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-struct AlgoPriceAttributeViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var icon: ImageStyle
-    var iconContentEdgeInsets: LayoutOffset
-    var title: TextStyle
-    var loadingCorner: Corner
+protocol WalletConnectConfig: AnyObject {
+    var meta: WalletConnectMetaConfig { get }
+}
 
-    init(
-        _ family: LayoutFamily
-    ) {
-        self.icon = [
-            .contentMode(.left)
-        ]
-        self.iconContentEdgeInsets = (4, 0)
-        self.title = [
-            .textOverflow(SingleLineFittingText())
-        ]
-        self.loadingCorner = 4
-    }
+protocol WalletConnectMetaConfig: AnyObject {
+    var name: String { get }
+    var description: String { get }
+    var icons: [URL] { get }
+    var url: URL { get }
 }

@@ -12,31 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//   AlgoPriceAttributeViewTheme.swift
+//   DeeplinkConfig.swift
 
 import Foundation
-import MacaroonUIKit
-import UIKit
 
-struct AlgoPriceAttributeViewTheme:
-    StyleSheet,
-    LayoutSheet {
-    var icon: ImageStyle
-    var iconContentEdgeInsets: LayoutOffset
-    var title: TextStyle
-    var loadingCorner: Corner
+protocol DeeplinkConfig: AnyObject {
+    var qr: DeeplinkSourceGroupConfig { get }
+    var walletConnect: DeeplinkSourceGroupConfig { get }
+    var moonpay: DeeplinkSourceConfig { get }
+}
 
-    init(
-        _ family: LayoutFamily
-    ) {
-        self.icon = [
-            .contentMode(.left)
-        ]
-        self.iconContentEdgeInsets = (4, 0)
-        self.title = [
-            .textOverflow(SingleLineFittingText())
-        ]
-        self.loadingCorner = 4
+protocol DeeplinkSourceGroupConfig: AnyObject {
+    var acceptedSchemes: [String] { get }
+    var preferredScheme: String { get }
+}
+
+extension DeeplinkSourceGroupConfig {
+    func canAcceptScheme(
+        _ aScheme: String
+    ) -> Bool {
+        return acceptedSchemes.contains(aScheme)
     }
+}
+
+protocol DeeplinkSourceConfig: AnyObject {
+    var scheme: String { get }
 }

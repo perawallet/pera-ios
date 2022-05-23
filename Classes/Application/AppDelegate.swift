@@ -187,22 +187,23 @@ class AppDelegate:
         open url: URL,
         options: [UIApplication.OpenURLOptionsKey: Any] = [:]
     ) -> Bool {
+        let deeplinkConfig = ALGAppTarget.current.deeplinkConfig
+        
         guard let scheme = url.scheme else {
             return false
         }
         
-        /// <todo>
-        /// Schemes should be controlled from a single point.
-        switch scheme {
-        case "algorand":
+        if deeplinkConfig.qr.canAcceptScheme(scheme) {
             receive(deeplinkWithSource: .url(url))
             return true
-        case "algorand-wc":
+        }
+        
+        if deeplinkConfig.walletConnect.canAcceptScheme(scheme) {
             receive(deeplinkWithSource: .walletConnectSessionRequest(url))
             return true
-        default:
-            return false
         }
+        
+        return false
     }
 }
 
