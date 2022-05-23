@@ -27,19 +27,13 @@ struct TransactionOptionsViewTheme:
     var content: ViewStyle
     var contentCorner: Corner
     var contentSafeAreaInsets: UIEdgeInsets
-    var actionsMinHorizontalPaddings: LayoutHorizontalPaddings
-    var actionsVerticalPaddings: LayoutVerticalPaddings
+    var contentPaddings: LayoutPaddings
     var spacingBetweenActions: LayoutMetric
-    var sendAction: ButtonStyle
-    var receiveAction: ButtonStyle
-    var buyAlgoAction: ButtonStyle
-    
+    var action: ListActionViewTheme
+
     init(
         _ family: LayoutFamily
     ) {
-        let actionFont = Fonts.DMSans.medium.make(15)
-        let actionTitleColor = AppColors.Components.Text.main
-        
         self.backgroundStart = [
             .backgroundColor(UIColor.clear)
         ]
@@ -56,27 +50,11 @@ struct TransactionOptionsViewTheme:
                 .layerMaxXMinYCorner
             ]
         )
+        self.contentPaddings = (48, 20, 44, 20)
         self.contentSafeAreaInsets = .zero
-        self.actionsMinHorizontalPaddings = (8, 8)
-        self.actionsVerticalPaddings = (60, 40)
-        self.spacingBetweenActions = 52
-        self.sendAction = [
-            .font(actionFont),
-            .icon([ .normal("tabbar-icon-send") ]),
-            .title("title-send".localized),
-            .titleColor([ .normal(actionTitleColor) ])
-        ]
-        self.receiveAction = [
-            .font(actionFont),
-            .icon([ .normal("tabbar-icon-receive") ]),
-            .title("title-receive".localized),
-            .titleColor([ .normal(actionTitleColor) ])
-        ]
-        self.buyAlgoAction = [
-            .font(actionFont),
-            .icon([ .normal("tabbar-icon-buy") ]),
-            .title("moonpay-buy-button-title".localized),
-            .titleColor([ .normal(actionTitleColor) ])
-        ]
+        self.spacingBetweenActions = 20
+        var action = ListActionViewTheme()
+        action.configureForPeraButton()
+        self.action = action
     }
 }
