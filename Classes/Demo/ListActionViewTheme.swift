@@ -55,7 +55,7 @@ struct ListActionViewTheme:
 }
 
 extension ListActionViewTheme {
-    mutating func configureForPeraButton() {
+    mutating func configureForTransactionOptionsView() {
         self.iconContentEdgeInsets = (12, 0)
         self.iconAlignment = .aligned(top: 0)
         self.contentVerticalPaddings = (8, 8)

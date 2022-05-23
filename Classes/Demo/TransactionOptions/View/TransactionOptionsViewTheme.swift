@@ -54,7 +54,7 @@ struct TransactionOptionsViewTheme:
         self.contentSafeAreaInsets = .zero
         self.spacingBetweenActions = 20
         var action = ListActionViewTheme()
-        action.configureForPeraButton()
+        action.configureForTransactionOptionsView()
         self.action = action
     }
 }
