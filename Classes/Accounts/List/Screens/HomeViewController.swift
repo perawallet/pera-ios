@@ -24,6 +24,7 @@ final class HomeViewController:
     BaseViewController,
     UICollectionViewDelegateFlowLayout {
 
+    private lazy var storyTransition = StoryTransition(presentingViewController: self)
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
       
@@ -35,6 +36,7 @@ final class HomeViewController:
     )
     
     private let onceWhenViewDidAppear = Once()
+    private let storyOnceWhenViewDidAppear = Once()
 
     override var name: AnalyticsScreenName? {
         return .accounts
@@ -86,6 +88,7 @@ final class HomeViewController:
             case .didUpdate(let snapshot):
                 self.configureWalletConnectIfNeeded()
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.presentCopyAddressStoryIfNeeded()
             }
         }
         dataController.load()
@@ -388,6 +391,55 @@ extension HomeViewController {
         peraAppLaunchStore.isOnboarded = true
 
         open(.peraIntroduction, by: .present)
+    }
+}
+
+extension HomeViewController {
+    private func presentCopyAddressStoryIfNeeded() {
+        /// note: If any screen presented on top of home screen, it will prevent opening story screen here
+        guard sharedDataController.isAvailable, presentedViewController == nil else {
+            return
+        }
+        
+        storyOnceWhenViewDidAppear.execute { [weak self] in
+            guard let self = self else {
+                return
+            }
+
+            self.presentCopyAddressStory()
+        }
+    }
+    
+    private func presentCopyAddressStory() {
+        guard let session = session,
+              session.hasAuthentication() else {
+            return
+        }
+
+        var copyAddressDisplayStore = CopyAddressDisplayStore()
+
+        if !copyAddressDisplayStore.shouldAskForCopyAddress(sharedDataController.accountCollection.count) {
+            return
+        }
+
+        copyAddressDisplayStore.increaseAppOpenCount()
+        
+        let eventHandler: CopyAddressStoryScreen.EventHandler = {
+            [weak self] event in
+            guard let self = self else { return }
+
+            switch event {
+            case .close:
+                self.dismiss(animated: true)
+            }
+        }
+
+        self.storyTransition.perform(
+            .copyAddressStory(
+                eventHandler: eventHandler
+            ),
+            by: .presentWithoutNavigationController
+        )
     }
 }
 
@@ -817,5 +869,27 @@ struct PasscodeSettingDisplayStore: Storable {
 
     var shouldAskForPasscode: Bool {
         return appOpenCount % appOpenCountToAskPasscode == 0
+    }
+}
+
+struct CopyAddressDisplayStore: Storable {
+    typealias Object = Any
+
+    let accountLimit = 1
+    let appOpenCountCopyAddress = 2
+
+    private let appOpenCountKey = "com.algorand.algorand.copy.address.count.key"
+    private let dontAskAgainKey = "com.algorand.algorand.copy.address.dont.ask.again"
+
+    var appOpenCount: Int {
+        return userDefaults.integer(forKey: appOpenCountKey)
+    }
+
+    mutating func increaseAppOpenCount() {
+        userDefaults.set(appOpenCount + 1, forKey: appOpenCountKey)
+    }
+    
+    func shouldAskForCopyAddress(_ addressCount: Int) -> Bool {
+        return addressCount >= accountLimit && appOpenCount < appOpenCountCopyAddress
     }
 }

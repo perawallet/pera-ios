@@ -1038,3 +1038,7 @@
 "moonpay-transaction-waitingPayment-title" = "Almost there!";
 "moonpay-transaction-waitingPayment-description" = "Your purchase request is pending payment. Once payment is processed, you will receive a notification.";
 "moonpay-transaction-testnet-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use MoonPay.";
+
+//MARK: Story
+"story-copy-address-title" = "Press and hold to “Copy Address”";
+"story-copy-address-description" = "You can quickly copy the account address by pressing and holding on Account box";
