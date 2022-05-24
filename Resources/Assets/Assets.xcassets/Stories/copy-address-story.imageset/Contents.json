@@ -3,6 +3,16 @@
     {
       "filename" : "copy-address-story.pdf",
       "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "copy-address-story-dark.pdf",
+      "idiom" : "universal"
     }
   ],
   "info" : {
