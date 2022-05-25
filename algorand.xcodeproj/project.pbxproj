@@ -4359,15 +4359,6 @@
 		F08709222791907D00BEE5C2 /* HomePortfolioViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709212791907D00BEE5C2 /* HomePortfolioViewTheme.swift */; };
 		F08709232791907D00BEE5C2 /* HomePortfolioViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709212791907D00BEE5C2 /* HomePortfolioViewTheme.swift */; };
 		F08709242791907D00BEE5C2 /* HomePortfolioViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709212791907D00BEE5C2 /* HomePortfolioViewTheme.swift */; };
-		F08709262791921C00BEE5C2 /* HomePortfolioItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709252791921C00BEE5C2 /* HomePortfolioItemView.swift */; };
-		F08709272791921C00BEE5C2 /* HomePortfolioItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709252791921C00BEE5C2 /* HomePortfolioItemView.swift */; };
-		F08709282791921C00BEE5C2 /* HomePortfolioItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709252791921C00BEE5C2 /* HomePortfolioItemView.swift */; };
-		F087092A2791922000BEE5C2 /* HomePortfolioItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709292791922000BEE5C2 /* HomePortfolioItemViewTheme.swift */; };
-		F087092B2791922000BEE5C2 /* HomePortfolioItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709292791922000BEE5C2 /* HomePortfolioItemViewTheme.swift */; };
-		F087092C2791922000BEE5C2 /* HomePortfolioItemViewTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709292791922000BEE5C2 /* HomePortfolioItemViewTheme.swift */; };
-		F087092E2791922500BEE5C2 /* HomePortfolioItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087092D2791922500BEE5C2 /* HomePortfolioItemViewModel.swift */; };
-		F087092F2791922500BEE5C2 /* HomePortfolioItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087092D2791922500BEE5C2 /* HomePortfolioItemViewModel.swift */; };
-		F08709302791922500BEE5C2 /* HomePortfolioItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F087092D2791922500BEE5C2 /* HomePortfolioItemViewModel.swift */; };
 		F08709322791A8ED00BEE5C2 /* HomePortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709312791A8ED00BEE5C2 /* HomePortfolioCell.swift */; };
 		F08709332791A8ED00BEE5C2 /* HomePortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709312791A8ED00BEE5C2 /* HomePortfolioCell.swift */; };
 		F08709342791A8ED00BEE5C2 /* HomePortfolioCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F08709312791A8ED00BEE5C2 /* HomePortfolioCell.swift */; };
@@ -6007,9 +5998,6 @@
 		F087091927918E1A00BEE5C2 /* HomePortfolioViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePortfolioViewModel.swift; sourceTree = "<group>"; };
 		F087091D27918FE400BEE5C2 /* HomePortfolioView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePortfolioView.swift; sourceTree = "<group>"; };
 		F08709212791907D00BEE5C2 /* HomePortfolioViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePortfolioViewTheme.swift; sourceTree = "<group>"; };
-		F08709252791921C00BEE5C2 /* HomePortfolioItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePortfolioItemView.swift; sourceTree = "<group>"; };
-		F08709292791922000BEE5C2 /* HomePortfolioItemViewTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePortfolioItemViewTheme.swift; sourceTree = "<group>"; };
-		F087092D2791922500BEE5C2 /* HomePortfolioItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePortfolioItemViewModel.swift; sourceTree = "<group>"; };
 		F08709312791A8ED00BEE5C2 /* HomePortfolioCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePortfolioCell.swift; sourceTree = "<group>"; };
 		F08709352792217100BEE5C2 /* Portfolio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Portfolio.swift; sourceTree = "<group>"; };
 		F09608682795E36B00CFBB90 /* SingleLineIconTitleViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SingleLineIconTitleViewModel.swift; sourceTree = "<group>"; };
@@ -14328,9 +14316,6 @@
 				F087090C2790D97F00BEE5C2 /* UIBlockInteraction.swift */,
 				2BB68F51261261250070FFE9 /* HomeNoContentViewModel.swift */,
 				F08709312791A8ED00BEE5C2 /* HomePortfolioCell.swift */,
-				F08709252791921C00BEE5C2 /* HomePortfolioItemView.swift */,
-				F087092D2791922500BEE5C2 /* HomePortfolioItemViewModel.swift */,
-				F08709292791922000BEE5C2 /* HomePortfolioItemViewTheme.swift */,
 				F087091D27918FE400BEE5C2 /* HomePortfolioView.swift */,
 				F087091927918E1A00BEE5C2 /* HomePortfolioViewModel.swift */,
 				F08709212791907D00BEE5C2 /* HomePortfolioViewTheme.swift */,
@@ -15164,7 +15149,6 @@
 				2B01E2C924EF121000C6E5B7 /* LedgerAccountSelectionDataSource.swift in Sources */,
 				2B57D8F825587FBB006E6FCE /* SendAssetDetailEvent.swift in Sources */,
 				D4CCA1D727241DA400DF1B76 /* RekeyConfirmationViewTheme.swift in Sources */,
-				F087092C2791922000BEE5C2 /* HomePortfolioItemViewTheme.swift in Sources */,
 				2B5F6F9F2768EC0300C9B780 /* SingleGrayTitleHeaderSuplementaryView.swift in Sources */,
 				D45A36E327E71A2700E7F8FD /* BottomActionableBannerController.swift in Sources */,
 				D419432F2735555B0055EC70 /* AssetAdditionViewController+Theme.swift in Sources */,
@@ -15371,7 +15355,6 @@
 				17BD4E462292F1260003E49A /* TransactionParams.swift in Sources */,
 				95B01153276A7F9C00B5CA7B /* EditNoteScreen+Theme.swift in Sources */,
 				2B57159F2634CA57002C876D /* AlgosUSDChartViewModel.swift in Sources */,
-				F08709282791921C00BEE5C2 /* HomePortfolioItemView.swift in Sources */,
 				2BA9F014268C8DEF003BDDA8 /* WCTransactionErrorResponse.swift in Sources */,
 				D43A0C1F2790CAAB007430B9 /* LoadingViewCommonTheme.swift in Sources */,
 				2BCBF46927B557E0008814C7 /* MultilineTextInputFieldViewCommonTheme.swift in Sources */,
@@ -16288,7 +16271,6 @@
 				2BCFD6762791A34D00406A2A /* AccountAssetListDataSource.swift in Sources */,
 				2B5F6FAB2768FEEE00C9B780 /* SingleGrayTitleHeaderViewModel.swift in Sources */,
 				D4241FD226E764940064CDD0 /* FormInputFieldAssistiveViewTheme.swift in Sources */,
-				F08709302791922500BEE5C2 /* HomePortfolioItemViewModel.swift in Sources */,
 				17BD4EFB2292F1260003E49A /* TransactionAmountView.swift in Sources */,
 				D43A0C502790D8E2007430B9 /* ResultView.swift in Sources */,
 				2BA9F02E268DCDC7003BDDA8 /* WCMultisigMetadata.swift in Sources */,
@@ -16590,7 +16572,6 @@
 				2B5715AF2634CC8F002C876D /* AlgoUSDValueChartCustomizer.swift in Sources */,
 				2B0F619F24EC129D00DA22A6 /* Payment.swift in Sources */,
 				95B388B827F17CFA00A500B3 /* BuyAlgoViewTheme.swift in Sources */,
-				F087092B2791922000BEE5C2 /* HomePortfolioItemViewTheme.swift in Sources */,
 				2B0F61A124EC129D00DA22A6 /* NotificationCell.swift in Sources */,
 				D4DF3F6C26F1EED4006625E6 /* LedgerApprovalViewTheme.swift in Sources */,
 				2B0F61A324EC129D00DA22A6 /* AccountCellViewModel.swift in Sources */,
@@ -16802,7 +16783,6 @@
 				2BD0E7E22789BFA2001145E6 /* AccountListOptionsViewControllerTheme.swift in Sources */,
 				2BCBF46827B557E0008814C7 /* MultilineTextInputFieldViewCommonTheme.swift in Sources */,
 				D4C75BD8272E9125002BAA66 /* SearchInputViewTheme.swift in Sources */,
-				F08709272791921C00BEE5C2 /* HomePortfolioItemView.swift in Sources */,
 				2B1336DA2576987D00371CFB /* AppearanceSelectionViewController.swift in Sources */,
 				2B0F61E824EC129D00DA22A6 /* NotificationsViewModel.swift in Sources */,
 				D4710B19276A529D00F35F74 /* BottomWarningViewConfigurator.swift in Sources */,
@@ -17724,7 +17704,6 @@
 				2B0F631024EC129D00DA22A6 /* ContactDisplayView.swift in Sources */,
 				2B0F631124EC129D00DA22A6 /* BLEConnectionManager.swift in Sources */,
 				2B0F631224EC129D00DA22A6 /* TransactionSendDraft.swift in Sources */,
-				F087092F2791922500BEE5C2 /* HomePortfolioItemViewModel.swift in Sources */,
 				2B58CE1A27FBB9D500A95BB4 /* ManageAssetsListDataController.swift in Sources */,
 				D4241FD126E764940064CDD0 /* FormInputFieldAssistiveViewTheme.swift in Sources */,
 				D4092BB6276B56020009722D /* WCSessionShortListItemCell.swift in Sources */,
@@ -18028,7 +18007,6 @@
 				2BF34CB2223A77650052CAD3 /* StatusBarConfigurable.swift in Sources */,
 				2BAB8AAB275F736F006CBB15 /* OrderAccountListViewController.swift in Sources */,
 				F0261A9827C4E28D009D8BF4 /* AppAuthChecker.swift in Sources */,
-				F087092A2791922000BEE5C2 /* HomePortfolioItemViewTheme.swift in Sources */,
 				95D11CFC2770BDC8001B2C37 /* SelectAccountViewTheme.swift in Sources */,
 				D45A36E127E71A2700E7F8FD /* BottomActionableBannerController.swift in Sources */,
 				D4FC5F5327F51C760017E81F /* ReceiveCollectibleAccountListInfoViewModel.swift in Sources */,
@@ -18242,7 +18220,6 @@
 				2BA015762636B865009EC914 /* LedgerAccountVerificationViewController.swift in Sources */,
 				2BCBF46727B557E0008814C7 /* MultilineTextInputFieldViewCommonTheme.swift in Sources */,
 				2B4BDA1D238D36CA00491149 /* AssetDecoration.swift in Sources */,
-				F08709262791921C00BEE5C2 /* HomePortfolioItemView.swift in Sources */,
 				2B57159D2634CA57002C876D /* AlgosUSDChartViewModel.swift in Sources */,
 				2BD73A192241324700B66EEF /* ChoosePasswordViewModel.swift in Sources */,
 				2BE4D1202594E91B005F5764 /* AlgorandAppStoreReviewer.swift in Sources */,
@@ -19162,7 +19139,6 @@
 				2BCFD6742791A34D00406A2A /* AccountAssetListDataSource.swift in Sources */,
 				2B2AACB3250A7E8C00B8C5C5 /* DeveloperSettingsViewController.swift in Sources */,
 				2B56714123F7E87A0037FCFA /* TransactionSendDraft.swift in Sources */,
-				F087092E2791922500BEE5C2 /* HomePortfolioItemViewModel.swift in Sources */,
 				D419431F273541790055EC70 /* PageBarLayoutSheet.swift in Sources */,
 				D49D77E12789FE75001FD5F6 /* FloatingActionItemButtonTheme.swift in Sources */,
 				D4241FD026E764940064CDD0 /* FormInputFieldAssistiveViewTheme.swift in Sources */,

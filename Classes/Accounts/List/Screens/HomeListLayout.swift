@@ -61,10 +61,10 @@ extension HomeListLayout {
         case .empty:
             return insets
         case .loading:
-            insets.top = 72
+            insets.top = 16
             return insets
         case .portfolio:
-            insets.top = 72
+            insets.top = 16
             return insets
         case .announcement:
             insets.top = 36

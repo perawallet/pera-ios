@@ -26,14 +26,9 @@ final class HomeLoadingView:
     private lazy var theme = HomeLoadingViewTheme()
 
     private lazy var portfolioLabel = UILabel()
+    private lazy var infoActionView = MacaroonUIKit.Button()
     private lazy var portfolioLoading = ShimmerView()
-    private lazy var holdingsContainer = UIView()
-    private lazy var algoHoldingsContainer = UIView()
-    private lazy var algoHoldingsLabel = Label()
-    private lazy var algoHoldingLoading = ShimmerView()
-    private lazy var assetHoldingsContainer = UIView()
-    private lazy var assetHoldingsLabel = Label()
-    private lazy var assetHoldingLoading = ShimmerView()
+    private lazy var portfolioCurrencyLoading = ShimmerView()
     
     private lazy var buyAlgoButton = Button()
     
@@ -62,13 +57,19 @@ final class HomeLoadingView:
 extension HomeLoadingView {
     private func addPortfolioView() {
         portfolioLabel.editText = theme.portfolioText
-        algoHoldingsLabel.editText = theme.algoHoldingText
-        assetHoldingsLabel.editText = theme.assetHoldingText
 
         addSubview(portfolioLabel)
         portfolioLabel.snp.makeConstraints {
             $0.top.equalToSuperview().inset(theme.portfolioMargin.top)
-            $0.leading.equalToSuperview()
+            $0.centerX.equalToSuperview()
+        }
+        
+        infoActionView.customizeAppearance(theme.infoAction)
+        
+        addSubview(infoActionView)
+        infoActionView.snp.makeConstraints{
+            $0.centerY == portfolioLabel
+            $0.leading == portfolioLabel.snp.trailing + theme.spacingBetweenTitleAndInfoAction
         }
 
         portfolioLoading.draw(corner: theme.loadingCorner)
@@ -76,66 +77,17 @@ extension HomeLoadingView {
         addSubview(portfolioLoading)
         portfolioLoading.snp.makeConstraints {
             $0.top.equalTo(portfolioLabel.snp.bottom).offset(theme.portfolioLoadingMargin.top)
-            $0.leading.equalTo(portfolioLabel)
+            $0.centerX.equalToSuperview()
             $0.fitToSize(theme.portfolioLoadingSize)
         }
+        
+        portfolioCurrencyLoading.draw(corner: theme.loadingCorner)
 
-        addSubview(holdingsContainer)
-        holdingsContainer.snp.makeConstraints {
-            $0.top.equalTo(portfolioLabel.snp.bottom).offset(theme.holdingsContainerMargin.top)
-            $0.leading.equalToSuperview()
-            $0.trailing.equalToSuperview()
-            $0.height.equalTo(theme.holdingsContainerHeight)
-        }
-
-        addAlgoHoldings()
-        addAssetHoldings()
-    }
-
-    private func addAlgoHoldings() {
-        holdingsContainer.addSubview(algoHoldingsContainer)
-        algoHoldingsContainer.snp.makeConstraints {
-            $0.top.leading.bottom.equalToSuperview()
-        }
-
-        algoHoldingsContainer.addSubview(algoHoldingsLabel)
-        algoHoldingsLabel.snp.makeConstraints {
-            $0.top.equalToSuperview()
-            $0.leading.equalToSuperview()
-        }
-
-        algoHoldingLoading.draw(corner: theme.loadingCorner)
-
-        algoHoldingsContainer.addSubview(algoHoldingLoading)
-        algoHoldingLoading.snp.makeConstraints {
-            $0.top.equalTo(algoHoldingsLabel.snp.bottom).offset(theme.algoHoldingLoadingTopInset)
-            $0.leading.equalToSuperview()
-            $0.fitToSize(theme.algoHoldingLoadingSize)
-        }
-    }
-
-    private func addAssetHoldings() {
-        holdingsContainer.addSubview(assetHoldingsContainer)
-        assetHoldingsContainer.snp.makeConstraints {
-            $0.width.equalTo(algoHoldingsContainer)
-            $0.top.equalToSuperview()
-            $0.leading.equalTo(algoHoldingsContainer.snp.trailing)
-            $0.bottom.equalToSuperview()
-            $0.trailing.equalToSuperview()
-        }
-
-        assetHoldingsContainer.addSubview(assetHoldingsLabel)
-        assetHoldingsLabel.snp.makeConstraints {
+        addSubview(portfolioCurrencyLoading)
+        portfolioCurrencyLoading.snp.makeConstraints {
+            $0.top.equalTo(portfolioLoading.snp.bottom).offset(theme.portfolioCurrencyLoadingMargin.top)
             $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview()
-        }
-
-        assetHoldingLoading.draw(corner:theme.loadingCorner)
-        assetHoldingsContainer.addSubview(assetHoldingLoading)
-        assetHoldingLoading.snp.makeConstraints {
-            $0.centerY.equalTo(algoHoldingLoading)
-            $0.leading.equalTo(assetHoldingsLabel.snp.leading)
-            $0.fitToSize(theme.algoHoldingLoadingSize)
+            $0.fitToSize(theme.portfolioCurrencyLoadingSize)
         }
     }
 
@@ -144,7 +96,7 @@ extension HomeLoadingView {
 
         addSubview(buyAlgoButton)
         buyAlgoButton.snp.makeConstraints {
-            $0.top.equalTo(holdingsContainer.snp.bottom).offset(theme.buyAlgoButtonMargin.top)
+            $0.top.equalTo(portfolioCurrencyLoading.snp.bottom).offset(theme.buyAlgoButtonMargin.top)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
             $0.height.equalTo(theme.buyAlgoButtonHeight)
