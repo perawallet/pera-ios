@@ -51,7 +51,7 @@
 "title-generic-error" = "Something went wrong";
 "title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
 "title-buy-algo" = "Buy ALGO";
-"title-press-hold-copy-address" = "Press and hold to copy address";
+
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";
 
@@ -404,6 +404,7 @@
 "transaction-detail-close-amount" = "Close Amount";
 "transaction-detail-note-copied" = "Transaction note copied to clipboard";
 "transaction-detail-id-copied" = "Transaction ID copied to clipboard";
+"transaction-detail-copy-tooltip" = "Press and hold to Copy to Clipboard";
 "transaction-id-open-algoexplorer" = "Open in AlgoExplorer";
 "transaction-id-open-goalseeker" = "Open in GoalSeeker";
 "transaction-detail-balance" = "Account Balance";
