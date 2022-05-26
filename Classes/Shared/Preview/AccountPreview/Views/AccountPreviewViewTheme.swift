@@ -59,6 +59,6 @@ struct AccountPreviewViewTheme:
             .contentMode(.right)
         ]
         self.accessoryIconContentEdgeInsets = (8, 0)
-        self.minSpacingBetweenContentAndAccessory = 8
+        self.minSpacingBetweenContentAndAccessory = 16
     }
 }
