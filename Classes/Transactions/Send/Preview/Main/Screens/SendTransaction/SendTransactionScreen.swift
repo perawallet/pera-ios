@@ -195,7 +195,7 @@ extension SendTransactionScreen {
         case .asset(let asset):
 
             if let collectibleAsset = asset as? CollectibleAsset {
-                let draft = CollectibleAssetSelectionDraft(
+                let draft = CollectibleAssetPreviewSelectionDraft(
                     currency: currency,
                     asset: collectibleAsset
                 )

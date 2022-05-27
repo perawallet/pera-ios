@@ -12,27 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetPreviewDeleteCell.swift
+//   AssetPreviewWithActionViewModel.swift
 
+import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class AssetPreviewDeleteCell:
-    CollectionCell<AssetPreviewDeleteView>,
-    ViewModelBindable,
-    UIInteractionObservable {
-    static let theme: AssetPreviewDeleteViewTheme = {
-        var theme = AssetPreviewDeleteViewTheme()
-        theme.configureForAssetPreviewAddition()
-        return theme
-    }()
-    
-    override class var contextPaddings: LayoutPaddings {
-        return (14, 0, 14, 0)
+protocol AssetPreviewWithActionViewModel: ViewModel {
+    var contentViewModel: AssetPreviewViewModel? { get }
+    var actionIcon: UIImage? { get }
+}
+
+extension AssetPreviewWithActionViewModel where Self: Hashable {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(contentViewModel?.hashValue)
+        hasher.combine(actionIcon)
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
+
+    static func == (
+        lhs: Self,
+        rhs: Self
+    ) -> Bool {
+        return lhs.contentViewModel == rhs.contentViewModel &&
+        lhs.actionIcon == rhs.actionIcon
     }
 }

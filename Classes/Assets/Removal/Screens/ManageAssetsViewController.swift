@@ -74,8 +74,8 @@ final class ManageAssetsViewController: BaseViewController {
             
             switch itemIdentifier {
             case .asset:
-                let assetCell = cell as! AssetPreviewDeleteCell
-                assetCell.observe(event: .delete) {
+                let assetCell = cell as! AssetPreviewWithActionCell
+                assetCell.observe(event: .primaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return

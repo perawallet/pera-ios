@@ -12,28 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//   AssetPreviewAdditionCell.swift
+//   AssetPreviewWithRemoveActionViewModel.swift
 
+import Foundation
 import UIKit
 import MacaroonUIKit
 
-final class AssetPreviewAdditionCell:
-    CollectionCell<AssetPreviewView>,
-    ViewModelBindable {
-    override class var contextPaddings: LayoutPaddings {
-        return (14, 0, 14, 0)
-    }
+struct AssetPreviewWithRemoveActionViewModel:
+    AssetPreviewWithActionViewModel,
+    Hashable {
+    private(set) var contentViewModel: AssetPreviewViewModel?
+    private(set) var actionIcon: UIImage?
 
-    static let theme: AssetPreviewViewTheme = {
-        var theme = AssetPreviewViewTheme()
-        theme.configureForAssetPreviewAddition()
-        return theme
-    }()
-
-    override init(
-        frame: CGRect
+    init(
+        contentViewModel: AssetPreviewViewModel
     ) {
-        super.init(frame: frame)
-        contextView.customize(Self.theme)
+        self.contentViewModel = contentViewModel
+
+        bindAction()
+    }
+}
+
+extension AssetPreviewWithRemoveActionViewModel {
+    private mutating func bindAction() {
+        actionIcon = "icon-asset-delete".uiImage
     }
 }
