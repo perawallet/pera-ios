@@ -156,7 +156,7 @@ extension AssetListViewAPIDataController {
                         decoration: asset
                     )
                     viewModel = AssetPreviewViewModel(
-                        AssetPreviewAdditionDraft(asset: collectibleAsset)
+                        CollectibleAssetPreviewAdditionDraft(asset: collectibleAsset)
                     )
 
                 } else {
@@ -165,7 +165,7 @@ extension AssetListViewAPIDataController {
                         decoration: asset
                     )
                     viewModel = AssetPreviewViewModel(
-                        AssetPreviewAdditionDraft(asset: standardAsset)
+                        StandardAssetPreviewAdditionDraft(asset: standardAsset)
                     )
                 }
                 

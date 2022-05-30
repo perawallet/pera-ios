@@ -24,7 +24,7 @@ final class AssetPreviewWithActionView:
     UIControlInteractionPublisher,
     ListReusable {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
-        .primaryAction: UIControlInteraction()
+        .performAction: UIControlInteraction()
     ]
     
     private lazy var contentView = AssetPreviewView()
@@ -110,7 +110,7 @@ extension AssetPreviewWithActionView {
         }
 
         startPublishing(
-            event: .primaryAction,
+            event: .performAction,
             for: actionView
         )
     }
@@ -118,6 +118,6 @@ extension AssetPreviewWithActionView {
 
 extension AssetPreviewWithActionView {
     enum Event {
-        case primaryAction
+        case performAction
     }
 }

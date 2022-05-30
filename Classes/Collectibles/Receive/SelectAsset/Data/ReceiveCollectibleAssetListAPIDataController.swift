@@ -159,7 +159,7 @@ extension ReceiveCollectibleAssetListAPIDataController {
                 let collectibleAsset = CollectibleAsset(asset: ALGAsset(id: asset.id), decoration: asset)
                 let assetItem: ReceiveCollectibleAssetListItem = .collectible(
                     AssetPreviewViewModel(
-                        AssetPreviewAdditionDraft(asset: collectibleAsset)
+                        CollectibleAssetPreviewAdditionDraft(asset: collectibleAsset)
                     )
                 )
 
