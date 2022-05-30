@@ -38,6 +38,7 @@ final class AccountPreviewView:
     ) {
         addIcon(theme)
         addContentAndAccessoryContext(theme)
+        addAccessoryIcon(theme)
     }
 
     func customizeAppearance(
@@ -125,7 +126,6 @@ extension AccountPreviewView {
 
         addContent(theme)
         addAccessory(theme)
-        addAccessoryIcon(theme)
     }
 
     private func addContent(
@@ -216,7 +216,7 @@ extension AccountPreviewView {
         accessoryView.addSubview(primaryAccessoryView)
 
         primaryAccessoryView.fitToHorizontalIntrinsicSize(
-            hugging: .defaultHigh,
+            hugging: .defaultLow,
             compression: .required
         )
         primaryAccessoryView.fitToVerticalIntrinsicSize(
