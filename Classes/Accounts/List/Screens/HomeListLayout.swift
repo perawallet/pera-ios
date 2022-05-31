@@ -271,8 +271,8 @@ extension HomeListLayout {
     ) -> CGSize {
         let width = calculateContentWidth(for: listView)
 
-        return BuyAlgoCell.calculatePreferredSize(
-            for: BuyAlgoViewTheme(),
+        return QuickActionsCell.calculatePreferredSize(
+            for: QuickActionsViewTheme(),
             fittingIn: CGSize((width, .greatestFiniteMagnitude))
         )
     }

@@ -130,6 +130,8 @@ final class HomeViewController:
     override func linkInteractors() {
         super.linkInteractors()
         listView.delegate = self
+
+        view.backgroundColor = AppColors.Shared.Layer.grayLightest.uiColor
     }
 }
 
@@ -225,7 +227,7 @@ extension HomeViewController {
     }
 
     private func linkInteractors(
-        _ cell: BuyAlgoCell
+        _ cell: QuickActionsCell
     ) {
         cell.observe(event: .buyAlgo) {
             [weak self] in
@@ -584,7 +586,7 @@ extension HomeViewController {
                 break
             }
         case .buyAlgo:
-            linkInteractors(cell as! BuyAlgoCell)
+            linkInteractors(cell as! QuickActionsCell)
         case .announcement(let item):
             if item.isGeneric {
                 linkInteractors(cell as! GenericAnnouncementCell, for: item)
