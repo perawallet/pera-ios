@@ -554,6 +554,10 @@ extension SendTransactionScreen: NumpadViewDelegate {
         }
 
         if Int(draft.from.amount) - Int(decimalAmount.toMicroAlgos) - Int(minimumFee) < calculateMininmumAmount(for: draft.from) {
+
+            if !draft.from.hasDifferentMinBalance {
+                return .valid
+            }
             
             if Int(decimalAmount.toMicroAlgos) <= Int(calculateMininmumAmount(for: draft.from)) + Int(minimumFee) {
                 return .requiredMinAlgo
@@ -565,7 +569,7 @@ extension SendTransactionScreen: NumpadViewDelegate {
         if isMaxTransaction {
             if draft.from.doesAccountHasParticipationKey() {
                 return .algoParticipationKeyWarning
-            } else if draft.from.hasMinAmountFields || draft.from.isRekeyed() {
+            } else if draft.from.hasDifferentMinBalance || draft.from.isRekeyed() {
                 displayMaxTransactionWarning()
                 return .maxAlgo
             }
