@@ -1,17 +1,19 @@
 %PDF-1.7
 
 1 0 obj
-  << >>
-endobj
-
-2 0 obj
-  << /Length 3 0 R >>
+  << /Type /XObject
+     /Length 2 0 R
+     /Group << /Type /Group
+               /S /Transparency
+            >>
+     /Subtype /Form
+     /Resources << >>
+     /BBox [ 0.000000 0.000000 24.000000 24.000000 ]
+  >>
 stream
-/DeviceRGB CS
-/DeviceRGB cs
 q
 1.000000 0.000000 -0.000000 1.000000 2.000000 -0.013794 cm
-0.094118 0.094118 0.105882 scn
+0.631373 0.631373 0.666667 scn
 7.020000 21.173632 m
 6.406060 21.962984 l
 6.405351 21.962431 l
@@ -103,7 +105,7 @@ n
 Q
 q
 1.000000 0.000000 -0.000000 1.000000 12.000000 4.009766 cm
-0.094118 0.094118 0.105882 scn
+0.631373 0.631373 0.666667 scn
 -1.000000 2.000000 m
 -1.000000 1.447715 -0.552285 1.000000 0.000000 1.000000 c
 0.552285 1.000000 1.000000 1.447715 1.000000 2.000000 c
@@ -127,47 +129,72 @@ Q
 endstream
 endobj
 
-3 0 obj
-  2825
+2 0 obj
+  2797
 endobj
 
-4 0 obj
-  << /Annots []
-     /Type /Page
-     /MediaBox [ 0.000000 0.000000 24.000000 24.000000 ]
-     /Resources 1 0 R
-     /Contents 2 0 R
-     /Parent 5 0 R
+3 0 obj
+  << /XObject << /X1 1 0 R >>
+     /ExtGState << /E1 << /ca 0.500000 >> >>
   >>
 endobj
 
+4 0 obj
+  << /Length 5 0 R >>
+stream
+/DeviceRGB CS
+/DeviceRGB cs
+q
+/E1 gs
+/X1 Do
+Q
+
+endstream
+endobj
+
 5 0 obj
-  << /Kids [ 4 0 R ]
+  46
+endobj
+
+6 0 obj
+  << /Annots []
+     /Type /Page
+     /MediaBox [ 0.000000 0.000000 24.000000 24.000000 ]
+     /Resources 3 0 R
+     /Contents 4 0 R
+     /Parent 7 0 R
+  >>
+endobj
+
+7 0 obj
+  << /Kids [ 6 0 R ]
      /Count 1
      /Type /Pages
   >>
 endobj
 
-6 0 obj
-  << /Pages 5 0 R
+8 0 obj
+  << /Pages 7 0 R
      /Type /Catalog
   >>
 endobj
 
 xref
-0 7
+0 9
 0000000000 65535 f
 0000000010 00000 n
-0000000034 00000 n
-0000002915 00000 n
-0000002938 00000 n
-0000003111 00000 n
-0000003185 00000 n
+0000003055 00000 n
+0000003078 00000 n
+0000003174 00000 n
+0000003276 00000 n
+0000003297 00000 n
+0000003470 00000 n
+0000003544 00000 n
 trailer
 << /ID [ (some) (id) ]
-   /Root 6 0 R
-   /Size 7
+   /Root 8 0 R
+   /Size 9
 >>
 startxref
-3244
+3603
 %%EOF
