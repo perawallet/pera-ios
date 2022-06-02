@@ -24,6 +24,7 @@ struct ListActionViewTheme:
     LayoutSheet {
     var icon: ImageStyle
     var iconContentEdgeInsets: LayoutOffset
+    var iconAlignment: ListActionView.IconViewAlignment
     var contentMinHeight: LayoutMetric
     var contentVerticalPaddings: LayoutVerticalPaddings
     var title: TextStyle
@@ -38,6 +39,7 @@ struct ListActionViewTheme:
             .isInteractable(false)
         ]
         self.iconContentEdgeInsets = (20, 0)
+        self.iconAlignment = .centered
         self.contentMinHeight = 36
         self.contentVerticalPaddings = (12, 12)
         self.title = [
@@ -49,5 +51,19 @@ struct ListActionViewTheme:
             .textColor(AppColors.Components.Text.gray)
         ]
         self.spacingBetweenTitleAndSubtitle = 2
+    }
+}
+
+extension ListActionViewTheme {
+    mutating func configureForTransactionOptionsView() {
+        self.iconContentEdgeInsets = (12, 0)
+        self.iconAlignment = .aligned(top: 0)
+        self.contentVerticalPaddings = (8, 8)
+        self.contentMinHeight = 40
+        self.spacingBetweenTitleAndSubtitle = 0
+        self.subtitle = [
+            .textOverflow(FittingText()),
+            .textColor(AppColors.Components.Text.gray)
+        ]
     }
 }

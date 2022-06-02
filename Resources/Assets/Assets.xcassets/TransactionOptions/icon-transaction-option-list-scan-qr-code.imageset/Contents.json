@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "tabbar-icon-send.pdf",
+      "filename" : "icon-options-scan-qr-code.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "tabbar-icon-send-dark.pdf",
+      "filename" : "icon-options-scan-qr-code-dark.pdf",
       "idiom" : "universal"
     }
   ],

@@ -50,6 +50,7 @@
 "title-not-available" = "Not available";
 "title-generic-error" = "Something went wrong";
 "title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
+"title-buy-algo" = "Buy ALGO";
 
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";
@@ -1022,7 +1023,7 @@
 "number-abbreviation-billion" = "B";
 "number-abbreviation-trillion" = "T";
 
-//MARK: MoonPay
+// MARK: MoonPay
 "moonpay-buy-button-title" = "Buy ALGO";
 "moonpay-introduction-title"="Buy ALGO with Moonpay";
 "moonpay-introduction-description"="MoonPay offers the fastest way to buy ALGO with your local currency. Buy crypto with credit card or bank transfers. It's fast, simple, and secure.";
@@ -1038,3 +1039,9 @@
 "moonpay-transaction-waitingPayment-title" = "Almost there!";
 "moonpay-transaction-waitingPayment-description" = "Your purchase request is pending payment. Once payment is processed, you will receive a notification.";
 "moonpay-transaction-testnet-not-available-description" = "You cannot purchase while on TestNet. Please switch back to MainNet from Settings to use MoonPay.";
+
+// MARK: Transaction Options
+"transaction-option-list-buy-algo-subtitle" = "Buy crypto with credit card or bank transfers";
+"transaction-option-list-send-subtitle" = "Algo or any ASA to another account";
+"transaction-option-list-receive-subtitle" = "View or copy your account address";
+"transaction-option-list-scan-qr-code-subtitle" = "Use WalletConnect or scan an account address";

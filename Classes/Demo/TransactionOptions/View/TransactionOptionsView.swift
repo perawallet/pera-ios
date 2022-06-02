@@ -20,95 +20,30 @@ import MacaroonUIKit
 import SnapKit
 import UIKit
 
-/// <todo>:
-/// Move this to Macaroon
-public final class UIViewTapInteraction: MacaroonUIKit.UIInteraction {
-    private var view: UIView?
-    private var handler: Handler?
-}
-
-extension UIViewTapInteraction {
-    public func link(
-        _ view: UIView
-    ) {
-        view.addGestureRecognizer(
-            UITapGestureRecognizer(
-                target: self,
-                action: #selector(deliverAction)
-            )
-        )
-
-        self.view = view
-    }
-
-    public func unlink() {
-        view?.removeGestureRecognizer(
-            UITapGestureRecognizer(
-                target: self,
-                action: #selector(deliverAction)
-            )
-        )
-
-        self.view = nil
-    }
-
-    public func activate(
-        _ handler: @escaping Handler
-    ) {
-        self.handler = handler
-    }
-
-    public func deactivate() {
-        self.handler = nil
-    }
-}
-
-extension UIViewTapInteraction {
-    @objc
-    private func deliverAction() {
-        handler?()
-    }
-}
-
-// <note>: Can it be better to renamte it as InteractionPublisher?
-extension UIControlInteractionPublisher {
-    public func startPublishing(
-        event: Event,
-        for view: UIView
-    ) {
-        let interaction = uiInteractions[event] as? UIViewTapInteraction
-        interaction?.link(view)
-    }
-}
-
 final class TransactionOptionsView:
     View,
     UIInteractionObservable,
     UIControlInteractionPublisher {
     private(set) var uiInteractions: [Event: MacaroonUIKit.UIInteraction] = [
+        .buyAlgo: UIControlInteraction(),
         .send: UIControlInteraction(),
         .receive: UIControlInteraction(),
-        .buyAlgo: UIControlInteraction(),
+        .scanQRCode: UIControlInteraction(),
         .close: UIViewTapInteraction()
     ]
-    
+
+    private lazy var backgroundView = MacaroonUIKit.BaseView()
     private lazy var contentView = MacaroonUIKit.BaseView()
-    private lazy var actionsView = HStackView()
-    private lazy var sendActionView =
-        MacaroonUIKit.Button(.imageAtTop(spacing: spacingBetweenActionIconAndTitle))
-    private lazy var receiveActionView =
-        MacaroonUIKit.Button(.imageAtTop(spacing: spacingBetweenActionIconAndTitle))
-    private lazy var buyAlgoActionView =
-        MacaroonUIKit.Button(.imageAtTop(spacing: spacingBetweenActionIconAndTitle))
-    
+    private lazy var contextView = VStackView()
+
     private var backgroundStartStyle: ViewStyle = []
     private var backgroundEndStyle: ViewStyle = []
     
     private var contentStartLayout: [Constraint] = []
     private var contentEndLayout: [Constraint] = []
-    
-    private let spacingBetweenActionIconAndTitle: CGFloat = 15
-    
+
+    private let actions = Action.allCases
+        
     func customize(
         _ theme: TransactionOptionsViewTheme
     ) {
@@ -144,14 +79,19 @@ extension TransactionOptionsView {
     private func addBackground(
         _ theme: TransactionOptionsViewTheme
     ) {
+        addSubview(backgroundView)
+        backgroundView.snp.makeConstraints {
+            $0.edges == 0
+        }
+
         backgroundStartStyle = theme.backgroundStart
         backgroundEndStyle = theme.backgroundEnd
         
         updateBackground(for: .start)
-
+        
         startPublishing(
             event: .close,
-            for: self
+            for: backgroundView
         )
     }
     
@@ -165,7 +105,7 @@ extension TransactionOptionsView {
         case .end: style = backgroundEndStyle
         }
         
-        customizeAppearance(style)
+        backgroundView.customizeAppearance(style)
     }
     
     private func addContent(
@@ -186,7 +126,7 @@ extension TransactionOptionsView {
         
         updateContent(for: .start)
         
-        addActions(theme)
+        addContext(theme)
     }
     
     private func updateContent(
@@ -218,75 +158,102 @@ extension TransactionOptionsView {
     private func updateContentAlongsideAnimations(
         for position: Position
     ) {
-        actionsView.alpha = position == .start ? 0 : 1
+        contextView.alpha = position == .start ? 0 : 1
     }
     
+    private func addContext(
+        _ theme: TransactionOptionsViewTheme
+    ) {
+        contentView.addSubview(contextView)
+        contextView.spacing = theme.spacingBetweenActions
+        contextView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: theme.contentPaddings.top + theme.contentSafeAreaInsets.top,
+            leading: theme.contentPaddings.leading + theme.contentSafeAreaInsets.left,
+            bottom: theme.contentPaddings.bottom + theme.contentSafeAreaInsets.bottom,
+            trailing: theme.contentPaddings.trailing + theme.contentSafeAreaInsets.right
+        )
+        contextView.insetsLayoutMarginsFromSafeArea = false
+        contextView.isLayoutMarginsRelativeArrangement = true
+        contextView.snp.makeConstraints {
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+            $0.trailing == 0
+        }
+        
+        addActions(theme)
+    }
+
     private func addActions(
         _ theme: TransactionOptionsViewTheme
     ) {
-        contentView.addSubview(actionsView)
-        actionsView.alignment = .top
-        actionsView.spacing = theme.spacingBetweenActions
-        actionsView.snp.makeConstraints {
-            $0.centerX == 0
-            $0.top == theme.actionsVerticalPaddings.top + theme.contentSafeAreaInsets.top
-            $0.leading >= theme.actionsMinHorizontalPaddings.leading + theme.contentSafeAreaInsets.left
-            $0.bottom == theme.actionsVerticalPaddings.bottom + theme.contentSafeAreaInsets.bottom
-            $0.trailing <= theme.actionsMinHorizontalPaddings.trailing + theme.contentSafeAreaInsets.right
+        actions.forEach {
+            switch $0 {
+            case .buyAlgo:
+                addAction(
+                    theme: theme.action,
+                    viewModel: BuyAlgoTransactionOptionListActionViewModel(),
+                    event: .buyAlgo
+                )
+            case .send:
+                addAction(
+                    theme: theme.action,
+                    viewModel: SendTransactionOptionListActionViewModel(),
+                    event: .send
+                )
+            case .receive:
+                addAction(
+                    theme: theme.action,
+                    viewModel: ReceiveTransactionOptionListActionViewModel(),
+                    event: .receive
+                )
+            case .scanQRCode:
+                addAction(
+                    theme: theme.action,
+                    viewModel: ScanQRCodeTransactionOptionListActionViewModel(),
+                    event: .scanQRCode
+                )
+            }
         }
-        
-        addSendAction(theme)
-        addReceiveAction(theme)
-        addBuyAction(theme)
-    }
-    
-    private func addSendAction(
-        _ theme: TransactionOptionsViewTheme
-    ) {
-        sendActionView.customizeAppearance(theme.sendAction)
-        actionsView.addArrangedSubview(sendActionView)
-        
-        startPublishing(
-            event: .send,
-            for: sendActionView
-        )
-    }
-    
-    private func addReceiveAction(
-        _ theme: TransactionOptionsViewTheme
-    ) {
-        receiveActionView.customizeAppearance(theme.receiveAction)
-        actionsView.addArrangedSubview(receiveActionView)
-        
-        startPublishing(
-            event: .receive,
-            for: receiveActionView
-        )
     }
 
-    private func addBuyAction(
-        _ theme: TransactionOptionsViewTheme
+    private func addAction(
+        theme: ListActionViewTheme,
+        viewModel: TransactionOptionListActionViewModel,
+        event: Event
     ) {
-        buyAlgoActionView.customizeAppearance(theme.buyAlgoAction)
-        actionsView.addArrangedSubview(buyAlgoActionView)
+        let actionView = ListActionView()
+        
+        actionView.customize(theme)
+        actionView.bindData(viewModel)
+
+        contextView.addArrangedSubview(actionView)
 
         startPublishing(
-            event: .buyAlgo,
-            for: buyAlgoActionView
+            event: event,
+            for: actionView
         )
     }
 }
 
 extension TransactionOptionsView {
+    enum Action: CaseIterable {
+        case buyAlgo
+        case send
+        case receive
+        case scanQRCode
+    }
+
     enum Position {
         case start
         case end
     }
     
     enum Event {
+        case buyAlgo
         case send
         case receive
+        case scanQRCode
         case close
-        case buyAlgo
     }
 }
