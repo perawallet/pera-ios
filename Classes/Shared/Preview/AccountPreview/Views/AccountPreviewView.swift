@@ -24,6 +24,7 @@ final class AccountPreviewView:
     ViewModelBindable,
     ListReusable {
     private lazy var iconView = ImageView()
+    private lazy var contentAndAccessoryContextView = UIView()
     private lazy var contentView = UIView()
     private lazy var titleView = Label()
     private lazy var subtitleView = Label()
@@ -36,10 +37,10 @@ final class AccountPreviewView:
         _ theme: AccountPreviewViewTheme
     ) {
         addIcon(theme)
-        addContent(theme)
-        addAccessory(theme)
+        addContentAndAccessoryContext(theme)
+        addAccessoryIcon(theme)
     }
-    
+
     func customizeAppearance(
         _ styleSheet: NoStyleSheet
     ) {}
@@ -47,7 +48,7 @@ final class AccountPreviewView:
     func prepareLayout(
         _ layoutSheet: NoLayoutSheet
     ) {}
-    
+
     func bindData(
         _ viewModel: AccountPreviewViewModel?
     ) {
@@ -58,7 +59,7 @@ final class AccountPreviewView:
         secondaryAccessoryView.editText = viewModel?.secondaryAccessory
         accessoryIconView.image = viewModel?.accessoryIcon
     }
-    
+
     class func calculatePreferredSize(
         _ viewModel: AccountPreviewViewModel?,
         for theme: AccountPreviewViewTheme,
@@ -67,7 +68,7 @@ final class AccountPreviewView:
         guard let viewModel = viewModel else {
             return CGSize((size.width, 0))
         }
-        
+
         /// <warning>
         /// The constrained widths of the subviews will be discarded from the calculations because
         /// none of them has the multi-line texts.
@@ -103,7 +104,7 @@ extension AccountPreviewView {
         _ theme: AccountPreviewViewTheme
     ) {
         iconView.customizeAppearance(theme.icon)
-        
+
         addSubview(iconView)
         iconView.contentEdgeInsets = theme.iconContentEdgeInsets
         iconView.fitToIntrinsicSize()
@@ -112,89 +113,124 @@ extension AccountPreviewView {
             $0.leading == 0
         }
     }
-    
-    private func addContent(
+
+    private func addContentAndAccessoryContext(
         _ theme: AccountPreviewViewTheme
     ) {
-        addSubview(contentView)
-        contentView.snp.makeConstraints {
-            $0.width >= self * theme.contentMinWidthRatio
+        addSubview(contentAndAccessoryContextView)
+        contentAndAccessoryContextView.snp.makeConstraints {
             $0.top == 0
             $0.leading == iconView.snp.trailing
             $0.bottom == 0
         }
-        
+
+        addContent(theme)
+        addAccessory(theme)
+    }
+
+    private func addContent(
+        _ theme: AccountPreviewViewTheme
+    ) {
+        contentAndAccessoryContextView.addSubview(contentView)
+        contentView.snp.makeConstraints {
+            $0.width >= contentAndAccessoryContextView.snp.width * theme.contentMinWidthRatio
+            $0.top == 0
+            $0.leading == 0
+            $0.bottom == 0
+        }
+
         addTitle(theme)
         addSubtitle(theme)
     }
-    
+
     private func addTitle(
         _ theme: AccountPreviewViewTheme
     ) {
         titleView.customizeAppearance(theme.title)
-        
+
         contentView.addSubview(titleView)
+        titleView.contentEdgeInsets.trailing = theme.minSpacingBetweenContentAndAccessory
+
         titleView.fitToVerticalIntrinsicSize(
             hugging: .defaultLow,
             compression: .required
         )
+        titleView.fitToHorizontalIntrinsicSize(
+            hugging: .required,
+            compression: .defaultLow
+        )
+
         titleView.snp.makeConstraints {
             $0.top == 0
             $0.leading == 0
-            $0.trailing == 0
+            $0.trailing <= 0
         }
     }
-    
+
     private func addSubtitle(
         _ theme: AccountPreviewViewTheme
     ) {
         subtitleView.customizeAppearance(theme.subtitle)
-        
+        titleView.contentEdgeInsets.trailing = theme.minSpacingBetweenContentAndAccessory
+
         contentView.addSubview(subtitleView)
-        subtitleView.fitToVerticalIntrinsicSize()
+        subtitleView.contentEdgeInsets.trailing = theme.minSpacingBetweenContentAndAccessory
+
+        subtitleView.fitToVerticalIntrinsicSize(
+            hugging: .required,
+            compression: .defaultLow
+        )
+        subtitleView.fitToHorizontalIntrinsicSize(
+            hugging: .required,
+            compression: .defaultLow
+        )
+
         subtitleView.snp.makeConstraints {
             $0.top == titleView.snp.bottom
             $0.leading == 0
             $0.bottom == 0
-            $0.trailing == 0
+            $0.trailing <= 0
         }
     }
-    
+
     private func addAccessory(
         _ theme: AccountPreviewViewTheme
     ) {
-        addSubview(accessoryView)
+        contentAndAccessoryContextView.addSubview(accessoryView)
         accessoryView.snp.makeConstraints {
             $0.top == 0
-            $0.leading == contentView.snp.trailing + theme.minSpacingBetweenContentAndAccessory
+            $0.leading == contentView.snp.trailing
             $0.bottom == 0
             $0.trailing == 0
-            $0.width >= self * theme.accessoryMinWidthRatio
         }
-        
+
         addPrimaryAccessory(theme)
         addSecondaryAccessory(theme)
-        addAccessoryIcon(theme)
     }
-    
+
     private func addPrimaryAccessory(
         _ theme: AccountPreviewViewTheme
     ) {
         primaryAccessoryView.customizeAppearance(theme.primaryAccessory)
-        
+
         accessoryView.addSubview(primaryAccessoryView)
+
         primaryAccessoryView.fitToHorizontalIntrinsicSize(
-            hugging: .defaultHigh,
+            hugging: .defaultLow,
             compression: .required
         )
         primaryAccessoryView.fitToVerticalIntrinsicSize(
             hugging: .defaultLow,
             compression: .required
         )
+
         primaryAccessoryView.snp.makeConstraints {
             $0.top == 0
-            $0.trailing == 0
             $0.leading == 0
+            $0.trailing == 0
+            $0.bottom
+                .equalToSuperview()
+                .priority(.low)
         }
     }
 
@@ -202,14 +238,23 @@ extension AccountPreviewView {
         _ theme: AccountPreviewViewTheme
     ) {
         secondaryAccessoryView.customizeAppearance(theme.secondaryAccessory)
-        
+
         accessoryView.addSubview(secondaryAccessoryView)
-        secondaryAccessoryView.fitToIntrinsicSize()
+
+        secondaryAccessoryView.fitToHorizontalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .required
+        )
+        secondaryAccessoryView.fitToVerticalIntrinsicSize(
+            hugging: .defaultLow,
+            compression: .defaultLow
+        )
+
         secondaryAccessoryView.snp.makeConstraints {
             $0.top == primaryAccessoryView.snp.bottom
             $0.leading == 0
             $0.bottom == 0
-            $0.trailing == primaryAccessoryView
+            $0.trailing == 0
         }
     }
 
@@ -217,13 +262,13 @@ extension AccountPreviewView {
         _ theme: AccountPreviewViewTheme
     ) {
         accessoryIconView.customizeAppearance(theme.accessoryIcon)
-        
-        accessoryView.addSubview(accessoryIconView)
+
+        addSubview(accessoryIconView)
         accessoryIconView.contentEdgeInsets = theme.accessoryIconContentEdgeInsets
         accessoryIconView.fitToIntrinsicSize()
         accessoryIconView.snp.makeConstraints {
             $0.centerY == 0
-            $0.leading == primaryAccessoryView.snp.trailing
+            $0.leading == contentAndAccessoryContextView.snp.trailing
             $0.trailing == 0
         }
     }

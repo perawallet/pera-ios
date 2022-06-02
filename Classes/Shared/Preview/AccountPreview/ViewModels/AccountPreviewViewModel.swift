@@ -29,7 +29,7 @@ struct AccountPreviewViewModel:
     private(set) var primaryAccessory: EditText?
     private(set) var secondaryAccessory: EditText?
     private(set) var accessoryIcon: UIImage?
-    
+
     init<T>(
         _ model: T
     ) {
@@ -253,7 +253,7 @@ extension AccountPreviewViewModel {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
-                    .lineBreakMode(.byTruncatingMiddle),
+                    .lineBreakMode(.byTruncatingTail),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
             ])
