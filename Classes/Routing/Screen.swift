@@ -89,7 +89,10 @@ indirect enum Screen {
     case jsonDisplay(jsonData: Data, title: String)
     case ledgerPairWarning(delegate: LedgerPairWarningViewControllerDelegate)
     case accountListOptions(accountType: AccountType, eventHandler: AccountListOptionsViewController.EventHandler)
-    case orderAccountList(accountType: AccountType, eventHandler: OrderAccountListViewController.EventHandler)
+    case sortAccountList(
+        dataController: SortAccountListDataController,
+        eventHandler: SortAccountListViewController.EventHandler
+    )
     case accountSelection(
         transactionAction: TransactionAction,
         delegate: SelectAccountViewControllerDelegate?

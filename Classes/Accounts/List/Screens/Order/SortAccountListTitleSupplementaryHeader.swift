@@ -12,22 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//
-//  SingleSelectionCell.swift
+//   SortAccountListTitleSupplementaryHeader.swift
 
 import UIKit
 
-final class SingleSelectionCell: BaseCollectionViewCell<SingleSelectionView> {
-    override init(frame: CGRect) {
+final class SortAccountListTitleSupplementaryHeader:
+    BaseSupplementaryView<TitleView> {
+    static let theme: TitleViewTheme = {
+        var theme = TitleViewTheme()
+        theme.configureForSortAccountListHeader()
+        return theme
+    }()
+
+    override init(
+        frame: CGRect
+    ) {
         super.init(frame: frame)
-        customize(SingleSelectionViewTheme())
+
+        contextView.customize(Self.theme)
     }
-    
-    private func customize(_ theme: SingleSelectionViewTheme) {
-        contextView.customize(theme)
-    }
-    
-    func bindData(_ viewModel: SingleSelectionViewModel) {
+
+    func bindData(
+        _ viewModel: TitleViewModel
+    ) {
         contextView.bindData(viewModel)
     }
 }

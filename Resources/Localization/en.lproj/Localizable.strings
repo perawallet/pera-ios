@@ -51,6 +51,12 @@
 "title-generic-error" = "Something went wrong";
 "title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
 "title-buy-algo" = "Buy ALGO";
+"title-sort" = "Sort";
+"title-alphabetically-a-to-z" = "Alphabetically A to Z";
+"title-alphabetically-z-to-a" =  "Alphabetically Z to A";
+"title-lowest-value-to-highest" = "Lowest Value to Highest";
+"title-highest-value-to-lowest" = "Highest Value to Lowest";
+"title-manually" = "Manually";
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";
 "title-home" = "Home";
@@ -1045,3 +1051,6 @@
 "transaction-option-list-send-subtitle" = "Algo or any ASA to another account";
 "transaction-option-list-receive-subtitle" = "View or copy your account address";
 "transaction-option-list-scan-qr-code-subtitle" = "Use WalletConnect or scan an account address";
+
+// MARK: Sort Account List
+"sort-account-list-manually-header-title" = "Reorganize Accounts Manually";

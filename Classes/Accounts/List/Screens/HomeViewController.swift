@@ -305,8 +305,8 @@ extension HomeViewController {
                                 transitioningDelegate: nil
                             )
                         )
-                    case .arrangeAccounts(let accountType):
-                        let eventHandler: OrderAccountListViewController.EventHandler = {
+                    case .arrangeAccounts(_): // <todo> There is no need for AccountType
+                        let eventHandler: SortAccountListViewController.EventHandler = {
                             [weak self] event in
                             guard let self = self else { return }
                             
@@ -319,8 +319,15 @@ extension HomeViewController {
                                 }
                             }
                         }
+
                         self.open(
-                            .orderAccountList(accountType: accountType, eventHandler: eventHandler),
+                            .sortAccountList(
+                                dataController: SortAccountListLocalDataController(
+                                    session: self.session!,
+                                    sharedDataController: self.sharedDataController
+                                ),
+                                 eventHandler: eventHandler
+                            ),
                             by: .present
                         )
                     }
