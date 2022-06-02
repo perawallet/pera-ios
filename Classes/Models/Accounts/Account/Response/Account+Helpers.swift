@@ -84,7 +84,7 @@ extension Account {
         return totalCreatedApps != account.totalCreatedApps || appsLocalState?.count != account.appsLocalState?.count
     }
 
-    var hasMinAmountFields: Bool {
+    var hasDifferentMinBalance: Bool {
         return hasAnyAssets() || isThereAnyCreatedApps || isThereAnyOptedApps || isThereSchemaValues || isThereAnyAppExtraPages
     }
 
