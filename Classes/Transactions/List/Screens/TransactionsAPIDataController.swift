@@ -707,7 +707,11 @@ extension TransactionsAPIDataController {
         with transaction: PendingTransaction,
         for address: String?
     ) -> TransactionHistoryContextViewModel {
-        let asset = draft.asset.unwrap(AssetDecoration.init)
+        var asset: AssetDecoration?
+        if let assetID = transaction.xaid,
+           let anAsset = sharedDataController.assetDetailCollection[assetID] {
+            asset = anAsset
+        }
 
         if let contact = contacts.first(where: { contact  in
             contact.address == address
