@@ -211,7 +211,7 @@ extension ManageAssetsViewController:
             return
         }
 
-        guard let asset = account[asset.id] else {
+        guard let asset = self.dataController[asset.id] else {
             return
         }
         
