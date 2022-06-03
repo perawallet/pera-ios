@@ -202,11 +202,6 @@ extension AccountDetailViewController: OptionsViewControllerDelegate {
             by: .present
         )
     }
-    
-    func optionsViewControllerDidRemoveAsset(_ optionsViewController: OptionsViewController) {
-        let controller = open(.removeAsset(account: accountHandle.value), by: .present) as? ManageAssetsViewController
-        controller?.delegate = self
-    }
 
     func optionsViewControllerDidRemoveAccount(_ optionsViewController: OptionsViewController) {
         displayRemoveAccountAlert()
