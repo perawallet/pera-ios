@@ -26,7 +26,7 @@ final class AssetManagementViewController:
     private lazy var contextView = VStackView()
     
     override func configureAppearance() {
-        title = "asset-remove-title".localized
+        title = "options-manage-assets".localized
     }
     
     override func configureNavigationBarAppearance() {

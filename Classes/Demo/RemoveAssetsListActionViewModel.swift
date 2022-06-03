@@ -25,7 +25,7 @@ struct RemoveAssetsListActionViewModel: ListActionViewModel {
     init() {
         self.icon = "icon-asset-delete"
         self.title = Self.getTitle(
-            "title-remove-assets".localized,
+            "asset-remove-title".localized,
             AppColors.Shared.Helpers.negative
         )
         self.subtitle = nil

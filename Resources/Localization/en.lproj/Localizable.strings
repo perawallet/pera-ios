@@ -197,13 +197,12 @@
 "asset-not-found-title" = "No asset found";
 "asset-not-found-detail" = "Try different asset name or asset id";
 "asset-algos-title" = "Algo";
-"asset-remove-title" = "Manage Assets";
-"asset-remove-subtitle" = "To remove an asset, you must first transfer that asset’s balance to another account";
+"asset-remove-title" = "Remove Assets";
+"asset-remove-subtitle" = "To remove an asset, you must first transfer any remaining balance to another account.";
 "asset-search-placeholder" = "Search Assets ID or Name";
 "asset-remove-confirmation-title" = "Manage asset";
 "asset-manage-button" = "Manage";
 "asset-transfer-balance" = "Transfer Balance";
-"title-remove-assets" = "Remove Assets";
 "title-add-asset" = "Add New Asset";
 "asset-add-warning" = "Adding an asset requires sending a transaction with a minimum transaction fee. This will appear on your transaction history.";
 "asset-support-error" = "Unfortunately, this account has not added this asset. Please instruct the account owner to add the asset, and then try again.";
@@ -273,7 +272,6 @@
 "options-title" = "ACCOUNT SETTINGS";
 "options-show-qr" = "Show QR Code";
 "options-rekey" = "Rekey Account";
-"options-remove-assets" = "Remove Assets";
 "options-view-passphrase" = "View Passphrase";
 "options-passphrase" = "Passphrase";
 "options-edit-account-name" = "Rename Account";
