@@ -121,6 +121,37 @@ enum AlgorandWeb: String {
             return self.rawValue
         }
     }
+    
+    enum AlgoExplorer {
+        case address(isMainnet: Bool, param: String)
+        case asset(isMainnet: Bool, param: String)
+        
+        var link: URL? {
+            switch self {
+            case .address(let isMainnet, let param):
+                return isMainnet
+                    ? URL(string: "https://algoexplorer.io/address/\(param)")
+                    : URL(string: "https://testnet.algoexplorer.io/address/\(param)")
+            case .asset(let isMainnet, let param):
+                return isMainnet
+                    ? URL(string: "https://algoexplorer.io/asset/\(param)")
+                    : URL(string: "https://testnet.algoexplorer.io/asset/\(param)")
+            }
+        }
+    }
+    
+    enum NftExplorer {
+        case asset(isMainnet: Bool, param: String)
+        
+        var link: URL? {
+            switch self {
+            case .asset(let isMainnet, let param):
+                return isMainnet
+                    ? URL(string: "https://www.nftexplorer.app/asset/\(param)")
+                    : nil
+            }
+        }
+    }
 }
 
 extension AlgorandWeb {

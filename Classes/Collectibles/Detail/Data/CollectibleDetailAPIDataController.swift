@@ -329,7 +329,7 @@ extension CollectibleDetailAPIDataController {
                         title: "collectible-detail-creator-address".localized,
                         value: creator.shortAddressDisplay,
                         isCollectibleSpecificValue: true,
-                        actionURL: source.getExplorerUrl()
+                        actionURL: source.url
                     )
                 )
             )
