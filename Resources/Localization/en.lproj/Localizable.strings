@@ -286,6 +286,7 @@
 "options-unmute-notification" = "Unmute Notifications";
 "options-copy-address" = "Copy Address";
 "options-manage-assets" = "Manage Assets";
+"options-sort-title" = "Sort";
 
 // MARK: Contacts
 "contacts-title" = "Contacts";
