@@ -51,6 +51,12 @@ final class ManageAssetsListLocalDataController:
         return searchResults[safe: index]
     }
     
+    subscript (assetId: AssetID) -> Asset? {
+        return searchResults.first { asset in
+            asset.id == assetId
+        }
+    }
+    
     func hasSection() -> Bool {
         return !searchResults.isEmpty
     }
