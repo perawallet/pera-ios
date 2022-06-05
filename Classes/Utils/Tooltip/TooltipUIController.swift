@@ -175,11 +175,11 @@ extension TooltipUIController {
             $0.leading
                 .greaterThanOrEqualTo(titleView.snp.leading)
                 .inset(theme.triangleMinHorizontalMargin)
-                .priority(.low)
+                .priority(.medium)
             $0.trailing
                 .lessThanOrEqualTo(titleView.snp.trailing)
                 .inset(theme.triangleMinHorizontalMargin)
-                .priority(.low)
+                .priority(.medium)
         }
 
         triangleView.snp.prepareConstraints {

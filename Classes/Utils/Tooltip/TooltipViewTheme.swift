@@ -21,8 +21,6 @@ import UIKit
 struct TooltipViewTheme:
     StyleSheet,
     LayoutSheet {
-    let background: ViewStyle
-
     /// <note>
     /// The space around an tooltip's border
     let contentHorizontalMargins: LayoutHorizontalMargins
@@ -38,9 +36,6 @@ struct TooltipViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        background = [
-            .backgroundColor(AppColors.Components.Banner.infoBackground)
-        ]
         contentHorizontalMargins = (24, 24)
         corner = Corner(radius: 12)
         title = [
@@ -53,6 +48,6 @@ struct TooltipViewTheme:
             .image("tooltip-triangle"),
         ]
         triangleOffset = 8
-        triangleMinHorizontalMargin = 4
+        triangleMinHorizontalMargin = 12
     }
 }
