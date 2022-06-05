@@ -44,7 +44,7 @@ final class SortAccountListDataSource:
                 switch item {
                 case .cell(let item):
                     let cell = collectionView.dequeue(
-                        AccountPreviewCell.self,
+                        AccountOrderingPreviewCell.self,
                         at: indexPath
                     )
                     cell.bindData(
@@ -77,7 +77,7 @@ final class SortAccountListDataSource:
 
         [
             SingleSelectionCell.self,
-            AccountPreviewCell.self
+            AccountOrderingPreviewCell.self
         ].forEach {
             collectionView.register($0)
         }

@@ -192,12 +192,13 @@ extension SortAccountListLocalDataController {
         var items: [SortAccountListItem] = []
 
         accounts.forEach { account in
-            let accountNameViewModel = AccountNameViewModel(account: account.value)
-            let preview = CustomAccountPreview(accountNameViewModel)
-
             let item: SortAccountListItem = .order(
                 .cell(
-                    AccountPreviewViewModel(preview)
+                    AccountPreviewViewModel(
+                        AccountOrderingDraft(
+                            account: account.value
+                        )
+                    )
                 )
             )
             items.append(item)
