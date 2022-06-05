@@ -273,7 +273,7 @@
 
 // MARK: Options
 "options-title" = "ACCOUNT SETTINGS";
-"options-show-qr" = "Show QR Code";
+"options-show-qr" = "Show Address";
 "options-rekey" = "Rekey Account";
 "options-view-passphrase" = "View Passphrase";
 "options-passphrase" = "Passphrase";
