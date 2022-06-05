@@ -35,6 +35,8 @@ final class SortAccountListViewController:
         return collectionView
     }()
 
+    private var movingAccountOrderingPreviewCellIndexPath: IndexPath?
+
     private lazy var listLayout = SortAccountListLayout(
         listDataSource: listDataSource
     )
@@ -133,7 +135,7 @@ extension SortAccountListViewController {
 extension SortAccountListViewController {
     private func linkListViewInteractors() {
         listView.delegate = self
-        
+
         let gesture = UILongPressGestureRecognizer(
             target: self,
             action: #selector(handleLongPressGesture)
@@ -145,6 +147,8 @@ extension SortAccountListViewController {
     private func handleLongPressGesture(
         _ gesture: UILongPressGestureRecognizer
     ) {
+        listView.isUserInteractionEnabled = false
+
         switch gesture.state {
         case .began:
             guard let targetIndexPath = listView.indexPathForItem(
@@ -156,15 +160,55 @@ extension SortAccountListViewController {
             listView.beginInteractiveMovementForItem(
                 at: targetIndexPath
             )
+
+            recustomizeAccountOrderingCellAppearanceOnMove(
+                targetIndexPath,
+                isMoving: true
+            )
         case .changed:
             listView.updateInteractiveMovementTargetPosition(
                 gesture.location(in: listView)
             )
         case .ended:
             listView.endInteractiveMovement()
+            listView.isUserInteractionEnabled = true
+
+            guard let targetIndexPath = movingAccountOrderingPreviewCellIndexPath else {
+                return
+            }
+
+            recustomizeAccountOrderingCellAppearanceOnMove(
+                targetIndexPath,
+                isMoving: false
+            )
         default:
             listView.cancelInteractiveMovement()
+            listView.isUserInteractionEnabled = true
+
+            guard let targetIndexPath = movingAccountOrderingPreviewCellIndexPath else {
+                return
+            }
+
+            recustomizeAccountOrderingCellAppearanceOnMove(
+                targetIndexPath,
+                isMoving: false
+            )
         }
+    }
+}
+
+extension SortAccountListViewController {
+    private func recustomizeAccountOrderingCellAppearanceOnMove(
+        _ indexPath: IndexPath,
+        isMoving: Bool
+    ) {
+        let cell = listView.cellForItem(
+            at: indexPath
+        ) as? AccountOrderingPreviewCell
+
+        cell?.recustomizeAppearanceOnMove(
+            isMoving: isMoving
+        )
     }
 }
 
@@ -246,8 +290,12 @@ extension SortAccountListViewController {
         toProposedIndexPath proposedIndexPath: IndexPath
     ) -> IndexPath {
         if currentIndexPath.section != proposedIndexPath.section {
+            movingAccountOrderingPreviewCellIndexPath = currentIndexPath
+
             return currentIndexPath
         }
+
+        movingAccountOrderingPreviewCellIndexPath = proposedIndexPath
 
         return proposedIndexPath
     }

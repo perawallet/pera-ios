@@ -61,6 +61,8 @@ extension SortAccountListLayout {
             insets.bottom = 8
             return insets
         case .order:
+            insets.left = 0
+            insets.right = 0
             insets.bottom = 8
             return insets
         }
@@ -113,7 +115,7 @@ extension SortAccountListLayout {
         case .sort(_):
             return CGSize(
                 width: calculateContentWidth(for: collectionView),
-                height: 64
+                height: 56
             ) /// <todo>: Calculate height
         case .order(let item):
             switch item {
@@ -141,7 +143,7 @@ extension SortAccountListLayout {
             return cachedSize
         }
 
-        let width = calculateContentWidth(for: listView)
+        let width = listView.bounds.width
         let sampleAccountPreview = CustomAccountPreview(
             icon: "standard-orange".uiImage,
             title: "title-unknown".localized,

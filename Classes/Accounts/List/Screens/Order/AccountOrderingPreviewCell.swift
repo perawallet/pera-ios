@@ -19,10 +19,14 @@ import MacaroonUIKit
 
 final class AccountOrderingPreviewCell:
     CollectionCell<AccountPreviewView>,
-    ViewModelBindable {
+    ViewModelBindable,
+    ShadowDrawable {
     override class var contextPaddings: LayoutPaddings {
-        return (14, 0, 14, 0)
+        return (14, 24, 14, 24)
     }
+
+    var shadow: MacaroonUIKit.Shadow?
+    var shadowLayer: CAShapeLayer = CAShapeLayer()
 
     static let theme: AccountPreviewViewTheme = {
         var theme = AccountPreviewViewTheme()
@@ -35,6 +39,27 @@ final class AccountOrderingPreviewCell:
     ) {
         super.init(frame: frame)
         contextView.customize(Self.theme)
+
+        draw(
+            shadow: MacaroonUIKit.Shadow(
+                color: AppColors.SendTransaction.Shadow.second.uiColor,
+                opacity: 1,
+                offset: (0, 2),
+                radius: 4,
+                fillColor: AppColors.Shared.System.background.uiColor.withAlphaComponent(0.7),
+                cornerRadii: (4, 4),
+                corners: .allCorners
+            )
+        )
+
+        shadowLayer.isHidden = true
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        contextView.prepareForReuse()
+        shadowLayer.isHidden = true
     }
 }
 
@@ -43,5 +68,13 @@ fileprivate extension AccountPreviewViewTheme {
         accessoryIcon = accessoryIcon.modify(
             [ .tintColor(AppColors.Components.Text.grayLighter) ]
         )
+    }
+}
+
+extension AccountOrderingPreviewCell {
+    func recustomizeAppearanceOnMove(
+        isMoving: Bool
+    ) {
+        shadowLayer.isHidden = !isMoving
     }
 }
