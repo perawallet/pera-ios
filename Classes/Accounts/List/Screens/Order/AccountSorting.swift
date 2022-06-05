@@ -25,77 +25,151 @@ protocol AccountSorting {
     ) -> [AccountHandle]
 }
 
-struct AccountSortingWithAlphabetically: AccountSorting {
-    var id: String {
-        switch order {
-        case .ascending:
-            return "alphabeticalyAscending"
-        case .descending:
-            return "alphabeticalyDescending"
-        }
-    }
-
-    var title: String {
-        switch order {
-        case .ascending:
-            return"title-alphabetically-a-to-z".localized
-        case .descending:
-            return "title-alphabetically-z-to-a".localized
-        }
-    }
-
-    private let order: SortOrder
-
-    init(
-        _ order: SortOrder
-    ) {
-        self.order = order
-    }
+struct AccountSortingWithAlphabeticallyDescending: AccountSorting {
+    var id: String = "alphabeticallyDescending"
+    var title: String = "title-alphabetically-z-to-a".localized
 
     func sort(
         _ accounts: [AccountHandle]
     ) -> [AccountHandle] {
-        return accounts.sorted(
-            by: \.value.name,
-            using:  order == .descending ? (>) : (<)
-        )
+        return accounts.sorted { first, second in
+            guard let firstValue = first.value.name,
+                  let secondValue = second.value.name else {
+                return false
+            }
+
+            return firstValue.localizedCaseInsensitiveCompare(secondValue) == .orderedDescending
+        }
     }
 }
 
-struct AccountSortingWithValue: AccountSorting {
-    var id: String {
-        switch order {
-        case .ascending:
-            return "valueAscending"
-        case .descending:
-            return "valueDescending"
+struct AccountSortingWithAlphabeticallyAscending: AccountSorting {
+    var id: String = "alphabeticallyAscending"
+    var title: String = "title-alphabetically-a-to-z".localized
+
+    func sort(
+        _ accounts: [AccountHandle]
+    ) -> [AccountHandle] {
+        return accounts.sorted { first, second in
+            guard let firstValue = first.value.name,
+                  let secondValue = second.value.name else {
+                return false
+            }
+
+            return firstValue.localizedCaseInsensitiveCompare(secondValue) == .orderedAscending
         }
     }
+}
 
-    var title: String {
-        switch order {
-        case .ascending:
-            return "title-lowest-value-to-highest".localized
-        case .descending:
-            return "title-highest-value-to-lowest".localized
-        }
-    }
+struct AccountSortingWithValueDescending: AccountSorting {
+    var id: String = "valueDescending"
+    var title: String = "title-highest-value-to-lowest".localized
 
-    private let order: SortOrder
+    private let currency: CurrencyHandle
+    private let calculator: PortfolioCalculator
 
     init(
-        _ order: SortOrder
+        currency: CurrencyHandle,
+        calculator: PortfolioCalculator
     ) {
-        self.order = order
+        self.currency = currency
+        self.calculator = calculator
     }
 
     func sort(
         _ accounts: [AccountHandle]
     ) -> [AccountHandle] {
-        return accounts.sorted(
-            by: \.value.amount,
-            using: order == .descending ? (>) : (<)
-        )
+        var totalValueCache: [String: Decimal] = [:]
+
+        return accounts.sorted { first, second in
+            let firstTotalValue: Decimal = getTotalValue(
+                for: first,
+                cache: &totalValueCache
+            )
+
+            let secondTotalValue: Decimal = getTotalValue(
+                for: second,
+                cache: &totalValueCache
+            )
+
+            return firstTotalValue > secondTotalValue
+        }
+    }
+
+    private func getTotalValue(
+        for accountHandle: AccountHandle,
+        cache: inout [String: Decimal]
+    ) -> Decimal {
+        let account = accountHandle.value
+
+        if let totalValueFromCache = cache[account.address] {
+            return totalValueFromCache
+        }
+
+        let calculatedTotalValue = calculator.calculateTotalValue(
+            [accountHandle],
+            as: currency
+        ).amount
+
+        cache[account.address] = calculatedTotalValue
+
+        return calculatedTotalValue
+    }
+}
+
+struct AccountSortingWithValueAscending: AccountSorting {
+    var id: String = "valueAscending"
+    var title: String = "title-lowest-value-to-highest".localized
+
+    private let currency: CurrencyHandle
+    private let calculator: PortfolioCalculator
+
+    init(
+        currency: CurrencyHandle,
+        calculator: PortfolioCalculator
+    ) {
+        self.currency = currency
+        self.calculator = calculator
+    }
+
+    func sort(
+        _ accounts: [AccountHandle]
+    ) -> [AccountHandle] {
+        var totalValueCache: [String: Decimal] = [:]
+
+        return accounts.sorted { first, second in
+            let firstTotalValue: Decimal = getTotalValue(
+                for: first,
+                cache: &totalValueCache
+            )
+
+            let secondTotalValue: Decimal = getTotalValue(
+                for: second,
+                cache: &totalValueCache
+            )
+
+            return firstTotalValue < secondTotalValue
+        }
+    }
+
+    private func getTotalValue(
+        for accountHandle: AccountHandle,
+        cache: inout [String: Decimal]
+    ) -> Decimal {
+        let account = accountHandle.value
+
+        if let totalValueFromCache = cache[account.address] {
+            return totalValueFromCache
+        }
+
+        let calculatedTotalValue = calculator.calculateTotalValue(
+            [accountHandle],
+            as: currency
+        ).amount
+
+        cache[account.address] = calculatedTotalValue
+
+        return calculatedTotalValue
     }
 }
 
@@ -108,9 +182,4 @@ struct AccountSortingWithManually: AccountSorting {
     ) -> [AccountHandle] {
         return accounts
     }
-}
-
-enum SortOrder {
-    case ascending
-    case descending
 }

@@ -25,11 +25,17 @@ final class SortAccountListLocalDataController:
         label: "sortAccountListSnapshot"
     )
 
-    private var accountsSortings: [AccountSorting] = [
-        AccountSortingWithAlphabetically(.ascending),
-        AccountSortingWithAlphabetically(.descending),
-        AccountSortingWithValue(.descending),
-        AccountSortingWithValue(.ascending),
+    private lazy var accountsSortings: [AccountSorting] = [
+        AccountSortingWithAlphabeticallyAscending(),
+        AccountSortingWithAlphabeticallyDescending(),
+        AccountSortingWithValueDescending(
+            currency: sharedDataController!.currency,
+            calculator: ALGPortfolioCalculator()
+        ),
+        AccountSortingWithValueAscending(
+            currency: sharedDataController!.currency,
+            calculator: ALGPortfolioCalculator()
+        ),
         AccountSortingWithManually()
     ]
 
