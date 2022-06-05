@@ -472,6 +472,7 @@ extension String {
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
                     .textAlignment(alignment),
+                    .textAlignment(alignment),
                     .lineBreakMode(lineBreakMode),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
@@ -503,6 +504,7 @@ extension String {
                 .letterSpacing(-0.07),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
+                    .textAlignment(alignment),
                     .lineBreakMode(lineBreakMode),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
@@ -528,6 +530,7 @@ extension String {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
+                    .textAlignment(alignment),
                     .lineBreakMode(lineBreakMode),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
@@ -553,6 +556,7 @@ extension String {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
+                    .textAlignment(alignment),
                     .lineBreakMode(lineBreakMode),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
@@ -579,6 +583,7 @@ extension String {
                 .letterSpacing(-0.26),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
+                    .textAlignment(alignment),
                     .lineBreakMode(lineBreakMode),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
@@ -604,6 +609,7 @@ extension String {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
+                    .textAlignment(alignment),
                     .lineBreakMode(lineBreakMode),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
@@ -633,6 +639,7 @@ extension String {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
+                    .textAlignment(alignment),
                     .lineBreakMode(lineBreakMode),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
@@ -658,6 +665,7 @@ extension String {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
+                    .textAlignment(alignment),
                     .lineBreakMode(lineBreakMode),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
@@ -683,6 +691,7 @@ extension String {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
+                    .textAlignment(alignment),
                     .lineBreakMode(lineBreakMode),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
@@ -708,6 +717,7 @@ extension String {
                 .font(font),
                 .lineHeightMultiplier(lineHeightMultiplier, font),
                 .paragraph([
+                    .textAlignment(alignment),
                     .lineBreakMode(lineBreakMode),
                     .lineHeightMultiple(lineHeightMultiplier)
                 ])
