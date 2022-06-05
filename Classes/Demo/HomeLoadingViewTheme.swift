@@ -33,7 +33,7 @@ struct HomeLoadingViewTheme:
 
     var loadingCorner: Corner
 
-    var buyAlgoButtonTheme: ButtonTheme
+    var quickActionsTheme: QuickActionsViewTheme
     var buyAlgoButtonMargin: LayoutMargins
     var buyAlgoButtonHeight: LayoutMetric
 
@@ -69,13 +69,13 @@ struct HomeLoadingViewTheme:
         ]
         self.spacingBetweenTitleAndInfoAction = 10
         self.portfolioLoadingMargin = (18, .noMetric, .noMetric, .noMetric)
-        self.portfolioLoadingSize = (181, 44)
+        self.portfolioLoadingSize = (181, 48)
         self.portfolioCurrencyLoadingMargin = (12, .noMetric, .noMetric, .noMetric)
         self.portfolioCurrencyLoadingSize = (97, 20)
 
         self.loadingCorner = Corner(radius: 4)
 
-        self.buyAlgoButtonTheme = ButtonPrimaryTheme(family)
+        self.quickActionsTheme = QuickActionsViewTheme(family)
         self.buyAlgoButtonMargin = (44, 24, .noMetric, 24)
         self.buyAlgoButtonHeight = 52
 

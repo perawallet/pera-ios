@@ -29,7 +29,7 @@ final class HomePortfolioView:
         .showInfo: UIControlInteraction()
     ]
 
-    private lazy var titleView = Label()
+    private(set) lazy var titleView = Label()
     private lazy var infoActionView = MacaroonUIKit.Button()
     private lazy var valueView = Label()
     private lazy var secondaryValueView = Label()

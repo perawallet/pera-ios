@@ -30,7 +30,7 @@ final class HomeLoadingView:
     private lazy var portfolioLoading = ShimmerView()
     private lazy var portfolioCurrencyLoading = ShimmerView()
     
-    private lazy var buyAlgoButton = Button()
+    private lazy var quickActionsView = QuickActionsView()
     
     private lazy var accountsLabel = Label()
     private lazy var firstAccountPreviewLoading = PreviewLoadingView()
@@ -41,7 +41,7 @@ final class HomeLoadingView:
     ) {
         super.init(frame: frame)
         addPortfolioView()
-        addBuyAlgoButton()
+        addQuickActionsView()
         addAccountCells()
     }
 
@@ -91,15 +91,15 @@ extension HomeLoadingView {
         }
     }
 
-    private func addBuyAlgoButton() {
-        buyAlgoButton.customize(theme.buyAlgoButtonTheme)
+    private func addQuickActionsView() {
+        quickActionsView.customize(theme.quickActionsTheme)
 
-        addSubview(buyAlgoButton)
-        buyAlgoButton.snp.makeConstraints {
+        addSubview(quickActionsView)
+        quickActionsView.snp.makeConstraints {
             $0.top.equalTo(portfolioCurrencyLoading.snp.bottom).offset(theme.buyAlgoButtonMargin.top)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
-            $0.height.equalTo(theme.buyAlgoButtonHeight)
+            $0.height.equalTo(80)
         }
     }
 
@@ -108,7 +108,7 @@ extension HomeLoadingView {
 
         addSubview(accountsLabel)
         accountsLabel.snp.makeConstraints {
-            $0.top.equalTo(buyAlgoButton.snp.bottom).offset(theme.accountsLabelMargin.top)
+            $0.top.equalTo(quickActionsView.snp.bottom).offset(theme.accountsLabelMargin.top)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
         }

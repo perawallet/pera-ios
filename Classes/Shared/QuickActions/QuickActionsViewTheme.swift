@@ -31,7 +31,7 @@ struct QuickActionsViewTheme:
     init(
         _ family: LayoutFamily
     ) {
-        let actionFont = Fonts.DMSans.medium.make(15)
+        let actionFont = Fonts.DMSans.regular.make(13)
         let actionTitleColor = AppColors.Components.Text.main
 
         self.contentSafeAreaInsets = .zero

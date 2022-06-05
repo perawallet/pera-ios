@@ -34,15 +34,15 @@ final class QuickActionsView:
     private lazy var contentView = MacaroonUIKit.BaseView()
     private lazy var actionsView = HStackView()
     private lazy var buyAlgoActionView =
-        MacaroonUIKit.Button(.imageAtTop(spacing: spacingBetweenActionIconAndTitle))
+        MacaroonUIKit.Button(.imageAtTopmost(padding: 0, titleAdjustmentY: Self.spacingBetweenActionIconAndTitle))
     private lazy var sendActionView =
-        MacaroonUIKit.Button(.imageAtTop(spacing: spacingBetweenActionIconAndTitle))
+        MacaroonUIKit.Button(.imageAtTopmost(padding: 0, titleAdjustmentY: Self.spacingBetweenActionIconAndTitle))
     private lazy var receiveActionView =
-        MacaroonUIKit.Button(.imageAtTop(spacing: spacingBetweenActionIconAndTitle))
+        MacaroonUIKit.Button(.imageAtTopmost(padding: 0, titleAdjustmentY: Self.spacingBetweenActionIconAndTitle))
     private lazy var scanQRActionView =
-        MacaroonUIKit.Button(.imageAtTop(spacing: spacingBetweenActionIconAndTitle))
+        MacaroonUIKit.Button(.imageAtTopmost(padding: 0, titleAdjustmentY: Self.spacingBetweenActionIconAndTitle))
 
-    private let spacingBetweenActionIconAndTitle: CGFloat = 15
+    private static let spacingBetweenActionIconAndTitle: CGFloat = 15
 
     func customize(
         _ theme: QuickActionsViewTheme
@@ -62,7 +62,22 @@ final class QuickActionsView:
         for theme: QuickActionsViewTheme,
         fittingIn size: CGSize
     ) -> CGSize {
-        return CGSize((size.width, 130))
+        let oneButtonWidth = (size.width - (3 * theme.spacingBetweenActions)) / 4
+        let font = theme.buyAlgoAction.font?.uiFont
+        
+        let firstSize = theme.buyAlgoAction.title?.text.string?.boundingSize(attributes: .font(font), multiline: true, fittingSize: CGSize(width: oneButtonWidth, height: .greatestFiniteMagnitude)) ?? .zero
+        let secondSize = theme.sendAction.title?.text.string?.boundingSize(attributes: .font(font), fittingSize: CGSize(width: oneButtonWidth, height: .greatestFiniteMagnitude)) ?? .zero
+        let thirdSize = theme.receiveAction.title?.text.string?.boundingSize(attributes: .font(font), multiline: true, fittingSize: CGSize(width: oneButtonWidth, height: .greatestFiniteMagnitude)) ?? .zero
+        let fourthSize = theme.qrAction.title?.text.string?.boundingSize(attributes: .font(font), multiline: true, fittingSize: CGSize(width: oneButtonWidth, height: .greatestFiniteMagnitude)) ?? .zero
+        
+        let firstMax = max(firstSize.height.rounded(), secondSize.height.rounded())
+        let secondMax = max(thirdSize.height.rounded(), fourthSize.height.rounded())
+        
+        
+        let imageHeight = theme.buyAlgoAction.icon?[.normal]?.height ?? 48.0
+        
+        let totalHeight = max(firstMax, secondMax) + imageHeight + spacingBetweenActionIconAndTitle
+        return CGSize((size.width, totalHeight))
     }
 }
 
@@ -73,7 +88,6 @@ extension QuickActionsView {
     ) {
         addSubview(actionsView)
         actionsView.distribution = .fillEqually
-//        actionsView.alignment = .top
         actionsView.spacing = theme.spacingBetweenActions
         actionsView.snp.makeConstraints {
             $0.top == 0
