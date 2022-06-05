@@ -94,7 +94,7 @@ extension SelectAssetViewControllerDataSource {
         let viewModel: AssetPreviewViewModel
 
         if let collectibleAsset = asset as? CollectibleAsset {
-            let draft = CollectibleAssetSelectionDraft(
+            let draft = CollectibleAssetPreviewSelectionDraft(
                 currency: currency,
                 asset: collectibleAsset
             )
