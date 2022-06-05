@@ -51,9 +51,12 @@
 "title-generic-error" = "Something went wrong";
 "title-generic-response-description" = "We couldn't fetch some of the assets. Please try again.";
 "title-buy-algo" = "Buy ALGO";
-
 "title-show-transaction-detail" = "Show Transaction Details";
 "title-show-all-detail" = "Show All Details";
+"title-home" = "Home";
+"title-price" = "Price";
+"title-collectibles" = "Collectibles";
+"settings-title" = "Settings";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -319,7 +322,6 @@
 "settings-sections-account" = "Account";
 "settings-sections-appPreferences" = "App Preferences";
 "settings-sections-support" = "Support";
-"settings-title" = "Settings";
 "settings-server-node-settings" = "Node Settings";
 "settings-backup-title" = "Backup";
 "settings-language" = "Language";
@@ -931,7 +933,6 @@
 "pera-announcement-action-title" = "Start Using Pera Wallet";
 
 // MARK: Collectible Common
-"title-collectibles" = "Collectibles";
 "collectibles-empty-title" = "Collectibles";
 "collectibles-empty-body" = "Welcome to your NFT Gallery! You don’t have any NFTs yet. All the NFTs available in your wallet will be visible here.";
 
