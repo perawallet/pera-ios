@@ -18,10 +18,10 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AssetManagementItemCell:
-    CollectionCell<AssetManagementItemView>,
+final class ManagementItemCell:
+    CollectionCell<ManagementItemView>,
     UIInteractionObservable {
-    static let theme = AssetManagementItemViewTheme()
+    static let theme = ManagementItemViewTheme()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

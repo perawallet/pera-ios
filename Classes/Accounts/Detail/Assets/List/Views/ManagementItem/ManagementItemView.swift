@@ -18,7 +18,7 @@ import Foundation
 import MacaroonUIKit
 import UIKit
 
-final class AssetManagementItemView:
+final class ManagementItemView:
     View,
     UIInteractionObservable,
     UIControlInteractionPublisher,
@@ -32,7 +32,7 @@ final class AssetManagementItemView:
     private lazy var manageButton = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
     private lazy var addButton = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
     
-    func customize(_ theme: AssetManagementItemViewTheme) {
+    func customize(_ theme: ManagementItemViewTheme) {
         addAddButton(theme)
         addManageButton(theme)
         addTitle(theme)
@@ -43,8 +43,8 @@ final class AssetManagementItemView:
     func prepareLayout(_ layoutSheet: NoLayoutSheet) {}
 }
 
-extension AssetManagementItemView {
-    private func addTitle(_ theme: AssetManagementItemViewTheme) {
+extension ManagementItemView {
+    private func addTitle(_ theme: ManagementItemViewTheme) {
         titleView.editText = theme.title
         
         addSubview(titleView)
@@ -54,7 +54,7 @@ extension AssetManagementItemView {
         }
     }
     
-    private func addManageButton(_ theme: AssetManagementItemViewTheme) {
+    private func addManageButton(_ theme: ManagementItemViewTheme) {
         manageButton.customizeAppearance(theme.manageButton)
         
         addSubview(manageButton)
@@ -70,7 +70,7 @@ extension AssetManagementItemView {
         )
     }
     
-    private func addAddButton(_ theme: AssetManagementItemViewTheme) {
+    private func addAddButton(_ theme: ManagementItemViewTheme) {
         addButton.customizeAppearance(theme.addButton)
         
         addSubview(addButton)
@@ -86,7 +86,7 @@ extension AssetManagementItemView {
     }
 }
 
-extension AssetManagementItemView {
+extension ManagementItemView {
     enum Event {
         case manage
         case add

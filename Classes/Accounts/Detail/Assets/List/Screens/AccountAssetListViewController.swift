@@ -144,7 +144,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
             
             switch itemIdentifier {
             case .assetManagement:
-                guard let item = cell as? AssetManagementItemCell else {
+                guard let item = cell as? ManagementItemCell else {
                     return
                 }
                 

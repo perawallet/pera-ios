@@ -17,7 +17,7 @@
 import Foundation
 import MacaroonUIKit
 
-struct AssetManagementItemViewTheme:
+struct ManagementItemViewTheme:
     StyleSheet,
     LayoutSheet {
     let title: EditText?
