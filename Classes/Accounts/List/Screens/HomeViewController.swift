@@ -26,6 +26,7 @@ final class HomeViewController:
 
     private lazy var modalTransition = BottomSheetTransition(presentingViewController: self)
     private lazy var buyAlgoResultTransition = BottomSheetTransition(presentingViewController: self)
+    private lazy var navigationView = HomePortfolioNavigationView()
       
     private lazy var pushNotificationController = PushNotificationController(
         target: target,
@@ -73,6 +74,10 @@ final class HomeViewController:
 
     override func configureNavigationBarAppearance() {
         addBarButtons()
+
+        navigationView.prepareLayout(NoLayoutSheet())
+
+        navigationItem.titleView = navigationView
     }
 
     override func viewDidLoad() {
@@ -86,6 +91,7 @@ final class HomeViewController:
             case .didUpdate(let snapshot):
                 self.configureWalletConnectIfNeeded()
                 self.listDataSource.apply(snapshot, animatingDifferences: self.isViewAppeared)
+                self.bindNavigation()
             }
         }
         dataController.load()
@@ -94,6 +100,17 @@ final class HomeViewController:
         pushNotificationController.sendDeviceDetails()
 
         requestAppReview()
+
+    }
+
+    private func bindNavigation() {
+        guard let title = dataController.portfolioViewModel?.value?.string else {
+            return
+        }
+
+        let subtitle = dataController.portfolioViewModel?.secondaryValue?.string
+
+        navigationView.bind(title: title, subtitle: subtitle)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -132,6 +149,14 @@ final class HomeViewController:
         listView.delegate = self
 
         view.backgroundColor = AppColors.Shared.Layer.grayLightest.uiColor
+    }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let visibleIndexPaths = listView.indexPathsForVisibleItems
+
+        let headerVisible = visibleIndexPaths.contains(IndexPath(item: 0, section: 0))
+
+        navigationView.startAnimationToToggleTitleVisibility(visible: !headerVisible)
     }
 }
 

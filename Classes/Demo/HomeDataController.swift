@@ -22,6 +22,8 @@ protocol HomeDataController: AnyObject {
     typealias Snapshot = NSDiffableDataSourceSnapshot<HomeSection, HomeItem>
     
     var eventHandler: ((HomeDataControllerEvent) -> Void)? { get set }
+
+    var portfolioViewModel: HomePortfolioViewModel? { get }
     
     subscript (address: String?) -> AccountHandle? { get }
     

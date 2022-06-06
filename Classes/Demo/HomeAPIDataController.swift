@@ -20,7 +20,10 @@ import Foundation
 final class HomeAPIDataController:
     HomeDataController,
     SharedDataControllerObserver {
+
     var eventHandler: ((HomeDataControllerEvent) -> Void)?
+
+    private(set) var portfolioViewModel: HomePortfolioViewModel?
 
     private var lastSnapshot: Snapshot?
     
@@ -162,6 +165,8 @@ extension HomeAPIDataController {
             let portfolio =
                 Portfolio(accounts: accounts, currency: currency, calculator: calculator)
             let portfolioItem = HomePortfolioViewModel(portfolio)
+
+            self.portfolioViewModel = portfolioItem
 
             snapshot.appendItems(
                 [.portfolio(portfolioItem)],
