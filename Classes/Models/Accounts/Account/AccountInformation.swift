@@ -126,11 +126,23 @@ enum AccountType: String, Codable {
     case standard = "standard"
     case watch = "watch"
     case ledger = "ledger"
-    case multiSig = "multiSig"
     case rekeyed = "rekeyed"
 
     func image(for accountImageType: AccountImageType) -> UIImage? {
         return img("\(rawValue)-\(accountImageType.rawValue)")
+    }
+
+    var title: String? {
+        switch self {
+        case .standard:
+            return nil
+        case .watch:
+            return "title-watch-account".localized
+        case .ledger:
+            return "title-ledger-account".localized
+        case .rekeyed:
+            return "title-rekeyed-account".localized
+        }
     }
 }
 

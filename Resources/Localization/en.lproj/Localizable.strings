@@ -57,6 +57,9 @@
 "title-price" = "Price";
 "title-collectibles" = "Collectibles";
 "settings-title" = "Settings";
+"title-watch-account" = "Watch Account";
+"title-ledger-account" = "Ledger Account";
+"title-rekeyed-account" = "Rekeyed Account";
 
 // MARK: Account Type Selection
 "account-type-selection-add" = "I want to create an account";
@@ -606,7 +609,6 @@
 "ledger-pairing-first-warning-message-fourth-instruction" = "Once pairing is confirmed on both Ledger and this device, open the Algorand Ledger app.";
 
 // MARK: Watch Account
-"title-watch-account" = "Watch Account";
 "watch-account-create" = "Create a watch\naccount";
 "watch-account-button" = "Create a Watch Account";
 "watch-account-paste" = "Paste";
