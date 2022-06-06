@@ -150,28 +150,7 @@ extension HomeViewController {
             self.open(.notifications, by: .push)
         }
 
-        let qrBarButtonItem = ALGBarButtonItem(kind: .qr) { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            let qrScannerViewController = self.open(.qrScanner(canReadWCSession: true), by: .push) as? QRScannerViewController
-            qrScannerViewController?.delegate = self
-        }
-
-        let addBarButtonItem = ALGBarButtonItem(kind: .circleAdd) { [weak self] in
-            guard let self = self else {
-                return
-            }
-
-            self.open(
-                .welcome(flow: .addNewAccount(mode: .none)),
-                by: .customPresent(presentationStyle: .fullScreen, transitionStyle: nil, transitioningDelegate: nil)
-            )
-        }
-
-        leftBarButtonItems = [notificationBarButtonItem]
-        rightBarButtonItems = [addBarButtonItem, qrBarButtonItem]
+        rightBarButtonItems = [notificationBarButtonItem]
     }
 }
 
