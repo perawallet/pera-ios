@@ -24,17 +24,17 @@ final class ManagementItemView:
     UIControlInteractionPublisher,
     ListReusable {
     private(set) var uiInteractions: [Event : MacaroonUIKit.UIInteraction] = [
-        .manage: UIControlInteraction(),
-        .add: UIControlInteraction()
+        .primaryAction: UIControlInteraction(),
+        .secondaryAction: UIControlInteraction()
     ]
     
     private lazy var titleView = Label()
-    private lazy var manageButton = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
-    private lazy var addButton = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
+    private lazy var primaryButton = MacaroonUIKit.Button(.imageAtLeft(spacing: 8))
+    private lazy var secondaryButton = MacaroonUIKit.Button()
     
     func customize(_ theme: ManagementItemViewTheme) {
-        addAddButton(theme)
-        addManageButton(theme)
+        addSecondaryButton(theme)
+        addPrimaryButton(theme)
         addTitle(theme)
     }
     
@@ -45,50 +45,89 @@ final class ManagementItemView:
 
 extension ManagementItemView {
     private func addTitle(_ theme: ManagementItemViewTheme) {
-        titleView.editText = theme.title
-        
         addSubview(titleView)
         titleView.snp.makeConstraints {
             $0.top.leading.bottom.equalToSuperview()
-            $0.trailing.lessThanOrEqualTo(manageButton.snp.leading).offset(-theme.spacing)
+            $0.trailing.lessThanOrEqualTo(primaryButton.snp.leading).offset(-theme.spacing)
         }
     }
     
-    private func addManageButton(_ theme: ManagementItemViewTheme) {
-        manageButton.customizeAppearance(theme.manageButton)
-        
-        addSubview(manageButton)
-        manageButton.fitToIntrinsicSize()
-        manageButton.snp.makeConstraints {
+    private func addPrimaryButton(_ theme: ManagementItemViewTheme) {
+        primaryButton.customizeAppearance(theme.primaryButton)
+
+        addSubview(primaryButton)
+        primaryButton.fitToIntrinsicSize()
+        primaryButton.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
-            $0.trailing.equalTo(addButton.snp.leading).offset(-theme.spacing)
+            $0.trailing.equalTo(secondaryButton.snp.leading).offset(-theme.spacing)
         }
         
         startPublishing(
-            event: .manage,
-            for: manageButton
+            event: .primaryAction,
+            for: primaryButton
         )
     }
     
-    private func addAddButton(_ theme: ManagementItemViewTheme) {
-        addButton.customizeAppearance(theme.addButton)
-        
-        addSubview(addButton)
-        addButton.fitToIntrinsicSize()
-        addButton.snp.makeConstraints {
+    private func addSecondaryButton(_ theme: ManagementItemViewTheme) {
+        secondaryButton.customizeAppearance(theme.secondaryButton)
+
+        addSubview(secondaryButton)
+        secondaryButton.fitToIntrinsicSize()
+        secondaryButton.snp.makeConstraints {
             $0.top.trailing.bottom.equalToSuperview()
         }
         
         startPublishing(
-            event: .add,
-            for: addButton
+            event: .secondaryAction,
+            for: secondaryButton
         )
+    }
+}
+
+extension ManagementItemView: ViewModelBindable {
+    func bindData(_ viewModel: ManagementItemViewModel?) {
+        titleView.editText = viewModel?.title
+        primaryButton.setEditTitle(
+            viewModel?.primaryButtonTitle,
+            for: .normal
+        )
+        primaryButton.setImage(
+            viewModel?.primaryButtonIcon?.uiImage,
+            for: .normal
+        )
+        secondaryButton.setEditTitle(
+            viewModel?.secondaryButtonTitle,
+            for: .normal
+        )
+        secondaryButton.setImage(
+            viewModel?.secondaryButtonIcon?.uiImage,
+            for: .normal
+        )
+    }
+
+    class func calculatePreferredSize(
+        _ viewModel: ManagementItemViewModel?,
+        for layoutSheet: ManagementItemViewTheme,
+        fittingIn size: CGSize
+    ) -> CGSize {
+        guard let viewModel = viewModel else {
+            return CGSize((size.width, 0))
+        }
+
+        let width = size.width
+        let titleSize = viewModel.title.boundingSize(
+            multiline: false,
+            fittingSize: CGSize((width, .greatestFiniteMagnitude))
+        )
+        let preferredHeight = max(layoutSheet.buttonHeight, titleSize.height)
+
+        return CGSize((size.width, min(preferredHeight.ceil(), size.height)))
     }
 }
 
 extension ManagementItemView {
     enum Event {
-        case manage
-        case add
+        case primaryAction
+        case secondaryAction
     }
 }

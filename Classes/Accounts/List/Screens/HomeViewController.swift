@@ -280,56 +280,21 @@ extension HomeViewController {
     }
     
     private func linkInteractors(
-        _ cell: TitleWithAccessorySupplementaryCell,
-        for item: HomeAccountSectionHeaderViewModel
+        _ cell: ManagementItemCell,
+        for item: ManagementItemViewModel
     ) {
-        cell.observe(event: .performAccessory) {
-            [weak self] in
-            guard let self = self else { return }
-            
-            let eventHandler: AccountListOptionsViewController.EventHandler = {
-                [weak self] event in
-                guard let self = self else { return }
-                
-                self.dismiss(animated: true) {
-                    [weak self] in
-                    guard let self = self else { return }
-                    
-                    switch event {
-                    case .addAccount:
-                        self.open(
-                            .welcome(flow: .addNewAccount(mode: .none)),
-                            by: .customPresent(
-                                presentationStyle: .fullScreen,
-                                transitionStyle: nil,
-                                transitioningDelegate: nil
-                            )
-                        )
-                    case .arrangeAccounts(let accountType):
-                        let eventHandler: OrderAccountListViewController.EventHandler = {
-                            [weak self] event in
-                            guard let self = self else { return }
-                            
-                            self.dismiss(animated: true) {
-                                [weak self] in
-                                guard let self = self else { return }
-                                
-                                switch event {
-                                case .didReorder: self.dataController.reload()
-                                }
-                            }
-                        }
-                        self.open(
-                            .orderAccountList(accountType: accountType, eventHandler: eventHandler),
-                            by: .present
-                        )
-                    }
-                }
-            }
-            
-            self.modalTransition.perform(
-                .accountListOptions(accountType: item.type, eventHandler: eventHandler),
-                by: .presentWithoutNavigationController
+        cell.observe(event: .primaryAction) {
+            /// <todo>
+            /// Add "sorting" action
+        }
+        cell.observe(event: .secondaryAction) {
+            self.open(
+                .welcome(flow: .addNewAccount(mode: .none)),
+                by: .customPresent(
+                    presentationStyle: .fullScreen,
+                    transitionStyle: nil,
+                    transitioningDelegate: nil
+                )
             )
         }
     }
@@ -577,7 +542,7 @@ extension HomeViewController {
             switch item {
             case .header(let headerItem):
                 linkInteractors(
-                    cell as! TitleWithAccessorySupplementaryCell,
+                    cell as! ManagementItemCell,
                     for: headerItem
                 )
             default:

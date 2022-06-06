@@ -183,7 +183,7 @@ extension HomeAPIDataController {
             
             if !accounts.isEmpty {
                 let headerItem: HomeAccountItem =
-                    .header(HomeAccountSectionHeaderViewModel(.standard))
+                    .header(ManagementItemViewModel(.account))
                 accountItems.insert(
                     .account(headerItem),
                     at: 0
@@ -198,7 +198,7 @@ extension HomeAPIDataController {
             
             if !watchAccounts.isEmpty {
                 let headerItem: HomeAccountItem =
-                    .header(HomeAccountSectionHeaderViewModel(.watch))
+                    .header(ManagementItemViewModel(.watchAccount))
                 watchAccountItems.insert(
                     .account(headerItem),
                     at: 0

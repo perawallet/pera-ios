@@ -20,42 +20,19 @@ import MacaroonUIKit
 struct ManagementItemViewTheme:
     StyleSheet,
     LayoutSheet {
-    let title: EditText?
-    let manageButton: ButtonStyle
-    let addButton: ButtonStyle
+    let primaryButton: ButtonStyle
+    let secondaryButton: ButtonStyle
+    let buttonHeight: LayoutMetric
     let spacing: LayoutMetric
     
     init(_ family: LayoutFamily) {
-        let font = Fonts.DMSans.medium.make(15)
-        let lineHeightMultiplier = 1.23
-        
-        self.title = .attributedString(
-            "accounts-title-assets"
-                .localized
-                .attributed([
-                    .font(font),
-                    .lineHeightMultiplier(lineHeightMultiplier, font),
-                    .paragraph([
-                        .lineBreakMode(.byTruncatingTail),
-                        .lineHeightMultiple(lineHeightMultiplier)
-                    ])
-                ])
-        )
-        
-        self.manageButton = [
-            .font(font),
-            .title("asset-manage-button".localized),
-            .icon([.normal("icon-asset-manage")]),
-            .titleColor([.normal(AppColors.Components.Link.primary)])
+        self.primaryButton = [
+            .titleColor([.normal(AppColors.Shared.Helpers.positive)])
         ]
-        
-        self.addButton = [
-            .font(font),
-            .title("transaction-detail-add".localized),
-            .icon([.normal("icon-asset-add")]),
-            .titleColor([.normal(AppColors.Components.Link.primary)])
+        self.secondaryButton = [
+            .titleColor([.normal(AppColors.Shared.Helpers.positive)])
         ]
-        
+        self.buttonHeight = 40
         self.spacing = 16
     }
 }

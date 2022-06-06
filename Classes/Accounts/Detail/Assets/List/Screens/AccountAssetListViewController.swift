@@ -148,7 +148,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     return
                 }
                 
-                item.observe(event: .manage) {
+                item.observe(event: .primaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return
@@ -156,7 +156,7 @@ extension AccountAssetListViewController: UICollectionViewDelegateFlowLayout {
                     
                     self.eventHandler?(.manageAssets)
                 }
-                item.observe(event: .add) {
+                item.observe(event: .secondaryAction) {
                     [weak self] in
                     guard let self = self else {
                         return

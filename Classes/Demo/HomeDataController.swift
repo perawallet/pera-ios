@@ -57,7 +57,7 @@ enum HomeEmptyItem: Hashable {
 }
 
 enum HomeAccountItem: Hashable {
-    case header(HomeAccountSectionHeaderViewModel)
+    case header(ManagementItemViewModel)
     case cell(AccountPreviewViewModel)
 }
 

@@ -20,6 +20,7 @@ import UIKit
 
 final class ManagementItemCell:
     CollectionCell<ManagementItemView>,
+    ViewModelBindable,
     UIInteractionObservable {
     static let theme = ManagementItemViewTheme()
     

@@ -17,10 +17,14 @@
 import Foundation
 import MacaroonUIKit
 
-struct ManagementItemViewModel: ViewModel {
+struct ManagementItemViewModel:
+    ViewModel,
+    Hashable {
     private(set) var title: EditText?
-    private(set) var primaryButton: ButtonViewModel?
-    private(set) var secondaryButton: ButtonViewModel?
+    private(set) var primaryButtonTitle: EditText?
+    private(set) var primaryButtonIcon: Image?
+    private(set) var secondaryButtonTitle: EditText?
+    private(set) var secondaryButtonIcon: Image?
 
     init(
         _ type: ManagementItemType
@@ -54,6 +58,15 @@ extension ManagementItemViewModel {
                         hasMultilines: false
                     )
             )
+        case .watchAccount:
+            self.title = .attributedString(
+                "portfolio-title-watchlist"
+                    .localized
+                    .bodyMedium(
+                        lineBreakMode: .byTruncatingTail,
+                        hasMultilines: false
+                    )
+            )
         }
     }
 
@@ -61,30 +74,48 @@ extension ManagementItemViewModel {
         _ type: ManagementItemType
     ) {
         switch type {
-        case .account:
-            self.primaryButton = ButtonCommonViewModel(
-                title: "options-sort-title".localized,
-                iconSet: [.normal("icon-management-sort")]
+        case .account, .watchAccount:
+            self.primaryButtonTitle = .attributedString(
+                "options-sort-title"
+                    .localized
+                    .bodyMedium()
             )
+            self.primaryButtonIcon = img("icon-management-sort")
         case .asset:
-            self.primaryButton = ButtonCommonViewModel(
-                title: "asset-manage-button".localized,
-                iconSet: [.normal("icon-asset-manage")]
+            self.primaryButtonTitle = .attributedString(
+                "asset-manage-button"
+                    .localized
+                    .bodyMedium()
             )
+            self.primaryButtonIcon = img("icon-asset-manage")
         }
     }
 
     private mutating func bindSecondaryButton(
         _ type: ManagementItemType
     ) {
-        self.secondaryButton = ButtonCommonViewModel(
-            title: nil,
-            iconSet: [.normal("icon-management-add")]
-        )
+        self.secondaryButtonTitle = nil
+        self.secondaryButtonIcon = img("icon-management-add")
     }
 }
 
 enum ManagementItemType {
     case asset
     case account
+    case watchAccount
+}
+
+extension ManagementItemViewModel {
+    func hash(
+        into hasher: inout Hasher
+    ) {
+        hasher.combine(title)
+    }
+
+    static func == (
+        lhs: ManagementItemViewModel,
+        rhs: ManagementItemViewModel
+    ) -> Bool {
+        return lhs.title == rhs.title
+    }
 }
